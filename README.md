@@ -83,6 +83,27 @@ membership, representation of all databases, and absence of protected fields.
 from the committed 231 IDs and writes allocation diagnostics, including the
 post-allocation `conditions.order` marginal.
 
+## Reproduce the public HKB intermediate representation
+
+Fetch and verify the 18 public HKB files, then regenerate the committed
+provenance-preserving IR:
+
+```bash
+uv run python scripts/prepare_hkb.py fetch \
+  --inventory config/public_hkb_sources.json \
+  --destination-root data/raw/livesqlbench-large-v1/hkb
+
+uv run python scripts/prepare_hkb.py build \
+  --inventory config/public_hkb_sources.json \
+  --source-root data/raw/livesqlbench-large-v1/hkb \
+  --output-root semantic_models/public_ir
+```
+
+The generator validates all source hashes and the complete dependency DAG before
+publishing output. It preserves every public definition and its dependency
+provenance while leaving semantic representability explicitly unassessed. See
+[`docs/hkb-semantic-baseline.md`](docs/hkb-semantic-baseline.md).
+
 ## Gold custody
 
 Keep the untouched private attachment outside this repository and outside any

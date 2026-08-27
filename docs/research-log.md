@@ -1420,3 +1420,92 @@ Commit the Freeze A record, then begin only public-data work: provision the
 database canary, build the provenance-preserving HKB intermediate
 representation, and generate the immutable public-only baseline outputs before
 the human custodian releases dev-A labels.
+
+## 2026-08-27 — D-021: Preserve the HKB as a strict dependency graph before semantic interpretation
+
+### Decision / experiment
+
+Create a public-only, deterministic HKB intermediate representation before
+attempting any HKB-to-Omni semantic mapping.
+
+### Observation
+
+The 18 pinned public HKB files contain 1,090 natural-language definitions and
+945 dependency edges. Source reconnaissance found 28 edges pointing to a higher
+numeric ID, nonzero and gapped ID sequences, three duplicate knowledge names
+within a database, seven CRLF files, nine files without a final newline, and
+intentional Unicode and whitespace. The official reference agent's convenience
+loader keys definitions by name and omits dependency/type information from its
+agent-facing output, which would lose material source structure for this study.
+
+### Hypothesis
+
+A strict ID-keyed DAG representation will preserve the hierarchical business
+knowledge needed for later semantic compilation while exposing ambiguity rather
+than forcing premature measure/dimension decisions. Hash-binding source and
+output bytes will make the mechanical baseline reproducible across machines.
+
+### Decision
+
+Use `<database>:hkb:<id>` as stable identity, parse the exact public six-field
+schema, normalize only `-1` and `[]` as no dependency, resolve the complete graph
+before output, and leave semantic representability unassessed. Reject duplicate
+JSON keys, extra/protected fields, duplicate IDs/edges, dangling references,
+self-edges, and cycles. Do not use knowledge names as keys and do not translate
+natural-language formulas in this stage.
+
+### Rationale
+
+This is the smallest boundary that preserves what makes LiveSQLBench relevant
+to Omni: business definitions compose. Directly emitting Omni YAML would mix
+deterministic source handling with interpretive modeling decisions and make
+LODO portability and provenance harder to audit. Reusing the official loader
+would silently overwrite the three same-name definitions and flatten the graph.
+
+### Intervention
+
+Added a pinned 18-file public source inventory; bounded, verified-before-publish
+source acquisition; no-follow regular-file reads; an immutable parser and
+dependency compiler; contamination-rejecting deterministic per-database JSONL
+and hash-bound manifest generation; a thin CLI; committed public IR artifacts;
+and focused unit/integration tests. Experiment ID: public
+baseline D-021; commit: this experiment commit; affected subsystem: HKB transformation. Change
+type: general system improvement. Content provenance: public HKB. Intervention
+provenance: mechanical baseline transformation.
+
+### Result
+
+The real build reproduces 18 databases, 1,090 definitions, 430 calculation
+rules, 462 domain rules, 198 value illustrations, 509 `-1` sentinels, 21 empty
+lists, 560 dependent definitions, 945 edges, and maximum depth 6. Synthetic
+tests cover forward references, gapped IDs, duplicate names, CRLF/no-final-
+newline input, Unicode/whitespace, malformed/private fields, graph corruption,
+source hash/OID mismatch, path traversal, symlinked sources and outputs,
+preexisting output contamination, deterministic regeneration, and output hash
+binding. No private label, hidden annotation, benchmark question, or gold SQL
+was accessed.
+
+### Interpretation
+
+The public HKB is structurally clean but cannot safely be treated as a flat
+name-to-description dictionary. Dependency preservation is a necessary input to
+the semantic-layer experiment; semantic interpretation remains the next—and
+scientifically interesting—stage.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+For semantic-model import workflows generally, source identity and dependency
+lineage should survive modeling. A UI or API that represents only display names
+and descriptions can silently collapse distinct business concepts or hide
+composition depth before an agent ever queries them. This is a design
+implication from public structure, not yet a measured Omni product finding.
+
+### Next step
+
+Compile one public database's schema, column meanings, and HKB IR into a
+conservative Omni extension bundle with explicit representability/loss records;
+validate it locally and on an isolated Omni branch before fan-out.

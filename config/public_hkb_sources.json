@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "dataset": "birdsql/livesqlbench-large-v1",
+  "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+  "files": [
+    {
+      "database": "archeology_scan_large",
+      "path": "archeology_scan_large/archeology_scan_large_kb.jsonl",
+      "oid": "14af77907119f06d1f42173ed1bd690b93cd2f62",
+      "size": 29209,
+      "sha256": "1484aac689307eb8e0fe3029d37b7ca41f64e1efbc5dea4ffcdd5a4b428549e7"
+    },
+    {
+      "database": "cross_border_large",
+      "path": "cross_border_large/cross_border_large_kb.jsonl",
+      "oid": "87e7515800ba749521eb028979f7dbea5b7a150f",
+      "size": 23481,
+      "sha256": "2251a54243eb4d76517957c6d7bf114e14741ce5881d4a75000da85f65c97113"
+    },
+    {
+      "database": "cybermarket_pattern_large",
+      "path": "cybermarket_pattern_large/cybermarket_pattern_large_kb.jsonl",
+      "oid": "0b6bdc0e6251945cd651c82a2c1d20474dbfd7a5",
+      "size": 10370,
+      "sha256": "78c43b3775565e16eb02e8c7a7e48ccf59c21292dd65d95f6dd019f5de470c9d"
+    },
+    {
+      "database": "disaster_relief_large",
+      "path": "disaster_relief_large/disaster_relief_large_kb.jsonl",
+      "oid": "ae882fdf6770dd6b5bdb615f4c76feadd388543c",
+      "size": 22879,
+      "sha256": "44f6af450c407fd526ef0a86c2119cfc4e0405db9d9318090051482b0bb752ae"
+    },
+    {
+      "database": "exchange_traded_funds_large",
+      "path": "exchange_traded_funds_large/exchange_traded_funds_large_kb.jsonl",
+      "oid": "5e25d8b93c73f1f13ffce1be4aaa5baf081901a7",
+      "size": 34260,
+      "sha256": "c23117add303077180b6c689a23a91cd12930384fd0e3d6ce2845c4b281ea65c"
+    },
+    {
+      "database": "fake_account_large",
+      "path": "fake_account_large/fake_account_large_kb.jsonl",
+      "oid": "e55d48cbfb41796e89630a300fe8041027cb1f6f",
+      "size": 26931,
+      "sha256": "39db82961b1b98c01cb3e15786abef0c34b560c6512e4748811e6d66874686b2"
+    },
+    {
+      "database": "labor_certification_applications_large",
+      "path": "labor_certification_applications_large/labor_certification_applications_large_kb.jsonl",
+      "oid": "4dc432fff58f2ec068ecd105db831e59e4541756",
+      "size": 27429,
+      "sha256": "5e43ab50e4c0474c3fcf014718a5893c3d846764ec46da5af357b00ac732305e"
+    },
+    {
+      "database": "mental_healths_large",
+      "path": "mental_healths_large/mental_healths_large_kb.jsonl",
+      "oid": "15c1fea8439f752c36eb7e98438424bde839c53c",
+      "size": 38561,
+      "sha256": "b8ac04ce3ed5d3410ebd087e652769cf5fde40a56d9805e69a747a3b8b668c69"
+    },
+    {
+      "database": "museum_artifact_large",
+      "path": "museum_artifact_large/museum_artifact_large_kb.jsonl",
+      "oid": "bf391611096639682474955cffe84c6c979e2550",
+      "size": 24523,
+      "sha256": "0dd2297d4833adbaec9fcc1bbce04aa55b061b8f52c6642c096801ea79ec72eb"
+    },
+    {
+      "database": "organ_transplant_large",
+      "path": "organ_transplant_large/organ_transplant_large_kb.jsonl",
+      "oid": "b1c6ae6f7ed015a9e5b54719399ae130d86e76a3",
+      "size": 26679,
+      "sha256": "a5171d6c8c6a46d0233f682774035358bcbc01f85df9f03423b79dbf7a7bc1b5"
+    },
+    {
+      "database": "planets_data_large",
+      "path": "planets_data_large/planets_data_large_kb.jsonl",
+      "oid": "46970e988377a83bb676f6d480b2a69c5022f302",
+      "size": 20025,
+      "sha256": "2e31e1141a6351e17133734ff5db6676fd580a7402804888efe40a0cd06cfa24"
+    },
+    {
+      "database": "polar_equipment_large",
+      "path": "polar_equipment_large/polar_equipment_large_kb.jsonl",
+      "oid": "5d0a5553252f8d7317506a4b4d7e30f6ed3c1f0d",
+      "size": 29117,
+      "sha256": "be8aa380f5b28e5c29fd6c8e682e7942a3c3b68a9f6f5f70e27247ee71df3367"
+    },
+    {
+      "database": "residential_data_large",
+      "path": "residential_data_large/residential_data_large_kb.jsonl",
+      "oid": "146a4249674e6bfd6ca1d144626f32dbdf2d8eaf",
+      "size": 14387,
+      "sha256": "f80516bc163542cb3d8e14ba49a3efd70ec60a0cf26b618f02da15dd3b2dcda6"
+    },
+    {
+      "database": "reverse_logistics_large",
+      "path": "reverse_logistics_large/reverse_logistics_large_kb.jsonl",
+      "oid": "de960059570b9ae1d843c2cbd34f25cce02ca415",
+      "size": 10348,
+      "sha256": "3d08998a2e838762df018bc0339a868b2d532d480a72afff89987ae8b4222bcd"
+    },
+    {
+      "database": "robot_fault_prediction_large",
+      "path": "robot_fault_prediction_large/robot_fault_prediction_large_kb.jsonl",
+      "oid": "43656329e7ffc39b8bebe83b95a1d55c24e4c7e5",
+      "size": 23663,
+      "sha256": "5bced3badb59501a51eef545837555a38f5b1c5677aadc15df8e191f9f4103c1"
+    },
+    {
+      "database": "solar_panel_large",
+      "path": "solar_panel_large/solar_panel_large_kb.jsonl",
+      "oid": "e7a80990ead1cf86816aff79d8f03f16f1f53172",
+      "size": 21516,
+      "sha256": "608b56057e19b4abd56a79ca8b5381e2a94b5ff7c23101dcffda8f9a08480d11"
+    },
+    {
+      "database": "sports_events_large",
+      "path": "sports_events_large/sports_events_large_kb.jsonl",
+      "oid": "da905e4dacd23473c48ace4c9067dcd30c89e944",
+      "size": 21888,
+      "sha256": "0e1cca104c5d48dec121b8acdcbd17111980308e22d38bd39a2f05fee843b8cd"
+    },
+    {
+      "database": "virtual_idol_large",
+      "path": "virtual_idol_large/virtual_idol_large_kb.jsonl",
+      "oid": "19a01c524fe8b09bd6d2239da1d54d252ee6390c",
+      "size": 24193,
+      "sha256": "e52f9b7a0d9b7953c6c8ef64ff8a28a4d4c561998966047136cbb1d7a8da3581"
+    }
+  ]
+}
