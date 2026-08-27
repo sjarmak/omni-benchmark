@@ -1,51 +1,88 @@
-# Agent Instructions
+# omni-benchmark
 
-This project uses **bd** (beads) for issue tracking. Run `bd prime` for full workflow context.
+Research evaluation of Omni's semantic layer on **LiveSQLBench Large-v1**. The
+goal is evidence about *why* the system succeeds or fails, not a high score.
+Read [README.md](README.md) first, then the doc that matches your task:
 
-> **Architecture in one line:** Issues live in a local Dolt database
-> (`.beads/dolt/`); cross-machine sync uses `bd dolt push/pull` (a
-> git-compatible protocol), stored under `refs/dolt/data` on your git
-> remote — separate from `refs/heads/*` where your code lives.
-> `.beads/issues.jsonl` is a passive export, not the wire protocol.
->
-> See [sync-concepts](https://github.com/gastownhall/beads/blob/main/docs/core-concepts/sync-concepts.md)
-> for the one-screen overview and anti-patterns (don't treat JSONL as the
-> source of truth; don't `bd import` during normal operation; don't
-> reach for third-party Dolt hosting before trying the default).
+| Question | File |
+| --- | --- |
+| What is the preregistered design, custody, and freeze plan? | `EVALUATION_PROTOCOL.md` |
+| What does the public benchmark actually contain, and what is unresolved? | `docs/benchmark-notes.md` |
+| How does the optimization control plane work? | `docs/autoresearch.md` |
+| What has been tried, and why? | `docs/research-log.md`, `experiments/` |
+| Scorer semantics and the two frozen scorers | `docs/scoring.md` |
+| Condition scaffolds and telemetry contract | `docs/harness-disclosure.md` |
 
-## Quick Reference
+Partitions: 332 eligible `Query` tasks, 231 development (154 `dev-A` adaptive,
+77 `dev-B` metered), 101 sealed test. Conditions C1-C4 are defined in the README
+table.
+
+## Build and test
 
 ```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --claim  # Claim work atomically
-bd close <id>         # Complete work
-bd dolt push          # Push beads data to remote
+uv sync --dev
+uv run pytest --cov=omni_benchmark --cov-branch   # branch coverage, fail_under=80
+uv run ruff check . && uv run ruff format --check .
 ```
 
-## Non-Interactive Shell Commands
+## Hard boundaries (do not relax for convenience)
 
-**ALWAYS use non-interactive flags** with file operations to avoid hanging on confirmation prompts.
+- **Never** read, grep, index, or summarize hidden fields for the 101 test IDs.
+  If test gold becomes visible, stop and document the contamination.
+- Hidden train annotations are **offline diagnostic input only**. They may shape
+  how the system is built; they may never become question-specific runtime input.
+- Split membership, custody rules, scoring definitions, endpoints, and the
+  protocol are human-controlled surfaces. Propose changes; do not make them.
+- Never commit credentials, private gold, run artifacts, or sealed annotations.
+- Never rerun a trial because its answer was wrong. Reruns require a demonstrable
+  failure outside the evaluated system (see the protocol's rerun policy).
 
-Shell commands like `cp`, `mv`, and `rm` may be aliased to include `-i` (interactive) mode on some systems, causing the agent to hang indefinitely waiting for y/n input.
+## Gotchas
 
-**Use these forms instead:**
-```bash
-# Force overwrite without prompting
-cp -f source dest           # NOT: cp source dest
-mv -f source dest           # NOT: mv source dest
-rm -f file                  # NOT: rm file
+These cost time if you discover them by hitting them.
 
-# For recursive operations
-rm -rf directory            # NOT: rm -r directory
-cp -rf source dest          # NOT: cp -r source dest
-```
+- **State artifacts refuse overwrite.** `_write_exclusive` writes mode `0600` via
+  `O_EXCL` and raises `already exists; refusing overwrite`. Ledger, manifest, and
+  checkpoint records are append-only. A botched record is fixed forward with a new
+  record, never by deleting the file to retry.
+- **The control plane reads git, not your working tree.** Autoresearch, custody,
+  and probe commands verify `config/autoresearch.json` and `data/manifests/*`
+  against the recorded Freeze A commit with `git show`. Uncommitted edits fail with
+  "must be committed" or "must match the recorded commit". `--freeze-a-commit`
+  needs the full 40-hex canonical hash; abbreviations are rejected.
+- **`guardian_public_key_sha256` is `UNPROVISIONED`.** dev-B checkpoints cannot run
+  until the human custodian provisions the key. Do not substitute a value.
+- **dev-B is metered and single-use.** Hard maximum 10 checkpoints. Receipt and
+  output hashes cannot be replayed, and each consumption marker must be committed
+  before the next checkpoint is permitted.
+- **Forbidden fields are rejected recursively.** Generation artifacts may not
+  contain `sol_sql`, `gold_sql`, `test_cases`, `external_knowledge`,
+  `test_correctness`, `gold_result`, or `expected_result` at any nesting depth.
+  Correctness belongs in a separate immutable score artifact.
+- **Broad gitignore patterns.** `*gold*.jsonl`, `*ground_truth*`, `*_gt*`,
+  `data/raw/`, `data/private/`, `runs/`, `experiments/runs/`, and `.mcp.json` are
+  ignored. A legitimately named new file can vanish silently; check `git status
+  --ignored` if something you created will not stage.
+- **Manifests are regenerated, never hand-edited.** Tests assert byte-identical
+  regeneration from the pinned seeds and source hash. Fix inputs, rerun
+  `scripts/prepare_benchmark.py` / `make_split.py` / `make_dev_split.py`.
+- **Omni env contract.** Set exactly one of `OMNI_PROFILE` or `OMNI_API_TOKEN`.
+  `OMNI_BASE_URL` must be an HTTPS origin with no embedded credentials. Values
+  live in an untracked `.env`; `.env.example` is the only committed template.
+- **Two frozen scorers, both reported.** Official Soft EX (pinned to evaluator
+  commit `e15cd221`) reproduces lossy behavior on purpose. Do not "fix" it, and do
+  not choose between scorers after seeing results.
+- **No git remote is configured.** Local commits only. Never push or run remote sync.
+- Shell aliases may force `-i` on `cp`/`mv`/`rm` and hang the session. Use
+  `cp -f`, `mv -f`, `rm -f`, `rm -rf`, and expand destructive paths literally.
 
-**Other commands that may prompt:**
-- `scp` - use `-o BatchMode=yes` for non-interactive
-- `ssh` - use `-o BatchMode=yes` to fail instead of prompting
-- `apt-get` - use `-y` flag
-- `brew` - use `HOMEBREW_NO_AUTO_UPDATE=1` env var
+## Working style
+
+Every meaningful change starts with a hypothesis and ends in the ledger, including
+the ones that failed. Log contemporaneously in `docs/research-log.md`; do not
+reconstruct the story afterward. Classify each intervention's generality before
+making it: question-specific changes are prohibited, benchmark-specific ones stay
+out of the final system.
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:1105d646 -->
 ## Beads Issue Tracker
@@ -101,27 +138,3 @@ This protocol applies when ending a Beads implementation workflow. It is subordi
 - Do not commit or push without clear authority from the active profile or the current user request.
 - If a required sync or push is blocked, stop and report the exact command and error.
 <!-- END BEADS INTEGRATION -->
-
-<!-- BEGIN BEADS CODEX SETUP: generated by bd setup codex -->
-## Beads Issue Tracker
-
-Use Beads (`bd`) for durable task tracking in repositories that include it. Use the `beads` skill at `.agents/skills/beads/SKILL.md` (project install) or `~/.agents/skills/beads/SKILL.md` (global install) for Beads workflow guidance, then use the `bd` CLI for issue operations.
-
-### Quick Reference
-
-```bash
-bd ready                # Find available work
-bd show <id>            # View issue details
-bd update <id> --claim  # Claim work
-bd close <id>           # Complete work
-bd prime                # Refresh Beads context
-```
-
-### Rules
-
-- Use `bd` for all task tracking; do not create markdown TODO lists.
-- Run `bd prime` when Beads context is missing or stale. Codex 0.129.0+ can load Beads context automatically through native hooks; use `/hooks` to inspect or toggle them.
-- Keep persistent project memory in Beads via `bd remember`; do not create ad hoc memory files.
-
-**Architecture in one line:** issues live in a local Dolt DB; sync uses `refs/dolt/data` on your git remote; `.beads/issues.jsonl` is a passive export. See https://github.com/gastownhall/beads/blob/main/docs/core-concepts/sync-concepts.md for details and anti-patterns.
-<!-- END BEADS CODEX SETUP -->
