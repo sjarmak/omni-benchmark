@@ -1,0 +1,327 @@
+{
+  "algorithm": {
+    "database_allocation": "Hamilton largest remainder",
+    "name": "development_database_high_level_sha256_v1",
+    "primary_strata": [
+      "selected_database",
+      "high_level"
+    ],
+    "seed": "omni-livesqlbench-large-v1-development-split-v1",
+    "unit": "analytical_question",
+    "within_database_stratum": "high_level",
+    "within_stratum_order": "SHA-256(seed, database, high_level, instance_id)"
+  },
+  "artifacts": {
+    "dev_a_ids": {
+      "file": "dev_a_ids.txt",
+      "sha256": "acfafec356386612f77a2eef9f37fc5459dd8e23cace6f7b652a505dadfd81a6"
+    },
+    "dev_b_ids": {
+      "file": "dev_b_ids.txt",
+      "sha256": "fd9292c3428de82c0f68209784caa9104bdd73c11e0aff1325d9f38183bd8ea3"
+    }
+  },
+  "balance_diagnostics": {
+    "conditions": {
+      "order": {
+        "false": {
+          "absolute_deviation": 5.0,
+          "actual_dev_b": 37,
+          "expected_dev_b": 32.0
+        },
+        "true": {
+          "absolute_deviation": 5.0,
+          "actual_dev_b": 40,
+          "expected_dev_b": 45.0
+        }
+      }
+    }
+  },
+  "counts": {
+    "dev_a": 154,
+    "dev_b": 77,
+    "development": 231
+  },
+  "distributions": {
+    "by_database": {
+      "archeology_scan_large": {
+        "dev_a": 5,
+        "dev_b": 2,
+        "development": 7,
+        "high_level": {
+          "dev_a": 3,
+          "dev_b": 1,
+          "development": 4
+        }
+      },
+      "cross_border_large": {
+        "dev_a": 9,
+        "dev_b": 5,
+        "development": 14,
+        "high_level": {
+          "dev_a": 1,
+          "dev_b": 0,
+          "development": 1
+        }
+      },
+      "cybermarket_pattern_large": {
+        "dev_a": 9,
+        "dev_b": 5,
+        "development": 14,
+        "high_level": {
+          "dev_a": 0,
+          "dev_b": 0,
+          "development": 0
+        }
+      },
+      "disaster_relief_large": {
+        "dev_a": 5,
+        "dev_b": 3,
+        "development": 8,
+        "high_level": {
+          "dev_a": 4,
+          "dev_b": 3,
+          "development": 7
+        }
+      },
+      "exchange_traded_funds_large": {
+        "dev_a": 9,
+        "dev_b": 4,
+        "development": 13,
+        "high_level": {
+          "dev_a": 8,
+          "dev_b": 3,
+          "development": 11
+        }
+      },
+      "fake_account_large": {
+        "dev_a": 11,
+        "dev_b": 6,
+        "development": 17,
+        "high_level": {
+          "dev_a": 1,
+          "dev_b": 0,
+          "development": 1
+        }
+      },
+      "labor_certification_applications_large": {
+        "dev_a": 9,
+        "dev_b": 4,
+        "development": 13,
+        "high_level": {
+          "dev_a": 8,
+          "dev_b": 3,
+          "development": 11
+        }
+      },
+      "mental_healths_large": {
+        "dev_a": 9,
+        "dev_b": 5,
+        "development": 14,
+        "high_level": {
+          "dev_a": 5,
+          "dev_b": 2,
+          "development": 7
+        }
+      },
+      "museum_artifact_large": {
+        "dev_a": 9,
+        "dev_b": 5,
+        "development": 14,
+        "high_level": {
+          "dev_a": 9,
+          "dev_b": 5,
+          "development": 14
+        }
+      },
+      "organ_transplant_large": {
+        "dev_a": 9,
+        "dev_b": 4,
+        "development": 13,
+        "high_level": {
+          "dev_a": 9,
+          "dev_b": 4,
+          "development": 13
+        }
+      },
+      "planets_data_large": {
+        "dev_a": 9,
+        "dev_b": 4,
+        "development": 13,
+        "high_level": {
+          "dev_a": 2,
+          "dev_b": 1,
+          "development": 3
+        }
+      },
+      "polar_equipment_large": {
+        "dev_a": 9,
+        "dev_b": 5,
+        "development": 14,
+        "high_level": {
+          "dev_a": 7,
+          "dev_b": 4,
+          "development": 11
+        }
+      },
+      "residential_data_large": {
+        "dev_a": 10,
+        "dev_b": 5,
+        "development": 15,
+        "high_level": {
+          "dev_a": 7,
+          "dev_b": 4,
+          "development": 11
+        }
+      },
+      "reverse_logistics_large": {
+        "dev_a": 9,
+        "dev_b": 5,
+        "development": 14,
+        "high_level": {
+          "dev_a": 0,
+          "dev_b": 0,
+          "development": 0
+        }
+      },
+      "robot_fault_prediction_large": {
+        "dev_a": 5,
+        "dev_b": 2,
+        "development": 7,
+        "high_level": {
+          "dev_a": 5,
+          "dev_b": 2,
+          "development": 7
+        }
+      },
+      "solar_panel_large": {
+        "dev_a": 9,
+        "dev_b": 5,
+        "development": 14,
+        "high_level": {
+          "dev_a": 3,
+          "dev_b": 2,
+          "development": 5
+        }
+      },
+      "sports_events_large": {
+        "dev_a": 10,
+        "dev_b": 4,
+        "development": 14,
+        "high_level": {
+          "dev_a": 4,
+          "dev_b": 2,
+          "development": 6
+        }
+      },
+      "virtual_idol_large": {
+        "dev_a": 9,
+        "dev_b": 4,
+        "development": 13,
+        "high_level": {
+          "dev_a": 9,
+          "dev_b": 4,
+          "development": 13
+        }
+      }
+    },
+    "overall": {
+      "dev_a": {
+        "conditions": {
+          "decimal": {
+            "-1": 77,
+            "0": 3,
+            "1": 4,
+            "2": 47,
+            "3": 11,
+            "4": 10,
+            "6": 1,
+            "8": 1
+          },
+          "distinct": {
+            "false": 147,
+            "true": 7
+          },
+          "order": {
+            "false": 59,
+            "true": 95
+          }
+        },
+        "count": 154,
+        "high_level": {
+          "false": 69,
+          "true": 85
+        }
+      },
+      "dev_b": {
+        "conditions": {
+          "decimal": {
+            "-1": 34,
+            "0": 3,
+            "1": 1,
+            "2": 29,
+            "3": 5,
+            "4": 4,
+            "5": 1
+          },
+          "distinct": {
+            "false": 72,
+            "true": 5
+          },
+          "order": {
+            "false": 37,
+            "true": 40
+          }
+        },
+        "count": 77,
+        "high_level": {
+          "false": 37,
+          "true": 40
+        }
+      },
+      "development": {
+        "conditions": {
+          "decimal": {
+            "-1": 111,
+            "0": 6,
+            "1": 5,
+            "2": 76,
+            "3": 16,
+            "4": 14,
+            "5": 1,
+            "6": 1,
+            "8": 1
+          },
+          "distinct": {
+            "false": 219,
+            "true": 12
+          },
+          "order": {
+            "false": 96,
+            "true": 135
+          }
+        },
+        "count": 231,
+        "high_level": {
+          "false": 106,
+          "true": 125
+        }
+      }
+    }
+  },
+  "manifest": {
+    "file": "eligible_questions.jsonl",
+    "sha256": "ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "file": "livesqlbench_large_v1_data.jsonl",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "sha256": "f0e12218cb46f5b6e019908740a0b3303a1f8d1136c661545ad6dd1b4b5444f6"
+  },
+  "source_partition": {
+    "file": "train_ids.txt",
+    "sha256": "ecdd1e4cd425e41970d3d4e96d7c3cb044cb78d94e34621d320e3d542a5d1c46"
+  }
+}

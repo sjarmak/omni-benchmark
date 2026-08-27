@@ -1,0 +1,6 @@
+{
+  "adapter_instruction": "Submit the public benchmark question unchanged through Omni's production agent job API.",
+  "managed_agent_instructions": "not_exposed_by_omni",
+  "question_specific_hidden_annotations": false,
+  "runtime_oracle_context": false
+}

@@ -29,8 +29,10 @@ uv run ruff check . && uv run ruff format --check .
 
 - **Never** read, grep, index, or summarize hidden fields for the 101 test IDs.
   If test gold becomes visible, stop and document the contamination.
-- Hidden train annotations are **offline diagnostic input only**. They may shape
+- Hidden dev-A annotations are **offline diagnostic input only**. They may shape
   how the system is built; they may never become question-specific runtime input.
+  Dev-B per-question annotations remain guardian-only; development receives
+  signed aggregate checkpoint receipts.
 - Split membership, custody rules, scoring definitions, endpoints, and the
   protocol are human-controlled surfaces. Propose changes; do not make them.
 - Never commit credentials, private gold, run artifacts, or sealed annotations.
@@ -50,8 +52,8 @@ These cost time if you discover them by hitting them.
   against the recorded Freeze A commit with `git show`. Uncommitted edits fail with
   "must be committed" or "must match the recorded commit". `--freeze-a-commit`
   needs the full 40-hex canonical hash; abbreviations are rejected.
-- **`guardian_public_key_sha256` is `UNPROVISIONED`.** dev-B checkpoints cannot run
-  until the human custodian provisions the key. Do not substitute a value.
+- **The dev-B guardian digest is Freeze-A-protected.** Its private key remains
+  outside agent scope. Never replace the committed digest during development.
 - **dev-B is metered and single-use.** Hard maximum 10 checkpoints. Receipt and
   output hashes cannot be replayed, and each consumption marker must be committed
   before the next checkpoint is permitted.

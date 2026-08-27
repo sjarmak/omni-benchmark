@@ -1,0 +1,23 @@
+{
+  "condition": "C4",
+  "execution": "omni_production_agent_job_api",
+  "knowledge": "public_schema_and_hkb_encoded_in_omni_semantic_model",
+  "managed_llm_identity": "managed-unobservable",
+  "maximum_status_checks": 60,
+  "model_config_id": "c4-production-v1",
+  "omni_cli_sha256": "09ee288da55cca60983ce099ded5a77f9241ff98c3e08a48d53f6cd4f3a43695",
+  "omni_cli_version": "1.1.2",
+  "poll_schedule_seconds": [
+    2.0,
+    5.0,
+    10.0
+  ],
+  "production_retry_policy": "managed_unobservable",
+  "provider": "omni-production",
+  "result_selection": "last_successful_generate_query_action",
+  "semantic_enforcement": "governed",
+  "typed_result_cache": "disabled",
+  "typed_result_formatting": false,
+  "typed_result_type": "json",
+  "truncated_result_policy": "evaluated_system_error"
+}

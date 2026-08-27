@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omni-benchmark"
+version = "0.1.0"
+description = "Reproducible Omni evaluation tooling for LiveSQLBench Large-v1"
+requires-python = ">=3.11"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4,<9",
+  "pytest-cov>=7,<8",
+  "ruff>=0.15,<0.16",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["omni_benchmark"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "partition": "dev-A",
+  "expected_train_count": 231,
+  "expected_dev_a_count": 154,
+  "expected_dev_b_count": 77,
+  "dev_b_max_evaluations": 10,
+  "guardian_public_key_sha256": "d0c19233a84060cd725c38f27724492675b0ddc4eeba51f3a7763d617124770c",
+  "train_ids_path": "data/manifests/train_ids.txt",
+  "dev_a_ids_path": "data/manifests/dev_a_ids.txt",
+  "dev_b_ids_path": "data/manifests/dev_b_ids.txt",
+  "test_ids_path": "data/manifests/test_ids.txt",
+  "public_manifest_path": "data/manifests/eligible_questions.jsonl",
+  "state_dir": "experiments/autoresearch/state",
+  "ledger_path": "experiments/autoresearch/ledger.jsonl",
+  "forbidden_fields": [
+    "sol_sql",
+    "gold_sql",
+    "test_cases",
+    "external_knowledge",
+    "test_correctness",
+    "gold_result",
+    "expected_result"
+  ],
+  "decisions": [
+    "KEEP",
+    "REVERT",
+    "INCONCLUSIVE",
+    "INVESTIGATE",
+    "ARCHIVE"
+  ],
+  "objectives_in_priority_order": [
+    "execution_accuracy",
+    "generality",
+    "low_regression_rate",
+    "latency_and_cost",
+    "low_system_complexity",
+    "production_relevance"
+  ],
+  "acceptance_policy": {
+    "keep_requires_complete_dev_a_run": true,
+    "routine_dev_b_access": false,
+    "dev_b_checkpoint_target_minimum": 5,
+    "dev_b_checkpoint_maximum": 10,
+    "keep_requires_generality_rationale": true,
+    "keep_requires_regression_accounting": true,
+    "aggregate_accuracy_is_not_a_sufficient_reason": true
+  },
+  "intervention_policy": {
+    "one_mechanism_per_experiment": true,
+    "reject_exact_benchmark_instance_ids": true,
+    "hidden_annotations_at_runtime": false,
+    "question_specific_rules": false,
+    "verbatim_question_to_gold_examples": false,
+    "optimization_surfaces": [
+      "textual",
+      "structural",
+      "human_research_controlled"
+    ],
+    "autonomous_human_research_controlled_changes": false,
+    "generality_scopes": [
+      "cross_database_general",
+      "database_family",
+      "database_specific_legitimate",
+      "benchmark_specific",
+      "question_specific"
+    ],
+    "question_specific_keep": false,
+    "benchmark_specific_keep": false,
+    "local_interpretable_change_precedes_architectural_change": true
+  },
+  "checkpoint_labels": [
+    "baseline",
+    "checkpoint-N",
+    "final-candidate"
+  ],
+  "checkpoint_policy": {
+    "dev_b_requires_explicit_checkpoint": true,
+    "dev_b_evaluation_counter_required": true,
+    "dev_b_results_may_not_select_question_specific_changes": true
+  },
+  "trace_policy": {
+    "aggregate_score_only_is_insufficient": true,
+    "runtime_hidden_annotations": false,
+    "offline_hidden_annotation_content_in_ordinary_trace": false,
+    "scaled_runs_require_condition_smoke_preflight": true,
+    "scaled_runs_require_run_manifest": true,
+    "raw_trace_root": "experiments/autoresearch/raw",
+    "unavailable_telemetry_is_null_not_zero": true,
+    "generation_and_scoring_records_are_immutable_and_separate": true,
+    "fields_when_available": [
+      "question",
+      "generation_outcome",
+      "scored_outcome",
+      "model_provider_version",
+      "input_output_total_tokens",
+      "token_and_cost_source",
+      "tool_call_count",
+      "database_query_count",
+      "wall_clock_duration",
+      "retry_count",
+      "validation_attempt_count",
+      "terminal_failure_class",
+      "actual_result_hash",
+      "failure_category",
+      "public_hkb_nodes",
+      "semantic_objects_available",
+      "semantic_objects_retrieved",
+      "generated_query",
+      "compiler_status",
+      "validation_status",
+      "execution_status",
+      "raw_trace_hash_reference",
+      "prior_experiments"
+    ]
+  },
+  "regression_policy": {
+    "partition": "dev-A",
+    "append_only": true,
+    "representative_capability_and_rationale_required": true,
+    "keep_requires_preservation_evidence": true
+  },
+  "candidate_policy": {
+    "branching_lineage": true,
+    "single_latest_parent_required": false,
+    "weighted_scalar_reward": false,
+    "maintain_non_dominated_candidates": true,
+    "pareto_dimensions": {
+      "maximize": [
+        "execution_accuracy",
+        "stability",
+        "generality"
+      ],
+      "minimize": [
+        "wrong_answer_rate",
+        "refusal_error_rate",
+        "regressions",
+        "cost",
+        "latency",
+        "semantic_model_complexity",
+        "special_case_count"
+      ]
+    }
+  },
+  "surface_strategy": {
+    "textual": "systematic_multi_candidate_trace_guided_search",
+    "structural": "mechanism_hypothesis_targeted_test_global_regression",
+    "human_research_controlled": "explicit_human_review_only",
+    "optimizer_switching_after_plateau": true
+  },
+  "stopping_policy": {
+    "review_after_consecutive_non_keep_experiments": 4,
+    "allowed_reasons": [
+      "consecutive_experiments_without_meaningful_gain",
+      "remaining_failures_predominantly_irreducible_or_model_related",
+      "further_gain_requires_benchmark_specific_behavior",
+      "complexity_or_cost_outpaces_accuracy",
+      "planned_budget_reached",
+      "final_candidate_selected"
+    ]
+  },
+  "condition_policy": {
+    "primary_development_condition": "C4",
+    "comparators": [
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "comparators_must_be_reasonable_before_freeze": true,
+    "all_conditions_frozen_together": true
+  }
+}

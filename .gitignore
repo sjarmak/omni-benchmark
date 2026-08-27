@@ -5,3 +5,48 @@
 .beads-credential-key
 .beads/proxieddb/
 *.gate.lock*
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.omni-session.json
+.mcp.json
+
+# Python tooling
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Public source downloads are reproducible; committed manifests are not ignored.
+data/raw/
+data/source/
+
+# Private benchmark material must never enter git.
+data/private/
+private/
+*.private.jsonl
+*.gold.jsonl
+*.gt.jsonl
+*gold*.jsonl
+*GOLD*.jsonl
+*ground_truth*.jsonl
+*GROUND_TRUTH*.jsonl
+*_gt*.jsonl
+*_GT*.jsonl
+experiments/runs/*/private/
+
+# Per-attempt outputs and trace sidecars can contain generated SQL or result data.
+runs/
+experiments/runs/
+experiments/autoresearch/raw/
+experiments/autoresearch/guardian_receipts/

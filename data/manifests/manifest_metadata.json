@@ -1,0 +1,50 @@
+{
+  "categories": {
+    "Management": 148,
+    "Query": 332
+  },
+  "counts": {
+    "eligible": 332,
+    "excluded": 148,
+    "source": 480
+  },
+  "databases": {
+    "archeology_scan_large": 10,
+    "cross_border_large": 20,
+    "cybermarket_pattern_large": 20,
+    "disaster_relief_large": 12,
+    "exchange_traded_funds_large": 19,
+    "fake_account_large": 24,
+    "labor_certification_applications_large": 19,
+    "mental_healths_large": 20,
+    "museum_artifact_large": 20,
+    "organ_transplant_large": 19,
+    "planets_data_large": 19,
+    "polar_equipment_large": 20,
+    "residential_data_large": 21,
+    "reverse_logistics_large": 20,
+    "robot_fault_prediction_large": 10,
+    "solar_panel_large": 20,
+    "sports_events_large": 20,
+    "virtual_idol_large": 19
+  },
+  "eligibility": {
+    "category": "Query"
+  },
+  "manifest": {
+    "file": "eligible_questions.jsonl",
+    "sha256": "ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e"
+  },
+  "private_field_policy": {
+    "external_knowledge": "required_empty",
+    "sol_sql": "required_empty",
+    "test_cases": "required_empty"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "file": "livesqlbench_large_v1_data.jsonl",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "sha256": "f0e12218cb46f5b6e019908740a0b3303a1f8d1136c661545ad6dd1b4b5444f6"
+  }
+}
