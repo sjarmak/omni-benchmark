@@ -1338,3 +1338,85 @@ the underlying labels are readable by the optimizer.
 Provision the guardian public-key digest, run independent code/security review
 and full exact-tree gates, then create Freeze A Commit A and its separate hash
 record before any dev-A label release.
+
+## 2026-08-27 — D-020: Record the pre-gold protocol freeze
+
+### Decision / experiment
+
+Freeze the eligible population, nested partitions, custody boundary, scorers,
+conditions, endpoints, and optimization controls before any private label enters
+development.
+
+### Observation
+
+The public-only protocol candidate had passed broad tests, but the git index was
+stale and the dev-B guardian digest was not yet provisioned. Independent custody
+review then found both the 231-label release contradiction and a manifest
+time-of-check/time-of-use race. Those issues made an earlier commit scientifically
+unsafe even though the outer 101-question test partition remained untouched.
+
+### Hypothesis
+
+A commit containing the real guardian digest, dev-A-only extraction, immutable
+committed-ID selection, deterministic splits, and frozen analysis/scoring rules
+will form an auditable pre-gold boundary. A second non-self-referential record can
+bind that commit and its protected artifacts without altering them.
+
+### Decision
+
+Declare commit `7d39ee107338da1ce10e2553a4290e64bfc2f892` Freeze A Commit A.
+Record its hashes separately before any dev-A label release. Keep database
+infrastructure, the supporting manuscript, Beads export, and local OS metadata
+outside this commit because they are not part of the frozen protocol payload.
+
+### Rationale
+
+The exact committed tree—not the larger shared worktree—is the reproducible
+experimental state. Separating mutable infrastructure work prevents an unrelated
+Neon lane from contaminating the protocol freeze, while the two-commit record
+avoids a self-referential hash.
+
+### Intervention
+
+Pinned the externally generated guardian public-key digest, changed status
+markers to frozen, explicitly staged 96 protocol/harness files, and verified the
+result through a detached worktree created from the staged git tree. Added
+`experiments/freeze-a.json` with Commit A and SHA-256 values computed from
+`git show` bytes. Experiment ID: control-plane D-020; affected subsystem:
+pre-gold experimental freeze. Change type: general evaluation-system integrity.
+
+### Result
+
+The exact Commit A tree passes 426 tests with 85.81% branch coverage, Ruff lint
+and formatting, and a package build. It contains no excluded database-lane or
+manuscript files, no unstaged tracked bytes, and no non-test secret-pattern
+matches. Synthetic connection-string fixtures caused the deliberately broad
+all-file scan to alert; a reviewed scan excluding those test fixtures found no
+candidate secret. Post-commit `load_config` verification succeeds against the
+full Commit A hash and committed guardian digest. Independent final code and
+security reviews approve the custody change after the race regression. No
+private label, gold SQL, hidden test case, or hidden knowledge annotation was
+accessed.
+
+### Interpretation
+
+Freeze A now proves split integrity and development-label custody rather than
+merely describing them. The most important review finding was not statistical:
+security-sensitive evaluation metadata must be consumed from the same immutable
+bytes that were verified.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+None for Omni yet. For evaluation harnesses, immutable content identity and
+access-boundary observability are prerequisites for credible adaptive research.
+
+### Next step
+
+Commit the Freeze A record, then begin only public-data work: provision the
+database canary, build the provenance-preserving HKB intermediate
+representation, and generate the immutable public-only baseline outputs before
+the human custodian releases dev-A labels.

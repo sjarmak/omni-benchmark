@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "kind": "freeze-a-record",
+  "freeze_a_commit": "7d39ee107338da1ce10e2553a4290e64bfc2f892",
+  "recorded_at": "2026-08-27T23:00:41Z",
+  "guardian_public_key_sha256": "d0c19233a84060cd725c38f27724492675b0ddc4eeba51f3a7763d617124770c",
+  "eligible_questions_sha256": "ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e",
+  "split_metadata_sha256": "c3594721c2ca6af9001c2e187f86d83419d11e580d32c9fa26bbce0aeefcfde2",
+  "development_split_metadata_sha256": "a9404d75dd5554f526468f80291379e79887bdf3612740a554e1d0a1c729bee5",
+  "preregistration_sha256": "309bec57990217c4aef46787c9069358fbeecba662ba331161ecdc6525cf5f3c",
+  "evaluation_protocol_sha256": "1ee258dafc5ee8152ac400a12f696317dd8529bc28977f616125f2319b424e6f"
+}
