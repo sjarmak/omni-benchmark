@@ -5,11 +5,13 @@ from __future__ import annotations
 import argparse
 import io
 import json
+import math
 import os
 import subprocess
 import tarfile
 import tempfile
 import threading
+import time
 from collections.abc import Callable, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
@@ -41,6 +43,7 @@ BundleInventoryLoader = Callable[
 _LIVE_CONNECTION_PREFIX = "LiveSQLBench "
 _ARCHAEOLOGY_DATABASE = "archeology_scan_large"
 _MAX_RESPONSE_BYTES = 64 * 1024 * 1024
+_MAX_REQUEST_INTERVAL_SECONDS = 60.0
 _CHILD_ENVIRONMENT_KEYS = frozenset(
     {
         "HOME",
@@ -75,9 +78,18 @@ class OmniDeploymentCli:
         timeout_seconds: float = 120.0,
         runner: CommandRunner | None = None,
         environment: Mapping[str, str] | None = None,
+        minimum_request_interval_seconds: float = 0.0,
+        clock: Callable[[], float] = time.monotonic,
+        sleep: Callable[[float], None] = time.sleep,
     ) -> None:
         if not profile.strip():
             raise OmniDeploymentCliError("profile must be non-empty")
+        if (
+            not math.isfinite(minimum_request_interval_seconds)
+            or minimum_request_interval_seconds < 0
+            or minimum_request_interval_seconds > _MAX_REQUEST_INTERVAL_SECONDS
+        ):
+            raise OmniDeploymentCliError("request interval is outside safe bounds")
         self._profile = profile.strip()
         self._binary = binary
         self._timeout_seconds = timeout_seconds
@@ -88,6 +100,11 @@ class OmniDeploymentCli:
             for key, value in source.items()
             if key in _CHILD_ENVIRONMENT_KEYS and value
         }
+        self._minimum_request_interval_seconds = minimum_request_interval_seconds
+        self._clock = clock
+        self._sleep = sleep
+        self._pace_lock = threading.Lock()
+        self._last_request_at: float | None = None
         self._lock = threading.Lock()
         self._connections: dict[str, str] | None = None
         self._models: dict[tuple[str, str], tuple[str, dict[str, str]]] | None = None
@@ -248,9 +265,7 @@ class OmniDeploymentCli:
             *command,
         )
         try:
-            returncode, stdout, _stderr = self._runner(
-                arguments, self._environment, stdin, self._timeout_seconds
-            )
+            returncode, stdout, _stderr = self._run_paced(arguments, stdin)
         except (OSError, subprocess.TimeoutExpired) as error:
             raise OmniDeploymentCliError("Omni CLI request did not complete") from error
         if returncode != 0:
@@ -265,6 +280,23 @@ class OmniDeploymentCli:
             raise OmniDeploymentCliError(
                 "Omni CLI response is not valid JSON"
             ) from error
+
+    def _run_paced(
+        self, arguments: tuple[str, ...], stdin: str | None
+    ) -> tuple[int, str, str]:
+        with self._pace_lock:
+            now = self._clock()
+            if self._last_request_at is not None:
+                delay = self._minimum_request_interval_seconds - (
+                    now - self._last_request_at
+                )
+                if delay > 0:
+                    self._sleep(delay)
+                    now = self._clock()
+            self._last_request_at = now
+            return self._runner(
+                arguments, self._environment, stdin, self._timeout_seconds
+            )
 
 
 def deployment_main(
@@ -303,7 +335,11 @@ def deployment_main(
         if database in all_plan_failures
     }
     _claim_deployment_run(
-        arguments.output_root, arguments.run_id, requested, source_commit
+        arguments.output_root,
+        arguments.run_id,
+        requested,
+        source_commit,
+        arguments.minimum_request_interval_seconds,
     )
     observed_at = datetime.now().astimezone().isoformat(timespec="seconds")
     records: list[DeploymentRecord] = []
@@ -335,7 +371,10 @@ def deployment_main(
     if not plans:
         return _print_summary(arguments.run_id, records, persistence_failures)
     client = (
-        OmniDeploymentCli(arguments.profile)
+        OmniDeploymentCli(
+            arguments.profile,
+            minimum_request_interval_seconds=arguments.minimum_request_interval_seconds,
+        )
         if client_factory is None
         else client_factory(arguments.profile)
     )
@@ -411,6 +450,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--profile", required=True)
     parser.add_argument("--database", action="append")
     parser.add_argument("--max-workers", type=int, choices=range(1, 9), default=4)
+    parser.add_argument(
+        "--minimum-request-interval-seconds",
+        type=_request_interval,
+        default=0.0,
+    )
     parser.add_argument("--execute-live-deployment", action="store_true")
     return parser
 
@@ -520,7 +564,11 @@ def _preflight_record_paths(
 
 
 def _claim_deployment_run(
-    root: Path, run_id: str, databases: tuple[str, ...], source_commit: str
+    root: Path,
+    run_id: str,
+    databases: tuple[str, ...],
+    source_commit: str,
+    minimum_request_interval_seconds: float = 0.0,
 ) -> Path:
     if root.exists() and not root.is_dir():
         raise OmniDeploymentCliError("deployment run could not be claimed")
@@ -534,6 +582,7 @@ def _claim_deployment_run(
                 {
                     "databases": sorted(databases),
                     "kind": "public-omni-semantic-deployment-claim",
+                    "minimum_request_interval_seconds": minimum_request_interval_seconds,
                     "run_id": run_id,
                     "schema_version": 1,
                     "source_commit": source_commit,
@@ -547,6 +596,20 @@ def _claim_deployment_run(
         raise OmniDeploymentCliError("deployment run is already claimed") from error
     except (OSError, ValueError) as error:
         raise OmniDeploymentCliError("deployment run could not be claimed") from error
+
+
+def _request_interval(value: str) -> float:
+    try:
+        interval = float(value)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("request interval must be numeric") from error
+    if (
+        not math.isfinite(interval)
+        or interval < 0
+        or interval > _MAX_REQUEST_INTERVAL_SECONDS
+    ):
+        raise argparse.ArgumentTypeError("request interval is outside safe bounds")
+    return interval
 
 
 def _connection_map(response: Mapping[str, Any]) -> dict[str, str]:

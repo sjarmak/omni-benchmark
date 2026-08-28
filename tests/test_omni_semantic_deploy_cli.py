@@ -5,6 +5,7 @@ import json
 import subprocess
 import sys
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -131,6 +132,8 @@ def test_batch_cli_discovers_canary_and_fanout_bundles_and_writes_statuses(
             "benchmark-infra",
             "--max-workers",
             "2",
+            "--minimum-request-interval-seconds",
+            "1.25",
             "--execute-live-deployment",
         ],
         client_factory=lambda _profile: fake,
@@ -145,6 +148,8 @@ def test_batch_cli_discovers_canary_and_fanout_bundles_and_writes_statuses(
         "sample_large",
     }
     assert {record["status"] for record in records} == {"verified"}
+    claim = json.loads((output / "public-v1.claim").read_text())
+    assert claim["minimum_request_interval_seconds"] == 1.25
 
 
 def test_batch_cli_can_select_one_database_without_touching_others(
@@ -468,6 +473,90 @@ def test_live_cli_uses_profile_and_json_stdin_without_credential_arguments() -> 
         "modelKind": "SHARED",
         "modelName": "model-name",
     }
+
+
+def test_live_cli_paces_request_starts_across_operations() -> None:
+    current_time = [10.0]
+    sleeps: list[float] = []
+    responses = iter(
+        [
+            {
+                "connections": [
+                    {
+                        "id": "connection-id",
+                        "name": "LiveSQLBench sample_large",
+                    }
+                ]
+            },
+            [],
+            [],
+        ]
+    )
+
+    def sleep(delay: float) -> None:
+        sleeps.append(delay)
+        current_time[0] += delay
+
+    client = OmniDeploymentCli(
+        "benchmark-infra",
+        runner=lambda *_args: (0, json.dumps(next(responses)), ""),
+        environment={"PATH": "/usr/bin"},
+        minimum_request_interval_seconds=1.25,
+        clock=lambda: current_time[0],
+        sleep=sleep,
+    )
+
+    assert client.connection_ids(("sample_large",)) == {"sample_large": "connection-id"}
+    assert client.validate("model-id", "branch-id") == []
+    assert client.validate("model-id", "branch-id") == []
+    assert sleeps == [1.25, 1.25]
+
+
+def test_live_cli_keeps_concurrent_runner_starts_inside_pacing_lock() -> None:
+    first_started = threading.Event()
+    second_started = threading.Event()
+    release_first = threading.Event()
+    starts: list[float] = []
+    starts_lock = threading.Lock()
+
+    def runner(*_args: object) -> tuple[int, str, str]:
+        with starts_lock:
+            starts.append(time.monotonic())
+            call_number = len(starts)
+        if call_number == 1:
+            first_started.set()
+            assert release_first.wait(timeout=2)
+        else:
+            second_started.set()
+        return 0, "[]", ""
+
+    client = OmniDeploymentCli(
+        "benchmark-infra",
+        runner=runner,
+        environment={"PATH": "/usr/bin"},
+        minimum_request_interval_seconds=0.01,
+    )
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        first = executor.submit(client.validate, "model-id", "branch-id")
+        assert first_started.wait(timeout=2)
+        second = executor.submit(client.validate, "model-id", "branch-id")
+        assert not second_started.wait(timeout=0.05)
+        release_first.set()
+        assert first.result() == []
+        assert second.result() == []
+
+    assert starts[1] - starts[0] >= 0.01
+
+
+@pytest.mark.parametrize("interval", (-1.0, float("inf"), 60.1))
+def test_live_cli_rejects_unsafe_request_interval(interval: float) -> None:
+    with pytest.raises(OmniDeploymentCliError, match="request interval"):
+        OmniDeploymentCli(
+            "benchmark-infra",
+            runner=lambda *_args: (0, "{}", ""),
+            environment={"PATH": "/usr/bin"},
+            minimum_request_interval_seconds=interval,
+        )
 
 
 def test_live_cli_reuses_exact_existing_model_and_branch() -> None:
