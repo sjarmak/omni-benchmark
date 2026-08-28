@@ -1,0 +1,225 @@
+{
+  "allocation": [
+    {
+      "database": "archeology_scan_large",
+      "first_ordinal": 1,
+      "high_level": {
+        "false": 3,
+        "true": 4
+      },
+      "last_ordinal": 7,
+      "selected_count": 7
+    },
+    {
+      "database": "cross_border_large",
+      "first_ordinal": 8,
+      "high_level": {
+        "false": 13,
+        "true": 1
+      },
+      "last_ordinal": 21,
+      "selected_count": 14
+    },
+    {
+      "database": "cybermarket_pattern_large",
+      "first_ordinal": 22,
+      "high_level": {
+        "false": 14,
+        "true": 0
+      },
+      "last_ordinal": 35,
+      "selected_count": 14
+    },
+    {
+      "database": "disaster_relief_large",
+      "first_ordinal": 36,
+      "high_level": {
+        "false": 1,
+        "true": 7
+      },
+      "last_ordinal": 43,
+      "selected_count": 8
+    },
+    {
+      "database": "exchange_traded_funds_large",
+      "first_ordinal": 44,
+      "high_level": {
+        "false": 2,
+        "true": 11
+      },
+      "last_ordinal": 56,
+      "selected_count": 13
+    },
+    {
+      "database": "fake_account_large",
+      "first_ordinal": 57,
+      "high_level": {
+        "false": 16,
+        "true": 1
+      },
+      "last_ordinal": 73,
+      "selected_count": 17
+    },
+    {
+      "database": "labor_certification_applications_large",
+      "first_ordinal": 74,
+      "high_level": {
+        "false": 2,
+        "true": 11
+      },
+      "last_ordinal": 86,
+      "selected_count": 13
+    },
+    {
+      "database": "museum_artifact_large",
+      "first_ordinal": 87,
+      "high_level": {
+        "false": 0,
+        "true": 14
+      },
+      "last_ordinal": 100,
+      "selected_count": 14
+    },
+    {
+      "database": "residential_data_large",
+      "first_ordinal": 101,
+      "high_level": {
+        "false": 4,
+        "true": 11
+      },
+      "last_ordinal": 115,
+      "selected_count": 15
+    },
+    {
+      "database": "reverse_logistics_large",
+      "first_ordinal": 116,
+      "high_level": {
+        "false": 14,
+        "true": 0
+      },
+      "last_ordinal": 129,
+      "selected_count": 14
+    }
+  ],
+  "databases": [
+    "archeology_scan_large",
+    "cross_border_large",
+    "cybermarket_pattern_large",
+    "disaster_relief_large",
+    "exchange_traded_funds_large",
+    "fake_account_large",
+    "labor_certification_applications_large",
+    "museum_artifact_large",
+    "residential_data_large",
+    "reverse_logistics_large"
+  ],
+  "full_ids_sha256": "ea6de0355419f912072b45ade4a7dda7b0f5b74a8b7a2020dc3534c66fbb9f05",
+  "kind": "public-c4-baseline-arm-metadata",
+  "ordering": "selected_database_then_train_manifest_order",
+  "paired_allocation": [
+    {
+      "database": "cross_border_large",
+      "first_ordinal": 1,
+      "high_level": {
+        "false": 13,
+        "true": 1
+      },
+      "last_ordinal": 14,
+      "selected_count": 14
+    },
+    {
+      "database": "disaster_relief_large",
+      "first_ordinal": 15,
+      "high_level": {
+        "false": 1,
+        "true": 7
+      },
+      "last_ordinal": 22,
+      "selected_count": 8
+    },
+    {
+      "database": "exchange_traded_funds_large",
+      "first_ordinal": 23,
+      "high_level": {
+        "false": 2,
+        "true": 11
+      },
+      "last_ordinal": 35,
+      "selected_count": 13
+    },
+    {
+      "database": "fake_account_large",
+      "first_ordinal": 36,
+      "high_level": {
+        "false": 16,
+        "true": 1
+      },
+      "last_ordinal": 52,
+      "selected_count": 17
+    },
+    {
+      "database": "labor_certification_applications_large",
+      "first_ordinal": 53,
+      "high_level": {
+        "false": 2,
+        "true": 11
+      },
+      "last_ordinal": 65,
+      "selected_count": 13
+    },
+    {
+      "database": "museum_artifact_large",
+      "first_ordinal": 66,
+      "high_level": {
+        "false": 0,
+        "true": 14
+      },
+      "last_ordinal": 79,
+      "selected_count": 14
+    },
+    {
+      "database": "residential_data_large",
+      "first_ordinal": 80,
+      "high_level": {
+        "false": 4,
+        "true": 11
+      },
+      "last_ordinal": 94,
+      "selected_count": 15
+    },
+    {
+      "database": "reverse_logistics_large",
+      "first_ordinal": 95,
+      "high_level": {
+        "false": 14,
+        "true": 0
+      },
+      "last_ordinal": 108,
+      "selected_count": 14
+    }
+  ],
+  "paired_databases": [
+    "cross_border_large",
+    "disaster_relief_large",
+    "exchange_traded_funds_large",
+    "fake_account_large",
+    "labor_certification_applications_large",
+    "museum_artifact_large",
+    "residential_data_large",
+    "reverse_logistics_large"
+  ],
+  "paired_ids_sha256": "f27ab4ca2acda08b3df10279afa0c10bc7e838cccf11d83e223134f9ffcaf610",
+  "paired_selected_count": 108,
+  "schema_version": 1,
+  "seed": null,
+  "selected_count": 129,
+  "selection": "all_public_train_questions_for_selected_databases",
+  "source": {
+    "eligible_manifest_path": "data/manifests/eligible_questions.jsonl",
+    "eligible_manifest_sha256": "ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e",
+    "spec_path": "config/conditions/c4-public-baseline-arm-v1.json",
+    "spec_sha256": "ea6b14c6eb68d3f22cb2524c00434f4b53fe0988facfe0cf7901f65d5e9476aa",
+    "train_ids_path": "data/manifests/train_ids.txt",
+    "train_ids_sha256": "ecdd1e4cd425e41970d3d4e96d7c3cb044cb78d94e34621d320e3d542a5d1c46"
+  }
+}

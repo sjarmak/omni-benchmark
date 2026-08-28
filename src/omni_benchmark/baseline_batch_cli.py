@@ -12,7 +12,9 @@ from .baseline_batch import (
     BASELINE_CONDITIONS,
     BaselineBatchError,
     BatchBudget,
+    BatchStopPolicy,
     ImmutableAttemptRepository,
+    c4_public_baseline_schedule,
     direct_only_baseline_schedule,
     load_committed_baseline_schedule,
     project_baseline_cost,
@@ -22,10 +24,14 @@ from .baseline_batch_live import (
     DatabaseEnvironmentDirectory,
     LiveBaselineDispatcher,
     build_execution_plan,
+    c4_concurrency_canary_schedule,
     direct_concurrency_canary_schedule,
     project_condition_cost_scenario,
     verify_deployment_gate,
+    verify_derived_deployment_gate,
 )
+
+_C4_ARM_SPEC_PATH = Path("config/conditions/c4-public-baseline-arm-v1.json")
 
 _CHILD_ENVIRONMENT_KEYS = frozenset(
     {
@@ -59,9 +65,12 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--cost-ceiling-usd", required=True)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--dry-run-execution-plan", action="store_true")
+    mode.add_argument("--dry-run-c4-baseline", action="store_true")
     mode.add_argument("--execute-live-baseline", action="store_true")
     mode.add_argument("--execute-live-direct-baseline", action="store_true")
     mode.add_argument("--execute-live-direct-concurrency-canary", action="store_true")
+    mode.add_argument("--execute-live-c4-baseline", action="store_true")
+    mode.add_argument("--execute-live-c4-concurrency-canary", action="store_true")
     parser.add_argument("--freeze-a-commit")
     parser.add_argument("--output-root", type=Path)
     parser.add_argument("--claude-config-dir", type=Path, action="append")
@@ -72,6 +81,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--attempt-cost-ceiling-usd", type=float)
     parser.add_argument("--maximum-concurrency", type=int, default=4)
     parser.add_argument("--subprocess-timeout-seconds", type=float, default=1800.0)
+    parser.add_argument("--maximum-wall-clock-seconds", type=float)
     return parser
 
 
@@ -83,7 +93,18 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
         arguments.system_commit,
         run_id=arguments.run_id,
     )
-    if arguments.execute_live_direct_concurrency_canary:
+    c4_mode = (
+        arguments.dry_run_c4_baseline
+        or arguments.execute_live_c4_baseline
+        or arguments.execute_live_c4_concurrency_canary
+    )
+    if c4_mode:
+        schedule = c4_public_baseline_schedule(
+            arguments.workspace, arguments.system_commit, schedule
+        )
+        if arguments.execute_live_c4_concurrency_canary:
+            schedule = c4_concurrency_canary_schedule(schedule)
+    elif arguments.execute_live_direct_concurrency_canary:
         schedule = direct_concurrency_canary_schedule(schedule)
     elif arguments.execute_live_direct_baseline:
         schedule = direct_only_baseline_schedule(schedule)
@@ -94,26 +115,40 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
     )
     if (
         arguments.dry_run_execution_plan
+        or arguments.dry_run_c4_baseline
         or arguments.execute_live_baseline
         or arguments.execute_live_direct_baseline
         or arguments.execute_live_direct_concurrency_canary
+        or arguments.execute_live_c4_baseline
+        or arguments.execute_live_c4_concurrency_canary
     ):
         required = {
             "freeze A commit": arguments.freeze_a_commit,
             "output root": arguments.output_root,
-            "Claude config directory": arguments.claude_config_dir,
             "condition cost observations": arguments.observed_condition_cost,
         }
+        if any(attempt.condition != "C4" for attempt in schedule.attempts):
+            required["Claude config directory"] = arguments.claude_config_dir
+        if c4_mode:
+            required["maximum wall-clock seconds"] = (
+                arguments.maximum_wall_clock_seconds
+            )
+            if arguments.maximum_concurrency > 5:
+                raise BaselineBatchError(
+                    "C4 concurrency cannot exceed Omni's limit of 5"
+                )
         missing = [name for name, value in required.items() if value is None]
         if missing:
             raise BaselineBatchError(
                 f"execution planning requires {', '.join(missing)}"
             )
+        if c4_mode:
+            BatchStopPolicy(arguments.maximum_wall_clock_seconds)
         plan = build_execution_plan(
             schedule,
             workspace=arguments.workspace.resolve(strict=True),
             output_root=arguments.output_root,
-            claude_config_directories=tuple(arguments.claude_config_dir),
+            claude_config_directories=tuple(arguments.claude_config_dir or ()),
             freeze_a_commit=arguments.freeze_a_commit,
         )
         scenario = _successful_canary_scenario(
@@ -126,6 +161,19 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 plan,
                 scenario.as_dict(),
                 require_deployment=True,
+                derived_deployment=False,
+            )
+        if (
+            arguments.execute_live_c4_baseline
+            or arguments.execute_live_c4_concurrency_canary
+        ):
+            return _execute_live(
+                arguments,
+                schedule,
+                plan,
+                scenario.as_dict(),
+                require_deployment=True,
+                derived_deployment=True,
             )
         if (
             arguments.execute_live_direct_baseline
@@ -137,12 +185,38 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 plan,
                 scenario.as_dict(),
                 require_deployment=False,
+                derived_deployment=False,
+            )
+        deployment_targets = None
+        if arguments.dry_run_c4_baseline:
+            deployment_targets = verify_derived_deployment_gate(
+                arguments.workspace,
+                arguments.system_commit,
+                _C4_ARM_SPEC_PATH,
+                {attempt.database for attempt in schedule.attempts},
             )
         print(
             json.dumps(
                 {
                     "execution_plan": plan.public_dict(),
+                    "cost_projection": projection.as_dict(),
+                    "cost_role": (
+                        "telemetry_only_not_an_operational_stop"
+                        if c4_mode
+                        else "operational_budget"
+                    ),
+                    "deployment_target_count": (
+                        None if deployment_targets is None else len(deployment_targets)
+                    ),
                     "live_execution": "not_started",
+                    "operational_stop": (
+                        None
+                        if not c4_mode
+                        else {
+                            "maximum_wall_clock_seconds": arguments.maximum_wall_clock_seconds,
+                            "policy": "finish_started_database_condition_blocks",
+                        }
+                    ),
                     "successful_canary_cost_scenario": scenario.as_dict(),
                 },
                 allow_nan=False,
@@ -194,12 +268,12 @@ def _execute_live(
     scenario: Mapping[str, object],
     *,
     require_deployment: bool,
+    derived_deployment: bool,
 ) -> int:
-    required = {
-        "database environment directory": arguments.database_environment_dir,
-        "attempt cost ceiling": arguments.attempt_cost_ceiling_usd,
-    }
-    if require_deployment:
+    required = {"attempt cost ceiling": arguments.attempt_cost_ceiling_usd}
+    if any(attempt.condition != "C4" for attempt in schedule.attempts):
+        required["database environment directory"] = arguments.database_environment_dir
+    if require_deployment and not derived_deployment:
         required = {
             **required,
             "deployment root": arguments.deployment_root,
@@ -209,18 +283,28 @@ def _execute_live(
     if missing:
         raise BaselineBatchError(f"live baseline requires {', '.join(missing)}")
     databases = {attempt.database for attempt in schedule.attempts}
-    targets = (
-        verify_deployment_gate(
+    if derived_deployment:
+        targets = verify_derived_deployment_gate(
+            arguments.workspace,
+            arguments.system_commit,
+            _C4_ARM_SPEC_PATH,
+            databases,
+        )
+    elif require_deployment:
+        targets = verify_deployment_gate(
             arguments.deployment_root, arguments.deployment_run_id, databases
         )
-        if require_deployment
-        else None
-    )
+    else:
+        targets = None
     workspace = arguments.workspace.resolve(strict=True)
     dispatcher = LiveBaselineDispatcher(
         plan,
-        database_environments=DatabaseEnvironmentDirectory(
-            workspace, arguments.database_environment_dir
+        database_environments=(
+            None
+            if arguments.database_environment_dir is None
+            else DatabaseEnvironmentDirectory(
+                workspace, arguments.database_environment_dir
+            )
         ),
         common_environment=_child_environment(os.environ),
         timeout_seconds=arguments.subprocess_timeout_seconds,
@@ -235,13 +319,28 @@ def _execute_live(
             cost_ceiling_usd=float(arguments.cost_ceiling_usd),
             attempt_cost_ceiling_usd=arguments.attempt_cost_ceiling_usd,
             unobservable_cost_reservation_conditions=(
-                frozenset({"C4"}) if require_deployment else frozenset()
+                frozenset({"C4"})
+                if require_deployment and not derived_deployment
+                else frozenset()
             ),
+            telemetry_only_conditions=(
+                frozenset({"C4"}) if derived_deployment else frozenset()
+            ),
+        ),
+        stop_policy=(
+            BatchStopPolicy(arguments.maximum_wall_clock_seconds)
+            if derived_deployment
+            else None
         ),
     )
     print(
         json.dumps(
             {
+                "cost_role": (
+                    "telemetry_only_not_an_operational_stop"
+                    if derived_deployment
+                    else "operational_budget"
+                ),
                 "execution_plan_sha256": plan.sha256,
                 "live_execution": report.as_dict(),
                 "successful_canary_cost_scenario": dict(scenario),

@@ -1,0 +1,54 @@
+{
+  "databases": [
+    "archeology_scan_large",
+    "cross_border_large",
+    "cybermarket_pattern_large",
+    "disaster_relief_large",
+    "exchange_traded_funds_large",
+    "fake_account_large",
+    "labor_certification_applications_large",
+    "museum_artifact_large",
+    "residential_data_large",
+    "reverse_logistics_large"
+  ],
+  "deployment": {
+    "claim_path": "experiments/deployments/public-baseline-v6/public-baseline-v6-20260828.claim",
+    "claim_sha256": "57575e40a15208391d67eb608d2efe213f673998a398cff8ee1e86ebbcd68319",
+    "record_root": "experiments/deployments/public-baseline-v6",
+    "record_sha256": {
+      "archeology_scan_large": "ea5116bd96b09702d5fc5ae61e6483ddc8b22d87489cf4b88096ce75184d260d",
+      "cross_border_large": "e5233f601cad6b7427993c480bc91e5eeee7d07994bbd6d48a69731e20f5a8a3",
+      "cybermarket_pattern_large": "9eb9ec3a644fb2344b137cb4258ce07f79d8a677c6b36c6021f76d594e12642b",
+      "disaster_relief_large": "279fad4ed892ef496ce49bd0afd9305b19cbb58a51c00df4bbe7687b3b1d6d54",
+      "exchange_traded_funds_large": "50b9a07e69de831e9d1f20f0cdf01442a897986871e6c86a4445516fd7e4e43f",
+      "fake_account_large": "5450e669426ad812e9b7199b518a867f873bd27bf2bb9b1f89a0b9e1a6822ba5",
+      "labor_certification_applications_large": "85073bd078f190c0e02ae955edd0e2fd8c78bd74d80e6ac85d3beb8af60c4f30",
+      "museum_artifact_large": "7f9041510b2d8d6297deaa2ed22fac461a485c7b821508938ad5dfbe51f35ff3",
+      "residential_data_large": "f30641660b1d7f33b482722c5c158277647758dbc8d541f9fd187317d095d49d",
+      "reverse_logistics_large": "5aa550d64cca7f2e56800f3057b92760855a751d00e7834318b21854817bb52a"
+    },
+    "run_id": "public-baseline-v6-20260828"
+  },
+  "eligible_manifest_path": "data/manifests/eligible_questions.jsonl",
+  "full_ids_path": "data/manifests/c4_public_baseline_ids.txt",
+  "kind": "public-c4-baseline-arm",
+  "metadata_path": "data/manifests/c4_public_baseline_metadata.json",
+  "ordering": "selected_database_then_train_manifest_order",
+  "paired_databases": [
+    "cross_border_large",
+    "disaster_relief_large",
+    "exchange_traded_funds_large",
+    "fake_account_large",
+    "labor_certification_applications_large",
+    "museum_artifact_large",
+    "residential_data_large",
+    "reverse_logistics_large"
+  ],
+  "paired_ids_path": "data/manifests/c4_paired_analysis_ids.txt",
+  "paired_target_count": 108,
+  "schema_version": 1,
+  "seed": null,
+  "selection": "all_public_train_questions_for_selected_databases",
+  "target_count": 129,
+  "train_ids_path": "data/manifests/train_ids.txt"
+}

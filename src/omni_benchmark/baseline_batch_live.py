@@ -24,7 +24,9 @@ from .baseline_batch import (
     _money,
     _positive_decimal,
 )
+from .c4_baseline_arm import C4BaselineArmError, parse_c4_baseline_arm_spec
 from .content_policy import ContentPolicy
+from .omni_probe_preflight import OmniProbePreflightError, committed_spec
 
 _PG_FIELDS = frozenset(
     {"PGHOST", "PGDATABASE", "PGUSER", "PGPASSWORD", "PGPORT", "PGSSLMODE"}
@@ -174,6 +176,26 @@ def direct_concurrency_canary_schedule(
     )
 
 
+def c4_concurrency_canary_schedule(schedule: BaselineSchedule) -> BaselineSchedule:
+    """Select one public attempt from each of the first five C4 database blocks."""
+    if not schedule.attempts or {item.condition for item in schedule.attempts} != {
+        "C4"
+    }:
+        raise BaselineBatchError("C4 canary requires a C4-only schedule")
+    first_by_database: dict[str, BaselineAttempt] = {}
+    for attempt in schedule.attempts:
+        first_by_database.setdefault(attempt.database, attempt)
+    if len(first_by_database) < 5:
+        raise BaselineBatchError("C4 canary requires at least five database blocks")
+    attempts = tuple(first_by_database.values())[:5]
+    return BaselineSchedule(
+        attempts=attempts,
+        eligible_manifest_sha256=schedule.eligible_manifest_sha256,
+        source_commit=schedule.source_commit,
+        train_ids_sha256=schedule.train_ids_sha256,
+    )
+
+
 def project_condition_cost_scenario(
     schedule: BaselineSchedule,
     *,
@@ -224,7 +246,9 @@ def build_execution_plan(
     freeze_a_commit: str,
 ) -> ExecutionPlan:
     """Build the exact public command plan without authentication or execution."""
-    if not claude_config_directories:
+    if not claude_config_directories and any(
+        attempt.condition != "C4" for attempt in schedule.attempts
+    ):
         raise BaselineBatchError("at least one Claude OAuth slot is required")
     resolved_slots = tuple(
         Path(path).expanduser().resolve(strict=False)
@@ -443,6 +467,81 @@ def verify_deployment_gate(
         raise BaselineBatchError(
             "deployment records do not have exact database coverage"
         )
+    return targets
+
+
+def verify_derived_deployment_gate(
+    workspace: Path,
+    commit: str,
+    spec_path: Path,
+    expected_databases: set[str],
+) -> dict[str, DeploymentTarget]:
+    """Resolve an exact verified subset by reference to frozen deployment evidence."""
+    try:
+        root = workspace.resolve(strict=True)
+        spec_input = committed_spec(root, commit, spec_path)
+        spec = parse_c4_baseline_arm_spec(spec_input.content)
+        claim_input = committed_spec(root, commit, spec.deployment.claim_path)
+    except (C4BaselineArmError, OSError, OmniProbePreflightError) as error:
+        raise BaselineBatchError("derived deployment gate is unavailable") from error
+    if hashlib.sha256(claim_input.content).hexdigest() != spec.deployment.claim_sha256:
+        raise BaselineBatchError("derived deployment claim digest changed")
+    try:
+        claim = json.loads(claim_input.content)
+    except json.JSONDecodeError as error:
+        raise BaselineBatchError("derived deployment claim is invalid") from error
+    configured = set(spec.databases)
+    if not expected_databases or not expected_databases.issubset(configured):
+        raise BaselineBatchError(
+            "scheduled databases exceed the derived deployment gate"
+        )
+    source_commit = claim.get("source_commit") if isinstance(claim, dict) else None
+    if (
+        not isinstance(claim, dict)
+        or claim.get("kind") != "public-omni-semantic-deployment-claim"
+        or claim.get("schema_version") != 1
+        or claim.get("run_id") != spec.deployment.run_id
+        or not configured.issubset(set(claim.get("databases", ())))
+        or not isinstance(source_commit, str)
+    ):
+        raise BaselineBatchError("derived deployment claim is invalid")
+    targets: dict[str, DeploymentTarget] = {}
+    record_digests = dict(spec.deployment.record_sha256)
+    for database in spec.databases:
+        record_path = (
+            spec.deployment.record_root / f"{spec.deployment.run_id}.{database}.json"
+        )
+        try:
+            record_input = committed_spec(root, commit, record_path)
+            record = json.loads(record_input.content)
+        except (json.JSONDecodeError, OmniProbePreflightError) as error:
+            raise BaselineBatchError(
+                "derived deployment record is unavailable"
+            ) from error
+        if hashlib.sha256(record_input.content).hexdigest() != record_digests[database]:
+            raise BaselineBatchError(
+                f"derived deployment record digest changed: {database}"
+            )
+        if not isinstance(record, dict):
+            raise BaselineBatchError("derived deployment record is invalid")
+        branch_id = record.get("branch_id")
+        model_id = record.get("model_id")
+        if (
+            record.get("kind") != "public-omni-semantic-deployment"
+            or record.get("schema_version") != 1
+            or record.get("run_id") != spec.deployment.run_id
+            or record.get("source_commit") != source_commit
+            or record.get("database") != database
+            or record.get("status") != "verified"
+            or record.get("validation_issue_count") != 0
+            or record.get("readback_verified") is not True
+            or not isinstance(branch_id, str)
+            or not isinstance(model_id, str)
+        ):
+            raise BaselineBatchError(
+                f"derived deployment record is not verified: {database}"
+            )
+        targets[database] = DeploymentTarget(branch_id=branch_id, model_id=model_id)
     return targets
 
 

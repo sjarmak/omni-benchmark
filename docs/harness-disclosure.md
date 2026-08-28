@@ -292,3 +292,12 @@ coverage, and terminal failure vectors by condition. Operational numerators
 include every valid attempt; comparative views use matched question-condition-
 repetition populations. These are measured outcomes, not resource-equality
 constraints.
+
+For the public-only governed baseline, the executable product arm is the 129
+train questions on the ten databases whose frozen C4 semantic deployment has
+zero validator issues and exact attested readback. The separately committed
+108-question, eight-database intersection is the paired C1--C4 analysis
+population. C4 admits at most five concurrent database-condition blocks.
+Wall-clock stopping is applied only at block boundaries: already-started
+database/C4 blocks finish, while unstarted blocks remain resumable. Managed C4
+dollar cost is recorded when observable but does not select or truncate the arm.

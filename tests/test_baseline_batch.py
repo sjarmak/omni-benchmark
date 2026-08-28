@@ -17,6 +17,7 @@ from omni_benchmark.baseline_batch import (
     BaselineAttempt,
     BaselineBatchError,
     BaselineSchedule,
+    BatchStopPolicy,
     BatchBudget,
     ImmutableAttemptRepository,
     direct_only_baseline_schedule,
@@ -347,6 +348,28 @@ def test_scheduler_serializes_each_database_while_using_cross_database_paralleli
     assert report.telemetry.median_latency_ms == 100.0
 
 
+def test_transient_inflight_reservations_do_not_mark_a_complete_run_stopped(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    schedule = _small_schedule(databases=3, attempts_per_database=2)
+
+    report = run_baseline_batch(
+        schedule,
+        repository=ImmutableAttemptRepository(
+            workspace, Path("experiments/autoresearch/raw/reservation-release")
+        ),
+        executor=_executor(cost_usd=0.1),
+        maximum_concurrency=2,
+        budget=BatchBudget(cost_ceiling_usd=2, attempt_cost_ceiling_usd=1),
+    )
+
+    assert report.status == "complete"
+    assert report.remaining_attempts == 0
+    assert report.budget_stop_reason is None
+
+
 def test_resume_skips_only_fully_reconciled_immutable_attempts(tmp_path: Path) -> None:
     workspace = tmp_path / "workspace"
     workspace.mkdir()
@@ -528,6 +551,55 @@ def test_explicit_c4_reservation_preserves_hard_budget_when_cost_is_unobservable
     assert report.status == "complete"
     assert report.budget_charge_usd == 1.0
     assert report.telemetry.total_cost_usd is None
+
+
+def test_wall_clock_stop_finishes_started_database_block(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    attempts = tuple(
+        BaselineAttempt(
+            condition="C4",
+            database=database,
+            instance_id=f"{database}_{index}",
+            repetition=1,
+            run_id="c4-arm-v1",
+        )
+        for database in ("database_1", "database_2")
+        for index in range(2)
+    )
+    schedule = BaselineSchedule(
+        attempts=attempts,
+        eligible_manifest_sha256="c" * 64,
+        source_commit=COMMIT_SHA,
+        train_ids_sha256="d" * 64,
+    )
+    clock = [0.0]
+
+    def execute(attempt: BaselineAttempt, root: Path) -> None:
+        _write_attempt(root, attempt, cost_usd=None)
+        clock[0] += 1.0
+
+    report = run_baseline_batch(
+        schedule,
+        repository=ImmutableAttemptRepository(
+            workspace, Path("experiments/autoresearch/raw/test-c4-wall-clock")
+        ),
+        executor=execute,
+        maximum_concurrency=1,
+        budget=BatchBudget(
+            cost_ceiling_usd=1,
+            attempt_cost_ceiling_usd=1,
+            telemetry_only_conditions=frozenset({"C4"}),
+        ),
+        stop_policy=BatchStopPolicy(maximum_wall_clock_seconds=1.5),
+        monotonic=lambda: clock[0],
+    )
+
+    assert report.status == "operational_stopped"
+    assert report.operational_stop_reason == "wall_clock_database_block_boundary"
+    assert report.completed_this_run == 2
+    assert report.remaining_attempts == 2
+    assert report.budget_charge_usd == 0
 
 
 def test_projection_cli_is_non_authenticated_and_exposes_no_scoring_fields(

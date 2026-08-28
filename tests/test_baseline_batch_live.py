@@ -19,6 +19,7 @@ from omni_benchmark.baseline_batch_live import (
     DatabaseEnvironmentDirectory,
     LiveBaselineDispatcher,
     build_execution_plan,
+    c4_concurrency_canary_schedule,
     project_condition_cost_scenario,
     verify_deployment_gate,
 )
@@ -269,6 +270,33 @@ def test_dispatcher_refuses_c4_until_the_verified_deployment_gate_is_attached(
 
     with pytest.raises(BaselineBatchError, match="deployment gate"):
         dispatcher(c4, tmp_path / planned.output_root)
+
+
+def test_c4_concurrency_canary_selects_one_attempt_from_first_five_blocks() -> None:
+    schedule = BaselineSchedule(
+        attempts=tuple(
+            BaselineAttempt(
+                condition="C4",
+                database=f"database_{database}",
+                instance_id=f"question_{database}_{index}",
+                repetition=1,
+                run_id="c4-canary-v1",
+            )
+            for database in range(10)
+            for index in range(2)
+        ),
+        eligible_manifest_sha256="a" * 64,
+        source_commit=COMMIT_SHA,
+        train_ids_sha256="b" * 64,
+    )
+
+    canary = c4_concurrency_canary_schedule(schedule)
+
+    assert len(canary.attempts) == 5
+    assert tuple(item.database for item in canary.attempts) == tuple(
+        f"database_{index}" for index in range(5)
+    )
+    assert all(item.instance_id.endswith("_0") for item in canary.attempts)
 
 
 def test_failed_child_keeps_final_root_resumable_and_preserves_safe_diagnostic(

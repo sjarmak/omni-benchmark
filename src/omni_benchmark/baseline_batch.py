@@ -8,6 +8,7 @@ import math
 import os
 import re
 import stat
+import time
 from collections import Counter, deque
 from collections.abc import Callable, Mapping, Sequence
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
@@ -18,6 +19,10 @@ from typing import Any
 
 from .artifact_store import ALLOWED_RAW_ROOTS
 from .autoresearch_metrics import median_iqr
+from .c4_baseline_arm import (
+    C4BaselineArmError,
+    parse_c4_baseline_arm_spec,
+)
 from .omni_probe_preflight import OmniProbePreflightError, committed_spec
 from .omni_result_adapter import reject_forbidden_keys
 from .run_manifest import RunManifest, RunManifestError
@@ -25,6 +30,7 @@ from .run_manifest import RunManifest, RunManifestError
 BASELINE_CONDITIONS = ("C1", "C2", "C3", "C4")
 _TRAIN_IDS_PATH = Path("data/manifests/train_ids.txt")
 _ELIGIBLE_MANIFEST_PATH = Path("data/manifests/eligible_questions.jsonl")
+_C4_ARM_SPEC_PATH = Path("config/conditions/c4-public-baseline-arm-v1.json")
 _IDENTIFIER_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}")
 _COMMIT_PATTERN = re.compile(r"[0-9a-f]{40,64}")
 _MAX_PRIVATE_FILE_BYTES = 16 * 1024 * 1024
@@ -135,6 +141,7 @@ class BatchBudget:
     cost_ceiling_usd: float
     attempt_cost_ceiling_usd: float
     unobservable_cost_reservation_conditions: frozenset[str] = frozenset()
+    telemetry_only_conditions: frozenset[str] = frozenset()
 
     def __post_init__(self) -> None:
         for value, name in (
@@ -156,6 +163,29 @@ class BatchBudget:
             raise BaselineBatchError(
                 "unobservable-cost reservation contains an invalid condition"
             )
+        if not self.telemetry_only_conditions.issubset(
+            BASELINE_CONDITIONS
+        ) or self.telemetry_only_conditions.intersection(
+            self.unobservable_cost_reservation_conditions
+        ):
+            raise BaselineBatchError("telemetry-only cost conditions are invalid")
+
+
+@dataclass(frozen=True, slots=True)
+class BatchStopPolicy:
+    """Stop admitting new database-condition blocks after a wall-clock bound."""
+
+    maximum_wall_clock_seconds: float
+
+    def __post_init__(self) -> None:
+        value = self.maximum_wall_clock_seconds
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+            or value <= 0
+        ):
+            raise BaselineBatchError("maximum wall-clock seconds must be positive")
 
 
 @dataclass(frozen=True, slots=True)
@@ -206,6 +236,7 @@ class BaselineBatchReport:
     failure_classes_by_condition: Mapping[str, Mapping[str, int]]
     maximum_observed_concurrency: int
     outcome_counts: Mapping[str, int]
+    operational_stop_reason: str | None
     reconciled_before_run: int
     remaining_attempts: int
     schedule_attempts: int
@@ -224,6 +255,7 @@ class BaselineBatchReport:
             },
             "maximum_observed_concurrency": self.maximum_observed_concurrency,
             "outcome_counts": dict(self.outcome_counts),
+            "operational_stop_reason": self.operational_stop_reason,
             "reconciled_before_run": self.reconciled_before_run,
             "remaining_attempts": self.remaining_attempts,
             "schedule_attempts": self.schedule_attempts,
@@ -290,6 +322,58 @@ def direct_only_baseline_schedule(schedule: BaselineSchedule) -> BaselineSchedul
         or {attempt.condition for attempt in attempts} != {"C1", "C2", "C3"}
     ):
         raise BaselineBatchError("direct baseline phase must be exactly 231 x C1-C3")
+    return BaselineSchedule(
+        attempts=attempts,
+        eligible_manifest_sha256=schedule.eligible_manifest_sha256,
+        source_commit=schedule.source_commit,
+        train_ids_sha256=schedule.train_ids_sha256,
+    )
+
+
+def c4_public_baseline_schedule(
+    workspace: Path, commit: str, schedule: BaselineSchedule
+) -> BaselineSchedule:
+    """Select the committed public C4 product arm in its fixed block order."""
+    if (
+        len(schedule.attempts) != 924
+        or len({attempt.instance_id for attempt in schedule.attempts}) != 231
+        or {attempt.condition for attempt in schedule.attempts}
+        != set(BASELINE_CONDITIONS)
+    ):
+        raise BaselineBatchError("C4 arm requires the complete public schedule")
+    try:
+        root = workspace.resolve(strict=True)
+        spec_input = committed_spec(root, commit, _C4_ARM_SPEC_PATH)
+        spec = parse_c4_baseline_arm_spec(spec_input.content)
+        ids_input = committed_spec(root, commit, spec.full_ids_path)
+        metadata_input = committed_spec(root, commit, spec.metadata_path)
+        ids = _parse_subset_ids(ids_input.content, expected=spec.target_count)
+        metadata = json.loads(metadata_input.content)
+    except (
+        C4BaselineArmError,
+        json.JSONDecodeError,
+        OSError,
+        OmniProbePreflightError,
+        UnicodeError,
+    ) as error:
+        raise BaselineBatchError("committed C4 arm is unavailable") from error
+    _validate_c4_arm_metadata(
+        metadata,
+        schedule=schedule,
+        spec_sha256=spec_input.sha256,
+        ids_sha256=ids_input.sha256,
+        expected_count=spec.target_count,
+    )
+    indexed = {
+        attempt.instance_id: attempt
+        for attempt in schedule.attempts
+        if attempt.condition == "C4"
+    }
+    if len(indexed) != 231 or any(instance_id not in indexed for instance_id in ids):
+        raise BaselineBatchError("C4 arm IDs are absent from the public schedule")
+    attempts = tuple(indexed[instance_id] for instance_id in ids)
+    if {attempt.database for attempt in attempts} != set(spec.databases):
+        raise BaselineBatchError("C4 arm database coverage is invalid")
     return BaselineSchedule(
         attempts=attempts,
         eligible_manifest_sha256=schedule.eligible_manifest_sha256,
@@ -394,31 +478,47 @@ def run_baseline_batch(
     executor: AttemptExecutor,
     maximum_concurrency: int,
     budget: BatchBudget,
+    stop_policy: BatchStopPolicy | None = None,
+    monotonic: Callable[[], float] = time.monotonic,
 ) -> BaselineBatchReport:
     """Run pending attempts with one in-flight attempt per isolated database."""
     if type(maximum_concurrency) is not int or maximum_concurrency < 1:
         raise BaselineBatchError("maximum concurrency must be a positive integer")
     observations, pending = _reconcile_schedule(schedule, repository)
+    started_at = monotonic()
+    deadline = (
+        None
+        if stop_policy is None
+        else started_at + stop_policy.maximum_wall_clock_seconds
+    )
     reconciled_count = len(observations)
     spent = _observed_cost(observations, budget)
     queues = _database_queues(pending)
     active_databases: set[str] = set()
+    started_databases = {observation.attempt.database for observation in observations}
     futures: dict[Future[None], BaselineAttempt] = {}
     completed_this_run = 0
     maximum_observed = 0
-    stopped = False
+    budget_stopped = False
+    operational_stopped = False
 
     with ThreadPoolExecutor(max_workers=maximum_concurrency) as pool:
         while _remaining(queues) or futures:
             while len(futures) < maximum_concurrency:
-                attempt = _next_attempt(queues, active_databases)
+                allow_new_blocks = deadline is None or monotonic() < deadline
+                attempt = _next_attempt(
+                    queues,
+                    active_databases,
+                    started_databases,
+                    allow_new_blocks=allow_new_blocks,
+                )
                 if attempt is None:
                     break
-                reserved = len(futures) * budget.attempt_cost_ceiling_usd
-                if (
-                    spent + reserved + budget.attempt_cost_ceiling_usd
-                    > budget.cost_ceiling_usd
-                ):
+                reserved = sum(
+                    _reservation_cost(value, budget) for value in futures.values()
+                )
+                next_reservation = _reservation_cost(attempt, budget)
+                if spent + reserved + next_reservation > budget.cost_ceiling_usd:
                     break
                 queues[attempt.database].popleft()
                 future = pool.submit(
@@ -426,9 +526,19 @@ def run_baseline_batch(
                 )
                 futures[future] = attempt
                 active_databases.add(attempt.database)
+                started_databases.add(attempt.database)
                 maximum_observed = max(maximum_observed, len(futures))
             if not futures:
-                stopped = _remaining(queues) > 0
+                operational_stopped = (
+                    _remaining(queues) > 0
+                    and deadline is not None
+                    and monotonic() >= deadline
+                    and not any(
+                        queue and database in started_databases
+                        for database, queue in queues.items()
+                    )
+                )
+                budget_stopped = _remaining(queues) > 0 and not operational_stopped
                 break
             done, _ = wait(tuple(futures), return_when=FIRST_COMPLETED)
             for future in sorted(done, key=lambda item: futures[item].attempt_id):
@@ -460,7 +570,8 @@ def run_baseline_batch(
         completed_this_run=completed_this_run,
         maximum_observed=maximum_observed,
         remaining=remaining,
-        stopped=stopped,
+        budget_stopped=budget_stopped,
+        operational_stopped=operational_stopped,
         budget=budget,
     )
 
@@ -472,6 +583,45 @@ def _parse_train_ids(content: bytes) -> tuple[str, ...]:
     if len(set(values)) != len(values):
         raise BaselineBatchError("train IDs contain duplicates")
     return values
+
+
+def _parse_subset_ids(content: bytes, *, expected: int) -> tuple[str, ...]:
+    values = tuple(content.decode("utf-8").splitlines())
+    if (
+        len(values) != expected
+        or len(set(values)) != len(values)
+        or any(_IDENTIFIER_PATTERN.fullmatch(value) is None for value in values)
+    ):
+        raise BaselineBatchError("C4 arm IDs are invalid")
+    return values
+
+
+def _validate_c4_arm_metadata(
+    value: object,
+    *,
+    schedule: BaselineSchedule,
+    spec_sha256: str,
+    ids_sha256: str,
+    expected_count: int,
+) -> None:
+    if (
+        not isinstance(value, dict)
+        or value.get("kind") != "public-c4-baseline-arm-metadata"
+    ):
+        raise BaselineBatchError("C4 arm metadata is invalid")
+    source = value.get("source")
+    if (
+        value.get("schema_version") != 1
+        or value.get("selected_count") != expected_count
+        or value.get("full_ids_sha256") != ids_sha256
+        or value.get("seed") is not None
+        or value.get("selection") != "all_public_train_questions_for_selected_databases"
+        or not isinstance(source, dict)
+        or source.get("spec_sha256") != spec_sha256
+        or source.get("eligible_manifest_sha256") != schedule.eligible_manifest_sha256
+        or source.get("train_ids_sha256") != schedule.train_ids_sha256
+    ):
+        raise BaselineBatchError("C4 arm metadata does not bind public sources")
 
 
 def _parse_public_databases(content: bytes) -> dict[str, str]:
@@ -604,11 +754,19 @@ def _database_queues(
 
 
 def _next_attempt(
-    queues: Mapping[str, deque[BaselineAttempt]], active: set[str]
+    queues: Mapping[str, deque[BaselineAttempt]],
+    active: set[str],
+    started: set[str],
+    *,
+    allow_new_blocks: bool,
 ) -> BaselineAttempt | None:
     for database, queue in queues.items():
-        if queue and database not in active:
+        if queue and database not in active and database in started:
             return queue[0]
+    if allow_new_blocks:
+        for database, queue in queues.items():
+            if queue and database not in active:
+                return queue[0]
     return None
 
 
@@ -623,6 +781,8 @@ def _observed_cost(
 
 
 def _hard_budget_cost(observation: AttemptObservation, budget: BatchBudget) -> float:
+    if observation.attempt.condition in budget.telemetry_only_conditions:
+        return 0.0
     cost = observation.cost_usd
     if cost is None:
         if (
@@ -636,6 +796,12 @@ def _hard_budget_cost(observation: AttemptObservation, budget: BatchBudget) -> f
     return cost
 
 
+def _reservation_cost(attempt: BaselineAttempt, budget: BatchBudget) -> float:
+    if attempt.condition in budget.telemetry_only_conditions:
+        return 0.0
+    return budget.attempt_cost_ceiling_usd
+
+
 def _batch_report(
     schedule: BaselineSchedule,
     *,
@@ -644,7 +810,8 @@ def _batch_report(
     completed_this_run: int,
     maximum_observed: int,
     remaining: int,
-    stopped: bool,
+    budget_stopped: bool,
+    operational_stopped: bool,
     budget: BatchBudget,
 ) -> BaselineBatchReport:
     outcomes = Counter(value.generation_outcome for value in observations)
@@ -659,7 +826,7 @@ def _batch_report(
             _hard_budget_cost(observation, budget) for observation in observations
         ),
         budget_stop_reason=(
-            "next_attempt_reservation_exceeds_ceiling" if stopped else None
+            "next_attempt_reservation_exceeds_ceiling" if budget_stopped else None
         ),
         completed_this_run=completed_this_run,
         failure_classes_by_condition={
@@ -668,11 +835,20 @@ def _batch_report(
         },
         maximum_observed_concurrency=maximum_observed,
         outcome_counts=dict(sorted(outcomes.items())),
+        operational_stop_reason=(
+            "wall_clock_database_block_boundary" if operational_stopped else None
+        ),
         reconciled_before_run=reconciled_count,
         remaining_attempts=remaining,
         schedule_attempts=len(schedule.attempts),
         schedule_sha256=schedule.sha256,
-        status="budget_stopped" if stopped else "complete",
+        status=(
+            "budget_stopped"
+            if budget_stopped
+            else "operational_stopped"
+            if operational_stopped
+            else "complete"
+        ),
         telemetry=_aggregate_telemetry(observations),
     )
 
