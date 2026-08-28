@@ -4434,3 +4434,80 @@ be misread as model capability or safety behavior.
 After the baseline releases the OAuth profiles, launch the fixed arm once and
 compare `no_answer_insufficient_context`, cost, tokens, and database-query
 counts against the same 20 C1 baseline attempts.
+
+## 2026-08-28 — D-055: Limit supervised optimization to four mechanism tests
+
+### Decision / experiment
+
+Preregister the same-day dev-A intervention sequence before baseline scoring is
+available. Bead `omni-benchmark-dih.4.2`; change type: research-plan freeze.
+
+### Observation
+
+Public representability evidence identifies two structural bottlenecks: only
+193 of 1,090 HKB nodes compile, while 511 are deferred cross-grain, and the HKB
+contains 945 declared dependency edges with chains up to depth six. Another 193
+definitions remain searchable context, so discoverability is separable from
+representability. D-045 and D-054 also show that context volume is a material
+scaffold variable.
+
+### Hypothesis
+
+Four controlled experiments can distinguish the highest-value explanations:
+same-grain dependency composition, missing safe relationship/grain contracts,
+weak bounded descriptions, and the competing claim that simply exposing more
+HKB text is sufficient.
+
+### Decision
+
+Freeze E01--E04 before consulting question-level baseline results. Every
+promotion-eligible change must run on all 154 dev-A questions, preserve the
+entire baseline-correct dev-A regression set, fix at least two net answers,
+avoid a higher confidently-wrong rate, and remain within the preregistered cost
+rule. C4 is the promotion condition; matched C3 results are diagnostic and may
+not compensate for a C4 regression. Dev-B stays reserved and unconsumed. The
+broad transitive-context arm is a benchmark-specific negative control and
+cannot enter the final candidate even if its score rises.
+
+### Rationale
+
+This sequence covers structural, textual, and diagnostic surfaces without an
+open-ended prompt search. It favors experiments that separate mechanisms and
+produce product evidence over chasing the last training points.
+
+### Intervention
+
+The machine-readable plan is
+`experiments/planned-dev-a-interventions-v1.json`. It records each observation,
+hypothesis, exact reusable change, generality class, public-mechanism slice,
+full-dev-A evaluation, regression check, and keep/revert rule. Question-ID
+logic, hidden runtime annotations, gold lookups, near-verbatim examples, and
+single-item semantic objects are prohibited.
+
+### Result
+
+Planning only; no intervention has run. Membership and intervention choice use
+aggregate public mapping evidence, not current per-question attempt identities
+or correctness.
+
+### Interpretation
+
+The experiment count is intentionally small. A failed intervention remains a
+result: in particular, E04 can show whether exhaustive business context harms
+precision or cost even if it occasionally recovers missing knowledge.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+The planned contrasts map directly to product surfaces: dependency-aware model
+authoring, relationship/grain contracts, AI-facing semantic descriptions, and
+bounded context selection.
+
+### Next step
+
+Freeze and score the public-only baseline, then execute E01--E04 in order unless
+the stopping rule fires. Preserve every full-dev-A result and keep/revert
+decision in the structured ledger.
