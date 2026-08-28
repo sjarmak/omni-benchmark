@@ -4492,3 +4492,90 @@ by other action types complicate uniform trace processing.
 
 Commit the reviewed adapter fix and rerun a fresh immutable five-attempt C4
 canary. Launch the 129-question arm only if capture verification passes.
+
+## 2026-08-28 — D-055: Separate selected output fields from helper metadata
+
+### Decision / experiment
+
+Diagnose the two remaining response-contract failures in the fresh C4 capture
+canary without treating valid evaluated-system failures as harness defects.
+Change type: general system integration. Last updated: 2026-08-28 14:45 EDT.
+
+### Observation
+
+Run `public-c4-concurrency-canary-v4-20260828-1434` at commit `9526505`
+captured three of five attempts successfully. Disaster relief and ETF both
+completed a governed query, reached a `PLANNED` semantic query plan, and
+returned JSON rows, but the adapter rejected their plan metadata as ambiguous.
+The disaster plan selected three output fields while its summary also described
+the helper field `damage_report`; the ETF plan selected four output fields while
+its summary also described `platform_tier`.
+
+The five jobs used 4,523,303 tokens, 60 tool calls, and 18 database queries over
+a 113.8-second concurrent wall span. Read-only replay of the two preserved
+public responses showed 240 complete disaster rows and 185 complete ETF rows.
+
+### Hypothesis
+
+Omni's plan summary is a dependency superset rather than an output schema. The
+authoritative selected fields are the identical lists in the submitted semantic
+query and `plan.query.model_job.fields`; requiring summary metadata for that
+selected subset should admit helper dependencies without making column binding
+ambiguous.
+
+### Decision
+
+Allow extra summary metadata only after proving that the query field list is
+non-empty and unique, exactly matches the planned model-job field list, every
+selected field has summary metadata, and the selected-field count matches the
+returned column count. Do not infer a result type when the plan reports
+`UNKNOWN`; preserve it as a distinct evaluated-system failure.
+
+### Rationale
+
+Dropping summary validation would weaken the type-faithful scorer boundary.
+Conversely, requiring helper metadata to equal the selected output turns an
+internal planning detail into a false harness error. A dedicated unsupported
+type outcome distinguishes a product representability gap from malformed
+capture while avoiding unsafe value-based type inference.
+
+### Intervention
+
+Validate selected fields against `plan.query.model_job.fields` and use only
+their summary entries for type binding. Add
+`unsupported_semantic_result_type / ERROR` for a selected
+field whose plan type is not one of the supported authoritative result types.
+
+### Result
+
+RED/GREEN tests cover both mechanisms. Preserved-response replay now binds all
+240 disaster rows and classifies the ETF `yield_to_expense_ratio` field as
+`unsupported_semantic_result_type` because Omni reports its type as `UNKNOWN`.
+No value coercion or inferred type was introduced. Live canary verification is
+pending.
+
+### Interpretation
+
+The dependency-superset hypothesis explains the disaster failure. It also
+revealed a separate semantic result-schema limitation for ETF rather than a
+second instance of the same harness bug. A fresh canary may therefore produce
+four captured answers and one explicit evaluated-system failure; that is a
+valid capture-gate outcome if no generic response-contract error remains.
+
+### Outcome
+
+FOLLOW UP.
+
+### Product implication
+
+The production plan API should distinguish selected output fields from
+dependency/helper fields and expose an authoritative executable output type for
+every selected semantic field. Without both contracts, external consumers must
+either reject otherwise valid governed results or guess how to coerce them.
+
+### Next step
+
+Independently review the narrow adapter change, commit it in the isolated C4
+branch, and run a fresh immutable five-attempt canary. Launch the 129-question
+arm only when remaining failures are explicitly classified evaluated-system
+outcomes rather than capture or infrastructure errors.

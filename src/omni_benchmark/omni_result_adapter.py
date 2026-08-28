@@ -21,6 +21,10 @@ class OmniResultContractError(ValueError):
     """Raised when a completed Omni job has no scoreable governed result."""
 
 
+class OmniUnsupportedResultTypeError(OmniResultContractError):
+    """Raised when Omni does not expose a type-faithful result field type."""
+
+
 _TRUNCATED_CSV_MARKER = re.compile(
     r"# (?:FIRST [0-9]+ ROWS:|"
     r"SAMPLED [0-9]+ ROWS FROM MIDDLE \(rows [0-9]+-[0-9]+\):|"
@@ -348,20 +352,33 @@ def _planned_data_types(
         raise OmniResultContractError("Omni query plan contains invalid fields")
     fields = summary.get("fields")
     query_fields = parsed.semantic_query.get("fields")
+    planned_query = plan.get("query")
+    model_job = (
+        planned_query.get("model_job") if isinstance(planned_query, Mapping) else None
+    )
+    planned_fields = model_job.get("fields") if isinstance(model_job, Mapping) else None
     if (
         not isinstance(fields, Mapping)
         or not isinstance(query_fields, list)
         or not query_fields
-        or tuple(fields) != tuple(query_fields)
-        or len(fields) != len(columns)
+        or any(not isinstance(field, str) or not field for field in query_fields)
+        or len(set(query_fields)) != len(query_fields)
+        or not isinstance(planned_fields, list)
+        or planned_fields != query_fields
+        or any(field not in fields for field in query_fields)
+        or len(query_fields) != len(columns)
     ):
         raise OmniResultContractError("Omni query plan field metadata is ambiguous")
     data_types: list[str] = []
     for field_name in query_fields:
         metadata = fields.get(field_name)
         data_type = metadata.get("data_type") if isinstance(metadata, Mapping) else None
-        if data_type not in {"DATE", "JSON", "NUMBER", "STRING", "TIMESTAMP", "YESNO"}:
+        if not isinstance(data_type, str) or not data_type:
             raise OmniResultContractError(
+                f"Omni query plan has invalid data type metadata for {field_name}"
+            )
+        if data_type not in {"DATE", "JSON", "NUMBER", "STRING", "TIMESTAMP", "YESNO"}:
+            raise OmniUnsupportedResultTypeError(
                 f"Omni query plan has unsupported data type for {field_name}"
             )
         data_types.append(data_type)

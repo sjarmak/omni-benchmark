@@ -15,6 +15,7 @@ from .autoresearch_runs import TRACE_SCHEMA_VERSION
 from .content_policy import REDACTED, ContentPolicy
 from .omni_result_adapter import (
     OmniResultContractError,
+    OmniUnsupportedResultTypeError,
     ParsedOmniQuery,
     ParsedOmniResult,
     bind_typed_query_result,
@@ -189,6 +190,12 @@ class OmniJobCapture:
         except _TransportCaptureError:
             return self._failure_outcome(
                 job_id, "ADAPTER_ERROR", "adapter_transport_error"
+            )
+        except OmniUnsupportedResultTypeError:
+            return self._failure_outcome(
+                job_id,
+                "ERROR",
+                "unsupported_semantic_result_type",
             )
         except (OmniCaptureError, OmniResultContractError):
             return self._failure_outcome(

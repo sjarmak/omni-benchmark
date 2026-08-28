@@ -629,6 +629,99 @@ def test_typed_result_uses_authoritative_json_keys_when_csv_has_friendly_labels(
     assert parsed.rows == (({"type": "decimal", "value": "42"},),)
 
 
+def test_typed_result_allows_plan_metadata_for_dependency_fields() -> None:
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result="Label,Value\nA,42\n",
+                    query={"fields": ["answer.label", "answer.value"]},
+                    total_row_count=1,
+                )
+            ]
+        }
+    )
+    plan = _plan(("answer.label", "STRING"), ("answer.value", "NUMBER"))
+    plan["summary"]["fields"]["answer.hidden_dependency"] = {
+        "data_type": "STRING",
+        "fully_qualified_name": "answer.hidden_dependency",
+    }
+
+    parsed = bind_typed_query_result(
+        parsed_query,
+        [{"Label": "A", "Value": 42}],
+        plan,
+    )
+
+    assert parsed.rows == (("A", {"type": "decimal", "value": "42"}),)
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        "planned_fields_mismatch",
+        "duplicate_query_field",
+        "empty_query_field",
+        "missing_selected_metadata",
+        "output_cardinality_mismatch",
+    ],
+)
+def test_typed_result_rejects_ambiguous_selected_plan_fields(case: str) -> None:
+    query_fields = ["answer.label", "answer.value"]
+    csv_result = "Label,Value\nA,42\n"
+    plan = _plan(("answer.label", "STRING"), ("answer.value", "NUMBER"))
+    if case == "planned_fields_mismatch":
+        plan["query"]["model_job"]["fields"] = list(reversed(query_fields))  # type: ignore[index]
+    elif case == "duplicate_query_field":
+        query_fields = ["answer.label", "answer.label"]
+        plan["query"]["model_job"]["fields"] = query_fields  # type: ignore[index]
+    elif case == "empty_query_field":
+        query_fields = ["answer.label", ""]
+        plan["query"]["model_job"]["fields"] = query_fields  # type: ignore[index]
+    elif case == "missing_selected_metadata":
+        del plan["summary"]["fields"]["answer.value"]  # type: ignore[index]
+    else:
+        query_fields = ["answer.label"]
+        plan = _plan(("answer.label", "STRING"))
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result=csv_result,
+                    query={"fields": query_fields},
+                    total_row_count=1,
+                )
+            ]
+        }
+    )
+
+    with pytest.raises(OmniResultContractError, match="field metadata"):
+        bind_typed_query_result(
+            parsed_query,
+            [{"Label": "A", "Value": 42}],
+            plan,
+        )
+
+
+def test_typed_result_rejects_non_string_data_type_metadata() -> None:
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result="Value\n42\n",
+                    query={"fields": ["answer.value"]},
+                    total_row_count=1,
+                )
+            ]
+        }
+    )
+    plan = _plan(("answer.value", "NUMBER"))
+    plan["summary"]["fields"]["answer.value"]["data_type"] = 7  # type: ignore[index]
+
+    with pytest.raises(OmniResultContractError, match="invalid data type metadata"):
+        bind_typed_query_result(parsed_query, [{"Value": 42}], plan)
+
+
 @pytest.mark.parametrize(
     ("response", "message"),
     [

@@ -750,8 +750,10 @@ execution mechanics rather than accuracy.
   capture failures before the adapter correction.
 - **Benchmark impact:** The initial authenticated concurrency canary produced
   five `response_contract_error` outcomes despite 63 tool calls and 17 database
-  queries. The narrow adapter correction parses all five preserved responses;
-  live verification is pending.
+  queries. The narrow adapter correction parses all five preserved responses.
+  A fresh five-question canary then captured three complete results and exposed
+  two separate plan-schema differences rather than the original preview/action
+  variants.
 - **Severity:** High for machine-to-machine analytics and external evaluation.
 - **Proposed product change:** Return preview section boundaries as structured
   metadata outside the CSV payload and give every action a stable timestamped
@@ -759,7 +761,9 @@ execution mechanics rather than accuracy.
 - **Was the change tested?:** Yes on the external adapter with RED/GREEN tests
   and all five preserved public responses; no product-side change was available.
 - **Measured effect:** Preserved-response parse success changed from 0/5 to 5/5.
-- **Experiment / commit provenance:** D-054; live source commit pending review.
+- **Experiment / commit provenance:** D-054; source commit `9526505`; runs
+  `public-c4-concurrency-canary-v3-20260828-1425` and
+  `public-c4-concurrency-canary-v4-20260828-1434`.
 - **Visible in AI Hub?:** Partially. AI Hub exposes action history and truncated
   results, but the schema mismatch is clearest in the machine API response.
 - **AI Hub exposes relevant context/behavior?:** It exposes the recovered query
@@ -767,15 +771,74 @@ execution mechanics rather than accuracy.
 - **Fixable through current AI Hub/modeling workflow?:** No; this is an API
   response-contract issue rather than semantic-model authoring.
 - **AI Hub Eval outcome:** Not run; external execution remains authoritative.
-- **External execution outcome:** Pending a fresh capture canary.
-- **Evaluator agreement/disagreement:** Not yet applicable; the failure occurred
-  before scorer input was produced.
+- **External execution outcome:** Three of five fresh attempts produced complete
+  typed result artifacts; two reached governed JSON execution before failing a
+  different plan-metadata contract.
+- **Evaluator agreement/disagreement:** External capture distinguished the API
+  representation issue from governed query completion; no correctness score was
+  consulted.
 - **External execution outcome:** Product validation and exact semantic readback
   passed for the ten-database frozen subset; question scoring remains separate.
 - **Evaluator agreement/disagreement:** The product validator accepted all three
   models while the original external exact-readback gate rejected them. The
   attested canonicalizer reconciled the representations without treating the
   validator as the correctness authority.
+
+## PF-014: Query-plan summaries conflate output and dependency field metadata
+
+- **Observed behavior:** Two of five fresh C4 canary plans described more fields
+  in `summary.fields` than the governed query selected. After treating the
+  summary as a dependency superset, one result became type-faithfully captureable;
+  the other selected field still reported `data_type: UNKNOWN`.
+- **Minimal non-private reproduction:** Run the committed disaster-relief and ETF
+  public canary questions. Compare the submitted query fields,
+  `plan.query.model_job.fields`, `summary.fields`, and returned JSON columns.
+- **Expected behavior:** The API identifies the selected output schema separately
+  from helper/dependency metadata and supplies an authoritative executable type
+  for every selected field.
+- **Actual behavior:** Disaster selected three fields while the summary also
+  described `damage_report`; ETF selected four while the summary also described
+  `platform_tier`. ETF's selected `yield_to_expense_ratio` then reported
+  `UNKNOWN`, although the JSON endpoint returned string values.
+- **Why it matters to customers:** Machine clients need a type-faithful output
+  contract. Treating every summary field as output rejects valid queries, while
+  guessing an `UNKNOWN` type risks silently changing comparison and aggregation
+  semantics.
+- **Systematic evidence / frequency:** Extra helper metadata affected 2/5 fresh
+  canary attempts. One of those two (1/5 overall) also had an unsupported selected
+  result type.
+- **Benchmark impact:** The narrow selected-field validation makes all 240
+  disaster rows captureable. ETF is now classified as an explicit
+  `unsupported_semantic_result_type` evaluated-system failure rather than a
+  generic harness contract error; no correctness result was inspected.
+- **Severity:** High for external execution scoring and governed-query API
+  interoperability; medium for interactive users who consume rendered results.
+- **Proposed product change:** Return explicit `selected_fields` and
+  `dependency_fields` sections with canonical names, output order, and executable
+  data types. Do not emit `UNKNOWN` for a field that the JSON execution endpoint
+  can return.
+- **Was the change tested?:** Yes. RED/GREEN tests require exact equality between
+  submitted and planned selected fields, selected-field uniqueness and coverage,
+  and exact output-column cardinality. Unknown types remain fail-closed.
+- **Measured effect:** Preserved disaster replay changed from contract failure to
+  a 240-row typed result. Preserved ETF replay changed from an undifferentiated
+  contract error to a distinct unsupported-type outcome.
+- **Experiment / commit provenance:** D-055; run
+  `public-c4-concurrency-canary-v4-20260828-1434`; source commit pending review.
+- **Visible in AI Hub?:** Partially. The governed query and result are visible,
+  but the selected-versus-helper distinction and machine type-binding failure
+  require API trace inspection.
+- **AI Hub exposes relevant context/behavior?:** It exposes the semantic query and
+  result presentation, but not a clear authoritative output-schema contract.
+- **Fixable through current AI Hub/modeling workflow?:** The `UNKNOWN` type may
+  originate in semantic modeling, but the ambiguous response contract itself is
+  an API/compiler surface outside AI Hub evaluation.
+- **AI Hub Eval outcome:** Not run; external execution capture remains the
+  authority for this finding.
+- **External execution outcome:** Preserved public response replay succeeded for
+  disaster and produced the explicit unsupported-type classification for ETF.
+- **Evaluator agreement/disagreement:** No evaluator correctness outcome was
+  consulted; this finding concerns the product-to-harness result contract.
 
 ## Entry template
 

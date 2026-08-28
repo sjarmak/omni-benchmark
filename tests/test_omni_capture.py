@@ -143,6 +143,20 @@ class ContradictoryQueryMetricsClient(TruncatedMetricsClient):
         return response
 
 
+class UnknownResultTypeClient(FakeOmniClient):
+    def plan_query(self, query: dict[str, object]) -> dict[str, object]:
+        plan = super().plan_query(query)
+        plan["summary"]["fields"]["answers.value"]["data_type"] = "UNKNOWN"  # type: ignore[index]
+        return plan
+
+
+class MissingResultTypeClient(FakeOmniClient):
+    def plan_query(self, query: dict[str, object]) -> dict[str, object]:
+        plan = super().plan_query(query)
+        del plan["summary"]["fields"]["answers.value"]["data_type"]  # type: ignore[index]
+        return plan
+
+
 def _store(tmp_path: Path) -> ArtifactStore:
     workspace = tmp_path / "workspace"
     workspace.mkdir()
@@ -290,6 +304,39 @@ def test_capture_preserves_composite_model_identity(tmp_path: Path) -> None:
     assert result.model_provider == "bedrock"
     assert result.token_usage is not None
     assert result.token_usage.total_tokens == 248_891
+
+
+def test_capture_classifies_unsupported_semantic_result_type(tmp_path: Path) -> None:
+    capture = OmniJobCapture(
+        UnknownResultTypeClient([{"state": "COMPLETE"}]),
+        _store(tmp_path),
+        clock=iter(index / 10 for index in range(12)).__next__,
+        sleep=lambda _: None,
+        utc_now=lambda: "2026-08-27T12:00:00Z",
+    )
+
+    result = capture.probe("Public benchmark question")
+
+    assert result.terminal_state == "ERROR"
+    assert result.failure_class == "unsupported_semantic_result_type"
+    assert result.result_artifact is None
+    assert result.database_query_count == 1
+
+
+def test_capture_treats_missing_result_type_as_contract_error(tmp_path: Path) -> None:
+    capture = OmniJobCapture(
+        MissingResultTypeClient([{"state": "COMPLETE"}]),
+        _store(tmp_path),
+        clock=iter(index / 10 for index in range(12)).__next__,
+        sleep=lambda _: None,
+        utc_now=lambda: "2026-08-27T12:00:00Z",
+    )
+
+    result = capture.probe("Public benchmark question")
+
+    assert result.terminal_state == "CONTRACT_ERROR"
+    assert result.failure_class == "response_contract_error"
+    assert result.result_artifact is None
 
 
 def test_capture_rejects_recursive_forbidden_typed_result_and_finalizes_trace(
