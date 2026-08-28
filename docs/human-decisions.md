@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T14:51:42-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T14:57:00-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -23,18 +23,23 @@ hidden annotation, or sealed-test result has been accessed.
   `2026-08-28T18:20:46Z` through `18:26:20Z` are recorded as authorized
   benchmark-infrastructure reruns and will not enter outcome metrics.
 
-  **Requested operator action:** dedicate accounts 3, 4, and 5 exclusively to
-  the benchmark until the direct continuation finishes. First stop the live
-  account-5 background Claude session shown by `claude agents`; do not kill its
-  files or delete its transcript. Confirm no other Claude session is using any
-  of the three identities. Then perform one interactive `/login` directly in
-  each external benchmark profile under
-  `/home/ds/.local/state/omni-benchmark-claude-oauth/claude-N`, and exit without
-  starting or resuming other work. Do not run `ds-cred`, copy credential files,
-  start Remote Control, or open another Claude session under those identities
-  afterward. Notify the benchmark operator only when all three direct-profile
-  logins are complete. Account 1 remains excluded because it is not one of the
-  three clean-room profiles frozen for the interrupted run.
+  **Requested operator action, narrowed after read-only verification:** do not
+  touch profiles 4 or 5; their benchmark access tokens remain valid until 22:20
+  and 22:33 EDT respectively. Stop the live account-5 background Claude session
+  `8cdefc68-337d-4b5d-98bf-98e568e1c6fb` through `claude agents`, preserving its
+  transcript. Profile 3 alone still has `expiresAt=0`, so enter the external
+  benchmark profile directly with:
+
+  ```text
+  env -u OPENAI_API_KEY -u ANTHROPIC_API_KEY -u ANTHROPIC_AUTH_TOKEN \
+    CLAUDE_CONFIG_DIR=/home/ds/.local/state/omni-benchmark-claude-oauth/claude-3 \
+    /home/ds/.local/bin/claude
+  ```
+
+  Run `/logout` and then `/login` once, authenticate account 3, and exit. Do not
+  run `ds-cred`, copy credential files, start Remote Control, or use accounts
+  3/4/5 afterward. Notify the benchmark operator when the account-5 session is
+  stopped and this profile-3 login is complete.
 
 ## Approved actions in progress
 
