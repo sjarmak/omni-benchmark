@@ -1,5 +1,67 @@
 {
   "database": "planets_data_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "companion_count",
+      "file": "planets_data_large.public__stars.view",
+      "source_stable_id": "planets_data_large:column:stars:compcount",
+      "sql": "compcount"
+    },
+    {
+      "field_name": "stellar_distance_parsec",
+      "file": "planets_data_large.public__stars.view",
+      "source_stable_id": "planets_data_large:column:stars:stellardist",
+      "sql": "stellardist"
+    },
+    {
+      "field_name": "planet_density_g_cm3",
+      "file": "planets_data_large.public__physical_properties.view",
+      "source_stable_id": "planets_data_large:column:physical_properties:densvalue",
+      "sql": "densvalue"
+    },
+    {
+      "field_name": "planet_mass_jupiter",
+      "file": "planets_data_large.public__physical_properties.view",
+      "source_stable_id": "planets_data_large:column:physical_properties:massjup",
+      "sql": "massjup"
+    },
+    {
+      "field_name": "planet_radius_jupiter",
+      "file": "planets_data_large.public__physical_properties.view",
+      "source_stable_id": "planets_data_large:column:physical_properties:radjup",
+      "sql": "radjup"
+    },
+    {
+      "field_name": "orbital_eccentricity",
+      "file": "planets_data_large.public__orbital_characteristics.view",
+      "source_stable_id": "planets_data_large:column:orbital_characteristics:eccentricity",
+      "sql": "eccentricity"
+    },
+    {
+      "field_name": "orbital_inclination_deg",
+      "file": "planets_data_large.public__orbital_characteristics.view",
+      "source_stable_id": "planets_data_large:column:orbital_characteristics:inclination",
+      "sql": "inclination"
+    },
+    {
+      "field_name": "orbital_period_days",
+      "file": "planets_data_large.public__orbital_characteristics.view",
+      "source_stable_id": "planets_data_large:column:orbital_characteristics:period",
+      "sql": "period"
+    },
+    {
+      "field_name": "semi_major_axis_au",
+      "file": "planets_data_large.public__orbital_characteristics.view",
+      "source_stable_id": "planets_data_large:column:orbital_characteristics:semimajor",
+      "sql": "semimajor"
+    },
+    {
+      "field_name": "discovery_method",
+      "file": "planets_data_large.public__planets.view",
+      "source_stable_id": "planets_data_large:column:planets:discmethod",
+      "sql": "discmethod"
+    }
+  ],
   "files": [
     {
       "file": "planets_data_large.public__stars.view",

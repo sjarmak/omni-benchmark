@@ -1,5 +1,79 @@
 {
   "database": "mental_healths_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "gad7_score",
+      "file": "mental_healths_large.public__assessmentsymptomsandrisk.view",
+      "source_stable_id": "mental_healths_large:column:assessmentsymptomsandrisk:gad7_scr",
+      "sql": "gad7_scr"
+    },
+    {
+      "field_name": "phq9_score",
+      "file": "mental_healths_large.public__assessmentsymptomsandrisk.view",
+      "source_stable_id": "mental_healths_large:column:assessmentsymptomsandrisk:phq9_scr",
+      "sql": "phq9_scr"
+    },
+    {
+      "field_name": "suicide_risk",
+      "file": "mental_healths_large.public__assessmentsymptomsandrisk.view",
+      "source_stable_id": "mental_healths_large:column:assessmentsymptomsandrisk:suic_risk",
+      "sql": "suic_risk"
+    },
+    {
+      "field_name": "crisis_intervention_count",
+      "file": "mental_healths_large.public__treatmentbasics.view",
+      "source_stable_id": "mental_healths_large:column:treatmentbasics:crisis_int",
+      "sql": "crisis_int"
+    },
+    {
+      "field_name": "therapy_engagement",
+      "file": "mental_healths_large.public__treatmentbasics.view",
+      "source_stable_id": "mental_healths_large:column:treatmentbasics:th_eng",
+      "sql": "th_eng"
+    },
+    {
+      "field_name": "community_resources",
+      "file": "mental_healths_large.public__facilities.view",
+      "source_stable_id": "mental_healths_large:column:facilities:com_res",
+      "sql": "com_res"
+    },
+    {
+      "field_name": "diagnosis_duration_months",
+      "file": "mental_healths_large.public__assessmentsocialanddiagnosis.view",
+      "source_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:dx_dur_m",
+      "sql": "dx_dur_m"
+    },
+    {
+      "field_name": "functional_impairment",
+      "file": "mental_healths_large.public__assessmentsocialanddiagnosis.view",
+      "source_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:func_imp",
+      "sql": "func_imp"
+    },
+    {
+      "field_name": "previous_hospitalizations",
+      "file": "mental_healths_large.public__assessmentsocialanddiagnosis.view",
+      "source_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:prev_hosp",
+      "sql": "prev_hosp"
+    },
+    {
+      "field_name": "primary_diagnosis",
+      "file": "mental_healths_large.public__assessmentsocialanddiagnosis.view",
+      "source_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:prim_dx",
+      "sql": "prim_dx"
+    },
+    {
+      "field_name": "recovery_status",
+      "file": "mental_healths_large.public__assessmentsocialanddiagnosis.view",
+      "source_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:rec_status",
+      "sql": "rec_status"
+    },
+    {
+      "field_name": "missed_appointment_count",
+      "file": "mental_healths_large.public__encounters.view",
+      "source_stable_id": "mental_healths_large:column:encounters:miss_appt",
+      "sql": "miss_appt"
+    }
+  ],
   "files": [
     {
       "file": "mental_healths_large.public__assessmentsymptomsandrisk.view",

@@ -1,5 +1,6 @@
 {
   "database": "sports_events_large",
+  "direct_physical_bindings": [],
   "files": [
     {
       "file": "sports_events_large.public__circuits.view",

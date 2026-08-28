@@ -759,6 +759,7 @@ def _build_bundle(
     ordered_ids = _ordered_compile_ids(compile_mappings)
     files: dict[str, str] = {}
     elements: list[dict[str, Any]] = []
+    direct_physical_bindings: list[dict[str, str]] = []
     for table_id, view in views.items():
         table = schema_index.get(table_id)
         if table is None or table.get("record_kind") != "table":
@@ -780,6 +781,11 @@ def _build_bundle(
         topic_file = _text(view.get("topic_file_name"), "topic file_name")
         files[view_file] = _yaml(_view_document(view, table, dimensions, spec))
         files[topic_file] = _yaml(_topic_document(view, names))
+        direct_physical_bindings.extend(
+            _direct_physical_bindings(
+                view_file, physical_by_table[table_id], schema_index
+            )
+        )
     return SemanticBundle(
         files=files,
         manifest=_bundle_manifest(
@@ -787,9 +793,35 @@ def _build_bundle(
             files,
             elements,
             compile_mappings,
+            direct_physical_bindings,
             _source_name_collisions(column_bindings),
         ),
     )
+
+
+def _direct_physical_bindings(
+    view_file: str,
+    physical_fields: Sequence[Mapping[str, Any]],
+    schema_index: Mapping[str, Mapping[str, Any]],
+) -> list[dict[str, str]]:
+    bindings: list[dict[str, str]] = []
+    for field in physical_fields:
+        if "sql" in field:
+            continue
+        schema_id = _text(field.get("schema_stable_id"), "schema_stable_id")
+        source = schema_index[schema_id]
+        if source.get("record_kind") != "column":
+            continue
+        source_id = _text(source.get("stable_id"), "column stable_id")
+        bindings.append(
+            {
+                "field_name": _omni_name(field.get("name"), "physical field name"),
+                "file": view_file,
+                "source_stable_id": source_id,
+                "sql": _source_column_sql(source, schema_index),
+            }
+        )
+    return sorted(bindings, key=lambda item: (item["file"], item["field_name"]))
 
 
 def _bundle_manifest(
@@ -797,6 +829,7 @@ def _bundle_manifest(
     files: Mapping[str, str],
     elements: Sequence[Mapping[str, Any]],
     compile_mappings: Mapping[str, Mapping[str, Any]],
+    direct_physical_bindings: Sequence[Mapping[str, str]],
     source_name_collisions: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
     materialized = {
@@ -808,6 +841,7 @@ def _bundle_manifest(
         raise SemanticBundleError("not all compile mappings were materialized")
     return {
         "database": _text(spec.get("database"), "database"),
+        "direct_physical_bindings": list(direct_physical_bindings),
         "files": _file_manifest(files),
         "kind": "public-omni-semantic-bundle",
         "representability": {

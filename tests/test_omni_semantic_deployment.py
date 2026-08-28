@@ -33,9 +33,13 @@ fields:
 """
 
 
-def _manifest(files: dict[str, bytes]) -> dict[str, object]:
+def _manifest(
+    files: dict[str, bytes],
+    direct_physical_bindings: list[dict[str, str]] | None = None,
+) -> dict[str, object]:
     return {
         "database": "archeology_scan_large",
+        "direct_physical_bindings": direct_physical_bindings or [],
         "files": [
             {
                 "file": name,
@@ -174,6 +178,74 @@ def test_readback_accepts_utf8_bytes_and_terminal_newline_serialization(
     }
 
     verify_semantic_deployment_readback(plan, readback)
+
+
+def test_readback_accepts_only_attested_omni_stripped_direct_physical_sql(
+    tmp_path: Path,
+) -> None:
+    direct_view = VIEW.replace(
+        "dimensions:\n",
+        "dimensions:\n  proc_comp:\n    label: Process Compliance\n    sql: '\"procComp\"'\n",
+    )
+    files = {VIEW_NAME: direct_view.encode(), TOPIC_NAME: TOPIC.encode()}
+    root = _bundle(tmp_path, files)
+    manifest = _manifest(
+        files,
+        [
+            {
+                "field_name": "proc_comp",
+                "file": VIEW_NAME,
+                "source_stable_id": (
+                    "archeology_scan_large:column:pointcloud:procComp"
+                ),
+                "sql": '"procComp"',
+            }
+        ],
+    )
+    (root / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    plan = build_semantic_deployment_plan(root)
+    readback = _readback()
+    readback[VIEW_PATH] = readback[VIEW_PATH].replace(
+        "dimensions:\n",
+        "dimensions:\n  proc_comp:\n    label: Process Compliance\n",
+    )
+
+    verify_semantic_deployment_readback(plan, readback)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "sql"),
+    [
+        ("scan_resolution_mm", "CAST(${cloud_metrics} AS DOUBLE PRECISION)"),
+        ("unattested_alias", '"sourceColumn"'),
+    ],
+)
+def test_readback_does_not_strip_derived_or_unattested_alias_sql(
+    tmp_path: Path, field_name: str, sql: str
+) -> None:
+    view = VIEW
+    if field_name == "unattested_alias":
+        view = VIEW.replace(
+            "dimensions:\n",
+            "dimensions:\n  unattested_alias:\n"
+            "    label: Authored Alias\n"
+            "    sql: '\"sourceColumn\"'\n",
+        )
+    files = {VIEW_NAME: view.encode(), TOPIC_NAME: TOPIC.encode()}
+    plan = build_semantic_deployment_plan(_bundle(tmp_path, files))
+    readback = _readback()
+    if field_name == "scan_resolution_mm":
+        readback[VIEW_PATH] = readback[VIEW_PATH].replace(
+            "    sql: CAST(${cloud_metrics} AS DOUBLE PRECISION)\n", ""
+        )
+    else:
+        readback[VIEW_PATH] = readback[VIEW_PATH].replace(
+            "dimensions:\n",
+            "dimensions:\n  unattested_alias:\n    label: Authored Alias\n",
+        )
+
+    with pytest.raises(OmniSemanticDeploymentError, match="semantic content"):
+        verify_semantic_deployment_readback(plan, readback)
 
 
 @pytest.mark.parametrize("change", ["missing", "extra", "identity", "content"])

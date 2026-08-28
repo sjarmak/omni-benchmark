@@ -1,5 +1,97 @@
 {
   "database": "virtual_idol_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "session_duration_minutes",
+      "file": "virtual_idol_large.public__interactions.view",
+      "source_stable_id": "virtual_idol_large:column:interactions:sess_dur_min",
+      "sql": "sess_dur_min"
+    },
+    {
+      "field_name": "total_watch_hours",
+      "file": "virtual_idol_large.public__interactions.view",
+      "source_stable_id": "virtual_idol_large:column:interactions:watch_hrs",
+      "sql": "watch_hrs"
+    },
+    {
+      "field_name": "community_contribution_level",
+      "file": "virtual_idol_large.public__socialcommunity.view",
+      "source_stable_id": "virtual_idol_large:column:socialcommunity:comm_contrib",
+      "sql": "comm_contrib"
+    },
+    {
+      "field_name": "privacy_setting",
+      "file": "virtual_idol_large.public__preferencesandsettings.view",
+      "source_stable_id": "virtual_idol_large:column:preferencesandsettings:priv_set",
+      "sql": "priv_set"
+    },
+    {
+      "field_name": "current_tier_level",
+      "file": "virtual_idol_large.public__fans.view",
+      "source_stable_id": "virtual_idol_large:column:fans:tier_step",
+      "sql": "tier_step"
+    },
+    {
+      "field_name": "fan_status",
+      "file": "virtual_idol_large.public__fans.view",
+      "source_stable_id": "virtual_idol_large:column:fans:status_tag",
+      "sql": "status_tag"
+    },
+    {
+      "field_name": "language_preference",
+      "file": "virtual_idol_large.public__fans.view",
+      "source_stable_id": "virtual_idol_large:column:fans:lang_pref",
+      "sql": "lang_pref"
+    },
+    {
+      "field_name": "total_loyalty_points",
+      "file": "virtual_idol_large.public__fans.view",
+      "source_stable_id": "virtual_idol_large:column:fans:pts_val",
+      "sql": "pts_val"
+    },
+    {
+      "field_name": "churn_risk_flag",
+      "file": "virtual_idol_large.public__retentionandinfluence.view",
+      "source_stable_id": "virtual_idol_large:column:retentionandinfluence:churn_flag",
+      "sql": "churn_flag"
+    },
+    {
+      "field_name": "digital_items_owned",
+      "file": "virtual_idol_large.public__commerceandcollection.view",
+      "source_stable_id": "virtual_idol_large:column:commerceandcollection:dig_own",
+      "sql": "dig_own"
+    },
+    {
+      "field_name": "physical_items_owned",
+      "file": "virtual_idol_large.public__commerceandcollection.view",
+      "source_stable_id": "virtual_idol_large:column:commerceandcollection:phys_own",
+      "sql": "phys_own"
+    },
+    {
+      "field_name": "trade_activity_level",
+      "file": "virtual_idol_large.public__commerceandcollection.view",
+      "source_stable_id": "virtual_idol_large:column:commerceandcollection:trade_level",
+      "sql": "trade_level"
+    },
+    {
+      "field_name": "idol_type",
+      "file": "virtual_idol_large.public__virtualidols.view",
+      "source_stable_id": "virtual_idol_large:column:virtualidols:kind_tag",
+      "sql": "kind_tag"
+    },
+    {
+      "field_name": "moderation_status",
+      "file": "virtual_idol_large.public__moderationandcompliance.view",
+      "source_stable_id": "virtual_idol_large:column:moderationandcompliance:mod_stat",
+      "sql": "mod_stat"
+    },
+    {
+      "field_name": "membership_type",
+      "file": "virtual_idol_large.public__membershipandspending.view",
+      "source_stable_id": "virtual_idol_large:column:membershipandspending:memb_kind",
+      "sql": "memb_kind"
+    }
+  ],
   "files": [
     {
       "file": "virtual_idol_large.public__interactions.view",

@@ -1,5 +1,43 @@
 {
   "database": "museum_artifact_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "conservation_status",
+      "file": "museum_artifact_large.public__artifacts_core.view",
+      "source_stable_id": "museum_artifact_large:column:ArtifactsCore:conserve_status",
+      "sql": "conserve_status"
+    },
+    {
+      "field_name": "relative_humidity_pct",
+      "file": "museum_artifact_large.public__environmental_readings_core.view",
+      "source_stable_id": "museum_artifact_large:column:EnvironmentalReadingsCore:RH",
+      "sql": "\"RH\""
+    },
+    {
+      "field_name": "temperature_c",
+      "file": "museum_artifact_large.public__environmental_readings_core.view",
+      "source_stable_id": "museum_artifact_large:column:EnvironmentalReadingsCore:TEMPc",
+      "sql": "\"TEMPc\""
+    },
+    {
+      "field_name": "light_intensity_lux",
+      "file": "museum_artifact_large.public__light_and_radiation_readings.view",
+      "source_stable_id": "museum_artifact_large:column:LightAndRadiationReadings:lux",
+      "sql": "lux"
+    },
+    {
+      "field_name": "insurance_value_usd",
+      "file": "museum_artifact_large.public__artifact_security_access.view",
+      "source_stable_id": "museum_artifact_large:column:ArtifactSecurityAccess:insUSD",
+      "sql": "\"insUSD\""
+    },
+    {
+      "field_name": "scheduled_next_cleaning_date",
+      "file": "museum_artifact_large.public__conservation_and_maintenance.view",
+      "source_stable_id": "museum_artifact_large:column:ConservationAndMaintenance:nextClean",
+      "sql": "\"nextClean\""
+    }
+  ],
   "files": [
     {
       "file": "museum_artifact_large.public__exhibition_halls.view",

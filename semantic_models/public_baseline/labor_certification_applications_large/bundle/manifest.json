@@ -1,5 +1,85 @@
 {
   "database": "labor_certification_applications_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "application_status",
+      "file": "labor_certification_applications_large.public__cases.view",
+      "source_stable_id": "labor_certification_applications_large:column:cases:statustag",
+      "sql": "statustag"
+    },
+    {
+      "field_name": "public_disclosure_status",
+      "file": "labor_certification_applications_large.public__cases.view",
+      "source_stable_id": "labor_certification_applications_large:column:cases:pubdisc",
+      "sql": "pubdisc"
+    },
+    {
+      "field_name": "visa_classification",
+      "file": "labor_certification_applications_large.public__cases.view",
+      "source_stable_id": "labor_certification_applications_large:column:cases:visacls",
+      "sql": "visacls"
+    },
+    {
+      "field_name": "worker_positions",
+      "file": "labor_certification_applications_large.public__cases.view",
+      "source_stable_id": "labor_certification_applications_large:column:cases:headct",
+      "sql": "headct"
+    },
+    {
+      "field_name": "worksite_count",
+      "file": "labor_certification_applications_large.public__cases.view",
+      "source_stable_id": "labor_certification_applications_large:column:cases:siteslots",
+      "sql": "siteslots"
+    },
+    {
+      "field_name": "full_time_position",
+      "file": "labor_certification_applications_large.public__employer_labor_condition.view",
+      "source_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:fullTimePosition_flag",
+      "sql": "\"fullTimePosition_flag\""
+    },
+    {
+      "field_name": "h1b_dependent_employer",
+      "file": "labor_certification_applications_large.public__employer_labor_condition.view",
+      "source_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:h1bDependentEmployer_flag",
+      "sql": "\"h1bDependentEmployer_flag\""
+    },
+    {
+      "field_name": "naics_code",
+      "file": "labor_certification_applications_large.public__employer_labor_condition.view",
+      "source_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:naicsCode",
+      "sql": "\"naicsCode\""
+    },
+    {
+      "field_name": "offered_annual_wage_usd",
+      "file": "labor_certification_applications_large.public__employer_labor_condition.view",
+      "source_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:offeredWage_USD",
+      "sql": "\"offeredWage_USD\""
+    },
+    {
+      "field_name": "prevailing_annual_wage_usd",
+      "file": "labor_certification_applications_large.public__employer_labor_condition.view",
+      "source_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:prevailingWage_USD",
+      "sql": "\"prevailingWage_USD\""
+    },
+    {
+      "field_name": "prevailing_wage_level",
+      "file": "labor_certification_applications_large.public__employer_labor_condition.view",
+      "source_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:wageLevel",
+      "sql": "\"wageLevel\""
+    },
+    {
+      "field_name": "soc_code",
+      "file": "labor_certification_applications_large.public__employer_labor_condition.view",
+      "source_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:socCode",
+      "sql": "\"socCode\""
+    },
+    {
+      "field_name": "willful_violator",
+      "file": "labor_certification_applications_large.public__employer_labor_condition.view",
+      "source_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:willfulViolator_flag",
+      "sql": "\"willfulViolator_flag\""
+    }
+  ],
   "files": [
     {
       "file": "labor_certification_applications_large.public__cases.view",

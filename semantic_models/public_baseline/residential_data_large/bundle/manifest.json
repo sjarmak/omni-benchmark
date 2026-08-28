@@ -1,5 +1,61 @@
 {
   "database": "residential_data_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "resident_count",
+      "file": "households.view",
+      "source_stable_id": "residential_data_large:column:households:residentcount",
+      "sql": "residentcount"
+    },
+    {
+      "field_name": "zone_identifier",
+      "file": "households.view",
+      "source_stable_id": "residential_data_large:column:households:loczone",
+      "sql": "loczone"
+    },
+    {
+      "field_name": "parking_availability",
+      "file": "infrastructure.view",
+      "source_stable_id": "residential_data_large:column:infrastructure:parkavail",
+      "sql": "parkavail"
+    },
+    {
+      "field_name": "road_surface",
+      "file": "infrastructure.view",
+      "source_stable_id": "residential_data_large:column:infrastructure:roadsurface",
+      "sql": "roadsurface"
+    },
+    {
+      "field_name": "water_access",
+      "file": "infrastructure.view",
+      "source_stable_id": "residential_data_large:column:infrastructure:wateraccess",
+      "sql": "wateraccess"
+    },
+    {
+      "field_name": "cable_status",
+      "file": "amenities.view",
+      "source_stable_id": "residential_data_large:column:amenities:cablestatus",
+      "sql": "cablestatus"
+    },
+    {
+      "field_name": "domestic_help",
+      "file": "service_types.view",
+      "source_stable_id": "residential_data_large:column:service_types:domestichelp",
+      "sql": "domestichelp"
+    },
+    {
+      "field_name": "social_support",
+      "file": "service_types.view",
+      "source_stable_id": "residential_data_large:column:service_types:socsupport",
+      "sql": "socsupport"
+    },
+    {
+      "field_name": "vehicle_type_distribution",
+      "file": "transportation_assets.view",
+      "source_stable_id": "residential_data_large:column:transportation_assets:vehicleinventory",
+      "sql": "vehicleinventory"
+    }
+  ],
   "files": [
     {
       "file": "households.view",

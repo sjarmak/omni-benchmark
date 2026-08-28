@@ -1,5 +1,37 @@
 {
   "database": "reverse_logistics_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "days_lapsed",
+      "file": "reverse_logistics_large.public__returns.view",
+      "source_stable_id": "reverse_logistics_large:column:returns:dayslapsed",
+      "sql": "dayslapsed"
+    },
+    {
+      "field_name": "return_channel",
+      "file": "reverse_logistics_large.public__returns.view",
+      "source_stable_id": "reverse_logistics_large:column:returns:return_channel",
+      "sql": "return_channel"
+    },
+    {
+      "field_name": "approval_level",
+      "file": "reverse_logistics_large.public__return_processing.view",
+      "source_stable_id": "reverse_logistics_large:column:return_processing:apprlevel",
+      "sql": "apprlevel"
+    },
+    {
+      "field_name": "processing_priority",
+      "file": "reverse_logistics_large.public__return_processing.view",
+      "source_stable_id": "reverse_logistics_large:column:return_processing:procprio",
+      "sql": "procprio"
+    },
+    {
+      "field_name": "satisfaction_score",
+      "file": "reverse_logistics_large.public__case_management.view",
+      "source_stable_id": "reverse_logistics_large:column:case_management:satisfscore",
+      "sql": "satisfscore"
+    }
+  ],
   "files": [
     {
       "file": "reverse_logistics_large.public__returns.view",

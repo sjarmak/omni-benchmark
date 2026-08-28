@@ -1,5 +1,115 @@
 {
   "database": "solar_panel_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "degyrrate",
+      "file": "solar_panel_large.public__panel_models.view",
+      "source_stable_id": "solar_panel_large:column:panel_models:degyrrate",
+      "sql": "degyrrate"
+    },
+    {
+      "field_name": "nomoptempc",
+      "file": "solar_panel_large.public__panel_models.view",
+      "source_stable_id": "solar_panel_large:column:panel_models:nomoptempc",
+      "sql": "nomoptempc"
+    },
+    {
+      "field_name": "rated_w",
+      "file": "solar_panel_large.public__panel_models.view",
+      "source_stable_id": "solar_panel_large:column:panel_models:rated_w",
+      "sql": "rated_w"
+    },
+    {
+      "field_name": "tempcoeff",
+      "file": "solar_panel_large.public__panel_models.view",
+      "source_stable_id": "solar_panel_large:column:panel_models:tempcoeff",
+      "sql": "tempcoeff"
+    },
+    {
+      "field_name": "cleancost",
+      "file": "solar_panel_large.public__operational_metrics.view",
+      "source_stable_id": "solar_panel_large:column:operational_metrics:cleancost",
+      "sql": "cleancost"
+    },
+    {
+      "field_name": "maintcost",
+      "file": "solar_panel_large.public__operational_metrics.view",
+      "source_stable_id": "solar_panel_large:column:operational_metrics:maintcost",
+      "sql": "maintcost"
+    },
+    {
+      "field_name": "mtbf",
+      "file": "solar_panel_large.public__operational_metrics.view",
+      "source_stable_id": "solar_panel_large:column:operational_metrics:mtbfh",
+      "sql": "mtbfh"
+    },
+    {
+      "field_name": "mttr",
+      "file": "solar_panel_large.public__operational_metrics.view",
+      "source_stable_id": "solar_panel_large:column:operational_metrics:mttrh",
+      "sql": "mttrh"
+    },
+    {
+      "field_name": "replcost",
+      "file": "solar_panel_large.public__operational_metrics.view",
+      "source_stable_id": "solar_panel_large:column:operational_metrics:replcost",
+      "sql": "replcost"
+    },
+    {
+      "field_name": "revloss",
+      "file": "solar_panel_large.public__operational_metrics.view",
+      "source_stable_id": "solar_panel_large:column:operational_metrics:revloss",
+      "sql": "revloss"
+    },
+    {
+      "field_name": "cap",
+      "file": "solar_panel_large.public__plants.view",
+      "source_stable_id": "solar_panel_large:column:plants:cap_mw",
+      "sql": "cap_mw"
+    },
+    {
+      "field_name": "warrclaims",
+      "file": "solar_panel_large.public__plants.view",
+      "source_stable_id": "solar_panel_large:column:plants:warrclaims",
+      "sql": "warrclaims"
+    },
+    {
+      "field_name": "warrstate",
+      "file": "solar_panel_large.public__plants.view",
+      "source_stable_id": "solar_panel_large:column:plants:warrstate",
+      "sql": "warrstate"
+    },
+    {
+      "field_name": "maintprio",
+      "file": "solar_panel_large.public__alert.view",
+      "source_stable_id": "solar_panel_large:column:alert:maintprio",
+      "sql": "maintprio"
+    },
+    {
+      "field_name": "replprio",
+      "file": "solar_panel_large.public__alert.view",
+      "source_stable_id": "solar_panel_large:column:alert:replprio",
+      "sql": "replprio"
+    },
+    {
+      "field_name": "dqscore",
+      "file": "solar_panel_large.public__inspection.view",
+      "source_stable_id": "solar_panel_large:column:inspection:dqscore",
+      "sql": "dqscore"
+    },
+    {
+      "field_name": "result",
+      "file": "solar_panel_large.public__inspection.view",
+      "source_stable_id": "solar_panel_large:column:inspection:inspectres",
+      "sql": "inspectres"
+    },
+    {
+      "field_name": "schedule",
+      "file": "solar_panel_large.public__inspection.view",
+      "source_stable_id": "solar_panel_large:column:inspection:maintsched",
+      "sql": "maintsched"
+    }
+  ],
   "files": [
     {
       "file": "solar_panel_large.public__panel_models.view",

@@ -295,6 +295,36 @@ def test_compile_bundle_normalizes_physical_names_and_emits_explicit_alias_sql()
         "sql": '"FINDTALLY"',
     }
     assert view["dimensions"]["route_complexity"]["sql"] == '"RouteComplex"'
+    assert bundle.manifest["direct_physical_bindings"] == [
+        {
+            "field_name": "findtally",
+            "file": "db.public__pointcloud.view",
+            "source_stable_id": "db:column:pointcloud:FINDTALLY",
+            "sql": '"FINDTALLY"',
+        },
+        {
+            "field_name": "proc_comp",
+            "file": "db.public__pointcloud.view",
+            "source_stable_id": "db:column:pointcloud:procComp",
+            "sql": '"procComp"',
+        },
+        {
+            "field_name": "route_complexity",
+            "file": "db.public__pointcloud.view",
+            "source_stable_id": "db:column:pointcloud:RouteComplex",
+            "sql": '"RouteComplex"',
+        },
+    ]
+
+
+def test_compile_bundle_does_not_mark_authored_or_derived_sql_as_direct_binding() -> (
+    None
+):
+    bundle = compile_semantic_bundle(
+        _spec(), _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    assert bundle.manifest["direct_physical_bindings"] == []
 
 
 def test_compile_bundle_rewrites_derived_references_to_normalized_physical_names() -> (

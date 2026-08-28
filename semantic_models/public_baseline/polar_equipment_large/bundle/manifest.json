@@ -1,5 +1,145 @@
 {
   "database": "polar_equipment_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "reliability_index",
+      "file": "polar_equipment_large.public__equipment.view",
+      "source_stable_id": "polar_equipment_large:column:Equipment:RELIAB_IDX",
+      "sql": "\"RELIAB_IDX\""
+    },
+    {
+      "field_name": "inspection_status",
+      "file": "polar_equipment_large.public__operationmaintenance.view",
+      "source_stable_id": "polar_equipment_large:column:OperationMaintenance:inspect_status",
+      "sql": "inspect_status"
+    },
+    {
+      "field_name": "maintenance_cycle_hours",
+      "file": "polar_equipment_large.public__operationmaintenance.view",
+      "source_stable_id": "polar_equipment_large:column:OperationMaintenance:maintCycleHrs",
+      "sql": "\"maintCycleHrs\""
+    },
+    {
+      "field_name": "operational_hours",
+      "file": "polar_equipment_large.public__operationmaintenance.view",
+      "source_stable_id": "polar_equipment_large:column:OperationMaintenance:OPER_hours",
+      "sql": "\"OPER_hours\""
+    },
+    {
+      "field_name": "operational_status",
+      "file": "polar_equipment_large.public__operationmaintenance.view",
+      "source_stable_id": "polar_equipment_large:column:OperationMaintenance:OPER_status",
+      "sql": "\"OPER_status\""
+    },
+    {
+      "field_name": "external_temperature_c",
+      "file": "polar_equipment_large.public__weatherandstructure.view",
+      "source_stable_id": "polar_equipment_large:column:WeatherAndStructure:extTempC",
+      "sql": "\"extTempC\""
+    },
+    {
+      "field_name": "snow_load_kg_m2",
+      "file": "polar_equipment_large.public__weatherandstructure.view",
+      "source_stable_id": "polar_equipment_large:column:WeatherAndStructure:snowLoad_kgm2",
+      "sql": "\"snowLoad_kgm2\""
+    },
+    {
+      "field_name": "structural_load_percent",
+      "file": "polar_equipment_large.public__weatherandstructure.view",
+      "source_stable_id": "polar_equipment_large:column:WeatherAndStructure:structLoadPct",
+      "sql": "\"structLoadPct\""
+    },
+    {
+      "field_name": "wind_speed_mps",
+      "file": "polar_equipment_large.public__weatherandstructure.view",
+      "source_stable_id": "polar_equipment_large:column:WeatherAndStructure:windSpeed_ms",
+      "sql": "\"windSpeed_ms\""
+    },
+    {
+      "field_name": "antenna_status",
+      "file": "polar_equipment_large.public__communication.view",
+      "source_stable_id": "polar_equipment_large:column:Communication:antenna_stat",
+      "sql": "antenna_stat"
+    },
+    {
+      "field_name": "network_latency_ms",
+      "file": "polar_equipment_large.public__communication.view",
+      "source_stable_id": "polar_equipment_large:column:Communication:netLatency_ms",
+      "sql": "\"netLatency_ms\""
+    },
+    {
+      "field_name": "radio_signal_dbm",
+      "file": "polar_equipment_large.public__communication.view",
+      "source_stable_id": "polar_equipment_large:column:Communication:radioSignal_dBm",
+      "sql": "\"radioSignal_dBm\""
+    },
+    {
+      "field_name": "fuel_cell_efficiency_percent",
+      "file": "polar_equipment_large.public__thermalsolarwindandgrid.view",
+      "source_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:fuelCellEffPct",
+      "sql": "\"fuelCellEffPct\""
+    },
+    {
+      "field_name": "fuel_cell_output_w",
+      "file": "polar_equipment_large.public__thermalsolarwindandgrid.view",
+      "source_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:fuelCellOutput_w",
+      "sql": "\"fuelCellOutput_w\""
+    },
+    {
+      "field_name": "heat_loss_rate_kwh",
+      "file": "polar_equipment_large.public__thermalsolarwindandgrid.view",
+      "source_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:heatLoss_kwh",
+      "sql": "\"heatLoss_kwh\""
+    },
+    {
+      "field_name": "insulation_status",
+      "file": "polar_equipment_large.public__thermalsolarwindandgrid.view",
+      "source_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:insulationStat",
+      "sql": "\"insulationStat\""
+    },
+    {
+      "field_name": "solar_output_w",
+      "file": "polar_equipment_large.public__thermalsolarwindandgrid.view",
+      "source_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:solarOutput_w",
+      "sql": "\"solarOutput_w\""
+    },
+    {
+      "field_name": "wind_output_w",
+      "file": "polar_equipment_large.public__thermalsolarwindandgrid.view",
+      "source_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:windOutput_w",
+      "sql": "\"windOutput_w\""
+    },
+    {
+      "field_name": "waste_tank_level_percent",
+      "file": "polar_equipment_large.public__waterandwaste.view",
+      "source_stable_id": "polar_equipment_large:column:WaterAndWaste:wasteTankPct",
+      "sql": "\"wasteTankPct\""
+    },
+    {
+      "field_name": "water_level_percent",
+      "file": "polar_equipment_large.public__waterandwaste.view",
+      "source_stable_id": "polar_equipment_large:column:WaterAndWaste:waterLevelPct",
+      "sql": "\"waterLevelPct\""
+    },
+    {
+      "field_name": "water_quality_index",
+      "file": "polar_equipment_large.public__waterandwaste.view",
+      "source_stable_id": "polar_equipment_large:column:WaterAndWaste:waterQualityIdx",
+      "sql": "\"waterQualityIdx\""
+    },
+    {
+      "field_name": "calibration_status",
+      "file": "polar_equipment_large.public__scientific.view",
+      "source_stable_id": "polar_equipment_large:column:Scientific:calibrStat",
+      "sql": "\"calibrStat\""
+    },
+    {
+      "field_name": "measurement_accuracy_percent",
+      "file": "polar_equipment_large.public__scientific.view",
+      "source_stable_id": "polar_equipment_large:column:Scientific:measureAccPct",
+      "sql": "\"measureAccPct\""
+    }
+  ],
   "files": [
     {
       "file": "polar_equipment_large.public__equipmenttype.view",

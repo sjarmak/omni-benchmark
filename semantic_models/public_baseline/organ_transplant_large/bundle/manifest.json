@@ -1,5 +1,121 @@
 {
   "database": "organ_transplant_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "abo_compatibility_result",
+      "file": "organ_transplant_large.public__compatibility_metrics.view",
+      "source_stable_id": "organ_transplant_large:column:compatibility_metrics:blood_compat",
+      "sql": "blood_compat"
+    },
+    {
+      "field_name": "hla_mismatch_count",
+      "file": "organ_transplant_large.public__compatibility_metrics.view",
+      "source_stable_id": "organ_transplant_large:column:compatibility_metrics:hla_mis_count",
+      "sql": "hla_mis_count"
+    },
+    {
+      "field_name": "crossmatch_result",
+      "file": "organ_transplant_large.public__recipients_immunology.view",
+      "source_stable_id": "organ_transplant_large:column:recipients_immunology:cross_result",
+      "sql": "cross_result"
+    },
+    {
+      "field_name": "dsa_status",
+      "file": "organ_transplant_large.public__recipients_immunology.view",
+      "source_stable_id": "organ_transplant_large:column:recipients_immunology:dsa_state",
+      "sql": "dsa_state"
+    },
+    {
+      "field_name": "pra_score",
+      "file": "organ_transplant_large.public__recipients_immunology.view",
+      "source_stable_id": "organ_transplant_large:column:recipients_immunology:pra_score",
+      "sql": "pra_score"
+    },
+    {
+      "field_name": "comorbidities",
+      "file": "organ_transplant_large.public__clinical.view",
+      "source_stable_id": "organ_transplant_large:column:clinical:comorbid_detail",
+      "sql": "comorbid_detail"
+    },
+    {
+      "field_name": "medical_urgency_status",
+      "file": "organ_transplant_large.public__clinical.view",
+      "source_stable_id": "organ_transplant_large:column:clinical:med_urgency",
+      "sql": "med_urgency"
+    },
+    {
+      "field_name": "wait_time",
+      "file": "organ_transplant_large.public__clinical.view",
+      "source_stable_id": "organ_transplant_large:column:clinical:wait_time",
+      "sql": "wait_time"
+    },
+    {
+      "field_name": "cause_of_death_description",
+      "file": "organ_transplant_large.public__function_and_recovery.view",
+      "source_stable_id": "organ_transplant_large:column:function_and_recovery:don_co_desc",
+      "sql": "don_co_desc"
+    },
+    {
+      "field_name": "cold_ischemia_time",
+      "file": "organ_transplant_large.public__function_and_recovery.view",
+      "source_stable_id": "organ_transplant_large:column:function_and_recovery:org_isch_time",
+      "sql": "org_isch_time"
+    },
+    {
+      "field_name": "donor_gfr",
+      "file": "organ_transplant_large.public__function_and_recovery.view",
+      "source_stable_id": "organ_transplant_large:column:function_and_recovery:don_gfr_val",
+      "sql": "don_gfr_val"
+    },
+    {
+      "field_name": "donor_serum_creatinine",
+      "file": "organ_transplant_large.public__function_and_recovery.view",
+      "source_stable_id": "organ_transplant_large:column:function_and_recovery:don_crtn_val",
+      "sql": "don_crtn_val"
+    },
+    {
+      "field_name": "preservation_method",
+      "file": "organ_transplant_large.public__function_and_recovery.view",
+      "source_stable_id": "organ_transplant_large:column:function_and_recovery:org_presv_meth",
+      "sql": "org_presv_meth"
+    },
+    {
+      "field_name": "center_outcomes_score",
+      "file": "organ_transplant_large.public__risk_evaluation.view",
+      "source_stable_id": "organ_transplant_large:column:risk_evaluation:cntr_out_val",
+      "sql": "cntr_out_val"
+    },
+    {
+      "field_name": "center_volume_score",
+      "file": "organ_transplant_large.public__risk_evaluation.view",
+      "source_stable_id": "organ_transplant_large:column:risk_evaluation:cntr_vol_val",
+      "sql": "cntr_vol_val"
+    },
+    {
+      "field_name": "cost_per_qaly",
+      "file": "organ_transplant_large.public__risk_evaluation.view",
+      "source_stable_id": "organ_transplant_large:column:risk_evaluation:cost_qaly",
+      "sql": "cost_qaly"
+    },
+    {
+      "field_name": "expected_graft_survival_score",
+      "file": "organ_transplant_large.public__risk_evaluation.view",
+      "source_stable_id": "organ_transplant_large:column:risk_evaluation:egs_val",
+      "sql": "egs_val"
+    },
+    {
+      "field_name": "surgical_risk_score",
+      "file": "organ_transplant_large.public__risk_evaluation.view",
+      "source_stable_id": "organ_transplant_large:column:risk_evaluation:surg_risk_val",
+      "sql": "surg_risk_val"
+    },
+    {
+      "field_name": "allocation_policy_version",
+      "file": "organ_transplant_large.public__allocation_details.view",
+      "source_stable_id": "organ_transplant_large:column:allocation_details:allc_pol_vers",
+      "sql": "allc_pol_vers"
+    }
+  ],
   "files": [
     {
       "file": "organ_transplant_large.public__demographics.view",

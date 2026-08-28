@@ -1,5 +1,163 @@
 {
   "database": "robot_fault_prediction_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "rd_firmware_version",
+      "file": "robot_fault_prediction_large.public__robot_details.view",
+      "source_stable_id": "robot_fault_prediction_large:column:robot_details:fwversionval",
+      "sql": "fwversionval"
+    },
+    {
+      "field_name": "rd_installation_date",
+      "file": "robot_fault_prediction_large.public__robot_details.view",
+      "source_stable_id": "robot_fault_prediction_large:column:robot_details:instdateval",
+      "sql": "instdateval"
+    },
+    {
+      "field_name": "rd_payload_capacity_kg",
+      "file": "robot_fault_prediction_large.public__robot_details.view",
+      "source_stable_id": "robot_fault_prediction_large:column:robot_details:payloadcapkg",
+      "sql": "payloadcapkg"
+    },
+    {
+      "field_name": "rd_reach_mm",
+      "file": "robot_fault_prediction_large.public__robot_details.view",
+      "source_stable_id": "robot_fault_prediction_large:column:robot_details:reachmmval",
+      "sql": "reachmmval"
+    },
+    {
+      "field_name": "rd_robot_type",
+      "file": "robot_fault_prediction_large.public__robot_details.view",
+      "source_stable_id": "robot_fault_prediction_large:column:robot_details:bottypeval",
+      "sql": "bottypeval"
+    },
+    {
+      "field_name": "sc_cabinet_humidity",
+      "file": "robot_fault_prediction_large.public__system_controller.view",
+      "source_stable_id": "robot_fault_prediction_large:column:system_controller:cabhumiditylevel",
+      "sql": "cabhumiditylevel"
+    },
+    {
+      "field_name": "sc_memory_usage",
+      "file": "robot_fault_prediction_large.public__system_controller.view",
+      "source_stable_id": "robot_fault_prediction_large:column:system_controller:memuseval",
+      "sql": "memuseval"
+    },
+    {
+      "field_name": "sc_overseer_load",
+      "file": "robot_fault_prediction_large.public__system_controller.view",
+      "source_stable_id": "robot_fault_prediction_large:column:system_controller:overseerloadvalue",
+      "sql": "overseerloadvalue"
+    },
+    {
+      "field_name": "ps_air_pressure",
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "source_stable_id": "robot_fault_prediction_large:column:performance_and_safety:airpressval",
+      "sql": "airpressval"
+    },
+    {
+      "field_name": "ps_calibration_state",
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "source_stable_id": "robot_fault_prediction_large:column:performance_and_safety:calibstateval",
+      "sql": "calibstateval"
+    },
+    {
+      "field_name": "ps_collisions",
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "source_stable_id": "robot_fault_prediction_large:column:performance_and_safety:collisioncount",
+      "sql": "collisioncount"
+    },
+    {
+      "field_name": "ps_condition_index",
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "source_stable_id": "robot_fault_prediction_large:column:performance_and_safety:conditionindexval",
+      "sql": "conditionindexval"
+    },
+    {
+      "field_name": "ps_emergency_stops",
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "source_stable_id": "robot_fault_prediction_large:column:performance_and_safety:emergencystopcount",
+      "sql": "emergencystopcount"
+    },
+    {
+      "field_name": "ps_overloads",
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "source_stable_id": "robot_fault_prediction_large:column:performance_and_safety:overloadcnt",
+      "sql": "overloadcnt"
+    },
+    {
+      "field_name": "ps_safety_state",
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "source_stable_id": "robot_fault_prediction_large:column:performance_and_safety:safetystateval",
+      "sql": "safetystateval"
+    },
+    {
+      "field_name": "ps_speed_violations",
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "source_stable_id": "robot_fault_prediction_large:column:performance_and_safety:speedviolnum",
+      "sql": "speedviolnum"
+    },
+    {
+      "field_name": "ps_zone_violations",
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "source_stable_id": "robot_fault_prediction_large:column:performance_and_safety:zoneviolnum",
+      "sql": "zoneviolnum"
+    },
+    {
+      "field_name": "mf_fault_prediction_score",
+      "file": "robot_fault_prediction_large.public__maintenance_and_fault.view",
+      "source_stable_id": "robot_fault_prediction_large:column:maintenance_and_fault:faultpredscore",
+      "sql": "faultpredscore"
+    },
+    {
+      "field_name": "mf_rul_hours",
+      "file": "robot_fault_prediction_large.public__maintenance_and_fault.view",
+      "source_stable_id": "robot_fault_prediction_large:column:maintenance_and_fault:rulhours",
+      "sql": "rulhours"
+    },
+    {
+      "field_name": "mf_upkeep_cost",
+      "file": "robot_fault_prediction_large.public__maintenance_and_fault.view",
+      "source_stable_id": "robot_fault_prediction_large:column:maintenance_and_fault:upkeepcostest",
+      "sql": "upkeepcostest"
+    },
+    {
+      "field_name": "mf_upkeep_due_days",
+      "file": "robot_fault_prediction_large.public__maintenance_and_fault.view",
+      "source_stable_id": "robot_fault_prediction_large:column:maintenance_and_fault:upkeepduedays",
+      "sql": "upkeepduedays"
+    },
+    {
+      "field_name": "o_application_type",
+      "file": "robot_fault_prediction_large.public__operation.view",
+      "source_stable_id": "robot_fault_prediction_large:column:operation:apptypeval",
+      "sql": "apptypeval"
+    },
+    {
+      "field_name": "o_cycle_time_seconds",
+      "file": "robot_fault_prediction_large.public__operation.view",
+      "source_stable_id": "robot_fault_prediction_large:column:operation:cycletimesecval",
+      "sql": "cycletimesecval"
+    },
+    {
+      "field_name": "o_operational_hours",
+      "file": "robot_fault_prediction_large.public__operation.view",
+      "source_stable_id": "robot_fault_prediction_large:column:operation:totopshrval",
+      "sql": "totopshrval"
+    },
+    {
+      "field_name": "a_payload_weight",
+      "file": "robot_fault_prediction_large.public__actuation_data.view",
+      "source_stable_id": "robot_fault_prediction_large:column:actuation_data:payloadwval",
+      "sql": "payloadwval"
+    },
+    {
+      "field_name": "a_position_error",
+      "file": "robot_fault_prediction_large.public__actuation_data.view",
+      "source_stable_id": "robot_fault_prediction_large:column:actuation_data:poserrmmval",
+      "sql": "poserrmmval"
+    }
+  ],
   "files": [
     {
       "file": "robot_fault_prediction_large.public__robot_details.view",

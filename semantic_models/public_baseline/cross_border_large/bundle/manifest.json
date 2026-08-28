@@ -1,5 +1,115 @@
 {
   "database": "cross_border_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "acl_state",
+      "file": "cross_border_large.public__security_profile.view",
+      "source_stable_id": "cross_border_large:column:SecurityProfile:acl_state",
+      "sql": "acl_state"
+    },
+    {
+      "field_name": "enc_state",
+      "file": "cross_border_large.public__security_profile.view",
+      "source_stable_id": "cross_border_large:column:SecurityProfile:enc_state",
+      "sql": "enc_state"
+    },
+    {
+      "field_name": "log_ret_days",
+      "file": "cross_border_large.public__security_profile.view",
+      "source_stable_id": "cross_border_large:column:SecurityProfile:LogRetDays",
+      "sql": "\"LogRetDays\""
+    },
+    {
+      "field_name": "acc_req_num",
+      "file": "cross_border_large.public__audit_and_compliance.view",
+      "source_stable_id": "cross_border_large:column:AuditAndCompliance:AccReqNum",
+      "sql": "\"AccReqNum\""
+    },
+    {
+      "field_name": "crit_find_num",
+      "file": "cross_border_large.public__audit_and_compliance.view",
+      "source_stable_id": "cross_border_large:column:AuditAndCompliance:critFindNum",
+      "sql": "\"critFindNum\""
+    },
+    {
+      "field_name": "del_req_num",
+      "file": "cross_border_large.public__audit_and_compliance.view",
+      "source_stable_id": "cross_border_large:column:AuditAndCompliance:DEL_REQ_NUM",
+      "sql": "\"DEL_REQ_NUM\""
+    },
+    {
+      "field_name": "findtally",
+      "file": "cross_border_large.public__audit_and_compliance.view",
+      "source_stable_id": "cross_border_large:column:AuditAndCompliance:FINDTALLY",
+      "sql": "\"FINDTALLY\""
+    },
+    {
+      "field_name": "portreqnum",
+      "file": "cross_border_large.public__audit_and_compliance.view",
+      "source_stable_id": "cross_border_large:column:AuditAndCompliance:PORTREQNUM",
+      "sql": "\"PORTREQNUM\""
+    },
+    {
+      "field_name": "rect_req_num",
+      "file": "cross_border_large.public__audit_and_compliance.view",
+      "source_stable_id": "cross_border_large:column:AuditAndCompliance:rect_req_num",
+      "sql": "rect_req_num"
+    },
+    {
+      "field_name": "remed_due",
+      "file": "cross_border_large.public__audit_and_compliance.view",
+      "source_stable_id": "cross_border_large:column:AuditAndCompliance:REMED_DUE",
+      "sql": "\"REMED_DUE\""
+    },
+    {
+      "field_name": "resp_time_day",
+      "file": "cross_border_large.public__audit_and_compliance.view",
+      "source_stable_id": "cross_border_large:column:AuditAndCompliance:resp_time_day",
+      "sql": "resp_time_day"
+    },
+    {
+      "field_name": "pol_comp",
+      "file": "cross_border_large.public__vendor_management.view",
+      "source_stable_id": "cross_border_large:column:VendorManagement:pol_comp",
+      "sql": "pol_comp"
+    },
+    {
+      "field_name": "proc_comp",
+      "file": "cross_border_large.public__vendor_management.view",
+      "source_stable_id": "cross_border_large:column:VendorManagement:procComp",
+      "sql": "\"procComp\""
+    },
+    {
+      "field_name": "csumverify",
+      "file": "cross_border_large.public__data_profile.view",
+      "source_stable_id": "cross_border_large:column:DataProfile:CSUMVERIFY",
+      "sql": "\"CSUMVERIFY\""
+    },
+    {
+      "field_name": "int_check",
+      "file": "cross_border_large.public__data_profile.view",
+      "source_stable_id": "cross_border_large:column:DataProfile:Int_check",
+      "sql": "\"Int_check\""
+    },
+    {
+      "field_name": "vol_gb",
+      "file": "cross_border_large.public__data_profile.view",
+      "source_stable_id": "cross_border_large:column:DataProfile:vol_gb",
+      "sql": "vol_gb"
+    },
+    {
+      "field_name": "gdpr_comp",
+      "file": "cross_border_large.public__compliance.view",
+      "source_stable_id": "cross_border_large:column:Compliance:gdprComp",
+      "sql": "\"gdprComp\""
+    },
+    {
+      "field_name": "effectiveness_score_pct",
+      "file": "cross_border_large.public__control_library.view",
+      "source_stable_id": "cross_border_large:column:Control_Library:effectiveness_score_pct",
+      "sql": "effectiveness_score_pct"
+    }
+  ],
   "files": [
     {
       "file": "cross_border_large.public__security_profile.view",

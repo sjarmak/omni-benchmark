@@ -1,5 +1,121 @@
 {
   "database": "disaster_relief_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "damage_report",
+      "file": "disaster_relief_large.public__disasterevents.view",
+      "source_stable_id": "disaster_relief_large:column:disasterevents:damagereport",
+      "sql": "damagereport"
+    },
+    {
+      "field_name": "hazard_level",
+      "file": "disaster_relief_large.public__disasterevents.view",
+      "source_stable_id": "disaster_relief_large:column:disasterevents:haz_level",
+      "sql": "haz_level"
+    },
+    {
+      "field_name": "last_mile_status",
+      "file": "disaster_relief_large.public__transportation.view",
+      "source_stable_id": "disaster_relief_large:column:transportation:lastmilestatus",
+      "sql": "lastmilestatus"
+    },
+    {
+      "field_name": "vehicle_count",
+      "file": "disaster_relief_large.public__transportation.view",
+      "source_stable_id": "disaster_relief_large:column:transportation:vehiclecount",
+      "sql": "vehiclecount"
+    },
+    {
+      "field_name": "audit_state",
+      "file": "disaster_relief_large.public__coordinationandevaluation.view",
+      "source_stable_id": "disaster_relief_large:column:coordinationandevaluation:audit_state",
+      "sql": "audit_state"
+    },
+    {
+      "field_name": "compliance_state",
+      "file": "disaster_relief_large.public__coordinationandevaluation.view",
+      "source_stable_id": "disaster_relief_large:column:coordinationandevaluation:compliancestate",
+      "sql": "compliancestate"
+    },
+    {
+      "field_name": "coordination_effectiveness_level",
+      "file": "disaster_relief_large.public__coordinationandevaluation.view",
+      "source_stable_id": "disaster_relief_large:column:coordinationandevaluation:coord_effect_lvl",
+      "sql": "coord_effect_lvl"
+    },
+    {
+      "field_name": "data_quality_value",
+      "file": "disaster_relief_large.public__coordinationandevaluation.view",
+      "source_stable_id": "disaster_relief_large:column:coordinationandevaluation:dataqualityvalue",
+      "sql": "dataqualityvalue"
+    },
+    {
+      "field_name": "quality_control_steps",
+      "file": "disaster_relief_large.public__coordinationandevaluation.view",
+      "source_stable_id": "disaster_relief_large:column:coordinationandevaluation:qualitycontrolsteps",
+      "sql": "qualitycontrolsteps"
+    },
+    {
+      "field_name": "report_compliance",
+      "file": "disaster_relief_large.public__coordinationandevaluation.view",
+      "source_stable_id": "disaster_relief_large:column:coordinationandevaluation:report_compliance",
+      "sql": "report_compliance"
+    },
+    {
+      "field_name": "stakeholder_satisfaction",
+      "file": "disaster_relief_large.public__coordinationandevaluation.view",
+      "source_stable_id": "disaster_relief_large:column:coordinationandevaluation:stakeholder_satisf",
+      "sql": "stakeholder_satisf"
+    },
+    {
+      "field_name": "emergency_level",
+      "file": "disaster_relief_large.public__operations.view",
+      "source_stable_id": "disaster_relief_large:column:operations:emerglevel",
+      "sql": "emerglevel"
+    },
+    {
+      "field_name": "response_phase",
+      "file": "disaster_relief_large.public__operations.view",
+      "source_stable_id": "disaster_relief_large:column:operations:resp_phase",
+      "sql": "resp_phase"
+    },
+    {
+      "field_name": "supply_flow_state",
+      "file": "disaster_relief_large.public__operations.view",
+      "source_stable_id": "disaster_relief_large:column:operations:supply_flow_state",
+      "sql": "supply_flow_state"
+    },
+    {
+      "field_name": "community_engagement_level",
+      "file": "disaster_relief_large.public__beneficiariesandassessments.view",
+      "source_stable_id": "disaster_relief_large:column:beneficiariesandassessments:commengagelvl",
+      "sql": "commengagelvl"
+    },
+    {
+      "field_name": "distribution_equity_index",
+      "file": "disaster_relief_large.public__beneficiariesandassessments.view",
+      "source_stable_id": "disaster_relief_large:column:beneficiariesandassessments:distequityidx",
+      "sql": "distequityidx"
+    },
+    {
+      "field_name": "funding_state",
+      "file": "disaster_relief_large.public__financials.view",
+      "source_stable_id": "disaster_relief_large:column:financials:funding_state",
+      "sql": "funding_state"
+    },
+    {
+      "field_name": "hub_utilization_pct",
+      "file": "disaster_relief_large.public__distributionhubs.view",
+      "source_stable_id": "disaster_relief_large:column:distributionhubs:hubutilpct",
+      "sql": "hubutilpct"
+    },
+    {
+      "field_name": "stock_turn_rate",
+      "file": "disaster_relief_large.public__distributionhubs.view",
+      "source_stable_id": "disaster_relief_large:column:distributionhubs:stockturnrate",
+      "sql": "stockturnrate"
+    }
+  ],
   "files": [
     {
       "file": "disaster_relief_large.public__disasterevents.view",

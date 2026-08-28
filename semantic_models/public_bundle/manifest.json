@@ -1,5 +1,31 @@
 {
   "database": "archeology_scan_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "guessdate",
+      "file": "archeology_scan_large.public__sites.view",
+      "source_stable_id": "archeology_scan_large:column:sites:guessdate",
+      "sql": "guessdate"
+    },
+    {
+      "field_name": "phasefactor",
+      "file": "archeology_scan_large.public__sites.view",
+      "source_stable_id": "archeology_scan_large:column:sites:phasefactor",
+      "sql": "phasefactor"
+    },
+    {
+      "field_name": "structstate",
+      "file": "archeology_scan_large.public__conservation.view",
+      "source_stable_id": "archeology_scan_large:column:conservation:structstate",
+      "sql": "structstate"
+    },
+    {
+      "field_name": "flowstage",
+      "file": "archeology_scan_large.public__processing.view",
+      "source_stable_id": "archeology_scan_large:column:processing:flowstage",
+      "sql": "flowstage"
+    }
+  ],
   "files": [
     {
       "file": "archeology_scan_large.public__pointcloud.view",

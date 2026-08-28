@@ -25,6 +25,8 @@ _FLAT_VIEW_NAME = re.compile(rf"(?P<table>{_IDENTIFIER})\.view")
 _TOPIC_NAME = re.compile(rf"{_IDENTIFIER}\.topic")
 _VIEW_IDENTITY_KEYS = frozenset({"catalog", "schema", "table_name"})
 _FILE_FIELDS = frozenset({"file", "sha256", "size_bytes"})
+_DIRECT_BINDING_FIELDS = frozenset({"field_name", "file", "source_stable_id", "sql"})
+_DIRECT_IDENTIFIER_SQL = re.compile(rf'(?:{_IDENTIFIER}|"{_IDENTIFIER}")')
 
 
 class OmniSemanticDeploymentError(ValueError):
@@ -42,12 +44,23 @@ class OmniSemanticDeploymentFile:
 
 
 @dataclass(frozen=True)
+class OmniSemanticDirectPhysicalBinding:
+    """One compiler-attested public-schema identity binding."""
+
+    remote_path: str
+    field_name: str
+    source_stable_id: str
+    sql: str
+
+
+@dataclass(frozen=True)
 class OmniSemanticDeploymentPlan:
     """Authenticated public-only inputs for one database deployment."""
 
     database: str
     manifest_sha256: str
     files: tuple[OmniSemanticDeploymentFile, ...]
+    direct_physical_bindings: tuple[OmniSemanticDirectPhysicalBinding, ...]
 
 
 class _UniqueSafeLoader(yaml.SafeLoader):
@@ -91,10 +104,14 @@ def build_semantic_deployment_plan(root: Path) -> OmniSemanticDeploymentPlan:
         for record in sorted(records, key=lambda item: item["file"])
     )
     _require_unique_paths(files)
+    direct_physical_bindings = _direct_physical_bindings(
+        manifest.get("direct_physical_bindings", []), files, database
+    )
     return OmniSemanticDeploymentPlan(
         database=database,
         manifest_sha256=hashlib.sha256(manifest_bytes).hexdigest(),
         files=files,
+        direct_physical_bindings=direct_physical_bindings,
     )
 
 
@@ -111,6 +128,15 @@ def verify_semantic_deployment_readback(
     for item in plan.files:
         expected = _expected_remote_document(item)
         actual = _parse_yaml(remote[item.remote_path], f"readback {item.remote_path}")
+        actual = _restore_stripped_direct_physical_sql(
+            actual,
+            expected,
+            tuple(
+                binding
+                for binding in plan.direct_physical_bindings
+                if binding.remote_path == item.remote_path
+            ),
+        )
         if not _semantic_documents_equal(actual, expected):
             raise OmniSemanticDeploymentError(
                 f"readback semantic content differs for {item.remote_path}"
@@ -255,6 +281,98 @@ def _require_unique_paths(files: Sequence[OmniSemanticDeploymentFile]) -> None:
         {path.casefold() for path in paths}
     ):
         raise OmniSemanticDeploymentError("remote extension path collision")
+
+
+def _direct_physical_bindings(
+    value: object,
+    files: Sequence[OmniSemanticDeploymentFile],
+    database: str,
+) -> tuple[OmniSemanticDirectPhysicalBinding, ...]:
+    if not isinstance(value, list):
+        raise OmniSemanticDeploymentError(
+            "manifest direct physical bindings must be an array"
+        )
+    files_by_name = {item.local_name: item for item in files}
+    result: list[OmniSemanticDirectPhysicalBinding] = []
+    for raw in value:
+        if not isinstance(raw, Mapping) or set(raw) != _DIRECT_BINDING_FIELDS:
+            raise OmniSemanticDeploymentError(
+                "manifest direct physical binding is malformed"
+            )
+        local_name = _require_local_name(raw.get("file"))
+        item = files_by_name.get(local_name)
+        if item is None or not local_name.endswith(".view"):
+            raise OmniSemanticDeploymentError(
+                "manifest direct physical binding file is invalid"
+            )
+        field_name = _require_identifier(
+            raw.get("field_name"), "direct physical binding field"
+        )
+        source_id = raw.get("source_stable_id")
+        if not isinstance(source_id, str) or not source_id.startswith(
+            f"{database}:column:"
+        ):
+            raise OmniSemanticDeploymentError(
+                "direct physical binding source is invalid"
+            )
+        sql = raw.get("sql")
+        if not isinstance(sql, str) or _DIRECT_IDENTIFIER_SQL.fullmatch(sql) is None:
+            raise OmniSemanticDeploymentError(
+                "direct physical binding SQL is not an identity"
+            )
+        expected = _expected_remote_document(item)
+        dimensions = expected.get("dimensions")
+        dimension = (
+            dimensions.get(field_name) if isinstance(dimensions, Mapping) else None
+        )
+        if not isinstance(dimension, Mapping) or dimension.get("sql") != sql:
+            raise OmniSemanticDeploymentError(
+                "direct physical binding does not match bundle content"
+            )
+        result.append(
+            OmniSemanticDirectPhysicalBinding(
+                remote_path=item.remote_path,
+                field_name=field_name,
+                source_stable_id=source_id,
+                sql=sql,
+            )
+        )
+    identities = [(item.remote_path, item.field_name) for item in result]
+    if len(identities) != len(set(identities)):
+        raise OmniSemanticDeploymentError("duplicate direct physical binding")
+    return tuple(sorted(result, key=lambda item: (item.remote_path, item.field_name)))
+
+
+def _restore_stripped_direct_physical_sql(
+    actual: Mapping[str, Any],
+    expected: Mapping[str, Any],
+    bindings: Sequence[OmniSemanticDirectPhysicalBinding],
+) -> Mapping[str, Any]:
+    if not bindings:
+        return actual
+    actual_dimensions = actual.get("dimensions")
+    expected_dimensions = expected.get("dimensions")
+    if not isinstance(actual_dimensions, Mapping) or not isinstance(
+        expected_dimensions, Mapping
+    ):
+        return actual
+    restored_dimensions = dict(actual_dimensions)
+    changed = False
+    for binding in bindings:
+        actual_field = actual_dimensions.get(binding.field_name)
+        expected_field = expected_dimensions.get(binding.field_name)
+        if (
+            isinstance(actual_field, Mapping)
+            and "sql" not in actual_field
+            and isinstance(expected_field, Mapping)
+            and expected_field.get("sql") == binding.sql
+        ):
+            restored_dimensions[binding.field_name] = {
+                **actual_field,
+                "sql": binding.sql,
+            }
+            changed = True
+    return {**actual, "dimensions": restored_dimensions} if changed else actual
 
 
 def _read_regular_file(path: Path, description: str) -> bytes:

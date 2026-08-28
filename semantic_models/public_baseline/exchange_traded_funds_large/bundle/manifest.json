@@ -1,5 +1,169 @@
 {
   "database": "exchange_traded_funds_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "category_average_annual_return",
+      "file": "exchange_traded_funds_large.public__annual_returns.view",
+      "source_stable_id": "exchange_traded_funds_large:column:annual_returns:categoryperf",
+      "sql": "categoryperf"
+    },
+    {
+      "field_name": "fund_annual_return",
+      "file": "exchange_traded_funds_large.public__annual_returns.view",
+      "source_stable_id": "exchange_traded_funds_large:column:annual_returns:fundperf",
+      "sql": "fundperf"
+    },
+    {
+      "field_name": "average_daily_volume_3m",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:vol3m",
+      "sql": "vol3m"
+    },
+    {
+      "field_name": "benchmark_expense_ratio",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:benchmarkexp",
+      "sql": "benchmarkexp"
+    },
+    {
+      "field_name": "duration",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:duration",
+      "sql": "duration"
+    },
+    {
+      "field_name": "equity_weight",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:equityweight",
+      "sql": "equityweight"
+    },
+    {
+      "field_name": "moving_average_200_day",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:ma200",
+      "sql": "ma200"
+    },
+    {
+      "field_name": "moving_average_50_day",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:ma50",
+      "sql": "ma50"
+    },
+    {
+      "field_name": "net_expense_ratio",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:expensenet",
+      "sql": "expensenet"
+    },
+    {
+      "field_name": "net_worth",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:networth",
+      "sql": "networth"
+    },
+    {
+      "field_name": "price_to_book_ratio",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:pb_ratio",
+      "sql": "pb_ratio"
+    },
+    {
+      "field_name": "price_to_cash_flow_ratio",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:pcf_ratio",
+      "sql": "pcf_ratio"
+    },
+    {
+      "field_name": "price_to_earnings_ratio",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:pe_ratio",
+      "sql": "pe_ratio"
+    },
+    {
+      "field_name": "price_to_sales_ratio",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:ps_ratio",
+      "sql": "ps_ratio"
+    },
+    {
+      "field_name": "turnover_ratio",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:turnoverratio",
+      "sql": "turnoverratio"
+    },
+    {
+      "field_name": "yield_rate",
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "source_stable_id": "exchange_traded_funds_large:column:funds:yieldrate",
+      "sql": "yieldrate"
+    },
+    {
+      "field_name": "current_price_minus_52_week_low",
+      "file": "exchange_traded_funds_large.public__performance.view",
+      "source_stable_id": "exchange_traded_funds_large:column:performance:lowdelta",
+      "sql": "lowdelta"
+    },
+    {
+      "field_name": "high_52_week",
+      "file": "exchange_traded_funds_large.public__performance.view",
+      "source_stable_id": "exchange_traded_funds_large:column:performance:high52w",
+      "sql": "high52w"
+    },
+    {
+      "field_name": "low_52_week",
+      "file": "exchange_traded_funds_large.public__performance.view",
+      "source_stable_id": "exchange_traded_funds_large:column:performance:low52w",
+      "sql": "low52w"
+    },
+    {
+      "field_name": "negative_return_years",
+      "file": "exchange_traded_funds_large.public__performance.view",
+      "source_stable_id": "exchange_traded_funds_large:column:performance:negativeyears",
+      "sql": "negativeyears"
+    },
+    {
+      "field_name": "positive_return_years",
+      "file": "exchange_traded_funds_large.public__performance.view",
+      "source_stable_id": "exchange_traded_funds_large:column:performance:positiveyears",
+      "sql": "positiveyears"
+    },
+    {
+      "field_name": "alpha_3_year",
+      "file": "exchange_traded_funds_large.public__risk_metrics.view",
+      "source_stable_id": "exchange_traded_funds_large:column:risk_metrics:alpha3y",
+      "sql": "alpha3y"
+    },
+    {
+      "field_name": "alpha_5_year",
+      "file": "exchange_traded_funds_large.public__risk_metrics.view",
+      "source_stable_id": "exchange_traded_funds_large:column:risk_metrics:alpha5y",
+      "sql": "alpha5y"
+    },
+    {
+      "field_name": "r_squared_3_year_pct",
+      "file": "exchange_traded_funds_large.public__risk_metrics.view",
+      "source_stable_id": "exchange_traded_funds_large:column:risk_metrics:rsquared3y",
+      "sql": "rsquared3y"
+    },
+    {
+      "field_name": "volatility_3_year",
+      "file": "exchange_traded_funds_large.public__risk_metrics.view",
+      "source_stable_id": "exchange_traded_funds_large:column:risk_metrics:volatility3y",
+      "sql": "volatility3y"
+    },
+    {
+      "field_name": "sector_weight",
+      "file": "exchange_traded_funds_large.public__sector_allocations.view",
+      "source_stable_id": "exchange_traded_funds_large:column:sector_allocations:weightpct",
+      "sql": "weightpct"
+    },
+    {
+      "field_name": "credit_quality",
+      "file": "exchange_traded_funds_large.public__bond_ratings.view",
+      "source_stable_id": "exchange_traded_funds_large:column:bond_ratings:credit_scoringmark",
+      "sql": "credit_scoringmark"
+    }
+  ],
   "files": [
     {
       "file": "exchange_traded_funds_large.public__annual_returns.view",

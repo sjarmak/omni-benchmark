@@ -1,5 +1,37 @@
 {
   "database": "fake_account_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "follower_growth_rate",
+      "file": "fake_account_large.public__network_metrics.view",
+      "source_stable_id": "fake_account_large:column:network_metrics:FollGrow",
+      "sql": "\"FollGrow\""
+    },
+    {
+      "field_name": "following_growth_rate",
+      "file": "fake_account_large.public__network_metrics.view",
+      "source_stable_id": "fake_account_large:column:network_metrics:FingGrow",
+      "sql": "\"FingGrow\""
+    },
+    {
+      "field_name": "coordination_score",
+      "file": "fake_account_large.public__cluster_analysis.view",
+      "source_stable_id": "fake_account_large:column:cluster_analysis:CoordScore",
+      "sql": "\"CoordScore\""
+    },
+    {
+      "field_name": "detection_confidence_score",
+      "file": "fake_account_large.public__monitoring.view",
+      "source_stable_id": "fake_account_large:column:monitoring:DetectConf",
+      "sql": "\"DetectConf\""
+    },
+    {
+      "field_name": "conversation_naturalness_value",
+      "file": "fake_account_large.public__interaction_metrics.view",
+      "source_stable_id": "fake_account_large:column:interaction_metrics:ConvNat",
+      "sql": "\"ConvNat\""
+    }
+  ],
   "files": [
     {
       "file": "fake_account_large.public__network_metrics.view",

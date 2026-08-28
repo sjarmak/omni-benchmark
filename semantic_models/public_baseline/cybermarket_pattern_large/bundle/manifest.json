@@ -1,5 +1,61 @@
 {
   "database": "cybermarket_pattern_large",
+  "direct_physical_bindings": [
+    {
+      "field_name": "operational_status",
+      "file": "cybermarket_pattern_large.public__markets.view",
+      "source_stable_id": "cybermarket_pattern_large:column:markets:OperStatus",
+      "sql": "\"OperStatus\""
+    },
+    {
+      "field_name": "access_level",
+      "file": "cybermarket_pattern_large.public__vendors.view",
+      "source_stable_id": "cybermarket_pattern_large:column:vendors:AccessLevel",
+      "sql": "\"AccessLevel\""
+    },
+    {
+      "field_name": "verification_tier",
+      "file": "cybermarket_pattern_large.public__vendors.view",
+      "source_stable_id": "cybermarket_pattern_large:column:vendors:VerTier",
+      "sql": "\"VerTier\""
+    },
+    {
+      "field_name": "authentication_level",
+      "file": "cybermarket_pattern_large.public__buyers.view",
+      "source_stable_id": "cybermarket_pattern_large:column:buyers:AuthLevel",
+      "sql": "\"AuthLevel\""
+    },
+    {
+      "field_name": "product_category",
+      "file": "cybermarket_pattern_large.public__products.view",
+      "source_stable_id": "cybermarket_pattern_large:column:products:ProdCat",
+      "sql": "\"ProdCat\""
+    },
+    {
+      "field_name": "cross_border",
+      "file": "cybermarket_pattern_large.public__transactions.view",
+      "source_stable_id": "cybermarket_pattern_large:column:transactions:CrossBorder",
+      "sql": "\"CrossBorder\""
+    },
+    {
+      "field_name": "route_complexity",
+      "file": "cybermarket_pattern_large.public__transactions.view",
+      "source_stable_id": "cybermarket_pattern_large:column:transactions:RouteComplex",
+      "sql": "\"RouteComplex\""
+    },
+    {
+      "field_name": "anonymity_level",
+      "file": "cybermarket_pattern_large.public__connection_security.view",
+      "source_stable_id": "cybermarket_pattern_large:column:connection_security:AnonLevel",
+      "sql": "\"AnonLevel\""
+    },
+    {
+      "field_name": "fraud_probability",
+      "file": "cybermarket_pattern_large.public__risk_model_predictions.view",
+      "source_stable_id": "cybermarket_pattern_large:column:RiskModelPredictions:fraud_probability",
+      "sql": "fraud_probability"
+    }
+  ],
   "files": [
     {
       "file": "cybermarket_pattern_large.public__markets.view",
