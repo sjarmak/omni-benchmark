@@ -7,15 +7,19 @@ dimensions:
   alpha_5_year:
     description: 'DECIMAL. Jensen''s alpha measuring fund''s risk-adjusted excess return over 5 years relative to its benchmark. Example: -2.35, 1.81, 28.12. Contains NULL when the fund does not have 5-year history or benchmark data is unavailable.'
     label: 5-Year Alpha
+    sql: ${alpha5y}
   r_squared_3_year_pct:
     description: 'DECIMAL. R-squared value over 3 years, expressed as percentage. Higher values indicate closer tracking to benchmark. Example: 45.06, 86.01, 88.01. Contains NULL when R-squared calculation data is incomplete.'
     label: 3-Year R-Squared (%)
+    sql: ${rsquared3y}
   alpha_3_year:
     description: 'DECIMAL. Jensen''s alpha measuring fund''s risk-adjusted excess return over 3 years relative to its benchmark. Example: 10.87, -2.35, 4.32. Contains NULL when alpha calculation data is incomplete.'
     label: 3-Year Alpha
+    sql: ${alpha3y}
   volatility_3_year:
     description: 'DECIMAL. Annualized standard deviation of returns over 3 years. Example: 12.01, 5.13, 25.59.'
     label: 3-Year Volatility
+    sql: ${volatility3y}
   r_squared_3_year_decimal:
     description: 3-year R-squared statistic (0-1) measuring how closely the fund's performance correlates with its benchmark. Contains  NULL when fund has less than 3 years of history or benchmark data is not available.
     label: 3-Year R-Squared (0-1)

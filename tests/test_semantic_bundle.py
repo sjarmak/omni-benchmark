@@ -232,6 +232,238 @@ def test_compile_bundle_emits_executable_field_context_topic_and_provenance() ->
     _assert_semantic_elements(bundle.manifest["semantic_elements"])
 
 
+def test_compile_bundle_normalizes_physical_names_and_emits_explicit_alias_sql() -> (
+    None
+):
+    schema = _schema_records()
+    schema.extend(
+        [
+            {
+                "database": "db",
+                "description": "Process compliance state.",
+                "identifier": {"name": "procComp"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:procComp",
+                "table_stable_id": "db:table:pointcloud",
+            },
+            {
+                "database": "db",
+                "description": "Route complexity state.",
+                "identifier": {"name": "RouteComplex"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:RouteComplex",
+                "table_stable_id": "db:table:pointcloud",
+            },
+            {
+                "database": "db",
+                "description": "Total findings.",
+                "identifier": {"name": "FINDTALLY"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:FINDTALLY",
+                "table_stable_id": "db:table:pointcloud",
+            },
+        ]
+    )
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"].extend(
+        [
+            {
+                "name": "procComp",
+                "schema_stable_id": "db:column:pointcloud:procComp",
+            },
+            {
+                "name": "route_complexity",
+                "schema_stable_id": "db:column:pointcloud:RouteComplex",
+            },
+            {
+                "name": "FINDTALLY",
+                "schema_stable_id": "db:column:pointcloud:FINDTALLY",
+            },
+        ]
+    )
+
+    bundle = compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert "procComp" not in view["dimensions"]
+    assert view["dimensions"]["proc_comp"] == {
+        "description": "Process compliance state."
+    }
+    assert view["dimensions"]["findtally"] == {"description": "Total findings."}
+    assert view["dimensions"]["route_complexity"]["sql"] == "${route_complex}"
+
+
+def test_compile_bundle_rewrites_derived_references_to_normalized_physical_names() -> (
+    None
+):
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"][0]["name"] = "scanResolutionMm"
+    spec["derived_fields"][0]["sql"] = "${scanResolutionMm} * 2.0"
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert "scanResolutionMm" not in view["dimensions"]
+    assert view["dimensions"]["resolution_index"]["sql"] == (
+        "${scan_resolution_mm} * 2.0"
+    )
+
+
+def test_compile_bundle_rejects_normalized_physical_name_collisions() -> None:
+    schema = _schema_records()
+    schema.extend(
+        [
+            {
+                "database": "db",
+                "description": "First value.",
+                "identifier": {"name": "first_value"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:first_value",
+                "table_stable_id": "db:table:pointcloud",
+            },
+            {
+                "database": "db",
+                "description": "Second value.",
+                "identifier": {"name": "second_value"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:second_value",
+                "table_stable_id": "db:table:pointcloud",
+            },
+        ]
+    )
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"].extend(
+        [
+            {
+                "name": "procComp",
+                "schema_stable_id": "db:column:pointcloud:first_value",
+            },
+            {
+                "name": "proc_comp",
+                "schema_stable_id": "db:column:pointcloud:second_value",
+            },
+        ]
+    )
+
+    with pytest.raises(SemanticBundleError, match="normalized physical field"):
+        compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+
+def test_compile_bundle_allows_unused_normalized_source_column_collisions() -> None:
+    schema = _schema_records()
+    schema.extend(
+        [
+            {
+                "database": "db",
+                "description": "First source.",
+                "identifier": {"name": "procComp"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:procComp",
+                "table_stable_id": "db:table:pointcloud",
+            },
+            {
+                "database": "db",
+                "description": "Second source.",
+                "identifier": {"name": "proc_comp"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:proc_comp",
+                "table_stable_id": "db:table:pointcloud",
+            },
+        ]
+    )
+
+    bundle = compile_semantic_bundle(
+        _spec(), _hkb_records(), schema, _mapping_records()
+    )
+
+    assert "db.public__pointcloud.view" in bundle.files
+    assert bundle.manifest["representability"] == {
+        "normalized_source_name_collisions": [
+            {
+                "omni_field_name": "proc_comp",
+                "source_stable_ids": [
+                    "db:column:pointcloud:procComp",
+                    "db:column:pointcloud:proc_comp",
+                ],
+                "table_stable_id": "db:table:pointcloud",
+            }
+        ]
+    }
+
+
+def test_compile_bundle_rejects_modeled_ambiguous_source_column() -> None:
+    schema = _schema_records()
+    schema.extend(
+        [
+            {
+                "database": "db",
+                "description": "First source.",
+                "identifier": {"name": "procComp"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:procComp",
+                "table_stable_id": "db:table:pointcloud",
+            },
+            {
+                "database": "db",
+                "description": "Second source.",
+                "identifier": {"name": "proc_comp"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:proc_comp",
+                "table_stable_id": "db:table:pointcloud",
+            },
+        ]
+    )
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"].append(
+        {
+            "name": "proc_comp",
+            "schema_stable_id": "db:column:pointcloud:procComp",
+        }
+    )
+
+    with pytest.raises(
+        SemanticBundleError,
+        match="modeled source field proc_comp is ambiguous",
+    ):
+        compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+
+def test_compile_bundle_rejects_alias_that_shadows_another_source_column() -> None:
+    schema = _schema_records()
+    schema.extend(
+        [
+            {
+                "database": "db",
+                "description": "Route complexity source.",
+                "identifier": {"name": "RouteComplex"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:RouteComplex",
+                "table_stable_id": "db:table:pointcloud",
+            },
+            {
+                "database": "db",
+                "description": "Existing field with the requested alias name.",
+                "identifier": {"name": "route_complexity"},
+                "record_kind": "column",
+                "stable_id": "db:column:pointcloud:route_complexity",
+                "table_stable_id": "db:table:pointcloud",
+            },
+        ]
+    )
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"].append(
+        {
+            "name": "route_complexity",
+            "schema_stable_id": "db:column:pointcloud:RouteComplex",
+        }
+    )
+
+    with pytest.raises(SemanticBundleError, match="shadows source field"):
+        compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+
 def test_compile_bundle_emits_parser_bypass_only_for_allowlisted_physical_sql() -> None:
     spec = copy.deepcopy(_spec())
     spec["physical_fields"][0]["omni_parser_mode"] = "do_not_parse"

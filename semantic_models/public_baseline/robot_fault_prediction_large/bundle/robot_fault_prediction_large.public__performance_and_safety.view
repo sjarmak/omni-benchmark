@@ -7,31 +7,40 @@ dimensions:
   ps_emergency_stops:
     description: 'BIGINT. Count of emergency stops. Possible values: 0, 1, 2, 3, 4, 5.'
     label: PS.emergency_stops
+    sql: ${emergencystopcount}
   ps_collisions:
     description: 'BIGINT. Count of collisions. Possible values: 0, 1, 2, 3.'
     label: PS.collisions
+    sql: ${collisioncount}
   ps_zone_violations:
     description: 'BIGINT. Number of zone violations. Example: 1.'
     label: PS.zone_violations
+    sql: ${zoneviolnum}
   ps_speed_violations:
     description: 'BIGINT. Number of speed violations. Example: 5.'
     label: PS.speed_violations
+    sql: ${speedviolnum}
   ps_overloads:
     description: 'BIGINT. Count of overloads. Possible values: 0, 1, 2, 3, 4, 5.'
     label: PS.overloads
+    sql: ${overloadcnt}
   ps_condition_index:
     description: 'REAL. Condition index value of the robot. **NULL means no condition index data available.**. Example: 0.152.'
     label: PS.condition_index
+    sql: ${conditionindexval}
     ai_context: 'Condition Index Tiers: A Condition Index is ''Excellent'' if > 0.9, ''Good'' if 0.7-0.9, ''Fair'' if 0.5-0.7, or ''Poor'' if < 0.5 (significant wear or risk).'
   ps_safety_state:
     description: 'TEXT. Safety state value of the robot. Possible values: Warning, ✓ Normal, ✗ Emergency.'
     label: PS.safety_state
+    sql: ${safetystateval}
     ai_context: 'Safety State Meanings: Key safety states are: ''✓ Normal'' (normal operation), ''Protective Stop'' (database value ''Warning''), and ''✗ Emergency'' (critical stop, database value ''✗ Emergency'').'
   ps_calibration_state:
     description: 'CHAR(20). Calibration state value of the robot. Possible values: 0, N, Y.'
     label: PS.calibration_state
+    sql: ${calibstateval}
     ai_context: 'Calibration State Meanings: Calibration states are: ''Success'' (database value ''Y''), ''Failed'' (database value ''0''), or ''Pending'' (database value ''N'').'
   ps_air_pressure:
     description: 'REAL. Air pressure value in the system. Example: 6.69.'
     label: PS.air_pressure
+    sql: ${airpressval}
     ai_context: 'Air Pressure Status: Air pressure is ''Normal'' if 5.5-7.0 bar, ''Low'' if < 5.5 bar, or ''High'' if > 7.0 bar.'

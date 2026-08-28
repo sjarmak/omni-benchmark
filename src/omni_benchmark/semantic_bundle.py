@@ -96,6 +96,11 @@ def _safe_name(value: Any, label: str) -> str:
     return name
 
 
+def _omni_name(value: Any, label: str) -> str:
+    name = _safe_name(value, label)
+    return re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", name).lower()
+
+
 def _safe_file_name(value: Any, label: str, suffix: str) -> str:
     name = _text(value, label)
     if "/" in name or "\\" in name or "\x00" in name or not name.endswith(suffix):
@@ -317,11 +322,11 @@ def _validate_derived_dependencies(
             )
 
 
-def _column_names_by_table(
+def _column_bindings_by_table(
     schema_records: Sequence[Mapping[str, Any]],
     modeled_table_ids: frozenset[str],
-) -> dict[str, set[str]]:
-    names: dict[str, set[str]] = {}
+) -> dict[str, dict[str, tuple[str, ...]]]:
+    collected: dict[str, dict[str, list[str]]] = {}
     for record in schema_records:
         if record.get("record_kind") != "column":
             continue
@@ -329,9 +334,59 @@ def _column_names_by_table(
         if table_id not in modeled_table_ids:
             continue
         identifier = _mapping(record.get("identifier"), "column identifier")
-        name = _safe_name(identifier.get("name"), "column name")
-        names.setdefault(table_id, set()).add(name)
-    return names
+        name = _omni_name(identifier.get("name"), "column name")
+        stable_id = _text(record.get("stable_id"), "column stable_id")
+        table_bindings = collected.setdefault(table_id, {})
+        table_bindings.setdefault(name, []).append(stable_id)
+    return {
+        table_id: {
+            name: tuple(sorted(stable_ids))
+            for name, stable_ids in table_bindings.items()
+        }
+        for table_id, table_bindings in collected.items()
+    }
+
+
+def _source_name_collisions(
+    bindings_by_table: Mapping[str, Mapping[str, tuple[str, ...]]],
+) -> list[dict[str, Any]]:
+    return [
+        {
+            "omni_field_name": name,
+            "source_stable_ids": list(stable_ids),
+            "table_stable_id": table_id,
+        }
+        for table_id, bindings in sorted(bindings_by_table.items())
+        for name, stable_ids in sorted(bindings.items())
+        if len(stable_ids) > 1
+    ]
+
+
+def _source_column(
+    source: Mapping[str, Any], schema_index: Mapping[str, Mapping[str, Any]]
+) -> Mapping[str, Any]:
+    if source.get("record_kind") == "column":
+        return source
+    column_id = _text(source.get("column_stable_id"), "leaf column_stable_id")
+    column = schema_index.get(column_id)
+    if column is None or column.get("record_kind") != "column":
+        raise SemanticBundleError(f"structured leaf column {column_id} is missing")
+    return column
+
+
+def _source_column_name(
+    source: Mapping[str, Any], schema_index: Mapping[str, Mapping[str, Any]]
+) -> tuple[str, str]:
+    column = _source_column(source, schema_index)
+    identifier = _mapping(column.get("identifier"), "column identifier")
+    raw_name = _safe_name(identifier.get("name"), "column name")
+    return raw_name, _omni_name(raw_name, "column name")
+
+
+def _rewrite_field_references(sql: str, names: Mapping[str, str]) -> str:
+    return _FIELD_REFERENCE.sub(
+        lambda match: f"${{{names.get(match.group(1), match.group(1))}}}", sql
+    )
 
 
 def _field_references(sql: str) -> list[str]:
@@ -463,13 +518,15 @@ def _context_by_schema_id(
 
 
 def _physical_dimension(
-    field: Mapping[str, Any], source: Mapping[str, Any], contexts: Sequence[str]
+    field: Mapping[str, Any],
+    source: Mapping[str, Any],
+    contexts: Sequence[str],
+    sql: str | None,
 ) -> dict[str, Any]:
     dimension: dict[str, Any] = {"description": _source_description(source)}
     if "label" in field:
         dimension["label"] = _text(field.get("label"), "physical field label")
-    if "sql" in field:
-        sql = _text(field.get("sql"), "physical field sql")
+    if sql is not None:
         if field.get("omni_parser_mode") == "do_not_parse":
             sql = f"{_DO_NOT_PARSE_DIRECTIVE}\n{sql}"
         dimension["sql"] = sql
@@ -479,7 +536,7 @@ def _physical_dimension(
 
 
 def _derived_dimension(
-    definition: Mapping[str, Any], hkb: Mapping[str, Any], mapping: Mapping[str, Any]
+    hkb: Mapping[str, Any], mapping: Mapping[str, Any], sql: str
 ) -> dict[str, Any]:
     representation = mapping.get("representation")
     supported = {
@@ -495,7 +552,7 @@ def _derived_dimension(
     return {
         "label": label,
         "description": _text(hkb.get("description"), "HKB description"),
-        "sql": _text(definition.get("sql"), "derived field sql"),
+        "sql": sql,
         "ai_context": f"Use this modeled field for {label}; do not reconstruct its formula.",
     }
 
@@ -686,7 +743,7 @@ def _build_bundle(
     physical_by_table: Mapping[str, list[Mapping[str, Any]]],
     contexts: Mapping[str, list[str]],
 ) -> SemanticBundle:
-    column_names = _column_names_by_table(schema_records, frozenset(views))
+    column_bindings = _column_bindings_by_table(schema_records, frozenset(views))
     ordered_ids = _ordered_compile_ids(compile_mappings)
     files: dict[str, str] = {}
     elements: list[dict[str, Any]] = []
@@ -703,7 +760,7 @@ def _build_bundle(
             derived,
             physical_by_table,
             contexts,
-            column_names.get(table_id, set()),
+            column_bindings.get(table_id, {}),
             ordered_ids,
             elements,
         )
@@ -713,7 +770,13 @@ def _build_bundle(
         files[topic_file] = _yaml(_topic_document(view, names))
     return SemanticBundle(
         files=files,
-        manifest=_bundle_manifest(spec, files, elements, compile_mappings),
+        manifest=_bundle_manifest(
+            spec,
+            files,
+            elements,
+            compile_mappings,
+            _source_name_collisions(column_bindings),
+        ),
     )
 
 
@@ -722,6 +785,7 @@ def _bundle_manifest(
     files: Mapping[str, str],
     elements: Sequence[Mapping[str, Any]],
     compile_mappings: Mapping[str, Mapping[str, Any]],
+    source_name_collisions: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
     materialized = {
         item["hkb_stable_id"]
@@ -734,6 +798,9 @@ def _bundle_manifest(
         "database": _text(spec.get("database"), "database"),
         "files": _file_manifest(files),
         "kind": "public-omni-semantic-bundle",
+        "representability": {
+            "normalized_source_name_collisions": list(source_name_collisions)
+        },
         "schema_version": 1,
         "semantic_elements": sorted(
             elements, key=lambda item: (item["hkb_stable_id"], item["kind"])
@@ -757,21 +824,62 @@ def _table_dimensions(
     derived: Mapping[str, Mapping[str, Any]],
     physical_by_table: Mapping[str, list[Mapping[str, Any]]],
     contexts: Mapping[str, list[str]],
-    base_names: set[str],
+    base_fields: Mapping[str, tuple[str, ...]],
     ordered_ids: Sequence[str],
     elements: list[dict[str, Any]],
 ) -> tuple[dict[str, Any], list[str]]:
     dimensions: dict[str, Any] = {}
-    allowed = set(base_names)
+    allowed = {name for name, stable_ids in base_fields.items() if len(stable_ids) == 1}
+    physical_names: dict[str, str] = {}
+    reference_names: dict[str, str] = {}
+    normalized_names: set[str] = set()
+    for field in physical_by_table[table_id]:
+        raw_name = _safe_name(field.get("name"), "physical field name")
+        name = _omni_name(raw_name, "physical field name")
+        if name in normalized_names:
+            raise SemanticBundleError(
+                f"duplicate normalized physical field name {name} in {table_id}"
+            )
+        normalized_names.add(name)
+        physical_names[raw_name] = name
+        schema_id = _text(field.get("schema_stable_id"), "schema_stable_id")
+        source_raw_name, source_name = _source_column_name(
+            schema_index[schema_id], schema_index
+        )
+        source_column = _source_column(schema_index[schema_id], schema_index)
+        source_column_id = _text(source_column.get("stable_id"), "column stable_id")
+        source_bindings = base_fields.get(source_name, ())
+        if source_bindings != (source_column_id,):
+            raise SemanticBundleError(
+                f"modeled source field {source_name} is ambiguous in {table_id}"
+            )
+        shadowed_sources = base_fields.get(name, ())
+        if shadowed_sources and shadowed_sources != (source_column_id,):
+            raise SemanticBundleError(
+                f"physical alias {name} shadows source field in {table_id}"
+            )
+        reference_names[source_raw_name] = source_name
+        reference_names[raw_name] = name
     for field in physical_by_table[table_id]:
         schema_id = _text(field.get("schema_stable_id"), "schema_stable_id")
-        name = _safe_name(field.get("name"), "physical field name")
+        raw_name = _safe_name(field.get("name"), "physical field name")
+        name = physical_names[raw_name]
         if name in dimensions:
             raise SemanticBundleError(f"duplicate field name {name} in {table_id}")
+        source = schema_index[schema_id]
+        sql: str | None = None
         if "sql" in field:
-            _validate_sql(_text(field.get("sql"), "physical field sql"), allowed)
+            sql = _rewrite_field_references(
+                _text(field.get("sql"), "physical field sql"), reference_names
+            )
+        elif source.get("record_kind") == "column":
+            _source_raw_name, source_name = _source_column_name(source, schema_index)
+            if name != source_name:
+                sql = f"${{{source_name}}}"
+        if sql is not None:
+            _validate_sql(sql, allowed)
         dimensions[name] = _physical_dimension(
-            field, schema_index[schema_id], contexts.get(schema_id, [])
+            field, source, contexts.get(schema_id, []), sql
         )
         allowed.add(name)
         for hkb_id, mapping in context_mappings.items():
@@ -788,12 +896,15 @@ def _table_dimensions(
         name = _safe_name(mapping.get("semantic_name"), "semantic_name")
         if name in dimensions:
             raise SemanticBundleError(f"duplicate field name {name} in {table_id}")
-        sql = _text(derived[hkb_id].get("sql"), "derived field sql")
+        sql = _rewrite_field_references(
+            _text(derived[hkb_id].get("sql"), "derived field sql"),
+            reference_names,
+        )
         _validate_sql(sql, allowed)
         hkb = hkb_index.get(hkb_id)
         if hkb is None:
             raise SemanticBundleError(f"HKB record {hkb_id} is missing")
-        dimensions[name] = _derived_dimension(derived[hkb_id], hkb, mapping)
+        dimensions[name] = _derived_dimension(hkb, mapping, sql)
         allowed.add(name)
         elements.append(_semantic_element(mapping, hkb_id, name, "derived_dimension"))
     return dimensions, list(dimensions)

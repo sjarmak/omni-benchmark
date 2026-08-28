@@ -7,4 +7,5 @@ dimensions:
   moderation_status:
     description: TEXT. Current moderation status and any active restrictions on the account.
     label: Moderation Status
+    sql: ${mod_stat}
     ai_context: 'Moderation Status: Reflects a fan''s account standing. ''Good Standing'' means no issues. ''Warning'' indicates a minor violation. ''Restricted'' indicates temporary limitations due to a serious violation.'

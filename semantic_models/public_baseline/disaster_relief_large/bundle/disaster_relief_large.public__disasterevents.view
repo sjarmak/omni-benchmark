@@ -55,10 +55,12 @@ dimensions:
   hazard_level:
     description: 'TEXT. Severity level of the disaster event. Possible values: Severity-1, Severity-2, Severity-3, Severity-4, Severity-5.'
     label: Hazard Severity Level
+    sql: ${haz_level}
     ai_context: 'Hazard Severity Levels: ''Level 1'' indicates a minor, localized event. ''Level 3'' indicates a moderate event with regional impact. ''Level 5'' indicates a catastrophic event with widespread, severe impact requiring international assistance.'
   damage_report:
     description: 'TEXT. Detailed report of the damage caused by the disaster. Possible values: Catastrophic, Minor, Moderate, Severe.'
     label: Damage Report Category
+    sql: ${damagereport}
     ai_context: 'Damage Report Categories: ''Minor'': Limited damage. ''Moderate'': Visible damage to some structures. ''Severe'': Widespread destruction. ''Catastrophic'': Near-total destruction of the built environment in the affected area.'
   disaster_mortality_rate:
     label: Disaster Mortality Rate (DMR)

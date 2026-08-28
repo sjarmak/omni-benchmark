@@ -7,9 +7,11 @@ dimensions:
   session_duration_minutes:
     description: SMALLINT. Duration of the interaction session in minutes.
     label: Session Duration (minutes)
+    sql: ${sess_dur_min}
   total_watch_hours:
     description: REAL. Total hours of content watched during the interaction session.
     label: Total Watch Hours
+    sql: ${watch_hrs}
   total_gift_value_usd:
     description: REAL. Total monetary value in USD of gifts sent during interaction.
     label: Total Gift Value (USD)

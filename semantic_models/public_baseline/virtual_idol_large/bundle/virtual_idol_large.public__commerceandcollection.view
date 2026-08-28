@@ -7,12 +7,15 @@ dimensions:
   digital_items_owned:
     description: BIGINT. Number of digital items owned by the fan.
     label: Digital Items Owned
+    sql: ${dig_own}
   physical_items_owned:
     description: BIGINT. Number of physical collectible items owned by the fan.
     label: Physical Items Owned
+    sql: ${phys_own}
   trade_activity_level:
     description: TEXT. Trading activity level classification. **NULL means trading activity tracking incomplete or user has not participated in trading.**
     label: Trade Activity Level
+    sql: ${trade_level}
     ai_context: 'Trade Activity Level: Classifies a fan''s engagement in the trading of digital or physical collectibles. ''High'', ''Medium'', and ''Low'' levels reflect the frequency and volume of trades.'
   collection_rate:
     label: Collection Rate (CR)

@@ -4,7 +4,7 @@ catalog: cross_border_large
 schema: public
 table_name: Compliance
 dimensions:
-  gdprComp:
+  gdpr_comp:
     description: 'TEXT. Compliance status with the General Data Protection Regulation (GDPR). Possible values: Compliant, Partial, Non-compliant.'
     label: GDPR Compliance Status
     ai_context: 'GDPR Compliance Status: Values: compliant, non-compliant, or partial.'

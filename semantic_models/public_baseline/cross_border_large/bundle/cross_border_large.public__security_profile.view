@@ -11,7 +11,7 @@ dimensions:
   acl_state:
     description: 'TEXT. The state of Access Control Lists (ACLs). Possible values: Strong, Weak, Adequate.'
     label: Access Control Strength
-  LogRetDays:
+  log_ret_days:
     description: 'BIGINT. The log retention period in days. Example: 2795.'
     label: Audit Log Retention (days)
     ai_context: 'Audit Log Retention: Higher means longer history is available.'

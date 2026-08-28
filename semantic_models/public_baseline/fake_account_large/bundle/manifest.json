@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "fake_account_large.public__network_metrics.view",
-      "sha256": "dae87001c1c4952782cc141ff390624775a1e979d0fb384d2f566eb113efcbe6",
-      "size_bytes": 782
+      "sha256": "499e1c6972ba20f552cd737d9889a5bce718c261ef99d016230c3ce7b967ccb2",
+      "size_bytes": 826
     },
     {
       "file": "network_metrics_semantics.topic",
@@ -23,8 +23,8 @@
     },
     {
       "file": "fake_account_large.public__cluster_analysis.view",
-      "sha256": "b0bedc839faa3c2b14b9e345f154c0460b8b550211b22e859c7b4c2bfd29ced3",
-      "size_bytes": 463
+      "sha256": "69b4eaa84234888f4b3808ec7bf7f112034249f8a61910b0c459fa97a63c4936",
+      "size_bytes": 487
     },
     {
       "file": "cluster_analysis_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "fake_account_large.public__monitoring.view",
-      "sha256": "65a774be95ccf72dcd5263ed1fdd4902d1b9af55a3cb08fde59f2e5c01a47934",
-      "size_bytes": 541
+      "sha256": "cdc67de979fb67bb1cb537affbb024890c36e189185d90973d5189b2a676734c",
+      "size_bytes": 565
     },
     {
       "file": "monitoring_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "fake_account_large.public__interaction_metrics.view",
-      "sha256": "99f0d36c400732d8311bbc1c14d57c4a766b27e9ca8e272732511c080e80faac",
-      "size_bytes": 534
+      "sha256": "ee5335e5a35793d1bac4ad28b0edbcb9b6c428dd2b1d303776e9fbc0070960ce",
+      "size_bytes": 555
     },
     {
       "file": "interaction_metrics_semantics.topic",
@@ -73,6 +73,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

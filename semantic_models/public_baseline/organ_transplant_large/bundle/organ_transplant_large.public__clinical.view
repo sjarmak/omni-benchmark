@@ -10,10 +10,12 @@ dimensions:
   medical_urgency_status:
     description: 'TEXT. Medical urgency status classification for transplant priority. **DATA NOISE: ''Status 2'' partially replaced with ''2'', ''Status 3'' partially replaced with ''3'', etc.** Possible values: 2, 3, Status 1A, Status 1B, Status 2, Status 3.'
     label: Medical Urgency Status
+    sql: ${med_urgency}
     ai_context: 'Medical Urgency Tiers: Patients are prioritized based on their risk of dying while on the waitlist. Status 1A is the highest urgency, reserved for critically ill patients in the ICU. Status 1B is a lower, but still urgent, category. Lower statuses (e.g., Status 2) are for more stable patients.'
   comorbidities:
     description: 'TEXT. Comorbid conditions and secondary medical issues. **NULL means comorbidity assessment is incomplete or not available.**. Example: Hypertension,Heart Disease,Diabetes.'
     label: Comorbidity Detail
+    sql: ${comorbid_detail}
     ai_context: 'Comorbidity: In transplantation, a recipient''s pre-existing conditions (e.g., diabetes, heart disease) are considered comorbidities. They can increase the complexity and risk of the transplant procedure.'
   recipient_wait_time_years:
     label: Recipient Wait Time Ratio

@@ -7,6 +7,7 @@ dimensions:
   cap:
     description: 'REAL. Total installed capacity in megawatts. Example: 257.58.'
     label: Plant Capacity
+    sql: ${cap_mw}
   warrstate:
     description: 'TEXT. Current status of equipment warranty. NULL means the encoder does not report status or data are missing. Possible values: Active, Claimed, Expired.'
     label: Warranty Status

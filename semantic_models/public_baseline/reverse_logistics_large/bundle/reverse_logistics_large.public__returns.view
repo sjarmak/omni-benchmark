@@ -14,6 +14,7 @@ dimensions:
   days_lapsed:
     description: 'BIGINT. Number of days lapsed since the transaction. Example: 33.'
     label: Days Lapsed
+    sql: ${dayslapsed}
     ai_context: 'Days Lapsed: Difference in days between transaction date and point at which funds/refund are issued.'
   return_channel:
     description: VARCHAR(50). Channel through which the return was made.

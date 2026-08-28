@@ -7,4 +7,5 @@ dimensions:
   conservation_status:
     description: 'TEXT. Current conservation status of the artifact. **NULL means no conservation status provided.**. Possible values: Critical, Excellent, Fair, Good, Poor.'
     label: Conservation Status
+    sql: ${conserve_status}
     ai_context: 'Conservation Status Categories: Values range from ''Excellent'' (recently conserved, no issues), ''Good'' (stable with minor issues), ''Fair'' (stable but with noticeable issues), ''Poor'' (active deterioration), to ''Critical'' (severe deterioration requiring immediate intervention).'

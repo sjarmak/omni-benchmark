@@ -7,4 +7,5 @@ dimensions:
   product_category:
     description: 'TEXT. High-level product category. PK (composite). Possible values: Data, Digital, Physical, Service.'
     label: Product Category
+    sql: ${prod_cat}
     ai_context: 'Product Categories: Values: Data, Digital, Physical, Service. Label descriptions: - Data: Digital information assets such as credential dumps, personal records, or proprietary databases. - Digital: Intangible goods like software licenses, media subscriptions, or downloadable files. - Physical: Tangible merchandise shipped to the buyer, including hardware devices or printed documents. - Service: Intangible labor or expertise, e.g., penetration testing, content creation, or laundering assistance.'

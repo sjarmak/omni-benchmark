@@ -7,8 +7,10 @@ dimensions:
   temperature_c:
     description: 'REAL. The recorded temperature in Celsius, extracted from the climate_metrics JSON. Possible values: 21, 18, 19, 20, 22.'
     label: Temperature (C)
+    sql: ${tempc}
     ai_context: 'Temperature Reading Implications: Ideal for most collections is 18-22°C. Fluctuations greater than 2°C within 24 hours can stress materials. Values outside 10-30°C may indicate control failure.'
   relative_humidity_pct:
     description: 'REAL. The recorded Relative Humidity in percent, extracted from the climate_metrics JSON. Example: 53.'
     label: Relative Humidity (%)
+    sql: ${rh}
     ai_context: 'Relative Humidity Implications: Ideal for mixed collections is 45-55%. Fluctuations greater than 5% within 24 hours are risky. Readings below 30% or above 65% indicate significant risk.'

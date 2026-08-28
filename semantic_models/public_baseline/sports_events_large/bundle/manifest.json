@@ -63,6 +63,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

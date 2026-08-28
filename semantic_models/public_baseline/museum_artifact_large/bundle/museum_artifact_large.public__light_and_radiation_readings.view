@@ -7,4 +7,5 @@ dimensions:
   light_intensity_lux:
     description: 'REAL. The recorded light level in lux, extracted from the radiation_exposure JSON. Example: 198.'
     label: Light Intensity (lux)
+    sql: ${lux}
     ai_context: 'Light Intensity Implications: Conservation standards recommend 50 lux for highly sensitive materials, 150-200 lux for medium sensitivity materials, and up to 300 lux for low sensitivity materials.'

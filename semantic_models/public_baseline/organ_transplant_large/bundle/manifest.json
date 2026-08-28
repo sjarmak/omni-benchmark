@@ -13,8 +13,8 @@
     },
     {
       "file": "organ_transplant_large.public__compatibility_metrics.view",
-      "sha256": "c279b4e449433fed1822c4a0aa03c05229d29a819100a255aa9314b49283040c",
-      "size_bytes": 2998
+      "sha256": "89266357949552af35ac706fb70878f4872db612a794d9acd86bd19e9db9b78a",
+      "size_bytes": 3049
     },
     {
       "file": "compatibility_metrics_semantics.topic",
@@ -23,8 +23,8 @@
     },
     {
       "file": "organ_transplant_large.public__recipients_immunology.view",
-      "sha256": "c46847a2295575f60a2bec2dace97f02c2aef2eb2d460fe6de1f250968c2c791",
-      "size_bytes": 2638
+      "sha256": "076810ad75d63874f1c306f1067a0759e73fafb9c952ff8badd09b06b20b2466",
+      "size_bytes": 2685
     },
     {
       "file": "recipients_immunology_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "organ_transplant_large.public__clinical.view",
-      "sha256": "f65ca07a93d8d92daf68fc3a7bab3af30c9e35672125c38ee54a4a5571b106d3",
-      "size_bytes": 2812
+      "sha256": "48e2cc0ba4479090ea217af87f88753a7443112de48464d128f33be38a09715c",
+      "size_bytes": 2864
     },
     {
       "file": "clinical_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "organ_transplant_large.public__function_and_recovery.view",
-      "sha256": "949f1dbb84057d12a0f95bee76bbf80bef701ce8adf4a5678072730cd596f5ba",
-      "size_bytes": 3500
+      "sha256": "283712760eda0686eb8fccbcd80a70bf866819fe44b77c5e6948e52464e37ff2",
+      "size_bytes": 3626
     },
     {
       "file": "function_and_recovery_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "organ_transplant_large.public__risk_evaluation.view",
-      "sha256": "6c80d2c97bf71e6239f96d95b9a353c2f855be59720577ca9d2e6bde08492643",
-      "size_bytes": 2782
+      "sha256": "7b3a0925636dc8defa6664244515737d726172bde9ff26afe91d733fbde9f647",
+      "size_bytes": 2900
     },
     {
       "file": "risk_evaluation_semantics.topic",
@@ -63,8 +63,8 @@
     },
     {
       "file": "organ_transplant_large.public__allocation_details.view",
-      "sha256": "8e957685139c7cc56edfeb5bdc9dab76c850a716e368ffc0a4a21476e071632d",
-      "size_bytes": 790
+      "sha256": "cb810334edfc2c682b0de10a5c4ec18f08ffd85f5e44768130914092cd136d41",
+      "size_bytes": 816
     },
     {
       "file": "allocation_details_semantics.topic",
@@ -73,6 +73,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

@@ -8,24 +8,24 @@ dimensions:
     description: 'REAL. The volume of the data in gigabytes. Example: 9289.72.'
     label: Data Volume (GB)
     ai_context: 'Data Volume: Ranges from small amounts (like 0.1) to large ones (like 1000).'
-  Int_check:
+  int_check:
     description: 'TEXT. The status of the integrity check. Possible values: Partial, Failed, Passed.'
     label: Integrity Check Status
-  CSUMVERIFY:
+  csumverify:
     description: 'TEXT. Status of checksum verification. Possible values: Success, Failed, Pending.'
     label: Checksum Verification Status
   is_data_integrity_failure:
     label: Data Integrity Failure
     description: Shows data batches that failed integrity or checksum checks.
-    sql: ${Int_check} = 'Failed' OR ${CSUMVERIFY} = 'Failed'
+    sql: ${int_check} = 'Failed' OR ${csumverify} = 'Failed'
     ai_context: Use this modeled field for Data Integrity Failure; do not reconstruct its formula.
   integrity_failure_count:
     label: Integrity Failure Count (IFC)
     description: Counts failed checks on a batch of data.
-    sql: CASE WHEN ${Int_check} = 'Failed' THEN 1 ELSE 0 END + CASE WHEN ${CSUMVERIFY} = 'Failed' THEN 1 ELSE 0 END
+    sql: CASE WHEN ${int_check} = 'Failed' THEN 1 ELSE 0 END + CASE WHEN ${csumverify} = 'Failed' THEN 1 ELSE 0 END
     ai_context: Use this modeled field for Integrity Failure Count (IFC); do not reconstruct its formula.
   failure_types_list:
     label: Failure Types List
     description: Lists the reasons for data batch check failures.
-    sql: CASE WHEN ${Int_check} = 'Failed' AND ${CSUMVERIFY} = 'Failed' THEN 'integrity check, verification' WHEN ${Int_check} = 'Failed' THEN 'integrity check' WHEN ${CSUMVERIFY} = 'Failed' THEN 'verification' ELSE '' END
+    sql: CASE WHEN ${int_check} = 'Failed' AND ${csumverify} = 'Failed' THEN 'integrity check, verification' WHEN ${int_check} = 'Failed' THEN 'integrity check' WHEN ${csumverify} = 'Failed' THEN 'verification' ELSE '' END
     ai_context: Use this modeled field for Failure Types List; do not reconstruct its formula.

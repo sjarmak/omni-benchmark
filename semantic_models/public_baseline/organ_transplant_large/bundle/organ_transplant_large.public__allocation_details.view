@@ -7,4 +7,5 @@ dimensions:
   allocation_policy_version:
     description: 'TEXT. Allocation policy version used. Example: v2.7.'
     label: Allocation Policy Version
+    sql: ${allc_pol_vers}
     ai_context: 'Allocation Policy: The precise set of rules used for organ distribution, identified by a unique version string in the `allc_pol_vers` field, such as ''v2.7''[cite: 73]. Each policy embodies a strict hierarchy of rules. As a formal example, a given policy stipulates that Medical Urgency Status is the primary sorting criterion; for recipients with an identical urgency status, the one with a lower HLA Mismatch Score receives higher priority.'

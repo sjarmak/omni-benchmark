@@ -13,6 +13,7 @@ dimensions:
   anonymity_level:
     description: 'TEXT. Level of anonymity observed. Possible values: High, Low, Medium.'
     label: Anonymity Level
+    sql: ${anon_level}
     ai_context: 'Session Anonymity Levels: Values: High, Medium, Low.'
   has_premium_authentication:
     label: Premium Authentication

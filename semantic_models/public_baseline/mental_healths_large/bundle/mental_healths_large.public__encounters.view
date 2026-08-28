@@ -7,4 +7,5 @@ dimensions:
   missed_appointment_count:
     description: Number of appointments missed by the patient prior to or following this encounter.
     label: Missed Appointment Count
+    sql: ${miss_appt}
     ai_context: 'Missed Appointment Count: A numeric value indicating the number of missed appointments. A value of 0 indicates perfect attendance, while higher values (e.g., 5) indicate frequent absences.'

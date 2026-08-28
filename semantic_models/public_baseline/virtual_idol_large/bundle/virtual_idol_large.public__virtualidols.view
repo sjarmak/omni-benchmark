@@ -7,4 +7,5 @@ dimensions:
   idol_type:
     description: TEXT. Type or category classification of the virtual_idol idol (e.g., vtuber, AI idol).
     label: Idol Type
+    sql: ${kind_tag}
     ai_context: 'Idol Type Classification: Describes the nature of the virtual idol. ''2D'' refers to traditionally animated characters. ''3D'' refers to computer-generated models. ''AI Generated'' refers to idols created and/or operated by artificial intelligence.'

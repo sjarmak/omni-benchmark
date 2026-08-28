@@ -3,42 +3,42 @@
   "files": [
     {
       "file": "cross_border_large.public__security_profile.view",
-      "sha256": "7d2a451a2aeecdf43f2608aea88f43b45002e9cd1daea797ccea97d8b654a82e",
-      "size_bytes": 1550
+      "sha256": "c458bd318a6c962a711da14e0ae66f511c86af88008a111bd0fc0753f13fb4d2",
+      "size_bytes": 1552
     },
     {
       "file": "security_profile_semantics.topic",
-      "sha256": "fa834cb9780eac32d770913cfcc1b120d57040743a02f0f59c75fc809cc7f9e2",
-      "size_bytes": 488
+      "sha256": "493fa10f4bcac06fd3bf5c8ed70447568436e194c836051fed14781fae0f2ef6",
+      "size_bytes": 490
     },
     {
       "file": "cross_border_large.public__audit_and_compliance.view",
-      "sha256": "1773c18fe7c1e8f43746d9cd93b1eecec9e7547acb2c58801da62758fb29a767",
-      "size_bytes": 3309
+      "sha256": "4e9b37d3cfeab5789c28beac8678de1a4022513a2f4b1e2baa13782187395698",
+      "size_bytes": 3319
     },
     {
       "file": "audit_and_compliance_semantics.topic",
-      "sha256": "3c00d4f51926589a59028d1934026e66a903229a71dc8d3fe95743b50ab1deb9",
-      "size_bytes": 702
+      "sha256": "0a5237924fefa5c75928ff48e54fda0351f39ffe649d3b5b678ea85df5aadecd",
+      "size_bytes": 706
     },
     {
       "file": "cross_border_large.public__vendor_management.view",
-      "sha256": "362a05f94e24d8edc72d195a19acb90af6c8842b5162ec1cb6743228d46c8897",
-      "size_bytes": 828
+      "sha256": "085ec354ed38c3071a2ced0bba9b40ed93166d7f59dddb6db7e7fb87730b2a19",
+      "size_bytes": 830
     },
     {
       "file": "vendor_management_semantics.topic",
-      "sha256": "216a1c1e1e3356b4111ab2ae9d497b88342841fe381df1d15453f8c7cc860e09",
-      "size_bytes": 438
+      "sha256": "262b3066a38c1c83df7926317e117af235343619ff17bfad793ad39db4dd7fd0",
+      "size_bytes": 439
     },
     {
       "file": "cross_border_large.public__data_profile.view",
-      "sha256": "5bbd33d5be3dec9d2b30768df81d2a6adfc5b80a0a84cc402ea0d0b385c69cf0",
+      "sha256": "3235d6036126d6e46b955bfbc7c8035e09ec0957f385a1c3479ba127d32d2d50",
       "size_bytes": 1799
     },
     {
       "file": "data_profile_semantics.topic",
-      "sha256": "e53c7eb1e7c21db42d0ac25362de67f74f8824f88566d55a013bd945f2f21d32",
+      "sha256": "e9b71ae3efedb79a3844c09482ba85042e682c954b46b9f9707f3f7eeacb4d13",
       "size_bytes": 477
     },
     {
@@ -53,13 +53,13 @@
     },
     {
       "file": "cross_border_large.public__compliance.view",
-      "sha256": "fd575e0b9d6c91d6674992376917def83e5d8f06ceb414d97f8ae5dbd12ebfaf",
-      "size_bytes": 454
+      "sha256": "602223560b1f1d2017de3ee8a88af1be6c8535391fe5ffa83d1a22d56f4a9243",
+      "size_bytes": 455
     },
     {
       "file": "compliance_semantics.topic",
-      "sha256": "8444c50b6f2c058ac3d6505744b8e6c30711e17210baa260f60287b6254f5ccc",
-      "size_bytes": 357
+      "sha256": "3e0a0de759026cc9aa6a169557c30df1d17d26186533c088d5ce03605c8215ee",
+      "size_bytes": 358
     },
     {
       "file": "cross_border_large.public__control_library.view",
@@ -73,6 +73,18 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": [
+      {
+        "omni_field_name": "control_code",
+        "source_stable_ids": [
+          "cross_border_large:column:Control_Library:CONTROL_CODE",
+          "cross_border_large:column:Control_Library:control_code"
+        ],
+        "table_stable_id": "cross_border_large:table:Control_Library"
+      }
+    ]
+  },
   "schema_version": 1,
   "semantic_elements": [
     {
@@ -195,7 +207,7 @@
       "loss_codes": [
         "context_only_no_executable_object"
       ],
-      "semantic_name": "gdprComp",
+      "semantic_name": "gdpr_comp",
       "table_stable_id": "cross_border_large:table:Compliance"
     },
     {
@@ -243,7 +255,7 @@
         "context_only_no_executable_object",
         "open_ended_value_examples"
       ],
-      "semantic_name": "LogRetDays",
+      "semantic_name": "log_ret_days",
       "table_stable_id": "cross_border_large:table:SecurityProfile"
     },
     {

@@ -7,18 +7,23 @@ dimensions:
   high_52_week:
     description: 'DECIMAL. Highest trading price reached in the past 52 weeks. Example: 30.6, 62.6, 52.17. Contains NULL when insufficient trading history exists for 52-week calculation.'
     label: 52-Week High
+    sql: ${high52w}
   low_52_week:
     description: 'DECIMAL. Lowest trading price reached in the past 52 weeks. Example: 30.6, 89.5, 24.59. Contains NULL when insufficient trading history exists for 52-week calculation.'
     label: 52-Week Low
+    sql: ${low52w}
   current_price_minus_52_week_low:
     description: 'DECIMAL. Absolute price difference between current price and 52-week low. Positive values indicate current price is above the low. Example: 2.9145, 8.22, 11.7508. Contains NULL when 52-week low data is not available or calculation cannot be performed.'
     label: Current Price Minus 52-Week Low
+    sql: ${lowdelta}
   positive_return_years:
     description: 'INTEGER. Count of calendar years with positive total returns since fund inception. Used to assess historical consistency. Example: 13, 18, 4. Contains NULL when historical annual return data is incomplete or fund is too new.'
     label: Positive Return Years
+    sql: ${positiveyears}
   negative_return_years:
     description: 'INTEGER. Count of calendar years with negative total returns since fund inception. Used to assess historical downside frequency. Example: 13, 2, 9. Contains NULL when historical annual return data is incomplete or fund is too new.'
     label: Negative Return Years
+    sql: ${negativeyears}
   largest_holding_weight:
     description: Percentage (0-1) of total assets represented by the single largest holding in the fund. Contains  NULL when holdings data is not available or not disclosed.
     label: Largest Holding Weight

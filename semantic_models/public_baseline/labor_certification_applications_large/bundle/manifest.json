@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "labor_certification_applications_large.public__cases.view",
-      "sha256": "34d828bc9fc673a9c113a8b65519b8804e3498b031cd8d85d684d7399fdf38ba",
-      "size_bytes": 2565
+      "sha256": "1b473140c545ed872e180388b65f21b6ed66e281af5cbde8fd331958d751d5eb",
+      "size_bytes": 2668
     },
     {
       "file": "cases_semantics.topic",
@@ -13,8 +13,8 @@
     },
     {
       "file": "labor_certification_applications_large.public__employer_labor_condition.view",
-      "sha256": "a92f21ffe1d521c37f8e30e22514ad35a46e5dab4bb1886f46776fa6230895b9",
-      "size_bytes": 5340
+      "sha256": "73e4454f4f36cfa0db1f8bf2fd67ff8370db1206afedbc8689a991ff3b29e067",
+      "size_bytes": 5534
     },
     {
       "file": "employer_labor_condition_semantics.topic",
@@ -33,6 +33,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

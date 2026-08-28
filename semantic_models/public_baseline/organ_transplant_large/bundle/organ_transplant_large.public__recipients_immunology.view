@@ -15,10 +15,12 @@ dimensions:
   crossmatch_result:
     description: 'TEXT. Crossmatch test result for donor-recipient compatibility. Possible values: Negative, Pending, Positive.'
     label: Crossmatch Result
+    sql: ${cross_result}
     ai_context: 'Crossmatch Results: A ''Negative'' result means no pre-formed donor-specific antibodies were detected, and the transplant can proceed. A ''Positive'' result indicates the presence of these antibodies, making transplant highly risky or contraindicated due to the high chance of hyperacute rejection.'
   dsa_status:
     description: 'TEXT. Donor-specific antibody presence status. Possible values: Negative, Positive.'
     label: Donor-Specific Antibody Status
+    sql: ${dsa_state}
     ai_context: 'Donor-Specific Antibodies (DSA): The presence of these antibodies is identified by a positive Crossmatch Test. They pose a significant risk for antibody-mediated rejection of the transplanted organ.'
   is_positive_crossmatch:
     label: Crossmatch Test

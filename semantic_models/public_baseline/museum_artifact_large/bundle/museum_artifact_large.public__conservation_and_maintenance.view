@@ -7,6 +7,7 @@ dimensions:
   scheduled_next_cleaning_date:
     description: 'DATE. Date when the next cleaning is due. Example: 2025/5/10.'
     label: Scheduled Next Cleaning Date
+    sql: ${next_clean}
   overdue_days:
     label: Overdue Days
     description: Calculates the number of days a scheduled maintenance task is past its due date.

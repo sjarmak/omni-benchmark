@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "cybermarket_pattern_large.public__markets.view",
-      "sha256": "54c4bca55104c94e9bded5681d1efec62e1f518d62d21ecb7e9790890d83dbf0",
-      "size_bytes": 968
+      "sha256": "e49e3fe7262c85fa1a0c30904858fbe1b26a1c4e3cc06f5885037c03320e7ddf",
+      "size_bytes": 992
     },
     {
       "file": "markets_semantics.topic",
@@ -13,8 +13,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__vendors.view",
-      "sha256": "0225dfa5225892a807f75373021379d55943e042b394db368154603ed5914855",
-      "size_bytes": 1204
+      "sha256": "ec2cdc8a0909403f1262daedb577328a11f1351d79a191b0cfbdeb736cada359",
+      "size_bytes": 1225
     },
     {
       "file": "vendors_semantics.topic",
@@ -23,8 +23,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__buyers.view",
-      "sha256": "b9f710b535651b8bf0f1f3d1db2fe0e1c82e965453ac8399328b130e36146fcd",
-      "size_bytes": 1395
+      "sha256": "266815953012571bc90d2cf1bf758851e7046181e68a754c3fd0159d19d95a3b",
+      "size_bytes": 1418
     },
     {
       "file": "buyers_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__products.view",
-      "sha256": "d75f719f0c5cb21988d02b6b9a21e89b7e279a22776521dbc962fb7f07bce259",
-      "size_bytes": 861
+      "sha256": "a48aeda9aeed25ec5a2ac42d5e35fc9ef16ec34a9f0cb78ca1dc33c7dbba86a6",
+      "size_bytes": 882
     },
     {
       "file": "products_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__transactions.view",
-      "sha256": "77434445b4f4e8a3c01cf7e0eb66e1755a66ab737f7759d7841f6c9fe84d4683",
-      "size_bytes": 1490
+      "sha256": "a9d66312eb9b056029e610c16915e752e83ac86fa030d3c6a3317b8874470501",
+      "size_bytes": 1516
     },
     {
       "file": "transactions_semantics.topic",
@@ -63,8 +63,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__connection_security.view",
-      "sha256": "7ab2bcd5dbf51643b58b16ce81ef9e96ec383429cb1381bc09381168fcb1e9dc",
-      "size_bytes": 986
+      "sha256": "b8591a78b4063c7bdf7c530f17e0113a1743fb6df8831e167044bb238d04aaf3",
+      "size_bytes": 1009
     },
     {
       "file": "connection_security_semantics.topic",
@@ -93,6 +93,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

@@ -4,4 +4,4 @@ description: Audit rows with finding counts, data-subject request counts, respon
 fields:
 - cross_border_large_public__audit_and_compliance.*
 joins: {}
-ai_context: Use the modeled business fields critFindNum, FINDTALLY, AccReqNum, DEL_REQ_NUM, rect_req_num, PORTREQNUM, resp_time_day, REMED_DUE, audit_finding_severity, is_critical_audit_issue, request_breakdown, is_slow_remediation_timeline, is_nearing_remediation_deadline, data_subject_request_load rather than reconstructing their definitions. This topic intentionally models no cross-table joins.
+ai_context: Use the modeled business fields crit_find_num, findtally, acc_req_num, del_req_num, rect_req_num, portreqnum, resp_time_day, remed_due, audit_finding_severity, is_critical_audit_issue, request_breakdown, is_slow_remediation_timeline, is_nearing_remediation_deadline, data_subject_request_load rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

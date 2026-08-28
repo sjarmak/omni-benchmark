@@ -7,8 +7,10 @@ dimensions:
   therapy_engagement:
     description: 'Level of patient engagement in therapy. Contains values: ''Medium'', ''High'', ''Low''.'
     label: Therapy Engagement
+    sql: ${th_eng}
     ai_context: 'Therapy Engagement: Ranges from Low to High. Low indicates minimal participation, Medium indicates regular participation, and High indicates active engagement.'
   crisis_intervention_count:
     description: Number of crisis interventions required during the treatment period.
     label: Crisis Intervention Count
+    sql: ${crisis_int}
     ai_context: 'Crisis Intervention Count: A numeric value indicating the number of crisis interventions. A value of 0 indicates no interventions, while higher values (e.g., 3) indicate frequent interventions.'

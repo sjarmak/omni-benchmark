@@ -13,8 +13,8 @@
     },
     {
       "file": "museum_artifact_large.public__artifacts_core.view",
-      "sha256": "7a75b585bf04ebef5ec7993dfdf7acdc22e3843725826bbbc73bc4f905bcfb36",
-      "size_bytes": 702
+      "sha256": "2cad3703261e98b456c905fb5e97bd73a1540eff58a61e63cb9625cbcb78906f",
+      "size_bytes": 730
     },
     {
       "file": "artifacts_core_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "museum_artifact_large.public__environmental_readings_core.view",
-      "sha256": "dad1e850507fa1fe9d7cfc45e99cd333a10088d570930ab20a40317fee1d26aa",
-      "size_bytes": 1001
+      "sha256": "87a18b3624e1da0f57ac448e720cf481d13568bfc174b731191fbcf2a91d7c9b",
+      "size_bytes": 1034
     },
     {
       "file": "environmental_readings_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "museum_artifact_large.public__light_and_radiation_readings.view",
-      "sha256": "e123edcac1263b5af7dad57e48ae21778decadfe5ac7b29a3be6d14cf5511709",
-      "size_bytes": 591
+      "sha256": "160cd764ae4d2d5f2af7019545b4102c9732d3d80f6ea0e8667255336ff501f1",
+      "size_bytes": 607
     },
     {
       "file": "light_and_radiation_readings_semantics.topic",
@@ -63,8 +63,8 @@
     },
     {
       "file": "museum_artifact_large.public__artifact_security_access.view",
-      "sha256": "73d8456244c3246e5116cc058ef9b64e1f368d38c341b47ea32d3cbc44fc7360",
-      "size_bytes": 696
+      "sha256": "16e7b483fee2becdc09749c41682b51bd53ca114cf815674bbc517ecd65acdfa",
+      "size_bytes": 716
     },
     {
       "file": "artifact_security_access_semantics.topic",
@@ -73,8 +73,8 @@
     },
     {
       "file": "museum_artifact_large.public__conservation_and_maintenance.view",
-      "sha256": "c6545be6aca9781ee9864d8b90f0a0ac32f80eacf6eb81803559b44a2c7fc1f9",
-      "size_bytes": 659
+      "sha256": "e795f5483eb56042fd915de9a34cb7b8d13ec0528d6d01a5d9a55d906fb2c158",
+      "size_bytes": 682
     },
     {
       "file": "conservation_and_maintenance_semantics.topic",
@@ -83,6 +83,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

@@ -7,12 +7,15 @@ dimensions:
   total_loyalty_points:
     description: BIGINT. Accumulated loyalty points earned through various platform activities and interactions.
     label: Total Loyalty Points
+    sql: ${pts_val}
   current_tier_level:
     description: SMALLINT. Fan loyalty tier level indicating status progression within the platform hierarchy.
     label: Current Tier Level
+    sql: ${tier_step}
   fan_status:
     description: TEXT. Current account status classification for the fan user.
     label: Fan Status
+    sql: ${status_tag}
     ai_context: 'Fan Status Tiers: Fan status indicates their platform standing. ''Active'' means regular recent activity. ''Inactive'' means no recent activity. ''VIP'' is a special high-value status granted based on contribution and spending.'
   fan_age:
     description: SMALLINT. Fan's age in years for demographic analysis and content targeting.
@@ -25,6 +28,7 @@ dimensions:
   language_preference:
     description: 'TEXT. Fan''s preferred language for platform interface and content. **NULL means language preference not specified or using platform default.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
     label: Language Preference
+    sql: ${lang_pref}
     ai_context: 'Language Preference Setting: Defines the fan''s preference for content language. ''Original'' means content is shown in the idol''s primary language. ''Translated'' means the fan prefers translated versions. ''Both'' indicates a willingness to consume content in either form.'
   loyalty_progression_rate:
     label: Loyalty Progression Rate (LPR)

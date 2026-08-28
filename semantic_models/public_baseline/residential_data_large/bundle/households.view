@@ -21,7 +21,9 @@ dimensions:
   resident_count:
     description: Number of people currently residing in the household, representing the total household size including all family members and occupants. EX. 1,2 3
     label: Resident Count
+    sql: ${residentcount}
   zone_identifier:
     description: Foreign key referencing locations.ZoneNum, indicating the specific macrozone within the administrative region. Part of composite foreign key constraint. EX.315,222,332
     label: Zone Identifier
+    sql: ${loczone}
     ai_context: 'Urban Zone: A zone is considered urban if its `loczone` is 1.'

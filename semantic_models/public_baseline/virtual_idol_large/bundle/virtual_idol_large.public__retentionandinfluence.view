@@ -7,6 +7,7 @@ dimensions:
   churn_risk_flag:
     description: TEXT. Churn risk classification and prediction status.
     label: Churn Risk Flag
+    sql: ${churn_flag}
     ai_context: 'Churn Risk Flag: A predictive classification of a fan''s likelihood to stop using the platform. ''High'' indicates a strong probability of churning soon. ''Medium'' indicates a moderate risk. ''Low'' indicates a loyal and stable user.'
   viral_content_pieces:
     description: SMALLINT. Number of viral content pieces created or shared.

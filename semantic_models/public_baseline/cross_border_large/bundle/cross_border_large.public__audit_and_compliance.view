@@ -4,35 +4,35 @@ catalog: cross_border_large
 schema: public
 table_name: AuditAndCompliance
 dimensions:
-  critFindNum:
+  crit_find_num:
     description: 'BIGINT. The number of critical findings from audits. Example: 0.'
     label: Critical Findings
-  FINDTALLY:
+  findtally:
     description: 'BIGINT. The total tally of audit findings. Example: 49.'
     label: Total Findings
-  AccReqNum:
+  acc_req_num:
     description: 'BIGINT. The number of access requests. Example: 75.'
     label: Access Requests
-  DEL_REQ_NUM:
+  del_req_num:
     description: 'BIGINT. The number of data deletion requests. Example: 354.'
     label: Deletion Requests
   rect_req_num:
     description: 'BIGINT. The number of data rectification requests. Example: 13.'
     label: Correction Requests
-  PORTREQNUM:
+  portreqnum:
     description: 'BIGINT. The number of data portability requests. Example: 50.'
     label: Transfer Requests
   resp_time_day:
     description: 'REAL. The average response time in days. Example: 16.'
     label: Response Time (days)
     ai_context: 'Response Time: Lower means faster response; higher means delays.'
-  REMED_DUE:
+  remed_due:
     description: 'DATE. The due date for remediation actions. Example: 2025-04-24.'
     label: Remediation Due Date
   audit_finding_severity:
     label: Audit Finding Severity (AFS)
     description: Indicates how serious audit findings are, especially critical issues.
-    sql: ${critFindNum} * 1.0 / (${FINDTALLY} + 1.0)
+    sql: ${crit_find_num} * 1.0 / (${findtally} + 1.0)
     ai_context: Use this modeled field for Audit Finding Severity (AFS); do not reconstruct its formula.
   is_critical_audit_issue:
     label: Critical Audit Issue
@@ -42,20 +42,20 @@ dimensions:
   request_breakdown:
     label: Request Breakdown
     description: Lists the types and numbers of requests individuals made about their data.
-    sql: '''access requests: '' || CAST(${AccReqNum} AS TEXT) || '', deletion requests: '' || CAST(${DEL_REQ_NUM} AS TEXT) || '', correction requests: '' || CAST(${rect_req_num} AS TEXT) || '', transfer requests: '' || CAST(${PORTREQNUM} AS TEXT)'
+    sql: '''access requests: '' || CAST(${acc_req_num} AS TEXT) || '', deletion requests: '' || CAST(${del_req_num} AS TEXT) || '', correction requests: '' || CAST(${rect_req_num} AS TEXT) || '', transfer requests: '' || CAST(${portreqnum} AS TEXT)'
     ai_context: Use this modeled field for Request Breakdown; do not reconstruct its formula.
   is_slow_remediation_timeline:
     label: Slow Remediation Timeline
     description: Labels cases where the deadline to fix an issue has already passed.
-    sql: CURRENT_DATE > ${REMED_DUE}
+    sql: CURRENT_DATE > ${remed_due}
     ai_context: Use this modeled field for Slow Remediation Timeline; do not reconstruct its formula.
   is_nearing_remediation_deadline:
     label: Nearing Remediation Deadline
     description: Highlights transfers close to their fix deadline.
-    sql: ${REMED_DUE} - CURRENT_DATE BETWEEN -5 AND 0
+    sql: ${remed_due} - CURRENT_DATE BETWEEN -5 AND 0
     ai_context: Use this modeled field for Nearing Remediation Deadline; do not reconstruct its formula.
   data_subject_request_load:
     label: Data Subject Request Load (DSRL)
     description: Shows how many requests people made about their own data.
-    sql: ${AccReqNum} + ${DEL_REQ_NUM} + ${rect_req_num} + ${PORTREQNUM}
+    sql: ${acc_req_num} + ${del_req_num} + ${rect_req_num} + ${portreqnum}
     ai_context: Use this modeled field for Data Subject Request Load (DSRL); do not reconstruct its formula.

@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "planets_data_large.public__stars.view",
-      "sha256": "ed8172dc8e9348be80e5ac87f740aa4c4e34c0286ced19a723c1ed8cbd1daf94",
-      "size_bytes": 5678
+      "sha256": "99d1bd585f3ec1c40e0f276b048daf32a4bb37141ff7f618f7cdab4338bba3f7",
+      "size_bytes": 5724
     },
     {
       "file": "stars_semantics.topic",
@@ -13,8 +13,8 @@
     },
     {
       "file": "planets_data_large.public__physical_properties.view",
-      "sha256": "e18db045af7335c5696cb54573afb77050786ab08cce9e96573fa7414798ce60",
-      "size_bytes": 4724
+      "sha256": "fc3c317398d217fc082e8e1ffe05c9f54c576c0d9ab3918140ec6a83b55d6f46",
+      "size_bytes": 4785
     },
     {
       "file": "physical_properties_semantics.topic",
@@ -23,8 +23,8 @@
     },
     {
       "file": "planets_data_large.public__orbital_characteristics.view",
-      "sha256": "d0573a416fe9562dfb79daf4bc67fa851dbe68ca194a9215ab95f72b8bccdfc4",
-      "size_bytes": 3163
+      "sha256": "279ff60d3b3c9d23a509c9c0f04eede341b4ad10562498895d79cfb64e6a3433",
+      "size_bytes": 3253
     },
     {
       "file": "orbital_characteristics_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "planets_data_large.public__planets.view",
-      "sha256": "1acbd551646d08fb67bd991bf9ff51c53b9728330168596ad4333501955162e6",
-      "size_bytes": 1870
+      "sha256": "76964ed3052d065872d7270d9745ca9a8724257db461aebee7309d78a1a9f24a",
+      "size_bytes": 1893
     },
     {
       "file": "planets_semantics.topic",
@@ -43,6 +43,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

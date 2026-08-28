@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "exchange_traded_funds_large.public__annual_returns.view",
-      "sha256": "4c6c519f5e10f8cccc72c882092bb75abed077af024c4c53b01e2ed47ffed485",
-      "size_bytes": 1075
+      "sha256": "373313cea809abde692e6ca05d801881f3268ab1993247fbc23a1368e779cd8e",
+      "size_bytes": 1121
     },
     {
       "file": "annual_returns_semantics.topic",
@@ -13,8 +13,8 @@
     },
     {
       "file": "exchange_traded_funds_large.public__funds.view",
-      "sha256": "6ebf144cfaedad22cb8a3180b1360aa2566304f56111cc2a79a100d0db024fa2",
-      "size_bytes": 11091
+      "sha256": "5d8e0c0dc9a5bcf5c432d35f0f62061623ac9dd2418881418f88c4550a7a1cd8",
+      "size_bytes": 11371
     },
     {
       "file": "funds_semantics.topic",
@@ -23,8 +23,8 @@
     },
     {
       "file": "exchange_traded_funds_large.public__performance.view",
-      "sha256": "49df18a0c831578056ed80d5e6ee1118f499f61122f73b119589154ddbc5cf42",
-      "size_bytes": 3757
+      "sha256": "e64264380e26de7ef6ced47ef6e2fb4685d007ea9b0abea6a93416a26af0bf42",
+      "size_bytes": 3869
     },
     {
       "file": "performance_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "exchange_traded_funds_large.public__risk_metrics.view",
-      "sha256": "131bc25be0d0e67d73d4efaf0158571064505c8291992f544d8a71fe04994036",
-      "size_bytes": 2991
+      "sha256": "bff8417ca365ffed4a8341f761f808e9f5006af3dc28f9caa6b909311d3554a1",
+      "size_bytes": 3079
     },
     {
       "file": "risk_metrics_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "exchange_traded_funds_large.public__sector_allocations.view",
-      "sha256": "320896ca29df9b61e5644b140e9668ea04c1d5bf447cd2b0ec2a38b64d98598f",
-      "size_bytes": 618
+      "sha256": "2b785ab94909100a22d3711f374d3cb9f6e78b6ce949895190515d86e315064f",
+      "size_bytes": 640
     },
     {
       "file": "sector_allocations_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "exchange_traded_funds_large.public__bond_ratings.view",
-      "sha256": "783c274d5de1e4d1d087dc44e9065e884867f4e4577501f9817134f08d36e74a",
-      "size_bytes": 651
+      "sha256": "4c93790aa10c14b0cbb99a6f31c7f3196eed123055807ea7ee1fa7fee03d328f",
+      "size_bytes": 682
     },
     {
       "file": "bond_ratings_semantics.topic",
@@ -63,6 +63,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

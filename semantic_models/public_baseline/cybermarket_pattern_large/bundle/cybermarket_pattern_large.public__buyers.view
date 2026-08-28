@@ -7,6 +7,7 @@ dimensions:
   authentication_level:
     description: 'TEXT. Authentication level attained by the buyer. **NULL means authentication level has not been determined.**. Possible values: Advanced, Basic.'
     label: Authentication Level
+    sql: ${auth_level}
     ai_context: 'Buyer Authentication Levels: Values: Advanced, Basic. Label descriptions: - Advanced: Account protected by multi factor authentication or hardware-backed credentials, offering high assurance. - Basic: Account relies on single factor authentication such as a password, with no secondary verification.'
   spend_pattern:
     description: 'TEXT. Categorised spending pattern for the buyer. Possible values: High, Low, Medium, Variable.'

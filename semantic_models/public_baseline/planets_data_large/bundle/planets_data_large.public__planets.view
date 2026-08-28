@@ -7,6 +7,7 @@ dimensions:
   discovery_method:
     description: 'Discovery method from ''pl_discmethod''. VARCHAR(50) with standardized values: ''RadVel''/''RV''/''RV Method''/''Radial Velocity''/''Doppler'' (radial velocity), ''Transit''/''TR''/''Transit Method''/''Photometry''/''Photometric'' (transit photometry), ''Direct Imaging''/''DI''/''Imaging''/''IMG''/''Direct'' (direct imaging), ''TTV''/''Transit Timing Variations''/''Transit Timing''/''TTV Method''/''Timing Var'' (transit timing), ''Microlensing''/''ML''/''μLens''/''Lensing''/''Gravitational'' (gravitational microlensing), ''Pulsar''/''PSR Timing''/''PT''/''Pulsation Timing Variations'' (pulsar timing), ''Eclipse Timing Variations''/''ETV''/''Eclipse Timing''/''Timing Variations'' (eclipse timing), ''Brightness Mod''/''OBM''/''Phase Curve''/''Orbital Mod'' (orbital brightness modulation), ''AST'' (astrometry).'
     label: Discovery Method
+    sql: ${discmethod}
   discovery_via_transit_method:
     label: Discovery via Transit Method
     description: Identifies a planet discovered by observing the dimming of its star as the planet passes in front.

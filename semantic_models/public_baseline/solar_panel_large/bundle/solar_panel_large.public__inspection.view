@@ -7,9 +7,11 @@ dimensions:
   result:
     description: 'TEXT. Inspection results summary. Possible values: Major Issues, Minor Issues, Pass.'
     label: Inspection Result
+    sql: ${inspectres}
   schedule:
     description: 'TEXT. Maintenance schedule status. Possible values: Delayed, On Schedule, Overdue.'
     label: Maintenance Schedule
+    sql: ${maintsched}
   dqscore:
     description: 'REAL. Data quality score. Example: 97.7.'
     label: Data Quality Score

@@ -7,6 +7,7 @@ dimensions:
   functional_impairment:
     description: 'Functional impairment assessment. Contains values: ''SEVERE'', ''MODERATE'', ''severe'', ''moderate'', ''mild'', ''Severe'', ''Moderate'', ''Mild''. Contains noise with mixed case variations like ''SeVerE'', ''MODErate'', ''SEVErE'', ''mIld'', ''MILD''. Contains NULL when functional impairment is not assessed.'
     label: Functional Impairment
+    sql: ${func_imp}
     ai_context: 'Functional Impairment: Ranges from Mild to Severe. Mild indicates minimal impact on daily life, Moderate indicates noticeable impact, and Severe indicates significant disruption.'
   social_support_level:
     description: 'Level of social support available to the patient. Contains values: ''Strong'', ''Limited'', ''Adequate'', ''Weak''. Contains NULL when social support is not evaluated.'
@@ -18,12 +19,15 @@ dimensions:
   previous_hospitalizations:
     description: Number of previous psychiatric hospitalizations or inpatient admissions for mental health treatment.
     label: Previous Hospitalizations
+    sql: ${prev_hosp}
   diagnosis_duration_months:
     description: Duration of the primary diagnosis in months since initial onset or first diagnosis.
     label: Diagnosis Duration (Months)
+    sql: ${dx_dur_m}
   recovery_status:
     description: 'Patient''s recovery status and stage in treatment. Contains values: ''Relapse'', ''Stable'', ''Advanced'', ''Early''.'
     label: Recovery Status
+    sql: ${rec_status}
   resilience_score:
     description: Resilience score rating typically ranging from 1 to 10.
     label: Resilience Score
@@ -33,6 +37,7 @@ dimensions:
   primary_diagnosis:
     description: 'Patient''s primary mental health diagnosis. Contains values: ''Anxiety'', ''PTSD'', ''Bipolar'', ''Schizophrenia'', ''Depression''.'
     label: Primary Diagnosis
+    sql: ${prim_dx}
   annualized_hospitalization_risk:
     label: Annualized Hospitalization Risk
     description: A risk score calculated by dividing a patient's total previous hospitalizations by the duration of their diagnosis in years.

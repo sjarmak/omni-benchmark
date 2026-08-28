@@ -7,9 +7,11 @@ dimensions:
   measurement_accuracy_percent:
     description: 'REAL. Measurement accuracy percentage. Example: 99.3.'
     label: Measurement Accuracy Percent
+    sql: ${measure_acc_pct}
   calibration_status:
     description: 'TEXT. Calibration status. Possible values: Due, Expired, Valid.'
     label: Calibration Status
+    sql: ${calibr_stat}
   scientific_equipment_reliability:
     label: Scientific Equipment Reliability (SER)
     description: Quantifies the reliability of scientific equipment based on calibration status and measurement accuracy.

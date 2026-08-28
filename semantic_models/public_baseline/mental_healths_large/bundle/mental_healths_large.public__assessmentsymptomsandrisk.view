@@ -7,14 +7,17 @@ dimensions:
   suicide_risk:
     description: 'Overall suicide risk level assessment. Contains values: ''Medium'', ''High'', ''Low''.'
     label: Suicide Risk
+    sql: ${suic_risk}
     ai_context: 'Suicide Risk Level: Ranges from Low to High. Low indicates minimal risk, Medium indicates some concern, and High indicates immediate concern and need for intervention.'
   phq9_score:
     description: Patient Health Questionnaire-9 total score, ranging from 0 to 27, measuring depression severity.
     label: PHQ-9 Score
+    sql: ${phq9_scr}
     ai_context: 'PHQ-9 Score (Depression): Ranges from 0 to 27. A score of 0–4 indicates minimal depression, 5–9 mild, 10–14 moderate, 15–19 moderately severe, and 20–27 severe.'
   gad7_score:
     description: Generalized Anxiety Disorder 7-item scale total score, ranging from 0 to 21, measuring anxiety severity.
     label: GAD-7 Score
+    sql: ${gad7_scr}
     ai_context: 'GAD-7 Score (Anxiety): Ranges from 0 to 21. A score of 0–4 indicates minimal anxiety, 5–9 mild, 10–14 moderate, and 15–21 severe.'
   is_high_risk_patient_assessment:
     label: High-Risk Patient

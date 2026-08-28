@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "disaster_relief_large.public__disasterevents.view",
-      "sha256": "e8d7a86e229abf2b62461a7e0f7a68e39dec02b7f958427733ff5cf6188583df",
-      "size_bytes": 6179
+      "sha256": "0d67374010cbf9f62634eedf503b41e32f5693540abfb3a1c81e96c764146324",
+      "size_bytes": 6226
     },
     {
       "file": "disasterevents_semantics.topic",
@@ -13,8 +13,8 @@
     },
     {
       "file": "disaster_relief_large.public__transportation.view",
-      "sha256": "74e9d4db7e0c64b6621ab66e470bbee22662424ed93e56e6b92a3908a2e4c71c",
-      "size_bytes": 1396
+      "sha256": "53f38d9758b66a466e03299dfbc3404c6fc27889271e2e0940f3b989e29b28fa",
+      "size_bytes": 1448
     },
     {
       "file": "transportation_semantics.topic",
@@ -23,8 +23,8 @@
     },
     {
       "file": "disaster_relief_large.public__coordinationandevaluation.view",
-      "sha256": "f4938cfdf1d3a26019e01f00fac81e27ea6fda7383927602ecece85f066b1b72",
-      "size_bytes": 2475
+      "sha256": "3495ea6f0096b84d26e2ca5bfc38eb3458f2de0ea75dc2b5769dea08ed64b9ec",
+      "size_bytes": 2624
     },
     {
       "file": "coordinationandevaluation_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "disaster_relief_large.public__operations.view",
-      "sha256": "8af3a8a81d0f50e545f5d4706a8a429a072fcd0f69ac05e4f25cba952d1e206d",
-      "size_bytes": 1801
+      "sha256": "48ef983be48515bd73e634c8a60fe4393745206704eb774ad2908cac38473943",
+      "size_bytes": 1847
     },
     {
       "file": "operations_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "disaster_relief_large.public__beneficiariesandassessments.view",
-      "sha256": "a50e84bb390fe810316a6ee382e594e7c0f439d0bdf3485fe21166ae3ec53694",
-      "size_bytes": 1154
+      "sha256": "625ff64ab2ef22f199e8bdfef47df97e644e69e7c500d4101b78f6b4e1dfc83d",
+      "size_bytes": 1206
     },
     {
       "file": "beneficiariesandassessments_semantics.topic",
@@ -73,8 +73,8 @@
     },
     {
       "file": "disaster_relief_large.public__distributionhubs.view",
-      "sha256": "1789575185899607acdde0eb69defb243dd77ce0877a6a76e37db5c323d95850",
-      "size_bytes": 770
+      "sha256": "06e961cf0917691ae42509a8f32a4f3009d0a1c0955d63d852eee19931753104",
+      "size_bytes": 819
     },
     {
       "file": "distributionhubs_semantics.topic",
@@ -83,6 +83,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

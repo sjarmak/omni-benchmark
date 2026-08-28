@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "reverse_logistics_large.public__returns.view",
-      "sha256": "1277625972f0bdb6e3d0eb47604fae71887fd451bd21622ab37ed7fed6927e2a",
-      "size_bytes": 2126
+      "sha256": "2eccded45fa2c578fb504d57efd44dd60da7c71311ebbb77dd895eedb1c347d9",
+      "size_bytes": 2149
     },
     {
       "file": "returns_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "reverse_logistics_large.public__return_processing.view",
-      "sha256": "96f2127bd7075d9a29efa46efe7c4775243af8da05c8a83fc755c1cffb65972e",
-      "size_bytes": 888
+      "sha256": "0ce707d158d443c0fe239c62084d5de45e703764a9dbb2e699092952e5035b68",
+      "size_bytes": 931
     },
     {
       "file": "return_processing_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "reverse_logistics_large.public__case_management.view",
-      "sha256": "e9b28b3f7afbd5cf4850d725b2fa571009cc5577c7d687f533850a8e9ea5b580",
-      "size_bytes": 538
+      "sha256": "55b676a1aaad6005e0eb63b12b568dcfcae6df320a89f391d1c89b8ee110cbe9",
+      "size_bytes": 562
     },
     {
       "file": "case_management_semantics.topic",
@@ -73,6 +73,9 @@
     }
   ],
   "kind": "public-omni-semantic-bundle",
+  "representability": {
+    "normalized_source_name_collisions": []
+  },
   "schema_version": 1,
   "semantic_elements": [
     {

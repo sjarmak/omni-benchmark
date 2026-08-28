@@ -4,4 +4,4 @@ description: Security-profile rows with encryption, access-control, log-retentio
 fields:
 - cross_border_large_public__security_profile.*
 joins: {}
-ai_context: Use the modeled business fields enc_state, acl_state, LogRetDays, security_robustness_score, is_secure_data_flow rather than reconstructing their definitions. This topic intentionally models no cross-table joins.
+ai_context: Use the modeled business fields enc_state, acl_state, log_ret_days, security_robustness_score, is_secure_data_flow rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

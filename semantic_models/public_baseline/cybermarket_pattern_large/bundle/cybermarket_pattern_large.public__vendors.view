@@ -7,6 +7,7 @@ dimensions:
   verification_tier:
     description: 'TEXT. Verification-tier level assigned to the vendor. **NULL means verification tier not yet assigned or unavailable.**. Possible values: Advanced, Basic, Premium.'
     label: Verification Tier
+    sql: ${ver_tier}
   access_level:
     description: 'TEXT. Access-privilege level granted to the vendor account. **NULL means access level has not been set.**. Possible values: Full, Partial.'
     label: Access Level
