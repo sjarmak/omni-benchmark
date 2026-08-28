@@ -163,6 +163,7 @@ class AttemptObservation:
     attempt: BaselineAttempt
     cost_usd: float | None
     database_query_count: int | None
+    failure_origin: str | None
     generation_outcome: str
     latency_ms: float
     retry_count: int | None
@@ -549,6 +550,7 @@ def _reconciled_observation(
             "attempt manifest does not bind the scheduled generation"
         )
     outcome = record.get("generation_outcome")
+    failure_origin = record.get("failure_origin")
     failure = record.get("terminal_failure_class")
     if outcome not in {"answered", "refused", "errored"}:
         raise BaselineBatchError("attempt generation outcome is invalid")
@@ -556,12 +558,21 @@ def _reconciled_observation(
         raise BaselineBatchError("attempt outcome and failure class are inconsistent")
     if failure is not None and (not isinstance(failure, str) or not failure):
         raise BaselineBatchError("attempt failure class is invalid")
+    if failure_origin not in {None, "benchmark_infrastructure", "evaluated_system"}:
+        raise BaselineBatchError("attempt failure origin is invalid")
+    if (outcome == "answered") != (failure_origin is None):
+        raise BaselineBatchError("attempt outcome and failure origin are inconsistent")
+    if failure_origin == "benchmark_infrastructure" and outcome != "errored":
+        raise BaselineBatchError(
+            "benchmark infrastructure failure must be reported as errored"
+        )
     return AttemptObservation(
         attempt=attempt,
         cost_usd=_optional_number(record.get("cost_usd"), "cost_usd"),
         database_query_count=_optional_count(
             record.get("database_query_count"), "database_query_count"
         ),
+        failure_origin=failure_origin,
         generation_outcome=outcome,
         latency_ms=_required_number(record.get("latency_ms"), "latency_ms"),
         retry_count=_optional_count(record.get("retry_count"), "retry_count"),
@@ -626,7 +637,8 @@ def _hard_budget_cost(observation: AttemptObservation, budget: BatchBudget) -> f
     cost = observation.cost_usd
     if cost is None:
         if (
-            observation.attempt.condition
+            observation.failure_origin == "evaluated_system"
+            or observation.attempt.condition
             in budget.unobservable_cost_reservation_conditions
         ):
             return budget.attempt_cost_ceiling_usd

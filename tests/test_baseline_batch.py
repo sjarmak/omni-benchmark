@@ -127,15 +127,19 @@ def _write_attempt(
     generation_outcome: str = "answered",
     latency_ms: float = 100.0,
     manifest_commit: str = COMMIT_SHA,
+    failure_origin: str | None = None,
     terminal_failure_class: str | None = None,
 ) -> None:
     root.mkdir(parents=True, mode=0o700)
     os.chmod(root, 0o700)
+    if failure_origin is None and generation_outcome != "answered":
+        failure_origin = "evaluated_system"
     record = {
         "attempt_id": attempt.attempt_id,
         "condition": attempt.condition,
         "cost_usd": cost_usd,
         "database_query_count": 1,
+        "failure_origin": failure_origin,
         "generation_outcome": generation_outcome,
         "instance_id": attempt.instance_id,
         "latency_ms": latency_ms,
@@ -528,6 +532,119 @@ def test_explicit_c4_reservation_preserves_hard_budget_when_cost_is_unobservable
     assert report.status == "complete"
     assert report.budget_charge_usd == 1.0
     assert report.telemetry.total_cost_usd is None
+
+
+def test_terminal_evaluated_system_null_cost_is_reserved_once_and_never_rerun(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    schedule = _small_schedule(databases=1, attempts_per_database=2)
+    repository = ImmutableAttemptRepository(
+        workspace, Path("experiments/autoresearch/raw/public-baseline-v1")
+    )
+    executed: list[str] = []
+
+    def execute(attempt: BaselineAttempt, root: Path) -> None:
+        executed.append(attempt.attempt_id)
+        if attempt == schedule.attempts[0]:
+            _write_attempt(
+                root,
+                attempt,
+                cost_usd=None,
+                failure_origin="evaluated_system",
+                generation_outcome="errored",
+                terminal_failure_class="model_setup_error",
+            )
+            return
+        _write_attempt(root, attempt, cost_usd=0.25)
+
+    first = run_baseline_batch(
+        schedule,
+        repository=repository,
+        executor=execute,
+        maximum_concurrency=1,
+        budget=BatchBudget(cost_ceiling_usd=10, attempt_cost_ceiling_usd=1),
+    )
+
+    assert first.status == "complete"
+    assert first.completed_this_run == 2
+    assert first.budget_charge_usd == pytest.approx(1.25)
+    assert first.telemetry.cost_unavailable_count == 1
+    assert first.telemetry.total_cost_usd is None
+    assert first.outcome_counts == {"answered": 1, "errored": 1}
+    assert executed == [attempt.attempt_id for attempt in schedule.attempts]
+
+    resumed = run_baseline_batch(
+        schedule,
+        repository=repository,
+        executor=lambda *_: pytest.fail("immutable attempt was rerun"),
+        maximum_concurrency=1,
+        budget=BatchBudget(cost_ceiling_usd=10, attempt_cost_ceiling_usd=1),
+    )
+
+    assert resumed.status == "complete"
+    assert resumed.reconciled_before_run == 2
+    assert resumed.completed_this_run == 0
+    assert resumed.budget_charge_usd == pytest.approx(1.25)
+
+
+def test_benchmark_infrastructure_origin_cannot_be_reported_as_refusal(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    schedule = _small_schedule(databases=1, attempts_per_database=1)
+    repository = ImmutableAttemptRepository(
+        workspace, Path("experiments/autoresearch/raw/public-baseline-v1")
+    )
+    attempt = schedule.attempts[0]
+    _write_attempt(
+        repository.attempt_root(attempt),
+        attempt,
+        cost_usd=0.25,
+        failure_origin="benchmark_infrastructure",
+        generation_outcome="refused",
+        terminal_failure_class="agent_refusal",
+    )
+
+    with pytest.raises(BaselineBatchError, match="incomplete or invalid"):
+        run_baseline_batch(
+            schedule,
+            repository=repository,
+            executor=lambda *_: pytest.fail("invalid immutable attempt was rerun"),
+            maximum_concurrency=1,
+            budget=BatchBudget(cost_ceiling_usd=10, attempt_cost_ceiling_usd=1),
+        )
+
+
+def test_benchmark_infrastructure_null_cost_still_halts_the_hard_budget(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    schedule = _small_schedule(databases=1, attempts_per_database=1)
+    repository = ImmutableAttemptRepository(
+        workspace, Path("experiments/autoresearch/raw/public-baseline-v1")
+    )
+    attempt = schedule.attempts[0]
+    _write_attempt(
+        repository.attempt_root(attempt),
+        attempt,
+        cost_usd=None,
+        failure_origin="benchmark_infrastructure",
+        generation_outcome="errored",
+        terminal_failure_class="database_infrastructure_error",
+    )
+
+    with pytest.raises(BaselineBatchError, match="observable attempt cost"):
+        run_baseline_batch(
+            schedule,
+            repository=repository,
+            executor=lambda *_: pytest.fail("immutable attempt was rerun"),
+            maximum_concurrency=1,
+            budget=BatchBudget(cost_ceiling_usd=10, attempt_cost_ceiling_usd=1),
+        )
 
 
 def test_projection_cli_is_non_authenticated_and_exposes_no_scoring_fields(
