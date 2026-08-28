@@ -1,0 +1,24 @@
+label: Scan Registration
+description: Registration records with row-level alignment method, accuracy, error, and quality-threshold semantics.
+catalog: archeology_scan_large
+schema: public
+table_name: registration
+dimensions:
+  registration_accuracy_mm:
+    description: 'REAL. Registration accuracy measurement in millimeters. Example: 0.84.'
+    label: Registration Accuracy (mm)
+    sql: CAST(${reg_accuracy} ->> 'Log_Accu_Mm' AS DOUBLE PRECISION)
+  error_value_mm:
+    description: 'REAL. Error value measurement in millimeters. Example: 6.962.'
+    label: Registration Error (mm)
+    sql: CAST(${reg_accuracy} ->> 'Err_Val_Mm' AS DOUBLE PRECISION)
+  registration_method:
+    description: 'TEXT. Registration method or algorithm used. Possible values: Feature-based, Hybrid, Target-based.'
+    label: Registration Method
+    sql: ${reg_accuracy} ->> 'Log_Method'
+    ai_context: 'Registration Method: A categorization of alignment techniques with specific methodologies: ''ICP'' (Iterative Closest Point algorithm for point cloud alignment), ''Target-based'' (alignment using physical reference markers), ''Hybrid'' (combination of automatic and manual alignment), and ''SLAM'' (Simultaneous Localization and Mapping for real-time registration). Each method has distinct accuracy characteristics and use cases.'
+  meets_registration_quality_threshold:
+    label: Registration Quality Threshold
+    description: Defines the quality threshold for scan registration in archaeological documentation based on error propagation analysis.
+    sql: ${registration_accuracy_mm} < 1.0 AND ${error_value_mm} < 2.0
+    ai_context: Use this modeled field for Registration Quality Threshold; do not reconstruct its formula.

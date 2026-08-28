@@ -1,0 +1,60 @@
+label: Point Cloud Scans
+description: Point-cloud scan records with row-level resolution, coverage, noise, and quality semantics.
+catalog: archeology_scan_large
+schema: public
+table_name: pointcloud
+dimensions:
+  scan_resolution_mm:
+    description: 'REAL. Scanning resolution in millimeters. Example: 2.4.'
+    label: Scan Resolution (mm)
+    sql: CAST(${cloud_metrics} ->> 'Scan_Resol_Mm' AS DOUBLE PRECISION)
+    ai_context: 'Scan Resolution: Measured in millimeters, representing the smallest feature that can be distinguished in the scan. Values like 0.5mm enable documentation of fine tool marks on artifacts, while 2.0mm might only capture general shape and macroscopic features.'
+  point_density:
+    description: 'BIGINT. Point density per square meter. Example: 42812.'
+    label: Point Density (points/m²)
+    sql: CAST(${cloud_metrics} ->> 'Point_Dense' AS DOUBLE PRECISION)
+    ai_context: 'Point Density: Measured as points per square meter. Values around 100 capture basic site topography, 1,000 can document structural details, while 10,000+ enables analysis of surface textures and fine engravings across multiple scales of inquiry.'
+  coverage_pct:
+    description: 'REAL. Percentage of surface area covered by scan. Example: 91.2.'
+    label: Coverage (%)
+    sql: CAST(${cloud_metrics} ->> 'Cover_Pct' AS DOUBLE PRECISION)
+    ai_context: 'Coverage Percentage: Percentage of target area successfully captured in scan data. Values above 95% indicate near-complete documentation, while 80% might have significant gaps requiring additional scanning or interpolation methods for comprehensive site analysis.'
+  overlap_pct:
+    description: 'REAL. Overlap percentage between scan segments. Example: 31.3.'
+    label: Overlap (%)
+    sql: CAST(${cloud_metrics} ->> 'Lap_Pct' AS DOUBLE PRECISION)
+  noise_db:
+    description: 'REAL. Noise level measurement in decibels. Example: 1.318.'
+    label: Noise Level (dB)
+    sql: CAST(${cloud_metrics} ->> 'Noise_Db' AS DOUBLE PRECISION)
+    ai_context: 'Noise Level: Measured in decibels, representing signal-to-noise ratio in scan data. Values below 1.0 indicate clean data suitable for detailed analysis, while values above 3.0 suggest significant noise that may obscure small features and introduce measurement uncertainty.'
+  scan_resolution_index:
+    label: Scan Resolution Index (SRI)
+    description: A sophisticated compound index measuring the overall resolution quality of a scan based on resolution and point density.
+    sql: CASE WHEN ${scan_resolution_mm} > 0 AND ${point_density} > 0 AND ${point_density} <> 1 THEN 5.0 * LN(${scan_resolution_mm} * 1000.0) / NULLIF(LN(${point_density}), 0) END
+    ai_context: Use this modeled field for Scan Resolution Index (SRI); do not reconstruct its formula.
+  scan_coverage_effectiveness:
+    label: Scan Coverage Effectiveness (SCE)
+    description: Measures how effectively a scan covers its target area considering both coverage percentage and overlap redundancy.
+    sql: ${coverage_pct} * (1.0 + (${overlap_pct} / 100.0) * (1.0 - ${coverage_pct} / 100.0))
+    ai_context: Use this modeled field for Scan Coverage Effectiveness (SCE); do not reconstruct its formula.
+  is_high_resolution_scan:
+    label: High Resolution Scan
+    description: Defines what constitutes a high-resolution archaeological scan based on quantitative parameters.
+    sql: ${scan_resolution_mm} <= 1.0 AND ${point_density} >= 1000.0
+    ai_context: Use this modeled field for High Resolution Scan; do not reconstruct its formula.
+  has_comprehensive_coverage:
+    label: Comprehensive Coverage
+    description: Defines the standard for comprehensive scan coverage of an archaeological site or artifact with statistical confidence.
+    sql: ${coverage_pct} >= 95.0 AND ${overlap_pct} >= 30.0
+    ai_context: Use this modeled field for Comprehensive Coverage; do not reconstruct its formula.
+  scan_quality_score:
+    label: Scan Quality Score (SQS)
+    description: Comprehensive quality metric combining resolution, coverage, and noise factors with weighted importance.
+    sql: CASE WHEN ${scan_resolution_index} > 0 THEN POWER(10.0 / ${scan_resolution_index}, 1.5) * (${scan_coverage_effectiveness} / 100.0) * POWER(1.0 - ${noise_db} / 30.0, 2.0) END
+    ai_context: Use this modeled field for Scan Quality Score (SQS); do not reconstruct its formula.
+  is_premium_quality_scan:
+    label: Premium Quality Scan
+    description: Defines the criteria for a premium quality archaeological scan suitable for conservation planning and scholarly publication.
+    sql: ${is_high_resolution_scan} AND ${has_comprehensive_coverage} AND ${scan_quality_score} > 7.5
+    ai_context: Use this modeled field for Premium Quality Scan; do not reconstruct its formula.

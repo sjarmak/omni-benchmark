@@ -1,0 +1,477 @@
+{
+  "database": "archeology_scan_large",
+  "files": [
+    {
+      "file": "archeology_scan_large.public__pointcloud.view",
+      "sha256": "d0f95298f3acce8b45c73132d8d3589f39d64e27e7bc9e859e3bec410e4cb361",
+      "size_bytes": 4750
+    },
+    {
+      "file": "pointcloud_semantics.topic",
+      "sha256": "efb2bc34b791fb15f5a6eac237ae8b49cdb08eaa367b2215cc154a603c9693a9",
+      "size_bytes": 600
+    },
+    {
+      "file": "archeology_scan_large.public__mesh.view",
+      "sha256": "99ef351e8a9c03ce0f862186378ea36f4c40a1a5bd63aa24cea0609f7520b407",
+      "size_bytes": 3244
+    },
+    {
+      "file": "mesh_semantics.topic",
+      "sha256": "da5cc5fe5fcf3da0dbba3b5adfa0da2c804badd6fcbf6932f6a0b63db8515cfd",
+      "size_bytes": 543
+    },
+    {
+      "file": "archeology_scan_large.public__environment.view",
+      "sha256": "5849614916c80e7fb408507c682cdd72158fa76e4cedbad6e59473fc46820761",
+      "size_bytes": 2459
+    },
+    {
+      "file": "environment_semantics.topic",
+      "sha256": "8953b4d39a9385fd2db3d27dd8c672fa106cb92df7a75009592aeb672f49de0e",
+      "size_bytes": 553
+    },
+    {
+      "file": "archeology_scan_large.public__registration.view",
+      "sha256": "fd427017a1d217ddaa00805188bc7d86dcf73e9129f5a927b756433b7f0846ec",
+      "size_bytes": 1713
+    },
+    {
+      "file": "registration_semantics.topic",
+      "sha256": "ce80cd8562d92e7aa80bab28097e72d53a599e4805b3c838c96d6ca3bf13c42a",
+      "size_bytes": 495
+    },
+    {
+      "file": "archeology_scan_large.public__sites.view",
+      "sha256": "b797a6b132e8e787cbcc5d22cee88b2d2f9d484c3e9960455b5905c38c071d7b",
+      "size_bytes": 1235
+    },
+    {
+      "file": "site_semantics.topic",
+      "sha256": "7472e47969fbd71a325539f61a12b6cc5c2af5ae408f57069f0496809c797632",
+      "size_bytes": 387
+    },
+    {
+      "file": "archeology_scan_large.public__conservation.view",
+      "sha256": "857c4037fd6d45334afa83c4b4e51c7e2272b4357ddb7264c9ca194c05832316",
+      "size_bytes": 729
+    },
+    {
+      "file": "conservation_semantics.topic",
+      "sha256": "f8bcc284da6f38a4409eb36ba763b7958027e25673f3fe6084064bfcb52014b2",
+      "size_bytes": 374
+    },
+    {
+      "file": "archeology_scan_large.public__processing.view",
+      "sha256": "73cf781e3f732eb2d19c51d9a441fff312f043b1f19aadef0bbb6ab6b81ed080",
+      "size_bytes": 744
+    },
+    {
+      "file": "processing_semantics.topic",
+      "sha256": "a9701333a64220b493e5af7e92f5f7dc6ae55411e80fb6077bd5cf705d0d826c",
+      "size_bytes": 379
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:0",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "scan_resolution_index",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:1",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "scan_coverage_effectiveness",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:10",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_high_resolution_scan",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:11",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "has_comprehensive_coverage",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:12",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_premium_quality_scan",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:13",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_high_fidelity_mesh",
+      "table_stable_id": "archeology_scan_large:table:mesh"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:15",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_optimal_scanning_condition",
+      "table_stable_id": "archeology_scan_large:table:environment"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:18",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "meets_registration_quality_threshold",
+      "table_stable_id": "archeology_scan_large:table:registration"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:20",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "scan_resolution_mm",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:21",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "point_density",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:22",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "noise_db",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:23",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "coverage_pct",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:24",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "geometric_accuracy_mm",
+      "table_stable_id": "archeology_scan_large:table:mesh"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:25",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "phasefactor",
+      "table_stable_id": "archeology_scan_large:table:sites"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:26",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "semantic_name": "structstate",
+      "table_stable_id": "archeology_scan_large:table:conservation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:27",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "semantic_name": "flowstage",
+      "table_stable_id": "archeology_scan_large:table:processing"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:28",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "semantic_name": "registration_method",
+      "table_stable_id": "archeology_scan_large:table:registration"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:29",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "semantic_name": "guessdate",
+      "table_stable_id": "archeology_scan_large:table:sites"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:3",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "scan_quality_score",
+      "table_stable_id": "archeology_scan_large:table:pointcloud"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:4",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "mesh_complexity_ratio",
+      "table_stable_id": "archeology_scan_large:table:mesh"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:5",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "texture_density_index",
+      "table_stable_id": "archeology_scan_large:table:mesh"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:50",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "boundary_semantics_unverified",
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "environmental_condition_classification",
+      "table_stable_id": "archeology_scan_large:table:environment"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:6",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "model_fidelity_score",
+      "table_stable_id": "archeology_scan_large:table:mesh"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "archeology_scan_large:hkb:7",
+      "intervention_provenance": "human_general_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "environmental_suitability_index",
+      "table_stable_id": "archeology_scan_large:table:environment"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "a3151e6a9981907e533db9da5e51e5df871bc669786c9da1319d1a91757a2312"
+    },
+    "hkb_ir": {
+      "sha256": "c6b20ec0e101f080712255645554cea2685deca7929a8c6d4c3391aeecf92d37"
+    },
+    "mapping": {
+      "sha256": "a54234cf768619bd15260a87ff3cd55765d006eaa4bd20bc05fd427ed24eeae6"
+    },
+    "mapping_manifest": {
+      "sha256": "33d8c5de2852cb5fb73117e4b60fa0dfc729f0762b519c0f7ce1fedc22803c22"
+    },
+    "schema_ir": {
+      "sha256": "e2044dc11b055e08046153de8c9cec9d121f037391d5b757c8cd071dd607162f"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

@@ -440,6 +440,8 @@ def _validate_compile(
     mapping_index: Mapping[str, Mapping[str, Any]],
 ) -> None:
     hkb_id = mapping["hkb_stable_id"]
+    if "source_field_missing" in mapping["loss_codes"]:
+        raise SemanticMappingError(f"{hkb_id} compile mapping has non-executable loss")
     target = _require_text(mapping["target_table_stable_id"], f"{hkb_id} target")
     if _schema_table_id(target, schema_index) != target:
         raise SemanticMappingError(f"{hkb_id} target must be a table")

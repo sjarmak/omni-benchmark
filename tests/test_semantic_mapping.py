@@ -166,6 +166,13 @@ def test_compile_disposition_rejects_cross_grain_inputs() -> None:
         validate_mapping_records([_hkb(0, [])], _schema(), [mapping])
 
 
+def test_compile_disposition_rejects_missing_source_loss() -> None:
+    mapping = _mapping(0, loss_codes=["source_field_missing"])
+
+    with pytest.raises(SemanticMappingError, match="non-executable loss"):
+        validate_mapping_records([_hkb(0, [])], _schema(), [mapping])
+
+
 def test_mapping_provenance_must_match_declared_sources() -> None:
     mapping = _mapping(0)
     tampered = deepcopy(mapping)

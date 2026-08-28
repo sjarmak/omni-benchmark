@@ -1,0 +1,6 @@
+base_view: archeology_scan_large_public__mesh
+label: Mesh Models
+description: Mesh records with row-level geometric complexity, texture density, and model fidelity semantics.
+fields:
+- archeology_scan_large_public__mesh.*
+ai_context: Use the modeled business fields mesh_vertices, mesh_faces, mesh_resolution_mm, texture_size_px, geometric_accuracy_mm, mesh_complexity_ratio, is_high_fidelity_mesh, texture_density_index, model_fidelity_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

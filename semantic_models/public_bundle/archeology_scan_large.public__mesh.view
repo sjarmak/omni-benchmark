@@ -1,0 +1,47 @@
+label: Mesh Models
+description: Mesh records with row-level geometric complexity, texture density, and model fidelity semantics.
+catalog: archeology_scan_large
+schema: public
+table_name: mesh
+dimensions:
+  mesh_vertices:
+    description: 'BIGINT. Number of vertices in the 3D mesh. Example: 7234721.'
+    label: Mesh Vertices
+    sql: CAST(${mesh_specs} ->> 'Facet_Verts' AS DOUBLE PRECISION)
+  mesh_faces:
+    description: 'BIGINT. Number of faces in the 3D mesh. Example: 5997318.'
+    label: Mesh Faces
+    sql: CAST(${mesh_specs} ->> 'Facet_Faces' AS DOUBLE PRECISION)
+  mesh_resolution_mm:
+    description: 'REAL. Mesh resolution in millimeters. Example: 3.2.'
+    label: Mesh Resolution (mm)
+    sql: CAST(${mesh_specs} ->> 'Facet_Res_Mm' AS DOUBLE PRECISION)
+  texture_size_px:
+    description: 'BIGINT. Texture size in pixels. Possible values: 1024, 2048, 4096, 8192.'
+    label: Texture Size (px)
+    sql: CAST(${mesh_specs} ->> 'Tex_Pix' AS DOUBLE PRECISION)
+  geometric_accuracy_mm:
+    description: 'REAL. Geometric accuracy measurement in millimeters. Example: 2.74.'
+    label: Geometric Accuracy (mm)
+    sql: CAST(${mesh_specs} ->> 'Geom_Delta_Mm' AS DOUBLE PRECISION)
+    ai_context: 'Geometric Accuracy: Measured in millimeters, representing the average deviation between the scan data and final 3D model. Values below 0.1mm indicate museum-quality accuracy, while values around 1.0mm are suitable for general documentation but introduce uncertainty in fine feature analysis.'
+  mesh_complexity_ratio:
+    label: Mesh Complexity Ratio (MCR)
+    description: Measures the topological complexity of a mesh relative to its resolution, helping identify overly complex or simplified archaeological models.
+    sql: CASE WHEN ${mesh_vertices} <> 0 AND ${mesh_resolution_mm} <> 0 THEN ${mesh_faces} / (${mesh_vertices} * POWER(${mesh_resolution_mm}, 2.0)) * 1000.0 END
+    ai_context: Use this modeled field for Mesh Complexity Ratio (MCR); do not reconstruct its formula.
+  is_high_fidelity_mesh:
+    label: High Fidelity Mesh
+    description: Defines criteria for high-fidelity 3D mesh models in archaeological documentation suitable for analytical studies.
+    sql: ${mesh_complexity_ratio} > 5.0 AND ${mesh_resolution_mm} < 1.0 AND ${geometric_accuracy_mm} < 0.5
+    ai_context: Use this modeled field for High Fidelity Mesh; do not reconstruct its formula.
+  texture_density_index:
+    label: Texture Density Index (TDI)
+    description: Evaluates the pixel density of textures relative to mesh resolution for assessing surface detail preservation.
+    sql: CASE WHEN ${mesh_faces} > 0 AND ${mesh_resolution_mm} <> 0 THEN ${texture_size_px} / (SQRT(${mesh_faces}) * ${mesh_resolution_mm}) * 0.01 END
+    ai_context: Use this modeled field for Texture Density Index (TDI); do not reconstruct its formula.
+  model_fidelity_score:
+    label: Model Fidelity Score (MFS)
+    description: Combines mesh complexity, texture quality, and geometric accuracy to assess overall 3D model fidelity for archaeological analysis.
+    sql: ${mesh_complexity_ratio} * (${texture_density_index} / 10.0) * (1.0 + EXP(-${geometric_accuracy_mm}))
+    ai_context: Use this modeled field for Model Fidelity Score (MFS); do not reconstruct its formula.

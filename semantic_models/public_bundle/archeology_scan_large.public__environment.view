@@ -1,0 +1,33 @@
+label: Scanning Environment
+description: Environmental records with row-level temperature, humidity, illumination, and suitability semantics.
+catalog: archeology_scan_large
+schema: public
+table_name: environment
+dimensions:
+  ambient_temperature_c:
+    description: 'REAL. Ambient air temperature in degrees Celsius. Example: 25.3.'
+    label: Ambient Temperature (C)
+    sql: CAST(${ambient_cond} ->> 'Ambic_Temp' AS DOUBLE PRECISION)
+  relative_humidity_pct:
+    description: 'REAL. Relative humidity percentage during scanning. Example: 60.4.'
+    label: Relative Humidity (%)
+    sql: CAST(${ambient_cond} ->> 'Hume_Pct' AS DOUBLE PRECISION)
+  light_lux:
+    description: 'BIGINT. Light intensity conditions in lux units. Example: 86054.'
+    label: Light Conditions (lux)
+    sql: CAST(${ambient_cond} ->> 'Illume_Lux' AS DOUBLE PRECISION)
+  environmental_suitability_index:
+    label: Environmental Suitability Index (ESI)
+    description: Evaluates how suitable environmental conditions were for scanning operations using weighted parameters.
+    sql: CASE WHEN ${light_lux} <> -100 THEN 100.0 - 2.5 * ABS(${ambient_temperature_c} - 20.0) - POWER(ABS((${relative_humidity_pct} - 50.0) / 2.0), 1.5) - 600.0 / (${light_lux} + 100.0) END
+    ai_context: Use this modeled field for Environmental Suitability Index (ESI); do not reconstruct its formula.
+  is_optimal_scanning_condition:
+    label: Optimal Scanning Conditions
+    description: Defines the environmental conditions considered optimal for archaeological scanning based on instrument sensitivity profiles.
+    sql: ${environmental_suitability_index} > 85.0
+    ai_context: Use this modeled field for Optimal Scanning Conditions; do not reconstruct its formula.
+  environmental_condition_classification:
+    label: Environmental Condition Classification System (ECCS)
+    description: A comprehensive classification system for archaeological site environments based on their suitability for scanning operations.
+    sql: CASE WHEN ${environmental_suitability_index} IS NULL THEN NULL WHEN ${is_optimal_scanning_condition} THEN 'Optimal Scanning Conditions' WHEN ${environmental_suitability_index} >= 70.0 THEN 'Good Scanning Conditions' WHEN ${environmental_suitability_index} >= 50.0 THEN 'Acceptable Scanning Conditions' ELSE 'Challenging Scanning Conditions' END
+    ai_context: Use this modeled field for Environmental Condition Classification System (ECCS); do not reconstruct its formula.

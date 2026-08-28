@@ -1,0 +1,240 @@
+{
+  "format_version": 1,
+  "database": "archeology_scan_large",
+  "catalog": "archeology_scan_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "archeology_scan_large:table:pointcloud",
+      "view_name": "archeology_scan_large_public__pointcloud",
+      "file_name": "archeology_scan_large.public__pointcloud.view",
+      "topic_file_name": "pointcloud_semantics.topic",
+      "label": "Point Cloud Scans",
+      "description": "Point-cloud scan records with row-level resolution, coverage, noise, and quality semantics."
+    },
+    {
+      "table_stable_id": "archeology_scan_large:table:mesh",
+      "view_name": "archeology_scan_large_public__mesh",
+      "file_name": "archeology_scan_large.public__mesh.view",
+      "topic_file_name": "mesh_semantics.topic",
+      "label": "Mesh Models",
+      "description": "Mesh records with row-level geometric complexity, texture density, and model fidelity semantics."
+    },
+    {
+      "table_stable_id": "archeology_scan_large:table:environment",
+      "view_name": "archeology_scan_large_public__environment",
+      "file_name": "archeology_scan_large.public__environment.view",
+      "topic_file_name": "environment_semantics.topic",
+      "label": "Scanning Environment",
+      "description": "Environmental records with row-level temperature, humidity, illumination, and suitability semantics."
+    },
+    {
+      "table_stable_id": "archeology_scan_large:table:registration",
+      "view_name": "archeology_scan_large_public__registration",
+      "file_name": "archeology_scan_large.public__registration.view",
+      "topic_file_name": "registration_semantics.topic",
+      "label": "Scan Registration",
+      "description": "Registration records with row-level alignment method, accuracy, error, and quality-threshold semantics."
+    },
+    {
+      "table_stable_id": "archeology_scan_large:table:sites",
+      "view_name": "archeology_scan_large_public__sites",
+      "file_name": "archeology_scan_large.public__sites.view",
+      "topic_file_name": "site_semantics.topic",
+      "label": "Archaeological Sites",
+      "description": "Site records with public business context for cultural period and estimated dating."
+    },
+    {
+      "table_stable_id": "archeology_scan_large:table:conservation",
+      "view_name": "archeology_scan_large_public__conservation",
+      "file_name": "archeology_scan_large.public__conservation.view",
+      "topic_file_name": "conservation_semantics.topic",
+      "label": "Conservation",
+      "description": "Conservation records with public business context for structural stability."
+    },
+    {
+      "table_stable_id": "archeology_scan_large:table:processing",
+      "view_name": "archeology_scan_large_public__processing",
+      "file_name": "archeology_scan_large.public__processing.view",
+      "topic_file_name": "processing_semantics.topic",
+      "label": "Scan Processing",
+      "description": "Processing records with public business context for the processing-stage lifecycle."
+    }
+  ],
+  "physical_fields": [
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Scan_Resol_Mm",
+      "name": "scan_resolution_mm",
+      "label": "Scan Resolution (mm)",
+      "sql": "CAST(${cloud_metrics} ->> 'Scan_Resol_Mm' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Point_Dense",
+      "name": "point_density",
+      "label": "Point Density (points/m²)",
+      "sql": "CAST(${cloud_metrics} ->> 'Point_Dense' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Cover_Pct",
+      "name": "coverage_pct",
+      "label": "Coverage (%)",
+      "sql": "CAST(${cloud_metrics} ->> 'Cover_Pct' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Lap_Pct",
+      "name": "overlap_pct",
+      "label": "Overlap (%)",
+      "sql": "CAST(${cloud_metrics} ->> 'Lap_Pct' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Noise_Db",
+      "name": "noise_db",
+      "label": "Noise Level (dB)",
+      "sql": "CAST(${cloud_metrics} ->> 'Noise_Db' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Facet_Verts",
+      "name": "mesh_vertices",
+      "label": "Mesh Vertices",
+      "sql": "CAST(${mesh_specs} ->> 'Facet_Verts' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Facet_Faces",
+      "name": "mesh_faces",
+      "label": "Mesh Faces",
+      "sql": "CAST(${mesh_specs} ->> 'Facet_Faces' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Facet_Res_Mm",
+      "name": "mesh_resolution_mm",
+      "label": "Mesh Resolution (mm)",
+      "sql": "CAST(${mesh_specs} ->> 'Facet_Res_Mm' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Tex_Pix",
+      "name": "texture_size_px",
+      "label": "Texture Size (px)",
+      "sql": "CAST(${mesh_specs} ->> 'Tex_Pix' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Geom_Delta_Mm",
+      "name": "geometric_accuracy_mm",
+      "label": "Geometric Accuracy (mm)",
+      "sql": "CAST(${mesh_specs} ->> 'Geom_Delta_Mm' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:environment:ambient_cond:k:Ambic_Temp",
+      "name": "ambient_temperature_c",
+      "label": "Ambient Temperature (C)",
+      "sql": "CAST(${ambient_cond} ->> 'Ambic_Temp' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:environment:ambient_cond:k:Hume_Pct",
+      "name": "relative_humidity_pct",
+      "label": "Relative Humidity (%)",
+      "sql": "CAST(${ambient_cond} ->> 'Hume_Pct' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:environment:ambient_cond:k:Illume_Lux",
+      "name": "light_lux",
+      "label": "Light Conditions (lux)",
+      "sql": "CAST(${ambient_cond} ->> 'Illume_Lux' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:registration:reg_accuracy:k:Log_Accu_Mm",
+      "name": "registration_accuracy_mm",
+      "label": "Registration Accuracy (mm)",
+      "sql": "CAST(${reg_accuracy} ->> 'Log_Accu_Mm' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:registration:reg_accuracy:k:Err_Val_Mm",
+      "name": "error_value_mm",
+      "label": "Registration Error (mm)",
+      "sql": "CAST(${reg_accuracy} ->> 'Err_Val_Mm' AS DOUBLE PRECISION)"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:structured-leaf:registration:reg_accuracy:k:Log_Method",
+      "name": "registration_method",
+      "label": "Registration Method",
+      "sql": "${reg_accuracy} ->> 'Log_Method'"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:column:sites:phasefactor",
+      "name": "phasefactor",
+      "label": "Cultural Period"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:column:sites:guessdate",
+      "name": "guessdate",
+      "label": "Estimated Dating"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:column:conservation:structstate",
+      "name": "structstate",
+      "label": "Structural Stability"
+    },
+    {
+      "schema_stable_id": "archeology_scan_large:column:processing:flowstage",
+      "name": "flowstage",
+      "label": "Processing Stage"
+    }
+  ],
+  "derived_fields": [
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:0",
+      "sql": "CASE WHEN ${scan_resolution_mm} > 0 AND ${point_density} > 0 AND ${point_density} <> 1 THEN 5.0 * LN(${scan_resolution_mm} * 1000.0) / NULLIF(LN(${point_density}), 0) END"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:1",
+      "sql": "${coverage_pct} * (1.0 + (${overlap_pct} / 100.0) * (1.0 - ${coverage_pct} / 100.0))"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:3",
+      "sql": "CASE WHEN ${scan_resolution_index} > 0 THEN POWER(10.0 / ${scan_resolution_index}, 1.5) * (${scan_coverage_effectiveness} / 100.0) * POWER(1.0 - ${noise_db} / 30.0, 2.0) END"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:4",
+      "sql": "CASE WHEN ${mesh_vertices} <> 0 AND ${mesh_resolution_mm} <> 0 THEN ${mesh_faces} / (${mesh_vertices} * POWER(${mesh_resolution_mm}, 2.0)) * 1000.0 END"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:5",
+      "sql": "CASE WHEN ${mesh_faces} > 0 AND ${mesh_resolution_mm} <> 0 THEN ${texture_size_px} / (SQRT(${mesh_faces}) * ${mesh_resolution_mm}) * 0.01 END"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:6",
+      "sql": "${mesh_complexity_ratio} * (${texture_density_index} / 10.0) * (1.0 + EXP(-${geometric_accuracy_mm}))"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:7",
+      "sql": "CASE WHEN ${light_lux} <> -100 THEN 100.0 - 2.5 * ABS(${ambient_temperature_c} - 20.0) - POWER(ABS((${relative_humidity_pct} - 50.0) / 2.0), 1.5) - 600.0 / (${light_lux} + 100.0) END"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:10",
+      "sql": "${scan_resolution_mm} <= 1.0 AND ${point_density} >= 1000.0"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:11",
+      "sql": "${coverage_pct} >= 95.0 AND ${overlap_pct} >= 30.0"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:12",
+      "sql": "${is_high_resolution_scan} AND ${has_comprehensive_coverage} AND ${scan_quality_score} > 7.5"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:13",
+      "sql": "${mesh_complexity_ratio} > 5.0 AND ${mesh_resolution_mm} < 1.0 AND ${geometric_accuracy_mm} < 0.5"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:15",
+      "sql": "${environmental_suitability_index} > 85.0"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:18",
+      "sql": "${registration_accuracy_mm} < 1.0 AND ${error_value_mm} < 2.0"
+    },
+    {
+      "hkb_stable_id": "archeology_scan_large:hkb:50",
+      "sql": "CASE WHEN ${environmental_suitability_index} IS NULL THEN NULL WHEN ${is_optimal_scanning_condition} THEN 'Optimal Scanning Conditions' WHEN ${environmental_suitability_index} >= 70.0 THEN 'Good Scanning Conditions' WHEN ${environmental_suitability_index} >= 50.0 THEN 'Acceptable Scanning Conditions' ELSE 'Challenging Scanning Conditions' END"
+    }
+  ]
+}

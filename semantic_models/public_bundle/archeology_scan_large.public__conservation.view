@@ -1,0 +1,10 @@
+label: Conservation
+description: Conservation records with public business context for structural stability.
+catalog: archeology_scan_large
+schema: public
+table_name: conservation
+dimensions:
+  structstate:
+    description: 'TEXT. Structural stability assessment status. Possible values: Moderate condition, careful monitoring required.'
+    label: Structural Stability
+    ai_context: 'Structural Stability: A categorical assessment with specific values: ''Stable'' indicates structures that maintain integrity under normal conditions, ''Unstable'' indicates structures showing signs of deterioration requiring intervention, and ''Critical'' indicates structures at imminent risk of collapse requiring emergency stabilization.'

@@ -1,0 +1,14 @@
+label: Archaeological Sites
+description: Site records with public business context for cultural period and estimated dating.
+catalog: archeology_scan_large
+schema: public
+table_name: sites
+dimensions:
+  phasefactor:
+    description: 'TEXT. Cultural period or chronological phase classification. **NULL means cultural period classification is undetermined or analysis incomplete.**. Example: Iron Age.'
+    label: Cultural Period
+    ai_context: 'Cultural Period: Classifies archaeological sites into standardized chronological/cultural periods. Values like ''Neolithic'' (10,000-4,500 BCE), ''Bronze Age'' (3,300-1,200 BCE), ''Roman'' (27 BCE-476 CE), or ''Medieval'' (476-1453 CE) determine applicable research methodologies, conservation approaches, and contextual interpretation frameworks.'
+  guessdate:
+    description: 'TEXT. Estimated date or age of archeologys materials. Example: -2929 BCE.'
+    label: Estimated Dating
+    ai_context: 'Estimated Dating: Values like ''3500-3000 BCE'', ''1st c. CE'', or ''ca. 1450 CE'' represent estimated chronological placement based on excavation findings. Precision varies from specific years to century-level estimates depending on available evidence and dating methodologies employed.'

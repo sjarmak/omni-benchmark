@@ -1,0 +1,10 @@
+label: Scan Processing
+description: Processing records with public business context for the processing-stage lifecycle.
+catalog: archeology_scan_large
+schema: public
+table_name: processing
+dimensions:
+  flowstage:
+    description: 'TEXT. Current processing stage or workflow step. Possible values: Aligned, Final, Meshed, Raw, Textured.'
+    label: Processing Stage
+    ai_context: 'Processing Stage: A sequential classification system with defined stages: ''Raw'' (unprocessed scan data), ''Aligned'' (multiple scans registered together), ''Cleaned'' (noise and artifacts removed), ''Meshed'' (point cloud converted to polygon mesh), and ''Textured'' (surface textures applied to mesh). Each stage represents a discrete processing milestone.'
