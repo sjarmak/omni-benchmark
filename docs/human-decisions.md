@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T08:47:33-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T08:57:28-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -14,12 +14,15 @@ empty queue at the timestamp above.
 
 ## Approved actions in progress
 
-| Bead | Approved scope | Boundary retained | Close the implementation work when |
-| --- | --- | --- | --- |
-| `omni-benchmark-dih.5.4.2.4.4.1.1` | Read the exact public Neon connection coordinates and generate credential-free SHA-256 target bindings for all 18 direct C1–C3 databases. | Persist only database name, physical database name, and digest—never host, endpoint, URL, password, or token. No connection mutation. | The inventory-bound sidecar and fail-closed loader are tested and committed. |
+No approved human-gated action is currently in progress.
 
 ## Recently completed
 
+- `omni-benchmark-dih.5.4.2.4.4.1.1` was completed at
+  `2026-08-28T08:57:28-04:00`. The credential-free bindings for all 18 direct
+  databases and their fail-closed inventory loader were tested and committed in
+  `459d3ce`. No endpoint, URL, password, token, or connection mutation entered
+  the repository.
 - `omni-benchmark-dih.15` was completed at
   `2026-08-28T08:47:33-04:00`. The public Git remote is configured and the
   explicitly authorized, reviewed history was pushed to `main`; Beads/Dolt

@@ -2718,3 +2718,78 @@ which matters for execution-result scoring and typed downstream consumers.
 Commit the pure deployment/readback adapter and canary documentation, update the
 C4 trace contract with the telemetry fields now observed, then use the same
 public-only gate before any multi-database bundle fan-out or scaled baseline.
+
+## 2026-08-28 — D-036: Land the direct comparator and move isolation to the driver
+
+### Decision / experiment
+
+Commit the reviewed C1–C3 runtime checkpoint, then resolve the remaining
+invocation-isolation and cross-condition parity concerns in the required
+executable driver rather than adding another identity layer.
+
+### Observation
+
+The direct-SQL implementation, condition configurations, database target
+bindings, and tests were complete but uncommitted and had no executable entry
+point. Independent review found no credential or SQL-admission blocker. It did
+find that caller-owned Claude working and temporary directories could affect
+behavior without appearing in the persisted model identity, and that parity was
+recorded per attempt but not yet enforced across the C1–C3 matrix.
+
+### Hypothesis
+
+A driver that creates fresh empty private work and scratch directories for every
+attempt and loads one committed model/budget/retry policy for all three direct
+conditions will remove the practical contamination path and enforce comparator
+parity without expanding the control plane.
+
+### Decision
+
+Land the current library and tests. Require the driver and public canary to prove
+per-attempt directory isolation and C1–C3 model/budget parity before any scaled
+run. Do not add another attestation or replay-protection layer. Do not add tests
+solely to satisfy an alternate per-module coverage denominator: the repository's
+branch-enabled suite remains the governing coverage check.
+
+### Rationale
+
+The observed risk occurs at invocation construction, which the missing driver
+must own. Fixing it there is smaller and easier to audit than threading another
+digest through every artifact. It also advances the actual blocker: producing a
+real, traceable comparator attempt.
+
+### Intervention
+
+Committed the direct runtime, C1–C3 configurations, all-18 target sidecar, trace
+contracts, and tests in `459d3ce`. Added the driver constraints to Bead
+`omni-benchmark-dih.5.4.2.5`. Change type: general system integration; affected
+surface: direct-comparator execution harness.
+
+### Result
+
+The independent code gate reported 442 focused tests and 1,218 full-suite tests
+passing, with 84.85% repository branch coverage. The independent security gate
+reported 241 adversarial tests passing and no critical or high-severity finding.
+Ruff, formatting, whitespace, and staged secret scans passed. No model call,
+gold data, hidden annotation, or correctness result was accessed.
+
+### Interpretation
+
+The comparator library is now reproducible from Git, but it is not yet a runnable
+benchmark condition. The next evidence must be an actual canary, not more control
+plane code.
+
+### Outcome
+
+KEEP / FOLLOW UP
+
+### Product implication
+
+Behaviorally relevant agent workspace state should be visible in run provenance,
+or the product should guarantee a clean invocation environment. Otherwise two
+apparently identical runs can inherit different instructions.
+
+### Next step
+
+Add the smallest C1–C3 driver, run one committed public dev-A question through
+all four conditions, and close the capture verification gate.
