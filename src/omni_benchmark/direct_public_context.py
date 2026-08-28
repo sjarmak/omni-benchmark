@@ -49,6 +49,8 @@ _PROMPT_PATH = Path("config/prompts/direct-sql-v1.txt")
 _SCHEMA_MANIFEST = Path("semantic_models/public_schema_ir/manifest.json")
 _HKB_MANIFEST = Path("semantic_models/public_ir/manifest.json")
 _SEMANTIC_MANIFEST = Path("semantic_models/public_bundle/manifest.json")
+_PUBLIC_BASELINE_ROOT = Path("semantic_models/public_baseline")
+_LEGACY_CANARY_DATABASE = "archeology_scan_large"
 _SHA256 = re.compile(r"[0-9a-f]{64}")
 _DATABASE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_]{0,127}")
 _POLICY_METADATA_INSTRUCTION = (
@@ -148,7 +150,9 @@ def _load_public_base(
     _validate_instructions(instructions.content)
     _validate_prompt(prompt.content)
 
-    schema_manifest = _load_committed(workspace, commit, _SCHEMA_MANIFEST, policy)
+    schema_manifest = _load_committed(
+        workspace, commit, _schema_manifest_path(selected_database), policy
+    )
     schema_input = _schema_input(
         workspace, commit, selected_database, schema_manifest, policy
     )
@@ -192,7 +196,10 @@ def _load_condition_references(
         )
     if base.condition == "C3":
         semantic_manifest = _load_committed(
-            workspace, commit, _SEMANTIC_MANIFEST, base.policy
+            workspace,
+            commit,
+            _semantic_manifest_path(base.database),
+            base.policy,
         )
         semantic_items = _semantic_items(
             workspace, commit, base.database, semantic_manifest, base.policy
@@ -202,6 +209,18 @@ def _load_condition_references(
             semantic_bytes=canonical(semantic_items),
         )
     return _ConditionReferences()
+
+
+def _schema_manifest_path(database: str) -> Path:
+    if database == _LEGACY_CANARY_DATABASE:
+        return _SCHEMA_MANIFEST
+    return _PUBLIC_BASELINE_ROOT / database / "schema_ir/manifest.json"
+
+
+def _semantic_manifest_path(database: str) -> Path:
+    if database == _LEGACY_CANARY_DATABASE:
+        return _SEMANTIC_MANIFEST
+    return _PUBLIC_BASELINE_ROOT / database / "bundle/manifest.json"
 
 
 def _public_tools(
