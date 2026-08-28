@@ -21,18 +21,18 @@ implementations actually isolate governed enforcement with model parity.
 | Property | C1 raw-schema SQL | C2 HKB-reference SQL | C3 Omni-model-reference SQL | C4 governed Omni |
 | --- | --- | --- | --- | --- |
 | Intended role | Competent direct-SQL baseline | Direct SQL with searchable business knowledge | Direct SQL with searchable structured semantic model | Production-default governed product |
-| Provider/model/version | Claude Code adapter 2.1.250; exact model is run-configured and must be pinned at Freeze B | Same as C1 | Same as C1 | Managed production selection; one public AI Hub diagnostic reported Bedrock `claude-opus-5`, but stage/model stability across runs remains unproven |
+| Provider/model/version | Claude Code adapter 2.1.250 through `anthropic_claude_code_oauth`, requesting `claude-opus-5`; realized model telemetry is recorded per attempt | Same as C1 | Same as C1 | Managed production selection; two public C4 probes reported Bedrock `claude-opus-5`, but stage/model stability across scaled runs remains unproven |
 | System instructions | Operative provider system prompt is code-bound; committed `direct-sql-v1.json` is non-operative policy metadata | Same operative provider prompt and condition-specific tool schema | Same operative provider prompt and condition-specific tool schema | Production agent instructions; export only if observable and permitted |
 | Available tools | Schema discovery, database query/execute, bounded error recovery | C1 plus database-level HKB search/get | C1 plus exported semantic-model search/get | Production Omni agent tools and governed query workflow |
 | Knowledge at runtime | Public schema/column metadata | Public schema plus database-level HKB; no hidden knowledge IDs | Public schema plus Omni model derived from public schema/HKB; no hidden knowledge IDs | Same public knowledge encoded in the governed model; no hidden knowledge IDs |
 | Retrieval/context | Complete committed public schema context | Public HKB search via unweighted SQLite FTS5 BM25 with canonical-order ties; not a whole-file prompt dump | Same retrieval algorithm over the searchable Omni semantic export | Production Omni discovery behavior |
 | Database access | Direct read-only benchmark database | Same | Same | Through Omni connection/governed query path |
 | Planning/orchestration | Direct agent, frozen after train-only tuning | Same base harness | Same base harness | Production composite workflow; stages disclosed when observable |
-| Retry behavior | Pending; matched ceiling across C1-C3 | Same | Same | Production-default retries; observed rather than artificially matched after treatment |
+| Retry behavior | Harness retry ceiling 0; provider-internal retry events are observed in the trace when exposed | Same | Same | Production-default retries; observed rather than artificially matched after treatment |
 | Compiler/query path | Agent emits SQL | Agent emits SQL | Agent emits SQL | Semantic query/objects compiled through Omni; generated SQL captured only if exposed |
 | Validation | Database execution/error handling only | Same | Same | Production validation behavior included |
-| Token/time ceilings | Pending; matched across C1-C3 | Same | Same | Production defaults where immutable; disclose any mismatch |
-| Current implementation state | Public context, pinned provider, attested PostgreSQL, capture, publisher, and committed v2-inventory/target-sidecar adapters pass synthetic/adversarial tests; authenticated live smoke pending | Same, including searchable public HKB and dependency-closure provenance | Same, including searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the first manifest-bound attempt exposed a truncation/telemetry defect now fixed in tests, with exact-commit rerun and scorer-type parity pending |
+| Token/time ceilings | Claude Code 2.1.250 exposes no supported input/output-token ceiling; each turn is limited to 120 seconds, USD 1 provider cost, and 12 total turns | Same | Same | Production defaults where immutable; disclose any mismatch |
+| Current implementation state | Public context, pinned provider, attested PostgreSQL, capture, publisher, committed database bindings, and executable driver pass synthetic/adversarial tests; authenticated live smoke pending | Same, including searchable public HKB and dependency-closure provenance | Same, including searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the exact-commit capture rerun preserved full telemetry on its deliberately unscoreable truncated result; scorer-type parity remains pending |
 
 Exact prompts, tool manifests, model identifiers, configuration hashes, retry
 ceilings, and version fingerprints are Freeze B artifacts. C1-C3 must be made
@@ -240,17 +240,18 @@ Before any 231-question baseline or expensive experiment:
    reruns.
 6. Record coverage by field and condition in this document.
 
-Current gate result: **not yet passed**. The public C4 product canary passed
-model validation, exact semantic readback, governed query execution, and AI Hub
-diagnostic inspection, exposing provider/model, token buckets, tool/query counts,
-and timings. The first complete manifest-bound attempt correctly rejected a
-truncated governed result but lost job telemetry on that failure path. The
-capture fix now passes synthetic, full-suite, and independent review gates; an
-exact-commit live rerun and typed-result scorer parity remain pending. The shared
-C1-C3 capture/publisher core and its public-context, provider,
-database-identity, and attested PostgreSQL adapters pass synthetic and
-adversarial tests. No four-condition live smoke bundle has passed the complete
-telemetry gate; scaled runs remain blocked until it does.
+Current gate result: **C4 capture sub-gate passed; four-condition gate not yet
+passed**. The exact-commit public C4 rerun at `dd8e7b1` preserved Bedrock
+`claude-opus-5`, 247,676 input tokens, 1,110 output tokens, three tool calls, one
+governed database query, and 29,338.859 ms latency while retaining the truncated
+result as an unscored `response_contract_error`. Its generation SHA-256 is
+`86814a6b5264cacc49d0ade910416b6521e4ab26f561819bfaa3701346914494` and its
+trace SHA-256 is
+`b9243d2a9f6e0d74d36b858282db79ee2fea482ee2b317f18826bd8d2ba4114d`.
+The C1-C3 executable driver and capture/publisher core now pass synthetic and
+adversarial tests, but their authenticated live attempts and typed-result scorer
+parity remain pending. No four-condition live smoke bundle has passed the
+complete telemetry gate; scaled runs remain blocked until it does.
 
 ## AI Hub diagnostic boundary
 

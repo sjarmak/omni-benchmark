@@ -217,9 +217,36 @@ complete unscored `generation.jsonl`, and a generation-bound `run.json`. The
 stdout receipt contains only paths, hashes, sizes, terminal state, and a hash of
 the private Omni job ID. It never writes correctness or identity values.
 
-Use the same public question, run ID, and repetition for C1-C3. Once all four
-condition bundles exist, validate the cross-condition smoke gate with four
-`--bundle CONDITION GENERATION RUN_MANIFEST MANIFEST_SHA256` arguments:
+The C1-C3 driver requires the exact read-only PostgreSQL coordinates in the
+process environment (`PGHOST`, `PGDATABASE`, `PGUSER`, and `PGPASSWORD`) and a
+private Claude Code OAuth directory. It forwards only the PostgreSQL allowlist
+to the database transport, creates fresh empty `0700` home/temp/work directories
+for the model invocation, and removes them afterward. Run this command once for
+each direct condition, using the same public question, run ID, and repetition as
+C4 and a new condition-specific output root each time:
+
+```bash
+uv run python scripts/direct_probe.py \
+  --workspace "$PWD" \
+  --system-commit "$SYSTEM_COMMIT" \
+  --instance-id <committed-dev-A-id> \
+  --condition <C1|C2|C3> \
+  --output-root experiments/autoresearch/raw/<condition>-contract-probe \
+  --run-id telemetry-smoke-v1 \
+  --repetition 1 \
+  --claude-config-dir "$CLAUDE_CONFIG_DIR" \
+  --execute-authenticated-smoke
+```
+
+The shared committed direct-runtime policy pins the same provider, requested
+model, effort, retry ceiling, turn limit, per-turn timeout, and per-turn cost
+ceiling for C1-C3. Token ceilings remain explicitly unavailable because the
+pinned Claude Code adapter exposes no supported token-limit setting; observed
+provider tokens are captured as outcomes.
+
+Once all four condition bundles exist, validate the cross-condition smoke gate
+with four `--bundle CONDITION GENERATION RUN_MANIFEST MANIFEST_SHA256`
+arguments:
 
 ```bash
 uv run python scripts/autoresearch.py \

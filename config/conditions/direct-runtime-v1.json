@@ -1,0 +1,16 @@
+{
+  "adapter": "claude-code-restricted-mcp",
+  "adapter_version": "1.0.0",
+  "budget_id": "direct-sql-public-baseline-v1",
+  "effort": "high",
+  "harness_retry_ceiling": 0,
+  "input_token_ceiling": null,
+  "maximum_cost_usd_per_turn": 1.0,
+  "maximum_turns": 12,
+  "model": "claude-opus-5",
+  "output_token_ceiling": null,
+  "provider": "anthropic_claude_code_oauth",
+  "schema_version": 1,
+  "timeout_seconds_per_turn": 120.0,
+  "token_ceiling_unavailable_reason": "claude_code_2.1.250_exposes_no_supported_token_limit"
+}
