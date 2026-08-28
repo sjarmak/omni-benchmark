@@ -3446,3 +3446,86 @@ governance claim.
 Deploy the frozen public-only bundles through isolated Omni branches, preserve
 the complete 231-question baseline outputs, and use execution traces to learn
 which representation gaps actually become answer failures.
+
+## 2026-08-28 — D-044: Adapt action variants to Claude's structured-output root
+
+### Decision / experiment
+
+Diagnose the first authenticated, exact-commit C1 attempt that reached the
+capacity-selected OAuth account but terminated before inference.
+
+### Observation
+
+Commit `e695afa` passed the committed public-question gate, exact archeology
+database identity/parity, read-only attestation, credential isolation, pinned
+Claude binary identity, and tool-surface initialization. The provider returned
+HTTP 400 in 784 ms with zero tokens, tool calls, or database queries. A bounded
+replay of the same initial model turn identified the rejected contract:
+Claude's `StructuredOutput` custom input schema does not accept `oneOf`,
+`allOf`, or `anyOf` at its top level. A minimal scalar schema succeeded under
+the same binary, model, account, and restrictions.
+
+### Hypothesis
+
+The action variants themselves are valid, but their placement is incompatible
+with the provider adapter. Nesting the existing strict variant schema under one
+required top-level `action` property should satisfy the provider's root-shape
+constraint while preserving the full variant contract and deterministic local
+validation after mechanical unwrapping.
+
+### Decision
+
+Test the narrow envelope adaptation under Bead
+`omni-benchmark-dih.5.4.2.5.5`. Do not flatten the schema into a permissive set
+of optional fields and do not weaken `validate_action`. Require exactly one
+top-level `action` key from the provider, then validate its value against the
+same local tool/answer/refusal rules as before.
+
+### Rationale
+
+This change directly unblocks baseline generation and isolates a provider
+schema-compilation defect found by the vertical slice. A permissive flat schema
+would move errors downstream and reduce generation guidance; changing the
+action protocol itself would be broader than the observed incompatibility.
+
+### Intervention
+
+Optimization surface: model-transport compatibility; change type: general
+system integration. A RED command-schema test required a composition-free
+provider root with the existing variants nested beneath `action`. The transport
+then mechanically unwraps only an exact one-key envelope before applying the
+unchanged local action validator.
+
+### Result
+
+The RED test failed on the former top-level `oneOf`. After the adaptation, 58
+focused transport/provider-compatibility tests and the 436-test Claude/direct
+suite pass with 87.46% scoped branch coverage; Ruff and formatting pass.
+Adversarial cases reject a missing, empty, extra-key, or double-wrapped envelope.
+A bounded live replay using the
+same pinned binary, model, account, public question, and C1 tool schema now
+succeeds: Claude returned an `inspect_schema` action after 1,428 input and 98
+output tokens, zero retries, and $0.01672. Independent review and the immutable
+full-driver replay remain pending.
+
+### Interpretation
+
+The provider incompatibility was the causal zero-token failure. Preserving the
+variant schema one level below the provider root restores inference without
+loosening the harness-owned action contract.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Semantic agent harnesses need an explicit adapter boundary between their
+internal typed action protocol and each provider's supported JSON-Schema
+dialect. Treating standard JSON Schema as uniformly portable caused a complete,
+zero-token system failure that synthetic validation did not reveal.
+
+### Next step
+
+Implement and review the minimal nested envelope, then rerun C1 from a fresh
+exact-commit worktree and artifact root.

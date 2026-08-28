@@ -135,7 +135,7 @@ def _success_stream(
             "modelUsage": model_usage,
             "result": json.dumps(action),
             "session_id": "session-1",
-            "structured_output": action,
+            "structured_output": {"action": action},
             "subtype": "success",
             "total_cost_usd": total_cost_usd,
             "type": "result",
@@ -347,7 +347,14 @@ def test_json_schema_is_limited_to_harness_action_and_offered_tools(
 
     schema = json.loads(_value_after(runner.calls[0]["command"], "--json-schema"))
     assert schema["additionalProperties"] is False
-    variants = schema["oneOf"]
+    assert set(schema) == {
+        "additionalProperties",
+        "properties",
+        "required",
+        "type",
+    }
+    assert schema["required"] == ["action"]
+    variants = schema["properties"]["action"]["oneOf"]
     tool_variants = [item for item in variants if "name" in item["properties"]]
     assert [item["properties"]["name"]["const"] for item in tool_variants] == [
         "inspect_schema",

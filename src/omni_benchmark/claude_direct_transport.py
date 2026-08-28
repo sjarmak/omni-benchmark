@@ -641,7 +641,12 @@ def _validated_action(
             evidence.retry_count,
             terminal,
         )
-    action = evidence.result.get("structured_output")
+    envelope = evidence.result.get("structured_output")
+    action = (
+        envelope.get("action")
+        if isinstance(envelope, Mapping) and set(envelope) == {"action"}
+        else None
+    )
     try:
         validate_action(action, tool_specs)
     except ClaudeDirectTransportError as error:

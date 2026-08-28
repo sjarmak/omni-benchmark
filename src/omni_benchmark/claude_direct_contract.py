@@ -697,7 +697,7 @@ def action_schema(tool_specs: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
         "required": ["type", "reason"],
         "type": "object",
     }
-    return {
+    variants = {
         "additionalProperties": False,
         "oneOf": [*tool_variants, answer, refusal],
         "properties": {
@@ -707,6 +707,12 @@ def action_schema(tool_specs: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
             "sql": {"type": "string"},
             "type": {"type": "string"},
         },
+        "type": "object",
+    }
+    return {
+        "additionalProperties": False,
+        "properties": {"action": variants},
+        "required": ["action"],
         "type": "object",
     }
 
