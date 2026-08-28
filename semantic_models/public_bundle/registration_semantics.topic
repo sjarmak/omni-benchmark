@@ -3,4 +3,5 @@ label: Scan Registration
 description: Registration records with row-level alignment method, accuracy, error, and quality-threshold semantics.
 fields:
 - archeology_scan_large_public__registration.*
+joins: {}
 ai_context: Use the modeled business fields registration_accuracy_mm, error_value_mm, registration_method, meets_registration_quality_threshold rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

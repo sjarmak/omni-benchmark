@@ -3,4 +3,5 @@ label: Scanning Environment
 description: Environmental records with row-level temperature, humidity, illumination, and suitability semantics.
 fields:
 - archeology_scan_large_public__environment.*
+joins: {}
 ai_context: Use the modeled business fields ambient_temperature_c, relative_humidity_pct, light_lux, environmental_suitability_index, is_optimal_scanning_condition, environmental_condition_classification rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

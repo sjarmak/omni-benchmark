@@ -3,4 +3,5 @@ label: Point Cloud Scans
 description: Point-cloud scan records with row-level resolution, coverage, noise, and quality semantics.
 fields:
 - archeology_scan_large_public__pointcloud.*
+joins: {}
 ai_context: Use the modeled business fields scan_resolution_mm, point_density, coverage_pct, overlap_pct, noise_db, scan_resolution_index, scan_coverage_effectiveness, is_high_resolution_scan, has_comprehensive_coverage, scan_quality_score, is_premium_quality_scan rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

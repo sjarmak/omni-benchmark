@@ -220,6 +220,7 @@ def test_compile_bundle_emits_executable_field_context_topic_and_provenance() ->
     topic = yaml.safe_load(bundle.files["pointcloud_semantics.topic"])
     assert topic["base_view"] == "db_public__pointcloud"
     assert topic["fields"] == ["db_public__pointcloud.*"]
+    assert topic["joins"] == {}
     assert "resolution_index" in topic["ai_context"]
     assert bundle.manifest["validation"] == {
         "all_compile_mappings_materialized": True,

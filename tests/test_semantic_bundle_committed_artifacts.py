@@ -53,7 +53,7 @@ def test_committed_public_bundle_regenerates_byte_for_byte() -> None:
 
     assert json.loads((BUNDLE_ROOT / "manifest.json").read_bytes()) == manifest
     assert hashlib.sha256((BUNDLE_ROOT / "manifest.json").read_bytes()).hexdigest() == (
-        "ba441ace28dc730508bf8de1771b18a61e83eec5050f8d44a4643bc83cfbe76d"
+        "761371f4eebef183cdf54cbbd5f146ebb67652ebcf72aeb6623eb79f70390802"
     )
     assert {path.name for path in BUNDLE_ROOT.iterdir()} == {
         *files,
@@ -68,7 +68,7 @@ def test_committed_public_bundle_is_public_only_and_no_join() -> None:
 
     assert manifest["source"] == {
         "bundle_spec": {
-            "sha256": "a3151e6a9981907e533db9da5e51e5df871bc669786c9da1319d1a91757a2312"
+            "sha256": "654a9f76edd8f0a20fd47fbe5a1941fa538fb68ff70470fddee234b673d3caa5"
         },
         "hkb_ir": {
             "sha256": "c6b20ec0e101f080712255645554cea2685deca7929a8c6d4c3391aeecf92d37"

@@ -8,8 +8,8 @@
     },
     {
       "file": "pointcloud_semantics.topic",
-      "sha256": "efb2bc34b791fb15f5a6eac237ae8b49cdb08eaa367b2215cc154a603c9693a9",
-      "size_bytes": 600
+      "sha256": "b27cd91a3fa2d2df909bbbb685066a5c569ce524162ef1e970f543a0ca149fbc",
+      "size_bytes": 610
     },
     {
       "file": "archeology_scan_large.public__mesh.view",
@@ -18,8 +18,8 @@
     },
     {
       "file": "mesh_semantics.topic",
-      "sha256": "da5cc5fe5fcf3da0dbba3b5adfa0da2c804badd6fcbf6932f6a0b63db8515cfd",
-      "size_bytes": 543
+      "sha256": "6d0593c22be25c2f66ec70ced7ec0c12d2d224d917ff06d43585b9cae6e0c7ec",
+      "size_bytes": 553
     },
     {
       "file": "archeology_scan_large.public__environment.view",
@@ -28,8 +28,8 @@
     },
     {
       "file": "environment_semantics.topic",
-      "sha256": "8953b4d39a9385fd2db3d27dd8c672fa106cb92df7a75009592aeb672f49de0e",
-      "size_bytes": 553
+      "sha256": "71736d5aac75e1a3c6dd0420c99513c43d5bdd5a9027b2c41b39a386ef582430",
+      "size_bytes": 563
     },
     {
       "file": "archeology_scan_large.public__registration.view",
@@ -38,8 +38,8 @@
     },
     {
       "file": "registration_semantics.topic",
-      "sha256": "ce80cd8562d92e7aa80bab28097e72d53a599e4805b3c838c96d6ca3bf13c42a",
-      "size_bytes": 495
+      "sha256": "dd81031e98155f2ace0cee9ea945da99b0f417b985a5589b5a49d153c71de0b0",
+      "size_bytes": 505
     },
     {
       "file": "archeology_scan_large.public__sites.view",
@@ -48,8 +48,8 @@
     },
     {
       "file": "site_semantics.topic",
-      "sha256": "7472e47969fbd71a325539f61a12b6cc5c2af5ae408f57069f0496809c797632",
-      "size_bytes": 387
+      "sha256": "52f3477259c59ce2de11f9a452d1bf3aa6b8ca63ee92c6a50ba404e0d6a66450",
+      "size_bytes": 397
     },
     {
       "file": "archeology_scan_large.public__conservation.view",
@@ -58,8 +58,8 @@
     },
     {
       "file": "conservation_semantics.topic",
-      "sha256": "f8bcc284da6f38a4409eb36ba763b7958027e25673f3fe6084064bfcb52014b2",
-      "size_bytes": 374
+      "sha256": "2c22b55448ca8077fb0ecf67c59caf17b8b20302bad32309c32ebab72cc087cb",
+      "size_bytes": 384
     },
     {
       "file": "archeology_scan_large.public__processing.view",
@@ -68,8 +68,8 @@
     },
     {
       "file": "processing_semantics.topic",
-      "sha256": "a9701333a64220b493e5af7e92f5f7dc6ae55411e80fb6077bd5cf705d0d826c",
-      "size_bytes": 379
+      "sha256": "da263507153faf81150cd3feb412bfc1f1347b279df1b50bb7df17da973754fd",
+      "size_bytes": 389
     }
   ],
   "kind": "public-omni-semantic-bundle",

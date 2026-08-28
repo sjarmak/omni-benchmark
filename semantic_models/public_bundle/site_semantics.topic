@@ -3,4 +3,5 @@ label: Archaeological Sites
 description: Site records with public business context for cultural period and estimated dating.
 fields:
 - archeology_scan_large_public__sites.*
+joins: {}
 ai_context: Use the modeled business fields phasefactor, guessdate rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

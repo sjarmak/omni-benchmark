@@ -528,6 +528,7 @@ def _topic_document(
         "label": _text(view.get("label"), "topic label"),
         "description": _text(view.get("description"), "topic description"),
         "fields": [f"{view_name}.*"],
+        "joins": {},
         "ai_context": (
             f"Use the modeled business fields {field_names} rather than reconstructing "
             "their definitions. This topic intentionally models no cross-table joins."
