@@ -28,7 +28,7 @@ dimensions:
   community_contribution_level:
     description: 'TEXT. Type and level of contribution to community activities. **NULL means contribution assessment incomplete or minimal community participation.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
     label: Community Contribution Level
-    sql: ${comm_contrib}
+    sql: comm_contrib
     ai_context: 'Community Contribution Level: Measures a fan''s positive impact on the community. Levels include ''High'', ''Medium'', and ''Low'', often associated with group roles and content creation.'
   community_role:
     description: TEXT. Role or position held within community groups. **NULL means no specific group role assigned or participating as regular member.**

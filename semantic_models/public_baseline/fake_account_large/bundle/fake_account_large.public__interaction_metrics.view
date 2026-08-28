@@ -7,5 +7,5 @@ dimensions:
   conversation_naturalness_value:
     description: 'REAL. Conversation nature score. Example: 0.825.'
     label: Conversation Naturalness Value
-    sql: ${conv_nat}
+    sql: '"ConvNat"'
     ai_context: 'conversation naturalness value: Ranges from 0 to 1. Values above 0.7 indicate natural human conversation, while values below 0.3 suggest automated or scripted responses.'

@@ -7,12 +7,12 @@ dimensions:
   stellar_distance_parsec:
     description: Distance to the host star measured in parsecs from 'st_dist'. REAL accommodating distances from 3.21 to 8500 parsecs. Contains  NULL when stellar distance measurements are unavailable or unreliable.
     label: Stellar Distance (pc)
-    sql: ${stellardist}
+    sql: stellardist
     ai_context: 'Stellar Distance Value: Measured in parsecs (pc), where 1 parsec equals about 3.26 light-years. Values range from nearby stars like Proxima Centauri (~1.3 pc) to stars thousands of parsecs away.'
   companion_count:
     description: Total number of confirmed planetary companions from 'pl_pnum'. INTEGER count of planets orbiting this host star, ranging from 1 to 8+ planets per system.
     label: Confirmed Planet Count
-    sql: ${compcount}
+    sql: compcount
   apparent_magnitude:
     description: Optical magnitude of the host star from 'st_optmag'. REAL covering magnitude range typically from -1.5 to 20+ magnitudes. Contains  NULL when stellar magnitude measurements are not available.
     label: Apparent Magnitude

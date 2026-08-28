@@ -13,11 +13,11 @@ dimensions:
   vehicle_count:
     description: 'BIGINT. Number of vehicles available. **NULL means vehicle count not recorded.**. Example: 141.0.'
     label: Vehicle Count
-    sql: ${vehiclecount}
+    sql: vehiclecount
   last_mile_status:
     description: 'TEXT. Status of the last-mile delivery. Possible values: Delayed, On Track, Suspended.'
     label: Last-Mile Delivery Status
-    sql: ${lastmilestatus}
+    sql: lastmilestatus
     ai_context: 'Last-Mile Delivery Status: ''On Track'': Deliveries are proceeding as planned. ''Delayed'': Deliveries are facing obstacles and are behind schedule. ''Suspended'': Deliveries have been halted due to safety, access, or other critical issues.'
   logistical_throughput_per_vehicle:
     label: Logistical Throughput per Vehicle (LTV)

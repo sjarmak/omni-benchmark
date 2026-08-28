@@ -7,10 +7,11 @@ dimensions:
   verification_tier:
     description: 'TEXT. Verification-tier level assigned to the vendor. **NULL means verification tier not yet assigned or unavailable.**. Possible values: Advanced, Basic, Premium.'
     label: Verification Tier
-    sql: ${ver_tier}
+    sql: '"VerTier"'
   access_level:
     description: 'TEXT. Access-privilege level granted to the vendor account. **NULL means access level has not been set.**. Possible values: Full, Partial.'
     label: Access Level
+    sql: '"AccessLevel"'
     ai_context: 'Vendor Access Levels: Values: Full, Partial. Label descriptions: - Full: Vendor can create listings, modify inventory, withdraw funds, and communicate without restriction. - Partial: Vendor functionality is limited, typically view only or blocked from withdrawals until verification is complete.'
   is_advanced_verification_tier:
     label: Advanced Verification Tier

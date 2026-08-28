@@ -7,11 +7,11 @@ dimensions:
   follower_growth_rate:
     description: 'REAL. Follower growth rate. Example: 0.697.'
     label: Follower Growth Rate
-    sql: ${foll_grow}
+    sql: '"FollGrow"'
   following_growth_rate:
     description: 'REAL. Following growth rate. Example: 0.899.'
     label: Following Growth Rate
-    sql: ${fing_grow}
+    sql: '"FingGrow"'
   network_growth_velocity:
     label: Network Growth Velocity (NGV)
     description: Measures the rate of network growth considering both followers and following.

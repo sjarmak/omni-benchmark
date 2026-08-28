@@ -7,24 +7,27 @@ dimensions:
   insulation_status:
     description: 'TEXT. Insulation status. Possible values: Fair, Good, Poor.'
     label: Insulation Status
-    sql: ${insulation_stat}
+    sql: '"insulationStat"'
   heat_loss_rate_kwh:
     description: 'REAL. Heat loss in kilowatt-hours. **NULL means no heat loss data recorded.**. Example: 1.11.'
     label: Heat Loss Rate (kWh)
-    sql: ${heat_loss_kwh}
+    sql: '"heatLoss_kwh"'
   solar_output_w:
     description: 'REAL. Solar panel output in watts. Example: 746.1.'
     label: Solar Output (W)
+    sql: '"solarOutput_w"'
   wind_output_w:
     description: 'REAL. Wind turbine output in watts. **NULL means no wind output data recorded.**. Example: 656.8.'
     label: Wind Output (W)
+    sql: '"windOutput_w"'
   fuel_cell_output_w:
     description: 'REAL. Fuel cell output in watts. Example: 185.0.'
     label: Fuel Cell Output (W)
+    sql: '"fuelCellOutput_w"'
   fuel_cell_efficiency_percent:
     description: 'REAL. Fuel cell efficiency percentage. Example: 48.2.'
     label: Fuel Cell Efficiency Percent
-    sql: ${fuel_cell_eff_pct}
+    sql: '"fuelCellEffPct"'
     ai_context: 'fuelcellefficiencypercent: Fuel cell efficiency percentages typically range from 40% to 90%. Values below 50% represent older or degraded fuel cell technology, 50-70% indicate standard efficiency modern fuel cells suitable for general applications, and values above 70% represent high-performance fuel cells with optimal conversion of chemical energy to electrical power with minimal waste heat generation.'
   thermal_insulation_efficiency:
     label: Thermal Insulation Efficiency (TIE)

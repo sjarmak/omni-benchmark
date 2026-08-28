@@ -7,27 +7,27 @@ dimensions:
   donor_serum_creatinine:
     description: 'TEXT. Donor''s serum creatinine level indicating kidney function. Example: 1.62 mg/dL.'
     label: Donor Serum Creatinine
-    sql: ${don_crtn_val}
+    sql: don_crtn_val
     ai_context: 'Serum Creatinine Levels: A waste product from muscle metabolism, cleared by the kidneys. Normal values are typically 0.7-1.3 mg/dL. A high value, such as 2.5 mg/dL, suggests impaired kidney function, which is a key component of the Renal Function Score.'
   donor_gfr:
     description: 'REAL. Donor''s glomerular filtration rate measuring kidney function. Example: 103.4 mL/min/1.73m².'
     label: Donor GFR
-    sql: ${don_gfr_val}
+    sql: don_gfr_val
     ai_context: 'Glomerular Filtration Rate (GFR) Values: GFR measures how well the kidneys are filtering blood. A GFR > 90 mL/min/1.73m² is considered normal. A GFR of 30-59 indicates moderate kidney disease, and a GFR < 15 signifies kidney failure.'
   cold_ischemia_time:
     description: 'TEXT. Cold ischemia time in minutes from recovery to transplant. Example: 702 mins.'
     label: Cold Ischemia Time
-    sql: ${org_isch_time}
+    sql: org_isch_time
     ai_context: 'Cold Ischemia: A state of organ preservation where metabolic activity is slowed by cooling, typically to around 4°C, to minimize tissue damage while outside the body. This is a critical factor in transplant success.'
   preservation_method:
     description: 'TEXT. Method used for organs preservation during transport. Possible values: Static cold storage, standard preservation method.'
     label: Organ Preservation Method
-    sql: ${org_presv_meth}
+    sql: org_presv_meth
     ai_context: 'Static Cold Storage: A preservation technique that relies on hypothermia to reduce the organ''s metabolic rate and oxygen demand during transport, minimizing tissue damage during Cold Ischemia.'
   cause_of_death_description:
     description: 'TEXT. Description of donor''s cause of death. Possible values: Anoxia, oxygen deprivation may affect organ quality.'
     label: Cause of Death Description
-    sql: ${don_co_desc}
+    sql: don_co_desc
     ai_context: 'Anoxia: A donor''s cause of death resulting from a complete lack of oxygen. [cite_start]Within the database, this specific cause is recorded as ''Anoxia'' in the donor''s cause of death description (`don_co_desc` [cite: 15]). This factor is critical for assessing the viability of oxygen-sensitive organs, such as the heart and kidneys.
 
       Cause of Death Impact: The mechanism of death influences organ viability. For example, death due to Anoxia (oxygen deprivation) can compromise the function of oxygen-sensitive organs like the heart and kidneys. In contrast, death from head trauma may leave abdominal organs in optimal condition.'

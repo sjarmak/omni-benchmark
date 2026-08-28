@@ -7,4 +7,5 @@ dimensions:
   gdpr_comp:
     description: 'TEXT. Compliance status with the General Data Protection Regulation (GDPR). Possible values: Compliant, Partial, Non-compliant.'
     label: GDPR Compliance Status
+    sql: '"gdprComp"'
     ai_context: 'GDPR Compliance Status: Values: compliant, non-compliant, or partial.'

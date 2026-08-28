@@ -7,34 +7,34 @@ dimensions:
   net_expense_ratio:
     description: 'DECIMAL. Net expense ratio representing the annual cost to investors after fee waivers and reimbursements, expressed as a decimal (e.g., 0.0132 = 1.32%). Example: 0.0132, 0.0101, 0.0014. Contains NULL when expense ratio data is not yet reported or fund is too new to have established fees.'
     label: Net Expense Ratio
-    sql: ${expensenet}
+    sql: expensenet
     ai_context: 'Net Expense Ratio: The annual fee charged to investors as a percentage of assets. A value of 0.005 corresponds to a 0.5% annual fee. Lower is generally better, as costs directly reduce returns.'
   benchmark_expense_ratio:
     description: 'DECIMAL. Benchmark expense ratio representing the cost of tracking the fund''s benchmark index, expressed as a decimal (e.g., 0.0022 = 0.22%). Example: 0.0022, 0.0028, 0.0038. Contains NULL when benchmark expense data is not available or fund does not track a benchmark index.'
     label: Benchmark Expense Ratio
-    sql: ${benchmarkexp}
+    sql: benchmarkexp
   yield_rate:
     description: 'DECIMAL. Distribution yield or dividend yield of the fund, expressed as a decimal (e.g., 0.0467 = 4.67%). Example: 0.3153, 0.0061, 0.0454. Contains NULL when the fund does not distribute dividends or yield data is not yet calculated.'
     label: Yield Rate
-    sql: ${yieldrate}
+    sql: yieldrate
     ai_context: 'Yield Rate: Represents the annual dividend per share as a percentage of the share''s price. A value of 0.02 signifies a 2% yield. This is a crucial metric for income-focused investors.'
   moving_average_50_day:
     description: 'DECIMAL. 50-day moving average price of the fund, used for medium-term trend analysis. Example: 38.636, 147.557, 25.59. Contains NULL when insufficient trading history exists to calculate 50-day average.'
     label: 50-Day Moving Average
-    sql: ${ma50}
+    sql: ma50
   moving_average_200_day:
     description: 'DECIMAL. 200-day moving average price of the fund, used for long-term trend analysis. Example: 56.79, 78.798, 39.194. Contains NULL when insufficient trading history exists to calculate 200-day average.'
     label: 200-Day Moving Average
-    sql: ${ma200}
+    sql: ma200
   equity_weight:
     description: 'DECIMAL. Proportion of fund assets allocated to equity/stock holdings, expressed as a decimal between 0 and 1 (e.g., 0.9937 = 99.37%). Example: 0.9937, 0.9977, 0.1244. Contains NULL when asset allocation data is not available or fund structure does not support weight breakdown.'
     label: Equity Weight
-    sql: ${equityweight}
+    sql: equityweight
     ai_context: 'Equity Weight: The percentage of the fund''s assets invested in equities (stocks). A value of 0.9 indicates that 90% of the fund is invested in stocks, suggesting a growth-oriented strategy.'
   turnover_ratio:
     description: 'DECIMAL. Annual portfolio turnover ratio indicating how frequently the fund trades its holdings, expressed as a decimal (e.g., 1.6 = 160% turnover). Example: 1.6, 0.43, 0.1879. Contains NULL when turnover data is not yet available or fund has insufficient trading history.'
     label: Turnover Ratio
-    sql: ${turnoverratio}
+    sql: turnoverratio
     ai_context: 'Turnover Ratio: Measures how frequently assets within a fund are bought and sold. A ratio of 1.0 (100%) means the fund replaces its entire portfolio once per year. A low value (<0.3) suggests a buy-and-hold strategy, while a high value (>1.0) indicates active trading.'
   geographic_focus:
     description: Geographic region or market focus of the fund (e.g., 'US', 'International', 'Emerging Markets', 'Global'). Contains  NULL when geographic focus is not specified or fund has global diversification without specific regional focus.
@@ -46,31 +46,32 @@ dimensions:
   duration:
     description: 'DECIMAL. Modified duration of the fund''s bond portfolio, measuring sensitivity to interest rate changes in years. Higher values indicate greater interest rate risk. Example: 3.12, 2.73, 11.58. Contains NULL when the fund does not hold fixed-income securities or duration calculation is not applicable.'
     label: Duration
+    sql: duration
     ai_context: 'Duration: Measures how much a bond fund''s price is likely to change for every 1% change in interest rates. A duration of 7 years means the fund''s price will likely fall by about 7% if interest rates rise by 1%.'
   net_worth:
     description: 'BIGINT. Total net asset value (NAV) of the fund in base currency units, representing assets under management. Example: 26004670464, 145110080, 8899219. Contains NULL when NAV data is not yet reported or fund is in liquidation process.'
     label: Net Worth
-    sql: ${networth}
+    sql: networth
   average_daily_volume_3m:
     description: 'BIGINT. Average daily trading volume over the past 3 months, indicating liquidity and trading activity. Example: 43115, 499616, 705119.'
     label: Average Daily Volume (3M)
-    sql: ${vol3m}
+    sql: vol3m
   price_to_earnings_ratio:
     description: 'DECIMAL. Price-to-earnings ratio of the fund''s underlying equity holdings, indicating valuation relative to earnings. Example: 10.87, 24.59, 34.94. Contains NULL when the fund does not hold equities or P/E calculation is not applicable (e.g., bond funds, funds with negative earnings).'
     label: Price-to-Earnings Ratio
-    sql: ${pe_ratio}
+    sql: pe_ratio
   price_to_sales_ratio:
     description: 'DECIMAL. Price-to-sales ratio of the fund''s underlying equity holdings, measuring valuation relative to revenue. Example: 6.19, 0.64, 2.04. Contains NULL when the fund does not hold equities or P/S calculation is not applicable.'
     label: Price-to-Sales Ratio
-    sql: ${ps_ratio}
+    sql: ps_ratio
   price_to_book_ratio:
     description: 'DECIMAL. Price-to-book ratio of the fund''s underlying equity holdings, indicating valuation relative to book value. Example: 1.6, 2.35, 4.32. Contains NULL when the fund does not hold equities or P/B calculation is not applicable (e.g., bond funds).'
     label: Price-to-Book Ratio
-    sql: ${pb_ratio}
+    sql: pb_ratio
   price_to_cash_flow_ratio:
     description: 'DECIMAL. Price-to-cash-flow ratio of the fund''s underlying equity holdings, measuring valuation relative to operating cash flow. Example: 12.01, 16.22, 10.87. Contains NULL when the fund does not hold equities or P/CF calculation is not applicable.'
     label: Price-to-Cash-Flow Ratio
-    sql: ${pcf_ratio}
+    sql: pcf_ratio
   relative_expense_ratio:
     label: Relative Expense Ratio
     description: Measures the difference between a fund's net expense ratio and its benchmark's expense ratio.

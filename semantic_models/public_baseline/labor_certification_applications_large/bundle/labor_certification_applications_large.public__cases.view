@@ -7,26 +7,26 @@ dimensions:
   visa_classification:
     description: 'enum_visa_class. Visa class for the case. Possible values: E-3 Australian, H-1B, H-1B1 Chile, H-1B1 Singapore.'
     label: Visa Classification
-    sql: ${visacls}
+    sql: visacls
     ai_context: 'Visa Classification Types: The visa classification system includes several types: H-1B (specialty occupations requiring theoretical and practical application of specialized knowledge), H-1B1 Singapore (Singapore nationals in specialty occupations), H-1B1 Chile (Chilean nationals in specialty occupations), and E-3 Australian (Australian nationals in specialty occupations).'
   public_disclosure_status:
     description: 'TEXT. Public disclosure status. Possible values: Disclose Business, Disclose Business and Employment, Disclose Employment.'
     label: Public Disclosure Status
-    sql: ${pubdisc}
+    sql: pubdisc
     ai_context: 'Public Disclosure Options: Employers can choose whether their business information is publicly disclosed in the visa application process. ''Disclose Business'' indicates the employer consents to having their information publicly available, while other options may restrict disclosure to protect confidential business information. Disclosure choices are recorded as part of the application data.'
   application_status:
     description: 'TEXT. Current status of the case. Possible values: CERTIFIED, Certified, certified.'
     label: Application Status
-    sql: ${statustag}
+    sql: statustag
     ai_context: 'Application Status Categories: Possible outcomes for a visa application include: Certified (approved), Denied (rejected), Withdrawn (voluntarily withdrawn by applicant), and Certified-Withdrawn (approved but later withdrawn). Application status is tracked as part of the application data.'
   worker_positions:
     description: 'BIGINT. Total number of worker positions in the case. Possible values: 1, 3, 4, 5, 6, 10, 25, 50.'
     label: Worker Positions
-    sql: ${headct}
+    sql: headct
   worksite_count:
     description: 'BIGINT. Total number of worksite locations. Possible values: 1, 2, 3, 4, 5, 10.'
     label: Worksite Count
-    sql: ${siteslots}
+    sql: siteslots
   worksite_density:
     label: Worksite Density (WD)
     description: Measures the number of visa workers per worksite.

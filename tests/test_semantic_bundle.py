@@ -241,7 +241,7 @@ def test_compile_bundle_normalizes_physical_names_and_emits_explicit_alias_sql()
             {
                 "database": "db",
                 "description": "Process compliance state.",
-                "identifier": {"name": "procComp"},
+                "identifier": {"name": "procComp", "quoted": True},
                 "record_kind": "column",
                 "stable_id": "db:column:pointcloud:procComp",
                 "table_stable_id": "db:table:pointcloud",
@@ -249,7 +249,7 @@ def test_compile_bundle_normalizes_physical_names_and_emits_explicit_alias_sql()
             {
                 "database": "db",
                 "description": "Route complexity state.",
-                "identifier": {"name": "RouteComplex"},
+                "identifier": {"name": "RouteComplex", "quoted": True},
                 "record_kind": "column",
                 "stable_id": "db:column:pointcloud:RouteComplex",
                 "table_stable_id": "db:table:pointcloud",
@@ -257,7 +257,7 @@ def test_compile_bundle_normalizes_physical_names_and_emits_explicit_alias_sql()
             {
                 "database": "db",
                 "description": "Total findings.",
-                "identifier": {"name": "FINDTALLY"},
+                "identifier": {"name": "FINDTALLY", "quoted": True},
                 "record_kind": "column",
                 "stable_id": "db:column:pointcloud:FINDTALLY",
                 "table_stable_id": "db:table:pointcloud",
@@ -287,10 +287,14 @@ def test_compile_bundle_normalizes_physical_names_and_emits_explicit_alias_sql()
     view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
     assert "procComp" not in view["dimensions"]
     assert view["dimensions"]["proc_comp"] == {
-        "description": "Process compliance state."
+        "description": "Process compliance state.",
+        "sql": '"procComp"',
     }
-    assert view["dimensions"]["findtally"] == {"description": "Total findings."}
-    assert view["dimensions"]["route_complexity"]["sql"] == "${route_complex}"
+    assert view["dimensions"]["findtally"] == {
+        "description": "Total findings.",
+        "sql": '"FINDTALLY"',
+    }
+    assert view["dimensions"]["route_complexity"]["sql"] == '"RouteComplex"'
 
 
 def test_compile_bundle_rewrites_derived_references_to_normalized_physical_names() -> (

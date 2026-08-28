@@ -7,10 +7,11 @@ dimensions:
   cross_border:
     description: 'BOOLEAN. Indicates whether the shipment crosses national borders. Possible values: No, Yes.'
     label: Cross-Border Shipment
+    sql: '"CrossBorder"'
   route_complexity:
     description: 'TEXT. Complexity classification of the shipping route. Possible values: Complex, Medium, Simple.'
     label: Shipping Route Complexity
-    sql: ${route_complex}
+    sql: '"RouteComplex"'
     ai_context: 'Shipping Route Complexity: Values: Simple, Medium, Complex.'
   escrow_usage_state:
     description: 'TEXT. Indicator describing escrow usage for the transaction. **NULL means escrow usage detail is unavailable.**. Possible values: No, Yes.'

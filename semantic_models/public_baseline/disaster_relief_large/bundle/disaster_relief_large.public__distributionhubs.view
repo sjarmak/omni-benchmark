@@ -7,11 +7,11 @@ dimensions:
   hub_utilization_pct:
     description: 'REAL. Hub''s utilization percentage. Example: 9.4.'
     label: Hub Utilization (%)
-    sql: ${hubutilpct}
+    sql: hubutilpct
   stock_turn_rate:
     description: 'REAL. Stock turnover rate. Example: 3.31.'
     label: Stock Turnover Rate
-    sql: ${stockturnrate}
+    sql: stockturnrate
   is_hub_overloaded:
     label: Hub Overload
     description: A state where a distribution hub's operational metrics indicate it is under excessive strain.

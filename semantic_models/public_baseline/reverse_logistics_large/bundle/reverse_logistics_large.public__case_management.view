@@ -7,5 +7,5 @@ dimensions:
   satisfaction_score:
     description: 'BIGINT. Satisfaction score for the case resolution. Possible values: 1, 2, 3, 4, 5.'
     label: Satisfaction Score
-    sql: ${satisfscore}
+    sql: satisfscore
     ai_context: 'Satisfaction Scores: Use 1-5 to quantify customer'' contentment. Larger number means more satified: 1 - Very Dissatisfied; 2 - Dissatisfied; 3 - Neutral; 4 - Satisfied; 5 - Very Satisfied.'

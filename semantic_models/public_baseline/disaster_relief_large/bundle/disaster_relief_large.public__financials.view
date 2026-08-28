@@ -7,4 +7,5 @@ dimensions:
   funding_state:
     description: 'TEXT. Funding state. Possible values: Adequate, Critical, Limited.'
     label: Funding State
+    sql: funding_state
     ai_context: 'Funding States: ''Adequate'': Sufficient funds are available. ''Limited'': Funding is available but does not cover all needs, requiring prioritization. ''Critical'': A severe funding gap threatens essential activities.'

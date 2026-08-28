@@ -7,16 +7,20 @@ dimensions:
   rated_w:
     description: 'REAL. Maximum power output in watts under standard test conditions. Possible values: 450.0, 500.0, 550.0, 600.0, 650.0.'
     label: Rated Power (W)
+    sql: rated_w
   degyrrate:
     description: 'REAL. Annual power output degradation rate. Example: 0.36.'
     label: Annual Degradation Rate
+    sql: degyrrate
   tempcoeff:
     description: 'REAL. Temperature coefficient of power. NULL means the encoder does not report status or data are missing. Example: -0.389.'
     label: Temperature Coefficient
+    sql: tempcoeff
     ai_context: 'Temperature Coefficient of Power: Indicates how much a panel''s power output decreases for every degree Celsius increase in temperature above a reference point (usually 25°C). A typical value is -0.39%/°C, meaning the power output drops by 0.39% for each 1°C rise in temperature.'
   nomoptempc:
     description: 'TEXT. Normal operating temperature range. Example: 45.7.'
     label: Nominal Operating Temperature
+    sql: nomoptempc
     ai_context: 'Nominal Operating Cell Temperature (NOCT): The temperature reached by open-circuited cells in a module under specific reference conditions (800 W/m² irradiance, 20°C ambient temperature, 1 m/s wind speed). A typical NOCT is around 45°C. It provides a more realistic measure of a panel''s operating temperature in the field than standard test conditions.'
   is_high_degradation_panel_model:
     label: High Degradation Panel Model

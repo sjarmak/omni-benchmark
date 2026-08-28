@@ -7,20 +7,20 @@ dimensions:
   operational_hours:
     description: 'REAL. Total operational hours of the equipment. Example: 17843.'
     label: Operational Hours
-    sql: ${oper_hours}
+    sql: '"OPER_hours"'
     ai_context: 'operationhours: Operation hours represent the cumulative time an equipment has been in active use. New equipment typically has low hours (0-100), mid-life equipment shows moderate hours (100-1000), while equipment approaching maintenance or replacement typically exceeds 1000 hours. The ratio of operation hours to maintenance cycle hours is critical for preventative maintenance scheduling.'
   maintenance_cycle_hours:
     description: 'REAL. Maintenance cycle hours. **NULL means no maintenance cycle defined.**. Example: 2047.0.'
     label: Maintenance Cycle Hours
-    sql: ${maint_cycle_hrs}
+    sql: '"maintCycleHrs"'
   operational_status:
     description: 'TEXT. Operational status of the equipment. Possible values: Active, Maintenance, Repair, Standby, Storage.'
     label: Operational Status
-    sql: ${oper_status}
+    sql: '"OPER_status"'
   inspection_status:
     description: 'TEXT. Inspection status of the equipment. Possible values: Failed, Passed, Pending.'
     label: Inspection Status
-    sql: ${inspect_status}
+    sql: inspect_status
   operational_readiness_score:
     label: Operational Readiness Score (ORS)
     description: Quantifies how ready equipment is for immediate deployment based on operational status and maintenance schedule.

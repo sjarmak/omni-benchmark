@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "robot_fault_prediction_large.public__robot_details.view",
-      "sha256": "121e4545fb6fa5b8e04f680883ee8c2181f3f53617c7a666341d54fe43323a2f",
-      "size_bytes": 2080
+      "sha256": "28229df5f06b3698e43ca02b56e426d2fb66fce5968e0e7b35c615cbc264b183",
+      "size_bytes": 2065
     },
     {
       "file": "robot_details_semantics.topic",
@@ -23,8 +23,8 @@
     },
     {
       "file": "robot_fault_prediction_large.public__system_controller.view",
-      "sha256": "3828b22ceebc6817663262a02088b535de90d035c48deabc25fff19497a1806f",
-      "size_bytes": 1280
+      "sha256": "afa2b55a1ce445f3edde536bb02bb212c0957a718f6381f6f324bc78e7773e6e",
+      "size_bytes": 1271
     },
     {
       "file": "system_controller_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "robot_fault_prediction_large.public__performance_and_safety.view",
-      "sha256": "319cc5ce1933c35c5ce9282562b82d7e538de460d1e699225d4bb205e9a64c4e",
-      "size_bytes": 2365
+      "sha256": "cfbd94cc602f6e027987a223c9c6703a263af0bcdf86d4b3a990bb6e983bb6b9",
+      "size_bytes": 2338
     },
     {
       "file": "performance_and_safety_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "robot_fault_prediction_large.public__maintenance_and_fault.view",
-      "sha256": "40ade2bb7678e6657e5c47f4543dad4a0b9dd5b6706c5a7f619c030da4db0a8a",
-      "size_bytes": 2321
+      "sha256": "065ec4a925b1bd2f165c4751472846ac9796ef3ad02702afbeff8752006b5900",
+      "size_bytes": 2309
     },
     {
       "file": "maintenance_and_fault_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "robot_fault_prediction_large.public__operation.view",
-      "sha256": "87fc518b5d833f139a8fc736614b7b30b2567c9b6d7c9b301e2e7deda17d1065",
-      "size_bytes": 1971
+      "sha256": "408c2182a2bd40dab8fa08ded6145163dec42b4c08e705eb273c9786ac3aecb2",
+      "size_bytes": 1962
     },
     {
       "file": "operation_semantics.topic",
@@ -63,8 +63,8 @@
     },
     {
       "file": "robot_fault_prediction_large.public__actuation_data.view",
-      "sha256": "f9808ef1f4c4610bb6ee572fa206c36f267fdfd6ba1cf87cb91b57c4d612631e",
-      "size_bytes": 532
+      "sha256": "38c866d43d9609c34340350c54895eb05455c633135ecfbce3ee4c17df3a58db",
+      "size_bytes": 526
     },
     {
       "file": "actuation_data_semantics.topic",

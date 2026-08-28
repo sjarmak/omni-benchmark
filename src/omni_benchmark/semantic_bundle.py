@@ -383,6 +383,18 @@ def _source_column_name(
     return raw_name, _omni_name(raw_name, "column name")
 
 
+def _source_column_sql(
+    source: Mapping[str, Any], schema_index: Mapping[str, Mapping[str, Any]]
+) -> str:
+    column = _source_column(source, schema_index)
+    identifier = _mapping(column.get("identifier"), "column identifier")
+    name = _safe_name(identifier.get("name"), "column name")
+    quoted = identifier.get("quoted", False)
+    if type(quoted) is not bool:
+        raise SemanticBundleError("column quoted flag must be boolean")
+    return f'"{name}"' if quoted else name
+
+
 def _rewrite_field_references(sql: str, names: Mapping[str, str]) -> str:
     return _FIELD_REFERENCE.sub(
         lambda match: f"${{{names.get(match.group(1), match.group(1))}}}", sql
@@ -868,15 +880,15 @@ def _table_dimensions(
             raise SemanticBundleError(f"duplicate field name {name} in {table_id}")
         source = schema_index[schema_id]
         sql: str | None = None
+        validate_sql = False
         if "sql" in field:
             sql = _rewrite_field_references(
                 _text(field.get("sql"), "physical field sql"), reference_names
             )
+            validate_sql = True
         elif source.get("record_kind") == "column":
-            _source_raw_name, source_name = _source_column_name(source, schema_index)
-            if name != source_name:
-                sql = f"${{{source_name}}}"
-        if sql is not None:
+            sql = _source_column_sql(source, schema_index)
+        if sql is not None and validate_sql:
             _validate_sql(sql, allowed)
         dimensions[name] = _physical_dimension(
             field, source, contexts.get(schema_id, []), sql

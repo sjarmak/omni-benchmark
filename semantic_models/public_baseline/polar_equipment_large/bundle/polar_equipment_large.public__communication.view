@@ -7,15 +7,15 @@ dimensions:
   antenna_status:
     description: 'TEXT. Antenna status. Possible values: Error, Normal, Warning.'
     label: Antenna Status
-    sql: ${antenna_stat}
+    sql: antenna_stat
   network_latency_ms:
     description: 'REAL. Network latency in milliseconds. Example: 1006.0.'
     label: Network Latency (ms)
-    sql: ${net_latency_ms}
+    sql: '"netLatency_ms"'
   radio_signal_dbm:
     description: 'REAL. Radio signal strength in dBm. Example: -97.8.'
     label: Radio Signal (dBm)
-    sql: ${radio_signal_d_bm}
+    sql: '"radioSignal_dBm"'
   communication_reliability_index:
     label: Communication Reliability Index (CRI)
     description: Assesses the reliability of communication systems based on signal metrics and antenna status.

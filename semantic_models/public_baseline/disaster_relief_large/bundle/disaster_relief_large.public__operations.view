@@ -7,16 +7,17 @@ dimensions:
   emergency_level:
     description: 'TEXT. Designated emergency severity level classification. Possible values: Black, Orange, Red, Yellow.'
     label: Emergency Alert Level
-    sql: ${emerglevel}
+    sql: emerglevel
     ai_context: 'Emergency Alert Levels: ''Yellow'': Monitoring required. ''Orange'': Active response, regional command. ''Red'': Full-scale emergency, national command. ''Black'': Catastrophic event, international-level coordination.'
   response_phase:
     description: 'TEXT. Current phase of the disaster response lifecycle. Possible values: Emergency, Initial, Reconstruction, Recovery.'
     label: Response Phase
-    sql: ${resp_phase}
+    sql: resp_phase
     ai_context: 'Response Phases: ''Initial'': First 24-72 hours, focus on life-saving. ''Emergency'': Period of active, large-scale relief. ''Recovery'': Transition to restoring services. ''Reconstruction'': Long-term rebuilding of infrastructure and society.'
   supply_flow_state:
     description: 'TEXT. Current condition of the supply chain flow supporting the operation. Possible values: Disrupted, Stable, Strained.'
     label: Supply Flow State
+    sql: supply_flow_state
     ai_context: 'Supply Flow States: ''Stable'': Goods are moving predictably and efficiently. ''Strained'': The supply chain is functioning but experiencing delays or difficulties. ''Disrupted'': The supply chain is broken, and goods are not reaching their destinations.'
   is_full_scale_emergency:
     label: Full-Scale Emergency

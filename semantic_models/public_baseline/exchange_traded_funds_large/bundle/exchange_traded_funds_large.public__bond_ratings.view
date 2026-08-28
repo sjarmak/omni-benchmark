@@ -7,5 +7,5 @@ dimensions:
   credit_quality:
     description: Unique credit rating designation (e.g., 'AAA', 'AA', 'A', 'BBB', 'BB', 'B', 'Below B', 'US Government'). Must be unique across all records.
     label: Credit Quality
-    sql: ${credit_scoringmark}
+    sql: credit_scoringmark
     ai_context: 'Credit Quality: Indicates the creditworthiness of the bonds a fund holds. ''Government'' is the highest quality. ''AAA'' and ''AA'' are considered high-grade investment quality. Ratings below ''BBB'' are considered speculative or high-yield.'

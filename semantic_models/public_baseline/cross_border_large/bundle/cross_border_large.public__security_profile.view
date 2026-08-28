@@ -7,13 +7,16 @@ dimensions:
   enc_state:
     description: 'TEXT. The overall state of encryption. Possible values: Partial, Full.'
     label: Encryption Status
+    sql: enc_state
     ai_context: 'Encryption Status: Options: full encryption or partial encryption.'
   acl_state:
     description: 'TEXT. The state of Access Control Lists (ACLs). Possible values: Strong, Weak, Adequate.'
     label: Access Control Strength
+    sql: acl_state
   log_ret_days:
     description: 'BIGINT. The log retention period in days. Example: 2795.'
     label: Audit Log Retention (days)
+    sql: '"LogRetDays"'
     ai_context: 'Audit Log Retention: Higher means longer history is available.'
   security_robustness_score:
     label: Security Robustness Score (SRS)

@@ -7,11 +7,11 @@ dimensions:
   community_engagement_level:
     description: 'TEXT. Level of community engagement in the process. Possible values: High, Low, Medium.'
     label: Community Engagement Level
-    sql: ${commengagelvl}
+    sql: commengagelvl
   distribution_equity_index:
     description: 'REAL. Index measuring the equity of aid distribution (0-1 scale). Example: 0.92.'
     label: Distribution Equity Index
-    sql: ${distequityidx}
+    sql: distequityidx
     ai_context: 'Distribution Equity Index: A score of 1.0 represents perfect equity. A score below 0.7 may indicate significant disparities. A score below 0.5 indicates severe inequity.'
   is_successful_community_partnership:
     label: Successful Community Partnership

@@ -14,5 +14,5 @@ dimensions:
   vehicle_type_distribution:
     description: JSONB column. Aggregates transportation assets owned by household including counts of different vehicle types and age information for mobility analysis.
     label: Vehicle Type Distribution
-    sql: ${vehicleinventory}
+    sql: vehicleinventory
     ai_context: 'Vehicle Type Distribution: An array of counts representing vehicle types. Null indicates unknown or unverified ownership.'

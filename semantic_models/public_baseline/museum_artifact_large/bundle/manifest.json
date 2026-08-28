@@ -13,8 +13,8 @@
     },
     {
       "file": "museum_artifact_large.public__artifacts_core.view",
-      "sha256": "2cad3703261e98b456c905fb5e97bd73a1540eff58a61e63cb9625cbcb78906f",
-      "size_bytes": 730
+      "sha256": "bc71424a27f547d24be80db57ff366c922e5be581bbeb7f7c869867880b6c8e3",
+      "size_bytes": 727
     },
     {
       "file": "artifacts_core_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "museum_artifact_large.public__environmental_readings_core.view",
-      "sha256": "87a18b3624e1da0f57ac448e720cf481d13568bfc174b731191fbcf2a91d7c9b",
-      "size_bytes": 1034
+      "sha256": "310dde6c77ac6fd36fef1c71226e4f2af1ecc60ab8c14680b080d163a6f94f7b",
+      "size_bytes": 1036
     },
     {
       "file": "environmental_readings_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "museum_artifact_large.public__light_and_radiation_readings.view",
-      "sha256": "160cd764ae4d2d5f2af7019545b4102c9732d3d80f6ea0e8667255336ff501f1",
-      "size_bytes": 607
+      "sha256": "211d516758ff597c5fa4dd047dd220587ee33766f147b01256203b79b2d52a37",
+      "size_bytes": 604
     },
     {
       "file": "light_and_radiation_readings_semantics.topic",
@@ -63,7 +63,7 @@
     },
     {
       "file": "museum_artifact_large.public__artifact_security_access.view",
-      "sha256": "16e7b483fee2becdc09749c41682b51bd53ca114cf815674bbc517ecd65acdfa",
+      "sha256": "80dc8b4c95da2b889e4789bbe5857c8eaf00b4ccf2025fd74665b22d98a95255",
       "size_bytes": 716
     },
     {
@@ -73,7 +73,7 @@
     },
     {
       "file": "museum_artifact_large.public__conservation_and_maintenance.view",
-      "sha256": "e795f5483eb56042fd915de9a34cb7b8d13ec0528d6d01a5d9a55d906fb2c158",
+      "sha256": "692cd50fd619423c46fdd307c8521e91eeb2dfe66c22d40b4d44c715d4c37272",
       "size_bytes": 682
     },
     {

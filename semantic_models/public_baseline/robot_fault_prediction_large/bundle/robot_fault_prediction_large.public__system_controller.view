@@ -7,16 +7,16 @@ dimensions:
   sc_overseer_load:
     description: 'REAL. Load value of the system overseer. Example: 0.99.'
     label: SC.overseer_load
-    sql: ${overseerloadvalue}
+    sql: overseerloadvalue
     ai_context: 'CPU Load Levels: CPU load is ''Normal'' if < 70%, ''High'' if 70%-90%, or ''Critical'' if > 90% (risks performance degradation).'
   sc_memory_usage:
     description: 'REAL. Memory usage of the system overseer. Example: 32.07.'
     label: SC.memory_usage
-    sql: ${memuseval}
+    sql: memuseval
   sc_cabinet_humidity:
     description: 'TEXT. Humidity level in the cabinet of the system overseer. Example: 47%.'
     label: SC.cabinet_humidity
-    sql: ${cabhumiditylevel}
+    sql: cabhumiditylevel
     ai_context: 'Cabinet Humidity Risk: Humidity is ''Safe'' if < 60%, a ''Warning'' if 60%-80% (corrosion risk), or ''Danger'' if > 80% (risk of electrical faults).'
   hkb_6:
     label: Controller Stress Score

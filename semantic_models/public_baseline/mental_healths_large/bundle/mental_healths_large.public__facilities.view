@@ -7,5 +7,5 @@ dimensions:
   community_resources:
     description: 'Community resources accessible to patients from this facility. Contains values: ''Comprehensive'', ''Limited'', ''Adequate'', ''Extensive''. Contains NULL when community resource mapping is incomplete.'
     label: Community Resources
-    sql: ${com_res}
+    sql: com_res
     ai_context: 'Community Resources: Ranges from Limited to Comprehensive/Extensive. Limited indicates few resources, Adequate indicates sufficient resources, and Comprehensive/Extensive indicates robust resources.'

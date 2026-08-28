@@ -7,5 +7,5 @@ dimensions:
   cable_status:
     description: Cable television service availability and subscription status indicating the household's access to cable TV services. Ex. avail, available,yes
     label: Cable Status
-    sql: ${cablestatus}
+    sql: cablestatus
     ai_context: 'Cable TV Status: Values indicating availability, based on schema, are ''avail'', ''available'', and ''yes''.'

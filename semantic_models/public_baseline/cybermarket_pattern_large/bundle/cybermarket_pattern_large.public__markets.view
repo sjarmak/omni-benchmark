@@ -7,5 +7,5 @@ dimensions:
   operational_status:
     description: 'TEXT. Current operational status of the platform (active, offline, seized, etc.). Possible values: Active, Closed, Suspended, Under Investigation.'
     label: Operational Status
-    sql: ${oper_status}
+    sql: '"OperStatus"'
     ai_context: 'Platform Operational Status: Values: Active, Closed, Suspended, Under Investigation. Label descriptions: - Active: The marketplace is online, accepting new listings and processing transactions normally.- Closed: Operators have permanently shut down the marketplace; no further log ins or transactions are possible. - Suspended: The marketplace is temporarily offline, often due to policy violations or maintenance, and may return to service. - Under Investigation: Law enforcement or compliance review is in progress; user activity is restricted or frozen.'

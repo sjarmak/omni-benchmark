@@ -7,39 +7,41 @@ dimensions:
   h1b_dependent_employer:
     description: 'BOOLEAN. Indicates if employer is classified as H-1B dependent. Possible values: True, False.'
     label: H-1B Dependent Employer
-    sql: ${h1b_dependent_employer_flag}
+    sql: '"h1bDependentEmployer_flag"'
     ai_context: 'H-1B Dependency Status: An employer is considered H-1B dependent when the proportion of H-1B workers relative to the total workforce exceeds specific thresholds: 15% for employers with more than 50 employees, 8 workers for employers with 26-50 employees, or 4 workers for employers with 25 or fewer employees. H-1B dependent employers face additional attestation requirements. This status is tracked as part of the application data.'
   willful_violator:
     description: 'BOOLEAN. Indicates if employer has willful violator status. Possible values: True, False.'
     label: Willful Violator
-    sql: ${willful_violator_flag}
+    sql: '"willfulViolator_flag"'
     ai_context: 'Willful Violator Status: A willful violator is an employer who has been found by the Department of Labor to have committed a willful failure to meet LCA conditions or made a misrepresentation of material fact on an LCA within the past 5 years. Such employers face additional attestation requirements similar to H-1B dependent employers. This status is tracked as part of the application data.'
   full_time_position:
     description: 'BOOLEAN. Indicates if the position is full-time employment. Possible values: True, False.'
     label: Full-Time Position
-    sql: ${full_time_position_flag}
+    sql: '"fullTimePosition_flag"'
     ai_context: 'Full-Time Position Indicator: A full-time position typically means employment for at least 35 hours per week, though specific definitions may vary by employer. Non-full-time positions may include part-time roles that require fewer hours per week. This indicator is recorded as part of the application data.'
   prevailing_wage_level:
     description: 'TEXT. DOL wage level classification for the position. Unique values: Level I, Level II, Level III, Level IV.'
     label: Prevailing Wage Level
-    sql: ${wage_level}
+    sql: '"wageLevel"'
     ai_context: 'Prevailing Wage Levels: Prevailing wage levels range from I to IV, representing increasingly higher wages based on skill, experience, education, and responsibility: Level I (entry-level), Level II (qualified), Level III (experienced), and Level IV (fully competent). These levels are determined based on the position''s requirements compared to the occupational standard. Wage level information is included in the wage determination data.'
   naics_code:
     description: 'TEXT. North American Industry Classification System code. Example: 541511.'
     label: NAICS Code
+    sql: '"naicsCode"'
     ai_context: 'NAICS Code Purpose: The North American Industry Classification System (NAICS) code is a 6-digit code that identifies the employer''s primary industry sector. For example, code 541511 represents ''Custom Computer Programming Services'', while 561320 represents ''Temporary Help Services''. These codes help categorize employers by industry for statistical and regulatory purposes. The NAICS code is part of the employer''s profile information.'
   soc_code:
     description: 'TEXT. Standard Occupational Classification code for the position. Example: 15-1252.'
     label: SOC Code
+    sql: '"socCode"'
     ai_context: 'SOC Code Framework: The Standard Occupational Classification (SOC) code is a standardized numbering system that identifies and classifies occupations. For example, 15-1253.00 represents ''Software Quality Assurance Analysts and Testers'', while 29-1141.00 represents ''Registered Nurses''. These codes help ensure that foreign workers are properly classified and paid according to their occupational category. The SOC code is included in the job information for each application.'
   offered_annual_wage_usd:
     description: 'REAL. Annual wage offered to the foreign worker in USD. Example: 95000.'
     label: Offered Annual Wage (USD)
-    sql: ${offered_wage_usd}
+    sql: '"offeredWage_USD"'
   prevailing_annual_wage_usd:
     description: 'REAL. DOL prevailing wage for the occupation and area in USD. Example: 88000.'
     label: Prevailing Annual Wage (USD)
-    sql: ${prevailing_wage_usd}
+    sql: '"prevailingWage_USD"'
   wage_differential_rate:
     label: Wage Differential Rate (WDR)
     description: Calculates the percentage difference between offered wage and prevailing wage.

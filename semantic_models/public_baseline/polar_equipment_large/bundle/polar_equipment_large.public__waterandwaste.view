@@ -7,15 +7,15 @@ dimensions:
   water_level_percent:
     description: 'REAL. Water level percentage. Example: 77.'
     label: Water Level Percent
-    sql: ${water_level_pct}
+    sql: '"waterLevelPct"'
   water_quality_index:
     description: 'BIGINT. Water quality index. Example: 57.'
     label: Water Quality Index
-    sql: ${water_quality_idx}
+    sql: '"waterQualityIdx"'
   waste_tank_level_percent:
     description: 'REAL. Waste tank percentage. Example: 28.'
     label: Waste Tank Level Percent
-    sql: ${waste_tank_pct}
+    sql: '"wasteTankPct"'
   water_resource_management_index:
     label: Water Resource Management Index (WRMI)
     description: Evaluates the efficiency of water resource management based on water levels, quality, and waste levels.

@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "labor_certification_applications_large.public__cases.view",
-      "sha256": "1b473140c545ed872e180388b65f21b6ed66e281af5cbde8fd331958d751d5eb",
-      "size_bytes": 2668
+      "sha256": "3dffd11650e0c195c355deb87679506ac9b8a2482b55177f6e1cf2c531bba6ae",
+      "size_bytes": 2653
     },
     {
       "file": "cases_semantics.topic",
@@ -13,8 +13,8 @@
     },
     {
       "file": "labor_certification_applications_large.public__employer_labor_condition.view",
-      "sha256": "73e4454f4f36cfa0db1f8bf2fd67ff8370db1206afedbc8689a991ff3b29e067",
-      "size_bytes": 5534
+      "sha256": "842bc7f3bbc030cbec8bb671daf703ac5677f6fc7f72fccb64a0e06687f06720",
+      "size_bytes": 5576
     },
     {
       "file": "employer_labor_condition_semantics.topic",

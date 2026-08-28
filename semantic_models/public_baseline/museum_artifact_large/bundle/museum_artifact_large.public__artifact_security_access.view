@@ -7,7 +7,7 @@ dimensions:
   insurance_value_usd:
     description: 'REAL. Insurance value in USD for the artifact. Example: 968368.'
     label: Insurance Value (USD)
-    sql: ${ins_usd}
+    sql: '"insUSD"'
   is_high_rarity_and_valuation:
     label: Artifact Rarity & Valuation (ARV)
     description: Establishes criteria for identifying artifacts of exceptional rarity and valuation.

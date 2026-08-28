@@ -7,4 +7,5 @@ dimensions:
   structstate:
     description: 'TEXT. Structural stability assessment status. Possible values: Moderate condition, careful monitoring required.'
     label: Structural Stability
+    sql: structstate
     ai_context: 'Structural Stability: A categorical assessment with specific values: ''Stable'' indicates structures that maintain integrity under normal conditions, ''Unstable'' indicates structures showing signs of deterioration requiring intervention, and ''Critical'' indicates structures at imminent risk of collapse requiring emergency stabilization.'

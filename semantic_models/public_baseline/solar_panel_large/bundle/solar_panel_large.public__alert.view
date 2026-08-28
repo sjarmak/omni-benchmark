@@ -7,9 +7,11 @@ dimensions:
   maintprio:
     description: 'TEXT. Maintenance priority level. NULL means the encoder does not report status or data are missing. Possible values: High, Low, Medium.'
     label: Maintenance Priority
+    sql: maintprio
   replprio:
     description: 'TEXT. Replacement priority level. Possible values: High, Low, Medium.'
     label: Replacement Priority
+    sql: replprio
   high_maintenance_priority:
     label: High Maintenance Priority
     description: A flag indicating that an asset requires immediate or urgent maintenance attention.

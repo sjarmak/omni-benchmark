@@ -7,14 +7,15 @@ dimensions:
   result:
     description: 'TEXT. Inspection results summary. Possible values: Major Issues, Minor Issues, Pass.'
     label: Inspection Result
-    sql: ${inspectres}
+    sql: inspectres
   schedule:
     description: 'TEXT. Maintenance schedule status. Possible values: Delayed, On Schedule, Overdue.'
     label: Maintenance Schedule
-    sql: ${maintsched}
+    sql: maintsched
   dqscore:
     description: 'REAL. Data quality score. Example: 97.7.'
     label: Data Quality Score
+    sql: dqscore
     ai_context: 'Data Quality Score (DQS): A metric, typically on a scale of 0 to 100, that assesses the quality, completeness, and consistency of a set of data. A score of 95-100 indicates high-quality data, while a score below 50 might suggest the data is unreliable for analysis.'
   data_quality_concern:
     label: Data Quality Concern

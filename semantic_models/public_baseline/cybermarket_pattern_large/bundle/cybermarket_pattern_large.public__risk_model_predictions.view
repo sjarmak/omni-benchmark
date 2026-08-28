@@ -7,6 +7,7 @@ dimensions:
   fraud_probability:
     description: 'REAL. Predicted probability of fraud (0-1). Example: 0.08.'
     label: Fraud Probability
+    sql: fraud_probability
   is_fraud_flagged_transaction:
     label: Fraud-Flagged Transaction
     description: Transaction flagged by fraud model probability.

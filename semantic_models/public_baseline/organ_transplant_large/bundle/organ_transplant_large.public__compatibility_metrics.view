@@ -7,12 +7,12 @@ dimensions:
   hla_mismatch_count:
     description: 'BIGINT. Number of HLA antigen mismatches between donor and recipient. Possible values: 0 '
     label: HLA Mismatch Count
-    sql: ${hla_mis_count}
+    sql: hla_mis_count
     ai_context: 'HLA Mismatch Levels: The number of mismatches impacts rejection risk. A ''0-mismatch'' is a perfect HLA match and is ideal. A ''6-mismatch'' is a complete mismatch across the A, B, and DR loci, representing the highest immunological barrier outside of ABO or positive crossmatch issues.'
   abo_compatibility_result:
     description: 'TEXT. Blood type compatibility assessment result. **NULL means blood compatibility assessment is pending or unavailable.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case).** Example: incompatible.'
     label: ABO Compatibility Result
-    sql: ${blood_compat}
+    sql: blood_compat
   size_compatibility_score:
     description: 'REAL. Size compatibility score based on donor-recipient measurements. Example: 0.228.'
     label: Size Compatibility Score

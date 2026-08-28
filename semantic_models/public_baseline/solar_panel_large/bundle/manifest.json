@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "solar_panel_large.public__panel_models.view",
-      "sha256": "7c7bc81e825222e80c08f1337dc521a72399c0d92cf469185438f67e7c1932ba",
-      "size_bytes": 1761
+      "sha256": "2e1e8b464a25d7c19bd7d57c7b19142bf28ed97569ceec71408de50207188d4f",
+      "size_bytes": 1836
     },
     {
       "file": "panel_models_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "solar_panel_large.public__operational_metrics.view",
-      "sha256": "337faff3bd0b5bebf7c57cb1530b8fbe11491cacf91bd4daab2c97674cc18c20",
-      "size_bytes": 2255
+      "sha256": "41c9653f0b43cfcdf496c89fbbcb5855d654649720a5d93d09a2989da544312c",
+      "size_bytes": 2322
     },
     {
       "file": "operational_metrics_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "solar_panel_large.public__plants.view",
-      "sha256": "230a59f5e61209be2522dfcbf4d4fc6a76b5846a7f0a1fea6383244bd436afca",
-      "size_bytes": 1004
+      "sha256": "5dc5fa5e9cd0d33e1bc215d805b2d1cb786eb64f3e9912ce7213cea2b81dfdd6",
+      "size_bytes": 1040
     },
     {
       "file": "plants_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "solar_panel_large.public__alert.view",
-      "sha256": "0f81a85b266f60c2d8050c3a35f24a7a0f8a80e5a4af50bb0119a92519ef1b9c",
-      "size_bytes": 1434
+      "sha256": "14b79bd3590d081de948d9ada01ea6e59dfc51cbaec3ea7a74177d6cf7b78221",
+      "size_bytes": 1471
     },
     {
       "file": "alert_semantics.topic",
@@ -73,8 +73,8 @@
     },
     {
       "file": "solar_panel_large.public__inspection.view",
-      "sha256": "239721750e05f2b59d4f174977f6dd20062c847e0cdc5b4f1c38ed55a21d53de",
-      "size_bytes": 1542
+      "sha256": "3ecf0d94e2e9eaf76a6951abcd3e53b13c6d8a0b528680467f5c0e29b305b309",
+      "size_bytes": 1553
     },
     {
       "file": "inspection_semantics.topic",

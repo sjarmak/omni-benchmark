@@ -7,5 +7,5 @@ dimensions:
   coordination_score:
     description: 'REAL. Coordination score. Example: 0.363.'
     label: Coordination Score
-    sql: ${coord_score}
+    sql: '"CoordScore"'
     ai_context: 'coordination score: Ranges from 0 to 1. Scores above 0.7 strongly indicate coordinated behavior, while scores below 0.2 suggest independent actions.'

@@ -13,7 +13,7 @@ dimensions:
   privacy_setting:
     description: TEXT. Privacy settings configuration chosen by the fan.
     label: Privacy Setting
-    sql: ${priv_set}
+    sql: priv_set
     ai_context: 'Privacy Setting Levels: Indicates the level of information a fan chooses to share. ''Public'' allows anyone to see their profile. ''Private'' restricts profile visibility to approved connections.'
   platform_stickiness_score:
     label: Platform Stickiness Score (PSS)

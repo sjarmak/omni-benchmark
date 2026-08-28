@@ -7,8 +7,8 @@ dimensions:
   a_position_error:
     description: 'REAL. Position error in mm. **NULL means no position error data available.**. Example: 0.069.'
     label: A.position_error
-    sql: ${poserrmmval}
+    sql: poserrmmval
   a_payload_weight:
     description: 'REAL. Payload weight in kg. **NULL means no payload data available.**. Example: 144.85.'
     label: A.payload_weight
-    sql: ${payloadwval}
+    sql: payloadwval

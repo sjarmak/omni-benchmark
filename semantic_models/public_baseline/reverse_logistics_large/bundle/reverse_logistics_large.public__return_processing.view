@@ -7,10 +7,10 @@ dimensions:
   approval_level:
     description: 'ApprovalLevel_enum. Level of approval required for processing the return. Possible values: Automatic, Manager, Supervisor.'
     label: Approval Level
-    sql: ${apprlevel}
+    sql: apprlevel
     ai_context: 'Approval Levels: There 3 levels: ''Automatic'', ''Manager'' and ''Supervisor''.'
   processing_priority:
     description: 'VARCHAR(50). Processing priority for the return. Possible values: Bulk, Express, Standard.'
     label: Processing Priority
-    sql: ${procprio}
+    sql: procprio
     ai_context: 'Processing Priorities: Use ''Bulk'' for palletised or batch returns processed during low-demand periods; ''Standard'' for default SLA (e.g., 3-5 days); ''Express'' for expedited for VIP customers, high resale value, or paid premium.'

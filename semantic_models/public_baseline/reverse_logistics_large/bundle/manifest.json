@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "reverse_logistics_large.public__returns.view",
-      "sha256": "2eccded45fa2c578fb504d57efd44dd60da7c71311ebbb77dd895eedb1c347d9",
-      "size_bytes": 2149
+      "sha256": "3afcd99a95fd0a6ff44edc544eaa001f7a159a12677368fe8669c9321da3b1bf",
+      "size_bytes": 2170
     },
     {
       "file": "returns_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "reverse_logistics_large.public__return_processing.view",
-      "sha256": "0ce707d158d443c0fe239c62084d5de45e703764a9dbb2e699092952e5035b68",
-      "size_bytes": 931
+      "sha256": "b80731ca62bf6a9c5c757ad96844504dc597bf060f4fd6b2eb91e97b3859d6b4",
+      "size_bytes": 925
     },
     {
       "file": "return_processing_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "reverse_logistics_large.public__case_management.view",
-      "sha256": "55b676a1aaad6005e0eb63b12b568dcfcae6df320a89f391d1c89b8ee110cbe9",
-      "size_bytes": 562
+      "sha256": "93f330f19cef52c9083bd2fb5a44a51885f386030018885d2cab9b36608b4aae",
+      "size_bytes": 559
     },
     {
       "file": "case_management_semantics.topic",

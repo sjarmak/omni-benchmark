@@ -13,8 +13,8 @@
     },
     {
       "file": "polar_equipment_large.public__equipment.view",
-      "sha256": "12dce023cb209fbeb418282f6e5217e28a2bd6a30016bc1b32b4f59f65cebe5b",
-      "size_bytes": 690
+      "sha256": "6e398d6f9e2a06e8aa5f5b3f7b9b8fcea522dc79d802b093f00fc07f00429014",
+      "size_bytes": 691
     },
     {
       "file": "equipment_semantics.topic",
@@ -23,8 +23,8 @@
     },
     {
       "file": "polar_equipment_large.public__operationmaintenance.view",
-      "sha256": "c8917bbb87d0df991f7ea8f8bb576608c1bc73d33fe01ed44b47a1c80ef099ec",
-      "size_bytes": 2937
+      "sha256": "464c1d0ed6b4c2cca51de573a3f322cc919cdfa59fc3032edebe0f6fe9cee8e3",
+      "size_bytes": 2935
     },
     {
       "file": "operationmaintenance_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "polar_equipment_large.public__weatherandstructure.view",
-      "sha256": "114d4cb81b86da7327ebb5c551c999feea6929cc29aee078db8ce1972a5222b2",
-      "size_bytes": 2133
+      "sha256": "8b741fdf453f521a878b39752531b347865c6d23b3917ded70238db406fe89c1",
+      "size_bytes": 2131
     },
     {
       "file": "weatherandstructure_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "polar_equipment_large.public__communication.view",
-      "sha256": "711549bfc3a2fe47721c09eae38fee3f02935312158bf2e610fd6d9669e96556",
-      "size_bytes": 2781
+      "sha256": "bbc6217aa7386c566cefa48f7df96aa637a6ad99f80d8c48b8ef849b8b300eea",
+      "size_bytes": 2777
     },
     {
       "file": "communication_semantics.topic",
@@ -63,8 +63,8 @@
     },
     {
       "file": "polar_equipment_large.public__thermalsolarwindandgrid.view",
-      "sha256": "f93192aa6d68fcde3f08db0e7e2c034ba03dfce43c34fc3bf7a5c613f5f5fd76",
-      "size_bytes": 2608
+      "sha256": "5cb9f0792fd4465d13bead3c613392fc032f7d47a4fb2229e5475734aa412a79",
+      "size_bytes": 2689
     },
     {
       "file": "thermalsolarwindandgrid_semantics.topic",
@@ -73,8 +73,8 @@
     },
     {
       "file": "polar_equipment_large.public__waterandwaste.view",
-      "sha256": "b30c393ab57b26c15bd98ddc7065d0e0b65a04b8f9309d9a92a96120163095e7",
-      "size_bytes": 2810
+      "sha256": "e50ebed2003ed1bafb1c4f4c22a1848c2c573f47c100aba255136db941304465",
+      "size_bytes": 2807
     },
     {
       "file": "waterandwaste_semantics.topic",
@@ -83,8 +83,8 @@
     },
     {
       "file": "polar_equipment_large.public__scientific.view",
-      "sha256": "913a9c63e57ef87cdb2db80f83753a8e1ba6ef2a3bc7fcd3902ef2b18db6066a",
-      "size_bytes": 973
+      "sha256": "3118427f121ba90b6e2a9bf9de1a06f5bb3b6dfe6841b6b3724683938268d876",
+      "size_bytes": 972
     },
     {
       "file": "scientific_semantics.topic",

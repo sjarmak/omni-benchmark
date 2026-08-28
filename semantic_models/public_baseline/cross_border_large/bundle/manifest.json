@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "cross_border_large.public__security_profile.view",
-      "sha256": "c458bd318a6c962a711da14e0ae66f511c86af88008a111bd0fc0753f13fb4d2",
-      "size_bytes": 1552
+      "sha256": "d8d1af1b54d0e580d4f91face7c6e1b4514258a0464f693b52acc8a777e3b400",
+      "size_bytes": 1614
     },
     {
       "file": "security_profile_semantics.topic",
@@ -13,8 +13,8 @@
     },
     {
       "file": "cross_border_large.public__audit_and_compliance.view",
-      "sha256": "4e9b37d3cfeab5789c28beac8678de1a4022513a2f4b1e2baa13782187395698",
-      "size_bytes": 3319
+      "sha256": "9282a354b04039e5fbe14c3385c1899ea8b47a9c0c0417bd34c4a750ab86e92e",
+      "size_bytes": 3507
     },
     {
       "file": "audit_and_compliance_semantics.topic",
@@ -23,8 +23,8 @@
     },
     {
       "file": "cross_border_large.public__vendor_management.view",
-      "sha256": "085ec354ed38c3071a2ced0bba9b40ed93166d7f59dddb6db7e7fb87730b2a19",
-      "size_bytes": 830
+      "sha256": "ffee0d3af6a24a32b3896409b22fccadadc581b3ad6a36ef35c9cd17a8808884",
+      "size_bytes": 870
     },
     {
       "file": "vendor_management_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "cross_border_large.public__data_profile.view",
-      "sha256": "3235d6036126d6e46b955bfbc7c8035e09ec0957f385a1c3479ba127d32d2d50",
-      "size_bytes": 1799
+      "sha256": "6102d6c860e69c4314498be21477eb9feab7485266126f40251f19b95028b42c",
+      "size_bytes": 1862
     },
     {
       "file": "data_profile_semantics.topic",
@@ -53,8 +53,8 @@
     },
     {
       "file": "cross_border_large.public__compliance.view",
-      "sha256": "602223560b1f1d2017de3ee8a88af1be6c8535391fe5ffa83d1a22d56f4a9243",
-      "size_bytes": 455
+      "sha256": "deea727eda3a1902410e3530111f4f34c52abfe7be2369b4bf510de14e263cb1",
+      "size_bytes": 477
     },
     {
       "file": "compliance_semantics.topic",
@@ -63,8 +63,8 @@
     },
     {
       "file": "cross_border_large.public__control_library.view",
-      "sha256": "defab996486c0990e654c48ebb5262f3afa10f549d8129b21d1ed84506cff324",
-      "size_bytes": 414
+      "sha256": "44550f20071e799a3df78b5090cf6031cef29b8c84ece59ac780d0710147204e",
+      "size_bytes": 447
     },
     {
       "file": "control_library_semantics.topic",

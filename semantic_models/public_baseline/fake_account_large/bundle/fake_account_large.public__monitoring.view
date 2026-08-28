@@ -7,5 +7,5 @@ dimensions:
   detection_confidence_score:
     description: 'REAL. Detection confidence score. **NULL means detection confidence not recorded.**. Example: 0.132.'
     label: Detection Confidence Score
-    sql: ${detect_conf}
+    sql: '"DetectConf"'
     ai_context: 'detection score: Ranges from 0 to 1. Values above 0.8 indicate high-confidence detections, while values below 0.3 suggest uncertain results requiring manual review.'

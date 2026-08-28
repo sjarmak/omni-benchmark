@@ -7,15 +7,15 @@ dimensions:
   o_operational_hours:
     description: 'REAL. Total operational hours of the robot. **NULL means no operational hours data available.**. Example: 20009.0.'
     label: O.operational_hours
-    sql: ${totopshrval}
+    sql: totopshrval
   o_cycle_time_seconds:
     description: 'REAL. Cycle time of the robot operation in seconds. **NULL means no cycle time data available.**. Example: 211.82.'
     label: O.cycle_time_seconds
-    sql: ${cycletimesecval}
+    sql: cycletimesecval
   o_application_type:
     description: 'TEXT. Application type for the operation. **NULL means no application type specified.**. Possible values: Assembly, Material Handling, Painting, Palletizing, Welding.'
     label: O.application_type
-    sql: ${apptypeval}
+    sql: apptypeval
     ai_context: 'Common Application Groups: Application groups include: ''Material Handling'' (e.g., Picking, Packing, Palletizing), ''Processing'' (e.g., Grinding, Polishing), ''Assembly'', ''Welding'', and ''Standby''.
 
       High-Wear Applications: High-Wear Applications include ''Welding'', ''Grinding'', ''Deburring'', ''Palletizing'', and ''Machine Tending''.

@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "virtual_idol_large.public__interactions.view",
-      "sha256": "01b99975fb1da11e44aa2c9e52f04aace8d89418e90ca585c04bfb439413ba74",
-      "size_bytes": 2535
+      "sha256": "a09a16ea104a6cc4f9d7865224d9f1807572658e109d40bb406dca4ef0d175cc",
+      "size_bytes": 2529
     },
     {
       "file": "interactions_semantics.topic",
@@ -13,8 +13,8 @@
     },
     {
       "file": "virtual_idol_large.public__socialcommunity.view",
-      "sha256": "f866a1f0abbcd208db0a8e012a6e0286b333e883b1efab698e80e874e251c36e",
-      "size_bytes": 3165
+      "sha256": "66ffe553f3fa929c8fccbe11cb906fdcb4d8f11ba7922320e24f8a4593aba3f0",
+      "size_bytes": 3162
     },
     {
       "file": "socialcommunity_semantics.topic",
@@ -33,8 +33,8 @@
     },
     {
       "file": "virtual_idol_large.public__preferencesandsettings.view",
-      "sha256": "6aa67b8a52536b86d825ece45ffa5091897829a349e413b737db31eef572ff12",
-      "size_bytes": 1278
+      "sha256": "cefe3e5650c23d250cca0b38e6348fc6c4ce2946be3bb5e2f3ed22b4deccbdb3",
+      "size_bytes": 1275
     },
     {
       "file": "preferencesandsettings_semantics.topic",
@@ -43,8 +43,8 @@
     },
     {
       "file": "virtual_idol_large.public__fans.view",
-      "sha256": "cccf89758ed9f01a37e8847dda405449d67f41ef4c023f2eebcfe83563b1d0c5",
-      "size_bytes": 2601
+      "sha256": "82a8011de334f4918e1a350955a346eea821233d74703a62950638371c19433b",
+      "size_bytes": 2589
     },
     {
       "file": "fans_semantics.topic",
@@ -63,8 +63,8 @@
     },
     {
       "file": "virtual_idol_large.public__retentionandinfluence.view",
-      "sha256": "9a2f20e855cee4530f3364cddf850aee01af515d8eb781cdec2d63fa82cdcd3f",
-      "size_bytes": 1186
+      "sha256": "2a06ec0d5ae944d9f6ff8a8de0a0682705847da62e344ea4f5d3a697e97a8b61",
+      "size_bytes": 1183
     },
     {
       "file": "retentionandinfluence_semantics.topic",
@@ -73,8 +73,8 @@
     },
     {
       "file": "virtual_idol_large.public__commerceandcollection.view",
-      "sha256": "ee539d7bde0d101c96c4fbdc86c230859a03c5bda243e9f4970412130dc2eaa8",
-      "size_bytes": 1231
+      "sha256": "adb1faa4db898b8b003c2b1dea9b2b61d1e223c8b8a77b69e15ab23efbae4f99",
+      "size_bytes": 1222
     },
     {
       "file": "commerceandcollection_semantics.topic",
@@ -83,8 +83,8 @@
     },
     {
       "file": "virtual_idol_large.public__virtualidols.view",
-      "sha256": "79dbd24ea1e6429976e5e3744c0d6fadd46515140bf15e928bab081fd9c8d308",
-      "size_bytes": 593
+      "sha256": "6c4990eb9211eccd7288da7cb2ae4698f7585e467427e17cabf145bb2c4da0b1",
+      "size_bytes": 590
     },
     {
       "file": "virtualidols_semantics.topic",
@@ -93,8 +93,8 @@
     },
     {
       "file": "virtual_idol_large.public__moderationandcompliance.view",
-      "sha256": "1feacf40ce9ac4136dcbf1a4deddfb77aff6bea656f764dc7820b027969a1369",
-      "size_bytes": 577
+      "sha256": "1975535c8072cf3904f226349386b84e05260bcdab2f60f93fd4dbe147a181fd",
+      "size_bytes": 574
     },
     {
       "file": "moderationandcompliance_semantics.topic",
@@ -103,8 +103,8 @@
     },
     {
       "file": "virtual_idol_large.public__membershipandspending.view",
-      "sha256": "5a4edafb1fa653e7df1cf699efdb13ebc94ab24b1a99ae081133079a618e354c",
-      "size_bytes": 507
+      "sha256": "c3147826aae2b02e662220d38340bcf68320b3011656d6d1bb756ced682ff287",
+      "size_bytes": 504
     },
     {
       "file": "membershipandspending_semantics.topic",

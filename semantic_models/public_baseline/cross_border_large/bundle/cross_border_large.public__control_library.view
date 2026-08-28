@@ -7,4 +7,5 @@ dimensions:
   effectiveness_score_pct:
     description: 'REAL. Measured effectiveness (%). Example: 61.24.'
     label: Control Effectiveness (%)
+    sql: effectiveness_score_pct
     ai_context: 'Control Effectiveness Score: Higher score means stronger controls.'

@@ -7,20 +7,20 @@ dimensions:
   mf_rul_hours:
     description: 'BIGINT. Remaining useful life in hours. Example: 1601.'
     label: MF.rul_hours
-    sql: ${rulhours}
+    sql: rulhours
   mf_upkeep_cost:
     description: 'TEXT. Estimated upkeep cost. Example: $7,299.59.'
     label: MF.upkeep_cost
-    sql: ${upkeepcostest}
+    sql: upkeepcostest
   mf_fault_prediction_score:
     description: 'REAL. Fault prediction score. **NULL means no fault prediction score available.**. Example: 0.021.'
     label: MF.fault_prediction_score
-    sql: ${faultpredscore}
+    sql: faultpredscore
     ai_context: 'Fault Prediction Score Tiers: A Fault Prediction Score is ''Low'' if < 0.3 (normal operation), ''Medium'' if 0.3-0.7 (monitoring required), or ''High'' if > 0.7 (high probability of impending fault).'
   mf_upkeep_due_days:
     description: 'BIGINT. Days until the next maintenance is due. Example: 16.'
     label: MF.upkeep_due_days
-    sql: ${upkeepduedays}
+    sql: upkeepduedays
   hkb_10:
     label: Remaining Useful Life in Days
     description: Converts the remaining useful life from hours to days for easier planning.

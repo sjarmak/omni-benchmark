@@ -7,9 +7,11 @@ dimensions:
   pol_comp:
     description: 'TEXT. The vendor''s policy compliance status. Possible values: Partial, Non-compliant, Full.'
     label: Policy Compliance
+    sql: pol_comp
   proc_comp:
     description: 'TEXT. The vendor''s process compliance status. Possible values: Partial, Non-compliant, Full.'
     label: Process Compliance
+    sql: '"procComp"'
   is_non_compliant_vendor:
     label: Non-Compliant Vendor
     description: Marks a partner as non-compliant if they fail key requirements.

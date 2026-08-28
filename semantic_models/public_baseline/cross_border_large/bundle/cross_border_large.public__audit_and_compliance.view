@@ -7,28 +7,36 @@ dimensions:
   crit_find_num:
     description: 'BIGINT. The number of critical findings from audits. Example: 0.'
     label: Critical Findings
+    sql: '"critFindNum"'
   findtally:
     description: 'BIGINT. The total tally of audit findings. Example: 49.'
     label: Total Findings
+    sql: '"FINDTALLY"'
   acc_req_num:
     description: 'BIGINT. The number of access requests. Example: 75.'
     label: Access Requests
+    sql: '"AccReqNum"'
   del_req_num:
     description: 'BIGINT. The number of data deletion requests. Example: 354.'
     label: Deletion Requests
+    sql: '"DEL_REQ_NUM"'
   rect_req_num:
     description: 'BIGINT. The number of data rectification requests. Example: 13.'
     label: Correction Requests
+    sql: rect_req_num
   portreqnum:
     description: 'BIGINT. The number of data portability requests. Example: 50.'
     label: Transfer Requests
+    sql: '"PORTREQNUM"'
   resp_time_day:
     description: 'REAL. The average response time in days. Example: 16.'
     label: Response Time (days)
+    sql: resp_time_day
     ai_context: 'Response Time: Lower means faster response; higher means delays.'
   remed_due:
     description: 'DATE. The due date for remediation actions. Example: 2025-04-24.'
     label: Remediation Due Date
+    sql: '"REMED_DUE"'
   audit_finding_severity:
     label: Audit Finding Severity (AFS)
     description: Indicates how serious audit findings are, especially critical issues.

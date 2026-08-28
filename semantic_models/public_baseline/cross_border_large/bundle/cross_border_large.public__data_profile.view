@@ -7,13 +7,16 @@ dimensions:
   vol_gb:
     description: 'REAL. The volume of the data in gigabytes. Example: 9289.72.'
     label: Data Volume (GB)
+    sql: vol_gb
     ai_context: 'Data Volume: Ranges from small amounts (like 0.1) to large ones (like 1000).'
   int_check:
     description: 'TEXT. The status of the integrity check. Possible values: Partial, Failed, Passed.'
     label: Integrity Check Status
+    sql: '"Int_check"'
   csumverify:
     description: 'TEXT. Status of checksum verification. Possible values: Success, Failed, Pending.'
     label: Checksum Verification Status
+    sql: '"CSUMVERIFY"'
   is_data_integrity_failure:
     label: Data Integrity Failure
     description: Shows data batches that failed integrity or checksum checks.

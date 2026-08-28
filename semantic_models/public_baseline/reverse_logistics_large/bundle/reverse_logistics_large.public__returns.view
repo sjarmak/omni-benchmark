@@ -14,11 +14,12 @@ dimensions:
   days_lapsed:
     description: 'BIGINT. Number of days lapsed since the transaction. Example: 33.'
     label: Days Lapsed
-    sql: ${dayslapsed}
+    sql: dayslapsed
     ai_context: 'Days Lapsed: Difference in days between transaction date and point at which funds/refund are issued.'
   return_channel:
     description: VARCHAR(50). Channel through which the return was made.
     label: Return Channel
+    sql: return_channel
     ai_context: 'Return Channels: Marked as ''Store'' when customer returns item in person at a retail outlet; ''Courier'' when customer arranges a courier service for doorstep pickup; ''Mail'' when item is posted through the national mail system; ''Locker'' when customer deposits parcel in an automated locker or drop-box; ''Pickup'' when retailer schedules a home or office collection for oversized or fragile goods.'
   fraud_risk_level:
     description: VARCHAR(50). Fraud risk level for the return. **NULL means no fraud risk level assessed.**

@@ -3,7 +3,7 @@
   "files": [
     {
       "file": "cybermarket_pattern_large.public__markets.view",
-      "sha256": "e49e3fe7262c85fa1a0c30904858fbe1b26a1c4e3cc06f5885037c03320e7ddf",
+      "sha256": "605bf6b5bb812baed2329a81efdb13d1e03e9fa943c52aca6b0940f412ce5359",
       "size_bytes": 992
     },
     {
@@ -13,8 +13,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__vendors.view",
-      "sha256": "ec2cdc8a0909403f1262daedb577328a11f1351d79a191b0cfbdeb736cada359",
-      "size_bytes": 1225
+      "sha256": "34930741ffb192f8f1968f16c54b96aea84e3e227f2e052ded655ba94ab252a6",
+      "size_bytes": 1250
     },
     {
       "file": "vendors_semantics.topic",
@@ -23,7 +23,7 @@
     },
     {
       "file": "cybermarket_pattern_large.public__buyers.view",
-      "sha256": "266815953012571bc90d2cf1bf758851e7046181e68a754c3fd0159d19d95a3b",
+      "sha256": "e3667cb2204be72d8511c148968e5f06c4a5d9d61299d70fab6b97f5311b33f9",
       "size_bytes": 1418
     },
     {
@@ -33,7 +33,7 @@
     },
     {
       "file": "cybermarket_pattern_large.public__products.view",
-      "sha256": "a48aeda9aeed25ec5a2ac42d5e35fc9ef16ec34a9f0cb78ca1dc33c7dbba86a6",
+      "sha256": "d2c9755b0adf13cd774cd1000604ef4cce5fe213d76abc585ec2f164d6191d1d",
       "size_bytes": 882
     },
     {
@@ -43,8 +43,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__transactions.view",
-      "sha256": "a9d66312eb9b056029e610c16915e752e83ac86fa030d3c6a3317b8874470501",
-      "size_bytes": 1516
+      "sha256": "37bdb4727eb17c470b8e671597cfc35988285223198d2d462b4aaf43e57a7a70",
+      "size_bytes": 1541
     },
     {
       "file": "transactions_semantics.topic",
@@ -63,7 +63,7 @@
     },
     {
       "file": "cybermarket_pattern_large.public__connection_security.view",
-      "sha256": "b8591a78b4063c7bdf7c530f17e0113a1743fb6df8831e167044bb238d04aaf3",
+      "sha256": "b8da4479cd38d175a2c6fb23143c453eda0d18e39d7128af0b0b7ab8e6040329",
       "size_bytes": 1009
     },
     {
@@ -83,8 +83,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__risk_model_predictions.view",
-      "sha256": "adc4e2f401a5e9e6cf539c5d1643d1a8650e47fa02de8e47c9f48d024a39ceeb",
-      "size_bytes": 613
+      "sha256": "9d3e1c35d2fe8df0958bde9611ff2347379b081fc8c7f3aa4137929c4cbd676a",
+      "size_bytes": 640
     },
     {
       "file": "risk_model_predictions_semantics.topic",
