@@ -32,7 +32,7 @@ implementations actually isolate governed enforcement with model parity.
 | Compiler/query path | Agent emits SQL | Agent emits SQL | Agent emits SQL | Semantic query/objects compiled through Omni; generated SQL captured only if exposed |
 | Validation | Database execution/error handling only | Same | Same | Production validation behavior included |
 | Token/time ceilings | Claude Code 2.1.250 exposes no supported input/output-token ceiling; each turn is limited to 120 seconds, USD 1 provider cost, and 12 total turns | Same | Same | Production defaults where immutable; disclose any mismatch |
-| Current implementation state | Public context, pinned provider, attested PostgreSQL, capture, publisher, committed database bindings, and executable driver pass synthetic/adversarial tests; the first authenticated live smoke reached schema discovery but exposed an unbounded-context budget failure, and the bounded replacement awaits immutable replay | Same, including searchable public HKB and dependency-closure provenance | Same, including searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the exact-commit capture rerun preserved full telemetry on its deliberately unscoreable truncated result; scorer-type parity remains pending |
+| Current implementation state | Public context, pinned provider, attested PostgreSQL, bounded retrieval, capture, publisher, committed database bindings, and executable driver pass synthetic/adversarial tests and an exact-commit authenticated smoke | Same, including live searchable public HKB and dependency-closure provenance | Same, including live searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the exact-commit capture rerun preserved full telemetry on its deliberately unscoreable truncated result; scorer-type parity remains pending |
 
 Exact prompts, tool manifests, model identifiers, configuration hashes, retry
 ceilings, and version fingerprints are Freeze B artifacts. C1-C3 must be made
@@ -244,18 +244,33 @@ Before any 231-question baseline or expensive experiment:
    reruns.
 6. Record coverage by field and condition in this document.
 
-Current gate result: **C4 capture sub-gate passed; four-condition gate not yet
-passed**. The exact-commit public C4 rerun at `dd8e7b1` preserved Bedrock
+Current gate result: **four-condition capture gate passed**. The bound
+`archeology_scan_3` bundles used common run ID `archeology-vertical-v1`,
+repetition one, and complete trace capture. C1-C3 ran at exact system commit
+`50ebc31075f742fba4e7d4bbc6fc4da0b15d53ce`; all three answered and executed
+against the attested read-only database. Their observed telemetry was:
+
+| Condition | Total tokens | Cost (USD) | Latency (ms) | Tool calls | Database queries |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| C1 | 33,445 | 0.214778 | 40,918.244 | 2 | 2 |
+| C2 | 81,838 | 0.6084515 | 31,067.570 | 3 | 2 |
+| C3 | 104,625 | 0.7275655 | 43,197.973 | 4 | 2 |
+
+All three reported zero harness retries and zero validation attempts. The
+exact-commit public C4 rerun at `dd8e7b1` preserved Bedrock
 `claude-opus-5`, 247,676 input tokens, 1,110 output tokens, three tool calls, one
 governed database query, and 29,338.859 ms latency while retaining the truncated
 result as an unscored `response_contract_error`. Its generation SHA-256 is
 `86814a6b5264cacc49d0ade910416b6521e4ab26f561819bfaa3701346914494` and its
 trace SHA-256 is
 `b9243d2a9f6e0d74d36b858282db79ee2fea482ee2b317f18826bd8d2ba4114d`.
-The C1-C3 executable driver and capture/publisher core now pass synthetic and
-adversarial tests, but their authenticated live attempts and typed-result scorer
-parity remain pending. No four-condition live smoke bundle has passed the
-complete telemetry gate; scaled runs remain blocked until it does.
+The validated smoke bundle binds generation hashes
+`45cd4c26df5fc57ee20aff267bca0e4c3e7238fc5278d024f5a58cb5d403be4e`,
+`810a2d827d91b9deaa4ff5972bd50b534a094d9ab5e17352b9a0b2a08dfda23d`,
+`f1c8ab9c97d5a15df5030ebc0661803aa274fe7123bca0bd8995b8af43bcc46c`,
+and `86814a6b5264cacc49d0ade910416b6521e4ab26f561819bfaa3701346914494`
+for C1-C4 respectively. Scorer/result-type parity remains a separate execution
+gate; capture no longer blocks scaled public-only generation.
 
 ## AI Hub diagnostic boundary
 

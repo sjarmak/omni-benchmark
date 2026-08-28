@@ -57,11 +57,11 @@ customer data must not appear in this file.
 
 ## Current status
 
-No Omni benchmark question run has been completed. PF-001 is evidence about the
-model-setup workflow, not agent correctness. Public benchmark structure and
-scorer quirks remain research inputs rather than Omni product behavior. Findings
-about answer generation should come from the public-only baseline and its rich
-traces.
+One public dev-A question has completed the unscored four-condition capture
+gate. C1-C3 answered and executed; C4 ended in a typed result-contract error
+because its exposed result was truncated. No correctness label or scored
+baseline has been accessed, so these canaries establish observability and
+execution mechanics rather than accuracy.
 
 ## PF-001 follow-up: Refresh failure was a selected-database permission mismatch
 
@@ -491,6 +491,55 @@ traces.
 - **External execution outcome:** Not run; this precedes the preserved public-only
   question baseline.
 - **Evaluator agreement/disagreement:** Not applicable.
+
+## PF-010: Truncated governed results are observable but not execution-scorable
+
+- **Observed behavior:** The governed C4 canary completed its product workflow
+  and exposed model, token, tool, query, and latency telemetry, but marked its
+  CSV result as truncated. The external adapter correctly rejected that result
+  as `response_contract_error` rather than treating an incomplete table as an
+  answer.
+- **Minimal non-private reproduction:** Ask the isolated archeology benchmark
+  branch the public `archeology_scan_3` question, retrieve the completed AI job,
+  and inspect the result truncation flag before adapting rows for execution
+  comparison.
+- **Expected behavior:** A machine client can obtain the complete governed
+  result set, or a stable handle for fetching it, even when the AI Hub preview
+  is truncated.
+- **Actual behavior:** The job retained one governed query and detailed trace
+  telemetry, but the exposed result was incomplete and therefore unscoreable by
+  either frozen execution scorer.
+- **Why it matters to customers:** API clients, downstream automations, and
+  external evaluators need complete results. A plausible partial table is more
+  dangerous than an explicit error because it can silently produce incorrect
+  analytical conclusions.
+- **Systematic evidence / frequency:** One of one full C4 benchmark canaries;
+  prevalence must be measured during public baseline generation.
+- **Benchmark impact:** C4 capture verification passes, but execution scoring is
+  blocked until the harness obtains the full governed result without changing
+  the evaluated query path.
+- **Severity:** High for execution-based evaluation and machine-to-machine use.
+- **Proposed product change:** Return a content-addressed full-result handle or
+  paginated result API from the AI job, with truncation applying only to the UI
+  preview. Bind the handle to the exact semantic query/model revision.
+- **Was the change tested?:** The external adapter's fail-closed behavior was
+  tested. No product-side full-result capability has yet been verified.
+- **Measured effect:** The attempt preserved 248,786 tokens, three tool calls,
+  one governed database query, and 29.3 seconds of latency while correctly
+  remaining an error rather than a confidently wrong partial answer.
+- **Experiment / commit provenance:** D-037 and D-045 closeout; C4 system commit
+  `dd8e7b1`; generation SHA-256
+  `86814a6b5264cacc49d0ade910416b6521e4ab26f561819bfaa3701346914494`.
+- **Visible in AI Hub?:** Yes; the job exposes the truncation flag and trace.
+- **AI Hub exposes relevant context/behavior?:** It exposes the query and
+  truncated result status, but not a complete scorer-ready result.
+- **Fixable through current AI Hub/modeling workflow?:** No; this is a result
+  delivery/API capability rather than semantic authoring.
+- **AI Hub Eval outcome:** No judge run; external execution is authoritative.
+- **External execution outcome:** Not scored because the result contract was
+  incomplete.
+- **Evaluator agreement/disagreement:** No disagreement was manufactured; the
+  external evaluator refused to judge an incomplete result.
 
 ## Entry template
 

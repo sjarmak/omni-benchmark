@@ -3700,3 +3700,94 @@ and credential redaction can make correct, public semantic context unusable.
 Commit the reviewed two-file correction and this contemporaneous record, then
 rerun C1 from a new exact-commit worktree and never-reused artifact root. Release
 C2/C3 only if C1 reaches SQL or produces a new evidenced failure.
+
+## 2026-08-28 — D-045 closeout: Direct canary and four-condition capture gate
+
+_Last updated: 2026-08-28 11:57 EDT_
+
+### Decision / experiment
+
+Replay C1 from reviewed commit `50ebc31`, release C2/C3 only after C1 reaches
+SQL, then validate the existing four-condition telemetry gate on the same
+public dev-A question.
+
+### Observation
+
+The prior exact-commit replay had established that retrieval cost collapsed but
+had not proven end-to-end SQL execution. C1-C3 also lacked an authenticated
+four-condition capture bundle with C4's common run identity.
+
+### Hypothesis
+
+If the typed provenance correction is sufficient, C1 should pass the same
+bounded public context into SQL execution. The unchanged retrieval and capture
+surfaces should then permit C2 and C3 to execute while preserving their added
+HKB and semantic-reference tool use.
+
+### Decision
+
+Run the public `archeology_scan_3` canary only. Do not inspect correctness. Treat
+provider/database invocation mistakes before model submission as benchmark
+infrastructure corrections; never reuse an artifact root. The first successful
+C1 diagnostic used a D-045-specific run ID, so issue one additional unscored C1
+invocation with the preregistered common smoke run ID. This was required by the
+capture gate and was not prompted by its answer.
+
+### Rationale
+
+This is the smallest vertical slice that proves generation, telemetry, database
+execution, immutable publication, and cross-condition reconciliation before
+scaled baseline work.
+
+### Intervention
+
+No semantic or prompt change after `50ebc31`. Run the frozen direct conditions
+against the same attested read-only Neon mirror and validate them with the
+existing C4 `dd8e7b1` bundle.
+
+### Result
+
+The first immutable C1 replay answered at 32,060 total tokens, $0.205594, one
+schema tool call, one database query, zero retries, and 27.0 seconds. The common
+run-identity bundles then produced:
+
+| Condition | Outcome | Total tokens | Cost (USD) | Latency (s) | Tool calls | DB queries |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| C1 | Answered | 33,445 | 0.214778 | 40.9 | 2 | 2 |
+| C2 | Answered | 81,838 | 0.6084515 | 31.1 | 3 | 2 |
+| C3 | Answered | 104,625 | 0.7275655 | 43.2 | 4 | 2 |
+| C4 | Errored: truncated result contract | 248,786 | Unavailable | 29.3 | 3 | 1 |
+
+C1-C3 each reported zero harness retries and zero validation attempts. C2 used
+both schema and HKB search; C3 used schema search and two semantic-model searches.
+The existing C4 attempt retained its already documented
+`response_contract_error`; it was not regenerated. The four-condition telemetry
+smoke validator returned `status=validated`, common question/run/repetition,
+and `trace_captured=true` for every condition.
+
+### Interpretation
+
+The D-045 mechanism is confirmed: unbounded schema discovery, rather than an
+inherent inability to answer, caused the $1.74 failure. Bounded retrieval cut
+the direct C1 path to roughly $0.21 while restoring SQL execution. Added
+business/semantic reference tools substantially increased token cost on this
+single canary; correctness is intentionally unknown until the immutable public
+baseline is scored.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+Agent-tool payload bounds are part of model quality and cost behavior, not mere
+infrastructure. Separately, C4's complete trace is usable for failure analysis,
+but a truncated governed result cannot yet enter execution scoring without a
+full-result adapter.
+
+### Next step
+
+Close the D-045 and direct-driver canary beads, preserve these immutable hashes,
+finish isolated bundle deployment/readback, and wire the reviewed batch
+orchestrator to live execution using observed successful-attempt costs rather
+than the earlier $1.74 failure as its expected-cost assumption.
