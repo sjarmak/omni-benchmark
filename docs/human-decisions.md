@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T10:51:34-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T12:26:16-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -17,6 +17,14 @@ empty queue at the timestamp above.
 No approved human-gated action is currently in progress.
 
 ## Recently completed
+
+- `omni-benchmark-dih.17.1` was authorized and completed on 2026-08-28. Safe
+  readback proved the 17 non-canary connections selected `neondb` while the
+  parity-verified mirrors and direct comparators targeted exact named
+  databases. Only each benchmark connection's database field was corrected;
+  all 17 public-only schema refreshes completed, and readback table/view counts
+  exactly matched the committed parity inventory. No Gas City connection,
+  credential, Neon content/grant, or shared/main Omni model was changed.
 
 - `omni-benchmark-dih.5.4.2.5.3` was dismissed at
   `2026-08-28T10:51:34-04:00`. The user identified the existing isolated

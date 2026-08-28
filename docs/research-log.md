@@ -3955,3 +3955,170 @@ between a physical table identity and its normalized Omni view/extension path.
 Resolve Beads `omni-benchmark-dih.17.1` and `.17.2`, then rerun under a new
 append-only run ID and require zero validation issues plus exact readback before
 the deployment records gate C4 baseline dispatch.
+
+## 2026-08-28 — D-048: Time-box optimization after the public baseline
+
+### Decision / experiment
+
+Refocus the remaining work on a results-complete deliverable today without
+weakening split, custody, baseline-preservation, or final-freeze boundaries.
+Beads `omni-benchmark-dih.5.4.2.4.4.2.2`, `omni-benchmark-dih.17`, and
+`omni-benchmark-dih.4`; change type: research execution decision.
+
+### Observation
+
+The four-condition capture gate passed, but C4 bundle deployment remained
+blocked on 17 databases while the direct C1--C3 path was independently ready to
+run. Serializing all baseline work behind the C4 product-integration failure
+would leave available direct-run capacity idle. The methodology was already
+sufficiently developed; the scarce resource was wall-clock execution and the
+evidence needed for a coherent results narrative.
+
+### Hypothesis
+
+Launching C1--C3 after a small fixed concurrency proof, while correcting the
+Omni connection and bundle-identity failures in parallel, will shorten the path
+to the immutable public-only baseline without changing any evaluated system or
+custody boundary. Observed attempts per minute will provide a defensible basis
+for retaining three sealed repetitions or increasing to four.
+
+### Decision
+
+Run the full 231-question public-only baseline for C1--C3 immediately after the
+prespecified public-canary concurrency slice passes; do not wait for D-047.
+Run C4 as soon as all 18 isolated deployments pass validation and exact
+readback. Keep the final sealed repetition count open until baseline throughput
+is measured. After the baseline is committed, run only three or four registered
+dev-A interventions with explicit hypotheses and full dev-A keep/revert
+decisions. Preserve at least one negative result. Reserve dev-B without
+consuming any checkpoint.
+
+### Rationale
+
+The conditions use separate execution paths, and the one-Neon-project-per-
+database topology makes cross-database direct attempts independently
+schedulable. This parallelization changes execution order, not the frozen
+population, runtime information, scoring policy, or system definitions. A
+bounded experiment count is enough to demonstrate disciplined product learning
+without turning the project into an open-ended benchmark search.
+
+### Intervention
+
+Materialized 18 private read-only Neon environments outside the repository from
+the committed public project and branch identifiers. Each environment is mode
+`0600` under a mode-`0700` directory, selects the exact named benchmark
+database, and uses `omni_benchmark_reader` with `verify-full`. No connection URL
+or credential entered the repository or command output. The baseline runner is
+being extended only with a fixed C1--C3 full-train mode and a fixed public-canary
+concurrency proof. The primary public report was started concurrently at
+[`RESULTS.md`](../RESULTS.md).
+
+### Result
+
+Pending concurrency proof and immutable public baseline.
+
+### Interpretation
+
+Pending.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+The first scale bottleneck is already product-relevant: correct database
+restores existed and passed parity, but 17 Omni connections selected `neondb`
+rather than the named databases. Connection root-cause and repair remain D-047
+evidence rather than being hidden as setup noise.
+
+### Next step
+
+Report the fixed-slice attempts per minute, continue the resumable 693-attempt
+C1--C3 run, finish D-047 in parallel, then freeze and commit the complete
+231-question public-only baseline before requesting any gold release.
+
+## 2026-08-28 — D-049: Repair connection targets and semantic-view identity
+
+### Decision / experiment
+
+Correct the two independent blockers exposed by D-047 without changing the
+public semantic content or using benchmark questions. Beads
+`omni-benchmark-dih.17.1` and `.17.2`; change type: general system integration.
+
+### Observation
+
+All 17 parity-verified direct targets named their benchmark database, while
+safe Omni readback showed the corresponding connections selected `neondb`.
+Separately, five bundles preserved mixed-case physical PostgreSQL table names
+behind normalized Omni view filenames, and one bundle used flat view filenames.
+The canary-derived deployment adapter incorrectly treated physical table and
+logical extension identity as the same value.
+
+### Hypothesis
+
+Changing only each affected connection's selected database would restore
+public schema generation. Separating authenticated logical extension paths from
+physical `table_name`, while qualifying flat paths from authenticated
+catalog/schema metadata, would make all mechanical bundles deployable without
+altering their semantic definitions.
+
+### Decision
+
+Use the field-only connection PATCH already proven on archeology, require exact
+readback, and refresh schema models in bounded batches. Change only the general
+deployment identity rule: preserve manifest hashes and physical table names;
+derive remote paths from normalized logical filenames plus authenticated
+catalog/schema. Do not regenerate definitions or add database/question cases.
+
+### Rationale
+
+This directly tests both diagnosed mechanisms. It is smaller and more
+interpretable than rewriting six bundle specifications, normalizing physical
+PostgreSQL identifiers, or hand-editing model documents.
+
+### Intervention
+
+The 17 existing LiveSQLBench connections were changed from `neondb` to their
+exact verified database names; no endpoint, role, credential, schema filter, or
+shared/main model changed. Public schema models were refreshed in product-limited
+batches. The adapter now accepts a normalized logical view filename whose
+embedded physical table is case-sensitive, and maps a flat `.view` file using
+its authenticated catalog/schema identity. Focused tests cover both classes and
+retain catalog/schema/path-confusion rejection.
+
+### Result
+
+KEEP pending the new append-only deployment readback. All 17 connection
+corrections round-tripped exactly; all 17 refresh jobs completed; each exposed
+only `<database>.public`, and view counts matched the committed parity inventory
+for all 17. Omni accepted at most five simultaneous refreshes in the first
+batch and returned HTTP 429 for additional requests; bounded subsequent batches
+completed. The corrected adapter builds authenticated plans for all 17 fan-out
+bundles, including the 27 mixed-case physical identities and six flat views.
+Fifty-five focused deployment tests pass and Ruff is clean.
+
+### Interpretation
+
+Both D-047 mechanisms were correct. The connection failure was configuration,
+not database parity or grants. The bundle failure was an identity-modeling bug:
+Omni's logical view identity is normalized independently of the exact physical
+PostgreSQL table identity. Neither fix uses question evidence.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Connection save/refresh needs selected-database validation and actionable error
+status. Model import/export needs an explicit stable logical view identifier
+separate from physical catalog/schema/table identity. The observed refresh
+concurrency ceiling should be documented or returned with retry guidance for
+bulk rollouts.
+
+### Next step
+
+Commit and independently review the adapter and secret-free correction receipt,
+then rerun the 18-database deployment under a new immutable run ID and require
+zero validator issues plus exact semantic readback before closing D-047.
