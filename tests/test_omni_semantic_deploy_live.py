@@ -85,10 +85,12 @@ class FakeDeploymentClient:
         existing: bool,
         readbacks: list[dict[str, str]] | None = None,
         validation: object = None,
+        validation_responses: list[object] | None = None,
     ) -> None:
         self.existing = existing
         self.readbacks = list(readbacks or [_readback()])
-        self.validation = [] if validation is None else validation
+        default_validation = [] if validation is None else validation
+        self.validation_responses = list(validation_responses or [default_validation])
         self.uploads: list[tuple[str, str, str, str]] = []
         self.created_models: list[tuple[str, str]] = []
         self.created_branches: list[tuple[str, str]] = []
@@ -109,7 +111,9 @@ class FakeDeploymentClient:
         self.uploads.append((model_id, branch_id, path, content))
 
     def validate(self, model_id: str, branch_id: str) -> object:
-        return self.validation
+        if len(self.validation_responses) > 1:
+            return self.validation_responses.pop(0)
+        return self.validation_responses[0]
 
     def readback(self, model_id: str, branch_id: str) -> dict[str, str]:
         if len(self.readbacks) > 1:
@@ -181,6 +185,29 @@ def test_partial_existing_branch_is_repaired_but_unexpected_files_fail_closed(
     assert record.failure_stage == "readback"
     assert record.readback_verified is False
     assert record.uploaded_file_count == 2
+
+
+def test_existing_invalid_branch_is_repaired_before_final_validation(
+    tmp_path: Path,
+) -> None:
+    client = FakeDeploymentClient(
+        existing=True,
+        validation_responses=[[{"type": "stale_bad_sql"}], []],
+    )
+
+    record = deploy_public_bundle(
+        bundle_root=_bundle(tmp_path),
+        connection_id="connection-id",
+        client=client,
+        run_id="deployment-1",
+        source_commit="d" * 40,
+        observed_at="2026-08-28T12:00:00-04:00",
+    )
+
+    assert record.status == "verified"
+    assert record.validation_issue_count == 0
+    assert record.uploaded_file_count == 2
+    assert {upload[2] for upload in client.uploads} == {VIEW_PATH, TOPIC_NAME}
 
 
 def test_validation_issues_are_preserved_as_failure_not_raised(tmp_path: Path) -> None:

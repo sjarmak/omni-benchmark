@@ -148,31 +148,28 @@ def deploy_public_plan(
             validation_count = _validation_issue_count(
                 client.validate(model_id, branch_id)
             )
-            if validation_count:
-                raise _StageFailure(
-                    "validation", f"validator returned {validation_count} issue(s)"
-                )
-            try:
-                readback_count = _verify_readback(
-                    plan, client.readback(model_id, branch_id)
-                )
-                return _record(
-                    plan=plan,
-                    connection_id=connection_id,
-                    model_id=model_id,
-                    branch_id=branch_id,
-                    model_name=model_name,
-                    branch_name=branch_name,
-                    run_id=run_id,
-                    source_commit=source_commit,
-                    observed_at=observed_at,
-                    file_sha256=file_sha256,
-                    uploaded=0,
-                    validation_count=validation_count,
-                    readback_count=readback_count,
-                )
-            except (OmniSemanticDeploymentError, _StageFailure):
-                pass
+            if validation_count == 0:
+                try:
+                    readback_count = _verify_readback(
+                        plan, client.readback(model_id, branch_id)
+                    )
+                    return _record(
+                        plan=plan,
+                        connection_id=connection_id,
+                        model_id=model_id,
+                        branch_id=branch_id,
+                        model_name=model_name,
+                        branch_name=branch_name,
+                        run_id=run_id,
+                        source_commit=source_commit,
+                        observed_at=observed_at,
+                        file_sha256=file_sha256,
+                        uploaded=0,
+                        validation_count=validation_count,
+                        readback_count=readback_count,
+                    )
+                except (OmniSemanticDeploymentError, _StageFailure):
+                    pass
         for item in plan.files:
             try:
                 content = item.content.decode("utf-8")
