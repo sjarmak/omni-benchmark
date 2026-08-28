@@ -449,6 +449,79 @@ def test_parse_allows_schema_valid_early_error_before_final_success() -> None:
     assert parsed.agent_database_query_count == 2
 
 
+def test_parse_preserves_product_error_before_final_success() -> None:
+    early_error = {
+        "isError": True,
+        "message": "The governed query failed.",
+        "result": {
+            "error": {
+                "detail": "The query could not be executed.",
+                "message": "Query execution failed.",
+            },
+            "query": {"fields": ["answer.value"]},
+            "queryName": "Failed governed query",
+            "resultId": "result-failed-1",
+            "status": "error",
+        },
+        "timestamp": "2026-08-27T12:00:00Z",
+        "type": "generate_query",
+    }
+    final = _query_action(
+        csv_result="answer\n2\n",
+        query={"fields": ["answer.value"]},
+        total_row_count=1,
+    )
+
+    parsed = parse_omni_job_result({"actions": [early_error, final]})
+
+    assert parsed.expected_row_count == 1
+    assert parsed.observed_actions_by_type == (("generate_query", 2),)
+    assert parsed.agent_database_query_count == 2
+
+
+@pytest.mark.parametrize(
+    ("mutation", "match"),
+    [
+        (lambda action: action.pop("isError"), "failed generate_query action"),
+        (lambda action: action["result"].pop("error"), "error is missing"),
+        (
+            lambda action: action["result"]["error"].pop("detail"),
+            "error detail is missing",
+        ),
+        (
+            lambda action: action["result"].pop("resultId"),
+            "resultId is missing",
+        ),
+    ],
+)
+def test_parse_rejects_malformed_product_error_before_final_success(
+    mutation: object, match: str
+) -> None:
+    early_error = {
+        "isError": True,
+        "message": "The governed query failed.",
+        "result": {
+            "error": {"detail": "detail", "message": "message"},
+            "query": {"fields": ["answer.value"]},
+            "queryName": "Failed governed query",
+            "resultId": "result-failed-1",
+            "status": "error",
+        },
+        "timestamp": "2026-08-27T12:00:00Z",
+        "type": "generate_query",
+    }
+    assert callable(mutation)
+    mutation(early_error)
+    final = _query_action(
+        csv_result="answer\n2\n",
+        query={"fields": ["answer.value"]},
+        total_row_count=1,
+    )
+
+    with pytest.raises(OmniResultContractError, match=match):
+        parse_omni_job_result({"actions": [early_error, final]})
+
+
 def test_parse_allows_earlier_truncated_success_when_final_success_is_scoreable() -> (
     None
 ):

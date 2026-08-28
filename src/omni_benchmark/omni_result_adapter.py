@@ -181,11 +181,20 @@ def _validated_action(value: object) -> dict[str, Any]:
     if value["type"] == "generate_query":
         if "result" not in value or not isinstance(value["result"], Mapping):
             raise OmniResultContractError("Omni generate_query result is missing")
-        return {**value, "result": _validated_query_result(value["result"])}
+        return {
+            **value,
+            "result": _validated_query_result(
+                value["result"], failed_action=value.get("isError") is True
+            ),
+        }
     return value
 
 
-def _validated_query_result(value: Mapping[str, Any]) -> dict[str, Any]:
+def _validated_query_result(
+    value: Mapping[str, Any], *, failed_action: bool
+) -> dict[str, Any]:
+    if value.get("status") == "error" and "csvResult" not in value:
+        return _validated_failed_query_result(value, failed_action=failed_action)
     required = (
         "csvResult",
         "csvResultWasTruncated",
@@ -199,6 +208,40 @@ def _validated_query_result(value: Mapping[str, Any]) -> dict[str, Any]:
         if field not in value:
             raise OmniResultContractError(f"Omni query result {field} is missing")
     _validate_query_result_types(value)
+    return dict(value)
+
+
+def _validated_failed_query_result(
+    value: Mapping[str, Any], *, failed_action: bool
+) -> dict[str, Any]:
+    if not failed_action:
+        raise OmniResultContractError(
+            "Omni failed generate_query action must expose isError"
+        )
+    required = ("error", "query", "queryName", "resultId", "status")
+    for field in required:
+        if field not in value:
+            raise OmniResultContractError(f"Omni query result {field} is missing")
+    if set(value) != set(required):
+        raise OmniResultContractError("Omni failed query result schema is invalid")
+    error = value["error"]
+    if not isinstance(error, Mapping):
+        raise OmniResultContractError("Omni query result error must be an object")
+    for field in ("detail", "message"):
+        if field not in error:
+            raise OmniResultContractError(f"Omni query result error {field} is missing")
+        if not isinstance(error[field], str):
+            raise OmniResultContractError(
+                f"Omni query result error {field} must be a string"
+            )
+    if set(error) != {"detail", "message"}:
+        raise OmniResultContractError("Omni query result error schema is invalid")
+    for field in ("queryName", "resultId"):
+        if not isinstance(value[field], str) or not value[field]:
+            raise OmniResultContractError(
+                f"Omni query result {field} must be a non-empty string"
+            )
+    _validate_semantic_query(value["query"])
     return dict(value)
 
 
