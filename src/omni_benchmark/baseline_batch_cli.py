@@ -15,6 +15,7 @@ from .baseline_batch import (
     BatchBudget,
     BatchStopPolicy,
     ImmutableAttemptRepository,
+    apply_committed_direct_baseline_exclusions,
     c4_dev_a_experiment_schedule,
     c4_public_baseline_schedule,
     direct_only_baseline_schedule,
@@ -128,7 +129,11 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
     elif arguments.execute_live_direct_concurrency_canary:
         schedule = direct_concurrency_canary_schedule(schedule)
     elif arguments.execute_live_direct_baseline:
-        schedule = direct_only_baseline_schedule(schedule)
+        schedule = apply_committed_direct_baseline_exclusions(
+            arguments.workspace,
+            arguments.system_commit,
+            direct_only_baseline_schedule(schedule),
+        )
     projection = project_baseline_cost(
         schedule,
         observed_attempt_cost_usd=arguments.observed_attempt_cost_usd,
@@ -270,6 +275,7 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                             "policy": "finish_started_database_condition_blocks",
                         }
                     ),
+                    "schedule_identity": schedule.public_identity(),
                     "successful_canary_cost_scenario": scenario.as_dict(),
                 },
                 allow_nan=False,
@@ -452,6 +458,7 @@ def _execute_live(
                 ),
                 "execution_plan_sha256": plan.sha256,
                 "live_execution": report.as_dict(),
+                "schedule_identity": schedule.public_identity(),
                 "successful_canary_cost_scenario": dict(scenario),
             },
             allow_nan=False,

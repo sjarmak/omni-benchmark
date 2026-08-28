@@ -20,6 +20,7 @@ from omni_benchmark.baseline_batch import (
     BatchStopPolicy,
     BatchBudget,
     ImmutableAttemptRepository,
+    apply_committed_direct_baseline_exclusions,
     c4_dev_a_experiment_schedule,
     direct_only_baseline_schedule,
     load_committed_baseline_schedule,
@@ -68,7 +69,15 @@ def _schedule_repo(tmp_path: Path) -> tuple[Path, str]:
             "category": "Query",
             "instance_id": instance_id,
             "query": f"Public question {index}",
-            "selected_database": f"database_{index % 18:02d}",
+            "selected_database": (
+                "database_00"
+                if index < 7
+                else (
+                    "database_01"
+                    if index < 21
+                    else f"database_{2 + ((index - 21) % 16):02d}"
+                )
+            ),
         }
         for index, instance_id in enumerate(ids)
     ]
@@ -85,6 +94,62 @@ def _schedule_repo(tmp_path: Path) -> tuple[Path, str]:
     _git(workspace, "add", ".")
     _git(workspace, "commit", "-qm", "public schedule inputs")
     return workspace, _git(workspace, "rev-parse", "HEAD")
+
+
+def _commit_exclusion_manifest(
+    workspace: Path,
+    *,
+    evidence_run_id: str = "public-baseline-v1-retrieval-bound-replay2",
+) -> str:
+    path = workspace / "config/conditions/public-baseline-exclusions-v1.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "exclusions": [
+                    {
+                        "conditions": ["C1", "C2", "C3"],
+                        "database": "database_00",
+                        "evidence": [
+                            {
+                                "artifact": "generation",
+                                "attempt_id": f"{evidence_run_id}:public_000:C1:1",
+                                "sha256": "1" * 64,
+                            },
+                            {
+                                "artifact": "run-manifest",
+                                "attempt_id": f"{evidence_run_id}:public_000:C1:1",
+                                "sha256": "2" * 64,
+                            },
+                        ],
+                        "reason": "Public-only replay remained unable to answer.",
+                        "scope": "public-only-c1-c3-baseline",
+                    },
+                    {
+                        "conditions": ["C1", "C2", "C3"],
+                        "database": "database_01",
+                        "evidence": [
+                            {
+                                "artifact": "failure-diagnostic",
+                                "attempt_id": "prior-public-baseline:public_001:C1:1",
+                                "sha256": "3" * 64,
+                            }
+                        ],
+                        "reason": "Pre-run infrastructure disposition was locked.",
+                        "scope": "public-only-c1-c3-baseline",
+                    },
+                ],
+                "kind": "public-baseline-database-exclusions",
+                "schema_version": 1,
+            },
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    _git(workspace, "add", str(path.relative_to(workspace)))
+    _git(workspace, "commit", "-qm", "add public baseline exclusion")
+    return _git(workspace, "rev-parse", "HEAD")
 
 
 def _small_schedule(
@@ -295,6 +360,59 @@ def test_direct_only_baseline_is_fixed_to_all_231_questions_and_c1_c3(
     assert len({attempt.instance_id for attempt in direct.attempts}) == 231
     assert len({attempt.database for attempt in direct.attempts}) == 18
     assert {attempt.condition for attempt in direct.attempts} == {"C1", "C2", "C3"}
+
+
+def test_committed_exclusion_filters_direct_schedule_and_binds_its_identity(
+    tmp_path: Path,
+) -> None:
+    workspace, _ = _schedule_repo(tmp_path)
+    commit = _commit_exclusion_manifest(workspace)
+    full = load_committed_baseline_schedule(
+        workspace, commit, run_id="public-baseline-v1"
+    )
+
+    direct = apply_committed_direct_baseline_exclusions(
+        workspace, commit, direct_only_baseline_schedule(full)
+    )
+
+    identity = direct.public_identity()
+    assert len(direct.attempts) == 630
+    assert identity["attempt_count"] == 630
+    assert identity["database_count"] == 16
+    assert identity["question_count"] == 210
+    assert identity["excluded_databases"] == ["database_00", "database_01"]
+    assert identity["exclusion_manifest_sha256"]
+    assert direct.exclusions[0].evidence[0].sha256 == "1" * 64
+
+
+def test_exclusion_cannot_be_selected_from_an_uncommitted_working_tree(
+    tmp_path: Path,
+) -> None:
+    workspace, commit = _schedule_repo(tmp_path)
+    _commit_exclusion_manifest(workspace)
+    full = load_committed_baseline_schedule(
+        workspace, commit, run_id="public-baseline-v1"
+    )
+
+    with pytest.raises(BaselineBatchError, match="committed exclusion"):
+        apply_committed_direct_baseline_exclusions(
+            workspace, commit, direct_only_baseline_schedule(full)
+        )
+
+
+def test_exclusion_cannot_cite_an_attempt_from_the_run_it_filters(
+    tmp_path: Path,
+) -> None:
+    workspace, _ = _schedule_repo(tmp_path)
+    commit = _commit_exclusion_manifest(workspace, evidence_run_id="public-baseline-v1")
+    full = load_committed_baseline_schedule(
+        workspace, commit, run_id="public-baseline-v1"
+    )
+
+    with pytest.raises(BaselineBatchError, match="current run"):
+        apply_committed_direct_baseline_exclusions(
+            workspace, commit, direct_only_baseline_schedule(full)
+        )
 
 
 def test_concurrency_canary_is_fixed_to_four_public_train_ids_and_c1_c3() -> None:
@@ -853,7 +971,8 @@ def test_live_cli_refuses_to_dispatch_before_complete_deployment_gate(
 def test_fixed_direct_live_mode_does_not_require_c4_deployment_gate(
     tmp_path: Path,
 ) -> None:
-    workspace, commit = _schedule_repo(tmp_path)
+    workspace, _ = _schedule_repo(tmp_path)
+    commit = _commit_exclusion_manifest(workspace)
 
     with pytest.raises((BaselineBatchError, FileNotFoundError), match="environment"):
         baseline_batch_main(
@@ -889,3 +1008,65 @@ def test_fixed_direct_live_mode_does_not_require_c4_deployment_gate(
                 "C3=0.7275655",
             ]
         )
+
+
+def test_direct_live_cli_passes_only_the_commit_bound_excluded_schedule(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace, _ = _schedule_repo(tmp_path)
+    commit = _commit_exclusion_manifest(workspace)
+    captured: list[BaselineSchedule] = []
+
+    def fake_execute(
+        _arguments,
+        schedule,
+        _plan,
+        _scenario,
+        *,
+        require_deployment,
+        derived_deployment,
+        require_human_approval,
+        telemetry_only_c4,
+        expected_deployment_source_commit,
+    ):
+        assert require_deployment is False
+        assert derived_deployment is False
+        assert require_human_approval is False
+        assert telemetry_only_c4 is False
+        assert expected_deployment_source_commit is None
+        captured.append(schedule)
+        return 0
+
+    monkeypatch.setattr(baseline_batch_cli, "_execute_live", fake_execute)
+
+    result = baseline_batch_main(
+        [
+            "--workspace",
+            str(workspace),
+            "--system-commit",
+            commit,
+            "--run-id",
+            "public-baseline-v1",
+            "--observed-attempt-cost-usd",
+            "1.7398935",
+            "--cost-ceiling-usd",
+            "2000",
+            "--execute-live-direct-baseline",
+            "--freeze-a-commit",
+            "f" * 40,
+            "--output-root",
+            "experiments/autoresearch/raw/public-baseline-v1",
+            "--claude-config-dir",
+            "/outside/claude-1",
+            "--observed-condition-cost",
+            "C1=0.214778",
+            "--observed-condition-cost",
+            "C2=0.6084515",
+            "--observed-condition-cost",
+            "C3=0.7275655",
+        ]
+    )
+
+    assert result == 0
+    assert captured[0].public_identity()["attempt_count"] == 630
+    assert captured[0].public_identity()["database_count"] == 16

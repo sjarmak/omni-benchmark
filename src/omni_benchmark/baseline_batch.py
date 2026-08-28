@@ -33,6 +33,7 @@ _TRAIN_IDS_PATH = Path("data/manifests/train_ids.txt")
 _DEV_A_IDS_PATH = Path("data/manifests/dev_a_ids.txt")
 _ELIGIBLE_MANIFEST_PATH = Path("data/manifests/eligible_questions.jsonl")
 _C4_ARM_SPEC_PATH = Path("config/conditions/c4-public-baseline-arm-v1.json")
+_BASELINE_EXCLUSIONS_PATH = Path("config/conditions/public-baseline-exclusions-v1.json")
 _IDENTIFIER_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}")
 _COMMIT_PATTERN = re.compile(r"[0-9a-f]{40,64}")
 _MAX_PRIVATE_FILE_BYTES = 16 * 1024 * 1024
@@ -86,6 +87,62 @@ class BaselineAttempt:
 
 
 @dataclass(frozen=True, slots=True)
+class BaselineExclusionEvidence:
+    artifact: str
+    attempt_id: str
+    sha256: str
+
+    def __post_init__(self) -> None:
+        if self.artifact not in {"failure-diagnostic", "generation", "run-manifest"}:
+            raise BaselineBatchError("baseline exclusion evidence artifact is invalid")
+        if (
+            not isinstance(self.attempt_id, str)
+            or not self.attempt_id
+            or len(self.attempt_id) > 512
+        ):
+            raise BaselineBatchError("baseline exclusion evidence attempt is invalid")
+        if re.fullmatch(r"[0-9a-f]{64}", self.sha256) is None:
+            raise BaselineBatchError("baseline exclusion evidence digest is invalid")
+
+    def canonical_dict(self) -> dict[str, str]:
+        return {
+            "artifact": self.artifact,
+            "attempt_id": self.attempt_id,
+            "sha256": self.sha256,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class BaselineExclusion:
+    conditions: tuple[str, ...]
+    database: str
+    evidence: tuple[BaselineExclusionEvidence, ...]
+    reason: str
+    scope: str
+
+    def __post_init__(self) -> None:
+        if self.conditions != ("C1", "C2", "C3"):
+            raise BaselineBatchError("baseline exclusion conditions are invalid")
+        if _IDENTIFIER_PATTERN.fullmatch(self.database) is None:
+            raise BaselineBatchError("baseline exclusion database is invalid")
+        if not self.evidence:
+            raise BaselineBatchError("baseline exclusion requires evidence")
+        if not isinstance(self.reason, str) or not self.reason.strip():
+            raise BaselineBatchError("baseline exclusion reason is invalid")
+        if self.scope != "public-only-c1-c3-baseline":
+            raise BaselineBatchError("baseline exclusion scope is invalid")
+
+    def canonical_dict(self) -> dict[str, object]:
+        return {
+            "conditions": list(self.conditions),
+            "database": self.database,
+            "evidence": [item.canonical_dict() for item in self.evidence],
+            "reason": self.reason,
+            "scope": self.scope,
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class BaselineSchedule:
     """Derived schedule bound to committed public manifest inputs."""
 
@@ -93,6 +150,8 @@ class BaselineSchedule:
     eligible_manifest_sha256: str
     source_commit: str
     train_ids_sha256: str
+    exclusion_manifest_sha256: str | None = None
+    exclusions: tuple[BaselineExclusion, ...] = ()
 
     def __post_init__(self) -> None:
         if not self.attempts:
@@ -105,6 +164,16 @@ class BaselineSchedule:
         for digest in (self.eligible_manifest_sha256, self.train_ids_sha256):
             if re.fullmatch(r"[0-9a-f]{64}", digest) is None:
                 raise BaselineBatchError("baseline source digest is invalid")
+        if (self.exclusion_manifest_sha256 is None) != (not self.exclusions):
+            raise BaselineBatchError("baseline exclusion identity is incomplete")
+        if (
+            self.exclusion_manifest_sha256 is not None
+            and re.fullmatch(r"[0-9a-f]{64}", self.exclusion_manifest_sha256) is None
+        ):
+            raise BaselineBatchError("baseline exclusion manifest digest is invalid")
+        excluded = tuple(item.database for item in self.exclusions)
+        if tuple(sorted(set(excluded))) != excluded:
+            raise BaselineBatchError("baseline exclusions must be unique and sorted")
 
     @property
     def sha256(self) -> str:
@@ -114,7 +183,20 @@ class BaselineSchedule:
             "source_commit": self.source_commit,
             "train_ids_sha256": self.train_ids_sha256,
         }
+        if self.exclusion_manifest_sha256 is not None:
+            payload["exclusion_manifest_sha256"] = self.exclusion_manifest_sha256
+            payload["exclusions"] = [item.canonical_dict() for item in self.exclusions]
         return hashlib.sha256(_canonical_json(payload)).hexdigest()
+
+    def public_identity(self) -> dict[str, object]:
+        return {
+            "attempt_count": len(self.attempts),
+            "database_count": len({attempt.database for attempt in self.attempts}),
+            "excluded_databases": [item.database for item in self.exclusions],
+            "exclusion_manifest_sha256": self.exclusion_manifest_sha256,
+            "question_count": len({attempt.instance_id for attempt in self.attempts}),
+            "schedule_sha256": self.sha256,
+        }
 
 
 @dataclass(frozen=True, slots=True)
@@ -353,6 +435,63 @@ def direct_only_baseline_schedule(schedule: BaselineSchedule) -> BaselineSchedul
         eligible_manifest_sha256=schedule.eligible_manifest_sha256,
         source_commit=schedule.source_commit,
         train_ids_sha256=schedule.train_ids_sha256,
+        exclusion_manifest_sha256=schedule.exclusion_manifest_sha256,
+        exclusions=schedule.exclusions,
+    )
+
+
+def apply_committed_direct_baseline_exclusions(
+    workspace: Path, commit: str, schedule: BaselineSchedule
+) -> BaselineSchedule:
+    """Apply only the fixed, commit-bound pre-run direct-baseline exclusions."""
+    if (
+        len(schedule.attempts) != 693
+        or len({attempt.instance_id for attempt in schedule.attempts}) != 231
+        or len({attempt.database for attempt in schedule.attempts}) != 18
+        or {attempt.condition for attempt in schedule.attempts} != {"C1", "C2", "C3"}
+        or schedule.exclusions
+    ):
+        raise BaselineBatchError(
+            "committed exclusions require the full direct schedule"
+        )
+    try:
+        spec = committed_spec(
+            workspace.resolve(strict=True), commit, _BASELINE_EXCLUSIONS_PATH
+        )
+        exclusions = _parse_baseline_exclusions(spec.content)
+    except (OSError, UnicodeError, OmniProbePreflightError) as error:
+        raise BaselineBatchError(
+            "committed exclusion manifest is unavailable"
+        ) from error
+    current_run_id = schedule.attempts[0].run_id
+    if any(
+        item.attempt_id.startswith(f"{current_run_id}:")
+        for exclusion in exclusions
+        for item in exclusion.evidence
+    ):
+        raise BaselineBatchError("committed exclusion cannot cite the current run")
+    excluded_keys = {
+        (exclusion.database, condition)
+        for exclusion in exclusions
+        for condition in exclusion.conditions
+    }
+    attempts = tuple(
+        attempt
+        for attempt in schedule.attempts
+        if (attempt.database, attempt.condition) not in excluded_keys
+    )
+    present = {attempt.database for attempt in schedule.attempts}
+    if any(exclusion.database not in present for exclusion in exclusions):
+        raise BaselineBatchError("committed exclusion database is absent from schedule")
+    if not attempts or len(attempts) == len(schedule.attempts):
+        raise BaselineBatchError("committed exclusion did not filter the schedule")
+    return BaselineSchedule(
+        attempts=attempts,
+        eligible_manifest_sha256=schedule.eligible_manifest_sha256,
+        source_commit=schedule.source_commit,
+        train_ids_sha256=schedule.train_ids_sha256,
+        exclusion_manifest_sha256=spec.sha256,
+        exclusions=exclusions,
     )
 
 
@@ -683,6 +822,53 @@ def _validate_c4_arm_metadata(
         or source.get("train_ids_sha256") != schedule.train_ids_sha256
     ):
         raise BaselineBatchError("C4 arm metadata does not bind public sources")
+
+
+def _parse_baseline_exclusions(content: bytes) -> tuple[BaselineExclusion, ...]:
+    try:
+        value = json.loads(content)
+    except json.JSONDecodeError as error:
+        raise BaselineBatchError("committed exclusion manifest is invalid") from error
+    if (
+        not isinstance(value, dict)
+        or set(value) != {"exclusions", "kind", "schema_version"}
+        or value.get("kind") != "public-baseline-database-exclusions"
+        or value.get("schema_version") != 1
+        or not isinstance(value.get("exclusions"), list)
+        or not value["exclusions"]
+    ):
+        raise BaselineBatchError("committed exclusion manifest is invalid")
+    exclusions: list[BaselineExclusion] = []
+    for item in value["exclusions"]:
+        if (
+            not isinstance(item, dict)
+            or set(item) != {"conditions", "database", "evidence", "reason", "scope"}
+            or not isinstance(item["conditions"], list)
+            or not isinstance(item["evidence"], list)
+        ):
+            raise BaselineBatchError("committed exclusion record is invalid")
+        evidence: list[BaselineExclusionEvidence] = []
+        for reference in item["evidence"]:
+            if not isinstance(reference, dict) or set(reference) != {
+                "artifact",
+                "attempt_id",
+                "sha256",
+            }:
+                raise BaselineBatchError("committed exclusion evidence is invalid")
+            evidence.append(BaselineExclusionEvidence(**reference))
+        exclusions.append(
+            BaselineExclusion(
+                conditions=tuple(item["conditions"]),
+                database=item["database"],
+                evidence=tuple(evidence),
+                reason=item["reason"],
+                scope=item["scope"],
+            )
+        )
+    ordered = tuple(sorted(exclusions, key=lambda item: item.database))
+    if tuple(exclusions) != ordered:
+        raise BaselineBatchError("committed exclusions must be sorted by database")
+    return ordered
 
 
 def _parse_public_databases(content: bytes) -> dict[str, str]:

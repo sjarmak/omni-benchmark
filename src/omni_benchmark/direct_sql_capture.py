@@ -257,8 +257,9 @@ class DirectSqlCapture:
                     return self._terminal_error(failure)
                 continue
             if isinstance(action, DirectRefusalAction):
-                self._append_terminal("direct_refusal", "DENIED", "agent_refusal")
-                return "refused", "agent_refusal", None, None
+                failure = action.failure_class
+                self._append_terminal("direct_refusal", "DENIED", failure)
+                return "refused", failure, None, None
             return self._finish_answer(action.sql)
         return self._terminal_error("turn_limit_exhausted")
 
