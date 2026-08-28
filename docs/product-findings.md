@@ -151,6 +151,54 @@ execution mechanics rather than accuracy.
   benchmark question execution was not run.
 - **Evaluator agreement/disagreement:** Not applicable.
 
+## PF-001 scale-out: The same selected-database error affected all 17 remaining connections
+
+- **Observed behavior:** The first immutable 18-database deployment fan-out
+  reached exact readback only for the corrected archeology canary. Read-only API
+  inspection then showed that every other LiveSQLBench connection still selected
+  `neondb` rather than its named benchmark database.
+- **Minimal non-private reproduction:** List the safe `name`, `id`, `database`,
+  and `includeSchemas` fields for the 18 isolated connections. Compare the
+  corrected canary with the other records, then create and refresh an isolated
+  schema model on one representative connection.
+- **Expected behavior:** A connection created after successful read-only mirror
+  verification selects the verified database, or connection validation rejects
+  a target the role cannot access.
+- **Actual behavior:** 17/17 non-canary records selected `neondb` with
+  `includeSchemas=[public]`; the corrected canary selected
+  `archeology_scan_large`. The representative schema-model refresh ended only
+  `FAILED`, and a shared model could not be created.
+- **Why it matters to customers:** A repeated single-field setup error can block
+  an entire multi-connection rollout while appearing to be a schema, grant, or
+  service problem.
+- **Systematic evidence / frequency:** 17/17 non-canary benchmark connections;
+  the earlier canary correction provides the positive counterfactual.
+- **Benchmark impact:** Eleven otherwise authenticated bundles failed before a
+  model ID. Six additional bundles were stopped by an independent local mapping
+  preflight and therefore did not yet exercise their connections.
+- **Severity:** High setup and rollout reliability impact; no accuracy result.
+- **Proposed product change:** Validate selected-database access when saving a
+  connection, expose the failing database in sanitized refresh status, and add a
+  bulk connection health check before multi-model rollout.
+- **Was the change tested?:** The archeology counterfactual was tested and fixed;
+  the 17 scale-out records were inspected but deliberately not mutated in this
+  deployment experiment.
+- **Measured effect:** One corrected connection refreshed and supported exact
+  14-file readback; 17 uncorrected connection records retained the same erroneous
+  selected database.
+- **Experiment / commit provenance:** D-047; Beads
+  `omni-benchmark-dih.17` and `.17.1`; deployment source
+  `5edb423d8eaa911cf8da467716ead287998acc30`.
+- **Visible in AI Hub?:** No; schema-model setup failed before AI Hub could be a
+  useful diagnostic surface.
+- **AI Hub exposes relevant context/behavior?:** No evidence that it exposes this
+  connection-layer cause.
+- **Fixable through current AI Hub/modeling workflow?:** No; this is connection
+  configuration and schema-refresh observability.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** No question was run or scored.
+- **Evaluator agreement/disagreement:** Not applicable.
+
 ## PF-002: Model upload can silently create a near-duplicate schema view
 
 - **Observed behavior:** Uploading an extension with the flat artifact name
@@ -540,6 +588,52 @@ execution mechanics rather than accuracy.
   incomplete.
 - **Evaluator agreement/disagreement:** No disagreement was manufactured; the
   external evaluator refused to judge an incomplete result.
+
+## PF-011: Physical table identity and semantic extension identity diverge
+
+- **Observed behavior:** Six public-only bundles failed the exact deployment
+  preflight even though their manifests were internally hashed. Five contained
+  mixed-case physical PostgreSQL table names behind normalized lowercase Omni
+  extension filenames; one used unqualified extension filenames.
+- **Minimal non-private reproduction:** Build the committed deployment plan for
+  `cross_border_large`, `cybermarket_pattern_large`,
+  `labor_certification_applications_large`, `museum_artifact_large`,
+  `polar_equipment_large`, or `residential_data_large` and compare each `.view`
+  filename with its `catalog`, `schema`, and `table_name` identity.
+- **Expected behavior:** Mechanical tooling can address the correct logical Omni
+  view while independently preserving the exact case-sensitive physical table
+  identity used for SQL compilation.
+- **Actual behavior:** The canary-derived adapter treated normalized extension
+  path identity and physical table identity as identical. It rejected 27
+  mixed-case mismatches across five databases and six unqualified filenames in
+  the sixth database.
+- **Why it matters to customers:** Warehouses with quoted or mixed-case objects
+  are common. Conflating physical and logical identity makes automated model
+  publishing brittle and encourages unsafe name guessing.
+- **Systematic evidence / frequency:** 6/18 mechanical bundles; 33 affected view
+  artifacts split into two coherent classes.
+- **Benchmark impact:** These bundles were correctly stopped before product
+  mutation, but cannot enter C4 baseline generation until the general mapping
+  rule is fixed and read back exactly.
+- **Severity:** High for semantic-model automation; no measured accuracy effect.
+- **Proposed product change:** Expose a stable schema-view identifier separately
+  from physical catalog/schema/table identity in model export/import APIs, and
+  validate extension targets against that identifier.
+- **Was the change tested?:** The fail-closed preflight was tested. The corrected
+  general mapping and live readback are tracked but not yet completed.
+- **Measured effect:** One lowercase canary verified; six additional databases
+  produced explicit blockers instead of near-duplicate or misbound model views.
+- **Experiment / commit provenance:** D-047; Beads
+  `omni-benchmark-dih.17` and `.17.2`; deployment source
+  `5edb423d8eaa911cf8da467716ead287998acc30`.
+- **Visible in AI Hub?:** No; the issue occurs before a valid branch exists.
+- **AI Hub exposes relevant context/behavior?:** Not at this stage.
+- **Fixable through current AI Hub/modeling workflow?:** Individual views could
+  be repaired manually, but the reusable identity mapping belongs in model
+  tooling or import/export contracts.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** No question was run or scored.
+- **Evaluator agreement/disagreement:** Not applicable.
 
 ## Entry template
 

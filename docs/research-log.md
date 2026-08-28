@@ -3791,3 +3791,167 @@ Close the D-045 and direct-driver canary beads, preserve these immutable hashes,
 finish isolated bundle deployment/readback, and wire the reviewed batch
 orchestrator to live execution using observed successful-attempt costs rather
 than the earlier $1.74 failure as its expected-cost assumption.
+
+## 2026-08-28 — D-046: Recover scorer-faithful C4 results from governed queries
+
+### Decision / experiment
+
+Repair the smallest result-transport gap that prevents a completed governed Omni
+query from becoming a scoreable execution artifact. Bead
+`omni-benchmark-dih.5.4.3`; optimization surface: C4 execution/result adapter;
+change type: general system integration.
+
+### Observation
+
+The exact-commit C4 vertical slice completed a governed semantic query, but its
+agent-action CSV preview was marked truncated and the strict adapter stopped
+before rerunning the semantic query. A new public-only live probe found two more
+facts. First, the installed client currently rejects the committed
+`cache:"disabled"` value and accepts `SkipCache`. Second,
+`resultType:"json"` with formatting disabled returns Omni NUMBER fields as JSON
+strings, including both a numeric dimension and a COUNT measure. The same query's
+plan-only response exposes ordered field metadata with authoritative
+`data_type: NUMBER` and performs no database execution.
+
+### Hypothesis
+
+The agent preview is sufficient to identify the selected semantic query even
+when its display CSV is truncated. If the evaluator validates that query,
+obtains authoritative column metadata through `planOnly`, reruns the query for
+the complete rows, and converts values only according to declared Omni types,
+then C4 can produce scorer-compatible typed artifacts without inferring types
+from string appearance or weakening truncation checks on the final result.
+
+### Decision
+
+Keep the preview/truncation signal as product telemetry, but do not treat a
+truncated preview as terminal when an independently rerunnable semantic query is
+present. Require the full rerun's row count, columns, and result presence to
+match the agent action. Use plan metadata as the only authority for typed
+conversion; reject absent, ambiguous, contradictory, or unsupported metadata.
+String fields that resemble numbers must remain strings. Use the live-supported
+`SkipCache` spelling. The plan and full-result calls are evaluator-side result
+transport and remain excluded from evaluated-system query counts.
+
+### Rationale
+
+This directly unblocks baseline scoring while preserving production C4
+generation. It is smaller and more auditable than parsing values heuristically,
+adding question-specific limits, or replacing Omni's governed workflow with raw
+SQL. Plan-only metadata also avoids a second warehouse query solely to discover
+types.
+
+### Intervention
+
+Planned TDD surface: truncated-preview validation, strict NDJSON plan parsing,
+metadata-driven NUMBER/DATE/TIMESTAMP/YESNO/STRING conversion, string-lookalike
+preservation, duplicate/ragged/ambiguous rejection, the current cache enum, and
+end-to-end capture of a full result after a truncated preview.
+
+### Result
+
+Pending.
+
+### Interpretation
+
+Pending.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Pending live validation. The current evidence already suggests that downstream
+execution consumers need a stable full-result handle and authoritative result
+type metadata independent of the AI-facing preview.
+
+### Next step
+
+Implement the failing contract tests, pass the focused and full gates, then run
+one public count canary through Omni and the read-only Neon mirror to establish
+typed scorer parity before scaled C4 generation.
+
+## 2026-08-28 — D-047: Preserve the first 18-database deployment fan-out
+
+### Decision / experiment
+
+Deploy the committed public-only semantic bundles through the D-035 adapter in
+one bounded, append-only fan-out. Bead `omni-benchmark-dih.17`; source commit
+`5edb423d8eaa911cf8da467716ead287998acc30`; change type: general system
+integration.
+
+### Observation
+
+The archeology canary proved upload, validation, and semantic readback for one
+lowercase-schema database. It did not test connection setup or schema-view
+identity across the remaining 17 databases.
+
+### Hypothesis
+
+The authenticated bundle mapping and readback projection would generalize
+unchanged across all 18 isolated models. Any failure would be retained as a
+per-database status rather than repaired by hand.
+
+### Decision
+
+Load bundle bytes from the exact recorded Git commit, deploy with four bounded
+workers, preserve every terminal record, and stop after the first shared failure
+mechanisms became clear. Do not update connection coordinates or regenerate
+semantic bundles inside the deployment lane.
+
+### Rationale
+
+This was the smallest live experiment that could distinguish deployment-code,
+connection, and mechanical-modeling failures without using benchmark questions
+or hidden supervision.
+
+### Intervention
+
+The deployment runner snapshots `git archive <source_commit>`, authenticates
+each manifest, creates only isolated `livesqlbench-*` resources, validates the
+branch, and compares semantic readback. TDD and review covered duplicate
+selection, append-only claims, malformed-bundle isolation, parser recursion,
+unsafe archives, exact-commit binding, bounded concurrency, and credential-safe
+failure capture.
+
+### Result
+
+INCONCLUSIVE as a scale deployment, but diagnostic. The immutable run retained
+18 records plus its claim; their aggregate SHA-256 is
+`57df58ee3ddf96de7dd240969a0bfa7cfab427f6cdc4dcc1b9a4b1e4545c3d75`.
+Archeology verified 14/14 files with zero validation issues. Six bundles failed
+preflight: five exposed case-sensitive physical table identities behind
+normalized extension names, and residential used unqualified view filenames.
+The other eleven failed before a shared-model ID was returned.
+
+Read-only product inspection then confirmed that all 17 non-canary Omni
+connections selected `neondb`, while the working canary selected
+`archeology_scan_large`. On one representative connection, creating the
+isolated schema-model record succeeded, its refresh ended `FAILED`, and shared
+model creation remained unavailable. No shared model or branch was created for
+that diagnostic.
+
+### Interpretation
+
+The hypothesis was false for two independent reasons. The canary adapter did
+not cover case-sensitive schema-view identity, and connection creation did not
+guarantee that the selected database matched the verified scorer mirror. These
+are integration and mechanical-modeling failures, not evidence about agent
+accuracy.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Connection setup should validate the selected database and surface actionable
+schema-refresh errors. Semantic-model tooling also needs an explicit distinction
+between a physical table identity and its normalized Omni view/extension path.
+
+### Next step
+
+Resolve Beads `omni-benchmark-dih.17.1` and `.17.2`, then rerun under a new
+append-only run ID and require zero validation issues plus exact readback before
+the deployment records gate C4 baseline dispatch.
