@@ -81,6 +81,14 @@ These cost time if you discover them by hitting them.
   remote are prohibited.
 - Shell aliases may force `-i` on `cp`/`mv`/`rm` and hang the session. Use
   `cp -f`, `mv -f`, `rm -f`, `rm -rf`, and expand destructive paths literally.
+- **OAuth profiles are leased, never repaired by benchmark agents.** Never
+  refresh, rotate, copy back, or validate credentials while any Claude session
+  or benchmark run may hold that identity; an auth failure pauses the lane for
+  human-owned canonical login because refresh-token copies can revoke live
+  sessions and turn benchmark attempts into infrastructure failures.
+- Credential rotation is an operator-controlled recovery action, not routine
+  benchmark maintenance. Establish exclusive ownership first, rotate once only
+  if required, and keep the leased credential state stable until the run ends.
 
 ## Working style
 
