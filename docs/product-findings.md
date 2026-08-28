@@ -444,6 +444,54 @@ traces.
   error due to truncation; no correctness score was computed.
 - **Evaluator agreement/disagreement:** Not applicable.
 
+## PF-009: Missing grain contracts dominate public-only HKB translation
+
+- **Observed behavior:** Across the 17 non-canary public HKBs, the conservative
+  compiler materialized 179 of 1,036 definitions and retained 183 as context;
+  491 were deferred cross-grain and 183 were unsupported.
+- **Minimal non-private reproduction:** Run the committed public schema, mapping,
+  and bundle publishers for any database under
+  `semantic_models/public_baseline/`, then inspect mapping disposition and loss
+  counts in its manifest.
+- **Expected behavior:** A reusable HKB-to-semantic-model workflow compiles
+  definitions whose grain and inputs are explicit, while explaining which
+  additional contracts are required for unsafe definitions.
+- **Actual behavior:** Row-local scalar definitions frequently compiled. The
+  leading loss codes were `cardinality_unknown` (398),
+  `aggregation_unspecified` (314), and `cross_grain_no_identity` (308).
+- **Why it matters to customers:** Business definitions often span entities and
+  grains. Without explicit contracts, automated modeling must either preserve
+  them only as prose or guess joins and aggregations that governance is supposed
+  to control.
+- **Systematic evidence / frequency:** 1,036 definitions across 17/17 non-canary
+  databases; the earlier archeology canary showed the same qualitative pattern.
+- **Benchmark impact:** Only 17.3% of these definitions entered the executable
+  public baseline. This is transformation coverage evidence; no answer accuracy
+  or failure prevalence is claimed before scored runs.
+- **Severity:** High semantic-model automation and authoring constraint.
+- **Proposed product change:** Add explicit metric grain, entity identity,
+  relationship/cardinality, and aggregation contracts, and expose a compiler
+  dry run that identifies the missing contract for each unmaterialized
+  definition.
+- **Was the change tested?:** The conservative no-guess transformation and its
+  explanations were tested; the proposed product capability was not.
+- **Measured effect:** 179 compiled, 183 context-only, 491 deferred cross-grain,
+  and 183 unsupported. All artifacts regenerate byte-for-byte.
+- **Experiment / commit provenance:** D-043; Bead `omni-benchmark-786`; commits
+  `d3f84f6ea5d15b247e3d1ffba739cd220289e72a` and
+  `dcdd1a08a3d45a4a14978fe39f66542938fa5f32`.
+- **Visible in AI Hub?:** Not yet tested across the fan-out; the evidence comes
+  from the external transformation/compiler artifacts.
+- **AI Hub exposes relevant context/behavior?:** To be measured after isolated
+  bundles are deployed.
+- **Fixable through current AI Hub/modeling workflow?:** Individual definitions
+  may be modeled manually; reusable cross-grain compilation requires semantic
+  model or compiler support outside prompt evaluation alone.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** Not run; this precedes the preserved public-only
+  question baseline.
+- **Evaluator agreement/disagreement:** Not applicable.
+
 ## Entry template
 
 ### PF-XXX: Short finding title

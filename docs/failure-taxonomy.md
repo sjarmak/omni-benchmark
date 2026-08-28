@@ -1,16 +1,18 @@
 # Living failure taxonomy
 
-Status: pre-baseline. No Omni benchmark run has been scored, so observed counts,
-prevalence, representative failed questions, and affected databases are not yet
-available. This file must not turn plausible risks into fabricated findings.
-Update it at every baseline/checkpoint and preserve category splits/merges in the
-research log.
+Status: pre-baseline. No Omni benchmark run has been scored, so observed question
+failure counts, prevalence, representative failed questions, and affected
+databases are not yet available. Public-only compiler dispositions now provide
+representation evidence, recorded separately below. They must not be reported
+as answer failures. Update this file at every baseline/checkpoint and preserve
+category splits/merges in the research log.
 
 ## Current top three risk hypotheses—not observed failures
 
-1. **HKB dependency composition.** All databases contain multi-hop HKB paths and
-   the public HKB has 945 declared edges. A mechanical compiler may represent
-   nodes but lose dependency meaning, grain, or composition.
+1. **Relationship, aggregation, and grain composition.** Public-only fan-out
+   deferred 491/1,036 definitions cross-grain. `cardinality_unknown`,
+   `aggregation_unspecified`, and `cross_grain_no_identity` were the leading loss
+   codes. Scored traces must determine how often this becomes an answer failure.
 2. **Semantic discoverability.** A definition may be correct in Omni but absent
    from the Topic/retrieval surface used by the agent, producing an apparent
    reasoning failure that is actually context selection.
@@ -26,6 +28,22 @@ these hypotheses.
 Every checkpoint also preserves the terminal failure vector. A move from
 `wrong_answer` to `refused_or_error` is recorded separately from an accuracy
 change so validation and safety behavior are not collapsed into one failure bin.
+
+## Pre-execution representation evidence — D-043
+
+These are HKB transformation dispositions, not question outcomes:
+
+| Disposition | Count | Share | Current interpretation |
+| --- | ---: | ---: | --- |
+| Compiled | 179 | 17.3% | Safely executable under the current no-join public compiler |
+| Context only | 183 | 17.7% | Discoverable semantics without an executable derived object |
+| Deferred cross-grain | 491 | 47.4% | Missing explicit identity, cardinality, relationship, or aggregation contract |
+| Unsupported | 183 | 17.7% | Missing source/type/semantic capability or dependent unsupported definition |
+
+The distribution spans all 17 non-canary databases. It elevates relationship,
+grain, and aggregation fidelity as the leading pre-baseline mechanism to test,
+while preserving retrieval, compilation, validation, and model reasoning as
+distinct downstream hypotheses.
 
 ## HKB-linked mechanism ladder
 

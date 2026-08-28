@@ -3338,3 +3338,111 @@ overwrite the actionable terminal failure class.
 
 Commit the reviewed correction and rerun the public-only C1 canary with the
 capacity-selected isolated OAuth harness.
+
+## 2026-08-28 — D-043: Preserve cross-database HKB representability as baseline evidence
+
+_Last updated: 2026-08-28 11:02 EDT_
+
+### Decision / experiment
+
+Apply the reviewed public-only HKB-to-Omni transformation to the 17 databases
+beyond the archeology canary before generating the 231-question baseline.
+
+### Observation
+
+The archeology canary compiled only 14 of 54 HKB nodes. Its deferred and
+unsupported definitions appeared concentrated in cross-grain composition, but
+one database could not establish whether that was a general transformation gap
+or a domain-specific artifact.
+
+### Hypothesis
+
+Exact row-local definitions will often map safely into executable Omni fields,
+while definitions that cross entities, grains, time windows, or ordered sets
+will remain unsafe to compile until the semantic contract supplies explicit
+relationship, cardinality, aggregation, and identity information.
+
+### Decision
+
+Run the same public-only classification discipline across every remaining
+database. Preserve `context_only`, `defer_cross_grain`, and `unsupported` as
+first-class results rather than guessing joins or hand-tuning against questions.
+
+### Rationale
+
+The full public-only baseline requires semantic artifacts for all 18 databases.
+Fan-out also tests the transformation methodology itself and identifies product
+gaps before expensive agent runs. Alternatives rejected were uploading only the
+canary, treating every formula as free-form context, or inventing relationships
+to raise the compile count.
+
+### Intervention
+
+Optimization surface: HKB-to-semantic-model transformation; change type:
+general system improvement. Bead `omni-benchmark-786`. Generated hash-bound
+schema IR, reviewed public-only mapping specifications, and deterministic Omni
+bundles for all 17 non-canary databases. Agent-assisted public modeling
+inference is explicit in provenance. Commits:
+`d3f84f6ea5d15b247e3d1ffba739cd220289e72a` and
+`dcdd1a08a3d45a4a14978fe39f66542938fa5f32`.
+
+### Result
+
+Across 1,036 HKB definitions, 179 (17.3%) compiled, 183 (17.7%) became
+discoverable context, 491 (47.4%) were deferred cross-grain, and 183 (17.7%)
+were unsupported. Per-database distributions are linked below as
+compile/context/defer/unsupported:
+
+| Public semantic artifact | Distribution |
+| --- | ---: |
+| [cross_border](../semantic_models/public_baseline/cross_border_large/) | 12 / 7 / 33 / 27 |
+| [cybermarket_pattern](../semantic_models/public_baseline/cybermarket_pattern_large/) | 5 / 10 / 11 / 4 |
+| [disaster_relief](../semantic_models/public_baseline/disaster_relief_large/) | 14 / 9 / 28 / 7 |
+| [exchange_traded_funds](../semantic_models/public_baseline/exchange_traded_funds_large/) | 21 / 8 / 51 / 9 |
+| [fake_account](../semantic_models/public_baseline/fake_account_large/) | 2 / 7 / 65 / 13 |
+| [labor_certification_applications](../semantic_models/public_baseline/labor_certification_applications_large/) | 4 / 10 / 35 / 11 |
+| [mental_healths](../semantic_models/public_baseline/mental_healths_large/) | 6 / 10 / 72 / 8 |
+| [museum_artifact](../semantic_models/public_baseline/museum_artifact_large/) | 3 / 8 / 44 / 7 |
+| [organ_transplant](../semantic_models/public_baseline/organ_transplant_large/) | 11 / 22 / 3 / 19 |
+| [planets_data](../semantic_models/public_baseline/planets_data_large/) | 22 / 10 / 11 / 9 |
+| [polar_equipment](../semantic_models/public_baseline/polar_equipment_large/) | 18 / 9 / 25 / 6 |
+| [residential_data](../semantic_models/public_baseline/residential_data_large/) | 0 / 13 / 26 / 6 |
+| [reverse_logistics](../semantic_models/public_baseline/reverse_logistics_large/) | 0 / 19 / 4 / 7 |
+| [robot_fault_prediction](../semantic_models/public_baseline/robot_fault_prediction_large/) | 18 / 13 / 17 / 17 |
+| [solar_panel](../semantic_models/public_baseline/solar_panel_large/) | 27 / 10 / 7 / 6 |
+| [sports_events](../semantic_models/public_baseline/sports_events_large/) | 4 / 3 / 32 / 17 |
+| [virtual_idol](../semantic_models/public_baseline/virtual_idol_large/) | 12 / 15 / 27 / 10 |
+
+The most frequent loss codes were `cardinality_unknown` (398),
+`aggregation_unspecified` (314), and `cross_grain_no_identity` (308). The full
+repository suite passed 1,264 tests with three explicit live-integration skips
+and 84.78% branch coverage. Independent review found and resolved a file-size
+violation and non-scalar provenance error-contract defect before approval. No
+questions, gold, hidden annotations, private data, or correctness outcomes were
+used.
+
+### Interpretation
+
+The hypothesis is supported as a representation result, not yet as an answer-
+accuracy result. Same-row sensor and physical definitions compiled readily in
+solar and planets. Residential and reverse-logistics preserved useful context
+but compiled no definitions safely. The dominant bottleneck is missing
+grain/relationship/aggregation contracts, not scalar expression syntax.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+Automated semantic-model construction needs first-class grain, identity,
+cardinality, and aggregation contracts, plus a dry-run explanation of why a
+definition is context-only or unsafe to compile. Silently guessing those
+contracts would make the semantic layer look more complete while weakening the
+governance claim.
+
+### Next step
+
+Deploy the frozen public-only bundles through isolated Omni branches, preserve
+the complete 231-question baseline outputs, and use execution traces to learn
+which representation gaps actually become answer failures.
