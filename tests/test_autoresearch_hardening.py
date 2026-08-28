@@ -253,6 +253,28 @@ def test_errored_attempt_may_have_no_generated_query(tmp_path: Path) -> None:
     assert validate_run(config, path).refused_or_error_rate == 0.5
 
 
+def test_benchmark_infrastructure_failure_must_be_rerun_before_scoring(
+    tmp_path: Path,
+) -> None:
+    workspace, config = _workspace(tmp_path)
+    records = [_record("dev_a_1"), _record("dev_a_2")]
+    records[0].update(
+        {
+            "failure_origin": "benchmark_infrastructure",
+            "generated_query": None,
+            "generation_outcome": "errored",
+            "harness_failure": "database_infrastructure_error",
+            "outcome": "refused_or_error",
+            "terminal_failure_class": "database_infrastructure_error",
+        }
+    )
+    path = workspace / "runs" / "infrastructure-invalid.jsonl"
+    _write_jsonl(path, records)
+
+    with pytest.raises(AutoresearchError, match="rerun before scoring"):
+        validate_run(config, path)
+
+
 def test_answered_attempt_cannot_report_terminal_failure(tmp_path: Path) -> None:
     workspace, config = _workspace(tmp_path)
     records = [_record("dev_a_1"), _record("dev_a_2")]

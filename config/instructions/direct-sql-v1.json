@@ -1,0 +1,5 @@
+{
+  "adapter_instruction": "Use only condition-specific public reference tools and read-only Query SQL; refuse when public information is insufficient.",
+  "question_specific_hidden_annotations": false,
+  "runtime_oracle_context": false
+}

@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import pytest
 
-from omni_benchmark.sql_admission import query_sql_is_admissible
+from omni_benchmark.sql_admission import (
+    query_sql_is_admissible,
+    single_query_sql_is_admissible,
+)
 
 
 @pytest.mark.parametrize(
@@ -39,3 +42,23 @@ def test_query_admission_accepts_a_sequence_but_rejects_invalid_members() -> Non
     assert query_sql_is_admissible(("SELECT 1", "SELECT 2"))
     assert not query_sql_is_admissible(("SELECT 1", "TRUNCATE values_table"))
     assert not query_sql_is_admissible(())
+
+
+@pytest.mark.parametrize(
+    "sql",
+    [
+        "SELECT 1; SELECT 2",
+        "SELECT 1; UPDATE accounts SET enabled = false",
+        ("SELECT 1", "SELECT 2"),
+    ],
+)
+def test_single_query_admission_rejects_multiple_statements(
+    sql: str | tuple[str, str],
+) -> None:
+    assert not single_query_sql_is_admissible(sql)
+
+
+def test_single_query_admission_accepts_exactly_one_query() -> None:
+    assert single_query_sql_is_admissible(
+        "WITH source AS (SELECT 1) SELECT * FROM source"
+    )

@@ -1,141 +1,114 @@
 from __future__ import annotations
 
-import hashlib
-import math
 import os
-import time
 from collections import Counter
-from collections.abc import Callable, Mapping
-from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from collections.abc import Mapping
 from pathlib import Path
-from typing import Any, Literal, Protocol
+from time import monotonic as _monotonic
+from typing import Any
 
-from .artifact_store import ArtifactStore, ArtifactStoreError, StoredArtifact
+from .artifact_store import ArtifactStoreError, StoredArtifact
 from .autoresearch_artifacts import TRACE_SCHEMA_VERSION
-from .autoresearch_config import _canonical_bytes
 from .content_policy import ContentPolicy
+from .direct_action_evidence import (
+    DirectActionEvidence,
+    DirectActionEvidenceError,
+    action_evidence_payload,
+    public_ids_from_reference,
+    tool_action_evidence,
+    validate_action_evidence_input,
+)
+from .direct_action_protocol import (
+    DIRECT_TOOL_NAMES,
+    DirectActionProtocolError,
+    DirectRefusalAction,
+    DirectToolAction,
+    direct_tool_specs,
+    parse_direct_action,
+)
+from .direct_capture_binding import (
+    DirectCaptureBindingError,
+    DirectDatabaseBindingError,
+    DirectModelBindingError,
+    DirectReferenceBindingError,
+    require_database_identity,
+    require_model_identity,
+    require_public_identity,
+    require_runtime_boundaries,
+)
+from .direct_capture_contract import (
+    DirectCondition as DirectCondition,
+    DirectDatabaseAttestation,
+    DirectModelFailure,
+    DirectModelFailureObservation,
+    DirectModelTurn,
+    DirectModelTurnProvenance,
+    DirectProbeResult,
+    DirectReferenceResult,
+    GenerationOutcome,
+)
+from .direct_capture_receipt import capture_receipt_payload, capture_summary_payload
+from .direct_capture_validation import (
+    DirectCaptureError,
+    event_digest as _event_digest,
+    validate_reference_result as _validate_reference_result,
+    validate_turn as _validate_turn,
+)
+from .direct_capture_telemetry import (
+    DirectProbeTelemetry as _ProbeTelemetry,
+    failure_origin as _failure_origin,
+    timestamp_after as _timestamp_after,
+    utc_now as _utc_now,
+)
+from .direct_model_observability import (
+    cost as model_cost,
+    reduce_turn_provenance,
+    retry_count as model_retry_count,
+    token_usage as model_token_usage,
+)
+from .direct_prepared_attempt import (
+    DirectPreparedAttempt,
+    DirectPreparedAttemptError,
+    validate_direct_prepared_attempt,
+)
 from .direct_sql_result import (
     DirectExecution,
     DirectResultError,
     adapt_query_result,
-    capture_receipt_payload,
     database_failure,
     validate_json_value,
 )
 from .omni_result_adapter import OmniResultContractError, reject_forbidden_keys
 from .postgres_execution import (
-    PostgreSQLConnection,
     PostgreSQLExecutionError,
     execute_query_sequence,
 )
-from .sql_admission import query_sql_is_admissible
+from .sql_admission import single_query_sql_is_admissible
 
-DirectCondition = Literal["C1", "C2", "C3"]
-GenerationOutcome = Literal["answered", "refused", "errored"]
-_REFUSAL_REASONS = frozenset({"cannot_answer_safely", "insufficient_information"})
-_TOOL_NAMES = {
-    "C1": ("inspect_schema", "execute_sql"),
-    "C2": ("inspect_schema", "search_hkb", "execute_sql"),
-    "C3": ("inspect_schema", "search_semantic_model", "execute_sql"),
+_MODEL_FAILURE_CLASSES = {
+    "auth": "model_auth_error",
+    "budget": "model_budget_error",
+    "infrastructure": "model_infrastructure_error",
+    "model_identity": "model_identity_mismatch",
+    "protocol": "model_protocol_error",
+    "quota": "model_quota_error",
+    "rate_limit": "model_rate_limit_error",
+    "setup": "model_setup_error",
+    "structured_output": "model_structured_output_error",
+    "timeout": "model_timeout_error",
+    "tool_surface": "model_tool_surface_error",
 }
-
-
-class DirectCaptureError(RuntimeError):
-    """Raised when a direct comparator cannot be configured safely."""
-
-
-class DirectModelTransport(Protocol):
-    """One provider adapter turn; the harness owns conversation and tools."""
-
-    def next_turn(
-        self,
-        messages: tuple[Mapping[str, Any], ...],
-        tool_specs: tuple[Mapping[str, Any], ...],
-    ) -> DirectModelTurn: ...
-
-
-class DirectDatabaseTransport(Protocol):
-    """A factory whose role/function audit contains Query-only SQL side effects."""
-
-    @property
-    def execution_attestation(self) -> DirectDatabaseAttestation: ...
-
-    def connect(self) -> PostgreSQLConnection: ...
-
-
-@dataclass(frozen=True)
-class DirectModelTurn:
-    """A structured model action plus authoritative provider telemetry."""
-
-    action: Mapping[str, Any]
-    input_tokens: int | None = None
-    output_tokens: int | None = None
-    retry_count: int | None = None
-    cost_usd: float | None = None
-
-
-@dataclass(frozen=True)
-class DirectReferenceResult:
-    """Public reference payload with optional semantic-object provenance."""
-
-    payload: Any
-    semantic_objects: tuple[str, ...] = ()
-
-
-@dataclass(frozen=True)
-class DirectDatabaseAttestation:
-    """External audit assertions required because AST admission is not a sandbox."""
-
-    role_is_read_only: bool
-    no_execute_on_non_system_functions: bool
-
-
-@dataclass(frozen=True)
-class DirectProbeResult:
-    """Unscored comparator output and measured attempt telemetry."""
-
-    condition: DirectCondition
-    attempt_id: str
-    maximum_turns: int
-    question_sha256: str
-    generation_outcome: GenerationOutcome
-    failure_class: str | None
-    trace: StoredArtifact
-    receipt: StoredArtifact
-    result_artifact: StoredArtifact | None
-    generated_sql: str | None
-    semantic_objects: tuple[str, ...]
-    tool_calls_by_name: tuple[tuple[str, int], ...]
-    tool_call_count: int
-    database_query_count: int | None
-    validation_attempt_count: int
-    retry_count: int | None
-    token_usage: dict[str, int] | None
-    token_source: str
-    cost_usd: float | None
-    cost_source: str
-    provider: str
-    model: str
-    started_at: str
-    finished_at: str
-    latency_ms: float
-
-
-@dataclass(frozen=True)
-class _ToolAction:
-    name: str
-    arguments: Mapping[str, Any]
-
-
-@dataclass(frozen=True)
-class _AnswerAction:
-    sql: str
-
-
-@dataclass(frozen=True)
-class _RefusalAction:
-    reason: str
+_TERMINAL_DATABASE_FAILURES = frozenset(
+    {"database_identity_mismatch", "database_infrastructure_error"}
+)
+__all__ = [
+    "DirectCaptureError",
+    "DirectDatabaseAttestation",
+    "DirectModelTurn",
+    "DirectProbeResult",
+    "DirectReferenceResult",
+    "DirectSqlCapture",
+]
 
 
 class DirectSqlCapture:
@@ -144,99 +117,118 @@ class DirectSqlCapture:
     def __init__(
         self,
         *,
-        condition: str,
-        model_transport: DirectModelTransport,
-        database: DirectDatabaseTransport,
-        inspect_schema: Callable[[], DirectReferenceResult],
-        search_hkb: Callable[[str], DirectReferenceResult] | None,
-        search_semantic_model: Callable[[str], DirectReferenceResult] | None,
-        store: ArtifactStore,
-        provider: str,
-        model: str,
-        maximum_turns: int = 12,
-        clock: Callable[[], float] = time.monotonic,
-        utc_now: Callable[[], str] | None = None,
+        prepared: DirectPreparedAttempt,
     ) -> None:
-        self._condition = _validate_configuration(
-            condition, search_hkb, search_semantic_model, maximum_turns
-        )
-        self._model_transport = model_transport
-        self._database = _validate_database_transport(database)
-        self._inspect_schema = inspect_schema
-        self._search_hkb = search_hkb
-        self._search_semantic_model = search_semantic_model
-        self._store = store
-        self._provider = _identifier(provider, "provider")
-        self._model = _identifier(model, "model")
-        self._maximum_turns = maximum_turns
-        self._clock = clock
-        self._utc_now = _utc_now if utc_now is None else utc_now
+        try:
+            authorized = validate_direct_prepared_attempt(prepared)
+            self._prepared = authorized
+            self._binding = authorized.binding
+            self._model_transport = authorized.model_transport
+            self._database = authorized.database
+            self._public_tools = authorized.public_tools
+            self._store = authorized.store
+        except (DirectCaptureBindingError, DirectPreparedAttemptError) as error:
+            raise DirectCaptureError(str(error)) from error
+        self._condition = self._binding.condition
+        self._provider = self._binding.model.provider
+        self._model = self._binding.model.model
+        self._maximum_turns = self._binding.budget.maximum_turns
+        self._clock = _monotonic
+        self._utc_now = _utc_now
         self._policy = ContentPolicy.from_environment(os.environ)
         self._events: list[dict[str, Any]] = []
+        self._action_evidence: list[DirectActionEvidence] = []
         self._messages: list[Mapping[str, Any]] = []
         self._turns: list[DirectModelTurn] = []
+        self._model_turn_provenance: list[DirectModelTurnProvenance] = []
+        self._model_failures: list[DirectModelFailureObservation] = []
         self._tools: Counter[str] = Counter()
         self._semantic_objects: set[str] = set()
         self._database_query_count: int | None = 0
         self._origin = 0.0
         self._started_at = ""
-        self._question_sha256 = ""
+        self._question_sha256 = self._binding.question.question_sha256
         self._used = False
+        self._model_failure = "model_transport_error"
 
-    def capture(self, question: str, *, attempt_id: str) -> DirectProbeResult:
-        """Run one fresh public question and always persist a terminal trace."""
-        self._start(question)
-        attempt_id = _identifier(attempt_id, "attempt_id")
+    def capture(self) -> DirectProbeResult:
+        """Run the single question authorized by the immutable runtime binding."""
+        self._start()
         outcome, failure, sql, result_artifact = self._run_turns()
         latency_ms = max(0.0, (self._clock() - self._origin) * 1000)
-        self._normalize_unavailable_trace_telemetry()
         trace = self._store.write_jsonl(Path("attempt.trace.jsonl"), self._events)
-        receipt = self._write_receipt(attempt_id, sql, trace, result_artifact)
+        action_evidence = self._store.write_json(
+            Path("attempt.action-evidence.json"),
+            action_evidence_payload(
+                binding=self._binding,
+                trace_sha256=trace.sha256,
+                records=self._action_evidence,
+                trace_events=self._events,
+                policy=self._policy,
+            ),
+        )
         return self._probe_result(
-            attempt_id,
             outcome,
             failure,
             sql,
             result_artifact,
             trace,
-            receipt,
+            action_evidence,
             latency_ms,
         )
 
     def _write_receipt(
         self,
-        attempt_id: str,
         sql: str | None,
         trace: StoredArtifact,
+        action_evidence: StoredArtifact,
         result: StoredArtifact | None,
+        summary: Mapping[str, Any],
     ) -> StoredArtifact:
         return self._store.write_json(
             Path("capture.receipt.json"),
             capture_receipt_payload(
                 store=self._store,
-                attempt_id=attempt_id,
-                condition=self._condition,
-                question_sha256=self._question_sha256,
-                provider=self._provider,
-                model=self._model,
-                maximum_turns=self._maximum_turns,
+                binding=self._binding,
                 sql=sql,
                 trace=trace,
+                action_evidence=action_evidence,
                 result=result,
+                capture_summary=summary,
             ),
         )
 
-    def _start(self, question: str) -> None:
+    def _start(self) -> None:
         if self._used:
             raise DirectCaptureError("direct SQL capture instances are single use")
-        if not isinstance(question, str) or not question.strip():
-            raise DirectCaptureError("question must be a non-empty string")
+        self._revalidate_prepared()
+        try:
+            require_runtime_boundaries(
+                self._binding,
+                self._model_transport,
+                self._database,
+                self._public_tools,
+            )
+        except DirectCaptureBindingError as error:
+            raise DirectCaptureError(str(error)) from error
+        try:
+            question = self._public_tools.render_question(
+                self._binding.question.question
+            )
+        except Exception as error:
+            raise DirectCaptureError("public question rendering failed") from error
+        try:
+            require_public_identity(self._binding, self._public_tools)
+            self._revalidate_prepared()
+        except DirectReferenceBindingError as error:
+            raise DirectCaptureError(str(error)) from error
+        if question != self._binding.question.question:
+            raise DirectCaptureError("rendered question does not match runtime binding")
         if not self._policy.query_is_safe(question):
             raise DirectCaptureError("question contains sensitive content")
         self._used = True
         self._origin = self._clock()
         self._started_at = self._utc_now()
-        self._question_sha256 = hashlib.sha256(question.encode("utf-8")).hexdigest()
         self._messages.append({"role": "user", "content": question})
 
     def _run_turns(
@@ -245,18 +237,22 @@ class DirectSqlCapture:
         for _ in range(self._maximum_turns):
             turn = self._next_turn()
             if turn is None:
-                return self._terminal_error("model_transport_error")
+                return self._terminal_error(self._model_failure)
             try:
-                action = _parse_action(turn.action)
-            except (DirectCaptureError, OmniResultContractError):
+                action = parse_direct_action(turn.action)
+            except (
+                DirectActionProtocolError,
+                DirectCaptureError,
+                OmniResultContractError,
+            ):
                 return self._terminal_error("invalid_model_action")
             self._messages.append({"role": "assistant", "content": dict(turn.action)})
-            if isinstance(action, _ToolAction):
+            if isinstance(action, DirectToolAction):
                 failure = self._dispatch_tool(action)
                 if failure is not None:
                     return self._terminal_error(failure)
                 continue
-            if isinstance(action, _RefusalAction):
+            if isinstance(action, DirectRefusalAction):
                 self._append_terminal("direct_refusal", "DENIED", "agent_refusal")
                 return "refused", "agent_refusal", None, None
             return self._finish_answer(action.sql)
@@ -265,25 +261,83 @@ class DirectSqlCapture:
     def _next_turn(self) -> DirectModelTurn | None:
         started = self._clock()
         try:
-            reject_forbidden_keys(self._messages)
-            if self._policy.sanitize_json(self._messages) != self._messages:
-                raise DirectCaptureError("outbound messages contain sensitive content")
-            turn = self._model_transport.next_turn(
-                tuple(self._messages), _tool_specs(self._condition)
+            turn = self._request_model_turn()
+            provenance = reduce_turn_provenance(
+                turn,
+                self._binding.model,
+                trace_seq=len(self._events),
+                policy=self._policy,
             )
-            _validate_turn(turn)
-            reject_forbidden_keys(turn.action)
-            if self._policy.sanitize_json(dict(turn.action)) != dict(turn.action):
-                raise DirectCaptureError("model action contains sensitive content")
-        except Exception:
-            self._append_event(
-                event_type="direct_model_turn",
-                status="ERROR",
-                started=started,
-                failure_class="model_transport_error",
+        except DirectModelBindingError:
+            self._record_model_failure(started, "model_identity_mismatch")
+            return None
+        except DirectModelFailure as error:
+            self._model_failures.append(error.observation)
+            usage = error.accounted_usage
+            self._record_model_failure(
+                started,
+                _MODEL_FAILURE_CLASSES[error.category],
+                input_tokens=None if usage is None else usage.input_tokens,
+                output_tokens=None if usage is None else usage.output_tokens,
+                retry_delta=error.retry_count,
             )
             return None
+        except Exception:
+            self._record_model_failure(started, "model_transport_error")
+            return None
+        self._record_model_success(started, turn, provenance)
+        return turn
+
+    def _request_model_turn(self) -> DirectModelTurn:
+        require_model_identity(self._binding, self._model_transport)
+        self._revalidate_prepared()
+        reject_forbidden_keys(self._messages)
+        if self._policy.sanitize_json(self._messages) != self._messages:
+            raise DirectCaptureError("outbound messages contain sensitive content")
+        turn = self._model_transport.next_turn(
+            tuple(self._messages), direct_tool_specs(self._condition)
+        )
+        require_model_identity(self._binding, self._model_transport)
+        self._revalidate_prepared()
+        _validate_turn(turn, self._binding.model)
+        reject_forbidden_keys(turn.action)
+        if self._policy.sanitize_json(dict(turn.action)) != dict(turn.action):
+            raise DirectCaptureError("model action contains sensitive content")
+        return turn
+
+    def _record_model_failure(
+        self,
+        started: float,
+        failure: str,
+        *,
+        input_tokens: int | None = 0,
+        output_tokens: int | None = 0,
+        retry_delta: int | None = 0,
+    ) -> None:
+        self._model_failure = failure
+        provenance = DirectModelTurnProvenance.unavailable(
+            trace_seq=len(self._events), identity=self._binding.model
+        )
+        self._model_turn_provenance.append(provenance)
+        self._append_event(
+            event_type="direct_model_turn",
+            status="ERROR",
+            started=started,
+            failure_class=failure,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            retry_delta=retry_delta,
+            metadata_sha256=provenance.sha256(),
+        )
+
+    def _record_model_success(
+        self,
+        started: float,
+        turn: DirectModelTurn,
+        provenance: DirectModelTurnProvenance,
+    ) -> None:
         self._turns.append(turn)
+        self._model_turn_provenance.append(provenance)
         self._append_event(
             event_type="direct_model_turn",
             status="SUCCESS",
@@ -291,44 +345,55 @@ class DirectSqlCapture:
             input_tokens=turn.input_tokens,
             output_tokens=turn.output_tokens,
             retry_delta=turn.retry_count,
+            metadata_sha256=provenance.sha256(),
         )
-        return turn
 
-    def _dispatch_tool(self, action: _ToolAction) -> str | None:
-        if action.name not in _TOOL_NAMES[self._condition]:
+    def _dispatch_tool(self, action: DirectToolAction) -> str | None:
+        if action.name not in DIRECT_TOOL_NAMES[self._condition]:
             return "unauthorized_tool"
+        try:
+            validate_action_evidence_input(action, self._policy)
+        except DirectActionEvidenceError:
+            return "invalid_model_action"
         started = self._clock()
         self._tools[action.name] += 1
         if action.name == "execute_sql":
             return self._dispatch_database_tool(action, started)
         try:
             result = self._tool_result(action)
-            _validate_reference_result(result, self._policy)
+            _validate_reference_result(
+                result,
+                self._policy,
+                self._binding,
+                action.name,
+            )
             if result.semantic_objects and not (
                 self._condition == "C3" and action.name == "search_semantic_model"
             ):
                 raise DirectCaptureError(
                     "semantic objects require C3 semantic-model search provenance"
                 )
-        except OmniResultContractError:
-            self._append_tool_event(
-                action.name, started, "ERROR", "forbidden_tool_payload"
-            )
+            retrieved_ids = public_ids_from_reference(result, self._policy)
+        except DirectReferenceBindingError:
+            self._append_tool_event(action, started, "ERROR", "reference_binding_error")
+            return "reference_binding_error"
+        except (DirectActionEvidenceError, OmniResultContractError):
+            self._append_tool_event(action, started, "ERROR", "forbidden_tool_payload")
             return "forbidden_tool_payload"
         except Exception:
-            self._append_tool_event(
-                action.name, started, "ERROR", "tool_execution_error"
-            )
+            self._append_tool_event(action, started, "ERROR", "tool_execution_error")
             return "tool_execution_error"
         self._semantic_objects.update(result.semantic_objects)
         self._messages.append(
             {"role": "tool", "name": action.name, "content": result.payload}
         )
-        self._append_tool_event(action.name, started, "SUCCESS", None)
+        self._append_tool_event(
+            action, started, "SUCCESS", None, retrieved_ids=retrieved_ids
+        )
         return None
 
     def _dispatch_database_tool(
-        self, action: _ToolAction, started: float
+        self, action: DirectToolAction, started: float
     ) -> str | None:
         execution = self._execute_sql(action.arguments["sql"])
         try:
@@ -339,56 +404,124 @@ class DirectSqlCapture:
                     "database tool payload contains sensitive content"
                 )
         except (DirectCaptureError, DirectResultError, OmniResultContractError):
-            self._append_tool_event(
-                action.name, started, "ERROR", "forbidden_tool_payload"
-            )
+            self._append_tool_event(action, started, "ERROR", "forbidden_tool_payload")
             return "forbidden_tool_payload"
         self._messages.append(
             {"role": "tool", "name": action.name, "content": execution.payload}
         )
         status = "ERROR" if execution.failure_class is not None else "SUCCESS"
-        self._append_tool_event(action.name, started, status, execution.failure_class)
+        self._append_tool_event(action, started, status, execution.failure_class)
+        if execution.failure_class in _TERMINAL_DATABASE_FAILURES:
+            return execution.failure_class
         return None
 
-    def _tool_result(self, action: _ToolAction) -> DirectReferenceResult:
+    def _tool_result(self, action: DirectToolAction) -> DirectReferenceResult:
+        require_public_identity(self._binding, self._public_tools)
+        self._revalidate_prepared()
         if action.name == "inspect_schema":
-            return self._inspect_schema()
-        if action.name == "search_hkb":
-            if self._search_hkb is None:
+            result = self._public_tools.inspect_schema()
+        elif action.name == "search_hkb":
+            if self._public_tools.search_hkb is None:
                 raise DirectCaptureError("HKB search is unavailable")
-            return self._search_hkb(action.arguments["query"])
-        if action.name == "search_semantic_model":
-            if self._search_semantic_model is None:
+            result = self._public_tools.search_hkb(action.arguments["query"])
+        elif action.name == "search_semantic_model":
+            if self._public_tools.search_semantic_model is None:
                 raise DirectCaptureError("semantic-model search is unavailable")
-            return self._search_semantic_model(action.arguments["query"])
-        raise DirectCaptureError("tool is not a public reference tool")
+            result = self._public_tools.search_semantic_model(action.arguments["query"])
+        else:
+            raise DirectCaptureError("tool is not a public reference tool")
+        require_public_identity(self._binding, self._public_tools)
+        self._revalidate_prepared()
+        return result
 
     def _execute_sql(self, sql: str) -> DirectExecution:
-        if not self._policy.query_is_safe(sql) or not query_sql_is_admissible(sql):
+        if not _sql_is_admitted(sql, self._policy):
             return DirectExecution(
                 {"failure_class": "sql_not_admitted", "status": "error"},
                 None,
                 "sql_not_admitted",
             )
+        connection: Any | None = None
         try:
+            require_database_identity(self._binding, self._database)
+            self._revalidate_prepared()
             connection = self._database.connect()
+            require_database_identity(self._binding, self._database)
+            self._revalidate_prepared()
+        except DirectDatabaseBindingError:
+            return self._database_preflight_failure(
+                connection, "database_identity_mismatch"
+            )
         except Exception:
-            return database_failure("database_infrastructure_error")
+            return self._database_preflight_failure(
+                connection, "database_infrastructure_error"
+            )
         try:
+            require_database_identity(self._binding, self._database)
+            self._revalidate_prepared()
             result = execute_query_sequence(connection, sql, read_only=True)
             self._record_database_queries(result.statement_count)
+            require_database_identity(self._binding, self._database)
+            self._revalidate_prepared()
             execution = adapt_query_result(result)
+        except DirectDatabaseBindingError:
+            execution = database_failure("database_identity_mismatch")
         except PostgreSQLExecutionError as error:
             self._record_database_queries(max(1, error.statement_index + 1))
             execution = database_failure(f"database_{error.kind}_error")
+        except DirectResultError:
+            execution = database_failure("result_contract_error")
         except Exception:
             self._database_query_count = None
             execution = database_failure("database_infrastructure_error")
+        cleanup_failure = self._close_database_connection(connection)
+        if cleanup_failure == "database_infrastructure_error":
+            return database_failure("database_infrastructure_error")
+        if (
+            cleanup_failure == "database_identity_mismatch"
+            and execution.failure_class != "database_identity_mismatch"
+        ):
+            return database_failure(cleanup_failure)
+        return execution
+
+    def _close_database_connection(self, connection: Any) -> str | None:
+        authority_failure: str | None = None
+        try:
+            require_database_identity(self._binding, self._database)
+            self._revalidate_prepared()
+        except DirectDatabaseBindingError:
+            authority_failure = "database_identity_mismatch"
+        except Exception:
+            authority_failure = "database_infrastructure_error"
         try:
             connection.close()
         except Exception:
-            return database_failure("database_infrastructure_error")
-        return execution
+            return "database_infrastructure_error"
+        try:
+            require_database_identity(self._binding, self._database)
+            self._revalidate_prepared()
+        except DirectDatabaseBindingError:
+            return "database_identity_mismatch"
+        except Exception:
+            return "database_infrastructure_error"
+        return authority_failure
+
+    @staticmethod
+    def _database_preflight_failure(
+        connection: Any | None, failure: str
+    ) -> DirectExecution:
+        if connection is not None:
+            try:
+                connection.close()
+            except Exception:
+                return database_failure("database_infrastructure_error")
+        return database_failure(failure)
+
+    def _revalidate_prepared(self) -> None:
+        try:
+            validate_direct_prepared_attempt(self._prepared)
+        except (DirectCaptureBindingError, DirectPreparedAttemptError) as error:
+            raise DirectCaptureError(str(error)) from error
 
     def _finish_answer(
         self, sql: str
@@ -429,19 +562,35 @@ class DirectSqlCapture:
         return "errored", failure, None, None
 
     def _append_tool_event(
-        self, name: str, started: float, status: str, failure: str | None
+        self,
+        action: DirectToolAction,
+        started: float,
+        status: str,
+        failure: str | None,
+        *,
+        retrieved_ids: tuple[str, ...] = (),
     ) -> None:
+        evidence = tool_action_evidence(
+            action=action,
+            trace_seq=len(self._events),
+            failure_class=failure,
+            retrieved_ids=retrieved_ids,
+            policy=self._policy,
+        )
+        if evidence is not None:
+            self._action_evidence.append(evidence)
         database_delta = 0
-        if name == "execute_sql" and failure != "sql_not_admitted":
+        if action.name == "execute_sql" and failure != "sql_not_admitted":
             database_delta = self._last_database_delta()
         self._append_event(
             event_type="direct_tool_dispatch",
             status=status,
             started=started,
             tool_call_delta=1,
-            tool_name=name,
+            tool_name=action.name,
             database_query_delta=database_delta,
             failure_class=failure,
+            metadata_sha256=None if evidence is None else evidence.sha256(),
         )
 
     def _append_final_execution(
@@ -488,6 +637,7 @@ class DirectSqlCapture:
         input_tokens: int | None = 0,
         output_tokens: int | None = 0,
         retry_delta: int | None = 0,
+        metadata_sha256: str | None = None,
     ) -> None:
         finished = self._clock()
         elapsed_ms = max(0.0, (finished - self._origin) * 1000)
@@ -500,7 +650,8 @@ class DirectSqlCapture:
                 "event_type": event_type,
                 "failure_class": failure_class,
                 "input_tokens": input_tokens,
-                "metadata_sha256": _event_digest(event_type, status, len(self._events)),
+                "metadata_sha256": metadata_sha256
+                or _event_digest(event_type, status, len(self._events)),
                 "model": self._model,
                 "output_tokens": output_tokens,
                 "provider": self._provider,
@@ -515,284 +666,118 @@ class DirectSqlCapture:
             }
         )
 
-    def _normalize_unavailable_trace_telemetry(self) -> None:
-        tokens_available = bool(self._turns) and all(
-            turn.input_tokens is not None and turn.output_tokens is not None
-            for turn in self._turns
-        )
-        retries_available = bool(self._turns) and all(
-            turn.retry_count is not None for turn in self._turns
-        )
-        self._events = [
-            {
-                **event,
-                "input_tokens": event["input_tokens"] if tokens_available else None,
-                "output_tokens": event["output_tokens"] if tokens_available else None,
-                "retry_delta": event["retry_delta"] if retries_available else None,
-                "database_query_delta": (
-                    event["database_query_delta"]
-                    if self._database_query_count is not None
-                    else None
-                ),
-            }
-            for event in self._events
-        ]
-
     def _probe_result(
         self,
-        attempt_id: str,
         outcome: GenerationOutcome,
         failure: str | None,
         sql: str | None,
         result_artifact: StoredArtifact | None,
         trace: StoredArtifact,
-        receipt: StoredArtifact,
+        action_evidence: StoredArtifact,
         latency_ms: float,
     ) -> DirectProbeResult:
-        token_usage = _token_usage(self._turns)
-        cost = _cost(self._turns)
+        telemetry = self._probe_telemetry(failure, latency_ms)
+        summary = self._capture_summary(outcome, failure, telemetry, latency_ms)
+        receipt = self._write_receipt(
+            sql, trace, action_evidence, result_artifact, summary
+        )
+        return self._build_probe_result(
+            outcome,
+            failure,
+            sql,
+            result_artifact,
+            trace,
+            action_evidence,
+            receipt,
+            telemetry,
+            latency_ms,
+        )
+
+    def _probe_telemetry(
+        self, failure: str | None, latency_ms: float
+    ) -> _ProbeTelemetry:
+        return _ProbeTelemetry(
+            token_usage=model_token_usage(self._turns, self._model_failures),
+            cost_usd=model_cost(self._turns, self._model_failures),
+            retry_count=model_retry_count(self._turns, self._model_failures),
+            semantic_objects=tuple(sorted(self._semantic_objects)),
+            tool_calls_by_name=tuple(sorted(self._tools.items())),
+            tool_call_count=sum(self._tools.values()),
+            failure_origin=_failure_origin(failure),
+            finished_at=_timestamp_after(self._started_at, latency_ms),
+        )
+
+    def _capture_summary(
+        self,
+        outcome: GenerationOutcome,
+        failure: str | None,
+        telemetry: _ProbeTelemetry,
+        latency_ms: float,
+    ) -> dict[str, Any]:
+        return capture_summary_payload(
+            generation_outcome=outcome,
+            failure_class=failure,
+            failure_origin=telemetry.failure_origin,
+            semantic_objects=telemetry.semantic_objects,
+            tool_calls_by_name=telemetry.tool_calls_by_name,
+            tool_call_count=telemetry.tool_call_count,
+            database_query_count=self._database_query_count,
+            validation_attempt_count=0,
+            retry_count=telemetry.retry_count,
+            token_usage=telemetry.token_usage,
+            token_source=telemetry.token_source,
+            cost_usd=telemetry.cost_usd,
+            cost_source=telemetry.cost_source,
+            started_at=self._started_at,
+            finished_at=telemetry.finished_at,
+            latency_ms=latency_ms,
+            model_turn_provenance=tuple(self._model_turn_provenance),
+        )
+
+    def _build_probe_result(
+        self,
+        outcome: GenerationOutcome,
+        failure: str | None,
+        sql: str | None,
+        result_artifact: StoredArtifact | None,
+        trace: StoredArtifact,
+        action_evidence: StoredArtifact,
+        receipt: StoredArtifact,
+        telemetry: _ProbeTelemetry,
+        latency_ms: float,
+    ) -> DirectProbeResult:
         return DirectProbeResult(
+            binding=self._binding,
             condition=self._condition,
-            attempt_id=attempt_id,
+            attempt_id=self._binding.attempt_id,
             maximum_turns=self._maximum_turns,
             question_sha256=self._question_sha256,
             generation_outcome=outcome,
             failure_class=failure,
             trace=trace,
+            action_evidence=action_evidence,
             receipt=receipt,
             result_artifact=result_artifact,
             generated_sql=sql,
-            semantic_objects=tuple(sorted(self._semantic_objects)),
-            tool_calls_by_name=tuple(sorted(self._tools.items())),
-            tool_call_count=sum(self._tools.values()),
+            semantic_objects=telemetry.semantic_objects,
+            tool_calls_by_name=telemetry.tool_calls_by_name,
+            tool_call_count=telemetry.tool_call_count,
             database_query_count=self._database_query_count,
             validation_attempt_count=0,
-            retry_count=_retry_count(self._turns),
-            token_usage=token_usage,
-            token_source="provider_reported"
-            if token_usage is not None
-            else "unavailable",
-            cost_usd=cost,
-            cost_source="provider_reported" if cost is not None else "unavailable",
+            retry_count=telemetry.retry_count,
+            token_usage=telemetry.token_usage,
+            token_source=telemetry.token_source,
+            cost_usd=telemetry.cost_usd,
+            cost_source=telemetry.cost_source,
             provider=self._provider,
             model=self._model,
             started_at=self._started_at,
-            finished_at=_timestamp_after(self._started_at, latency_ms),
+            finished_at=telemetry.finished_at,
             latency_ms=latency_ms,
+            model_turn_provenance=tuple(self._model_turn_provenance),
+            failure_origin=telemetry.failure_origin,
         )
 
 
-def _validate_configuration(
-    condition: str,
-    search_hkb: Callable[[str], DirectReferenceResult] | None,
-    search_semantic_model: Callable[[str], DirectReferenceResult] | None,
-    maximum_turns: int,
-) -> DirectCondition:
-    if condition not in _TOOL_NAMES:
-        raise DirectCaptureError("condition must be C1, C2, or C3")
-    if type(maximum_turns) is not int or maximum_turns < 1:
-        raise DirectCaptureError("maximum_turns must be a positive integer")
-    if condition == "C1" and (
-        search_hkb is not None or search_semantic_model is not None
-    ):
-        raise DirectCaptureError("C1 cannot expose HKB or semantic-model search")
-    if condition == "C2" and (search_hkb is None or search_semantic_model is not None):
-        raise DirectCaptureError(
-            "C2 requires HKB search and forbids semantic-model search"
-        )
-    if condition == "C3" and (search_semantic_model is None or search_hkb is not None):
-        raise DirectCaptureError(
-            "C3 requires semantic-model search and forbids HKB search"
-        )
-    return condition  # type: ignore[return-value]
-
-
-def _validate_database_transport(
-    database: DirectDatabaseTransport,
-) -> DirectDatabaseTransport:
-    try:
-        attestation = database.execution_attestation
-    except Exception as error:
-        raise DirectCaptureError(
-            "database execution attestation is required"
-        ) from error
-    required = DirectDatabaseAttestation(True, True)
-    if (
-        not isinstance(attestation, DirectDatabaseAttestation)
-        or attestation != required
-    ):
-        raise DirectCaptureError("database execution attestation is incomplete")
-    return database
-
-
-def _identifier(value: str, field: str) -> str:
-    if not isinstance(value, str) or not value:
-        raise DirectCaptureError(f"{field} must be a non-empty string")
-    return value
-
-
-def _tool_specs(condition: DirectCondition) -> tuple[Mapping[str, Any], ...]:
-    definitions = {
-        "inspect_schema": ("Inspect the public database schema.", {}),
-        "search_hkb": (
-            "Search the public database-level business knowledge base.",
-            {"query": {"type": "string"}},
-        ),
-        "search_semantic_model": (
-            "Search the public Omni semantic-model representation.",
-            {"query": {"type": "string"}},
-        ),
-        "execute_sql": (
-            "Execute admitted Query-only SQL using a read-only transaction.",
-            {"sql": {"type": "string"}},
-        ),
-    }
-    return tuple(
-        {
-            "description": definitions[name][0],
-            "input_schema": {
-                "additionalProperties": False,
-                "properties": definitions[name][1],
-                "required": list(definitions[name][1]),
-                "type": "object",
-            },
-            "name": name,
-        }
-        for name in _TOOL_NAMES[condition]
-    )
-
-
-def _validate_turn(turn: object) -> None:
-    if not isinstance(turn, DirectModelTurn) or not isinstance(turn.action, Mapping):
-        raise DirectCaptureError("model turn must use the strict transport contract")
-    for value, field in (
-        (turn.input_tokens, "input_tokens"),
-        (turn.output_tokens, "output_tokens"),
-        (turn.retry_count, "retry_count"),
-    ):
-        if value is not None and (type(value) is not int or value < 0):
-            raise DirectCaptureError(f"{field} must be a non-negative integer or null")
-    if turn.cost_usd is not None and (
-        isinstance(turn.cost_usd, bool)
-        or not isinstance(turn.cost_usd, (int, float))
-        or turn.cost_usd < 0
-        or not math.isfinite(turn.cost_usd)
-    ):
-        raise DirectCaptureError("cost_usd must be a non-negative number or null")
-
-
-def _parse_action(
-    action: Mapping[str, Any],
-) -> _ToolAction | _AnswerAction | _RefusalAction:
-    action_type = action.get("type")
-    if action_type == "tool":
-        if set(action) != {"type", "name", "arguments"}:
-            raise DirectCaptureError("tool action must use the exact schema")
-        return _parse_tool_action(action)
-    if action_type == "answer":
-        if set(action) != {"type", "sql"} or not _nonempty(action.get("sql")):
-            raise DirectCaptureError("answer action must contain only non-empty SQL")
-        return _AnswerAction(action["sql"])
-    if action_type == "refuse":
-        if (
-            set(action) != {"type", "reason"}
-            or action.get("reason") not in _REFUSAL_REASONS
-        ):
-            raise DirectCaptureError("refusal action must use an allowed reason")
-        return _RefusalAction(action["reason"])
-    raise DirectCaptureError("model action type is invalid")
-
-
-def _parse_tool_action(action: Mapping[str, Any]) -> _ToolAction:
-    name = action.get("name")
-    arguments = action.get("arguments")
-    if not isinstance(name, str) or not isinstance(arguments, Mapping):
-        raise DirectCaptureError("tool action name and arguments are invalid")
-    expected = {
-        "inspect_schema": set(),
-        "search_hkb": {"query"},
-        "search_semantic_model": {"query"},
-        "execute_sql": {"sql"},
-    }
-    if name not in expected or set(arguments) != expected[name]:
-        raise DirectCaptureError("tool arguments do not match the strict schema")
-    if any(not _nonempty(value) for value in arguments.values()):
-        raise DirectCaptureError("tool string arguments must be non-empty")
-    return _ToolAction(name, dict(arguments))
-
-
-def _nonempty(value: object) -> bool:
-    return isinstance(value, str) and bool(value.strip())
-
-
-def _validate_reference_result(
-    result: DirectReferenceResult, policy: ContentPolicy
-) -> None:
-    if not isinstance(result, DirectReferenceResult):
-        raise DirectCaptureError("reference tool must return DirectReferenceResult")
-    reject_forbidden_keys(result.payload)
-    validate_json_value(result.payload)
-    if policy.sanitize_json(result.payload) != result.payload:
-        raise DirectCaptureError("reference tool payload contains sensitive content")
-    if any(
-        not isinstance(value, str) or not value or not policy.identifier_is_safe(value)
-        for value in result.semantic_objects
-    ):
-        raise DirectCaptureError("semantic object identifiers are invalid")
-
-
-def _token_usage(turns: list[DirectModelTurn]) -> dict[str, int] | None:
-    if not turns or any(
-        turn.input_tokens is None or turn.output_tokens is None for turn in turns
-    ):
-        return None
-    input_tokens = sum(
-        turn.input_tokens for turn in turns if turn.input_tokens is not None
-    )
-    output_tokens = sum(
-        turn.output_tokens for turn in turns if turn.output_tokens is not None
-    )
-    return {
-        "input_tokens": input_tokens,
-        "output_tokens": output_tokens,
-        "total_tokens": input_tokens + output_tokens,
-    }
-
-
-def _retry_count(turns: list[DirectModelTurn]) -> int | None:
-    if not turns or any(turn.retry_count is None for turn in turns):
-        return None
-    return sum(turn.retry_count for turn in turns if turn.retry_count is not None)
-
-
-def _cost(turns: list[DirectModelTurn]) -> float | None:
-    if not turns or any(turn.cost_usd is None for turn in turns):
-        return None
-    total = sum(turn.cost_usd for turn in turns if turn.cost_usd is not None)
-    if not math.isfinite(total):
-        raise DirectCaptureError("provider cost aggregate is non-finite")
-    return total
-
-
-def _event_digest(event_type: str, status: str, seq: int) -> str:
-    return hashlib.sha256(
-        _canonical_bytes({"event_type": event_type, "seq": seq, "status": status})
-    ).hexdigest()
-
-
-def _timestamp_after(started_at: str, elapsed_ms: float) -> str:
-    parsed = datetime.fromisoformat(started_at.replace("Z", "+00:00"))
-    return (
-        (parsed + timedelta(milliseconds=elapsed_ms))
-        .astimezone(timezone.utc)
-        .isoformat(timespec="milliseconds")
-        .replace("+00:00", "Z")
-    )
-
-
-def _utc_now() -> str:
-    return (
-        datetime.now(timezone.utc)
-        .isoformat(timespec="milliseconds")
-        .replace("+00:00", "Z")
-    )
+def _sql_is_admitted(sql: str, policy: ContentPolicy) -> bool:
+    return policy.query_is_safe(sql) and single_query_sql_is_admissible(sql)

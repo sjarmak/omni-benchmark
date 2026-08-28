@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Mapping
 
@@ -14,7 +15,6 @@ from .autoresearch_config import (
     _find_forbidden,
     _read_confined_private_jsonl,
     _public_records_by_id,
-    _sha256_bytes,
 )
 from .autoresearch_artifacts import (
     MAX_RESULT_ARTIFACT_BYTES as MAX_RESULT_ARTIFACT_BYTES,
@@ -32,21 +32,28 @@ from .autoresearch_artifacts import (
     _validate_diagnostic_trace,
     _validate_safe_record_content,
     _validate_timestamp,
-    _validate_trace_reference,
     _verify_result_artifact,
     _verify_trace_artifact,
 )
+from .autoresearch_capture_policy import validate_capture_telemetry
 from .content_policy import ContentPolicy
 from .autoresearch_metrics import (
     ValidatedBaselineOutputs,
     ValidatedGenerationOutputs,
     ValidatedRun,
-    median_iqr,
 )
 from .autoresearch_provenance import validate_manifest_binding
+from .direct_capture_contract import DirectModelTurnProvenance
+from .direct_run_metrics import (
+    DirectRunObservation,
+    aggregate_run_metrics,
+    combined_run_sha,
+    make_validated_run,
+)
 from .score_artifacts import (
     AttemptScore,
     ScoreArtifactError,
+    ValidatedScoreArtifact,
     validate_score_artifact,
 )
 
@@ -67,6 +74,7 @@ ALLOWED_RUN_FIELDS = REQUIRED_RUN_FIELDS | {
     "failure_category",
     "generated_query",
     "generated_sql",
+    "model_turn_provenance",
     "prior_experiment_ids",
     "prior_experiments",
     "public_hkb_nodes",
@@ -75,11 +83,14 @@ ALLOWED_RUN_FIELDS = REQUIRED_RUN_FIELDS | {
     "result_artifact_path",
     "result_artifact_schema_version",
     "result_artifact_sha256",
+    "runtime_binding_sha256",
     "semantic_objects_available",
     "semantic_objects_retrieved",
     "validation_failure_class",
     "validation_status",
 }
+
+_SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 
 
 def __getattr__(name: str) -> Any:
@@ -91,6 +102,14 @@ def __getattr__(name: str) -> Any:
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
+def _validate_runtime_binding_digest(record: Mapping[str, Any]) -> None:
+    if "runtime_binding_sha256" not in record:
+        return
+    digest = record["runtime_binding_sha256"]
+    if not isinstance(digest, str) or _SHA256_PATTERN.fullmatch(digest) is None:
+        raise AutoresearchError("runtime_binding_sha256 must be a SHA-256 digest")
+
+
 def _validate_model(value: Any) -> None:
     if not isinstance(value, dict) or set(value) != {"provider", "name", "version"}:
         raise AutoresearchError("model must contain provider, name, and version")
@@ -99,6 +118,60 @@ def _validate_model(value: Any) -> None:
         for item in value.values()
     ):
         raise AutoresearchError("model fields must be non-empty strings or null")
+
+
+def _validate_model_turn_provenance(record: Mapping[str, Any]) -> None:
+    value = record.get("model_turn_provenance")
+    if value is None:
+        return
+    if not isinstance(value, list):
+        raise AutoresearchError("model turn provenance must be an array")
+    try:
+        records = [DirectModelTurnProvenance.from_dict(item) for item in value]
+    except ValueError as error:
+        raise AutoresearchError("model turn provenance is invalid") from error
+    model = record["model"]
+    trace_seqs = [item.trace_seq for item in records]
+    if trace_seqs != sorted(set(trace_seqs)) or any(
+        item.provider != model["provider"]
+        or item.requested_model != model["name"]
+        or (
+            item.availability == "observed"
+            and set(item.realized_models) != {model["name"]}
+        )
+        for item in records
+    ):
+        raise AutoresearchError("model turn provenance does not match run model")
+
+
+def _validate_model_provenance_trace(
+    config: AutoresearchConfig, record: Mapping[str, Any]
+) -> None:
+    value = record.get("model_turn_provenance")
+    if value is None:
+        return
+    if not record["trace_captured"]:
+        raise AutoresearchError("model turn provenance requires a complete trace")
+    trace_path = _resolve_raw_run_path(
+        config,
+        config.workspace / Path(record["trace_path"]),
+        "trace artifact",
+    )
+    events, _ = _read_confined_private_jsonl(
+        config.workspace,
+        trace_path,
+        "trace artifact",
+        maximum_bytes=MAX_RUN_ARTIFACT_BYTES,
+    )
+    records = [DirectModelTurnProvenance.from_dict(item) for item in value]
+    model_events = [
+        event for event in events if event["event_type"] == "direct_model_turn"
+    ]
+    if len(records) != len(model_events) or any(
+        item.trace_seq != event["seq"] or item.sha256() != event["metadata_sha256"]
+        for item, event in zip(records, model_events, strict=True)
+    ):
+        raise AutoresearchError("model turn provenance does not match trace")
 
 
 def _validate_token_usage(value: Any) -> None:
@@ -138,6 +211,7 @@ def _validate_telemetry(record: Mapping[str, Any]) -> None:
     ):
         raise AutoresearchError("repetition must be a positive integer")
     _validate_model(record["model"])
+    _validate_model_turn_provenance(record)
     _validate_token_usage(record["token_usage"])
     observed_latency = _number(record["latency_ms"], "latency_ms")
     timestamp_latency = (finished - started).total_seconds() * 1000
@@ -157,126 +231,7 @@ def _validate_telemetry(record: Mapping[str, Any]) -> None:
         not isinstance(failure_class, str) or not failure_class
     ):
         raise AutoresearchError("terminal_failure_class must be a string or null")
-    _validate_capture_telemetry(record)
-
-
-def _validate_capture_telemetry(record: Mapping[str, Any]) -> None:
-    generation_outcome = record["generation_outcome"]
-    if generation_outcome not in {"answered", "refused", "errored"}:
-        raise AutoresearchError(
-            "generation_outcome must be answered, refused, or errored"
-        )
-    scored_outcome = record.get("outcome")
-    if (
-        scored_outcome in {"correct", "wrong_answer"}
-        and generation_outcome != "answered"
-    ):
-        raise AutoresearchError(
-            "answered scored outcomes require generation_outcome answered"
-        )
-    if scored_outcome == "refused_or_error" and generation_outcome == "answered":
-        raise AutoresearchError(
-            "refused_or_error requires generation_outcome refused or errored"
-        )
-    failure_origin = record["failure_origin"]
-    if failure_origin not in {None, "evaluated_system"}:
-        raise AutoresearchError("failure_origin must be evaluated_system or null")
-    failure_class = record["terminal_failure_class"]
-    if generation_outcome == "answered" and any(
-        value is not None
-        for value in (failure_origin, failure_class, record["harness_failure"])
-    ):
-        raise AutoresearchError(
-            "answered attempts cannot declare a terminal evaluated-system failure"
-        )
-    if generation_outcome in {"refused", "errored"} and (
-        failure_origin != "evaluated_system" or failure_class is None
-    ):
-        raise AutoresearchError(
-            "refused or errored attempts require failure_origin and a terminal failure class"
-        )
-    for source_field, value_field in (
-        ("token_source", "token_usage"),
-        ("cost_source", "cost_usd"),
-    ):
-        source = record[source_field]
-        if source not in {"provider_reported", "derived", "unavailable"}:
-            raise AutoresearchError(
-                f"{source_field} must be provider_reported, derived, or unavailable"
-            )
-        if (record[value_field] is None) != (source == "unavailable"):
-            raise AutoresearchError(
-                f"{source_field} must disclose whether {value_field} is available"
-            )
-    _validate_unavailable_counts(record)
-    _validate_tool_breakdown(record)
-    _validate_trace_reference(record)
-
-
-def _validate_unavailable_counts(record: Mapping[str, Any]) -> None:
-    supported_fields = {
-        "tool_call_count",
-        "database_query_count",
-        "retry_count",
-        "validation_attempt_count",
-        "model_provider",
-        "model_name",
-        "model_version",
-    }
-    unavailable = record["telemetry_unavailable"]
-    if (
-        not isinstance(unavailable, list)
-        or len(set(unavailable)) != len(unavailable)
-        or any(field not in supported_fields for field in unavailable)
-    ):
-        raise AutoresearchError(
-            "telemetry_unavailable must contain unique supported telemetry fields"
-        )
-    null_fields = {
-        field
-        for field in supported_fields
-        if (
-            record[field] is None
-            if field in record
-            else record["model"][field.removeprefix("model_")] is None
-        )
-    }
-    if set(unavailable) != null_fields:
-        raise AutoresearchError(
-            "telemetry_unavailable must exactly identify unavailable counts"
-        )
-
-
-def _validate_tool_breakdown(record: Mapping[str, Any]) -> None:
-    breakdown = record["tool_calls_by_name"]
-    if not isinstance(breakdown, list):
-        raise AutoresearchError("tool_calls_by_name must be an array")
-    names: set[str] = set()
-    total = 0
-    for item in breakdown:
-        if not isinstance(item, dict) or set(item) != {"name", "count"}:
-            raise AutoresearchError(
-                "tool_calls_by_name entries must contain name and count"
-            )
-        name = item["name"]
-        count = item["count"]
-        if not isinstance(name, str) or not name or name in names:
-            raise AutoresearchError("tool_calls_by_name names must be unique strings")
-        try:
-            validated_count = _count(count, "tool_calls_by_name count", nullable=False)
-        except AutoresearchError as error:
-            raise AutoresearchError(
-                "tool_calls_by_name counts must be non-negative integers"
-            ) from error
-        names.add(name)
-        total += validated_count  # type: ignore[operator]
-    observed_total = record["tool_call_count"]
-    if observed_total is None and breakdown:
-        raise AutoresearchError(
-            "tool_calls_by_name must be empty when tool_call_count is unavailable"
-        )
-    if observed_total is not None and total != observed_total:
-        raise AutoresearchError("tool_calls_by_name must sum to tool_call_count")
+    validate_capture_telemetry(record)
 
 
 def _validate_run_record(
@@ -287,6 +242,33 @@ def _validate_run_record(
     scored: bool,
     public_questions: Mapping[str, str],
 ) -> tuple[str, str | None, float, float | None, str | None]:
+    instance_id, outcome = _validate_run_envelope(
+        record, config, expected_partition, scored, public_questions
+    )
+    content_policy = ContentPolicy.from_environment(os.environ)
+    _validate_generated_queries(record, content_policy)
+    latency_ms = _number(record["latency_ms"], "latency_ms")
+    cost_usd = _number(record["cost_usd"], "cost_usd", nullable=True)
+    _validate_telemetry(record)
+    if scored and record["failure_origin"] == "benchmark_infrastructure":
+        raise AutoresearchError(
+            "benchmark infrastructure failures must be rerun before scoring"
+        )
+    category = _validate_run_diagnostics(record)
+    _validate_safe_record_content(record, content_policy)
+    _verify_result_artifact(config, record, content_policy)
+    _verify_trace_artifact(config, record, content_policy)
+    _validate_model_provenance_trace(config, record)
+    return instance_id, outcome, float(latency_ms), cost_usd, category
+
+
+def _validate_run_envelope(
+    record: dict[str, Any],
+    config: AutoresearchConfig,
+    expected_partition: str,
+    scored: bool,
+    public_questions: Mapping[str, str],
+) -> tuple[str, str | None]:
     forbidden = _find_forbidden(record, config.forbidden_fields)
     if forbidden is not None:
         raise AutoresearchError("run artifact contains a forbidden field")
@@ -296,6 +278,7 @@ def _validate_run_record(
         raise AutoresearchError("run artifact record is missing required fields")
     if record.keys() - ALLOWED_RUN_FIELDS:
         raise AutoresearchError("run artifact record contains an unsupported field")
+    _validate_runtime_binding_digest(record)
     instance_id = record["instance_id"]
     if not isinstance(instance_id, str) or not instance_id:
         raise AutoresearchError("instance_id must be a non-empty string")
@@ -315,6 +298,12 @@ def _validate_run_record(
         raise AutoresearchError(
             "outcome must be correct, wrong_answer, or refused_or_error"
         )
+    return instance_id, outcome
+
+
+def _validate_generated_queries(
+    record: Mapping[str, Any], content_policy: ContentPolicy
+) -> None:
     queries = [record.get("generated_query"), record.get("generated_sql")]
     if any(
         query is not None and (not isinstance(query, str) or not query)
@@ -334,9 +323,9 @@ def _validate_run_record(
             raise AutoresearchError(
                 "answered attempts require a query, SQL, or bound opaque result"
             )
-    latency_ms = _number(record["latency_ms"], "latency_ms")
-    cost_usd = _number(record["cost_usd"], "cost_usd", nullable=True)
-    _validate_telemetry(record)
+
+
+def _validate_run_diagnostics(record: Mapping[str, Any]) -> str | None:
     harness_failure = record["harness_failure"]
     if harness_failure is not None and not isinstance(harness_failure, str):
         raise AutoresearchError("harness_failure must be a string or null")
@@ -351,10 +340,7 @@ def _validate_run_record(
     if category is not None and (not isinstance(category, str) or not category):
         raise AutoresearchError("failure_category must be a non-empty string or null")
     _validate_diagnostic_trace(record)
-    _validate_safe_record_content(record, content_policy)
-    _verify_result_artifact(config, record, content_policy)
-    _verify_trace_artifact(config, record, content_policy)
-    return instance_id, outcome, float(latency_ms), cost_usd, category
+    return category
 
 
 def _public_question_texts(config: AutoresearchConfig) -> dict[str, str]:
@@ -434,73 +420,14 @@ def _summarize_run_records(
     manifest_path: Path | None = None,
     expected_manifest_sha256: str | None = None,
 ) -> ValidatedRun:
-    """Join validated generation telemetry with optional immutable score labels."""
     expected_partition, expected_count, permitted_ids = _scope_definition(config, scope)
     if len(records) != expected_count:
         raise AutoresearchError(
             f"run artifact must contain exactly {expected_count} records"
         )
-    seen: set[str] = set()
-    correct_ids: set[str] = set()
-    wrong_ids: set[str] = set()
-    refusal_ids: set[str] = set()
-    latencies: list[float] = []
-    costs: list[float | None] = []
-    total_tokens: list[int | None] = []
-    tool_calls: list[int | None] = []
-    database_queries: list[int | None] = []
-    category_counts: dict[str, int] = {}
-    terminal_failure_counts: dict[str, int] = {}
-    public_questions = _public_question_texts(config)
-    for record in records:
-        instance_id, outcome, latency, cost, category = _validate_run_record(
-            record,
-            config,
-            expected_partition,
-            scored=scores_by_attempt is None,
-            public_questions=public_questions,
-        )
-        if scores_by_attempt is not None:
-            attempt_id = record["attempt_id"]
-            try:
-                score = scores_by_attempt[attempt_id]
-            except KeyError as error:
-                raise AutoresearchError(
-                    "score artifact is missing a generation attempt"
-                ) from error
-            outcome = score.outcome
-            category = score.failure_category
-            _validate_capture_telemetry({**record, "outcome": outcome})
-        if instance_id in seen:
-            raise AutoresearchError("run artifact contains a duplicate instance_id")
-        if instance_id not in permitted_ids:
-            raise AutoresearchError(
-                f"run artifact contains an ID outside the {scope} partition"
-            )
-        seen.add(instance_id)
-        if outcome == "correct":
-            correct_ids.add(instance_id)
-        elif outcome == "wrong_answer":
-            wrong_ids.add(instance_id)
-        else:
-            refusal_ids.add(instance_id)
-        latencies.append(latency)
-        costs.append(cost)
-        usage = record["token_usage"]
-        total_tokens.append(None if usage is None else usage["total_tokens"])
-        tool_calls.append(record["tool_call_count"])
-        database_queries.append(record["database_query_count"])
-        if category is not None:
-            category_counts[category] = category_counts.get(category, 0) + 1
-        terminal_failure = record["terminal_failure_class"]
-        if terminal_failure is not None:
-            terminal_failure_counts[terminal_failure] = (
-                terminal_failure_counts.get(terminal_failure, 0) + 1
-            )
-    if seen != permitted_ids:
-        raise AutoresearchError(
-            f"run artifact does not exactly match the {scope} partition"
-        )
+    observations = _validated_observations(
+        config, records, expected_partition, permitted_ids, scope, scores_by_attempt
+    )
     condition, run_id, repetition = _validate_run_identity(records, "run artifact")
     manifest = validate_manifest_binding(
         workspace=config.workspace,
@@ -513,31 +440,11 @@ def _summarize_run_records(
         expected_manifest_sha256=expected_manifest_sha256,
         required=config.run_manifest_required,
     )
-    total_cost = None if any(cost is None for cost in costs) else sum(costs)  # type: ignore[arg-type]
-    aggregate_tokens = (
-        None if any(value is None for value in total_tokens) else sum(total_tokens)  # type: ignore[arg-type]
-    )
-    median_tokens: float | None = None
-    iqr_tokens: float | None = None
-    if aggregate_tokens is not None:
-        median_tokens, iqr_tokens = median_iqr(total_tokens)  # type: ignore[arg-type]
-    aggregate_tool_calls = (
-        None if any(value is None for value in tool_calls) else sum(tool_calls)  # type: ignore[arg-type]
-    )
-    aggregate_database_queries = (
-        None
-        if any(value is None for value in database_queries)
-        else sum(database_queries)  # type: ignore[arg-type]
-    )
-    median_latency, iqr_latency = median_iqr(latencies)
-    combined_sha256 = generation_sha256
-    if score_sha256 is not None:
-        combined_sha256 = _sha256_bytes(f"{generation_sha256}:{score_sha256}".encode())
-    if manifest is not None:
-        combined_sha256 = _sha256_bytes(f"{combined_sha256}:{manifest.sha256}".encode())
-    return ValidatedRun(
-        path=run_path,
-        sha256=combined_sha256,
+    metrics = aggregate_run_metrics(observations)
+    combined_sha256 = combined_run_sha(generation_sha256, score_sha256, manifest)
+    return make_validated_run(
+        run_path=run_path,
+        combined_sha256=combined_sha256,
         generation_sha256=generation_sha256,
         score_path=score_path,
         score_sha256=score_sha256,
@@ -546,23 +453,85 @@ def _summarize_run_records(
         condition=condition,
         run_id=run_id,
         repetition=repetition,
-        correct_ids=frozenset(correct_ids),
-        wrong_answer_ids=frozenset(wrong_ids),
-        refused_or_error_ids=frozenset(refusal_ids),
-        mean_latency_ms=sum(latencies) / len(latencies),
-        median_latency_ms=median_latency,
-        iqr_latency_ms=iqr_latency,
-        total_cost_usd=total_cost,
-        total_tokens=aggregate_tokens,
-        median_tokens=median_tokens,
-        iqr_tokens=iqr_tokens,
-        total_tool_calls=aggregate_tool_calls,
-        total_database_queries=aggregate_database_queries,
-        failure_categories=tuple(sorted(category_counts.items())),
-        terminal_failure_classes=tuple(sorted(terminal_failure_counts.items())),
-        run_manifest_path=None if manifest is None else manifest.path,
-        run_manifest_sha256=None if manifest is None else manifest.sha256,
+        metrics=metrics,
+        manifest=manifest,
     )
+
+
+def _validated_observations(
+    config: AutoresearchConfig,
+    records: list[dict[str, Any]],
+    partition: str,
+    permitted_ids: frozenset[str],
+    scope: str,
+    scores: Mapping[str, AttemptScore] | None,
+) -> tuple[DirectRunObservation, ...]:
+    questions = _public_question_texts(config)
+    observations = tuple(
+        _record_observation(record, config, partition, questions, scores)
+        for record in records
+    )
+    seen = [observation.instance_id for observation in observations]
+    if len(set(seen)) != len(seen):
+        raise AutoresearchError("run artifact contains a duplicate instance_id")
+    if any(instance_id not in permitted_ids for instance_id in seen):
+        raise AutoresearchError(
+            f"run artifact contains an ID outside the {scope} partition"
+        )
+    if set(seen) != permitted_ids:
+        raise AutoresearchError(
+            f"run artifact does not exactly match the {scope} partition"
+        )
+    return observations
+
+
+def _record_observation(
+    record: dict[str, Any],
+    config: AutoresearchConfig,
+    partition: str,
+    questions: Mapping[str, str],
+    scores: Mapping[str, AttemptScore] | None,
+) -> DirectRunObservation:
+    instance_id, outcome, latency, cost, category = _validate_run_record(
+        record,
+        config,
+        partition,
+        scored=scores is None,
+        public_questions=questions,
+    )
+    if scores is not None:
+        outcome, category = _joined_score(record, scores)
+    if outcome is None:
+        raise AutoresearchError("scored run is missing an outcome")
+    usage = record["token_usage"]
+    return DirectRunObservation(
+        instance_id=instance_id,
+        outcome=outcome,
+        latency=latency,
+        cost=cost,
+        total_tokens=None if usage is None else usage["total_tokens"],
+        tool_calls=record["tool_call_count"],
+        database_queries=record["database_query_count"],
+        category=category,
+        terminal_failure=record["terminal_failure_class"],
+    )
+
+
+def _joined_score(
+    record: dict[str, Any], scores: Mapping[str, AttemptScore]
+) -> tuple[str, str | None]:
+    if record["failure_origin"] == "benchmark_infrastructure":
+        raise AutoresearchError(
+            "benchmark infrastructure failures must be rerun before scoring"
+        )
+    try:
+        score = scores[record["attempt_id"]]
+    except KeyError as error:
+        raise AutoresearchError(
+            "score artifact is missing a generation attempt"
+        ) from error
+    validate_capture_telemetry({**record, "outcome": score.outcome})
+    return score.outcome, score.failure_category
 
 
 def validate_run(
@@ -623,8 +592,30 @@ def validate_scored_generation(
         manifest_path=manifest_path,
         expected_manifest_sha256=expected_manifest_sha256,
     )
+    scores = _validated_scores(config, generation, score_path, expected_score_sha256)
+    records, generation_sha256 = _read_bound_generation(config, generation, scores)
+    return _summarize_run_records(
+        config,
+        run_path=generation.path,
+        generation_sha256=generation_sha256,
+        records=records,
+        scope=scope,
+        scores_by_attempt={score.attempt_id: score for score in scores.attempts},
+        score_path=scores.path,
+        score_sha256=scores.sha256,
+        manifest_path=generation.run_manifest_path,
+        expected_manifest_sha256=generation.run_manifest_sha256,
+    )
+
+
+def _validated_scores(
+    config: AutoresearchConfig,
+    generation: ValidatedGenerationOutputs,
+    score_path: Path,
+    expected_score_sha256: str,
+) -> ValidatedScoreArtifact:
     try:
-        scores = validate_score_artifact(
+        return validate_score_artifact(
             config.workspace,
             generation=generation,
             score_path=score_path,
@@ -632,6 +623,13 @@ def validate_scored_generation(
         )
     except ScoreArtifactError as error:
         raise AutoresearchError(str(error)) from error
+
+
+def _read_bound_generation(
+    config: AutoresearchConfig,
+    generation: ValidatedGenerationOutputs,
+    scores: ValidatedScoreArtifact,
+) -> tuple[list[dict[str, Any]], str]:
     records, generation_sha256 = _read_confined_private_jsonl(
         config.workspace,
         generation.path,
@@ -649,18 +647,7 @@ def validate_scored_generation(
         raise AutoresearchError(
             "generation artifact changed after score binding validation"
         )
-    return _summarize_run_records(
-        config,
-        run_path=generation.path,
-        generation_sha256=generation_sha256,
-        records=records,
-        scope=scope,
-        scores_by_attempt={score.attempt_id: score for score in scores.attempts},
-        score_path=scores.path,
-        score_sha256=scores.sha256,
-        manifest_path=generation.run_manifest_path,
-        expected_manifest_sha256=generation.run_manifest_sha256,
-    )
+    return records, generation_sha256
 
 
 def validate_baseline_outputs(
@@ -732,29 +719,9 @@ def _validate_generation_for_scope(
         raise AutoresearchError(
             f"generation artifact must contain exactly {expected_count} records"
         )
-    seen: set[str] = set()
-    public_questions = _public_question_texts(config)
-    for record in records:
-        instance_id, _, _, _, _ = _validate_run_record(
-            record,
-            config,
-            expected_partition,
-            scored=False,
-            public_questions=public_questions,
-        )
-        if instance_id in seen:
-            raise AutoresearchError(
-                "baseline output artifact contains a duplicate instance_id"
-            )
-        if instance_id not in permitted_ids:
-            raise AutoresearchError(
-                f"generation artifact contains an ID outside the {scope} partition"
-            )
-        seen.add(instance_id)
-    if seen != permitted_ids:
-        raise AutoresearchError(
-            f"generation artifact does not exactly match the {scope} partition"
-        )
+    _validate_generation_records(
+        records, config, expected_partition, permitted_ids, scope
+    )
     condition, run_id, repetition = _validate_run_identity(records, description)
     manifest = validate_manifest_binding(
         workspace=config.workspace,
@@ -778,3 +745,35 @@ def _validate_generation_for_scope(
         run_manifest_path=None if manifest is None else manifest.path,
         run_manifest_sha256=None if manifest is None else manifest.sha256,
     )
+
+
+def _validate_generation_records(
+    records: list[dict[str, Any]],
+    config: AutoresearchConfig,
+    partition: str,
+    permitted_ids: frozenset[str],
+    scope: str,
+) -> None:
+    seen: set[str] = set()
+    public_questions = _public_question_texts(config)
+    for record in records:
+        instance_id, _, _, _, _ = _validate_run_record(
+            record,
+            config,
+            partition,
+            scored=False,
+            public_questions=public_questions,
+        )
+        if instance_id in seen:
+            raise AutoresearchError(
+                "baseline output artifact contains a duplicate instance_id"
+            )
+        if instance_id not in permitted_ids:
+            raise AutoresearchError(
+                f"generation artifact contains an ID outside the {scope} partition"
+            )
+        seen.add(instance_id)
+    if seen != permitted_ids:
+        raise AutoresearchError(
+            f"generation artifact does not exactly match the {scope} partition"
+        )

@@ -58,18 +58,34 @@ def query_sql_is_admissible(statements: str | Sequence[str]) -> bool:
         )
     except (sqlglot.errors.SqlglotError, TypeError, ValueError):
         return False
-    if not parsed or any(
-        not isinstance(expression, exp.Query) for expression in parsed
-    ):
+    return bool(parsed) and _queries_are_safe(parsed)
+
+
+def single_query_sql_is_admissible(statement: object) -> bool:
+    """Return true only for one side-effect-free PostgreSQL Query statement."""
+    if not isinstance(statement, str) or not statement.strip():
         return False
+    try:
+        parsed = tuple(_parse_without_source_logging(statement))
+    except (sqlglot.errors.SqlglotError, TypeError, ValueError):
+        return False
+    return len(parsed) == 1 and _queries_are_safe(parsed)
+
+
+def _queries_are_safe(parsed: Sequence[exp.Expr | None]) -> bool:
+    if any(not isinstance(expression, exp.Query) for expression in parsed):
+        return False
+    queries = tuple(
+        expression for expression in parsed if isinstance(expression, exp.Query)
+    )
     if any(
         expression.find(exp.DML) is not None or expression.find(exp.Into) is not None
-        for expression in parsed
+        for expression in queries
     ):
         return False
     return not any(
         _side_effect_function(function.name)
-        for expression in parsed
+        for expression in queries
         for function in expression.find_all(exp.Anonymous)
     )
 

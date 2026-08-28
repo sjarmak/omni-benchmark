@@ -1,0 +1,14 @@
+{
+  "condition": "C2",
+  "execution": "direct_sql_harness",
+  "hkb_access": "searchable",
+  "hkb_manifest": "semantic_models/public_ir/manifest.json",
+  "knowledge": "public_schema_and_searchable_public_hkb",
+  "question_specific_hidden_annotations": false,
+  "runtime_oracle_context": false,
+  "schema_access": "inspect",
+  "schema_manifest": "semantic_models/public_schema_ir/manifest.json",
+  "semantic_enforcement": "none",
+  "semantic_model_access": "none",
+  "semantic_model_manifest": null
+}

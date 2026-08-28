@@ -1,0 +1,98 @@
+{
+  "benchmark": "LiveSQLBench Large-v1",
+  "databases": [
+    {
+      "connection_target_sha256": "961116e40fe70b088dfdcfdb73663455bcb7c06736ac597d787d2f2828f822c8",
+      "name": "archeology_scan_large",
+      "physical_database": "archeology_scan_large"
+    },
+    {
+      "connection_target_sha256": "33c2c7ca70d9dcfe763e699d5edeade357455c0f5d08ad23497ac37ce3042694",
+      "name": "cross_border_large",
+      "physical_database": "cross_border_large"
+    },
+    {
+      "connection_target_sha256": "4826679c259419997ba651f1259b0e51723b092a30e02bda243790cc9e03a5c1",
+      "name": "cybermarket_pattern_large",
+      "physical_database": "cybermarket_pattern_large"
+    },
+    {
+      "connection_target_sha256": "cabe60fd13ce31a86d2d49ea611bb6f8e0d3c23c96b20105d9ab86140505d616",
+      "name": "disaster_relief_large",
+      "physical_database": "disaster_relief_large"
+    },
+    {
+      "connection_target_sha256": "8be73ccea161fd127f1e8c65b030fad75eea39895488cd4c2d8e4bacba387fa5",
+      "name": "exchange_traded_funds_large",
+      "physical_database": "exchange_traded_funds_large"
+    },
+    {
+      "connection_target_sha256": "cb4ac225a8220e7a38ff8fff0dd5adeca92f8870be01131a99e2acc4171dce23",
+      "name": "fake_account_large",
+      "physical_database": "fake_account_large"
+    },
+    {
+      "connection_target_sha256": "cb25e1bb78966d458a708c9af25bb8f16be55e45baaa3ef99dd0825feb476e4b",
+      "name": "labor_certification_applications_large",
+      "physical_database": "labor_certification_applications_large"
+    },
+    {
+      "connection_target_sha256": "9dd9c7468084420719a3762a50fff2c85a3b01dc71f87ad99b6a3fba4bd87c81",
+      "name": "mental_healths_large",
+      "physical_database": "mental_healths_large"
+    },
+    {
+      "connection_target_sha256": "46263f343ceadc49866c8df2f9341b81dc80582f44563c55224cd8863cbb717b",
+      "name": "museum_artifact_large",
+      "physical_database": "museum_artifact_large"
+    },
+    {
+      "connection_target_sha256": "4385f3fdf1b166cd3e5331e9aeea4bd6b14e1c5867472cccda6daa617cc943bd",
+      "name": "organ_transplant_large",
+      "physical_database": "organ_transplant_large"
+    },
+    {
+      "connection_target_sha256": "dc892a841b3eb7426f24b601f73751bac0ec2afe12d15548face4336ead286c3",
+      "name": "planets_data_large",
+      "physical_database": "planets_data_large"
+    },
+    {
+      "connection_target_sha256": "e01552917945e645aaa6ba14eb2032335184fb67b73b52e4f4f3c39336c10219",
+      "name": "polar_equipment_large",
+      "physical_database": "polar_equipment_large"
+    },
+    {
+      "connection_target_sha256": "7089441f5c11951da8edb35c60b9acc9b8968266e97bae67b659dc93db0fe27e",
+      "name": "residential_data_large",
+      "physical_database": "residential_data_large"
+    },
+    {
+      "connection_target_sha256": "9a9a284094f582450988c78c5cb3a2bc9ffc2884a0c731247f80b831b5c236f0",
+      "name": "reverse_logistics_large",
+      "physical_database": "reverse_logistics_large"
+    },
+    {
+      "connection_target_sha256": "587edc1cea9323a56cba25fb153bf8b273fadf133f07bf7e567454035a28dbc3",
+      "name": "robot_fault_prediction_large",
+      "physical_database": "robot_fault_prediction_large"
+    },
+    {
+      "connection_target_sha256": "0fedc210948da5fdebb4ae658337ba445ec18fc50b140df10ff6abd5f9d4d9ba",
+      "name": "solar_panel_large",
+      "physical_database": "solar_panel_large"
+    },
+    {
+      "connection_target_sha256": "98ae5ecc12838d60167542f4fd61c89b880dc0a676681620aac64ed08d5dca68",
+      "name": "sports_events_large",
+      "physical_database": "sports_events_large"
+    },
+    {
+      "connection_target_sha256": "f66d1183c7f649e0af7605af9470d96ccfa1df05f611f1b6bab4421f13a07a3b",
+      "name": "virtual_idol_large",
+      "physical_database": "virtual_idol_large"
+    }
+  ],
+  "format_version": 1,
+  "inventory_path": "config/databases/livesqlbench-large-v1.json",
+  "inventory_sha256": "531d886cce92b51d186c5520ae958327f5df39faf0bf64ac4082ea70d5597688"
+}

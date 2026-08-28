@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import math
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -11,7 +10,6 @@ from decimal import Decimal
 from typing import Any
 from uuid import UUID
 
-from .artifact_store import ArtifactStore, StoredArtifact
 from .postgres_execution import QuerySequenceResult
 
 
@@ -28,46 +26,13 @@ class DirectExecution:
     failure_class: str | None
 
 
-def capture_receipt_payload(
-    *,
-    store: ArtifactStore,
-    attempt_id: str,
-    condition: str,
-    question_sha256: str,
-    provider: str,
-    model: str,
-    maximum_turns: int,
-    sql: str | None,
-    trace: StoredArtifact,
-    result: StoredArtifact | None,
-) -> dict[str, Any]:
-    """Bind an attempt identity to its exact immutable capture artifacts."""
-    return {
-        "artifact_root_identity": store.root_identity,
-        "attempt_id": attempt_id,
-        "condition": condition,
-        "generated_sql_sha256": (
-            hashlib.sha256(sql.encode()).hexdigest() if sql is not None else None
-        ),
-        "maximum_turns": maximum_turns,
-        "model": model,
-        "provider": provider,
-        "question_sha256": question_sha256,
-        "result_path": store.relative_path(result).as_posix() if result else None,
-        "result_sha256": result.sha256 if result else None,
-        "schema_version": 1,
-        "trace_path": store.relative_path(trace).as_posix(),
-        "trace_sha256": trace.sha256,
-    }
-
-
 def adapt_query_result(result: QuerySequenceResult) -> DirectExecution:
     """Convert a PostgreSQL result into the direct harness's typed JSON shape."""
     if result.rows is None:
         return DirectExecution({"status": "no_result"}, result, None)
     width = len(result.rows[0]) if result.rows else 0
     if any(len(row) != width for row in result.rows):
-        return database_failure("ragged_result")
+        raise DirectResultError("database result contains ragged rows")
     payload = {
         "columns": [f"column_{index + 1}" for index in range(width)],
         "rows": [[_json_cell(cell) for cell in row] for row in result.rows],

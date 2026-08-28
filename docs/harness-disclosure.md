@@ -21,23 +21,41 @@ implementations actually isolate governed enforcement with model parity.
 | Property | C1 raw-schema SQL | C2 HKB-reference SQL | C3 Omni-model-reference SQL | C4 governed Omni |
 | --- | --- | --- | --- | --- |
 | Intended role | Competent direct-SQL baseline | Direct SQL with searchable business knowledge | Direct SQL with searchable structured semantic model | Production-default governed product |
-| Provider/model/version | Pending adapter selection; pin one capable model across C1-C3 | Same as C1 | Same as C1 | Managed production selection; exact stage/model observability pending instance inspection |
-| System instructions | Frozen direct-SQL task contract; exact text pending | C1 plus HKB discovery instructions | C1 plus Omni-model discovery instructions | Production agent instructions; export only if observable and permitted |
+| Provider/model/version | Claude Code adapter 2.1.250; exact model is run-configured and must be pinned at Freeze B | Same as C1 | Same as C1 | Managed production selection; one public AI Hub diagnostic reported Bedrock `claude-opus-5`, but stage/model stability across runs remains unproven |
+| System instructions | Operative provider system prompt is code-bound; committed `direct-sql-v1.json` is non-operative policy metadata | Same operative provider prompt and condition-specific tool schema | Same operative provider prompt and condition-specific tool schema | Production agent instructions; export only if observable and permitted |
 | Available tools | Schema discovery, database query/execute, bounded error recovery | C1 plus database-level HKB search/get | C1 plus exported semantic-model search/get | Production Omni agent tools and governed query workflow |
 | Knowledge at runtime | Public schema/column metadata | Public schema plus database-level HKB; no hidden knowledge IDs | Public schema plus Omni model derived from public schema/HKB; no hidden knowledge IDs | Same public knowledge encoded in the governed model; no hidden knowledge IDs |
-| Retrieval/context | Pending common direct-agent adapter | Searchable HKB, not a whole-file prompt dump | Equivalent searchable semantic export | Production Omni discovery behavior |
+| Retrieval/context | Complete committed public schema context | Public HKB search via unweighted SQLite FTS5 BM25 with canonical-order ties; not a whole-file prompt dump | Same retrieval algorithm over the searchable Omni semantic export | Production Omni discovery behavior |
 | Database access | Direct read-only benchmark database | Same | Same | Through Omni connection/governed query path |
 | Planning/orchestration | Direct agent, frozen after train-only tuning | Same base harness | Same base harness | Production composite workflow; stages disclosed when observable |
 | Retry behavior | Pending; matched ceiling across C1-C3 | Same | Same | Production-default retries; observed rather than artificially matched after treatment |
 | Compiler/query path | Agent emits SQL | Agent emits SQL | Agent emits SQL | Semantic query/objects compiled through Omni; generated SQL captured only if exposed |
 | Validation | Database execution/error handling only | Same | Same | Production validation behavior included |
 | Token/time ceilings | Pending; matched across C1-C3 | Same | Same | Production defaults where immutable; disclose any mismatch |
-| Current implementation state | Provider-neutral capture/publisher core passes synthetic and adversarial contract tests; public context, provider, and live database adapters pending | Same core; searchable public HKB adapter pending | Same core; searchable exported-model adapter pending | Complete unscored attempt producer and strict production-response adapter pass synthetic contract tests; Omni CLI 1.1.2 executable bytes are SHA-256 pinned; authenticated live smoke pending |
+| Current implementation state | Public context, pinned provider, attested PostgreSQL, capture, publisher, and committed v2-inventory/target-sidecar adapters pass synthetic/adversarial tests; authenticated live smoke pending | Same, including searchable public HKB and dependency-closure provenance | Same, including searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, one governed semantic query, and one unscored AI Hub diagnostic pass; full manifest-bound attempt capture and scorer-type parity remain pending |
 
 Exact prompts, tool manifests, model identifiers, configuration hashes, retry
 ceilings, and version fingerprints are Freeze B artifacts. C1-C3 must be made
 reasonably competent, but perfect laboratory parity must not block the primary
 C4 research work.
+
+For C1-C3, `config/instructions/direct-sql-v1.json` is validated and hash-bound
+as fixed policy metadata, but its `adapter_instruction` text is not sent to the
+model. The operative instructions are the provider adapter's code-bound system
+prompt plus the condition-specific tool schemas. The only runtime user message
+is the exact committed public question. This distinction prevents the metadata
+hash from being misreported as an evaluated prompt treatment.
+
+C2 and C3 use the same dependency-free retrieval scaffold. The model chooses
+each query; no hidden annotation selects context. The adapter indexes the
+condition's committed public records in an in-memory SQLite FTS5 table, uses the
+built-in unweighted BM25 rank, and breaks equal ranks by canonical input order.
+This is a narrow deterministic-ranking exception: it replaces the earlier
+hand-weighted phrase heuristic without introducing semantic policy in the
+harness. C2 tool results expose selected direct and dependency-closure IDs in
+`retrieved_hkb_stable_ids` as public provenance. The normalized
+`semantic_objects` field remains C3-only; C2 IDs remain public HKB provenance
+rather than being relabeled as semantic-model objects.
 
 Each development run is required to have one exact-schema private `run.json`
 binding the immutable generation SHA, harness/config and prompt/instruction SHAs,
@@ -98,15 +116,26 @@ enough event data to reconcile it.
 The C1-C3 capture core owns tool dispatch rather than trusting provider-reported
 tool totals. Each capture writes an immutable receipt binding the attempt ID,
 question digest, condition, provider/model, maximum turns, generated-SQL digest,
-trace, result, and artifact-root identity. Publication revalidates those bindings,
-the condition-specific capability surface, Query-only SQL admission, lifecycle,
-failure-specific database-query deltas, strict finite and non-negative telemetry,
-and the prospective run manifest before writing either `generation.jsonl` or
-`run.json`. An attested direct database transport must prove read-only role state
-and lack of non-system function-execution privileges before the first model turn.
-The live public-context, model-provider, and PostgreSQL adapters remain pending;
-this core therefore supports synthetic contract evaluation but not a baseline
-accuracy run yet.
+trace, private action-evidence sidecar, result, and artifact-root identity. The
+bounded sidecar retains each model-authored public retrieval query, the stable HKB
+or semantic-object IDs actually returned when available, and every admitted
+exploratory `execute_sql` statement. Record digests bind these actions to exact
+trace sequence numbers. It excludes provider raw responses, result bodies,
+credentials, and hidden annotations; final generated SQL remains in the
+generation record. Publication revalidates those bindings, the condition-specific
+capability surface, Query-only SQL admission, lifecycle, failure-specific
+database-query deltas, strict finite and non-negative telemetry, and the
+prospective run manifest before writing either `generation.jsonl` or `run.json`.
+An attested direct database transport must prove read-only role state and lack of
+non-system function-execution privileges before the first model turn.
+The public-context, model-provider, and PostgreSQL adapters now pass synthetic
+and adversarial contract tests. Direct database identity is assembled from the
+exact committed format-v2 public inventory and an exact-coverage, credential-free
+sidecar containing only logical name, physical database name, and a target
+SHA-256. The sidecar is SHA-bound to the inventory bytes; the live transport
+still independently reattests the role, physical database, server, schema,
+content, and connection target. Live execution requires a clean commit containing
+both artifacts and runtime credentials supplied outside the repository.
 
 The production-agent contract probe uses the installed Omni CLI with argument
 arrays and JSON stdin. The committed C4 specification pins both the exact CLI
@@ -144,22 +173,26 @@ semantic-model branch, then preserves those JSON values without coercion in the
 hash-bound result sidecar. It records unrecognized completed responses as
 `response_contract_error` and never guesses SQL from prose.
 
-Raw JSON preserves JSON number, boolean, null, string, array, and object types,
-but the transport represents dates and timestamps as strings. The adapter does
-not heuristically coerce ISO-looking strings. Before scaled execution, scorer
-parity must either normalize both predicted and gold transports consistently or
-the capture path must adopt Omni's Arrow result stream for date/time type tags.
-This limitation is explicit rather than hidden behind inferred types.
+Raw JSON preserves JSON primitive distinctions in the envelope, but the first
+live semantic canary showed that it does not necessarily preserve semantic field
+types: with `formatResults:false`, a count measure was returned as a JSON string
+while the grouping field remained a boolean. Dates and timestamps may also be
+strings. The adapter does not heuristically coerce strings. Before scaled
+execution, scorer parity must prove consistent predicted/gold normalization or
+the capture path must adopt a result transport with authoritative field-type
+metadata. This is now an observed scale blocker, not only a theoretical
+limitation.
 
 The API exposes query actions clearly enough to count governed database queries;
 the additional raw-JSON semantic-query execution is also counted as an adapter
 database query and included in attempt latency.
 It does not establish that every action is a model tool call or expose the full
-production validation/retry internals. Accordingly, `database_query_count` is
-recorded for successful C4 attempts, while tool-call, validation-attempt, retry,
-token, and cost fields remain null and explicitly unavailable until a live
-response proves a more authoritative source. Reduced action-type counts are
-diagnostic response-shape metadata, not mislabeled tool counts.
+production validation/retry internals. The first public AI Hub job did provide
+authoritative job-level model/provider token buckets, tool-call and tool-error
+counts, query count, and total/LLM/query durations. Those fields should now be
+captured when present. Cost, retry count, and validation-attempt count remained
+unavailable and must stay null. Reduced action-type counts remain diagnostic
+response-shape metadata unless they reconcile to the job-level totals.
 
 For composite C4 workflows, raw capture should preserve stage/component model
 and usage where Omni exposes them. An aggregate model label must not be presented
@@ -195,13 +228,15 @@ Before any 231-question baseline or expensive experiment:
    reruns.
 6. Record coverage by field and condition in this document.
 
-Current gate result: **not yet passed**. The C4 transport, strict result adapter,
-complete attempt envelope, run manifest, and secure capture boundary pass
-synthetic/adversarial tests. The shared C1-C3 capture/publisher core also passes
-synthetic and adversarial tests, but its public-context, provider, and live
-database adapters are not connected. No live authenticated C4 response has been
-inspected. Scaled runs remain blocked until four separately manifested smoke
-bundles validate together.
+Current gate result: **not yet passed**. The public C4 product canary passed
+model validation, exact semantic readback, governed query execution, and AI Hub
+diagnostic inspection, exposing provider/model, token buckets, tool/query counts,
+and timings. It was not launched through the complete manifest-bound attempt
+producer, and typed-result scorer parity is not yet established. The shared
+C1-C3 capture/publisher core and its public-context, provider,
+database-identity, and attested PostgreSQL adapters pass synthetic and
+adversarial tests. No four-condition live smoke bundle has passed the complete
+telemetry gate; scaled runs remain blocked until it does.
 
 ## AI Hub diagnostic boundary
 
