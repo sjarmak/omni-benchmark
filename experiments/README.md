@@ -5,6 +5,12 @@ repository scaffold. The authoritative autoresearch history is the append-only
 JSONL path configured in `config/autoresearch.json`; records are added only by
 the validated lifecycle tooling.
 
+`PLUMBING-001` is a pre-label integration exercise. Its agreement labels mean
+only that two repeated public dev-A result sets compare equal under the named
+normalization policy; they are not LiveSQLBench correctness labels and must not
+be included in accuracy calculations. The hash-bound raw evidence remains in
+the ignored path named by the tracked receipt referenced from the row.
+
 Checkpoint manifests and stop state live under `experiments/autoresearch/state/`
 after real runs exist. They are intentionally absent at repository bootstrap:
 creating empty or fabricated baseline/checkpoint records would weaken the audit

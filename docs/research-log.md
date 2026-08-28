@@ -4262,3 +4262,95 @@ confidently wrong SQL and expose the reason a refusal occurred.
 Run the complete C1-C3 public baseline under the locked taxonomy and report
 refusal counts/rates by condition and database before interpreting comparator
 accuracy.
+
+## 2026-08-28 — PLUMBING-001: Gold-free scoring rehearsal on real dev-A results
+
+### Decision / experiment
+
+Exercise both frozen result comparators and the immutable score-artifact boundary
+before any private labels are released. Bead `omni-benchmark-dih.10.1`; change
+type: general system integration.
+
+### Observation
+
+Real generation and `answer.result.json` artifacts existed, but no real captured
+result had traversed normalization, comparison, score materialization, and score
+validation. `experiments/experiments.csv` still contained only its header.
+
+### Hypothesis
+
+Two independent answered attempts for the same dev-A question would expose any
+type-boundary or normalization mismatch before label release. Their agreement is
+useful only as a plumbing oracle; it cannot establish benchmark correctness.
+
+### Decision and rationale
+
+Use two already-immutable `archeology_scan_3:C2` attempts. This question is in
+dev-A. Both attempts were produced from public inputs, both have complete result
+sidecars, and neither requires hidden annotations. Treat the second result as a
+self-consistency reference, not as ground truth.
+
+### Intervention
+
+Added a narrow CLI that verifies the generation-to-result hash binding, decodes
+typed rows, invokes both frozen comparison paths, creates an immutable score
+artifact for each path, validates those artifacts, and emits a hash-bound
+evidence receipt. The exact exercised command was:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 uv run python scripts/gold_free_scoring_exercise.py \
+  --workspace /tmp/omni-benchmark-gold-free-scoring \
+  --left-generation /home/ds/projects/omni-benchmark/experiments/autoresearch/raw/c2-archeology-vertical-50ebc31/generation.jsonl \
+  --left-result /home/ds/projects/omni-benchmark/experiments/autoresearch/raw/c2-archeology-vertical-50ebc31/answer.result.json \
+  --right-generation /home/ds/projects/omni-benchmark/experiments/autoresearch/raw/public-baseline-v1-auth4/archeology_scan_large/c2/archeology_scan_3-r1/generation.jsonl \
+  --right-result /home/ds/projects/omni-benchmark/experiments/autoresearch/raw/public-baseline-v1-auth4/archeology_scan_large/c2/archeology_scan_3-r1/answer.result.json \
+  --output-root experiments/autoresearch/raw/gold-free-scoring-exercise-v1
+```
+
+### Result
+
+Both paths agreed across 825 ordered rows:
+
+- official-compatible Soft EX: agreement
+- corrected sensitivity scorer: agreement
+
+The left generation/result hashes are `810a2d827d91b9deaa4ff5972bd50b534a094d9ab5e17352b9a0b2a08dfda23d`
+and `8a3a81ec5432cc6132025c863d50d8f8a4067d2cdfbd50210b7727587c3526e1`.
+The right hashes are `dd598dcf1469f5fb57a0f46306a3e176a634bb3ddfe3aaa9ee19a50d7dd231cf`
+and `e264f221c44061ab7565b17e8285d46281765e23efbb626dfa0323dfda299809`.
+The immutable official and sensitivity score artifacts validated at hashes
+`57b50dff24ec1ffbb3411a99f9e9d4d97b738726488f1121acc39c786bd824bf`
+and `76d53626fd68b6a0d52906e2baf1cf2603f51cf61d922531456d836dcfc26d0a`.
+The evidence receipt hash is
+`6d4145491e4ae79ce435852f9c38ee36b99978a702fdd0d34f0177e4a0c35128`.
+Its public, row-free tracked receipt is
+`experiments/prelabel-scoring-exercise-v1.json` at hash
+`08fa442069cd90c466d9f636a60cc663d74eb47a9e24eb871319952adfef2697`.
+The first 48-column schema-valid evidence row was added to
+`experiments/experiments.csv` as `PLUMBING-001`.
+
+### Interpretation
+
+The result boundary is operational. The two raw result hashes differ because
+one attempt preserves a high-precision decimal tag while the other stores a
+float, yet both frozen normalization policies compare them as equal under the
+public two-decimal, ordered condition. The score schema's `correct` token means
+self-consistency agreement only under the explicitly named gold-free scorer;
+it must never be aggregated with benchmark correctness.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+Type-faithful result capture prevents serialization differences from becoming
+false evaluator disagreements. The immutable scorer boundary can remain
+independent from agent generation once the private evaluator supplies the true
+reference results.
+
+### Next step
+
+After authorized label release, feed sealed reference results through the same
+normalization and score-artifact boundary. Do not reuse the self-consistency
+labels as correctness outcomes.
