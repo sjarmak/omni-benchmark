@@ -17,14 +17,51 @@ Each finding must include:
 Private SQL, hidden knowledge annotations, test-case bodies, credentials, and
 customer data must not appear in this file.
 
+## PF-001: Schema-refresh failures lack actionable diagnostics in the CLI/API
+
+- **Observed behavior:** A newly created schema model reached terminal `FAILED`
+  on two refresh attempts, while the job-status surface returned no failure
+  reason.
+- **Minimal non-private reproduction:** Create a schema model for an isolated
+  read-only PostgreSQL benchmark connection; run one hard refresh and one
+  public-schema soft refresh; poll the returned job IDs.
+- **Expected behavior:** Terminal failure identifies whether the cause is
+  authentication, network reachability, database permission, SQL/introspection,
+  or an internal service error, with a safe remediation hint.
+- **Actual behavior:** Both jobs exposed only type `refresh_schema` and status
+  `FAILED`; subsequent shared-model creation could not use the schema model.
+- **Why it matters to customers:** Operators cannot distinguish a product issue
+  from an incorrectly configured least-privilege connection without leaving the
+  normal modeling workflow or contacting support.
+- **Systematic evidence / frequency:** 2/2 attempts on one isolated canary
+  connection. This is an initial workflow finding, not yet evidence of broad
+  prevalence.
+- **Benchmark impact:** Blocks live C4 model upload and delays baseline execution;
+  it does not affect any reported accuracy result.
+- **Severity:** Medium workflow/observability issue pending root-cause isolation.
+- **Proposed product change:** Return a sanitized structured error code, failing
+  stage, and remediation guidance from the refresh job-status endpoint; link the
+  same details from the model/AI Hub workflow.
+- **Was the change tested?:** No product change is available to test.
+- **Measured effect:** Not applicable; setup remains blocked on connectivity
+  diagnosis.
+- **Experiment / commit provenance:** Research decision D-027; public semantic
+  bundle commit `4622f0f`; live setup bead `omni-benchmark-dih.12`.
+- **Visible in AI Hub?:** Unknown; no usable live C4 model exists yet.
+- **AI Hub exposes relevant context/behavior?:** Unknown.
+- **Fixable through current AI Hub/modeling workflow?:** Unknown; likely outside
+  AI Hub if the failure is connection- or refresh-layer related.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** Not run.
+- **Evaluator agreement/disagreement:** Not applicable.
+
 ## Current status
 
-No Omni benchmark run has been completed, so there are no evidence-backed
-product findings yet. Public benchmark structure and scorer quirks are research
-inputs, not Omni product behavior. The first findings should come from the
-public-only baseline and its rich traces. Condition-specific telemetry opacity
-is a candidate observability finding, but it will not be entered as evidence
-until the four public smoke attempts establish what Omni actually exposes.
+No Omni benchmark question run has been completed. PF-001 is evidence about the
+model-setup workflow, not agent correctness. Public benchmark structure and
+scorer quirks remain research inputs rather than Omni product behavior. Findings
+about answer generation should come from the public-only baseline and its rich
+traces.
 
 ## Entry template
 

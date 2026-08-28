@@ -1926,3 +1926,88 @@ surface these distinctions during authoring and agent diagnosis.
 
 Compile only the approved same-grain/context subset into a local Omni extension,
 validate it, then upload/read it back on an isolated canary branch.
+
+## 2026-08-28 — D-027: Require dependency-bound formulas before live upload
+
+### Decision / experiment
+
+Strengthen the public semantic compiler, commit the canary bundle, and begin the
+isolated Omni upload sequence.
+
+### Observation
+
+Final review found that dependency order alone did not prove that a compiled
+formula used its declared HKB dependencies. The ECCS definition declared both
+ESI and Optimal Scanning Conditions but reconstructed the latter from ESI. The
+publication boundary also hash-bound the mapping manifest without checking its
+public-only/no-hidden validation claims.
+
+### Hypothesis
+
+If executable formulas must reference exactly their non-redundant compiled HKB
+dependencies, the bundle will preserve composition rather than merely preserve
+ordering. If the upstream manifest's trust assertions are verified explicitly,
+the bundle cannot relabel a failed or hidden-input mapping as public-only.
+
+### Decision
+
+Add fail-closed dependency-reference and upstream-manifest validation before any
+live upload. Treat redundant dependencies recorded by the mapping audit as
+non-executable edges. Do not weaken the custody boundary because the private gold
+attachment has arrived; it remains unopened and undownloaded.
+
+### Rationale
+
+Dependency composition is central to the benchmark's semantic-layer question.
+Uploading an artifact that only appeared compositional would make later product
+behavior uninterpretable. The changes are reusable compiler contracts rather
+than question- or benchmark-answer-specific fixes.
+
+### Intervention
+
+The compiler now rejects missing and undeclared derived-semantic references,
+validates the upstream mapping schema/version/public-only state and provenance
+fields, and expresses ECCS through the modeled Optimal Scanning Conditions
+field. Bead: `omni-benchmark-dih.12`; commit: `4622f0f`; affected subsystem:
+public HKB-to-Omni compilation. Change type: general system improvement plus
+legitimate database modeling.
+
+### Result
+
+Exactly 14 derived fields and 10 context annotations regenerate byte-for-byte;
+all 11 executable dependency edges are present and ordered. Full gates passed:
+663 tests, one explicit public-PostgreSQL integration skip, 84.90% branch
+coverage, lint/format/build/secret scan, and independent code, security, and
+simplification reviews. The bundle-manifest SHA-256 is
+`ba441ace28dc730508bf8de1771b18a61e83eec5050f8d44a4643bc83cfbe76d`.
+
+The isolated Omni schema-model record was then created. Both its default hard
+refresh and a public-only soft refresh failed; the status API exposed only
+`FAILED`. Shared-model creation could not proceed because the schema model was
+not usable. No shared model or branch was created, and no existing model was
+modified.
+
+### Interpretation
+
+The local public-only baseline is now strong enough for product validation. The
+current blocker is live connection/schema-refresh integration, not semantic
+bundle compilation. The lack of a diagnostic error from the refresh status
+surface is itself an early workflow-observability finding, but not evidence about
+agent accuracy.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Model authors need actionable schema-refresh failures—especially when setting up
+least-privilege production connections. A terminal status without a cause makes
+credential, permission, network, and introspection failures indistinguishable.
+
+### Next step
+
+Have the infrastructure lane verify the Omni-stored reader connectivity after
+active restores complete, then retry one schema refresh. Once it succeeds,
+create the isolated shared model/branch, upload, validate, read back, and run the
+public-only canary.
