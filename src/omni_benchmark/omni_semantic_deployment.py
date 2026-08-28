@@ -21,6 +21,7 @@ _VIEW_NAME = re.compile(
     rf"(?P<catalog>{_IDENTIFIER})\."
     rf"(?P<schema>{_IDENTIFIER})__(?P<table>{_IDENTIFIER})\.view"
 )
+_FLAT_VIEW_NAME = re.compile(rf"(?P<table>{_IDENTIFIER})\.view")
 _TOPIC_NAME = re.compile(rf"{_IDENTIFIER}\.topic")
 _VIEW_IDENTITY_KEYS = frozenset({"catalog", "schema", "table_name"})
 _FILE_FIELDS = frozenset({"file", "sha256", "size_bytes"})
@@ -186,7 +187,11 @@ def _require_local_name(value: object) -> str:
         raise OmniSemanticDeploymentError("local file name is invalid")
     if "/" in value or "\\" in value or ".." in value or Path(value).name != value:
         raise OmniSemanticDeploymentError("local file path is not confined")
-    if _VIEW_NAME.fullmatch(value) is None and _TOPIC_NAME.fullmatch(value) is None:
+    if (
+        _VIEW_NAME.fullmatch(value) is None
+        and _FLAT_VIEW_NAME.fullmatch(value) is None
+        and _TOPIC_NAME.fullmatch(value) is None
+    ):
         suffix = Path(value).suffix
         detail = "suffix" if suffix not in {".view", ".topic"} else "view or topic name"
         raise OmniSemanticDeploymentError(f"local file {detail} is invalid")
@@ -209,21 +214,39 @@ def _deployment_file(
     digest = hashlib.sha256(content).hexdigest()
     if digest != record["sha256"]:
         raise OmniSemanticDeploymentError(f"bundle file hash mismatch for {name}")
-    remote_path = _remote_path(name, database)
+    document = _parse_yaml(content, f"local file {name}")
+    remote_path = _remote_path(name, database, document)
     deployment_file = OmniSemanticDeploymentFile(name, remote_path, content, digest)
     _expected_remote_document(deployment_file)
     return deployment_file
 
 
-def _remote_path(name: str, database: str) -> str:
+def _remote_path(name: str, database: str, document: Mapping[str, Any]) -> str:
     match = _VIEW_NAME.fullmatch(name)
-    if match is None:
+    flat_match = _FLAT_VIEW_NAME.fullmatch(name)
+    if match is None and flat_match is None:
         return name
-    if match["catalog"] != database:
+    if match is not None and match["catalog"] != database:
         raise OmniSemanticDeploymentError(
             "view catalog does not match manifest database"
         )
-    return f"{match['catalog']}.{match['schema']}/{match['table']}.view"
+    catalog = _require_identifier(document.get("catalog"), "view catalog")
+    schema = _require_identifier(document.get("schema"), "view schema")
+    _require_identifier(document.get("table_name"), "view physical table")
+    if catalog != database:
+        raise OmniSemanticDeploymentError(
+            "view catalog does not match manifest database"
+        )
+    if match is not None:
+        if catalog != match["catalog"] or schema != match["schema"]:
+            raise OmniSemanticDeploymentError(
+                "local view identity does not match file name"
+            )
+        logical_table = match["table"]
+    else:
+        assert flat_match is not None
+        logical_table = flat_match["table"]
+    return f"{catalog}.{schema}/{logical_table}.view"
 
 
 def _require_unique_paths(files: Sequence[OmniSemanticDeploymentFile]) -> None:
@@ -268,18 +291,6 @@ def _expected_remote_document(item: OmniSemanticDeploymentFile) -> Mapping[str, 
     document = _parse_yaml(item.content, f"local file {item.local_name}")
     if not item.local_name.endswith(".view"):
         return document
-    match = _VIEW_NAME.fullmatch(item.local_name)
-    if match is None:
-        raise OmniSemanticDeploymentError("authenticated view name is invalid")
-    expected_identity = {
-        "catalog": match["catalog"],
-        "schema": match["schema"],
-        "table_name": match["table"],
-    }
-    if any(document.get(key) != value for key, value in expected_identity.items()):
-        raise OmniSemanticDeploymentError(
-            "local view identity does not match file name"
-        )
     return {
         key: value for key, value in document.items() if key not in _VIEW_IDENTITY_KEYS
     }

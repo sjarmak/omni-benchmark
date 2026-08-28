@@ -252,11 +252,41 @@ def test_plan_rejects_duplicate_manifest_keys_and_unsafe_local_yaml(
 def test_plan_rejects_local_view_identity_that_disagrees_with_file_name(
     tmp_path: Path,
 ) -> None:
-    changed = VIEW.replace("table_name: pointcloud", "table_name: mesh").encode()
+    changed = VIEW.replace("schema: public", "schema: private").encode()
     root = _bundle(tmp_path, {VIEW_NAME: changed, TOPIC_NAME: TOPIC.encode()})
 
     with pytest.raises(OmniSemanticDeploymentError, match="view identity"):
         build_semantic_deployment_plan(root)
+
+
+def test_plan_preserves_case_sensitive_physical_table_for_normalized_view_name(
+    tmp_path: Path,
+) -> None:
+    normalized_name = "archeology_scan_large.public__api_endpoint.view"
+    case_sensitive_view = VIEW.replace(
+        "table_name: pointcloud", "table_name: API_Endpoint"
+    ).encode()
+    root = _bundle(
+        tmp_path,
+        {normalized_name: case_sensitive_view, TOPIC_NAME: TOPIC.encode()},
+    )
+
+    plan = build_semantic_deployment_plan(root)
+
+    mapped = {item.local_name: item.remote_path for item in plan.files}
+    assert mapped[normalized_name] == ("archeology_scan_large.public/api_endpoint.view")
+
+
+def test_plan_qualifies_flat_view_from_authenticated_document_identity(
+    tmp_path: Path,
+) -> None:
+    flat_name = "pointcloud.view"
+    root = _bundle(tmp_path, {flat_name: VIEW.encode(), TOPIC_NAME: TOPIC.encode()})
+
+    plan = build_semantic_deployment_plan(root)
+
+    mapped = {item.local_name: item.remote_path for item in plan.files}
+    assert mapped[flat_name] == VIEW_PATH
 
 
 def test_plan_rejects_symlinks_and_a_view_catalog_mismatch(tmp_path: Path) -> None:

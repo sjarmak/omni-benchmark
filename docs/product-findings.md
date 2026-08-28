@@ -635,6 +635,49 @@ execution mechanics rather than accuracy.
 - **External execution outcome:** No question was run or scored.
 - **Evaluator agreement/disagreement:** Not applicable.
 
+## PF-001 scale-out validation: Exact database selection restored all 17 schema models
+
+- **Observed behavior:** Changing only the selected database on each affected
+  benchmark connection converted the representative opaque refresh failure into
+  completed public-schema refreshes across the full 17-connection scale-out.
+- **Minimal non-private reproduction:** Preserve each verified endpoint, role,
+  credential, and `includeSchemas=[public]`; change `database` from `neondb` to
+  the parity-verified named database; refresh and read back schemas/views.
+- **Expected behavior:** Every corrected connection exposes exactly its one
+  authorized public schema with the same table/view count as the scorer mirror.
+- **Actual behavior:** All 17 refresh jobs completed. Each schema readback
+  contained only `<database>.public`, and all 17 view counts exactly matched the
+  committed parity inventory. The API returned HTTP 429 when more than five
+  refresh jobs were started together; bounded later batches completed.
+- **Why it matters to customers:** This closes the causal loop: valid mirrors
+  and least-privilege grants were not the problem. A save-time connection check
+  and actionable refresh error would have prevented a rollout-wide outage.
+- **Systematic evidence / frequency:** 17/17 affected connections, following the
+  independently corrected archeology canary (18/18 total usable schema models).
+- **Benchmark impact:** Clears the connection prerequisite for isolated C4
+  semantic deployment; no question was run or scored.
+- **Severity:** High setup and rollout reliability impact, externally remediated.
+- **Proposed product change:** Validate the selected database during connection
+  save; return a sanitized failing stage/database from refresh status; document
+  or signal the refresh concurrency/rate limit with retry guidance.
+- **Was the change tested?:** The configuration correction was tested at full
+  benchmark scale. The proposed product-side validation/diagnostics were not.
+- **Measured effect:** Schema refresh changed from a representative `FAILED`
+  with no reason to 17/17 `COMPLETED`, with exact public view-count parity.
+- **Experiment / commit provenance:** D-049; Bead
+  `omni-benchmark-dih.17.1`; secret-free receipt
+  `experiments/deployments/connection-corrections-v1.json`.
+- **Visible in AI Hub?:** The repaired models can now reach AI-facing workflows;
+  the original connection failure cause was not visible there.
+- **AI Hub exposes relevant context/behavior?:** Not for the pre-model connection
+  cause observed here.
+- **Fixable through current AI Hub/modeling workflow?:** No; selected database
+  and schema refresh are connection/model infrastructure surfaces.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** Schema and view readback passed; no benchmark
+  correctness result was produced.
+- **Evaluator agreement/disagreement:** Not applicable.
+
 ## Entry template
 
 ### PF-XXX: Short finding title
