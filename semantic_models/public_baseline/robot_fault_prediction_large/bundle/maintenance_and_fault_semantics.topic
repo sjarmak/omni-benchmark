@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__maintenance_and_fault
+label: maintenance_and_fault
+description: Public semantic view for maintenance_and_fault.
+fields:
+- robot_fault_prediction_large_public__maintenance_and_fault.*
+joins: {}
+ai_context: Use the modeled business fields mf_rul_hours, mf_upkeep_cost, mf_fault_prediction_score, mf_upkeep_due_days, hkb_10, hkb_17, hkb_48, hkb_53 rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

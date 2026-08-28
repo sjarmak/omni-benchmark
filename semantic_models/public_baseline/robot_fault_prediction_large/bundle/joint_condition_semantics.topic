@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__joint_condition
+label: joint_condition
+description: Public semantic view for joint_condition.
+fields:
+- robot_fault_prediction_large_public__joint_condition.*
+joins: {}
+ai_context: Use the modeled business fields jc_j1_temp, jc_j2_temp, jc_j3_temp, jc_j4_temp, jc_j5_temp, jc_j6_temp, jc_j1_vibration, jc_j2_vibration, jc_j3_vibration, jc_j4_vibration, jc_j5_vibration, jc_j6_vibration, jc_j1_backlash, jc_j2_backlash, jc_j3_backlash, jc_j4_backlash, jc_j5_backlash, jc_j6_backlash, hkb_15, hkb_5, hkb_18, hkb_34, hkb_4, hkb_9, hkb_43, hkb_47, hkb_62 rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

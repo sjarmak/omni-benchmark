@@ -1,0 +1,568 @@
+{
+  "database": "robot_fault_prediction_large",
+  "files": [
+    {
+      "file": "robot_fault_prediction_large.public__robot_details.view",
+      "sha256": "e873d8b68a6495d821271e877730b7b54b515f4fea3131e6727c545b655bf8ec",
+      "size_bytes": 1960
+    },
+    {
+      "file": "robot_details_semantics.topic",
+      "sha256": "6f764cf95e8aab5af0b0382902f0553e2d7ca5dff5384b8c519c903de4af6e52",
+      "size_bytes": 462
+    },
+    {
+      "file": "robot_fault_prediction_large.public__joint_condition.view",
+      "sha256": "d9a946308478146fe3527382a843768abdc6bb037de25a0b129d6afa53f206bc",
+      "size_bytes": 6727
+    },
+    {
+      "file": "joint_condition_semantics.topic",
+      "sha256": "e92bfb7608c8e9fcb486186aaec47b565999061f027d89ef576a6f2833151403",
+      "size_bytes": 699
+    },
+    {
+      "file": "robot_fault_prediction_large.public__system_controller.view",
+      "sha256": "68e921c578f0aa075d66f857fb95048868e5d14a7a54c64038b6f30afae0501f",
+      "size_bytes": 1199
+    },
+    {
+      "file": "system_controller_semantics.topic",
+      "sha256": "7dad1464da5ca9b0aa2d422e2452d9cf5f22590076b6a6041d927369fcde0075",
+      "size_bytes": 431
+    },
+    {
+      "file": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "sha256": "1ac3b854a9126cd102af0d8203fd40f1fd63822809b7ab84793ef8de3fea2066",
+      "size_bytes": 2127
+    },
+    {
+      "file": "performance_and_safety_semantics.topic",
+      "sha256": "0220e7e15ebd6e55932835b54950094246aacd1b2a48c2d6f43cf0dbcb037dfe",
+      "size_bytes": 554
+    },
+    {
+      "file": "robot_fault_prediction_large.public__maintenance_and_fault.view",
+      "sha256": "16d67435b88f0f14e74fab5dedfb9f63c28a6e30e17fc5f7c06ac464afea492d",
+      "size_bytes": 2221
+    },
+    {
+      "file": "maintenance_and_fault_semantics.topic",
+      "sha256": "541d4ff4fd5bd673d1a6004a6a2b865fb2a387ddb1b44812420d9be44e1a3c8b",
+      "size_bytes": 493
+    },
+    {
+      "file": "robot_fault_prediction_large.public__operation.view",
+      "sha256": "112df0f6b3ceccb591df1c357235ae40f23c91990bbd7d68f3f4c055499458d9",
+      "size_bytes": 1896
+    },
+    {
+      "file": "operation_semantics.topic",
+      "sha256": "be66bb1cffd83c6bd10337166826c48589da425605a82f6147e12738d11452c8",
+      "size_bytes": 415
+    },
+    {
+      "file": "robot_fault_prediction_large.public__actuation_data.view",
+      "sha256": "fd81a364b2f3ee2ffc023aa59c0e51fa664a9a8ab978218b5436887315913f49",
+      "size_bytes": 484
+    },
+    {
+      "file": "actuation_data_semantics.topic",
+      "sha256": "230d7671ee7702d399290f21a4fa634c88e4227c09c7fa38c8b5e9432c8c7e7f",
+      "size_bytes": 392
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:0",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_0",
+      "table_stable_id": "robot_fault_prediction_large:table:robot_details"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:10",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_10",
+      "table_stable_id": "robot_fault_prediction_large:table:maintenance_and_fault"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_12",
+      "table_stable_id": "robot_fault_prediction_large:table:operation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:15",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_15",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:17",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_17",
+      "table_stable_id": "robot_fault_prediction_large:table:maintenance_and_fault"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:18",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_18",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "ps_safety_state",
+      "table_stable_id": "robot_fault_prediction_large:table:performance_and_safety"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:22",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "ps_calibration_state",
+      "table_stable_id": "robot_fault_prediction_large:table:performance_and_safety"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "mf_fault_prediction_score",
+      "table_stable_id": "robot_fault_prediction_large:table:maintenance_and_fault"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "ps_condition_index",
+      "table_stable_id": "robot_fault_prediction_large:table:performance_and_safety"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:27",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "sc_overseer_load",
+      "table_stable_id": "robot_fault_prediction_large:table:system_controller"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "sc_cabinet_humidity",
+      "table_stable_id": "robot_fault_prediction_large:table:system_controller"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:30",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "rd_payload_capacity_kg",
+      "table_stable_id": "robot_fault_prediction_large:table:robot_details"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:33",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "ps_air_pressure",
+      "table_stable_id": "robot_fault_prediction_large:table:performance_and_safety"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:34",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_34",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:37",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "rd_firmware_version",
+      "table_stable_id": "robot_fault_prediction_large:table:robot_details"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:38",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "rd_robot_type",
+      "table_stable_id": "robot_fault_prediction_large:table:robot_details"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:39",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "o_application_type",
+      "table_stable_id": "robot_fault_prediction_large:table:operation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:4",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_4",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:40",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "o_application_type",
+      "table_stable_id": "robot_fault_prediction_large:table:operation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:41",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "o_application_type",
+      "table_stable_id": "robot_fault_prediction_large:table:operation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:43",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_43",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:47",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_47",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:48",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_48",
+      "table_stable_id": "robot_fault_prediction_large:table:maintenance_and_fault"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:5",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_5",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:53",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_53",
+      "table_stable_id": "robot_fault_prediction_large:table:maintenance_and_fault"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:54",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_54",
+      "table_stable_id": "robot_fault_prediction_large:table:robot_details"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:6",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_6",
+      "table_stable_id": "robot_fault_prediction_large:table:system_controller"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:62",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_62",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:63",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_63",
+      "table_stable_id": "robot_fault_prediction_large:table:operation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:9",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hkb_9",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "627139cdf23f8ff9bfbaf2b38b03738356927f33b3ed1760477767ec17449f83"
+    },
+    "hkb_ir": {
+      "sha256": "7dc1bcd62075d10188797d330683696bd568181c123d56dda1a087e2b8a37206"
+    },
+    "mapping": {
+      "sha256": "fca6d4fbb5969cf3d54ea65b4a0627e588c327f300998c17263512e66b58936c"
+    },
+    "mapping_manifest": {
+      "sha256": "dc7849cca1b6926a9c0361b3b9918831c0d2dfcb7b5600d82dd056604fa080d8"
+    },
+    "schema_ir": {
+      "sha256": "1e13325a1ad1b2c0420ffa07c07ca4e16ba41aebe04314e02dd9eefb6555cfec"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

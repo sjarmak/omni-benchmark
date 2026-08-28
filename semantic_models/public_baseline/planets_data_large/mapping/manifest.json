@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 22,
+      "context_only": 10,
+      "defer_cross_grain": 11,
+      "unsupported": 9
+    },
+    "hkb_nodes": 52
+  },
+  "database": "planets_data_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "planets_data_large.mapping.jsonl",
+    "sha256": "cf79d260c7ccbac80c881c091d234204398696897ed81326d76c2f83b74f509c"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "ceee5a74a9eae9c09e587ddf151bc657aa694e113386756c20affe5091538963"
+    },
+    "mapping_spec": {
+      "sha256": "b4efa2f7d7d3dde9461a0fbf323f3676b234a7d73980eeb76018f37f8c4a2a9c"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "adebf90a865b8f92087f11b370d562cb169c12d39645dc850345d06c60992c7f",
+      "sha256": "e74ec7a196263b00642f032b6bb2be400f242f7772c597ba44d8fac039cd31f2"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

@@ -398,6 +398,25 @@ def test_compile_bundle_is_byte_deterministic() -> None:
     assert second.manifest == first.manifest
 
 
+def test_compile_bundle_ignores_unsafe_physical_names_on_unmodeled_tables() -> None:
+    schema = _schema_records()
+    schema[-1]["identifier"]["name"] = "MassTransferRate_solar_masses/year"
+
+    bundle = compile_semantic_bundle(
+        _spec(), _hkb_records(), schema, _mapping_records()
+    )
+
+    assert "db.public__pointcloud.view" in bundle.files
+
+
+def test_compile_bundle_rejects_unsafe_physical_name_on_modeled_table() -> None:
+    schema = _schema_records()
+    schema[1]["identifier"]["name"] = "unsafe/name"
+
+    with pytest.raises(SemanticBundleError, match="column name must be a safe"):
+        compile_semantic_bundle(_spec(), _hkb_records(), schema, _mapping_records())
+
+
 @pytest.mark.parametrize(
     ("mutation", "message"),
     [

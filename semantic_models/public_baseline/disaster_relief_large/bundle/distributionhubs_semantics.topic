@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__distributionhubs
+label: Distribution Hubs
+description: Distribution-hub records with row-level utilization, turnover, and overload semantics.
+fields:
+- disaster_relief_large_public__distributionhubs.*
+joins: {}
+ai_context: Use the modeled business fields hub_utilization_pct, stock_turn_rate, is_hub_overloaded rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

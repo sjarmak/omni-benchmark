@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__coordinationandevaluation
+label: Coordination and Evaluation
+description: Coordination and evaluation records with row-level quality, accountability, and effectiveness semantics.
+fields:
+- disaster_relief_large_public__coordinationandevaluation.*
+joins: {}
+ai_context: Use the modeled business fields report_compliance, stakeholder_satisfaction, data_quality_value, compliance_state, audit_state, quality_control_steps, coordination_effectiveness_level, coordination_quality_index, is_high_accountability_response rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

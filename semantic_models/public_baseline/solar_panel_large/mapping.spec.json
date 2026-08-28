@@ -1,0 +1,1432 @@
+{
+  "database": "solar_panel_large",
+  "schema_version": 1,
+  "intervention_provenance": "agent_assisted_public_modeling_inference",
+  "schema_aliases": {
+    "PM.T": "solar_panel_large:table:panel_models",
+    "PM.rated_w": "solar_panel_large:column:panel_models:rated_w",
+    "PM.degyrrate": "solar_panel_large:column:panel_models:degyrrate",
+    "PM.tempcoeff": "solar_panel_large:column:panel_models:tempcoeff",
+    "PM.nomoptempc": "solar_panel_large:column:panel_models:nomoptempc",
+    "EP.T": "solar_panel_large:table:electrical_performance",
+    "EP.specific_yield": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:energy_yield/k:specific_yield_kwh_kw",
+    "EP.capacity_factor": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:energy_yield/k:capacity_factor_pct",
+    "EP.performance_ratio": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:energy_yield/k:performance_ratio",
+    "EP.availability": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:energy_yield/k:availability_pct",
+    "EP.power_now": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:power/k:power_now_w",
+    "EP.power_loss": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:power/k:power_loss_w",
+    "EP.inverter_eff": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:inverter/k:inverter_eff_pct",
+    "EP.power_factor": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:inverter/k:power_factor",
+    "EP.harmonic": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:grid/k:harmonic_distortion_pct",
+    "EP.voc_initial": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:iv_curve/k:voc_initial_v",
+    "EP.voc_now": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:iv_curve/k:voc_now_v",
+    "EP.isc_initial": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:iv_curve/k:isc_initial_a",
+    "EP.isc_now": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:iv_curve/k:isc_now_a",
+    "EP.fill_initial": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:iv_curve/k:fill_factor_initial",
+    "EP.fill_now": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:iv_curve/k:fill_factor_now",
+    "EP.soil_loss": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:efficiency/k:soil_loss_pct",
+    "EP.cumulative_deg": "solar_panel_large:structured-leaf:electrical_performance:elec_perf_snapshot:k:efficiency/k:cumulative_deg_pct",
+    "EC.T": "solar_panel_large:table:environmental_conditions",
+    "EC.cell_temp": "solar_panel_large:structured-leaf:environmental_conditions:env_snapshot:k:temperatures/k:cell_temp_c",
+    "EC.uv": "solar_panel_large:structured-leaf:environmental_conditions:env_snapshot:k:atmospheric/k:uv_index",
+    "OM.T": "solar_panel_large:table:operational_metrics",
+    "OM.mtbf": "solar_panel_large:column:operational_metrics:mtbfh",
+    "OM.mttr": "solar_panel_large:column:operational_metrics:mttrh",
+    "OM.maintcost": "solar_panel_large:column:operational_metrics:maintcost",
+    "OM.cleancost": "solar_panel_large:column:operational_metrics:cleancost",
+    "OM.replcost": "solar_panel_large:column:operational_metrics:replcost",
+    "OM.revloss": "solar_panel_large:column:operational_metrics:revloss",
+    "PL.T": "solar_panel_large:table:plants",
+    "PL.cap": "solar_panel_large:column:plants:cap_mw",
+    "PL.warrstate": "solar_panel_large:column:plants:warrstate",
+    "PL.warrclaims": "solar_panel_large:column:plants:warrclaims",
+    "AL.T": "solar_panel_large:table:alert",
+    "AL.maintprio": "solar_panel_large:column:alert:maintprio",
+    "AL.replprio": "solar_panel_large:column:alert:replprio",
+    "MC.T": "solar_panel_large:table:mechanical_condition",
+    "MC.tracker": "solar_panel_large:structured-leaf:mechanical_condition:mech_health_snapshot:k:tracker/k:tracker_state",
+    "MC.mount": "solar_panel_large:structured-leaf:mechanical_condition:mech_health_snapshot:k:mount_cleaning/k:mount_structure_status",
+    "MC.busbar": "solar_panel_large:structured-leaf:mechanical_condition:mech_health_snapshot:k:module_surface/k:busbar_corrosion",
+    "MC.delam": "solar_panel_large:structured-leaf:mechanical_condition:mech_health_snapshot:k:module_surface/k:delamination_status",
+    "MC.microcrack": "solar_panel_large:structured-leaf:mechanical_condition:mech_health_snapshot:k:module_surface/k:microcrack_count",
+    "MC.ground": "solar_panel_large:structured-leaf:mechanical_condition:mech_health_snapshot:k:electrical_integrity/k:grounding_status",
+    "MC.diode": "solar_panel_large:structured-leaf:mechanical_condition:mech_health_snapshot:k:electrical_integrity/k:bypass_diode_status",
+    "IN.T": "solar_panel_large:table:inspection",
+    "IN.result": "solar_panel_large:column:inspection:inspectres",
+    "IN.schedule": "solar_panel_large:column:inspection:maintsched",
+    "IN.dqscore": "solar_panel_large:column:inspection:dqscore"
+  },
+  "records": [
+    {
+      "hkb_id": 0,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.specific_yield",
+          "confidence": "exact",
+          "role": "specific_yield"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "specific_yield_metric",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 1,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.capacity_factor",
+          "confidence": "exact",
+          "role": "capacity_factor"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "power_capacity_factor",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 2,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.soil_loss",
+          "confidence": "exact",
+          "role": "soiling_loss_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "soiling_loss_index",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 3,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "EC.cell_temp",
+          "confidence": "exact",
+          "role": "cell_temperature_c"
+        },
+        {
+          "alias": "PM.tempcoeff",
+          "confidence": "exact",
+          "role": "temperature_coefficient"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 4,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "OM.mttr",
+          "confidence": "exact",
+          "role": "mttr_hours"
+        },
+        {
+          "alias": "OM.mtbf",
+          "confidence": "exact",
+          "role": "mtbf_hours"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "system_unavailability",
+      "target_alias": "OM.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 5,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.fill_initial",
+          "confidence": "exact",
+          "role": "fill_factor_initial"
+        },
+        {
+          "alias": "EP.fill_now",
+          "confidence": "exact",
+          "role": "fill_factor_now"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "fill_factor_degradation",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 6,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "OM.maintcost",
+          "confidence": "exact",
+          "role": "maintenance_cost"
+        },
+        {
+          "alias": "OM.cleancost",
+          "confidence": "exact",
+          "role": "cleaning_cost"
+        },
+        {
+          "alias": "OM.replcost",
+          "confidence": "exact",
+          "role": "replacement_cost"
+        },
+        {
+          "alias": "PL.cap",
+          "confidence": "exact",
+          "role": "rated_capacity"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 7,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "EP.cumulative_deg",
+          "confidence": "exact",
+          "role": "cumulative_degradation_pct"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "source_type_requires_parsing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 8,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "system_availability",
+      "target_alias": "OM.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 9,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.performance_ratio",
+          "confidence": "exact",
+          "role": "performance_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "performance_ratio_metric",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 10,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "EP.power_now",
+          "confidence": "exact",
+          "role": "actual_power"
+        },
+        {
+          "alias": "EC.cell_temp",
+          "confidence": "exact",
+          "role": "cell_temperature_c"
+        },
+        {
+          "alias": "PM.tempcoeff",
+          "confidence": "exact",
+          "role": "temperature_coefficient"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 11,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "EP.cumulative_deg",
+          "confidence": "exact",
+          "role": "annual_degradation_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "source_type_requires_parsing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 12,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.inverter_eff",
+          "confidence": "exact",
+          "role": "inverter_efficiency_pct"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "inverter_efficiency_loss",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 13,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.power_loss",
+          "confidence": "exact",
+          "role": "power_loss"
+        },
+        {
+          "alias": "EP.power_now",
+          "confidence": "exact",
+          "role": "power_output"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "system_power_loss_ratio",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 14,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.voc_initial",
+          "confidence": "exact",
+          "role": "voltage_initial"
+        },
+        {
+          "alias": "EP.voc_now",
+          "confidence": "exact",
+          "role": "voltage_now"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "voltage_degradation_factor",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 15,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.isc_initial",
+          "confidence": "exact",
+          "role": "current_initial"
+        },
+        {
+          "alias": "EP.isc_now",
+          "confidence": "exact",
+          "role": "current_now"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "current_degradation_factor",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 16,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.power_now",
+          "confidence": "exact",
+          "role": "gross_power"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "effective_power_output",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 17,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "PM.rated_w",
+          "confidence": "exact",
+          "role": "rated_power"
+        },
+        {
+          "alias": "PM.degyrrate",
+          "confidence": "exact",
+          "role": "annual_degradation_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "source_type_requires_parsing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 18,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "OM.maintcost",
+          "confidence": "exact",
+          "role": "maintenance_cost"
+        },
+        {
+          "alias": "OM.revloss",
+          "confidence": "exact",
+          "role": "revenue_loss"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "source_type_requires_parsing"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "maintenance_cost_to_revenue_impact_ratio",
+      "target_alias": "OM.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 19,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "OM.maintcost",
+          "confidence": "exact",
+          "role": "maintenance_cost"
+        },
+        {
+          "alias": "OM.mtbf",
+          "confidence": "exact",
+          "role": "mtbf_hours"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "source_type_requires_parsing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 20,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "PM.degyrrate",
+          "confidence": "exact",
+          "role": "annual_degradation_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_high_degradation_panel_model",
+      "target_alias": "PM.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 21,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "MC.tracker",
+          "confidence": "exact",
+          "role": "tracker_state"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "tracker_malfunction",
+      "target_alias": "MC.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 22,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "IN.dqscore",
+          "confidence": "exact",
+          "role": "data_quality_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "data_quality_concern",
+      "target_alias": "IN.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 23,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "MC.mount",
+          "confidence": "exact",
+          "role": "mount_structure_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "structural_integrity_warning",
+      "target_alias": "MC.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 24,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "AL.maintprio",
+          "confidence": "exact",
+          "role": "maintenance_priority"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "high_maintenance_priority",
+      "target_alias": "AL.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 25,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "AL.replprio",
+          "confidence": "exact",
+          "role": "replacement_priority"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "high_replacement_priority",
+      "target_alias": "AL.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 26,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.soil_loss",
+          "confidence": "exact",
+          "role": "soiling_loss_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "severe_soiling_condition",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 27,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_alias_uncertain",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 28,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "PL.warrstate",
+          "confidence": "exact",
+          "role": "warranty_status"
+        },
+        {
+          "alias": "PL.warrclaims",
+          "confidence": "exact",
+          "role": "warranty_claim_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "warranty_claim_risk",
+      "target_alias": "PL.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 29,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "AL.maintprio",
+          "confidence": "exact",
+          "role": "maintenance_priority"
+        },
+        {
+          "alias": "AL.replprio",
+          "confidence": "exact",
+          "role": "replacement_priority"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "critical_alert",
+      "target_alias": "AL.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 30,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "MC.ground",
+          "confidence": "exact",
+          "role": "grounding_status"
+        },
+        {
+          "alias": "MC.diode",
+          "confidence": "exact",
+          "role": "bypass_diode_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "electrical_integrity_failure",
+      "target_alias": "MC.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 31,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "MC.busbar",
+          "confidence": "exact",
+          "role": "busbar_corrosion"
+        },
+        {
+          "alias": "MC.delam",
+          "confidence": "exact",
+          "role": "delamination_status"
+        },
+        {
+          "alias": "MC.microcrack",
+          "confidence": "exact",
+          "role": "microcrack_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "major_module_degradation",
+      "target_alias": "MC.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 32,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "EP.performance_ratio",
+          "confidence": "exact",
+          "role": "performance_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "underperforming_asset",
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 33,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "EP.availability",
+          "confidence": "exact",
+          "role": "system_availability"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 34,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 35,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "MC.mount",
+          "confidence": "exact",
+          "role": "mount_structure_status"
+        },
+        {
+          "alias": "MC.tracker",
+          "confidence": "exact",
+          "role": "tracker_state"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "critical_mechanical_health",
+      "target_alias": "MC.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 36,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "PM.degyrrate",
+          "confidence": "exact",
+          "role": "annual_degradation_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 37,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "IN.result",
+          "confidence": "exact",
+          "role": "inspection_result"
+        },
+        {
+          "alias": "IN.schedule",
+          "confidence": "exact",
+          "role": "maintenance_schedule_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "overdue_critical_maintenance",
+      "target_alias": "IN.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 38,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 39,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 40,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "EP.power_factor",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 41,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "PM.tempcoeff",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PM.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 42,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "EP.fill_now",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 43,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "EC.uv",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "EC.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 44,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "MC.tracker",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "MC.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 45,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "IN.dqscore",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "IN.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 46,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "MC.busbar",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "MC.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 47,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "OM.mtbf",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "OM.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 48,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "PM.nomoptempc",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PM.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    },
+    {
+      "hkb_id": 49,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "EP.harmonic",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "EP.T",
+      "notes": "Public-only classification derived from the supplied HKB and schema; disposition and loss codes preserve representability limits."
+    }
+  ]
+}

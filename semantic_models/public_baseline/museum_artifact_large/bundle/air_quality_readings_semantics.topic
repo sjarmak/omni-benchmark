@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__air_quality_readings
+label: Air Quality Readings
+description: Air-quality reading rows with PM2.5 conservation context.
+fields:
+- museum_artifact_large_public__air_quality_readings.*
+joins: {}
+ai_context: Use the modeled business fields pm25_ug_m3 rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

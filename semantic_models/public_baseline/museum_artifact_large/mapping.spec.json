@@ -1,0 +1,1507 @@
+{
+  "database": "museum_artifact_large",
+  "schema_version": 1,
+  "schema_aliases": {
+    "T.artifacts": "museum_artifact_large:table:ArtifactsCore",
+    "T.sensitivity": "museum_artifact_large:table:SensitivityData",
+    "T.halls": "museum_artifact_large:table:ExhibitionHalls",
+    "T.environment": "museum_artifact_large:table:EnvironmentalReadingsCore",
+    "T.light": "museum_artifact_large:table:LightAndRadiationReadings",
+    "T.air": "museum_artifact_large:table:AirQualityReadings",
+    "T.security": "museum_artifact_large:table:ArtifactSecurityAccess",
+    "T.maintenance": "museum_artifact_large:table:ConservationAndMaintenance",
+    "H.daily_visitors": "museum_artifact_large:structured-leaf:ExhibitionHalls:security_visitor_overview:k:visitor_statistics/k:avg_daily_visitors",
+    "H.visitor_flow": "museum_artifact_large:structured-leaf:ExhibitionHalls:security_visitor_overview:k:visitor_statistics/k:visitor_flow",
+    "H.dwell_minutes": "museum_artifact_large:structured-leaf:ExhibitionHalls:security_visitor_overview:k:visitor_statistics/k:avg_dwell_minutes",
+    "H.cctv": "museum_artifact_large:structured-leaf:ExhibitionHalls:security_visitor_overview:k:security/k:cctv_coverage",
+    "E.temp": "museum_artifact_large:column:EnvironmentalReadingsCore:TEMPc",
+    "E.rh": "museum_artifact_large:column:EnvironmentalReadingsCore:RH",
+    "A.insurance": "museum_artifact_large:column:ArtifactSecurityAccess:insUSD",
+    "M.next_clean": "museum_artifact_large:column:ConservationAndMaintenance:nextClean",
+    "A.status": "museum_artifact_large:column:ArtifactsCore:conserve_status",
+    "S.light": "museum_artifact_large:structured-leaf:SensitivityData:env_handling_sensitivity:k:environment/k:light",
+    "S.humidity": "museum_artifact_large:structured-leaf:SensitivityData:env_handling_sensitivity:k:environment/k:humidity",
+    "L.lux": "museum_artifact_large:column:LightAndRadiationReadings:lux",
+    "Q.pm25": "museum_artifact_large:structured-leaf:AirQualityReadings:air_quality_metrics:k:particulates/k:pm25_ug_m3"
+  },
+  "records": [
+    {
+      "hkb_id": 0,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "notes": "CPI combines artifact status with historical, research, and cultural ratings stored at separate artifact and rating grains."
+    },
+    {
+      "hkb_id": 1,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "blocked",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_alias_uncertain",
+        "categorical_match_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "notes": "The weight mapping applies to several sensitivity fields, so no single exact physical-field target represents this standalone definition."
+    },
+    {
+      "hkb_id": 2,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "blocked",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_alias_uncertain",
+        "aggregation_unspecified"
+      ],
+      "relationship_requirements": [],
+      "notes": "The definition does not identify the exact set of sensitivity factors to average and depends on the uncompiled sensitivity-weight mapping."
+    },
+    {
+      "hkb_id": 3,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "notes": "AVS depends on CPI and ERF, whose required inputs span artifact ratings, artifact status, and sensitivity data."
+    },
+    {
+      "hkb_id": 4,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "blocked",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "notes": "The row-level formula depends on the standalone sensitivity-weight definition, which has no unambiguous executable target."
+    },
+    {
+      "hkb_id": 5,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Temperature and humidity variation are reading-grain fields while leak rate is showcase-grain; the matching reading and time semantics are unspecified."
+    },
+    {
+      "hkb_id": 6,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior"
+      ],
+      "notes": "AEC requires an artifact sensitivity score and a showcase stability score without an artifact-to-showcase pairing grain."
+    },
+    {
+      "hkb_id": 7,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Artifact age and ERF are artifact-level while humidity and temperature are time-varying environmental readings."
+    },
+    {
+      "hkb_id": 8,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Artifact light sensitivity must be paired with a particular light reading and exposure record; no exact artifact-reading identity is declared."
+    },
+    {
+      "hkb_id": 9,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "notes": "CBE requires collection-wide averaging, per-artifact allocation ratios, and a total conservation budget; exact numeric allocation sources and aggregation grain are absent."
+    },
+    {
+      "hkb_id": 10,
+      "disposition": "compile",
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "visitor_impact_risk",
+      "target_alias": "T.halls",
+      "bindings": [
+        {
+          "alias": "H.daily_visitors",
+          "confidence": "exact",
+          "role": "daily_visitor_count"
+        },
+        {
+          "alias": "H.visitor_flow",
+          "confidence": "exact",
+          "role": "visitor_flow_category"
+        },
+        {
+          "alias": "H.dwell_minutes",
+          "confidence": "exact",
+          "role": "average_dwell_minutes"
+        }
+      ],
+      "dependency_mode": "same_grain",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "relationship_requirements": [],
+      "notes": "All inputs are exact leaves of one hall row; the declared Low=1, Medium=3, High=5 mapping is compiled directly."
+    },
+    {
+      "hkb_id": 11,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "notes": "The insurance criterion and rating criteria live on unlinked security and artifact-rating grains, and top-ten-percent thresholds require population aggregation."
+    },
+    {
+      "hkb_id": 12,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior"
+      ],
+      "notes": "Critical conservation status is artifact-grain while urgent treatment priority is maintenance-grain, with no artifact identity on maintenance rows."
+    },
+    {
+      "hkb_id": 13,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "blocked",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_alias_uncertain",
+        "boundary_semantics_unverified"
+      ],
+      "relationship_requirements": [],
+      "notes": "Temperature has an explicit 24-hour variation field, but RHvar is documented only as humidity variance with no verified 24-hour window, so the required humidity source is not exact."
+    },
+    {
+      "hkb_id": 14,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "MDR combines artifact and environmental grains, while counting high sensitivities requires a separate sensitivity record and matching identity."
+    },
+    {
+      "hkb_id": 15,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Display duration, DSD, and LER do not share a declared artifact/display/exposure row grain."
+    },
+    {
+      "hkb_id": 16,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cardinality_unknown",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "SESR requires matched environmental readings, and the definition does not exhaustively define which showcase indicator states are critical."
+    },
+    {
+      "hkb_id": 17,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "entity_existence_semantics_missing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "zero_match_behavior"
+      ],
+      "notes": "The collection-level CBE threshold and existence of a critical, insufficiently funded artifact require aggregation and artifact-maintenance identity semantics."
+    },
+    {
+      "hkb_id": 18,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior"
+      ],
+      "notes": "Dynasty is on the artifact row and research score is on a separate rating row; rating cardinality per artifact is not guaranteed."
+    },
+    {
+      "hkb_id": 19,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "entity_existence_semantics_missing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "notes": "Hall-level VIR must be combined with existence of an artifact having the lowest security level, but no artifact-to-hall path is declared."
+    },
+    {
+      "hkb_id": 20,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior"
+      ],
+      "notes": "Material kind and overall environmental sensitivity reside in separate artifact and sensitivity rows with unverified one-to-one cardinality."
+    },
+    {
+      "hkb_id": 21,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.artifacts",
+      "bindings": [
+        {
+          "alias": "A.status",
+          "confidence": "exact",
+          "role": "conservation_status"
+        }
+      ],
+      "dependency_mode": "none",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "This value illustration exactly documents the conservation-status column and its declared values."
+    },
+    {
+      "hkb_id": 22,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "blocked",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_alias_uncertain",
+        "vocabulary_conflict"
+      ],
+      "relationship_requirements": [],
+      "notes": "HIST_sign has 1-10 values but is documented as a unique primary-key identifier rather than an artifact historical-significance rating, so it is not an exact context target."
+    },
+    {
+      "hkb_id": 23,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.sensitivity",
+      "bindings": [
+        {
+          "alias": "S.light",
+          "confidence": "exact",
+          "role": "light_sensitivity_level"
+        }
+      ],
+      "dependency_mode": "none",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The Low, Medium, and High illustration exactly targets the structured light-sensitivity leaf."
+    },
+    {
+      "hkb_id": 24,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.sensitivity",
+      "bindings": [
+        {
+          "alias": "S.humidity",
+          "confidence": "exact",
+          "role": "humidity_sensitivity_level"
+        }
+      ],
+      "dependency_mode": "none",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The qualitative humidity-sensitivity illustration exactly targets one structured leaf."
+    },
+    {
+      "hkb_id": 25,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.halls",
+      "bindings": [
+        {
+          "alias": "H.cctv",
+          "confidence": "exact",
+          "role": "cctv_coverage_level"
+        }
+      ],
+      "dependency_mode": "none",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The coverage classifications exactly describe the hall CCTV-coverage leaf."
+    },
+    {
+      "hkb_id": 26,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "blocked",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_alias_uncertain",
+        "vocabulary_conflict"
+      ],
+      "relationship_requirements": [],
+      "notes": "The schema exposes both an airtightness factor and a leak rate per day, but neither is explicitly documented as air changes per day, so no exact context target is defensible."
+    },
+    {
+      "hkb_id": 27,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.environment",
+      "bindings": [
+        {
+          "alias": "E.temp",
+          "confidence": "exact",
+          "role": "temperature_c"
+        }
+      ],
+      "dependency_mode": "none",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The conservation ranges directly contextualize the recorded temperature column."
+    },
+    {
+      "hkb_id": 28,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.environment",
+      "bindings": [
+        {
+          "alias": "E.rh",
+          "confidence": "exact",
+          "role": "relative_humidity_pct"
+        }
+      ],
+      "dependency_mode": "none",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The conservation ranges directly contextualize the relative-humidity column."
+    },
+    {
+      "hkb_id": 29,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.light",
+      "bindings": [
+        {
+          "alias": "L.lux",
+          "confidence": "exact",
+          "role": "light_intensity_lux"
+        }
+      ],
+      "dependency_mode": "none",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The recommended lux levels directly contextualize the light-reading lux column."
+    },
+    {
+      "hkb_id": 30,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.air",
+      "bindings": [
+        {
+          "alias": "Q.pm25",
+          "confidence": "exact",
+          "role": "pm25_ug_m3"
+        }
+      ],
+      "dependency_mode": "none",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The PM2.5 value ranges exactly target the structured PM2.5 concentration leaf."
+    },
+    {
+      "hkb_id": 31,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "ERF is artifact-sensitivity grain while LER and MDR require matched environmental exposures; their sum has no common resolved grain."
+    },
+    {
+      "hkb_id": 32,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior"
+      ],
+      "notes": "Showcase SESR and artifact ERF require an artifact-showcase pairing that is not defined."
+    },
+    {
+      "hkb_id": 33,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "CPI and maintenance dates lack artifact identity, and no exact cleaning-interval-days source exists."
+    },
+    {
+      "hkb_id": 34,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "notes": "Hall-level VIR and artifact-level AVS lack a resolved hall-artifact grain, and zero AVS behavior is unspecified."
+    },
+    {
+      "hkb_id": 35,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "notes": "The three components occur at artifact, artifact-showcase, and hall grains, and the averaging population is unspecified."
+    },
+    {
+      "hkb_id": 36,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "notes": "Both inputs inherit unresolved collection aggregation and artifact-maintenance identity requirements."
+    },
+    {
+      "hkb_id": 37,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "MDR and TETL inherit unresolved artifact-to-environmental-exposure matching."
+    },
+    {
+      "hkb_id": 38,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Display months, DSD, LER, and CPI span usage, sensitivity, exposure, ratings, and artifact grains."
+    },
+    {
+      "hkb_id": 39,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Current environmental readings must be paired to an artifact ERF, and exact ideal temperature and humidity inputs are not declared."
+    },
+    {
+      "hkb_id": 40,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "notes": "Insurance value and hall-level VIR have no declared artifact-to-hall identity path."
+    },
+    {
+      "hkb_id": 41,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "notes": "Both dependent criteria inherit unresolved artifact, maintenance, rating, and sensitivity grains."
+    },
+    {
+      "hkb_id": 42,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "TETL and the accelerated-deterioration criterion both depend on unresolved artifact-environment matching."
+    },
+    {
+      "hkb_id": 43,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Both dependencies require a common artifact/display/exposure row that has not been resolved."
+    },
+    {
+      "hkb_id": 44,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior"
+      ],
+      "notes": "SPA and high-value status require a specific artifact-showcase pairing plus artifact rating and insurance identity."
+    },
+    {
+      "hkb_id": 45,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "notes": "Both dependent resource metrics inherit unresolved collection-level aggregation and artifact-maintenance cardinality."
+    },
+    {
+      "hkb_id": 46,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Dynasty value and material aging require artifact ratings, sensitivity, and matched environmental readings at unresolved grains."
+    },
+    {
+      "hkb_id": 47,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "ECI requires artifact-to-reading matching while instability is reading-grain; no exact common target grain is defined."
+    },
+    {
+      "hkb_id": 48,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "notes": "High-value status and SRE inherit unresolved insurance, rating, artifact, and hall grains."
+    },
+    {
+      "hkb_id": 49,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "entity_existence_semantics_missing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "notes": "VCSF and visitor crowd risk require unresolved hall-artifact identity and artifact-existence behavior."
+    },
+    {
+      "hkb_id": 50,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Organic-material classification and TETL require a common artifact and environmental-exposure grain."
+    },
+    {
+      "hkb_id": 51,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "notes": "The dependent high-value criterion requires collection percentiles and unresolved insurance-to-rating identity."
+    },
+    {
+      "hkb_id": 52,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "The threshold is scalar, but its ERPS dependency cannot be compiled until artifact/display/exposure grain is resolved."
+    },
+    {
+      "hkb_id": 53,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [
+          23
+        ],
+        "redundant_ids": [
+          8,
+          21
+        ]
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "dependency_omission",
+        "dependency_redundancy"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Light thresholds require light-sensitivity context and a matched light reading; the declared LER and conservation-status dependencies do not define this rule, while Light Sensitivity Levels is omitted."
+    },
+    {
+      "hkb_id": 54,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Chronological segmentation requires a selected interval, grouping grain, and aggregation behavior rather than a row-level scalar."
+    },
+    {
+      "hkb_id": 55,
+      "disposition": "compile",
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_high_rarity_and_valuation",
+      "target_alias": "T.security",
+      "bindings": [
+        {
+          "alias": "A.insurance",
+          "confidence": "exact",
+          "role": "insurance_value_usd"
+        }
+      ],
+      "dependency_mode": "same_grain",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "relationship_requirements": [],
+      "notes": "The declared criterion is a same-row comparison against the exact insurance-value field."
+    },
+    {
+      "hkb_id": 56,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "notes": "The category thresholds are exact, but CPI remains unresolved across artifact and rating grains."
+    },
+    {
+      "hkb_id": 57,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "blocked",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The threshold lookup depends on a context-only qualitative humidity definition rather than an executable modeled dependency; Low sensitivity behavior is also unspecified."
+    },
+    {
+      "hkb_id": 58,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "Current humidity readings require artifact-sensitivity matching, and the threshold dependency is not executable."
+    },
+    {
+      "hkb_id": 59,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cardinality_unknown",
+        "boundary_semantics_unverified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "The alternate threshold is clear, but SESR remains unresolved across showcase and time-varying environmental-reading grains."
+    },
+    {
+      "hkb_id": 60,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "bindings": [],
+      "dependency_mode": "cross_grain_unresolved",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "notes": "The category boundaries are explicit, but ECI cannot be compiled until artifact-to-environmental-reading grain is resolved."
+    },
+    {
+      "hkb_id": 61,
+      "disposition": "compile",
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "overdue_days",
+      "target_alias": "T.maintenance",
+      "bindings": [
+        {
+          "alias": "M.next_clean",
+          "confidence": "exact",
+          "role": "scheduled_next_cleaning_date"
+        }
+      ],
+      "dependency_mode": "same_grain",
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "date_boundary_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "relationship_requirements": [],
+      "notes": "PostgreSQL date subtraction yields positive days after the exact scheduled next-cleaning date; session date-boundary semantics remain explicit loss provenance."
+    }
+  ],
+  "intervention_provenance": "agent_assisted_public_modeling_inference"
+}

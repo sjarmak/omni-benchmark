@@ -1,0 +1,190 @@
+{
+  "format_version": 1,
+  "database": "reverse_logistics_large",
+  "catalog": "reverse_logistics_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "reverse_logistics_large:table:returns",
+      "view_name": "reverse_logistics_large_public__returns",
+      "file_name": "reverse_logistics_large.public__returns.view",
+      "topic_file_name": "returns_semantics.topic",
+      "label": "Returns",
+      "description": "Return-case rows with public channel, timing, shipping, warranty, and fraud semantics."
+    },
+    {
+      "table_stable_id": "reverse_logistics_large:table:financial_management",
+      "view_name": "reverse_logistics_large_public__financial_management",
+      "file_name": "reverse_logistics_large.public__financial_management.view",
+      "topic_file_name": "financial_management_semantics.topic",
+      "label": "Return Financials",
+      "description": "Return financial rows with public fee, valuation, disposal, refund, and sustainability semantics."
+    },
+    {
+      "table_stable_id": "reverse_logistics_large:table:customers",
+      "view_name": "reverse_logistics_large_public__customers",
+      "file_name": "reverse_logistics_large.public__customers.view",
+      "topic_file_name": "customers_semantics.topic",
+      "label": "Customers",
+      "description": "Customer-profile rows with public return-history semantics."
+    },
+    {
+      "table_stable_id": "reverse_logistics_large:table:quality_assessment",
+      "view_name": "reverse_logistics_large_public__quality_assessment",
+      "file_name": "reverse_logistics_large.public__quality_assessment.view",
+      "topic_file_name": "quality_assessment_semantics.topic",
+      "label": "Quality Assessment",
+      "description": "Inspection rows with public item-condition semantics."
+    },
+    {
+      "table_stable_id": "reverse_logistics_large:table:return_processing",
+      "view_name": "reverse_logistics_large_public__return_processing",
+      "file_name": "reverse_logistics_large.public__return_processing.view",
+      "topic_file_name": "return_processing_semantics.topic",
+      "label": "Return Processing",
+      "description": "Processing rows with public priority and approval semantics."
+    },
+    {
+      "table_stable_id": "reverse_logistics_large:table:case_management",
+      "view_name": "reverse_logistics_large_public__case_management",
+      "file_name": "reverse_logistics_large.public__case_management.view",
+      "topic_file_name": "case_management_semantics.topic",
+      "label": "Case Management",
+      "description": "Case rows with public satisfaction-score semantics."
+    },
+    {
+      "table_stable_id": "reverse_logistics_large:table:products",
+      "view_name": "reverse_logistics_large_public__products",
+      "file_name": "reverse_logistics_large.public__products.view",
+      "topic_file_name": "products_semantics.topic",
+      "label": "Products",
+      "description": "Product rows with public regulatory-compliance semantics."
+    }
+  ],
+  "physical_fields": [
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:returns:return_details:k:shipping/k:fee",
+      "name": "shipping_fee",
+      "label": "Shipping Fee",
+      "sql": "CAST(${return_details} -> 'shipping' ->> 'fee' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:column:returns:dayslapsed",
+      "name": "days_lapsed",
+      "label": "Days Lapsed"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:column:returns:return_channel",
+      "name": "return_channel",
+      "label": "Return Channel"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:returns:return_details:k:fraud/k:risk_level",
+      "name": "fraud_risk_level",
+      "label": "Fraud Risk Level",
+      "sql": "${return_details} -> 'fraud' ->> 'risk_level'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:returns:return_details:k:authorization/k:warranty_status",
+      "name": "warranty_status",
+      "label": "Warranty Status",
+      "sql": "${return_details} -> 'authorization' ->> 'warranty_status'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:fees/k:restocking_fee",
+      "name": "restocking_fee",
+      "label": "Restocking Fee",
+      "sql": "CAST(${cost_breakdown} -> 'fees' ->> 'restocking_fee' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:fees/k:relabeling_cost",
+      "name": "relabeling_cost",
+      "label": "Relabeling Cost",
+      "sql": "CAST(${cost_breakdown} -> 'fees' ->> 'relabeling_cost' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:disposal/k:disposal_cost",
+      "name": "disposal_cost",
+      "label": "Disposal Cost",
+      "sql": "CAST(${cost_breakdown} -> 'disposal' ->> 'disposal_cost' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:repair_costs/k:repair_estimate",
+      "name": "repair_estimate",
+      "label": "Repair Estimate",
+      "sql": "CAST(${cost_breakdown} -> 'repair_costs' ->> 'repair_estimate' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:valuation/k:recovery_value",
+      "name": "recovery_value",
+      "label": "Recovery Value",
+      "sql": "CAST(${cost_breakdown} -> 'valuation' ->> 'recovery_value' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:sustainability/k:carbon_footprint",
+      "name": "carbon_footprint",
+      "label": "Carbon Footprint",
+      "sql": "CAST(${cost_breakdown} -> 'sustainability' ->> 'carbon_footprint' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:disposal/k:disposal_method",
+      "name": "disposal_method",
+      "label": "Disposal Method",
+      "sql": "${cost_breakdown} -> 'disposal' ->> 'disposal_method'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:refund/k:method",
+      "name": "refund_method",
+      "label": "Refund Method",
+      "sql": "${cost_breakdown} -> 'refund' ->> 'method'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:customers:return_behavior_profile:k:total_returns",
+      "name": "total_returns",
+      "label": "Total Returns",
+      "sql": "CAST(${return_behavior_profile} ->> 'total_returns' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:quality_assessment:assessment_summary:k:condition/k:item_condition",
+      "name": "item_condition",
+      "label": "Item Condition",
+      "sql": "${assessment_summary} -> 'condition' ->> 'item_condition'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:column:return_processing:apprlevel",
+      "name": "approval_level",
+      "label": "Approval Level"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:column:return_processing:procprio",
+      "name": "processing_priority",
+      "label": "Processing Priority"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:column:case_management:satisfscore",
+      "name": "satisfaction_score",
+      "label": "Satisfaction Score"
+    },
+    {
+      "schema_stable_id": "reverse_logistics_large:structured-leaf:products:product_traceability:k:compliance/k:regulatory_compliance",
+      "name": "regulatory_compliance_status",
+      "label": "Regulatory Compliance Status",
+      "sql": "${product_traceability} -> 'compliance' ->> 'regulatory_compliance'",
+      "omni_parser_mode": "do_not_parse"
+    }
+  ],
+  "derived_fields": []
+}

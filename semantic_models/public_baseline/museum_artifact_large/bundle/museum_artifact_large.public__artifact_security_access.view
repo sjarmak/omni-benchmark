@@ -1,0 +1,14 @@
+label: Artifact Security and Access
+description: Artifact security-access rows with insurance-value rarity and valuation semantics.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactSecurityAccess
+dimensions:
+  insurance_value_usd:
+    description: 'REAL. Insurance value in USD for the artifact. Example: 968368.'
+    label: Insurance Value (USD)
+  is_high_rarity_and_valuation:
+    label: Artifact Rarity & Valuation (ARV)
+    description: Establishes criteria for identifying artifacts of exceptional rarity and valuation.
+    sql: ${insurance_value_usd} > 1000000.0
+    ai_context: Use this modeled field for Artifact Rarity & Valuation (ARV); do not reconstruct its formula.

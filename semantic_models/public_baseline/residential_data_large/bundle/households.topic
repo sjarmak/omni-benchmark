@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__households
+label: Households
+description: Public household records with socioeconomic context and resident counts.
+fields:
+- residential_data_large_public__households.*
+joins: {}
+ai_context: Use the modeled business fields tenure_status, income_bracket, resident_count, zone_identifier rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

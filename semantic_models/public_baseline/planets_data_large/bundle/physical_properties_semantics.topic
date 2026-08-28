@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__physical_properties
+label: Planet Physical Properties
+description: Planet physical-property records with public mass, radius, density, and derived same-row planet semantics.
+fields:
+- planets_data_large_public__physical_properties.*
+joins: {}
+ai_context: Use the modeled business fields planet_mass_jupiter, planet_radius_jupiter, planet_density_g_cm3, planet_mass_earth, planet_radius_earth, planet_escape_velocity, mass_radius_relationship, gas_giant_planet, rocky_planet, super_earth, inflated_gas_giant, planet_surface_gravity rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

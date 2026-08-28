@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 3,
+      "context_only": 8,
+      "defer_cross_grain": 44,
+      "unsupported": 7
+    },
+    "hkb_nodes": 62
+  },
+  "database": "museum_artifact_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "museum_artifact_large.mapping.jsonl",
+    "sha256": "3f62463d17d5a9d4cd8870bc11f461ce4f944157b0122123daf9e4561400c5a6"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "73cdad852963e950c727a2024504cbc6e47ee1870d3c156eebfcf87be6ccf393"
+    },
+    "mapping_spec": {
+      "sha256": "c22d0987a83399bf8dfc5b8e78f0884c0cdee0e6c769f01696ba50bb56695105"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "a96a67fca6596ea5d0ad683c241027a71b0bfadcf1d788dbc2ab1c46640bf45d",
+      "sha256": "d98d4f61f7dcca078777adafbb1f35f92e6f758dab3f0778e1db8d6aee538a1c"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

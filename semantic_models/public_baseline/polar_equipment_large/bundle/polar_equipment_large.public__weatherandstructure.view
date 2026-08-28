@@ -1,0 +1,25 @@
+label: Weather And Structure
+description: Weather and structure records with structural-safety semantics and field context.
+catalog: polar_equipment_large
+schema: public
+table_name: WeatherAndStructure
+dimensions:
+  external_temperature_c:
+    description: 'REAL. External temperature in Celsius. Example: -14.9.'
+    label: External Temperature (C)
+    ai_context: 'externaltemperaturec: External temperature in polar regions typically ranges from -70°C to 10°C. Temperatures below -40°C represent extreme cold requiring special equipment protection measures, -20°C to -40°C require standard cold weather protocols, while temperatures above -20°C are considered relatively mild for polar operations but still require normal cold weather precautions.'
+  wind_speed_mps:
+    description: 'REAL. Wind speed in meters per second. Example: 26.5.'
+    label: Wind Speed (m/s)
+    ai_context: 'windspeedms: Wind speeds in polar environments typically range from 0 to 60 m/s. Speeds below 5 m/s represent calm conditions, 5-15 m/s indicate moderate winds with minor operational impact, 15-25 m/s represent strong winds requiring additional safety measures, and speeds above 25 m/s indicate dangerous conditions that may require suspension of outdoor activities and securing of equipment.'
+  snow_load_kg_m2:
+    description: 'BIGINT. Snow load in kilograms per square meter. Example: 459.7.'
+    label: Snow Load (kg/m2)
+  structural_load_percent:
+    description: 'REAL. Structural load percentage. Example: 62.'
+    label: Structural Load Percent
+  structural_safety_factor:
+    label: Structural Safety Factor (SSF)
+    description: Evaluates the safety margin of structures under extreme weather conditions.
+    sql: (100.0 - ${structural_load_percent}) / 100.0 * CASE WHEN ${snow_load_kg_m2} > 100.0 OR ${wind_speed_mps} > 20.0 THEN 0.5 WHEN ${snow_load_kg_m2} > 50.0 OR ${wind_speed_mps} > 10.0 THEN 0.8 ELSE 1.0 END
+    ai_context: Use this modeled field for Structural Safety Factor (SSF); do not reconstruct its formula.

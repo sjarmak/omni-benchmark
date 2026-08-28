@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 6,
+      "context_only": 10,
+      "defer_cross_grain": 72,
+      "unsupported": 8
+    },
+    "hkb_nodes": 96
+  },
+  "database": "mental_healths_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "mental_healths_large.mapping.jsonl",
+    "sha256": "92868f5ea314da9fccac3bf7a08935869e6e0baf49571dacf46178f7d3834828"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "0e14ac17c9511741ce95f21234e7b8d5df350712d55e73cb8fa729ada23b3de0"
+    },
+    "mapping_spec": {
+      "sha256": "ca3e29963a9110cdf31723658caeea4f49ed55dd78d43b2a0e3a7a05756ad8b4"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "2c86ffc76c3177d7205c6c586cf7a7ec55ef3cc8673aab218ac370d05a2f5d09",
+      "sha256": "0314cb1aac99d357b2bc8296266ed248cb0561ef53aef9492fb7513da0876a12"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

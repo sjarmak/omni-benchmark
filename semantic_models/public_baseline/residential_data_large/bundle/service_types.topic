@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__service_types
+label: Service Types
+description: Public household service records with domestic-help and social-support context.
+fields:
+- residential_data_large_public__service_types.*
+joins: {}
+ai_context: Use the modeled business fields domestic_help, social_support rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

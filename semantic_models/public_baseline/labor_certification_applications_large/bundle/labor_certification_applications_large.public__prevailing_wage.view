@@ -1,0 +1,13 @@
+label: Prevailing Wage Determinations
+description: Prevailing-wage records with public structured wage-unit context.
+catalog: labor_certification_applications_large
+schema: public
+table_name: prevailing_wage
+dimensions:
+  prevailing_wage_unit:
+    description: 'enum_pw_unit_of_pay. Unit of pay for the prevailing wage. Possible values: Hour, Month, Week, Year.'
+    label: Prevailing Wage Unit
+    sql: '-- DO NOT PARSE
+
+      ${wage_details} #>> ''{prevailing_wage,unit}'''
+    ai_context: 'Wage Payment Units: Wage payment units indicate how wages are calculated and paid, with common units including: Hour (payment calculated per working hour), Week (payment calculated as a weekly salary), Month (payment calculated as a monthly salary), and Year (payment calculated as an annual salary). Different units may be used depending on industry norms and position types. Wage unit information is included in the wage determination data.'

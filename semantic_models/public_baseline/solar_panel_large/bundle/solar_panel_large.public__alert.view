@@ -1,0 +1,27 @@
+label: Alerts
+description: Maintenance and replacement priority alerts.
+catalog: solar_panel_large
+schema: public
+table_name: alert
+dimensions:
+  maintprio:
+    description: 'TEXT. Maintenance priority level. NULL means the encoder does not report status or data are missing. Possible values: High, Low, Medium.'
+    label: Maintenance Priority
+  replprio:
+    description: 'TEXT. Replacement priority level. Possible values: High, Low, Medium.'
+    label: Replacement Priority
+  high_maintenance_priority:
+    label: High Maintenance Priority
+    description: A flag indicating that an asset requires immediate or urgent maintenance attention.
+    sql: ${maintprio} = 'High'
+    ai_context: Use this modeled field for High Maintenance Priority; do not reconstruct its formula.
+  high_replacement_priority:
+    label: High Replacement Priority
+    description: A flag indicating that a component or asset is recommended for immediate or urgent replacement.
+    sql: ${replprio} = 'High'
+    ai_context: Use this modeled field for High Replacement Priority; do not reconstruct its formula.
+  critical_alert:
+    label: Critical Alert
+    description: An urgent notification indicating a severe issue that requires immediate maintenance and potential component replacement.
+    sql: ${high_maintenance_priority} AND ${high_replacement_priority}
+    ai_context: Use this modeled field for Critical Alert; do not reconstruct its formula.

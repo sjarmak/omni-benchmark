@@ -1,0 +1,28 @@
+label: Symptom and Risk Assessments
+description: Assessment rows with symptom scores and suicide-risk semantics.
+catalog: mental_healths_large
+schema: public
+table_name: assessmentsymptomsandrisk
+dimensions:
+  suicide_risk:
+    description: 'Overall suicide risk level assessment. Contains values: ''Medium'', ''High'', ''Low''.'
+    label: Suicide Risk
+    ai_context: 'Suicide Risk Level: Ranges from Low to High. Low indicates minimal risk, Medium indicates some concern, and High indicates immediate concern and need for intervention.'
+  phq9_score:
+    description: Patient Health Questionnaire-9 total score, ranging from 0 to 27, measuring depression severity.
+    label: PHQ-9 Score
+    ai_context: 'PHQ-9 Score (Depression): Ranges from 0 to 27. A score of 0–4 indicates minimal depression, 5–9 mild, 10–14 moderate, 15–19 moderately severe, and 20–27 severe.'
+  gad7_score:
+    description: Generalized Anxiety Disorder 7-item scale total score, ranging from 0 to 21, measuring anxiety severity.
+    label: GAD-7 Score
+    ai_context: 'GAD-7 Score (Anxiety): Ranges from 0 to 21. A score of 0–4 indicates minimal anxiety, 5–9 mild, 10–14 moderate, and 15–21 severe.'
+  is_high_risk_patient_assessment:
+    label: High-Risk Patient
+    description: Identifies patients with elevated suicide risk or severe symptoms.
+    sql: ${suicide_risk} = 'High' OR ${phq9_score} > 15 OR ${gad7_score} > 15
+    ai_context: Use this modeled field for High-Risk Patient; do not reconstruct its formula.
+  is_high_severity_high_risk_assessment:
+    label: High Severity, High Risk Patient Group
+    description: Identifies patients presenting with both high symptom severity (depression/anxiety) and elevated suicide risk.
+    sql: (${phq9_score} > 19 OR ${gad7_score} > 14) AND ${suicide_risk} = 'High'
+    ai_context: Use this modeled field for High Severity, High Risk Patient Group; do not reconstruct its formula.

@@ -1,0 +1,24 @@
+label: Support and Feedback
+description: Support records with row-level issue-report semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: supportandfeedback
+dimensions:
+  support_tickets:
+    description: SMALLINT. Number of support tickets opened by the fan.
+    label: Support Tickets
+  bug_reports:
+    description: SMALLINT. Number of bug reports submitted by the fan.
+    label: Bug Reports
+  technical_issue_reports:
+    description: SMALLINT. Number of technical issues reported by the fan.
+    label: Technical Issue Reports
+  nps_score:
+    description: SMALLINT. Net Promoter Score value indicating likelihood to recommend platform.
+    label: NPS Score
+    ai_context: 'NPS Score Tiers: Net Promoter Score (NPS) is categorized as: Promoters (score 9-10), Passives (score 7-8), and Detractors (score 0-6).'
+  support_load_score:
+    label: Support Load Score (SLS)
+    description: Quantifies the amount of support resources a fan utilizes, based on their submission of tickets and issue reports.
+    sql: ${support_tickets} + ${bug_reports} + ${technical_issue_reports}
+    ai_context: Use this modeled field for Support Load Score (SLS); do not reconstruct its formula.

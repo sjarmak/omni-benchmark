@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__cabinenvironment
+label: Cabin Environment
+description: Cabin environment records with habitability semantics and CO2 field context.
+fields:
+- polar_equipment_large_public__cabinenvironment.*
+joins: {}
+ai_context: Use the modeled business fields cabin_temperature_c, co2_level_ppm, oxygen_level_percent, ventilation_status, heater_status, meets_cabin_habitability_standard rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

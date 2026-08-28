@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 12,
+      "context_only": 15,
+      "defer_cross_grain": 27,
+      "unsupported": 10
+    },
+    "hkb_nodes": 64
+  },
+  "database": "virtual_idol_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "virtual_idol_large.mapping.jsonl",
+    "sha256": "f3b40f2b97b6b3a1f017172be0b979d7c7373a5010ba159fc27c11e0efddb3cf"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "eec485cc2f2b8c3f0509ef7aae5bfdda3bc859fd9789a45254bbefda5ca9a179"
+    },
+    "mapping_spec": {
+      "sha256": "6d19ac50e425689cb499dca5a857956764dd7cd44c478579a756e7eaaf711c10"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "e7528faf6ec5cfe2d7436a9934651718ee1490a24f098b5401ae322f56f6ca9e",
+      "sha256": "6ea1e8b78f28414779b7c0cc423a82842658a12910c5c4a97da93dd7d7a66173"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

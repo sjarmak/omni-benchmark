@@ -1,0 +1,18 @@
+label: Beneficiaries and Assessments
+description: Beneficiary-assessment records with row-level engagement and distribution-equity semantics.
+catalog: disaster_relief_large
+schema: public
+table_name: beneficiariesandassessments
+dimensions:
+  community_engagement_level:
+    description: 'TEXT. Level of community engagement in the process. Possible values: High, Low, Medium.'
+    label: Community Engagement Level
+  distribution_equity_index:
+    description: 'REAL. Index measuring the equity of aid distribution (0-1 scale). Example: 0.92.'
+    label: Distribution Equity Index
+    ai_context: 'Distribution Equity Index: A score of 1.0 represents perfect equity. A score below 0.7 may indicate significant disparities. A score below 0.5 indicates severe inequity.'
+  is_successful_community_partnership:
+    label: Successful Community Partnership
+    description: Identifies operations with excellent community relations and equitable aid distribution.
+    sql: ${community_engagement_level} = 'High' AND ${distribution_equity_index} > 0.9
+    ai_context: Use this modeled field for Successful Community Partnership; do not reconstruct its formula.

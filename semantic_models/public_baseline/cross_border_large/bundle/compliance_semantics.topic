@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__compliance
+label: Compliance
+description: Compliance rows with public context for GDPR compliance status.
+fields:
+- cross_border_large_public__compliance.*
+joins: {}
+ai_context: Use the modeled business fields gdprComp rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

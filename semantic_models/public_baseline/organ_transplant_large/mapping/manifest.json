@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 11,
+      "context_only": 22,
+      "defer_cross_grain": 3,
+      "unsupported": 19
+    },
+    "hkb_nodes": 55
+  },
+  "database": "organ_transplant_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "organ_transplant_large.mapping.jsonl",
+    "sha256": "66941d378f4aac5eb1047af9037437503bb8ffbf843aebb3eb640a9b52d1afd8"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "9b6866b47749811eb869b6a0679e7d9138cb809ca00d23f7667988ba29bdb02c"
+    },
+    "mapping_spec": {
+      "sha256": "aa184f93b63bc6fdfc5b6389854ddcb0b566ad3768f35a7bc0e5d86187029a50"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "8c3e5dedb9280ebdb1395404681fcdac347c19758d58d5640256a33c1ebf7471",
+      "sha256": "4a9942d829772a558f6bb2705c2eb76de263e4c8e4e7918b1706ca7f7b855086"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

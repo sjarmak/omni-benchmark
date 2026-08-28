@@ -87,7 +87,16 @@ DEPENDENCY_AUDIT_FIELDS = frozenset({"missing_references", "redundant_references
 CONTENT_PROVENANCE = frozenset(
     {"public_hkb", "public_schema", "public_column_metadata"}
 )
-SPEC_FIELDS = frozenset({"database", "records", "schema_aliases", "schema_version"})
+SPEC_REQUIRED_FIELDS = frozenset(
+    {"database", "records", "schema_aliases", "schema_version"}
+)
+SPEC_FIELDS = SPEC_REQUIRED_FIELDS | {"intervention_provenance"}
+INTERVENTION_PROVENANCE = frozenset(
+    {
+        "agent_assisted_public_modeling_inference",
+        "human_general_modeling_inference",
+    }
+)
 SPEC_RECORD_FIELDS = frozenset(
     {
         "bindings",
@@ -195,6 +204,24 @@ def _require_exact_fields(
         raise SemanticMappingError(f"{label} unknown fields: {', '.join(unknown)}")
 
 
+def _require_spec_fields(spec: Mapping[str, Any]) -> None:
+    missing = sorted(SPEC_REQUIRED_FIELDS - spec.keys())
+    unknown = sorted(spec.keys() - SPEC_FIELDS)
+    if missing:
+        raise SemanticMappingError(f"mapping spec missing fields: {', '.join(missing)}")
+    if unknown:
+        raise SemanticMappingError(f"mapping spec unknown fields: {', '.join(unknown)}")
+
+
+def _intervention_provenance(spec: Mapping[str, Any]) -> str:
+    intervention = spec.get(
+        "intervention_provenance", "human_general_modeling_inference"
+    )
+    if not isinstance(intervention, str) or intervention not in INTERVENTION_PROVENANCE:
+        raise SemanticMappingError("mapping spec has invalid intervention provenance")
+    return intervention
+
+
 def _require_text(value: Any, label: str) -> str:
     if not isinstance(value, str) or not value:
         raise SemanticMappingError(f"{label} must be a non-empty string")
@@ -285,6 +312,7 @@ def _compile_spec_record(
     database: str,
     aliases: Mapping[str, str],
     hkb: Mapping[str, Any],
+    intervention_provenance: str,
 ) -> dict[str, Any]:
     hkb_id = _require_text(hkb.get("stable_id"), "HKB stable ID")
     _require_exact_fields(spec_record, SPEC_RECORD_FIELDS, f"{hkb_id} spec")
@@ -307,7 +335,7 @@ def _compile_spec_record(
         "notes": spec_record["notes"],
         "provenance": {
             "content": content,
-            "intervention": "human_general_modeling_inference",
+            "intervention": intervention_provenance,
             "sources": {
                 "hkb_stable_id": hkb_id,
                 "schema_stable_ids": schema_ids,
@@ -373,7 +401,7 @@ def _validate_provenance(
         raise SemanticMappingError(f"{hkb_id} has invalid content provenance")
     if schema_ids and not {"public_schema", "public_column_metadata"}.issubset(content):
         raise SemanticMappingError(f"{hkb_id} schema inputs lack public provenance")
-    if provenance["intervention"] != "human_general_modeling_inference":
+    if provenance["intervention"] not in INTERVENTION_PROVENANCE:
         raise SemanticMappingError(f"{hkb_id} has invalid intervention provenance")
     if provenance["transformation_class"] != "interpretive":
         raise SemanticMappingError(f"{hkb_id} has invalid transformation class")
@@ -572,11 +600,12 @@ def compile_mapping_spec(
     schema_records: Sequence[Mapping[str, Any]],
 ) -> list[dict[str, Any]]:
     """Mechanically expand a reviewed public-only mapping specification."""
-    _require_exact_fields(spec, SPEC_FIELDS, "mapping spec")
+    _require_spec_fields(spec)
     if spec["schema_version"] != 1 or isinstance(spec["schema_version"], bool):
         raise SemanticMappingError("mapping spec schema_version must equal 1")
     database = _require_text(spec["database"], "mapping spec database")
     aliases = _schema_aliases(spec["schema_aliases"])
+    intervention_provenance = _intervention_provenance(spec)
     records = spec["records"]
     if not isinstance(records, list):
         raise SemanticMappingError("mapping spec records must be a list")
@@ -592,7 +621,15 @@ def compile_mapping_spec(
             raise SemanticMappingError(
                 f"mapping spec references unknown HKB ID {numeric_id}"
             )
-        compiled.append(_compile_spec_record(spec_record, database, aliases, hkb))
+        compiled.append(
+            _compile_spec_record(
+                spec_record,
+                database,
+                aliases,
+                hkb,
+                intervention_provenance,
+            )
+        )
     compiled.sort(key=lambda item: int(item["hkb_stable_id"].rsplit(":", 1)[1]))
     validate_mapping_records(hkb_records, schema_records, compiled)
     return compiled

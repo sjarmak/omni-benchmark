@@ -1,0 +1,2037 @@
+{
+  "database": "cross_border_large",
+  "schema_version": 1,
+  "schema_aliases": {
+    "API.T": "cross_border_large:table:API_Endpoint",
+    "API.success": "cross_border_large:structured-leaf:API_Endpoint:api_perf_obs:k:performance/k:success_pct",
+    "DP.T": "cross_border_large:table:DataProfile",
+    "DP.volume": "cross_border_large:column:DataProfile:vol_gb",
+    "DP.sensitivity": "cross_border_large:column:DataProfile:dataSense",
+    "DP.integrity": "cross_border_large:column:DataProfile:Int_check",
+    "DP.checksum": "cross_border_large:column:DataProfile:CSUMVERIFY",
+    "SP.T": "cross_border_large:table:SecurityProfile",
+    "SP.encryption": "cross_border_large:column:SecurityProfile:enc_state",
+    "SP.access": "cross_border_large:column:SecurityProfile:acl_state",
+    "SP.log_days": "cross_border_large:column:SecurityProfile:LogRetDays",
+    "V.T": "cross_border_large:table:VendorManagement",
+    "V.policy": "cross_border_large:column:VendorManagement:pol_comp",
+    "V.process": "cross_border_large:column:VendorManagement:procComp",
+    "V.rating": "cross_border_large:column:VendorManagement:vendSecRate",
+    "V.contract": "cross_border_large:column:VendorManagement:contrState",
+    "C.T": "cross_border_large:table:Compliance",
+    "C.gdpr": "cross_border_large:column:Compliance:gdprComp",
+    "C.ccpa": "cross_border_large:column:Compliance:CCPA_COMP",
+    "C.pipl": "cross_border_large:column:Compliance:PIPLcomp",
+    "C.local": "cross_border_large:column:Compliance:loc_law_comp",
+    "IR.cross_border": "cross_border_large:column:IncidentRegister:CROSS_BORDER_FLAG",
+    "CL.T": "cross_border_large:table:Control_Library",
+    "CL.effectiveness": "cross_border_large:column:Control_Library:effectiveness_score_pct",
+    "A.T": "cross_border_large:table:AuditAndCompliance",
+    "A.findings": "cross_border_large:column:AuditAndCompliance:FINDTALLY",
+    "A.critical": "cross_border_large:column:AuditAndCompliance:critFindNum",
+    "A.access": "cross_border_large:column:AuditAndCompliance:AccReqNum",
+    "A.deletion": "cross_border_large:column:AuditAndCompliance:DEL_REQ_NUM",
+    "A.correction": "cross_border_large:column:AuditAndCompliance:rect_req_num",
+    "A.portability": "cross_border_large:column:AuditAndCompliance:PORTREQNUM",
+    "A.response_days": "cross_border_large:column:AuditAndCompliance:resp_time_day",
+    "A.remediation_due": "cross_border_large:column:AuditAndCompliance:REMED_DUE"
+  },
+  "records": [
+    {
+      "hkb_id": 0,
+      "disposition": "unsupported",
+      "bindings": [
+        {
+          "alias": "API.success",
+          "confidence": "exact",
+          "role": "successful_transfer_rate_pct"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "A success percentage exists, but no exact transfer-error count exists; an error rate is not a count."
+    },
+    {
+      "hkb_id": 1,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "No same-row fields exactly provide network-used percentage, data amount, and transfer duration."
+    },
+    {
+      "hkb_id": 2,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "source_alias_uncertain",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Several risk scores and categorical risk levels exist, but the intended risk level and its numeric mapping are not identified."
+    },
+    {
+      "hkb_id": 3,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "The schema has costs and penalties in different domains but no exact total compliance cost and matching potential penalty at one grain."
+    },
+    {
+      "hkb_id": 4,
+      "disposition": "unsupported",
+      "bindings": [
+        {
+          "alias": "DP.volume",
+          "confidence": "exact",
+          "role": "data_volume_gb"
+        },
+        {
+          "alias": "DP.sensitivity",
+          "confidence": "exact",
+          "role": "data_sensitivity"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "DataProfile has both inputs, but its Critical category has no multiplier in the HKB definition."
+    },
+    {
+      "hkb_id": 5,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "SP.encryption",
+          "confidence": "exact",
+          "role": "encryption_status"
+        },
+        {
+          "alias": "SP.access",
+          "confidence": "exact",
+          "role": "access_control_strength"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "security_robustness_score",
+      "target_alias": "SP.T",
+      "notes": "Full encryption and Strong ACL are explicit same-row categories; null behavior remains explicit in SQL."
+    },
+    {
+      "hkb_id": 6,
+      "disposition": "unsupported",
+      "bindings": [
+        {
+          "alias": "V.rating",
+          "confidence": "exact",
+          "role": "vendor_security_rating"
+        },
+        {
+          "alias": "V.contract",
+          "confidence": "exact",
+          "role": "contract_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "vocabulary_conflict"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Vendor ratings are A-D while the HKB requires an unspecified numeric rating value."
+    },
+    {
+      "hkb_id": 7,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "A.critical",
+          "confidence": "exact",
+          "role": "critical_findings"
+        },
+        {
+          "alias": "A.findings",
+          "confidence": "exact",
+          "role": "total_findings"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "audit_finding_severity",
+      "target_alias": "A.T",
+      "notes": "Both audit counts exist on the same audit row."
+    },
+    {
+      "hkb_id": 8,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "A.access",
+          "confidence": "exact",
+          "role": "access_requests"
+        },
+        {
+          "alias": "A.deletion",
+          "confidence": "exact",
+          "role": "deletion_requests"
+        },
+        {
+          "alias": "A.correction",
+          "confidence": "exact",
+          "role": "correction_requests"
+        },
+        {
+          "alias": "A.portability",
+          "confidence": "exact",
+          "role": "transfer_requests"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "data_subject_request_load",
+      "target_alias": "A.T",
+      "notes": "All four request counts are explicit on the same audit row; portability is the schema term for transfer requests."
+    },
+    {
+      "hkb_id": 9,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "H2 is unsupported and no exact source-country and target-country pair exists."
+    },
+    {
+      "hkb_id": 10,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Both declared inputs H2 and H4 are unsupported."
+    },
+    {
+      "hkb_id": 11,
+      "disposition": "compile",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_secure_data_flow",
+      "target_alias": "SP.T",
+      "notes": "This is a same-row threshold over compiled H5."
+    },
+    {
+      "hkb_id": 12,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "V.policy",
+          "confidence": "exact",
+          "role": "policy_compliance_status"
+        },
+        {
+          "alias": "V.process",
+          "confidence": "exact",
+          "role": "process_compliance_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_non_compliant_vendor",
+      "target_alias": "V.T",
+      "notes": "The vendor row explicitly records Non-compliant for policy and process."
+    },
+    {
+      "hkb_id": 13,
+      "disposition": "compile",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_critical_audit_issue",
+      "target_alias": "A.T",
+      "notes": "This is a same-row strict threshold over compiled H7."
+    },
+    {
+      "hkb_id": 14,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Sensitivity and security live at different row grains, and H4 is unsupported."
+    },
+    {
+      "hkb_id": 15,
+      "disposition": "defer_cross_grain",
+      "bindings": [
+        {
+          "alias": "C.gdpr",
+          "confidence": "exact",
+          "role": "gdpr_compliance_status"
+        },
+        {
+          "alias": "C.ccpa",
+          "confidence": "exact",
+          "role": "ccpa_compliance_status"
+        },
+        {
+          "alias": "C.pipl",
+          "confidence": "exact",
+          "role": "pipl_compliance_status"
+        },
+        {
+          "alias": "C.local",
+          "confidence": "exact",
+          "role": "local_law_compliance_status"
+        },
+        {
+          "alias": "IR.cross_border",
+          "confidence": "exact",
+          "role": "cross_border_flag"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "categorical_match_semantics_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Compliance statuses and an international-transfer flag exist on different grains; missing-compliance semantics and incident matching are undefined."
+    },
+    {
+      "hkb_id": 16,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "H6 cannot be compiled because the vendor rating scale is undefined."
+    },
+    {
+      "hkb_id": 17,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "DP.integrity",
+          "confidence": "exact",
+          "role": "integrity_check_status"
+        },
+        {
+          "alias": "DP.checksum",
+          "confidence": "exact",
+          "role": "checksum_verification_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_data_integrity_failure",
+      "target_alias": "DP.T",
+      "notes": "Failed is an explicit category for both same-row checks."
+    },
+    {
+      "hkb_id": 18,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Both declared metrics H0 and H1 are unsupported."
+    },
+    {
+      "hkb_id": 19,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "The declared cross-border risk and compliance-gap inputs are not executable and span unresolved grains."
+    },
+    {
+      "hkb_id": 20,
+      "disposition": "context_only",
+      "bindings": [
+        {
+          "alias": "API.success",
+          "confidence": "exact",
+          "role": "success_percentage"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "API.T",
+      "notes": "The range guidance applies exactly to the API success percentage field."
+    },
+    {
+      "hkb_id": 21,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "source_alias_uncertain"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Multiple differently scaled risk scores exist and none is identified as this overall assessment score."
+    },
+    {
+      "hkb_id": 22,
+      "disposition": "context_only",
+      "bindings": [
+        {
+          "alias": "DP.volume",
+          "confidence": "exact",
+          "role": "data_volume_gb"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "DP.T",
+      "notes": "The HKB description exactly matches DataProfile volume in gigabytes."
+    },
+    {
+      "hkb_id": 23,
+      "disposition": "context_only",
+      "bindings": [
+        {
+          "alias": "SP.encryption",
+          "confidence": "exact",
+          "role": "encryption_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "SP.T",
+      "notes": "The declared Full and Partial values exactly match the encryption-state field."
+    },
+    {
+      "hkb_id": 24,
+      "disposition": "unsupported",
+      "bindings": [
+        {
+          "alias": "V.rating",
+          "confidence": "exact",
+          "role": "vendor_security_rating"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "vocabulary_conflict",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "The HKB numeric 1-4 scale conflicts with the physical A-D rating vocabulary."
+    },
+    {
+      "hkb_id": 25,
+      "disposition": "context_only",
+      "bindings": [
+        {
+          "alias": "C.gdpr",
+          "confidence": "exact",
+          "role": "gdpr_compliance_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "C.T",
+      "notes": "The three declared values exactly match the GDPR compliance field."
+    },
+    {
+      "hkb_id": 26,
+      "disposition": "context_only",
+      "bindings": [
+        {
+          "alias": "A.response_days",
+          "confidence": "exact",
+          "role": "response_time_days"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "A.T",
+      "notes": "The qualitative guidance applies exactly to average response time in days."
+    },
+    {
+      "hkb_id": 27,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "No exact general transfer-error count exists; integrity failures and error rates are narrower or differently typed."
+    },
+    {
+      "hkb_id": 28,
+      "disposition": "context_only",
+      "bindings": [
+        {
+          "alias": "CL.effectiveness",
+          "confidence": "exact",
+          "role": "control_effectiveness_score_pct"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CL.T",
+      "notes": "The guidance exactly describes the control-library effectiveness percentage."
+    },
+    {
+      "hkb_id": 29,
+      "disposition": "context_only",
+      "bindings": [
+        {
+          "alias": "SP.log_days",
+          "confidence": "exact",
+          "role": "audit_log_retention_days"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "SP.T",
+      "notes": "The field exactly records log retention in days."
+    },
+    {
+      "hkb_id": 30,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "H0 and H27 are unsupported and no exact retry-attempt count exists."
+    },
+    {
+      "hkb_id": 31,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "There is no exact compliance-cost field to combine with H5."
+    },
+    {
+      "hkb_id": 32,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Audit severity and vendor rating span grains, and H24 is unsupported."
+    },
+    {
+      "hkb_id": 33,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping",
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Cross-border risk is unsupported and data volume is contextual at another grain."
+    },
+    {
+      "hkb_id": 34,
+      "disposition": "unsupported",
+      "bindings": [
+        {
+          "alias": "A.response_days",
+          "confidence": "exact",
+          "role": "response_time_days"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "The physical inputs align on AuditAndCompliance, but declared dependency H26 is context-only and therefore cannot be preserved as an executable dependency."
+    },
+    {
+      "hkb_id": 35,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Sensitivity and security require a cross-grain relationship, and H4 is unsupported."
+    },
+    {
+      "hkb_id": 36,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": [
+          25
+        ]
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "dependency_redundancy"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "H25 is declared but absent from the formula; preserving it would introduce a separate compliance grain."
+    },
+    {
+      "hkb_id": 37,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Both BSI and DSI are unsupported."
+    },
+    {
+      "hkb_id": 38,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Vendor and risk inputs span grains and both declared metrics are unsupported."
+    },
+    {
+      "hkb_id": 39,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Both declared risk and reliability metrics are unsupported."
+    },
+    {
+      "hkb_id": 40,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Compliance-cost and audit-remediation inputs require unresolved grains and unsupported dependencies."
+    },
+    {
+      "hkb_id": 41,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Sensitivity and encryption coverage span unresolved grains and H4 is unsupported."
+    },
+    {
+      "hkb_id": 42,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Both declared pressure and bandwidth metrics are non-executable."
+    },
+    {
+      "hkb_id": 43,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "The vendor-related dependencies inherit unresolved audit, vendor, and risk grains."
+    },
+    {
+      "hkb_id": 44,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Audit severity and cross-border volume risk are at unresolved grains."
+    },
+    {
+      "hkb_id": 45,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Security robustness and contextual data volume live on different row grains."
+    },
+    {
+      "hkb_id": 46,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping",
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Regulatory exposure and compliance status are unresolved across grains."
+    },
+    {
+      "hkb_id": 47,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Bandwidth and risk dependencies are unsupported and require unresolved grain alignment."
+    },
+    {
+      "hkb_id": 48,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Resolved-on-time percentage and average resolution time require incident-level temporal matching and aggregation not defined by the HKB."
+    },
+    {
+      "hkb_id": 49,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [
+          48
+        ],
+        "redundant_ids": [
+          30
+        ]
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "dependency_omission",
+        "dependency_redundancy",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "The prose uses H48 but omits it and declares unused H30; H10 is also unsupported."
+    },
+    {
+      "hkb_id": 50,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "H27 and H30 are unsupported and H20 is context-only."
+    },
+    {
+      "hkb_id": 51,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "H34 is unsupported and no exact compliance-cost source exists."
+    },
+    {
+      "hkb_id": 52,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "context_only_no_executable_object",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Log retention is contextual and encryption coverage inherits cross-grain unsupported inputs."
+    },
+    {
+      "hkb_id": 53,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Vendor reliability and amplified risk cannot be aligned at a proven row grain."
+    },
+    {
+      "hkb_id": 54,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "context_only_no_executable_object",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Compliance context and cross-border volume risk require unresolved grain alignment."
+    },
+    {
+      "hkb_id": 55,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Risk exposure and incident resolution are unresolved across risk and incident grains."
+    },
+    {
+      "hkb_id": 56,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Although retention days share DataProfile grain, required H4 is unsupported."
+    },
+    {
+      "hkb_id": 57,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "H36 remains cross-grain and cannot be combined safely with audit severity."
+    },
+    {
+      "hkb_id": 58,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "context_only_no_executable_object",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Compliance context and bandwidth risk are unresolved across grains."
+    },
+    {
+      "hkb_id": 59,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Vendor burden and security-control cost ratio are unsupported and span unresolved grains."
+    },
+    {
+      "hkb_id": 60,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Critical-risk and stability definitions inherit multiple unresolved grains."
+    },
+    {
+      "hkb_id": 61,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Security maturity and cross-border compliance exposure inherit unresolved grains."
+    },
+    {
+      "hkb_id": 62,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Both H4 and H56 are unsupported despite their conceptual DataProfile grain."
+    },
+    {
+      "hkb_id": 63,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "The vendor cluster definition inherits audit, vendor, and risk grains without a target-grain contract."
+    },
+    {
+      "hkb_id": 64,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "context_only_no_executable_object",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Incident impact and compliance status require unresolved incident-to-compliance alignment."
+    },
+    {
+      "hkb_id": 65,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Compliance overhead and audit pressure inherit unresolved cost and compliance grains."
+    },
+    {
+      "hkb_id": 66,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Bandwidth and compliance-gap inputs are unresolved across network and compliance grains."
+    },
+    {
+      "hkb_id": 67,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Vendor cost and amplified-risk metrics inherit unresolved security, audit, and risk grains."
+    },
+    {
+      "hkb_id": 68,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Sensitive exposure and flow stability inherit unresolved data, security, and flow grains."
+    },
+    {
+      "hkb_id": 69,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "Regulatory exposure and audit pressure inherit unresolved cross-border and audit grains."
+    },
+    {
+      "hkb_id": 70,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "The public schema has endpoint regions but no exact source-country and destination-country pair."
+    },
+    {
+      "hkb_id": 71,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "A.access",
+          "confidence": "exact",
+          "role": "access_requests"
+        },
+        {
+          "alias": "A.deletion",
+          "confidence": "exact",
+          "role": "deletion_requests"
+        },
+        {
+          "alias": "A.correction",
+          "confidence": "exact",
+          "role": "correction_requests"
+        },
+        {
+          "alias": "A.portability",
+          "confidence": "exact",
+          "role": "transfer_requests"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "request_breakdown",
+      "target_alias": "A.T",
+      "notes": "The four labeled request counts are exact same-row inputs for the declared string representation."
+    },
+    {
+      "hkb_id": 72,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "DP.integrity",
+          "confidence": "exact",
+          "role": "integrity_check_status"
+        },
+        {
+          "alias": "DP.checksum",
+          "confidence": "exact",
+          "role": "checksum_verification_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "integrity_failure_count",
+      "target_alias": "DP.T",
+      "notes": "Each explicit Failed category contributes one on the same DataProfile row."
+    },
+    {
+      "hkb_id": 73,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "DP.integrity",
+          "confidence": "exact",
+          "role": "integrity_check_status"
+        },
+        {
+          "alias": "DP.checksum",
+          "confidence": "exact",
+          "role": "checksum_verification_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "failure_types_list",
+      "target_alias": "DP.T",
+      "notes": "The two failure labels can be emitted deterministically from explicit same-row Failed states."
+    },
+    {
+      "hkb_id": 74,
+      "disposition": "defer_cross_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "H57 remains cross-grain and cannot support a local threshold."
+    },
+    {
+      "hkb_id": 75,
+      "disposition": "unsupported",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "No exact same-row sending-country and receiving-country fields exist."
+    },
+    {
+      "hkb_id": 76,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "A.remediation_due",
+          "confidence": "exact",
+          "role": "fix_deadline"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified",
+        "date_boundary_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_slow_remediation_timeline",
+      "target_alias": "A.T",
+      "notes": "The audit row has an exact remediation due date; the comparison uses PostgreSQL CURRENT_DATE."
+    },
+    {
+      "hkb_id": 77,
+      "disposition": "compile",
+      "bindings": [
+        {
+          "alias": "A.remediation_due",
+          "confidence": "exact",
+          "role": "fix_deadline"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified",
+        "date_boundary_semantics_unspecified"
+      ],
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_nearing_remediation_deadline",
+      "target_alias": "A.T",
+      "notes": "The exact HKB interval is implemented over the same-row remediation due date and CURRENT_DATE."
+    },
+    {
+      "hkb_id": 78,
+      "disposition": "unsupported",
+      "bindings": [
+        {
+          "alias": "A.remediation_due",
+          "confidence": "exact",
+          "role": "fix_deadline"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "loss_codes": [
+        "vocabulary_conflict"
+      ],
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "notes": "The formula duplicates deadline logic while the title and description assert vendor risk concentration, so the semantic object is contradictory."
+    }
+  ],
+  "intervention_provenance": "agent_assisted_public_modeling_inference"
+}

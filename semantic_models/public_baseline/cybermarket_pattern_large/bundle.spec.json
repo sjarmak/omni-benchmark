@@ -1,0 +1,198 @@
+{
+  "format_version": 1,
+  "database": "cybermarket_pattern_large",
+  "catalog": "cybermarket_pattern_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "cybermarket_pattern_large:table:markets",
+      "view_name": "cybermarket_pattern_large_public__markets",
+      "file_name": "cybermarket_pattern_large.public__markets.view",
+      "topic_file_name": "markets_semantics.topic",
+      "label": "Marketplaces",
+      "description": "Marketplace records with public operational-status context."
+    },
+    {
+      "table_stable_id": "cybermarket_pattern_large:table:vendors",
+      "view_name": "cybermarket_pattern_large_public__vendors",
+      "file_name": "cybermarket_pattern_large.public__vendors.view",
+      "topic_file_name": "vendors_semantics.topic",
+      "label": "Vendors",
+      "description": "Vendor records with verification-tier semantics and access-level context."
+    },
+    {
+      "table_stable_id": "cybermarket_pattern_large:table:buyers",
+      "view_name": "cybermarket_pattern_large_public__buyers",
+      "file_name": "cybermarket_pattern_large.public__buyers.view",
+      "topic_file_name": "buyers_semantics.topic",
+      "label": "Buyers",
+      "description": "Buyer records with public authentication and spending-pattern context."
+    },
+    {
+      "table_stable_id": "cybermarket_pattern_large:table:products",
+      "view_name": "cybermarket_pattern_large_public__products",
+      "file_name": "cybermarket_pattern_large.public__products.view",
+      "topic_file_name": "products_semantics.topic",
+      "label": "Products",
+      "description": "Product listing records with public product-category context."
+    },
+    {
+      "table_stable_id": "cybermarket_pattern_large:table:transactions",
+      "view_name": "cybermarket_pattern_large_public__transactions",
+      "file_name": "cybermarket_pattern_large.public__transactions.view",
+      "topic_file_name": "transactions_semantics.topic",
+      "label": "Transactions",
+      "description": "Transaction records with row-level cross-border semantics and shipping and escrow context."
+    },
+    {
+      "table_stable_id": "cybermarket_pattern_large:table:communications",
+      "view_name": "cybermarket_pattern_large_public__communications",
+      "file_name": "cybermarket_pattern_large.public__communications.view",
+      "topic_file_name": "communications_semantics.topic",
+      "label": "Communications",
+      "description": "Communication-thread records with row-level suspicion-signal density and language-pattern context."
+    },
+    {
+      "table_stable_id": "cybermarket_pattern_large:table:connection_security",
+      "view_name": "cybermarket_pattern_large_public__connection_security",
+      "file_name": "cybermarket_pattern_large.public__connection_security.view",
+      "topic_file_name": "connection_security_semantics.topic",
+      "label": "Connection Security",
+      "description": "Connection-session security records with authentication and anonymity semantics."
+    },
+    {
+      "table_stable_id": "cybermarket_pattern_large:table:alerts",
+      "view_name": "cybermarket_pattern_large_public__alerts",
+      "file_name": "cybermarket_pattern_large.public__alerts.view",
+      "topic_file_name": "alerts_semantics.topic",
+      "label": "Alerts",
+      "description": "Alert records with public severity-level context."
+    },
+    {
+      "table_stable_id": "cybermarket_pattern_large:table:RiskModelPredictions",
+      "view_name": "cybermarket_pattern_large_public__risk_model_predictions",
+      "file_name": "cybermarket_pattern_large.public__risk_model_predictions.view",
+      "topic_file_name": "risk_model_predictions_semantics.topic",
+      "label": "Risk Model Predictions",
+      "description": "Risk-model prediction records with row-level fraud-probability semantics."
+    }
+  ],
+  "physical_fields": [
+    {
+      "schema_stable_id": "cybermarket_pattern_large:column:markets:OperStatus",
+      "name": "operational_status",
+      "label": "Operational Status"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:column:vendors:VerTier",
+      "name": "verification_tier",
+      "label": "Verification Tier"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:column:vendors:AccessLevel",
+      "name": "access_level",
+      "label": "Access Level"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:column:buyers:AuthLevel",
+      "name": "authentication_level",
+      "label": "Authentication Level"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:structured-leaf:buyers:buyer_risk_profile:k:spend_pattern",
+      "name": "spend_pattern",
+      "label": "Spend Pattern",
+      "sql": "${buyer_risk_profile} ->> 'spend_pattern'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:column:products:ProdCat",
+      "name": "product_category",
+      "label": "Product Category"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:column:transactions:CrossBorder",
+      "name": "cross_border",
+      "label": "Cross-Border Shipment"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:column:transactions:RouteComplex",
+      "name": "route_complexity",
+      "label": "Shipping Route Complexity"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:structured-leaf:transactions:transaction_financials:k:escrow_used_stat",
+      "name": "escrow_usage_state",
+      "label": "Escrow Usage State",
+      "sql": "${transaction_financials} ->> 'escrow_used_stat'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:structured-leaf:communications:communication_details:k:keyword_match_count",
+      "name": "keyword_matches",
+      "label": "Keyword Matches",
+      "sql": "CAST(${communication_details} ->> 'keyword_match_count' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:structured-leaf:communications:communication_details:k:msg_count_total",
+      "name": "total_messages",
+      "label": "Total Messages",
+      "sql": "CAST(${communication_details} ->> 'msg_count_total' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:structured-leaf:communications:communication_details:k:lang_pattern_type",
+      "name": "language_pattern",
+      "label": "Language Pattern",
+      "sql": "${communication_details} ->> 'lang_pattern_type'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:structured-leaf:connection_security:connection_security_metrics:k:auth_protocol_type",
+      "name": "authentication_protocol",
+      "label": "Authentication Protocol",
+      "sql": "${connection_security_metrics} ->> 'auth_protocol_type'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:column:connection_security:AnonLevel",
+      "name": "anonymity_level",
+      "label": "Anonymity Level"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:structured-leaf:alerts:alert_case_management:k:severity_level_stat",
+      "name": "severity_level",
+      "label": "Alert Severity Level",
+      "sql": "${alert_case_management} ->> 'severity_level_stat'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "cybermarket_pattern_large:column:RiskModelPredictions:fraud_probability",
+      "name": "fraud_probability",
+      "label": "Fraud Probability"
+    }
+  ],
+  "derived_fields": [
+    {
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:8",
+      "sql": "CASE WHEN ${total_messages} <> 0 THEN ${keyword_matches} / ${total_messages} END"
+    },
+    {
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:11",
+      "sql": "${cross_border}"
+    },
+    {
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:12",
+      "sql": "${verification_tier} = 'Advanced'"
+    },
+    {
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:14",
+      "sql": "${authentication_protocol} IN ('2FA', 'Multi-factor')"
+    },
+    {
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:18",
+      "sql": "${fraud_probability} > 0.70"
+    }
+  ]
+}

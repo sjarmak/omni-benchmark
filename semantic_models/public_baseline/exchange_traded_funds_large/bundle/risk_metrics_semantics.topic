@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__risk_metrics
+label: Fund Risk Metrics
+description: Fund risk records with row-level alpha, benchmark tracking, and appraisal semantics.
+fields:
+- exchange_traded_funds_large_public__risk_metrics.*
+joins: {}
+ai_context: Use the modeled business fields alpha_5_year, r_squared_3_year_pct, alpha_3_year, volatility_3_year, r_squared_3_year_decimal, is_alpha_generator, is_market_tracking_fund, is_passive_alpha_generator, appraisal_ratio rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

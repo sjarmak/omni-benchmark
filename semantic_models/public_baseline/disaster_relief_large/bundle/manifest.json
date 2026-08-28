@@ -1,0 +1,467 @@
+{
+  "database": "disaster_relief_large",
+  "files": [
+    {
+      "file": "disaster_relief_large.public__disasterevents.view",
+      "sha256": "e8d7a86e229abf2b62461a7e0f7a68e39dec02b7f958427733ff5cf6188583df",
+      "size_bytes": 6179
+    },
+    {
+      "file": "disasterevents_semantics.topic",
+      "sha256": "349fe19b8fb76a469487eebc7c5aacf7a933a6b224d4ce95c98afc113a7003f1",
+      "size_bytes": 797
+    },
+    {
+      "file": "disaster_relief_large.public__transportation.view",
+      "sha256": "74e9d4db7e0c64b6621ab66e470bbee22662424ed93e56e6b92a3908a2e4c71c",
+      "size_bytes": 1396
+    },
+    {
+      "file": "transportation_semantics.topic",
+      "sha256": "1f7bb2087bfde776666391c28c89e0a4ae1e14bc38da8b2d923c0114e835d802",
+      "size_bytes": 481
+    },
+    {
+      "file": "disaster_relief_large.public__coordinationandevaluation.view",
+      "sha256": "f4938cfdf1d3a26019e01f00fac81e27ea6fda7383927602ecece85f066b1b72",
+      "size_bytes": 2475
+    },
+    {
+      "file": "coordinationandevaluation_semantics.topic",
+      "sha256": "5cc2c260000f698840d4d67abc8af95c1a157a5eba1df67ac5fa3ef1d485deb3",
+      "size_bytes": 655
+    },
+    {
+      "file": "disaster_relief_large.public__humanresources.view",
+      "sha256": "2df122a7e068f1337a2d01952a45175124f3de444ab7f52a2387f3a12976327b",
+      "size_bytes": 1068
+    },
+    {
+      "file": "humanresources_semantics.topic",
+      "sha256": "e1d9c87adaf2effe217ec652bf9a4c7e4ba59f55642daaa7423e274c0b7049b7",
+      "size_bytes": 441
+    },
+    {
+      "file": "disaster_relief_large.public__operations.view",
+      "sha256": "8af3a8a81d0f50e545f5d4706a8a429a072fcd0f69ac05e4f25cba952d1e206d",
+      "size_bytes": 1801
+    },
+    {
+      "file": "operations_semantics.topic",
+      "sha256": "d2ba73527d23b082a6a1de7399643f72f68a43d4102236f6f3ae797aa8f81f47",
+      "size_bytes": 459
+    },
+    {
+      "file": "disaster_relief_large.public__beneficiariesandassessments.view",
+      "sha256": "a50e84bb390fe810316a6ee382e594e7c0f439d0bdf3485fe21166ae3ec53694",
+      "size_bytes": 1154
+    },
+    {
+      "file": "beneficiariesandassessments_semantics.topic",
+      "sha256": "f253d753d90a4e21f499c90d515a9b82c7e7fe9c9e861179db1dd0f5010c072d",
+      "size_bytes": 526
+    },
+    {
+      "file": "disaster_relief_large.public__financials.view",
+      "sha256": "99832d1fca361cc3106080a4c4ee6bdc969ad2fb0acd453fd2d3a1710b5fe20f",
+      "size_bytes": 530
+    },
+    {
+      "file": "financials_semantics.topic",
+      "sha256": "9b435c0555a2fc7c297a4c58ca6281eea324bcfa4e0cdba2074788e18c12c7cc",
+      "size_bytes": 357
+    },
+    {
+      "file": "disaster_relief_large.public__distributionhubs.view",
+      "sha256": "1789575185899607acdde0eb69defb243dd77ce0877a6a76e37db5c323d95850",
+      "size_bytes": 770
+    },
+    {
+      "file": "distributionhubs_semantics.topic",
+      "sha256": "849f94d82fb2c83acdc6e1547b3994198fdca115c4e227b796473fdf7584168e",
+      "size_bytes": 452
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:0",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "disaster_mortality_rate",
+      "table_stable_id": "disaster_relief_large:table:disasterevents"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:1",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "population_displacement_rate",
+      "table_stable_id": "disaster_relief_large:table:disasterevents"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:15",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "coordination_quality_index",
+      "table_stable_id": "disaster_relief_large:table:coordinationandevaluation"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:16",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "overall_disaster_severity_index",
+      "table_stable_id": "disaster_relief_large:table:disasterevents"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:17",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "total_humanitarian_footprint",
+      "table_stable_id": "disaster_relief_large:table:humanresources"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:2",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "infrastructure_damage_index",
+      "table_stable_id": "disaster_relief_large:table:disasterevents"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:30",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "boundary_semantics_unverified",
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_major_disaster",
+      "table_stable_id": "disaster_relief_large:table:disasterevents"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:33",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_full_scale_emergency",
+      "table_stable_id": "disaster_relief_large:table:operations"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:34",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_successful_community_partnership",
+      "table_stable_id": "disaster_relief_large:table:beneficiariesandassessments"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:38",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_high_accountability_response",
+      "table_stable_id": "disaster_relief_large:table:coordinationandevaluation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:41",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "semantic_name": "hazard_level",
+      "table_stable_id": "disaster_relief_large:table:disasterevents"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:42",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "emergency_level",
+      "table_stable_id": "disaster_relief_large:table:operations"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:43",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "response_phase",
+      "table_stable_id": "disaster_relief_large:table:operations"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:44",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "boundary_semantics_unverified",
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "distribution_equity_index",
+      "table_stable_id": "disaster_relief_large:table:beneficiariesandassessments"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:45",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "damage_report",
+      "table_stable_id": "disaster_relief_large:table:disasterevents"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:46",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "coordination_effectiveness_level",
+      "table_stable_id": "disaster_relief_large:table:coordinationandevaluation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:47",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "funding_state",
+      "table_stable_id": "disaster_relief_large:table:financials"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:49",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "supply_flow_state",
+      "table_stable_id": "disaster_relief_large:table:operations"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:50",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "last_mile_status",
+      "table_stable_id": "disaster_relief_large:table:transportation"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:51",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_catastrophic_disaster",
+      "table_stable_id": "disaster_relief_large:table:disasterevents"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:56",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_hub_overloaded",
+      "table_stable_id": "disaster_relief_large:table:distributionhubs"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:6",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "logistical_throughput_per_vehicle",
+      "table_stable_id": "disaster_relief_large:table:transportation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "disaster_relief_large:hkb:8",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "population_impact_score",
+      "table_stable_id": "disaster_relief_large:table:disasterevents"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "3dbcd625de0e74aa101810b4005f84eda5434b2449bfcf8f439be31bea0fcec7"
+    },
+    "hkb_ir": {
+      "sha256": "fa2d06c03b59b46f8689184a988602d79cb3473e1b6f6bca5da407502e1021a4"
+    },
+    "mapping": {
+      "sha256": "936ff84f055489a3be3bfbb45d0df66df413fb91835b759612675bace84d810c"
+    },
+    "mapping_manifest": {
+      "sha256": "5fd8ac3facb4215275d784c91359f129b9c65890a38cc4719bb0700b1157f17c"
+    },
+    "schema_ir": {
+      "sha256": "e8e96d1dba8a44d82b13cf347628516448ac5ae25489425079970eab3dbd0b8a"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

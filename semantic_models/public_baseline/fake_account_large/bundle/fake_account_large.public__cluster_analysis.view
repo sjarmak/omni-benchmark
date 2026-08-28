@@ -1,0 +1,10 @@
+label: Cluster Analysis
+description: Cluster-level analysis with row-local coordination semantics.
+catalog: fake_account_large
+schema: public
+table_name: cluster_analysis
+dimensions:
+  coordination_score:
+    description: 'REAL. Coordination score. Example: 0.363.'
+    label: Coordination Score
+    ai_context: 'coordination score: Ranges from 0 to 1. Scores above 0.7 strongly indicate coordinated behavior, while scores below 0.2 suggest independent actions.'

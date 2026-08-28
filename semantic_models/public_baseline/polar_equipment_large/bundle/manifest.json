@@ -1,0 +1,553 @@
+{
+  "database": "polar_equipment_large",
+  "files": [
+    {
+      "file": "polar_equipment_large.public__equipmenttype.view",
+      "sha256": "38989a79f81a38c531699f98d5dd12af3f3a0a42c2fe3d18303e74e513066f17",
+      "size_bytes": 862
+    },
+    {
+      "file": "equipmenttype_semantics.topic",
+      "sha256": "2722651c889a011ad08d4e462b70c0ef999ef4e4b0d0f3f5565d5f19adfd492b",
+      "size_bytes": 377
+    },
+    {
+      "file": "polar_equipment_large.public__equipment.view",
+      "sha256": "e68d2d30301e850aa4bd6b6b250159255831e6796c76cb9f68b4f92f7142cef6",
+      "size_bytes": 667
+    },
+    {
+      "file": "equipment_semantics.topic",
+      "sha256": "6eee2a279bcf2deb786ea96d97011daa990e0b116a26b4bab5b5c6f5a44d6968",
+      "size_bytes": 368
+    },
+    {
+      "file": "polar_equipment_large.public__operationmaintenance.view",
+      "sha256": "98f2fdec0c9f867e22a76ad8d7bebe3ca49951eb525ccaf6fe959461dff8130b",
+      "size_bytes": 2835
+    },
+    {
+      "file": "operationmaintenance_semantics.topic",
+      "sha256": "872accbe34a7f1cfaab7d05f95c85bf1e183c84d7ec36f7e0b10927a6b6001e5",
+      "size_bytes": 602
+    },
+    {
+      "file": "polar_equipment_large.public__powerbattery.view",
+      "sha256": "7baddf9943cdac35f0c8ea84f056c877f5b76031f522ab307ae488b41ac9a062",
+      "size_bytes": 3100
+    },
+    {
+      "file": "powerbattery_semantics.topic",
+      "sha256": "5be8ee9ee171ecc38f1b6e708885b4baa43c5819c153555d410700640fb25c4a",
+      "size_bytes": 530
+    },
+    {
+      "file": "polar_equipment_large.public__weatherandstructure.view",
+      "sha256": "5e9ea51fe20382b0c2ade2f88bed7d24b92714f5bee29e8f18e2b3ea26052bb0",
+      "size_bytes": 2029
+    },
+    {
+      "file": "weatherandstructure_semantics.topic",
+      "sha256": "02ffc348b9d186f42c6d57eee5db62b09aaded7514a7b60b67761cf979926077",
+      "size_bytes": 508
+    },
+    {
+      "file": "polar_equipment_large.public__communication.view",
+      "sha256": "08aaa393d584b3c141d59aa1898cfd5459cd97b3d46db7b5a7f6722d82de34f8",
+      "size_bytes": 2699
+    },
+    {
+      "file": "communication_semantics.topic",
+      "sha256": "f1bb6a9d2d15bf82436ffe0d015f927819db0aeadeb350c6deca48aca8bd1a77",
+      "size_bytes": 602
+    },
+    {
+      "file": "polar_equipment_large.public__thermalsolarwindandgrid.view",
+      "sha256": "e3e92879f6395af688213a8824d5ff26bc17f07dceae5bbad6df8a276ca675ab",
+      "size_bytes": 2524
+    },
+    {
+      "file": "thermalsolarwindandgrid_semantics.topic",
+      "sha256": "5c414341721518b3f05eee08ecccd4ec83d645e7f059270ba170c924b1ae5ea4",
+      "size_bytes": 615
+    },
+    {
+      "file": "polar_equipment_large.public__waterandwaste.view",
+      "sha256": "6c760e9eb65f38d674340df9f11005b36493e9bd341f39dfcf454f88e685de78",
+      "size_bytes": 2725
+    },
+    {
+      "file": "waterandwaste_semantics.topic",
+      "sha256": "142c1928c51d50b1763bc24dfaf519b0374a7645263c2452455444f6fb35bee4",
+      "size_bytes": 585
+    },
+    {
+      "file": "polar_equipment_large.public__scientific.view",
+      "sha256": "f966c65d169154b94b660aa83ffd6d16a0f348b92f1b50fe1c7d4b8191be40d1",
+      "size_bytes": 921
+    },
+    {
+      "file": "scientific_semantics.topic",
+      "sha256": "522b4ae6b0c6b69747b822f045cf9ff13ec24adbb68251d3bf55fde21d0d2b37",
+      "size_bytes": 439
+    },
+    {
+      "file": "polar_equipment_large.public__cabinenvironment.view",
+      "sha256": "64e73b4c9bd5165bb4d763bac6b338055ddad9ad0faa0215876eafff543550b1",
+      "size_bytes": 2359
+    },
+    {
+      "file": "cabinenvironment_semantics.topic",
+      "sha256": "67598fa65c058bafa0c24a4faa61675d0a79477bab5724f7fde9f1910db74412",
+      "size_bytes": 513
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:1",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "operational_readiness_score",
+      "table_stable_id": "polar_equipment_large:table:OperationMaintenance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "boundary_semantics_unverified",
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "maintenance_priority_level",
+      "table_stable_id": "polar_equipment_large:table:OperationMaintenance"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:13",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "boundary_semantics_unverified",
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "energy_sustainability_classification",
+      "table_stable_id": "polar_equipment_large:table:PowerBattery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:17",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "meets_cabin_habitability_standard",
+      "table_stable_id": "polar_equipment_large:table:CabinEnvironment"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:18",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "requires_water_conservation",
+      "table_stable_id": "polar_equipment_large:table:WaterAndWaste"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:2",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "energy_sustainability_index",
+      "table_stable_id": "polar_equipment_large:table:PowerBattery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "reliability_index",
+      "table_stable_id": "polar_equipment_large:table:Equipment"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "operational_hours",
+      "table_stable_id": "polar_equipment_large:table:OperationMaintenance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:22",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "external_temperature_c",
+      "table_stable_id": "polar_equipment_large:table:WeatherAndStructure"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:23",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "wind_speed_mps",
+      "table_stable_id": "polar_equipment_large:table:WeatherAndStructure"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "power_consumption_w",
+      "table_stable_id": "polar_equipment_large:table:PowerBattery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "boundary_semantics_unverified",
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "water_quality_classification_system",
+      "table_stable_id": "polar_equipment_large:table:WaterAndWaste"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:26",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "co2_level_ppm",
+      "table_stable_id": "polar_equipment_large:table:CabinEnvironment"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:27",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "energy_efficiency_percent",
+      "table_stable_id": "polar_equipment_large:table:PowerBattery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "safety_index",
+      "table_stable_id": "polar_equipment_large:table:EquipmentType"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "fuel_cell_efficiency_percent",
+      "table_stable_id": "polar_equipment_large:table:ThermalSolarWindAndGrid"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:3",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "structural_safety_factor",
+      "table_stable_id": "polar_equipment_large:table:WeatherAndStructure"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:32",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "base_station_communication_stability_index",
+      "table_stable_id": "polar_equipment_large:table:Communication"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:4",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "communication_reliability_index",
+      "table_stable_id": "polar_equipment_large:table:Communication"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:45",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "boundary_semantics_unverified",
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "communication_network_resilience_assessment",
+      "table_stable_id": "polar_equipment_large:table:Communication"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:53",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "boundary_semantics_unverified",
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "water_resource_management_status_classification",
+      "table_stable_id": "polar_equipment_large:table:WaterAndWaste"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:54",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "has_complete_bscsi_source_data",
+      "table_stable_id": "polar_equipment_large:table:Communication"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:57",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "violates_failed_inspection_activation_lockout",
+      "table_stable_id": "polar_equipment_large:table:OperationMaintenance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:6",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "thermal_insulation_efficiency",
+      "table_stable_id": "polar_equipment_large:table:ThermalSolarWindAndGrid"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:7",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "water_resource_management_index",
+      "table_stable_id": "polar_equipment_large:table:WaterAndWaste"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:8",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "scientific_equipment_reliability",
+      "table_stable_id": "polar_equipment_large:table:Scientific"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "polar_equipment_large:hkb:9",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "renewable_energy_contribution",
+      "table_stable_id": "polar_equipment_large:table:ThermalSolarWindAndGrid"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "5a702ac146d53669a92a1a9a94fcad1cb7f31ae6a156a03b9de98515aa59f46e"
+    },
+    "hkb_ir": {
+      "sha256": "52b02608af14749eb5f3f753977fae370d66d247200258143eb7687c73c4e1f4"
+    },
+    "mapping": {
+      "sha256": "a36d6468f12417d03dbef053834c6914cc062de15bd4642965d9682c638e9235"
+    },
+    "mapping_manifest": {
+      "sha256": "077fea282920c34b0eccf33d70212ac9736f1df2a81329e728d79b71f5c361b7"
+    },
+    "schema_ir": {
+      "sha256": "d2fb4f51c5f315580a85e31dc7fd8210efef44b1d3e28e6ae001cccbf4ece150"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

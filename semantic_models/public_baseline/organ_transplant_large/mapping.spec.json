@@ -1,0 +1,1346 @@
+{
+  "database": "organ_transplant_large",
+  "intervention_provenance": "agent_assisted_public_modeling_inference",
+  "records": [
+    {
+      "bindings": [
+        {
+          "alias": "D.weight",
+          "confidence": "exact",
+          "role": "weight_kg"
+        },
+        {
+          "alias": "D.height",
+          "confidence": "exact",
+          "role": "height_cm"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 0,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row donor BMI formula from public height and weight leaves.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "body_mass_index",
+      "target_alias": "D.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 1,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Donor and recipient ages live on different tables; public review does not approve a cross-table compile target or join discipline here.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FR.cold_ischemia_time",
+          "confidence": "exact",
+          "role": "cold_ischemia_minutes"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 2,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Public schema exposes cold ischemia only; the warm-ischemia component required for total ischemia is absent.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FR.gfr",
+          "confidence": "exact",
+          "role": "donor_gfr"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 3,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Same-row identity projection of the public donor GFR field for dependency-safe downstream formulas.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "estimated_glomerular_filtration_rate",
+      "target_alias": "FR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.hla_mismatch",
+          "confidence": "exact",
+          "role": "hla_mismatch_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 4,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Same-row identity projection of the public HLA mismatch count for dependency-safe downstream formulas.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hla_mismatch_score",
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CL.wait_time",
+          "confidence": "exact",
+          "role": "wait_time_days_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 5,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Same-row clinical formula after parsing the day count from the public wait-time text field.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "recipient_wait_time_years",
+      "target_alias": "CL.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.size_score",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 6,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public compatibility JSON already exposes a row-level size compatibility score.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.age_score",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 7,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public compatibility JSON already exposes a row-level age compatibility score.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.distance",
+          "confidence": "exact",
+          "role": "distance_text"
+        },
+        {
+          "alias": "CM.expected_ischemia",
+          "confidence": "exact",
+          "role": "expected_cold_ischemia_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 8,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_type_requires_parsing",
+        "vocabulary_conflict"
+      ],
+      "notes": "The formula depends on H2 total ischemia, and the available distance/ischemia fields are text with unit/semantic mismatches.",
+      "relationship_requirements": [
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FR.gfr",
+          "confidence": "exact",
+          "role": "estimated_glomerular_filtration_rate"
+        },
+        {
+          "alias": "FR.creatinine",
+          "confidence": "exact",
+          "role": "serum_creatinine_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 9,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Same-row donor renal score using the public eGFR field and parsed serum creatinine text.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "renal_function_score",
+      "target_alias": "FR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.blood_compat",
+          "confidence": "exact",
+          "role": "abo_compatibility_result"
+        },
+        {
+          "alias": "CM.hla_mismatch",
+          "confidence": "exact",
+          "role": "hla_mismatch_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 10,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "categorical_match_semantics_unspecified"
+      ],
+      "notes": "Same-row compatibility formula using the public blood-compatibility assessment result and mismatch count.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "immunological_compatibility_score",
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 11,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The public schema has no exact life-years field required to compute QALY.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RE.cost_qaly",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 12,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "notes": "The public schema already contains a cost-per-QALY field, but executable numeric parsing is outside context-only handling.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RE.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RE.egs",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 13,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public schema already contains an expected graft survival score field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RE.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CL.med_urgency",
+          "confidence": "exact",
+          "role": "medical_urgency_status"
+        },
+        {
+          "alias": "CL.wait_time",
+          "confidence": "exact",
+          "role": "wait_time_days_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 14,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "source_type_requires_parsing",
+        "categorical_mapping_underspecified"
+      ],
+      "notes": "Same-row clinical formula composed from the public urgency status mapping and parsed wait-time days.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "patient_urgency_score",
+      "target_alias": "CL.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RE.center_volume",
+          "confidence": "exact",
+          "role": "center_volume_score"
+        },
+        {
+          "alias": "RE.center_outcomes",
+          "confidence": "exact",
+          "role": "center_outcomes_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 15,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Same-row center-performance formula over the public center volume and outcome score fields.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "center_performance_score",
+      "target_alias": "RE.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RE.surgical_risk",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 16,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public schema already contains a surgical risk assessment score field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RE.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 17,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The allocation score spans clinical, compatibility, and risk tables; public-only review does not approve a single same-table target or cross-table compose path.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 18,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The public schema does not expose an exact expected length-of-stay field needed for the stated resource-utilization formula.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RE.readmission_risk",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 19,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public risk JSON already exposes a row-level readmission risk score.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RE.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.blood_compat",
+          "confidence": "exact",
+          "role": "abo_compatibility_result"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 20,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified",
+        "categorical_match_semantics_unspecified"
+      ],
+      "notes": "Same-row ABO compatibility boolean derived from the public compatibility-result field.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_abo_compatible",
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FR.cold_ischemia_time",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 21,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "notes": "Cold ischemia is represented by the public ischemia-time text field, but executable numeric parsing is not emitted for context-only output.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FR.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 22,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The concept spans donor and recipient HLA marker sets; the public schema does not provide one exact single-field target.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RI.pra_score",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 23,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public PRA score field is the exact context target for the high-PRA guidance.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RI.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RI.crossmatch_result",
+          "confidence": "exact",
+          "role": "crossmatch_result"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 24,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified",
+        "categorical_match_semantics_unspecified"
+      ],
+      "notes": "Same-row positive-crossmatch boolean derived from the public crossmatch-result field.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_positive_crossmatch",
+      "target_alias": "RI.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CL.med_urgency",
+          "confidence": "exact",
+          "role": "medical_urgency_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 25,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified"
+      ],
+      "notes": "Same-row categorical-to-numeric mapping from the public medical urgency status field.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "medical_urgency_numeric_value",
+      "target_alias": "CL.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RI.dsa_status",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 26,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public donor-specific-antibody status field is an exact context target.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RI.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 27,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "No single public field encodes the high-risk-donor determination across communicable disease history, malignancy, and behavior criteria.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 28,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The public schema does not expose an exact graft-function outcome field matching this concept.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RI.pra_score",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 29,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public PRA score field is the exact context target for sensitization guidance.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RI.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FR.preservation_method",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 30,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public preservation-method field is an exact context target for static cold storage.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.blood_compat",
+          "confidence": "exact",
+          "role": "abo_compatibility_result"
+        },
+        {
+          "alias": "CM.hla_mismatch",
+          "confidence": "exact",
+          "role": "hla_mismatch_count"
+        },
+        {
+          "alias": "CM.size_score",
+          "confidence": "exact",
+          "role": "size_compatibility_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 31,
+      "loss_codes": [
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The optimal-match rule depends on H6, which remains context-only because its formal donor/recipient BMI dependency chain is cross-table.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FR.cause_of_death",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 32,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public donor cause-of-death field is an exact context target for Anoxia.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CL.comorbidities",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 33,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public comorbidity-detail field is an exact context target.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CL.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "AD.policy_version",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 34,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public allocation-policy version field is an exact context target.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "AD.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 35,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The public schema has only coarse consent-status fields and does not encode the required informed-consent content boundary for high-risk donors.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "AD.policy_version",
+          "confidence": "exact",
+          "role": "allocation_policy_version"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 36,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The public schema does not expose both donor and recipient region fields needed to represent the regional-priority rule exactly.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 37,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The public schema does not expose a dedicated multi-organ-transplant indicator or exact organ-combination field.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 38,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The concept is a broad care plan, not one exact public field or same-table scalar formula.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 39,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Viral infection status spans multiple donor and recipient virus fields, so no single exact field target is available.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 40,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "BMI category guidance does not map to one exact public BMI field without choosing donor versus recipient context.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FR.creatinine",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 41,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "notes": "The public serum-creatinine field is exact context, but executable numeric parsing is not emitted for context-only output.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FR.gfr",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 42,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public donor GFR field is an exact context target.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RI.pra_score",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 43,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public PRA score field is an exact context target for the value-interpretation guidance.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RI.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.hla_mismatch",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 44,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public HLA mismatch count field is an exact context target for mismatch-level guidance.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CL.med_urgency",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 45,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public medical-urgency status field is an exact context target for urgency-tier guidance.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CL.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RI.crossmatch_result",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 46,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public crossmatch-result field is an exact context target for value-interpretation guidance.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RI.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FR.cause_of_death",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 47,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public donor cause-of-death field is an exact context target for cause-of-death impact guidance.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RE.cost_qaly",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 48,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "notes": "The public cost-per-QALY field is an exact context target for cost-effectiveness threshold guidance.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RE.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 49,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The public schema does not expose exact ALT or AST measurement fields.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 50,
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "notes": "The composite match score depends on H8, which is unsupported under the public-only same-table discipline.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RI.crossmatch_result",
+          "confidence": "exact",
+          "role": "crossmatch_result"
+        },
+        {
+          "alias": "RI.pra_score",
+          "confidence": "exact",
+          "role": "pra_score"
+        },
+        {
+          "alias": "RI.dsa_status",
+          "confidence": "exact",
+          "role": "dsa_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 51,
+      "loss_codes": [
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "AMR risk depends on the H23 PRA interpretation node, which remains context-only under the public-only discipline.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 52,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_field_missing"
+      ],
+      "notes": "The public schema lacks an exact life-years/QALY-gain field, so the net-health-benefit formula cannot be represented exactly.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 53,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_field_missing"
+      ],
+      "notes": "The marginal-donor guidance depends on unsupported high-risk-donor semantics and does not reduce to one exact public field.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 54,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The protocol tiers require combining recipient-immunology risk with compatibility semantics across tables without an approved same-table target.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    }
+  ],
+  "schema_aliases": {
+    "AD.T": "organ_transplant_large:table:allocation_details",
+    "AD.policy_version": "organ_transplant_large:column:allocation_details:allc_pol_vers",
+    "CL.T": "organ_transplant_large:table:clinical",
+    "CL.comorbidities": "organ_transplant_large:column:clinical:comorbid_detail",
+    "CL.med_urgency": "organ_transplant_large:column:clinical:med_urgency",
+    "CL.wait_time": "organ_transplant_large:column:clinical:wait_time",
+    "CM.T": "organ_transplant_large:table:compatibility_metrics",
+    "CM.age_score": "organ_transplant_large:structured-leaf:compatibility_metrics:compatscores:k:Age_Score",
+    "CM.blood_compat": "organ_transplant_large:column:compatibility_metrics:blood_compat",
+    "CM.distance": "organ_transplant_large:column:compatibility_metrics:distance",
+    "CM.expected_ischemia": "organ_transplant_large:column:compatibility_metrics:exp_isch_time",
+    "CM.hla_mismatch": "organ_transplant_large:column:compatibility_metrics:hla_mis_count",
+    "CM.size_score": "organ_transplant_large:structured-leaf:compatibility_metrics:compatscores:k:Size_Score",
+    "D.T": "organ_transplant_large:table:demographics",
+    "D.height": "organ_transplant_large:structured-leaf:demographics:physicalstats:k:Height_Cm",
+    "D.weight": "organ_transplant_large:structured-leaf:demographics:physicalstats:k:Weight_Kg",
+    "FR.T": "organ_transplant_large:table:function_and_recovery",
+    "FR.cause_of_death": "organ_transplant_large:column:function_and_recovery:don_co_desc",
+    "FR.cold_ischemia_time": "organ_transplant_large:column:function_and_recovery:org_isch_time",
+    "FR.creatinine": "organ_transplant_large:column:function_and_recovery:don_crtn_val",
+    "FR.gfr": "organ_transplant_large:column:function_and_recovery:don_gfr_val",
+    "FR.preservation_method": "organ_transplant_large:column:function_and_recovery:org_presv_meth",
+    "RE.T": "organ_transplant_large:table:risk_evaluation",
+    "RE.center_outcomes": "organ_transplant_large:column:risk_evaluation:cntr_out_val",
+    "RE.center_volume": "organ_transplant_large:column:risk_evaluation:cntr_vol_val",
+    "RE.cost_qaly": "organ_transplant_large:column:risk_evaluation:cost_qaly",
+    "RE.egs": "organ_transplant_large:column:risk_evaluation:egs_val",
+    "RE.readmission_risk": "organ_transplant_large:structured-leaf:risk_evaluation:riskmetrics:k:Readmit_Risk",
+    "RE.surgical_risk": "organ_transplant_large:column:risk_evaluation:surg_risk_val",
+    "RI.T": "organ_transplant_large:table:recipients_immunology",
+    "RI.crossmatch_result": "organ_transplant_large:column:recipients_immunology:cross_result",
+    "RI.dsa_status": "organ_transplant_large:column:recipients_immunology:dsa_state",
+    "RI.pra_score": "organ_transplant_large:column:recipients_immunology:pra_score"
+  },
+  "schema_version": 1
+}

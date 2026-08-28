@@ -1,0 +1,7 @@
+base_view: organ_transplant_large_public__recipients_immunology
+label: Recipient Immunology
+description: Recipient immunology records with public PRA, crossmatch, DSA, and AMR risk semantics.
+fields:
+- organ_transplant_large_public__recipients_immunology.*
+joins: {}
+ai_context: Use the modeled business fields pra_score, crossmatch_result, dsa_status, is_positive_crossmatch rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__funds
+label: Exchange-Traded Funds
+description: Fund records with row-level cost, yield, allocation, momentum, valuation, and liquidity semantics.
+fields:
+- exchange_traded_funds_large_public__funds.*
+joins: {}
+ai_context: Use the modeled business fields net_expense_ratio, benchmark_expense_ratio, yield_rate, moving_average_50_day, moving_average_200_day, equity_weight, turnover_ratio, geographic_focus, duration, net_worth, average_daily_volume_3m, price_to_earnings_ratio, price_to_sales_ratio, price_to_book_ratio, price_to_cash_flow_ratio, relative_expense_ratio, is_low_turnover_strategy, yield_to_expense_ratio, is_efficient_income_generator, short_term_momentum, has_golden_cross_signal, net_yield_advantage, composite_valuation_score, portfolio_liquidity_pressure, growth_value_spectrum_score, valuation_data_availability, is_total_return_fund rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

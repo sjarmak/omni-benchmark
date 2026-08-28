@@ -1,0 +1,17 @@
+label: Network Metrics
+description: Account-level network metrics with row-local growth semantics.
+catalog: fake_account_large
+schema: public
+table_name: network_metrics
+dimensions:
+  follower_growth_rate:
+    description: 'REAL. Follower growth rate. Example: 0.697.'
+    label: Follower Growth Rate
+  following_growth_rate:
+    description: 'REAL. Following growth rate. Example: 0.899.'
+    label: Following Growth Rate
+  network_growth_velocity:
+    label: Network Growth Velocity (NGV)
+    description: Measures the rate of network growth considering both followers and following.
+    sql: SQRT(POWER(${follower_growth_rate}, 2.0) + POWER(${following_growth_rate}, 2.0))
+    ai_context: Use this modeled field for Network Growth Velocity (NGV); do not reconstruct its formula.

@@ -1,0 +1,349 @@
+{
+  "format_version": 1,
+  "database": "polar_equipment_large",
+  "catalog": "polar_equipment_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "polar_equipment_large:table:EquipmentType",
+      "view_name": "polar_equipment_large_public__equipmenttype",
+      "file_name": "polar_equipment_large.public__equipmenttype.view",
+      "topic_file_name": "equipmenttype_semantics.topic",
+      "label": "Equipment Types",
+      "description": "Equipment-type records with public safety-index field context."
+    },
+    {
+      "table_stable_id": "polar_equipment_large:table:Equipment",
+      "view_name": "polar_equipment_large_public__equipment",
+      "file_name": "polar_equipment_large.public__equipment.view",
+      "topic_file_name": "equipment_semantics.topic",
+      "label": "Equipment",
+      "description": "Equipment records with public reliability-index field context."
+    },
+    {
+      "table_stable_id": "polar_equipment_large:table:OperationMaintenance",
+      "view_name": "polar_equipment_large_public__operationmaintenance",
+      "file_name": "polar_equipment_large.public__operationmaintenance.view",
+      "topic_file_name": "operationmaintenance_semantics.topic",
+      "label": "Operation Maintenance",
+      "description": "Operation and maintenance records with readiness, maintenance-priority, and lockout semantics."
+    },
+    {
+      "table_stable_id": "polar_equipment_large:table:PowerBattery",
+      "view_name": "polar_equipment_large_public__powerbattery",
+      "file_name": "polar_equipment_large.public__powerbattery.view",
+      "topic_file_name": "powerbattery_semantics.topic",
+      "label": "Power Battery",
+      "description": "Battery telemetry records with energy-sustainability semantics and field context."
+    },
+    {
+      "table_stable_id": "polar_equipment_large:table:WeatherAndStructure",
+      "view_name": "polar_equipment_large_public__weatherandstructure",
+      "file_name": "polar_equipment_large.public__weatherandstructure.view",
+      "topic_file_name": "weatherandstructure_semantics.topic",
+      "label": "Weather And Structure",
+      "description": "Weather and structure records with structural-safety semantics and field context."
+    },
+    {
+      "table_stable_id": "polar_equipment_large:table:Communication",
+      "view_name": "polar_equipment_large_public__communication",
+      "file_name": "polar_equipment_large.public__communication.view",
+      "topic_file_name": "communication_semantics.topic",
+      "label": "Communication",
+      "description": "Communication records with reliability, stability, resilience, and data-completeness semantics."
+    },
+    {
+      "table_stable_id": "polar_equipment_large:table:ThermalSolarWindAndGrid",
+      "view_name": "polar_equipment_large_public__thermalsolarwindandgrid",
+      "file_name": "polar_equipment_large.public__thermalsolarwindandgrid.view",
+      "topic_file_name": "thermalsolarwindandgrid_semantics.topic",
+      "label": "Thermal Solar Wind And Grid",
+      "description": "Thermal and power-generation records with insulation, renewable-energy, and field-context semantics."
+    },
+    {
+      "table_stable_id": "polar_equipment_large:table:WaterAndWaste",
+      "view_name": "polar_equipment_large_public__waterandwaste",
+      "file_name": "polar_equipment_large.public__waterandwaste.view",
+      "topic_file_name": "waterandwaste_semantics.topic",
+      "label": "Water And Waste",
+      "description": "Water and waste records with management and water-quality semantics."
+    },
+    {
+      "table_stable_id": "polar_equipment_large:table:Scientific",
+      "view_name": "polar_equipment_large_public__scientific",
+      "file_name": "polar_equipment_large.public__scientific.view",
+      "topic_file_name": "scientific_semantics.topic",
+      "label": "Scientific",
+      "description": "Scientific equipment records with same-row reliability semantics."
+    },
+    {
+      "table_stable_id": "polar_equipment_large:table:CabinEnvironment",
+      "view_name": "polar_equipment_large_public__cabinenvironment",
+      "file_name": "polar_equipment_large.public__cabinenvironment.view",
+      "topic_file_name": "cabinenvironment_semantics.topic",
+      "label": "Cabin Environment",
+      "description": "Cabin environment records with habitability semantics and CO2 field context."
+    }
+  ],
+  "physical_fields": [
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:EquipmentType:type_indices:k:safety_idx",
+      "name": "safety_index",
+      "label": "Safety Index",
+      "sql": "CAST(${type_indices} ->> 'safety_idx' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:Equipment:RELIAB_IDX",
+      "name": "reliability_index",
+      "label": "Reliability Index"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:OperationMaintenance:OPER_hours",
+      "name": "operational_hours",
+      "label": "Operational Hours"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:OperationMaintenance:maintCycleHrs",
+      "name": "maintenance_cycle_hours",
+      "label": "Maintenance Cycle Hours"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:OperationMaintenance:OPER_status",
+      "name": "operational_status",
+      "label": "Operational Status"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:OperationMaintenance:inspect_status",
+      "name": "inspection_status",
+      "label": "Inspection Status"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:PowerBattery:battery_telemetry:k:power_state/k:primary_source",
+      "name": "power_source",
+      "label": "Power Source",
+      "sql": "${battery_telemetry} #>> '{power_state,primary_source}'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:PowerBattery:battery_telemetry:k:power_state/k:conversion_eff_pct",
+      "name": "energy_efficiency_percent",
+      "label": "Energy Efficiency Percent",
+      "sql": "CAST(${battery_telemetry} #>> '{power_state,conversion_eff_pct}' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:PowerBattery:battery_telemetry:k:power_state/k:instant_consumption_w",
+      "name": "power_consumption_w",
+      "label": "Power Consumption (W)",
+      "sql": "CAST(${battery_telemetry} #>> '{power_state,instant_consumption_w}' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:PowerBattery:battery_telemetry:k:battery_pack/k:soc_pct",
+      "name": "battery_level_percent",
+      "label": "Battery Level Percent",
+      "sql": "CAST(${battery_telemetry} #>> '{battery_pack,soc_pct}' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:WeatherAndStructure:extTempC",
+      "name": "external_temperature_c",
+      "label": "External Temperature (C)"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:WeatherAndStructure:windSpeed_ms",
+      "name": "wind_speed_mps",
+      "label": "Wind Speed (m/s)"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:WeatherAndStructure:snowLoad_kgm2",
+      "name": "snow_load_kg_m2",
+      "label": "Snow Load (kg/m2)"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:WeatherAndStructure:structLoadPct",
+      "name": "structural_load_percent",
+      "label": "Structural Load Percent"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:Communication:antenna_stat",
+      "name": "antenna_status",
+      "label": "Antenna Status"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:Communication:netLatency_ms",
+      "name": "network_latency_ms",
+      "label": "Network Latency (ms)"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:Communication:radioSignal_dBm",
+      "name": "radio_signal_dbm",
+      "label": "Radio Signal (dBm)"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:insulationStat",
+      "name": "insulation_status",
+      "label": "Insulation Status"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:heatLoss_kwh",
+      "name": "heat_loss_rate_kwh",
+      "label": "Heat Loss Rate (kWh)"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:solarOutput_w",
+      "name": "solar_output_w",
+      "label": "Solar Output (W)"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:windOutput_w",
+      "name": "wind_output_w",
+      "label": "Wind Output (W)"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:fuelCellOutput_w",
+      "name": "fuel_cell_output_w",
+      "label": "Fuel Cell Output (W)"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:ThermalSolarWindAndGrid:fuelCellEffPct",
+      "name": "fuel_cell_efficiency_percent",
+      "label": "Fuel Cell Efficiency Percent"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:WaterAndWaste:waterLevelPct",
+      "name": "water_level_percent",
+      "label": "Water Level Percent"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:WaterAndWaste:waterQualityIdx",
+      "name": "water_quality_index",
+      "label": "Water Quality Index"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:WaterAndWaste:wasteTankPct",
+      "name": "waste_tank_level_percent",
+      "label": "Waste Tank Level Percent"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:Scientific:measureAccPct",
+      "name": "measurement_accuracy_percent",
+      "label": "Measurement Accuracy Percent"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:column:Scientific:calibrStat",
+      "name": "calibration_status",
+      "label": "Calibration Status"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:air_metrics/k:temperature_c",
+      "name": "cabin_temperature_c",
+      "label": "Cabin Temperature (C)",
+      "sql": "CAST(${cabin_env_snapshot} #>> '{air_metrics,temperature_c}' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:air_metrics/k:co2_ppm",
+      "name": "co2_level_ppm",
+      "label": "CO2 Level (ppm)",
+      "sql": "CAST(${cabin_env_snapshot} #>> '{air_metrics,co2_ppm}' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:air_metrics/k:o2_pct",
+      "name": "oxygen_level_percent",
+      "label": "Oxygen Level Percent",
+      "sql": "CAST(${cabin_env_snapshot} #>> '{air_metrics,o2_pct}' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:hvac/k:vent_state",
+      "name": "ventilation_status",
+      "label": "Ventilation Status",
+      "sql": "${cabin_env_snapshot} #>> '{hvac,vent_state}'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:hvac/k:heater_state",
+      "name": "heater_status",
+      "label": "Heater Status",
+      "sql": "${cabin_env_snapshot} #>> '{hvac,heater_state}'",
+      "omni_parser_mode": "do_not_parse"
+    }
+  ],
+  "derived_fields": [
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:1",
+      "sql": "CASE WHEN ${maintenance_cycle_hours} <> 0 AND ${operational_status} = 'Active' THEN 10.0 * (1.0 - ${operational_hours} / ${maintenance_cycle_hours}) WHEN ${maintenance_cycle_hours} <> 0 AND ${operational_status} = 'Standby' THEN 5.0 * (1.0 - ${operational_hours} / ${maintenance_cycle_hours}) ELSE 0.0 END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:2",
+      "sql": "${energy_efficiency_percent} * CASE WHEN ${power_source} IN ('Solar', 'Wind', 'Hybrid') THEN 1.5 WHEN ${power_source} = 'Battery' THEN 1.0 WHEN ${power_source} = 'Diesel' THEN 0.7 ELSE 0.0 END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:3",
+      "sql": "(100.0 - ${structural_load_percent}) / 100.0 * CASE WHEN ${snow_load_kg_m2} > 100.0 OR ${wind_speed_mps} > 20.0 THEN 0.5 WHEN ${snow_load_kg_m2} > 50.0 OR ${wind_speed_mps} > 10.0 THEN 0.8 ELSE 1.0 END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:4",
+      "sql": "CASE ${antenna_status} WHEN 'Error' THEN 0.0 WHEN 'Warning' THEN 5.0 WHEN 'Normal' THEN 10.0 ELSE 0.0 END * (1.0 - ${network_latency_ms} / 1000.0)"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:6",
+      "sql": "CASE ${insulation_status} WHEN 'Good' THEN 0.9 - ${heat_loss_rate_kwh} / 10.0 WHEN 'Fair' THEN 0.6 - ${heat_loss_rate_kwh} / 10.0 WHEN 'Poor' THEN 0.3 - ${heat_loss_rate_kwh} / 10.0 END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:7",
+      "sql": "${water_level_percent} / 100.0 * ${water_quality_index} / 100.0 * (1.0 - ${waste_tank_level_percent} / 100.0)"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:8",
+      "sql": "${measurement_accuracy_percent} * CASE ${calibration_status} WHEN 'Valid' THEN 1.0 WHEN 'Due' THEN 0.7 WHEN 'Expired' THEN 0.3 END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:9",
+      "sql": "CASE WHEN (${fuel_cell_output_w} + ${solar_output_w} + ${wind_output_w}) <> 0 THEN (${solar_output_w} + ${wind_output_w}) / (${fuel_cell_output_w} + ${solar_output_w} + ${wind_output_w}) * 100.0 END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:12",
+      "sql": "CASE WHEN ${operational_hours} > ${maintenance_cycle_hours} OR ${operational_status} = 'Repair' THEN 'Immediate Attention' WHEN ${operational_hours} > 0.8 * ${maintenance_cycle_hours} THEN 'Scheduled Service' ELSE 'Routine Maintenance' END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:13",
+      "sql": "CASE WHEN ${energy_sustainability_index} > 0.8 THEN 'Green' WHEN ${energy_sustainability_index} >= 0.4 AND ${energy_sustainability_index} <= 0.8 THEN 'Intermediate' WHEN ${energy_sustainability_index} < 0.4 THEN 'High Impact' END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:17",
+      "sql": "${cabin_temperature_c} >= 18.0 AND ${cabin_temperature_c} <= 24.0 AND ${oxygen_level_percent} > 19.5 AND ${co2_level_ppm} < 1000.0 AND ${ventilation_status} IN ('Auto', 'On') AND ${heater_status} IN ('Auto', 'On')"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:18",
+      "sql": "${water_resource_management_index} < 0.5"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:25",
+      "sql": "CASE WHEN ${water_quality_index} >= 91.0 THEN 'High-Quality' WHEN ${water_quality_index} >= 71.0 AND ${water_quality_index} < 91.0 THEN 'Good' WHEN ${water_quality_index} >= 51.0 AND ${water_quality_index} < 71.0 THEN 'Moderate' WHEN ${water_quality_index} >= 26.0 AND ${water_quality_index} < 51.0 THEN 'Poor' WHEN ${water_quality_index} < 26.0 THEN 'Unsafe' END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:32",
+      "sql": "${communication_reliability_index} * (1.0 + 0.2 * ${radio_signal_dbm} / 100.0) * (1.0 - 0.01 * (1000.0 - ${network_latency_ms}))"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:45",
+      "sql": "CASE WHEN ${communication_reliability_index} > 0.8 AND ${base_station_communication_stability_index} > 0.85 THEN 'High Resilience' WHEN ${communication_reliability_index} > 0.6 AND ${base_station_communication_stability_index} > 0.7 THEN 'Medium Resilience' ELSE 'Low Resilience' END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:53",
+      "sql": "CASE WHEN ${requires_water_conservation} THEN 'Conservation Needed' WHEN ${water_resource_management_index} >= 0.5 AND ${water_resource_management_index} < 0.7 THEN 'Monitoring Advised' WHEN ${water_resource_management_index} >= 0.7 THEN 'Sustainable Management' END"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:54",
+      "sql": "${antenna_status} IS NOT NULL AND ${network_latency_ms} IS NOT NULL AND ${radio_signal_dbm} IS NOT NULL AND ${communication_reliability_index} IS NOT NULL AND ${base_station_communication_stability_index} IS NOT NULL"
+    },
+    {
+      "hkb_stable_id": "polar_equipment_large:hkb:57",
+      "sql": "${operational_status} = 'Active' AND ${inspection_status} = 'Failed'"
+    }
+  ]
+}

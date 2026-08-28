@@ -1,0 +1,242 @@
+{
+  "format_version": 1,
+  "database": "organ_transplant_large",
+  "catalog": "organ_transplant_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "organ_transplant_large:table:demographics",
+      "view_name": "organ_transplant_large_public__demographics",
+      "file_name": "organ_transplant_large.public__demographics.view",
+      "topic_file_name": "demographics_semantics.topic",
+      "label": "Donor Demographics",
+      "description": "Donor demographic records with row-level BMI semantics from public height and weight measurements."
+    },
+    {
+      "table_stable_id": "organ_transplant_large:table:compatibility_metrics",
+      "view_name": "organ_transplant_large_public__compatibility_metrics",
+      "file_name": "organ_transplant_large.public__compatibility_metrics.view",
+      "topic_file_name": "compatibility_metrics_semantics.topic",
+      "label": "Compatibility Metrics",
+      "description": "Match-level compatibility records with public HLA, ABO, age, and size compatibility semantics."
+    },
+    {
+      "table_stable_id": "organ_transplant_large:table:recipients_immunology",
+      "view_name": "organ_transplant_large_public__recipients_immunology",
+      "file_name": "organ_transplant_large.public__recipients_immunology.view",
+      "topic_file_name": "recipients_immunology_semantics.topic",
+      "label": "Recipient Immunology",
+      "description": "Recipient immunology records with public PRA, crossmatch, DSA, and AMR risk semantics."
+    },
+    {
+      "table_stable_id": "organ_transplant_large:table:clinical",
+      "view_name": "organ_transplant_large_public__clinical",
+      "file_name": "organ_transplant_large.public__clinical.view",
+      "topic_file_name": "clinical_semantics.topic",
+      "label": "Recipient Clinical",
+      "description": "Recipient clinical records with public wait-time, urgency, and comorbidity semantics."
+    },
+    {
+      "table_stable_id": "organ_transplant_large:table:function_and_recovery",
+      "view_name": "organ_transplant_large_public__function_and_recovery",
+      "file_name": "organ_transplant_large.public__function_and_recovery.view",
+      "topic_file_name": "function_and_recovery_semantics.topic",
+      "label": "Donor Function and Recovery",
+      "description": "Donor organ-function records with public kidney, ischemia, preservation, and cause-of-death semantics."
+    },
+    {
+      "table_stable_id": "organ_transplant_large:table:risk_evaluation",
+      "view_name": "organ_transplant_large_public__risk_evaluation",
+      "file_name": "organ_transplant_large.public__risk_evaluation.view",
+      "topic_file_name": "risk_evaluation_semantics.topic",
+      "label": "Risk Evaluation",
+      "description": "Risk-evaluation records with public graft-survival, surgical-risk, center-performance, and readmission semantics."
+    },
+    {
+      "table_stable_id": "organ_transplant_large:table:allocation_details",
+      "view_name": "organ_transplant_large_public__allocation_details",
+      "file_name": "organ_transplant_large.public__allocation_details.view",
+      "topic_file_name": "allocation_details_semantics.topic",
+      "label": "Allocation Details",
+      "description": "Allocation-detail records with public policy-version context."
+    }
+  ],
+  "physical_fields": [
+    {
+      "schema_stable_id": "organ_transplant_large:structured-leaf:demographics:physicalstats:k:Height_Cm",
+      "name": "donor_height_cm",
+      "label": "Donor Height (cm)",
+      "sql": "CAST(${physicalstats} ->> 'Height_Cm' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:structured-leaf:demographics:physicalstats:k:Weight_Kg",
+      "name": "donor_weight_kg",
+      "label": "Donor Weight (kg)",
+      "sql": "CAST(${physicalstats} ->> 'Weight_Kg' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:compatibility_metrics:hla_mis_count",
+      "name": "hla_mismatch_count",
+      "label": "HLA Mismatch Count"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:compatibility_metrics:blood_compat",
+      "name": "abo_compatibility_result",
+      "label": "ABO Compatibility Result"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:structured-leaf:compatibility_metrics:compatscores:k:Size_Score",
+      "name": "size_compatibility_score",
+      "label": "Size Compatibility Score",
+      "sql": "CAST(${compatscores} ->> 'Size_Score' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:structured-leaf:compatibility_metrics:compatscores:k:Age_Score",
+      "name": "age_compatibility_score",
+      "label": "Age Compatibility Score",
+      "sql": "CAST(${compatscores} ->> 'Age_Score' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:recipients_immunology:pra_score",
+      "name": "pra_score",
+      "label": "PRA Score"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:recipients_immunology:cross_result",
+      "name": "crossmatch_result",
+      "label": "Crossmatch Result"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:recipients_immunology:dsa_state",
+      "name": "dsa_status",
+      "label": "Donor-Specific Antibody Status"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:clinical:wait_time",
+      "name": "wait_time",
+      "label": "Wait Time"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:clinical:med_urgency",
+      "name": "medical_urgency_status",
+      "label": "Medical Urgency Status"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:clinical:comorbid_detail",
+      "name": "comorbidities",
+      "label": "Comorbidity Detail"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:function_and_recovery:don_crtn_val",
+      "name": "donor_serum_creatinine",
+      "label": "Donor Serum Creatinine"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:function_and_recovery:don_gfr_val",
+      "name": "donor_gfr",
+      "label": "Donor GFR"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:function_and_recovery:org_isch_time",
+      "name": "cold_ischemia_time",
+      "label": "Cold Ischemia Time"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:function_and_recovery:org_presv_meth",
+      "name": "preservation_method",
+      "label": "Organ Preservation Method"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:function_and_recovery:don_co_desc",
+      "name": "cause_of_death_description",
+      "label": "Cause of Death Description"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:risk_evaluation:cost_qaly",
+      "name": "cost_per_qaly",
+      "label": "Cost per QALY"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:risk_evaluation:egs_val",
+      "name": "expected_graft_survival_score",
+      "label": "Expected Graft Survival Score"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:risk_evaluation:surg_risk_val",
+      "name": "surgical_risk_score",
+      "label": "Surgical Risk Score"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:risk_evaluation:cntr_vol_val",
+      "name": "center_volume_score",
+      "label": "Center Volume Score"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:risk_evaluation:cntr_out_val",
+      "name": "center_outcomes_score",
+      "label": "Center Outcomes Score"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:structured-leaf:risk_evaluation:riskmetrics:k:Readmit_Risk",
+      "name": "readmission_risk_score",
+      "label": "Readmission Risk Score",
+      "sql": "CAST(${riskmetrics} ->> 'Readmit_Risk' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "organ_transplant_large:column:allocation_details:allc_pol_vers",
+      "name": "allocation_policy_version",
+      "label": "Allocation Policy Version"
+    }
+  ],
+  "derived_fields": [
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:3",
+      "sql": "${donor_gfr}"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:4",
+      "sql": "${hla_mismatch_count}"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:0",
+      "sql": "CASE WHEN ${donor_height_cm} > 0 THEN ${donor_weight_kg} / POWER(${donor_height_cm} / 100.0, 2.0) END"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:5",
+      "sql": "CAST(NULLIF(REGEXP_REPLACE(${wait_time}, '[^0-9.]', '', 'g'), '') AS DOUBLE PRECISION) / 365.0"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:9",
+      "sql": "${estimated_glomerular_filtration_rate} - (10.0 * CAST(NULLIF(REGEXP_REPLACE(${donor_serum_creatinine}, '[^0-9.]', '', 'g'), '') AS DOUBLE PRECISION))"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:10",
+      "sql": "(CASE WHEN ${is_abo_compatible} THEN 0.6 ELSE 0.0 END) + 0.4 * (1.0 - ${hla_mismatch_score} / 6.0)"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:14",
+      "sql": "0.7 * ${medical_urgency_numeric_value} + 0.3 * ${recipient_wait_time_years}"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:15",
+      "sql": "0.6 * ${center_volume_score} + 0.4 * ${center_outcomes_score}"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:20",
+      "sql": "LOWER(TRIM(${abo_compatibility_result})) = 'compatible'"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:24",
+      "sql": "LOWER(TRIM(${crossmatch_result})) = 'positive'"
+    },
+    {
+      "hkb_stable_id": "organ_transplant_large:hkb:25",
+      "sql": "CASE WHEN UPPER(TRIM(${medical_urgency_status})) = 'STATUS 1A' THEN 5.0 WHEN UPPER(TRIM(${medical_urgency_status})) = 'STATUS 1B' THEN 4.0 WHEN UPPER(TRIM(${medical_urgency_status})) IN ('STATUS 2', '2') THEN 3.0 WHEN UPPER(TRIM(${medical_urgency_status})) IN ('STATUS 3', '3') THEN 2.0 ELSE 1.0 END"
+    }
+  ]
+}

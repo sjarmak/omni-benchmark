@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__eventsandclub
+label: Events and Club
+description: Event participation records with row-level attendance semantics.
+fields:
+- virtual_idol_large_public__eventsandclub.*
+joins: {}
+ai_context: Use the modeled business fields online_events, offline_events, meet_and_greets, event_participation_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

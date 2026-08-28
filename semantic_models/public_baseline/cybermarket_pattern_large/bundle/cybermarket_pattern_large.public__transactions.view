@@ -1,0 +1,31 @@
+label: Transactions
+description: Transaction records with row-level cross-border semantics and shipping and escrow context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: transactions
+dimensions:
+  cross_border:
+    description: 'BOOLEAN. Indicates whether the shipment crosses national borders. Possible values: No, Yes.'
+    label: Cross-Border Shipment
+  route_complexity:
+    description: 'TEXT. Complexity classification of the shipping route. Possible values: Complex, Medium, Simple.'
+    label: Shipping Route Complexity
+    ai_context: 'Shipping Route Complexity: Values: Simple, Medium, Complex.'
+  escrow_usage_state:
+    description: 'TEXT. Indicator describing escrow usage for the transaction. **NULL means escrow usage detail is unavailable.**. Possible values: No, Yes.'
+    label: Escrow Usage State
+    sql: '-- DO NOT PARSE
+
+      ${transaction_financials} ->> ''escrow_used_stat'''
+    ai_context: 'Escrow Usage States: Values: Yes, No.
+
+      Label descriptions:
+
+      - Yes: Funds were held in escrow pending delivery confirmation or dispute resolution, reducing counterparty risk.
+
+      - No: Payment was released directly without escrow protection, increasing the chance of fraud.'
+  is_cross_border_transaction:
+    label: Cross-Border Transaction
+    description: Indicates the shipment moves across national boundaries.
+    sql: ${cross_border}
+    ai_context: Use this modeled field for Cross-Border Transaction; do not reconstruct its formula.

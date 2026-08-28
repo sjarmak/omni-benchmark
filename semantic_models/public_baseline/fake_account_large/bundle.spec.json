@@ -1,0 +1,31 @@
+{
+  "format_version": 1,
+  "database": "fake_account_large",
+  "catalog": "fake_account_large",
+  "schema": "public",
+  "views": [
+    {"table_stable_id":"fake_account_large:table:network_metrics","view_name":"fake_account_large_public__network_metrics","file_name":"fake_account_large.public__network_metrics.view","topic_file_name":"network_metrics_semantics.topic","label":"Network Metrics","description":"Account-level network metrics with row-local growth semantics."},
+    {"table_stable_id":"fake_account_large:table:risk_and_moderation","view_name":"fake_account_large_public__risk_and_moderation","file_name":"fake_account_large.public__risk_and_moderation.view","topic_file_name":"risk_and_moderation_semantics.topic","label":"Risk and Moderation","description":"Account-level risk and moderation data with row-local risk semantics and score context."},
+    {"table_stable_id":"fake_account_large:table:cluster_analysis","view_name":"fake_account_large_public__cluster_analysis","file_name":"fake_account_large.public__cluster_analysis.view","topic_file_name":"cluster_analysis_semantics.topic","label":"Cluster Analysis","description":"Cluster-level analysis with row-local coordination semantics."},
+    {"table_stable_id":"fake_account_large:table:monitoring","view_name":"fake_account_large_public__monitoring","file_name":"fake_account_large.public__monitoring.view","topic_file_name":"monitoring_semantics.topic","label":"Monitoring","description":"Monitoring records with public detection-confidence context."},
+    {"table_stable_id":"fake_account_large:table:content_activity","view_name":"fake_account_large_public__content_activity","file_name":"fake_account_large.public__content_activity.view","topic_file_name":"content_activity_semantics.topic","label":"Content Activity","description":"Account-level content activity with public content-uniqueness context."},
+    {"table_stable_id":"fake_account_large:table:interaction_metrics","view_name":"fake_account_large_public__interaction_metrics","file_name":"fake_account_large.public__interaction_metrics.view","topic_file_name":"interaction_metrics_semantics.topic","label":"Interaction Metrics","description":"Account-level interaction metrics with public conversation-nature context."},
+    {"table_stable_id":"fake_account_large:table:security_sessions","view_name":"fake_account_large_public__security_sessions","file_name":"fake_account_large.public__security_sessions.view","topic_file_name":"security_sessions_semantics.topic","label":"Security Sessions","description":"Account-level security-session telemetry with public IP-reputation context."}
+  ],
+  "physical_fields": [
+    {"schema_stable_id":"fake_account_large:column:network_metrics:FollGrow","name":"follower_growth_rate","label":"Follower Growth Rate"},
+    {"schema_stable_id":"fake_account_large:column:network_metrics:FingGrow","name":"following_growth_rate","label":"Following Growth Rate"},
+    {"schema_stable_id":"fake_account_large:structured-leaf:risk_and_moderation:risk_profile:k:risk_scores/k:risk_value","name":"risk_value","label":"Risk Value","sql":"CAST(${risk_profile} #>> '{risk_scores,risk_value}' AS DOUBLE PRECISION)","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"fake_account_large:structured-leaf:risk_and_moderation:risk_profile:k:risk_scores/k:trust_score","name":"trust_value","label":"Trust Value","sql":"CAST(${risk_profile} #>> '{risk_scores,trust_score}' AS DOUBLE PRECISION)","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"fake_account_large:structured-leaf:risk_and_moderation:risk_profile:k:risk_scores/k:impact_score","name":"impact_value","label":"Impact Value","sql":"CAST(${risk_profile} #>> '{risk_scores,impact_score}' AS DOUBLE PRECISION)","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"fake_account_large:column:cluster_analysis:CoordScore","name":"coordination_score","label":"Coordination Score"},
+    {"schema_stable_id":"fake_account_large:column:monitoring:DetectConf","name":"detection_confidence_score","label":"Detection Confidence Score"},
+    {"schema_stable_id":"fake_account_large:structured-leaf:content_activity:content_metrics:k:content_quality/k:content_uniqueness","name":"content_uniqueness_score","label":"Content Uniqueness Score","sql":"CAST(${content_metrics} #>> '{content_quality,content_uniqueness}' AS DOUBLE PRECISION)","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"fake_account_large:column:interaction_metrics:ConvNat","name":"conversation_naturalness_value","label":"Conversation Naturalness Value"},
+    {"schema_stable_id":"fake_account_large:structured-leaf:security_sessions:session_telemetry:k:ip_reputation/k:ip_reputation_score","name":"ip_reputation_score","label":"IP Reputation Score","sql":"CAST(${session_telemetry} #>> '{ip_reputation,ip_reputation_score}' AS DOUBLE PRECISION)","omni_parser_mode":"do_not_parse"}
+  ],
+  "derived_fields": [
+    {"hkb_stable_id":"fake_account_large:hkb:2","sql":"SQRT(POWER(${follower_growth_rate}, 2.0) + POWER(${following_growth_rate}, 2.0))"},
+    {"hkb_stable_id":"fake_account_large:hkb:4","sql":"0.4 * ${risk_value} + 0.3 * (1.0 - ${trust_value}) + 0.3 * ${impact_value}"}
+  ]
+}

@@ -315,6 +315,60 @@ def test_mapping_spec_expands_aliases_and_public_provenance() -> None:
     assert encode_mapping_jsonl(records).endswith(b"\n")
 
 
+def test_mapping_spec_preserves_agent_assisted_intervention_provenance() -> None:
+    spec = {
+        "database": DATABASE,
+        "intervention_provenance": "agent_assisted_public_modeling_inference",
+        "records": [
+            {
+                "bindings": [
+                    {
+                        "alias": "VALUE",
+                        "confidence": "exact",
+                        "role": "input_value",
+                    }
+                ],
+                "dependency_audit": {"missing_ids": [], "redundant_ids": []},
+                "dependency_mode": "same_grain",
+                "disposition": "compile",
+                "hkb_id": 0,
+                "loss_codes": ["omni_expression_support_unverified"],
+                "notes": "A public-only agent-assisted interpretation.",
+                "relationship_requirements": [],
+                "representation": "numeric_derived_dimension",
+                "semantic_name": "metric_0",
+                "target_alias": "TABLE",
+            }
+        ],
+        "schema_aliases": {"TABLE": TABLE, "VALUE": COLUMN},
+        "schema_version": 1,
+    }
+
+    records = compile_mapping_spec(spec, [_hkb(0, [])], _schema())
+
+    assert records[0]["provenance"]["intervention"] == (
+        "agent_assisted_public_modeling_inference"
+    )
+
+
+@pytest.mark.parametrize("intervention", ["unknown", [], {}, None, 7])
+def test_mapping_spec_rejects_unknown_intervention_provenance(
+    intervention: object,
+) -> None:
+    with pytest.raises(SemanticMappingError, match="intervention provenance"):
+        compile_mapping_spec(
+            {
+                "database": DATABASE,
+                "intervention_provenance": intervention,
+                "records": [],
+                "schema_aliases": {},
+                "schema_version": 1,
+            },
+            [_hkb(0, [])],
+            _schema(),
+        )
+
+
 def test_mapping_spec_rejects_unknown_schema_alias() -> None:
     spec = {
         "database": DATABASE,

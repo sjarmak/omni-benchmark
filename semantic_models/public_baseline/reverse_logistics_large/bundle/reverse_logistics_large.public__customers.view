@@ -1,0 +1,13 @@
+label: Customers
+description: Customer-profile rows with public return-history semantics.
+catalog: reverse_logistics_large
+schema: public
+table_name: customers
+dimensions:
+  total_returns:
+    description: 'BIGINT. Total number of returns made by the customer. example: 10'
+    label: Total Returns
+    sql: '-- DO NOT PARSE
+
+      CAST(${return_behavior_profile} ->> ''total_returns'' AS DOUBLE PRECISION)'
+    ai_context: 'Total Returns: Cumulative tally of processed return cases associated with a single customer account.'

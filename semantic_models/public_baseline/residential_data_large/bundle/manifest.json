@@ -1,0 +1,288 @@
+{
+  "database": "residential_data_large",
+  "files": [
+    {
+      "file": "households.view",
+      "sha256": "6de9d9ab9f9b493cfe1778978b945e810d6cde905a4dc5497c6691cfbadae87e",
+      "size_bytes": 1731
+    },
+    {
+      "file": "households.topic",
+      "sha256": "da93a77c03e1e7e3c7d670ba39b8baf2b28c416ec053696db7558b240121f60e",
+      "size_bytes": 428
+    },
+    {
+      "file": "infrastructure.view",
+      "sha256": "fea030587542f2bc39fa0578c80cdb47362ea728657914c4f9b34a6a41d127a8",
+      "size_bytes": 1239
+    },
+    {
+      "file": "infrastructure.topic",
+      "sha256": "925e628d5362d430e45aebfd2e44460c710c0efe9e417221b89367d80a673037",
+      "size_bytes": 432
+    },
+    {
+      "file": "properties.view",
+      "sha256": "6d9ad2b81c1499938d9d05831e7fd8eeabe50966303ab113d78f3959e74f1a65",
+      "size_bytes": 668
+    },
+    {
+      "file": "properties.topic",
+      "sha256": "9d04764fd77184e32dca7c6e50d312baf1a690cb5bf23af8ef9131aa4071e7e0",
+      "size_bytes": 365
+    },
+    {
+      "file": "amenities.view",
+      "sha256": "bdd7c2e95f036f8f7aea7c6557a90fd784496989dd60c40d17663bb0a714433a",
+      "size_bytes": 500
+    },
+    {
+      "file": "amenities.topic",
+      "sha256": "d9a4c953f3267c67d6879511af304280e05330d0c3a876de8deb6137f2e6adb6",
+      "size_bytes": 364
+    },
+    {
+      "file": "service_types.view",
+      "sha256": "9851cf869dd96eaabe02d607da3250e975950f2c4e16d59c74ad72cfd48c8f1f",
+      "size_bytes": 1256
+    },
+    {
+      "file": "service_types.topic",
+      "sha256": "d3ef87b5c93682cd5d89b0de26ea4fd40a31f946d0f3ae20643498aa7fbc6b9d",
+      "size_bytes": 411
+    },
+    {
+      "file": "transportation_assets.view",
+      "sha256": "8f83f2eb5907c365e5cd54acd2a09ce10a8ec5160fc11e9b6a53ab14c7698e90",
+      "size_bytes": 1229
+    },
+    {
+      "file": "transportation_assets.topic",
+      "sha256": "5bf01aaa47ea142ef29a06525613ddaa3e9fbad9447699be70c74766455183c8",
+      "size_bytes": 440
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:1",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "tenure_status",
+      "table_stable_id": "residential_data_large:table:households"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:10",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "newest_vehicle_year",
+      "table_stable_id": "residential_data_large:table:transportation_assets"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:2",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "income_bracket",
+      "table_stable_id": "residential_data_large:table:households"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:3",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "water_access",
+      "table_stable_id": "residential_data_large:table:infrastructure"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:36",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "vehicle_type_distribution",
+      "table_stable_id": "residential_data_large:table:transportation_assets"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:37",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "social_support",
+      "table_stable_id": "residential_data_large:table:service_types"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:4",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "road_surface",
+      "table_stable_id": "residential_data_large:table:infrastructure"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:45",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "zone_identifier",
+      "table_stable_id": "residential_data_large:table:households"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:5",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "parking_availability",
+      "table_stable_id": "residential_data_large:table:infrastructure"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:6",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "dwelling_type",
+      "table_stable_id": "residential_data_large:table:properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:7",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "cable_status",
+      "table_stable_id": "residential_data_large:table:amenities"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:8",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "domestic_help",
+      "table_stable_id": "residential_data_large:table:service_types"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "residential_data_large:hkb:9",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "social_support",
+      "table_stable_id": "residential_data_large:table:service_types"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "c94d36ec39c84adcbb16b0c1c078d9b90d22d7a97f5eef4754ee0db0c1cf8598"
+    },
+    "hkb_ir": {
+      "sha256": "9bd188a06b1d912296095d145a7d3f7199aa1a29be78eecceca11d0c07bc6930"
+    },
+    "mapping": {
+      "sha256": "a76c16cfad2e399ea03e8944182305d3e5951239454535da2b500d77859e08df"
+    },
+    "mapping_manifest": {
+      "sha256": "897335a0f29fa75bfdb06248f702b445b745210d7e67a378137d41713bfd49bd"
+    },
+    "schema_ir": {
+      "sha256": "6c198d68e43b734cd4a76a3b83b40e85a4cb4a58e791bae352303c7bb93386d6"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

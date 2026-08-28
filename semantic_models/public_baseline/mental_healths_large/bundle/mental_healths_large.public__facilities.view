@@ -1,0 +1,10 @@
+label: Facilities
+description: Facility rows with community-resource context.
+catalog: mental_healths_large
+schema: public
+table_name: facilities
+dimensions:
+  community_resources:
+    description: 'Community resources accessible to patients from this facility. Contains values: ''Comprehensive'', ''Limited'', ''Adequate'', ''Extensive''. Contains NULL when community resource mapping is incomplete.'
+    label: Community Resources
+    ai_context: 'Community Resources: Ranges from Limited to Comprehensive/Extensive. Limited indicates few resources, Adequate indicates sufficient resources, and Comprehensive/Extensive indicates robust resources.'

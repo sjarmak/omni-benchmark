@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__markets
+label: Marketplaces
+description: Marketplace records with public operational-status context.
+fields:
+- cybermarket_pattern_large_public__markets.*
+joins: {}
+ai_context: Use the modeled business fields operational_status rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

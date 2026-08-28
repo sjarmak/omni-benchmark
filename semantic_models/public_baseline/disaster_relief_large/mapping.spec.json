@@ -1,0 +1,1931 @@
+{
+  "database": "disaster_relief_large",
+  "schema_version": 1,
+  "schema_aliases": {
+    "DE.T": "disaster_relief_large:table:disasterevents",
+    "DE.affected": "disaster_relief_large:structured-leaf:disasterevents:impact_summary:k:population_impact/k:affected",
+    "DE.displaced": "disaster_relief_large:structured-leaf:disasterevents:impact_summary:k:population_impact/k:displaced",
+    "DE.casualties": "disaster_relief_large:structured-leaf:disasterevents:impact_summary:k:population_impact/k:casualties",
+    "DE.injured": "disaster_relief_large:structured-leaf:disasterevents:impact_summary:k:population_impact/k:injured",
+    "DE.missing": "disaster_relief_large:structured-leaf:disasterevents:impact_summary:k:population_impact/k:missing",
+    "DE.infra": "disaster_relief_large:structured-leaf:disasterevents:impact_summary:k:infrastructure_damage/k:infra_damage_pct",
+    "DE.power": "disaster_relief_large:structured-leaf:disasterevents:impact_summary:k:infrastructure_damage/k:power_outage_pct",
+    "DE.water_damage": "disaster_relief_large:structured-leaf:disasterevents:impact_summary:k:infrastructure_damage/k:water_damage_pct",
+    "DE.transport_access": "disaster_relief_large:structured-leaf:disasterevents:impact_summary:k:communication_and_transport/k:transport_access",
+    "DE.hazard_level": "disaster_relief_large:column:disasterevents:haz_level",
+    "DE.damage_report": "disaster_relief_large:column:disasterevents:damagereport",
+    "TR.T": "disaster_relief_large:table:transportation",
+    "TR.vehicle_count": "disaster_relief_large:column:transportation:vehiclecount",
+    "TR.last_mile": "disaster_relief_large:column:transportation:lastmilestatus",
+    "TR.daily_tons": "disaster_relief_large:structured-leaf:transportation:delivery_metrics:k:delivery_capacity/k:daily_tons",
+    "TR.total_tons": "disaster_relief_large:structured-leaf:transportation:delivery_metrics:k:delivery_capacity/k:total_tons",
+    "TR.success_rate": "disaster_relief_large:structured-leaf:transportation:delivery_metrics:k:delivery_performance/k:success_rate",
+    "TR.break_rate": "disaster_relief_large:structured-leaf:transportation:delivery_metrics:k:vehicle_metrics/k:break_rate",
+    "SU.food": "disaster_relief_large:column:supplies:foodtons",
+    "SU.water": "disaster_relief_large:column:supplies:water_liters",
+    "SU.shelter": "disaster_relief_large:column:supplies:shelter_units",
+    "OP.T": "disaster_relief_large:table:operations",
+    "OP.start": "disaster_relief_large:column:operations:ops_start_date",
+    "OP.emergency": "disaster_relief_large:column:operations:emerglevel",
+    "OP.status": "disaster_relief_large:column:operations:opsstatus",
+    "OP.priority": "disaster_relief_large:column:operations:priority_rank",
+    "OP.supply_flow": "disaster_relief_large:column:operations:supply_flow_state",
+    "OP.phase": "disaster_relief_large:column:operations:resp_phase",
+    "FI.T": "disaster_relief_large:table:financials",
+    "FI.budget": "disaster_relief_large:column:financials:budgetallotusd",
+    "FI.utilization": "disaster_relief_large:column:financials:funds_util_pct",
+    "FI.ops_cost": "disaster_relief_large:column:financials:ops_costs_usd",
+    "FI.transport_cost": "disaster_relief_large:column:financials:transportcostsusd",
+    "FI.storage_cost": "disaster_relief_large:column:financials:storage_costs_usd",
+    "FI.personnel_cost": "disaster_relief_large:column:financials:personnelcostsusd",
+    "FI.funding": "disaster_relief_large:column:financials:funding_state",
+    "FI.resource_gap": "disaster_relief_large:column:financials:resource_gaps_usd",
+    "DH.T": "disaster_relief_large:table:distributionhubs",
+    "DH.utilization": "disaster_relief_large:column:distributionhubs:hubutilpct",
+    "DH.turnover": "disaster_relief_large:column:distributionhubs:stockturnrate",
+    "HR.T": "disaster_relief_large:table:humanresources",
+    "HR.total": "disaster_relief_large:structured-leaf:humanresources:staffing_details:k:staff_counts/k:total",
+    "HR.medical": "disaster_relief_large:structured-leaf:humanresources:staffing_details:k:staff_counts/k:medical",
+    "HR.volunteers": "disaster_relief_large:structured-leaf:humanresources:staffing_details:k:staff_counts/k:volunteers",
+    "HR.availability": "disaster_relief_large:structured-leaf:humanresources:staffing_details:k:availability_and_equipment/k:availability_pct",
+    "HR.ppe": "disaster_relief_large:structured-leaf:humanresources:staffing_details:k:availability_and_equipment/k:ppe_status",
+    "HR.comms": "disaster_relief_large:structured-leaf:humanresources:staffing_details:k:availability_and_equipment/k:comm_equipment",
+    "BA.T": "disaster_relief_large:table:beneficiariesandassessments",
+    "BA.equity": "disaster_relief_large:column:beneficiariesandassessments:distequityidx",
+    "BA.feedback": "disaster_relief_large:column:beneficiariesandassessments:bene_feedbackscore",
+    "BA.engagement": "disaster_relief_large:column:beneficiariesandassessments:commengagelvl",
+    "CE.T": "disaster_relief_large:table:coordinationandevaluation",
+    "CE.security_incidents": "disaster_relief_large:column:coordinationandevaluation:secincidentcount",
+    "CE.safety": "disaster_relief_large:column:coordinationandevaluation:safety_ranking",
+    "CE.effectiveness": "disaster_relief_large:column:coordinationandevaluation:coord_effect_lvl",
+    "CE.report_compliance": "disaster_relief_large:column:coordinationandevaluation:report_compliance",
+    "CE.data_quality": "disaster_relief_large:column:coordinationandevaluation:dataqualityvalue",
+    "CE.compliance": "disaster_relief_large:column:coordinationandevaluation:compliancestate",
+    "CE.audit": "disaster_relief_large:column:coordinationandevaluation:audit_state",
+    "CE.quality_control": "disaster_relief_large:column:coordinationandevaluation:qualitycontrolsteps",
+    "CE.stakeholder_satisfaction": "disaster_relief_large:column:coordinationandevaluation:stakeholder_satisf",
+    "CE.media_sentiment": "disaster_relief_large:column:coordinationandevaluation:mediacoversentiment",
+    "CE.public_perception": "disaster_relief_large:column:coordinationandevaluation:public_perception",
+    "EH.disease_risk": "disaster_relief_large:structured-leaf:environmentandhealth:health_environment_profile:k:health/k:disease_risk",
+    "EH.sanitation": "disaster_relief_large:structured-leaf:environmentandhealth:health_environment_profile:k:environment/k:sanitation_coverage",
+    "EH.water_quality": "disaster_relief_large:structured-leaf:environmentandhealth:health_environment_profile:k:environment/k:water_quality_index"
+  },
+  "records": [
+    {
+      "hkb_id": 0,
+      "bindings": [
+        {
+          "alias": "DE.casualties",
+          "confidence": "exact",
+          "role": "confirmed_deaths"
+        },
+        {
+          "alias": "DE.affected",
+          "confidence": "exact",
+          "role": "affected_population"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same disaster-event row percentage using the public population-impact leaves.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "disaster_mortality_rate",
+      "target_alias": "DE.T"
+    },
+    {
+      "hkb_id": 1,
+      "bindings": [
+        {
+          "alias": "DE.displaced",
+          "confidence": "exact",
+          "role": "displaced_population"
+        },
+        {
+          "alias": "DE.affected",
+          "confidence": "exact",
+          "role": "affected_population"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same disaster-event row percentage using the public population-impact leaves.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "population_displacement_rate",
+      "target_alias": "DE.T"
+    },
+    {
+      "hkb_id": 2,
+      "bindings": [
+        {
+          "alias": "DE.infra",
+          "confidence": "exact",
+          "role": "infrastructure_damage_pct"
+        },
+        {
+          "alias": "DE.power",
+          "confidence": "exact",
+          "role": "power_outage_pct"
+        },
+        {
+          "alias": "DE.water_damage",
+          "confidence": "exact",
+          "role": "water_damage_pct"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Exact same-row formula over the three public infrastructure-damage leaves.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "infrastructure_damage_index",
+      "target_alias": "DE.T"
+    },
+    {
+      "hkb_id": 3,
+      "bindings": [
+        {
+          "alias": "SU.food",
+          "confidence": "exact",
+          "role": "food_tons"
+        },
+        {
+          "alias": "SU.water",
+          "confidence": "exact",
+          "role": "water_liters"
+        },
+        {
+          "alias": "DE.affected",
+          "confidence": "exact",
+          "role": "affected_population"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Supply rows and disaster-event population require a relationship and supply aggregation contract.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 4,
+      "bindings": [
+        {
+          "alias": "FI.ops_cost",
+          "confidence": "exact",
+          "role": "total_operational_costs"
+        },
+        {
+          "alias": "OP.start",
+          "confidence": "exact",
+          "role": "operation_start_date"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Costs and operation start date are on separate rows; current-date and elapsed-day boundary behavior also require an explicit contract.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 5,
+      "bindings": [
+        {
+          "alias": "FI.ops_cost",
+          "confidence": "exact",
+          "role": "operational_costs_usd"
+        },
+        {
+          "alias": "FI.transport_cost",
+          "confidence": "exact",
+          "role": "transport_costs_usd"
+        },
+        {
+          "alias": "FI.storage_cost",
+          "confidence": "exact",
+          "role": "storage_costs_usd"
+        },
+        {
+          "alias": "FI.personnel_cost",
+          "confidence": "exact",
+          "role": "personnel_costs_usd"
+        },
+        {
+          "alias": "DE.affected",
+          "confidence": "exact",
+          "role": "affected_population"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Financial and disaster-event rows require an operation/event relationship and a cardinality contract.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 6,
+      "bindings": [
+        {
+          "alias": "TR.daily_tons",
+          "confidence": "exact",
+          "role": "daily_tons"
+        },
+        {
+          "alias": "TR.vehicle_count",
+          "confidence": "exact",
+          "role": "vehicle_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-row transportation formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "logistical_throughput_per_vehicle",
+      "target_alias": "TR.T"
+    },
+    {
+      "hkb_id": 7,
+      "bindings": [
+        {
+          "alias": "DH.utilization",
+          "confidence": "exact",
+          "role": "hub_utilization_pct"
+        },
+        {
+          "alias": "DH.turnover",
+          "confidence": "exact",
+          "role": "stock_turn_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "The declared disaster-severity dependency must be averaged across disasters served by each hub.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 8,
+      "bindings": [
+        {
+          "alias": "DE.casualties",
+          "confidence": "exact",
+          "role": "casualties"
+        },
+        {
+          "alias": "DE.injured",
+          "confidence": "exact",
+          "role": "injured"
+        },
+        {
+          "alias": "DE.missing",
+          "confidence": "exact",
+          "role": "missing"
+        },
+        {
+          "alias": "DE.displaced",
+          "confidence": "exact",
+          "role": "displaced"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Exact same-row weighted formula over population-impact leaves.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "population_impact_score",
+      "target_alias": "DE.T"
+    },
+    {
+      "hkb_id": 9,
+      "bindings": [
+        {
+          "alias": "HR.medical",
+          "confidence": "exact",
+          "role": "medical_personnel"
+        },
+        {
+          "alias": "DE.casualties",
+          "confidence": "exact",
+          "role": "casualties"
+        },
+        {
+          "alias": "DE.injured",
+          "confidence": "exact",
+          "role": "injured"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Medical staffing and disaster impact are separate grains and may each have multiple rows per event.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 10,
+      "bindings": [
+        {
+          "alias": "FI.transport_cost",
+          "confidence": "exact",
+          "role": "transport_costs_usd"
+        },
+        {
+          "alias": "TR.total_tons",
+          "confidence": "exact",
+          "role": "total_tons_delivered"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Financial transport cost has no transport-ID key, so it cannot be paired with transportation tonnage at the required grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 11,
+      "bindings": [
+        {
+          "alias": "FI.budget",
+          "confidence": "exact",
+          "role": "allocated_budget"
+        },
+        {
+          "alias": "FI.ops_cost",
+          "confidence": "exact",
+          "role": "total_operational_costs"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "source_type_requires_parsing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The burn-rate dependency is cross-table and allocated budget is unit-formatted text without a declared parser.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 12,
+      "bindings": [
+        {
+          "alias": "DE.displaced",
+          "confidence": "exact",
+          "role": "displaced_population"
+        },
+        {
+          "alias": "SU.shelter",
+          "confidence": "exact",
+          "role": "shelter_units"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Disaster displacement and supply shelter units require event-level aggregation and relationship semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 13,
+      "bindings": [
+        {
+          "alias": "HR.availability",
+          "confidence": "exact",
+          "role": "personnel_availability_pct"
+        },
+        {
+          "alias": "HR.ppe",
+          "confidence": "exact",
+          "role": "ppe_status"
+        },
+        {
+          "alias": "HR.comms",
+          "confidence": "exact",
+          "role": "communication_equipment_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "source_alias_uncertain"
+      ],
+      "notes": "No formula, equipment-status scoring, or maintenance-level source mapping is declared.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 14,
+      "bindings": [
+        {
+          "alias": "TR.success_rate",
+          "confidence": "exact",
+          "role": "success_rate"
+        },
+        {
+          "alias": "BA.feedback",
+          "confidence": "exact",
+          "role": "beneficiary_feedback_score"
+        },
+        {
+          "alias": "BA.equity",
+          "confidence": "exact",
+          "role": "distribution_equity_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Transportation performance and beneficiary assessments do not share a direct row identity.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 15,
+      "bindings": [
+        {
+          "alias": "CE.report_compliance",
+          "confidence": "exact",
+          "role": "report_compliance"
+        },
+        {
+          "alias": "CE.stakeholder_satisfaction",
+          "confidence": "exact",
+          "role": "stakeholder_satisfaction"
+        },
+        {
+          "alias": "CE.data_quality",
+          "confidence": "exact",
+          "role": "data_quality_value"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-row coordination formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "coordination_quality_index",
+      "target_alias": "CE.T"
+    },
+    {
+      "hkb_id": 16,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row composition of the two declared disaster-event dependencies.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "overall_disaster_severity_index",
+      "target_alias": "DE.T"
+    },
+    {
+      "hkb_id": 17,
+      "bindings": [
+        {
+          "alias": "HR.total",
+          "confidence": "exact",
+          "role": "paid_staff"
+        },
+        {
+          "alias": "HR.volunteers",
+          "confidence": "exact",
+          "role": "volunteers"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row total of the public staff and volunteer counts.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "total_humanitarian_footprint",
+      "target_alias": "HR.T"
+    },
+    {
+      "hkb_id": 18,
+      "bindings": [
+        {
+          "alias": "DH.utilization",
+          "confidence": "exact",
+          "role": "hub_utilization_pct"
+        },
+        {
+          "alias": "DH.turnover",
+          "confidence": "exact",
+          "role": "stock_turn_rate"
+        },
+        {
+          "alias": "TR.break_rate",
+          "confidence": "exact",
+          "role": "break_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Hub metrics and vehicle breakdown rates require hub-to-transport aggregation semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 19,
+      "bindings": [
+        {
+          "alias": "EH.disease_risk",
+          "confidence": "exact",
+          "role": "disease_risk"
+        },
+        {
+          "alias": "EH.sanitation",
+          "confidence": "exact",
+          "role": "sanitation_coverage"
+        },
+        {
+          "alias": "EH.water_quality",
+          "confidence": "exact",
+          "role": "water_quality_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "The medical-support dependency is on another grain, and water quality is unit-bearing text without parsing rules.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 20,
+      "bindings": [
+        {
+          "alias": "FI.utilization",
+          "confidence": "exact",
+          "role": "funds_utilization_pct"
+        },
+        {
+          "alias": "FI.budget",
+          "confidence": "exact",
+          "role": "budget_allotment_usd"
+        },
+        {
+          "alias": "FI.resource_gap",
+          "confidence": "exact",
+          "role": "resource_gaps_usd"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "loss_codes": [
+        "source_type_requires_parsing"
+      ],
+      "notes": "Funds utilization and budget are formatted text and no exact parsing rules are public.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 21,
+      "bindings": [
+        {
+          "alias": "DE.casualties",
+          "confidence": "exact",
+          "role": "fatalities"
+        },
+        {
+          "alias": "DE.injured",
+          "confidence": "exact",
+          "role": "injuries"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The declared medical-support dependency is on a separate staffing grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 23,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Inherits the unresolved supply-to-disaster grain from the declared sufficiency dependency.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 24,
+      "bindings": [
+        {
+          "alias": "FI.funding",
+          "confidence": "exact",
+          "role": "funding_state"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "source_type_requires_parsing",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Budget runway remains cross-table and depends on formatted budget text and current-date semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 25,
+      "bindings": [
+        {
+          "alias": "OP.supply_flow",
+          "confidence": "exact",
+          "role": "supply_flow_state"
+        },
+        {
+          "alias": "DE.transport_access",
+          "confidence": "exact",
+          "role": "transport_access"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Operation supply flow and disaster transport access require event-operation relationship semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 26,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Inherits the unresolved multi-grain and parsing requirements of the declared health-risk dependency.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 27,
+      "bindings": [
+        {
+          "alias": "CE.safety",
+          "confidence": "exact",
+          "role": "safety_ranking"
+        },
+        {
+          "alias": "CE.security_incidents",
+          "confidence": "exact",
+          "role": "security_incidents"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "loss_codes": [
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "The security count covers an unspecified evaluation period, not an exact weekly window.",
+      "relationship_requirements": [
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 28,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "The two declared score dependencies resolve to different transportation/beneficiary and coordination grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 29,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Inherits the unresolved event-to-supply grain of the shelter-gap dependency.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 30,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Same-row threshold over the declared disaster-severity dependency; BETWEEN is modeled inclusively.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_major_disaster",
+      "target_alias": "DE.T"
+    },
+    {
+      "hkb_id": 31,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Inherits the unresolved hub-to-disaster aggregation of the hub-strain dependency.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 32,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "The declared throughput and effectiveness dependencies cannot be placed on one row grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 33,
+      "bindings": [
+        {
+          "alias": "OP.emergency",
+          "confidence": "exact",
+          "role": "emergency_level"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row operation category test.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_full_scale_emergency",
+      "target_alias": "OP.T"
+    },
+    {
+      "hkb_id": 34,
+      "bindings": [
+        {
+          "alias": "BA.engagement",
+          "confidence": "exact",
+          "role": "community_engagement"
+        },
+        {
+          "alias": "BA.equity",
+          "confidence": "exact",
+          "role": "distribution_equity_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row beneficiary-assessment condition.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_successful_community_partnership",
+      "target_alias": "BA.T"
+    },
+    {
+      "hkb_id": 35,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "The declared scores are cross-grain and both above-average comparisons require an aggregation population.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 36,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Inherits the unresolved hub-to-transport aggregation of the fragility index.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 37,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_type_requires_parsing"
+      ],
+      "notes": "The declared financial-health dependency cannot be compiled from its formatted text sources.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 38,
+      "bindings": [
+        {
+          "alias": "CE.compliance",
+          "confidence": "exact",
+          "role": "compliance_state"
+        },
+        {
+          "alias": "CE.audit",
+          "confidence": "exact",
+          "role": "audit_state"
+        },
+        {
+          "alias": "CE.quality_control",
+          "confidence": "exact",
+          "role": "quality_control_steps"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row coordination category test.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_high_accountability_response",
+      "target_alias": "CE.T"
+    },
+    {
+      "hkb_id": 39,
+      "bindings": [
+        {
+          "alias": "CE.media_sentiment",
+          "confidence": "exact",
+          "role": "media_coverage_sentiment"
+        },
+        {
+          "alias": "CE.public_perception",
+          "confidence": "exact",
+          "role": "public_perception_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "loss_codes": [
+        "source_type_requires_parsing"
+      ],
+      "notes": "Public perception is star-formatted text and no exact numeric parser is declared.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 40,
+      "bindings": [
+        {
+          "alias": "OP.priority",
+          "confidence": "exact",
+          "role": "priority_rank"
+        },
+        {
+          "alias": "DE.transport_access",
+          "confidence": "exact",
+          "role": "transport_access"
+        },
+        {
+          "alias": "HR.total",
+          "confidence": "exact",
+          "role": "total_personnel"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "categorical_mapping_underspecified"
+      ],
+      "notes": "Inputs span operation, disaster, and staffing grains, and intermediate category scores are not fully specified.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 41,
+      "bindings": [
+        {
+          "alias": "DE.hazard_level",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "notes": "Severity-level illustrations enrich haz_level context; HKB labels differ from the schema's Severity-N vocabulary.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "DE.T"
+    },
+    {
+      "hkb_id": 42,
+      "bindings": [
+        {
+          "alias": "OP.emergency",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public emergency-level meanings enrich the exact operation field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "OP.T"
+    },
+    {
+      "hkb_id": 43,
+      "bindings": [
+        {
+          "alias": "OP.phase",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public response-phase meanings enrich the exact operation field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "OP.T"
+    },
+    {
+      "hkb_id": 44,
+      "bindings": [
+        {
+          "alias": "BA.equity",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Public threshold illustrations enrich the exact distribution-equity field without creating an executable category.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "BA.T"
+    },
+    {
+      "hkb_id": 45,
+      "bindings": [
+        {
+          "alias": "DE.damage_report",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public damage-category meanings enrich the exact damage-report field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "DE.T"
+    },
+    {
+      "hkb_id": 46,
+      "bindings": [
+        {
+          "alias": "CE.effectiveness",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public coordination-level meanings enrich the exact effectiveness field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CE.T"
+    },
+    {
+      "hkb_id": 47,
+      "bindings": [
+        {
+          "alias": "FI.funding",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public funding-state meanings enrich the exact financial field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FI.T"
+    },
+    {
+      "hkb_id": 48,
+      "bindings": [
+        {
+          "alias": "CE.data_quality",
+          "confidence": "exact",
+          "role": "data_quality_value"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "loss_codes": [
+        "vocabulary_conflict",
+        "categorical_mapping_underspecified"
+      ],
+      "notes": "The HKB assumes a 0-100 scale, while the exact schema field is explicitly scored 1-5.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 49,
+      "bindings": [
+        {
+          "alias": "OP.supply_flow",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public supply-flow meanings enrich the exact operation field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "OP.T"
+    },
+    {
+      "hkb_id": 50,
+      "bindings": [
+        {
+          "alias": "TR.last_mile",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public last-mile meanings enrich the exact transportation field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "TR.T"
+    },
+    {
+      "hkb_id": 51,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row threshold over the declared disaster-severity dependency.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_catastrophic_disaster",
+      "target_alias": "DE.T"
+    },
+    {
+      "hkb_id": 52,
+      "bindings": [
+        {
+          "alias": "FI.ops_cost",
+          "confidence": "exact",
+          "role": "operational_costs_usd"
+        },
+        {
+          "alias": "FI.transport_cost",
+          "confidence": "exact",
+          "role": "transport_costs_usd"
+        },
+        {
+          "alias": "FI.storage_cost",
+          "confidence": "exact",
+          "role": "storage_costs_usd"
+        },
+        {
+          "alias": "FI.personnel_cost",
+          "confidence": "exact",
+          "role": "personnel_costs_usd"
+        },
+        {
+          "alias": "DE.affected",
+          "confidence": "exact",
+          "role": "affected_population"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Financial totals and affected population require a cross-table event/operation grain contract.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 53,
+      "bindings": [
+        {
+          "alias": "TR.break_rate",
+          "confidence": "exact",
+          "role": "break_rate_pct"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "The requested mean requires a group definition, grouping key, and empty-group behavior.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 54,
+      "bindings": [
+        {
+          "alias": "OP.status",
+          "confidence": "exact",
+          "role": "operation_status"
+        },
+        {
+          "alias": "CE.safety",
+          "confidence": "exact",
+          "role": "safety_ranking"
+        },
+        {
+          "alias": "CE.security_incidents",
+          "confidence": "exact",
+          "role": "security_incidents"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Operation status and coordination risk assessments require relationship and multiple-assessment semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 55,
+      "bindings": [
+        {
+          "alias": "HR.medical",
+          "confidence": "exact",
+          "role": "medical_staff_count"
+        },
+        {
+          "alias": "DE.affected",
+          "confidence": "exact",
+          "role": "affected_population"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Medical staffing and affected population require event-level relationship and aggregation semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 56,
+      "bindings": [
+        {
+          "alias": "DH.utilization",
+          "confidence": "exact",
+          "role": "hub_utilization_pct"
+        },
+        {
+          "alias": "DH.turnover",
+          "confidence": "exact",
+          "role": "stock_turn_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row distribution-hub threshold.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_hub_overloaded",
+      "target_alias": "DH.T"
+    },
+    {
+      "hkb_id": 57,
+      "bindings": [
+        {
+          "alias": "FI.ops_cost",
+          "confidence": "exact",
+          "role": "operational_costs_usd"
+        },
+        {
+          "alias": "FI.transport_cost",
+          "confidence": "exact",
+          "role": "transport_costs_usd"
+        },
+        {
+          "alias": "FI.storage_cost",
+          "confidence": "exact",
+          "role": "storage_costs_usd"
+        },
+        {
+          "alias": "FI.personnel_cost",
+          "confidence": "exact",
+          "role": "personnel_costs_usd"
+        },
+        {
+          "alias": "FI.budget",
+          "confidence": "exact",
+          "role": "allocated_budget"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "loss_codes": [
+        "source_type_requires_parsing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Allocated budget is formatted text and no exact parser is declared.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "hkb_id": 58,
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Inherits the unresolved hub-to-transport aggregation of the fragility index.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    }
+  ],
+  "intervention_provenance": "agent_assisted_public_modeling_inference"
+}

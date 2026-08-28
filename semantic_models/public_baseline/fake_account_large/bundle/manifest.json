@@ -1,0 +1,238 @@
+{
+  "database": "fake_account_large",
+  "files": [
+    {
+      "file": "fake_account_large.public__network_metrics.view",
+      "sha256": "dae87001c1c4952782cc141ff390624775a1e979d0fb384d2f566eb113efcbe6",
+      "size_bytes": 782
+    },
+    {
+      "file": "network_metrics_semantics.topic",
+      "sha256": "e0734280348419b164e7563fe55f4f914f4fcc4160be9e56a3cd87a23b95ea88",
+      "size_bytes": 431
+    },
+    {
+      "file": "fake_account_large.public__risk_and_moderation.view",
+      "sha256": "6011c8a25fff3a5957f29ca74dd6dee212cded035418dc4e028c50494e0ad2f5",
+      "size_bytes": 1554
+    },
+    {
+      "file": "risk_and_moderation_semantics.topic",
+      "sha256": "2c1ecf2bbee30e7ebaf2ae11293407934baa7297f29856064d5374dd1ae40a51",
+      "size_bytes": 458
+    },
+    {
+      "file": "fake_account_large.public__cluster_analysis.view",
+      "sha256": "b0bedc839faa3c2b14b9e345f154c0460b8b550211b22e859c7b4c2bfd29ced3",
+      "size_bytes": 463
+    },
+    {
+      "file": "cluster_analysis_semantics.topic",
+      "sha256": "86fee09f1b2a8eb0b12ce51d65b98fb6ff30d93c4e45df3e3da126a4de037170",
+      "size_bytes": 383
+    },
+    {
+      "file": "fake_account_large.public__monitoring.view",
+      "sha256": "65a774be95ccf72dcd5263ed1fdd4902d1b9af55a3cb08fde59f2e5c01a47934",
+      "size_bytes": 541
+    },
+    {
+      "file": "monitoring_semantics.topic",
+      "sha256": "55628bd16f83ec499d9d02817b438479acb9d79dfe92c8ddbae01b72b061721f",
+      "size_bytes": 372
+    },
+    {
+      "file": "fake_account_large.public__content_activity.view",
+      "sha256": "06cb087ec22a35ece7295659a62f2dec43738f42fc369de8ec49e80d2f67a686",
+      "size_bytes": 625
+    },
+    {
+      "file": "content_activity_semantics.topic",
+      "sha256": "cdae0a09ac1a78614ddcbb2eff8c6fd20318b745bc455663034276d4d3c6725b",
+      "size_bytes": 398
+    },
+    {
+      "file": "fake_account_large.public__interaction_metrics.view",
+      "sha256": "99f0d36c400732d8311bbc1c14d57c4a766b27e9ca8e272732511c080e80faac",
+      "size_bytes": 534
+    },
+    {
+      "file": "interaction_metrics_semantics.topic",
+      "sha256": "08e949d7e21591be01388a73219cf82ed2f421d37ae10cd31dca187ef50153dd",
+      "size_bytes": 417
+    },
+    {
+      "file": "fake_account_large.public__security_sessions.view",
+      "sha256": "0fd5d0f62736c0fd1966f3a5733f48e64b2bc0809dd8e588ae18af4a2dc12da0",
+      "size_bytes": 610
+    },
+    {
+      "file": "security_sessions_semantics.topic",
+      "sha256": "4bdd9c588c99cee67e998d03bc21692c936508173578238152b22476b6516c9a",
+      "size_bytes": 401
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "fake_account_large:hkb:2",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "network_growth_velocity",
+      "table_stable_id": "fake_account_large:table:network_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "fake_account_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "detection_confidence_score",
+      "table_stable_id": "fake_account_large:table:monitoring"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "fake_account_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "coordination_score",
+      "table_stable_id": "fake_account_large:table:cluster_analysis"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "fake_account_large:hkb:23",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "content_uniqueness_score",
+      "table_stable_id": "fake_account_large:table:content_activity"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "fake_account_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "conversation_naturalness_value",
+      "table_stable_id": "fake_account_large:table:interaction_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "fake_account_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "ip_reputation_score",
+      "table_stable_id": "fake_account_large:table:security_sessions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "fake_account_large:hkb:27",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "trust_value",
+      "table_stable_id": "fake_account_large:table:risk_and_moderation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "fake_account_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "impact_value",
+      "table_stable_id": "fake_account_large:table:risk_and_moderation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "fake_account_large:hkb:4",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "security_risk_score",
+      "table_stable_id": "fake_account_large:table:risk_and_moderation"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "f53ffbd8555af82f5b1795e8ea140024a7268ad6410c55fa74843d05687b1c1d"
+    },
+    "hkb_ir": {
+      "sha256": "895f0ee4eead3e712cbbf49ee25712cc88436844fc3528db9cf8e0cd2cdfafc3"
+    },
+    "mapping": {
+      "sha256": "d9566ee8474208f168f29cfa8fc82b970f8f9790b9001b64c2521046b7ef73fa"
+    },
+    "mapping_manifest": {
+      "sha256": "fbb51fd1716dd9bc47bd0fc9de13cd5e5c971eac9bce67c89701b76f89c36583"
+    },
+    "schema_ir": {
+      "sha256": "148b703f75f97386e56da3a3b20b29418092e60beffb6a55c95740e083b1adb0"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

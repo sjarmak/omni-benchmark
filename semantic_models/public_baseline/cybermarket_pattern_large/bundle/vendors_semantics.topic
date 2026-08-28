@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__vendors
+label: Vendors
+description: Vendor records with verification-tier semantics and access-level context.
+fields:
+- cybermarket_pattern_large_public__vendors.*
+joins: {}
+ai_context: Use the modeled business fields verification_tier, access_level, is_advanced_verification_tier rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

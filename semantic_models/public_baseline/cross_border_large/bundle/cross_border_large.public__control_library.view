@@ -1,0 +1,10 @@
+label: Control Library
+description: Control-library rows with public context for measured control effectiveness.
+catalog: cross_border_large
+schema: public
+table_name: Control_Library
+dimensions:
+  effectiveness_score_pct:
+    description: 'REAL. Measured effectiveness (%). Example: 61.24.'
+    label: Control Effectiveness (%)
+    ai_context: 'Control Effectiveness Score: Higher score means stronger controls.'

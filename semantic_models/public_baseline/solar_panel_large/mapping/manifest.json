@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 27,
+      "context_only": 10,
+      "defer_cross_grain": 7,
+      "unsupported": 6
+    },
+    "hkb_nodes": 50
+  },
+  "database": "solar_panel_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "solar_panel_large.mapping.jsonl",
+    "sha256": "680f7359fd3f1b0a3470b42211bc9febb5cbd346f00dcd60572e6a03b8ed7c9f"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "6fd6acc9a3c4a7bfab8d147c540f653368fcd2176d4a9f0a83426fa07b4650fb"
+    },
+    "mapping_spec": {
+      "sha256": "d75c4cd678d11841298ee2f0c3773e37604125cff386f308ed9646e05207ac28"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "cf58a72d9b07c53451eaf4d99def89b591d71a9bce4c64d2ae87587c26c2d0fa",
+      "sha256": "332babdc4e5c2d2796602ba14ec769aea88c1727dd4430f8f6395fc0ae475e14"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

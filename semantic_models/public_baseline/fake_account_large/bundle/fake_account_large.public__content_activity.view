@@ -1,0 +1,13 @@
+label: Content Activity
+description: Account-level content activity with public content-uniqueness context.
+catalog: fake_account_large
+schema: public
+table_name: content_activity
+dimensions:
+  content_uniqueness_score:
+    description: 'REAL. Content uniqueness score. Example: 0.858.'
+    label: Content Uniqueness Score
+    sql: '-- DO NOT PARSE
+
+      CAST(${content_metrics} #>> ''{content_quality,content_uniqueness}'' AS DOUBLE PRECISION)'
+    ai_context: 'content uniqueness scoring: Ranges from 0 to 1. Scores above 0.8 indicate highly unique content, while scores below 0.3 suggest duplicate or templated content.'

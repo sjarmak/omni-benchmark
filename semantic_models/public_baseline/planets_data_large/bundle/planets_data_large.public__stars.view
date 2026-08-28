@@ -1,0 +1,76 @@
+label: Host Stars
+description: Host-star records with public stellar distance, structure, and derived star-system semantics.
+catalog: planets_data_large
+schema: public
+table_name: stars
+dimensions:
+  stellar_distance_parsec:
+    description: Distance to the host star measured in parsecs from 'st_dist'. REAL accommodating distances from 3.21 to 8500 parsecs. Contains  NULL when stellar distance measurements are unavailable or unreliable.
+    label: Stellar Distance (pc)
+    ai_context: 'Stellar Distance Value: Measured in parsecs (pc), where 1 parsec equals about 3.26 light-years. Values range from nearby stars like Proxima Centauri (~1.3 pc) to stars thousands of parsecs away.'
+  companion_count:
+    description: Total number of confirmed planetary companions from 'pl_pnum'. INTEGER count of planets orbiting this host star, ranging from 1 to 8+ planets per system.
+    label: Confirmed Planet Count
+  apparent_magnitude:
+    description: Optical magnitude of the host star from 'st_optmag'. REAL covering magnitude range typically from -1.5 to 20+ magnitudes. Contains  NULL when stellar magnitude measurements are not available.
+    label: Apparent Magnitude
+    sql: '-- DO NOT PARSE
+
+      CAST(${stellarprops} -> ''photometry'' ->> ''Opt_Mag'' AS DOUBLE PRECISION)'
+    ai_context: 'Apparent Magnitude Value: This is a logarithmic scale where smaller numbers are brighter. A magnitude of 1.0 is 100 times brighter than a magnitude of 6.0. The brightest stars have negative magnitudes (e.g., Sirius is -1.46).'
+  stellar_temperature_k:
+    description: Effective temperature from 'st_teff' measured in Kelvin. REAL covering range from 575K to 57000K. Contains  NULL when stellar temperature measurements are not available or unreliable.
+    label: Stellar Temperature (K)
+    sql: '-- DO NOT PARSE
+
+      CAST(${stellarprops} -> ''physical'' ->> ''Temp_Value'' AS DOUBLE PRECISION)'
+    ai_context: 'Stellar Temperature Value: Measured in Kelvin (K). Cool red dwarfs can be around 3,000 K, a Sun-like star is about 5,800 K, and very hot blue stars can exceed 30,000 K.'
+  stellar_mass_solar:
+    description: Stellar mass from 'st_mass' in solar mass units (M☉). REAL covering range from low-mass stars to massive stars. Contains  NULL when stellar mass cannot be determined from available data.
+    label: Stellar Mass (Solar Masses)
+    sql: '-- DO NOT PARSE
+
+      CAST(${stellarprops} -> ''physical'' ->> ''Mass_Value'' AS DOUBLE PRECISION)'
+    ai_context: 'Stellar Mass Value: Measured in solar masses ($M_{\odot}$), where 1 is the mass of our Sun. Most known host stars range from low-mass red dwarfs (~0.1 $M_{\odot}$) to stars several times more massive than the Sun.'
+  stellar_radius_solar:
+    description: Stellar radius from 'st_rad' in solar radius units (R☉). REAL covering range from sub-solar to giant stars. Contains  NULL when stellar radius measurements are not available.
+    label: Stellar Radius (Solar Radii)
+    sql: '-- DO NOT PARSE
+
+      CAST(${stellarprops} -> ''physical'' ->> ''Radius_Value'' AS DOUBLE PRECISION)'
+    ai_context: 'Stellar Radius Value: Measured in solar radii ($R_{\odot}$), where 1 is the radius of our Sun. Values range from small neutron stars to giant stars like Betelgeuse, which would extend beyond the orbit of Mars if in our solar system.'
+  distance_light_years:
+    label: Distance in Light-Years
+    description: Converts the distance of a celestial object from parsecs to light-years.
+    sql: ${stellar_distance_parsec} * 3.26156
+    ai_context: Use this modeled field for Distance in Light-Years; do not reconstruct its formula.
+  stellar_density:
+    label: Stellar Density
+    description: Calculates the average density of a star.
+    sql: CASE WHEN ${stellar_radius_solar} <> 0 THEN (3.0 * ${stellar_mass_solar}) / (4.0 * PI() * POWER(${stellar_radius_solar}, 3.0)) END
+    ai_context: Use this modeled field for Stellar Density; do not reconstruct its formula.
+  gravitational_parameter:
+    label: Gravitational Parameter (μ)
+    description: Calculates the standard gravitational parameter for a star, a constant used in orbital mechanics.
+    sql: 6.67430e-11 * (${stellar_mass_solar} * 1.98847e30)
+    ai_context: Use this modeled field for Gravitational Parameter (μ); do not reconstruct its formula.
+  multi_planetary_system:
+    label: Multi-planetary System
+    description: A star that hosts more than one confirmed planet.
+    sql: ${companion_count} > 1
+    ai_context: Use this modeled field for Multi-planetary System; do not reconstruct its formula.
+  stellar_luminosity:
+    label: Stellar Luminosity
+    description: Calculates a star's luminosity relative to the Sun using its temperature and radius.
+    sql: POWER(${stellar_radius_solar}, 2.0) * POWER(${stellar_temperature_k} / 5778.0, 4.0)
+    ai_context: Use this modeled field for Stellar Luminosity; do not reconstruct its formula.
+  habitable_zone_inner_boundary:
+    label: Habitable Zone Inner Boundary
+    description: Calculates the inner edge of a star's habitable zone, where a planet would be too hot for liquid water.
+    sql: CASE WHEN ${stellar_luminosity} >= 0 THEN SQRT(${stellar_luminosity} / 1.1) END
+    ai_context: Use this modeled field for Habitable Zone Inner Boundary; do not reconstruct its formula.
+  habitable_zone_outer_boundary:
+    label: Habitable Zone Outer Boundary
+    description: Calculates the outer edge of a star's habitable zone, where a planet would be too cold for liquid water.
+    sql: CASE WHEN ${stellar_luminosity} >= 0 THEN SQRT(${stellar_luminosity} / 0.53) END
+    ai_context: Use this modeled field for Habitable Zone Outer Boundary; do not reconstruct its formula.

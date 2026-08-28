@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__light_and_radiation_readings
+label: Light and Radiation Readings
+description: Light-reading rows with conservation-oriented lux context.
+fields:
+- museum_artifact_large_public__light_and_radiation_readings.*
+joins: {}
+ai_context: Use the modeled business fields light_intensity_lux rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

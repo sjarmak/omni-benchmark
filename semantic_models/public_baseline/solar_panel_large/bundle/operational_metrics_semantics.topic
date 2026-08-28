@@ -1,0 +1,7 @@
+base_view: solar_panel_large_public__operational_metrics
+label: Operational Metrics
+description: Reliability, cost, and loss metrics.
+fields:
+- solar_panel_large_public__operational_metrics.*
+joins: {}
+ai_context: Use the modeled business fields mtbf, mttr, maintcost, cleancost, replcost, revloss, maintenance_cost_to_revenue_impact_ratio, system_unavailability, system_availability rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

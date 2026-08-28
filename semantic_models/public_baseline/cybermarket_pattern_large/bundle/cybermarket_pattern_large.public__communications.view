@@ -1,0 +1,38 @@
+label: Communications
+description: Communication-thread records with row-level suspicion-signal density and language-pattern context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: communications
+dimensions:
+  keyword_matches:
+    description: 'BIGINT. Count of significant keyword matches detected. Example: 20.'
+    label: Keyword Matches
+    sql: '-- DO NOT PARSE
+
+      CAST(${communication_details} ->> ''keyword_match_count'' AS DOUBLE PRECISION)'
+  total_messages:
+    description: 'BIGINT. Number of messages exchanged in the communication thread. Example: 36.'
+    label: Total Messages
+    sql: '-- DO NOT PARSE
+
+      CAST(${communication_details} ->> ''msg_count_total'' AS DOUBLE PRECISION)'
+  language_pattern:
+    description: 'TEXT. Language pattern or grammar classification inferred from messages. Possible values: Consistent, Suspicious, Variable.'
+    label: Language Pattern
+    sql: '-- DO NOT PARSE
+
+      ${communication_details} ->> ''lang_pattern_type'''
+    ai_context: 'Language Patterns: Values: Consistent, Suspicious, Variable.
+
+      Label descriptions:
+
+      - Consistent: Uniform grammar, vocabulary, and tone across messages, suggesting a single genuine author.
+
+      - Suspicious: Irregular phrasing, sudden language switches, or machine translated text indicating possible deception.
+
+      - Variable: Mixed linguistic styles from multiple senders or intentionally altered patterns to hinder profiling.'
+  suspicion_signal_density:
+    label: Suspicion Signal Density
+    description: Keyword hits per message volume in communication.
+    sql: CASE WHEN ${total_messages} <> 0 THEN ${keyword_matches} / ${total_messages} END
+    ai_context: Use this modeled field for Suspicion Signal Density; do not reconstruct its formula.

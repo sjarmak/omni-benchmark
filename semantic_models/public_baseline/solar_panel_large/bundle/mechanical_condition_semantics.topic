@@ -1,0 +1,7 @@
+base_view: solar_panel_large_public__mechanical_condition
+label: Mechanical Condition
+description: Mechanical, structural, and electrical condition snapshots.
+fields:
+- solar_panel_large_public__mechanical_condition.*
+joins: {}
+ai_context: Use the modeled business fields tracker, mount, busbar, delam, microcrack, ground, diode, tracker_malfunction, structural_integrity_warning, electrical_integrity_failure, major_module_degradation, critical_mechanical_health rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

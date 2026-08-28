@@ -1,0 +1,13 @@
+label: Races
+description: Race records.
+catalog: sports_events_large
+schema: public
+table_name: races
+dimensions:
+  event_schedule:
+    description: JSONB column. Groups all date and time-related fields for a race weekend schedule including practice, qualifying, and sprint sessions.
+    label: Race event schedule
+    sql: '-- DO NOT PARSE
+
+      ${event_schedule}'
+    ai_context: 'Indeterminate Event Timings: When the date or time for any session (practice, qualifying, sprint, or race) is not provided, it signifies that the schedule for that session is To Be Determined (TBD), not applicable for the event, or not yet published.'

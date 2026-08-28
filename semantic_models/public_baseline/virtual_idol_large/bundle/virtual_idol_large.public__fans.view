@@ -1,0 +1,33 @@
+label: Fans
+description: Fan records with row-level loyalty semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: fans
+dimensions:
+  total_loyalty_points:
+    description: BIGINT. Accumulated loyalty points earned through various platform activities and interactions.
+    label: Total Loyalty Points
+  current_tier_level:
+    description: SMALLINT. Fan loyalty tier level indicating status progression within the platform hierarchy.
+    label: Current Tier Level
+  fan_status:
+    description: TEXT. Current account status classification for the fan user.
+    label: Fan Status
+    ai_context: 'Fan Status Tiers: Fan status indicates their platform standing. ''Active'' means regular recent activity. ''Inactive'' means no recent activity. ''VIP'' is a special high-value status granted based on contribution and spending.'
+  fan_age:
+    description: SMALLINT. Fan's age in years for demographic analysis and content targeting.
+    label: Fan Age
+    ai_context: 'Fan Age Category: Fan age is categorized as: Teen (<=18), Young Adult (19-29), Adult (30-49), Senior (>=50).'
+  occupation_path:
+    description: 'TEXT. Fan''s occupation or professional background. **NULL means occupation information not provided or privacy setting enabled.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    label: Occupation Path
+    ai_context: 'Occupation Path: Represents the declared occupation category of a fan, such as ''Professional'', ''Student'', ''Creative'', or ''Technical''.'
+  language_preference:
+    description: 'TEXT. Fan''s preferred language for platform interface and content. **NULL means language preference not specified or using platform default.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    label: Language Preference
+    ai_context: 'Language Preference Setting: Defines the fan''s preference for content language. ''Original'' means content is shown in the idol''s primary language. ''Translated'' means the fan prefers translated versions. ''Both'' indicates a willingness to consume content in either form.'
+  loyalty_progression_rate:
+    label: Loyalty Progression Rate (LPR)
+    description: Measures the efficiency of a fan's progression through loyalty tiers based on points accumulated.
+    sql: ${total_loyalty_points} / NULLIF(${current_tier_level}, 0)
+    ai_context: Use this modeled field for Loyalty Progression Rate (LPR); do not reconstruct its formula.

@@ -1,0 +1,39 @@
+label: maintenance_and_fault
+description: Public semantic view for maintenance_and_fault.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: maintenance_and_fault
+dimensions:
+  mf_rul_hours:
+    description: 'BIGINT. Remaining useful life in hours. Example: 1601.'
+    label: MF.rul_hours
+  mf_upkeep_cost:
+    description: 'TEXT. Estimated upkeep cost. Example: $7,299.59.'
+    label: MF.upkeep_cost
+  mf_fault_prediction_score:
+    description: 'REAL. Fault prediction score. **NULL means no fault prediction score available.**. Example: 0.021.'
+    label: MF.fault_prediction_score
+    ai_context: 'Fault Prediction Score Tiers: A Fault Prediction Score is ''Low'' if < 0.3 (normal operation), ''Medium'' if 0.3-0.7 (monitoring required), or ''High'' if > 0.7 (high probability of impending fault).'
+  mf_upkeep_due_days:
+    description: 'BIGINT. Days until the next maintenance is due. Example: 16.'
+    label: MF.upkeep_due_days
+  hkb_10:
+    label: Remaining Useful Life in Days
+    description: Converts the remaining useful life from hours to days for easier planning.
+    sql: ${mf_rul_hours} / 24.0
+    ai_context: Use this modeled field for Remaining Useful Life in Days; do not reconstruct its formula.
+  hkb_17:
+    label: Predictive Maintenance Urgency (PMU)
+    description: A score that quantifies the urgency of performing maintenance based on predictive models.
+    sql: (1000.0 / (${mf_rul_hours} + 1.0)) + (${mf_fault_prediction_score} * 10.0)
+    ai_context: Use this modeled field for Predictive Maintenance Urgency (PMU); do not reconstruct its formula.
+  hkb_48:
+    label: Predictive Maintenance Trigger
+    description: A rule that triggers a high-priority maintenance work order based on predictive data.
+    sql: ${hkb_17} > 50.0
+    ai_context: Use this modeled field for Predictive Maintenance Trigger; do not reconstruct its formula.
+  hkb_53:
+    label: Urgent Maintenance Required
+    description: Identifies a robot that requires immediate maintenance based on its predicted remaining life or scheduled due date.
+    sql: ${hkb_10} < 7.0 OR ${mf_upkeep_due_days} <= 0
+    ai_context: Use this modeled field for Urgent Maintenance Required; do not reconstruct its formula.

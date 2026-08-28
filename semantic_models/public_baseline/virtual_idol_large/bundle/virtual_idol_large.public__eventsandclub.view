@@ -1,0 +1,20 @@
+label: Events and Club
+description: Event participation records with row-level attendance semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: eventsandclub
+dimensions:
+  online_events:
+    description: SMALLINT. Number of online events attended by the fan.
+    label: Online Events
+  offline_events:
+    description: SMALLINT. Number of offline events attended by the fan.
+    label: Offline Events
+  meet_and_greets:
+    description: SMALLINT. Number of meet-and-greet events attended.
+    label: Meet-and-Greets
+  event_participation_score:
+    label: Event Participation Score (EPS)
+    description: A weighted score that measures a fan's engagement with platform events, prioritizing in-person attendance.
+    sql: ${online_events} + (${offline_events} * 1.5) + (${meet_and_greets} * 2)
+    ai_context: Use this modeled field for Event Participation Score (EPS); do not reconstruct its formula.

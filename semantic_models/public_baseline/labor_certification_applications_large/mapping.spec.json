@@ -1,0 +1,1929 @@
+{
+  "schema_version": 1,
+  "database": "labor_certification_applications_large",
+  "schema_aliases": {
+    "T.cases": "labor_certification_applications_large:table:cases",
+    "T.elc": "labor_certification_applications_large:table:EmployerLaborCondition",
+    "T.prevailing_wage": "labor_certification_applications_large:table:prevailing_wage",
+    "C.cases.visacls": "labor_certification_applications_large:column:cases:visacls",
+    "C.cases.pubdisc": "labor_certification_applications_large:column:cases:pubdisc",
+    "C.cases.statustag": "labor_certification_applications_large:column:cases:statustag",
+    "C.cases.recvday": "labor_certification_applications_large:column:cases:recvday",
+    "C.cases.decisionday": "labor_certification_applications_large:column:cases:decisionday",
+    "C.cases.beginday": "labor_certification_applications_large:column:cases:beginday",
+    "C.cases.headct": "labor_certification_applications_large:column:cases:headct",
+    "C.cases.siteslots": "labor_certification_applications_large:column:cases:siteslots",
+    "C.cases.h1bdep": "labor_certification_applications_large:column:cases:h1bdep",
+    "C.cases.willfulv": "labor_certification_applications_large:column:cases:willfulv",
+    "C.cases.newemp": "labor_certification_applications_large:column:cases:newemp",
+    "C.cases.amendflag": "labor_certification_applications_large:column:cases:amendflag",
+    "C.cases.homefirm": "labor_certification_applications_large:column:cases:homefirm",
+    "C.cases.contemp": "labor_certification_applications_large:column:cases:contemp",
+    "C.cases.soccd": "labor_certification_applications_large:column:cases:soccd",
+    "C.elc.h1b_dependent": "labor_certification_applications_large:column:EmployerLaborCondition:h1bDependentEmployer_flag",
+    "C.elc.willful_violator": "labor_certification_applications_large:column:EmployerLaborCondition:willfulViolator_flag",
+    "C.elc.full_time": "labor_certification_applications_large:column:EmployerLaborCondition:fullTimePosition_flag",
+    "C.elc.wage_level": "labor_certification_applications_large:column:EmployerLaborCondition:wageLevel",
+    "C.elc.naics": "labor_certification_applications_large:column:EmployerLaborCondition:naicsCode",
+    "C.elc.soc": "labor_certification_applications_large:column:EmployerLaborCondition:socCode",
+    "C.elc.offered_wage": "labor_certification_applications_large:column:EmployerLaborCondition:offeredWage_USD",
+    "C.elc.prevailing_wage": "labor_certification_applications_large:column:EmployerLaborCondition:prevailingWage_USD",
+    "C.elc.submit_date": "labor_certification_applications_large:column:EmployerLaborCondition:lcaSubmitDate",
+    "C.case_attorney.counselfor": "labor_certification_applications_large:column:case_attorney:counselfor",
+    "C.case_attorney.counselmail": "labor_certification_applications_large:column:case_attorney:counselmail",
+    "C.worksite.state": "labor_certification_applications_large:column:worksite:wstate",
+    "C.worksite.city": "labor_certification_applications_large:column:worksite:wcity",
+    "C.timeline.premium": "labor_certification_applications_large:column:case_processing_timeline:premiumPaid_flag",
+    "C.attorney_metric.approval_rate": "labor_certification_applications_large:column:AttorneyPerformanceMetric:approvalRate_pct",
+    "L.prevailing_unit": "labor_certification_applications_large:structured-leaf:prevailing_wage:wage_details:k:prevailing_wage/k:unit",
+    "L.offered_from": "labor_certification_applications_large:structured-leaf:prevailing_wage:wage_details:k:offered_wage/k:from",
+    "L.prevailing_value": "labor_certification_applications_large:structured-leaf:prevailing_wage:wage_details:k:prevailing_wage/k:value",
+    "L.alt_source_type": "labor_certification_applications_large:structured-leaf:prevailing_wage:wage_details:k:alternate_source/k:source_type",
+    "L.oes_year": "labor_certification_applications_large:structured-leaf:prevailing_wage:wage_details:k:prevailing_wage/k:oes_year"
+  },
+  "records": [
+    {
+      "hkb_id": 1,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.cases",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "C.cases.visacls",
+          "confidence": "exact",
+          "role": "visa_classification"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The public visa-class field is an exact target for the HKB's value-domain illustration."
+    },
+    {
+      "hkb_id": 2,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.elc",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "C.elc.h1b_dependent",
+          "confidence": "exact",
+          "role": "h1b_dependent_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The public LCA flag exactly stores the status; workforce counts needed to reconstruct the legal thresholds are not asserted."
+    },
+    {
+      "hkb_id": 3,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.elc",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "C.elc.willful_violator",
+          "confidence": "exact",
+          "role": "willful_violator_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The public LCA flag exactly stores the designation described by the HKB."
+    },
+    {
+      "hkb_id": 4,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.elc",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "C.elc.full_time",
+          "confidence": "exact",
+          "role": "full_time_position_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The public LCA boolean is the exact field illustrated by the full-time definition."
+    },
+    {
+      "hkb_id": 5,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.elc",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "C.elc.wage_level",
+          "confidence": "exact",
+          "role": "prevailing_wage_level"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The LCA wage-level field is an exact single-field target for the four-level domain explanation."
+    },
+    {
+      "hkb_id": 6,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.elc",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "C.elc.naics",
+          "confidence": "exact",
+          "role": "naics_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "relationship_requirements": [],
+      "notes": "The HKB gives illustrative NAICS values for the exact public NAICS-code field."
+    },
+    {
+      "hkb_id": 7,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.elc",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "C.elc.soc",
+          "confidence": "exact",
+          "role": "soc_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "relationship_requirements": [],
+      "notes": "The HKB gives illustrative SOC values for the exact public SOC-code field."
+    },
+    {
+      "hkb_id": 8,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.prevailing_wage",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "L.prevailing_unit",
+          "confidence": "exact",
+          "role": "wage_payment_unit"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "relationship_requirements": [],
+      "notes": "The structured prevailing-wage unit leaf exactly carries the Hour, Week, Month, and Year domain described by the HKB."
+    },
+    {
+      "hkb_id": 9,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.case_attorney.counselfor",
+          "confidence": "exact",
+          "role": "attorney_represents_employer"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Representation is stored on case-attorney rows, while absence is defined by whether a case has any qualifying row; existence and multiple-attorney behavior are unspecified."
+    },
+    {
+      "hkb_id": 10,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.cases",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "C.cases.pubdisc",
+          "confidence": "exact",
+          "role": "public_disclosure_option"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "relationship_requirements": [],
+      "notes": "The public-disclosure field is the exact target for this open-ended option illustration."
+    },
+    {
+      "hkb_id": 11,
+      "disposition": "compile",
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "wage_differential_rate",
+      "target_alias": "T.elc",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "C.elc.offered_wage",
+          "confidence": "exact",
+          "role": "offered_annual_wage_usd"
+        },
+        {
+          "alias": "C.elc.prevailing_wage",
+          "confidence": "exact",
+          "role": "prevailing_annual_wage_usd"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "notes": "Both exact annual-USD inputs exist on the same LCA row, so no unit conversion or relationship is required."
+    },
+    {
+      "hkb_id": 12,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "C.cases.recvday",
+          "confidence": "exact",
+          "role": "application_received_date_text"
+        },
+        {
+          "alias": "C.cases.decisionday",
+          "confidence": "exact",
+          "role": "application_decision_date_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_type_requires_parsing",
+        "date_boundary_semantics_unspecified"
+      ],
+      "relationship_requirements": [
+        "temporal_behavior"
+      ],
+      "notes": "Both dates are TEXT and the public metadata shows different formats; no exact parsing rule is declared."
+    },
+    {
+      "hkb_id": 13,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.statustag",
+          "confidence": "exact",
+          "role": "application_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Approval rate requires certified and total counts at a target reporting grain, which the HKB does not choose."
+    },
+    {
+      "hkb_id": 14,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.case_attorney.counselmail",
+          "confidence": "exact",
+          "role": "attorney_identifier"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "A case load is a count across case-attorney rows and requires a defined attorney grain and deduplication rule."
+    },
+    {
+      "hkb_id": 15,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.visacls",
+          "confidence": "exact",
+          "role": "visa_classification"
+        },
+        {
+          "alias": "C.cases.homefirm",
+          "confidence": "exact",
+          "role": "employer_identifier"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Employer and global H-1B application counts require aggregation and a reporting population."
+    },
+    {
+      "hkb_id": 16,
+      "disposition": "compile",
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "worksite_density",
+      "target_alias": "T.cases",
+      "dependency_mode": "same_grain",
+      "bindings": [
+        {
+          "alias": "C.cases.headct",
+          "confidence": "exact",
+          "role": "worker_positions"
+        },
+        {
+          "alias": "C.cases.siteslots",
+          "confidence": "exact",
+          "role": "worksite_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "notes": "Worker-position and worksite counts coexist at the application row grain and directly support the declared ratio."
+    },
+    {
+      "hkb_id": 17,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "C.elc.offered_wage",
+          "confidence": "exact",
+          "role": "offered_annual_wage_usd"
+        },
+        {
+          "alias": "C.elc.prevailing_wage",
+          "confidence": "medium",
+          "role": "candidate_minimum_required_wage"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_alias_uncertain",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "notes": "The HKB says minimum required wage may be prevailing wage or a higher regulatory amount, but no exact selection rule or field is declared."
+    },
+    {
+      "hkb_id": 18,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.statustag",
+          "confidence": "exact",
+          "role": "application_status"
+        },
+        {
+          "alias": "C.cases.homefirm",
+          "confidence": "exact",
+          "role": "employer_identifier"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Certified and total case counts must be aggregated to employer grain."
+    },
+    {
+      "hkb_id": 19,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.worksite.state",
+          "confidence": "exact",
+          "role": "worksite_state"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "State is stored at worksite grain, while the numerator and denominator require application counts and a case-worksite relationship policy."
+    },
+    {
+      "hkb_id": 20,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.elc.naics",
+          "confidence": "exact",
+          "role": "industry_naics_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Industry and total application counts require aggregation over a defined LCA population."
+    },
+    {
+      "hkb_id": 21,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.soccd",
+          "confidence": "exact",
+          "role": "soc_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Counts per SOC and the average across SOC groups are aggregate quantities with an unspecified reporting population."
+    },
+    {
+      "hkb_id": 22,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "C.elc.offered_wage",
+          "confidence": "exact",
+          "role": "offered_annual_wage_usd"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "null_zero_domain_unspecified"
+      ],
+      "relationship_requirements": [],
+      "notes": "An exact offered wage exists, but no public cost-of-living-index field exists."
+    },
+    {
+      "hkb_id": 23,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.recvday",
+          "confidence": "exact",
+          "role": "application_received_date_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "source_type_requires_parsing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "notes": "Monthly counts and their average require temporal aggregation, and the receipt date is unparsed TEXT."
+    },
+    {
+      "hkb_id": 24,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.case_attorney.counselmail",
+          "confidence": "exact",
+          "role": "attorney_identifier"
+        },
+        {
+          "alias": "C.cases.statustag",
+          "confidence": "exact",
+          "role": "application_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Attorney assignment and case status are on different tables; approval counting and multi-attorney attribution are unspecified."
+    },
+    {
+      "hkb_id": 25,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.contemp",
+          "confidence": "exact",
+          "role": "continuation_positions"
+        },
+        {
+          "alias": "C.cases.homefirm",
+          "confidence": "exact",
+          "role": "employer_identifier"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Continuation positions are recorded per case, but an employer-level application-rate numerator and denominator require aggregation semantics."
+    },
+    {
+      "hkb_id": 26,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.case_attorney.counselfor",
+          "confidence": "exact",
+          "role": "attorney_represents_employer"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "entity_existence_semantics_missing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "The rate requires case-level attorney existence, deduplication of multiple attorney rows, and a total-case denominator."
+    },
+    {
+      "hkb_id": 27,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.headct",
+          "confidence": "exact",
+          "role": "worker_positions"
+        },
+        {
+          "alias": "C.worksite.state",
+          "confidence": "exact",
+          "role": "worksite_geography"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "The diversity sum requires allocating workers from cases to individual worksites and aggregating at employer grain."
+    },
+    {
+      "hkb_id": 28,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.elc.offered_wage",
+          "confidence": "exact",
+          "role": "offered_annual_wage_usd"
+        },
+        {
+          "alias": "C.elc.naics",
+          "confidence": "exact",
+          "role": "industry_naics_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Employer and industry average wages require two aggregation grains and a defined comparison population."
+    },
+    {
+      "hkb_id": 29,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.visacls",
+          "confidence": "exact",
+          "role": "visa_classification"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Visa-class and total application counts require aggregation over a defined application population."
+    },
+    {
+      "hkb_id": 30,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.homefirm",
+          "confidence": "exact",
+          "role": "employer_identifier"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Employer counts and the average count across employers require two aggregate grains."
+    },
+    {
+      "hkb_id": 31,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.elc.naics",
+          "confidence": "exact",
+          "role": "industry_naics_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "The dependency is same-row on each LCA, but the requested result is an average across applications grouped by industry."
+    },
+    {
+      "hkb_id": 32,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.recvday",
+          "confidence": "exact",
+          "role": "application_received_date_text"
+        },
+        {
+          "alias": "C.cases.decisionday",
+          "confidence": "exact",
+          "role": "application_decision_date_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "source_type_requires_parsing",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "notes": "The numerator requires an average across parsed processing times, while H12 is blocked by undeclared date parsing."
+    },
+    {
+      "hkb_id": 33,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.worksite.state",
+          "confidence": "exact",
+          "role": "worksite_state"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "The concentration sum inherits state-distribution aggregation and unresolved case-to-worksite allocation."
+    },
+    {
+      "hkb_id": 34,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.case_attorney.counselmail",
+          "confidence": "exact",
+          "role": "attorney_identifier"
+        },
+        {
+          "alias": "C.cases.visacls",
+          "confidence": "exact",
+          "role": "visa_classification"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Distinct visa types per attorney require joining attorney assignments to cases and defining the total visa-type domain."
+    },
+    {
+      "hkb_id": 35,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.elc.naics",
+          "confidence": "exact",
+          "role": "industry_naics_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "The industry concentration sum requires industry-level shares across an application population."
+    },
+    {
+      "hkb_id": 36,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.elc.offered_wage",
+          "confidence": "exact",
+          "role": "offered_annual_wage_usd"
+        },
+        {
+          "alias": "C.elc.submit_date",
+          "confidence": "exact",
+          "role": "lca_submission_timestamp"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "date_boundary_semantics_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "notes": "Current- and previous-year averages require temporal grouping, a similar-position grain, and year-boundary rules."
+    },
+    {
+      "hkb_id": 37,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "C.cases.h1bdep",
+          "confidence": "exact",
+          "role": "h1b_dependent_status"
+        },
+        {
+          "alias": "C.cases.willfulv",
+          "confidence": "exact",
+          "role": "willful_violator_status"
+        },
+        {
+          "alias": "C.cases.newemp",
+          "confidence": "exact",
+          "role": "new_employment_positions"
+        },
+        {
+          "alias": "C.cases.amendflag",
+          "confidence": "exact",
+          "role": "amendment_indicator"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "depends_on_ambiguous_mapping"
+      ],
+      "relationship_requirements": [],
+      "notes": "The factors exist on case rows, but the weights and binary conversion rules are not declared, and H2/H3 are contextual rather than compiled dependencies."
+    },
+    {
+      "hkb_id": 38,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "depends_on_unsupported_mapping"
+      ],
+      "relationship_requirements": [],
+      "notes": "Neither worksite nor national cost-of-living index exists in the public schema, and H22 is unsupported for the same reason."
+    },
+    {
+      "hkb_id": 39,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.timeline.premium",
+          "confidence": "exact",
+          "role": "premium_processing_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": [
+          12
+        ]
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "dependency_redundancy"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "The rate requires aggregating timeline rows to a case population; H12 processing duration is declared but not used by the formula."
+    },
+    {
+      "hkb_id": 40,
+      "disposition": "compile",
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_premium_wage_position",
+      "target_alias": "T.elc",
+      "dependency_mode": "same_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "relationship_requirements": [],
+      "notes": "The exact greater-than-20-percent threshold composes the same-row compiled WDR dependency."
+    },
+    {
+      "hkb_id": 41,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "C.cases.recvday",
+          "confidence": "exact",
+          "role": "application_submission_date_text"
+        },
+        {
+          "alias": "C.cases.beginday",
+          "confidence": "exact",
+          "role": "employment_start_date_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_type_requires_parsing",
+        "date_boundary_semantics_unspecified",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [
+        "temporal_behavior"
+      ],
+      "notes": "Both dates are heterogeneous TEXT and the month-based category boundaries do not specify exact interval or partial-month behavior."
+    },
+    {
+      "hkb_id": 42,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.elc.naics",
+          "confidence": "exact",
+          "role": "industry_naics_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Visa applications can be grouped by industry, but total industry workforce is absent and the industry reporting grain is unresolved."
+    },
+    {
+      "hkb_id": 43,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.elc.soc",
+          "confidence": "exact",
+          "role": "soc_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "WDR is available per LCA, but a statistically significant application count by occupation is an unspecified aggregate rule."
+    },
+    {
+      "hkb_id": 44,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.worksite.state",
+          "confidence": "exact",
+          "role": "worksite_state"
+        },
+        {
+          "alias": "C.worksite.city",
+          "confidence": "exact",
+          "role": "worksite_city"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Location exists at worksite grain, but application allocation, national-average comparison, and population data are unresolved or absent."
+    },
+    {
+      "hkb_id": 45,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.case_attorney.counselmail",
+          "confidence": "exact",
+          "role": "attorney_identifier"
+        },
+        {
+          "alias": "C.cases.visacls",
+          "confidence": "exact",
+          "role": "visa_classification"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Attorney visa-type distributions require a join and aggregation; even-distribution and significant-experience rules are not quantified."
+    },
+    {
+      "hkb_id": 46,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.homefirm",
+          "confidence": "exact",
+          "role": "employer_identifier"
+        },
+        {
+          "alias": "C.cases.recvday",
+          "confidence": "exact",
+          "role": "application_received_date_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "source_type_requires_parsing",
+        "date_boundary_semantics_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "notes": "Annual employer application counts require parsing receipt dates, choosing year boundaries, and aggregating cases."
+    },
+    {
+      "hkb_id": 47,
+      "disposition": "context_only",
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.cases",
+      "dependency_mode": "none",
+      "bindings": [
+        {
+          "alias": "C.cases.statustag",
+          "confidence": "exact",
+          "role": "application_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "relationship_requirements": [],
+      "notes": "The exact application-status field is enriched with the HKB outcome vocabulary, which is broader than the schema metadata's listed certified variants."
+    },
+    {
+      "hkb_id": 48,
+      "disposition": "compile",
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "wage_competitiveness_tier",
+      "target_alias": "T.elc",
+      "dependency_mode": "same_grain",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "relationship_requirements": [],
+      "notes": "The declared closed thresholds compile directly from same-row WDR."
+    },
+    {
+      "hkb_id": 49,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "C.elc.wage_level",
+          "confidence": "medium",
+          "role": "candidate_specialization_signal"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "source_alias_uncertain",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [],
+      "notes": "Wage level is only a stated correlation; experience requirements and exact rules for the three categories are absent."
+    },
+    {
+      "hkb_id": 50,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.recvday",
+          "confidence": "exact",
+          "role": "application_received_date_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "source_type_requires_parsing",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "notes": "Seasonal rates require temporal aggregation, date parsing, and quantified peak/off-peak thresholds."
+    },
+    {
+      "hkb_id": 51,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "C.elc.h1b_dependent",
+          "confidence": "exact",
+          "role": "h1b_dependent_status"
+        },
+        {
+          "alias": "C.elc.willful_violator",
+          "confidence": "exact",
+          "role": "willful_violator_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "depends_on_ambiguous_mapping",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [],
+      "notes": "H2/H3 are contextual rather than compiled, and the special-attestation source and exact Standard/Complex rule are incomplete."
+    },
+    {
+      "hkb_id": 52,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.attorney_metric.approval_rate",
+          "confidence": "exact",
+          "role": "period_attorney_approval_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "depends_on_ambiguous_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "notes": "A public period-level approval metric exists, but H24 is unresolved and the HKB does not specify which period or how multiple periods map to an attorney."
+    },
+    {
+      "hkb_id": 53,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.worksite.state",
+          "confidence": "exact",
+          "role": "worksite_state"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Employer worksite spread inherits H27 aggregation and lacks a defined region taxonomy."
+    },
+    {
+      "hkb_id": 54,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.elc.h1b_dependent",
+          "confidence": "exact",
+          "role": "h1b_dependent_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "source_field_missing",
+        "depends_on_ambiguous_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "The dependency flag exists, but employer workforce proportions needed for the three levels are absent and require employer-grain aggregation."
+    },
+    {
+      "hkb_id": 55,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "depends_on_ambiguous_mapping",
+        "source_field_missing"
+      ],
+      "relationship_requirements": [],
+      "notes": "H21 is unresolved, and many, limited, and very few candidates have no public thresholds or candidate-count source."
+    },
+    {
+      "hkb_id": 56,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.homefirm",
+          "confidence": "exact",
+          "role": "employer_identifier"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "Average WDR must be joined or attributed from LCA wage rows to an employer and aggregated across applications."
+    },
+    {
+      "hkb_id": 57,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "C.cases.willfulv",
+          "confidence": "exact",
+          "role": "willful_violator_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "categorical_mapping_underspecified"
+      ],
+      "relationship_requirements": [],
+      "notes": "H37 cannot produce the required complexity score, and the conversion from its unspecified weights to factor counts is undefined."
+    },
+    {
+      "hkb_id": 58,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.cases.homefirm",
+          "confidence": "exact",
+          "role": "employer_identifier"
+        },
+        {
+          "alias": "C.cases.recvday",
+          "confidence": "exact",
+          "role": "application_received_date_text"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "source_type_requires_parsing",
+        "date_boundary_semantics_unspecified"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "notes": "Distinct filing months per employer require parsed dates, a chosen year, and employer-level temporal aggregation."
+    },
+    {
+      "hkb_id": 59,
+      "disposition": "defer_cross_grain",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "cross_grain_unresolved",
+      "bindings": [
+        {
+          "alias": "C.case_attorney.counselfor",
+          "confidence": "exact",
+          "role": "attorney_represents_employer"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "depends_on_ambiguous_mapping"
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "notes": "The comparison requires two approval-rate populations and inherits unresolved global and attorney attribution semantics from H13 and H24."
+    },
+    {
+      "hkb_id": 60,
+      "disposition": "unsupported",
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null,
+      "dependency_mode": "blocked",
+      "bindings": [
+        {
+          "alias": "L.alt_source_type",
+          "confidence": "exact",
+          "role": "alternate_source_type"
+        },
+        {
+          "alias": "L.oes_year",
+          "confidence": "exact",
+          "role": "oes_source_presence"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "vocabulary_conflict"
+      ],
+      "relationship_requirements": [],
+      "notes": "OES presence and alternative source type are split across leaves, and Survey does not distinguish an independent published survey that meets DOL requirements."
+    }
+  ],
+  "intervention_provenance": "agent_assisted_public_modeling_inference"
+}

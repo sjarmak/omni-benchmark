@@ -1,0 +1,50 @@
+label: Social Community
+description: Social community records with row-level network and content-creation semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: socialcommunity
+dimensions:
+  follower_count:
+    description: BIGINT. Number of other users following this fan.
+    label: Follower Count
+  following_count:
+    description: BIGINT. Number of users this fan is following.
+    label: Following Count
+  social_network_size:
+    description: BIGINT. Size of fan's social network within the platform.
+    label: Social Network Size
+  friend_connections:
+    description: BIGINT. Number of mutual friend connections within the platform.
+    label: Friend Connections
+  content_submissions:
+    description: BIGINT. Total user-generated content value or count created by fan.
+    label: Content Submissions
+  collaborations:
+    description: SMALLINT. Number of collaborative projects participated in by the fan.
+    label: Collaborations
+  average_content_quality_rating:
+    description: REAL. Quality rating of content created by the fan.
+    label: Average Content Quality Rating
+  community_contribution_level:
+    description: 'TEXT. Type and level of contribution to community activities. **NULL means contribution assessment incomplete or minimal community participation.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    label: Community Contribution Level
+    ai_context: 'Community Contribution Level: Measures a fan''s positive impact on the community. Levels include ''High'', ''Medium'', and ''Low'', often associated with group roles and content creation.'
+  community_role:
+    description: TEXT. Role or position held within community groups. **NULL means no specific group role assigned or participating as regular member.**
+    label: Community Role
+    ai_context: 'Community Role Hierarchy: Defines a fan''s position within a community group. ''Member'' is a standard participant. ''Moderator'' helps enforce rules. ''Leader'' manages the group.'
+  social_capital_score:
+    label: Social Capital Score (SCS)
+    description: Represents the size and strength of a fan's social network on the platform.
+    sql: ${social_network_size} + (${friend_connections} * 1.5)
+    ai_context: Use this modeled field for Social Capital Score (SCS); do not reconstruct its formula.
+  follower_to_following_ratio:
+    label: Follower-to-Following Ratio (FFR)
+    description: Measures a fan's social influence by comparing the number of users who follow them to the number of users they follow.
+    sql: ${follower_count} / NULLIF(${following_count}, 0)
+    ai_context: Use this modeled field for Follower-to-Following Ratio (FFR); do not reconstruct its formula.
+  content_creator_score:
+    label: Content Creator Score (CCS)
+    description: Evaluates a fan's contribution as a content creator by combining the volume and quality of their user-generated content.
+    sql: (${content_submissions} + ${collaborations}) * ${average_content_quality_rating}
+    ai_context: Use this modeled field for Content Creator Score (CCS); do not reconstruct its formula.

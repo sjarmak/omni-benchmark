@@ -1,0 +1,10 @@
+label: Amenities
+description: Public household amenities records with cable-status context.
+catalog: residential_data_large
+schema: public
+table_name: amenities
+dimensions:
+  cable_status:
+    description: Cable television service availability and subscription status indicating the household's access to cable TV services. Ex. avail, available,yes
+    label: Cable Status
+    ai_context: 'Cable TV Status: Values indicating availability, based on schema, are ''avail'', ''available'', and ''yes''.'

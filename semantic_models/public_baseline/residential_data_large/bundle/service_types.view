@@ -1,0 +1,16 @@
+label: Service Types
+description: Public household service records with domestic-help and social-support context.
+catalog: residential_data_large
+schema: public
+table_name: service_types
+dimensions:
+  domestic_help:
+    description: Domestic worker service availability indicating whether households have access to or utilize domestic help services. Part of unique constraint combination. EX. No domestic workers, Yes, occasional
+    label: Domestic Help
+    ai_context: 'Domestic Help Availability: Includes ''Full-time'' (daily), ''Part-time'' (periodic), ''Occasional'' (as-needed), ''None'' (no help), and ''Live-in'' (resident worker). Null indicates informal or undisclosed arrangements.'
+  social_support:
+    description: Social assistance program participation indicating whether the households accept social assistance. Part of unique constraint combination. Ex. Yes, No
+    label: Social Support
+    ai_context: 'Social Assistance Participation: Simple Yes/No indicator showing whether the household accepts social assistance, part of a unique constraint combination.
+
+      Social Support Status: Binary indicator where ''Yes'' means the household accepts social assistance and ''No'' means it does not. Part of unique constraint combination.'

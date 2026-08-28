@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__powerbattery
+label: Power Battery
+description: Battery telemetry records with energy-sustainability semantics and field context.
+fields:
+- polar_equipment_large_public__powerbattery.*
+joins: {}
+ai_context: Use the modeled business fields power_source, energy_efficiency_percent, power_consumption_w, battery_level_percent, energy_sustainability_index, energy_sustainability_classification rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

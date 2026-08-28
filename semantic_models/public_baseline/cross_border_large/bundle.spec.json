@@ -1,0 +1,135 @@
+{
+  "format_version": 1,
+  "database": "cross_border_large",
+  "catalog": "cross_border_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "cross_border_large:table:SecurityProfile",
+      "view_name": "cross_border_large_public__security_profile",
+      "file_name": "cross_border_large.public__security_profile.view",
+      "topic_file_name": "security_profile_semantics.topic",
+      "label": "Security Profiles",
+      "description": "Security-profile rows with encryption, access-control, log-retention, and modeled robustness semantics."
+    },
+    {
+      "table_stable_id": "cross_border_large:table:AuditAndCompliance",
+      "view_name": "cross_border_large_public__audit_and_compliance",
+      "file_name": "cross_border_large.public__audit_and_compliance.view",
+      "topic_file_name": "audit_and_compliance_semantics.topic",
+      "label": "Audit and Compliance",
+      "description": "Audit rows with finding counts, data-subject request counts, response time, remediation deadlines, and same-row modeled semantics."
+    },
+    {
+      "table_stable_id": "cross_border_large:table:VendorManagement",
+      "view_name": "cross_border_large_public__vendor_management",
+      "file_name": "cross_border_large.public__vendor_management.view",
+      "topic_file_name": "vendor_management_semantics.topic",
+      "label": "Vendor Management",
+      "description": "Vendor rows with policy and process compliance status and a modeled non-compliance flag."
+    },
+    {
+      "table_stable_id": "cross_border_large:table:DataProfile",
+      "view_name": "cross_border_large_public__data_profile",
+      "file_name": "cross_border_large.public__data_profile.view",
+      "topic_file_name": "data_profile_semantics.topic",
+      "label": "Data Profiles",
+      "description": "Data-profile rows with volume, integrity, checksum, and same-row failure semantics."
+    },
+    {
+      "table_stable_id": "cross_border_large:table:API_Endpoint",
+      "view_name": "cross_border_large_public__api_endpoint",
+      "file_name": "cross_border_large.public__api_endpoint.view",
+      "topic_file_name": "api_endpoint_semantics.topic",
+      "label": "API Endpoints",
+      "description": "API endpoint observations with public context for the structured success-percentage field."
+    },
+    {
+      "table_stable_id": "cross_border_large:table:Compliance",
+      "view_name": "cross_border_large_public__compliance",
+      "file_name": "cross_border_large.public__compliance.view",
+      "topic_file_name": "compliance_semantics.topic",
+      "label": "Compliance",
+      "description": "Compliance rows with public context for GDPR compliance status."
+    },
+    {
+      "table_stable_id": "cross_border_large:table:Control_Library",
+      "view_name": "cross_border_large_public__control_library",
+      "file_name": "cross_border_large.public__control_library.view",
+      "topic_file_name": "control_library_semantics.topic",
+      "label": "Control Library",
+      "description": "Control-library rows with public context for measured control effectiveness."
+    }
+  ],
+  "physical_fields": [
+    {"schema_stable_id":"cross_border_large:column:SecurityProfile:enc_state","name":"enc_state","label":"Encryption Status"},
+    {"schema_stable_id":"cross_border_large:column:SecurityProfile:acl_state","name":"acl_state","label":"Access Control Strength"},
+    {"schema_stable_id":"cross_border_large:column:SecurityProfile:LogRetDays","name":"LogRetDays","label":"Audit Log Retention (days)"},
+    {"schema_stable_id":"cross_border_large:column:AuditAndCompliance:critFindNum","name":"critFindNum","label":"Critical Findings"},
+    {"schema_stable_id":"cross_border_large:column:AuditAndCompliance:FINDTALLY","name":"FINDTALLY","label":"Total Findings"},
+    {"schema_stable_id":"cross_border_large:column:AuditAndCompliance:AccReqNum","name":"AccReqNum","label":"Access Requests"},
+    {"schema_stable_id":"cross_border_large:column:AuditAndCompliance:DEL_REQ_NUM","name":"DEL_REQ_NUM","label":"Deletion Requests"},
+    {"schema_stable_id":"cross_border_large:column:AuditAndCompliance:rect_req_num","name":"rect_req_num","label":"Correction Requests"},
+    {"schema_stable_id":"cross_border_large:column:AuditAndCompliance:PORTREQNUM","name":"PORTREQNUM","label":"Transfer Requests"},
+    {"schema_stable_id":"cross_border_large:column:AuditAndCompliance:resp_time_day","name":"resp_time_day","label":"Response Time (days)"},
+    {"schema_stable_id":"cross_border_large:column:AuditAndCompliance:REMED_DUE","name":"REMED_DUE","label":"Remediation Due Date"},
+    {"schema_stable_id":"cross_border_large:column:VendorManagement:pol_comp","name":"pol_comp","label":"Policy Compliance"},
+    {"schema_stable_id":"cross_border_large:column:VendorManagement:procComp","name":"procComp","label":"Process Compliance"},
+    {"schema_stable_id":"cross_border_large:column:DataProfile:vol_gb","name":"vol_gb","label":"Data Volume (GB)"},
+    {"schema_stable_id":"cross_border_large:column:DataProfile:Int_check","name":"Int_check","label":"Integrity Check Status"},
+    {"schema_stable_id":"cross_border_large:column:DataProfile:CSUMVERIFY","name":"CSUMVERIFY","label":"Checksum Verification Status"},
+    {"schema_stable_id":"cross_border_large:structured-leaf:API_Endpoint:api_perf_obs:k:performance/k:success_pct","name":"success_pct","label":"Success Percentage","sql":"CAST(${api_perf_obs} #>> '{performance,success_pct}' AS DOUBLE PRECISION)","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"cross_border_large:column:Compliance:gdprComp","name":"gdprComp","label":"GDPR Compliance Status"},
+    {"schema_stable_id":"cross_border_large:column:Control_Library:effectiveness_score_pct","name":"effectiveness_score_pct","label":"Control Effectiveness (%)"}
+  ],
+  "derived_fields": [
+    {
+      "hkb_stable_id": "cross_border_large:hkb:5",
+      "sql": "CASE WHEN ${enc_state} IS NULL OR ${acl_state} IS NULL THEN NULL WHEN ${enc_state} = 'Full' AND ${acl_state} = 'Strong' THEN 3 WHEN ${enc_state} = 'Full' OR ${acl_state} = 'Strong' THEN 2 ELSE 1 END"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:7",
+      "sql": "${critFindNum} * 1.0 / (${FINDTALLY} + 1.0)"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:8",
+      "sql": "${AccReqNum} + ${DEL_REQ_NUM} + ${rect_req_num} + ${PORTREQNUM}"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:11",
+      "sql": "${security_robustness_score} = 3"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:12",
+      "sql": "${pol_comp} = 'Non-compliant' OR ${procComp} = 'Non-compliant'"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:13",
+      "sql": "${audit_finding_severity} > 0.5"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:17",
+      "sql": "${Int_check} = 'Failed' OR ${CSUMVERIFY} = 'Failed'"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:71",
+      "sql": "'access requests: ' || CAST(${AccReqNum} AS TEXT) || ', deletion requests: ' || CAST(${DEL_REQ_NUM} AS TEXT) || ', correction requests: ' || CAST(${rect_req_num} AS TEXT) || ', transfer requests: ' || CAST(${PORTREQNUM} AS TEXT)"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:72",
+      "sql": "CASE WHEN ${Int_check} = 'Failed' THEN 1 ELSE 0 END + CASE WHEN ${CSUMVERIFY} = 'Failed' THEN 1 ELSE 0 END"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:73",
+      "sql": "CASE WHEN ${Int_check} = 'Failed' AND ${CSUMVERIFY} = 'Failed' THEN 'integrity check, verification' WHEN ${Int_check} = 'Failed' THEN 'integrity check' WHEN ${CSUMVERIFY} = 'Failed' THEN 'verification' ELSE '' END"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:76",
+      "sql": "CURRENT_DATE > ${REMED_DUE}"
+    },
+    {
+      "hkb_stable_id": "cross_border_large:hkb:77",
+      "sql": "${REMED_DUE} - CURRENT_DATE BETWEEN -5 AND 0"
+    }
+  ]
+}

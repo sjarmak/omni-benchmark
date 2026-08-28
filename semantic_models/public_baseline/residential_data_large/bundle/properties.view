@@ -1,0 +1,13 @@
+label: Properties
+description: Public residential property records with dwelling context.
+catalog: residential_data_large
+schema: public
+table_name: properties
+dimensions:
+  dwelling_type:
+    description: Dwelling type classification describing the structural and architectural category of the residential unit. Contains NULL when dwelling type is non-standard, mixed-use, or classification is pending assessment. Ex. Brickwork house, Apartment
+    label: Dwelling Type
+    sql: '-- DO NOT PARSE
+
+      ${dwelling_specs} ->> ''Dwelling_Class'''
+    ai_context: 'Dwelling Type: Values based on schema include ''Brickwork house'', ''Apartment'', ''Condominium'', etc.'

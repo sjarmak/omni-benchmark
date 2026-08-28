@@ -1,0 +1,21 @@
+label: Commerce and Collection
+description: Commerce records with row-level collection semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: commerceandcollection
+dimensions:
+  digital_items_owned:
+    description: BIGINT. Number of digital items owned by the fan.
+    label: Digital Items Owned
+  physical_items_owned:
+    description: BIGINT. Number of physical collectible items owned by the fan.
+    label: Physical Items Owned
+  trade_activity_level:
+    description: TEXT. Trading activity level classification. **NULL means trading activity tracking incomplete or user has not participated in trading.**
+    label: Trade Activity Level
+    ai_context: 'Trade Activity Level: Classifies a fan''s engagement in the trading of digital or physical collectibles. ''High'', ''Medium'', and ''Low'' levels reflect the frequency and volume of trades.'
+  collection_rate:
+    label: Collection Rate (CR)
+    description: Measures the total number of digital and physical collectible items a fan owns.
+    sql: ${digital_items_owned} + ${physical_items_owned}
+    ai_context: Use this modeled field for Collection Rate (CR); do not reconstruct its formula.

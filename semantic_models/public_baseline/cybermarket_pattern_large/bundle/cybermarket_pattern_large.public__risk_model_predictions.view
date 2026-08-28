@@ -1,0 +1,14 @@
+label: Risk Model Predictions
+description: Risk-model prediction records with row-level fraud-probability semantics.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: RiskModelPredictions
+dimensions:
+  fraud_probability:
+    description: 'REAL. Predicted probability of fraud (0-1). Example: 0.08.'
+    label: Fraud Probability
+  is_fraud_flagged_transaction:
+    label: Fraud-Flagged Transaction
+    description: Transaction flagged by fraud model probability.
+    sql: ${fraud_probability} > 0.70
+    ai_context: Use this modeled field for Fraud-Flagged Transaction; do not reconstruct its formula.

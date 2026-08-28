@@ -1,0 +1,29 @@
+{
+  "format_version": 1,
+  "database": "sports_events_large",
+  "catalog": "sports_events_large",
+  "schema": "public",
+  "views": [
+    {"table_stable_id":"sports_events_large:table:circuits","view_name":"sports_events_large_public__circuits","file_name":"sports_events_large.public__circuits.view","topic_file_name":"circuits_semantics.topic","label":"Circuits","description":"Circuit records with location metadata."},
+    {"table_stable_id":"sports_events_large:table:pit_stops","view_name":"sports_events_large_public__pit_stops","file_name":"sports_events_large.public__pit_stops.view","topic_file_name":"pit_stops_semantics.topic","label":"Pit Stops","description":"Pit-stop records with duration measurements."},
+    {"table_stable_id":"sports_events_large:table:lap_times","view_name":"sports_events_large_public__lap_times","file_name":"sports_events_large.public__lap_times.view","topic_file_name":"lap_times_semantics.topic","label":"Lap Times","description":"Lap-time records with millisecond measurements."}
+    ,{"table_stable_id":"sports_events_large:table:drivers","view_name":"sports_events_large_public__drivers","file_name":"sports_events_large.public__drivers.view","topic_file_name":"drivers_semantics.topic","label":"Drivers","description":"Driver records."}
+    ,{"table_stable_id":"sports_events_large:table:constructors","view_name":"sports_events_large_public__constructors","file_name":"sports_events_large.public__constructors.view","topic_file_name":"constructors_semantics.topic","label":"Constructors","description":"Constructor records."}
+    ,{"table_stable_id":"sports_events_large:table:races","view_name":"sports_events_large_public__races","file_name":"sports_events_large.public__races.view","topic_file_name":"races_semantics.topic","label":"Races","description":"Race records."}
+  ],
+  "physical_fields": [
+    {"schema_stable_id":"sports_events_large:structured-leaf:circuits:location_metadata:k:coordinates/k:elevation_m","name":"elevation_m","label":"Elevation (m)","sql":"CAST(${location_metadata} -> 'coordinates' ->> 'elevation_m' AS DOUBLE PRECISION)","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"sports_events_large:column:circuits:location_metadata","name":"location_metadata","label":"Circuit location metadata","sql":"${location_metadata}","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"sports_events_large:column:drivers:driver_identity","name":"driver_identity","label":"Driver identity","sql":"${driver_identity}","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"sports_events_large:column:constructors:naty","name":"naty","label":"Constructor nationality","sql":"${naty}","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"sports_events_large:column:races:event_schedule","name":"event_schedule","label":"Race event schedule","sql":"${event_schedule}","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"sports_events_large:column:lap_times:msec_val","name":"msec_val","label":"Lap time in milliseconds","sql":"${msec_val}","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"sports_events_large:column:pit_stops:ms_count","name":"ms_count","label":"Pit stop duration in milliseconds","sql":"${ms_count}","omni_parser_mode":"do_not_parse"}
+  ],
+  "derived_fields": [
+    {"hkb_stable_id":"sports_events_large:hkb:14","sql":"${elevation_m} > 800"},
+    {"hkb_stable_id":"sports_events_large:hkb:17","sql":"${ms_count} < 2500"},
+    {"hkb_stable_id":"sports_events_large:hkb:21","sql":"${msec_val} / 1000.0"},
+    {"hkb_stable_id":"sports_events_large:hkb:22","sql":"${ms_count} / 1000.0"}
+  ]
+}

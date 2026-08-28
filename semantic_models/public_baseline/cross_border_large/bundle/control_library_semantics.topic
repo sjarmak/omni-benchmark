@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__control_library
+label: Control Library
+description: Control-library rows with public context for measured control effectiveness.
+fields:
+- cross_border_large_public__control_library.*
+joins: {}
+ai_context: Use the modeled business fields effectiveness_score_pct rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

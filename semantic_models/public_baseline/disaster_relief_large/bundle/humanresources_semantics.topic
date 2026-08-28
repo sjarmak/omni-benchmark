@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__humanresources
+label: Human Resources
+description: Human-resource records with row-level staff and volunteer footprint semantics.
+fields:
+- disaster_relief_large_public__humanresources.*
+joins: {}
+ai_context: Use the modeled business fields total_staff, volunteer_count, total_humanitarian_footprint rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

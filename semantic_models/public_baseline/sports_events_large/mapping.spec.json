@@ -1,0 +1,1299 @@
+{
+  "database": "sports_events_large",
+  "schema_version": 1,
+  "intervention_provenance": "agent_assisted_public_modeling_inference",
+  "schema_aliases": {
+    "circuits": "sports_events_large:table:circuits",
+    "constructors": "sports_events_large:table:constructors",
+    "races": "sports_events_large:table:races",
+    "pit_stops": "sports_events_large:table:pit_stops",
+    "lap_times": "sports_events_large:table:lap_times",
+    "C.elevation": "sports_events_large:structured-leaf:circuits:location_metadata:k:coordinates/k:elevation_m",
+    "PS.ms": "sports_events_large:column:pit_stops:ms_count",
+    "L.msec": "sports_events_large:column:lap_times:msec_val",
+    "C.location": "sports_events_large:column:circuits:location_metadata",
+    "drivers.driver_identity": "sports_events_large:column:drivers:driver_identity",
+    "constructors.naty": "sports_events_large:column:constructors:naty",
+    "races.event_schedule": "sports_events_large:column:races:event_schedule"
+  },
+  "records": [
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 0,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 1,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 2,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 3,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "One exact public field target; context only.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "C.location",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 4,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "One exact public field target; context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "circuits"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 5,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "One exact public field target; context only.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "constructors.naty",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 6,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "One exact public field target; context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "constructors"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "races.event_schedule",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 7,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "One exact public field target; context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "races"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 8,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 9,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 10,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 11,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 12,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 13,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "C.elevation",
+          "confidence": "exact",
+          "role": "elevation_m"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 14,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-table scalar representation from public schema fields.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "high_altitude_circuit",
+      "target_alias": "circuits"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 15,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 16,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PS.ms",
+          "confidence": "exact",
+          "role": "duration_ms"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 17,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-table scalar representation from public schema fields.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "efficient_pit_stop",
+      "target_alias": "pit_stops"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 18,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 19,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 20,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "L.msec",
+          "confidence": "exact",
+          "role": "lap_time_ms"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 21,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-table scalar representation from public schema fields.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "lap_time_seconds",
+      "target_alias": "lap_times"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PS.ms",
+          "confidence": "exact",
+          "role": "duration_ms"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 22,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-table scalar representation from public schema fields.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "pit_stop_duration_seconds",
+      "target_alias": "pit_stops"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 23,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 24,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 25,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 26,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 27,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 28,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 29,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 30,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 31,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 32,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 33,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 34,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 35,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 36,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 37,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 38,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 39,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 40,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 41,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 42,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 43,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 44,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 45,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 46,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 47,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 48,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 49,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Missing, ambiguous, or nonrepresentable from the allowed public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 50,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 51,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 52,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 53,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 54,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 55,
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires unresolved joins, row grouping, aggregation, or existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    }
+  ]
+}

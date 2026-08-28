@@ -1,0 +1,2047 @@
+{
+  "database": "robot_fault_prediction_large",
+  "intervention_provenance": "agent_assisted_public_modeling_inference",
+  "records": [
+    {
+      "bindings": [
+        {
+          "alias": "RD.installation_date",
+          "confidence": "exact",
+          "role": "RD_installation_date"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 0,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Robot Age",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_0",
+      "target_alias": "RD.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 1,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Payload Utilization Ratio (PUR)",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 2,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Mean Time Between Stoppages (MTBS)",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 3,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Supply Sufficiency (Days)",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "JC.J1_temp",
+          "confidence": "exact",
+          "role": "JC_J1_temp"
+        },
+        {
+          "alias": "JC.J2_temp",
+          "confidence": "exact",
+          "role": "JC_J2_temp"
+        },
+        {
+          "alias": "JC.J3_temp",
+          "confidence": "exact",
+          "role": "JC_J3_temp"
+        },
+        {
+          "alias": "JC.J4_temp",
+          "confidence": "exact",
+          "role": "JC_J4_temp"
+        },
+        {
+          "alias": "JC.J5_temp",
+          "confidence": "exact",
+          "role": "JC_J5_temp"
+        },
+        {
+          "alias": "JC.J6_temp",
+          "confidence": "exact",
+          "role": "JC_J6_temp"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 4,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Average Joint Temperature",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_4",
+      "target_alias": "JC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "JC.J1_vibration",
+          "confidence": "exact",
+          "role": "JC_J1_vibration"
+        },
+        {
+          "alias": "JC.J2_vibration",
+          "confidence": "exact",
+          "role": "JC_J2_vibration"
+        },
+        {
+          "alias": "JC.J3_vibration",
+          "confidence": "exact",
+          "role": "JC_J3_vibration"
+        },
+        {
+          "alias": "JC.J4_vibration",
+          "confidence": "exact",
+          "role": "JC_J4_vibration"
+        },
+        {
+          "alias": "JC.J5_vibration",
+          "confidence": "exact",
+          "role": "JC_J5_vibration"
+        },
+        {
+          "alias": "JC.J6_vibration",
+          "confidence": "exact",
+          "role": "JC_J6_vibration"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 5,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Average Joint Vibration",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_5",
+      "target_alias": "JC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SC.overseer_load",
+          "confidence": "exact",
+          "role": "SC_overseer_load"
+        },
+        {
+          "alias": "SC.memory_usage",
+          "confidence": "exact",
+          "role": "SC_memory_usage"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 6,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Controller Stress Score",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_6",
+      "target_alias": "SC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PS.collisions",
+          "confidence": "exact",
+          "role": "PS_collisions"
+        },
+        {
+          "alias": "PS.zone_violations",
+          "confidence": "exact",
+          "role": "PS_zone_violations"
+        },
+        {
+          "alias": "PS.speed_violations",
+          "confidence": "exact",
+          "role": "PS_speed_violations"
+        },
+        {
+          "alias": "O.operational_hours",
+          "confidence": "exact",
+          "role": "O_operational_hours"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 7,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Safety Incident Rate",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 8,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Relative Positional Error",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "JC.J1_temp",
+          "confidence": "exact",
+          "role": "JC_J1_temp"
+        },
+        {
+          "alias": "JC.J2_temp",
+          "confidence": "exact",
+          "role": "JC_J2_temp"
+        },
+        {
+          "alias": "JC.J3_temp",
+          "confidence": "exact",
+          "role": "JC_J3_temp"
+        },
+        {
+          "alias": "JC.J4_temp",
+          "confidence": "exact",
+          "role": "JC_J4_temp"
+        },
+        {
+          "alias": "JC.J5_temp",
+          "confidence": "exact",
+          "role": "JC_J5_temp"
+        },
+        {
+          "alias": "JC.J6_temp",
+          "confidence": "exact",
+          "role": "JC_J6_temp"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 9,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Joint Temperature Differential",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_9",
+      "target_alias": "JC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "MF.rul_hours",
+          "confidence": "exact",
+          "role": "MF_rul_hours"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 10,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Remaining Useful Life in Days",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_10",
+      "target_alias": "MF.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 11,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Budget Runway (Days)",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "O.cycle_time_seconds",
+          "confidence": "exact",
+          "role": "O_cycle_time_seconds"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 12,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Throughput Rate",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_12",
+      "target_alias": "O.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 13,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Overload Frequency",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 14,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Response Effectiveness Score (RES)",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "JC.J1_backlash",
+          "confidence": "exact",
+          "role": "JC_J1_backlash"
+        },
+        {
+          "alias": "JC.J2_backlash",
+          "confidence": "exact",
+          "role": "JC_J2_backlash"
+        },
+        {
+          "alias": "JC.J3_backlash",
+          "confidence": "exact",
+          "role": "JC_J3_backlash"
+        },
+        {
+          "alias": "JC.J4_backlash",
+          "confidence": "exact",
+          "role": "JC_J4_backlash"
+        },
+        {
+          "alias": "JC.J5_backlash",
+          "confidence": "exact",
+          "role": "JC_J5_backlash"
+        },
+        {
+          "alias": "JC.J6_backlash",
+          "confidence": "exact",
+          "role": "JC_J6_backlash"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 15,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Average Backlash",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_15",
+      "target_alias": "JC.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 16,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Maintenance Cost Per Hour",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "MF.rul_hours",
+          "confidence": "exact",
+          "role": "MF_rul_hours"
+        },
+        {
+          "alias": "MF.fault_prediction_score",
+          "confidence": "exact",
+          "role": "MF_fault_prediction_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 17,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Predictive Maintenance Urgency (PMU)",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_17",
+      "target_alias": "MF.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "JC.J1_vibration",
+          "confidence": "exact",
+          "role": "JC_J1_vibration"
+        },
+        {
+          "alias": "JC.J2_vibration",
+          "confidence": "exact",
+          "role": "JC_J2_vibration"
+        },
+        {
+          "alias": "JC.J3_vibration",
+          "confidence": "exact",
+          "role": "JC_J3_vibration"
+        },
+        {
+          "alias": "JC.J4_vibration",
+          "confidence": "exact",
+          "role": "JC_J4_vibration"
+        },
+        {
+          "alias": "JC.J5_vibration",
+          "confidence": "exact",
+          "role": "JC_J5_vibration"
+        },
+        {
+          "alias": "JC.J6_vibration",
+          "confidence": "exact",
+          "role": "JC_J6_vibration"
+        },
+        {
+          "alias": "JC.J1_backlash",
+          "confidence": "exact",
+          "role": "JC_J1_backlash"
+        },
+        {
+          "alias": "JC.J2_backlash",
+          "confidence": "exact",
+          "role": "JC_J2_backlash"
+        },
+        {
+          "alias": "JC.J3_backlash",
+          "confidence": "exact",
+          "role": "JC_J3_backlash"
+        },
+        {
+          "alias": "JC.J4_backlash",
+          "confidence": "exact",
+          "role": "JC_J4_backlash"
+        },
+        {
+          "alias": "JC.J5_backlash",
+          "confidence": "exact",
+          "role": "JC_J5_backlash"
+        },
+        {
+          "alias": "JC.J6_backlash",
+          "confidence": "exact",
+          "role": "JC_J6_backlash"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 18,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Mechanical Wear Score",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_18",
+      "target_alias": "JC.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 19,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Health Degradation Rate (HDR)",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 20,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Financial Health Score (FHS)",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PS.safety_state",
+          "confidence": "exact",
+          "role": "PS_safety_state"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 21,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Safety State Meanings",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PS.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PS.calibration_state",
+          "confidence": "exact",
+          "role": "PS_calibration_state"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 22,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Calibration State Meanings",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PS.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 23,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Imminent Supply Depletion Alert",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "MF.fault_prediction_score",
+          "confidence": "exact",
+          "role": "MF_fault_prediction_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 24,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Fault Prediction Score Tiers",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "MF.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PS.condition_index",
+          "confidence": "exact",
+          "role": "PS_condition_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 25,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Condition Index Tiers",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PS.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 26,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Public Health Emergency",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SC.overseer_load",
+          "confidence": "exact",
+          "role": "SC_overseer_load"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 27,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "CPU Load Levels",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "SC.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 28,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Highly Effective Operation",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SC.cabinet_humidity",
+          "confidence": "exact",
+          "role": "SC_cabinet_humidity"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 29,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Cabinet Humidity Risk",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "SC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RD.payload_capacity_kg",
+          "confidence": "exact",
+          "role": "RD_payload_capacity_kg"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 30,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Payload Capacity Class",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RD.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 31,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Overwhelmed Logistical Hub",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 32,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Failing Operation",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PS.air_pressure",
+          "confidence": "exact",
+          "role": "PS_air_pressure"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 33,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Air Pressure Status",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PS.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "JC.J1_backlash",
+          "confidence": "exact",
+          "role": "JC_J1_backlash"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 34,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Backlash Severity",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_34",
+      "target_alias": "JC.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 35,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "High Cost, Low Impact Operation",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 36,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Brake Status Interpretation",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RD.firmware_version",
+          "confidence": "exact",
+          "role": "RD_firmware_version"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 37,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Firmware Lifecycle Stage",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RD.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RD.robot_type",
+          "confidence": "exact",
+          "role": "RD_robot_type"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 38,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Robot Architectures",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RD.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "O.application_type",
+          "confidence": "exact",
+          "role": "O_application_type"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 39,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Common Application Groups",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "O.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "O.application_type",
+          "confidence": "exact",
+          "role": "O_application_type"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 40,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "High-Wear Applications",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "O.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "O.application_type",
+          "confidence": "exact",
+          "role": "O_application_type"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 41,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Precision-Critical Applications",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "O.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 42,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Payload Overload Condition",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "JC.J1_temp",
+          "confidence": "exact",
+          "role": "JC_J1_temp"
+        },
+        {
+          "alias": "JC.J2_temp",
+          "confidence": "exact",
+          "role": "JC_J2_temp"
+        },
+        {
+          "alias": "JC.J3_temp",
+          "confidence": "exact",
+          "role": "JC_J3_temp"
+        },
+        {
+          "alias": "JC.J4_temp",
+          "confidence": "exact",
+          "role": "JC_J4_temp"
+        },
+        {
+          "alias": "JC.J5_temp",
+          "confidence": "exact",
+          "role": "JC_J5_temp"
+        },
+        {
+          "alias": "JC.J6_temp",
+          "confidence": "exact",
+          "role": "JC_J6_temp"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 43,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Thermal Anomaly",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_43",
+      "target_alias": "JC.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 44,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Mechanical Wear Score Tiers",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 45,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Underutilized Asset",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 46,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Reliability Risk",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "JC.J1_vibration",
+          "confidence": "exact",
+          "role": "JC_J1_vibration"
+        },
+        {
+          "alias": "JC.J2_vibration",
+          "confidence": "exact",
+          "role": "JC_J2_vibration"
+        },
+        {
+          "alias": "JC.J3_vibration",
+          "confidence": "exact",
+          "role": "JC_J3_vibration"
+        },
+        {
+          "alias": "JC.J4_vibration",
+          "confidence": "exact",
+          "role": "JC_J4_vibration"
+        },
+        {
+          "alias": "JC.J5_vibration",
+          "confidence": "exact",
+          "role": "JC_J5_vibration"
+        },
+        {
+          "alias": "JC.J6_vibration",
+          "confidence": "exact",
+          "role": "JC_J6_vibration"
+        },
+        {
+          "alias": "JC.J1_backlash",
+          "confidence": "exact",
+          "role": "JC_J1_backlash"
+        },
+        {
+          "alias": "JC.J2_backlash",
+          "confidence": "exact",
+          "role": "JC_J2_backlash"
+        },
+        {
+          "alias": "JC.J3_backlash",
+          "confidence": "exact",
+          "role": "JC_J3_backlash"
+        },
+        {
+          "alias": "JC.J4_backlash",
+          "confidence": "exact",
+          "role": "JC_J4_backlash"
+        },
+        {
+          "alias": "JC.J5_backlash",
+          "confidence": "exact",
+          "role": "JC_J5_backlash"
+        },
+        {
+          "alias": "JC.J6_backlash",
+          "confidence": "exact",
+          "role": "JC_J6_backlash"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 47,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Mechanical Degradation Alert",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_47",
+      "target_alias": "JC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "MF.rul_hours",
+          "confidence": "exact",
+          "role": "MF_rul_hours"
+        },
+        {
+          "alias": "MF.fault_prediction_score",
+          "confidence": "exact",
+          "role": "MF_fault_prediction_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 48,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Predictive Maintenance Trigger",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_48",
+      "target_alias": "MF.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PS.collisions",
+          "confidence": "exact",
+          "role": "PS_collisions"
+        },
+        {
+          "alias": "PS.zone_violations",
+          "confidence": "exact",
+          "role": "PS_zone_violations"
+        },
+        {
+          "alias": "PS.speed_violations",
+          "confidence": "exact",
+          "role": "PS_speed_violations"
+        },
+        {
+          "alias": "O.operational_hours",
+          "confidence": "exact",
+          "role": "O_operational_hours"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 49,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "High Safety-Risk Unit",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 50,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Precision Performance Degradation",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 51,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Catastrophic Disaster",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 52,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Workhorse Robot",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "MF.rul_hours",
+          "confidence": "exact",
+          "role": "MF_rul_hours"
+        },
+        {
+          "alias": "MF.upkeep_due_days",
+          "confidence": "exact",
+          "role": "MF_upkeep_due_days"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 53,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Urgent Maintenance Required",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_53",
+      "target_alias": "MF.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RD.installation_date",
+          "confidence": "exact",
+          "role": "RD_installation_date"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 54,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Legacy Robot",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_54",
+      "target_alias": "RD.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 55,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Medical Staff Ratio",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 56,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Imminent Failure Warning",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 57,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "High Burn Rate Alert",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 58,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Intensive Workload",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 59,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Degrading Robot",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 60,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Top-Tier Usage Model",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 61,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Anomalous Controller Stress",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "JC.J1_temp",
+          "confidence": "exact",
+          "role": "JC_J1_temp"
+        },
+        {
+          "alias": "JC.J2_temp",
+          "confidence": "exact",
+          "role": "JC_J2_temp"
+        },
+        {
+          "alias": "JC.J3_temp",
+          "confidence": "exact",
+          "role": "JC_J3_temp"
+        },
+        {
+          "alias": "JC.J4_temp",
+          "confidence": "exact",
+          "role": "JC_J4_temp"
+        },
+        {
+          "alias": "JC.J5_temp",
+          "confidence": "exact",
+          "role": "JC_J5_temp"
+        },
+        {
+          "alias": "JC.J6_temp",
+          "confidence": "exact",
+          "role": "JC_J6_temp"
+        },
+        {
+          "alias": "JC.J1_vibration",
+          "confidence": "exact",
+          "role": "JC_J1_vibration"
+        },
+        {
+          "alias": "JC.J2_vibration",
+          "confidence": "exact",
+          "role": "JC_J2_vibration"
+        },
+        {
+          "alias": "JC.J3_vibration",
+          "confidence": "exact",
+          "role": "JC_J3_vibration"
+        },
+        {
+          "alias": "JC.J4_vibration",
+          "confidence": "exact",
+          "role": "JC_J4_vibration"
+        },
+        {
+          "alias": "JC.J5_vibration",
+          "confidence": "exact",
+          "role": "JC_J5_vibration"
+        },
+        {
+          "alias": "JC.J6_vibration",
+          "confidence": "exact",
+          "role": "JC_J6_vibration"
+        },
+        {
+          "alias": "JC.J1_backlash",
+          "confidence": "exact",
+          "role": "JC_J1_backlash"
+        },
+        {
+          "alias": "JC.J2_backlash",
+          "confidence": "exact",
+          "role": "JC_J2_backlash"
+        },
+        {
+          "alias": "JC.J3_backlash",
+          "confidence": "exact",
+          "role": "JC_J3_backlash"
+        },
+        {
+          "alias": "JC.J4_backlash",
+          "confidence": "exact",
+          "role": "JC_J4_backlash"
+        },
+        {
+          "alias": "JC.J5_backlash",
+          "confidence": "exact",
+          "role": "JC_J5_backlash"
+        },
+        {
+          "alias": "JC.J6_backlash",
+          "confidence": "exact",
+          "role": "JC_J6_backlash"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 62,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Critical Condition Robot",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_62",
+      "target_alias": "JC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "O.cycle_time_seconds",
+          "confidence": "exact",
+          "role": "O_cycle_time_seconds"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 63,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Throughput Rate (Cycles per Hour)",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "hkb_63",
+      "target_alias": "O.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 64,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "High Safety-Risk",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    }
+  ],
+  "schema_aliases": {
+    "A.T": "robot_fault_prediction_large:table:actuation_data",
+    "JC.J1_backlash": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J1/k:backlash_deg",
+    "JC.J1_temp": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J1/k:temperature_C",
+    "JC.J1_vibration": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J1/k:vibration_mmps",
+    "JC.J2_backlash": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J2/k:backlash_deg",
+    "JC.J2_temp": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J2/k:temperature_C",
+    "JC.J2_vibration": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J2/k:vibration_mmps",
+    "JC.J3_backlash": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J3/k:backlash_deg",
+    "JC.J3_temp": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J3/k:temperature_C",
+    "JC.J3_vibration": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J3/k:vibration_mmps",
+    "JC.J4_backlash": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J4/k:backlash_deg",
+    "JC.J4_temp": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J4/k:temperature_C",
+    "JC.J4_vibration": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J4/k:vibration_mmps",
+    "JC.J5_backlash": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J5/k:backlash_deg",
+    "JC.J5_temp": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J5/k:temperature_C",
+    "JC.J5_vibration": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J5/k:vibration_mmps",
+    "JC.J6_backlash": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J6/k:backlash_deg",
+    "JC.J6_temp": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J6/k:temperature_C",
+    "JC.J6_vibration": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J6/k:vibration_mmps",
+    "JC.T": "robot_fault_prediction_large:table:joint_condition",
+    "MF.T": "robot_fault_prediction_large:table:maintenance_and_fault",
+    "MF.fault_prediction_score": "robot_fault_prediction_large:column:maintenance_and_fault:faultpredscore",
+    "MF.rul_hours": "robot_fault_prediction_large:column:maintenance_and_fault:rulhours",
+    "MF.upkeep_due_days": "robot_fault_prediction_large:column:maintenance_and_fault:upkeepduedays",
+    "O.T": "robot_fault_prediction_large:table:operation",
+    "O.application_type": "robot_fault_prediction_large:column:operation:apptypeval",
+    "O.cycle_time_seconds": "robot_fault_prediction_large:column:operation:cycletimesecval",
+    "O.operational_hours": "robot_fault_prediction_large:column:operation:totopshrval",
+    "PS.T": "robot_fault_prediction_large:table:performance_and_safety",
+    "PS.air_pressure": "robot_fault_prediction_large:column:performance_and_safety:airpressval",
+    "PS.calibration_state": "robot_fault_prediction_large:column:performance_and_safety:calibstateval",
+    "PS.collisions": "robot_fault_prediction_large:column:performance_and_safety:collisioncount",
+    "PS.condition_index": "robot_fault_prediction_large:column:performance_and_safety:conditionindexval",
+    "PS.safety_state": "robot_fault_prediction_large:column:performance_and_safety:safetystateval",
+    "PS.speed_violations": "robot_fault_prediction_large:column:performance_and_safety:speedviolnum",
+    "PS.zone_violations": "robot_fault_prediction_large:column:performance_and_safety:zoneviolnum",
+    "RD.T": "robot_fault_prediction_large:table:robot_details",
+    "RD.firmware_version": "robot_fault_prediction_large:column:robot_details:fwversionval",
+    "RD.installation_date": "robot_fault_prediction_large:column:robot_details:instdateval",
+    "RD.payload_capacity_kg": "robot_fault_prediction_large:column:robot_details:payloadcapkg",
+    "RD.robot_type": "robot_fault_prediction_large:column:robot_details:bottypeval",
+    "SC.T": "robot_fault_prediction_large:table:system_controller",
+    "SC.cabinet_humidity": "robot_fault_prediction_large:column:system_controller:cabhumiditylevel",
+    "SC.memory_usage": "robot_fault_prediction_large:column:system_controller:memuseval",
+    "SC.overseer_load": "robot_fault_prediction_large:column:system_controller:overseerloadvalue"
+  },
+  "schema_version": 1
+}

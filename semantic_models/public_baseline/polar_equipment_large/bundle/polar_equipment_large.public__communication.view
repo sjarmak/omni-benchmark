@@ -1,0 +1,35 @@
+label: Communication
+description: Communication records with reliability, stability, resilience, and data-completeness semantics.
+catalog: polar_equipment_large
+schema: public
+table_name: Communication
+dimensions:
+  antenna_status:
+    description: 'TEXT. Antenna status. Possible values: Error, Normal, Warning.'
+    label: Antenna Status
+  network_latency_ms:
+    description: 'REAL. Network latency in milliseconds. Example: 1006.0.'
+    label: Network Latency (ms)
+  radio_signal_dbm:
+    description: 'REAL. Radio signal strength in dBm. Example: -97.8.'
+    label: Radio Signal (dBm)
+  communication_reliability_index:
+    label: Communication Reliability Index (CRI)
+    description: Assesses the reliability of communication systems based on signal metrics and antenna status.
+    sql: CASE ${antenna_status} WHEN 'Error' THEN 0.0 WHEN 'Warning' THEN 5.0 WHEN 'Normal' THEN 10.0 ELSE 0.0 END * (1.0 - ${network_latency_ms} / 1000.0)
+    ai_context: Use this modeled field for Communication Reliability Index (CRI); do not reconstruct its formula.
+  base_station_communication_stability_index:
+    label: Base Station Communication Stability Index (BSCSI)
+    description: Evaluates the stability and reliability of polar base station communication systems
+    sql: ${communication_reliability_index} * (1.0 + 0.2 * ${radio_signal_dbm} / 100.0) * (1.0 - 0.01 * (1000.0 - ${network_latency_ms}))
+    ai_context: Use this modeled field for Base Station Communication Stability Index (BSCSI); do not reconstruct its formula.
+  communication_network_resilience_assessment:
+    label: Communication Network Resilience Assessment (CNRA)
+    description: Assesses the resilience and interference resistance of polar communication networks
+    sql: CASE WHEN ${communication_reliability_index} > 0.8 AND ${base_station_communication_stability_index} > 0.85 THEN 'High Resilience' WHEN ${communication_reliability_index} > 0.6 AND ${base_station_communication_stability_index} > 0.7 THEN 'Medium Resilience' ELSE 'Low Resilience' END
+    ai_context: Use this modeled field for Communication Network Resilience Assessment (CNRA); do not reconstruct its formula.
+  has_complete_bscsi_source_data:
+    label: Complete Data Set
+    description: A data quality rule requiring that records used for a specific analysis must be complete and not contain null values for key input metrics.
+    sql: ${antenna_status} IS NOT NULL AND ${network_latency_ms} IS NOT NULL AND ${radio_signal_dbm} IS NOT NULL AND ${communication_reliability_index} IS NOT NULL AND ${base_station_communication_stability_index} IS NOT NULL
+    ai_context: Use this modeled field for Complete Data Set; do not reconstruct its formula.

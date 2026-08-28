@@ -1,0 +1,388 @@
+{
+  "database": "reverse_logistics_large",
+  "files": [
+    {
+      "file": "reverse_logistics_large.public__returns.view",
+      "sha256": "1277625972f0bdb6e3d0eb47604fae71887fd451bd21622ab37ed7fed6927e2a",
+      "size_bytes": 2126
+    },
+    {
+      "file": "returns_semantics.topic",
+      "sha256": "ef37695949642ab391d07da03b2d1c5b1822133e53f38a883eedd2e53e34d34b",
+      "size_bytes": 449
+    },
+    {
+      "file": "reverse_logistics_large.public__financial_management.view",
+      "sha256": "3af740ad5b7744adf87d4e138953ce6c72e842b3e3c34f29beb4cf85abc77372",
+      "size_bytes": 3603
+    },
+    {
+      "file": "financial_management_semantics.topic",
+      "sha256": "bd208033307a1445ef9dd81250ca81eba209064f37906033798d33f34be9afaf",
+      "size_bytes": 549
+    },
+    {
+      "file": "reverse_logistics_large.public__customers.view",
+      "sha256": "5e999c19a851a87d33d6953cb03c43ce5b3a57b5b1352604221087b7491d6c3d",
+      "size_bytes": 527
+    },
+    {
+      "file": "customers_semantics.topic",
+      "sha256": "2414ae70a9c71e9c1d18cfe41a6f63290bd13f787e0bd6f98c8f7b5653a28f0c",
+      "size_bytes": 365
+    },
+    {
+      "file": "reverse_logistics_large.public__quality_assessment.view",
+      "sha256": "1d7cdacb39b358013379e1c69a8449f0e1f875410b4b44afd144b01ec76ebbaa",
+      "size_bytes": 557
+    },
+    {
+      "file": "quality_assessment_semantics.topic",
+      "sha256": "a0506797220b69c796631067c8ac0a40b1be6b0e0c6971da480f3bd3da2dc4fb",
+      "size_bytes": 387
+    },
+    {
+      "file": "reverse_logistics_large.public__return_processing.view",
+      "sha256": "96f2127bd7075d9a29efa46efe7c4775243af8da05c8a83fc755c1cffb65972e",
+      "size_bytes": 888
+    },
+    {
+      "file": "return_processing_semantics.topic",
+      "sha256": "d71e0df432880286fefac6999151030eed751a4d1f8ee46e290c98933d3e6a70",
+      "size_bytes": 412
+    },
+    {
+      "file": "reverse_logistics_large.public__case_management.view",
+      "sha256": "e9b28b3f7afbd5cf4850d725b2fa571009cc5577c7d687f533850a8e9ea5b580",
+      "size_bytes": 538
+    },
+    {
+      "file": "case_management_semantics.topic",
+      "sha256": "eb6fde0574bf8accfdc2190969a6a049da92a7b036e05403e090f16921502b3b",
+      "size_bytes": 380
+    },
+    {
+      "file": "reverse_logistics_large.public__products.view",
+      "sha256": "e3cb347207c28977e57040fe1ec6f926f3aa7a0d2c2024599bac081bee613b87",
+      "size_bytes": 779
+    },
+    {
+      "file": "products_semantics.topic",
+      "sha256": "b910589601617c5f6344b47735c50212719b293de5638ca39e5a2159a7b7e9b9",
+      "size_bytes": 375
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:10",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "shipping_fee",
+      "table_stable_id": "reverse_logistics_large:table:returns"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:11",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "restocking_fee",
+      "table_stable_id": "reverse_logistics_large:table:financial_management"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "relabeling_cost",
+      "table_stable_id": "reverse_logistics_large:table:financial_management"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:13",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "disposal_cost",
+      "table_stable_id": "reverse_logistics_large:table:financial_management"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:14",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "repair_estimate",
+      "table_stable_id": "reverse_logistics_large:table:financial_management"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:15",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "recovery_value",
+      "table_stable_id": "reverse_logistics_large:table:financial_management"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:16",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "days_lapsed",
+      "table_stable_id": "reverse_logistics_large:table:returns"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:17",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "total_returns",
+      "table_stable_id": "reverse_logistics_large:table:customers"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:19",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "carbon_footprint",
+      "table_stable_id": "reverse_logistics_large:table:financial_management"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "return_channel",
+      "table_stable_id": "reverse_logistics_large:table:returns"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "fraud_risk_level",
+      "table_stable_id": "reverse_logistics_large:table:returns"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:22",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "item_condition",
+      "table_stable_id": "reverse_logistics_large:table:quality_assessment"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:23",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "disposal_method",
+      "table_stable_id": "reverse_logistics_large:table:financial_management"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "refund_method",
+      "table_stable_id": "reverse_logistics_large:table:financial_management"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "approval_level",
+      "table_stable_id": "reverse_logistics_large:table:return_processing"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:26",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "satisfaction_score",
+      "table_stable_id": "reverse_logistics_large:table:case_management"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:27",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "warranty_status",
+      "table_stable_id": "reverse_logistics_large:table:returns"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "processing_priority",
+      "table_stable_id": "reverse_logistics_large:table:return_processing"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "reverse_logistics_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "regulatory_compliance_status",
+      "table_stable_id": "reverse_logistics_large:table:products"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "55fe9d5718671b390351474663371b614af8f212d82cc056987912feaafe3d58"
+    },
+    "hkb_ir": {
+      "sha256": "d94f49674eb056f2d1be68fe3d6fa233ee0167ab13c5fd67c51440c356a92065"
+    },
+    "mapping": {
+      "sha256": "d8aa9e370dc14f24b7a3621628e25a98234d74e3f57f8fb5b84841fc41ba252f"
+    },
+    "mapping_manifest": {
+      "sha256": "aeae157d8149c1cf88604c8af6870317d18de449d2e8cd55c14bfff7af8c399c"
+    },
+    "schema_ir": {
+      "sha256": "7c69b9193add6d4794a144056822b3e89fc7710cf7405dc2fb7622484bc0caf8"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

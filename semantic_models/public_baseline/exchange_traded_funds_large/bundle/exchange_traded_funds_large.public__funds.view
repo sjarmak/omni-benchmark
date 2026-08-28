@@ -1,0 +1,120 @@
+label: Exchange-Traded Funds
+description: Fund records with row-level cost, yield, allocation, momentum, valuation, and liquidity semantics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: funds
+dimensions:
+  net_expense_ratio:
+    description: 'DECIMAL. Net expense ratio representing the annual cost to investors after fee waivers and reimbursements, expressed as a decimal (e.g., 0.0132 = 1.32%). Example: 0.0132, 0.0101, 0.0014. Contains NULL when expense ratio data is not yet reported or fund is too new to have established fees.'
+    label: Net Expense Ratio
+    ai_context: 'Net Expense Ratio: The annual fee charged to investors as a percentage of assets. A value of 0.005 corresponds to a 0.5% annual fee. Lower is generally better, as costs directly reduce returns.'
+  benchmark_expense_ratio:
+    description: 'DECIMAL. Benchmark expense ratio representing the cost of tracking the fund''s benchmark index, expressed as a decimal (e.g., 0.0022 = 0.22%). Example: 0.0022, 0.0028, 0.0038. Contains NULL when benchmark expense data is not available or fund does not track a benchmark index.'
+    label: Benchmark Expense Ratio
+  yield_rate:
+    description: 'DECIMAL. Distribution yield or dividend yield of the fund, expressed as a decimal (e.g., 0.0467 = 4.67%). Example: 0.3153, 0.0061, 0.0454. Contains NULL when the fund does not distribute dividends or yield data is not yet calculated.'
+    label: Yield Rate
+    ai_context: 'Yield Rate: Represents the annual dividend per share as a percentage of the share''s price. A value of 0.02 signifies a 2% yield. This is a crucial metric for income-focused investors.'
+  moving_average_50_day:
+    description: 'DECIMAL. 50-day moving average price of the fund, used for medium-term trend analysis. Example: 38.636, 147.557, 25.59. Contains NULL when insufficient trading history exists to calculate 50-day average.'
+    label: 50-Day Moving Average
+  moving_average_200_day:
+    description: 'DECIMAL. 200-day moving average price of the fund, used for long-term trend analysis. Example: 56.79, 78.798, 39.194. Contains NULL when insufficient trading history exists to calculate 200-day average.'
+    label: 200-Day Moving Average
+  equity_weight:
+    description: 'DECIMAL. Proportion of fund assets allocated to equity/stock holdings, expressed as a decimal between 0 and 1 (e.g., 0.9937 = 99.37%). Example: 0.9937, 0.9977, 0.1244. Contains NULL when asset allocation data is not available or fund structure does not support weight breakdown.'
+    label: Equity Weight
+    ai_context: 'Equity Weight: The percentage of the fund''s assets invested in equities (stocks). A value of 0.9 indicates that 90% of the fund is invested in stocks, suggesting a growth-oriented strategy.'
+  turnover_ratio:
+    description: 'DECIMAL. Annual portfolio turnover ratio indicating how frequently the fund trades its holdings, expressed as a decimal (e.g., 1.6 = 160% turnover). Example: 1.6, 0.43, 0.1879. Contains NULL when turnover data is not yet available or fund has insufficient trading history.'
+    label: Turnover Ratio
+    ai_context: 'Turnover Ratio: Measures how frequently assets within a fund are bought and sold. A ratio of 1.0 (100%) means the fund replaces its entire portfolio once per year. A low value (<0.3) suggests a buy-and-hold strategy, while a high value (>1.0) indicates active trading.'
+  geographic_focus:
+    description: Geographic region or market focus of the fund (e.g., 'US', 'International', 'Emerging Markets', 'Global'). Contains  NULL when geographic focus is not specified or fund has global diversification without specific regional focus.
+    label: Geographic Focus
+    sql: '-- DO NOT PARSE
+
+      ${fundclass} ->> ''GeoZone_Class'''
+    ai_context: 'Geographic Focus: Funds are categorized by their geographic scope, such as ''UNITED_STATES'', ''International'', ''Global'', ''Pacific/Asia ex-Japan Stk'', and ''Emerging Markets''.'
+  duration:
+    description: 'DECIMAL. Modified duration of the fund''s bond portfolio, measuring sensitivity to interest rate changes in years. Higher values indicate greater interest rate risk. Example: 3.12, 2.73, 11.58. Contains NULL when the fund does not hold fixed-income securities or duration calculation is not applicable.'
+    label: Duration
+    ai_context: 'Duration: Measures how much a bond fund''s price is likely to change for every 1% change in interest rates. A duration of 7 years means the fund''s price will likely fall by about 7% if interest rates rise by 1%.'
+  net_worth:
+    description: 'BIGINT. Total net asset value (NAV) of the fund in base currency units, representing assets under management. Example: 26004670464, 145110080, 8899219. Contains NULL when NAV data is not yet reported or fund is in liquidation process.'
+    label: Net Worth
+  average_daily_volume_3m:
+    description: 'BIGINT. Average daily trading volume over the past 3 months, indicating liquidity and trading activity. Example: 43115, 499616, 705119.'
+    label: Average Daily Volume (3M)
+  price_to_earnings_ratio:
+    description: 'DECIMAL. Price-to-earnings ratio of the fund''s underlying equity holdings, indicating valuation relative to earnings. Example: 10.87, 24.59, 34.94. Contains NULL when the fund does not hold equities or P/E calculation is not applicable (e.g., bond funds, funds with negative earnings).'
+    label: Price-to-Earnings Ratio
+  price_to_sales_ratio:
+    description: 'DECIMAL. Price-to-sales ratio of the fund''s underlying equity holdings, measuring valuation relative to revenue. Example: 6.19, 0.64, 2.04. Contains NULL when the fund does not hold equities or P/S calculation is not applicable.'
+    label: Price-to-Sales Ratio
+  price_to_book_ratio:
+    description: 'DECIMAL. Price-to-book ratio of the fund''s underlying equity holdings, indicating valuation relative to book value. Example: 1.6, 2.35, 4.32. Contains NULL when the fund does not hold equities or P/B calculation is not applicable (e.g., bond funds).'
+    label: Price-to-Book Ratio
+  price_to_cash_flow_ratio:
+    description: 'DECIMAL. Price-to-cash-flow ratio of the fund''s underlying equity holdings, measuring valuation relative to operating cash flow. Example: 12.01, 16.22, 10.87. Contains NULL when the fund does not hold equities or P/CF calculation is not applicable.'
+    label: Price-to-Cash-Flow Ratio
+  relative_expense_ratio:
+    label: Relative Expense Ratio
+    description: Measures the difference between a fund's net expense ratio and its benchmark's expense ratio.
+    sql: ${net_expense_ratio} - ${benchmark_expense_ratio}
+    ai_context: Use this modeled field for Relative Expense Ratio; do not reconstruct its formula.
+  is_low_turnover_strategy:
+    label: Low-Turnover Strategy
+    description: An investment strategy characterized by infrequent trading of portfolio holdings, often associated with long-term, passive, or buy-and-hold approaches.
+    sql: ${turnover_ratio} < 0.3
+    ai_context: Use this modeled field for Low-Turnover Strategy; do not reconstruct its formula.
+  yield_to_expense_ratio:
+    label: Yield-to-Expense Ratio (YTER)
+    description: Evaluates an income-generating fund's efficiency by comparing its dividend yield to its net expense ratio.
+    sql: CASE WHEN ${net_expense_ratio} <> 0 THEN ${yield_rate} / NULLIF(${net_expense_ratio}, 0) END
+    ai_context: Use this modeled field for Yield-to-Expense Ratio (YTER); do not reconstruct its formula.
+  is_efficient_income_generator:
+    label: Efficient Income Generator
+    description: A fund that provides a high dividend yield relative to its management cost.
+    sql: ${yield_to_expense_ratio} > 15.0
+    ai_context: Use this modeled field for Efficient Income Generator; do not reconstruct its formula.
+  short_term_momentum:
+    label: Short-Term Momentum Indicator
+    description: A technical indicator that signals short-term trend strength by comparing the 50-day and 200-day moving averages.
+    sql: ${moving_average_50_day} - ${moving_average_200_day}
+    ai_context: Use this modeled field for Short-Term Momentum Indicator; do not reconstruct its formula.
+  has_golden_cross_signal:
+    label: Golden Cross Signal
+    description: A bullish technical signal indicating potential for a major rally, based on moving average trends.
+    sql: ${short_term_momentum} > 0
+    ai_context: Use this modeled field for Golden Cross Signal; do not reconstruct its formula.
+  net_yield_advantage:
+    label: Net Yield Advantage
+    description: Calculates a fund's final yield advantage or disadvantage after accounting for its cost relative to peers.
+    sql: ${yield_rate} - ${relative_expense_ratio}
+    ai_context: Use this modeled field for Net Yield Advantage; do not reconstruct its formula.
+  composite_valuation_score:
+    label: Composite Valuation Score
+    description: Calculates a single score representing a fund's valuation attractiveness by averaging the inverted values of its key price-to-metric ratios.
+    sql: CASE WHEN ${price_to_earnings_ratio} <> 0 AND ${price_to_sales_ratio} <> 0 AND ${price_to_book_ratio} <> 0 AND ${price_to_cash_flow_ratio} <> 0 THEN 0.25 * (1.0 / ${price_to_earnings_ratio} + 1.0 / ${price_to_sales_ratio} + 1.0 / ${price_to_book_ratio} + 1.0 / ${price_to_cash_flow_ratio}) END
+    ai_context: Use this modeled field for Composite Valuation Score; do not reconstruct its formula.
+  portfolio_liquidity_pressure:
+    label: Portfolio Liquidity Pressure
+    description: Estimates the potential market impact of a fund's trading activity by comparing its annual turnover to its average daily trading volume.
+    sql: CASE WHEN ${average_daily_volume_3m} <> 0 THEN (${net_worth} * ${turnover_ratio}) / NULLIF(${average_daily_volume_3m} * 252.0, 0) END
+    ai_context: Use this modeled field for Portfolio Liquidity Pressure; do not reconstruct its formula.
+  growth_value_spectrum_score:
+    label: Growth-Value Spectrum Score
+    description: A quantitative factor score that places a fund on a spectrum from deep value to high growth based on the interplay of its Price-to-Earnings and Price-to-Book ratios.
+    sql: CASE WHEN ${price_to_earnings_ratio} > 0 AND ${price_to_book_ratio} > 0 THEN LN(${price_to_earnings_ratio} / ${price_to_book_ratio}) END
+    ai_context: Use this modeled field for Growth-Value Spectrum Score; do not reconstruct its formula.
+  valuation_data_availability:
+    label: Valuation Data Availability
+    description: A classification that categorizes funds based on whether they disclose key valuation metrics.
+    sql: CASE WHEN ${price_to_earnings_ratio} IS NOT NULL AND ${price_to_book_ratio} IS NOT NULL THEN 'Transparent' ELSE 'Opaque' END
+    ai_context: Use this modeled field for Valuation Data Availability; do not reconstruct its formula.
+  is_total_return_fund:
+    label: Total Return Fund
+    description: Defines a fund that aims to provide both capital appreciation and income through dividends.
+    sql: ${equity_weight} <> 0 AND ${yield_rate} <> 0
+    ai_context: Use this modeled field for Total Return Fund; do not reconstruct its formula.

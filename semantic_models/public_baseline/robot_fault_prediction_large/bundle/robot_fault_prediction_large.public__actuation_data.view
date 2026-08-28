@@ -1,0 +1,12 @@
+label: actuation_data
+description: Public semantic view for actuation_data.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: actuation_data
+dimensions:
+  a_position_error:
+    description: 'REAL. Position error in mm. **NULL means no position error data available.**. Example: 0.069.'
+    label: A.position_error
+  a_payload_weight:
+    description: 'REAL. Payload weight in kg. **NULL means no payload data available.**. Example: 144.85.'
+    label: A.payload_weight

@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__transportation
+label: Transportation
+description: Transportation records with row-level capacity, vehicle throughput, and last-mile status semantics.
+fields:
+- disaster_relief_large_public__transportation.*
+joins: {}
+ai_context: Use the modeled business fields daily_tons, vehicle_count, last_mile_status, logistical_throughput_per_vehicle rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

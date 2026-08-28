@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__system_controller
+label: system_controller
+description: Public semantic view for system_controller.
+fields:
+- robot_fault_prediction_large_public__system_controller.*
+joins: {}
+ai_context: Use the modeled business fields sc_overseer_load, sc_memory_usage, sc_cabinet_humidity, hkb_6 rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

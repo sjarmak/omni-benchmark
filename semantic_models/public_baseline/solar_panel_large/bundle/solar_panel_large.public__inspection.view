@@ -1,0 +1,26 @@
+label: Inspection
+description: Inspection results and data-quality measurements.
+catalog: solar_panel_large
+schema: public
+table_name: inspection
+dimensions:
+  result:
+    description: 'TEXT. Inspection results summary. Possible values: Major Issues, Minor Issues, Pass.'
+    label: Inspection Result
+  schedule:
+    description: 'TEXT. Maintenance schedule status. Possible values: Delayed, On Schedule, Overdue.'
+    label: Maintenance Schedule
+  dqscore:
+    description: 'REAL. Data quality score. Example: 97.7.'
+    label: Data Quality Score
+    ai_context: 'Data Quality Score (DQS): A metric, typically on a scale of 0 to 100, that assesses the quality, completeness, and consistency of a set of data. A score of 95-100 indicates high-quality data, while a score below 50 might suggest the data is unreliable for analysis.'
+  data_quality_concern:
+    label: Data Quality Concern
+    description: Flags a dataset or record when its quality score falls below an acceptable threshold, suggesting the data may be unreliable.
+    sql: ${dqscore} < 50.0
+    ai_context: Use this modeled field for Data Quality Concern; do not reconstruct its formula.
+  overdue_critical_maintenance:
+    label: Overdue Critical Maintenance
+    description: A high-priority maintenance task that has not been completed by its scheduled date.
+    sql: ${result} = 'Major Issues' AND ${schedule} = 'Overdue'
+    ai_context: Use this modeled field for Overdue Critical Maintenance; do not reconstruct its formula.

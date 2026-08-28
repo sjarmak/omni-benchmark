@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 12,
+      "context_only": 7,
+      "defer_cross_grain": 33,
+      "unsupported": 27
+    },
+    "hkb_nodes": 79
+  },
+  "database": "cross_border_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "cross_border_large.mapping.jsonl",
+    "sha256": "0c29030db9115701ce0ccbe6001ea8d6866c4664b5dbd4b4ea121319c18cadcd"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "f3836b7422150807412e15079b546e0954264756a559ac38fcd1a2f8b621523f"
+    },
+    "mapping_spec": {
+      "sha256": "ce12733faca9461d9a75ea759e832114e6286c27e4f4281a08cd28472eb36006"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "d06671eb6200a527e83a349e7f9ffe7092219fe7ec4d84ccd7bc1f38b0913260",
+      "sha256": "a14b24b34963bb9e04a13a18599506c7c7f328d5a84f07a791b9dcf618185fd7"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

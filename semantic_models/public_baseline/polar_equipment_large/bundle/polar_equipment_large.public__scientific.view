@@ -1,0 +1,17 @@
+label: Scientific
+description: Scientific equipment records with same-row reliability semantics.
+catalog: polar_equipment_large
+schema: public
+table_name: Scientific
+dimensions:
+  measurement_accuracy_percent:
+    description: 'REAL. Measurement accuracy percentage. Example: 99.3.'
+    label: Measurement Accuracy Percent
+  calibration_status:
+    description: 'TEXT. Calibration status. Possible values: Due, Expired, Valid.'
+    label: Calibration Status
+  scientific_equipment_reliability:
+    label: Scientific Equipment Reliability (SER)
+    description: Quantifies the reliability of scientific equipment based on calibration status and measurement accuracy.
+    sql: ${measurement_accuracy_percent} * CASE ${calibration_status} WHEN 'Valid' THEN 1.0 WHEN 'Due' THEN 0.7 WHEN 'Expired' THEN 0.3 END
+    ai_context: Use this modeled field for Scientific Equipment Reliability (SER); do not reconstruct its formula.

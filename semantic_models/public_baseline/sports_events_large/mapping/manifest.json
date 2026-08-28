@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 4,
+      "context_only": 3,
+      "defer_cross_grain": 32,
+      "unsupported": 17
+    },
+    "hkb_nodes": 56
+  },
+  "database": "sports_events_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "sports_events_large.mapping.jsonl",
+    "sha256": "73f790b6696f4d568ceeeed43324dfe2a2cbfd5ad6a35b915c9c2e6598ce4505"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "72272246f1b2902edd4d4ca2bbd3c11e005e049155fab265c30025b1a9659b3c"
+    },
+    "mapping_spec": {
+      "sha256": "42fbebec797097ed6ac79891e212f4fb568e176b9d532bb90c5e379563acc100"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "d3da9fc11237c266eba6b44397cb29107e5e8c72f41a2719e636708a99df594d",
+      "sha256": "f63830bc4faebc32560cb36440f90a1e41c4166993a3f4026d8043633697d6a6"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

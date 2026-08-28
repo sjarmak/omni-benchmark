@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__orbital_characteristics
+label: Orbital Characteristics
+description: Orbital-parameter records with public period, semi-major axis, eccentricity, inclination, and derived same-row orbital semantics.
+fields:
+- planets_data_large_public__orbital_characteristics.*
+joins: {}
+ai_context: Use the modeled business fields orbital_period_days, semi_major_axis_au, orbital_eccentricity, orbital_inclination_deg, kepler_third_law_stellar_mass, short_period_planet, high_eccentricity_planet, retrograde_orbit rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

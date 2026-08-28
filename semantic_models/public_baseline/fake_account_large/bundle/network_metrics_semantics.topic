@@ -1,0 +1,7 @@
+base_view: fake_account_large_public__network_metrics
+label: Network Metrics
+description: Account-level network metrics with row-local growth semantics.
+fields:
+- fake_account_large_public__network_metrics.*
+joins: {}
+ai_context: Use the modeled business fields follower_growth_rate, following_growth_rate, network_growth_velocity rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

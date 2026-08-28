@@ -1,0 +1,7 @@
+base_view: mental_healths_large_public__assessmentsymptomsandrisk
+label: Symptom and Risk Assessments
+description: Assessment rows with symptom scores and suicide-risk semantics.
+fields:
+- mental_healths_large_public__assessmentsymptomsandrisk.*
+joins: {}
+ai_context: Use the modeled business fields suicide_risk, phq9_score, gad7_score, is_high_risk_patient_assessment, is_high_severity_high_risk_assessment rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

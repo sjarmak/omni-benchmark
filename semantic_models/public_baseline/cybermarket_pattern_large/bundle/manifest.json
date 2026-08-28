@@ -1,0 +1,353 @@
+{
+  "database": "cybermarket_pattern_large",
+  "files": [
+    {
+      "file": "cybermarket_pattern_large.public__markets.view",
+      "sha256": "54c4bca55104c94e9bded5681d1efec62e1f518d62d21ecb7e9790890d83dbf0",
+      "size_bytes": 968
+    },
+    {
+      "file": "markets_semantics.topic",
+      "sha256": "0c0dd37a56ce32b97e46c5b5111ab02477845c32ab48dcfe1cf57529269f78b7",
+      "size_bytes": 373
+    },
+    {
+      "file": "cybermarket_pattern_large.public__vendors.view",
+      "sha256": "0225dfa5225892a807f75373021379d55943e042b394db368154603ed5914855",
+      "size_bytes": 1204
+    },
+    {
+      "file": "vendors_semantics.topic",
+      "sha256": "0f0934ab614801db0f127b20926b8a17cb103611cb86334976ec0a8b57cef7f4",
+      "size_bytes": 426
+    },
+    {
+      "file": "cybermarket_pattern_large.public__buyers.view",
+      "sha256": "b9f710b535651b8bf0f1f3d1db2fe0e1c82e965453ac8399328b130e36146fcd",
+      "size_bytes": 1395
+    },
+    {
+      "file": "buyers_semantics.topic",
+      "sha256": "05fbfa2d960dccadf8c8cc6ab7ef46ae5cd4b913c4a02a394776b37245b29679",
+      "size_bytes": 393
+    },
+    {
+      "file": "cybermarket_pattern_large.public__products.view",
+      "sha256": "d75f719f0c5cb21988d02b6b9a21e89b7e279a22776521dbc962fb7f07bce259",
+      "size_bytes": 861
+    },
+    {
+      "file": "products_semantics.topic",
+      "sha256": "76031a0a4ff3b10f476d763a83d7d3d9918790c0ce987b2210b7ec187d15ada1",
+      "size_bytes": 371
+    },
+    {
+      "file": "cybermarket_pattern_large.public__transactions.view",
+      "sha256": "77434445b4f4e8a3c01cf7e0eb66e1755a66ab737f7759d7841f6c9fe84d4683",
+      "size_bytes": 1490
+    },
+    {
+      "file": "transactions_semantics.topic",
+      "sha256": "b07ba93ad40e68c0923e38d94d2ae268f7f5ba30a244a73309a461adc9a99064",
+      "size_bytes": 475
+    },
+    {
+      "file": "cybermarket_pattern_large.public__communications.view",
+      "sha256": "dd3ba4ec2522a5646e99bb6c548ce8029743e6d18854a8f9fb608ba6a0335c4a",
+      "size_bytes": 1781
+    },
+    {
+      "file": "communications_semantics.topic",
+      "sha256": "e0fb7620f3b2bebd5301bebe9722c3b4abb6e0b041bdc655ee47608c485445be",
+      "size_bytes": 485
+    },
+    {
+      "file": "cybermarket_pattern_large.public__connection_security.view",
+      "sha256": "7ab2bcd5dbf51643b58b16ce81ef9e96ec383429cb1381bc09381168fcb1e9dc",
+      "size_bytes": 986
+    },
+    {
+      "file": "connection_security_semantics.topic",
+      "sha256": "9750f98ee5f157d25f9eefb66030f181788f4d40dbf583aa5613d39aa1ae57ba",
+      "size_bytes": 475
+    },
+    {
+      "file": "cybermarket_pattern_large.public__alerts.view",
+      "sha256": "58a117f97f01c57bebf5bf46bd4a343b4f4df6bf208a8c3fff66cee224995264",
+      "size_bytes": 482
+    },
+    {
+      "file": "alerts_semantics.topic",
+      "sha256": "2df8ee5f008fbc5e3bf0a399190b31882e19343f531d02071965cadd93953a51",
+      "size_bytes": 351
+    },
+    {
+      "file": "cybermarket_pattern_large.public__risk_model_predictions.view",
+      "sha256": "adc4e2f401a5e9e6cf539c5d1643d1a8650e47fa02de8e47c9f48d024a39ceeb",
+      "size_bytes": 613
+    },
+    {
+      "file": "risk_model_predictions_semantics.topic",
+      "sha256": "84625abc08f2e068a7891919730c4c20c2c7126570743fce10f7335384c319f4",
+      "size_bytes": 456
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:11",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_cross_border_transaction",
+      "table_stable_id": "cybermarket_pattern_large:table:transactions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_advanced_verification_tier",
+      "table_stable_id": "cybermarket_pattern_large:table:vendors"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:14",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "has_premium_authentication",
+      "table_stable_id": "cybermarket_pattern_large:table:connection_security"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:18",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_fraud_flagged_transaction",
+      "table_stable_id": "cybermarket_pattern_large:table:RiskModelPredictions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "operational_status",
+      "table_stable_id": "cybermarket_pattern_large:table:markets"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "access_level",
+      "table_stable_id": "cybermarket_pattern_large:table:vendors"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:22",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "authentication_level",
+      "table_stable_id": "cybermarket_pattern_large:table:buyers"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:23",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "product_category",
+      "table_stable_id": "cybermarket_pattern_large:table:products"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "route_complexity",
+      "table_stable_id": "cybermarket_pattern_large:table:transactions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "anonymity_level",
+      "table_stable_id": "cybermarket_pattern_large:table:connection_security"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:26",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "severity_level",
+      "table_stable_id": "cybermarket_pattern_large:table:alerts"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:27",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "escrow_usage_state",
+      "table_stable_id": "cybermarket_pattern_large:table:transactions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "language_pattern",
+      "table_stable_id": "cybermarket_pattern_large:table:communications"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "spend_pattern",
+      "table_stable_id": "cybermarket_pattern_large:table:buyers"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cybermarket_pattern_large:hkb:8",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "suspicion_signal_density",
+      "table_stable_id": "cybermarket_pattern_large:table:communications"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "7212836ff242a99afc9cc338c6c6c62a16f3bb38a20647497527036cc8482314"
+    },
+    "hkb_ir": {
+      "sha256": "e60b16d3c8a343695e28123262e0dc69130eb37b359d91bb990dd72f02c3fc77"
+    },
+    "mapping": {
+      "sha256": "8cf6c71f3c9aae3bf113e265abababdcb8aada01febab78a178e577b197d2f86"
+    },
+    "mapping_manifest": {
+      "sha256": "72ec47659f7662391da65d693673f449dff65b3226e189967f63211224f2afeb"
+    },
+    "schema_ir": {
+      "sha256": "baa5789ad9d49017fe66c283205adba6cdda82760cb8bcc10d6a9e09cc85c3da"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__commerceandcollection
+label: Commerce and Collection
+description: Commerce records with row-level collection semantics.
+fields:
+- virtual_idol_large_public__commerceandcollection.*
+joins: {}
+ai_context: Use the modeled business fields digital_items_owned, physical_items_owned, trade_activity_level, collection_rate rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 4,
+      "context_only": 10,
+      "defer_cross_grain": 35,
+      "unsupported": 11
+    },
+    "hkb_nodes": 60
+  },
+  "database": "labor_certification_applications_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "labor_certification_applications_large.mapping.jsonl",
+    "sha256": "13d71cd107311d799d5eea26d0eae33405f73ab8eb61f964c2693444432f5f24"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "3d810d14a69c625e08d4e9dcefaaaf127ae7a6839da629a1f2e2342869f06449"
+    },
+    "mapping_spec": {
+      "sha256": "93e2ed377203bd770d4cbea54e99906149f62e5fc60a9f865cd951ecc3041a89"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "b44fec064948ed6bd38aeff54e1f7c12f1b9e50dfa0df3691eabe126b8d932f1",
+      "sha256": "7c6dadaac3d1615723eedd9babd7081e9ba636987be2966ad0dbef16ece9cb7b"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

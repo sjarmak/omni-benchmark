@@ -1,0 +1,14 @@
+label: Conservation and Maintenance
+description: Conservation-maintenance rows with scheduled-cleaning overdue-day semantics.
+catalog: museum_artifact_large
+schema: public
+table_name: ConservationAndMaintenance
+dimensions:
+  scheduled_next_cleaning_date:
+    description: 'DATE. Date when the next cleaning is due. Example: 2025/5/10.'
+    label: Scheduled Next Cleaning Date
+  overdue_days:
+    label: Overdue Days
+    description: Calculates the number of days a scheduled maintenance task is past its due date.
+    sql: CURRENT_DATE - ${scheduled_next_cleaning_date}
+    ai_context: Use this modeled field for Overdue Days; do not reconstruct its formula.

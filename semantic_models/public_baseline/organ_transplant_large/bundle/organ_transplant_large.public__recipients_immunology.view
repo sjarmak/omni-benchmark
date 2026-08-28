@@ -1,0 +1,27 @@
+label: Recipient Immunology
+description: Recipient immunology records with public PRA, crossmatch, DSA, and AMR risk semantics.
+catalog: organ_transplant_large
+schema: public
+table_name: recipients_immunology
+dimensions:
+  pra_score:
+    description: 'REAL. Panel reactive antibody score indicating sensitization level. Example: 6.'
+    label: PRA Score
+    ai_context: 'Panel Reactive Antibody (PRA): A measure of a recipient''s sensitization to foreign HLA antigens, represented by the `pra_score`[cite: 36]. For matching purposes, a recipient with a `pra_score` of 80 or higher is defined as having a ''high PRA score'', indicating a state of high immunological sensitization.
+
+      Immunological Sensitization: A clinical state where a recipient is considered highly sensitized to potential donors. This condition is formally defined as having a Panel Reactive Antibody (PRA) score of 80 or greater. This high level of sensitization significantly complicates the matching process by severely limiting the number of compatible donors.
+
+      Panel Reactive Antibody (PRA) Score Interpretation: A PRA score reflects a recipient''s sensitization level. A score of 0-10% indicates low sensitization, making it easier to find a compatible donor. A score > 80% indicates high Immunological Sensitization, meaning the patient is likely to be incompatible with over 80% of potential donors.'
+  crossmatch_result:
+    description: 'TEXT. Crossmatch test result for donor-recipient compatibility. Possible values: Negative, Pending, Positive.'
+    label: Crossmatch Result
+    ai_context: 'Crossmatch Results: A ''Negative'' result means no pre-formed donor-specific antibodies were detected, and the transplant can proceed. A ''Positive'' result indicates the presence of these antibodies, making transplant highly risky or contraindicated due to the high chance of hyperacute rejection.'
+  dsa_status:
+    description: 'TEXT. Donor-specific antibody presence status. Possible values: Negative, Positive.'
+    label: Donor-Specific Antibody Status
+    ai_context: 'Donor-Specific Antibodies (DSA): The presence of these antibodies is identified by a positive Crossmatch Test. They pose a significant risk for antibody-mediated rejection of the transplanted organ.'
+  is_positive_crossmatch:
+    label: Crossmatch Test
+    description: A final compatibility test performed just before transplant surgery to ensure the recipient has no pre-formed antibodies against the specific donor's tissues.
+    sql: LOWER(TRIM(${crossmatch_result})) = 'positive'
+    ai_context: Use this modeled field for Crossmatch Test; do not reconstruct its formula.

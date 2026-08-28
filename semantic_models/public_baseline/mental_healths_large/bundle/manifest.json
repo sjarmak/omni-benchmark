@@ -1,0 +1,340 @@
+{
+  "database": "mental_healths_large",
+  "files": [
+    {
+      "file": "mental_healths_large.public__assessmentsymptomsandrisk.view",
+      "sha256": "67ccb9ac59c3959abe32b40a753c7161b93a8a6332dd4d906109a359527b1956",
+      "size_bytes": 1930
+    },
+    {
+      "file": "assessmentsymptomsandrisk_semantics.topic",
+      "sha256": "4eb0606147faa79e21bbb45e13112db722ab243d4daf22bc594840643054400d",
+      "size_bytes": 509
+    },
+    {
+      "file": "mental_healths_large.public__treatmentoutcomes.view",
+      "sha256": "441363a642ac3890ac0a0c5d414e63a59b1c6ff74a46191ae2a311cc33100068",
+      "size_bytes": 1305
+    },
+    {
+      "file": "treatmentoutcomes_semantics.topic",
+      "sha256": "4871635cc29edf7dcc95b273913fa44f11da1209ec7733beafe9893bb5a8b6f6",
+      "size_bytes": 444
+    },
+    {
+      "file": "mental_healths_large.public__treatmentbasics.view",
+      "sha256": "8a399c2971fb72bca94668fe06e77c3324f7e73b09a5b54306e92904df206383",
+      "size_bytes": 895
+    },
+    {
+      "file": "treatmentbasics_semantics.topic",
+      "sha256": "6bd26f4a88505807281217ebcb15076ed4acc5e8a7662aa78b9fb83d6814e734",
+      "size_bytes": 422
+    },
+    {
+      "file": "mental_healths_large.public__facilities.view",
+      "sha256": "4c279f850496d4bf595ad7e883ccd531f59d7adec18a70e681f55553d8d5e694",
+      "size_bytes": 650
+    },
+    {
+      "file": "facilities_semantics.topic",
+      "sha256": "f779a0c41081e19c01d120ddffd70583cf9af2b9ac8fdc67e3ebfd34fe91edb8",
+      "size_bytes": 355
+    },
+    {
+      "file": "mental_healths_large.public__assessmentsocialanddiagnosis.view",
+      "sha256": "17d93df0d0b0079bff68265a899861508aaf8280beba56cf195a9b928492b040",
+      "size_bytes": 3653
+    },
+    {
+      "file": "assessmentsocialanddiagnosis_semantics.topic",
+      "sha256": "56868b3928c0a1f48861138b5732c832f1fd39c742bde907ecdf7f1eaea58ae5",
+      "size_bytes": 675
+    },
+    {
+      "file": "mental_healths_large.public__encounters.view",
+      "sha256": "140f61ce58e8cf8bbd8c9077dbc350d7ddd9cc37fd184d1c25bb6e1852efda15",
+      "size_bytes": 530
+    },
+    {
+      "file": "encounters_semantics.topic",
+      "sha256": "bf1793582cc2dd5fd9e6c38aebac0631524245da01e68605b3625716c2fec756",
+      "size_bytes": 361
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:10",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_high_risk_patient_assessment",
+      "table_stable_id": "mental_healths_large:table:assessmentsymptomsandrisk"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:11",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_treatment_resistant_outcome",
+      "table_stable_id": "mental_healths_large:table:treatmentoutcomes"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "phq9_score",
+      "table_stable_id": "mental_healths_large:table:assessmentsymptomsandrisk"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "gad7_score",
+      "table_stable_id": "mental_healths_large:table:assessmentsymptomsandrisk"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:22",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "suicide_risk",
+      "table_stable_id": "mental_healths_large:table:assessmentsymptomsandrisk"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:23",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "therapy_engagement",
+      "table_stable_id": "mental_healths_large:table:treatmentbasics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "community_resources",
+      "table_stable_id": "mental_healths_large:table:facilities"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "functional_impairment",
+      "table_stable_id": "mental_healths_large:table:assessmentsocialanddiagnosis"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:26",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "semantic_name": "treatment_adherence",
+      "table_stable_id": "mental_healths_large:table:treatmentoutcomes"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:27",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "crisis_intervention_count",
+      "table_stable_id": "mental_healths_large:table:treatmentbasics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "social_support_level",
+      "table_stable_id": "mental_healths_large:table:assessmentsocialanddiagnosis"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "missed_appointment_count",
+      "table_stable_id": "mental_healths_large:table:encounters"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:49",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_high_severity_high_risk_assessment",
+      "table_stable_id": "mental_healths_large:table:assessmentsymptomsandrisk"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:66",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "annualized_hospitalization_risk",
+      "table_stable_id": "mental_healths_large:table:assessmentsocialanddiagnosis"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:75",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_peer_mentor_candidate",
+      "table_stable_id": "mental_healths_large:table:assessmentsocialanddiagnosis"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "mental_healths_large:hkb:76",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_chronic_high_acuity_bipolar",
+      "table_stable_id": "mental_healths_large:table:assessmentsocialanddiagnosis"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "bb96bb626b6c6ef26aa812fdde03472d18070d5410362622e0a7c9cab36c31a1"
+    },
+    "hkb_ir": {
+      "sha256": "0e14ac17c9511741ce95f21234e7b8d5df350712d55e73cb8fa729ada23b3de0"
+    },
+    "mapping": {
+      "sha256": "92868f5ea314da9fccac3bf7a08935869e6e0baf49571dacf46178f7d3834828"
+    },
+    "mapping_manifest": {
+      "sha256": "c34b7353759bcfcfc8f6cab9071b0f517c9b891ae6227a022569f6642bd885c8"
+    },
+    "schema_ir": {
+      "sha256": "0314cb1aac99d357b2bc8296266ed248cb0561ef53aef9492fb7513da0876a12"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

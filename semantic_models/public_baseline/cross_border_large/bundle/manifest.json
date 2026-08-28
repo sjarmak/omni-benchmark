@@ -1,0 +1,404 @@
+{
+  "database": "cross_border_large",
+  "files": [
+    {
+      "file": "cross_border_large.public__security_profile.view",
+      "sha256": "7d2a451a2aeecdf43f2608aea88f43b45002e9cd1daea797ccea97d8b654a82e",
+      "size_bytes": 1550
+    },
+    {
+      "file": "security_profile_semantics.topic",
+      "sha256": "fa834cb9780eac32d770913cfcc1b120d57040743a02f0f59c75fc809cc7f9e2",
+      "size_bytes": 488
+    },
+    {
+      "file": "cross_border_large.public__audit_and_compliance.view",
+      "sha256": "1773c18fe7c1e8f43746d9cd93b1eecec9e7547acb2c58801da62758fb29a767",
+      "size_bytes": 3309
+    },
+    {
+      "file": "audit_and_compliance_semantics.topic",
+      "sha256": "3c00d4f51926589a59028d1934026e66a903229a71dc8d3fe95743b50ab1deb9",
+      "size_bytes": 702
+    },
+    {
+      "file": "cross_border_large.public__vendor_management.view",
+      "sha256": "362a05f94e24d8edc72d195a19acb90af6c8842b5162ec1cb6743228d46c8897",
+      "size_bytes": 828
+    },
+    {
+      "file": "vendor_management_semantics.topic",
+      "sha256": "216a1c1e1e3356b4111ab2ae9d497b88342841fe381df1d15453f8c7cc860e09",
+      "size_bytes": 438
+    },
+    {
+      "file": "cross_border_large.public__data_profile.view",
+      "sha256": "5bbd33d5be3dec9d2b30768df81d2a6adfc5b80a0a84cc402ea0d0b385c69cf0",
+      "size_bytes": 1799
+    },
+    {
+      "file": "data_profile_semantics.topic",
+      "sha256": "e53c7eb1e7c21db42d0ac25362de67f74f8824f88566d55a013bd945f2f21d32",
+      "size_bytes": 477
+    },
+    {
+      "file": "cross_border_large.public__api_endpoint.view",
+      "sha256": "7d45eb1b3063514431f78b9be4074a277a64da21a1f952461b2b6b1300edd190",
+      "size_bytes": 536
+    },
+    {
+      "file": "api_endpoint_semantics.topic",
+      "sha256": "77cfdb9e95120c44e46d661183d4397b75290b541aa14b4cb56487f27e05a13a",
+      "size_bytes": 394
+    },
+    {
+      "file": "cross_border_large.public__compliance.view",
+      "sha256": "fd575e0b9d6c91d6674992376917def83e5d8f06ceb414d97f8ae5dbd12ebfaf",
+      "size_bytes": 454
+    },
+    {
+      "file": "compliance_semantics.topic",
+      "sha256": "8444c50b6f2c058ac3d6505744b8e6c30711e17210baa260f60287b6254f5ccc",
+      "size_bytes": 357
+    },
+    {
+      "file": "cross_border_large.public__control_library.view",
+      "sha256": "defab996486c0990e654c48ebb5262f3afa10f549d8129b21d1ed84506cff324",
+      "size_bytes": 414
+    },
+    {
+      "file": "control_library_semantics.topic",
+      "sha256": "5f1b2076695527da63cdde4965226f97efd51d2da19f41a6e336e81861210cd0",
+      "size_bytes": 400
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:11",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_secure_data_flow",
+      "table_stable_id": "cross_border_large:table:SecurityProfile"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_non_compliant_vendor",
+      "table_stable_id": "cross_border_large:table:VendorManagement"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:13",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "boundary_semantics_unverified",
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_critical_audit_issue",
+      "table_stable_id": "cross_border_large:table:AuditAndCompliance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:17",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_data_integrity_failure",
+      "table_stable_id": "cross_border_large:table:DataProfile"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "success_pct",
+      "table_stable_id": "cross_border_large:table:API_Endpoint"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:22",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "vol_gb",
+      "table_stable_id": "cross_border_large:table:DataProfile"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:23",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "enc_state",
+      "table_stable_id": "cross_border_large:table:SecurityProfile"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "gdprComp",
+      "table_stable_id": "cross_border_large:table:Compliance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:26",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "resp_time_day",
+      "table_stable_id": "cross_border_large:table:AuditAndCompliance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "effectiveness_score_pct",
+      "table_stable_id": "cross_border_large:table:Control_Library"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "LogRetDays",
+      "table_stable_id": "cross_border_large:table:SecurityProfile"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:5",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "security_robustness_score",
+      "table_stable_id": "cross_border_large:table:SecurityProfile"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:7",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "audit_finding_severity",
+      "table_stable_id": "cross_border_large:table:AuditAndCompliance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:71",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "request_breakdown",
+      "table_stable_id": "cross_border_large:table:AuditAndCompliance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:72",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "integrity_failure_count",
+      "table_stable_id": "cross_border_large:table:DataProfile"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:73",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "failure_types_list",
+      "table_stable_id": "cross_border_large:table:DataProfile"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:76",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "date_boundary_semantics_unspecified",
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_slow_remediation_timeline",
+      "table_stable_id": "cross_border_large:table:AuditAndCompliance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:77",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "date_boundary_semantics_unspecified",
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_nearing_remediation_deadline",
+      "table_stable_id": "cross_border_large:table:AuditAndCompliance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "cross_border_large:hkb:8",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "data_subject_request_load",
+      "table_stable_id": "cross_border_large:table:AuditAndCompliance"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "376708da01162ef2faa16ea0bf3d9b38cf2dae504254a2566894de0279f1fc14"
+    },
+    "hkb_ir": {
+      "sha256": "f3836b7422150807412e15079b546e0954264756a559ac38fcd1a2f8b621523f"
+    },
+    "mapping": {
+      "sha256": "0c29030db9115701ce0ccbe6001ea8d6866c4664b5dbd4b4ea121319c18cadcd"
+    },
+    "mapping_manifest": {
+      "sha256": "8aedb954ea3816fdc3c2064b02183f814b642cd9202e1abc923d32dc1c1ab552"
+    },
+    "schema_ir": {
+      "sha256": "a14b24b34963bb9e04a13a18599506c7c7f328d5a84f07a791b9dcf618185fd7"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

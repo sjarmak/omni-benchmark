@@ -1,0 +1,7 @@
+base_view: solar_panel_large_public__panel_models
+label: Panel Models
+description: Solar panel model specifications.
+fields:
+- solar_panel_large_public__panel_models.*
+joins: {}
+ai_context: Use the modeled business fields rated_w, degyrrate, tempcoeff, nomoptempc, is_high_degradation_panel_model rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

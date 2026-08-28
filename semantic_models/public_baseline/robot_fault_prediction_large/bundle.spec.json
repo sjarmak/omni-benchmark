@@ -1,0 +1,396 @@
+{
+  "catalog": "robot_fault_prediction_large",
+  "database": "robot_fault_prediction_large",
+  "derived_fields": [
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:0",
+      "sql": "CURRENT_DATE - ${rd_installation_date}"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:4",
+      "sql": "(${jc_j1_temp} + ${jc_j2_temp} + ${jc_j3_temp} + ${jc_j4_temp} + ${jc_j5_temp} + ${jc_j6_temp}) / 6.0"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:5",
+      "sql": "(${jc_j1_vibration} + ${jc_j2_vibration} + ${jc_j3_vibration} + ${jc_j4_vibration} + ${jc_j5_vibration} + ${jc_j6_vibration}) / 6.0"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:6",
+      "sql": "(${sc_overseer_load} + ${sc_memory_usage}) / 2.0"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:9",
+      "sql": "GREATEST(${jc_j1_temp},${jc_j2_temp},${jc_j3_temp},${jc_j4_temp},${jc_j5_temp},${jc_j6_temp}) - LEAST(${jc_j1_temp},${jc_j2_temp},${jc_j3_temp},${jc_j4_temp},${jc_j5_temp},${jc_j6_temp})"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:10",
+      "sql": "${mf_rul_hours} / 24.0"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:12",
+      "sql": "60.0 / NULLIF(${o_cycle_time_seconds}, 0)"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:15",
+      "sql": "(${jc_j1_backlash} + ${jc_j2_backlash} + ${jc_j3_backlash} + ${jc_j4_backlash} + ${jc_j5_backlash} + ${jc_j6_backlash}) / 6.0"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:17",
+      "sql": "(1000.0 / (${mf_rul_hours} + 1.0)) + (${mf_fault_prediction_score} * 10.0)"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:18",
+      "sql": "0.6 * ${hkb_5} + 0.4 * ${hkb_15}"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:34",
+      "sql": "CASE WHEN ${hkb_15} < 0.01 THEN 'Low' WHEN ${hkb_15} <= 0.05 THEN 'Medium' ELSE 'High' END"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:43",
+      "sql": "${hkb_4} > 75.0 OR ${hkb_9} > 15.0"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:47",
+      "sql": "${hkb_34} = 'High' OR ${hkb_5} > 3.0"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:48",
+      "sql": "${hkb_17} > 50.0"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:53",
+    "sql": "${hkb_10} < 7.0 OR ${mf_upkeep_due_days} <= 0"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:54",
+      "sql": "${hkb_0} > 3650"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:62",
+      "sql": "${hkb_43} AND ${hkb_47}"
+    },
+    {
+      "hkb_stable_id": "robot_fault_prediction_large:hkb:63",
+      "sql": "3600.0 / NULLIF(${o_cycle_time_seconds}, 0)"
+    }
+  ],
+  "format_version": 1,
+  "physical_fields": [
+    {
+      "label": "RD.installation_date",
+      "name": "rd_installation_date",
+      "schema_stable_id": "robot_fault_prediction_large:column:robot_details:instdateval"
+    },
+    {
+      "label": "O.operational_hours",
+      "name": "o_operational_hours",
+      "schema_stable_id": "robot_fault_prediction_large:column:operation:totopshrval"
+    },
+    {
+      "label": "PS.emergency_stops",
+      "name": "ps_emergency_stops",
+      "schema_stable_id": "robot_fault_prediction_large:column:performance_and_safety:emergencystopcount"
+    },
+    {
+      "label": "JC.J1_temp",
+      "name": "jc_j1_temp",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J1/k:temperature_C",
+      "sql": "${joint_health} #>> '{J1,temperature_C}'"
+    },
+    {
+      "label": "JC.J2_temp",
+      "name": "jc_j2_temp",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J2/k:temperature_C",
+      "sql": "${joint_health} #>> '{J2,temperature_C}'"
+    },
+    {
+      "label": "JC.J3_temp",
+      "name": "jc_j3_temp",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J3/k:temperature_C",
+      "sql": "${joint_health} #>> '{J3,temperature_C}'"
+    },
+    {
+      "label": "JC.J4_temp",
+      "name": "jc_j4_temp",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J4/k:temperature_C",
+      "sql": "${joint_health} #>> '{J4,temperature_C}'"
+    },
+    {
+      "label": "JC.J5_temp",
+      "name": "jc_j5_temp",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J5/k:temperature_C",
+      "sql": "${joint_health} #>> '{J5,temperature_C}'"
+    },
+    {
+      "label": "JC.J6_temp",
+      "name": "jc_j6_temp",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J6/k:temperature_C",
+      "sql": "${joint_health} #>> '{J6,temperature_C}'"
+    },
+    {
+      "label": "JC.J1_vibration",
+      "name": "jc_j1_vibration",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J1/k:vibration_mmps",
+      "sql": "${joint_health} #>> '{J1,vibration_mmps}'"
+    },
+    {
+      "label": "JC.J2_vibration",
+      "name": "jc_j2_vibration",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J2/k:vibration_mmps",
+      "sql": "${joint_health} #>> '{J2,vibration_mmps}'"
+    },
+    {
+      "label": "JC.J3_vibration",
+      "name": "jc_j3_vibration",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J3/k:vibration_mmps",
+      "sql": "${joint_health} #>> '{J3,vibration_mmps}'"
+    },
+    {
+      "label": "JC.J4_vibration",
+      "name": "jc_j4_vibration",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J4/k:vibration_mmps",
+      "sql": "${joint_health} #>> '{J4,vibration_mmps}'"
+    },
+    {
+      "label": "JC.J5_vibration",
+      "name": "jc_j5_vibration",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J5/k:vibration_mmps",
+      "sql": "${joint_health} #>> '{J5,vibration_mmps}'"
+    },
+    {
+      "label": "JC.J6_vibration",
+      "name": "jc_j6_vibration",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J6/k:vibration_mmps",
+      "sql": "${joint_health} #>> '{J6,vibration_mmps}'"
+    },
+    {
+      "label": "SC.overseer_load",
+      "name": "sc_overseer_load",
+      "schema_stable_id": "robot_fault_prediction_large:column:system_controller:overseerloadvalue"
+    },
+    {
+      "label": "SC.memory_usage",
+      "name": "sc_memory_usage",
+      "schema_stable_id": "robot_fault_prediction_large:column:system_controller:memuseval"
+    },
+    {
+      "label": "PS.collisions",
+      "name": "ps_collisions",
+      "schema_stable_id": "robot_fault_prediction_large:column:performance_and_safety:collisioncount"
+    },
+    {
+      "label": "PS.zone_violations",
+      "name": "ps_zone_violations",
+      "schema_stable_id": "robot_fault_prediction_large:column:performance_and_safety:zoneviolnum"
+    },
+    {
+      "label": "PS.speed_violations",
+      "name": "ps_speed_violations",
+      "schema_stable_id": "robot_fault_prediction_large:column:performance_and_safety:speedviolnum"
+    },
+    {
+      "label": "A.position_error",
+      "name": "a_position_error",
+      "schema_stable_id": "robot_fault_prediction_large:column:actuation_data:poserrmmval"
+    },
+    {
+      "label": "RD.reach_mm",
+      "name": "rd_reach_mm",
+      "schema_stable_id": "robot_fault_prediction_large:column:robot_details:reachmmval"
+    },
+    {
+      "label": "MF.rul_hours",
+      "name": "mf_rul_hours",
+      "schema_stable_id": "robot_fault_prediction_large:column:maintenance_and_fault:rulhours"
+    },
+    {
+      "label": "O.cycle_time_seconds",
+      "name": "o_cycle_time_seconds",
+      "schema_stable_id": "robot_fault_prediction_large:column:operation:cycletimesecval"
+    },
+    {
+      "label": "PS.overloads",
+      "name": "ps_overloads",
+      "schema_stable_id": "robot_fault_prediction_large:column:performance_and_safety:overloadcnt"
+    },
+    {
+      "label": "JC.J1_backlash",
+      "name": "jc_j1_backlash",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J1/k:backlash_deg",
+      "sql": "${joint_health} #>> '{J1,backlash_deg}'"
+    },
+    {
+      "label": "JC.J2_backlash",
+      "name": "jc_j2_backlash",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J2/k:backlash_deg",
+      "sql": "${joint_health} #>> '{J2,backlash_deg}'"
+    },
+    {
+      "label": "JC.J3_backlash",
+      "name": "jc_j3_backlash",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J3/k:backlash_deg",
+      "sql": "${joint_health} #>> '{J3,backlash_deg}'"
+    },
+    {
+      "label": "JC.J4_backlash",
+      "name": "jc_j4_backlash",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J4/k:backlash_deg",
+      "sql": "${joint_health} #>> '{J4,backlash_deg}'"
+    },
+    {
+      "label": "JC.J5_backlash",
+      "name": "jc_j5_backlash",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J5/k:backlash_deg",
+      "sql": "${joint_health} #>> '{J5,backlash_deg}'"
+    },
+    {
+      "label": "JC.J6_backlash",
+      "name": "jc_j6_backlash",
+      "omni_parser_mode": "do_not_parse",
+      "schema_stable_id": "robot_fault_prediction_large:structured-leaf:joint_condition:joint_health:k:J6/k:backlash_deg",
+      "sql": "${joint_health} #>> '{J6,backlash_deg}'"
+    },
+    {
+      "label": "MF.upkeep_cost",
+      "name": "mf_upkeep_cost",
+      "schema_stable_id": "robot_fault_prediction_large:column:maintenance_and_fault:upkeepcostest"
+    },
+    {
+      "label": "MF.fault_prediction_score",
+      "name": "mf_fault_prediction_score",
+      "schema_stable_id": "robot_fault_prediction_large:column:maintenance_and_fault:faultpredscore"
+    },
+    {
+      "label": "PS.condition_index",
+      "name": "ps_condition_index",
+      "schema_stable_id": "robot_fault_prediction_large:column:performance_and_safety:conditionindexval"
+    },
+    {
+      "label": "PS.safety_state",
+      "name": "ps_safety_state",
+      "schema_stable_id": "robot_fault_prediction_large:column:performance_and_safety:safetystateval"
+    },
+    {
+      "label": "PS.calibration_state",
+      "name": "ps_calibration_state",
+      "schema_stable_id": "robot_fault_prediction_large:column:performance_and_safety:calibstateval"
+    },
+    {
+      "label": "SC.cabinet_humidity",
+      "name": "sc_cabinet_humidity",
+      "schema_stable_id": "robot_fault_prediction_large:column:system_controller:cabhumiditylevel"
+    },
+    {
+      "label": "RD.payload_capacity_kg",
+      "name": "rd_payload_capacity_kg",
+      "schema_stable_id": "robot_fault_prediction_large:column:robot_details:payloadcapkg"
+    },
+    {
+      "label": "PS.air_pressure",
+      "name": "ps_air_pressure",
+      "schema_stable_id": "robot_fault_prediction_large:column:performance_and_safety:airpressval"
+    },
+    {
+      "label": "RD.firmware_version",
+      "name": "rd_firmware_version",
+      "schema_stable_id": "robot_fault_prediction_large:column:robot_details:fwversionval"
+    },
+    {
+      "label": "RD.robot_type",
+      "name": "rd_robot_type",
+      "schema_stable_id": "robot_fault_prediction_large:column:robot_details:bottypeval"
+    },
+    {
+      "label": "O.application_type",
+      "name": "o_application_type",
+      "schema_stable_id": "robot_fault_prediction_large:column:operation:apptypeval"
+    },
+    {
+      "label": "MF.upkeep_due_days",
+      "name": "mf_upkeep_due_days",
+      "schema_stable_id": "robot_fault_prediction_large:column:maintenance_and_fault:upkeepduedays"
+    },
+    {
+      "label": "A.payload_weight",
+      "name": "a_payload_weight",
+      "schema_stable_id": "robot_fault_prediction_large:column:actuation_data:payloadwval"
+    }
+  ],
+  "schema": "public",
+  "views": [
+    {
+      "description": "Public semantic view for robot_details.",
+      "file_name": "robot_fault_prediction_large.public__robot_details.view",
+      "label": "robot_details",
+      "table_stable_id": "robot_fault_prediction_large:table:robot_details",
+      "topic_file_name": "robot_details_semantics.topic",
+      "view_name": "robot_fault_prediction_large_public__robot_details"
+    },
+    {
+      "description": "Public semantic view for joint_condition.",
+      "file_name": "robot_fault_prediction_large.public__joint_condition.view",
+      "label": "joint_condition",
+      "table_stable_id": "robot_fault_prediction_large:table:joint_condition",
+      "topic_file_name": "joint_condition_semantics.topic",
+      "view_name": "robot_fault_prediction_large_public__joint_condition"
+    },
+    {
+      "description": "Public semantic view for system_controller.",
+      "file_name": "robot_fault_prediction_large.public__system_controller.view",
+      "label": "system_controller",
+      "table_stable_id": "robot_fault_prediction_large:table:system_controller",
+      "topic_file_name": "system_controller_semantics.topic",
+      "view_name": "robot_fault_prediction_large_public__system_controller"
+    },
+    {
+      "description": "Public semantic view for performance_and_safety.",
+      "file_name": "robot_fault_prediction_large.public__performance_and_safety.view",
+      "label": "performance_and_safety",
+      "table_stable_id": "robot_fault_prediction_large:table:performance_and_safety",
+      "topic_file_name": "performance_and_safety_semantics.topic",
+      "view_name": "robot_fault_prediction_large_public__performance_and_safety"
+    },
+    {
+      "description": "Public semantic view for maintenance_and_fault.",
+      "file_name": "robot_fault_prediction_large.public__maintenance_and_fault.view",
+      "label": "maintenance_and_fault",
+      "table_stable_id": "robot_fault_prediction_large:table:maintenance_and_fault",
+      "topic_file_name": "maintenance_and_fault_semantics.topic",
+      "view_name": "robot_fault_prediction_large_public__maintenance_and_fault"
+    },
+    {
+      "description": "Public semantic view for operation.",
+      "file_name": "robot_fault_prediction_large.public__operation.view",
+      "label": "operation",
+      "table_stable_id": "robot_fault_prediction_large:table:operation",
+      "topic_file_name": "operation_semantics.topic",
+      "view_name": "robot_fault_prediction_large_public__operation"
+    },
+    {
+      "description": "Public semantic view for actuation_data.",
+      "file_name": "robot_fault_prediction_large.public__actuation_data.view",
+      "label": "actuation_data",
+      "table_stable_id": "robot_fault_prediction_large:table:actuation_data",
+      "topic_file_name": "actuation_data_semantics.topic",
+      "view_name": "robot_fault_prediction_large_public__actuation_data"
+    }
+  ]
+}

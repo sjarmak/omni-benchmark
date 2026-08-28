@@ -1,0 +1,17 @@
+label: Vendor Management
+description: Vendor rows with policy and process compliance status and a modeled non-compliance flag.
+catalog: cross_border_large
+schema: public
+table_name: VendorManagement
+dimensions:
+  pol_comp:
+    description: 'TEXT. The vendor''s policy compliance status. Possible values: Partial, Non-compliant, Full.'
+    label: Policy Compliance
+  procComp:
+    description: 'TEXT. The vendor''s process compliance status. Possible values: Partial, Non-compliant, Full.'
+    label: Process Compliance
+  is_non_compliant_vendor:
+    label: Non-Compliant Vendor
+    description: Marks a partner as non-compliant if they fail key requirements.
+    sql: ${pol_comp} = 'Non-compliant' OR ${procComp} = 'Non-compliant'
+    ai_context: Use this modeled field for Non-Compliant Vendor; do not reconstruct its formula.

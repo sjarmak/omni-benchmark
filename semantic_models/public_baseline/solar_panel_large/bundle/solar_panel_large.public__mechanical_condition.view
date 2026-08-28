@@ -1,0 +1,54 @@
+label: Mechanical Condition
+description: Mechanical, structural, and electrical condition snapshots.
+catalog: solar_panel_large
+schema: public
+table_name: mechanical_condition
+dimensions:
+  tracker:
+    description: 'TEXT. Tracking system operational status. Possible values: Error, Maintenance, Normal.'
+    label: Tracker State
+    ai_context: 'Tracker System State: Describes the current status of the solar tracking system. Common states include: ''Normal'' (actively tracking the sun), ''Maintenance'' (undergoing service), ''Error'' (malfunctioning), or ''Stow'' (locked in a safe, fixed position due to high winds).'
+  mount:
+    description: 'TEXT. Mounting structure condition. Possible values: Check Required, Stable, Unstable.'
+    label: Mount Structure Status
+  busbar:
+    description: 'TEXT. Busbar corrosion status. NULL means the encoder does not report status or data are missing. Possible values: Severe, Visible.'
+    label: Busbar Corrosion
+    ai_context: 'Busbar Corrosion Severity: Describes the extent of corrosion on the metallic strips (busbars) that conduct electricity within a solar panel. Levels can range from ''None'' to ''Light'' (minor discoloration), ''Visible'' (clear corrosion affecting small areas), and ''Severe'' (widespread corrosion that can disrupt conductivity and reduce power output).'
+  delam:
+    description: 'TEXT. Delamination status. NULL means the encoder does not report status or data are missing. Possible values: Major, Minor.'
+    label: Delamination Status
+  microcrack:
+    description: 'BIGINT. Count of microcracks detected. Example: 7.0.'
+    label: Microcrack Count
+  ground:
+    description: 'TEXT. Grounding system status. Possible values: Check Required, Failed, Normal.'
+    label: Grounding Status
+  diode:
+    description: 'TEXT. Bypass diode functionality status. Possible values: Failed, Normal, Partial.'
+    label: Bypass Diode Status
+  tracker_malfunction:
+    label: Tracker Malfunction
+    description: Indicates that a solar tracking system is not functioning correctly and may be stuck, in maintenance, or reporting an error.
+    sql: ${tracker} IN ('Error', 'Maintenance')
+    ai_context: Use this modeled field for Tracker Malfunction; do not reconstruct its formula.
+  structural_integrity_warning:
+    label: Structural Integrity Warning
+    description: Indicates that the physical mounting or support structure of the equipment may be compromised.
+    sql: ${mount} IN ('Unstable', 'Check Required')
+    ai_context: Use this modeled field for Structural Integrity Warning; do not reconstruct its formula.
+  electrical_integrity_failure:
+    label: Electrical Integrity Failure
+    description: Indicates a failure in the fundamental electrical safety or operational components of the system.
+    sql: ${ground} = 'Failed' OR ${diode} <> 'Normal'
+    ai_context: Use this modeled field for Electrical Integrity Failure; do not reconstruct its formula.
+  major_module_degradation:
+    label: Major Module Degradation
+    description: A composite indicator of severe physical aging and damage to solar modules.
+    sql: ${busbar} = 'Severe' AND ${delam} = 'Major' AND ${microcrack} > 5
+    ai_context: Use this modeled field for Major Module Degradation; do not reconstruct its formula.
+  critical_mechanical_health:
+    label: Critical Mechanical Health
+    description: Indicates that an asset is suffering from severe and concurrent mechanical failures.
+    sql: ${structural_integrity_warning} AND ${tracker_malfunction}
+    ai_context: Use this modeled field for Critical Mechanical Health; do not reconstruct its formula.

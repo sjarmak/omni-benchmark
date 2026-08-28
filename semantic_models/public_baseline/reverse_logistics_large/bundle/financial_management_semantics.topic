@@ -1,0 +1,7 @@
+base_view: reverse_logistics_large_public__financial_management
+label: Return Financials
+description: Return financial rows with public fee, valuation, disposal, refund, and sustainability semantics.
+fields:
+- reverse_logistics_large_public__financial_management.*
+joins: {}
+ai_context: Use the modeled business fields restocking_fee, relabeling_cost, disposal_cost, repair_estimate, recovery_value, carbon_footprint, disposal_method, refund_method rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

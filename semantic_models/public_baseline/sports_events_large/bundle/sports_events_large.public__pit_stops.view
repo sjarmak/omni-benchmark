@@ -1,0 +1,22 @@
+label: Pit Stops
+description: Pit-stop records with duration measurements.
+catalog: sports_events_large
+schema: public
+table_name: pit_stops
+dimensions:
+  ms_count:
+    description: 'INTEGER. Millisecond count for the pit stop. Example: 22936.'
+    label: Pit stop duration in milliseconds
+    sql: '-- DO NOT PARSE
+
+      ${ms_count}'
+  efficient_pit_stop:
+    label: Efficient Pit Stop
+    description: Defines a benchmark for an exceptionally fast pit stop.
+    sql: ${ms_count} < 2500
+    ai_context: Use this modeled field for Efficient Pit Stop; do not reconstruct its formula.
+  pit_stop_duration_seconds:
+    label: Pit Stop Duration in Seconds
+    description: Converts pit stop duration from milliseconds to a more human-readable seconds format.
+    sql: ${ms_count} / 1000.0
+    ai_context: Use this modeled field for Pit Stop Duration in Seconds; do not reconstruct its formula.

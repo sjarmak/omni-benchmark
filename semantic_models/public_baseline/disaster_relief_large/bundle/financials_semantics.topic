@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__financials
+label: Financials
+description: Financial records with public funding-state context.
+fields:
+- disaster_relief_large_public__financials.*
+joins: {}
+ai_context: Use the modeled business fields funding_state rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

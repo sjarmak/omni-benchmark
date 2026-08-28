@@ -1,0 +1,27 @@
+label: Buyers
+description: Buyer records with public authentication and spending-pattern context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: buyers
+dimensions:
+  authentication_level:
+    description: 'TEXT. Authentication level attained by the buyer. **NULL means authentication level has not been determined.**. Possible values: Advanced, Basic.'
+    label: Authentication Level
+    ai_context: 'Buyer Authentication Levels: Values: Advanced, Basic. Label descriptions: - Advanced: Account protected by multi factor authentication or hardware-backed credentials, offering high assurance. - Basic: Account relies on single factor authentication such as a password, with no secondary verification.'
+  spend_pattern:
+    description: 'TEXT. Categorised spending pattern for the buyer. Possible values: High, Low, Medium, Variable.'
+    label: Spend Pattern
+    sql: '-- DO NOT PARSE
+
+      ${buyer_risk_profile} ->> ''spend_pattern'''
+    ai_context: 'Spend Pattern Categories: Values: High, Low, Medium, Variable.
+
+      Label descriptions:
+
+      - High: Frequent, high value purchases indicative of heavy marketplace engagement.
+
+      - Low: Infrequent, low value purchases typical of casual or opportunistic buyers.
+
+      - Medium: Steady purchasing cadence with moderate transaction amounts.
+
+      - Variable: Irregular bursts of spending with no predictable pattern.'

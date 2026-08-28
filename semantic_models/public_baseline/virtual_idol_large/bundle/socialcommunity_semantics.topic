@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__socialcommunity
+label: Social Community
+description: Social community records with row-level network and content-creation semantics.
+fields:
+- virtual_idol_large_public__socialcommunity.*
+joins: {}
+ai_context: Use the modeled business fields follower_count, following_count, social_network_size, friend_connections, content_submissions, collaborations, average_content_quality_rating, community_contribution_level, community_role, social_capital_score, follower_to_following_ratio, content_creator_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

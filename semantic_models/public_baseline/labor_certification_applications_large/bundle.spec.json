@@ -1,0 +1,124 @@
+{
+  "format_version": 1,
+  "database": "labor_certification_applications_large",
+  "catalog": "labor_certification_applications_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "labor_certification_applications_large:table:cases",
+      "view_name": "labor_certification_applications_large_public__cases",
+      "file_name": "labor_certification_applications_large.public__cases.view",
+      "topic_file_name": "cases_semantics.topic",
+      "label": "Labor Certification Cases",
+      "description": "Application case rows with public visa, disclosure, status, worker-position, worksite-count, and worksite-density semantics."
+    },
+    {
+      "table_stable_id": "labor_certification_applications_large:table:EmployerLaborCondition",
+      "view_name": "labor_certification_applications_large_public__employer_labor_condition",
+      "file_name": "labor_certification_applications_large.public__employer_labor_condition.view",
+      "topic_file_name": "employer_labor_condition_semantics.topic",
+      "label": "Employer Labor Conditions",
+      "description": "Employer labor-condition rows with public classification flags, occupational codes, annual wages, and same-row wage semantics."
+    },
+    {
+      "table_stable_id": "labor_certification_applications_large:table:prevailing_wage",
+      "view_name": "labor_certification_applications_large_public__prevailing_wage",
+      "file_name": "labor_certification_applications_large.public__prevailing_wage.view",
+      "topic_file_name": "prevailing_wage_semantics.topic",
+      "label": "Prevailing Wage Determinations",
+      "description": "Prevailing-wage records with public structured wage-unit context."
+    }
+  ],
+  "physical_fields": [
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:cases:visacls",
+      "name": "visa_classification",
+      "label": "Visa Classification"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:cases:pubdisc",
+      "name": "public_disclosure_status",
+      "label": "Public Disclosure Status"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:cases:statustag",
+      "name": "application_status",
+      "label": "Application Status"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:cases:headct",
+      "name": "worker_positions",
+      "label": "Worker Positions"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:cases:siteslots",
+      "name": "worksite_count",
+      "label": "Worksite Count"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:h1bDependentEmployer_flag",
+      "name": "h1b_dependent_employer",
+      "label": "H-1B Dependent Employer"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:willfulViolator_flag",
+      "name": "willful_violator",
+      "label": "Willful Violator"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:fullTimePosition_flag",
+      "name": "full_time_position",
+      "label": "Full-Time Position"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:wageLevel",
+      "name": "prevailing_wage_level",
+      "label": "Prevailing Wage Level"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:naicsCode",
+      "name": "naics_code",
+      "label": "NAICS Code"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:socCode",
+      "name": "soc_code",
+      "label": "SOC Code"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:offeredWage_USD",
+      "name": "offered_annual_wage_usd",
+      "label": "Offered Annual Wage (USD)"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:column:EmployerLaborCondition:prevailingWage_USD",
+      "name": "prevailing_annual_wage_usd",
+      "label": "Prevailing Annual Wage (USD)"
+    },
+    {
+      "schema_stable_id": "labor_certification_applications_large:structured-leaf:prevailing_wage:wage_details:k:prevailing_wage/k:unit",
+      "name": "prevailing_wage_unit",
+      "label": "Prevailing Wage Unit",
+      "sql": "${wage_details} #>> '{prevailing_wage,unit}'",
+      "omni_parser_mode": "do_not_parse"
+    }
+  ],
+  "derived_fields": [
+    {
+      "hkb_stable_id": "labor_certification_applications_large:hkb:11",
+      "sql": "CASE WHEN ${prevailing_annual_wage_usd} <> 0 THEN ((${offered_annual_wage_usd} - ${prevailing_annual_wage_usd}) / ${prevailing_annual_wage_usd}) * 100.0 END"
+    },
+    {
+      "hkb_stable_id": "labor_certification_applications_large:hkb:16",
+      "sql": "CASE WHEN ${worksite_count} <> 0 THEN CAST(${worker_positions} AS DOUBLE PRECISION) / ${worksite_count} END"
+    },
+    {
+      "hkb_stable_id": "labor_certification_applications_large:hkb:40",
+      "sql": "${wage_differential_rate} > 20.0"
+    },
+    {
+      "hkb_stable_id": "labor_certification_applications_large:hkb:48",
+      "sql": "CASE WHEN ${wage_differential_rate} IS NULL THEN NULL WHEN ${wage_differential_rate} < 0.0 THEN 'Below-Market' WHEN ${wage_differential_rate} <= 10.0 THEN 'Market-Competitive' ELSE 'Premium' END"
+    }
+  ]
+}

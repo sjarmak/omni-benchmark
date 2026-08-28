@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__employer_labor_condition
+label: Employer Labor Conditions
+description: Employer labor-condition rows with public classification flags, occupational codes, annual wages, and same-row wage semantics.
+fields:
+- labor_certification_applications_large_public__employer_labor_condition.*
+joins: {}
+ai_context: Use the modeled business fields h1b_dependent_employer, willful_violator, full_time_position, prevailing_wage_level, naics_code, soc_code, offered_annual_wage_usd, prevailing_annual_wage_usd, wage_differential_rate, is_premium_wage_position, wage_competitiveness_tier rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

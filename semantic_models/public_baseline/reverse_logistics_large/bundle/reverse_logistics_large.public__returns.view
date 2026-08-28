@@ -1,0 +1,35 @@
+label: Returns
+description: Return-case rows with public channel, timing, shipping, warranty, and fraud semantics.
+catalog: reverse_logistics_large
+schema: public
+table_name: returns
+dimensions:
+  shipping_fee:
+    description: 'REAL. Shipping fee for the return. Example: 64.1.'
+    label: Shipping Fee
+    sql: '-- DO NOT PARSE
+
+      CAST(${return_details} -> ''shipping'' ->> ''fee'' AS DOUBLE PRECISION)'
+    ai_context: 'Shipping Fee: A monetary amount reflecting transportation cost incurred for a single return shipment.'
+  days_lapsed:
+    description: 'BIGINT. Number of days lapsed since the transaction. Example: 33.'
+    label: Days Lapsed
+    ai_context: 'Days Lapsed: Difference in days between transaction date and point at which funds/refund are issued.'
+  return_channel:
+    description: VARCHAR(50). Channel through which the return was made.
+    label: Return Channel
+    ai_context: 'Return Channels: Marked as ''Store'' when customer returns item in person at a retail outlet; ''Courier'' when customer arranges a courier service for doorstep pickup; ''Mail'' when item is posted through the national mail system; ''Locker'' when customer deposits parcel in an automated locker or drop-box; ''Pickup'' when retailer schedules a home or office collection for oversized or fragile goods.'
+  fraud_risk_level:
+    description: VARCHAR(50). Fraud risk level for the return. **NULL means no fraud risk level assessed.**
+    label: Fraud Risk Level
+    sql: '-- DO NOT PARSE
+
+      ${return_details} -> ''fraud'' ->> ''risk_level'''
+    ai_context: 'Fraud Risk Levels: There are 3 different levels: ''Low'', ''Medium'' and ''High''.'
+  warranty_status:
+    description: 'VARCHAR(50). Warranty status of the product being returned. Possible values: Expired, Not Applicable, Valid.'
+    label: Warranty Status
+    sql: '-- DO NOT PARSE
+
+      ${return_details} -> ''authorization'' ->> ''warranty_status'''
+    ai_context: 'Warranty Statuses: ''Valid'' is within manufacturer or retailer warranty period; ''Expired'' is warranty term has lapsed; ''Not Applicable'' is no warranty offered or proof unavailable.'

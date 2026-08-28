@@ -1,0 +1,7 @@
+base_view: mental_healths_large_public__assessmentsocialanddiagnosis
+label: Social and Diagnosis Assessments
+description: Assessment rows with diagnosis, recovery, functioning, and hospitalization semantics.
+fields:
+- mental_healths_large_public__assessmentsocialanddiagnosis.*
+joins: {}
+ai_context: Use the modeled business fields functional_impairment, social_support_level, previous_hospitalizations, diagnosis_duration_months, recovery_status, resilience_score, primary_diagnosis, annualized_hospitalization_risk, is_peer_mentor_candidate, is_chronic_high_acuity_bipolar rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

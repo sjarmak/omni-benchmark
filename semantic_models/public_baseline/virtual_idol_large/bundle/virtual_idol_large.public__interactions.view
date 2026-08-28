@@ -1,0 +1,41 @@
+label: Interactions
+description: Interaction records with row-level watch, gift, chat, and duration semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: interactions
+dimensions:
+  session_duration_minutes:
+    description: SMALLINT. Duration of the interaction session in minutes.
+    label: Session Duration (minutes)
+  total_watch_hours:
+    description: REAL. Total hours of content watched during the interaction session.
+    label: Total Watch Hours
+  total_gift_value_usd:
+    description: REAL. Total monetary value in USD of gifts sent during interaction.
+    label: Total Gift Value (USD)
+  chat_messages:
+    description: BIGINT. Number of chat messages sent by the fan during this interaction.
+    label: Chat Messages
+  gift_frequency:
+    description: TEXT. Frequency classification of gift-giving behavior during interaction.
+    label: Gift Frequency
+    ai_context: 'Gift Frequency: Classifies how often a fan gives virtual gifts during interactions. Categories include ''Often'', ''Frequently'', ''Occasionally'', and ''Rarely''.'
+  interaction_tone:
+    description: TEXT. Sentiment or tone analysis result of messages sent during interaction.
+    label: Interaction Tone
+    ai_context: 'Interaction Tone: Indicates the overall sentiment of a fan''s chat messages. Common values are ''Positive'', ''Negative'', ''Neutral'', or ''Mixed''.'
+  fan_monetization_index:
+    label: Fan Monetization Index (FMI)
+    description: Measures a fan's direct financial contribution per minute of engagement, indicating their propensity for in-session spending.
+    sql: ${total_gift_value_usd} / NULLIF(${session_duration_minutes}, 0)
+    ai_context: Use this modeled field for Fan Monetization Index (FMI); do not reconstruct its formula.
+  content_consumption_index:
+    label: Content Consumption Index (CCI)
+    description: Quantifies a fan's level of passive engagement by measuring the hours of content they watch relative to their session time.
+    sql: ${total_watch_hours} / NULLIF(${session_duration_minutes}, 0)
+    ai_context: Use this modeled field for Content Consumption Index (CCI); do not reconstruct its formula.
+  chattiness_score:
+    label: Chattiness Score (CS)
+    description: Measures a fan's active communication during a session, reflecting their level of social interaction.
+    sql: ${chat_messages} / NULLIF(${session_duration_minutes}, 0)
+    ai_context: Use this modeled field for Chattiness Score (CS); do not reconstruct its formula.

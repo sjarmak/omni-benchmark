@@ -1,0 +1,17 @@
+label: Distribution Hubs
+description: Distribution-hub records with row-level utilization, turnover, and overload semantics.
+catalog: disaster_relief_large
+schema: public
+table_name: distributionhubs
+dimensions:
+  hub_utilization_pct:
+    description: 'REAL. Hub''s utilization percentage. Example: 9.4.'
+    label: Hub Utilization (%)
+  stock_turn_rate:
+    description: 'REAL. Stock turnover rate. Example: 3.31.'
+    label: Stock Turnover Rate
+  is_hub_overloaded:
+    label: Hub Overload
+    description: A state where a distribution hub's operational metrics indicate it is under excessive strain.
+    sql: (${hub_utilization_pct} / 100.0) + (${stock_turn_rate} / 10.0) > 1.5
+    ai_context: Use this modeled field for Hub Overload; do not reconstruct its formula.

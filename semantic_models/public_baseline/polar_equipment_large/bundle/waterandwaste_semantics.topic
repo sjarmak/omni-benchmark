@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__waterandwaste
+label: Water And Waste
+description: Water and waste records with management and water-quality semantics.
+fields:
+- polar_equipment_large_public__waterandwaste.*
+joins: {}
+ai_context: Use the modeled business fields water_level_percent, water_quality_index, waste_tank_level_percent, water_resource_management_index, requires_water_conservation, water_quality_classification_system, water_resource_management_status_classification rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

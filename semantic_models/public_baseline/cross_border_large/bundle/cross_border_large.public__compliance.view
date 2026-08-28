@@ -1,0 +1,10 @@
+label: Compliance
+description: Compliance rows with public context for GDPR compliance status.
+catalog: cross_border_large
+schema: public
+table_name: Compliance
+dimensions:
+  gdprComp:
+    description: 'TEXT. Compliance status with the General Data Protection Regulation (GDPR). Possible values: Compliant, Partial, Non-compliant.'
+    label: GDPR Compliance Status
+    ai_context: 'GDPR Compliance Status: Values: compliant, non-compliant, or partial.'

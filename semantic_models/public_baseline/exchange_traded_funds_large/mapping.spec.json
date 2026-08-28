@@ -1,0 +1,2565 @@
+{
+  "database": "exchange_traded_funds_large",
+  "records": [
+    {
+      "bindings": [
+        {
+          "alias": "AR.fundperf",
+          "confidence": "exact",
+          "role": "fund_annual_return"
+        },
+        {
+          "alias": "AR.categoryperf",
+          "confidence": "exact",
+          "role": "category_average_annual_return"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 0,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same annual-return row contains the fund and category returns for the stated subtraction.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "annual_fund_outperformance",
+      "target_alias": "AR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.expensenet",
+          "confidence": "exact",
+          "role": "fund_net_expense_ratio"
+        },
+        {
+          "alias": "F.benchmarkexp",
+          "confidence": "exact",
+          "role": "benchmark_expense_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 1,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Both expense ratios are scalar columns on the same fund row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "relative_expense_ratio",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.r1y",
+          "confidence": "exact",
+          "role": "fund_1_year_return"
+        },
+        {
+          "alias": "F.expensenet",
+          "confidence": "exact",
+          "role": "net_expense_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 2,
+      "loss_codes": [
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The return and expense inputs are on separate tables; no joined target grain is modeled.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.yieldrate",
+          "confidence": "exact",
+          "role": "fund_yield_rate"
+        },
+        {
+          "alias": "F.expensenet",
+          "confidence": "exact",
+          "role": "net_expense_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 3,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Yield and net expense are scalar columns on the same fund row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "yield_to_expense_ratio",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.lowdelta",
+          "confidence": "exact",
+          "role": "recent_price_minus_52_week_low"
+        },
+        {
+          "alias": "P.high52w",
+          "confidence": "exact",
+          "role": "52_week_high_price"
+        },
+        {
+          "alias": "P.low52w",
+          "confidence": "exact",
+          "role": "52_week_low_price"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 4,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The exact low delta equals recent price minus the 52-week low, so the stated numerator is directly available on the same row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "price_position_52_week_pct",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.ma50",
+          "confidence": "exact",
+          "role": "50_day_moving_average"
+        },
+        {
+          "alias": "F.ma200",
+          "confidence": "exact",
+          "role": "200_day_moving_average"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 5,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Both moving averages are scalar columns on the same fund row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "short_term_momentum",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.avgreturn3y",
+          "confidence": "exact",
+          "role": "fund_3_year_average_return"
+        },
+        {
+          "alias": "P.benchr3y",
+          "confidence": "exact",
+          "role": "benchmark_3_year_return"
+        },
+        {
+          "alias": "R.volatility3y",
+          "confidence": "exact",
+          "role": "fund_3_year_volatility"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 6,
+      "loss_codes": [
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The benchmark return is on performance while average return and volatility are on risk_metrics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.positiveyears",
+          "confidence": "exact",
+          "role": "positive_return_year_count"
+        },
+        {
+          "alias": "P.negativeyears",
+          "confidence": "exact",
+          "role": "negative_return_year_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 7,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Positive and negative year counts are on the same performance row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "positive_return_consistency_pct",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 8,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The declared inputs compile on annual_returns and funds, and the prose does not specify a combine operator.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.equityweight",
+          "confidence": "exact",
+          "role": "stock_allocation"
+        },
+        {
+          "alias": "F.yieldrate",
+          "confidence": "exact",
+          "role": "dividend_yield"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 9,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Both non-zero tests use exact scalar fields on the same fund row.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_total_return_fund",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.alpha5y",
+          "confidence": "exact",
+          "role": "5_year_alpha"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 10,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The exact 5-year alpha scalar supports the stated threshold.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_alpha_generator",
+      "target_alias": "R.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.rsquared3y",
+          "confidence": "exact",
+          "role": "3_year_r_squared_percentage"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 11,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The ordinary 3-year R-squared column is explicitly percentage-scaled for the threshold of 90.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_market_tracking_fund",
+      "target_alias": "R.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.turnoverratio",
+          "confidence": "exact",
+          "role": "annual_portfolio_turnover_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 12,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The annual turnover ratio is decimal-scaled, so 30 percent is 0.3.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_low_turnover_strategy",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.largestholdingweight",
+          "confidence": "exact",
+          "role": "single_largest_holding_weight"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 13,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The structured Top_Weight leaf explicitly represents the single largest holding as a 0-1 weight.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_high_conviction_portfolio",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 14,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The declared YTER dependency is compiled on the same fund row.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_efficient_income_generator",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 15,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Alpha Generator and Positive Return Consistency compile on different tables.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 16,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Both declared boolean dependencies compile on the same risk_metrics row.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_passive_alpha_generator",
+      "target_alias": "R.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 17,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The declared momentum dependency compiles on the same fund row.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "has_golden_cross_signal",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.geofocus",
+          "confidence": "exact",
+          "role": "geographic_focus"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 18,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "notes": "The definition is an open-ended value illustration for the exact GeoZone_Class leaf.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "BA.allocationpct",
+          "confidence": "exact",
+          "role": "rating_allocation"
+        },
+        {
+          "alias": "BR.rating",
+          "confidence": "exact",
+          "role": "credit_rating"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 19,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "The definition requires joining rating labels to allocation rows and summing selected ratings per fund.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.yieldrate",
+          "confidence": "exact",
+          "role": "yield_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 20,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "notes": "This is a value and unit illustration for the exact fund yield field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.turnoverratio",
+          "confidence": "exact",
+          "role": "turnover_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 21,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "notes": "This is a value-domain illustration for the exact fund turnover field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 22,
+      "loss_codes": [
+        "source_alias_uncertain"
+      ],
+      "notes": "The HKB does not choose among the public 3-year, 5-year, 10-year, and other beta fields.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 23,
+      "loss_codes": [
+        "source_alias_uncertain"
+      ],
+      "notes": "The HKB does not choose among multiple public R-squared periods and scales.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 24,
+      "loss_codes": [
+        "source_alias_uncertain"
+      ],
+      "notes": "The HKB does not choose among the public 3-year, 5-year, 10-year, and other Sharpe fields.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.duration",
+          "confidence": "exact",
+          "role": "fund_duration"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 25,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "notes": "This is a value and interpretation illustration for the exact fund duration field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.expensenet",
+          "confidence": "exact",
+          "role": "net_expense_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 26,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "notes": "This is a value and unit illustration for the exact net expense field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.equityweight",
+          "confidence": "exact",
+          "role": "equity_weight"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 27,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "notes": "This is a value illustration for the exact equity allocation field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SA.weightpct",
+          "confidence": "exact",
+          "role": "sector_weight"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 28,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "notes": "This is a value illustration for the exact per-sector allocation weight field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "SA.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "BR.rating",
+          "confidence": "exact",
+          "role": "credit_quality"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 29,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "notes": "The rating vocabulary illustrates the exact credit rating designation field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "BR.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 30,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The two declared inputs compile at annual-return and fund grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.ma200",
+          "confidence": "exact",
+          "role": "200_day_moving_average"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 31,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Price Position compiles on performance while Momentum and the 200-day average are on funds.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 32,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Information Ratio requires risk and performance data, while consistency is on performance.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 33,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The declared inputs span funds, performance, and risk_metrics grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 34,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Information Ratio and Relative Expense require risk/performance and fund data.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 35,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "YTER is fund-grain while high-quality credit requires joined and aggregated bond allocations.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 36,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Momentum compiles on funds and price position compiles on performance.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.yieldrate",
+          "confidence": "exact",
+          "role": "yield_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [
+          20
+        ],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 37,
+      "loss_codes": [
+        "dependency_omission",
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Yield is an exact fund column and the declared Relative Expense dependency compiles on the same row; the named Yield Rate context node is omitted from dependencies.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "net_yield_advantage",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 38,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "Annual outperformance is annual-return grain while cost adjustment requires a fund-grain input and an unspecified combine operator.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.volatility3y",
+          "confidence": "exact",
+          "role": "3_year_volatility"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 39,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "ROC requires performance and fund data while volatility is on risk_metrics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 40,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The declared classifications are not compiled on one common table.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 41,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Market tracking is risk-grain while turnover and relative expense are fund-grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 42,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Income efficiency is fund-grain while credit quality requires relationship and aggregation semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 43,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "The last annual-return row must be temporally selected and combined with a fund-row signal.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 44,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Relative expense is fund-grain and market tracking is risk-grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 45,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Alpha Generator and High-Conviction Portfolio compile on risk_metrics and performance respectively.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 46,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The dependencies span risk_metrics, performance, and funds.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 47,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Price position is performance-grain while turnover and relative expense are fund-grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 48,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Alpha Generator is risk-grain and Geographic Focus is a fund structured leaf.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 49,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Relative expense is fund-grain and annual outperformance is annual-return grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.alpha3y",
+          "confidence": "exact",
+          "role": "3_year_alpha"
+        },
+        {
+          "alias": "R.volatility3y",
+          "confidence": "exact",
+          "role": "3_year_volatility"
+        },
+        {
+          "alias": "R.rsquared3ydecimal",
+          "confidence": "exact",
+          "role": "3_year_r_squared_decimal"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": [
+          10
+        ]
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 50,
+      "loss_codes": [
+        "dependency_redundancy",
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "All stated 3-year inputs are on risk_metrics; the structured R-squared leaf is explicitly 0-1. Alpha Generator is a redundant 5-year boolean dependency.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "appraisal_ratio",
+      "target_alias": "R.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.pe",
+          "confidence": "exact",
+          "role": "price_to_earnings_ratio"
+        },
+        {
+          "alias": "F.ps",
+          "confidence": "exact",
+          "role": "price_to_sales_ratio"
+        },
+        {
+          "alias": "F.pb",
+          "confidence": "exact",
+          "role": "price_to_book_ratio"
+        },
+        {
+          "alias": "F.pcf",
+          "confidence": "exact",
+          "role": "price_to_cash_flow_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 51,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "All four valuation ratios are scalar columns on the same fund row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "composite_valuation_score",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 52,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "R-squared is risk-grain and turnover is fund-grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.alpha3y",
+          "confidence": "exact",
+          "role": "3_year_alpha"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": [
+          10
+        ]
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 53,
+      "loss_codes": [
+        "dependency_redundancy",
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The formula needs 3-year alpha on risk_metrics and relative expense on funds; Alpha Generator is a redundant 5-year boolean dependency.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.ma200",
+          "confidence": "exact",
+          "role": "200_day_moving_average"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 54,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Momentum is fund-grain while Information Ratio requires risk and performance data.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 55,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "YTER is fund-grain and high-quality credit requires joined, aggregated bond allocations.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.alpha3y",
+          "confidence": "exact",
+          "role": "3_year_alpha"
+        },
+        {
+          "alias": "F.expensenet",
+          "confidence": "exact",
+          "role": "net_expense_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [
+          26
+        ],
+        "redundant_ids": [
+          10
+        ]
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 56,
+      "loss_codes": [
+        "dependency_omission",
+        "dependency_redundancy",
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The exact inputs are on risk_metrics and funds; the named Net Expense node is omitted and Alpha Generator is not the required 3-year alpha scalar.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.negativeyears",
+          "confidence": "exact",
+          "role": "negative_year_count"
+        },
+        {
+          "alias": "P.low52w",
+          "confidence": "exact",
+          "role": "52_week_low_price"
+        },
+        {
+          "alias": "P.lowdelta",
+          "confidence": "exact",
+          "role": "current_price_minus_52_week_low"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": [
+          7
+        ]
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 57,
+      "loss_codes": [
+        "dependency_redundancy",
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Negative years, low price, and exact current-minus-low delta are same-row scalars; Positive Return Consistency is not used by the stated formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "capital_preservation_index",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.networth",
+          "confidence": "exact",
+          "role": "net_worth"
+        },
+        {
+          "alias": "F.turnoverratio",
+          "confidence": "exact",
+          "role": "turnover_ratio"
+        },
+        {
+          "alias": "F.vol3m",
+          "confidence": "exact",
+          "role": "average_daily_volume_3_month"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [
+          21
+        ],
+        "redundant_ids": [
+          12
+        ]
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 58,
+      "loss_codes": [
+        "dependency_omission",
+        "dependency_redundancy",
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "All formula inputs are exact fund-row scalars; the raw Turnover Ratio node is omitted while the Low-Turnover boolean dependency is redundant.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "portfolio_liquidity_pressure",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.pe",
+          "confidence": "exact",
+          "role": "price_to_earnings_ratio"
+        },
+        {
+          "alias": "F.pb",
+          "confidence": "exact",
+          "role": "price_to_book_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 59,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "P/E and P/B are scalar columns on the same fund row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "growth_value_spectrum_score",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 60,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Relative expense is fund-grain and market tracking is risk-grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 61,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Low turnover is fund-grain and market tracking is risk-grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.alpha3y",
+          "confidence": "exact",
+          "role": "most_recent_3_year_alpha"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 62,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Previously-consistent status requires historical state and temporal matching across performance and risk data.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 63,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Category percentile ranking requires grouping and joins in addition to the declared cross-table dependencies.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 64,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Category percentile ranking and the declared dependencies span fund and performance grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 65,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "categorical_mapping_underspecified"
+      ],
+      "notes": "Ideal Index Fund is cross-table and the threshold for a high ROC is not specified.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 66,
+      "loss_codes": [
+        "categorical_mapping_underspecified"
+      ],
+      "notes": "The HKB provides no threshold or sign rule for when the score indicates a growth tilt.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.beta3y",
+          "confidence": "exact",
+          "role": "3_year_beta"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [
+          22
+        ],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 67,
+      "loss_codes": [
+        "dependency_omission",
+        "categorical_mapping_underspecified",
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The high Capital Preservation threshold is unspecified, and beta and preservation inputs are on separate tables.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 68,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "The dependencies require fund, risk, performance, and holding-derived semantics without a modeled common grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 69,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Golden Cross is fund-grain while High-Cost Underperformer requires annual-return and fund data.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 70,
+      "loss_codes": [
+        "cardinality_unknown",
+        "date_boundary_semantics_unspecified",
+        "aggregation_unspecified"
+      ],
+      "notes": "Current and previous annual-return rows require temporal matching and missing-period behavior.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.duration",
+          "confidence": "exact",
+          "role": "fund_duration"
+        },
+        {
+          "alias": "F.productclass",
+          "confidence": "exact",
+          "role": "fund_category"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 71,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "The metric requires category grouping and averaging across multiple fund rows.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 72,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Category Average Duration is an aggregate that must be related back to each fund row.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "AR.categoryperf",
+          "confidence": "exact",
+          "role": "category_annual_return"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 73,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "The definition requires filtering and averaging multiple annual-return rows per fund.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "AR.categoryperf",
+          "confidence": "exact",
+          "role": "category_annual_return"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 74,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "The definition requires filtering and averaging multiple annual-return rows per fund.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 75,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Both declared dependencies are multi-row conditional averages.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.vol3m",
+          "confidence": "exact",
+          "role": "average_daily_volume_3_month"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 76,
+      "loss_codes": [
+        "source_alias_uncertain"
+      ],
+      "notes": "Average daily volume exists, but the HKB only gives an example rather than an exact average-share-price source.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [
+          22
+        ],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 77,
+      "loss_codes": [
+        "dependency_omission",
+        "categorical_mapping_underspecified",
+        "source_alias_uncertain"
+      ],
+      "notes": "The first and second beta periods are not identified among the available horizons.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [
+          23
+        ],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 78,
+      "loss_codes": [
+        "dependency_omission",
+        "categorical_mapping_underspecified",
+        "source_alias_uncertain"
+      ],
+      "notes": "The first and second R-squared periods and scale are not identified.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 79,
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "notes": "Both declared drift dependencies are unsupported because their comparison periods are undefined.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 80,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Percentile ranks require peer-group aggregation across risk and fund fields.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 81,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "The definition requires category counts, within-category ranking, tie behavior, and a minimum-size filter.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.alpha3y",
+          "confidence": "exact",
+          "role": "3_year_alpha"
+        },
+        {
+          "alias": "F.turnoverratio",
+          "confidence": "exact",
+          "role": "turnover_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 82,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Regression requires a joined population and an aggregation over many fund observations.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.alpha3y",
+          "confidence": "exact",
+          "role": "3_year_alpha"
+        },
+        {
+          "alias": "F.turnoverratio",
+          "confidence": "exact",
+          "role": "turnover_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 83,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Regression fit quality requires a joined population and an aggregation over many observations.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.pe",
+          "confidence": "exact",
+          "role": "price_to_earnings_ratio"
+        },
+        {
+          "alias": "F.pb",
+          "confidence": "exact",
+          "role": "price_to_book_ratio"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 84,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified"
+      ],
+      "notes": "Both valuation fields are scalar fund columns and numeric availability is represented by non-null values.",
+      "relationship_requirements": [],
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "valuation_data_availability",
+      "target_alias": "F.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.r1y",
+          "confidence": "exact",
+          "role": "1_year_return"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 85,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "A median requires a specified group grain and aggregation over multiple fund rows.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.networth",
+          "confidence": "exact",
+          "role": "net_worth"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 86,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Relative expense and net worth are fund-grain, but the required Closet Indexer dependency also needs risk data.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 87,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "The profile requires joins from families to funds and sectors plus averaging and arg-max semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 88,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "The family classification requires family-level average beta and a count of alpha-generating funds.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    }
+  ],
+  "schema_aliases": {
+    "AR.T": "exchange_traded_funds_large:table:annual_returns",
+    "AR.fundperf": "exchange_traded_funds_large:column:annual_returns:fundperf",
+    "AR.categoryperf": "exchange_traded_funds_large:column:annual_returns:categoryperf",
+    "F.T": "exchange_traded_funds_large:table:funds",
+    "F.geofocus": "exchange_traded_funds_large:structured-leaf:funds:fundclass:k:GeoZone_Class",
+    "F.productclass": "exchange_traded_funds_large:column:funds:productclass",
+    "F.yieldrate": "exchange_traded_funds_large:column:funds:yieldrate",
+    "F.turnoverratio": "exchange_traded_funds_large:column:funds:turnoverratio",
+    "F.expensenet": "exchange_traded_funds_large:column:funds:expensenet",
+    "F.benchmarkexp": "exchange_traded_funds_large:column:funds:benchmarkexp",
+    "F.vol3m": "exchange_traded_funds_large:column:funds:vol3m",
+    "F.ma50": "exchange_traded_funds_large:column:funds:ma50",
+    "F.ma200": "exchange_traded_funds_large:column:funds:ma200",
+    "F.equityweight": "exchange_traded_funds_large:column:funds:equityweight",
+    "F.networth": "exchange_traded_funds_large:column:funds:networth",
+    "F.pe": "exchange_traded_funds_large:column:funds:pe_ratio",
+    "F.ps": "exchange_traded_funds_large:column:funds:ps_ratio",
+    "F.pb": "exchange_traded_funds_large:column:funds:pb_ratio",
+    "F.pcf": "exchange_traded_funds_large:column:funds:pcf_ratio",
+    "F.duration": "exchange_traded_funds_large:column:funds:duration",
+    "P.T": "exchange_traded_funds_large:table:performance",
+    "P.high52w": "exchange_traded_funds_large:column:performance:high52w",
+    "P.low52w": "exchange_traded_funds_large:column:performance:low52w",
+    "P.lowdelta": "exchange_traded_funds_large:column:performance:lowdelta",
+    "P.r1y": "exchange_traded_funds_large:column:performance:r1y",
+    "P.benchr3y": "exchange_traded_funds_large:column:performance:benchr3y",
+    "P.positiveyears": "exchange_traded_funds_large:column:performance:positiveyears",
+    "P.negativeyears": "exchange_traded_funds_large:column:performance:negativeyears",
+    "P.largestholdingweight": "exchange_traded_funds_large:structured-leaf:performance:histstats:k:Top_Weight",
+    "R.T": "exchange_traded_funds_large:table:risk_metrics",
+    "R.alpha3y": "exchange_traded_funds_large:column:risk_metrics:alpha3y",
+    "R.beta3y": "exchange_traded_funds_large:column:risk_metrics:beta3y",
+    "R.avgreturn3y": "exchange_traded_funds_large:column:risk_metrics:avgreturn3y",
+    "R.rsquared3y": "exchange_traded_funds_large:column:risk_metrics:rsquared3y",
+    "R.rsquared3ydecimal": "exchange_traded_funds_large:structured-leaf:risk_metrics:risk3y:k:risk_measures_3y/k:R_Squared_3Y",
+    "R.volatility3y": "exchange_traded_funds_large:column:risk_metrics:volatility3y",
+    "R.alpha5y": "exchange_traded_funds_large:column:risk_metrics:alpha5y",
+    "SA.T": "exchange_traded_funds_large:table:sector_allocations",
+    "SA.weightpct": "exchange_traded_funds_large:column:sector_allocations:weightpct",
+    "BA.allocationpct": "exchange_traded_funds_large:column:bond_allocations:allocationpct",
+    "BR.T": "exchange_traded_funds_large:table:bond_ratings",
+    "BR.rating": "exchange_traded_funds_large:column:bond_ratings:credit_scoringmark"
+  },
+  "schema_version": 1,
+  "intervention_provenance": "agent_assisted_public_modeling_inference"
+}

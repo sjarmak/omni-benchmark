@@ -1,0 +1,1881 @@
+{
+  "database": "polar_equipment_large",
+  "intervention_provenance": "agent_assisted_public_modeling_inference",
+  "schema_aliases": {
+    "ET.T": "polar_equipment_large:table:EquipmentType",
+    "ET.performance": "polar_equipment_large:structured-leaf:EquipmentType:type_indices:k:performance_score",
+    "ET.environmental_impact": "polar_equipment_large:structured-leaf:EquipmentType:type_indices:k:environmental_impact_idx",
+    "ET.safety": "polar_equipment_large:structured-leaf:EquipmentType:type_indices:k:safety_idx",
+    "EQ.T": "polar_equipment_large:table:Equipment",
+    "EQ.reliability": "polar_equipment_large:column:Equipment:RELIAB_IDX",
+    "EQ.type": "polar_equipment_large:column:Equipment:EquipType",
+    "OM.T": "polar_equipment_large:table:OperationMaintenance",
+    "OM.hours": "polar_equipment_large:column:OperationMaintenance:OPER_hours",
+    "OM.cycle": "polar_equipment_large:column:OperationMaintenance:maintCycleHrs",
+    "OM.status": "polar_equipment_large:column:OperationMaintenance:OPER_status",
+    "OM.inspection": "polar_equipment_large:column:OperationMaintenance:inspect_status",
+    "PB.T": "polar_equipment_large:table:PowerBattery",
+    "PB.source": "polar_equipment_large:structured-leaf:PowerBattery:battery_telemetry:k:power_state/k:primary_source",
+    "PB.eff": "polar_equipment_large:structured-leaf:PowerBattery:battery_telemetry:k:power_state/k:conversion_eff_pct",
+    "PB.consumption": "polar_equipment_large:structured-leaf:PowerBattery:battery_telemetry:k:power_state/k:instant_consumption_w",
+    "PB.battery_level": "polar_equipment_large:structured-leaf:PowerBattery:battery_telemetry:k:battery_pack/k:soc_pct",
+    "PB.health": "polar_equipment_large:structured-leaf:PowerBattery:battery_telemetry:k:battery_pack/k:health_pct",
+    "WS.T": "polar_equipment_large:table:WeatherAndStructure",
+    "WS.ext_temp": "polar_equipment_large:column:WeatherAndStructure:extTempC",
+    "WS.wind": "polar_equipment_large:column:WeatherAndStructure:windSpeed_ms",
+    "WS.snow": "polar_equipment_large:column:WeatherAndStructure:snowLoad_kgm2",
+    "WS.load": "polar_equipment_large:column:WeatherAndStructure:structLoadPct",
+    "CM.T": "polar_equipment_large:table:Communication",
+    "CM.antenna": "polar_equipment_large:column:Communication:antenna_stat",
+    "CM.latency": "polar_equipment_large:column:Communication:netLatency_ms",
+    "CM.signal": "polar_equipment_large:column:Communication:radioSignal_dBm",
+    "CM.satellite": "polar_equipment_large:column:Communication:sat_conn_stat",
+    "TH.T": "polar_equipment_large:table:ThermalSolarWindAndGrid",
+    "TH.insulation": "polar_equipment_large:column:ThermalSolarWindAndGrid:insulationStat",
+    "TH.heat_loss": "polar_equipment_large:column:ThermalSolarWindAndGrid:heatLoss_kwh",
+    "TH.solar_output": "polar_equipment_large:column:ThermalSolarWindAndGrid:solarOutput_w",
+    "TH.wind_output": "polar_equipment_large:column:ThermalSolarWindAndGrid:windOutput_w",
+    "TH.fuel_cell_output": "polar_equipment_large:column:ThermalSolarWindAndGrid:fuelCellOutput_w",
+    "TH.fuel_cell_eff": "polar_equipment_large:column:ThermalSolarWindAndGrid:fuelCellEffPct",
+    "TH.backup_power": "polar_equipment_large:column:ThermalSolarWindAndGrid:backupPowerStat",
+    "TH.hydrogen_level": "polar_equipment_large:column:ThermalSolarWindAndGrid:H2LevelPct",
+    "WW.T": "polar_equipment_large:table:WaterAndWaste",
+    "WW.water_level": "polar_equipment_large:column:WaterAndWaste:waterLevelPct",
+    "WW.water_quality": "polar_equipment_large:column:WaterAndWaste:waterQualityIdx",
+    "WW.waste_level": "polar_equipment_large:column:WaterAndWaste:wasteTankPct",
+    "SCI.T": "polar_equipment_large:table:Scientific",
+    "SCI.accuracy": "polar_equipment_large:column:Scientific:measureAccPct",
+    "SCI.calibration": "polar_equipment_large:column:Scientific:calibrStat",
+    "SCI.data_logging": "polar_equipment_large:column:Scientific:dataLogStat",
+    "CAB.T": "polar_equipment_large:table:CabinEnvironment",
+    "CAB.temp": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:air_metrics/k:temperature_c",
+    "CAB.co2": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:air_metrics/k:co2_ppm",
+    "CAB.o2": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:air_metrics/k:o2_pct",
+    "CAB.vent": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:hvac/k:vent_state",
+    "CAB.heater": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:hvac/k:heater_state",
+    "CAB.heater_temp": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:hvac/k:heater_temp_c",
+    "CAB.beacon": "polar_equipment_large:structured-leaf:CabinEnvironment:cabin_env_snapshot:k:emergency",
+    "LS.emergency_light": "polar_equipment_large:column:LightingAndSafety:emerLightStat",
+    "LS.life_support": "polar_equipment_large:column:LightingAndSafety:lifeSupportStat",
+    "LS.oxygen_supply": "polar_equipment_large:column:LightingAndSafety:O2SupplyStat",
+    "CV.brake_wear": "polar_equipment_large:structured-leaf:ChassisAndVehicle:ground_vehicle_status:k:brake_system/k:pad_wear_pct",
+    "CV.brake_fluid": "polar_equipment_large:structured-leaf:ChassisAndVehicle:ground_vehicle_status:k:brake_system/k:fluid_level_pct",
+    "CV.tire_pressure": "polar_equipment_large:structured-leaf:ChassisAndVehicle:ground_vehicle_status:k:tires/k:pressure_kpa",
+    "CV.track_wear": "polar_equipment_large:structured-leaf:ChassisAndVehicle:ground_vehicle_status:k:tracks/k:wear_pct",
+    "CV.speed": "polar_equipment_large:structured-leaf:ChassisAndVehicle:ground_vehicle_status:k:vehicle_motion/k:speed_kmh",
+    "EF.engine_load": "polar_equipment_large:structured-leaf:EngineAndFluids:engine_fluids_snapshot:k:engine_core/k:load_pct"
+  },
+  "schema_version": 1,
+  "records": [
+    {
+      "bindings": [
+        {
+          "alias": "ET.performance",
+          "confidence": "exact",
+          "role": "performance_score"
+        },
+        {
+          "alias": "EQ.reliability",
+          "confidence": "exact",
+          "role": "reliability_index"
+        },
+        {
+          "alias": "ET.environmental_impact",
+          "confidence": "exact",
+          "role": "environmental_impact_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 0,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Performance and environmental impact are type-grain fields, while reliability is equipment-grain; the public FK path exists but the target grain is not specified.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "OM.hours",
+          "confidence": "exact",
+          "role": "operational_hours"
+        },
+        {
+          "alias": "OM.cycle",
+          "confidence": "exact",
+          "role": "maintenance_cycle_hours"
+        },
+        {
+          "alias": "OM.status",
+          "confidence": "exact",
+          "role": "operational_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 1,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row operation-maintenance formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "operational_readiness_score",
+      "target_alias": "OM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PB.eff",
+          "confidence": "exact",
+          "role": "energy_efficiency_percent"
+        },
+        {
+          "alias": "PB.source",
+          "confidence": "exact",
+          "role": "power_source"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 2,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row battery telemetry formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "energy_sustainability_index",
+      "target_alias": "PB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "WS.load",
+          "confidence": "exact",
+          "role": "structural_load_percent"
+        },
+        {
+          "alias": "WS.snow",
+          "confidence": "exact",
+          "role": "snow_load_kg_m2"
+        },
+        {
+          "alias": "WS.wind",
+          "confidence": "exact",
+          "role": "wind_speed_mps"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 3,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row weather-and-structure formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "structural_safety_factor",
+      "target_alias": "WS.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.antenna",
+          "confidence": "exact",
+          "role": "antenna_status"
+        },
+        {
+          "alias": "CM.latency",
+          "confidence": "exact",
+          "role": "network_latency_ms"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 4,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row communication formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "communication_reliability_index",
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CV.brake_wear",
+          "confidence": "exact",
+          "role": "brake_pad_wear_percent"
+        },
+        {
+          "alias": "CV.track_wear",
+          "confidence": "exact",
+          "role": "track_wear_percent"
+        },
+        {
+          "alias": "CV.speed",
+          "confidence": "exact",
+          "role": "vehicle_speed_kmh"
+        },
+        {
+          "alias": "EF.engine_load",
+          "confidence": "exact",
+          "role": "engine_load_percent"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 5,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "source_type_requires_parsing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Brake, track, and speed live on the chassis JSON, while engine load lives on the linked engine row; vehicle speed is unit-bearing text.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TH.insulation",
+          "confidence": "exact",
+          "role": "insulation_status"
+        },
+        {
+          "alias": "TH.heat_loss",
+          "confidence": "exact",
+          "role": "heat_loss_rate_kwh"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 6,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row thermal formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "thermal_insulation_efficiency",
+      "target_alias": "TH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "WW.water_level",
+          "confidence": "exact",
+          "role": "water_level_percent"
+        },
+        {
+          "alias": "WW.water_quality",
+          "confidence": "exact",
+          "role": "water_quality_index"
+        },
+        {
+          "alias": "WW.waste_level",
+          "confidence": "exact",
+          "role": "waste_tank_level_percent"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 7,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row water-and-waste formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "water_resource_management_index",
+      "target_alias": "WW.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SCI.accuracy",
+          "confidence": "exact",
+          "role": "measurement_accuracy_percent"
+        },
+        {
+          "alias": "SCI.calibration",
+          "confidence": "exact",
+          "role": "calibration_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 8,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row scientific-equipment formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "scientific_equipment_reliability",
+      "target_alias": "SCI.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TH.solar_output",
+          "confidence": "exact",
+          "role": "solar_output_w"
+        },
+        {
+          "alias": "TH.wind_output",
+          "confidence": "exact",
+          "role": "wind_output_w"
+        },
+        {
+          "alias": "TH.fuel_cell_output",
+          "confidence": "exact",
+          "role": "fuel_cell_output_w"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 9,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row thermal power-source formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "renewable_energy_contribution",
+      "target_alias": "TH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "WS.ext_temp",
+          "confidence": "exact",
+          "role": "external_temperature_c"
+        },
+        {
+          "alias": "CAB.heater",
+          "confidence": "exact",
+          "role": "heater_status"
+        },
+        {
+          "alias": "TH.insulation",
+          "confidence": "exact",
+          "role": "insulation_status"
+        },
+        {
+          "alias": "LS.emergency_light",
+          "confidence": "exact",
+          "role": "emergency_light_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 10,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "SSF is on weather rows, while heater, insulation, and emergency-light state sit on separate cabin, thermal, and lighting rows.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "EQ.type",
+          "confidence": "exact",
+          "role": "equipment_type"
+        },
+        {
+          "alias": "ET.safety",
+          "confidence": "exact",
+          "role": "safety_index"
+        },
+        {
+          "alias": "LS.life_support",
+          "confidence": "exact",
+          "role": "life_support_status"
+        },
+        {
+          "alias": "LS.oxygen_supply",
+          "confidence": "exact",
+          "role": "oxygen_supply_status"
+        },
+        {
+          "alias": "CAB.heater",
+          "confidence": "exact",
+          "role": "heater_status"
+        },
+        {
+          "alias": "WS.ext_temp",
+          "confidence": "exact",
+          "role": "external_temperature_c"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 11,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "entity_existence_semantics_missing",
+        "aggregation_unspecified"
+      ],
+      "notes": "Critical-equipment logic mixes equipment, type, lighting, cabin, and weather rows and uses an any-of life-critical-systems existence rule.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "OM.hours",
+          "confidence": "exact",
+          "role": "operational_hours"
+        },
+        {
+          "alias": "OM.cycle",
+          "confidence": "exact",
+          "role": "maintenance_cycle_hours"
+        },
+        {
+          "alias": "OM.status",
+          "confidence": "exact",
+          "role": "operational_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 12,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Same-row maintenance-priority classification.",
+      "relationship_requirements": [],
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "maintenance_priority_level",
+      "target_alias": "OM.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 13,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Same-row classification over H2.",
+      "relationship_requirements": [],
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "energy_sustainability_classification",
+      "target_alias": "PB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.satellite",
+          "confidence": "exact",
+          "role": "satellite_status"
+        },
+        {
+          "alias": "CAB.beacon",
+          "confidence": "exact",
+          "role": "emergency_beacon_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 14,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "Communication reliability is row-local, but the zone-level classification adds cabin beacon state and within-zone equipment existence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CV.brake_fluid",
+          "confidence": "exact",
+          "role": "brake_fluid_level_percent"
+        },
+        {
+          "alias": "CV.tire_pressure",
+          "confidence": "exact",
+          "role": "tire_pressure_kpa"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 15,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "source_type_requires_parsing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Brake-fluid and tire-pressure checks are chassis-local, but VPC inherits the unresolved chassis-to-engine pairing and unit-bearing speed source.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SCI.accuracy",
+          "confidence": "exact",
+          "role": "measurement_accuracy_percent"
+        },
+        {
+          "alias": "SCI.calibration",
+          "confidence": "exact",
+          "role": "calibration_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 16,
+      "loss_codes": [
+        "source_field_missing",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Research-grade thresholds for 'appropriate environmental conditions for the equipment type' are not defined in the public schema.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CAB.temp",
+          "confidence": "exact",
+          "role": "cabin_temperature_c"
+        },
+        {
+          "alias": "CAB.o2",
+          "confidence": "exact",
+          "role": "oxygen_level_percent"
+        },
+        {
+          "alias": "CAB.co2",
+          "confidence": "exact",
+          "role": "co2_level_ppm"
+        },
+        {
+          "alias": "CAB.vent",
+          "confidence": "exact",
+          "role": "ventilation_status"
+        },
+        {
+          "alias": "CAB.heater",
+          "confidence": "exact",
+          "role": "heater_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 17,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row cabin-environment habitability rule.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "meets_cabin_habitability_standard",
+      "target_alias": "CAB.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 18,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row threshold over H7.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "requires_water_conservation",
+      "target_alias": "WW.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TH.backup_power",
+          "confidence": "exact",
+          "role": "backup_power_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 19,
+      "loss_codes": [
+        "source_field_missing",
+        "entity_existence_semantics_missing",
+        "cross_grain_no_identity"
+      ],
+      "notes": "The public schema lacks exact fields for 'full operational capability' and a 48-hour power-reserve test, and the HKB speaks at operation scope rather than one row.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "EQ.reliability",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 20,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches RELIAB_IDX context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "EQ.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "OM.hours",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 21,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches OPER_hours context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "OM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "WS.ext_temp",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 22,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches extTempC context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "WS.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "WS.wind",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 23,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches windSpeed_ms context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "WS.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PB.consumption",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 24,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches instant_consumption_w context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "WW.water_quality",
+          "confidence": "exact",
+          "role": "water_quality_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 25,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Same-row water-quality classification.",
+      "relationship_requirements": [],
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "water_quality_classification_system",
+      "target_alias": "WW.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CAB.co2",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 26,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches cabin CO2 context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CAB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PB.eff",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 27,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches conversion_eff_pct context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ET.safety",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 28,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches safety_idx context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ET.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TH.fuel_cell_eff",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 29,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches fuelCellEffPct context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "TH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ET.safety",
+          "confidence": "exact",
+          "role": "safety_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 30,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "OSPI inherits the unresolved equipment-vs-type grain in H0 while adding another type-grain safety term.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 31,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "PTEC inherits the unresolved per-vehicle pairing between battery-row ESI and chassis-engine VPC.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.signal",
+          "confidence": "exact",
+          "role": "radio_signal_dbm"
+        },
+        {
+          "alias": "CM.latency",
+          "confidence": "exact",
+          "role": "network_latency_ms"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 32,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row communication stability formula over H4 and public link metrics.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "base_station_communication_stability_index",
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 33,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "ORS is operation-maintenance grain while TIE is thermal grain; the public graph links them only indirectly through equipment.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 34,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "SER and CRI live on separate scientific and communication rows and require an unresolved equipment-level join contract.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 35,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "REC and WRMI are stored on separate thermal and water rows and need an explicit equipment or site grain contract.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "WS.ext_temp",
+          "confidence": "exact",
+          "role": "external_temperature_c"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 36,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "ECAC mixes weather-row SSF and temperature with thermal-row TIE.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "OM.hours",
+          "confidence": "exact",
+          "role": "operational_hours"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 37,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "LOSS inherits the unresolved equipment-vs-type grain from H0 and adds operation-maintenance hours.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CAB.heater_temp",
+          "confidence": "exact",
+          "role": "heater_temperature_c"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 38,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "EWRII mixes battery-row ESI, water-row WRMI, and cabin-row heater temperature.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 39,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "CORI combines H0, H1, and H4 across type, operation-maintenance, and communication grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 40,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Extreme-condition safety inherits the unresolved H36 composition on top of H3.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TH.backup_power",
+          "confidence": "exact",
+          "role": "backup_power_status"
+        },
+        {
+          "alias": "PB.battery_level",
+          "confidence": "exact",
+          "role": "battery_level_percent"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 41,
+      "loss_codes": [
+        "source_field_missing",
+        "aggregation_unspecified",
+        "entity_existence_semantics_missing",
+        "cross_grain_no_identity"
+      ],
+      "notes": "The public schema has no exact emergency-communication-status field, and the site-level critical-equipment aggregation contract is absent.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ET.environmental_impact",
+          "confidence": "exact",
+          "role": "environmental_impact_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 42,
+      "loss_codes": [
+        "depends_on_ambiguous_mapping",
+        "aggregation_unspecified",
+        "cross_grain_no_identity",
+        "source_field_missing"
+      ],
+      "notes": "SPO inherits unresolved H35/H38 joins, and the public schema does not expose one unambiguous waste-management status source at the required operating grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 43,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "CSES is scientific-equipment grain but depends on SMSP, which requires unresolved scientific-to-communication pairing.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "OM.status",
+          "confidence": "exact",
+          "role": "operational_status"
+        },
+        {
+          "alias": "ET.safety",
+          "confidence": "exact",
+          "role": "safety_index"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 44,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "PVSOC adds operation and safety-type checks on top of unresolved PTEC/VPC vehicle pairing.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 45,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Same-row classification over H4 and H32.",
+      "relationship_requirements": [],
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "communication_network_resilience_assessment",
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 46,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "CIPL depends on H30 and H37, which both remain unresolved across type and operation-maintenance grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SCI.calibration",
+          "confidence": "exact",
+          "role": "calibration_status"
+        },
+        {
+          "alias": "SCI.data_logging",
+          "confidence": "exact",
+          "role": "data_logging_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 47,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "LSMV requires all-involved scientific equipment and site-level overall operations on top of unresolved SMSP and CORI joins.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PB.battery_level",
+          "confidence": "exact",
+          "role": "battery_level_percent"
+        },
+        {
+          "alias": "TH.hydrogen_level",
+          "confidence": "exact",
+          "role": "hydrogen_level_percent"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 48,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "PBESS mixes battery-row ESI and SOC with thermal-row REC, RSSI, and hydrogen state.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TH.insulation",
+          "confidence": "exact",
+          "role": "insulation_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 49,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "CEAR inherits unresolved H10 and H36 cross-table compositions and adds another thermal status check.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CAB.heater",
+          "confidence": "exact",
+          "role": "heater_status"
+        },
+        {
+          "alias": "TH.insulation",
+          "confidence": "exact",
+          "role": "insulation_status"
+        },
+        {
+          "alias": "LS.emergency_light",
+          "confidence": "exact",
+          "role": "emergency_light_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 50,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "EWRS reuses SSF plus cabin, thermal, and lighting states that are not co-located on one public row.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 51,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "LSRC is only executable after the unresolved LSSR composition in H33 is resolved.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": [
+          9
+        ]
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 52,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "dependency_redundancy"
+      ],
+      "notes": "The prose is a simple REC thresholding rule, but the declared dependency on unsupported H19 makes the dependency contract inexact.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 53,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Same-row WRMI status classification over H7 and its threshold derivative.",
+      "relationship_requirements": [],
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "water_resource_management_status_classification",
+      "target_alias": "WW.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CM.antenna",
+          "confidence": "exact",
+          "role": "antenna_status"
+        },
+        {
+          "alias": "CM.latency",
+          "confidence": "exact",
+          "role": "network_latency_ms"
+        },
+        {
+          "alias": "CM.signal",
+          "confidence": "exact",
+          "role": "radio_signal_dbm"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 54,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row completeness predicate for BSCSI source data.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "has_complete_bscsi_source_data",
+      "target_alias": "CM.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 55,
+      "loss_codes": [
+        "depends_on_ambiguous_mapping",
+        "aggregation_unspecified"
+      ],
+      "notes": "The HKB describes a ranked report over vehicles rather than a same-row scalar semantic, and it depends on unresolved PTEC.",
+      "relationship_requirements": [
+        "target_grain",
+        "cardinality",
+        "multiple_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PB.health",
+          "confidence": "exact",
+          "role": "battery_health_percent"
+        },
+        {
+          "alias": "WS.ext_temp",
+          "confidence": "exact",
+          "role": "external_temperature_c"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 56,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "The metric needs battery-row health joined to weather-row temperature and then averaged by derived temperature zones.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "OM.status",
+          "confidence": "exact",
+          "role": "operational_status"
+        },
+        {
+          "alias": "OM.inspection",
+          "confidence": "exact",
+          "role": "inspection_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 57,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row lockout-violation predicate over the current operational and inspection states.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "violates_failed_inspection_activation_lockout",
+      "target_alias": "OM.T"
+    }
+  ]
+}

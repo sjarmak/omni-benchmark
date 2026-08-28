@@ -1,0 +1,7 @@
+base_view: organ_transplant_large_public__demographics
+label: Donor Demographics
+description: Donor demographic records with row-level BMI semantics from public height and weight measurements.
+fields:
+- organ_transplant_large_public__demographics.*
+joins: {}
+ai_context: Use the modeled business fields donor_height_cm, donor_weight_kg, body_mass_index rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

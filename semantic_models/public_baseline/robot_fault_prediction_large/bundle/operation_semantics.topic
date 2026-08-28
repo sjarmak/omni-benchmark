@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__operation
+label: operation
+description: Public semantic view for operation.
+fields:
+- robot_fault_prediction_large_public__operation.*
+joins: {}
+ai_context: Use the modeled business fields o_operational_hours, o_cycle_time_seconds, o_application_type, hkb_12, hkb_63 rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

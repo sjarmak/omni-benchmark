@@ -1,0 +1,1625 @@
+{
+  "database": "planets_data_large",
+  "intervention_provenance": "agent_assisted_public_modeling_inference",
+  "schema_version": 1,
+  "schema_aliases": {
+    "ST.T": "planets_data_large:table:stars",
+    "ST.dist": "planets_data_large:column:stars:stellardist",
+    "ST.compcount": "planets_data_large:column:stars:compcount",
+    "ST.optmag": "planets_data_large:structured-leaf:stars:stellarprops:k:photometry/k:Opt_Mag",
+    "ST.mag_blend": "planets_data_large:structured-leaf:stars:stellarprops:k:photometry/k:Mag_Blend",
+    "ST.temp": "planets_data_large:structured-leaf:stars:stellarprops:k:physical/k:Temp_Value",
+    "ST.temp_blend": "planets_data_large:structured-leaf:stars:stellarprops:k:physical/k:Temp_Blend",
+    "ST.mass": "planets_data_large:structured-leaf:stars:stellarprops:k:physical/k:Mass_Value",
+    "ST.mass_blend": "planets_data_large:structured-leaf:stars:stellarprops:k:physical/k:Mass_Blend",
+    "ST.radius": "planets_data_large:structured-leaf:stars:stellarprops:k:physical/k:Radius_Value",
+    "ST.radius_blend": "planets_data_large:structured-leaf:stars:stellarprops:k:physical/k:Rad_Blend",
+    "PH.T": "planets_data_large:table:physical_properties",
+    "PH.massjup": "planets_data_large:column:physical_properties:massjup",
+    "PH.radjup": "planets_data_large:column:physical_properties:radjup",
+    "PH.dens": "planets_data_large:column:physical_properties:densvalue",
+    "ORB.T": "planets_data_large:table:orbital_characteristics",
+    "ORB.period": "planets_data_large:column:orbital_characteristics:period",
+    "ORB.semimajor": "planets_data_large:column:orbital_characteristics:semimajor",
+    "ORB.ecc": "planets_data_large:column:orbital_characteristics:eccentricity",
+    "ORB.incl": "planets_data_large:column:orbital_characteristics:inclination",
+    "PL.T": "planets_data_large:table:planets",
+    "PL.discmethod": "planets_data_large:column:planets:discmethod",
+    "MEM.T": "planets_data_large:table:planet_system_membership",
+    "MEM.rank": "planets_data_large:column:planet_system_membership:orbital_rank",
+    "OBS.T": "planets_data_large:table:planet_instrument_observations",
+    "OBS.subject": "planets_data_large:column:planet_instrument_observations:subjectlink",
+    "OBS.facility": "planets_data_large:column:planet_instrument_observations:facilitylink",
+    "FAC.T": "planets_data_large:table:instruments_surveys",
+    "FAC.name": "planets_data_large:column:instruments_surveys:facilityname",
+    "DQ.T": "planets_data_large:table:data_quality_tracking",
+    "DQ.period_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:planetary_limits/k:Period_Lim",
+    "DQ.semimajor_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:planetary_limits/k:Semimaj_Lim",
+    "DQ.ecc_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:planetary_limits/k:Ecc_Lim",
+    "DQ.incl_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:planetary_limits/k:Incl_Lim",
+    "DQ.mass_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:planetary_limits/k:Mass_Lim",
+    "DQ.rad_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:planetary_limits/k:Rad_Lim",
+    "DQ.dens_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:planetary_limits/k:Dens_Lim",
+    "DQ.dist_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:stellar_limits/k:Dist_Lim",
+    "DQ.optmag_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:stellar_limits/k:OptMag_Lim",
+    "DQ.temp_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:stellar_limits/k:Temp_Lim",
+    "DQ.stellarmass_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:stellar_limits/k:StellarMass_Lim",
+    "DQ.stellarrad_lim": "planets_data_large:structured-leaf:data_quality_tracking:limitflags:k:stellar_limits/k:StellarRad_Lim"
+  },
+  "records": [
+    {
+      "bindings": [
+        {
+          "alias": "ST.dist",
+          "confidence": "exact",
+          "role": "distance_parsec"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 0,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Exact same-row unit conversion from stellar distance in parsecs.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "distance_light_years",
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "planet_mass_jupiter"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 1,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Exact same-row unit conversion from Jupiter masses to Earth masses.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "planet_mass_earth",
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.radjup",
+          "confidence": "exact",
+          "role": "planet_radius_jupiter"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 2,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Exact same-row unit conversion from Jupiter radii to Earth radii.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "planet_radius_earth",
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "stellar_radius_solar"
+        },
+        {
+          "alias": "ST.temp",
+          "confidence": "exact",
+          "role": "stellar_temperature_k"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 3,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Exact same-row Stefan-Boltzmann-style luminosity estimate from structured stellar properties.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "stellar_luminosity",
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "planet_mass_jupiter"
+        },
+        {
+          "alias": "PH.radjup",
+          "confidence": "exact",
+          "role": "planet_radius_jupiter"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 4,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-row composition of H1 and H2 for relative surface gravity.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "planet_surface_gravity",
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.temp",
+          "confidence": "exact",
+          "role": "stellar_temperature_k"
+        },
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "stellar_radius_solar"
+        },
+        {
+          "alias": "ORB.semimajor",
+          "confidence": "exact",
+          "role": "semi_major_axis_au"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 5,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Requires cross-table planet-to-star joining between orbital rows and host-star structured properties.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "stellar_radius_solar"
+        },
+        {
+          "alias": "ST.temp",
+          "confidence": "exact",
+          "role": "stellar_temperature_k"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 6,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-row star-level boundary derived from H3 semantics.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "habitable_zone_inner_boundary",
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "stellar_radius_solar"
+        },
+        {
+          "alias": "ST.temp",
+          "confidence": "exact",
+          "role": "stellar_temperature_k"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 7,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-row star-level boundary derived from H3 semantics.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "habitable_zone_outer_boundary",
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 8,
+      "loss_codes": [
+        "source_field_missing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The public schema does not expose an exact generic value plus positive and negative error triplet for a single executable target.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.radjup",
+          "confidence": "exact",
+          "role": "planet_radius_jupiter"
+        },
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "stellar_radius_solar"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 9,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The theoretical radius ratio requires cross-table planet-to-host-star joining.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "planet_mass_jupiter"
+        },
+        {
+          "alias": "PH.radjup",
+          "confidence": "exact",
+          "role": "planet_radius_jupiter"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 10,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-row escape-velocity formula using public planet mass and radius with explicit unit conversion.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "planet_escape_velocity",
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.mass",
+          "confidence": "exact",
+          "role": "stellar_mass_solar"
+        },
+        {
+          "alias": "ORB.semimajor",
+          "confidence": "exact",
+          "role": "semi_major_axis_au"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 11,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Requires cross-table joining between orbital rows and host-star mass.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.mass",
+          "confidence": "exact",
+          "role": "stellar_mass_solar"
+        },
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "stellar_radius_solar"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 12,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-row density calculation from public stellar mass and radius leaves.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "stellar_density",
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.temp",
+          "confidence": "exact",
+          "role": "stellar_temperature_k"
+        },
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "stellar_radius_solar"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 13,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The protocol publishes scalar fields only; the HR-diagram output is a coordinate pair rather than one executable scalar object.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.semimajor",
+          "confidence": "exact",
+          "role": "semi_major_axis_au"
+        },
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "stellar_radius_solar"
+        },
+        {
+          "alias": "ST.temp",
+          "confidence": "exact",
+          "role": "stellar_temperature_k"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 14,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Requires cross-table planet orbit and host-star habitable-zone boundaries at one target grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.semimajor",
+          "confidence": "exact",
+          "role": "semi_major_axis_au"
+        },
+        {
+          "alias": "ORB.period",
+          "confidence": "exact",
+          "role": "orbital_period_days"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 15,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-row Kepler-law calculation after converting days to years.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "kepler_third_law_stellar_mass",
+      "target_alias": "ORB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "planet_mass_jupiter"
+        },
+        {
+          "alias": "PH.radjup",
+          "confidence": "exact",
+          "role": "planet_radius_jupiter"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 16,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Exact same-row composition of H1 and H2 for a mass-radius ratio.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "mass_radius_relationship",
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.period",
+          "confidence": "exact",
+          "role": "orbital_period_days"
+        },
+        {
+          "alias": "MEM.rank",
+          "confidence": "exact",
+          "role": "orbital_rank"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 17,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires pairing multiple planetary rows within each system and defining adjacent ordering semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "planet_mass_jupiter"
+        },
+        {
+          "alias": "ST.mass",
+          "confidence": "exact",
+          "role": "stellar_mass_solar"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 18,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Requires cross-table joining between planet-mass rows and host-star mass.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.mass",
+          "confidence": "exact",
+          "role": "stellar_mass_solar"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 19,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Exact same-row gravitational parameter derived from stellar mass with explicit solar-mass conversion.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "gravitational_parameter",
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "planet_mass_jupiter"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 20,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row threshold on planetary mass in Jupiter units.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "gas_giant_planet",
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.dens",
+          "confidence": "exact",
+          "role": "planet_density_g_cm3"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 21,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row density threshold for rocky-planet classification.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "rocky_planet",
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.period",
+          "confidence": "exact",
+          "role": "orbital_period_days"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 22,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row period threshold in days.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "short_period_planet",
+      "target_alias": "ORB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "planet_mass_jupiter"
+        },
+        {
+          "alias": "ORB.period",
+          "confidence": "exact",
+          "role": "orbital_period_days"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 23,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Depends on same-planet facts stored in different tables and cannot compile under the same-table-only discipline.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "planet_mass_jupiter"
+        },
+        {
+          "alias": "PH.dens",
+          "confidence": "exact",
+          "role": "planet_density_g_cm3"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 24,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row composition of H1 and H21 on the physical-properties grain.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "super_earth",
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.semimajor",
+          "confidence": "exact",
+          "role": "semi_major_axis_au"
+        },
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "stellar_radius_solar"
+        },
+        {
+          "alias": "ST.temp",
+          "confidence": "exact",
+          "role": "stellar_temperature_k"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 25,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Requires combining orbital distance with host-star habitable-zone boundaries across tables.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.dens",
+          "confidence": "exact",
+          "role": "planet_density_g_cm3"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 26,
+      "loss_codes": [
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The rocky-planet predicate is exact, but the habitable-zone dependency remains deferred cross-grain and blocks executable classification.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.ecc",
+          "confidence": "exact",
+          "role": "orbital_eccentricity"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 27,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row eccentricity threshold.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "high_eccentricity_planet",
+      "target_alias": "ORB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.compcount",
+          "confidence": "exact",
+          "role": "confirmed_planet_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 28,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row system-level predicate from the public companion count.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "multi_planetary_system",
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 29,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_field_missing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "H8 is unsupported and the public schema does not expose a single generic measurement-plus-asymmetric-error target to threshold.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 30,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity",
+        "source_field_missing"
+      ],
+      "notes": "Requires unsupported generic high-precision predicates across mass, radius, and period stored on different tables.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.incl",
+          "confidence": "exact",
+          "role": "orbital_inclination_deg"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 31,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row inclination threshold for retrograde classification.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "retrograde_orbit",
+      "target_alias": "ORB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "planet_mass_jupiter"
+        },
+        {
+          "alias": "PH.dens",
+          "confidence": "exact",
+          "role": "planet_density_g_cm3"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 32,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row composition of the gas-giant predicate with a density threshold.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "inflated_gas_giant",
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.period",
+          "confidence": "exact",
+          "role": "orbital_period_days"
+        },
+        {
+          "alias": "MEM.rank",
+          "confidence": "exact",
+          "role": "orbital_rank"
+        },
+        {
+          "alias": "ST.compcount",
+          "confidence": "exact",
+          "role": "confirmed_planet_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 33,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires ordered pairwise comparisons across multiple planetary rows within one system.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PL.discmethod",
+          "confidence": "exact",
+          "role": "discovery_method_label"
+        },
+        {
+          "alias": "ORB.incl",
+          "confidence": "exact",
+          "role": "orbital_inclination_deg"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 34,
+      "loss_codes": [
+        "source_field_missing",
+        "cross_grain_no_identity",
+        "categorical_mapping_underspecified"
+      ],
+      "notes": "No exact public flag identifies minimum-mass determinations; discovery method plus missing inclination would be inferential rather than direct.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "DQ.period_lim",
+          "confidence": "exact",
+          "role": "period_limit_flag"
+        },
+        {
+          "alias": "DQ.semimajor_lim",
+          "confidence": "exact",
+          "role": "semi_major_axis_limit_flag"
+        },
+        {
+          "alias": "DQ.ecc_lim",
+          "confidence": "exact",
+          "role": "eccentricity_limit_flag"
+        },
+        {
+          "alias": "DQ.incl_lim",
+          "confidence": "exact",
+          "role": "inclination_limit_flag"
+        },
+        {
+          "alias": "DQ.mass_lim",
+          "confidence": "exact",
+          "role": "planet_mass_limit_flag"
+        },
+        {
+          "alias": "DQ.rad_lim",
+          "confidence": "exact",
+          "role": "planet_radius_limit_flag"
+        },
+        {
+          "alias": "DQ.dens_lim",
+          "confidence": "exact",
+          "role": "planet_density_limit_flag"
+        },
+        {
+          "alias": "DQ.dist_lim",
+          "confidence": "exact",
+          "role": "stellar_distance_limit_flag"
+        },
+        {
+          "alias": "DQ.optmag_lim",
+          "confidence": "exact",
+          "role": "apparent_magnitude_limit_flag"
+        },
+        {
+          "alias": "DQ.temp_lim",
+          "confidence": "exact",
+          "role": "stellar_temperature_limit_flag"
+        },
+        {
+          "alias": "DQ.stellarmass_lim",
+          "confidence": "exact",
+          "role": "stellar_mass_limit_flag"
+        },
+        {
+          "alias": "DQ.stellarrad_lim",
+          "confidence": "exact",
+          "role": "stellar_radius_limit_flag"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 35,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The public schema exposes many exact limit flags, but H35 is a generic parameter-level flag with no single exact executable target.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PL.discmethod",
+          "confidence": "exact",
+          "role": "discovery_method_label"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 36,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row classification from the public discovery-method vocabulary.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "discovery_via_transit_method",
+      "target_alias": "PL.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PL.discmethod",
+          "confidence": "exact",
+          "role": "discovery_method_label"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 37,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Exact same-row classification from the public discovery-method vocabulary.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "discovery_via_radial_velocity",
+      "target_alias": "PL.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.mag_blend",
+          "confidence": "exact",
+          "role": "magnitude_blend_flag"
+        },
+        {
+          "alias": "ST.temp_blend",
+          "confidence": "exact",
+          "role": "temperature_blend_flag"
+        },
+        {
+          "alias": "ST.mass_blend",
+          "confidence": "exact",
+          "role": "mass_blend_flag"
+        },
+        {
+          "alias": "ST.radius_blend",
+          "confidence": "exact",
+          "role": "radius_blend_flag"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 38,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The public schema has several exact measurement-specific blend flags, but no single generic blended-measurement executable target.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "OBS.subject",
+          "confidence": "exact",
+          "role": "planet_id"
+        },
+        {
+          "alias": "OBS.facility",
+          "confidence": "exact",
+          "role": "facility_id"
+        },
+        {
+          "alias": "FAC.name",
+          "confidence": "exact",
+          "role": "facility_name"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 39,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Exact facility data exists, but compiling a planet-level predicate requires cross-table observation-to-facility joining.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.dist",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 40,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public unit and range prose enriches the stellar-distance field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.optmag",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 41,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public magnitude-scale explanation enriches the apparent-magnitude field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.temp",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 42,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public temperature-unit prose enriches the stellar-temperature field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.mass",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 43,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public solar-mass explanation enriches the stellar-mass field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ST.radius",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 44,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public solar-radius explanation enriches the stellar-radius field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ST.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.period",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 45,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public period-unit prose enriches the orbital-period field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ORB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ORB.ecc",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 46,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public eccentricity explanation enriches the eccentricity field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ORB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.massjup",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 47,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public mass-unit prose enriches the planet-mass field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.radjup",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 48,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public radius-unit prose enriches the planet-radius field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PH.dens",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 49,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public density-unit prose enriches the planet-density field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PH.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "OBS.subject",
+          "confidence": "exact",
+          "role": "planet_id"
+        },
+        {
+          "alias": "OBS.facility",
+          "confidence": "exact",
+          "role": "facility_id"
+        },
+        {
+          "alias": "FAC.name",
+          "confidence": "exact",
+          "role": "facility_name"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 50,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Exact facility data exists, but compiling a planet-level TTV predicate requires cross-table observation-to-facility joining.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PL.discmethod",
+          "confidence": "exact",
+          "role": "discovery_method_label"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 51,
+      "loss_codes": [
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The direct same-row CASE would be exact for the public discovery-method labels, but the declared H50 dependency remains deferred cross-grain and blocks compiled publication.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    }
+  ]
+}

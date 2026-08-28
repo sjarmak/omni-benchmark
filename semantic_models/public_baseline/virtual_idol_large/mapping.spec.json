@@ -1,0 +1,1859 @@
+{
+  "database": "virtual_idol_large",
+  "schema_version": 1,
+  "intervention_provenance": "agent_assisted_public_modeling_inference",
+  "schema_aliases": {
+    "I.T": "virtual_idol_large:table:interactions",
+    "I.gift": "virtual_idol_large:structured-leaf:interactions:gift_metrics:k:Gift_Val_Usd",
+    "I.dur": "virtual_idol_large:column:interactions:sess_dur_min",
+    "I.watch": "virtual_idol_large:column:interactions:watch_hrs",
+    "I.chat": "virtual_idol_large:structured-leaf:interactions:chat_activity:k:Chat_Msg",
+    "I.tone": "virtual_idol_large:structured-leaf:interactions:chat_activity:k:Msg_Tone",
+    "I.giftfreq": "virtual_idol_large:structured-leaf:interactions:gift_metrics:k:Gift_Freq",
+    "F.T": "virtual_idol_large:table:fans",
+    "F.pts": "virtual_idol_large:column:fans:pts_val",
+    "F.tier": "virtual_idol_large:column:fans:tier_step",
+    "F.age": "virtual_idol_large:structured-leaf:fans:demo_profile:k:Age_Count",
+    "F.status": "virtual_idol_large:column:fans:status_tag",
+    "F.lang": "virtual_idol_large:column:fans:lang_pref",
+    "F.occupation": "virtual_idol_large:structured-leaf:fans:demo_profile:k:Occu_Path",
+    "S.T": "virtual_idol_large:table:socialcommunity",
+    "S.followers": "virtual_idol_large:structured-leaf:socialcommunity:network_stats:k:Foll_Count",
+    "S.following": "virtual_idol_large:structured-leaf:socialcommunity:network_stats:k:Fing_Count",
+    "S.network": "virtual_idol_large:structured-leaf:socialcommunity:network_stats:k:Soc_Net_Sz",
+    "S.friends": "virtual_idol_large:structured-leaf:socialcommunity:network_stats:k:Friend_Con",
+    "S.groups": "virtual_idol_large:structured-leaf:socialcommunity:network_stats:k:Grp_Memb",
+    "S.role": "virtual_idol_large:structured-leaf:socialcommunity:network_stats:k:Grp_Role",
+    "S.contrib": "virtual_idol_large:column:socialcommunity:comm_contrib",
+    "S.submissions": "virtual_idol_large:structured-leaf:socialcommunity:content_creation:k:UGC_Val",
+    "S.collabs": "virtual_idol_large:structured-leaf:socialcommunity:content_creation:k:Collab_Count",
+    "S.quality": "virtual_idol_large:structured-leaf:socialcommunity:content_creation:k:Cont_Qual_Rate",
+    "M.T": "virtual_idol_large:table:membershipandspending",
+    "M.kind": "virtual_idol_large:column:membershipandspending:memb_kind",
+    "M.days": "virtual_idol_large:column:membershipandspending:memb_days",
+    "E.T": "virtual_idol_large:table:eventsandclub",
+    "E.online": "virtual_idol_large:structured-leaf:eventsandclub:evt_participation:k:On_Evt_Att",
+    "E.offline": "virtual_idol_large:structured-leaf:eventsandclub:evt_participation:k:Off_Evt_Att",
+    "E.meet": "virtual_idol_large:structured-leaf:eventsandclub:evt_participation:k:Meet_Att",
+    "L.T": "virtual_idol_large:table:loyaltyandachievements",
+    "L.achievements": "virtual_idol_large:structured-leaf:loyaltyandachievements:achiev_stats:k:Ach_Count",
+    "U.T": "virtual_idol_large:table:preferencesandsettings",
+    "U.sessions": "virtual_idol_large:structured-leaf:preferencesandsettings:usage_metrics:k:Sess_Count",
+    "U.consistency": "virtual_idol_large:structured-leaf:preferencesandsettings:usage_metrics:k:Int_Consist",
+    "U.stability": "virtual_idol_large:structured-leaf:preferencesandsettings:usage_metrics:k:Plat_Stable",
+    "H.T": "virtual_idol_large:table:supportandfeedback",
+    "H.tickets": "virtual_idol_large:structured-leaf:supportandfeedback:feedback_data:k:Supp_Tix",
+    "H.bugs": "virtual_idol_large:structured-leaf:supportandfeedback:feedback_data:k:Bug_Subs",
+    "H.technical": "virtual_idol_large:structured-leaf:supportandfeedback:feedback_data:k:Tech_Issue_Rpt",
+    "H.nps": "virtual_idol_large:structured-leaf:supportandfeedback:feedback_data:k:NPS_Val",
+    "C.T": "virtual_idol_large:table:commerceandcollection",
+    "C.digital": "virtual_idol_large:column:commerceandcollection:dig_own",
+    "C.physical": "virtual_idol_large:column:commerceandcollection:phys_own",
+    "C.trade": "virtual_idol_large:column:commerceandcollection:trade_level",
+    "R.T": "virtual_idol_large:table:retentionandinfluence",
+    "R.churn": "virtual_idol_large:column:retentionandinfluence:churn_flag",
+    "R.viral": "virtual_idol_large:structured-leaf:retentionandinfluence:infl_impact:k:Viral_Cont",
+    "R.trends": "virtual_idol_large:structured-leaf:retentionandinfluence:infl_impact:k:Trend_Part",
+    "V.T": "virtual_idol_large:table:virtualidols",
+    "V.type": "virtual_idol_large:column:virtualidols:kind_tag",
+    "P.T": "virtual_idol_large:table:preferencesandsettings",
+    "P.privacy": "virtual_idol_large:column:preferencesandsettings:priv_set",
+    "M.mod": "virtual_idol_large:column:moderationandcompliance:mod_stat",
+    "Mo.T": "virtual_idol_large:table:moderationandcompliance"
+  },
+  "records": [
+    {
+      "hkb_id": 0,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "fan_monetization_index",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "I.T",
+      "bindings": [
+        {
+          "alias": "I.gift",
+          "role": "total_gift_value_usd",
+          "confidence": "exact"
+        },
+        {
+          "alias": "I.dur",
+          "role": "session_duration_minutes",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row interaction formula."
+    },
+    {
+      "hkb_id": 1,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "content_consumption_index",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "I.T",
+      "bindings": [
+        {
+          "alias": "I.watch",
+          "role": "total_watch_hours",
+          "confidence": "exact"
+        },
+        {
+          "alias": "I.dur",
+          "role": "session_duration_minutes",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row interaction formula."
+    },
+    {
+      "hkb_id": 2,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "chattiness_score",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "I.T",
+      "bindings": [
+        {
+          "alias": "I.chat",
+          "role": "chat_messages",
+          "confidence": "exact"
+        },
+        {
+          "alias": "I.dur",
+          "role": "session_duration_minutes",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row interaction formula."
+    },
+    {
+      "hkb_id": 3,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Total spending is not an exposed scalar field in the supplied schema IR."
+    },
+    {
+      "hkb_id": 4,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Total spending is not an exposed scalar field in the supplied schema IR."
+    },
+    {
+      "hkb_id": 5,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "follower_to_following_ratio",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "S.T",
+      "bindings": [
+        {
+          "alias": "S.followers",
+          "role": "follower_count",
+          "confidence": "exact"
+        },
+        {
+          "alias": "S.following",
+          "role": "following_count",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row social formula."
+    },
+    {
+      "hkb_id": 6,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "content_creator_score",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "S.T",
+      "bindings": [
+        {
+          "alias": "S.submissions",
+          "role": "content_submissions",
+          "confidence": "exact"
+        },
+        {
+          "alias": "S.collabs",
+          "role": "collaborations",
+          "confidence": "exact"
+        },
+        {
+          "alias": "S.quality",
+          "role": "average_content_quality_rating",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row social formula."
+    },
+    {
+      "hkb_id": 7,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [
+        {
+          "alias": "S.followers",
+          "role": "follower_count",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Content reach is not exposed as an exact same-row scalar alongside follower count."
+    },
+    {
+      "hkb_id": 8,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [
+        {
+          "alias": "L.achievements",
+          "role": "achievements_unlocked",
+          "confidence": "exact"
+        },
+        {
+          "alias": "M.days",
+          "role": "membership_duration_days",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "Achievement and membership records are separate grains."
+    },
+    {
+      "hkb_id": 9,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "support_load_score",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "H.T",
+      "bindings": [
+        {
+          "alias": "H.tickets",
+          "role": "support_tickets",
+          "confidence": "exact"
+        },
+        {
+          "alias": "H.bugs",
+          "role": "bug_reports",
+          "confidence": "exact"
+        },
+        {
+          "alias": "H.technical",
+          "role": "technical_issue_reports",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row support formula."
+    },
+    {
+      "hkb_id": 10,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "viral_potential_score",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "R.T",
+      "bindings": [
+        {
+          "alias": "R.viral",
+          "role": "viral_content_pieces",
+          "confidence": "exact"
+        },
+        {
+          "alias": "R.trends",
+          "role": "trend_participation_count",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row influence formula."
+    },
+    {
+      "hkb_id": 11,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "event_participation_score",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "E.T",
+      "bindings": [
+        {
+          "alias": "E.online",
+          "role": "online_events",
+          "confidence": "exact"
+        },
+        {
+          "alias": "E.offline",
+          "role": "offline_events",
+          "confidence": "exact"
+        },
+        {
+          "alias": "E.meet",
+          "role": "meet_and_greets",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row event formula."
+    },
+    {
+      "hkb_id": 12,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "platform_stickiness_score",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "U.T",
+      "bindings": [
+        {
+          "alias": "U.consistency",
+          "role": "interaction_consistency_score",
+          "confidence": "exact"
+        },
+        {
+          "alias": "U.stability",
+          "role": "platform_stability_score",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row usage formula."
+    },
+    {
+      "hkb_id": 13,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "loyalty_progression_rate",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "F.T",
+      "bindings": [
+        {
+          "alias": "F.pts",
+          "role": "total_loyalty_points",
+          "confidence": "exact"
+        },
+        {
+          "alias": "F.tier",
+          "role": "current_tier_level",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row fan formula."
+    },
+    {
+      "hkb_id": 14,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "social_capital_score",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "S.T",
+      "bindings": [
+        {
+          "alias": "S.network",
+          "role": "social_network_size",
+          "confidence": "exact"
+        },
+        {
+          "alias": "S.friends",
+          "role": "friend_connections",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row social formula."
+    },
+    {
+      "hkb_id": 15,
+      "disposition": "compile",
+      "dependency_mode": "same_grain",
+      "semantic_name": "collection_rate",
+      "representation": "numeric_derived_dimension",
+      "target_alias": "C.T",
+      "bindings": [
+        {
+          "alias": "C.digital",
+          "role": "digital_items_owned",
+          "confidence": "exact"
+        },
+        {
+          "alias": "C.physical",
+          "role": "physical_items_owned",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row collection formula."
+    },
+    {
+      "hkb_id": 16,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "F.T",
+      "bindings": [
+        {
+          "alias": "F.age",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact age field target."
+    },
+    {
+      "hkb_id": 17,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "H.T",
+      "bindings": [
+        {
+          "alias": "H.nps",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact NPS field target."
+    },
+    {
+      "hkb_id": 18,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "M.T",
+      "bindings": [
+        {
+          "alias": "M.kind",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact membership type field target."
+    },
+    {
+      "hkb_id": 19,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Predicate depends on derived FMI."
+    },
+    {
+      "hkb_id": 20,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Predicate depends on two interaction-derived metrics."
+    },
+    {
+      "hkb_id": 21,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Combines membership and derived financial value."
+    },
+    {
+      "hkb_id": 22,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [
+        {
+          "alias": "C.trade",
+          "role": "collection_completion_rate",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Collection formula and completion predicate require fan-grain composition."
+    },
+    {
+      "hkb_id": 23,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Depends on derived social metrics."
+    },
+    {
+      "hkb_id": 24,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Depends on derived creator score."
+    },
+    {
+      "hkb_id": 25,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [
+        {
+          "alias": "R.churn",
+          "role": "churn_flag",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Combines derived stickiness with retention flag."
+    },
+    {
+      "hkb_id": 26,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Depends on metrics at separate source grains."
+    },
+    {
+      "hkb_id": 27,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Depends on support-derived score."
+    },
+    {
+      "hkb_id": 28,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Category derives from NPS context."
+    },
+    {
+      "hkb_id": 29,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [
+        {
+          "alias": "S.groups",
+          "role": "community_groups",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Combines derived social capital and group count."
+    },
+    {
+      "hkb_id": 30,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Depends on event-derived score."
+    },
+    {
+      "hkb_id": 31,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [
+        {
+          "alias": "F.age",
+          "role": "fan_age",
+          "confidence": "exact"
+        },
+        {
+          "alias": "F.occupation",
+          "role": "occupation",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires age categorization plus occupation predicate."
+    },
+    {
+      "hkb_id": 32,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Combines two derived classifications."
+    },
+    {
+      "hkb_id": 33,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Combines derived influence metrics."
+    },
+    {
+      "hkb_id": 34,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [
+        {
+          "alias": "U.sessions",
+          "role": "total_session_count",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "source_field_missing"
+      ],
+      "notes": "Premium membership, sessions, and device count are separate sources; no exact device-count target for this predicate."
+    },
+    {
+      "hkb_id": 35,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "F.T",
+      "bindings": [
+        {
+          "alias": "F.status",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact status field target."
+    },
+    {
+      "hkb_id": 36,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "I.T",
+      "bindings": [
+        {
+          "alias": "I.tone",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact tone field target."
+    },
+    {
+      "hkb_id": 37,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "S.T",
+      "bindings": [
+        {
+          "alias": "S.contrib",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact contribution field target."
+    },
+    {
+      "hkb_id": 38,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Reputation level is only described inside an unstructured JSON string."
+    },
+    {
+      "hkb_id": 39,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "I.T",
+      "bindings": [
+        {
+          "alias": "I.giftfreq",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact gift-frequency field target."
+    },
+    {
+      "hkb_id": 40,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "V.T",
+      "bindings": [
+        {
+          "alias": "V.type",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact idol-type field target."
+    },
+    {
+      "hkb_id": 41,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "R.T",
+      "bindings": [
+        {
+          "alias": "R.churn",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact churn flag target."
+    },
+    {
+      "hkb_id": 42,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Spending frequency is only described inside an unstructured JSON string."
+    },
+    {
+      "hkb_id": 43,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "S.T",
+      "bindings": [
+        {
+          "alias": "S.role",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact community-role field target."
+    },
+    {
+      "hkb_id": 44,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Reward tier is only described inside an unstructured JSON string."
+    },
+    {
+      "hkb_id": 45,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "Mo.T",
+      "bindings": [
+        {
+          "alias": "M.mod",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact moderation-status field target."
+    },
+    {
+      "hkb_id": 46,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "P.T",
+      "bindings": [
+        {
+          "alias": "P.privacy",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact privacy field target."
+    },
+    {
+      "hkb_id": 47,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "C.T",
+      "bindings": [
+        {
+          "alias": "C.trade",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact trade-level field target."
+    },
+    {
+      "hkb_id": 48,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "F.T",
+      "bindings": [
+        {
+          "alias": "F.lang",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact language field target."
+    },
+    {
+      "hkb_id": 49,
+      "disposition": "context_only",
+      "dependency_mode": "none",
+      "semantic_name": null,
+      "representation": "field_context",
+      "target_alias": "F.T",
+      "bindings": [
+        {
+          "alias": "F.occupation",
+          "role": "target",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Single exact occupation field target."
+    },
+    {
+      "hkb_id": 50,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "aggregation_unspecified",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Requires population ranking and derived metrics."
+    },
+    {
+      "hkb_id": 51,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "Transactional archive process is not a semantic field or scalar formula."
+    },
+    {
+      "hkb_id": 52,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "DDL index object is not represented by the supplied semantic schema IR."
+    },
+    {
+      "hkb_id": 53,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "DML upsert operation is not a semantic field or scalar formula."
+    },
+    {
+      "hkb_id": 54,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "DDL constraint object is not represented by the supplied semantic schema IR."
+    },
+    {
+      "hkb_id": 55,
+      "disposition": "unsupported",
+      "dependency_mode": "blocked",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "DDL domain object is not represented by the supplied semantic schema IR."
+    },
+    {
+      "hkb_id": 56,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Maximum FMI across interaction sessions requires fan-grain aggregation."
+    },
+    {
+      "hkb_id": 57,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "source_field_missing",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Subscription date and conversion event semantics are not represented at a resolved grain."
+    },
+    {
+      "hkb_id": 58,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Combines two derived fan metrics."
+    },
+    {
+      "hkb_id": 59,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [
+        {
+          "alias": "I.T",
+          "role": "interaction_rows",
+          "confidence": "exact"
+        },
+        {
+          "alias": "I.gift",
+          "role": "gift_value_usd",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Window aggregation is unresolved for the requested fan/time grain."
+    },
+    {
+      "hkb_id": 60,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Cohort and daily trajectory aggregation are unresolved."
+    },
+    {
+      "hkb_id": 61,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cross_grain_no_identity"
+      ],
+      "notes": "Cohort, registration, and first-gift identity/grain are unresolved."
+    },
+    {
+      "hkb_id": 62,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "Session construction and non-target aggregation are unresolved."
+    },
+    {
+      "hkb_id": 63,
+      "disposition": "defer_cross_grain",
+      "dependency_mode": "cross_grain_unresolved",
+      "semantic_name": null,
+      "representation": null,
+      "target_alias": null,
+      "bindings": [
+        {
+          "alias": "I.T",
+          "role": "interaction_rows",
+          "confidence": "exact"
+        }
+      ],
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "loss_codes": [
+        "cross_grain_no_identity"
+      ],
+      "notes": "A five-minute session window is a multi-row temporal construction."
+    }
+  ]
+}

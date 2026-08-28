@@ -1,0 +1,167 @@
+{
+  "format_version": 1,
+  "database": "museum_artifact_large",
+  "catalog": "museum_artifact_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "museum_artifact_large:table:ExhibitionHalls",
+      "view_name": "museum_artifact_large_public__exhibition_halls",
+      "file_name": "museum_artifact_large.public__exhibition_halls.view",
+      "topic_file_name": "exhibition_halls_semantics.topic",
+      "label": "Exhibition Halls",
+      "description": "Exhibition-hall rows with visitor-impact semantics and CCTV coverage context."
+    },
+    {
+      "table_stable_id": "museum_artifact_large:table:ArtifactsCore",
+      "view_name": "museum_artifact_large_public__artifacts_core",
+      "file_name": "museum_artifact_large.public__artifacts_core.view",
+      "topic_file_name": "artifacts_core_semantics.topic",
+      "label": "Artifacts",
+      "description": "Artifact rows with public conservation-status context."
+    },
+    {
+      "table_stable_id": "museum_artifact_large:table:SensitivityData",
+      "view_name": "museum_artifact_large_public__sensitivity_data",
+      "file_name": "museum_artifact_large.public__sensitivity_data.view",
+      "topic_file_name": "sensitivity_data_semantics.topic",
+      "label": "Artifact Sensitivity",
+      "description": "Artifact-sensitivity rows with light and humidity sensitivity context."
+    },
+    {
+      "table_stable_id": "museum_artifact_large:table:EnvironmentalReadingsCore",
+      "view_name": "museum_artifact_large_public__environmental_readings_core",
+      "file_name": "museum_artifact_large.public__environmental_readings_core.view",
+      "topic_file_name": "environmental_readings_semantics.topic",
+      "label": "Environmental Readings",
+      "description": "Environmental-reading rows with temperature and humidity conservation context."
+    },
+    {
+      "table_stable_id": "museum_artifact_large:table:LightAndRadiationReadings",
+      "view_name": "museum_artifact_large_public__light_and_radiation_readings",
+      "file_name": "museum_artifact_large.public__light_and_radiation_readings.view",
+      "topic_file_name": "light_and_radiation_readings_semantics.topic",
+      "label": "Light and Radiation Readings",
+      "description": "Light-reading rows with conservation-oriented lux context."
+    },
+    {
+      "table_stable_id": "museum_artifact_large:table:AirQualityReadings",
+      "view_name": "museum_artifact_large_public__air_quality_readings",
+      "file_name": "museum_artifact_large.public__air_quality_readings.view",
+      "topic_file_name": "air_quality_readings_semantics.topic",
+      "label": "Air Quality Readings",
+      "description": "Air-quality reading rows with PM2.5 conservation context."
+    },
+    {
+      "table_stable_id": "museum_artifact_large:table:ArtifactSecurityAccess",
+      "view_name": "museum_artifact_large_public__artifact_security_access",
+      "file_name": "museum_artifact_large.public__artifact_security_access.view",
+      "topic_file_name": "artifact_security_access_semantics.topic",
+      "label": "Artifact Security and Access",
+      "description": "Artifact security-access rows with insurance-value rarity and valuation semantics."
+    },
+    {
+      "table_stable_id": "museum_artifact_large:table:ConservationAndMaintenance",
+      "view_name": "museum_artifact_large_public__conservation_and_maintenance",
+      "file_name": "museum_artifact_large.public__conservation_and_maintenance.view",
+      "topic_file_name": "conservation_and_maintenance_semantics.topic",
+      "label": "Conservation and Maintenance",
+      "description": "Conservation-maintenance rows with scheduled-cleaning overdue-day semantics."
+    }
+  ],
+  "physical_fields": [
+    {
+      "schema_stable_id": "museum_artifact_large:structured-leaf:ExhibitionHalls:security_visitor_overview:k:visitor_statistics/k:avg_daily_visitors",
+      "name": "average_daily_visitors",
+      "label": "Average Daily Visitors",
+      "sql": "CAST(${security_visitor_overview} -> 'visitor_statistics' ->> 'avg_daily_visitors' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:structured-leaf:ExhibitionHalls:security_visitor_overview:k:visitor_statistics/k:visitor_flow",
+      "name": "visitor_flow",
+      "label": "Visitor Flow",
+      "sql": "${security_visitor_overview} -> 'visitor_statistics' ->> 'visitor_flow'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:structured-leaf:ExhibitionHalls:security_visitor_overview:k:visitor_statistics/k:avg_dwell_minutes",
+      "name": "average_dwell_minutes",
+      "label": "Average Dwell Time (minutes)",
+      "sql": "CAST(${security_visitor_overview} -> 'visitor_statistics' ->> 'avg_dwell_minutes' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:column:ArtifactsCore:conserve_status",
+      "name": "conservation_status",
+      "label": "Conservation Status"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:structured-leaf:SensitivityData:env_handling_sensitivity:k:environment/k:light",
+      "name": "light_sensitivity_level",
+      "label": "Light Sensitivity Level",
+      "sql": "${env_handling_sensitivity} -> 'environment' ->> 'light'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:structured-leaf:SensitivityData:env_handling_sensitivity:k:environment/k:humidity",
+      "name": "humidity_sensitivity_level",
+      "label": "Humidity Sensitivity Level",
+      "sql": "${env_handling_sensitivity} -> 'environment' ->> 'humidity'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:structured-leaf:ExhibitionHalls:security_visitor_overview:k:security/k:cctv_coverage",
+      "name": "cctv_coverage_level",
+      "label": "CCTV Coverage Level",
+      "sql": "${security_visitor_overview} -> 'security' ->> 'cctv_coverage'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:column:EnvironmentalReadingsCore:TEMPc",
+      "name": "temperature_c",
+      "label": "Temperature (C)"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:column:EnvironmentalReadingsCore:RH",
+      "name": "relative_humidity_pct",
+      "label": "Relative Humidity (%)"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:column:LightAndRadiationReadings:lux",
+      "name": "light_intensity_lux",
+      "label": "Light Intensity (lux)"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:structured-leaf:AirQualityReadings:air_quality_metrics:k:particulates/k:pm25_ug_m3",
+      "name": "pm25_ug_m3",
+      "label": "PM2.5 (µg/m³)",
+      "sql": "CAST(${air_quality_metrics} -> 'particulates' ->> 'pm25_ug_m3' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:column:ArtifactSecurityAccess:insUSD",
+      "name": "insurance_value_usd",
+      "label": "Insurance Value (USD)"
+    },
+    {
+      "schema_stable_id": "museum_artifact_large:column:ConservationAndMaintenance:nextClean",
+      "name": "scheduled_next_cleaning_date",
+      "label": "Scheduled Next Cleaning Date"
+    }
+  ],
+  "derived_fields": [
+    {
+      "hkb_stable_id": "museum_artifact_large:hkb:10",
+      "sql": "(${average_daily_visitors} * CASE ${visitor_flow} WHEN 'Low' THEN 1.0 WHEN 'Medium' THEN 3.0 WHEN 'High' THEN 5.0 ELSE NULL END * ${average_dwell_minutes}) / 1000.0"
+    },
+    {
+      "hkb_stable_id": "museum_artifact_large:hkb:55",
+      "sql": "${insurance_value_usd} > 1000000.0"
+    },
+    {
+      "hkb_stable_id": "museum_artifact_large:hkb:61",
+      "sql": "CURRENT_DATE - ${scheduled_next_cleaning_date}"
+    }
+  ]
+}

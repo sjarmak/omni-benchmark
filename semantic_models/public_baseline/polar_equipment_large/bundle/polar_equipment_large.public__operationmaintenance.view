@@ -1,0 +1,34 @@
+label: Operation Maintenance
+description: Operation and maintenance records with readiness, maintenance-priority, and lockout semantics.
+catalog: polar_equipment_large
+schema: public
+table_name: OperationMaintenance
+dimensions:
+  operational_hours:
+    description: 'REAL. Total operational hours of the equipment. Example: 17843.'
+    label: Operational Hours
+    ai_context: 'operationhours: Operation hours represent the cumulative time an equipment has been in active use. New equipment typically has low hours (0-100), mid-life equipment shows moderate hours (100-1000), while equipment approaching maintenance or replacement typically exceeds 1000 hours. The ratio of operation hours to maintenance cycle hours is critical for preventative maintenance scheduling.'
+  maintenance_cycle_hours:
+    description: 'REAL. Maintenance cycle hours. **NULL means no maintenance cycle defined.**. Example: 2047.0.'
+    label: Maintenance Cycle Hours
+  operational_status:
+    description: 'TEXT. Operational status of the equipment. Possible values: Active, Maintenance, Repair, Standby, Storage.'
+    label: Operational Status
+  inspection_status:
+    description: 'TEXT. Inspection status of the equipment. Possible values: Failed, Passed, Pending.'
+    label: Inspection Status
+  operational_readiness_score:
+    label: Operational Readiness Score (ORS)
+    description: Quantifies how ready equipment is for immediate deployment based on operational status and maintenance schedule.
+    sql: CASE WHEN ${maintenance_cycle_hours} <> 0 AND ${operational_status} = 'Active' THEN 10.0 * (1.0 - ${operational_hours} / ${maintenance_cycle_hours}) WHEN ${maintenance_cycle_hours} <> 0 AND ${operational_status} = 'Standby' THEN 5.0 * (1.0 - ${operational_hours} / ${maintenance_cycle_hours}) ELSE 0.0 END
+    ai_context: Use this modeled field for Operational Readiness Score (ORS); do not reconstruct its formula.
+  maintenance_priority_level:
+    label: Maintenance Priority Level
+    description: Classifies equipment based on the urgency of required maintenance.
+    sql: CASE WHEN ${operational_hours} > ${maintenance_cycle_hours} OR ${operational_status} = 'Repair' THEN 'Immediate Attention' WHEN ${operational_hours} > 0.8 * ${maintenance_cycle_hours} THEN 'Scheduled Service' ELSE 'Routine Maintenance' END
+    ai_context: Use this modeled field for Maintenance Priority Level; do not reconstruct its formula.
+  violates_failed_inspection_activation_lockout:
+    label: Failed Inspection Activation Lockout
+    description: A critical safety protocol implemented at the database level to prevent unsafe equipment from being put into service.
+    sql: ${operational_status} = 'Active' AND ${inspection_status} = 'Failed'
+    ai_context: Use this modeled field for Failed Inspection Activation Lockout; do not reconstruct its formula.

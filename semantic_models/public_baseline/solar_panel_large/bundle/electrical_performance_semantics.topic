@@ -1,0 +1,7 @@
+base_view: solar_panel_large_public__electrical_performance
+label: Electrical Performance
+description: Electrical health and energy-yield measurements.
+fields:
+- solar_panel_large_public__electrical_performance.*
+joins: {}
+ai_context: Use the modeled business fields specific_yield, capacity_factor, performance_ratio, availability, power_now, power_loss, inverter_eff, power_factor, harmonic, voc_initial, voc_now, isc_initial, isc_now, fill_initial, fill_now, soil_loss, cumulative_deg, specific_yield_metric, power_capacity_factor, inverter_efficiency_loss, system_power_loss_ratio, voltage_degradation_factor, current_degradation_factor, effective_power_output, soiling_loss_index, severe_soiling_condition, performance_ratio_metric, underperforming_asset, fill_factor_degradation rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

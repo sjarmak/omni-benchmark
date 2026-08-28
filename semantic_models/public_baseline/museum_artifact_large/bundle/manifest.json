@@ -1,0 +1,281 @@
+{
+  "database": "museum_artifact_large",
+  "files": [
+    {
+      "file": "museum_artifact_large.public__exhibition_halls.view",
+      "sha256": "d18719de40358a334acd5661398514e48f180fb750bd89e448ab23c7d27f7b43",
+      "size_bytes": 1877
+    },
+    {
+      "file": "exhibition_halls_semantics.topic",
+      "sha256": "01f88b8d07ca8c8ba297fafac5c3e84d7d05a1ce451ea3f85de4fbc3b2249203",
+      "size_bytes": 488
+    },
+    {
+      "file": "museum_artifact_large.public__artifacts_core.view",
+      "sha256": "7a75b585bf04ebef5ec7993dfdf7acdc22e3843725826bbbc73bc4f905bcfb36",
+      "size_bytes": 702
+    },
+    {
+      "file": "artifacts_core_semantics.topic",
+      "sha256": "ebfc993c82ab577824e06753c5c4683a0675d474d383a434fa6f15454994e9c5",
+      "size_bytes": 372
+    },
+    {
+      "file": "museum_artifact_large.public__sensitivity_data.view",
+      "sha256": "de04b5d2e836fbc2dee59d0280b99bae03baccefac0e18dfcc97967206066552",
+      "size_bytes": 1196
+    },
+    {
+      "file": "sensitivity_data_semantics.topic",
+      "sha256": "b199df9bcce2b5e58a31aff0733432f9bdcd39e1a2323721e6d5151b77a126cf",
+      "size_bytes": 435
+    },
+    {
+      "file": "museum_artifact_large.public__environmental_readings_core.view",
+      "sha256": "dad1e850507fa1fe9d7cfc45e99cd333a10088d570930ab20a40317fee1d26aa",
+      "size_bytes": 1001
+    },
+    {
+      "file": "environmental_readings_semantics.topic",
+      "sha256": "1989d9ed98feb6ba13abcef3bf5c861bb44dabccfc722d9fbd29066e512415ef",
+      "size_bytes": 452
+    },
+    {
+      "file": "museum_artifact_large.public__light_and_radiation_readings.view",
+      "sha256": "e123edcac1263b5af7dad57e48ae21778decadfe5ac7b29a3be6d14cf5511709",
+      "size_bytes": 591
+    },
+    {
+      "file": "light_and_radiation_readings_semantics.topic",
+      "sha256": "ab63a42ff094c0cf32ac068f60e48b97869819f2a87a45c15315ac0e5f18d7a6",
+      "size_bytes": 423
+    },
+    {
+      "file": "museum_artifact_large.public__air_quality_readings.view",
+      "sha256": "9506131235ea12ef8ccc6e1b822c7ac84a1fc395980d31fc3fe96e267d665692",
+      "size_bytes": 645
+    },
+    {
+      "file": "air_quality_readings_semantics.topic",
+      "sha256": "40836256886edd3950fe0a2dc9555cba9777363c618c440e82d3c191583ddefb",
+      "size_bytes": 389
+    },
+    {
+      "file": "museum_artifact_large.public__artifact_security_access.view",
+      "sha256": "73d8456244c3246e5116cc058ef9b64e1f368d38c341b47ea32d3cbc44fc7360",
+      "size_bytes": 696
+    },
+    {
+      "file": "artifact_security_access_semantics.topic",
+      "sha256": "004a12ed074b4e918393ed76741b04390535b9e0a8a591aa84911880a1474638",
+      "size_bytes": 469
+    },
+    {
+      "file": "museum_artifact_large.public__conservation_and_maintenance.view",
+      "sha256": "c6545be6aca9781ee9864d8b90f0a0ac32f80eacf6eb81803559b44a2c7fc1f9",
+      "size_bytes": 659
+    },
+    {
+      "file": "conservation_and_maintenance_semantics.topic",
+      "sha256": "28e208c976ad26453643326669131b2751d63bce3ff73a42081a3347059c02d2",
+      "size_bytes": 464
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:10",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "visitor_impact_risk",
+      "table_stable_id": "museum_artifact_large:table:ExhibitionHalls"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "conservation_status",
+      "table_stable_id": "museum_artifact_large:table:ArtifactsCore"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:23",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "light_sensitivity_level",
+      "table_stable_id": "museum_artifact_large:table:SensitivityData"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "humidity_sensitivity_level",
+      "table_stable_id": "museum_artifact_large:table:SensitivityData"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "cctv_coverage_level",
+      "table_stable_id": "museum_artifact_large:table:ExhibitionHalls"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:27",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "temperature_c",
+      "table_stable_id": "museum_artifact_large:table:EnvironmentalReadingsCore"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "relative_humidity_pct",
+      "table_stable_id": "museum_artifact_large:table:EnvironmentalReadingsCore"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "light_intensity_lux",
+      "table_stable_id": "museum_artifact_large:table:LightAndRadiationReadings"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:30",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "pm25_ug_m3",
+      "table_stable_id": "museum_artifact_large:table:AirQualityReadings"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:55",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_high_rarity_and_valuation",
+      "table_stable_id": "museum_artifact_large:table:ArtifactSecurityAccess"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "museum_artifact_large:hkb:61",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "date_boundary_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "overdue_days",
+      "table_stable_id": "museum_artifact_large:table:ConservationAndMaintenance"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "7a3dfe7508d92f3f3ff9a15fd82b5cab4a461617d4faac8afbd84075b5152e2a"
+    },
+    "hkb_ir": {
+      "sha256": "73cdad852963e950c727a2024504cbc6e47ee1870d3c156eebfcf87be6ccf393"
+    },
+    "mapping": {
+      "sha256": "3f62463d17d5a9d4cd8870bc11f461ce4f944157b0122123daf9e4561400c5a6"
+    },
+    "mapping_manifest": {
+      "sha256": "58fc825b4d0b2a02bb851d9f88350b70787ade791b92f3821370dcd244361943"
+    },
+    "schema_ir": {
+      "sha256": "d98d4f61f7dcca078777adafbb1f35f92e6f758dab3f0778e1db8d6aee538a1c"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

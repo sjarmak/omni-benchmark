@@ -1,0 +1,38 @@
+label: Coordination and Evaluation
+description: Coordination and evaluation records with row-level quality, accountability, and effectiveness semantics.
+catalog: disaster_relief_large
+schema: public
+table_name: coordinationandevaluation
+dimensions:
+  report_compliance:
+    description: 'REAL. Percentage score indicating compliance with reporting standards. Example: 96.6.'
+    label: Report Compliance
+  stakeholder_satisfaction:
+    description: 'REAL. Numerical score representing stakeholder satisfaction levels. Example: 1.6.'
+    label: Stakeholder Satisfaction
+  data_quality_value:
+    description: 'BIGINT. Score (1-5) representing the quality and reliability of collected data. Example: 2.'
+    label: Data Quality Value
+  compliance_state:
+    description: 'TEXT. Overall regulatory or procedural compliance status. Possible values: Compliant, Non-Compliant, Partial.'
+    label: Compliance State
+  audit_state:
+    description: 'TEXT. Current status regarding financial or operational audits. Possible values: Completed, Due, Overdue.'
+    label: Audit State
+  quality_control_steps:
+    description: 'TEXT. Assessment of the strength of quality control measures. Possible values: Moderate, Strong, Weak.'
+    label: Quality Control Steps
+  coordination_effectiveness_level:
+    description: 'TEXT. Rating of the effectiveness of coordination efforts. Possible values: High, Low, Medium.'
+    label: Coordination Effectiveness Level
+    ai_context: 'Coordination Effectiveness Levels: ''Low'': Poor communication, duplicated efforts. ''Medium'': Functional coordination with some gaps. ''High'': Seamless, efficient, and collaborative partnership among all stakeholders.'
+  coordination_quality_index:
+    label: Coordination Quality Index (CQI)
+    description: An index measuring the quality of inter-agency coordination and information management.
+    sql: (${report_compliance} + ${stakeholder_satisfaction} * 20.0 + ${data_quality_value} * 20.0) / 3.0
+    ai_context: Use this modeled field for Coordination Quality Index (CQI); do not reconstruct its formula.
+  is_high_accountability_response:
+    label: High-Accountability Response
+    description: A response characterized by strong compliance, documentation, and quality control.
+    sql: ${compliance_state} = 'Compliant' AND ${audit_state} = 'Completed' AND ${quality_control_steps} = 'Strong'
+    ai_context: Use this modeled field for High-Accountability Response; do not reconstruct its formula.

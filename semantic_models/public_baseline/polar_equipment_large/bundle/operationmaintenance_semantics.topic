@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__operationmaintenance
+label: Operation Maintenance
+description: Operation and maintenance records with readiness, maintenance-priority, and lockout semantics.
+fields:
+- polar_equipment_large_public__operationmaintenance.*
+joins: {}
+ai_context: Use the modeled business fields operational_hours, maintenance_cycle_hours, operational_status, inspection_status, operational_readiness_score, maintenance_priority_level, violates_failed_inspection_activation_lockout rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,896 @@
+{
+  "database": "reverse_logistics_large",
+  "intervention_provenance": "agent_assisted_public_modeling_inference",
+  "records": [
+    {
+      "bindings": [
+        {
+          "alias": "RET.ship_fee",
+          "confidence": "exact",
+          "role": "shipping_fee"
+        },
+        {
+          "alias": "FIN.restock",
+          "confidence": "exact",
+          "role": "restocking_fee"
+        },
+        {
+          "alias": "FIN.relabel",
+          "confidence": "exact",
+          "role": "relabeling_cost"
+        },
+        {
+          "alias": "FIN.dispose_cost",
+          "confidence": "exact",
+          "role": "disposal_cost"
+        },
+        {
+          "alias": "FIN.repair_est",
+          "confidence": "exact",
+          "role": "repair_estimate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 0,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Shipping lives on returns while the other exact costs live on financial_management; public metadata does not guarantee a same-table same-grain executable row model.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.recovery_value",
+          "confidence": "exact",
+          "role": "recovery_value"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 1,
+      "loss_codes": [
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The subtraction is scalar, but H0 is deferred and cannot be compiled under the same-table discipline.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.recovery_value",
+          "confidence": "exact",
+          "role": "recovery_value"
+        },
+        {
+          "alias": "RET.days",
+          "confidence": "exact",
+          "role": "days_lapsed"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 2,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Recovery value and days lapsed are exact public fields, but they reside on different tables and cannot be compiled as a same-table scalar.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CUS.total_returns",
+          "confidence": "exact",
+          "role": "total_returns"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 3,
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "notes": "The numerator is exact, but H18 is unsupported, so the ratio cannot be compiled.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.carbon",
+          "confidence": "exact",
+          "role": "carbon_footprint"
+        },
+        {
+          "alias": "FIN.recovery_value",
+          "confidence": "exact",
+          "role": "recovery_value"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 4,
+      "loss_codes": [
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The additional exact financial inputs exist, but H0 is deferred and blocks compilation of the full formula.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PROC.proctime",
+          "confidence": "exact",
+          "role": "processing_time"
+        },
+        {
+          "alias": "PROC.loccode",
+          "confidence": "exact",
+          "role": "facility_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 5,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "The public table exposes row-level processing time and facility code, but the batch grain and averaging scope are not specified.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RET.warranty_status",
+          "confidence": "exact",
+          "role": "warranty_status"
+        },
+        {
+          "alias": "RET.warranty_claim",
+          "confidence": "exact",
+          "role": "warranty_claim_reference"
+        },
+        {
+          "alias": "CUS.total_returns",
+          "confidence": "exact",
+          "role": "total_returns"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 6,
+      "loss_codes": [
+        "source_field_missing",
+        "entity_existence_semantics_missing",
+        "cross_grain_no_identity",
+        "aggregation_unspecified"
+      ],
+      "notes": "No exact public field counts authorized warranty claims, and linking return-level claims to customer-level total_returns would require unresolved customer identity and counting semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RET.fraud_flags",
+          "confidence": "exact",
+          "role": "fraud_flag_count"
+        },
+        {
+          "alias": "RET.fraud_risk",
+          "confidence": "exact",
+          "role": "fraud_risk_level"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 7,
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The public fields expose the count and qualitative level, but the HKB does not define the numeric weight for each risk bucket.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PROD.reg_compliance",
+          "confidence": "exact",
+          "role": "regulatory_compliance_status"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 8,
+      "loss_codes": [
+        "depends_on_ambiguous_mapping",
+        "cross_grain_no_identity"
+      ],
+      "notes": "The compliance status is exact on products, but H0 is deferred and the full rule spans product and financial/return rows.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RET.ship_fee",
+          "confidence": "exact",
+          "role": "shipping_fee"
+        },
+        {
+          "alias": "RET.channel",
+          "confidence": "exact",
+          "role": "return_channel"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 9,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "The numerator is row-level, but the historical same-channel baseline requires an unresolved aggregation scope.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RET.ship_fee",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 10,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public shipping fee field provides the exact row-level scalar for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RET.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.restock",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 11,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The exact restocking fee lives on the financial cost_breakdown JSON leaf and is exposed as field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FIN.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.relabel",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 12,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The exact relabeling cost is available as a structured financial leaf and is bound for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FIN.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.dispose_cost",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 13,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The exact disposal cost field is exposed for public context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FIN.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.repair_est",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 14,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The exact repair estimate leaf is available for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FIN.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.recovery_value",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 15,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The exact recovery value field is available for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FIN.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RET.days",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 16,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The exact dayslapsed column already captures the public row-level scalar and is bound as field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RET.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CUS.total_returns",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 17,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The customer return_behavior_profile exposes an exact total_returns leaf for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CUS.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 18,
+      "loss_codes": [
+        "source_field_missing",
+        "source_type_requires_parsing",
+        "cross_grain_no_identity",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "No exact public customer-tenure field exists; deriving tenure would require linking customers to historical orders, parsing txndate, and fixing current-date behavior.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.carbon",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 19,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The exact carbon footprint leaf is available on financial_management for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FIN.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RET.channel",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 20,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The return_channel field is the exact public categorical target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RET.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RET.fraud_risk",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 21,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The fraud risk level leaf is the exact public categorical target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RET.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "QA.item_condition",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 22,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The item condition leaf is the exact public categorical target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "QA.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.dispose_method",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 23,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The disposal method leaf is the exact public categorical target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FIN.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FIN.refund_method",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 24,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The refund method leaf is the exact public categorical target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FIN.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PROC.apprlevel",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 25,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The approval level column is the exact public categorical target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PROC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CASE.satisfscore",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 26,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The satisfscore column is the exact public ordinal target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CASE.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RET.warranty_status",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 27,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The warranty status leaf is the exact public categorical target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RET.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PROC.procprio",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 28,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The procprio column is the exact public categorical target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PROC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PROD.reg_compliance",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 29,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The regulatory compliance leaf is the exact public categorical target for context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PROD.T"
+    }
+  ],
+  "schema_aliases": {
+    "RET.T": "reverse_logistics_large:table:returns",
+    "RET.days": "reverse_logistics_large:column:returns:dayslapsed",
+    "RET.channel": "reverse_logistics_large:column:returns:return_channel",
+    "RET.ship_fee": "reverse_logistics_large:structured-leaf:returns:return_details:k:shipping/k:fee",
+    "RET.warranty_status": "reverse_logistics_large:structured-leaf:returns:return_details:k:authorization/k:warranty_status",
+    "RET.warranty_claim": "reverse_logistics_large:structured-leaf:returns:return_details:k:authorization/k:warranty_claim",
+    "RET.fraud_risk": "reverse_logistics_large:structured-leaf:returns:return_details:k:fraud/k:risk_level",
+    "RET.fraud_flags": "reverse_logistics_large:structured-leaf:returns:return_details:k:fraud/k:fraud_flags",
+    "FIN.T": "reverse_logistics_large:table:financial_management",
+    "FIN.restock": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:fees/k:restocking_fee",
+    "FIN.relabel": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:fees/k:relabeling_cost",
+    "FIN.dispose_cost": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:disposal/k:disposal_cost",
+    "FIN.dispose_method": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:disposal/k:disposal_method",
+    "FIN.repair_est": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:repair_costs/k:repair_estimate",
+    "FIN.recovery_value": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:valuation/k:recovery_value",
+    "FIN.carbon": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:sustainability/k:carbon_footprint",
+    "FIN.refund_method": "reverse_logistics_large:structured-leaf:financial_management:cost_breakdown:k:refund/k:method",
+    "CUS.T": "reverse_logistics_large:table:customers",
+    "CUS.total_returns": "reverse_logistics_large:structured-leaf:customers:return_behavior_profile:k:total_returns",
+    "QA.T": "reverse_logistics_large:table:quality_assessment",
+    "QA.item_condition": "reverse_logistics_large:structured-leaf:quality_assessment:assessment_summary:k:condition/k:item_condition",
+    "PROC.T": "reverse_logistics_large:table:return_processing",
+    "PROC.loccode": "reverse_logistics_large:column:return_processing:loccode",
+    "PROC.proctime": "reverse_logistics_large:column:return_processing:proctime",
+    "PROC.procprio": "reverse_logistics_large:column:return_processing:procprio",
+    "PROC.apprlevel": "reverse_logistics_large:column:return_processing:apprlevel",
+    "CASE.T": "reverse_logistics_large:table:case_management",
+    "CASE.satisfscore": "reverse_logistics_large:column:case_management:satisfscore",
+    "PROD.T": "reverse_logistics_large:table:products",
+    "PROD.reg_compliance": "reverse_logistics_large:structured-leaf:products:product_traceability:k:compliance/k:regulatory_compliance"
+  },
+  "schema_version": 1
+}

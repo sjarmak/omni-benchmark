@@ -1,0 +1,35 @@
+label: Water And Waste
+description: Water and waste records with management and water-quality semantics.
+catalog: polar_equipment_large
+schema: public
+table_name: WaterAndWaste
+dimensions:
+  water_level_percent:
+    description: 'REAL. Water level percentage. Example: 77.'
+    label: Water Level Percent
+  water_quality_index:
+    description: 'BIGINT. Water quality index. Example: 57.'
+    label: Water Quality Index
+  waste_tank_level_percent:
+    description: 'REAL. Waste tank percentage. Example: 28.'
+    label: Waste Tank Level Percent
+  water_resource_management_index:
+    label: Water Resource Management Index (WRMI)
+    description: Evaluates the efficiency of water resource management based on water levels, quality, and waste levels.
+    sql: ${water_level_percent} / 100.0 * ${water_quality_index} / 100.0 * (1.0 - ${waste_tank_level_percent} / 100.0)
+    ai_context: Use this modeled field for Water Resource Management Index (WRMI); do not reconstruct its formula.
+  requires_water_conservation:
+    label: Water Conservation Requirement
+    description: Specifies the conditions under which water conservation measures must be implemented.
+    sql: ${water_resource_management_index} < 0.5
+    ai_context: Use this modeled field for Water Conservation Requirement; do not reconstruct its formula.
+  water_quality_classification_system:
+    label: Water Quality Classification System (WQCS)
+    description: A standardized system that categorizes water quality for health, safety, and operational purposes in polar environments.
+    sql: CASE WHEN ${water_quality_index} >= 91.0 THEN 'High-Quality' WHEN ${water_quality_index} >= 71.0 AND ${water_quality_index} < 91.0 THEN 'Good' WHEN ${water_quality_index} >= 51.0 AND ${water_quality_index} < 71.0 THEN 'Moderate' WHEN ${water_quality_index} >= 26.0 AND ${water_quality_index} < 51.0 THEN 'Poor' WHEN ${water_quality_index} < 26.0 THEN 'Unsafe' END
+    ai_context: Use this modeled field for Water Quality Classification System (WQCS); do not reconstruct its formula.
+  water_resource_management_status_classification:
+    label: Water Resource Management Status Classification (WRMSC)
+    description: A comprehensive classification system that categorizes water resource management status based on WRMI values to guide operational decisions.
+    sql: CASE WHEN ${requires_water_conservation} THEN 'Conservation Needed' WHEN ${water_resource_management_index} >= 0.5 AND ${water_resource_management_index} < 0.7 THEN 'Monitoring Advised' WHEN ${water_resource_management_index} >= 0.7 THEN 'Sustainable Management' END
+    ai_context: Use this modeled field for Water Resource Management Status Classification (WRMSC); do not reconstruct its formula.

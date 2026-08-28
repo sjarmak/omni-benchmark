@@ -1,0 +1,50 @@
+label: Social and Diagnosis Assessments
+description: Assessment rows with diagnosis, recovery, functioning, and hospitalization semantics.
+catalog: mental_healths_large
+schema: public
+table_name: assessmentsocialanddiagnosis
+dimensions:
+  functional_impairment:
+    description: 'Functional impairment assessment. Contains values: ''SEVERE'', ''MODERATE'', ''severe'', ''moderate'', ''mild'', ''Severe'', ''Moderate'', ''Mild''. Contains noise with mixed case variations like ''SeVerE'', ''MODErate'', ''SEVErE'', ''mIld'', ''MILD''. Contains NULL when functional impairment is not assessed.'
+    label: Functional Impairment
+    ai_context: 'Functional Impairment: Ranges from Mild to Severe. Mild indicates minimal impact on daily life, Moderate indicates noticeable impact, and Severe indicates significant disruption.'
+  social_support_level:
+    description: 'Level of social support available to the patient. Contains values: ''Strong'', ''Limited'', ''Adequate'', ''Weak''. Contains NULL when social support is not evaluated.'
+    label: Social Support Level
+    sql: '-- DO NOT PARSE
+
+      ${funcassess} ->> ''Soc_Sup'''
+    ai_context: 'Social Support Level: Ranges from Weak to Strong. Weak indicates minimal support, Limited indicates some support, Adequate indicates good support, and Strong indicates robust support.'
+  previous_hospitalizations:
+    description: Number of previous psychiatric hospitalizations or inpatient admissions for mental health treatment.
+    label: Previous Hospitalizations
+  diagnosis_duration_months:
+    description: Duration of the primary diagnosis in months since initial onset or first diagnosis.
+    label: Diagnosis Duration (Months)
+  recovery_status:
+    description: 'Patient''s recovery status and stage in treatment. Contains values: ''Relapse'', ''Stable'', ''Advanced'', ''Early''.'
+    label: Recovery Status
+  resilience_score:
+    description: Resilience score rating typically ranging from 1 to 10.
+    label: Resilience Score
+    sql: '-- DO NOT PARSE
+
+      CAST(${funcassess} ->> ''Res_Scr'' AS DOUBLE PRECISION)'
+  primary_diagnosis:
+    description: 'Patient''s primary mental health diagnosis. Contains values: ''Anxiety'', ''PTSD'', ''Bipolar'', ''Schizophrenia'', ''Depression''.'
+    label: Primary Diagnosis
+  annualized_hospitalization_risk:
+    label: Annualized Hospitalization Risk
+    description: A risk score calculated by dividing a patient's total previous hospitalizations by the duration of their diagnosis in years.
+    sql: CASE WHEN ${diagnosis_duration_months} > 0 THEN ${previous_hospitalizations} / (${diagnosis_duration_months} / 12.0) END
+    ai_context: Use this modeled field for Annualized Hospitalization Risk; do not reconstruct its formula.
+  is_peer_mentor_candidate:
+    label: Peer Mentor Candidate Profile
+    description: Identifies patients who are in stable recovery, have a long-term diagnosis, and demonstrate high resilience, making them suitable candidates for mentorship roles.
+    sql: ${recovery_status} = 'Stable' AND ${diagnosis_duration_months} > 72 AND ${resilience_score} >= 8
+    ai_context: Use this modeled field for Peer Mentor Candidate Profile; do not reconstruct its formula.
+  is_chronic_high_acuity_bipolar:
+    label: Chronic High-Acuity Bipolar Cohort
+    description: Identifies a specific group of Bipolar patients characterized by a long diagnosis history and multiple prior hospitalizations.
+    sql: ${primary_diagnosis} = 'Bipolar' AND ${diagnosis_duration_months} >= 120 AND ${previous_hospitalizations} > 3
+    ai_context: Use this modeled field for Chronic High-Acuity Bipolar Cohort; do not reconstruct its formula.

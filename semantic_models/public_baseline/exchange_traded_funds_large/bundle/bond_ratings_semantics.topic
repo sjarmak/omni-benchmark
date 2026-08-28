@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__bond_ratings
+label: Bond Ratings
+description: Credit rating reference records with public credit-quality context.
+fields:
+- exchange_traded_funds_large_public__bond_ratings.*
+joins: {}
+ai_context: Use the modeled business fields credit_quality rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

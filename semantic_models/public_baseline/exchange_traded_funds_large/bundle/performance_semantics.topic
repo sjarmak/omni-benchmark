@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__performance
+label: Fund Performance
+description: Fund performance records with row-level price-range, historical consistency, concentration, and preservation semantics.
+fields:
+- exchange_traded_funds_large_public__performance.*
+joins: {}
+ai_context: Use the modeled business fields high_52_week, low_52_week, current_price_minus_52_week_low, positive_return_years, negative_return_years, largest_holding_weight, is_high_conviction_portfolio, price_position_52_week_pct, positive_return_consistency_pct, capital_preservation_index rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

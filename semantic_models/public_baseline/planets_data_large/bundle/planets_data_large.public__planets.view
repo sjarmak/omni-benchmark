@@ -1,0 +1,19 @@
+label: Planets
+description: Planet identity records with public discovery-method semantics.
+catalog: planets_data_large
+schema: public
+table_name: planets
+dimensions:
+  discovery_method:
+    description: 'Discovery method from ''pl_discmethod''. VARCHAR(50) with standardized values: ''RadVel''/''RV''/''RV Method''/''Radial Velocity''/''Doppler'' (radial velocity), ''Transit''/''TR''/''Transit Method''/''Photometry''/''Photometric'' (transit photometry), ''Direct Imaging''/''DI''/''Imaging''/''IMG''/''Direct'' (direct imaging), ''TTV''/''Transit Timing Variations''/''Transit Timing''/''TTV Method''/''Timing Var'' (transit timing), ''Microlensing''/''ML''/''μLens''/''Lensing''/''Gravitational'' (gravitational microlensing), ''Pulsar''/''PSR Timing''/''PT''/''Pulsation Timing Variations'' (pulsar timing), ''Eclipse Timing Variations''/''ETV''/''Eclipse Timing''/''Timing Variations'' (eclipse timing), ''Brightness Mod''/''OBM''/''Phase Curve''/''Orbital Mod'' (orbital brightness modulation), ''AST'' (astrometry).'
+    label: Discovery Method
+  discovery_via_transit_method:
+    label: Discovery via Transit Method
+    description: Identifies a planet discovered by observing the dimming of its star as the planet passes in front.
+    sql: LOWER(TRIM(${discovery_method})) IN ('transit', 'tr', 'transit method', 'photometry', 'photometric')
+    ai_context: Use this modeled field for Discovery via Transit Method; do not reconstruct its formula.
+  discovery_via_radial_velocity:
+    label: Discovery via Radial Velocity
+    description: Identifies a planet discovered by observing the wobble of its star caused by the planet's gravitational pull.
+    sql: LOWER(TRIM(${discovery_method})) IN ('radvel', 'rv', 'rv method', 'radial velocity', 'doppler')
+    ai_context: Use this modeled field for Discovery via Radial Velocity; do not reconstruct its formula.

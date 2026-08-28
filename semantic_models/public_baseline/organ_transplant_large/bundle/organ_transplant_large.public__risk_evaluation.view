@@ -1,0 +1,38 @@
+label: Risk Evaluation
+description: Risk-evaluation records with public graft-survival, surgical-risk, center-performance, and readmission semantics.
+catalog: organ_transplant_large
+schema: public
+table_name: risk_evaluation
+dimensions:
+  cost_per_qaly:
+    description: 'TEXT. Cost effectiveness per quality-adjusted life year. Example: 45000 USD/QALY'
+    label: Cost per QALY
+    ai_context: 'Cost-Effectiveness Ratio (CER): The ratio of the net cost of an intervention to its net health gain. Formula: $CER = \frac{Cost_{net}}{QALY_{gained}}$
+
+      Cost-Effectiveness Thresholds: A common benchmark for the Cost-Effectiveness Ratio (CER) in the US is $50,000 to $150,000 per Quality-Adjusted Life Year (QALY) gained. Interventions below this threshold are generally considered a good value.'
+  expected_graft_survival_score:
+    description: 'REAL. Expected graft survival score. Example: 0.114.'
+    label: Expected Graft Survival Score
+    ai_context: 'Expected Graft Survival (EGS) Score: A predictive score based on factors like the Immunological Compatibility Score and donor age. Formula: $EGS = \frac{1}{1 + e^{-(-0.5 + 1.5 S_{immune} - 0.02 Age_{donor})}}$'
+  surgical_risk_score:
+    description: 'REAL. Surgical risk assessment score. **NULL means surgical risk assessment is incomplete or not performed.** **DATA NOISE: Random NULL values added to original data.** Example: 0.33.'
+    label: Surgical Risk Score
+    ai_context: 'Surgical Risk Score: A composite score derived from the recipient''s comorbidities and the inherent complexity of the surgical procedure. Formula: $S_{surgical} = 0.6 \times N_{comorbidities} + 0.4 \times C_{procedure}$, where components are normalized.'
+  center_volume_score:
+    description: 'REAL. Transplant center volume score. Example: 0.919.'
+    label: Center Volume Score
+  center_outcomes_score:
+    description: 'REAL. Transplant center outcomes score. Example: 0.077.'
+    label: Center Outcomes Score
+  readmission_risk_score:
+    description: 'REAL. Readmission risk assessment score. Example: 0.747.'
+    label: Readmission Risk Score
+    sql: '-- DO NOT PARSE
+
+      CAST(${riskmetrics} ->> ''Readmit_Risk'' AS DOUBLE PRECISION)'
+    ai_context: 'Readmission Risk Index: A risk index calculated from the number of pre-existing medical conditions and the Surgical Risk Score. Formula: $I_{readmission} = 0.1 + (0.05 \times N_{conditions}) + (0.2 \times S_{surgical})$'
+  center_performance_score:
+    label: Center Performance Score
+    description: A score evaluating a transplant center's performance based on its experience and patient outcomes.
+    sql: 0.6 * ${center_volume_score} + 0.4 * ${center_outcomes_score}
+    ai_context: Use this modeled field for Center Performance Score; do not reconstruct its formula.

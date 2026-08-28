@@ -1,0 +1,35 @@
+label: Thermal Solar Wind And Grid
+description: Thermal and power-generation records with insulation, renewable-energy, and field-context semantics.
+catalog: polar_equipment_large
+schema: public
+table_name: ThermalSolarWindAndGrid
+dimensions:
+  insulation_status:
+    description: 'TEXT. Insulation status. Possible values: Fair, Good, Poor.'
+    label: Insulation Status
+  heat_loss_rate_kwh:
+    description: 'REAL. Heat loss in kilowatt-hours. **NULL means no heat loss data recorded.**. Example: 1.11.'
+    label: Heat Loss Rate (kWh)
+  solar_output_w:
+    description: 'REAL. Solar panel output in watts. Example: 746.1.'
+    label: Solar Output (W)
+  wind_output_w:
+    description: 'REAL. Wind turbine output in watts. **NULL means no wind output data recorded.**. Example: 656.8.'
+    label: Wind Output (W)
+  fuel_cell_output_w:
+    description: 'REAL. Fuel cell output in watts. Example: 185.0.'
+    label: Fuel Cell Output (W)
+  fuel_cell_efficiency_percent:
+    description: 'REAL. Fuel cell efficiency percentage. Example: 48.2.'
+    label: Fuel Cell Efficiency Percent
+    ai_context: 'fuelcellefficiencypercent: Fuel cell efficiency percentages typically range from 40% to 90%. Values below 50% represent older or degraded fuel cell technology, 50-70% indicate standard efficiency modern fuel cells suitable for general applications, and values above 70% represent high-performance fuel cells with optimal conversion of chemical energy to electrical power with minimal waste heat generation.'
+  thermal_insulation_efficiency:
+    label: Thermal Insulation Efficiency (TIE)
+    description: Measures how effectively a structure retains heat based on insulation status and heat loss rate.
+    sql: CASE ${insulation_status} WHEN 'Good' THEN 0.9 - ${heat_loss_rate_kwh} / 10.0 WHEN 'Fair' THEN 0.6 - ${heat_loss_rate_kwh} / 10.0 WHEN 'Poor' THEN 0.3 - ${heat_loss_rate_kwh} / 10.0 END
+    ai_context: Use this modeled field for Thermal Insulation Efficiency (TIE); do not reconstruct its formula.
+  renewable_energy_contribution:
+    label: Renewable Energy Contribution (REC)
+    description: Calculates the percentage contribution of renewable energy sources to the total power generation.
+    sql: CASE WHEN (${fuel_cell_output_w} + ${solar_output_w} + ${wind_output_w}) <> 0 THEN (${solar_output_w} + ${wind_output_w}) / (${fuel_cell_output_w} + ${solar_output_w} + ${wind_output_w}) * 100.0 END
+    ai_context: Use this modeled field for Renewable Energy Contribution (REC); do not reconstruct its formula.

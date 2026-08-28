@@ -1,0 +1,17 @@
+label: Annual Fund Returns
+description: Annual fund and category returns with row-level outperformance semantics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: annual_returns
+dimensions:
+  fund_annual_return:
+    description: Fund's return performance for the specific calendar year as decimal (-1 to positive). Contains  NULL when fund performance data is not available for that year (e.g., fund not yet launched).
+    label: Fund Annual Return
+  category_average_annual_return:
+    description: Category or benchmark average return performance for the same calendar year for comparison. Contains  NULL when category performance data is not available for comparison.
+    label: Category Average Annual Return
+  annual_fund_outperformance:
+    label: Annual Fund Outperformance
+    description: Calculates the excess return of a fund compared to its category benchmark for a given year.
+    sql: ${fund_annual_return} - ${category_average_annual_return}
+    ai_context: Use this modeled field for Annual Fund Outperformance; do not reconstruct its formula.

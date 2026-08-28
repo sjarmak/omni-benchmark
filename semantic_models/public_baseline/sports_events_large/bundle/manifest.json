@@ -1,0 +1,202 @@
+{
+  "database": "sports_events_large",
+  "files": [
+    {
+      "file": "sports_events_large.public__circuits.view",
+      "sha256": "453df4780c23fe5de41d54be49eb7e86d9d596db0989f4245403920b03556c42",
+      "size_bytes": 1171
+    },
+    {
+      "file": "circuits_semantics.topic",
+      "sha256": "7293eb82063cb3d736638c7408f0e184f77757f030a4ef3b7b7ff79e2e70cfbc",
+      "size_bytes": 374
+    },
+    {
+      "file": "sports_events_large.public__pit_stops.view",
+      "sha256": "4c43e1900236c6ec9a2cc96529cfd1bd24970465a9329cd73fbf887e2361510a",
+      "size_bytes": 891
+    },
+    {
+      "file": "pit_stops_semantics.topic",
+      "sha256": "ac172594a1e53d0f58f39ff1a45128820d4ab64913bfeb63094493addc0cc696",
+      "size_bytes": 384
+    },
+    {
+      "file": "sports_events_large.public__lap_times.view",
+      "sha256": "da96b62bff366751785289204398b094c61bf71c0aa6e98cd4c1dbefcf8d82af",
+      "size_bytes": 576
+    },
+    {
+      "file": "lap_times_semantics.topic",
+      "sha256": "97f9dd3a24ad960a3da73383a7b9e48d5f6ec61e444ead2f638f7c19a685bd8f",
+      "size_bytes": 358
+    },
+    {
+      "file": "sports_events_large.public__drivers.view",
+      "sha256": "11a7a88d856de3bfa4d74f29d2c31b598191e34afac7625061a22dc94d199f81",
+      "size_bytes": 313
+    },
+    {
+      "file": "drivers_semantics.topic",
+      "sha256": "0f5d360ed3c5930408406f5db3c1a4f84f0afcb63e959c59cb1a6becaa8cb85b",
+      "size_bytes": 309
+    },
+    {
+      "file": "sports_events_large.public__constructors.view",
+      "sha256": "13036ba74080a07118e81f37d895959a4f73f1c00c08ff505d7d2714153db3b7",
+      "size_bytes": 561
+    },
+    {
+      "file": "constructors_semantics.topic",
+      "sha256": "4c624a7450b7aa2781f6696a72b37bbd00e7eff3ec7799b956c9456d916389bd",
+      "size_bytes": 318
+    },
+    {
+      "file": "sports_events_large.public__races.view",
+      "sha256": "bff62da875f7da3e7f557a99f46a14c8f75091c966db24fd270977cecb602dbb",
+      "size_bytes": 636
+    },
+    {
+      "file": "races_semantics.topic",
+      "sha256": "50775db2c216d3cc023e7a5e9e1ad9b19cf745df0b49aa0c76a27a0857f84c67",
+      "size_bytes": 300
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "sports_events_large:hkb:14",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "high_altitude_circuit",
+      "table_stable_id": "sports_events_large:table:circuits"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "sports_events_large:hkb:17",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "efficient_pit_stop",
+      "table_stable_id": "sports_events_large:table:pit_stops"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "sports_events_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "lap_time_seconds",
+      "table_stable_id": "sports_events_large:table:lap_times"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "sports_events_large:hkb:22",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "pit_stop_duration_seconds",
+      "table_stable_id": "sports_events_large:table:pit_stops"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "sports_events_large:hkb:4",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "location_metadata",
+      "table_stable_id": "sports_events_large:table:circuits"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "sports_events_large:hkb:6",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "naty",
+      "table_stable_id": "sports_events_large:table:constructors"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "sports_events_large:hkb:7",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "event_schedule",
+      "table_stable_id": "sports_events_large:table:races"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "bcc74fb039b0ae1db8e6eac0840af8e4254c26aa0de1700574c0b0beb1f879dc"
+    },
+    "hkb_ir": {
+      "sha256": "72272246f1b2902edd4d4ca2bbd3c11e005e049155fab265c30025b1a9659b3c"
+    },
+    "mapping": {
+      "sha256": "73f790b6696f4d568ceeeed43324dfe2a2cbfd5ad6a35b915c9c2e6598ce4505"
+    },
+    "mapping_manifest": {
+      "sha256": "f7a9a5b216f298f748dabf1e00875ce9531741edc3c63ad9e16ad76aa09a8b8e"
+    },
+    "schema_ir": {
+      "sha256": "f63830bc4faebc32560cb36440f90a1e41c4166993a3f4026d8043633697d6a6"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

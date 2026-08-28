@@ -1,0 +1,42 @@
+label: Compatibility Metrics
+description: Match-level compatibility records with public HLA, ABO, age, and size compatibility semantics.
+catalog: organ_transplant_large
+schema: public
+table_name: compatibility_metrics
+dimensions:
+  hla_mismatch_count:
+    description: 'BIGINT. Number of HLA antigen mismatches between donor and recipient. Possible values: 0 '
+    label: HLA Mismatch Count
+    ai_context: 'HLA Mismatch Levels: The number of mismatches impacts rejection risk. A ''0-mismatch'' is a perfect HLA match and is ideal. A ''6-mismatch'' is a complete mismatch across the A, B, and DR loci, representing the highest immunological barrier outside of ABO or positive crossmatch issues.'
+  abo_compatibility_result:
+    description: 'TEXT. Blood type compatibility assessment result. **NULL means blood compatibility assessment is pending or unavailable.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case).** Example: incompatible.'
+    label: ABO Compatibility Result
+  size_compatibility_score:
+    description: 'REAL. Size compatibility score based on donor-recipient measurements. Example: 0.228.'
+    label: Size Compatibility Score
+    sql: '-- DO NOT PARSE
+
+      CAST(${compatscores} ->> ''Size_Score'' AS DOUBLE PRECISION)'
+    ai_context: 'Size Compatibility Score: A score derived from the ratio of donor and recipient BMI. Formula: $S_{size} = 1 - |\frac{BMI_{donor}}{BMI_{recipient}} - 1|$.'
+  age_compatibility_score:
+    description: 'REAL. Age compatibility score for optimal matching. Example: 0.327.'
+    label: Age Compatibility Score
+    sql: '-- DO NOT PARSE
+
+      CAST(${compatscores} ->> ''Age_Score'' AS DOUBLE PRECISION)'
+    ai_context: 'Age Compatibility Score: A normalized score based on the Donor-Recipient Age Difference. Formula: $S_{age} = e^{-0.03 \times |Age_{recipient} - Age_{donor}|}$, using a standard scaling factor.'
+  hla_mismatch_score:
+    label: HLA Mismatch Score
+    description: Quantifies the degree of immunological difference between a donor and recipient based on Human Leukocyte Antigens (HLA).
+    sql: ${hla_mismatch_count}
+    ai_context: Use this modeled field for HLA Mismatch Score; do not reconstruct its formula.
+  is_abo_compatible:
+    label: ABO Blood Type Compatibility
+    description: Defines the rules for matching blood types between an organ donor and recipient to prevent hyperacute rejection.
+    sql: LOWER(TRIM(${abo_compatibility_result})) = 'compatible'
+    ai_context: Use this modeled field for ABO Blood Type Compatibility; do not reconstruct its formula.
+  immunological_compatibility_score:
+    label: Immunological Compatibility Score
+    description: A comprehensive score assessing the immunological match, factoring in blood type and HLA differences.
+    sql: (CASE WHEN ${is_abo_compatible} THEN 0.6 ELSE 0.0 END) + 0.4 * (1.0 - ${hla_mismatch_score} / 6.0)
+    ai_context: Use this modeled field for Immunological Compatibility Score; do not reconstruct its formula.

@@ -1,0 +1,62 @@
+label: Return Financials
+description: Return financial rows with public fee, valuation, disposal, refund, and sustainability semantics.
+catalog: reverse_logistics_large
+schema: public
+table_name: financial_management
+dimensions:
+  restocking_fee:
+    description: REAL. Restocking fee for the return item.
+    label: Restocking Fee
+    sql: '-- DO NOT PARSE
+
+      CAST(${cost_breakdown} -> ''fees'' ->> ''restocking_fee'' AS DOUBLE PRECISION)'
+    ai_context: 'Restocking Fee: Fee imposed to cover administrative and handling work required to make the item sellable again.'
+  relabeling_cost:
+    description: 'REAL. Relabeling cost for the return item. Example: 10.26.'
+    label: Relabeling Cost
+    sql: '-- DO NOT PARSE
+
+      CAST(${cost_breakdown} -> ''fees'' ->> ''relabeling_cost'' AS DOUBLE PRECISION)'
+    ai_context: 'Relabeling Cost: Direct cost of material and labor associated with correcting item labeling deficiencies.'
+  disposal_cost:
+    description: 'REAL. Disposal fee for the return item. Example: 83.49.'
+    label: Disposal Cost
+    sql: '-- DO NOT PARSE
+
+      CAST(${cost_breakdown} -> ''disposal'' ->> ''disposal_cost'' AS DOUBLE PRECISION)'
+    ai_context: 'Disposal Cost: Monetary cost of disposing the item through methods such as recycling, landfill, or hazardous-waste processing.'
+  repair_estimate:
+    description: 'REAL. Estimated repair cost for the return item. Example: 490.99.'
+    label: Repair Estimate
+    sql: '-- DO NOT PARSE
+
+      CAST(${cost_breakdown} -> ''repair_costs'' ->> ''repair_estimate'' AS DOUBLE PRECISION)'
+    ai_context: 'Repair Estimate: Estimated sum of parts, labor and overhead needed for repair work, agreed before work commences.'
+  recovery_value:
+    description: 'REAL. Amount recovered from the return. Example: 19.18.'
+    label: Recovery Value
+    sql: '-- DO NOT PARSE
+
+      CAST(${cost_breakdown} -> ''valuation'' ->> ''recovery_value'' AS DOUBLE PRECISION)'
+    ai_context: 'Recovery Value: Net revenue expected after processing the return, excluding initial cost.'
+  carbon_footprint:
+    description: 'REAL. Carbon footprint of the return item. Example: 32.28.'
+    label: Carbon Footprint
+    sql: '-- DO NOT PARSE
+
+      CAST(${cost_breakdown} -> ''sustainability'' ->> ''carbon_footprint'' AS DOUBLE PRECISION)'
+    ai_context: 'Carbon Footprint: Quantifies greenhouse-gas emissions attributable to transportation, handling, and disposal of a single return.'
+  disposal_method:
+    description: 'DisposalMethod_enum. Method used to dispose of the return item. Possible values: Hazardous Waste, Landfill, Recycle, Return to Vendor.'
+    label: Disposal Method
+    sql: '-- DO NOT PARSE
+
+      ${cost_breakdown} -> ''disposal'' ->> ''disposal_method'''
+    ai_context: 'Disposal Methods: ''Recycle'' for materials separated for recycling streams; ''Hazardous Waste'' for components containing batteries, chemicals, or e-waste; ''Landfill'' for non-recyclable residuals; ''Return to Vendor'' for supplier agrees to take back for specialised processing.'
+  refund_method:
+    description: 'RefundMethod_enum. Method used for refunding the customer. Possible values: Bank Transfer, Original Payment, Store Credit.'
+    label: Refund Method
+    sql: '-- DO NOT PARSE
+
+      ${cost_breakdown} -> ''refund'' ->> ''method'''
+    ai_context: 'Refund Methods: ''Original Payment'' is when credit card/PayPal reversal within payment gateway; ''Bank Transfer'' is when direct ACH/SEPA transfer when gateway refund blocked; ''Store Credit'' is when applied to customer account as gift card or voucher on customer request or policy.'

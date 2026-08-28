@@ -1,0 +1,13 @@
+label: Constructors
+description: Constructor records.
+catalog: sports_events_large
+schema: public
+table_name: constructors
+dimensions:
+  naty:
+    description: 'VARCHAR. Nationality of the constructor. **NULL means the team''s nationality is not specified in the dataset.**. Example: British.'
+    label: Constructor nationality
+    sql: '-- DO NOT PARSE
+
+      ${naty}'
+    ai_context: 'Data Unavailability for Constructor Nationality: When a constructor''s nationality is not specified, it means the team''s country of origin is not recorded in the dataset.'

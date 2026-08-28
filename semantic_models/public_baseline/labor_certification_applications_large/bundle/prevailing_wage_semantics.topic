@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__prevailing_wage
+label: Prevailing Wage Determinations
+description: Prevailing-wage records with public structured wage-unit context.
+fields:
+- labor_certification_applications_large_public__prevailing_wage.*
+joins: {}
+ai_context: Use the modeled business fields prevailing_wage_unit rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,23 @@
+label: Donor Demographics
+description: Donor demographic records with row-level BMI semantics from public height and weight measurements.
+catalog: organ_transplant_large
+schema: public
+table_name: demographics
+dimensions:
+  donor_height_cm:
+    description: 'SMALLINT. Donor''s height measurement in centimeters. Example: 171.'
+    label: Donor Height (cm)
+    sql: '-- DO NOT PARSE
+
+      CAST(${physicalstats} ->> ''Height_Cm'' AS DOUBLE PRECISION)'
+  donor_weight_kg:
+    description: 'SMALLINT. Donor''s weight measurement in kilograms. Example: 55.'
+    label: Donor Weight (kg)
+    sql: '-- DO NOT PARSE
+
+      CAST(${physicalstats} ->> ''Weight_Kg'' AS DOUBLE PRECISION)'
+  body_mass_index:
+    label: Body Mass Index (BMI)
+    description: Calculates a person's body mass index from their weight and height.
+    sql: CASE WHEN ${donor_height_cm} > 0 THEN ${donor_weight_kg} / POWER(${donor_height_cm} / 100.0, 2.0) END
+    ai_context: Use this modeled field for Body Mass Index (BMI); do not reconstruct its formula.

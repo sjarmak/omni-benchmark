@@ -1,0 +1,7 @@
+base_view: mental_healths_large_public__treatmentoutcomes
+label: Treatment Outcomes
+description: Treatment-outcome rows with response and adherence semantics.
+fields:
+- mental_healths_large_public__treatmentoutcomes.*
+joins: {}
+ai_context: Use the modeled business fields treatment_response, treatment_adherence, is_treatment_resistant_outcome rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

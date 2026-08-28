@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__robot_details
+label: robot_details
+description: Public semantic view for robot_details.
+fields:
+- robot_fault_prediction_large_public__robot_details.*
+joins: {}
+ai_context: Use the modeled business fields rd_installation_date, rd_reach_mm, rd_payload_capacity_kg, rd_firmware_version, rd_robot_type, hkb_0, hkb_54 rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

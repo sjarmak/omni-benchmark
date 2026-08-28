@@ -1,0 +1,7 @@
+base_view: organ_transplant_large_public__risk_evaluation
+label: Risk Evaluation
+description: Risk-evaluation records with public graft-survival, surgical-risk, center-performance, and readmission semantics.
+fields:
+- organ_transplant_large_public__risk_evaluation.*
+joins: {}
+ai_context: Use the modeled business fields cost_per_qaly, expected_graft_survival_score, surgical_risk_score, center_volume_score, center_outcomes_score, readmission_risk_score, center_performance_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,10 @@
+label: Membership and Spending
+description: Membership records with row-level membership type semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: membershipandspending
+dimensions:
+  membership_type:
+    description: TEXT. Type or tier of membership subscription held by the fan.
+    label: Membership Type
+    ai_context: 'Premium Member: A fan is considered a Premium Member if their membership type is not ''Free''. This includes tiers like ''Basic'', ''Elite'', etc.'

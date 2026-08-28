@@ -1,0 +1,7 @@
+base_view: sports_events_large_public__circuits
+label: Circuits
+description: Circuit records with location metadata.
+fields:
+- sports_events_large_public__circuits.*
+joins: {}
+ai_context: Use the modeled business fields elevation_m, location_metadata, high_altitude_circuit rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

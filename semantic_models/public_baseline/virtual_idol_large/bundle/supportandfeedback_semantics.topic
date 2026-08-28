@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__supportandfeedback
+label: Support and Feedback
+description: Support records with row-level issue-report semantics.
+fields:
+- virtual_idol_large_public__supportandfeedback.*
+joins: {}
+ai_context: Use the modeled business fields support_tickets, bug_reports, technical_issue_reports, nps_score, support_load_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

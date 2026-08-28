@@ -1,0 +1,2316 @@
+{
+  "schema_version": 1,
+  "database": "mental_healths_large",
+  "schema_aliases": {
+    "ASR.T": "mental_healths_large:table:assessmentsymptomsandrisk",
+    "ASR.phq9": "mental_healths_large:column:assessmentsymptomsandrisk:phq9_scr",
+    "ASR.gad7": "mental_healths_large:column:assessmentsymptomsandrisk:gad7_scr",
+    "ASR.suic_risk": "mental_healths_large:column:assessmentsymptomsandrisk:suic_risk",
+    "TO.T": "mental_healths_large:table:treatmentoutcomes",
+    "TO.response": "mental_healths_large:structured-leaf:treatmentoutcomes:txprogmet:k:Tx_Resp",
+    "TO.adherence": "mental_healths_large:structured-leaf:treatmentoutcomes:txprogmet:k:Tx_Adh",
+    "TB.T": "mental_healths_large:table:treatmentbasics",
+    "TB.engagement": "mental_healths_large:column:treatmentbasics:th_eng",
+    "TB.crisis": "mental_healths_large:column:treatmentbasics:crisis_int",
+    "FAC.T": "mental_healths_large:table:facilities",
+    "FAC.resources": "mental_healths_large:column:facilities:com_res",
+    "ASD.T": "mental_healths_large:table:assessmentsocialanddiagnosis",
+    "ASD.impairment": "mental_healths_large:column:assessmentsocialanddiagnosis:func_imp",
+    "ASD.social_support": "mental_healths_large:structured-leaf:assessmentsocialanddiagnosis:funcassess:k:Soc_Sup",
+    "ASD.prev_hosp": "mental_healths_large:column:assessmentsocialanddiagnosis:prev_hosp",
+    "ASD.dx_months": "mental_healths_large:column:assessmentsocialanddiagnosis:dx_dur_m",
+    "ASD.recovery": "mental_healths_large:column:assessmentsocialanddiagnosis:rec_status",
+    "ASD.resilience": "mental_healths_large:structured-leaf:assessmentsocialanddiagnosis:funcassess:k:Res_Scr",
+    "ASD.primary_dx": "mental_healths_large:column:assessmentsocialanddiagnosis:prim_dx",
+    "ENC.T": "mental_healths_large:table:encounters",
+    "ENC.missed": "mental_healths_large:column:encounters:miss_appt"
+  },
+  "records": [
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 0,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 1,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 2,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 3,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 4,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 5,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 6,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 7,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 8,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 9,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASR.suic_risk",
+          "confidence": "exact",
+          "role": "suicide_risk"
+        },
+        {
+          "alias": "ASR.phq9",
+          "confidence": "exact",
+          "role": "phq9_score"
+        },
+        {
+          "alias": "ASR.gad7",
+          "confidence": "exact",
+          "role": "gad7_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 10,
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "notes": "All criteria are scalar fields on the same symptom-and-risk assessment row; the field flags that assessment row.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_high_risk_patient_assessment",
+      "target_alias": "ASR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TO.response",
+          "confidence": "exact",
+          "role": "treatment_response"
+        },
+        {
+          "alias": "TO.adherence",
+          "confidence": "exact",
+          "role": "treatment_adherence"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 11,
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Treatment response and adherence are exact leaves of the same treatment-outcome row.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_treatment_resistant_outcome",
+      "target_alias": "TO.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 12,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 13,
+      "loss_codes": [
+        "cardinality_unknown"
+      ],
+      "notes": "The definition requires unresolved relationship, entity-grain, or cohort semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 14,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 15,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 16,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 17,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 18,
+      "loss_codes": [
+        "cardinality_unknown"
+      ],
+      "notes": "The definition requires unresolved relationship, entity-grain, or cohort semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 19,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASR.phq9",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 20,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "PHQ-9 score ranges enrich the exact PHQ-9 score field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ASR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASR.gad7",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 21,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "GAD-7 score ranges enrich the exact GAD-7 score field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ASR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASR.suic_risk",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 22,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Suicide-risk value meanings enrich the exact suicide-risk field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ASR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TB.engagement",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 23,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Therapy-engagement value meanings enrich the exact therapy-engagement field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "TB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "FAC.resources",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 24,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Community-resource value meanings enrich the exact facility resource field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "FAC.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASD.impairment",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 25,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Functional-impairment value meanings enrich the exact impairment field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ASD.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TO.adherence",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 26,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "notes": "Treatment-adherence context targets the exact outcome leaf; the HKB includes Low while the schema lists Non-compliant, Medium, High, and Compliant.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "TO.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "TB.crisis",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 27,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Crisis-intervention count examples enrich the exact numeric field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "TB.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASD.social_support",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 28,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Social-support value meanings enrich the exact structured leaf.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ASD.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ENC.missed",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 29,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Missed-appointment count examples enrich the exact encounter field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "ENC.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 30,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 31,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 32,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 33,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 34,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 35,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 36,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 37,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 38,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 39,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 40,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 41,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 42,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 43,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 44,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 45,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 46,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 47,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 48,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASR.phq9",
+          "confidence": "exact",
+          "role": "phq9_score"
+        },
+        {
+          "alias": "ASR.gad7",
+          "confidence": "exact",
+          "role": "gad7_score"
+        },
+        {
+          "alias": "ASR.suic_risk",
+          "confidence": "exact",
+          "role": "suicide_risk"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 49,
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "notes": "The symptom thresholds and suicide-risk criterion are scalar fields on one assessment row.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_high_severity_high_risk_assessment",
+      "target_alias": "ASR.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 50,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 51,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 52,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 53,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 54,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 55,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 56,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 57,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 58,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 59,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 60,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 61,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 62,
+      "loss_codes": [
+        "cardinality_unknown",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Requires unresolved latest/temporal matching; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 63,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 64,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, latest/temporal matching, entity-existence behavior; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 65,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, latest/temporal matching, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASD.prev_hosp",
+          "confidence": "exact",
+          "role": "previous_hospitalizations"
+        },
+        {
+          "alias": "ASD.dx_months",
+          "confidence": "exact",
+          "role": "diagnosis_duration_months"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 66,
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Previous hospitalizations and diagnosis duration are numeric fields on the same social-and-diagnosis assessment row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "annualized_hospitalization_risk",
+      "target_alias": "ASD.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 67,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 68,
+      "loss_codes": [
+        "source_type_requires_parsing"
+      ],
+      "notes": "The improvement rate is unit-bearing TEXT and no exact public parsing rule is declared.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 69,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 70,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 71,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The annual budget required by the formula has no exact physical source.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 72,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 73,
+      "loss_codes": [
+        "source_field_missing",
+        "source_type_requires_parsing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The quality threshold, exchange rate, and hourly rate are not exact modeled inputs, and the available rate is unit-bearing text.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 74,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASD.recovery",
+          "confidence": "exact",
+          "role": "recovery_status"
+        },
+        {
+          "alias": "ASD.dx_months",
+          "confidence": "exact",
+          "role": "diagnosis_duration_months"
+        },
+        {
+          "alias": "ASD.resilience",
+          "confidence": "exact",
+          "role": "resilience_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 75,
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Recovery status, diagnosis duration, and resilience score are scalar values on the same assessment row.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_peer_mentor_candidate",
+      "target_alias": "ASD.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "ASD.primary_dx",
+          "confidence": "exact",
+          "role": "primary_diagnosis"
+        },
+        {
+          "alias": "ASD.dx_months",
+          "confidence": "exact",
+          "role": "diagnosis_duration_months"
+        },
+        {
+          "alias": "ASD.prev_hosp",
+          "confidence": "exact",
+          "role": "previous_hospitalizations"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 76,
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Diagnosis, duration, and hospitalization count are scalar fields on the same assessment row.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_chronic_high_acuity_bipolar",
+      "target_alias": "ASD.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 77,
+      "loss_codes": [
+        "source_type_requires_parsing",
+        "source_field_missing"
+      ],
+      "notes": "Therapy intensity is unit-bearing TEXT and the comparison threshold is not defined.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 78,
+      "loss_codes": [
+        "source_type_requires_parsing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Both rates are unit-bearing TEXT without public parsing rules.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 79,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 80,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 81,
+      "loss_codes": [
+        "source_type_requires_parsing"
+      ],
+      "notes": "Recovery goal velocity is unit-bearing TEXT without a public parsing rule.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 82,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 83,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 84,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 85,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 86,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, latest/temporal matching, entity-existence behavior; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 87,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, latest/temporal matching; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 88,
+      "loss_codes": [
+        "depends_on_unsupported_mapping"
+      ],
+      "notes": "The declared Projected Annual QoL Gain dependency is unsupported because its annual budget source is missing.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 89,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 90,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, latest/temporal matching, entity-existence behavior; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 91,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, entity-existence behavior; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 92,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, latest/temporal matching, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 93,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, latest/temporal matching, entity-existence behavior; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 94,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "This is an update operation and does not define a representable scalar semantic field or exact source value.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 95,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Requires unresolved aggregation or cohort semantics, latest/temporal matching, unit-bearing text parsing; no row-local executable definition is defensible.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    }
+  ],
+  "intervention_provenance": "agent_assisted_public_modeling_inference"
+}

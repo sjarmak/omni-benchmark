@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__moderationandcompliance
+label: Moderation and Compliance
+description: Moderation records with row-level status semantics.
+fields:
+- virtual_idol_large_public__moderationandcompliance.*
+joins: {}
+ai_context: Use the modeled business fields moderation_status rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

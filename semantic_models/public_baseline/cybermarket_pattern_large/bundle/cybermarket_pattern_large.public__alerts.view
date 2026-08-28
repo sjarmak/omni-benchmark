@@ -1,0 +1,13 @@
+label: Alerts
+description: Alert records with public severity-level context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: alerts
+dimensions:
+  severity_level:
+    description: 'TEXT. Severity level assigned to the alert. Possible values: Critical, High, Low, Medium.'
+    label: Alert Severity Level
+    sql: '-- DO NOT PARSE
+
+      ${alert_case_management} ->> ''severity_level_stat'''
+    ai_context: 'Alert Severity Levels: Values: Critical, High, Medium, Low.'

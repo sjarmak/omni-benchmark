@@ -1,0 +1,613 @@
+{
+  "database": "organ_transplant_large",
+  "files": [
+    {
+      "file": "organ_transplant_large.public__demographics.view",
+      "sha256": "11820357916520fec74f2ad45c1d121319c26c6a6cb1e59752b82dcfab7fb793",
+      "size_bytes": 1025
+    },
+    {
+      "file": "demographics_semantics.topic",
+      "sha256": "2a8aea10dc744e0b387c036376eadd412a81a60d23acdaf675c84876227a4cb1",
+      "size_bytes": 453
+    },
+    {
+      "file": "organ_transplant_large.public__compatibility_metrics.view",
+      "sha256": "c279b4e449433fed1822c4a0aa03c05229d29a819100a255aa9314b49283040c",
+      "size_bytes": 2998
+    },
+    {
+      "file": "compatibility_metrics_semantics.topic",
+      "sha256": "7377c1956c988864e7a8f1405b51f5c92dbadf5733da602763b44f556c2a8d18",
+      "size_bytes": 590
+    },
+    {
+      "file": "organ_transplant_large.public__recipients_immunology.view",
+      "sha256": "c46847a2295575f60a2bec2dace97f02c2aef2eb2d460fe6de1f250968c2c791",
+      "size_bytes": 2638
+    },
+    {
+      "file": "recipients_immunology_semantics.topic",
+      "sha256": "f9385b3d3bf3a5781c7c1834f78a9dfe6fdd356ba215b18548eccf4e0a6741ba",
+      "size_bytes": 476
+    },
+    {
+      "file": "organ_transplant_large.public__clinical.view",
+      "sha256": "f65ca07a93d8d92daf68fc3a7bab3af30c9e35672125c38ee54a4a5571b106d3",
+      "size_bytes": 2812
+    },
+    {
+      "file": "clinical_semantics.topic",
+      "sha256": "6e91b111207ef2be6a0008c5d9c73cef9b8e0511a64ff3fe2d33411ef1bc87cf",
+      "size_bytes": 512
+    },
+    {
+      "file": "organ_transplant_large.public__function_and_recovery.view",
+      "sha256": "949f1dbb84057d12a0f95bee76bbf80bef701ce8adf4a5678072730cd596f5ba",
+      "size_bytes": 3500
+    },
+    {
+      "file": "function_and_recovery_semantics.topic",
+      "sha256": "38c4e68bff7b6fe67d9e5fdebf4c0ca5f53a1aebabeff2bd5f5f2e6c1739b3a0",
+      "size_bytes": 597
+    },
+    {
+      "file": "organ_transplant_large.public__risk_evaluation.view",
+      "sha256": "6c80d2c97bf71e6239f96d95b9a353c2f855be59720577ca9d2e6bde08492643",
+      "size_bytes": 2782
+    },
+    {
+      "file": "risk_evaluation_semantics.topic",
+      "sha256": "c68b3ca6f75eff0f31d19485c02c3d2fd6cf8d4345ec4d0a0d48e105c4d5ad7b",
+      "size_bytes": 581
+    },
+    {
+      "file": "organ_transplant_large.public__allocation_details.view",
+      "sha256": "8e957685139c7cc56edfeb5bdc9dab76c850a716e368ffc0a4a21476e071632d",
+      "size_bytes": 790
+    },
+    {
+      "file": "allocation_details_semantics.topic",
+      "sha256": "32a16da46a4323981b97990c959ddf0b1295252e2f23ec59f3ef7e2b78d1c5c6",
+      "size_bytes": 404
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:0",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "body_mass_index",
+      "table_stable_id": "organ_transplant_large:table:demographics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:10",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "categorical_match_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "immunological_compatibility_score",
+      "table_stable_id": "organ_transplant_large:table:compatibility_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "semantic_name": "cost_per_qaly",
+      "table_stable_id": "organ_transplant_large:table:risk_evaluation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:13",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "expected_graft_survival_score",
+      "table_stable_id": "organ_transplant_large:table:risk_evaluation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:14",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "omni_expression_support_unverified",
+        "source_type_requires_parsing"
+      ],
+      "semantic_name": "patient_urgency_score",
+      "table_stable_id": "organ_transplant_large:table:clinical"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:15",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "center_performance_score",
+      "table_stable_id": "organ_transplant_large:table:risk_evaluation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:16",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "surgical_risk_score",
+      "table_stable_id": "organ_transplant_large:table:risk_evaluation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:19",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "readmission_risk_score",
+      "table_stable_id": "organ_transplant_large:table:risk_evaluation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "categorical_match_semantics_unspecified",
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_abo_compatible",
+      "table_stable_id": "organ_transplant_large:table:compatibility_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "semantic_name": "cold_ischemia_time",
+      "table_stable_id": "organ_transplant_large:table:function_and_recovery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:23",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "pra_score",
+      "table_stable_id": "organ_transplant_large:table:recipients_immunology"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "categorical_match_semantics_unspecified",
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_positive_crossmatch",
+      "table_stable_id": "organ_transplant_large:table:recipients_immunology"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "medical_urgency_numeric_value",
+      "table_stable_id": "organ_transplant_large:table:clinical"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:26",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "dsa_status",
+      "table_stable_id": "organ_transplant_large:table:recipients_immunology"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "pra_score",
+      "table_stable_id": "organ_transplant_large:table:recipients_immunology"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:3",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "estimated_glomerular_filtration_rate",
+      "table_stable_id": "organ_transplant_large:table:function_and_recovery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:30",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "preservation_method",
+      "table_stable_id": "organ_transplant_large:table:function_and_recovery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:32",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "cause_of_death_description",
+      "table_stable_id": "organ_transplant_large:table:function_and_recovery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:33",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "comorbidities",
+      "table_stable_id": "organ_transplant_large:table:clinical"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:34",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "allocation_policy_version",
+      "table_stable_id": "organ_transplant_large:table:allocation_details"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:4",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "hla_mismatch_score",
+      "table_stable_id": "organ_transplant_large:table:compatibility_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:41",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "semantic_name": "donor_serum_creatinine",
+      "table_stable_id": "organ_transplant_large:table:function_and_recovery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:42",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "donor_gfr",
+      "table_stable_id": "organ_transplant_large:table:function_and_recovery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:43",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "pra_score",
+      "table_stable_id": "organ_transplant_large:table:recipients_immunology"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:44",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "hla_mismatch_count",
+      "table_stable_id": "organ_transplant_large:table:compatibility_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:45",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "medical_urgency_status",
+      "table_stable_id": "organ_transplant_large:table:clinical"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:46",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "crossmatch_result",
+      "table_stable_id": "organ_transplant_large:table:recipients_immunology"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:47",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "cause_of_death_description",
+      "table_stable_id": "organ_transplant_large:table:function_and_recovery"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:48",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "semantic_name": "cost_per_qaly",
+      "table_stable_id": "organ_transplant_large:table:risk_evaluation"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:5",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "source_type_requires_parsing"
+      ],
+      "semantic_name": "recipient_wait_time_years",
+      "table_stable_id": "organ_transplant_large:table:clinical"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:6",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "size_compatibility_score",
+      "table_stable_id": "organ_transplant_large:table:compatibility_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:7",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "age_compatibility_score",
+      "table_stable_id": "organ_transplant_large:table:compatibility_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "organ_transplant_large:hkb:9",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "source_type_requires_parsing"
+      ],
+      "semantic_name": "renal_function_score",
+      "table_stable_id": "organ_transplant_large:table:function_and_recovery"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "d9548c83285195e2aedee25beb169f1c491d86ded53bc4f3035c0dfadd924492"
+    },
+    "hkb_ir": {
+      "sha256": "9b6866b47749811eb869b6a0679e7d9138cb809ca00d23f7667988ba29bdb02c"
+    },
+    "mapping": {
+      "sha256": "66941d378f4aac5eb1047af9037437503bb8ffbf843aebb3eb640a9b52d1afd8"
+    },
+    "mapping_manifest": {
+      "sha256": "306cfd4165269fb75c7a6b4f01f109f43222e1d98fb7963fa9b1524cf8b741a9"
+    },
+    "schema_ir": {
+      "sha256": "4a9942d829772a558f6bb2705c2eb76de263e4c8e4e7918b1706ca7f7b855086"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

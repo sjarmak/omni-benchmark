@@ -1,0 +1,7 @@
+base_view: organ_transplant_large_public__allocation_details
+label: Allocation Details
+description: Allocation-detail records with public policy-version context.
+fields:
+- organ_transplant_large_public__allocation_details.*
+joins: {}
+ai_context: Use the modeled business fields allocation_policy_version rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

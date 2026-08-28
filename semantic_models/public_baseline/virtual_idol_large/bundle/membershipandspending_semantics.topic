@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__membershipandspending
+label: Membership and Spending
+description: Membership records with row-level membership type semantics.
+fields:
+- virtual_idol_large_public__membershipandspending.*
+joins: {}
+ai_context: Use the modeled business fields membership_type rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

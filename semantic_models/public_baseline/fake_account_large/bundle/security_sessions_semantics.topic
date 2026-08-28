@@ -1,0 +1,7 @@
+base_view: fake_account_large_public__security_sessions
+label: Security Sessions
+description: Account-level security-session telemetry with public IP-reputation context.
+fields:
+- fake_account_large_public__security_sessions.*
+joins: {}
+ai_context: Use the modeled business fields ip_reputation_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

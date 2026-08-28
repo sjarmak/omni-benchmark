@@ -1,0 +1,17 @@
+label: Transportation Assets
+description: Public household transportation asset records with vehicle context.
+catalog: residential_data_large
+schema: public
+table_name: transportation_assets
+dimensions:
+  newest_vehicle_year:
+    description: Year of manufacture for the newest vehicle in the household's transportation fleet, stored as text to accommodate various date formats and null values. Contains NULL when no vehicles are owned, vehicle age information is not available, or vehicles are too old to have reliable manufacture date records. EX.2012 To 2013, Not applicable, 2014 or newer
+    label: Newest Vehicle Year
+    sql: '-- DO NOT PARSE
+
+      ${vehicleinventory} ->> ''Newest_Year'''
+    ai_context: 'Vehicle Year Range: Text ranges like ''1995 to 1999'', ''2005 to 2009'', or ''2010 to 2013''. Null indicates no vehicles or unknown age.'
+  vehicle_type_distribution:
+    description: JSONB column. Aggregates transportation assets owned by household including counts of different vehicle types and age information for mobility analysis.
+    label: Vehicle Type Distribution
+    ai_context: 'Vehicle Type Distribution: An array of counts representing vehicle types. Null indicates unknown or unverified ownership.'

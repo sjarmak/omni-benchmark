@@ -1,0 +1,30 @@
+label: operation
+description: Public semantic view for operation.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: operation
+dimensions:
+  o_operational_hours:
+    description: 'REAL. Total operational hours of the robot. **NULL means no operational hours data available.**. Example: 20009.0.'
+    label: O.operational_hours
+  o_cycle_time_seconds:
+    description: 'REAL. Cycle time of the robot operation in seconds. **NULL means no cycle time data available.**. Example: 211.82.'
+    label: O.cycle_time_seconds
+  o_application_type:
+    description: 'TEXT. Application type for the operation. **NULL means no application type specified.**. Possible values: Assembly, Material Handling, Painting, Palletizing, Welding.'
+    label: O.application_type
+    ai_context: 'Common Application Groups: Application groups include: ''Material Handling'' (e.g., Picking, Packing, Palletizing), ''Processing'' (e.g., Grinding, Polishing), ''Assembly'', ''Welding'', and ''Standby''.
+
+      High-Wear Applications: High-Wear Applications include ''Welding'', ''Grinding'', ''Deburring'', ''Palletizing'', and ''Machine Tending''.
+
+      Precision-Critical Applications: Precision-Critical Applications include ''Assembly'', ''Electronics-Handling'', ''Inspection'', ''Dispensing'', and ''Laser Cutting''.'
+  hkb_12:
+    label: Throughput Rate
+    description: Calculates the number of cycles completed per minute, as a direct measure of production throughput.
+    sql: 60.0 / NULLIF(${o_cycle_time_seconds}, 0)
+    ai_context: Use this modeled field for Throughput Rate; do not reconstruct its formula.
+  hkb_63:
+    label: Throughput Rate (Cycles per Hour)
+    description: Calculates the number of cycles completed per hour.
+    sql: 3600.0 / NULLIF(${o_cycle_time_seconds}, 0)
+    ai_context: Use this modeled field for Throughput Rate (Cycles per Hour); do not reconstruct its formula.

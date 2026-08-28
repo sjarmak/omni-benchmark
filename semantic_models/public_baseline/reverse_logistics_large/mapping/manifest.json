@@ -1,0 +1,39 @@
+{
+  "counts": {
+    "dispositions": {
+      "context_only": 19,
+      "defer_cross_grain": 4,
+      "unsupported": 7
+    },
+    "hkb_nodes": 30
+  },
+  "database": "reverse_logistics_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "reverse_logistics_large.mapping.jsonl",
+    "sha256": "d8aa9e370dc14f24b7a3621628e25a98234d74e3f57f8fb5b84841fc41ba252f"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "d94f49674eb056f2d1be68fe3d6fa233ee0167ab13c5fd67c51440c356a92065"
+    },
+    "mapping_spec": {
+      "sha256": "47a85537cadfd660e938e7cea08c6fd0c97a466fc442de03046103c05d65f70b"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "913847d6b8b688c17a8cac028ab55ccf85f1f129d7de1e04c06919c28664e678",
+      "sha256": "7c69b9193add6d4794a144056822b3e89fc7710cf7405dc2fb7622484bc0caf8"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

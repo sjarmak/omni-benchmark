@@ -1,0 +1,7 @@
+base_view: organ_transplant_large_public__function_and_recovery
+label: Donor Function and Recovery
+description: Donor organ-function records with public kidney, ischemia, preservation, and cause-of-death semantics.
+fields:
+- organ_transplant_large_public__function_and_recovery.*
+joins: {}
+ai_context: Use the modeled business fields donor_serum_creatinine, donor_gfr, cold_ischemia_time, preservation_method, cause_of_death_description, estimated_glomerular_filtration_rate, renal_function_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

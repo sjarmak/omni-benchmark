@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 5,
+      "context_only": 10,
+      "defer_cross_grain": 11,
+      "unsupported": 4
+    },
+    "hkb_nodes": 30
+  },
+  "database": "cybermarket_pattern_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "cybermarket_pattern_large.mapping.jsonl",
+    "sha256": "8cf6c71f3c9aae3bf113e265abababdcb8aada01febab78a178e577b197d2f86"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "e60b16d3c8a343695e28123262e0dc69130eb37b359d91bb990dd72f02c3fc77"
+    },
+    "mapping_spec": {
+      "sha256": "89cc27a1ddbf3222978d19d96c9e5077477990196c2c504f34f728f17dbfadfa"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "16acc142b63ae539532736e03d96e01b1644128005567fb504c3041f970934f3",
+      "sha256": "baa5789ad9d49017fe66c283205adba6cdda82760cb8bcc10d6a9e09cc85c3da"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

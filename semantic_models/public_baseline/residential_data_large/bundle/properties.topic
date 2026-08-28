@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__properties
+label: Properties
+description: Public residential property records with dwelling context.
+fields:
+- residential_data_large_public__properties.*
+joins: {}
+ai_context: Use the modeled business fields dwelling_type rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

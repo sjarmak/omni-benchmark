@@ -1,0 +1,7 @@
+base_view: reverse_logistics_large_public__products
+label: Products
+description: Product rows with public regulatory-compliance semantics.
+fields:
+- reverse_logistics_large_public__products.*
+joins: {}
+ai_context: Use the modeled business fields regulatory_compliance_status rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

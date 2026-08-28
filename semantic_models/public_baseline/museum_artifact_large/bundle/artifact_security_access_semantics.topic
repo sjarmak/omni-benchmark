@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__artifact_security_access
+label: Artifact Security and Access
+description: Artifact security-access rows with insurance-value rarity and valuation semantics.
+fields:
+- museum_artifact_large_public__artifact_security_access.*
+joins: {}
+ai_context: Use the modeled business fields insurance_value_usd, is_high_rarity_and_valuation rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

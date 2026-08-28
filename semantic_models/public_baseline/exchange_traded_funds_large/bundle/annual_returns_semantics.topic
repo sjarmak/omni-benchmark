@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__annual_returns
+label: Annual Fund Returns
+description: Annual fund and category returns with row-level outperformance semantics.
+fields:
+- exchange_traded_funds_large_public__annual_returns.*
+joins: {}
+ai_context: Use the modeled business fields fund_annual_return, category_average_annual_return, annual_fund_outperformance rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

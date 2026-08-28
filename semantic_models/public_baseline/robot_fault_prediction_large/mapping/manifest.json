@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 18,
+      "context_only": 13,
+      "defer_cross_grain": 17,
+      "unsupported": 17
+    },
+    "hkb_nodes": 65
+  },
+  "database": "robot_fault_prediction_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "robot_fault_prediction_large.mapping.jsonl",
+    "sha256": "fca6d4fbb5969cf3d54ea65b4a0627e588c327f300998c17263512e66b58936c"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "7dc1bcd62075d10188797d330683696bd568181c123d56dda1a087e2b8a37206"
+    },
+    "mapping_spec": {
+      "sha256": "e6137db31b8a6e2c6a762ca1c89d34e1ef4ce47bb13956fcf54d7ffa7fa56fe3"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "269ce35754f8989f54e218946181fee17951aa903f1d19d7cbb0ad63d370321b",
+      "sha256": "1e13325a1ad1b2c0420ffa07c07ca4e16ba41aebe04314e02dd9eefb6555cfec"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

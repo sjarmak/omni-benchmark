@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 18,
+      "context_only": 9,
+      "defer_cross_grain": 25,
+      "unsupported": 6
+    },
+    "hkb_nodes": 58
+  },
+  "database": "polar_equipment_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "polar_equipment_large.mapping.jsonl",
+    "sha256": "a36d6468f12417d03dbef053834c6914cc062de15bd4642965d9682c638e9235"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "52b02608af14749eb5f3f753977fae370d66d247200258143eb7687c73c4e1f4"
+    },
+    "mapping_spec": {
+      "sha256": "8d89184baf52e2a63004e1c2b5e32180ccfcdb536b0763a4c6caf883704e7a88"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "8abc84a601bd3dc8151905e370525447b4a45b06c2053f5f271103be0b52ffa6",
+      "sha256": "d2fb4f51c5f315580a85e31dc7fd8210efef44b1d3e28e6ae001cccbf4ece150"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

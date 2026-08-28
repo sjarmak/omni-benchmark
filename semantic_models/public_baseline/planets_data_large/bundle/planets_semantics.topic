@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__planets
+label: Planets
+description: Planet identity records with public discovery-method semantics.
+fields:
+- planets_data_large_public__planets.*
+joins: {}
+ai_context: Use the modeled business fields discovery_method, discovery_via_transit_method, discovery_via_radial_velocity rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__conservation_and_maintenance
+label: Conservation and Maintenance
+description: Conservation-maintenance rows with scheduled-cleaning overdue-day semantics.
+fields:
+- museum_artifact_large_public__conservation_and_maintenance.*
+joins: {}
+ai_context: Use the modeled business fields scheduled_next_cleaning_date, overdue_days rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

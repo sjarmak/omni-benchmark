@@ -1,0 +1,27 @@
+label: Security Profiles
+description: Security-profile rows with encryption, access-control, log-retention, and modeled robustness semantics.
+catalog: cross_border_large
+schema: public
+table_name: SecurityProfile
+dimensions:
+  enc_state:
+    description: 'TEXT. The overall state of encryption. Possible values: Partial, Full.'
+    label: Encryption Status
+    ai_context: 'Encryption Status: Options: full encryption or partial encryption.'
+  acl_state:
+    description: 'TEXT. The state of Access Control Lists (ACLs). Possible values: Strong, Weak, Adequate.'
+    label: Access Control Strength
+  LogRetDays:
+    description: 'BIGINT. The log retention period in days. Example: 2795.'
+    label: Audit Log Retention (days)
+    ai_context: 'Audit Log Retention: Higher means longer history is available.'
+  security_robustness_score:
+    label: Security Robustness Score (SRS)
+    description: Reflects how strong the protections are for keeping data safe.
+    sql: CASE WHEN ${enc_state} IS NULL OR ${acl_state} IS NULL THEN NULL WHEN ${enc_state} = 'Full' AND ${acl_state} = 'Strong' THEN 3 WHEN ${enc_state} = 'Full' OR ${acl_state} = 'Strong' THEN 2 ELSE 1 END
+    ai_context: Use this modeled field for Security Robustness Score (SRS); do not reconstruct its formula.
+  is_secure_data_flow:
+    label: Secure Data Flow
+    description: Marks a transfer as secure if the protections are at the highest level.
+    sql: ${security_robustness_score} = 3
+    ai_context: Use this modeled field for Secure Data Flow; do not reconstruct its formula.

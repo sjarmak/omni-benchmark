@@ -1,0 +1,21 @@
+label: Retention and Influence
+description: Retention records with row-level viral-impact semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: retentionandinfluence
+dimensions:
+  churn_risk_flag:
+    description: TEXT. Churn risk classification and prediction status.
+    label: Churn Risk Flag
+    ai_context: 'Churn Risk Flag: A predictive classification of a fan''s likelihood to stop using the platform. ''High'' indicates a strong probability of churning soon. ''Medium'' indicates a moderate risk. ''Low'' indicates a loyal and stable user.'
+  viral_content_pieces:
+    description: SMALLINT. Number of viral content pieces created or shared.
+    label: Viral Content Pieces
+  trend_participation_count:
+    description: SMALLINT. Number of trending topics or events participated in.
+    label: Trend Participation Count
+  viral_potential_score:
+    label: Viral Potential Score (VPS)
+    description: Assesses a fan's ability to create and participate in viral trends.
+    sql: ${viral_content_pieces} * (1 + ${trend_participation_count})
+    ai_context: Use this modeled field for Viral Potential Score (VPS); do not reconstruct its formula.

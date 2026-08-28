@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__weatherandstructure
+label: Weather And Structure
+description: Weather and structure records with structural-safety semantics and field context.
+fields:
+- polar_equipment_large_public__weatherandstructure.*
+joins: {}
+ai_context: Use the modeled business fields external_temperature_c, wind_speed_mps, snow_load_kg_m2, structural_load_percent, structural_safety_factor rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__operations
+label: Operations
+description: Operation records with row-level emergency-level, response-phase, and supply-flow semantics.
+fields:
+- disaster_relief_large_public__operations.*
+joins: {}
+ai_context: Use the modeled business fields emergency_level, response_phase, supply_flow_state, is_full_scale_emergency rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -319,12 +319,15 @@ def _validate_derived_dependencies(
 
 def _column_names_by_table(
     schema_records: Sequence[Mapping[str, Any]],
+    modeled_table_ids: frozenset[str],
 ) -> dict[str, set[str]]:
     names: dict[str, set[str]] = {}
     for record in schema_records:
         if record.get("record_kind") != "column":
             continue
         table_id = _text(record.get("table_stable_id"), "column table_stable_id")
+        if table_id not in modeled_table_ids:
+            continue
         identifier = _mapping(record.get("identifier"), "column identifier")
         name = _safe_name(identifier.get("name"), "column name")
         names.setdefault(table_id, set()).add(name)
@@ -683,7 +686,7 @@ def _build_bundle(
     physical_by_table: Mapping[str, list[Mapping[str, Any]]],
     contexts: Mapping[str, list[str]],
 ) -> SemanticBundle:
-    column_names = _column_names_by_table(schema_records)
+    column_names = _column_names_by_table(schema_records, frozenset(views))
     ordered_ids = _ordered_compile_ids(compile_mappings)
     files: dict[str, str] = {}
     elements: list[dict[str, Any]] = []

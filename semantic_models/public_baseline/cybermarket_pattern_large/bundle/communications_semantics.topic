@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__communications
+label: Communications
+description: Communication-thread records with row-level suspicion-signal density and language-pattern context.
+fields:
+- cybermarket_pattern_large_public__communications.*
+joins: {}
+ai_context: Use the modeled business fields keyword_matches, total_messages, language_pattern, suspicion_signal_density rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

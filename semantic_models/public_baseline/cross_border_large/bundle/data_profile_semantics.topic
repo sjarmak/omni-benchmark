@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__data_profile
+label: Data Profiles
+description: Data-profile rows with volume, integrity, checksum, and same-row failure semantics.
+fields:
+- cross_border_large_public__data_profile.*
+joins: {}
+ai_context: Use the modeled business fields vol_gb, Int_check, CSUMVERIFY, is_data_integrity_failure, integrity_failure_count, failure_types_list rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

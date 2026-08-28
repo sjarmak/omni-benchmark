@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__interactions
+label: Interactions
+description: Interaction records with row-level watch, gift, chat, and duration semantics.
+fields:
+- virtual_idol_large_public__interactions.*
+joins: {}
+ai_context: Use the modeled business fields session_duration_minutes, total_watch_hours, total_gift_value_usd, chat_messages, gift_frequency, interaction_tone, fan_monetization_index, content_consumption_index, chattiness_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

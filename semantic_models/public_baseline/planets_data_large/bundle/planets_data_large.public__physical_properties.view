@@ -1,0 +1,63 @@
+label: Planet Physical Properties
+description: Planet physical-property records with public mass, radius, density, and derived same-row planet semantics.
+catalog: planets_data_large
+schema: public
+table_name: physical_properties
+dimensions:
+  planet_mass_jupiter:
+    description: Planetary mass from 'pl_bmassj' in Jupiter mass units. REAL covering range from 0.00006 MJ (sub-Earth) to 28.5 MJ (super-Jupiter). Contains  NULL when mass cannot be determined (e.g., for transit-only discoveries without radial velocity follow-up).
+    label: Planet Mass (Jupiter Masses)
+    ai_context: 'Planet Mass Value: Typically measured in Jupiter masses ($M_J$). Earth''s mass is about 0.003 $M_J$. Known exoplanets range from less than Earth''s mass to over 20 times the mass of Jupiter.'
+  planet_radius_jupiter:
+    description: Planetary radius from 'pl_radj' in Jupiter radius units. REAL covering range from 0.027 RJ (sub-Earth) to 6.9 RJ (inflated giants). Contains  NULL when radius cannot be measured (e.g., for radial velocity-only discoveries).
+    label: Planet Radius (Jupiter Radii)
+    ai_context: 'Planet Radius Value: Typically measured in Jupiter radii ($R_J$). Earth''s radius is about 0.09 $R_J$. Planets range from small rocky worlds smaller than Earth to ''inflated'' gas giants larger than Jupiter.'
+  planet_density_g_cm3:
+    description: Bulk density from 'pl_dens' in g/cm³. REAL covering gas giants (<1 g/cm³) to super-dense planets (>20 g/cm³). Contains  NULL when both mass and radius are not available for density calculation.
+    label: Planet Density (g/cm^3)
+    ai_context: 'Planet Density Value: Measured in grams per cubic centimeter (g/cm³). Puffy gas giants can have densities less than water (<1 g/cm³), while dense, rocky planets like Earth have densities around 5.5 g/cm³.'
+  planet_mass_earth:
+    label: Planet Mass in Earth Units
+    description: Converts a planet's mass from Jupiter mass units to Earth mass units.
+    sql: ${planet_mass_jupiter} * 317.83
+    ai_context: Use this modeled field for Planet Mass in Earth Units; do not reconstruct its formula.
+  planet_radius_earth:
+    label: Planet Radius in Earth Units
+    description: Converts a planet's radius from Jupiter radius units to Earth radius units.
+    sql: ${planet_radius_jupiter} * 11.209
+    ai_context: Use this modeled field for Planet Radius in Earth Units; do not reconstruct its formula.
+  planet_escape_velocity:
+    label: Planet Escape Velocity
+    description: Calculates the minimum speed needed for an object to escape a planet's gravitational pull.
+    sql: CASE WHEN ${planet_radius_earth} > 0 THEN SQRT((2.0 * 6.67430e-11 * (${planet_mass_earth} * 5.9722e24)) / (${planet_radius_earth} * 6.371e6)) END
+    ai_context: Use this modeled field for Planet Escape Velocity; do not reconstruct its formula.
+  mass_radius_relationship:
+    label: Mass-Radius Relationship
+    description: A simple ratio to compare a planet's mass and size.
+    sql: CASE WHEN ${planet_radius_earth} <> 0 THEN ${planet_mass_earth} / ${planet_radius_earth} END
+    ai_context: Use this modeled field for Mass-Radius Relationship; do not reconstruct its formula.
+  gas_giant_planet:
+    label: Gas Giant Planet
+    description: A large planet composed primarily of gases like hydrogen and helium.
+    sql: ${planet_mass_jupiter} > 0.1
+    ai_context: Use this modeled field for Gas Giant Planet; do not reconstruct its formula.
+  rocky_planet:
+    label: Rocky Planet
+    description: A planet composed primarily of rock or metals, with a solid surface.
+    sql: ${planet_density_g_cm3} > 3.0
+    ai_context: Use this modeled field for Rocky Planet; do not reconstruct its formula.
+  super_earth:
+    label: Super-Earth
+    description: A class of planets with masses higher than Earth's but substantially below those of the solar system's ice giants.
+    sql: ${rocky_planet} AND ${planet_mass_earth} >= 1.0 AND ${planet_mass_earth} <= 10.0
+    ai_context: Use this modeled field for Super-Earth; do not reconstruct its formula.
+  inflated_gas_giant:
+    label: Inflated Gas Giant
+    description: A gas giant planet with a radius that is unexpectedly large for its mass, suggesting a high internal temperature.
+    sql: ${gas_giant_planet} AND ${planet_density_g_cm3} < 0.5
+    ai_context: Use this modeled field for Inflated Gas Giant; do not reconstruct its formula.
+  planet_surface_gravity:
+    label: Planet Surface Gravity
+    description: Estimates the surface gravity of a planet relative to Earth's.
+    sql: CASE WHEN ${planet_radius_earth} <> 0 THEN ${planet_mass_earth} / POWER(${planet_radius_earth}, 2.0) END
+    ai_context: Use this modeled field for Planet Surface Gravity; do not reconstruct its formula.

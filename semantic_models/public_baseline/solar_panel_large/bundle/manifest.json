@@ -1,0 +1,693 @@
+{
+  "database": "solar_panel_large",
+  "files": [
+    {
+      "file": "solar_panel_large.public__panel_models.view",
+      "sha256": "7c7bc81e825222e80c08f1337dc521a72399c0d92cf469185438f67e7c1932ba",
+      "size_bytes": 1761
+    },
+    {
+      "file": "panel_models_semantics.topic",
+      "sha256": "350156537e84924bf5400922274d36ce76f4a87774a03bf10c5a08220ca19a28",
+      "size_bytes": 397
+    },
+    {
+      "file": "solar_panel_large.public__electrical_performance.view",
+      "sha256": "723940362bb83f913d9ee097e5b13951f872d5e86bb909837f5977c3302bbbe9",
+      "size_bytes": 7506
+    },
+    {
+      "file": "electrical_performance_semantics.topic",
+      "sha256": "de73b4654364b6acef88d2497a2df7d178f746a61ac11637d9c2e2aa1c66633d",
+      "size_bytes": 885
+    },
+    {
+      "file": "solar_panel_large.public__environmental_conditions.view",
+      "sha256": "42ff3e32b8034de3a5075458fa4d5969bc425f57b2292e11644c6b7f3552585d",
+      "size_bytes": 707
+    },
+    {
+      "file": "environmental_conditions_semantics.topic",
+      "sha256": "4be96e6c31fbcd4a9be720d98f1b7d71914d8cceadbaba2107033528dd285cbe",
+      "size_bytes": 372
+    },
+    {
+      "file": "solar_panel_large.public__operational_metrics.view",
+      "sha256": "fe0ca244c6ced95d74529396c3fc243ee6fa51bd496ef301d3f585b2431aefd8",
+      "size_bytes": 2219
+    },
+    {
+      "file": "operational_metrics_semantics.topic",
+      "sha256": "d4f18dc58099b17d110ac29ac4d25964b4aaa73768c939f9bda6e3f129b8e6c7",
+      "size_bytes": 484
+    },
+    {
+      "file": "solar_panel_large.public__plants.view",
+      "sha256": "6855942380315dcbb2b293b0569aab94858ae4c26fb94933d1b5f7ec5a7013ab",
+      "size_bytes": 985
+    },
+    {
+      "file": "plants_semantics.topic",
+      "sha256": "0df813f8565dff1eae4da2cc5fbaf2188d57c4801c8e4c8684a540f21135e244",
+      "size_bytes": 342
+    },
+    {
+      "file": "solar_panel_large.public__alert.view",
+      "sha256": "0f81a85b266f60c2d8050c3a35f24a7a0f8a80e5a4af50bb0119a92519ef1b9c",
+      "size_bytes": 1434
+    },
+    {
+      "file": "alert_semantics.topic",
+      "sha256": "c2a1aa37b858eb5b443400fe1fe864e6a97c41744cc79497a9cd51b685255366",
+      "size_bytes": 403
+    },
+    {
+      "file": "solar_panel_large.public__mechanical_condition.view",
+      "sha256": "322bb6e68d2c43c51b000703c9e8ac603b12c2a4675e9978936e682edbfddbed",
+      "size_bytes": 3612
+    },
+    {
+      "file": "mechanical_condition_semantics.topic",
+      "sha256": "bc0b61fe8e085988fd1fe662367618ab22bf55f2bed0fe1ba7c98178bb2a1f47",
+      "size_bytes": 564
+    },
+    {
+      "file": "solar_panel_large.public__inspection.view",
+      "sha256": "35db2defed8cccc88bfa97446e4ed1027b2a241bdfa82fe4d2b14b8993fefab7",
+      "size_bytes": 1496
+    },
+    {
+      "file": "inspection_semantics.topic",
+      "sha256": "224aafcb9672725ab7ca38155e2bfc620046abd9357a762ed908b60ff590518c",
+      "size_bytes": 410
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:0",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "specific_yield_metric",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:1",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "power_capacity_factor",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "inverter_efficiency_loss",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:13",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "system_power_loss_ratio",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:14",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "voltage_degradation_factor",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:15",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "current_degradation_factor",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:16",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "effective_power_output",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:18",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "source_type_requires_parsing"
+      ],
+      "semantic_name": "maintenance_cost_to_revenue_impact_ratio",
+      "table_stable_id": "solar_panel_large:table:operational_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:2",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "soiling_loss_index",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_high_degradation_panel_model",
+      "table_stable_id": "solar_panel_large:table:panel_models"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "tracker_malfunction",
+      "table_stable_id": "solar_panel_large:table:mechanical_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:22",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "data_quality_concern",
+      "table_stable_id": "solar_panel_large:table:inspection"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:23",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "structural_integrity_warning",
+      "table_stable_id": "solar_panel_large:table:mechanical_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "high_maintenance_priority",
+      "table_stable_id": "solar_panel_large:table:alert"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "high_replacement_priority",
+      "table_stable_id": "solar_panel_large:table:alert"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:26",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "severe_soiling_condition",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "warranty_claim_risk",
+      "table_stable_id": "solar_panel_large:table:plants"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "critical_alert",
+      "table_stable_id": "solar_panel_large:table:alert"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:30",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "electrical_integrity_failure",
+      "table_stable_id": "solar_panel_large:table:mechanical_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:31",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "major_module_degradation",
+      "table_stable_id": "solar_panel_large:table:mechanical_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:32",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "underperforming_asset",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:35",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "critical_mechanical_health",
+      "table_stable_id": "solar_panel_large:table:mechanical_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:37",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "overdue_critical_maintenance",
+      "table_stable_id": "solar_panel_large:table:inspection"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:4",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "system_unavailability",
+      "table_stable_id": "solar_panel_large:table:operational_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:40",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "power_factor",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:41",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "tempcoeff",
+      "table_stable_id": "solar_panel_large:table:panel_models"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:42",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "fill_now",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:43",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "uv",
+      "table_stable_id": "solar_panel_large:table:environmental_conditions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:44",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "tracker",
+      "table_stable_id": "solar_panel_large:table:mechanical_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:45",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "dqscore",
+      "table_stable_id": "solar_panel_large:table:inspection"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:46",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "busbar",
+      "table_stable_id": "solar_panel_large:table:mechanical_condition"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:47",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "mtbf",
+      "table_stable_id": "solar_panel_large:table:operational_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:48",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "nomoptempc",
+      "table_stable_id": "solar_panel_large:table:panel_models"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:49",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "harmonic",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:5",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "fill_factor_degradation",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:8",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "system_availability",
+      "table_stable_id": "solar_panel_large:table:operational_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "solar_panel_large:hkb:9",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "performance_ratio_metric",
+      "table_stable_id": "solar_panel_large:table:electrical_performance"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "fbb11771c70ec1d821adc369cdeda124fc9a9bc98bc3afb34263c6f20043f6d6"
+    },
+    "hkb_ir": {
+      "sha256": "6fd6acc9a3c4a7bfab8d147c540f653368fcd2176d4a9f0a83426fa07b4650fb"
+    },
+    "mapping": {
+      "sha256": "680f7359fd3f1b0a3470b42211bc9febb5cbd346f00dcd60572e6a03b8ed7c9f"
+    },
+    "mapping_manifest": {
+      "sha256": "d44ba8bb19257ae8d721572f99f9f96db6fd4314462d312a4734789a2f2e05cf"
+    },
+    "schema_ir": {
+      "sha256": "332babdc4e5c2d2796602ba14ec769aea88c1727dd4430f8f6395fc0ae475e14"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

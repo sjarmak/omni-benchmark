@@ -1,0 +1,7 @@
+base_view: solar_panel_large_public__plants
+label: Plants
+description: Solar plant attributes.
+fields:
+- solar_panel_large_public__plants.*
+joins: {}
+ai_context: Use the modeled business fields cap, warrstate, warrclaims, warranty_claim_risk rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

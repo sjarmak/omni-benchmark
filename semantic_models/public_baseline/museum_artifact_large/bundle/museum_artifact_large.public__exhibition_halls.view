@@ -1,0 +1,36 @@
+label: Exhibition Halls
+description: Exhibition-hall rows with visitor-impact semantics and CCTV coverage context.
+catalog: museum_artifact_large
+schema: public
+table_name: ExhibitionHalls
+dimensions:
+  average_daily_visitors:
+    description: 'BIGINT. Daily visitor count for the exhibition hall. Example: 308.'
+    label: Average Daily Visitors
+    sql: '-- DO NOT PARSE
+
+      CAST(${security_visitor_overview} -> ''visitor_statistics'' ->> ''avg_daily_visitors'' AS DOUBLE PRECISION)'
+  visitor_flow:
+    description: 'TEXT. Visitor flow data in the hall. Possible values: High, Low, Medium.'
+    label: Visitor Flow
+    sql: '-- DO NOT PARSE
+
+      ${security_visitor_overview} -> ''visitor_statistics'' ->> ''visitor_flow'''
+  average_dwell_minutes:
+    description: 'BIGINT. Dwell time of visitors in minutes. Example: 16.'
+    label: Average Dwell Time (minutes)
+    sql: '-- DO NOT PARSE
+
+      CAST(${security_visitor_overview} -> ''visitor_statistics'' ->> ''avg_dwell_minutes'' AS DOUBLE PRECISION)'
+  cctv_coverage_level:
+    description: 'TEXT. CCTV coverage status in the exhibition hall. Possible values: Full, Limited, Partial.'
+    label: CCTV Coverage Level
+    sql: '-- DO NOT PARSE
+
+      ${security_visitor_overview} -> ''security'' ->> ''cctv_coverage'''
+    ai_context: 'CCTV Coverage Levels: ''Full'' indicates 100% space coverage, ''Partial'' indicates 60-90% coverage, and ''Limited'' indicates less than 60% coverage.'
+  visitor_impact_risk:
+    label: Visitor Impact Risk (VIR)
+    description: Assesses the risk posed by visitor traffic to artifacts in exhibition halls.
+    sql: (${average_daily_visitors} * CASE ${visitor_flow} WHEN 'Low' THEN 1.0 WHEN 'Medium' THEN 3.0 WHEN 'High' THEN 5.0 ELSE NULL END * ${average_dwell_minutes}) / 1000.0
+    ai_context: Use this modeled field for Visitor Impact Risk (VIR); do not reconstruct its formula.

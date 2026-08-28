@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__buyers
+label: Buyers
+description: Buyer records with public authentication and spending-pattern context.
+fields:
+- cybermarket_pattern_large_public__buyers.*
+joins: {}
+ai_context: Use the modeled business fields authentication_level, spend_pattern rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,18 @@
+label: Infrastructure
+description: Public household infrastructure records with water, road, and parking context.
+catalog: residential_data_large
+schema: public
+table_name: infrastructure
+dimensions:
+  water_access:
+    description: Piped water supply access type indicating the household's water infrastructure connectivity. Part of unique constraint combination. ex.Yes, available at least in one room
+    label: Water Access
+    ai_context: 'Water Access Type: Values based on schema include ''Yes'' and other non-piped statuses.'
+  road_surface:
+    description: Street pavement condition and type describing the road infrastructure quality around the household location. Part of unique constraint combination. EX. Asphalt, concrete;Gravel surface
+    label: Road Surface
+    ai_context: 'Road Surface Quality: Values based on schema include ''Asphalt'', ''Concrete'', ''Gravel'', etc.'
+  parking_availability:
+    description: Private parking space availability indicating whether households have dedicated parking facilities. Part of unique constraint combination. EX.Available, not available
+    label: Parking Availability
+    ai_context: 'Parking Availability: Values based on schema include ''Available'' and ''not available''.'

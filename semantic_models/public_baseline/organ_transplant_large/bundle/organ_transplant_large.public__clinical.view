@@ -1,0 +1,32 @@
+label: Recipient Clinical
+description: Recipient clinical records with public wait-time, urgency, and comorbidity semantics.
+catalog: organ_transplant_large
+schema: public
+table_name: clinical
+dimensions:
+  wait_time:
+    description: 'TEXT. Number of days recipient has been on transplant waiting list. Example: 104 days'
+    label: Wait Time
+  medical_urgency_status:
+    description: 'TEXT. Medical urgency status classification for transplant priority. **DATA NOISE: ''Status 2'' partially replaced with ''2'', ''Status 3'' partially replaced with ''3'', etc.** Possible values: 2, 3, Status 1A, Status 1B, Status 2, Status 3.'
+    label: Medical Urgency Status
+    ai_context: 'Medical Urgency Tiers: Patients are prioritized based on their risk of dying while on the waitlist. Status 1A is the highest urgency, reserved for critically ill patients in the ICU. Status 1B is a lower, but still urgent, category. Lower statuses (e.g., Status 2) are for more stable patients.'
+  comorbidities:
+    description: 'TEXT. Comorbid conditions and secondary medical issues. **NULL means comorbidity assessment is incomplete or not available.**. Example: Hypertension,Heart Disease,Diabetes.'
+    label: Comorbidity Detail
+    ai_context: 'Comorbidity: In transplantation, a recipient''s pre-existing conditions (e.g., diabetes, heart disease) are considered comorbidities. They can increase the complexity and risk of the transplant procedure.'
+  recipient_wait_time_years:
+    label: Recipient Wait Time Ratio
+    description: Calculates the ratio of a recipient's waiting time to the average waiting time for their specific organ and blood type.
+    sql: CAST(NULLIF(REGEXP_REPLACE(${wait_time}, '[^0-9.]', '', 'g'), '') AS DOUBLE PRECISION) / 365.0
+    ai_context: Use this modeled field for Recipient Wait Time Ratio; do not reconstruct its formula.
+  medical_urgency_numeric_value:
+    label: Medical Urgency Status
+    description: A classification system used to prioritize patients on the transplant waiting list based on their immediate need and risk of mortality.
+    sql: CASE WHEN UPPER(TRIM(${medical_urgency_status})) = 'STATUS 1A' THEN 5.0 WHEN UPPER(TRIM(${medical_urgency_status})) = 'STATUS 1B' THEN 4.0 WHEN UPPER(TRIM(${medical_urgency_status})) IN ('STATUS 2', '2') THEN 3.0 WHEN UPPER(TRIM(${medical_urgency_status})) IN ('STATUS 3', '3') THEN 2.0 ELSE 1.0 END
+    ai_context: Use this modeled field for Medical Urgency Status; do not reconstruct its formula.
+  patient_urgency_score:
+    label: Patient Urgency Score
+    description: A score that quantifies the urgency of a recipient's need for a transplant.
+    sql: 0.7 * ${medical_urgency_numeric_value} + 0.3 * ${recipient_wait_time_years}
+    ai_context: Use this modeled field for Patient Urgency Score; do not reconstruct its formula.

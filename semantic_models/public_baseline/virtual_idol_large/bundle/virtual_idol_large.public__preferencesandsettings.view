@@ -1,0 +1,21 @@
+label: Preferences and Settings
+description: Preference records with row-level usage and stability semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: preferencesandsettings
+dimensions:
+  interaction_consistency_score:
+    description: REAL. Interaction consistency score measuring regular engagement patterns.
+    label: Interaction Consistency Score
+  platform_stability_score:
+    description: REAL. Platform stability score based on session reliability and connection quality.
+    label: Platform Stability Score
+  privacy_setting:
+    description: TEXT. Privacy settings configuration chosen by the fan.
+    label: Privacy Setting
+    ai_context: 'Privacy Setting Levels: Indicates the level of information a fan chooses to share. ''Public'' allows anyone to see their profile. ''Private'' restricts profile visibility to approved connections.'
+  platform_stickiness_score:
+    label: Platform Stickiness Score (PSS)
+    description: Measures a fan's loyalty and connection to the platform based on their interaction consistency and session stability.
+    sql: (${interaction_consistency_score} + ${platform_stability_score}) / 2
+    ai_context: Use this modeled field for Platform Stickiness Score (PSS); do not reconstruct its formula.

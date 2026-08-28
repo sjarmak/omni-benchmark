@@ -1,0 +1,13 @@
+label: API Endpoints
+description: API endpoint observations with public context for the structured success-percentage field.
+catalog: cross_border_large
+schema: public
+table_name: API_Endpoint
+dimensions:
+  success_pct:
+    description: 'REAL. Percentage of successful responses. Example: 98.498.'
+    label: Success Percentage
+    sql: '-- DO NOT PARSE
+
+      CAST(${api_perf_obs} #>> ''{performance,success_pct}'' AS DOUBLE PRECISION)'
+    ai_context: 'Success Percentage: Ranges from 0 to 100. Higher means more reliable transfers.'

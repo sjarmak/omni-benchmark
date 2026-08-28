@@ -1,0 +1,7 @@
+base_view: fake_account_large_public__content_activity
+label: Content Activity
+description: Account-level content activity with public content-uniqueness context.
+fields:
+- fake_account_large_public__content_activity.*
+joins: {}
+ai_context: Use the modeled business fields content_uniqueness_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

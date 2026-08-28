@@ -1,0 +1,10 @@
+label: Equipment
+description: Equipment records with public reliability-index field context.
+catalog: polar_equipment_large
+schema: public
+table_name: Equipment
+dimensions:
+  reliability_index:
+    description: 'REAL. Reliability index of the equipment. Example: 97.8.'
+    label: Reliability Index
+    ai_context: 'reliabilityindex: The reliability index typically ranges from 0 to 1, where values below 0.5 indicate equipment that fails frequently and requires constant maintenance, values between 0.5-0.8 represent equipment with occasional failures that require regular maintenance, and values above 0.8 indicate highly reliable equipment with minimal downtime.'

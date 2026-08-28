@@ -1,0 +1,10 @@
+label: Monitoring
+description: Monitoring records with public detection-confidence context.
+catalog: fake_account_large
+schema: public
+table_name: monitoring
+dimensions:
+  detection_confidence_score:
+    description: 'REAL. Detection confidence score. **NULL means detection confidence not recorded.**. Example: 0.132.'
+    label: Detection Confidence Score
+    ai_context: 'detection score: Ranges from 0 to 1. Values above 0.8 indicate high-confidence detections, while values below 0.3 suggest uncertain results requiring manual review.'

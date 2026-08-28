@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__cases
+label: Labor Certification Cases
+description: Application case rows with public visa, disclosure, status, worker-position, worksite-count, and worksite-density semantics.
+fields:
+- labor_certification_applications_large_public__cases.*
+joins: {}
+ai_context: Use the modeled business fields visa_classification, public_disclosure_status, application_status, worker_positions, worksite_count, worksite_density rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

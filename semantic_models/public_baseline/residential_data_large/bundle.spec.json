@@ -1,0 +1,30 @@
+{
+  "format_version": 1,
+  "database": "residential_data_large",
+  "catalog": "residential_data_large",
+  "schema": "public",
+  "views": [
+    {"table_stable_id":"residential_data_large:table:households","view_name":"residential_data_large_public__households","file_name":"households.view","topic_file_name":"households.topic","label":"Households","description":"Public household records with socioeconomic context and resident counts."},
+    {"table_stable_id":"residential_data_large:table:infrastructure","view_name":"residential_data_large_public__infrastructure","file_name":"infrastructure.view","topic_file_name":"infrastructure.topic","label":"Infrastructure","description":"Public household infrastructure records with water, road, and parking context."},
+    {"table_stable_id":"residential_data_large:table:properties","view_name":"residential_data_large_public__properties","file_name":"properties.view","topic_file_name":"properties.topic","label":"Properties","description":"Public residential property records with dwelling context."},
+    {"table_stable_id":"residential_data_large:table:amenities","view_name":"residential_data_large_public__amenities","file_name":"amenities.view","topic_file_name":"amenities.topic","label":"Amenities","description":"Public household amenities records with cable-status context."},
+    {"table_stable_id":"residential_data_large:table:service_types","view_name":"residential_data_large_public__service_types","file_name":"service_types.view","topic_file_name":"service_types.topic","label":"Service Types","description":"Public household service records with domestic-help and social-support context."},
+    {"table_stable_id":"residential_data_large:table:transportation_assets","view_name":"residential_data_large_public__transportation_assets","file_name":"transportation_assets.view","topic_file_name":"transportation_assets.topic","label":"Transportation Assets","description":"Public household transportation asset records with vehicle context."}
+  ],
+  "physical_fields": [
+    {"schema_stable_id":"residential_data_large:structured-leaf:households:socioeconomic:k:Tenure_Type","name":"tenure_status","label":"Tenure Status","sql":"${socioeconomic} ->> 'Tenure_Type'","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"residential_data_large:structured-leaf:households:socioeconomic:k:Income_Bracket","name":"income_bracket","label":"Income Bracket","sql":"${socioeconomic} ->> 'Income_Bracket'","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"residential_data_large:column:households:residentcount","name":"resident_count","label":"Resident Count"},
+    {"schema_stable_id":"residential_data_large:column:households:loczone","name":"zone_identifier","label":"Zone Identifier"},
+    {"schema_stable_id":"residential_data_large:column:infrastructure:wateraccess","name":"water_access","label":"Water Access"},
+    {"schema_stable_id":"residential_data_large:column:infrastructure:roadsurface","name":"road_surface","label":"Road Surface"},
+    {"schema_stable_id":"residential_data_large:column:infrastructure:parkavail","name":"parking_availability","label":"Parking Availability"},
+    {"schema_stable_id":"residential_data_large:structured-leaf:properties:dwelling_specs:k:Dwelling_Class","name":"dwelling_type","label":"Dwelling Type","sql":"${dwelling_specs} ->> 'Dwelling_Class'","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"residential_data_large:column:amenities:cablestatus","name":"cable_status","label":"Cable Status"},
+    {"schema_stable_id":"residential_data_large:column:service_types:domestichelp","name":"domestic_help","label":"Domestic Help"},
+    {"schema_stable_id":"residential_data_large:column:service_types:socsupport","name":"social_support","label":"Social Support"},
+    {"schema_stable_id":"residential_data_large:structured-leaf:transportation_assets:vehicleinventory:k:Newest_Year","name":"newest_vehicle_year","label":"Newest Vehicle Year","sql":"${vehicleinventory} ->> 'Newest_Year'","omni_parser_mode":"do_not_parse"},
+    {"schema_stable_id":"residential_data_large:column:transportation_assets:vehicleinventory","name":"vehicle_type_distribution","label":"Vehicle Type Distribution"}
+  ],
+  "derived_fields": []
+}

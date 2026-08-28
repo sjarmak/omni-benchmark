@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__stars
+label: Host Stars
+description: Host-star records with public stellar distance, structure, and derived star-system semantics.
+fields:
+- planets_data_large_public__stars.*
+joins: {}
+ai_context: Use the modeled business fields stellar_distance_parsec, companion_count, apparent_magnitude, stellar_temperature_k, stellar_mass_solar, stellar_radius_solar, distance_light_years, stellar_density, gravitational_parameter, multi_planetary_system, stellar_luminosity, habitable_zone_inner_boundary, habitable_zone_outer_boundary rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,560 @@
+{
+  "database": "virtual_idol_large",
+  "files": [
+    {
+      "file": "virtual_idol_large.public__interactions.view",
+      "sha256": "904e919445e717d11cef7abe805550c0e08ff45ca09d9df9da5492aa8df980a2",
+      "size_bytes": 2488
+    },
+    {
+      "file": "interactions_semantics.topic",
+      "sha256": "f53d6272759edbcb1e66fd2e6e5fe44f1d61208067c74866e7adce9301904c23",
+      "size_bytes": 552
+    },
+    {
+      "file": "virtual_idol_large.public__socialcommunity.view",
+      "sha256": "48594e4ccfd3f0bb8b3a384256bf454cfa368a478ce5a14c8733583415b61693",
+      "size_bytes": 3140
+    },
+    {
+      "file": "socialcommunity_semantics.topic",
+      "sha256": "121d832da6430fc995a8a343fdd6c95ed161a5001960ced4ea3a6278080155af",
+      "size_bytes": 642
+    },
+    {
+      "file": "virtual_idol_large.public__eventsandclub.view",
+      "sha256": "93c6b0c4e0093807694b65ecacc5fcced3fb17226bfe31c44ab9e930a83ec9f4",
+      "size_bytes": 913
+    },
+    {
+      "file": "eventsandclub_semantics.topic",
+      "sha256": "1abf0b67769c0b381f08607b528251f03822d1a4660392af85dd29fd8833cace",
+      "size_bytes": 434
+    },
+    {
+      "file": "virtual_idol_large.public__preferencesandsettings.view",
+      "sha256": "f356b3f290d4295750f86fb4f52e4ec6f2777a5357aaa686d9d85ba2a1b3a5d6",
+      "size_bytes": 1257
+    },
+    {
+      "file": "preferencesandsettings_semantics.topic",
+      "sha256": "2d5cf7ad28785a681423fe22f36f05777432df144d1aeea598368ca86dcb18a0",
+      "size_bytes": 487
+    },
+    {
+      "file": "virtual_idol_large.public__fans.view",
+      "sha256": "58c860a76a50073b4aeacb1023fc28f49e337c43c1064744447f6949e68c6520",
+      "size_bytes": 2514
+    },
+    {
+      "file": "fans_semantics.topic",
+      "sha256": "da47048504528da4ecc90c538ecdfe0307a7ac749da432cc8846b1a2682a00d7",
+      "size_bytes": 438
+    },
+    {
+      "file": "virtual_idol_large.public__supportandfeedback.view",
+      "sha256": "ac531d72249b5ab4e541a2a392d94c087f6938b4f7e82035832f21335be26a27",
+      "size_bytes": 1195
+    },
+    {
+      "file": "supportandfeedback_semantics.topic",
+      "sha256": "cb92f7a8e6c993fd90f945f07a9fc6b19f8a7b249148e8d28f473c6a7e6ce462",
+      "size_bytes": 450
+    },
+    {
+      "file": "virtual_idol_large.public__retentionandinfluence.view",
+      "sha256": "6e0a3e28132b9c294fcceb29c345b45b17bc31676ca903ba257b778f589c0c4c",
+      "size_bytes": 1163
+    },
+    {
+      "file": "retentionandinfluence_semantics.topic",
+      "sha256": "5fd5101d638aa734c4c495c7316789924aa0513c2f1dc25287437bf3d7b48424",
+      "size_bytes": 464
+    },
+    {
+      "file": "virtual_idol_large.public__commerceandcollection.view",
+      "sha256": "c7006e257f18b547fce17da50195cf3c30421c8bf5c414c4a936830a61c24310",
+      "size_bytes": 1166
+    },
+    {
+      "file": "commerceandcollection_semantics.topic",
+      "sha256": "f62cb1de4de9ede75cac7277e531a3bb3b199bb78143ffb554c4858a3490f4c8",
+      "size_bytes": 454
+    },
+    {
+      "file": "virtual_idol_large.public__virtualidols.view",
+      "sha256": "1322ef4fbe07a5a1818800f27060a458e1b8dbed419921171e24779aab8ec082",
+      "size_bytes": 572
+    },
+    {
+      "file": "virtualidols_semantics.topic",
+      "sha256": "4716ee66ea4cf6e9b86294d217548dd05d09fcd46cc08233c4baf2fa8155e042",
+      "size_bytes": 353
+    },
+    {
+      "file": "virtual_idol_large.public__moderationandcompliance.view",
+      "sha256": "2f44fa93ea89069a351895c95338c407bc0cb6b2d03e6f4462c817c7488b2568",
+      "size_bytes": 556
+    },
+    {
+      "file": "moderationandcompliance_semantics.topic",
+      "sha256": "8b75747838323b066dc455304a21f84a865ca8b818bbe4c8ef85d27b2b2fd7ff",
+      "size_bytes": 395
+    },
+    {
+      "file": "virtual_idol_large.public__membershipandspending.view",
+      "sha256": "50c4e8edb8142604205411e18d2b92c9b0b0470f9b65dca8367a6a0cd42422e4",
+      "size_bytes": 485
+    },
+    {
+      "file": "membershipandspending_semantics.topic",
+      "sha256": "5e096040b6976f4d4c05618183bf279055eacc7f5b63c7fcf89b4ebdebffa528",
+      "size_bytes": 396
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:0",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "fan_monetization_index",
+      "table_stable_id": "virtual_idol_large:table:interactions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:1",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "content_consumption_index",
+      "table_stable_id": "virtual_idol_large:table:interactions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:10",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "viral_potential_score",
+      "table_stable_id": "virtual_idol_large:table:retentionandinfluence"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:11",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "event_participation_score",
+      "table_stable_id": "virtual_idol_large:table:eventsandclub"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "platform_stickiness_score",
+      "table_stable_id": "virtual_idol_large:table:preferencesandsettings"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:13",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "loyalty_progression_rate",
+      "table_stable_id": "virtual_idol_large:table:fans"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:14",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "social_capital_score",
+      "table_stable_id": "virtual_idol_large:table:socialcommunity"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:15",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "collection_rate",
+      "table_stable_id": "virtual_idol_large:table:commerceandcollection"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:16",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "fan_age",
+      "table_stable_id": "virtual_idol_large:table:fans"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:17",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "nps_score",
+      "table_stable_id": "virtual_idol_large:table:supportandfeedback"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:18",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "membership_type",
+      "table_stable_id": "virtual_idol_large:table:membershipandspending"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:2",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "chattiness_score",
+      "table_stable_id": "virtual_idol_large:table:interactions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:35",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "fan_status",
+      "table_stable_id": "virtual_idol_large:table:fans"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:36",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "interaction_tone",
+      "table_stable_id": "virtual_idol_large:table:interactions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:37",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "community_contribution_level",
+      "table_stable_id": "virtual_idol_large:table:socialcommunity"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:39",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "gift_frequency",
+      "table_stable_id": "virtual_idol_large:table:interactions"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:40",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "idol_type",
+      "table_stable_id": "virtual_idol_large:table:virtualidols"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:41",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "churn_risk_flag",
+      "table_stable_id": "virtual_idol_large:table:retentionandinfluence"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:43",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "community_role",
+      "table_stable_id": "virtual_idol_large:table:socialcommunity"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:45",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "moderation_status",
+      "table_stable_id": "virtual_idol_large:table:moderationandcompliance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:46",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "privacy_setting",
+      "table_stable_id": "virtual_idol_large:table:preferencesandsettings"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:47",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "trade_activity_level",
+      "table_stable_id": "virtual_idol_large:table:commerceandcollection"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:48",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "language_preference",
+      "table_stable_id": "virtual_idol_large:table:fans"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:49",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "occupation_path",
+      "table_stable_id": "virtual_idol_large:table:fans"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:5",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "follower_to_following_ratio",
+      "table_stable_id": "virtual_idol_large:table:socialcommunity"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:6",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "content_creator_score",
+      "table_stable_id": "virtual_idol_large:table:socialcommunity"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "virtual_idol_large:hkb:9",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "support_load_score",
+      "table_stable_id": "virtual_idol_large:table:supportandfeedback"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "c64b38b87b5d2a09c117aa1e63e97a4b05d3c1d7890b9c83db5f1f73d736647b"
+    },
+    "hkb_ir": {
+      "sha256": "eec485cc2f2b8c3f0509ef7aae5bfdda3bc859fd9789a45254bbefda5ca9a179"
+    },
+    "mapping": {
+      "sha256": "f3b40f2b97b6b3a1f017172be0b979d7c7373a5010ba159fc27c11e0efddb3cf"
+    },
+    "mapping_manifest": {
+      "sha256": "537ba41eb01d21f9ac0e3354ee239f7a7d3dd671ac4c40cafa81dd2b71f7c7b2"
+    },
+    "schema_ir": {
+      "sha256": "6ea1e8b78f28414779b7c0cc423a82842658a12910c5c4a97da93dd7d7a66173"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

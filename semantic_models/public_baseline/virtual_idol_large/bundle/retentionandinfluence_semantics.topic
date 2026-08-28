@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__retentionandinfluence
+label: Retention and Influence
+description: Retention records with row-level viral-impact semantics.
+fields:
+- virtual_idol_large_public__retentionandinfluence.*
+joins: {}
+ai_context: Use the modeled business fields churn_risk_flag, viral_content_pieces, trend_participation_count, viral_potential_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

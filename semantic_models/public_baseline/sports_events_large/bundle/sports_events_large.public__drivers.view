@@ -1,0 +1,12 @@
+label: Drivers
+description: Driver records.
+catalog: sports_events_large
+schema: public
+table_name: drivers
+dimensions:
+  driver_identity:
+    description: JSONB column. Consolidates driver’s identity, nationality, and references.
+    label: Driver identity
+    sql: '-- DO NOT PARSE
+
+      ${driver_identity}'

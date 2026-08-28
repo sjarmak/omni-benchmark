@@ -1,0 +1,570 @@
+{
+  "database": "planets_data_large",
+  "files": [
+    {
+      "file": "planets_data_large.public__stars.view",
+      "sha256": "ed8172dc8e9348be80e5ac87f740aa4c4e34c0286ced19a723c1ed8cbd1daf94",
+      "size_bytes": 5678
+    },
+    {
+      "file": "stars_semantics.topic",
+      "sha256": "a2b3bc1844b54ff52083652bdb7b3f67fd733aba3d11929ccd95e0a75903742b",
+      "size_bytes": 664
+    },
+    {
+      "file": "planets_data_large.public__physical_properties.view",
+      "sha256": "e18db045af7335c5696cb54573afb77050786ab08cce9e96573fa7414798ce60",
+      "size_bytes": 4724
+    },
+    {
+      "file": "physical_properties_semantics.topic",
+      "sha256": "3ac22e3ba9e3020246fe1a15eb988d469b4d6b86e1339894539b654d17d12dfb",
+      "size_bytes": 669
+    },
+    {
+      "file": "planets_data_large.public__orbital_characteristics.view",
+      "sha256": "d0573a416fe9562dfb79daf4bc67fa851dbe68ca194a9215ab95f72b8bccdfc4",
+      "size_bytes": 3163
+    },
+    {
+      "file": "orbital_characteristics_semantics.topic",
+      "sha256": "a584714e63520a51329036fb9ed0d7bcf326784ef45aa3e2413d9208de111077",
+      "size_bytes": 636
+    },
+    {
+      "file": "planets_data_large.public__planets.view",
+      "sha256": "1acbd551646d08fb67bd991bf9ff51c53b9728330168596ad4333501955162e6",
+      "size_bytes": 1870
+    },
+    {
+      "file": "planets_semantics.topic",
+      "sha256": "f372cea8435c744a15a502885eb14a575188b56bd583a442040668ac075f77e3",
+      "size_bytes": 417
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:0",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "distance_light_years",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:1",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "planet_mass_earth",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:10",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "planet_escape_velocity",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "stellar_density",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:15",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "kepler_third_law_stellar_mass",
+      "table_stable_id": "planets_data_large:table:orbital_characteristics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:16",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "mass_radius_relationship",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:19",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "gravitational_parameter",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:2",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "planet_radius_earth",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "gas_giant_planet",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "rocky_planet",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:22",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "short_period_planet",
+      "table_stable_id": "planets_data_large:table:orbital_characteristics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:24",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "super_earth",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:27",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "high_eccentricity_planet",
+      "table_stable_id": "planets_data_large:table:orbital_characteristics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "multi_planetary_system",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:3",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "stellar_luminosity",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:31",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "retrograde_orbit",
+      "table_stable_id": "planets_data_large:table:orbital_characteristics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:32",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "inflated_gas_giant",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:36",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "discovery_via_transit_method",
+      "table_stable_id": "planets_data_large:table:planets"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:37",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "discovery_via_radial_velocity",
+      "table_stable_id": "planets_data_large:table:planets"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:4",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "planet_surface_gravity",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:40",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "stellar_distance_parsec",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:41",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "apparent_magnitude",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:42",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "stellar_temperature_k",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:43",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "stellar_mass_solar",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:44",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "stellar_radius_solar",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:45",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "orbital_period_days",
+      "table_stable_id": "planets_data_large:table:orbital_characteristics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:46",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "orbital_eccentricity",
+      "table_stable_id": "planets_data_large:table:orbital_characteristics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:47",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "planet_mass_jupiter",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:48",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "planet_radius_jupiter",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:49",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "semantic_name": "planet_density_g_cm3",
+      "table_stable_id": "planets_data_large:table:physical_properties"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:6",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "habitable_zone_inner_boundary",
+      "table_stable_id": "planets_data_large:table:stars"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "planets_data_large:hkb:7",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "habitable_zone_outer_boundary",
+      "table_stable_id": "planets_data_large:table:stars"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "16dbd0f9ccb525cee4106c164d04d814f179b1c6413e20cd6a4b983be9dd09dc"
+    },
+    "hkb_ir": {
+      "sha256": "ceee5a74a9eae9c09e587ddf151bc657aa694e113386756c20affe5091538963"
+    },
+    "mapping": {
+      "sha256": "cf79d260c7ccbac80c881c091d234204398696897ed81326d76c2f83b74f509c"
+    },
+    "mapping_manifest": {
+      "sha256": "589121812aee5ba331e90cea2c56a1fb3229ca88395cef194454d2a754ebf524"
+    },
+    "schema_ir": {
+      "sha256": "e74ec7a196263b00642f032b6bb2be400f242f7772c597ba44d8fac039cd31f2"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

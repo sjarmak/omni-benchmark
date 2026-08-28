@@ -1,0 +1,172 @@
+{
+  "format_version": 1,
+  "database": "mental_healths_large",
+  "catalog": "mental_healths_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "mental_healths_large:table:assessmentsymptomsandrisk",
+      "view_name": "mental_healths_large_public__assessmentsymptomsandrisk",
+      "file_name": "mental_healths_large.public__assessmentsymptomsandrisk.view",
+      "topic_file_name": "assessmentsymptomsandrisk_semantics.topic",
+      "label": "Symptom and Risk Assessments",
+      "description": "Assessment rows with symptom scores and suicide-risk semantics."
+    },
+    {
+      "table_stable_id": "mental_healths_large:table:treatmentoutcomes",
+      "view_name": "mental_healths_large_public__treatmentoutcomes",
+      "file_name": "mental_healths_large.public__treatmentoutcomes.view",
+      "topic_file_name": "treatmentoutcomes_semantics.topic",
+      "label": "Treatment Outcomes",
+      "description": "Treatment-outcome rows with response and adherence semantics."
+    },
+    {
+      "table_stable_id": "mental_healths_large:table:treatmentbasics",
+      "view_name": "mental_healths_large_public__treatmentbasics",
+      "file_name": "mental_healths_large.public__treatmentbasics.view",
+      "topic_file_name": "treatmentbasics_semantics.topic",
+      "label": "Treatment Basics",
+      "description": "Treatment rows with therapy engagement and crisis-intervention context."
+    },
+    {
+      "table_stable_id": "mental_healths_large:table:facilities",
+      "view_name": "mental_healths_large_public__facilities",
+      "file_name": "mental_healths_large.public__facilities.view",
+      "topic_file_name": "facilities_semantics.topic",
+      "label": "Facilities",
+      "description": "Facility rows with community-resource context."
+    },
+    {
+      "table_stable_id": "mental_healths_large:table:assessmentsocialanddiagnosis",
+      "view_name": "mental_healths_large_public__assessmentsocialanddiagnosis",
+      "file_name": "mental_healths_large.public__assessmentsocialanddiagnosis.view",
+      "topic_file_name": "assessmentsocialanddiagnosis_semantics.topic",
+      "label": "Social and Diagnosis Assessments",
+      "description": "Assessment rows with diagnosis, recovery, functioning, and hospitalization semantics."
+    },
+    {
+      "table_stable_id": "mental_healths_large:table:encounters",
+      "view_name": "mental_healths_large_public__encounters",
+      "file_name": "mental_healths_large.public__encounters.view",
+      "topic_file_name": "encounters_semantics.topic",
+      "label": "Encounters",
+      "description": "Encounter rows with missed-appointment context."
+    }
+  ],
+  "physical_fields": [
+    {
+      "schema_stable_id": "mental_healths_large:column:assessmentsymptomsandrisk:suic_risk",
+      "name": "suicide_risk",
+      "label": "Suicide Risk"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:assessmentsymptomsandrisk:phq9_scr",
+      "name": "phq9_score",
+      "label": "PHQ-9 Score"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:assessmentsymptomsandrisk:gad7_scr",
+      "name": "gad7_score",
+      "label": "GAD-7 Score"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:structured-leaf:treatmentoutcomes:txprogmet:k:Tx_Resp",
+      "name": "treatment_response",
+      "label": "Treatment Response",
+      "sql": "${txprogmet} ->> 'Tx_Resp'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:structured-leaf:treatmentoutcomes:txprogmet:k:Tx_Adh",
+      "name": "treatment_adherence",
+      "label": "Treatment Adherence",
+      "sql": "${txprogmet} ->> 'Tx_Adh'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:treatmentbasics:th_eng",
+      "name": "therapy_engagement",
+      "label": "Therapy Engagement"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:treatmentbasics:crisis_int",
+      "name": "crisis_intervention_count",
+      "label": "Crisis Intervention Count"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:facilities:com_res",
+      "name": "community_resources",
+      "label": "Community Resources"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:func_imp",
+      "name": "functional_impairment",
+      "label": "Functional Impairment"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:structured-leaf:assessmentsocialanddiagnosis:funcassess:k:Soc_Sup",
+      "name": "social_support_level",
+      "label": "Social Support Level",
+      "sql": "${funcassess} ->> 'Soc_Sup'",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:prev_hosp",
+      "name": "previous_hospitalizations",
+      "label": "Previous Hospitalizations"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:dx_dur_m",
+      "name": "diagnosis_duration_months",
+      "label": "Diagnosis Duration (Months)"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:rec_status",
+      "name": "recovery_status",
+      "label": "Recovery Status"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:structured-leaf:assessmentsocialanddiagnosis:funcassess:k:Res_Scr",
+      "name": "resilience_score",
+      "label": "Resilience Score",
+      "sql": "CAST(${funcassess} ->> 'Res_Scr' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:assessmentsocialanddiagnosis:prim_dx",
+      "name": "primary_diagnosis",
+      "label": "Primary Diagnosis"
+    },
+    {
+      "schema_stable_id": "mental_healths_large:column:encounters:miss_appt",
+      "name": "missed_appointment_count",
+      "label": "Missed Appointment Count"
+    }
+  ],
+  "derived_fields": [
+    {
+      "hkb_stable_id": "mental_healths_large:hkb:10",
+      "sql": "${suicide_risk} = 'High' OR ${phq9_score} > 15 OR ${gad7_score} > 15"
+    },
+    {
+      "hkb_stable_id": "mental_healths_large:hkb:11",
+      "sql": "${treatment_response} = 'Poor' AND ${treatment_adherence} IN ('Medium', 'High')"
+    },
+    {
+      "hkb_stable_id": "mental_healths_large:hkb:49",
+      "sql": "(${phq9_score} > 19 OR ${gad7_score} > 14) AND ${suicide_risk} = 'High'"
+    },
+    {
+      "hkb_stable_id": "mental_healths_large:hkb:66",
+      "sql": "CASE WHEN ${diagnosis_duration_months} > 0 THEN ${previous_hospitalizations} / (${diagnosis_duration_months} / 12.0) END"
+    },
+    {
+      "hkb_stable_id": "mental_healths_large:hkb:75",
+      "sql": "${recovery_status} = 'Stable' AND ${diagnosis_duration_months} > 72 AND ${resilience_score} >= 8"
+    },
+    {
+      "hkb_stable_id": "mental_healths_large:hkb:76",
+      "sql": "${primary_diagnosis} = 'Bipolar' AND ${diagnosis_duration_months} >= 120 AND ${previous_hospitalizations} > 3"
+    }
+  ]
+}

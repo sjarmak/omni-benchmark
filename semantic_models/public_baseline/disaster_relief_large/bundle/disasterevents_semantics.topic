@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__disasterevents
+label: Disaster Events
+description: Disaster-event records with row-level population impact, infrastructure damage, severity, and damage-category semantics.
+fields:
+- disaster_relief_large_public__disasterevents.*
+joins: {}
+ai_context: Use the modeled business fields affected_population, displaced_population, casualties, injured_population, missing_population, infrastructure_damage_pct, power_outage_pct, water_damage_pct, hazard_level, damage_report, disaster_mortality_rate, population_displacement_rate, infrastructure_damage_index, population_impact_score, overall_disaster_severity_index, is_major_disaster, is_catastrophic_disaster rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

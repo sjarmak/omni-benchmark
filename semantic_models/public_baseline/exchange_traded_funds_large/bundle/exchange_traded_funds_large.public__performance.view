@@ -1,0 +1,47 @@
+label: Fund Performance
+description: Fund performance records with row-level price-range, historical consistency, concentration, and preservation semantics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: performance
+dimensions:
+  high_52_week:
+    description: 'DECIMAL. Highest trading price reached in the past 52 weeks. Example: 30.6, 62.6, 52.17. Contains NULL when insufficient trading history exists for 52-week calculation.'
+    label: 52-Week High
+  low_52_week:
+    description: 'DECIMAL. Lowest trading price reached in the past 52 weeks. Example: 30.6, 89.5, 24.59. Contains NULL when insufficient trading history exists for 52-week calculation.'
+    label: 52-Week Low
+  current_price_minus_52_week_low:
+    description: 'DECIMAL. Absolute price difference between current price and 52-week low. Positive values indicate current price is above the low. Example: 2.9145, 8.22, 11.7508. Contains NULL when 52-week low data is not available or calculation cannot be performed.'
+    label: Current Price Minus 52-Week Low
+  positive_return_years:
+    description: 'INTEGER. Count of calendar years with positive total returns since fund inception. Used to assess historical consistency. Example: 13, 18, 4. Contains NULL when historical annual return data is incomplete or fund is too new.'
+    label: Positive Return Years
+  negative_return_years:
+    description: 'INTEGER. Count of calendar years with negative total returns since fund inception. Used to assess historical downside frequency. Example: 13, 2, 9. Contains NULL when historical annual return data is incomplete or fund is too new.'
+    label: Negative Return Years
+  largest_holding_weight:
+    description: Percentage (0-1) of total assets represented by the single largest holding in the fund. Contains  NULL when holdings data is not available or not disclosed.
+    label: Largest Holding Weight
+    sql: '-- DO NOT PARSE
+
+      CAST(${histstats} ->> ''Top_Weight'' AS DOUBLE PRECISION)'
+  is_high_conviction_portfolio:
+    label: High-Conviction Portfolio
+    description: A portfolio where the manager allocates a significant portion of assets to a small number of their best ideas.
+    sql: ${largest_holding_weight} > 0.08
+    ai_context: Use this modeled field for High-Conviction Portfolio; do not reconstruct its formula.
+  price_position_52_week_pct:
+    label: Price Position in 52-Week Range
+    description: Calculates the current price's position within its 52-week high-low range as a percentage.
+    sql: CASE WHEN ${high_52_week} <> ${low_52_week} THEN ${current_price_minus_52_week_low} / NULLIF(${high_52_week} - ${low_52_week}, 0) * 100.0 END
+    ai_context: Use this modeled field for Price Position in 52-Week Range; do not reconstruct its formula.
+  positive_return_consistency_pct:
+    label: Positive Return Consistency
+    description: Calculates the percentage of a fund's historical years that have yielded positive returns.
+    sql: CASE WHEN ${positive_return_years} + ${negative_return_years} <> 0 THEN ${positive_return_years} / NULLIF(${positive_return_years} + ${negative_return_years}, 0) * 100.0 END
+    ai_context: Use this modeled field for Positive Return Consistency; do not reconstruct its formula.
+  capital_preservation_index:
+    label: Capital Preservation Index
+    description: Scores a fund on its ability to protect capital by combining its history of avoiding down years with its ability to stay above its 52-week lows.
+    sql: CASE WHEN 1.0 + ${negative_return_years} <> 0 AND ${low_52_week} <> 0 THEN (1.0 / (1.0 + ${negative_return_years})) * (1.0 + ${current_price_minus_52_week_low} / ${low_52_week}) END
+    ai_context: Use this modeled field for Capital Preservation Index; do not reconstruct its formula.

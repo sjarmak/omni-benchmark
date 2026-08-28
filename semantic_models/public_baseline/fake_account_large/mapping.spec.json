@@ -1,0 +1,2049 @@
+{
+  "database": "fake_account_large",
+  "schema_version": 1,
+  "schema_aliases": {
+    "NM.T": "fake_account_large:table:network_metrics",
+    "NM.follower_growth": "fake_account_large:column:network_metrics:FollGrow",
+    "NM.following_growth": "fake_account_large:column:network_metrics:FingGrow",
+    "RM.T": "fake_account_large:table:risk_and_moderation",
+    "RM.risk": "fake_account_large:structured-leaf:risk_and_moderation:risk_profile:k:risk_scores/k:risk_value",
+    "RM.trust": "fake_account_large:structured-leaf:risk_and_moderation:risk_profile:k:risk_scores/k:trust_score",
+    "RM.impact": "fake_account_large:structured-leaf:risk_and_moderation:risk_profile:k:risk_scores/k:impact_score",
+    "CA.T": "fake_account_large:table:cluster_analysis",
+    "CA.coordination": "fake_account_large:column:cluster_analysis:CoordScore",
+    "MON.T": "fake_account_large:table:monitoring",
+    "MON.detection_confidence": "fake_account_large:column:monitoring:DetectConf",
+    "CO.T": "fake_account_large:table:content_activity",
+    "CO.uniqueness": "fake_account_large:structured-leaf:content_activity:content_metrics:k:content_quality/k:content_uniqueness",
+    "IM.T": "fake_account_large:table:interaction_metrics",
+    "IM.conversation_naturalness": "fake_account_large:column:interaction_metrics:ConvNat",
+    "SS.T": "fake_account_large:table:security_sessions",
+    "SS.ip_reputation": "fake_account_large:structured-leaf:security_sessions:session_telemetry:k:ip_reputation/k:ip_reputation_score"
+  },
+  "records": [
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 0,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Session count and account age are stored on different account-grain tables; a target and one-to-one relationship contract are required.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 1,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The three component scores are distributed across risk, content, and interaction tables.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "NM.follower_growth",
+          "confidence": "exact",
+          "role": "follower_growth_rate"
+        },
+        {
+          "alias": "NM.following_growth",
+          "confidence": "exact",
+          "role": "following_growth_rate"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 2,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "Both exact growth-rate inputs are scalar columns on the same network-metrics row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "network_growth_velocity",
+      "target_alias": "NM.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 3,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Bot and automated-behavior scores share one row, but conversation naturalness is on another table.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RM.risk",
+          "confidence": "exact",
+          "role": "risk_value"
+        },
+        {
+          "alias": "RM.trust",
+          "confidence": "exact",
+          "role": "trust_value"
+        },
+        {
+          "alias": "RM.impact",
+          "confidence": "exact",
+          "role": "impact_value"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 4,
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "notes": "All three exact scalar inputs are leaves of the same risk-profile row.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "security_risk_score",
+      "target_alias": "RM.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 5,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "No exact physical field for profile completeness is declared in the public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 6,
+      "loss_codes": [
+        "source_field_missing",
+        "vocabulary_conflict"
+      ],
+      "notes": "The schema has a network influence score but no exact network influence centrality source; the later NIC definition cannot be assumed here.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 7,
+      "loss_codes": [
+        "source_type_requires_parsing"
+      ],
+      "notes": "VPN usage is unit-bearing text and the public schema does not declare a complete parsing contract.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 8,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Content uniqueness and media reuse are on content rows while text uniqueness is on interaction rows.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 9,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "The schema exposes an abuse count but does not identify it as the required abuse-report count.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 10,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "cardinality_unknown"
+      ],
+      "notes": "The definition requires existence of an active critical security detection in addition to the risk score.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 11,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Average BBI over all accounts in a cluster requires membership relationships and aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 12,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "date_boundary_semantics_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Absence of detections during a 180-day window requires a temporal relationship and zero-match semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 13,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "CMS and posting frequency require content/account relationship semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 14,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Linked-account counting and coordinated score evaluation require group membership and aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": [
+          3
+        ]
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 15,
+      "loss_codes": [
+        "dependency_redundancy",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The declared BBI dependency is unused by the Dormant status definition and cannot be preserved in a same-table compilation.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 16,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_type_requires_parsing"
+      ],
+      "notes": "This definition depends on unsupported TEI and an undocumented VPN percentage parse.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 17,
+      "loss_codes": [
+        "vocabulary_conflict"
+      ],
+      "notes": "The candidate EngAuth field is publicly described as engagement authority, not engagement authenticity.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 18,
+      "loss_codes": [
+        "source_field_missing",
+        "categorical_mapping_underspecified"
+      ],
+      "notes": "No exact suspicious-history count is declared, and no conversion from available history JSON is specified.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 19,
+      "loss_codes": [
+        "vocabulary_conflict"
+      ],
+      "notes": "Amplifier is not among the declared cluster-role values.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "MON.detection_confidence",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 20,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public threshold illustration enriches the exact detection-confidence field only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "MON.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CA.coordination",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 21,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public threshold illustration enriches the exact coordination-score field only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CA.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 22,
+      "loss_codes": [
+        "vocabulary_conflict"
+      ],
+      "notes": "The only similarly named physical field is described as engagement authority rather than authenticity.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CO.uniqueness",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 23,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public value illustration enriches the exact content-uniqueness leaf only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CO.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "IM.conversation_naturalness",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 24,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public value illustration enriches the conversation-nature score field only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "IM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SS.ip_reputation",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 25,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The trusted-IP wording identifies the exact IP-reputation score leaf.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "SS.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 26,
+      "loss_codes": [
+        "source_field_missing"
+      ],
+      "notes": "No exact profile-completeness degree is declared in the public schema.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RM.trust",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 27,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public value illustration enriches the exact trust-value leaf only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RM.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RM.impact",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 28,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public value illustration enriches the exact impact-value leaf only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "RM.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 29,
+      "loss_codes": [
+        "vocabulary_conflict"
+      ],
+      "notes": "The HKB declares a 0-to-100 domain while the exact bot-likelihood leaf is illustrated on a 0-to-1 scale.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 30,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "SRS and login-country count are on different account-related tables.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 31,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "BBI and coordinated activity are defined at different row grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 32,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "PCI and content-authenticity CAS cannot be compiled on one public table.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 33,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "BBI, coordinated activity, and cluster size span behavioral and cluster grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 34,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "CMS and content-authenticity CAS do not share one exact target table.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 35,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "The dependent BBI, TEI, and CAS definitions span multiple grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 36,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "PCI, NGV, and CBR cannot be placed on one same-grain public row.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 37,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "CMS, moderation priority, and network influence span content, risk, and cluster grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 38,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "TEI, PCI, and SRS do not share one physical target table.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 39,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "BBI, activity frequency, and network growth span behavioral, session/account, and network grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [
+          11
+        ],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 40,
+      "loss_codes": [
+        "dependency_omission",
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "The prose additionally invokes Bot Network without declaring H11, and requires cluster/account aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 41,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "ETS and CIS inherit multiple-table inputs and cannot be evaluated on one row.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 42,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "cardinality_unknown"
+      ],
+      "notes": "The VPN-abuser detection existence condition requires relationship and zero-match behavior.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 43,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "cardinality_unknown"
+      ],
+      "notes": "Bot-network membership must be related to account-level NTS.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 44,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Testing CMS for every member of a sockpuppet network requires membership aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 45,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Average ABS and all-member Content Farm conditions require cluster aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 46,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "cardinality_unknown"
+      ],
+      "notes": "The definition combines account risk with sockpuppet-network membership.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 47,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Average BAS and Bot Network existence require cluster membership aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 48,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "The all-accounts CIS condition requires membership and aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 49,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Network-level and account/session-level dependent definitions must be related explicitly.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 50,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Observed-versus-expected hourly vectors require temporal matching and 24-hour aggregation not represented by a scalar row.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 51,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Connection quality and interaction diversity are account-network fields, while network influence is cluster-level.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 52,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Pairwise Pearson correlations over linked accounts require relationships, pairing, and aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 53,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Coefficient of variation and rate of change require a reputation time series and window semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 54,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Entropy, burstiness, and periodicity require post-time aggregation over a declared window.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 55,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "TPDS, RVI, and behavior-pattern deviation do not share one scalar target row.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 56,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Unique account-pair synchronization and cluster averaging require pair generation and aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 57,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "CIS, NIC, and reshare count span multiple semantic grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 58,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "TEI, BCS, and authentication anomaly count do not share one exact table.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 59,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "CPRI, MACI, and platform-link count require cross-table account relationships.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 60,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "cardinality_unknown"
+      ],
+      "notes": "The operation definition combines network scores with ring existence.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 61,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "cardinality_unknown"
+      ],
+      "notes": "The negated Trusted Account condition requires relationship and absence semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 62,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "categorical_match_semantics_unspecified"
+      ],
+      "notes": "All-account similarity of MACI patterns requires group aggregation and a similarity rule.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 63,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "Average APS and risk-account existence require cluster aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 64,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "cardinality_unknown"
+      ],
+      "notes": "Account scores must be related to membership in an influence operation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 65,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "categorical_match_semantics_unspecified"
+      ],
+      "notes": "All-member RVI and similar-pattern conditions require membership aggregation and a similarity definition.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 66,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "categorical_match_semantics_unspecified"
+      ],
+      "notes": "All-account BCS-pattern similarity requires cluster aggregation and a similarity rule.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 67,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Cross-platform threat scores and synchronized-cluster membership require group relationships.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 68,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "cardinality_unknown"
+      ],
+      "notes": "Campaign membership, hub existence, and NSI require network relationships.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 69,
+      "loss_codes": [
+        "date_boundary_semantics_unspecified",
+        "aggregation_unspecified"
+      ],
+      "notes": "Persistence over 30 days requires a temporal series, window, and continuity rule.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 70,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Distribution quartiles require a population, ranking/window operation, and tie-boundary semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 71,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Selecting the latest detection score requires a detection relationship and timestamp tie behavior.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 72,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "boundary_semantics_unverified",
+        "source_alias_uncertain"
+      ],
+      "notes": "Top-quartile abuse reports require population aggregation, and the available abuse count is not an exact abuse-report binding.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 73,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "NIC and posts per day are stored at cluster and content/account grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [
+          75,
+          76
+        ],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 74,
+      "loss_codes": [
+        "dependency_omission",
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "The prose invokes session count and total post frequency without declaring H75 and H76, and both require aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 75,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Counting session entries requires profile/account relationships and deduplication semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 76,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Summing content post frequencies requires content-to-session-to-profile-to-account relationships.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 77,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Both declared dependencies are cross-grain aggregates rather than local scalar fields.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 78,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Influence ranking requires comparison against the full account population and explicit tie semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 79,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "The category depends on distribution-derived H70 and its unresolved quartile boundaries.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 80,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown"
+      ],
+      "notes": "Associating platform identifiers with amplification-network accounts requires network membership relationships.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 81,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Distinct member counting is a group aggregation at cluster grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 82,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Maximum coordination score is an aggregation over cluster members.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 83,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown"
+      ],
+      "notes": "Producing a member-account list requires relationship traversal, aggregation, and ordering semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 84,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "Maximum detection time requires an account-to-detection relationship and temporal aggregation.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 85,
+      "loss_codes": [
+        "source_field_missing",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "No review-priority field exists on accounts, and the inactivity trigger depends on unresolved temporal aggregation.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 86,
+      "loss_codes": [
+        "date_boundary_semantics_unspecified",
+        "aggregation_unspecified"
+      ],
+      "notes": "The condition depends on aggregated last activity and current-date boundary semantics.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    }
+  ],
+  "intervention_provenance": "agent_assisted_public_modeling_inference"
+}

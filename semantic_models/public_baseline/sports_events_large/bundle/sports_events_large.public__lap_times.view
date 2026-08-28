@@ -1,0 +1,17 @@
+label: Lap Times
+description: Lap-time records with millisecond measurements.
+catalog: sports_events_large
+schema: public
+table_name: lap_times
+dimensions:
+  msec_val:
+    description: 'INTEGER. Lap time in milliseconds. Example: 103848.'
+    label: Lap time in milliseconds
+    sql: '-- DO NOT PARSE
+
+      ${msec_val}'
+  lap_time_seconds:
+    label: Lap Time in Seconds
+    description: Converts lap time measurements from milliseconds to seconds.
+    sql: ${msec_val} / 1000.0
+    ai_context: Use this modeled field for Lap Time in Seconds; do not reconstruct its formula.

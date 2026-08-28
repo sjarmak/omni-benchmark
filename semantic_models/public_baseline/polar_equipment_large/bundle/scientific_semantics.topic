@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__scientific
+label: Scientific
+description: Scientific equipment records with same-row reliability semantics.
+fields:
+- polar_equipment_large_public__scientific.*
+joins: {}
+ai_context: Use the modeled business fields measurement_accuracy_percent, calibration_status, scientific_equipment_reliability rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

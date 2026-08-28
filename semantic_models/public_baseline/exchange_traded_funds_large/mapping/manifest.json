@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 21,
+      "context_only": 8,
+      "defer_cross_grain": 51,
+      "unsupported": 9
+    },
+    "hkb_nodes": 89
+  },
+  "database": "exchange_traded_funds_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "exchange_traded_funds_large.mapping.jsonl",
+    "sha256": "4d68b6814abdfd0b500dd12f9339d344da2d079ccaa7c47772789c66933aefea"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "7244910029a24127ad54223ad4d87fcb32a969cee4a5ab8f0807cd2861b3b7aa"
+    },
+    "mapping_spec": {
+      "sha256": "1fa638211ff452688e702b2c4c90aa77e8032acbd776f4afd9f2f4a02e826915"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "fd8d425aa388ab6bbd005d59b26ae45d9be59114f97f62783043b635b67ad38e",
+      "sha256": "8bb426f29a9a23182afc96a50119571573049eb761e8686fc7b2ae9be0d30411"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

@@ -1,0 +1,21 @@
+label: Connection Security
+description: Connection-session security records with authentication and anonymity semantics.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: connection_security
+dimensions:
+  authentication_protocol:
+    description: 'TEXT. Authentication protocol used during the session. Possible values: 2FA, Basic, Multi-factor.'
+    label: Authentication Protocol
+    sql: '-- DO NOT PARSE
+
+      ${connection_security_metrics} ->> ''auth_protocol_type'''
+  anonymity_level:
+    description: 'TEXT. Level of anonymity observed. Possible values: High, Low, Medium.'
+    label: Anonymity Level
+    ai_context: 'Session Anonymity Levels: Values: High, Medium, Low.'
+  has_premium_authentication:
+    label: Premium Authentication
+    description: Sessions with multi-factor authentication or 2FA.
+    sql: ${authentication_protocol} IN ('2FA', 'Multi-factor')
+    ai_context: Use this modeled field for Premium Authentication; do not reconstruct its formula.

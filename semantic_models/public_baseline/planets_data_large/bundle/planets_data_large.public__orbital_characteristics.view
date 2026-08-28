@@ -1,0 +1,40 @@
+label: Orbital Characteristics
+description: Orbital-parameter records with public period, semi-major axis, eccentricity, inclination, and derived same-row orbital semantics.
+catalog: planets_data_large
+schema: public
+table_name: orbital_characteristics
+dimensions:
+  orbital_period_days:
+    description: Orbital period from 'pl_orbper' measured in days. REAL accommodating periods from 0.09 days (hot Jupiters) to 7,300,000 days (20,000+ years). Contains  NULL when orbital period cannot be determined from available observations.
+    label: Orbital Period (days)
+    ai_context: 'Orbital Period Value: Measured in days. ''Hot Jupiters'' can have periods of only a few days, while planets in very distant orbits can have periods of many thousands of years.'
+  semi_major_axis_au:
+    description: Semi-major axis from 'pl_orbsmax' measured in AU. REAL covering range from 0.0044 AU (ultra-hot Jupiters) to 2500 AU (wide-separation planets). Contains  NULL when orbital distance cannot be reliably calculated.
+    label: Semi-Major Axis (AU)
+  orbital_eccentricity:
+    description: Orbital eccentricity from 'pl_orbeccen' ranging from 0 (circular) to <1 (elliptical). REAL providing high precision for nearly circular orbits. Contains  NULL when eccentricity cannot be constrained from available data.
+    label: Orbital Eccentricity
+    ai_context: 'Orbital Eccentricity Value: A dimensionless value from 0 to <1. An eccentricity of 0 is a perfect circle. A value of 0.1 indicates a slightly elliptical orbit, while a value of 0.7 indicates a very elongated, comet-like orbit.'
+  orbital_inclination_deg:
+    description: Orbital inclination from 'pl_orbincl' in degrees relative to sky plane. REAL ranging from 0° (face-on) to 180° (retrograde). Contains  NULL when inclination cannot be determined (e.g., for radial velocity-only discoveries).
+    label: Orbital Inclination (deg)
+  kepler_third_law_stellar_mass:
+    label: Kepler's Third Law Verification
+    description: Uses a planet's orbital properties to calculate the mass of its host star.
+    sql: CASE WHEN ${orbital_period_days} <> 0 THEN POWER(${semi_major_axis_au}, 3.0) / POWER(${orbital_period_days} / 365.25, 2.0) END
+    ai_context: Use this modeled field for Kepler's Third Law Verification; do not reconstruct its formula.
+  short_period_planet:
+    label: Short-Period Planet
+    description: A planet that orbits its host star in a very short amount of time.
+    sql: ${orbital_period_days} < 10.0
+    ai_context: Use this modeled field for Short-Period Planet; do not reconstruct its formula.
+  high_eccentricity_planet:
+    label: High Eccentricity Planet
+    description: A planet with a highly elliptical orbit, leading to significant temperature variations.
+    sql: ${orbital_eccentricity} > 0.25
+    ai_context: Use this modeled field for High Eccentricity Planet; do not reconstruct its formula.
+  retrograde_orbit:
+    label: Retrograde Orbit
+    description: A planet that orbits its star in the opposite direction to the star's rotation.
+    sql: ${orbital_inclination_deg} > 90.0
+    ai_context: Use this modeled field for Retrograde Orbit; do not reconstruct its formula.

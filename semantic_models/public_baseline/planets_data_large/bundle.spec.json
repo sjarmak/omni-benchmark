@@ -1,0 +1,210 @@
+{
+  "format_version": 1,
+  "database": "planets_data_large",
+  "catalog": "planets_data_large",
+  "schema": "public",
+  "views": [
+    {
+      "table_stable_id": "planets_data_large:table:stars",
+      "view_name": "planets_data_large_public__stars",
+      "file_name": "planets_data_large.public__stars.view",
+      "topic_file_name": "stars_semantics.topic",
+      "label": "Host Stars",
+      "description": "Host-star records with public stellar distance, structure, and derived star-system semantics."
+    },
+    {
+      "table_stable_id": "planets_data_large:table:physical_properties",
+      "view_name": "planets_data_large_public__physical_properties",
+      "file_name": "planets_data_large.public__physical_properties.view",
+      "topic_file_name": "physical_properties_semantics.topic",
+      "label": "Planet Physical Properties",
+      "description": "Planet physical-property records with public mass, radius, density, and derived same-row planet semantics."
+    },
+    {
+      "table_stable_id": "planets_data_large:table:orbital_characteristics",
+      "view_name": "planets_data_large_public__orbital_characteristics",
+      "file_name": "planets_data_large.public__orbital_characteristics.view",
+      "topic_file_name": "orbital_characteristics_semantics.topic",
+      "label": "Orbital Characteristics",
+      "description": "Orbital-parameter records with public period, semi-major axis, eccentricity, inclination, and derived same-row orbital semantics."
+    },
+    {
+      "table_stable_id": "planets_data_large:table:planets",
+      "view_name": "planets_data_large_public__planets",
+      "file_name": "planets_data_large.public__planets.view",
+      "topic_file_name": "planets_semantics.topic",
+      "label": "Planets",
+      "description": "Planet identity records with public discovery-method semantics."
+    }
+  ],
+  "physical_fields": [
+    {
+      "schema_stable_id": "planets_data_large:column:stars:stellardist",
+      "name": "stellar_distance_parsec",
+      "label": "Stellar Distance (pc)"
+    },
+    {
+      "schema_stable_id": "planets_data_large:column:stars:compcount",
+      "name": "companion_count",
+      "label": "Confirmed Planet Count"
+    },
+    {
+      "schema_stable_id": "planets_data_large:structured-leaf:stars:stellarprops:k:photometry/k:Opt_Mag",
+      "name": "apparent_magnitude",
+      "label": "Apparent Magnitude",
+      "sql": "CAST(${stellarprops} -> 'photometry' ->> 'Opt_Mag' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "planets_data_large:structured-leaf:stars:stellarprops:k:physical/k:Temp_Value",
+      "name": "stellar_temperature_k",
+      "label": "Stellar Temperature (K)",
+      "sql": "CAST(${stellarprops} -> 'physical' ->> 'Temp_Value' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "planets_data_large:structured-leaf:stars:stellarprops:k:physical/k:Mass_Value",
+      "name": "stellar_mass_solar",
+      "label": "Stellar Mass (Solar Masses)",
+      "sql": "CAST(${stellarprops} -> 'physical' ->> 'Mass_Value' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "planets_data_large:structured-leaf:stars:stellarprops:k:physical/k:Radius_Value",
+      "name": "stellar_radius_solar",
+      "label": "Stellar Radius (Solar Radii)",
+      "sql": "CAST(${stellarprops} -> 'physical' ->> 'Radius_Value' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
+    },
+    {
+      "schema_stable_id": "planets_data_large:column:physical_properties:massjup",
+      "name": "planet_mass_jupiter",
+      "label": "Planet Mass (Jupiter Masses)"
+    },
+    {
+      "schema_stable_id": "planets_data_large:column:physical_properties:radjup",
+      "name": "planet_radius_jupiter",
+      "label": "Planet Radius (Jupiter Radii)"
+    },
+    {
+      "schema_stable_id": "planets_data_large:column:physical_properties:densvalue",
+      "name": "planet_density_g_cm3",
+      "label": "Planet Density (g/cm^3)"
+    },
+    {
+      "schema_stable_id": "planets_data_large:column:orbital_characteristics:period",
+      "name": "orbital_period_days",
+      "label": "Orbital Period (days)"
+    },
+    {
+      "schema_stable_id": "planets_data_large:column:orbital_characteristics:semimajor",
+      "name": "semi_major_axis_au",
+      "label": "Semi-Major Axis (AU)"
+    },
+    {
+      "schema_stable_id": "planets_data_large:column:orbital_characteristics:eccentricity",
+      "name": "orbital_eccentricity",
+      "label": "Orbital Eccentricity"
+    },
+    {
+      "schema_stable_id": "planets_data_large:column:orbital_characteristics:inclination",
+      "name": "orbital_inclination_deg",
+      "label": "Orbital Inclination (deg)"
+    },
+    {
+      "schema_stable_id": "planets_data_large:column:planets:discmethod",
+      "name": "discovery_method",
+      "label": "Discovery Method"
+    }
+  ],
+  "derived_fields": [
+    {
+      "hkb_stable_id": "planets_data_large:hkb:0",
+      "sql": "${stellar_distance_parsec} * 3.26156"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:1",
+      "sql": "${planet_mass_jupiter} * 317.83"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:2",
+      "sql": "${planet_radius_jupiter} * 11.209"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:3",
+      "sql": "POWER(${stellar_radius_solar}, 2.0) * POWER(${stellar_temperature_k} / 5778.0, 4.0)"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:4",
+      "sql": "CASE WHEN ${planet_radius_earth} <> 0 THEN ${planet_mass_earth} / POWER(${planet_radius_earth}, 2.0) END"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:6",
+      "sql": "CASE WHEN ${stellar_luminosity} >= 0 THEN SQRT(${stellar_luminosity} / 1.1) END"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:7",
+      "sql": "CASE WHEN ${stellar_luminosity} >= 0 THEN SQRT(${stellar_luminosity} / 0.53) END"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:10",
+      "sql": "CASE WHEN ${planet_radius_earth} > 0 THEN SQRT((2.0 * 6.67430e-11 * (${planet_mass_earth} * 5.9722e24)) / (${planet_radius_earth} * 6.371e6)) END"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:12",
+      "sql": "CASE WHEN ${stellar_radius_solar} <> 0 THEN (3.0 * ${stellar_mass_solar}) / (4.0 * PI() * POWER(${stellar_radius_solar}, 3.0)) END"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:15",
+      "sql": "CASE WHEN ${orbital_period_days} <> 0 THEN POWER(${semi_major_axis_au}, 3.0) / POWER(${orbital_period_days} / 365.25, 2.0) END"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:16",
+      "sql": "CASE WHEN ${planet_radius_earth} <> 0 THEN ${planet_mass_earth} / ${planet_radius_earth} END"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:19",
+      "sql": "6.67430e-11 * (${stellar_mass_solar} * 1.98847e30)"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:20",
+      "sql": "${planet_mass_jupiter} > 0.1"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:21",
+      "sql": "${planet_density_g_cm3} > 3.0"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:22",
+      "sql": "${orbital_period_days} < 10.0"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:24",
+      "sql": "${rocky_planet} AND ${planet_mass_earth} >= 1.0 AND ${planet_mass_earth} <= 10.0"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:27",
+      "sql": "${orbital_eccentricity} > 0.25"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:28",
+      "sql": "${companion_count} > 1"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:31",
+      "sql": "${orbital_inclination_deg} > 90.0"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:32",
+      "sql": "${gas_giant_planet} AND ${planet_density_g_cm3} < 0.5"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:36",
+      "sql": "LOWER(TRIM(${discovery_method})) IN ('transit', 'tr', 'transit method', 'photometry', 'photometric')"
+    },
+    {
+      "hkb_stable_id": "planets_data_large:hkb:37",
+      "sql": "LOWER(TRIM(${discovery_method})) IN ('radvel', 'rv', 'rv method', 'radial velocity', 'doppler')"
+    }
+  ]
+}

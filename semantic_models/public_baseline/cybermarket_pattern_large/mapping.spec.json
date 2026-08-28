@@ -1,0 +1,924 @@
+{
+  "database": "cybermarket_pattern_large",
+  "schema_version": 1,
+  "schema_aliases": {
+    "M.T": "cybermarket_pattern_large:table:markets",
+    "M.vuln": "cybermarket_pattern_large:structured-leaf:markets:platform_compliance:k:vuln_inst_count",
+    "M.events": "cybermarket_pattern_large:structured-leaf:markets:platform_compliance:k:sec_event_count",
+    "M.protection": "cybermarket_pattern_large:structured-leaf:markets:platform_compliance:k:protection_meas_count",
+    "M.reputation": "cybermarket_pattern_large:column:markets:RepScore",
+    "M.status": "cybermarket_pattern_large:column:markets:OperStatus",
+    "V.T": "cybermarket_pattern_large:table:vendors",
+    "V.violations": "cybermarket_pattern_large:structured-leaf:vendors:vendor_compliance_ratings:k:viol_count",
+    "V.completed": "cybermarket_pattern_large:column:vendors:CompletedTxns",
+    "V.days": "cybermarket_pattern_large:column:vendors:DaysActive",
+    "V.verification": "cybermarket_pattern_large:column:vendors:VerTier",
+    "V.access": "cybermarket_pattern_large:column:vendors:AccessLevel",
+    "V.investigation": "cybermarket_pattern_large:column:vendors:InvestigationFlag",
+    "V.le_interest": "cybermarket_pattern_large:column:vendors:LE_Interest",
+    "V.escrow_adherence": "cybermarket_pattern_large:structured-leaf:vendors:vendor_compliance_ratings:k:escrow_adher_score",
+    "VP.compliance": "cybermarket_pattern_large:structured-leaf:vendor_profile_details:complianceblob_v1:k:cmplScore",
+    "B.T": "cybermarket_pattern_large:table:buyers",
+    "B.risk": "cybermarket_pattern_large:structured-leaf:buyers:buyer_risk_profile:k:risk_metric_scr",
+    "B.behavior": "cybermarket_pattern_large:structured-leaf:buyers:buyer_risk_profile:k:behavior_consistency_scr",
+    "B.risk_ratio": "cybermarket_pattern_large:structured-leaf:buyers:buyer_risk_profile:k:risk_dollar_ratio",
+    "B.auth": "cybermarket_pattern_large:column:buyers:AuthLevel",
+    "B.spend_pattern": "cybermarket_pattern_large:structured-leaf:buyers:buyer_risk_profile:k:spend_pattern",
+    "T.T": "cybermarket_pattern_large:table:transactions",
+    "T.cross_border": "cybermarket_pattern_large:column:transactions:CrossBorder",
+    "T.route": "cybermarket_pattern_large:column:transactions:RouteComplex",
+    "T.escrow": "cybermarket_pattern_large:structured-leaf:transactions:transaction_financials:k:escrow_used_stat",
+    "C.T": "cybermarket_pattern_large:table:communications",
+    "C.keywords": "cybermarket_pattern_large:structured-leaf:communications:communication_details:k:keyword_match_count",
+    "C.messages": "cybermarket_pattern_large:structured-leaf:communications:communication_details:k:msg_count_total",
+    "C.language": "cybermarket_pattern_large:structured-leaf:communications:communication_details:k:lang_pattern_type",
+    "CS.T": "cybermarket_pattern_large:table:connection_security",
+    "CS.auth": "cybermarket_pattern_large:structured-leaf:connection_security:connection_security_metrics:k:auth_protocol_type",
+    "CS.anonymity": "cybermarket_pattern_large:column:connection_security:AnonLevel",
+    "A.T": "cybermarket_pattern_large:table:alerts",
+    "A.severity": "cybermarket_pattern_large:structured-leaf:alerts:alert_case_management:k:severity_level_stat",
+    "A.escalation": "cybermarket_pattern_large:structured-leaf:alerts:alert_case_management:k:escalation_tier_stat",
+    "P.T": "cybermarket_pattern_large:table:products",
+    "P.price": "cybermarket_pattern_large:structured-leaf:products:product_availability:k:price_amt",
+    "P.category": "cybermarket_pattern_large:column:products:ProdCat",
+    "RA.wallet_value": "cybermarket_pattern_large:structured-leaf:risk_analytics:wallet_risk_assessment:k:wallet_value_usd",
+    "RA.wallet_age": "cybermarket_pattern_large:structured-leaf:risk_analytics:wallet_risk_assessment:k:wallet_age_days",
+    "RMP.T": "cybermarket_pattern_large:table:RiskModelPredictions",
+    "RMP.fraud_probability": "cybermarket_pattern_large:column:RiskModelPredictions:fraud_probability"
+  },
+  "records": [
+    {
+      "bindings": [
+        {
+          "alias": "M.vuln",
+          "confidence": "exact",
+          "role": "vulnerability_count"
+        },
+        {
+          "alias": "M.events",
+          "confidence": "exact",
+          "role": "security_event_count"
+        },
+        {
+          "alias": "M.reputation",
+          "confidence": "exact",
+          "role": "reputation_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 0,
+      "loss_codes": [
+        "source_type_requires_parsing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The same marketplace row contains the three concepts, but RepScore is currency-formatted TEXT and the public schema does not declare a complete parsing rule.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 1,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_field_missing",
+        "vocabulary_conflict"
+      ],
+      "notes": "The declared H0 dependency is unsupported, and no public same-row sources provide total transactions and active hours; the available unit-bearing velocity field is described as USD/hour rather than the declared ratio.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "VP.compliance",
+          "confidence": "exact",
+          "role": "compliance_score"
+        },
+        {
+          "alias": "V.violations",
+          "confidence": "exact",
+          "role": "violation_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 2,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "zero_match_semantics_missing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Compliance score and violation count are on separate vendor-related tables; the public schema does not establish a row-preserving one-to-one identity between them.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.protection",
+          "confidence": "exact",
+          "role": "protection_measures"
+        },
+        {
+          "alias": "M.vuln",
+          "confidence": "exact",
+          "role": "vulnerability_instances"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 3,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "depends_on_unsupported_mapping",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The raw ratio is same-row on markets, but the declared H1 dependency is transaction-grain and unsupported, so the dependency contract cannot be compiled locally.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 4,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "source_field_missing",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The exact traceability-cost and numeric anonymity-score inputs are absent, while declared dependencies H3 and H2 resolve to different unresolved grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "B.risk",
+          "confidence": "exact",
+          "role": "buyer_risk_score"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 5,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_field_missing",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "Buyer risk is available, but total buyer spending requires transaction aggregation and the declared H1/H4 dependencies are unresolved outside the buyer row grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "V.completed",
+          "confidence": "exact",
+          "role": "successful_transactions"
+        },
+        {
+          "alias": "P.price",
+          "confidence": "exact",
+          "role": "listing_price"
+        },
+        {
+          "alias": "V.days",
+          "confidence": "exact",
+          "role": "days_active"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 6,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "cardinality_unknown",
+        "cross_grain_no_identity",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Successful transactions and active days are vendor-grain, while an average price requires aggregating product listings with unresolved multiplicity.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 7,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "source_field_missing",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "Exact threats-handled and total-hours sources are absent, and declared dependencies H6 and H3 belong to unresolved vendor/product and marketplace grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "C.keywords",
+          "confidence": "exact",
+          "role": "keyword_matches"
+        },
+        {
+          "alias": "C.messages",
+          "confidence": "exact",
+          "role": "total_messages"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 8,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Both numeric inputs are exact leaves of the same communication-thread row; division by zero is guarded.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "suspicion_signal_density",
+      "target_alias": "C.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RA.wallet_value",
+          "confidence": "exact",
+          "role": "wallet_value_usd"
+        },
+        {
+          "alias": "RA.wallet_age",
+          "confidence": "exact",
+          "role": "wallet_age_days"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 9,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "depends_on_unsupported_mapping",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "The raw wallet ratio is same-row, but declared dependencies H1 and H2 are unavailable at the risk-analytics row grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "V.investigation",
+          "confidence": "exact",
+          "role": "investigation_status"
+        },
+        {
+          "alias": "V.le_interest",
+          "confidence": "exact",
+          "role": "law_enforcement_interest"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 10,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The categorical inputs are same-row on vendors, but declared dependencies H3 and H4 are unresolved across marketplace, vendor-profile, and connection grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "T.cross_border",
+          "confidence": "exact",
+          "role": "cross_border_indicator"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 11,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The transaction row exposes the exact boolean indicating that its shipment crosses national borders.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_cross_border_transaction",
+      "target_alias": "T.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "V.verification",
+          "confidence": "exact",
+          "role": "verification_tier"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 12,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The vendor row has an exact verification-tier field whose declared domain includes Advanced.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_advanced_verification_tier",
+      "target_alias": "V.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "V.escrow_adherence",
+          "confidence": "exact",
+          "role": "escrow_adherence_percentage"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 13,
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "A vendor-level escrow-adherence percentage exists, but the public HKB gives no threshold or missing-value rule for 'consistently' compliant.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CS.auth",
+          "confidence": "exact",
+          "role": "authentication_protocol"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 14,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The same session row declares authentication protocols 2FA, Basic, and Multi-factor, enabling the stated boolean rule exactly.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "has_premium_authentication",
+      "target_alias": "CS.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "C.keywords",
+          "confidence": "exact",
+          "role": "flagged_keyword_count"
+        },
+        {
+          "alias": "C.language",
+          "confidence": "exact",
+          "role": "language_pattern"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 15,
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "The same communication row has keyword counts and a language-pattern category, but 'high volume' and qualifying anomaly rules are not defined.",
+      "relationship_requirements": [],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "B.behavior",
+          "confidence": "exact",
+          "role": "behavior_consistency_score"
+        },
+        {
+          "alias": "B.risk_ratio",
+          "confidence": "exact",
+          "role": "risk_per_dollar_metric"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 16,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "depends_on_unsupported_mapping",
+        "source_type_requires_parsing_if_executable",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Buyer fields are colocated, but the risk-per-dollar value is unit-bearing text, thresholds are unspecified, and declared H7/H1 dependencies are unresolved on other grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.vuln",
+          "confidence": "exact",
+          "role": "unresolved_vulnerability_count"
+        },
+        {
+          "alias": "M.protection",
+          "confidence": "exact",
+          "role": "active_protection_measure_count"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 17,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "The threshold inputs are exact on markets, but declared dependencies H2 and H14 resolve to vendor compliance and connection-session grains.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "RMP.fraud_probability",
+          "confidence": "exact",
+          "role": "fraud_probability"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 18,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "The risk-model prediction row exposes a 0-1 fraud probability, so exceeding 70 percent is a direct same-row comparison.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_fraud_flagged_transaction",
+      "target_alias": "RMP.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "A.escalation",
+          "confidence": "exact",
+          "role": "escalation_tier"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 19,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "Level3 is available on the alert row, but declared dependencies H7 and H12 resolve to connection/vendor concepts outside that grain.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.status",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 20,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public value illustration exactly enriches the marketplace operational-status field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "M.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "V.access",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 21,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public Full/Partial illustration exactly enriches vendor access level.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "V.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "B.auth",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 22,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The public Advanced/Basic illustration exactly enriches buyer authentication level.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "B.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.category",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 23,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The four public product categories exactly match the products category field domain.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "T.route",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 24,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The Simple/Medium/Complex illustration exactly matches transaction route complexity.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "CS.anonymity",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 25,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The High/Medium/Low illustration exactly enriches session anonymity level.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "CS.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "A.severity",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 26,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The Critical/High/Medium/Low illustration exactly matches alert severity.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "A.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "T.escrow",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 27,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The Yes/No illustration exactly enriches the transaction escrow-usage state.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "T.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "C.language",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 28,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The Consistent/Suspicious/Variable illustration exactly matches the communication language-pattern field.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "C.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "B.spend_pattern",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 29,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "The High/Low/Medium/Variable illustration exactly matches buyer spend-pattern categories.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "B.T"
+    }
+  ],
+  "intervention_provenance": "agent_assisted_public_modeling_inference"
+}

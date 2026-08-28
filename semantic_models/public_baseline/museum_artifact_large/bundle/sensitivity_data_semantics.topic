@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__sensitivity_data
+label: Artifact Sensitivity
+description: Artifact-sensitivity rows with light and humidity sensitivity context.
+fields:
+- museum_artifact_large_public__sensitivity_data.*
+joins: {}
+ai_context: Use the modeled business fields light_sensitivity_level, humidity_sensitivity_level rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

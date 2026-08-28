@@ -1,0 +1,7 @@
+base_view: organ_transplant_large_public__compatibility_metrics
+label: Compatibility Metrics
+description: Match-level compatibility records with public HLA, ABO, age, and size compatibility semantics.
+fields:
+- organ_transplant_large_public__compatibility_metrics.*
+joins: {}
+ai_context: Use the modeled business fields hla_mismatch_count, abo_compatibility_result, size_compatibility_score, age_compatibility_score, hla_mismatch_score, is_abo_compatible, immunological_compatibility_score rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

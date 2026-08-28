@@ -1,0 +1,7 @@
+base_view: solar_panel_large_public__alert
+label: Alerts
+description: Maintenance and replacement priority alerts.
+fields:
+- solar_panel_large_public__alert.*
+joins: {}
+ai_context: Use the modeled business fields maintprio, replprio, high_maintenance_priority, high_replacement_priority, critical_alert rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

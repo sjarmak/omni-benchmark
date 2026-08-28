@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__transactions
+label: Transactions
+description: Transaction records with row-level cross-border semantics and shipping and escrow context.
+fields:
+- cybermarket_pattern_large_public__transactions.*
+joins: {}
+ai_context: Use the modeled business fields cross_border, route_complexity, escrow_usage_state, is_cross_border_transaction rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

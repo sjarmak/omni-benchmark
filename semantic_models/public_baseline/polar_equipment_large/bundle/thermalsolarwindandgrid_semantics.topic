@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__thermalsolarwindandgrid
+label: Thermal Solar Wind And Grid
+description: Thermal and power-generation records with insulation, renewable-energy, and field-context semantics.
+fields:
+- polar_equipment_large_public__thermalsolarwindandgrid.*
+joins: {}
+ai_context: Use the modeled business fields insulation_status, heat_loss_rate_kwh, solar_output_w, wind_output_w, fuel_cell_output_w, fuel_cell_efficiency_percent, thermal_insulation_efficiency, renewable_energy_contribution rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

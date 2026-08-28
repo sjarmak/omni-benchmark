@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__beneficiariesandassessments
+label: Beneficiaries and Assessments
+description: Beneficiary-assessment records with row-level engagement and distribution-equity semantics.
+fields:
+- disaster_relief_large_public__beneficiariesandassessments.*
+joins: {}
+ai_context: Use the modeled business fields community_engagement_level, distribution_equity_index, is_successful_community_partnership rather than reconstructing their definitions. This topic intentionally models no cross-table joins.

@@ -1,0 +1,18 @@
+label: Vendors
+description: Vendor records with verification-tier semantics and access-level context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendors
+dimensions:
+  verification_tier:
+    description: 'TEXT. Verification-tier level assigned to the vendor. **NULL means verification tier not yet assigned or unavailable.**. Possible values: Advanced, Basic, Premium.'
+    label: Verification Tier
+  access_level:
+    description: 'TEXT. Access-privilege level granted to the vendor account. **NULL means access level has not been set.**. Possible values: Full, Partial.'
+    label: Access Level
+    ai_context: 'Vendor Access Levels: Values: Full, Partial. Label descriptions: - Full: Vendor can create listings, modify inventory, withdraw funds, and communicate without restriction. - Partial: Vendor functionality is limited, typically view only or blocked from withdrawals until verification is complete.'
+  is_advanced_verification_tier:
+    label: Advanced Verification Tier
+    description: Vendors with strong identity validation.
+    sql: ${verification_tier} = 'Advanced'
+    ai_context: Use this modeled field for Advanced Verification Tier; do not reconstruct its formula.

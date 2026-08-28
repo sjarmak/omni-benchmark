@@ -1,0 +1,554 @@
+{
+  "database": "exchange_traded_funds_large",
+  "files": [
+    {
+      "file": "exchange_traded_funds_large.public__annual_returns.view",
+      "sha256": "4c6c519f5e10f8cccc72c882092bb75abed077af024c4c53b01e2ed47ffed485",
+      "size_bytes": 1075
+    },
+    {
+      "file": "annual_returns_semantics.topic",
+      "sha256": "b55ab2707f6f2e15cf401bbac79b470356a7e18c31d08fa2e8bba72619f96b99",
+      "size_bytes": 472
+    },
+    {
+      "file": "exchange_traded_funds_large.public__funds.view",
+      "sha256": "6ebf144cfaedad22cb8a3180b1360aa2566304f56111cc2a79a100d0db024fa2",
+      "size_bytes": 11091
+    },
+    {
+      "file": "funds_semantics.topic",
+      "sha256": "5669173973e5562c232a4a5b70a4d925b1bd75e99014d10c1508d034f5b2efd4",
+      "size_bytes": 1002
+    },
+    {
+      "file": "exchange_traded_funds_large.public__performance.view",
+      "sha256": "49df18a0c831578056ed80d5e6ee1118f499f61122f73b119589154ddbc5cf42",
+      "size_bytes": 3757
+    },
+    {
+      "file": "performance_semantics.topic",
+      "sha256": "330f69eee8587fe225c7d1fdacc46b97fbab8ef88978518b720f371e458cdce7",
+      "size_bytes": 678
+    },
+    {
+      "file": "exchange_traded_funds_large.public__risk_metrics.view",
+      "sha256": "131bc25be0d0e67d73d4efaf0158571064505c8291992f544d8a71fe04994036",
+      "size_bytes": 2991
+    },
+    {
+      "file": "risk_metrics_semantics.topic",
+      "sha256": "723b4410e754624f141c693dcbd27e492ae4f209bcb4ba75d8a2974ddaf7d483",
+      "size_bytes": 582
+    },
+    {
+      "file": "exchange_traded_funds_large.public__sector_allocations.view",
+      "sha256": "320896ca29df9b61e5644b140e9668ea04c1d5bf447cd2b0ec2a38b64d98598f",
+      "size_bytes": 618
+    },
+    {
+      "file": "sector_allocations_semantics.topic",
+      "sha256": "10bba0cdab8a0e350ccdcec1727f61725021a071f1165a376db2f8865367cf19",
+      "size_bytes": 410
+    },
+    {
+      "file": "exchange_traded_funds_large.public__bond_ratings.view",
+      "sha256": "783c274d5de1e4d1d087dc44e9065e884867f4e4577501f9817134f08d36e74a",
+      "size_bytes": 651
+    },
+    {
+      "file": "bond_ratings_semantics.topic",
+      "sha256": "1ec76a486844200563c9de33cffade168a0822367b6f1d901d2a6827fac059d9",
+      "size_bytes": 391
+    }
+  ],
+  "kind": "public-omni-semantic-bundle",
+  "schema_version": 1,
+  "semantic_elements": [
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:0",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "annual_fund_outperformance",
+      "table_stable_id": "exchange_traded_funds_large:table:annual_returns"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:1",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "relative_expense_ratio",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:10",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_alpha_generator",
+      "table_stable_id": "exchange_traded_funds_large:table:risk_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:11",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_market_tracking_fund",
+      "table_stable_id": "exchange_traded_funds_large:table:risk_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:12",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_low_turnover_strategy",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:13",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_high_conviction_portfolio",
+      "table_stable_id": "exchange_traded_funds_large:table:performance"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:14",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_efficient_income_generator",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:16",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_passive_alpha_generator",
+      "table_stable_id": "exchange_traded_funds_large:table:risk_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_hkb"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:17",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "has_golden_cross_signal",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:18",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "geographic_focus",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:20",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "yield_rate",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:21",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "turnover_ratio",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:25",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "duration",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:26",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "net_expense_ratio",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:27",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "equity_weight",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:28",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "sector_weight",
+      "table_stable_id": "exchange_traded_funds_large:table:sector_allocations"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:29",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "field_context",
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "semantic_name": "credit_quality",
+      "table_stable_id": "exchange_traded_funds_large:table:bond_ratings"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:3",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "yield_to_expense_ratio",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:37",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "dependency_omission",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "net_yield_advantage",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:4",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "price_position_52_week_pct",
+      "table_stable_id": "exchange_traded_funds_large:table:performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:5",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "short_term_momentum",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:50",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "dependency_redundancy",
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "appraisal_ratio",
+      "table_stable_id": "exchange_traded_funds_large:table:risk_metrics"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:51",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "composite_valuation_score",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:57",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "dependency_redundancy",
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "capital_preservation_index",
+      "table_stable_id": "exchange_traded_funds_large:table:performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:58",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "dependency_omission",
+        "dependency_redundancy",
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "portfolio_liquidity_pressure",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:59",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "growth_value_spectrum_score",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:7",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_zero_domain_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "positive_return_consistency_pct",
+      "table_stable_id": "exchange_traded_funds_large:table:performance"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:84",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_category_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "valuation_data_availability",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    },
+    {
+      "content_provenance": [
+        "public_column_metadata",
+        "public_hkb",
+        "public_schema"
+      ],
+      "hkb_stable_id": "exchange_traded_funds_large:hkb:9",
+      "intervention_provenance": "agent_assisted_public_modeling_inference",
+      "kind": "derived_dimension",
+      "loss_codes": [
+        "null_boolean_semantics_unspecified",
+        "omni_expression_support_unverified"
+      ],
+      "semantic_name": "is_total_return_fund",
+      "table_stable_id": "exchange_traded_funds_large:table:funds"
+    }
+  ],
+  "source": {
+    "bundle_spec": {
+      "sha256": "7979148bf2541f332b1d7253420d52fe44d4d985f9e4d3d6e32ec78dda3cdd33"
+    },
+    "hkb_ir": {
+      "sha256": "7244910029a24127ad54223ad4d87fcb32a969cee4a5ab8f0807cd2861b3b7aa"
+    },
+    "mapping": {
+      "sha256": "4d68b6814abdfd0b500dd12f9339d344da2d079ccaa7c47772789c66933aefea"
+    },
+    "mapping_manifest": {
+      "sha256": "d8d70b0d47caf9ce5abc53f573eb323eab3752fc7bf5765d56e36c67ea3142ff"
+    },
+    "schema_ir": {
+      "sha256": "8bb426f29a9a23182afc96a50119571573049eb761e8686fc7b2ae9be0d30411"
+    }
+  },
+  "validation": {
+    "all_compile_mappings_materialized": true,
+    "hidden_annotations_used": false,
+    "joins_generated": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}
