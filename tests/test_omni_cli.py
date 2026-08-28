@@ -318,7 +318,7 @@ def test_typed_query_rerun_uses_uncached_raw_json_and_preserves_types() -> None:
     assert invocation.arguments[-4:] == ("query", "run", "--body", "-")
     assert json.loads(invocation.stdin or "") == {
         "branchId": "branch-id",
-        "cache": "disabled",
+        "cache": "SkipCache",
         "formatResults": False,
         "query": {
             "fields": ["answers.value"],
@@ -333,6 +333,78 @@ def test_typed_query_rerun_uses_uncached_raw_json_and_preserves_types() -> None:
     assert result[0]["note"] is None
     # JSON has no date scalar; preserve the provider string without guessing a type.
     assert result[0]["reported_on"] == "2026-08-27"
+
+
+def test_query_plan_uses_plan_only_ndjson_and_returns_one_planned_job() -> None:
+    environment = {**_token_environment(), "OMNI_BRANCH_ID": "branch-id"}
+    plan = {
+        "job_id": "job-1",
+        "query": {"model_job": {"fields": ["answers.value"]}},
+        "status": "PLANNED",
+        "summary": {
+            "fields": {"answers.value": {"data_type": "NUMBER"}},
+            "invalid_calculations": {},
+            "missing_fields": [],
+        },
+    }
+    runner = FakeRunner(
+        stdout="\n".join(
+            json.dumps(value)
+            for value in (
+                {"jobs_submitted": {"job-1": "result-1"}},
+                plan,
+                {"remaining_job_ids": [], "timed_out": "false"},
+            )
+        )
+    )
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+    )
+
+    result = client.plan_query({"fields": ["answers.value"], "table": "answers"})
+
+    invocation = runner.invocations[0]
+    assert result == plan
+    assert invocation.arguments[-4:] == ("query", "run", "--body", "-")
+    assert json.loads(invocation.stdin or "") == {
+        "branchId": "branch-id",
+        "cache": "SkipRequery",
+        "planOnly": True,
+        "query": {
+            "fields": ["answers.value"],
+            "modelId": "770e8400-e29b-41d4-a716-446655440002",
+            "table": "answers",
+        },
+    }
+
+
+@pytest.mark.parametrize(
+    "stdout",
+    [
+        '{"jobs_submitted":{"job-1":null}}\n'
+        '{"job_id":"job-1","status":"COMPLETE"}\n'
+        '{"remaining_job_ids":[],"timed_out":"false"}',
+        '{"jobs_submitted":{"job-1":null}}\n'
+        '{"job_id":"job-1","status":"PLANNED"}\n'
+        '{"remaining_job_ids":["job-1"],"timed_out":"true"}',
+        '{"jobs_submitted":{"job-1":null}}\nnot-json\n'
+        '{"remaining_job_ids":[],"timed_out":"false"}',
+    ],
+)
+def test_query_plan_rejects_non_planned_pending_or_malformed_stream(
+    stdout: str,
+) -> None:
+    environment = _token_environment()
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=FakeRunner(stdout=stdout),
+        environment=environment,
+    )
+
+    with pytest.raises(OmniCliError):
+        client.plan_query({"fields": ["answers.value"]})
 
 
 def test_typed_query_rerun_rejects_model_mismatch_or_non_row_array() -> None:

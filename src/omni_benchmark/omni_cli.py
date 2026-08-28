@@ -145,7 +145,7 @@ class OmniCliClient:
         """Rerun one semantic query as raw JSON without formatting or cache reuse."""
         semantic_query = _query_with_model(query, self._settings.model_id)
         body: dict[str, object] = {
-            "cache": "disabled",
+            "cache": "SkipCache",
             "formatResults": False,
             "query": semantic_query,
             "resultType": "json",
@@ -162,6 +162,22 @@ class OmniCliClient:
             raise OmniCliError("Omni typed result must be an array of row objects")
         return value
 
+    def plan_query(self, query: Mapping[str, Any]) -> dict[str, Any]:
+        """Return authoritative field metadata without executing the query."""
+        semantic_query = _query_with_model(query, self._settings.model_id)
+        body: dict[str, object] = {
+            "cache": "SkipRequery",
+            "planOnly": True,
+            "query": semantic_query,
+        }
+        if self._settings.branch_id is not None:
+            body["branchId"] = self._settings.branch_id
+        lines = self._run_ndjson(
+            ("query", "run", "--body", "-"),
+            stdin=json.dumps(body, separators=(",", ":"), sort_keys=True),
+        )
+        return _one_planned_job(lines)
+
     def _run_json(
         self, command: Sequence[str], *, stdin: str | None = None
     ) -> dict[str, Any]:
@@ -173,6 +189,33 @@ class OmniCliClient:
     def _run_json_value(
         self, command: Sequence[str], *, stdin: str | None = None
     ) -> Any:
+        stdout = self._run_output(command, stdin=stdin)
+        try:
+            value = json.loads(stdout)
+        except (UnicodeError, json.JSONDecodeError) as error:
+            raise OmniCliError("Omni CLI did not return valid JSON") from error
+        return value
+
+    def _run_ndjson(
+        self, command: Sequence[str], *, stdin: str | None = None
+    ) -> tuple[dict[str, Any], ...]:
+        stdout = self._run_output(command, stdin=stdin)
+        values: list[dict[str, Any]] = []
+        for line in stdout.splitlines():
+            if not line.strip():
+                continue
+            try:
+                value = json.loads(line)
+            except (UnicodeError, json.JSONDecodeError) as error:
+                raise OmniCliError("Omni CLI did not return valid NDJSON") from error
+            if not isinstance(value, dict):
+                raise OmniCliError("Omni CLI NDJSON lines must be objects")
+            values.append(value)
+        if not values:
+            raise OmniCliError("Omni CLI returned an empty NDJSON stream")
+        return tuple(values)
+
+    def _run_output(self, command: Sequence[str], *, stdin: str | None = None) -> str:
         arguments = (*self._base_arguments(), *command)
         environment = self._child_environment()
         try:
@@ -191,11 +234,7 @@ class OmniCliClient:
             raise OmniCliError(f"Omni CLI request failed: {detail}")
         if len(stdout.encode()) > MAX_RESPONSE_BYTES:
             raise OmniCliError("Omni CLI response exceeds the capture limit")
-        try:
-            value = json.loads(stdout)
-        except (UnicodeError, json.JSONDecodeError) as error:
-            raise OmniCliError("Omni CLI did not return valid JSON") from error
-        return value
+        return stdout
 
     def _base_arguments(self) -> tuple[str, ...]:
         arguments = (
@@ -272,3 +311,17 @@ def _query_with_model(query: Mapping[str, Any], model_id: str) -> dict[str, Any]
     if supplied_model is not None and supplied_model != model_id:
         raise OmniCliError("query modelId does not match the configured model")
     return {**query, "modelId": model_id}
+
+
+def _one_planned_job(lines: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    jobs = [line for line in lines if "job_id" in line]
+    footers = [line for line in lines if "remaining_job_ids" in line]
+    if len(jobs) != 1 or len(footers) != 1:
+        raise OmniCliError("Omni query plan stream has an invalid shape")
+    footer = footers[0]
+    if footer.get("remaining_job_ids") != [] or footer.get("timed_out") != "false":
+        raise OmniCliError("Omni query plan did not finish synchronously")
+    job = jobs[0]
+    if job.get("status") != "PLANNED":
+        raise OmniCliError("Omni query plan did not reach PLANNED")
+    return dict(job)

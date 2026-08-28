@@ -10,7 +10,8 @@ import re
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
+from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from .autoresearch_config import MANDATORY_FORBIDDEN_FIELDS
@@ -82,14 +83,17 @@ def parse_omni_job_result(response: Mapping[str, Any]) -> ParsedOmniQuery:
 
 
 def bind_typed_query_result(
-    parsed: ParsedOmniQuery, rows: Sequence[Mapping[str, Any]]
+    parsed: ParsedOmniQuery,
+    rows: Sequence[Mapping[str, Any]],
+    plan: Mapping[str, Any],
 ) -> ParsedOmniResult:
-    """Bind a raw JSON query rerun without coercing any cell values."""
+    """Bind a complete JSON rerun using only authoritative Omni field types."""
     if not isinstance(rows, list):
         raise OmniResultContractError("typed Omni result must be an array")
     reject_forbidden_keys(rows)
     columns = _typed_columns(rows, parsed.expected_columns)
-    typed_rows = tuple(_typed_row(row, columns) for row in rows)
+    data_types = _planned_data_types(parsed, plan, columns)
+    typed_rows = tuple(_typed_row(row, columns, data_types) for row in rows)
     if len(typed_rows) != parsed.expected_row_count:
         raise OmniResultContractError("typed Omni query row count does not match CSV")
     if bool(typed_rows) != parsed.expected_has_results:
@@ -104,6 +108,34 @@ def bind_typed_query_result(
         observed_actions_by_type=parsed.observed_actions_by_type,
         database_query_count=parsed.agent_database_query_count,
     )
+
+
+def decode_result_artifact_rows(
+    artifact: Mapping[str, Any],
+) -> tuple[tuple[Any, ...], ...]:
+    """Decode persisted typed cells for the frozen execution scorers."""
+    if not isinstance(artifact, Mapping):
+        raise OmniResultContractError("result artifact must be an object")
+    reject_forbidden_keys(artifact)
+    if set(artifact) != {"columns", "rows", "schema_version", "truncated"}:
+        raise OmniResultContractError("result artifact has an invalid schema")
+    columns = artifact["columns"]
+    rows = artifact["rows"]
+    if (
+        not isinstance(columns, list)
+        or any(not isinstance(column, str) or not column for column in columns)
+        or len(set(columns)) != len(columns)
+        or not isinstance(rows, list)
+        or artifact["schema_version"] != 1
+        or artifact["truncated"] is not False
+    ):
+        raise OmniResultContractError("result artifact has invalid metadata")
+    decoded: list[tuple[Any, ...]] = []
+    for row in rows:
+        if not isinstance(row, list) or len(row) != len(columns):
+            raise OmniResultContractError("result artifact rows are ragged")
+        decoded.append(tuple(_decode_typed_cell(cell) for cell in row))
+    return tuple(decoded)
 
 
 def reject_forbidden_keys(value: Any) -> None:
@@ -152,12 +184,13 @@ def _validated_query_result(value: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _validated_scoreable_query_result(value: Mapping[str, Any]) -> dict[str, Any]:
-    if value["csvResultWasTruncated"]:
-        raise OmniResultContractError("Omni query result is truncated")
     columns, row_count = _parse_csv(value["csvResult"])
-    if row_count != value["totalRowCount"]:
+    if value["csvResultWasTruncated"]:
+        if row_count > value["totalRowCount"]:
+            raise OmniResultContractError("Omni query preview exceeds total row count")
+    elif row_count != value["totalRowCount"]:
         raise OmniResultContractError("Omni query row count does not match CSV")
-    if value["hasResults"] != bool(row_count):
+    if value["hasResults"] != bool(value["totalRowCount"]):
         raise OmniResultContractError("Omni query result presence does not match CSV")
     return {**value, "_validated_columns": columns}
 
@@ -231,13 +264,20 @@ def _parse_csv(value: str) -> tuple[tuple[str, ...], int]:
     return columns, len(parsed) - 1
 
 
-def _typed_row(value: Mapping[str, Any], columns: tuple[str, ...]) -> tuple[Any, ...]:
+def _typed_row(
+    value: Mapping[str, Any],
+    columns: tuple[str, ...],
+    data_types: tuple[str, ...],
+) -> tuple[Any, ...]:
     if not isinstance(value, dict):
         raise OmniResultContractError("typed Omni result rows must be objects")
     if set(value) != set(columns):
         raise OmniResultContractError("typed Omni result columns do not match CSV")
     _validate_json_value(value)
-    return tuple(value[column] for column in columns)
+    return tuple(
+        _typed_cell(value[column], data_type)
+        for column, data_type in zip(columns, data_types, strict=True)
+    )
 
 
 def _typed_columns(
@@ -249,9 +289,118 @@ def _typed_columns(
     if not isinstance(first, dict):
         raise OmniResultContractError("typed Omni result rows must be objects")
     columns = tuple(first)
-    if len(columns) != len(expected_columns):
+    if len(columns) != len(expected_columns) or len(set(columns)) != len(columns):
         raise OmniResultContractError("typed Omni result columns do not match CSV")
     return columns
+
+
+def _planned_data_types(
+    parsed: ParsedOmniQuery,
+    plan: Mapping[str, Any],
+    columns: tuple[str, ...],
+) -> tuple[str, ...]:
+    if not isinstance(plan, Mapping) or plan.get("status") != "PLANNED":
+        raise OmniResultContractError("Omni query plan must reach PLANNED")
+    summary = plan.get("summary")
+    if not isinstance(summary, Mapping):
+        raise OmniResultContractError("Omni query plan summary is missing")
+    if summary.get("missing_fields") != [] or summary.get("invalid_calculations") != {}:
+        raise OmniResultContractError("Omni query plan contains invalid fields")
+    fields = summary.get("fields")
+    query_fields = parsed.semantic_query.get("fields")
+    if (
+        not isinstance(fields, Mapping)
+        or not isinstance(query_fields, list)
+        or not query_fields
+        or tuple(fields) != tuple(query_fields)
+        or len(fields) != len(columns)
+    ):
+        raise OmniResultContractError("Omni query plan field metadata is ambiguous")
+    data_types: list[str] = []
+    for field_name in query_fields:
+        metadata = fields.get(field_name)
+        data_type = metadata.get("data_type") if isinstance(metadata, Mapping) else None
+        if data_type not in {"DATE", "JSON", "NUMBER", "STRING", "TIMESTAMP", "YESNO"}:
+            raise OmniResultContractError(
+                f"Omni query plan has unsupported data type for {field_name}"
+            )
+        data_types.append(data_type)
+    return tuple(data_types)
+
+
+def _typed_cell(value: Any, data_type: str) -> Any:
+    if value is None:
+        return None
+    if data_type == "STRING":
+        if not isinstance(value, str):
+            raise OmniResultContractError("Omni STRING result must be a string")
+        return value
+    if data_type == "YESNO":
+        if not isinstance(value, bool):
+            raise OmniResultContractError("Omni YESNO result must be boolean")
+        return value
+    if data_type == "NUMBER":
+        if isinstance(value, bool) or not isinstance(value, (str, int, float)):
+            raise OmniResultContractError("Omni NUMBER result is invalid")
+        try:
+            number = Decimal(str(value))
+        except InvalidOperation as error:
+            raise OmniResultContractError("Omni NUMBER result is invalid") from error
+        if not number.is_finite():
+            raise OmniResultContractError("Omni NUMBER result is non-finite")
+        return {"type": "decimal", "value": str(number)}
+    if data_type == "DATE":
+        if not isinstance(value, str):
+            raise OmniResultContractError("Omni DATE result must be a string")
+        try:
+            normalized = date.fromisoformat(value).isoformat()
+        except ValueError as error:
+            raise OmniResultContractError("Omni DATE result is invalid") from error
+        return {"type": "date", "value": normalized}
+    if data_type == "TIMESTAMP":
+        if not isinstance(value, str):
+            raise OmniResultContractError("Omni TIMESTAMP result must be a string")
+        try:
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError as error:
+            raise OmniResultContractError("Omni TIMESTAMP result is invalid") from error
+        return {"type": "datetime", "value": parsed.isoformat()}
+    if data_type == "JSON":
+        parsed = value
+        if isinstance(value, str):
+            try:
+                parsed = json.loads(value)
+            except json.JSONDecodeError as error:
+                raise OmniResultContractError("Omni JSON result is invalid") from error
+        _validate_json_value(parsed)
+        return {"type": "json", "value": parsed}
+    raise OmniResultContractError("Omni query plan data type is unsupported")
+
+
+def _decode_typed_cell(value: Any) -> Any:
+    if not isinstance(value, Mapping) or set(value) != {"type", "value"}:
+        _validate_json_value(value)
+        return value
+    kind = value["type"]
+    raw = value["value"]
+    if kind == "json":
+        _validate_json_value(raw)
+        return raw
+    if not isinstance(kind, str) or not isinstance(raw, str):
+        raise OmniResultContractError("typed result cell is invalid")
+    try:
+        if kind == "decimal":
+            decoded = Decimal(raw)
+            if not decoded.is_finite():
+                raise ValueError
+            return decoded
+        if kind == "date":
+            return date.fromisoformat(raw)
+        if kind == "datetime":
+            return datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    except (InvalidOperation, ValueError) as error:
+        raise OmniResultContractError("typed result cell is invalid") from error
+    raise OmniResultContractError("typed result cell kind is unsupported")
 
 
 def _validate_timestamp(value: str) -> None:

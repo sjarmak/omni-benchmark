@@ -56,6 +56,23 @@ class FakeClient:
         assert query == {"fields": ["answers.value"]}
         return [{"answer": 42}]
 
+    def plan_query(self, query: dict[str, Any]) -> dict[str, Any]:
+        assert query == {"fields": ["answers.value"]}
+        return {
+            "query": {"model_job": {"fields": ["answers.value"]}},
+            "status": "PLANNED",
+            "summary": {
+                "fields": {
+                    "answers.value": {
+                        "data_type": "NUMBER",
+                        "fully_qualified_name": "answers.value",
+                    }
+                },
+                "invalid_calculations": {},
+                "missing_fields": [],
+            },
+        }
+
 
 class FailedClient(FakeClient):
     def __init__(self, settings: OmniCliSettings) -> None:
@@ -488,7 +505,7 @@ def test_probe_records_supported_cancelled_state_as_error(
     assert trace[-1]["failure_class"] == "omni_job_terminal_failure"
 
 
-def test_probe_persists_live_metrics_for_unscoreable_governed_result(
+def test_probe_persists_live_metrics_and_recovers_truncated_preview_result(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     workspace, freeze_a_commit = _workspace(tmp_path)
@@ -504,8 +521,9 @@ def test_probe_persists_live_metrics_for_unscoreable_governed_result(
     assert status == 0
     receipt = json.loads(capsys.readouterr().out)
     record = json.loads((workspace / receipt["generation"]["path"]).read_text())
-    assert record["generation_outcome"] == "errored"
-    assert record["terminal_failure_class"] == "response_contract_error"
+    assert record["generation_outcome"] == "answered"
+    assert record["terminal_failure_class"] is None
+    assert record["result_artifact_path"] is not None
     assert record["model"] == {
         "name": "claude-opus-5",
         "provider": "bedrock",

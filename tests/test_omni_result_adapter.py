@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import json
+from datetime import date, datetime, timezone
+from decimal import Decimal
 
 import pytest
 
 from omni_benchmark.omni_result_adapter import (
     OmniResultContractError,
     bind_typed_query_result,
+    decode_result_artifact_rows,
     parse_omni_job_result,
 )
 
@@ -34,6 +37,142 @@ def _query_action(
         "timestamp": "2026-08-27T12:00:01Z",
         "type": "generate_query",
     }
+
+
+def _plan(*fields: tuple[str, str]) -> dict[str, object]:
+    names = [name for name, _ in fields]
+    return {
+        "query": {"model_job": {"fields": names}},
+        "status": "PLANNED",
+        "summary": {
+            "fields": {
+                name: {
+                    "data_type": data_type,
+                    "fully_qualified_name": name,
+                }
+                for name, data_type in fields
+            },
+            "invalid_calculations": {},
+            "missing_fields": [],
+        },
+    }
+
+
+def test_truncated_final_preview_binds_complete_metadata_typed_rerun() -> None:
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result="Number,Numeric-looking code,Enabled,Day,Observed at\n",
+                    query={
+                        "fields": [
+                            "answer.number",
+                            "answer.code",
+                            "answer.enabled",
+                            "answer.day",
+                            "answer.observed_at",
+                        ]
+                    },
+                    total_row_count=1,
+                    truncated=True,
+                )
+            ]
+        }
+    )
+
+    parsed = bind_typed_query_result(
+        parsed_query,
+        [
+            {
+                "Number": "12.500",
+                "Numeric-looking code": "00123",
+                "Enabled": True,
+                "Day": "2026-08-28",
+                "Observed at": "2026-08-28T13:14:15Z",
+            }
+        ],
+        _plan(
+            ("answer.number", "NUMBER"),
+            ("answer.code", "STRING"),
+            ("answer.enabled", "YESNO"),
+            ("answer.day", "DATE"),
+            ("answer.observed_at", "TIMESTAMP"),
+        ),
+    )
+
+    artifact = parsed.as_result_artifact()
+    assert artifact["rows"] == [
+        [
+            {"type": "decimal", "value": "12.500"},
+            "00123",
+            True,
+            {"type": "date", "value": "2026-08-28"},
+            {"type": "datetime", "value": "2026-08-28T13:14:15+00:00"},
+        ]
+    ]
+    assert decode_result_artifact_rows(artifact) == (
+        (
+            Decimal("12.500"),
+            "00123",
+            True,
+            date(2026, 8, 28),
+            datetime(2026, 8, 28, 13, 14, 15, tzinfo=timezone.utc),
+        ),
+    )
+
+
+@pytest.mark.parametrize(
+    ("plan", "message"),
+    [
+        (_plan(("answer.value", "UNSUPPORTED")), "unsupported"),
+        (_plan(), "field metadata"),
+        (
+            {
+                **_plan(("answer.value", "NUMBER")),
+                "status": "COMPLETE",
+            },
+            "PLANNED",
+        ),
+    ],
+)
+def test_typed_rerun_rejects_ambiguous_or_unsupported_plan_metadata(
+    plan: dict[str, object], message: str
+) -> None:
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result="Value\n1\n",
+                    query={"fields": ["answer.value"]},
+                    total_row_count=1,
+                )
+            ]
+        }
+    )
+
+    with pytest.raises(OmniResultContractError, match=message):
+        bind_typed_query_result(parsed_query, [{"Value": "1"}], plan)
+
+
+def test_number_metadata_rejects_non_numeric_string_without_fallback() -> None:
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result="Value\nnot-a-number\n",
+                    query={"fields": ["answer.value"]},
+                    total_row_count=1,
+                )
+            ]
+        }
+    )
+
+    with pytest.raises(OmniResultContractError, match="NUMBER"):
+        bind_typed_query_result(
+            parsed_query,
+            [{"Value": "not-a-number"}],
+            _plan(("answer.value", "NUMBER")),
+        )
 
 
 def test_parse_uses_last_successful_query_action_and_preserves_typed_multiset() -> None:
@@ -72,10 +211,14 @@ def test_parse_uses_last_successful_query_action_and_preserves_typed_multiset() 
             {"status": "complete", "count": 2345},
             {"status": "complete", "count": 2345},
         ],
+        _plan(("orders.status", "STRING"), ("orders.count", "NUMBER")),
     )
 
     assert parsed.columns == ("status", "count")
-    assert parsed.rows == (("complete", 2345), ("complete", 2345))
+    assert parsed.rows == (
+        ("complete", {"type": "decimal", "value": "2345"}),
+        ("complete", {"type": "decimal", "value": "2345"}),
+    )
     assert parsed.generated_query == json.dumps(
         final_query, ensure_ascii=False, separators=(",", ":"), sort_keys=True
     )
@@ -99,7 +242,11 @@ def test_parse_supports_empty_result_with_header() -> None:
             ]
         }
     )
-    parsed = bind_typed_query_result(parsed_query, [])
+    parsed = bind_typed_query_result(
+        parsed_query,
+        [],
+        _plan(("orders.status", "STRING"), ("orders.count", "NUMBER")),
+    )
 
     assert parsed.columns == ("status", "count")
     assert parsed.rows == ()
@@ -139,11 +286,48 @@ def test_typed_result_preserves_json_scalar_and_nested_value_types() -> None:
                 "metadata": {"items": [1, None]},
             }
         ],
+        _plan(
+            ("answer.number", "NUMBER"),
+            ("answer.ratio", "NUMBER"),
+            ("answer.enabled", "YESNO"),
+            ("answer.note", "STRING"),
+            ("answer.metadata", "JSON"),
+        ),
     )
 
     assert parsed.as_result_artifact()["rows"] == [
-        [42, 1.25, True, None, {"items": [1, None]}]
+        [
+            {"type": "decimal", "value": "42"},
+            {"type": "decimal", "value": "1.25"},
+            True,
+            None,
+            {"type": "json", "value": {"items": [1, None]}},
+        ]
     ]
+
+
+def test_json_object_cannot_collide_with_typed_cell_encoding() -> None:
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result="metadata\nobject\n",
+                    query={"fields": ["answer.metadata"]},
+                    total_row_count=1,
+                )
+            ]
+        }
+    )
+    json_value = {"type": "decimal", "value": "12"}
+
+    parsed = bind_typed_query_result(
+        parsed_query,
+        [{"metadata": json_value}],
+        _plan(("answer.metadata", "JSON")),
+    )
+    artifact = parsed.as_result_artifact()
+
+    assert decode_result_artifact_rows(artifact) == ((json_value,),)
 
 
 @pytest.mark.parametrize("missing", ["message", "timestamp"])
@@ -314,6 +498,7 @@ def test_typed_result_rejects_recursive_forbidden_keys_before_serialization() ->
         bind_typed_query_result(
             parsed_query,
             [{"answer": {"external_knowledge": ["hidden-node"]}}],
+            _plan(("answer.value", "NUMBER")),
         )
 
 
@@ -331,9 +516,17 @@ def test_typed_result_rejects_row_shape_or_count_mismatch() -> None:
     )
 
     with pytest.raises(OmniResultContractError, match="columns"):
-        bind_typed_query_result(parsed_query, [{"different": 2, "extra": 3}])
+        bind_typed_query_result(
+            parsed_query,
+            [{"different": 2, "extra": 3}],
+            _plan(("answer.value", "NUMBER")),
+        )
     with pytest.raises(OmniResultContractError, match="row count"):
-        bind_typed_query_result(parsed_query, [])
+        bind_typed_query_result(
+            parsed_query,
+            [],
+            _plan(("answer.value", "NUMBER")),
+        )
 
 
 def test_typed_result_uses_authoritative_json_keys_when_csv_has_friendly_labels() -> (
@@ -351,10 +544,14 @@ def test_typed_result_uses_authoritative_json_keys_when_csv_has_friendly_labels(
         }
     )
 
-    parsed = bind_typed_query_result(parsed_query, [{"orders.total_revenue": 42}])
+    parsed = bind_typed_query_result(
+        parsed_query,
+        [{"orders.total_revenue": 42}],
+        _plan(("orders.total_revenue", "NUMBER")),
+    )
 
     assert parsed.columns == ("orders.total_revenue",)
-    assert parsed.rows == ((42,),)
+    assert parsed.rows == (({"type": "decimal", "value": "42"},),)
 
 
 @pytest.mark.parametrize(
@@ -368,12 +565,12 @@ def test_typed_result_uses_authoritative_json_keys_when_csv_has_friendly_labels(
                     _query_action(
                         csv_result="answer\n42\n",
                         query={"fields": ["answer"]},
-                        total_row_count=1,
+                        total_row_count=0,
                         truncated=True,
                     )
                 ]
             },
-            "truncated",
+            "exceeds",
         ),
         (
             {

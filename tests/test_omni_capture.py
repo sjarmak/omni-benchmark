@@ -52,6 +52,23 @@ class FakeOmniClient:
         assert query == {"fields": ["answers.value"]}
         return [{"answer": 42}]
 
+    def plan_query(self, query: dict[str, object]) -> dict[str, object]:
+        assert query == {"fields": ["answers.value"]}
+        return {
+            "query": {"model_job": {"fields": ["answers.value"]}},
+            "status": "PLANNED",
+            "summary": {
+                "fields": {
+                    "answers.value": {
+                        "data_type": "NUMBER",
+                        "fully_qualified_name": "answers.value",
+                    }
+                },
+                "invalid_calculations": {},
+                "missing_fields": [],
+            },
+        }
+
 
 class TruncatedMetricsClient(FakeOmniClient):
     def job_result(self, job_id: str) -> dict[str, object]:
@@ -157,35 +174,36 @@ def test_capture_preserves_shape_and_trace_without_result_values(
     assert result.result_artifact is not None
     assert json.loads(result.result_artifact.path.read_text()) == {
         "columns": ["answer"],
-        "rows": [[42]],
+        "rows": [[{"type": "decimal", "value": "42"}]],
         "schema_version": 1,
         "truncated": False,
     }
     trace = [json.loads(line) for line in result.trace.path.read_text().splitlines()]
-    assert [event["seq"] for event in trace] == [0, 1, 2, 3, 4]
+    assert [event["seq"] for event in trace] == [0, 1, 2, 3, 4, 5]
     assert [event["event_type"] for event in trace] == [
         "omni_job_submit",
         "omni_job_status",
         "omni_job_status",
         "omni_job_result",
+        "omni_query_plan",
         "omni_query_run_json",
     ]
     assert all(event["retry_delta"] is None for event in trace)
     assert all(event["tool_call_delta"] is None for event in trace)
-    assert [event["database_query_delta"] for event in trace] == [0, 0, 0, 1, 0]
+    assert [event["database_query_delta"] for event in trace] == [0, 0, 0, 1, 0, 0]
     assert all(event["validation_attempt_delta"] is None for event in trace)
     assert stat.S_IMODE(result.trace.path.stat().st_mode) == 0o600
     shape_text = result.response_shape.path.read_text()
     assert "csvResult" in shape_text
     assert '"generate_query":1' in shape_text
-    assert "answers.value" not in shape_text
+    assert "answers.value" in shape_text
     assert '"type":"number"' in shape_text
     assert "authorization" not in shape_text
     assert "provider-secret" not in shape_text
     assert "private-result-id" not in shape_text
 
 
-def test_capture_preserves_job_metrics_when_governed_result_is_truncated(
+def test_capture_recovers_full_result_and_metrics_from_truncated_preview(
     tmp_path: Path,
 ) -> None:
     capture = OmniJobCapture(
@@ -198,9 +216,9 @@ def test_capture_preserves_job_metrics_when_governed_result_is_truncated(
 
     result = capture.probe("Public benchmark question")
 
-    assert result.terminal_state == "CONTRACT_ERROR"
-    assert result.failure_class == "response_contract_error"
-    assert result.result_artifact is None
+    assert result.terminal_state == "COMPLETE"
+    assert result.failure_class is None
+    assert result.result_artifact is not None
     assert result.model_name == "claude-opus-5"
     assert result.model_provider == "bedrock"
     assert result.token_usage is not None
@@ -346,7 +364,14 @@ def test_capture_preserves_known_query_counts_when_typed_binding_fails(
     assert result.terminal_state == "CONTRACT_ERROR"
     assert result.database_query_count == 1
     trace = [json.loads(line) for line in result.trace.path.read_text().splitlines()]
-    assert [event["database_query_delta"] for event in trace] == [0, 0, 1, 0, 0]
+    assert [event["database_query_delta"] for event in trace] == [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+    ]
 
 
 def test_capture_records_completed_unrecognized_result_as_contract_error(

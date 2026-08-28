@@ -40,6 +40,8 @@ class OmniJobClient(Protocol):
 
     def job_result(self, job_id: str) -> dict[str, Any]: ...
 
+    def plan_query(self, query: Mapping[str, Any]) -> dict[str, Any]: ...
+
     def run_query_json(self, query: Mapping[str, Any]) -> list[dict[str, Any]]: ...
 
 
@@ -202,12 +204,16 @@ class OmniJobCapture:
         self._parsed_query = parsed_query
         self._record_agent_query_telemetry(parsed_query)
         self._database_queries_observable = True
+        plan = self._observe_mapping(
+            "omni_query_plan",
+            lambda: self._client.plan_query(parsed_query.semantic_query),
+        )
         typed_rows = self._observe(
             "omni_query_run_json",
             lambda: self._client.run_query_json(parsed_query.semantic_query),
             database_query_delta=0,
         )
-        parsed_result = bind_typed_query_result(parsed_query, typed_rows)
+        parsed_result = bind_typed_query_result(parsed_query, typed_rows, plan)
         result_artifact = self._store.write_json(
             "answer.result.json", parsed_result.as_result_artifact()
         )
