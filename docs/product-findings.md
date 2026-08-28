@@ -42,3 +42,9 @@ until the four public smoke attempts establish what Omni actually exposes.
 - **Was the change tested?:**
 - **Measured effect:**
 - **Experiment / commit provenance:**
+- **Visible in AI Hub?:**
+- **AI Hub exposes relevant context/behavior?:**
+- **Fixable through current AI Hub/modeling workflow?:**
+- **AI Hub Eval outcome:**
+- **External execution outcome:**
+- **Evaluator agreement/disagreement:**

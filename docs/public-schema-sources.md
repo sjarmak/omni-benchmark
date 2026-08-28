@@ -25,6 +25,13 @@ uv run python scripts/prepare_schema_sources.py fetch \
 uv run python scripts/prepare_schema_sources.py inspect \
   --inventory config/public_schema_sources.json \
   --source-root data/raw/livesqlbench-large-v1/schema
+
+uv run python scripts/prepare_schema_sources.py build \
+  --inventory config/public_schema_sources.json \
+  --source-root data/raw/livesqlbench-large-v1/schema \
+  --output-root semantic_models/public_schema_ir \
+  --database archeology_scan_large \
+  --companion-hkb-ir semantic_models/public_ir/archeology_scan_large.hkb.jsonl
 ```
 
 The inventory reader walks every absolute path component through held no-follow
@@ -69,3 +76,27 @@ baseline.
 
 No benchmark question text, gold SQL, test case, or hidden
 `external_knowledge` annotation is used by this source-acquisition stage.
+
+## Canary schema IR
+
+The committed canary output contains only row-free public semantics:
+
+| Record | Count |
+| --- | ---: |
+| Tables | 51 |
+| Columns | 959 |
+| Structured JSON leaves | 92 |
+| Primary keys | 51 |
+| Foreign keys | 77 |
+
+The generator uses the pinned SQLGlot 30.17 PostgreSQL parser rather than a
+custom comma- or line-based DDL grammar. It preserves source order, semantic
+identifier case and quote state, declared types, defaults, nullability, key
+order, nested JSON paths, and content/intervention provenance. Stable IDs use
+percent-encoded exact identifiers. The manifest binds the DDL, column meanings,
+companion HKB IR, and emitted JSONL by SHA-256.
+
+This artifact is still pre-semantic. It does not infer joins, aggregation grain,
+measures, or HKB-to-field mappings. Those interpretive decisions belong in a
+separate mapping artifact so they can carry explicit representability losses
+and modeling provenance.

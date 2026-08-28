@@ -18,5 +18,6 @@ def test_prepare_schema_sources_script_exposes_fetch_command() -> None:
     )
 
     assert result.returncode == 0
+    assert "build" in result.stdout
     assert "fetch" in result.stdout
     assert "inspect" in result.stdout

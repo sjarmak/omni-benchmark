@@ -1610,3 +1610,233 @@ by the model author or transformation system.
 Compile a row-free, case-preserving schema/column intermediate representation
 for the canary, then map that IR and the HKB dependency graph into a conservative
 Omni extension with explicit representability and loss records.
+
+## 2026-08-27 — D-023: Separate mechanical schema extraction from semantic interpretation
+
+### Decision / experiment
+
+Compile one row-free public schema IR before authoring any Omni objects or
+binding HKB definitions to fields.
+
+### Observation
+
+The canary DDL contains quoted identifiers, composite keys, foreign keys,
+defaults with casts and commas, and nested JSONB columns. A table counter was
+enough for source reconnaissance but could not safely drive relationship or
+field generation. The source files also interleave each DDL statement with
+example rows that are outside the chosen baseline information boundary.
+
+### Hypothesis
+
+A real PostgreSQL parser behind an exact row-section splitter will preserve the
+mechanical schema faithfully while preventing source examples or modeling
+judgment from entering the semantic baseline unnoticed.
+
+### Decision
+
+Emit only table, column, structured-leaf, and declared-foreign-key records. Keep
+primary and unique keys on table records. Bind the output to the public schema,
+column meanings, and companion HKB IR, but defer every HKB-to-schema mapping to
+a separate interpretive artifact.
+
+### Rationale
+
+A custom DDL grammar was rejected because defaults, constraints, and quoted
+identifiers make comma/line splitting brittle. `pglast` was considered because
+it wraps PostgreSQL's parser, but SQLGlot 30.17 parsed all 51 canary statements,
+has a permissive MIT license, and provides the needed PostgreSQL AST without a
+native dependency. Direct Omni YAML generation was deferred because it would
+mix source extraction with choices about grain, formulas, and representability.
+
+### Intervention
+
+Pinned SQLGlot 30.17.0; added strict DDL/example-row separation, PostgreSQL AST
+extraction, PostgreSQL-resolved identifier identity with source spelling and
+quote-state provenance, typed JSON paths, PK/FK resolution, hash-bound
+provenance, deterministic publication, a CLI build command, and a committed
+canary IR. Experiment ID: public baseline D-023; affected subsystem:
+schema-to-semantic transformation. Change type: general system improvement.
+Content provenance: public schema and column metadata. Intervention provenance:
+mechanical baseline transformation.
+
+### Result
+
+The committed canary IR contains 51 tables, 959 columns, 92 structured leaves,
+51 primary keys, and 77 foreign keys across 1,179 records. Its JSONL SHA-256 is
+`e2044dc11b055e08046153de8c9cec9d121f037391d5b757c8cd071dd607162f`.
+Independent generation into two directories is byte-identical. Adversarial
+tests put SQL-looking text and protected-key names in the example-row section;
+none entered the output. The real canary counts, exact quoted identifiers,
+relationship targets, companion HKB hash, and output hash are regression-tested.
+No benchmark question text or hidden label was accessed.
+
+### Interpretation
+
+The public source data now has a reproducible boundary suitable for semantic
+modeling. Any later join, metric, or HKB binding can be reviewed as an explicit
+interpretation rather than being mistaken for extracted source truth.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+Semantic-model import needs a provenance boundary between warehouse facts and
+model-author choices. This is an import/modeling principle, not yet an observed
+Omni runtime finding.
+
+### Next step
+
+Create the reviewed HKB-to-schema mapping and loss manifest, then compile the
+representable same-grain subset into an isolated Omni branch.
+
+## 2026-08-27 — D-024: Require explicit grain before compiling HKB definitions
+
+### Decision / experiment
+
+Classify all 54 canary HKB nodes by public-only representability before emitting
+derived fields.
+
+### Observation
+
+The HKB dependency graph composes definitions across point-cloud, mesh,
+environment, registration, scan, processing, site, equipment, and conservation
+tables. The public schema does not declare a shared scan/session identity across
+the measurement tables. Several tables share project, person, site, or equipment
+keys, but those paths can produce many-to-many fanout rather than a defensible
+analytic grain.
+
+### Hypothesis
+
+Compiling every syntactically expressible HKB formula would create plausible but
+semantically unsafe fields. A conservative classification should isolate a
+useful same-row baseline and make the missing contracts visible.
+
+### Decision
+
+Compile only same-row dependency closures in the first canary model. Preserve
+value illustrations as descriptions or synonyms. Mark cross-grain definitions
+as ambiguous until a mapping specifies target grain, relationship path,
+cardinality, deduplication/preaggregation, and zero/multiple-match behavior.
+Keep missing or underspecified definitions explicitly unsupported.
+
+### Rationale
+
+One all-purpose Topic and inferred joins were considered and rejected because
+they could silently change metric meaning. This project is testing semantic
+governance; emitting unsafe joins merely to increase apparent knowledge coverage
+would contradict that premise.
+
+### Intervention
+
+Performed a public-only node-by-node reconnaissance against the HKB IR, DDL, and
+column meanings. No Omni model was changed in this step. Affected subsystem:
+HKB-to-schema mapping policy. Change type: general modeling safeguard. Content
+provenance: public HKB, schema, and column metadata. Intervention provenance:
+human/general modeling inference.
+
+### Result
+
+The initial classification is 14 mechanically representable same-grain nodes,
+10 context-only value illustrations, 20 cross-grain ambiguous nodes, and 10
+currently unsupported nodes. The largest blocker is missing shared measurement
+identity. Other blockers include a missing scan-duration field, unspecified
+rarity/status mappings, source/HKB vocabulary mismatches, unit-bearing free text,
+and entity-level existence/aggregation semantics. Dependency metadata also omits
+concepts referenced in the prose of two definitions, so the dependency list
+cannot be treated as a complete executable plan.
+
+### Interpretation
+
+Dependency preservation is necessary but not sufficient. Grain is the central
+semantic contract for this canary, and honest non-representation is safer than
+an executable formula on an invented join path.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+An HKB-import workflow should surface representability and grain conflicts
+instead of maximizing imported-object count. This is a pre-runtime product
+hypothesis to test during Omni upload and query planning, not yet evidence of an
+Omni agent failure.
+
+### Next step
+
+Encode the classification and exact source bindings in a reviewable mapping/loss
+artifact, then generate grain-focused Topics for the same-row subset.
+
+## 2026-08-27 — D-025: Use AI Hub for diagnosis, not benchmark truth
+
+### Decision / experiment
+
+Define Omni AI Hub's role before the first authenticated C4 canary run.
+
+### Observation
+
+AI Hub provides the product-native workflow for governed-agent session
+inspection, prompt sets, accuracy-judge evals, and branch comparison. The
+LiveSQLBench study, however, defines correctness by executed result-set parity
+under external custody and scoring. Conflating those evaluators would make the
+benchmark dependent on a product judge with a different objective.
+
+### Hypothesis
+
+Using AI Hub for rapid mechanism diagnosis while retaining independent execution
+correctness will improve both iteration speed and product insight. Preserved
+judge/execution disagreements may reveal observability, validator, or evaluation
+gaps that a single scoring surface would hide.
+
+### Decision
+
+Use AI Hub where useful to inspect representative C4 failures, compare isolated
+branches, and run small failure-class prompt sets. Do not mirror all `dev-A` in
+AI Hub, expose hidden annotations, or promote a change solely from its judge.
+Promising candidates must pass external `dev-A` and regression gates; `dev-B`
+usage remains checkpoint-only.
+
+### Rationale
+
+Ignoring the native workflow would reduce production fidelity and miss a core
+product question: can an Omni user see and fix the failure? Making AI Hub the
+benchmark judge would weaken the independent execution claim. The two-surface
+design retains both advantages without rebuilding unnecessary parallel tooling.
+
+### Intervention
+
+Added the AI Hub responsibility boundary, preferred C4 loop, eval-set provenance
+requirements, first-live-run telemetry inventory, and product-learning matrix.
+Bead: `omni-benchmark-dih.13`; affected subsystem: C4 diagnosis and product
+evaluation. Change type: general evaluation/product workflow. No model or
+experimental condition changed.
+
+### Result
+
+Documentation now names external execution as authoritative and treats AI Hub
+outcomes as diagnostic evidence. No authenticated AI Hub session or eval has run;
+the live comparison remains gated on the isolated public-only canary model and
+database connection.
+
+### Interpretation
+
+The benchmark can evaluate both Omni's governed system and the workflow customers
+use to improve it, without allowing a native judge to redefine correctness.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+The first canary will test whether AI Hub exposes enough context, retrieval,
+compiler, validation, and telemetry evidence to move from a wrong result to a
+reusable fix—and whether its judge agrees with execution-based correctness.
+
+### Next step
+
+After isolated upload/read-back, run one representative C4 question, inventory
+AI Hub visibility against the trace contract, and record the first evidence-backed
+product finding or explicit observability gap.

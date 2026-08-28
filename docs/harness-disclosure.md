@@ -4,6 +4,12 @@ Status: frozen for Freeze A. No scaled baseline has been launched and no private
 label has been accessed. Unknown values below are blockers for the condition-specific
 telemetry smoke test, not values to infer or fill retrospectively.
 
+Freeze A remains the historical protocol state recorded at commit
+`7d39ee107338da1ce10e2553a4290e64bfc2f892` (metadata record commit
+`7720cc4da3369484f5076422147822efba76d387`). Later human-directed protocol
+amendments, including the AI Hub diagnostic boundary below, are prospective
+addenda and do not rewrite that historical commit.
+
 Measured results are conditional on these evaluated harnesses. Published
 controlled studies do not support assuming either that scaffold effects are
 negligible or that they dominate model effects across tasks. Accordingly,
@@ -181,6 +187,17 @@ complete attempt envelope, run manifest, and secure capture boundary pass
 synthetic/adversarial tests. No live authenticated C4 response has been inspected
 and C1-C3 are not connected. Scaled runs remain blocked until four separately
 manifested smoke bundles validate together.
+
+## AI Hub diagnostic boundary
+
+For C4, Omni AI Hub is the preferred product-native surface for inspecting
+sessions and running small branch comparisons when it provides useful signal.
+It is not the correctness authority and does not replace external `dev-A`,
+guardian-gated `dev-B`, or sealed test scoring. Preserve both AI Hub judge output
+and LiveSQLBench execution outcomes when available; disagreement is a product
+finding rather than a reason to overwrite either result. The live canary will
+inventory AI Hub telemetry against the attempt contract before scaled runs. See
+[`ai-hub-role.md`](ai-hub-role.md).
 
 ## Derived co-outcomes
 

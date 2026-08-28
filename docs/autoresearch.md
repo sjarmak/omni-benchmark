@@ -93,6 +93,13 @@ regression rate, reasonable latency/cost, low complexity, and production
 relevance. It is deliberately not collapsed into a weighted reward. A scalar
 increase cannot authorize `KEEP` by itself.
 
+For C4, AI Hub may accelerate the observe and local-evaluation steps through
+product-native session inspection and small failure-class prompt sets. It cannot
+authorize `KEEP`: external execution correctness remains authoritative, and a
+promising AI Hub branch comparison must still pass the full `dev-A` and existing
+regression gates. Prompt-set membership and selection provenance are recorded.
+See [`ai-hub-role.md`](ai-hub-role.md).
+
 ## Optimization surfaces and search methods
 
 The optimized artifact is the complete relevant system: HKB transformation,

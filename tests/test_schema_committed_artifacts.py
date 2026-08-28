@@ -11,6 +11,7 @@ from omni_benchmark.schema_source_inventory import load_schema_source_inventory
 REPOSITORY_ROOT = Path(__file__).parents[1]
 SCHEMA_INVENTORY_PATH = REPOSITORY_ROOT / "config" / "public_schema_sources.json"
 HKB_INVENTORY_PATH = REPOSITORY_ROOT / "config" / "public_hkb_sources.json"
+CANARY_SCHEMA_IR_ROOT = REPOSITORY_ROOT / "semantic_models" / "public_schema_ir"
 
 
 def test_committed_inventory_pins_schema_metadata_for_every_hkb_database() -> None:
@@ -41,3 +42,45 @@ def test_committed_inventory_matches_the_eligible_population_databases() -> None
     }
 
     assert {item.database for item in inventory.files} == eligible_databases
+
+
+def test_committed_canary_schema_ir_is_hash_bound_and_row_free() -> None:
+    manifest_path = CANARY_SCHEMA_IR_ROOT / "manifest.json"
+    manifest = json.loads(manifest_path.read_bytes())
+    ir_path = CANARY_SCHEMA_IR_ROOT / manifest["output"]["file"]
+    ir_bytes = ir_path.read_bytes()
+    records = [json.loads(line) for line in ir_bytes.splitlines()]
+
+    assert manifest["database"] == "archeology_scan_large"
+    assert manifest["counts"] == {
+        "columns": 959,
+        "foreign_keys": 77,
+        "primary_keys": 51,
+        "structured_columns": 12,
+        "structured_leaves": 92,
+        "tables": 51,
+    }
+    assert manifest["output"]["sha256"] == hashlib.sha256(ir_bytes).hexdigest()
+    assert manifest["output"]["sha256"] == (
+        "e2044dc11b055e08046153de8c9cec9d121f037391d5b757c8cd071dd607162f"
+    )
+    assert manifest["source"]["companion_hkb_ir"]["sha256"] == (
+        "c6b20ec0e101f080712255645554cea2685deca7929a8c6d4c3391aeecf92d37"
+    )
+    assert manifest["source"]["companion_hkb_ir"]["manifest_sha256"] == (
+        "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d"
+    )
+    assert len(records) == 1_179
+    assert {record["record_kind"] for record in records} == {
+        "column",
+        "foreign_key",
+        "structured_leaf",
+        "table",
+    }
+    assert all(
+        not {"sol_sql", "gold_sql", "external_knowledge", "test_cases"}.intersection(
+            record
+        )
+        for record in records
+    )
+    assert b"First 3 rows:" not in ir_bytes

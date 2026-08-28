@@ -114,11 +114,20 @@ uv run python scripts/prepare_schema_sources.py fetch \
 uv run python scripts/prepare_schema_sources.py inspect \
   --inventory config/public_schema_sources.json \
   --source-root data/raw/livesqlbench-large-v1/schema
+
+uv run python scripts/prepare_schema_sources.py build \
+  --inventory config/public_schema_sources.json \
+  --source-root data/raw/livesqlbench-large-v1/schema \
+  --output-root semantic_models/public_schema_ir \
+  --database archeology_scan_large \
+  --companion-hkb-ir semantic_models/public_ir/archeology_scan_large.hkb.jsonl
 ```
 
 The 36 source objects are verified against the same dataset revision before any
-file is published. The later semantic compiler consumes DDL and column meanings
-only; it does not consume the public sample rows embedded in the schema text.
+file is published. The canary compiler consumes DDL and column meanings only;
+it does not consume the public sample rows embedded in the schema text. Its
+committed row-free IR preserves tables, columns, structured leaves, and declared
+keys while leaving HKB-to-schema interpretation to the next reviewed stage.
 See [`docs/public-schema-sources.md`](docs/public-schema-sources.md).
 
 ## Gold custody

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch the pinned public LiveSQLBench schema metadata."""
+"""Fetch, inspect, and compile pinned public LiveSQLBench schema metadata."""
 
 from __future__ import annotations
 
