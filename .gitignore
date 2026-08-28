@@ -4,14 +4,19 @@
 *.db
 .beads-credential-key
 .beads/proxieddb/
-.beads/issues.jsonl
 *.gate.lock*
 
 # Operating-system and editor-local files
 .DS_Store
+._*
+.Spotlight-V100/
+.Trashes/
+.fseventsd/
 Thumbs.db
 .idea/
 .vscode/
+.fleet/
+.history/
 *.swp
 *.swo
 *~
@@ -20,6 +25,8 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+.envrc
+.direnv/
 .omni-session.json
 .mcp.json
 
@@ -27,9 +34,16 @@ Thumbs.db
 .venv/
 __pycache__/
 *.py[cod]
+.cache/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+.hypothesis/
+.tox/
+.nox/
+.ipynb_checkpoints/
+.jupyter/
+.uv-cache/
 .coverage
 .coverage.*
 htmlcov/
