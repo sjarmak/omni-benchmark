@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Reproducible Omni evaluation tooling for LiveSQLBench Large-v1"
 requires-python = ">=3.11"
 dependencies = [
+  "psycopg[binary]==3.3.4",
   "PyYAML==6.0.3",
   "sqlglot==30.17.0",
 ]

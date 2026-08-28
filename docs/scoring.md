@@ -71,24 +71,34 @@ instead of silently changing scoring.
 decimal-policy identifiers. Freeze manifests should store that object with the
 scorer source commit. Any semantic change requires a new version string.
 
-## Database execution integration still required
+## Database execution integration
 
-The current module intentionally stops at pure SQL rewriting and result
-comparison. The sealed evaluator still needs an integration layer that:
+The pure scoring module intentionally stops at SQL rewriting and result
+comparison. The integration layer is implemented in
+`omni_benchmark.postgres_execution`, `omni_benchmark.postgres_isolation`,
+`omni_benchmark.sealed_scoring`, and `omni_benchmark.sealed_batch`. It:
 
-- executes rewritten candidate and gold SQL against the same isolated PostgreSQL
-  state for the official score;
+- executes rewritten candidate and gold SQL against separate clones of the same
+  pristine PostgreSQL state for the official score;
 - executes the unchanged authored SQL against equivalent isolated state for the
   sensitivity score;
 - applies public `preprocess_sql` and `clean_up_sqls` in the correct lifecycle;
 - preserves multiple-statement ordering and obtains rows with stable driver
   types;
+- uses a distinct restricted role and read-only transactions for all candidate
+  and gold SQL, while trusted setup/cleanup uses the clone-admin role;
+- structurally admits only Query statements for generated candidate SQL and
+  applies an evaluator-owned cancellation timer outside server SQL settings;
+- rejects no-result statements without conflating them with a valid empty
+  result; official overflow preserves the upstream prefix comparison with an
+  explicit diagnostic, while sensitivity scoring rejects overflow;
 - enforces the preregistered timeout and retry rules;
 - distinguishes candidate-system failures from benchmark-infrastructure
   failures;
 - records the three-state attempt outcome separately from result equality;
 - keeps hidden test SQL and rows inside the sealed evaluator.
 
-Integration tests for those behaviors require provisioned benchmark databases.
-They must be completed and frozen before Freeze B. The pure synthetic suite does
-not claim database-execution equivalence by itself.
+The public/synthetic suite covers each behavior, and an opt-in live conformance
+test passed against a disposable PostgreSQL 18 template clone. See
+`docs/sealed-execution.md` for the lifecycle, failure ownership, generate-then-
+score gate, and the remaining Freeze-B version-recording requirement.

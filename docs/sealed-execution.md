@@ -1,0 +1,177 @@
+# Sealed PostgreSQL execution
+
+Status: public/synthetic conformance implementation. No hidden label was used to
+build or test this adapter.
+
+This layer joins the frozen pure comparators in `omni_benchmark.scoring` to
+PostgreSQL without making the development workspace a gold-package reader. The
+package deliberately contains no attachment parser. A dedicated evaluator must
+construct evaluator-only `SealedGoldRecord` values inside the custody boundary
+after Freeze B.
+
+## Execution contract
+
+`omni_benchmark.postgres_execution` uses Psycopg's typed DB-API transport and
+reproduces the public LiveSQLBench Query execution behavior:
+
+- set a 60-second PostgreSQL statement timeout before every statement;
+- independently arm a client-side cancellation timer that candidate SQL cannot
+  disable by changing PostgreSQL settings;
+- execute a string containing semicolon-separated statements as one driver call;
+- advance Psycopg 3 to the final result set, matching the pinned Psycopg 2
+  evaluator's last-result behavior;
+- execute explicit statement lists in order and retain only the last result;
+- commit each successful statement and roll back a failed statement;
+- fetch 10,001 rows, transport at most the first 10,000, and mark overflow;
+- preserve Psycopg values such as `Decimal`, dates, JSON, booleans, and nulls for
+  the frozen comparators rather than converting them through CSV.
+
+Driver errors are reduced to a SQLSTATE-aware class without retaining SQL or the
+driver message. SQLSTATE `57014` is a query timeout, SQLSTATE class `08` and
+client connection errors are infrastructure failures, and other database errors
+are statement failures. A rollback, cursor-creation, or cursor-close failure is
+infrastructure-owned because the evaluator can no longer establish clean state.
+
+The timeout override exists only for bounded public conformance tests. It cannot
+exceed the preregistered 60-second ceiling; final evaluation uses the default.
+
+Before any isolate is acquired, candidate SQL is parsed with the pinned
+PostgreSQL dialect and admitted only when every top-level statement is a query.
+Transaction control, utility commands, DDL/DML, and nested DML are rejected.
+Query-call forms with cluster/session side effects are also rejected, including
+`set_config`, session random-seed mutation, large-object mutation, and sequence
+mutation. Anonymous `pg_*` functions are denied as a class because PostgreSQL
+includes non-transactional WAL, notification, advisory-lock, and administrative
+functions that remain effective in a read-only transaction. Unsupported syntax
+is rejected without allowing the parser to log the SQL source. Multiple
+admitted query statements remain supported for official last-result
+compatibility.
+
+## Per-scorer lifecycle
+
+Every scorer gets two fresh disposable database clones so candidate-side state
+can never affect gold execution:
+
+1. acquire candidate and gold clones from the same pristine template;
+2. run trusted `preprocess_sql` independently on both clones;
+3. run candidate SQL as a restricted role in read-only transactions;
+4. run gold SQL as the same restricted role on the untouched gold clone;
+5. run trusted `clean_up_sql` independently on both clones;
+6. destroy/reset and release both clones.
+
+Reset and release run even if evaluation or cleanup raises. There is no scorer
+retry. The outer sealed runner may repeat a trial only when the returned failure
+is mechanically classified as benchmark infrastructure under the preregistered
+rule.
+
+The official policy first executes the authored candidate once, reproducing the
+public runner's error-detection pass. It then rewrites candidate and gold SQL
+with the frozen comment/`DISTINCT`/`ROUND` rules, executes both, and applies
+official Soft EX. This means the candidate is executed twice, as it is upstream.
+
+The sensitivity policy executes candidate and gold SQL once each without SQL
+rewriting and applies the frozen multiset/decimal comparator. It is run on a
+different pristine clone so official scoring cannot affect it.
+
+The public evaluator uses one database for candidate and gold within a scorer.
+The sealed adapter deliberately hardens that lifecycle with independent clones
+and read-only scoring connections. This preserves Query-task results while
+preventing candidate DDL/DML from changing the answer used as ground truth.
+The official scorer preserves the public evaluator's lossy 10,000-row prefix
+comparison and records explicit candidate/gold overflow diagnostics. The
+sensitivity scorer rejects overflow rather than silently accepting equal
+truncated prefixes.
+
+## Outcome and retry ownership
+
+The SQL-free `SealedScoringResult` has an optional three-state score:
+
+- `correct` and `wrong_answer` are normal completed answers;
+- `refused_or_error` covers candidate syntax/runtime errors, candidate query
+  timeouts, and no query after the evaluated system exhausts its own policy;
+- a `None` outcome is a benchmark-infrastructure failure and is not allowed into
+  a score artifact.
+
+Candidate statements with no result set are evaluated-system failures. Candidate
+overflow is also an evaluated-system failure for sensitivity scoring. A valid
+empty `SELECT` remains distinct and can be scored by the sensitivity comparator.
+Gold no-result and sensitivity-overflow states are deterministic evaluator
+failures and are not rerunnable. Only a closed allowlist of plausibly transient
+database acquire/connect/state failures is rerun-eligible. `as_score_record()`
+transports only the attempt ID, three-state outcome, and optional failure
+category into the existing hash-bound score-artifact API. SQL and result rows
+never cross that interface.
+
+## Generate-then-score gate
+
+`omni_benchmark.sealed_batch.score_completed_generation` validates all inputs
+before acquiring any database:
+
+- the committed schedule has exactly 1,212 unique attempt IDs;
+- the frozen generation has exactly that attempt set;
+- the sealed gold records have exactly that attempt set.
+
+Only then does it score the attempts, in committed schedule order, under both
+policies. This is the mechanical boundary behind “generate all 1,212 outputs
+before scoring any.” The final evaluator should pass each policy's score records
+to `create_score_artifact`, which adds generation-file and per-record hash
+bindings. An infrastructure failure blocks score-artifact materialization until
+the preregistered rerun procedure resolves it.
+
+## Psycopg template connector
+
+`PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It
+requires separate in-memory admin and execution connection strings plus a
+database-to-template mapping. Both strings must name explicit, distinct roles.
+Only the admin role creates/drops clones and runs trusted setup/cleanup; generated
+candidate and gold SQL always use the restricted execution role with both a
+connection-level read-only default and transaction-level read-only enforcement.
+Those settings are defense in depth, not the security boundary: before returning
+a scoring connection the provider attests the live role, including role
+attributes/memberships, database ownership and CREATE/TEMP, schema CREATE,
+table/column/sequence mutation privileges, and user-function execution. The
+clone's database ACL is hardened before connection. Any unsafe privilege fails
+closed. The provider creates randomly named single-use clones with safely quoted
+identifiers, uses `ClientCursor` for Psycopg 2-compatible simple-query behavior,
+terminates clone connections during reset, and drops each clone. Connection
+strings are excluded from object representations and errors are sanitized.
+If clone creation has an ambiguous acknowledgement or ACL hardening fails, the
+provider performs a compensating `DROP DATABASE IF EXISTS` so a full evaluation
+cannot accumulate orphan databases.
+
+Psycopg and its binary package are pinned to 3.3.4 in the lockfile. Final Freeze
+B metadata must also record PostgreSQL server and libpq versions.
+
+## Conformance evidence
+
+The normal suite uses only synthetic/public fixtures and covers preprocessing,
+cleanup, raw candidate detection, both SQL rewrite transports, ordered statement
+execution, semicolon batches, final-result selection, row cap, empty results,
+server and client-enforced timeouts, query-only candidate admission, database
+failures, cleanup/reset, compensating clone cleanup, exact batch gating,
+score-record transport, and SQL-free representations.
+
+`tests/test_postgres_execution_live.py` is an opt-in PostgreSQL oracle for an
+explicitly disposable public or synthetic server. The main test uses the first
+three variables. The adversarial role-admission test additionally uses the last
+two. Admin and execution DSNs must name distinct roles:
+
+```text
+OMNI_BENCHMARK_LIVE_POSTGRES_DSN
+OMNI_BENCHMARK_LIVE_POSTGRES_EXECUTION_DSN
+OMNI_BENCHMARK_LIVE_TEMPLATE_DATABASE
+OMNI_BENCHMARK_LIVE_POSTGRES_UNSAFE_EXECUTION_DSN
+OMNI_BENCHMARK_LIVE_POSTGRES_UNSAFE_TEMPLATE_DATABASE
+```
+
+It creates disposable clones and verifies a real server timeout,
+semicolon-batch final result, 10,000-row overflow signal, read-only enforcement,
+credential separation, both known read-only bypass payloads under a hardened
+role, client cancellation after a query disables the server timeout, rejection
+of the exact `ALTER ROLE`, large-object, `set_config`, logical-WAL-message, and
+advisory-lock candidate payloads,
+rejection of a role with an effective UPDATE grant, and pristine state after
+reset. It does not print connection strings. Both tests passed against a separate
+local PostgreSQL 18 container on 2026-08-28; that container was removed
+immediately afterward and the active benchmark-infrastructure canary was not
+touched.
