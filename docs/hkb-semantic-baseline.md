@@ -133,3 +133,33 @@ semantic-compiler stage with explicit loss records:
 No benchmark question, question ID, hidden annotation, or gold-derived example
 may drive this baseline mapping. Unsupported or ambiguous definitions must be
 reported rather than silently converted to generic prompt text.
+
+## Canary representability map
+
+The reviewed public-only canary map is generated independently of Omni syntax:
+
+```bash
+uv run python scripts/prepare_semantic_mapping.py \
+  --spec config/archeology_scan_public_mapping.json \
+  --hkb-ir semantic_models/public_ir/archeology_scan_large.hkb.jsonl \
+  --schema-ir semantic_models/public_schema_ir/archeology_scan_large.schema.jsonl \
+  --schema-manifest semantic_models/public_schema_ir/manifest.json \
+  --output-root semantic_models/public_mapping
+```
+
+The mapping classifies all 54 `archeology_scan_large` HKB nodes exactly once:
+
+| Disposition | Count | Meaning |
+| --- | ---: | --- |
+| `compile` | 14 | Same-table dependencies and inputs have a defensible row grain. |
+| `context_only` | 10 | Public value illustrations enrich existing fields without creating executable definitions. |
+| `defer_cross_grain` | 20 | A relationship/grain/aggregation contract is missing. |
+| `unsupported` | 10 | Required source fields, parsing rules, category mappings, dependencies, or existence semantics are absent. |
+
+Each expanded row preserves source bindings with role and confidence,
+dependency-audit exceptions, enumerated loss codes, unresolved relationship
+requirements, and separate content/intervention provenance. The mapping output
+is SHA-256
+`a54234cf768619bd15260a87ff3cd55765d006eaa4bd20bc05fd427ed24eeae6`.
+It is the reviewed input to the Omni compiler, not evidence that Omni accepted
+or executed the definition.

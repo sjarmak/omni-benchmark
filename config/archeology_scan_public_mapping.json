@@ -1,0 +1,1780 @@
+{
+  "database": "archeology_scan_large",
+  "records": [
+    {
+      "bindings": [
+        {
+          "alias": "P.res",
+          "confidence": "exact",
+          "role": "scan_resolution_mm"
+        },
+        {
+          "alias": "P.density",
+          "confidence": "exact",
+          "role": "point_density"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 0,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row point-cloud formula; null and zero-domain behavior remains to be verified in Omni.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "scan_resolution_index",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.coverage",
+          "confidence": "exact",
+          "role": "coverage_pct"
+        },
+        {
+          "alias": "P.overlap",
+          "confidence": "exact",
+          "role": "overlap_pct"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 1,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row point-cloud formula with public coverage and overlap inputs.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "scan_coverage_effectiveness",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.total",
+          "confidence": "exact",
+          "role": "total_points"
+        },
+        {
+          "alias": "P.cloud",
+          "confidence": "medium",
+          "role": "point_cloud_density_code"
+        },
+        {
+          "alias": "SP.area",
+          "confidence": "exact",
+          "role": "surface_area_m2"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 2,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_alias_uncertain"
+      ],
+      "notes": "Point-cloud and spatial rows share project/person references but no acquisition identity; Cloud_Dense is only a medium-confidence match for a density code.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.noise",
+          "confidence": "exact",
+          "role": "noise_db"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 3,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row composition of H0 and H1 with point-cloud noise.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "scan_quality_score",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.faces",
+          "confidence": "exact",
+          "role": "mesh_faces"
+        },
+        {
+          "alias": "M.vertices",
+          "confidence": "exact",
+          "role": "mesh_vertices"
+        },
+        {
+          "alias": "M.res",
+          "confidence": "exact",
+          "role": "mesh_resolution_mm"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 4,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row mesh formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "mesh_complexity_ratio",
+      "target_alias": "M.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.tex",
+          "confidence": "exact",
+          "role": "texture_size_px"
+        },
+        {
+          "alias": "M.faces",
+          "confidence": "exact",
+          "role": "mesh_faces"
+        },
+        {
+          "alias": "M.res",
+          "confidence": "exact",
+          "role": "mesh_resolution_mm"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 5,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row mesh texture formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "texture_density_index",
+      "target_alias": "M.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.geom",
+          "confidence": "exact",
+          "role": "geometric_accuracy_mm"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 6,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row composition of H4 and H5 with geometric accuracy.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "model_fidelity_score",
+      "target_alias": "M.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "E.temp",
+          "confidence": "exact",
+          "role": "ambient_temperature_c"
+        },
+        {
+          "alias": "E.humidity",
+          "confidence": "exact",
+          "role": "relative_humidity_pct"
+        },
+        {
+          "alias": "E.light",
+          "confidence": "exact",
+          "role": "light_lux"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 7,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Same-row environment formula.",
+      "relationship_requirements": [],
+      "representation": "numeric_derived_dimension",
+      "semantic_name": "environmental_suitability_index",
+      "target_alias": "E.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SC.size",
+          "confidence": "exact",
+          "role": "file_size_gb"
+        },
+        {
+          "alias": "P.total",
+          "confidence": "exact",
+          "role": "total_points"
+        },
+        {
+          "alias": "PR.hours",
+          "confidence": "exact",
+          "role": "processing_hours"
+        },
+        {
+          "alias": "PR.cpu",
+          "confidence": "exact",
+          "role": "cpu_pct"
+        },
+        {
+          "alias": "PR.gpu",
+          "confidence": "exact",
+          "role": "gpu_pct"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 8,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Scan, point-cloud, and processing rows lack a common acquisition identity; file size is unit-bearing text.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.noise",
+          "confidence": "exact",
+          "role": "noise_db"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 9,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Point-cloud and mesh dependency closures have no direct row identity.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.res",
+          "confidence": "exact",
+          "role": "scan_resolution_mm"
+        },
+        {
+          "alias": "P.density",
+          "confidence": "exact",
+          "role": "point_density"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 10,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row point-cloud threshold definition.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_high_resolution_scan",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.coverage",
+          "confidence": "exact",
+          "role": "coverage_pct"
+        },
+        {
+          "alias": "P.overlap",
+          "confidence": "exact",
+          "role": "overlap_pct"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 11,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row point-cloud threshold definition.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "has_comprehensive_coverage",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 12,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row composition of H10, H11, and H3.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_premium_quality_scan",
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.res",
+          "confidence": "exact",
+          "role": "mesh_resolution_mm"
+        },
+        {
+          "alias": "M.geom",
+          "confidence": "exact",
+          "role": "geometric_accuracy_mm"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 13,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row mesh threshold using H4 plus source fields.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_high_fidelity_mesh",
+      "target_alias": "M.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "S.preservation",
+          "confidence": "exact",
+          "role": "preservation_status"
+        },
+        {
+          "alias": "C.stability",
+          "confidence": "exact",
+          "role": "structural_stability"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 14,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "categorical_match_semantics_unspecified"
+      ],
+      "notes": "A site can have many conservation rows; any/latest/all and zero-row behavior are not defined.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 15,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row threshold over H7.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "is_optimal_scanning_condition",
+      "target_alias": "E.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "S.date",
+          "confidence": "exact",
+          "role": "estimated_date"
+        },
+        {
+          "alias": "S.type",
+          "confidence": "exact",
+          "role": "site_type"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [
+          29
+        ],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 16,
+      "loss_codes": [
+        "dependency_omission",
+        "source_type_requires_parsing",
+        "categorical_mapping_underspecified",
+        "entity_existence_semantics_missing",
+        "cross_grain_no_identity"
+      ],
+      "notes": "The prose requires H29 but omits it from dependencies; Rare/Unique taxonomy and site-level premium-scan existence are unspecified.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 17,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Inherits the unresolved multi-grain identity and text parsing of H8.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.accuracy",
+          "confidence": "exact",
+          "role": "registration_accuracy_mm"
+        },
+        {
+          "alias": "R.error",
+          "confidence": "exact",
+          "role": "error_value_mm"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 18,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_boolean_semantics_unspecified"
+      ],
+      "notes": "Same-row registration threshold.",
+      "relationship_requirements": [],
+      "representation": "boolean_derived_dimension",
+      "semantic_name": "meets_registration_quality_threshold",
+      "target_alias": "R.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 19,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "Requires site-level existence and aggregation across point-cloud, mesh, registration, and ADC closures.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.res",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 20,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches the Scan_Resol_Mm field context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.density",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 21,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches Point_Dense context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.noise",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 22,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches Noise_Db context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.coverage",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 23,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches Cover_Pct context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "P.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.geom",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 24,
+      "loss_codes": [
+        "context_only_no_executable_object"
+      ],
+      "notes": "Public value illustration enriches Geom_Delta_Mm context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "M.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "S.period",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 25,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "open_ended_value_examples"
+      ],
+      "notes": "Open-ended cultural-period examples enrich phasefactor context only.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "S.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "C.stability",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 26,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "notes": "HKB Stable/Unstable/Critical vocabulary conflicts with the schema prose example.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "C.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PR.stage",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 27,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "notes": "HKB Cleaned conflicts with the schema's listed Final stage.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "PR.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.method",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 28,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "vocabulary_conflict"
+      ],
+      "notes": "HKB ICP/SLAM values are absent from the schema's listed registration methods.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "R.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "S.date",
+          "confidence": "exact",
+          "role": "target"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "none",
+      "disposition": "context_only",
+      "hkb_id": 29,
+      "loss_codes": [
+        "context_only_no_executable_object",
+        "source_type_requires_parsing_if_executable"
+      ],
+      "notes": "Estimated dating examples enrich text-field context; executable date semantics require parsing.",
+      "relationship_requirements": [],
+      "representation": "field_context",
+      "semantic_name": null,
+      "target_alias": "S.T"
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.coverage",
+          "confidence": "exact",
+          "role": "coverage_pct"
+        },
+        {
+          "alias": "SC.count",
+          "confidence": "exact",
+          "role": "number_of_scans"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 30,
+      "loss_codes": [
+        "source_field_missing",
+        "source_type_requires_parsing",
+        "cross_grain_no_identity",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Scan duration is absent, scan count is unit-bearing text, and point-cloud quality cannot be paired to scan sessions.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 31,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Point-cloud and environment rows have no common acquisition identity.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.features",
+          "confidence": "exact",
+          "role": "detected_features"
+        },
+        {
+          "alias": "F.artifacts",
+          "confidence": "exact",
+          "role": "artifact_count"
+        },
+        {
+          "alias": "P.cloud",
+          "confidence": "medium",
+          "role": "point_cloud_density_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 32,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_alias_uncertain",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Feature and point-cloud/spatial grains lack a common identity; Cloud_Dense is a medium-confidence code match.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.res",
+          "confidence": "exact",
+          "role": "scan_resolution_mm"
+        },
+        {
+          "alias": "R.accuracy",
+          "confidence": "exact",
+          "role": "registration_accuracy_mm"
+        },
+        {
+          "alias": "R.error",
+          "confidence": "exact",
+          "role": "error_value_mm"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 33,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Point-cloud and registration share project/person only; pairing and cardinality are undefined.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "P.total",
+          "confidence": "exact",
+          "role": "total_points"
+        },
+        {
+          "alias": "SP.area",
+          "confidence": "exact",
+          "role": "surface_area_m2"
+        },
+        {
+          "alias": "P.density",
+          "confidence": "exact",
+          "role": "point_density"
+        },
+        {
+          "alias": "P.cloud",
+          "confidence": "medium",
+          "role": "point_cloud_density_code"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 34,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_alias_uncertain",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Point-cloud and spatial share project/person only; Cloud_Dense is a medium-confidence code match.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "S.preservation",
+          "confidence": "exact",
+          "role": "preservation_status"
+        },
+        {
+          "alias": "S.date",
+          "confidence": "exact",
+          "role": "estimated_date"
+        },
+        {
+          "alias": "S.type",
+          "confidence": "exact",
+          "role": "site_type"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 35,
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "source_type_requires_parsing",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Preservation mapping is defined, but date parsing, rarity scoring, and inherited site/conservation aggregation are not.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.vertices",
+          "confidence": "exact",
+          "role": "mesh_vertices"
+        },
+        {
+          "alias": "P.total",
+          "confidence": "exact",
+          "role": "total_points"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 36,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Mesh and point-cloud rows have no direct identity.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "PR.hours",
+          "confidence": "exact",
+          "role": "processing_hours"
+        },
+        {
+          "alias": "PR.cpu",
+          "confidence": "exact",
+          "role": "cpu_pct"
+        },
+        {
+          "alias": "PR.gpu",
+          "confidence": "exact",
+          "role": "gpu_pct"
+        },
+        {
+          "alias": "SC.size",
+          "confidence": "exact",
+          "role": "file_size_gb"
+        },
+        {
+          "alias": "M.vertices",
+          "confidence": "exact",
+          "role": "mesh_vertices"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 37,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Processing, mesh, and scan rows require pairing/preaggregation; file size is unit-bearing text.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.error",
+          "confidence": "exact",
+          "role": "error_value_mm"
+        },
+        {
+          "alias": "P.res",
+          "confidence": "exact",
+          "role": "scan_resolution_mm"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 38,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Composite point-cloud, mesh, registration, and spatial/site grouping is undefined.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "EQ.status",
+          "confidence": "exact",
+          "role": "equipment_status"
+        },
+        {
+          "alias": "EQ.battery",
+          "confidence": "exact",
+          "role": "battery_level_pct"
+        },
+        {
+          "alias": "EQ.calibration",
+          "confidence": "exact",
+          "role": "calibration_date"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 39,
+      "loss_codes": [
+        "categorical_mapping_underspecified",
+        "source_type_requires_parsing",
+        "cross_grain_no_identity",
+        "null_zero_domain_unspecified"
+      ],
+      "notes": "Intermediate equipment-status mapping is absent and point-cloud quality has no equipment identity.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior",
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "SP.area",
+          "confidence": "exact",
+          "role": "surface_area_m2"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 40,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "entity_existence_semantics_missing"
+      ],
+      "notes": "Spatial rows have project/person but no site key; site path and aggregation are undefined.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "F.texture",
+          "confidence": "exact",
+          "role": "texture_analysis"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 41,
+      "loss_codes": [
+        "vocabulary_conflict",
+        "cross_grain_no_identity",
+        "categorical_match_semantics_unspecified"
+      ],
+      "notes": "Feature texture status values cannot implement the HKB Detailed/Critical categories and cannot be paired safely to mesh TDI.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [
+          12
+        ],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 42,
+      "loss_codes": [
+        "dependency_omission",
+        "depends_on_unsupported_mapping",
+        "entity_existence_semantics_missing",
+        "cross_grain_no_identity"
+      ],
+      "notes": "The prose requires H12 but omits it from dependencies; H35 and site-level premium-scan existence remain unsupported.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 43,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Processing and mesh rows share site/equipment only; pairing and preaggregation are undefined.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "R.method",
+          "confidence": "exact",
+          "role": "registration_method"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 44,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "categorical_match_semantics_unspecified"
+      ],
+      "notes": "Inherits unresolved point-cloud/registration pairing from H33.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 45,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Inherits point-cloud/environment ambiguity and lacks a scan-session identity.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "S.date",
+          "confidence": "exact",
+          "role": "estimated_date"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 46,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "source_type_requires_parsing",
+        "date_boundary_semantics_unspecified"
+      ],
+      "notes": "H35 is unsupported and parsing the before-500-CE boundary is not defined.",
+      "relationship_requirements": [
+        "temporal_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.faces",
+          "confidence": "exact",
+          "role": "mesh_faces"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 47,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "Inherits unresolved mesh/point-cloud identity from H36.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 48,
+      "loss_codes": [
+        "aggregation_unspecified",
+        "entity_existence_semantics_missing",
+        "cross_grain_no_identity",
+        "depends_on_ambiguous_mapping"
+      ],
+      "notes": "Project grouping of individual scans and combined DPQ lacks a scan identity and combine operator.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 49,
+      "loss_codes": [
+        "depends_on_unsupported_mapping",
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified"
+      ],
+      "notes": "H39 is unsupported and equipment EER cannot be paired safely with environment ESI.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "same_grain",
+      "disposition": "compile",
+      "hkb_id": 50,
+      "loss_codes": [
+        "omni_expression_support_unverified",
+        "null_category_semantics_unspecified",
+        "boundary_semantics_unverified"
+      ],
+      "notes": "Same-row categorical composition of H7 and H15; boundary/null behavior needs Omni verification.",
+      "relationship_requirements": [],
+      "representation": "categorical_derived_dimension",
+      "semantic_name": "environmental_condition_classification",
+      "target_alias": "E.T"
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 51,
+      "loss_codes": [
+        "cross_grain_no_identity",
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "source_type_requires_parsing"
+      ],
+      "notes": "Inherits processing/scan/mesh identity and parsing gaps from H37.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": [
+          26
+        ]
+      },
+      "dependency_mode": "cross_grain_unresolved",
+      "disposition": "defer_cross_grain",
+      "hkb_id": 52,
+      "loss_codes": [
+        "cardinality_unknown",
+        "aggregation_unspecified",
+        "dependency_redundancy",
+        "cross_grain_no_identity"
+      ],
+      "notes": "H26 is redundant because H14 already depends on it; site/conservation aggregation remains undefined.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    },
+    {
+      "bindings": [
+        {
+          "alias": "M.site",
+          "confidence": "exact",
+          "role": "mesh_site_key"
+        }
+      ],
+      "dependency_audit": {
+        "missing_ids": [],
+        "redundant_ids": []
+      },
+      "dependency_mode": "blocked",
+      "disposition": "unsupported",
+      "hkb_id": 53,
+      "loss_codes": [
+        "entity_existence_semantics_missing",
+        "aggregation_unspecified",
+        "zero_match_semantics_missing"
+      ],
+      "notes": "Site-level any-high-fidelity, meshes-but-none-high-fidelity, and zero-mesh states need an explicit existence contract.",
+      "relationship_requirements": [
+        "target_grain",
+        "relationship_path",
+        "cardinality",
+        "deduplication",
+        "multiple_match_behavior",
+        "zero_match_behavior"
+      ],
+      "representation": null,
+      "semantic_name": null,
+      "target_alias": null
+    }
+  ],
+  "schema_aliases": {
+    "P.T": "archeology_scan_large:table:pointcloud",
+    "P.res": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Scan_Resol_Mm",
+    "P.density": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Point_Dense",
+    "P.coverage": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Cover_Pct",
+    "P.total": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Total_Pts",
+    "P.cloud": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Cloud_Dense",
+    "P.overlap": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Lap_Pct",
+    "P.noise": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Noise_Db",
+    "M.T": "archeology_scan_large:table:mesh",
+    "M.vertices": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Facet_Verts",
+    "M.faces": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Facet_Faces",
+    "M.res": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Facet_Res_Mm",
+    "M.tex": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Tex_Pix",
+    "M.geom": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Geom_Delta_Mm",
+    "M.site": "archeology_scan_large:column:mesh:zoneref",
+    "E.T": "archeology_scan_large:table:environment",
+    "E.temp": "archeology_scan_large:structured-leaf:environment:ambient_cond:k:Ambic_Temp",
+    "E.humidity": "archeology_scan_large:structured-leaf:environment:ambient_cond:k:Hume_Pct",
+    "E.light": "archeology_scan_large:structured-leaf:environment:ambient_cond:k:Illume_Lux",
+    "R.T": "archeology_scan_large:table:registration",
+    "R.accuracy": "archeology_scan_large:structured-leaf:registration:reg_accuracy:k:Log_Accu_Mm",
+    "R.error": "archeology_scan_large:structured-leaf:registration:reg_accuracy:k:Err_Val_Mm",
+    "R.method": "archeology_scan_large:structured-leaf:registration:reg_accuracy:k:Log_Method",
+    "PR.T": "archeology_scan_large:table:processing",
+    "PR.hours": "archeology_scan_large:structured-leaf:processing:system_usage:k:Flow_Hrs",
+    "PR.cpu": "archeology_scan_large:structured-leaf:processing:system_usage:k:Proc_CPU",
+    "PR.gpu": "archeology_scan_large:structured-leaf:processing:system_usage:k:Proc_GPU",
+    "PR.stage": "archeology_scan_large:column:processing:flowstage",
+    "SP.area": "archeology_scan_large:structured-leaf:spatial:spatial_dims:k:Area_M2",
+    "F.features": "archeology_scan_large:structured-leaf:features:feature_analysis:k:Trait_Count",
+    "F.artifacts": "archeology_scan_large:structured-leaf:features:feature_analysis:k:Arti_Count",
+    "F.texture": "archeology_scan_large:structured-leaf:features:feature_analysis:k:Analysis_Status/k:Texture_Study",
+    "S.T": "archeology_scan_large:table:sites",
+    "S.preservation": "archeology_scan_large:structured-leaf:sites:site_status:k:Pres_Stat",
+    "S.date": "archeology_scan_large:column:sites:guessdate",
+    "S.type": "archeology_scan_large:column:sites:typesite",
+    "S.period": "archeology_scan_large:column:sites:phasefactor",
+    "C.T": "archeology_scan_large:table:conservation",
+    "C.stability": "archeology_scan_large:column:conservation:structstate",
+    "SC.size": "archeology_scan_large:column:scans:size",
+    "SC.count": "archeology_scan_large:column:scans:scancount",
+    "EQ.status": "archeology_scan_large:column:equipment:equipstatus",
+    "EQ.battery": "archeology_scan_large:column:equipment:powerlevel",
+    "EQ.calibration": "archeology_scan_large:column:equipment:equiptune"
+  },
+  "schema_version": 1
+}

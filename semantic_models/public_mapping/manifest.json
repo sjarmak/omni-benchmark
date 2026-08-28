@@ -1,0 +1,40 @@
+{
+  "counts": {
+    "dispositions": {
+      "compile": 14,
+      "context_only": 10,
+      "defer_cross_grain": 20,
+      "unsupported": 10
+    },
+    "hkb_nodes": 54
+  },
+  "database": "archeology_scan_large",
+  "kind": "public-hkb-semantic-mapping",
+  "output": {
+    "file": "archeology_scan_large.mapping.jsonl",
+    "sha256": "a54234cf768619bd15260a87ff3cd55765d006eaa4bd20bc05fd427ed24eeae6"
+  },
+  "schema_version": 1,
+  "source": {
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "hkb_ir": {
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "c6b20ec0e101f080712255645554cea2685deca7929a8c6d4c3391aeecf92d37"
+    },
+    "mapping_spec": {
+      "sha256": "491bacf20601baf6501fdda0fe2d540eccd74629215501f15ebac8fb2a3355c6"
+    },
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema_ir": {
+      "manifest_sha256": "bf01d84dca216405dedc92fd98e8b29a3cb17983cc2e7c110a62cfe370757610",
+      "sha256": "e2044dc11b055e08046153de8c9cec9d121f037391d5b757c8cd071dd607162f"
+    }
+  },
+  "validation": {
+    "all_hkb_nodes_classified_once": true,
+    "all_schema_bindings_resolve": true,
+    "hidden_annotations_used": false,
+    "public_inputs_only": true,
+    "status": "passed"
+  }
+}

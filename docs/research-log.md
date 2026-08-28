@@ -1840,3 +1840,89 @@ reusable fix—and whether its judge agrees with execution-based correctness.
 After isolated upload/read-back, run one representative C4 question, inventory
 AI Hub visibility against the trace contract, and record the first evidence-backed
 product finding or explicit observability gap.
+
+## 2026-08-27 — D-026: Make HKB representability explicit before Omni compilation
+
+### Decision / experiment
+
+Create a complete public-only HKB-to-schema mapping/loss artifact for the canary
+before generating any Omni semantic objects.
+
+### Observation
+
+Fourteen of the 54 public HKB nodes have a plausible same-table representation,
+and ten value illustrations can enrich existing field context. The other 30
+definitions either span tables without a declared shared analytic identity or
+contain missing, inconsistent, redundant, or underspecified semantics. Declared
+foreign keys do not supply the grain, cardinality, deduplication, or zero/many
+behavior required to compile those definitions safely.
+
+### Hypothesis
+
+If every HKB node receives one hash-bound disposition with exact schema inputs,
+dependency handling, loss reason, and provenance, the first semantic model can
+be useful without silently inventing cross-grain answers. The loss distribution
+will also identify whether the main import bottleneck is expression support or
+missing modeling contracts.
+
+### Decision
+
+Represent all 54 nodes exactly once as one of: compile a same-grain semantic
+field, attach public context to a source field, defer pending a cross-grain
+contract, or reject as currently unsupported. Keep formula compilation separate
+from this classification so Omni syntax choices cannot change the source-level
+representability record.
+
+### Rationale
+
+Compiling every parseable formula would maximize object count while obscuring
+fanout and aggregation risk. Compiling nothing would avoid risk but fail to test
+the semantic-layer premise. A complete mapping/loss ledger makes the boundary
+reviewable and preserves the evidence needed to improve the transformer later.
+
+### Intervention
+
+Added a deterministic validator, reviewed 54-record mapping specification, and
+hash-bound expanded mapping artifact. Each record binds the public HKB node,
+exact public schema stable IDs, dependency mode, intended representation, loss
+codes, relationship requirements, generality, and content/intervention
+provenance. Bead:
+`omni-benchmark-dih.12`; affected subsystem: HKB-to-semantic transformation.
+Change type: general transformation method plus legitimate database modeling.
+
+### Result
+
+All 54 HKB nodes are classified exactly once: 14 `compile`, 10 `context_only`,
+20 `defer_cross_grain`, and 10 `unsupported`. The expanded mapping SHA-256 is
+`a54234cf768619bd15260a87ff3cd55765d006eaa4bd20bc05fd427ed24eeae6`.
+The artifact records two omitted dependencies (H16→H29 and H42→H12), one
+redundant dependency (H52→H26), exact/medium-confidence schema bindings, and
+the grain/cardinality/aggregation contracts needed before deferred definitions
+could be compiled. It regenerates byte-for-byte from the reviewed spec and the
+committed public HKB/schema IRs. No question text, gold SQL, hidden annotation,
+or development outcome is an input.
+
+### Interpretation
+
+The main canary bottleneck is not formula syntax. It is absent analytical grain
+and relationship semantics: declared entity foreign keys do not identify which
+point-cloud, mesh, registration, scan, environment, and processing rows belong
+to the same acquisition. This supports a conservative first model containing
+the 14 same-grain fields and 10 context annotations while preserving the other
+30 definitions as explicit losses.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+Semantic-model import should expose unsafe or unrepresentable business knowledge
+as a first-class result instead of silently dropping it or emitting a plausible
+field. The live Omni canary will determine whether the product can preserve and
+surface these distinctions during authoring and agent diagnosis.
+
+### Next step
+
+Compile only the approved same-grain/context subset into a local Omni extension,
+validate it, then upload/read it back on an isolated canary branch.
