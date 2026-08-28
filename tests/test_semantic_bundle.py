@@ -231,6 +231,72 @@ def test_compile_bundle_emits_executable_field_context_topic_and_provenance() ->
     _assert_semantic_elements(bundle.manifest["semantic_elements"])
 
 
+def test_compile_bundle_emits_parser_bypass_only_for_allowlisted_physical_sql() -> None:
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"][0]["omni_parser_mode"] = "do_not_parse"
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    raw_view = bundle.files["db.public__pointcloud.view"]
+    view = yaml.safe_load(raw_view)
+    assert view["dimensions"]["scan_resolution_mm"]["sql"] == (
+        "-- DO NOT PARSE\n"
+        "CAST(${cloud_metrics} ->> 'Scan_Resol_Mm' AS DOUBLE PRECISION)"
+    )
+    assert "-- DO NOT PARSE" in raw_view
+    assert view["dimensions"]["resolution_index"]["sql"] == (
+        "${scan_resolution_mm} * 2.0"
+    )
+
+
+@pytest.mark.parametrize("parser_mode", (None, "", "parse", True, 1))
+def test_compile_bundle_rejects_unknown_physical_parser_mode(
+    parser_mode: object,
+) -> None:
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"][0]["omni_parser_mode"] = parser_mode
+
+    with pytest.raises(
+        SemanticBundleError,
+        match="omni_parser_mode must be exactly do_not_parse",
+    ):
+        compile_semantic_bundle(
+            spec, _hkb_records(), _schema_records(), _mapping_records()
+        )
+
+
+def test_compile_bundle_rejects_parser_mode_without_physical_sql() -> None:
+    spec = copy.deepcopy(_spec())
+    del spec["physical_fields"][0]["sql"]
+    spec["physical_fields"][0]["omni_parser_mode"] = "do_not_parse"
+
+    with pytest.raises(
+        SemanticBundleError,
+        match="omni_parser_mode requires physical field sql",
+    ):
+        compile_semantic_bundle(
+            spec, _hkb_records(), _schema_records(), _mapping_records()
+        )
+
+
+@pytest.mark.parametrize("field_kind", ("physical_fields", "derived_fields"))
+def test_compile_bundle_rejects_injected_omni_parser_directive(
+    field_kind: str,
+) -> None:
+    spec = copy.deepcopy(_spec())
+    spec[field_kind][0]["sql"] = "-- DO NOT PARSE\n${scan_resolution_mm} * 2.0"
+
+    with pytest.raises(
+        SemanticBundleError,
+        match="reserved Omni parser directive in field SQL",
+    ):
+        compile_semantic_bundle(
+            spec, _hkb_records(), _schema_records(), _mapping_records()
+        )
+
+
 def _assert_semantic_elements(elements: object) -> None:
     assert elements == [
         {

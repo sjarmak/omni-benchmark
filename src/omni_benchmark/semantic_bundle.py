@@ -64,8 +64,11 @@ _VIEW_KEYS = frozenset(
         "view_name",
     }
 )
-_PHYSICAL_FIELD_KEYS = frozenset({"label", "name", "schema_stable_id", "sql"})
+_PHYSICAL_FIELD_KEYS = frozenset(
+    {"label", "name", "omni_parser_mode", "schema_stable_id", "sql"}
+)
 _DERIVED_FIELD_KEYS = frozenset({"hkb_stable_id", "sql"})
+_DO_NOT_PARSE_DIRECTIVE = "-- DO NOT PARSE"
 
 
 def _mapping(value: Any, label: str) -> Mapping[str, Any]:
@@ -210,6 +213,15 @@ def _validated_physical_fields(
         if table_id not in views:
             raise SemanticBundleError(f"physical field table {table_id} has no view")
         _safe_name(field.get("name"), "physical field name")
+        if "omni_parser_mode" in field:
+            if field.get("omni_parser_mode") != "do_not_parse":
+                raise SemanticBundleError(
+                    "omni_parser_mode must be exactly do_not_parse"
+                )
+            if "sql" not in field:
+                raise SemanticBundleError(
+                    "omni_parser_mode requires physical field sql"
+                )
         by_schema_id[schema_id] = field
         by_table[table_id].append(field)
     return by_schema_id, by_table
@@ -327,6 +339,8 @@ def _field_references(sql: str) -> list[str]:
 
 
 def _validate_sql(sql: str, allowed_fields: set[str]) -> None:
+    if _DO_NOT_PARSE_DIRECTIVE.lower() in sql.lower():
+        raise SemanticBundleError("reserved Omni parser directive in field SQL")
     references = _field_references(sql)
     for reference in sorted(set(references)):
         if reference not in allowed_fields:
@@ -452,7 +466,10 @@ def _physical_dimension(
     if "label" in field:
         dimension["label"] = _text(field.get("label"), "physical field label")
     if "sql" in field:
-        dimension["sql"] = _text(field.get("sql"), "physical field sql")
+        sql = _text(field.get("sql"), "physical field sql")
+        if field.get("omni_parser_mode") == "do_not_parse":
+            sql = f"{_DO_NOT_PARSE_DIRECTIVE}\n{sql}"
+        dimension["sql"] = sql
     if contexts:
         dimension["ai_context"] = "\n".join(contexts)
     return dimension

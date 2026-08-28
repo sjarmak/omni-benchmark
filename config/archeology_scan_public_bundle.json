@@ -66,97 +66,113 @@
       "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Scan_Resol_Mm",
       "name": "scan_resolution_mm",
       "label": "Scan Resolution (mm)",
-      "sql": "CAST(${cloud_metrics} ->> 'Scan_Resol_Mm' AS DOUBLE PRECISION)"
+      "sql": "CAST(${cloud_metrics} ->> 'Scan_Resol_Mm' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Point_Dense",
       "name": "point_density",
       "label": "Point Density (points/m²)",
-      "sql": "CAST(${cloud_metrics} ->> 'Point_Dense' AS DOUBLE PRECISION)"
+      "sql": "CAST(${cloud_metrics} ->> 'Point_Dense' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Cover_Pct",
       "name": "coverage_pct",
       "label": "Coverage (%)",
-      "sql": "CAST(${cloud_metrics} ->> 'Cover_Pct' AS DOUBLE PRECISION)"
+      "sql": "CAST(${cloud_metrics} ->> 'Cover_Pct' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Lap_Pct",
       "name": "overlap_pct",
       "label": "Overlap (%)",
-      "sql": "CAST(${cloud_metrics} ->> 'Lap_Pct' AS DOUBLE PRECISION)"
+      "sql": "CAST(${cloud_metrics} ->> 'Lap_Pct' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:pointcloud:cloud_metrics:k:Noise_Db",
       "name": "noise_db",
       "label": "Noise Level (dB)",
-      "sql": "CAST(${cloud_metrics} ->> 'Noise_Db' AS DOUBLE PRECISION)"
+      "sql": "CAST(${cloud_metrics} ->> 'Noise_Db' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Facet_Verts",
       "name": "mesh_vertices",
       "label": "Mesh Vertices",
-      "sql": "CAST(${mesh_specs} ->> 'Facet_Verts' AS DOUBLE PRECISION)"
+      "sql": "CAST(${mesh_specs} ->> 'Facet_Verts' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Facet_Faces",
       "name": "mesh_faces",
       "label": "Mesh Faces",
-      "sql": "CAST(${mesh_specs} ->> 'Facet_Faces' AS DOUBLE PRECISION)"
+      "sql": "CAST(${mesh_specs} ->> 'Facet_Faces' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Facet_Res_Mm",
       "name": "mesh_resolution_mm",
       "label": "Mesh Resolution (mm)",
-      "sql": "CAST(${mesh_specs} ->> 'Facet_Res_Mm' AS DOUBLE PRECISION)"
+      "sql": "CAST(${mesh_specs} ->> 'Facet_Res_Mm' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Tex_Pix",
       "name": "texture_size_px",
       "label": "Texture Size (px)",
-      "sql": "CAST(${mesh_specs} ->> 'Tex_Pix' AS DOUBLE PRECISION)"
+      "sql": "CAST(${mesh_specs} ->> 'Tex_Pix' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:mesh:mesh_specs:k:Geom_Delta_Mm",
       "name": "geometric_accuracy_mm",
       "label": "Geometric Accuracy (mm)",
-      "sql": "CAST(${mesh_specs} ->> 'Geom_Delta_Mm' AS DOUBLE PRECISION)"
+      "sql": "CAST(${mesh_specs} ->> 'Geom_Delta_Mm' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:environment:ambient_cond:k:Ambic_Temp",
       "name": "ambient_temperature_c",
       "label": "Ambient Temperature (C)",
-      "sql": "CAST(${ambient_cond} ->> 'Ambic_Temp' AS DOUBLE PRECISION)"
+      "sql": "CAST(${ambient_cond} ->> 'Ambic_Temp' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:environment:ambient_cond:k:Hume_Pct",
       "name": "relative_humidity_pct",
       "label": "Relative Humidity (%)",
-      "sql": "CAST(${ambient_cond} ->> 'Hume_Pct' AS DOUBLE PRECISION)"
+      "sql": "CAST(${ambient_cond} ->> 'Hume_Pct' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:environment:ambient_cond:k:Illume_Lux",
       "name": "light_lux",
       "label": "Light Conditions (lux)",
-      "sql": "CAST(${ambient_cond} ->> 'Illume_Lux' AS DOUBLE PRECISION)"
+      "sql": "CAST(${ambient_cond} ->> 'Illume_Lux' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:registration:reg_accuracy:k:Log_Accu_Mm",
       "name": "registration_accuracy_mm",
       "label": "Registration Accuracy (mm)",
-      "sql": "CAST(${reg_accuracy} ->> 'Log_Accu_Mm' AS DOUBLE PRECISION)"
+      "sql": "CAST(${reg_accuracy} ->> 'Log_Accu_Mm' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:registration:reg_accuracy:k:Err_Val_Mm",
       "name": "error_value_mm",
       "label": "Registration Error (mm)",
-      "sql": "CAST(${reg_accuracy} ->> 'Err_Val_Mm' AS DOUBLE PRECISION)"
+      "sql": "CAST(${reg_accuracy} ->> 'Err_Val_Mm' AS DOUBLE PRECISION)",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:structured-leaf:registration:reg_accuracy:k:Log_Method",
       "name": "registration_method",
       "label": "Registration Method",
-      "sql": "${reg_accuracy} ->> 'Log_Method'"
+      "sql": "${reg_accuracy} ->> 'Log_Method'",
+      "omni_parser_mode": "do_not_parse"
     },
     {
       "schema_stable_id": "archeology_scan_large:column:sites:phasefactor",

@@ -7,15 +7,21 @@ dimensions:
   ambient_temperature_c:
     description: 'REAL. Ambient air temperature in degrees Celsius. Example: 25.3.'
     label: Ambient Temperature (C)
-    sql: CAST(${ambient_cond} ->> 'Ambic_Temp' AS DOUBLE PRECISION)
+    sql: '-- DO NOT PARSE
+
+      CAST(${ambient_cond} ->> ''Ambic_Temp'' AS DOUBLE PRECISION)'
   relative_humidity_pct:
     description: 'REAL. Relative humidity percentage during scanning. Example: 60.4.'
     label: Relative Humidity (%)
-    sql: CAST(${ambient_cond} ->> 'Hume_Pct' AS DOUBLE PRECISION)
+    sql: '-- DO NOT PARSE
+
+      CAST(${ambient_cond} ->> ''Hume_Pct'' AS DOUBLE PRECISION)'
   light_lux:
     description: 'BIGINT. Light intensity conditions in lux units. Example: 86054.'
     label: Light Conditions (lux)
-    sql: CAST(${ambient_cond} ->> 'Illume_Lux' AS DOUBLE PRECISION)
+    sql: '-- DO NOT PARSE
+
+      CAST(${ambient_cond} ->> ''Illume_Lux'' AS DOUBLE PRECISION)'
   environmental_suitability_index:
     label: Environmental Suitability Index (ESI)
     description: Evaluates how suitable environmental conditions were for scanning operations using weighted parameters.
