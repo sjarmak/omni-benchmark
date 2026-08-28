@@ -4354,3 +4354,83 @@ reference results.
 After authorized label release, feed sealed reference results through the same
 normalization and score-artifact boundary. Do not reuse the self-consistency
 labels as correctness outcomes.
+## 2026-08-28 — D-054: Prespecify a C1 schema-retrieval sensitivity arm
+
+### Decision / experiment
+
+Test whether C1's `no_answer_insufficient_context` rate is robust to the
+schema-retrieval width. Bead
+`omni-benchmark-dih.5.4.2.4.4.2.2.4`; change type: evaluation robustness check,
+not a candidate system improvement.
+
+### Observation
+
+The running direct baseline surfaced early C1 no-answer outcomes attributed to
+insufficient visible schema. A narrow retrieval tool and a genuinely limited
+raw-schema agent imply opposite product conclusions, so the mechanism needs an
+isolated check.
+
+### Hypothesis
+
+If the four-table schema window is materially causing the no-answer behavior,
+raising only that window to eight tables should reduce
+`no_answer_insufficient_context`. If the rate remains similar, the C1 result is
+more robust to this scaffold choice.
+
+### Decision
+
+Before consulting question-level baseline outcomes, select a deterministic
+20-question public-development subset across all 16 included databases,
+stratified by database and public `high_level`. Run C1 once with
+`MAX_SCHEMA_MATCHES=8`; hold the 64 KiB per-call payload ceiling, question,
+model, prompt, instructions, budget, retries, database targets, execution, and
+telemetry fixed. Use a separate immutable run ID and never selectively rerun.
+
+### Rationale
+
+Twenty attempts cover every included database while fitting beside the running
+baseline. This directly distinguishes the retrieval-width explanation from the
+raw-schema-capability explanation without modifying the baseline in flight.
+
+### Intervention
+
+The selected-ID artifact SHA-256 is
+`201f51d8a678d776607da8e836003d139cb8ab2632bdbd34742a858cf372ab42`;
+the allocation-metadata SHA-256 is
+`fd3640e65ea2bb9c1c9fee3f04fa5a5eecc1b63be4ab191be55895be89056714`.
+The isolated runner validates those artifacts from git and changes the schema
+match cap from four to eight. At the observed $2.19 direct-attempt mean, the
+point projection is $43.80; the 20-attempt, $12-per-attempt notional maximum is
+$240. OAuth spend is telemetry, not a stopping rule. The legacy batch budget is
+set to a mathematically nonbinding capacity; launch instead requires more than
+1,200 seconds remaining, comprising a 600-second projection plus a 600-second
+margin, and then runs all 20 attempts to completion.
+
+### Result
+
+The subset and runner are prepared but intentionally not launched while the
+three authenticated comparator profiles are leased by the canonical baseline.
+No question-level baseline outcome, hidden annotation, gold SQL, or test data
+was used to select membership.
+
+### Interpretation
+
+No result is available yet. Both prespecified outcomes remain informative: a
+flat insufficient-context rate supports C1 robustness, while a large reduction
+identifies retrieval width as a comparator scaffold confound.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Agent telemetry should make insufficient context distinguishable from content
+refusal and expose what schema was retrieved. Otherwise a retrieval limit can
+be misread as model capability or safety behavior.
+
+### Next step
+
+After the baseline releases the OAuth profiles, launch the fixed arm once and
+compare `no_answer_insufficient_context`, cost, tokens, and database-query
+counts against the same 20 C1 baseline attempts.

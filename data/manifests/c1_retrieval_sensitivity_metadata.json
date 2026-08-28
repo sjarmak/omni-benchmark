@@ -1,0 +1,195 @@
+{
+  "algorithm": {
+    "database_allocation": "one-per-database minimum then quota-remainder allocation",
+    "name": "database_high_level_sha256_sensitivity_v1",
+    "seed": "omni-livesqlbench-c1-retrieval-sensitivity-v1",
+    "unit": "public_development_question",
+    "within_database_stratum": "high_level",
+    "within_stratum_order": "SHA-256(seed, database, high_level, instance_id)"
+  },
+  "artifacts": {
+    "selected_ids": {
+      "file": "c1_retrieval_sensitivity_ids.txt",
+      "sha256": "201f51d8a678d776607da8e836003d139cb8ab2632bdbd34742a858cf372ab42"
+    }
+  },
+  "counts": {
+    "candidate_databases": 16,
+    "candidate_questions": 210,
+    "selected_databases": 16,
+    "selected_questions": 20
+  },
+  "distributions": {
+    "by_database": {
+      "cross_border_large": {
+        "candidate": 14,
+        "candidate_high_level": 1,
+        "selected": 2,
+        "selected_high_level": 0
+      },
+      "disaster_relief_large": {
+        "candidate": 8,
+        "candidate_high_level": 7,
+        "selected": 1,
+        "selected_high_level": 1
+      },
+      "exchange_traded_funds_large": {
+        "candidate": 13,
+        "candidate_high_level": 11,
+        "selected": 1,
+        "selected_high_level": 1
+      },
+      "fake_account_large": {
+        "candidate": 17,
+        "candidate_high_level": 1,
+        "selected": 2,
+        "selected_high_level": 0
+      },
+      "labor_certification_applications_large": {
+        "candidate": 13,
+        "candidate_high_level": 11,
+        "selected": 1,
+        "selected_high_level": 1
+      },
+      "mental_healths_large": {
+        "candidate": 14,
+        "candidate_high_level": 7,
+        "selected": 2,
+        "selected_high_level": 1
+      },
+      "museum_artifact_large": {
+        "candidate": 14,
+        "candidate_high_level": 14,
+        "selected": 1,
+        "selected_high_level": 1
+      },
+      "organ_transplant_large": {
+        "candidate": 13,
+        "candidate_high_level": 13,
+        "selected": 1,
+        "selected_high_level": 1
+      },
+      "planets_data_large": {
+        "candidate": 13,
+        "candidate_high_level": 3,
+        "selected": 1,
+        "selected_high_level": 0
+      },
+      "polar_equipment_large": {
+        "candidate": 14,
+        "candidate_high_level": 11,
+        "selected": 1,
+        "selected_high_level": 1
+      },
+      "residential_data_large": {
+        "candidate": 15,
+        "candidate_high_level": 11,
+        "selected": 2,
+        "selected_high_level": 1
+      },
+      "reverse_logistics_large": {
+        "candidate": 14,
+        "candidate_high_level": 0,
+        "selected": 1,
+        "selected_high_level": 0
+      },
+      "robot_fault_prediction_large": {
+        "candidate": 7,
+        "candidate_high_level": 7,
+        "selected": 1,
+        "selected_high_level": 1
+      },
+      "solar_panel_large": {
+        "candidate": 14,
+        "candidate_high_level": 5,
+        "selected": 1,
+        "selected_high_level": 0
+      },
+      "sports_events_large": {
+        "candidate": 14,
+        "candidate_high_level": 6,
+        "selected": 1,
+        "selected_high_level": 0
+      },
+      "virtual_idol_large": {
+        "candidate": 13,
+        "candidate_high_level": 13,
+        "selected": 1,
+        "selected_high_level": 1
+      }
+    },
+    "overall": {
+      "candidate": {
+        "conditions": {
+          "decimal": {
+            "-1": 102,
+            "0": 6,
+            "1": 3,
+            "2": 68,
+            "3": 15,
+            "4": 13,
+            "5": 1,
+            "6": 1,
+            "8": 1
+          },
+          "distinct": {
+            "false": 198,
+            "true": 12
+          },
+          "order": {
+            "false": 87,
+            "true": 123
+          }
+        },
+        "count": 210,
+        "high_level": {
+          "false": 89,
+          "true": 121
+        }
+      },
+      "selected": {
+        "conditions": {
+          "decimal": {
+            "-1": 14,
+            "2": 2,
+            "3": 2,
+            "4": 2
+          },
+          "distinct": {
+            "false": 20
+          },
+          "order": {
+            "false": 12,
+            "true": 8
+          }
+        },
+        "count": 20,
+        "high_level": {
+          "false": 10,
+          "true": 10
+        }
+      }
+    }
+  },
+  "excluded_databases": [
+    "archeology_scan_large",
+    "cybermarket_pattern_large"
+  ],
+  "kind": "c1-retrieval-sensitivity-subset",
+  "schema_version": 1,
+  "source": {
+    "eligible_manifest": {
+      "file": "eligible_questions.jsonl",
+      "sha256": "ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e"
+    },
+    "public_baseline_exclusions": {
+      "file": "public-baseline-exclusions-v1.json",
+      "sha256": "657b3b8dd2c43a5857c2772e7b759f68b35fc261909a9fb380816b0f8633ff19"
+    },
+    "source_baseline_commit": "5be315e44bea7ee1a39500380dcbc4c05976dd3e",
+    "train_ids": {
+      "file": "train_ids.txt",
+      "sha256": "ecdd1e4cd425e41970d3d4e96d7c3cb044cb78d94e34621d320e3d542a5d1c46"
+    }
+  }
+}
