@@ -77,7 +77,7 @@ def _init_event(model: str = MODEL) -> dict[str, Any]:
         "model": model,
         "session_id": "session-1",
         "subtype": "init",
-        "tools": [],
+        "tools": ["StructuredOutput"],
         "type": "system",
     }
 
@@ -127,7 +127,7 @@ def _success_stream(
         {
             **_init_event(model),
             "mcp_servers": [] if mcp_servers is None else mcp_servers,
-            "tools": [] if init_tools is None else init_tools,
+            "tools": ["StructuredOutput"] if init_tools is None else init_tools,
         },
         *extra_events,
         {
@@ -540,11 +540,38 @@ def test_terminal_cost_must_reconcile_with_model_usage(tmp_path: Path) -> None:
     assert exc.value.category == "protocol"
 
 
+def test_intrinsic_structured_output_surface_is_accepted(tmp_path: Path) -> None:
+    transport, _ = _transport(
+        tmp_path,
+        _success_stream(init_tools=["StructuredOutput"]),
+    )
+
+    turn = transport.next_turn(_messages(), _tool_specs())
+
+    assert turn.action == {"sql": "SELECT COUNT(*) FROM site", "type": "answer"}
+
+
 @pytest.mark.parametrize(
     ("stdout", "match", "category"),
     [
         (_success_stream(model="claude-unexpected-9"), "model", "model_identity"),
+        (_success_stream(init_tools=[]), "tool surface", "tool_surface"),
         (_success_stream(init_tools=["Bash"]), "tool surface", "tool_surface"),
+        (
+            _success_stream(init_tools=["StructuredOutput", "StructuredOutput"]),
+            "tool surface",
+            "tool_surface",
+        ),
+        (
+            _success_stream(init_tools=["StructuredOutput", "Bash"]),
+            "tool surface",
+            "tool_surface",
+        ),
+        (
+            _success_stream(init_tools=["Bash", "StructuredOutput"]),
+            "tool surface",
+            "tool_surface",
+        ),
         (
             _success_stream(mcp_servers=[{"name": "ambient", "status": "connected"}]),
             "tool surface",
@@ -568,6 +595,7 @@ def test_wrong_model_or_ambient_surface_fails_with_terminal_telemetry(
     [
         {"sql": "SELECT 1", "type": "answer", "unexpected": True},
         {"name": "Bash", "arguments": {}, "type": "tool"},
+        {"name": "StructuredOutput", "arguments": {}, "type": "tool"},
         {"name": "execute_sql", "arguments": {}, "type": "tool"},
         {"reason": "maybe", "type": "refuse"},
     ],

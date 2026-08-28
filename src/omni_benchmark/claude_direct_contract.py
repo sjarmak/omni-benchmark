@@ -533,8 +533,8 @@ def validate_session(
 
 
 def validate_surface(init: Mapping[str, Any]) -> None:
-    """Reject any provider-exposed ambient tool or MCP surface."""
-    if init.get("tools") != [] or init.get("mcp_servers") != []:
+    """Require only the CLI's intrinsic JSON-schema output capability."""
+    if init.get("tools") != ["StructuredOutput"] or init.get("mcp_servers") != []:
         raise ClaudeDirectTransportError(
             "tool_surface", "Claude init exposed an ambient tool surface"
         )

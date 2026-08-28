@@ -3171,3 +3171,82 @@ an ordinary client trust-store mismatch look like a role-policy defect.
 
 Review and commit the narrow trust-store fix, rerun C1 from the exact commit,
 then run C2/C3 and close the four-condition capture gate if their artifacts pass.
+
+## 2026-08-28 — D-041: Distinguish structured output from ambient Claude tools
+
+### Decision / experiment
+
+Diagnose the first live C1 model-transport failure using only structural init
+telemetry before changing prompts, model settings, or comparator capabilities.
+
+### Observation
+
+The exact-commit C1 attempt passed Neon TLS, identity, and privilege preflight,
+then ended in 620 ms as `model_tool_surface_error` with zero provider tokens,
+zero tool calls, and zero database queries. A minimal isolated diagnostic against
+the same pinned Claude Code 2.1.250 binary showed an init tool list containing
+only `StructuredOutput` and no MCP servers. The CLI exposes this intrinsic
+capability whenever `--json-schema` is used, even though `--tools ""`, restricted
+mode, safe mode, and an empty strict MCP configuration are all active.
+
+### Hypothesis
+
+The transport contract is confusing the CLI's own schema-constrained response
+mechanism with an ambient agent tool. Requiring exactly `StructuredOutput` while
+continuing to reject every additional tool and MCP server should allow the
+intended structured model transport without giving the model filesystem, shell,
+web, or database capabilities.
+
+### Decision
+
+Treat `StructuredOutput` as part of the pinned adapter contract, not as an
+evaluated tool. Require the exact singleton list rather than broadly allowing
+provider-reported tools. Keep harness-owned schema and SQL actions outside the
+Claude tool surface.
+
+### Rationale
+
+This is the smallest change that matches observed behavior and preserves the
+security and interpretability boundary. Removing schema-constrained output would
+weaken the action protocol; permitting arbitrary built-ins would invalidate the
+direct comparator.
+
+### Intervention
+
+Experiment surface: structural harness compatibility; change type: general
+system improvement; Bead `omni-benchmark-dih.5.4.2.5.2`. A RED test first proved
+that the real singleton init surface was rejected. The validator now requires
+exactly `StructuredOutput` plus an empty MCP list, and adversarial tests cover an
+empty list, `Bash`, and `StructuredOutput` combined with `Bash`.
+
+### Result
+
+The RED test failed with the observed `tool_surface` category. After the minimal
+change and review-driven coverage of duplicate, reordered, and attempted
+`StructuredOutput` actions, all 50 Claude direct-transport tests pass. The
+broader Claude/direct suite passes 428 tests. Independent review found no
+blocking issue; Ruff, formatting, and diff checks are clean. An exact-commit
+live rerun remains pending.
+
+### Interpretation
+
+The first live C1 failure was not model reasoning, authentication, or database
+access. It exposed a mismatch between synthetic transport fixtures and the
+pinned product CLI's real initialization contract. Capturing zero-token terminal
+failure telemetry made that distinction immediate.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Tool-surface observability needs to distinguish response-format machinery from
+capabilities that can act on user data or external systems. Treating both as one
+undifferentiated list produces false security failures and makes agent scaffolds
+harder to audit.
+
+### Next step
+
+Review and commit the exact-surface contract, rerun C1 from a fresh immutable
+worktree, then continue C2/C3 only if the live artifact passes capture checks.
