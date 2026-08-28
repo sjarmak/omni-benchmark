@@ -2287,3 +2287,434 @@ Add the committed condition/configuration and public-context adapters, then test
 the restricted transport against recorded provider envelopes. The first live
 call remains one unscored public canary; scaled context and concurrency decisions
 will use its observed cost, token, tool-surface, and latency evidence.
+
+## 2026-08-28 — D-031: Bind every direct attempt to one runtime identity
+
+### Decision / experiment
+
+Replace the direct comparator's independent question, database, context,
+provider, model, and budget labels with one frozen end-to-end runtime binding.
+
+### Observation
+
+The public context, restricted Claude transport, and attested PostgreSQL
+transport each passed their local contract tests, but an adversarial integration
+review showed that their identities were not preserved through capture and
+publication. A valid attempt could be produced with an arbitrary question,
+substituted condition callback, wrong audited database, or provider/model labels
+that did not match the realized Claude transport. The same review found four
+independent issues: PostgreSQL TLS modes without hostname verification, accepted
+positive web-search telemetry, a path verification-to-execution race, and
+result-adaptation errors mislabeled as database infrastructure failures.
+
+### Hypothesis
+
+A small immutable value constructed from committed public inputs, exact adapter
+identities, and fixed budgets will make substitution mechanically detectable
+without coupling the core harness to the current Neon or Omni inventory formats.
+Keeping TLS, web-search, executable pinning, and failure taxonomy as separate
+local fixes should preserve experimental interpretability and reduce migration
+risk.
+
+### Decision
+
+Introduce `DirectRuntimeBinding` from five exact components: committed question,
+public semantic context, database target/fingerprints, realized model adapter,
+and budget. Remove free runtime question/provider/model/callback labels from the
+capture path. Context, model, and database adapters must expose immutable
+identities that exactly match the binding before work begins and at their use
+boundaries. Carry the full binding and its canonical digest through the probe,
+receipt, attempt publisher, and generation artifact.
+
+The core remains inventory-agnostic: a later preflight translates a committed
+database record into a generic content-addressed database identity. The
+development question loader supports only train, dev-A, and dev-B; test remains
+outside this capability. Local security fixes land before the cross-cutting
+migration.
+
+### Rationale
+
+Adding more pairwise string comparisons was considered and rejected because it
+would preserve multiple sources of truth. Making capture parse the Neon inventory
+was rejected because it couples benchmark mechanics to a mutable provider shape.
+Treating the adapters as locally trustworthy was rejected because the published
+receipt would still overstate what actually ran. One canonical binding keeps the
+mechanism small and gives the sealed publisher an independently recomputable
+claim.
+
+### Intervention
+
+Bead `omni-benchmark-dih.5.4.2.4`; optimization surface: structural harness and
+evaluation custody; candidate-generation method: adversarial security review plus
+independent architecture review; change type: general system improvement. This
+decision changes no benchmark split, endpoint, scorer, or supervision policy.
+
+### Result
+
+Pending implementation. The exploit cases are preserved as required regression
+tests. No live provider/database call, private package, hidden annotation, gold
+answer, or correctness result was accessed.
+
+### Interpretation
+
+Local provenance is not end-to-end provenance. A trustworthy attempt must prove
+that the committed question, semantic representation, physical data target,
+model process, and budgets all refer to the same invocation.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+This is primarily benchmark-harness hardening. The analogous product opportunity
+is a native run identity that links an Omni agent session to the exact model
+revision, semantic-model revision, connection target, validation path, and
+result artifact without requiring external reconstruction.
+
+### Next step
+
+Land the four independent local fixes, implement the binding and committed
+development-question loader, then migrate capture and publication before any live
+C1-C3 canary.
+
+## 2026-08-28 — D-032: Make direct-attempt preparation a dev-A-only capability
+
+### Decision / experiment
+
+Replace caller-asserted direct-comparator dependencies with one committed,
+dev-A-only preparation capability, and adversarially review it before any live
+comparator call.
+
+### Observation
+
+The first integrated security review did not approve the implementation. It
+demonstrated four distinct boundary failures: an untracked runtime file could be
+attributed to the recorded commit; an artifact store from another workspace was
+accepted; mutable Claude timeout/runner and PostgreSQL connector state could
+change after authorization; and the ordinary per-question factory could select
+`train` or `dev-b`, bypassing the checkpoint control plane. The review also
+showed that a test-only arbitrary-authority mint was shipped in the production
+module.
+
+Separately, the committed database-identity loader cannot yet run against the
+real inventory. The infrastructure-owned inventory is still an uncommitted
+format-v2 artifact and lacks the credential-free physical-database and
+connection-target digest required to authenticate a live target.
+
+### Hypothesis
+
+A single dev-A-only factory that verifies clean executing source, workspace,
+store, committed question/context/database inputs, and transport execution state
+will close the accidental-leakage and provenance gaps without adding benchmark
+policy to the model-facing harness.
+
+### Decision
+
+Ordinary direct attempts are restricted to `dev-a`. The one-time 231-question
+public baseline and guardian-controlled dev-B checkpoints will require separate,
+metered orchestration capabilities; they are not aliases of the ordinary
+per-question factory. The production module no longer contains an arbitrary
+test mint. Tests exercise the committed factory with external adapters patched
+only inside the test suite.
+
+Transport authorization now covers not only model/database object and method
+identity, but the mutable state that can change execution: Claude configuration
+and runner, plus PostgreSQL connector, connection configuration, attestation,
+and database identity. These values are rechecked around external boundaries.
+
+### Rationale
+
+Relying on the final publisher to detect a mislabeled run was rejected because
+the model or database call would already have occurred. Treating dev-B as an
+ordinary development scope was rejected because it would make the guardian an
+optional convention. Keeping the arbitrary test mint was rejected because it
+made the production capture capability indistinguishable from a synthetic one.
+
+### Intervention
+
+Bead `omni-benchmark-dih.5.4.2.4`; optimization surface: benchmark harness and
+custody mechanism; change type: general system improvement. Primary modules are
+`direct_prepared_attempt.py`, `direct_database_loader.py`, the restricted Claude
+and PostgreSQL transports, and the direct capture/publisher contracts.
+
+### Result
+
+The first security review was a failed gate and no commit was made. After the
+intervention, 309 focused adversarial and integration tests pass. The complete
+suite before the final follow-up review passed 1,103 tests with three explicit
+live-integration skips and 85.06% branch coverage. The follow-up independent
+review is pending. No live comparator invocation, hidden annotation, private
+gold package, or correctness result was accessed.
+
+### Interpretation
+
+Content-addressing inputs is insufficient when the code, output root, or mutable
+transport state can diverge after the hash is recorded. Development-partition
+custody is likewise a capability-design problem, not merely a naming
+convention.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+An Omni-native immutable run identity should bind the semantic revision,
+connection target, agent/model stages, budgets, validation path, and artifacts.
+For evaluation workflows, access to checkpoint sets should be represented as a
+separate auditable capability rather than another scope string accepted by the
+same runner.
+
+### Next step
+
+Require the follow-up security/code/simplification reviews to reproduce the
+original exploits, then commit the direct runtime checkpoint. Coordinate the
+credential-free inventory extension with the database-infrastructure lane before
+the first live C1-C3 canary.
+
+## 2026-08-28 — D-033: Treat product validation as the semantic compiler gate
+
+### Decision / experiment
+
+Upload the byte-authenticated public archeology bundle to one isolated Omni
+branch and require product-native validation before any semantic query or AI Hub
+inspection.
+
+### Observation
+
+All 14 local bundle files matched commit `4622f0f` and manifest SHA-256
+`ba441ace28dc730508bf8de1771b18a61e83eec5050f8d44a4643bc83cfbe76d`.
+The files uploaded successfully, but Omni validation rejected the 29 executable
+dimensions. It also revealed that flat local names such as
+`archeology_scan_large.public__pointcloud.view` create a new logical view rather
+than extending the schema-model file
+`archeology_scan_large.public/pointcloud.view`. PostgreSQL JSON extraction with
+`->>` was rejected by Omni's SQL parser, and dependent expressions then failed
+validation as well.
+
+### Hypothesis
+
+The semantic content is not the immediate failure. The deployment mapping is
+targeting the wrong model path, and the dialect-specific JSON leaf expressions
+need Omni's documented `DO NOT PARSE` escape while ordinary derived expressions
+remain parser-validated. Correcting those two mechanical compiler/deployment
+rules should make the same public definitions validate without weakening checks
+for general expressions.
+
+### Decision
+
+Stop before query generation or AI inspection. Test the narrow JSON-parser
+hypothesis on the isolated branch, then encode the successful rule with tests and
+regenerate a new committed public-only bundle. Do not use `DO NOT PARSE` for all
+fields and do not proceed with a partially valid model.
+
+### Rationale
+
+Suppressing validation globally would hide genuine expression errors. Removing
+the executable fields would make the canary pass while defeating the research
+question. A one-class parser exception plus an explicit local-to-Omni deployment
+path is the smallest reusable intervention that distinguishes representation
+failure from content failure.
+
+### Intervention
+
+Bead `omni-benchmark-dih.12`; optimization surface: HKB-to-semantic-model
+compiler and deployment adapter; change type: general system improvement.
+External scope remains the authorized isolated archeology branch only.
+
+### Result
+
+IN PROGRESS. Initial validation produced 29 `unparseable_sql` errors; no query,
+AI Hub evaluation, benchmark correctness judgment, hidden annotation, or gold
+data was used.
+
+### Interpretation
+
+Local syntactic validation was necessary but not sufficient. Omni model path
+identity and product-dialect parsing are part of semantic compilation and must be
+verified against the running product before scaling to 18 databases.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+The validation errors precisely identify each affected field, but the API does
+not explain that the uploaded filename created a parallel logical view instead
+of extending the schema view. A deployment-time warning for near-duplicate view
+names or non-extending files would prevent a subtle class of apparently
+successful model uploads.
+
+### Next step
+
+Verify the narrow parser exception on one view, then implement and regression-test
+the deployment mapping and semantic compiler rule before repeating full branch
+validation.
+
+## 2026-08-28 — D-034: Freeze topic joins explicitly
+
+### Decision / experiment
+
+Require semantic readback, not only zero validation errors, before accepting the
+public-only Omni branch.
+
+### Observation
+
+All seven corrected view extensions uploaded to schema-model paths and full model
+validation returned zero issues. Semantic readback matched the pointcloud view,
+but the pointcloud topic did not match its source artifact: Omni inserted joins
+to `personnel` and `projects`. Omni documentation states that newly created
+topics include joinable many-to-one and one-to-one tables by default. The local
+topic selected only base-view fields and claimed that it modeled no cross-table
+joins, but it did not explicitly declare an empty `joins` map.
+
+### Hypothesis
+
+An explicit `joins: {}` is required to freeze a generated single-view topic.
+If so, adding this mechanical property to every no-join topic should prevent
+product defaults from expanding the semantic surface while preserving the
+existing field curation and AI context.
+
+### Decision
+
+Test the empty map on the isolated pointcloud topic before changing the compiler.
+Do not accept zero model-validation errors as evidence of exact semantic
+readback, and do not weaken the comparison to ignore product-added joins.
+
+### Rationale
+
+The joins are not necessarily invalid, but they contradict the preregistered
+conservative no-join baseline and introduce unreviewed relationship semantics.
+Readback is the only gate that revealed the difference.
+
+### Intervention
+
+Bead `omni-benchmark-dih.12`; optimization surface: topic generation and product
+deployment semantics; change type: general system improvement. The diagnostic
+uses only the authorized isolated public archeology branch.
+
+### Result
+
+IN PROGRESS. Product validation is clean, but 1/1 inspected topic readbacks has
+unrequested joins. No AI call, benchmark question, correctness judgment, hidden
+annotation, or gold data was used.
+
+### Interpretation
+
+A semantically valid model can still differ materially from its source bundle.
+Generated semantic models need content readback that covers inferred product
+defaults, not just YAML checksums and validator status.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Automatic join inclusion is convenient for interactive modeling but risky for
+programmatic/governed model generation. The upload/readback workflow should make
+inferred topic joins explicit or offer a freeze-defaults mode.
+
+### Next step
+
+Test `joins: {}` on pointcloud, then encode and validate the rule across all
+seven public-only topics if it suppresses the inferred joins.
+
+## 2026-08-28 — D-035: Accept the public-only governed canary
+
+### Decision / experiment
+
+Complete the authorized archeology C4 canary only after compiler fixes, exact
+semantic readback, one governed query, and one unscored AI Hub diagnostic.
+
+### Observation
+
+The explicit empty join map suppressed Omni's default topic expansion. The
+corrected bundle at commit `dc05b6b7ea61d256d54e4077a97884297ffa57a4`
+and manifest SHA-256
+`761371f4eebef183cdf54cbbd5f146ebb67652ebcf72aeb6623eb79f70390802`
+uploaded to the isolated branch. Product validation returned zero issues, and
+all 14 artifacts matched semantic readback after only two documented Omni
+normalizations: YAML formatting/comments and removal of inherited
+catalog/schema/table keys from schema-view extensions.
+
+### Hypothesis
+
+If the public HKB definitions are genuinely executable through the semantic
+layer, a topic query should compile and execute the deepest modeled pointcloud
+boolean without reconstructing its formula, and the production agent should
+select that same field when explicitly asked to use it.
+
+### Decision
+
+Use `is_premium_quality_scan`, which depends on multiple modeled fields, for the
+single read-only semantic query and AI Hub diagnostic. Do not judge benchmark
+correctness or run a benchmark question.
+
+### Rationale
+
+A base-column count would prove connection health but not semantic composition.
+The chosen field tests JSON leaf extraction, recursive same-grain dependencies,
+topic discoverability, semantic compilation, database execution, and production
+agent selection in one small public canary.
+
+### Intervention
+
+Bead `omni-benchmark-dih.12`; branch
+`a1adff15-282b-4c35-be59-123fa6ed681b` of isolated model
+`c947be84-92d4-418d-8f80-4a7d9ce1f181`; optimization surfaces: semantic
+compiler, topic generation, governed query path, and AI Hub observability;
+change type: general system improvement plus legitimate database modeling.
+
+### Result
+
+KEEP. The governed semantic query grouped 697 pointcloud rows into 680 false and
+17 true values and issued no raw SQL. This is an execution canary, not a
+correctness score. The first request was rejected before query execution because
+the CLI request schema advertised cache values that the live endpoint did not
+accept; replacing `disabled` with the live value `SkipCache` produced the one
+executed canary.
+
+The AI Hub job completed with one successful `generate_query` action and one
+`summarize` action. Its generated query selected exactly
+`is_premium_quality_scan` and `count` through `pointcloud_semantics`, returned
+two rows without truncation, and did not reconstruct the metric. The response
+exposed Bedrock model `claude-opus-5`, one tool call, one database query, total
+duration 7,233 ms, LLM duration 6,302 ms, query duration 352 ms, 4 input tokens,
+250 output tokens, 79,585 cache-read tokens, and 80,087 cache-write tokens. It
+did not expose cost, retries, or validation-attempt counts. The response body
+SHA-256 was
+`960cfbeba89022944bba2fcbd569a8948b521d4bc8c388d8fc1b92ab066b781d`;
+the product retains the underlying AI Hub session. No gold, hidden annotation,
+test outcome, or AI judge was used.
+
+### Interpretation
+
+The mechanical public-only transformation can produce an executable governed
+semantic chain, but local compilation was insufficient: three product-specific
+details had to be learned from the canary—schema-model file paths,
+dialect-parser escape syntax, and explicit suppression of default joins. AI Hub
+provides substantially more model/cost telemetry than the earlier synthetic C4
+contract assumed, but it still leaves important retry/validation fields opaque.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+The native workflow can expose the selected semantic query, topic, model/provider,
+token buckets, tool count, query count, and timings. That is useful for C4
+diagnosis. The same run also exposed three integration gaps worth product
+feedback: silent near-duplicate view paths, implicit topic joins, and drift
+between the CLI request schema and live cache enum. Additionally, the supposedly
+unformatted JSON semantic-query response represented the count as a string,
+which matters for execution-result scoring and typed downstream consumers.
+
+### Next step
+
+Commit the pure deployment/readback adapter and canary documentation, update the
+C4 trace contract with the telemetry fields now observed, then use the same
+public-only gate before any multi-database bundle fan-out or scaled baseline.

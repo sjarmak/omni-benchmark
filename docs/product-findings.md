@@ -63,6 +63,345 @@ scorer quirks remain research inputs rather than Omni product behavior. Findings
 about answer generation should come from the public-only baseline and its rich
 traces.
 
+## PF-001 follow-up: Refresh failure was a selected-database permission mismatch
+
+- **Observed behavior:** Read-only diagnosis established that the stored Omni
+  connection selected PostgreSQL database `neondb`, while the benchmark reader
+  was intentionally granted `CONNECT` only to `archeology_scan_large`.
+- **Minimal non-private reproduction:** Configure a valid PostgreSQL host, role,
+  and password but select a database for which the role lacks `CONNECT`; create
+  or refresh the schema model and inspect the terminal job response.
+- **Expected behavior:** Connection validation or schema refresh identifies the
+  selected-database `CONNECT` denial and names the configuration field to fix.
+- **Actual behavior:** Connection creation succeeded. Both refresh jobs exposed
+  only `FAILED`; schema access returned 404 and raw query access returned 403.
+  The underlying PostgreSQL denial was not exposed by the product surfaces used.
+- **Why it matters to customers:** A nearly correct least-privilege connection
+  is a common setup error. Without the selected-database error, an operator can
+  spend substantial time investigating schema grants, network policy, model
+  syntax, or service health instead of correcting one connection field.
+- **Systematic evidence / frequency:** The wrong selected database was confirmed
+  on the archeology canary. The same connection-creation pattern was used for
+  the remaining benchmark databases, but those connections have not yet been
+  audited for this mismatch; prevalence therefore remains unconfirmed.
+- **Benchmark impact:** C4 upload/readback and live canary execution remain
+  blocked until an explicitly approved connection correction and refresh.
+- **Severity:** High setup-workflow impact; no effect on any accuracy result.
+- **Proposed product change:** Validate database reachability and `CONNECT` at
+  connection save time. Also propagate a sanitized PostgreSQL error category,
+  failing database name, and remediation hint through refresh job status and the
+  modeling/AI Hub UI.
+- **Was the change tested?:** No product change was available. A read-only
+  counterfactual check succeeded against `archeology_scan_large` with the same
+  host and role.
+- **Measured effect:** The correct target exposed PostgreSQL 18 in read-only
+  mode with public-schema usage and exactly 51 base tables / 959 columns; the
+  stored target denied database access. No Omni connection was mutated.
+- **Experiment / commit provenance:** Bead `omni-benchmark-dih.14`; uncommitted
+  read-only diagnosis on 2026-08-28; no benchmark-question or correctness run.
+- **Visible in AI Hub?:** Not yet; schema generation never completed.
+- **AI Hub exposes relevant context/behavior?:** No evidence that the database
+  permission cause is visible before a usable model exists.
+- **Fixable through current AI Hub/modeling workflow?:** No; the selected
+  database belongs to connection configuration.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** Direct read-only database verification
+  succeeded on the intended database; benchmark scoring was not run.
+- **Evaluator agreement/disagreement:** Not applicable.
+
+## PF-001 validation: Correcting the selected database resolved the refresh
+
+- **Observed behavior:** After changing only the connection's selected database
+  from `neondb` to `archeology_scan_large`, the same least-privilege role and
+  endpoint completed a public-only schema refresh.
+- **Minimal non-private reproduction:** Keep host, port, role, grants, and
+  connection ID fixed; correct the selected database; run one soft refresh
+  restricted to `public`; read back schemas and views.
+- **Expected behavior:** The corrected connection refreshes the one authorized
+  public schema and exposes the same table population as the verified mirror.
+- **Actual behavior:** Refresh job
+  `8039ab6a-5a8d-4f80-9ae7-fddae67d4b7d` completed. Readback returned only
+  `archeology_scan_large.public` and 51 views, matching the mirror's 51 public
+  tables.
+- **Why it matters to customers:** This counterfactual isolates the selected
+  database as the cause. Actionable connection validation would have turned an
+  opaque multi-hour setup investigation into a single-field correction.
+- **Systematic evidence / frequency:** Confirmed on the archeology canary only;
+  the other 17 connections were deliberately not changed.
+- **Benchmark impact:** Clears the first C4 schema-model blocker. It does not
+  contribute any benchmark accuracy result.
+- **Severity:** High setup-workflow impact, now remediated for the canary.
+- **Proposed product change:** Validate database `CONNECT` during connection
+  save and return a sanitized failing-database error from refresh jobs.
+- **Was the change tested?:** The configuration correction was tested; the
+  proposed product diagnostics were not.
+- **Measured effect:** Refresh changed from 2/2 opaque failures to one completed
+  controlled refresh with 51/51 expected views.
+- **Experiment / commit provenance:** Beads
+  `omni-benchmark-dih.14` and `omni-benchmark-dih.14.1`; external action on
+  2026-08-28; local documentation commit pending.
+- **Visible in AI Hub?:** AI Hub inspection awaits the isolated semantic-model
+  canary.
+- **AI Hub exposes relevant context/behavior?:** Not applicable before a usable
+  semantic model exists.
+- **Fixable through current AI Hub/modeling workflow?:** No; the fix is in
+  connection configuration.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** Schema refresh and model readback passed;
+  benchmark question execution was not run.
+- **Evaluator agreement/disagreement:** Not applicable.
+
+## PF-002: Model upload can silently create a near-duplicate schema view
+
+- **Observed behavior:** Uploading an extension with the flat artifact name
+  `archeology_scan_large.public__pointcloud.view` succeeded, but created the new
+  logical view `archeology_scan_large.public__pointcloud` instead of extending
+  the schema-model view `archeology_scan_large_public__pointcloud`.
+- **Minimal non-private reproduction:** On an isolated branch, upload a view
+  extension whose filename encodes `catalog.schema__table.view` rather than the
+  schema-model path `catalog.schema/table.view`; compare fully resolved view
+  names and run model validation.
+- **Expected behavior:** The upload surface either maps the obvious schema-view
+  artifact to the existing view or warns that the file creates a near-duplicate
+  logical view with the same catalog, schema, and table.
+- **Actual behavior:** The API reported success. The distinction became visible
+  only through fully resolved model readback; validation discussed SQL parsing,
+  not the duplicate target identity.
+- **Why it matters to customers:** A modeler can believe they governed an
+  existing schema view while topics and queries continue to use a different
+  unmodified view. This is especially difficult to spot in generated models.
+- **Systematic evidence / frequency:** 7/7 uploaded canary view files used the
+  wrong logical path before the deployment rule was corrected. This measures one
+  compiler's repeated mistake, not general customer prevalence.
+- **Benchmark impact:** The first semantic bundle could not be accepted as the
+  public-only C4 baseline. No benchmark question was run against it.
+- **Severity:** High model-correctness risk in automated upload workflows.
+- **Proposed product change:** Warn when a new view file resolves to the same
+  catalog/schema/table as an existing schema view but has a different logical
+  name, and expose the resolved logical target in the upload response.
+- **Was the change tested?:** The external product was not changed. Mapping the
+  artifact to `archeology_scan_large.public/pointcloud.view` extended the
+  intended base view and removed this class of validation ambiguity.
+- **Measured effect:** The corrected pointcloud path resolved to
+  `archeology_scan_large_public__pointcloud`; the seven duplicate files were
+  removed from the isolated branch.
+- **Experiment / commit provenance:** Research decision D-033; bead
+  `omni-benchmark-dih.12`; public bundle source commit `4622f0f`; isolated branch
+  canary on 2026-08-28.
+- **Visible in AI Hub?:** Pending the authorized diagnostic inspection.
+- **AI Hub exposes relevant context/behavior?:** Pending.
+- **Fixable through current AI Hub/modeling workflow?:** Yes, by editing model
+  filenames/paths; discoverability of the cause remains the product issue.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** Product-native validation/readback only; no
+  benchmark scoring.
+- **Evaluator agreement/disagreement:** Not applicable.
+
+## PF-003: Valid PostgreSQL JSON expressions require an opaque parser escape
+
+- **Observed behavior:** Omni validation rejected valid PostgreSQL `->>` JSON
+  extraction in modeled dimensions as `unparseable_sql`.
+- **Minimal non-private reproduction:** Define a dimension as
+  `CAST(${cloud_metrics} ->> 'Scan_Resol_Mm' AS DOUBLE PRECISION)` on a
+  PostgreSQL JSON/structured column and validate the branch.
+- **Expected behavior:** The dialect-aware model parser accepts SQL that the
+  configured PostgreSQL database accepts, or identifies the unsupported
+  construct and proposes the documented compatibility marker.
+- **Actual behavior:** Validation rejected the extractor and every field that
+  depended on it. Adding `-- DO NOT PARSE` only to the extractor made the entire
+  pointcloud extension validate while leaving derived formulas parser-checked.
+- **Why it matters to customers:** A valid, reusable semantic definition either
+  appears broken or must opt out of parser validation, reducing compiler
+  observability for exactly the semi-structured fields where validation is
+  valuable.
+- **Systematic evidence / frequency:** The initial branch reported 29 cascading
+  expression errors across four executable view extensions. The narrow
+  pointcloud test covered five JSON leaves and six dependent fields; after the
+  parser marker, none of those eleven fields produced a validation issue.
+- **Benchmark impact:** Blocks mechanical HKB-to-Omni compilation until the
+  compiler records an explicit dialect-bypass decision. It has not affected an
+  accuracy result.
+- **Severity:** Medium modeling/compilation issue with a documented workaround.
+- **Proposed product change:** Add PostgreSQL JSON operator support to the model
+  SQL parser, or make the validator return a structured `dialect_parse_gap`
+  suggestion that preserves validation of downstream expressions.
+- **Was the change tested?:** The narrow compiler workaround was tested on the
+  isolated pointcloud extension; a full regenerated-bundle validation is next.
+- **Measured effect:** Pointcloud validation changed from eleven direct/cascaded
+  errors to zero without disabling parsing for derived formulas.
+- **Experiment / commit provenance:** Research decision D-033; bead
+  `omni-benchmark-dih.12`; isolated branch canary on 2026-08-28; corrected local
+  compiler commit pending.
+- **Visible in AI Hub?:** Pending the authorized diagnostic inspection.
+- **AI Hub exposes relevant context/behavior?:** Pending.
+- **Fixable through current AI Hub/modeling workflow?:** Yes through YAML model
+  editing, but the workaround weakens parser coverage for the marked field.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** Product-native validation only; no benchmark
+  correctness judgment.
+- **Evaluator agreement/disagreement:** Not applicable.
+
+## PF-004: Topic readback adds joins unless no-join intent is explicit
+
+- **Observed behavior:** A topic with one base-view field selector but no
+  `joins` property gained two inferred many-to-one joins on readback.
+- **Minimal non-private reproduction:** Create a topic on the pointcloud schema
+  view with `fields: [archeology_scan_large_public__pointcloud.*]`, omit
+  `joins`, upload it, and read the extension YAML back.
+- **Expected behavior:** A generated topic that selects only one view either
+  remains single-view or clearly reports that model-default joins will be added.
+- **Actual behavior:** Omni inserted joins to `personnel` and `projects` while
+  model validation remained clean. Setting `joins: {}` suppressed both.
+- **Why it matters to customers:** Implicit joins expand the semantic and AI
+  search surface beyond the modeler's reviewed intent and can introduce
+  unreviewed relationship/cardinality behavior.
+- **Systematic evidence / frequency:** 1/1 topic inspected before the fix had
+  inferred joins; 7/7 topics passed exact no-join readback after the compiler
+  emitted an empty map.
+- **Benchmark impact:** The public-only baseline would otherwise have contained
+  relationship semantics not approved by the HKB transformation methodology.
+- **Severity:** High semantic-governance risk for generated topics.
+- **Proposed product change:** Expose inferred joins in the upload response and
+  provide an explicit freeze-defaults/no-inferred-joins creation mode.
+- **Was the change tested?:** Yes. The compiler now emits `joins: {}` for every
+  deliberate single-view topic.
+- **Measured effect:** Pointcloud topic readback changed from two inferred joins
+  to zero; all 14 bundle artifacts then matched semantic readback and validation
+  remained clean.
+- **Experiment / commit provenance:** Research decisions D-034/D-035; commit
+  `dc05b6b7ea61d256d54e4077a97884297ffa57a4`; bead
+  `omni-benchmark-dih.12`.
+- **Visible in AI Hub?:** The resulting agent query is visible, but the
+  pre-fix implicit topic configuration was not surfaced in the inspected job.
+- **AI Hub exposes relevant context/behavior?:** It exposes the selected topic
+  and query fields, not why the topic contains a join.
+- **Fixable through current AI Hub/modeling workflow?:** Yes through topic YAML;
+  automated diagnosis remains weak.
+- **AI Hub Eval outcome:** No judge run; one diagnostic job after the fix used
+  only the intended base-view fields.
+- **External execution outcome:** Governed query succeeded after the fix; no
+  benchmark score was computed.
+- **Evaluator agreement/disagreement:** Not applicable.
+
+## PF-005: CLI request schema and live query cache enums disagree
+
+- **Observed behavior:** `omni query run --schema` advertised `disabled`,
+  `normal`, `refresh`, and `refresh_all`; the live endpoint rejected `disabled`
+  and required `Standard`, `SkipRequery`, `SkipCache`, or
+  `SkipCacheAndRebuildExtracts`.
+- **Minimal non-private reproduction:** Build a query body from the CLI's schema
+  with `cache: disabled` and submit it to the same authenticated instance.
+- **Expected behavior:** A request that validates against the installed CLI's
+  generated schema is accepted by the endpoint, or version skew is identified
+  before submission.
+- **Actual behavior:** The endpoint returned HTTP 400 before query execution.
+  Replacing the value with `SkipCache` succeeded.
+- **Why it matters to customers:** Schema-driven integrations can fail at
+  runtime even when they follow the product's own machine-readable contract.
+- **Systematic evidence / frequency:** 1/1 canary request using the advertised
+  value failed; 1/1 corrected request succeeded.
+- **Benchmark impact:** No accuracy effect, but it would create false harness
+  failures at scale if not caught by the canary.
+- **Severity:** Medium API/CLI integration issue.
+- **Proposed product change:** Generate CLI request schemas from the live API
+  contract or enforce compatible version negotiation and contract tests.
+- **Was the change tested?:** The integration workaround was tested; the
+  product contract was not changed.
+- **Measured effect:** Request outcome changed from pre-execution HTTP 400 to a
+  successful two-row governed result.
+- **Experiment / commit provenance:** D-035; Omni CLI 1.1.2; isolated archeology
+  branch canary on 2026-08-28.
+- **Visible in AI Hub?:** No; this occurred in the semantic-query API client.
+- **AI Hub exposes relevant context/behavior?:** No.
+- **Fixable through current AI Hub/modeling workflow?:** No.
+- **AI Hub Eval outcome:** Not applicable.
+- **External execution outcome:** The corrected request executed; no benchmark
+  correctness judgment was made.
+- **Evaluator agreement/disagreement:** Not applicable.
+
+## PF-006: Unformatted JSON results still stringify numeric measures
+
+- **Observed behavior:** A semantic query with `resultType: json` and
+  `formatResults: false` returned the count measure as strings (`"680"` and
+  `"17"`) while preserving the boolean grouping field as booleans.
+- **Minimal non-private reproduction:** Query
+  `is_premium_quality_scan` and `count` through `pointcloud_semantics` with raw
+  JSON output and formatting disabled.
+- **Expected behavior:** Unformatted JSON preserves database/semantic primitive
+  types, particularly numeric measures used for execution-result comparison.
+- **Actual behavior:** Boolean values remained typed; the count became a string.
+- **Why it matters to customers:** Downstream API clients and execution scorers
+  cannot assume JSON primitive types reflect semantic field types, creating
+  subtle equality and aggregation bugs.
+- **Systematic evidence / frequency:** One query and one numeric measure so far;
+  prevalence across numeric/date types remains to be measured before scale.
+- **Benchmark impact:** The current C4 result adapter must not claim typed-number
+  preservation or launch scaled scoring until predicted/gold normalization is
+  demonstrably aligned.
+- **Severity:** High for strict machine-to-machine result comparison; lower for
+  human-facing presentation.
+- **Proposed product change:** Preserve semantic types in unformatted JSON or
+  return an explicit field-type schema alongside values and document coercion.
+- **Was the change tested?:** No product fix exists. The finding is now a gate
+  for C4 scorer-parity validation.
+- **Measured effect:** Two numeric count cells were strings; two boolean cells
+  were booleans.
+- **Experiment / commit provenance:** D-035; isolated archeology semantic query
+  on 2026-08-28.
+- **Visible in AI Hub?:** AI Hub stores the executed query result as CSV, which
+  does not resolve primitive-type preservation.
+- **AI Hub exposes relevant context/behavior?:** It exposes field metadata and
+  the generated query, but its CSV result is not a typed oracle.
+- **Fixable through current AI Hub/modeling workflow?:** No.
+- **AI Hub Eval outcome:** No judge run.
+- **External execution outcome:** Query execution succeeded; no benchmark score
+  was computed.
+- **Evaluator agreement/disagreement:** Not applicable.
+
+## PF-007: AI Hub exposes rich run telemetry but not an immutable branch revision
+
+- **Observed behavior:** The inspected AI job exposed model/provider token
+  buckets, tool and query counts, tool errors, LLM/query/total durations, actions,
+  generated semantic query, result status, row count, and truncation. The result
+  did not echo an immutable branch/model-content revision; its query carried the
+  shared model ID even though submission targeted an isolated branch.
+- **Minimal non-private reproduction:** Submit a branch-scoped public prompt,
+  retrieve the completed job result, and inspect `metrics`, `actions`, and the
+  generated query identity.
+- **Expected behavior:** A diagnostic run binds its trace to exact semantic
+  model revision and branch alongside provider/model and execution metrics.
+- **Actual behavior:** Bedrock `claude-opus-5`, token buckets, one tool call, one
+  query, and detailed durations were visible. Cost, retry count, validation
+  attempts, and immutable semantic revision were not.
+- **Why it matters to customers:** AI Hub is genuinely useful for diagnosing
+  performance and cost behavior, but branch comparisons and reproducible evals
+  still require external request provenance.
+- **Systematic evidence / frequency:** One branch-scoped diagnostic job.
+- **Benchmark impact:** C4 telemetry coverage is better than the synthetic
+  contract assumed, but the harness must retain submitted branch/revision identity
+  and mark unobserved fields unavailable.
+- **Severity:** Medium observability/reproducibility gap with strong existing
+  diagnostic value.
+- **Proposed product change:** Echo branch ID plus immutable semantic revision,
+  model-stage routing, retries, validation attempts, and cost in the job result.
+- **Was the change tested?:** No product change. The observed metrics will be
+  integrated into the external trace contract.
+- **Measured effect:** One job reported 7,233 ms total, 6,302 ms LLM, 352 ms
+  query, one tool call, one query, zero tool errors, and provider/model token
+  buckets; cost/retry/validation remained unavailable.
+- **Experiment / commit provenance:** D-035; AI Hub job
+  `49955018-a245-4fb6-ba81-668181c49e77`; response SHA-256
+  `960cfbeba89022944bba2fcbd569a8948b521d4bc8c388d8fc1b92ab066b781d`.
+- **Visible in AI Hub?:** Yes; this is a native AI Hub observation.
+- **AI Hub exposes relevant context/behavior?:** Yes for selected topic, query,
+  actions, token buckets, tool/query counts, and timings.
+- **Fixable through current AI Hub/modeling workflow?:** The model can be
+  improved there; missing run identity/telemetry requires product support.
+- **AI Hub Eval outcome:** No judge run; diagnostic only.
+- **External execution outcome:** The independently issued semantic query used
+  the same fields and returned the same grouping shape; no correctness score.
+- **Evaluator agreement/disagreement:** No correctness evaluator was invoked.
+
 ## Entry template
 
 ### PF-XXX: Short finding title
