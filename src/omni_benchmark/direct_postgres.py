@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import stat
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any
 
@@ -23,6 +24,7 @@ _REQUIRED_ENVIRONMENT_FIELDS = ("PGHOST", "PGDATABASE", "PGUSER", "PGPASSWORD")
 _DEFAULT_PORT = 5432
 _REQUIRED_SSL_MODE = "verify-full"
 _SYSTEM_ROOT_CERTIFICATE = "system"
+_CANONICAL_SYSTEM_ROOT_CERTIFICATE = "/etc/ssl/certs/ca-certificates.crt"
 _CONNECT_TIMEOUT_SECONDS = 10
 _SYSTEM_TRUST_OVERRIDE_FIELDS = frozenset({"SSL_CERT_DIR", "SSL_CERT_FILE"})
 RUNTIME_IDENTITY_ATTESTATION_SQL = (
@@ -364,7 +366,7 @@ def _read_connection_values(
     if isinstance(root_certificate, str) and type(root_certificate) is not str:
         raise TypeError("hostile PGSSLROOTCERT string subclass")
     if not _root_certificate_is_safe(root_certificate):
-        return None, "PGSSLROOTCERT must be system"
+        return None, "PGSSLROOTCERT must use approved system trust"
     values["PGPORT"] = str(port)
     values["PGSSLMODE"] = ssl_mode
     values["PGSSLROOTCERT"] = root_certificate
@@ -372,7 +374,17 @@ def _read_connection_values(
 
 
 def _root_certificate_is_safe(value: object) -> bool:
-    return type(value) is str and value == _SYSTEM_ROOT_CERTIFICATE
+    if type(value) is not str:
+        return False
+    if value == _SYSTEM_ROOT_CERTIFICATE:
+        return True
+    if value != _CANONICAL_SYSTEM_ROOT_CERTIFICATE:
+        return False
+    try:
+        metadata = os.stat(value, follow_symlinks=False)
+    except OSError:
+        return False
+    return stat.S_ISREG(metadata.st_mode) and not stat.S_IMODE(metadata.st_mode) & 0o022
 
 
 def _audit_row_is_safe(row: object, expected_user: str) -> bool:

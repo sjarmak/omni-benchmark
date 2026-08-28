@@ -3083,3 +3083,91 @@ externally verifiable result without building parallel diagnostic machinery.
 Commit and run the C1-C3 archeology probes, prove generation/scoring database
 parity and typed scorer ingestion, then preserve the mechanical all-database
 baseline as soon as the semantic bundles finish.
+
+## 2026-08-28 — D-040: Repair direct Neon TLS trust without weakening verification
+
+### Decision / experiment
+
+Diagnose the first live C1 preflight failure before changing the model, query
+harness, database privileges, or semantic inputs.
+
+### Observation
+
+The committed C1 driver reached the Neon transport but failed before any model
+invocation with a sanitized PostgreSQL attestation error. Direct diagnostics
+showed that Psycopg's bundled libpq rejected Neon's certificate when configured
+with the special `sslrootcert=system` value. With the same `verify-full` hostname
+policy and the canonical Linux CA bundle at
+`/etc/ssl/certs/ca-certificates.crt`, the connection succeeded. The exact live
+privilege attestation returned safe, and database, role, and PostgreSQL version
+matched the committed archeology identity.
+
+### Hypothesis
+
+The failure is a trust-store compatibility issue in the bundled client, not a
+database-parity or role-hardening defect. Allowing only the canonical immutable
+OS CA path in addition to the `system` sentinel should restore the connection
+without broadening trust or weakening hostname verification.
+
+### Decision
+
+Add a narrow compatibility path under Bead
+`omni-benchmark-dih.5.4.2.5.1`. Continue to require `verify-full`; accept only
+the literal `system` sentinel or the exact canonical CA-bundle path when it is a
+regular file that is not group/world writable. Keep arbitrary, missing,
+relative, custom, and symlinked roots rejected.
+
+### Rationale
+
+This change repairs an observed gate failure and generalizes to Psycopg/libpq
+deployments using the standard Debian/Ubuntu trust bundle. Disabling certificate
+or hostname checks would invalidate the database target boundary and was not
+considered acceptable.
+
+### Intervention
+
+Optimization surface: direct database transport; change type: general system
+integration. Added a RED test for the canonical OS trust bundle, then the minimal
+root-certificate admission rule.
+
+### Result
+
+The RED test failed under the prior system-only policy. After the change and
+review-driven test hardening, 61 direct PostgreSQL tests pass, including exact
+canonical-path acceptance, non-following stat behavior, canonical symlink and
+unsafe-mode rejection, stat failures, and the existing custom-path/adversarial
+cases. The live archeology privilege attestation and exact runtime identity both
+pass with the canonical bundle. An initial independent review raised a pre-open
+TOCTOU concern and found that the positive test depended on the host filesystem.
+The test was made host-independent and the missing fail-closed branches were
+added. A second independent security review found no blocking issue under the
+explicit unprivileged-process threat boundary: changing the literal trust path
+or its root-owned, non-writable parent chain requires authority outside the
+evaluated process. Ruff, formatting, and diff checks pass. The full C1 canary
+remains pending; no model call, correctness label, hidden annotation, or gold
+data was accessed.
+
+### Interpretation
+
+The preflight failure did not implicate Neon parity or role design. The strict
+attestation was useful because it stopped the condition before an ambiguous
+partial model attempt and made the transport defect locally reproducible. A
+process-controlled certificate snapshot was considered and rejected as
+disproportionate: it would add a new credential-like lifecycle and hardening
+surface to defend against replacement of a root-owned system path by an actor
+who already exceeds the benchmark threat model.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Evaluation and product connectors should report TLS/trust failures separately
+from privilege failures. The previous combined error preserved secrecy but made
+an ordinary client trust-store mismatch look like a role-policy defect.
+
+### Next step
+
+Review and commit the narrow trust-store fix, rerun C1 from the exact commit,
+then run C2/C3 and close the four-condition capture gate if their artifacts pass.
