@@ -298,6 +298,10 @@ def _validate_run_envelope(
         raise AutoresearchError(
             "outcome must be correct, wrong_answer, or refused_or_error"
         )
+    if record["condition"] == "C4" and record["generation_outcome"] == "refused":
+        raise AutoresearchError(
+            "C4 refusal is not observable without a structured product signal"
+        )
     return instance_id, outcome
 
 
@@ -507,6 +511,7 @@ def _record_observation(
     return DirectRunObservation(
         instance_id=instance_id,
         outcome=outcome,
+        generation_outcome=record["generation_outcome"],
         latency=latency,
         cost=cost,
         total_tokens=None if usage is None else usage["total_tokens"],

@@ -16,6 +16,7 @@ from .autoresearch_provenance import ValidatedManifestBinding
 class DirectRunObservation:
     instance_id: str
     outcome: str
+    generation_outcome: str
     latency: float
     cost: float | None
     total_tokens: int | None
@@ -29,7 +30,9 @@ class DirectRunObservation:
 class DirectRunMetrics:
     correct_ids: frozenset[str]
     wrong_ids: frozenset[str]
-    refusal_ids: frozenset[str]
+    refused_or_error_ids: frozenset[str]
+    refused_ids: frozenset[str]
+    errored_ids: frozenset[str]
     mean_latency: float
     median_latency: float
     iqr_latency: float
@@ -56,7 +59,9 @@ def aggregate_run_metrics(
     return DirectRunMetrics(
         correct_ids=_ids_for_outcome(observations, "correct"),
         wrong_ids=_ids_for_outcome(observations, "wrong_answer"),
-        refusal_ids=_ids_for_outcome(observations, "refused_or_error"),
+        refused_or_error_ids=_ids_for_outcome(observations, "refused_or_error"),
+        refused_ids=_ids_for_generation_outcome(observations, "refused"),
+        errored_ids=_ids_for_generation_outcome(observations, "errored"),
         mean_latency=sum(latencies) / len(latencies),
         median_latency=median_latency,
         iqr_latency=iqr_latency,
@@ -116,7 +121,10 @@ def make_validated_run(
         repetition=repetition,
         correct_ids=metrics.correct_ids,
         wrong_answer_ids=metrics.wrong_ids,
-        refused_or_error_ids=metrics.refusal_ids,
+        refused_or_error_ids=metrics.refused_or_error_ids,
+        refused_ids=metrics.refused_ids,
+        errored_ids=metrics.errored_ids,
+        refusal_observable=condition != "C4",
         mean_latency_ms=metrics.mean_latency,
         median_latency_ms=metrics.median_latency,
         iqr_latency_ms=metrics.iqr_latency,
@@ -138,6 +146,16 @@ def _ids_for_outcome(
 ) -> frozenset[str]:
     return frozenset(
         value.instance_id for value in observations if value.outcome == outcome
+    )
+
+
+def _ids_for_generation_outcome(
+    observations: tuple[DirectRunObservation, ...], generation_outcome: str
+) -> frozenset[str]:
+    return frozenset(
+        value.instance_id
+        for value in observations
+        if value.generation_outcome == generation_outcome
     )
 
 

@@ -575,6 +575,9 @@ def test_separate_scores_must_match_generation_terminal_state(
         record["partition"] = "dev-a"
     records[0]["generation_outcome"] = generation_outcome
     if generation_outcome == "refused":
+        for record in records:
+            record["condition"] = "C1"
+            record["attempt_id"] = record["attempt_id"].replace(":C4:", ":C1:")
         records[0]["failure_origin"] = "evaluated_system"
         records[0]["terminal_failure_class"] = "agent_refusal"
         records[0]["harness_failure"] = "agent_refusal"

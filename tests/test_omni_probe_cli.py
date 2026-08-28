@@ -66,6 +66,12 @@ class FailedClient(FakeClient):
         raise AssertionError("failed jobs must not fetch a result")
 
 
+class CancelledClient(FailedClient):
+    def __init__(self, settings: OmniCliSettings) -> None:
+        super().__init__(settings)
+        self.statuses = iter(({"state": "CANCELLED"},))
+
+
 class NeverCompleteClient(FakeClient):
     def job_status(self, job_id: str) -> dict[str, Any]:
         assert job_id == "job-private-1"
@@ -73,6 +79,44 @@ class NeverCompleteClient(FakeClient):
 
     def job_result(self, job_id: str) -> dict[str, Any]:
         raise AssertionError("non-terminal jobs must not fetch a result")
+
+
+class TruncatedMetricsClient(FakeClient):
+    def __init__(self, settings: OmniCliSettings) -> None:
+        super().__init__(settings)
+        self.statuses = iter(({"state": "COMPLETE"},))
+
+    def job_result(self, job_id: str) -> dict[str, Any]:
+        response = super().job_result(job_id)
+        response["actions"][0]["result"]["csvResultWasTruncated"] = True
+        response["metrics"] = {
+            "durationMs": 23_911,
+            "llmMs": 22_427,
+            "queryCount": 1,
+            "queryDurationMs": 2_030,
+            "tokenBuckets": {
+                "default": {
+                    "tokensByModel": {
+                        "claude-opus-5": {
+                            "modelProvider": "bedrock",
+                            "tokens": {
+                                "cacheReadTokens": 161_357,
+                                "cacheWriteTokens": 86_137,
+                                "inputTokens": 6,
+                                "outputTokens": 1_083,
+                            },
+                        }
+                    }
+                }
+            },
+            "toolBreakdown": {
+                "generate_query": {"calls": 1, "errors": 0, "totalMs": 2_625},
+                "search_model": {"calls": 2, "errors": 0, "totalMs": 128},
+            },
+            "toolCallCount": 3,
+            "toolErrorCount": 0,
+        }
+        return response
 
 
 def _workspace(tmp_path: Path, *, guardian_pin: str = "a" * 64) -> tuple[Path, str]:
@@ -292,7 +336,7 @@ def test_probe_uses_only_public_dev_a_question_and_emits_safe_receipt(
     assert generation["condition"] == "C4"
     assert generation["generation_outcome"] == "answered"
     assert "outcome" not in generation
-    assert generation["database_query_count"] == 2
+    assert generation["database_query_count"] == 1
     assert generation["tool_call_count"] is None
     assert generation["validation_attempt_count"] is None
     assert "tool_call_count" in generation["telemetry_unavailable"]
@@ -398,6 +442,92 @@ def test_probe_persists_a_complete_unscored_error_attempt(
     assert record["validation_attempt_count"] is None
     assert "actual_result_hash" not in record
     assert "outcome" not in record
+    config = load_config(
+        workspace / "config" / "autoresearch.json",
+        workspace=workspace,
+        freeze_a_commit=freeze_a_commit,
+    )
+    assert (
+        validate_generation_outputs(
+            config,
+            Path(receipt["generation"]["path"]),
+            scope="dev-a",
+            manifest_path=Path(receipt["run_manifest"]["path"]),
+            expected_manifest_sha256=receipt["run_manifest"]["sha256"],
+        ).question_count
+        == 1
+    )
+
+
+def test_probe_records_supported_cancelled_state_as_error(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    workspace, freeze_a_commit = _workspace(tmp_path)
+
+    assert (
+        probe_main(
+            _probe_arguments(workspace, freeze_a_commit),
+            environment=_environment(workspace),
+            client_factory=CancelledClient,
+            sleep=lambda _: None,
+            cli_version_observer=_observe_cli_version,
+        )
+        == 0
+    )
+
+    receipt = json.loads(capsys.readouterr().out)
+    record = json.loads((workspace / receipt["generation"]["path"]).read_text())
+    assert record["generation_outcome"] == "errored"
+    assert record["generation_outcome"] != "refused"
+    assert record["terminal_failure_class"] == "omni_job_terminal_failure"
+    trace = [
+        json.loads(line)
+        for line in (workspace / record["trace_path"]).read_text().splitlines()
+    ]
+    assert any(event["status"] == "CANCELLED" for event in trace)
+    assert trace[-1]["failure_class"] == "omni_job_terminal_failure"
+
+
+def test_probe_persists_live_metrics_for_unscoreable_governed_result(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    workspace, freeze_a_commit = _workspace(tmp_path)
+
+    status = probe_main(
+        _probe_arguments(workspace, freeze_a_commit),
+        environment=_environment(workspace),
+        client_factory=TruncatedMetricsClient,
+        sleep=lambda _: None,
+        cli_version_observer=_observe_cli_version,
+    )
+
+    assert status == 0
+    receipt = json.loads(capsys.readouterr().out)
+    record = json.loads((workspace / receipt["generation"]["path"]).read_text())
+    assert record["generation_outcome"] == "errored"
+    assert record["terminal_failure_class"] == "response_contract_error"
+    assert record["model"] == {
+        "name": "claude-opus-5",
+        "provider": "bedrock",
+        "version": None,
+    }
+    assert record["token_source"] == "provider_reported"
+    assert record["token_usage"] == {
+        "input_tokens": 247_500,
+        "output_tokens": 1_083,
+        "total_tokens": 248_583,
+    }
+    assert record["tool_call_count"] == 3
+    assert record["tool_calls_by_name"] == [
+        {"count": 1, "name": "generate_query"},
+        {"count": 2, "name": "search_model"},
+    ]
+    assert record["database_query_count"] == 1
+    assert record["telemetry_unavailable"] == [
+        "model_version",
+        "retry_count",
+        "validation_attempt_count",
+    ]
     config = load_config(
         workspace / "config" / "autoresearch.json",
         workspace=workspace,

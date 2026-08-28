@@ -402,6 +402,48 @@ traces.
   the same fields and returned the same grouping shape; no correctness score.
 - **Evaluator agreement/disagreement:** No correctness evaluator was invoked.
 
+## PF-008: Governed AI jobs do not expose a structured refusal outcome
+
+- **Observed behavior:** The pinned Omni AI job contract exposes terminal states
+  `COMPLETE`, `FAILED`, and `CANCELLED`, but no distinct refusal state or typed
+  refusal reason.
+- **Minimal non-private reproduction:** Inspect the embedded job schema in the
+  pinned Omni CLI and compare its terminal-state enum with a completed job that
+  has no scoreable query action.
+- **Expected behavior:** A governed agent run exposes `REFUSED` separately from
+  product failure, cancellation, transport error, and result-contract failure.
+- **Actual behavior:** External telemetry can classify the latter failures as
+  errors, but cannot identify a genuine refusal without interpreting response
+  prose. This benchmark deliberately does not use that heuristic.
+- **Why it matters to customers:** Refusal and failure have different product and
+  safety implications. Combining them makes it harder to tell whether governance
+  safely declined a request or the system malfunctioned.
+- **Systematic evidence / frequency:** Contract-level limitation in pinned CLI
+  1.1.2; one completed-no-scoreable-result C4 attempt observed so far.
+- **Benchmark impact:** C1-C3 can report separate refusal/error rates. C4 error
+  rate is observable, while its refusal rate must be labeled unavailable until a
+  structured signal exists.
+- **Severity:** Medium observability and evaluation gap.
+- **Proposed product change:** Add a stable typed terminal/action outcome for
+  refusal plus a machine-readable reason category, independent of narrative text.
+- **Was the change tested?:** The external harness was tested to preserve separate
+  raw and summary buckets and to avoid treating unsupported states or prose as a
+  refusal.
+- **Measured effect:** No accuracy effect measured; the change prevents two
+  operationally different non-answer classes from being silently conflated.
+- **Experiment / commit provenance:** D-037; Bead
+  `omni-benchmark-dih.5.4.4`; commit pending.
+- **Visible in AI Hub?:** Narrative behavior may be visible, but the inspected
+  machine-readable job contract lacks a stable refusal outcome.
+- **AI Hub exposes relevant context/behavior?:** Partially; actions and terminal
+  state are visible, but refusal is not structurally distinguishable.
+- **Fixable through current AI Hub/modeling workflow?:** No; this requires product
+  telemetry/API support.
+- **AI Hub Eval outcome:** No judge run.
+- **External execution outcome:** One C4 attempt was classified as a contract
+  error due to truncation; no correctness score was computed.
+- **Evaluator agreement/disagreement:** Not applicable.
+
 ## Entry template
 
 ### PF-XXX: Short finding title

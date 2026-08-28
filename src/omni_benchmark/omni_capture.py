@@ -22,7 +22,7 @@ from .omni_result_adapter import (
     reject_forbidden_keys,
 )
 
-TERMINAL_STATES = frozenset({"CANCELLED", "COMPLETE", "DENIED", "FAILED"})
+TERMINAL_STATES = frozenset({"CANCELLED", "COMPLETE", "FAILED"})
 
 
 class OmniCaptureError(RuntimeError):
@@ -44,6 +44,25 @@ class OmniJobClient(Protocol):
 
 
 @dataclass(frozen=True)
+class OmniTokenUsage:
+    """Provider-reported token counts normalized for run artifacts."""
+
+    input_tokens: int
+    output_tokens: int
+
+    @property
+    def total_tokens(self) -> int:
+        return self.input_tokens + self.output_tokens
+
+    def as_dict(self) -> dict[str, int]:
+        return {
+            "input_tokens": self.input_tokens,
+            "output_tokens": self.output_tokens,
+            "total_tokens": self.total_tokens,
+        }
+
+
+@dataclass(frozen=True)
 class OmniProbeResult:
     """Private probe references; no answer values or correctness."""
 
@@ -55,6 +74,9 @@ class OmniProbeResult:
     result_artifact: StoredArtifact | None
     generated_query: str | None
     semantic_objects: tuple[str, ...]
+    model_name: str | None
+    model_provider: str | None
+    token_usage: OmniTokenUsage | None
     tool_calls_by_name: tuple[tuple[str, int], ...]
     tool_call_count: int | None
     database_query_count: int | None
@@ -62,6 +84,16 @@ class OmniProbeResult:
     started_at: str
     finished_at: str
     latency_ms: float
+
+
+@dataclass(frozen=True)
+class _JobTelemetry:
+    model_name: str | None = None
+    model_provider: str | None = None
+    token_usage: OmniTokenUsage | None = None
+    tool_calls_by_name: tuple[tuple[str, int], ...] = ()
+    tool_call_count: int | None = None
+    database_query_count: int | None = None
 
 
 class _TransportCaptureError(OmniCaptureError):
@@ -113,6 +145,7 @@ class OmniJobCapture:
         self._last_observed: float | None = None
         self._started_at: str | None = None
         self._database_queries_observable = False
+        self._job_telemetry = _JobTelemetry()
         self._parsed_query: ParsedOmniQuery | None = None
         self._used = False
 
@@ -164,6 +197,7 @@ class OmniJobCapture:
         response = self._observe_mapping(
             "omni_job_result", lambda: self._client.job_result(job_id)
         )
+        self._record_job_telemetry(_job_telemetry(response))
         parsed_query = parse_omni_job_result(response)
         self._parsed_query = parsed_query
         self._record_agent_query_telemetry(parsed_query)
@@ -171,7 +205,7 @@ class OmniJobCapture:
         typed_rows = self._observe(
             "omni_query_run_json",
             lambda: self._client.run_query_json(parsed_query.semantic_query),
-            database_query_delta=1,
+            database_query_delta=0,
         )
         parsed_result = bind_typed_query_result(parsed_query, typed_rows)
         result_artifact = self._store.write_json(
@@ -192,6 +226,7 @@ class OmniJobCapture:
         return _CaptureOutcome(job_id, state, failure_class, None, None)
 
     def _finalize(self, outcome: _CaptureOutcome) -> OmniProbeResult:
+        self._backfill_observable_trace_counts()
         trace = self._store.write_jsonl("attempt.trace.jsonl", self._events)
         response_shape = self._store.write_json(
             "response-shape.json",
@@ -221,8 +256,11 @@ class OmniJobCapture:
                 if parsed_query is None
                 else parsed_query.semantic_objects
             ),
-            tool_calls_by_name=(),
-            tool_call_count=None,
+            model_name=self._job_telemetry.model_name,
+            model_provider=self._job_telemetry.model_provider,
+            token_usage=self._job_telemetry.token_usage,
+            tool_calls_by_name=self._job_telemetry.tool_calls_by_name,
+            tool_call_count=self._job_telemetry.tool_call_count,
             database_query_count=self._database_query_count(parsed_result),
             validation_attempt_count=None,
             started_at=self._started_at,
@@ -463,20 +501,82 @@ class OmniJobCapture:
     def _record_agent_query_telemetry(self, result: ParsedOmniQuery) -> None:
         if not self._events or self._events[-1]["event_type"] != "omni_job_result":
             raise OmniCaptureError("result telemetry has no matching trace event")
-        final_event = {
-            **self._events[-1],
-            "database_query_delta": result.agent_database_query_count,
-        }
-        self._events = [*self._events[:-1], final_event]
+        if self._job_telemetry.database_query_count is None:
+            final_event = {
+                **self._events[-1],
+                "database_query_delta": result.agent_database_query_count,
+            }
+            self._events = [*self._events[:-1], final_event]
         current_shape = self._shapes[-1]
         self._shapes[-1] = {
             **current_shape,
             "observed_actions_by_type": dict(result.observed_actions_by_type),
         }
 
+    def _record_job_telemetry(self, telemetry: _JobTelemetry) -> None:
+        if not self._events or self._events[-1]["event_type"] != "omni_job_result":
+            raise OmniCaptureError("job telemetry has no matching trace event")
+        self._job_telemetry = telemetry
+        final_event = {
+            **self._events[-1],
+            "database_query_delta": telemetry.database_query_count,
+            "input_tokens": (
+                None
+                if telemetry.token_usage is None
+                else telemetry.token_usage.input_tokens
+            ),
+            "model": telemetry.model_name,
+            "output_tokens": (
+                None
+                if telemetry.token_usage is None
+                else telemetry.token_usage.output_tokens
+            ),
+            "provider": telemetry.model_provider,
+            "tool_call_delta": telemetry.tool_call_count,
+        }
+        self._events = [*self._events[:-1], final_event]
+        if telemetry.database_query_count is not None:
+            self._database_queries_observable = True
+        self._shapes[-1] = {
+            **self._shapes[-1],
+            "observed_job_telemetry": {
+                "database_query_count": telemetry.database_query_count is not None,
+                "model_identity": telemetry.model_name is not None,
+                "provider_identity": telemetry.model_provider is not None,
+                "token_usage": telemetry.token_usage is not None,
+                "tool_call_count": telemetry.tool_call_count is not None,
+            },
+        }
+
+    def _backfill_observable_trace_counts(self) -> None:
+        replacements: dict[str, int] = {}
+        if self._job_telemetry.token_usage is not None:
+            replacements.update(input_tokens=0, output_tokens=0)
+        if self._job_telemetry.tool_call_count is not None:
+            replacements["tool_call_delta"] = 0
+        if self._job_telemetry.database_query_count is not None:
+            replacements["database_query_delta"] = 0
+        if replacements:
+            self._events = [
+                {
+                    **event,
+                    **{
+                        field: default
+                        for field, default in replacements.items()
+                        if event[field] is None
+                    },
+                }
+                for event in self._events
+            ]
+
     def _database_query_count(
         self, parsed_result: ParsedOmniResult | None
     ) -> int | None:
+        if self._job_telemetry.database_query_count is not None:
+            deltas = [event["database_query_delta"] for event in self._events]
+            if any(delta is None for delta in deltas):
+                raise OmniCaptureError("observable database-query trace is incomplete")
+            return sum(deltas)
         if parsed_result is not None:
             return parsed_result.database_query_count
         if not self._database_queries_observable:
@@ -515,6 +615,134 @@ def _required_path_string(
             if isinstance(current, str) and current:
                 return current
     raise OmniCaptureError(f"Omni response did not expose a {description}")
+
+
+def _job_telemetry(response: Mapping[str, Any]) -> _JobTelemetry:
+    metrics = response.get("metrics")
+    if metrics is None:
+        return _JobTelemetry()
+    if not isinstance(metrics, Mapping):
+        raise OmniCaptureError("Omni job metrics must be an object")
+    token_usage, model_name, model_provider = _job_token_usage(metrics)
+    tool_calls_by_name, tool_call_count = _job_tool_usage(metrics)
+    database_query_count = _optional_count(metrics, "queryCount")
+    successful_query_actions = _successful_query_action_count(response)
+    if (
+        database_query_count is not None
+        and database_query_count < successful_query_actions
+    ):
+        raise OmniCaptureError(
+            "Omni query count is lower than successful query actions"
+        )
+    return _JobTelemetry(
+        model_name=model_name,
+        model_provider=model_provider,
+        token_usage=token_usage,
+        tool_calls_by_name=tool_calls_by_name,
+        tool_call_count=tool_call_count,
+        database_query_count=database_query_count,
+    )
+
+
+def _successful_query_action_count(response: Mapping[str, Any]) -> int:
+    actions = response.get("actions")
+    if not isinstance(actions, list):
+        return 0
+    count = 0
+    for action in actions:
+        if not isinstance(action, Mapping) or action.get("type") != "generate_query":
+            continue
+        result = action.get("result")
+        if isinstance(result, Mapping) and result.get("status") == "success":
+            count += 1
+    return count
+
+
+def _job_token_usage(
+    metrics: Mapping[str, Any],
+) -> tuple[OmniTokenUsage | None, str | None, str | None]:
+    buckets = metrics.get("tokenBuckets")
+    if buckets is None:
+        return None, None, None
+    if not isinstance(buckets, Mapping):
+        raise OmniCaptureError("Omni token buckets must be an object")
+    input_tokens = 0
+    output_tokens = 0
+    models: set[str] = set()
+    providers: set[str] = set()
+    observed = False
+    for bucket in buckets.values():
+        if not isinstance(bucket, Mapping):
+            raise OmniCaptureError("Omni token bucket must be an object")
+        by_model = bucket.get("tokensByModel")
+        if not isinstance(by_model, Mapping):
+            raise OmniCaptureError("Omni token bucket models must be an object")
+        for model_name, model_usage in by_model.items():
+            if not isinstance(model_name, str) or not model_name:
+                raise OmniCaptureError("Omni token model name is invalid")
+            if not isinstance(model_usage, Mapping):
+                raise OmniCaptureError("Omni token model usage must be an object")
+            provider = model_usage.get("modelProvider")
+            tokens = model_usage.get("tokens")
+            if not isinstance(provider, str) or not provider:
+                raise OmniCaptureError("Omni token model provider is invalid")
+            if not isinstance(tokens, Mapping):
+                raise OmniCaptureError("Omni token counts must be an object")
+            input_tokens += sum(
+                _required_count(tokens, field)
+                for field in ("inputTokens", "cacheReadTokens", "cacheWriteTokens")
+            )
+            output_tokens += _required_count(tokens, "outputTokens")
+            models.add(model_name)
+            providers.add(provider)
+            observed = True
+    if not observed:
+        return None, None, None
+    return (
+        OmniTokenUsage(input_tokens=input_tokens, output_tokens=output_tokens),
+        _observed_identity(models),
+        _observed_identity(providers),
+    )
+
+
+def _job_tool_usage(
+    metrics: Mapping[str, Any],
+) -> tuple[tuple[tuple[str, int], ...], int | None]:
+    total = _optional_count(metrics, "toolCallCount")
+    breakdown = metrics.get("toolBreakdown")
+    if total is None and breakdown is None:
+        return (), None
+    if total is None or not isinstance(breakdown, Mapping):
+        raise OmniCaptureError("Omni tool metrics are incomplete")
+    calls: list[tuple[str, int]] = []
+    for name, value in breakdown.items():
+        if not isinstance(name, str) or not name or not isinstance(value, Mapping):
+            raise OmniCaptureError("Omni tool breakdown is invalid")
+        calls.append((name, _required_count(value, "calls")))
+    ordered = tuple(sorted(calls))
+    if sum(count for _, count in ordered) != total:
+        raise OmniCaptureError("Omni tool counts do not reconcile")
+    return ordered, total
+
+
+def _observed_identity(values: set[str]) -> str:
+    ordered = sorted(values)
+    if len(ordered) == 1:
+        return ordered[0]
+    return f"composite:{'+'.join(ordered)}"
+
+
+def _optional_count(value: Mapping[str, Any], field: str) -> int | None:
+    if field not in value:
+        return None
+    return _required_count(value, field)
+
+
+def _required_count(value: Mapping[str, Any], field: str) -> int:
+    count = value.get(field)
+    if type(count) is not int or count < 0:
+        raise OmniCaptureError(f"Omni {field} must be a non-negative integer")
+    return count
 
 
 def _optional_state(value: Mapping[str, Any]) -> str | None:

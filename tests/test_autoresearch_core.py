@@ -368,6 +368,13 @@ def test_experiment_lifecycle_records_lineage_and_computed_deltas(
     }
     assert decision["metrics"]["wrong_answer_rate_delta"] == 0
     assert decision["metrics"]["refused_or_error_rate_delta"] == 0
+    assert decision["metrics"]["refusal_rate_delta"] is None
+    assert decision["metrics"]["error_rate_delta"] == 0
+    assert decision["metrics"]["generation_outcome_transitions"] == {
+        "answered->answered": 2
+    }
+    assert decision["candidate_vector"]["refusal_rate"] is None
+    assert decision["candidate_vector"]["error_rate"] == 0
     events = [json.loads(line) for line in config.ledger_path.read_text().splitlines()]
     assert [event["event"] for event in events] == ["proposal", "decision"]
     assert events[1]["previous_event_sha256"] == events[0]["event_sha256"]

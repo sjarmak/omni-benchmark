@@ -227,6 +227,11 @@ def test_non_answers_require_failure_provenance(
     records[0].update(
         {"generation_outcome": generation_outcome, "outcome": "refused_or_error"}
     )
+    if generation_outcome == "refused":
+        records[0]["condition"] = "C1"
+        records[0]["attempt_id"] = records[0]["attempt_id"].replace(":C4:", ":C1:")
+        records[1]["condition"] = "C1"
+        records[1]["attempt_id"] = records[1]["attempt_id"].replace(":C4:", ":C1:")
     path = workspace / "runs" / "missing-failure-provenance.jsonl"
     _write_jsonl(path, records)
 
@@ -250,7 +255,110 @@ def test_errored_attempt_may_have_no_generated_query(tmp_path: Path) -> None:
     path = workspace / "runs" / "no-query-error.jsonl"
     _write_jsonl(path, records)
 
-    assert validate_run(config, path).refused_or_error_rate == 0.5
+    run = validate_run(config, path)
+
+    assert run.refused_or_error_rate == 0.5
+    assert run.refusal_observable is False
+    assert run.refusal_rate is None
+    assert run.error_rate == 0.5
+    assert run.refused_ids == frozenset()
+    assert run.errored_ids == frozenset({"dev_a_1"})
+
+
+def test_validated_run_preserves_refused_and_errored_as_distinct_outcomes(
+    tmp_path: Path,
+) -> None:
+    workspace, config = _workspace(tmp_path)
+    records = [_record("dev_a_1"), _record("dev_a_2")]
+    for record in records:
+        record["condition"] = "C1"
+        record["attempt_id"] = record["attempt_id"].replace(":C4:", ":C1:")
+    records[0].update(
+        {
+            "failure_origin": "evaluated_system",
+            "generated_query": None,
+            "generation_outcome": "refused",
+            "harness_failure": "model refused",
+            "outcome": "refused_or_error",
+            "terminal_failure_class": "direct_refusal",
+        }
+    )
+    records[1].update(
+        {
+            "failure_origin": "evaluated_system",
+            "generated_query": None,
+            "generation_outcome": "errored",
+            "harness_failure": "model failed before query generation",
+            "outcome": "refused_or_error",
+            "terminal_failure_class": "query_generation_failure",
+        }
+    )
+    path = workspace / "runs" / "distinct-non-answer-outcomes.jsonl"
+    _write_jsonl(path, records)
+
+    run = validate_run(config, path)
+    manifest = run.as_manifest(workspace)
+
+    assert run.refused_or_error_ids == frozenset({"dev_a_1", "dev_a_2"})
+    assert run.refusal_observable is True
+    assert run.refused_ids == frozenset({"dev_a_1"})
+    assert run.errored_ids == frozenset({"dev_a_2"})
+    assert run.refused_or_error_rate == 1
+    assert run.refusal_rate == 0.5
+    assert run.error_rate == 0.5
+    assert manifest["refused_or_error_count"] == 2
+    assert manifest["refusal_observable"] is True
+    assert manifest["refused_count"] == 1
+    assert manifest["errored_count"] == 1
+
+
+def test_c4_manifest_marks_refusal_rate_unobservable(tmp_path: Path) -> None:
+    workspace, config = _workspace(tmp_path)
+    records = [_record("dev_a_1"), _record("dev_a_2")]
+    records[0].update(
+        {
+            "failure_origin": "evaluated_system",
+            "generated_query": None,
+            "generation_outcome": "errored",
+            "harness_failure": "governed result unavailable",
+            "outcome": "refused_or_error",
+            "terminal_failure_class": "response_contract_error",
+        }
+    )
+    path = workspace / "runs" / "c4-refusal-unobservable.jsonl"
+    _write_jsonl(path, records)
+
+    manifest = validate_run(config, path).as_manifest(workspace)
+
+    assert manifest["refusal_observable"] is False
+    assert manifest["refused_count"] is None
+    assert manifest["refusal_rate"] is None
+
+
+def test_c4_rejects_refusal_without_a_structured_product_signal(
+    tmp_path: Path,
+) -> None:
+    workspace, config = _workspace(tmp_path)
+    records = [
+        _record("dev_a_1", scored=False),
+        _record("dev_a_2", scored=False),
+    ]
+    for record in records:
+        record["partition"] = "dev-a"
+    records[0].update(
+        {
+            "failure_origin": "evaluated_system",
+            "generated_query": None,
+            "generation_outcome": "refused",
+            "harness_failure": "narrative looked like a refusal",
+            "terminal_failure_class": "direct_refusal",
+        }
+    )
+    path = workspace / "runs" / "unsupported-c4-refusal.jsonl"
+    _write_jsonl(path, records)
+
+    with pytest.raises(AutoresearchError, match="C4 refusal.*not observable"):
+        validate_generation_outputs(config, path, scope="dev-a")
 
 
 def test_benchmark_infrastructure_failure_must_be_rerun_before_scoring(

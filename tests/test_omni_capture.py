@@ -53,6 +53,79 @@ class FakeOmniClient:
         return [{"answer": 42}]
 
 
+class TruncatedMetricsClient(FakeOmniClient):
+    def job_result(self, job_id: str) -> dict[str, object]:
+        response = super().job_result(job_id)
+        action = response["actions"][0]  # type: ignore[index]
+        action["result"]["csvResultWasTruncated"] = True  # type: ignore[index]
+        return {
+            **response,
+            "metrics": {
+                "durationMs": 23_911,
+                "llmMs": 22_427,
+                "queryCount": 1,
+                "queryDurationMs": 2_030,
+                "tokenBuckets": {
+                    "default": {
+                        "tokensByModel": {
+                            "claude-opus-5": {
+                                "modelProvider": "bedrock",
+                                "tokens": {
+                                    "cacheReadTokens": 161_357,
+                                    "cacheWriteTokens": 86_137,
+                                    "inputTokens": 6,
+                                    "outputTokens": 1_083,
+                                },
+                            }
+                        }
+                    }
+                },
+                "toolBreakdown": {
+                    "generate_query": {"calls": 1, "errors": 0, "totalMs": 2_625},
+                    "search_model": {"calls": 2, "errors": 0, "totalMs": 128},
+                },
+                "toolCallCount": 3,
+                "toolErrorCount": 0,
+            },
+        }
+
+
+class MetricsTypedTransportClient(TruncatedMetricsClient):
+    def job_result(self, job_id: str) -> dict[str, object]:
+        response = super().job_result(job_id)
+        action = response["actions"][0]  # type: ignore[index]
+        action["result"]["csvResultWasTruncated"] = False  # type: ignore[index]
+        return response
+
+    def run_query_json(self, query: dict[str, object]) -> list[dict[str, object]]:
+        raise RuntimeError("typed replay unavailable")
+
+
+class MultiModelMetricsClient(TruncatedMetricsClient):
+    def job_result(self, job_id: str) -> dict[str, object]:
+        response = super().job_result(job_id)
+        metrics = response["metrics"]  # type: ignore[index]
+        models = metrics["tokenBuckets"]["default"]["tokensByModel"]  # type: ignore[index]
+        models["claude-sonnet-5"] = {  # type: ignore[index]
+            "modelProvider": "bedrock",
+            "tokens": {
+                "cacheReadTokens": 100,
+                "cacheWriteTokens": 200,
+                "inputTokens": 3,
+                "outputTokens": 5,
+            },
+        }
+        return response
+
+
+class ContradictoryQueryMetricsClient(TruncatedMetricsClient):
+    def job_result(self, job_id: str) -> dict[str, object]:
+        response = super().job_result(job_id)
+        metrics = response["metrics"]  # type: ignore[index]
+        metrics["queryCount"] = 0  # type: ignore[index]
+        return response
+
+
 def _store(tmp_path: Path) -> ArtifactStore:
     workspace = tmp_path / "workspace"
     workspace.mkdir()
@@ -79,7 +152,7 @@ def test_capture_preserves_shape_and_trace_without_result_values(
     assert result.generated_query == '{"fields":["answers.value"]}'
     assert result.semantic_objects == ("answers.value",)
     assert result.tool_call_count is None
-    assert result.database_query_count == 2
+    assert result.database_query_count == 1
     assert result.validation_attempt_count is None
     assert result.result_artifact is not None
     assert json.loads(result.result_artifact.path.read_text()) == {
@@ -99,7 +172,7 @@ def test_capture_preserves_shape_and_trace_without_result_values(
     ]
     assert all(event["retry_delta"] is None for event in trace)
     assert all(event["tool_call_delta"] is None for event in trace)
-    assert [event["database_query_delta"] for event in trace] == [0, 0, 0, 1, 1]
+    assert [event["database_query_delta"] for event in trace] == [0, 0, 0, 1, 0]
     assert all(event["validation_attempt_delta"] is None for event in trace)
     assert stat.S_IMODE(result.trace.path.stat().st_mode) == 0o600
     shape_text = result.response_shape.path.read_text()
@@ -110,6 +183,95 @@ def test_capture_preserves_shape_and_trace_without_result_values(
     assert "authorization" not in shape_text
     assert "provider-secret" not in shape_text
     assert "private-result-id" not in shape_text
+
+
+def test_capture_preserves_job_metrics_when_governed_result_is_truncated(
+    tmp_path: Path,
+) -> None:
+    capture = OmniJobCapture(
+        TruncatedMetricsClient([{"state": "COMPLETE"}]),
+        _store(tmp_path),
+        clock=iter(index / 10 for index in range(12)).__next__,
+        sleep=lambda _: None,
+        utc_now=lambda: "2026-08-27T12:00:00Z",
+    )
+
+    result = capture.probe("Public benchmark question")
+
+    assert result.terminal_state == "CONTRACT_ERROR"
+    assert result.failure_class == "response_contract_error"
+    assert result.result_artifact is None
+    assert result.model_name == "claude-opus-5"
+    assert result.model_provider == "bedrock"
+    assert result.token_usage is not None
+    assert result.token_usage.as_dict() == {
+        "input_tokens": 247_500,
+        "output_tokens": 1_083,
+        "total_tokens": 248_583,
+    }
+    assert result.tool_call_count == 3
+    assert result.tool_calls_by_name == (("generate_query", 1), ("search_model", 2))
+    assert result.database_query_count == 1
+    trace = [json.loads(line) for line in result.trace.path.read_text().splitlines()]
+    assert sum(event["input_tokens"] for event in trace) == 247_500
+    assert sum(event["output_tokens"] for event in trace) == 1_083
+    assert sum(event["tool_call_delta"] for event in trace) == 3
+    assert sum(event["database_query_delta"] for event in trace) == 1
+
+
+def test_capture_preserves_provider_query_count_when_typed_replay_fails(
+    tmp_path: Path,
+) -> None:
+    capture = OmniJobCapture(
+        MetricsTypedTransportClient([{"state": "COMPLETE"}]),
+        _store(tmp_path),
+        clock=iter(index / 10 for index in range(12)).__next__,
+        sleep=lambda _: None,
+        utc_now=lambda: "2026-08-27T12:00:00Z",
+    )
+
+    result = capture.probe("Public benchmark question")
+
+    assert result.terminal_state == "ADAPTER_ERROR"
+    assert result.failure_class == "adapter_transport_error"
+    assert result.database_query_count == 1
+    trace = [json.loads(line) for line in result.trace.path.read_text().splitlines()]
+    assert sum(event["database_query_delta"] for event in trace) == 1
+
+
+def test_capture_rejects_provider_query_count_below_successful_query_actions(
+    tmp_path: Path,
+) -> None:
+    capture = OmniJobCapture(
+        ContradictoryQueryMetricsClient([{"state": "COMPLETE"}]),
+        _store(tmp_path),
+        clock=iter(index / 10 for index in range(12)).__next__,
+        sleep=lambda _: None,
+        utc_now=lambda: "2026-08-27T12:00:00Z",
+    )
+
+    result = capture.probe("Public benchmark question")
+
+    assert result.terminal_state == "CONTRACT_ERROR"
+    assert result.failure_class == "response_contract_error"
+    assert result.database_query_count is None
+
+
+def test_capture_preserves_composite_model_identity(tmp_path: Path) -> None:
+    capture = OmniJobCapture(
+        MultiModelMetricsClient([{"state": "COMPLETE"}]),
+        _store(tmp_path),
+        clock=iter(index / 10 for index in range(12)).__next__,
+        sleep=lambda _: None,
+        utc_now=lambda: "2026-08-27T12:00:00Z",
+    )
+
+    result = capture.probe("Public benchmark question")
+
+    assert result.model_name == "composite:claude-opus-5+claude-sonnet-5"
+    assert result.model_provider == "bedrock"
+    assert result.token_usage is not None
+    assert result.token_usage.total_tokens == 248_891
 
 
 def test_capture_rejects_recursive_forbidden_typed_result_and_finalizes_trace(
@@ -132,7 +294,7 @@ def test_capture_rejects_recursive_forbidden_typed_result_and_finalizes_trace(
     assert result.terminal_state == "CONTRACT_ERROR"
     assert result.failure_class == "response_contract_error"
     assert result.result_artifact is None
-    assert result.database_query_count == 2
+    assert result.database_query_count == 1
     assert result.trace.path.is_file()
     assert result.response_shape.path.is_file()
     persisted = result.trace.path.read_text() + result.response_shape.path.read_text()
@@ -160,10 +322,10 @@ def test_capture_typed_query_transport_failure_finalizes_errored_attempt(
     assert result.terminal_state == "ADAPTER_ERROR"
     assert result.failure_class == "adapter_transport_error"
     assert result.result_artifact is None
-    assert result.database_query_count is None
+    assert result.database_query_count == 1
     trace = [json.loads(line) for line in result.trace.path.read_text().splitlines()]
     assert trace[-1]["event_type"] == "omni_capture_failure"
-    assert all(event["database_query_delta"] is None for event in trace)
+    assert sum(event["database_query_delta"] for event in trace) == 1
 
 
 def test_capture_preserves_known_query_counts_when_typed_binding_fails(
@@ -182,9 +344,9 @@ def test_capture_preserves_known_query_counts_when_typed_binding_fails(
     result = capture.probe("Public benchmark question")
 
     assert result.terminal_state == "CONTRACT_ERROR"
-    assert result.database_query_count == 2
+    assert result.database_query_count == 1
     trace = [json.loads(line) for line in result.trace.path.read_text().splitlines()]
-    assert [event["database_query_delta"] for event in trace] == [0, 0, 1, 1, 0]
+    assert [event["database_query_delta"] for event in trace] == [0, 0, 1, 0, 0]
 
 
 def test_capture_records_completed_unrecognized_result_as_contract_error(

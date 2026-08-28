@@ -102,7 +102,7 @@ def bind_typed_query_result(
         columns=columns,
         rows=typed_rows,
         observed_actions_by_type=parsed.observed_actions_by_type,
-        database_query_count=parsed.agent_database_query_count + 1,
+        database_query_count=parsed.agent_database_query_count,
     )
 
 

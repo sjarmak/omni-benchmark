@@ -84,7 +84,7 @@ def test_parse_uses_last_successful_query_action_and_preserves_typed_multiset() 
         ("generate_query", 2),
         ("validate", 1),
     )
-    assert parsed.database_query_count == 3
+    assert parsed.database_query_count == 2
 
 
 def test_parse_supports_empty_result_with_header() -> None:

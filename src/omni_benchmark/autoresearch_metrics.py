@@ -43,6 +43,9 @@ class ValidatedRun:
     correct_ids: frozenset[str]
     wrong_answer_ids: frozenset[str]
     refused_or_error_ids: frozenset[str]
+    refused_ids: frozenset[str]
+    errored_ids: frozenset[str]
+    refusal_observable: bool
     mean_latency_ms: float
     median_latency_ms: float
     iqr_latency_ms: float
@@ -68,6 +71,16 @@ class ValidatedRun:
     @property
     def refused_or_error_rate(self) -> float:
         return len(self.refused_or_error_ids) / self.question_count
+
+    @property
+    def refusal_rate(self) -> float | None:
+        if not self.refusal_observable:
+            return None
+        return len(self.refused_ids) / self.question_count
+
+    @property
+    def error_rate(self) -> float:
+        return len(self.errored_ids) / self.question_count
 
     @property
     def tokens_per_correct(self) -> float | None:
@@ -105,7 +118,15 @@ class ValidatedRun:
             "median_tokens": self.median_tokens,
             "path": _display_path(self.path, workspace),
             "question_count": self.question_count,
+            "refused_count": (
+                len(self.refused_ids) if self.refusal_observable else None
+            ),
+            "refusal_observable": self.refusal_observable,
+            "refusal_rate": self.refusal_rate,
+            "refused_or_error_count": len(self.refused_or_error_ids),
             "refused_or_error_rate": self.refused_or_error_rate,
+            "errored_count": len(self.errored_ids),
+            "error_rate": self.error_rate,
             "repetition": self.repetition,
             "run_id": self.run_id,
             "run_manifest_path": (

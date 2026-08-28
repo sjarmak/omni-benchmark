@@ -32,7 +32,7 @@ implementations actually isolate governed enforcement with model parity.
 | Compiler/query path | Agent emits SQL | Agent emits SQL | Agent emits SQL | Semantic query/objects compiled through Omni; generated SQL captured only if exposed |
 | Validation | Database execution/error handling only | Same | Same | Production validation behavior included |
 | Token/time ceilings | Pending; matched across C1-C3 | Same | Same | Production defaults where immutable; disclose any mismatch |
-| Current implementation state | Public context, pinned provider, attested PostgreSQL, capture, publisher, and committed v2-inventory/target-sidecar adapters pass synthetic/adversarial tests; authenticated live smoke pending | Same, including searchable public HKB and dependency-closure provenance | Same, including searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, one governed semantic query, and one unscored AI Hub diagnostic pass; full manifest-bound attempt capture and scorer-type parity remain pending |
+| Current implementation state | Public context, pinned provider, attested PostgreSQL, capture, publisher, and committed v2-inventory/target-sidecar adapters pass synthetic/adversarial tests; authenticated live smoke pending | Same, including searchable public HKB and dependency-closure provenance | Same, including searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the first manifest-bound attempt exposed a truncation/telemetry defect now fixed in tests, with exact-commit rerun and scorer-type parity pending |
 
 Exact prompts, tool manifests, model identifiers, configuration hashes, retry
 ceilings, and version fingerprints are Freeze B artifacts. C1-C3 must be made
@@ -104,6 +104,15 @@ are never encoded as zero. Token/cost values separately declare
 record with `correct`, `wrong_answer`, or `refused_or_error`; it does not mutate
 the generation record. Raw traces and generated SQL live only under ignored
 run roots. Committed artifacts contain hashes and permitted summaries.
+
+The official `refused_or_error` score remains available for benchmark
+compatibility, but analysis does not use it as the only non-answer summary.
+Validated runs retain separate raw `refused` and `errored` ID sets, counts,
+rates, and experiment-to-experiment transitions. C1-C3 can emit both outcomes
+from structured direct-agent events. The pinned C4 job contract currently has no
+structured refusal state, so C4 records observable terminal/transport/contract
+failures as errors and reports refusal observability as unavailable rather than
+classifying prose heuristically.
 
 Complete token reports contain non-null input/output/total counts that reconcile.
 Attempt latency must match its start/end timestamps. Refused or errored attempts
@@ -183,9 +192,12 @@ the capture path must adopt a result transport with authoritative field-type
 metadata. This is now an observed scale blocker, not only a theoretical
 limitation.
 
-The API exposes query actions clearly enough to count governed database queries;
-the additional raw-JSON semantic-query execution is also counted as an adapter
-database query and included in attempt latency.
+The API exposes query actions clearly enough to count governed database queries.
+The additional raw-JSON semantic-query replay is evaluator-side result transport:
+its trace event and latency are retained, but it is excluded from the evaluated
+system's `database_query_count`, just as scorer/gold execution is excluded.
+Provider `queryCount` must be at least the number of structurally successful
+`generate_query` actions or the count is rejected as contradictory.
 It does not establish that every action is a model tool call or expose the full
 production validation/retry internals. The first public AI Hub job did provide
 authoritative job-level model/provider token buckets, tool-call and tool-error
@@ -231,8 +243,10 @@ Before any 231-question baseline or expensive experiment:
 Current gate result: **not yet passed**. The public C4 product canary passed
 model validation, exact semantic readback, governed query execution, and AI Hub
 diagnostic inspection, exposing provider/model, token buckets, tool/query counts,
-and timings. It was not launched through the complete manifest-bound attempt
-producer, and typed-result scorer parity is not yet established. The shared
+and timings. The first complete manifest-bound attempt correctly rejected a
+truncated governed result but lost job telemetry on that failure path. The
+capture fix now passes synthetic, full-suite, and independent review gates; an
+exact-commit live rerun and typed-result scorer parity remain pending. The shared
 C1-C3 capture/publisher core and its public-context, provider,
 database-identity, and attested PostgreSQL adapters pass synthetic and
 adversarial tests. No four-condition live smoke bundle has passed the complete

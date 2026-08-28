@@ -33,6 +33,10 @@ def _optional_delta(left: int | None, right: int | None) -> int | None:
     return None if left is None or right is None else right - left
 
 
+def _optional_rate_delta(left: float | None, right: float | None) -> float | None:
+    return None if left is None or right is None else right - left
+
+
 def _outcome_transitions(before: ValidatedRun, after: ValidatedRun) -> dict[str, int]:
     transitions: dict[str, int] = {}
     instance_ids = (
@@ -41,6 +45,30 @@ def _outcome_transitions(before: ValidatedRun, after: ValidatedRun) -> dict[str,
     for instance_id in sorted(instance_ids):
         transition = (
             f"{outcome_for(before, instance_id)}->{outcome_for(after, instance_id)}"
+        )
+        transitions[transition] = transitions.get(transition, 0) + 1
+    return transitions
+
+
+def _generation_outcome_for(run: ValidatedRun, instance_id: str) -> str:
+    if instance_id in run.refused_ids:
+        return "refused"
+    if instance_id in run.errored_ids:
+        return "errored"
+    return "answered"
+
+
+def _generation_outcome_transitions(
+    before: ValidatedRun, after: ValidatedRun
+) -> dict[str, int]:
+    transitions: dict[str, int] = {}
+    instance_ids = (
+        before.correct_ids | before.wrong_answer_ids | before.refused_or_error_ids
+    )
+    for instance_id in sorted(instance_ids):
+        transition = (
+            f"{_generation_outcome_for(before, instance_id)}"
+            f"->{_generation_outcome_for(after, instance_id)}"
         )
         transitions[transition] = transitions.get(transition, 0) + 1
     return transitions
@@ -68,11 +96,18 @@ def run_deltas(before: ValidatedRun, after: ValidatedRun) -> dict[str, object]:
             for name in sorted(category_names)
         },
         "fixed_questions": sorted(after.correct_ids - before.correct_ids),
+        "generation_outcome_transitions": _generation_outcome_transitions(
+            before, after
+        ),
         "mean_latency_delta_ms": after.mean_latency_ms - before.mean_latency_ms,
         "outcome_transitions": _outcome_transitions(before, after),
         "refused_or_error_rate_delta": (
             after.refused_or_error_rate - before.refused_or_error_rate
         ),
+        "refusal_rate_delta": _optional_rate_delta(
+            before.refusal_rate, after.refusal_rate
+        ),
+        "error_rate_delta": after.error_rate - before.error_rate,
         "regressed_questions": sorted(before.correct_ids - after.correct_ids),
         "terminal_failure_class_changes": {
             name: after_terminal.get(name, 0) - before_terminal.get(name, 0)

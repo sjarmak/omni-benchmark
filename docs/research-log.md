@@ -2793,3 +2793,135 @@ apparently identical runs can inherit different instructions.
 
 Add the smallest C1–C3 driver, run one committed public dev-A question through
 all four conditions, and close the capture verification gate.
+
+## 2026-08-28 — D-037: Preserve C4 telemetry when the governed result cannot be scored
+
+### Decision / experiment
+
+Run the first manifest-bound C4 attempt on the archeology vertical slice and
+repair only capture defects that the live product response exposes.
+
+### Observation
+
+The public `archeology_scan_3` dev-A question completed in Omni, but the final
+`generate_query` action reported a truncated result. The preregistered policy
+correctly classified the attempt as an evaluated-system
+`response_contract_error`; no correctness score was computed. The immutable
+generation SHA-256 was
+`2aea0701b27015645f367303feda0586d78e1e1e0befb6b611ba0fffbd158517`.
+
+The same job exposed Bedrock `claude-opus-5`, 6 ordinary input tokens, 161,357
+cache-read tokens, 86,137 cache-write tokens, 1,083 output tokens, three tool
+calls, and one database query. The adapter discarded those fields because it
+validated result scoreability before preserving job-level telemetry. Two
+pre-auth launches also showed that Python bytecode created during process
+startup can trip the clean-runtime check; running from the committed worktree
+with bytecode writes disabled avoided that host-contamination interaction
+without changing the harness.
+
+### Hypothesis
+
+Job metrics are independent of whether the generated result is scoreable. If
+the adapter captures and reconciles those metrics before applying truncation and
+result-shape rules, failed C4 attempts will remain diagnosable without weakening
+the scoring boundary.
+
+### Decision
+
+Preserve a strict whitelist of model/provider, provider token buckets, tool
+calls, and query count before scoreability validation. Keep truncation as an
+error. Aggregate ordinary, cache-read, and cache-write tokens into the normalized
+input-token count so the existing `input + output = total` invariant represents
+all provider-reported token consumption; retain the source as
+`provider_reported`. Keep cost, retries, and validation attempts unavailable.
+
+Raw generation telemetry must also retain `refused` separately from `errored`.
+The first implementation assumed that C4 exposed a structured `DENIED` terminal
+state. Independent review of the pinned Omni CLI contract falsified that
+assumption: the product job schema exposes only `COMPLETE`, `FAILED`, and
+`CANCELLED`. C4 therefore records failed, cancelled, transport, contract, and
+truncation outcomes as `errored` and leaves refusal observability unavailable.
+It does not infer refusal from response prose. C1-C3 retain their separate,
+structured direct-agent refusal outcome.
+
+### Rationale
+
+This change directly improves failure diagnosis on the critical path. It does
+not add a new control layer, relax result validation, or introduce semantic
+heuristics. The structured-signal requirement prevents a benchmark harness from
+silently reclassifying natural-language content.
+
+### Intervention
+
+Bead `omni-benchmark-dih.5.4.4`; optimization surface: C4 capture and
+observability; change type: general system improvement. Added live-shape
+regressions for truncated results with metrics, provider/action query-count
+reconciliation, and end-to-end summary preservation of the raw
+refused-versus-errored distinction.
+
+### Result
+
+IN PROGRESS. The pre-change tests failed because `OmniProbeResult` and the
+generation envelope had no observed model/token fields. A second RED test proved
+that validated run summaries discarded the raw refusal/error distinction; a
+third proved that a contradictory provider `queryCount` could under-report a
+successful query action. The fixes pass 165 focused tests and the 1,227-test
+repository suite (three explicit live-integration skips). Independent code,
+security/custody, and simplification reviews approved the final implementation.
+The exact-commit live rerun remains pending. No gold, hidden annotation, test
+outcome, or AI judge was accessed.
+
+### Interpretation
+
+The first real benchmark-shaped C4 question exposed two distinct facts: the
+system can produce a governed semantic query yet still fail the benchmark
+contract through truncation, and product telemetry remains valuable on that
+failure path. It also exposed an observability limit: the external harness can
+distinguish errors from refusals only when the evaluated system supplies a
+structured refusal signal. Accuracy or a combined non-answer rate alone would
+hide these mechanisms.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+AI Hub already exposes enough data to diagnose expensive or tool-heavy failed
+runs, but downstream integrations need a stable structured failure/refusal
+signal and scoreable-result status independent from telemetry availability.
+
+### Next step
+
+Complete independent review, commit the narrow capture fix, rerun the public C4
+question from that exact commit, and update the capture-disclosure gate before
+resuming the C1–C3 driver.
+
+## 2026-08-28: Public-repository dotfile hygiene
+
+### Hypothesis
+
+Explicitly ignoring common machine-local dot caches, environment-manager state,
+notebook checkpoints, and operating-system metadata will prevent accidental
+publication without hiding intentional public automation configuration.
+
+### Classification
+
+Repository-hygiene intervention; general system improvement. This does not
+change a benchmark condition, runtime input, scorer, split, protocol, or custody
+surface.
+
+### Decision
+
+Extend the existing category-specific rules. Do not use a blanket `.*` rule:
+the tracked `.agents`, `.beads`, `.claude`, `.codex`, and `.cursor` trees are
+intentional project configuration, while `.env.example` is the public setup
+template. Keep `.beads/issues.jsonl` visible as the public passive issue export;
+only the live Dolt store, credentials, locks, backups, and sync state remain
+private.
+
+### Result
+
+IN PROGRESS. Validate representative paths with `git check-ignore`, confirm no
+intentional tracked path is newly ignored, and inspect the final repository
+status before closing the intervention.

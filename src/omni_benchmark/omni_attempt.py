@@ -87,13 +87,13 @@ def _identity_fields(
         "condition": "C4",
         "failure_origin": None if answered else "evaluated_system",
         "finished_at": probe.finished_at,
-        "generation_outcome": "answered" if answered else _failure_outcome(probe),
+        "generation_outcome": "answered" if answered else "errored",
         "harness_failure": None if answered else failure_class,
         "instance_id": spec.instance_id,
         "latency_ms": probe.latency_ms,
         "model": {
-            "name": spec.model,
-            "provider": spec.provider,
+            "name": probe.model_name or spec.model,
+            "provider": probe.model_provider or spec.provider,
             "version": spec.model_version,
         },
         "partition": "dev-a",
@@ -108,7 +108,8 @@ def _identity_fields(
 
 def _telemetry_fields(spec: C4AttemptSpec, probe: OmniProbeResult) -> dict[str, object]:
     unavailable = (
-        ("retry_count", "tool_call_count", "validation_attempt_count")
+        ("retry_count", "validation_attempt_count")
+        + (("tool_call_count",) if probe.tool_call_count is None else ())
         + (("model_version",) if spec.model_version is None else ())
         + (("database_query_count",) if probe.database_query_count is None else ())
     )
@@ -118,8 +119,12 @@ def _telemetry_fields(spec: C4AttemptSpec, probe: OmniProbeResult) -> dict[str, 
         "database_query_count": probe.database_query_count,
         "retry_count": None,
         "telemetry_unavailable": sorted(unavailable),
-        "token_source": "unavailable",
-        "token_usage": None,
+        "token_source": (
+            "unavailable" if probe.token_usage is None else "provider_reported"
+        ),
+        "token_usage": (
+            None if probe.token_usage is None else probe.token_usage.as_dict()
+        ),
         "tool_call_count": probe.tool_call_count,
         "tool_calls_by_name": [
             {"count": count, "name": name} for name, count in probe.tool_calls_by_name
@@ -177,10 +182,10 @@ def _run_manifest(
             "git_commit": spec.git_commit,
             "harness_config_sha256": spec.harness_config_sha256,
             "instructions_sha256": spec.instructions_sha256,
-            "model": spec.model,
+            "model": probe.model_name or spec.model,
             "model_config_id": spec.model_config_id,
             "prompt_sha256": spec.prompt_sha256,
-            "provider": spec.provider,
+            "provider": probe.model_provider or spec.provider,
             "repetition": spec.repetition,
             "schema_version": 2,
             "scope": "dev-a",
@@ -190,9 +195,3 @@ def _run_manifest(
             "started_at": probe.started_at,
         }
     )
-
-
-def _failure_outcome(probe: OmniProbeResult) -> str:
-    if probe.terminal_state == "DENIED":
-        return "refused"
-    return "errored"
