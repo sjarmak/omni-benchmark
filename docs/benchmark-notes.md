@@ -282,7 +282,7 @@ Three practical topologies remain under consideration:
 | --- | --- | --- |
 | Official local PostgreSQL 18 container | Closest scorer parity; all 18 DBs on one host; fast template cloning/reset; low cost | Omni must be able to reach it, or generation and scoring use different copies |
 | One managed PostgreSQL server with 18 databases | Stable network endpoint for Omni; matches the evaluator's one-host/many-database assumption | Service must support dump restore, required extensions, PG compatibility, template cloning or another reset strategy |
-| One Neon project per database, as suggested in the assignment | Strong DB isolation and independent reset/branch operations | 18 hosts conflict with the stock evaluator's single-host configuration; restore/version/extension compatibility, automation, quotas, and cross-copy identity require validation |
+| One Neon project per database, as proposed in the initial topology | Strong DB isolation and independent reset/branch operations | 18 hosts conflict with the stock evaluator's single-host configuration; restore/version/extension compatibility, automation, quotas, and cross-copy identity require validation |
 
 The initial recommendation is to keep the official local PostgreSQL 18 snapshot
 as the scoring authority even if Omni must query a managed mirror. Before any

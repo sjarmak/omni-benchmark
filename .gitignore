@@ -4,7 +4,17 @@
 *.db
 .beads-credential-key
 .beads/proxieddb/
+.beads/issues.jsonl
 *.gate.lock*
+
+# Operating-system and editor-local files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
 
 # Local configuration and credentials
 .env
@@ -26,6 +36,7 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+*.log
 
 # Public source downloads are reproducible; committed manifests are not ignored.
 data/raw/

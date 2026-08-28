@@ -17,7 +17,7 @@ dataset-card description, the rows do not contain `difficulty_tier`.
 ### Hypothesis
 
 Filtering by the observed `category` field is the least ambiguous and most
-reproducible way to implement the assignment's request to skip CRUD work.
+reproducible way to enforce the study's exclusion of CRUD work.
 
 ### Decision
 
@@ -190,7 +190,7 @@ of ten consultations and no question-level reactive tuning.
 
 The alternative—cross-validation or repeated full-development optimization—adds
 either substantial cost or weak overfitting control. A single internal gate is
-simple enough for the hiring task.
+simple enough for this study.
 
 ### Intervention
 
@@ -281,12 +281,12 @@ real product surfaces.
 Finish the minimum Freeze A controls, then prioritize the mechanical HKB-to-Omni
 baseline and full dev-A traces.
 
-## 2026-08-27 — D-006: Refocus on the hiring-task research story
+## 2026-08-27 — D-006: Refocus on the research and product story
 
 ### Observation
 
 The protocol had become rigorous enough that additional methodology risked
-delaying the evidence the assignment actually values: baseline behavior,
+delaying the evidence the project requires: baseline behavior,
 meaningful interventions, negative results, and product implications.
 
 ### Hypothesis
@@ -364,7 +364,7 @@ Local patterns in Codeprobe, EnterpriseBench, and CodeScaleBench all favored a
 normalized attempt record plus raw trace sidecar and explicit degraded capture.
 Installing a generalized telemetry framework was considered and deferred. The
 small contract directly protects the planned baseline and enables the product
-analysis requested by the assignment.
+analysis required by the research questions.
 
 ### Intervention
 
