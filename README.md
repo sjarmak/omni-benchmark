@@ -104,6 +104,23 @@ publishing output. It preserves every public definition and its dependency
 provenance while leaving semantic representability explicitly unassessed. See
 [`docs/hkb-semantic-baseline.md`](docs/hkb-semantic-baseline.md).
 
+Fetch the independently pinned public DDL and column-meaning sources with:
+
+```bash
+uv run python scripts/prepare_schema_sources.py fetch \
+  --inventory config/public_schema_sources.json \
+  --destination-root data/raw/livesqlbench-large-v1/schema
+
+uv run python scripts/prepare_schema_sources.py inspect \
+  --inventory config/public_schema_sources.json \
+  --source-root data/raw/livesqlbench-large-v1/schema
+```
+
+The 36 source objects are verified against the same dataset revision before any
+file is published. The later semantic compiler consumes DDL and column meanings
+only; it does not consume the public sample rows embedded in the schema text.
+See [`docs/public-schema-sources.md`](docs/public-schema-sources.md).
+
 ## Gold custody
 
 Keep the untouched private attachment outside this repository and outside any

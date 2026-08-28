@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import stat
+from contextlib import ExitStack
 from pathlib import Path
 from typing import Sequence
 
@@ -13,6 +14,7 @@ class HKBFileSafetyError(ValueError):
 
 
 _DIRECTORY_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+_REGULAR_FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK
 
 
 def _close_all(descriptors: Sequence[int]) -> None:
@@ -39,6 +41,48 @@ def _read_bounded(file_descriptor: int, maximum_bytes: int) -> bytes:
     return b"".join(chunks)
 
 
+def _open_directory_path(path: Path) -> list[int]:
+    absolute = path.absolute()
+    descriptors: list[int] = []
+    try:
+        current = os.open(absolute.anchor, _DIRECTORY_FLAGS)
+        descriptors.append(current)
+        for component in absolute.parts[1:]:
+            current = os.open(component, _DIRECTORY_FLAGS, dir_fd=current)
+            descriptors.append(current)
+        return descriptors
+    except OSError:
+        _close_all(descriptors)
+        raise
+
+
+def read_regular_file(path: Path, *, maximum_bytes: int) -> bytes:
+    """Read one bounded regular file without following its final path component."""
+
+    absolute = path.absolute()
+    descriptors: list[int] = []
+    try:
+        descriptors = _open_directory_path(absolute.parent)
+        descriptor = os.open(
+            absolute.name,
+            _REGULAR_FILE_FLAGS,
+            dir_fd=descriptors[-1],
+        )
+        descriptors.append(descriptor)
+        if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+            raise OSError("not a regular file")
+        content = _read_bounded(descriptor, maximum_bytes + 1)
+    except OSError as error:
+        raise HKBFileSafetyError(
+            f"{path} must be a regular non-symlink file"
+        ) from error
+    finally:
+        _close_all(descriptors)
+    if len(content) > maximum_bytes:
+        raise HKBFileSafetyError(f"{path} exceeds {maximum_bytes} bytes")
+    return content
+
+
 def read_relative_regular_file(
     root: Path, relative: str, *, maximum_bytes: int
 ) -> bytes:
@@ -46,15 +90,13 @@ def read_relative_regular_file(
 
     descriptors: list[int] = []
     try:
-        current = os.open(root, _DIRECTORY_FLAGS)
-        descriptors.append(current)
+        descriptors = _open_directory_path(root)
+        current = descriptors[-1]
         parts = _relative_parts(relative)
         for directory in parts[:-1]:
             current = os.open(directory, _DIRECTORY_FLAGS, dir_fd=current)
             descriptors.append(current)
-        file_descriptor = os.open(
-            parts[-1], os.O_RDONLY | os.O_NOFOLLOW, dir_fd=current
-        )
+        file_descriptor = os.open(parts[-1], _REGULAR_FILE_FLAGS, dir_fd=current)
         descriptors.append(file_descriptor)
         if not stat.S_ISREG(os.fstat(file_descriptor).st_mode):
             raise OSError("not a regular file")
@@ -160,11 +202,9 @@ def _open_child_directory(root_descriptor: int, name: str) -> int:
         ) from error
 
 
-def _publish_child_files(
-    staging: Path,
+def _validate_child_files(
     directory: str,
     descriptor: int,
-    names: frozenset[str],
     observed: frozenset[str],
 ) -> None:
     for name in observed:
@@ -173,8 +213,29 @@ def _publish_child_files(
             raise HKBFileSafetyError(
                 f"existing output {directory}/{name} must be a regular non-symlink file"
             )
+
+
+def _publish_child_files(
+    staging: Path,
+    directory: str,
+    descriptor: int,
+    names: frozenset[str],
+) -> None:
     for name in sorted(names):
         os.replace(staging / directory / name, name, dst_dir_fd=descriptor)
+
+
+def _open_validated_child(
+    stack: ExitStack,
+    root_descriptor: int,
+    directory: str,
+    names: frozenset[str],
+) -> tuple[str, frozenset[str], int]:
+    descriptor = _open_child_directory(root_descriptor, directory)
+    stack.callback(os.close, descriptor)
+    observed = _reject_unexpected(descriptor, names)
+    _validate_child_files(directory, descriptor, observed)
+    return directory, names, descriptor
 
 
 def publish_nested_files(
@@ -186,17 +247,23 @@ def publish_nested_files(
 
     tree = _expected_tree(paths)
     prepare_safe_parent(destination)
-    root_descriptor = _open_output_root(destination)
-    try:
+    with ExitStack() as stack:
+        root_descriptor = _open_output_root(destination)
+        stack.callback(os.close, root_descriptor)
         _reject_unexpected(root_descriptor, frozenset(tree))
-        for directory, names in sorted(tree.items()):
-            child_descriptor = _open_child_directory(root_descriptor, directory)
-            try:
-                observed = _reject_unexpected(child_descriptor, names)
-                _publish_child_files(
-                    staging, directory, child_descriptor, names, observed
-                )
-            finally:
-                os.close(child_descriptor)
-    finally:
-        os.close(root_descriptor)
+        destinations = tuple(
+            _open_validated_child(
+                stack,
+                root_descriptor,
+                directory,
+                names,
+            )
+            for directory, names in sorted(tree.items())
+        )
+        for directory, names, descriptor in destinations:
+            _publish_child_files(
+                staging,
+                directory,
+                descriptor,
+                names,
+            )

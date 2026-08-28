@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "dataset": "birdsql/livesqlbench-large-v1",
+  "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+  "files": [
+    {
+      "database": "archeology_scan_large",
+      "kind": "column_meanings",
+      "path": "archeology_scan_large/archeology_scan_large_column_meaning_base.json",
+      "oid": "47a5845265a5d0c5bbf00144fedbaed3b2d3b776",
+      "size": 169557,
+      "sha256": "2f4d95d8b004d7f299e704e603655c337a0f078d7144b1f183c7300f9961d726"
+    },
+    {
+      "database": "archeology_scan_large",
+      "kind": "schema",
+      "path": "archeology_scan_large/archeology_scan_large_schema.txt",
+      "oid": "d64988b91c8f26d86af52e58ffc62632a65ac750",
+      "size": 155807,
+      "sha256": "fbe971266acdac9bbcf636379cd0818355cc98a66a872aa2de5b8d21505022e0"
+    },
+    {
+      "database": "cross_border_large",
+      "kind": "column_meanings",
+      "path": "cross_border_large/cross_border_large_column_meaning_base.json",
+      "oid": "d19639dfdb5bf8981ecfe30c17a2acd920d753e7",
+      "size": 168930,
+      "sha256": "f13b879315c674af9871bf75326f43fcadbb930ac0c4f04be093efcb7b6a1bd6"
+    },
+    {
+      "database": "cross_border_large",
+      "kind": "schema",
+      "path": "cross_border_large/cross_border_large_schema.txt",
+      "oid": "8650709adbb2ee54129aa6ebb7c94d5b5796478b",
+      "size": 169297,
+      "sha256": "b7d7c680dc66be04d29fcfe74c071b5cca2d08cade133dcaba10cce56eace9c2"
+    },
+    {
+      "database": "cybermarket_pattern_large",
+      "kind": "column_meanings",
+      "path": "cybermarket_pattern_large/cybermarket_pattern_large_column_meaning_base.json",
+      "oid": "6f0c3d49e5eff6a70736548f74e20ff62aabb6a5",
+      "size": 207458,
+      "sha256": "46e210c66a0e0bb486b3fda6d91aa208a0812cc7b1142f155da454678205670c"
+    },
+    {
+      "database": "cybermarket_pattern_large",
+      "kind": "schema",
+      "path": "cybermarket_pattern_large/cybermarket_pattern_large_schema.txt",
+      "oid": "fed3a0c9c4842f0df88e454a147831b02137c6c6",
+      "size": 179651,
+      "sha256": "b1350cf725706bbb0112284f4a24a39b0cceceeb94420a8fc24590d27da86d56"
+    },
+    {
+      "database": "disaster_relief_large",
+      "kind": "column_meanings",
+      "path": "disaster_relief_large/disaster_relief_large_column_meaning_base.json",
+      "oid": "0b9165c99d1a403bb5f4f82eecc6e833bd5b4465",
+      "size": 166510,
+      "sha256": "eada3b3467b13bf3bbec3c9cecf92df152500a95bf527ad3194c44b552854045"
+    },
+    {
+      "database": "disaster_relief_large",
+      "kind": "schema",
+      "path": "disaster_relief_large/disaster_relief_large_schema.txt",
+      "oid": "f151a55115ba9af5de125429ce8a7379611e3024",
+      "size": 164853,
+      "sha256": "fb9cfabf82e7ec98b9d71ca69785b51ad15b7dc8a18732a4c32b325231f83257"
+    },
+    {
+      "database": "exchange_traded_funds_large",
+      "kind": "column_meanings",
+      "path": "exchange_traded_funds_large/exchange_traded_funds_large_column_meaning_base.json",
+      "oid": "83fff0e9e968dffe06e46eb5dab6031802b11ab7",
+      "size": 257087,
+      "sha256": "088d4790a2cf0ab251aeb0cff4a4bb97cb863c2af676b57e9762b95070325974"
+    },
+    {
+      "database": "exchange_traded_funds_large",
+      "kind": "schema",
+      "path": "exchange_traded_funds_large/exchange_traded_funds_large_schema.txt",
+      "oid": "9fc636463a792dc769ddda01dd68f1c33aba88cc",
+      "size": 215355,
+      "sha256": "a05d30f7503ffebf1d00a58ad9bc84eeec273582e2bed14f37c05f4ca448bdc4"
+    },
+    {
+      "database": "fake_account_large",
+      "kind": "column_meanings",
+      "path": "fake_account_large/fake_account_large_column_meaning_base.json",
+      "oid": "54aec2a6560f5605e1c2b0d5a8ae996a9ebbee6d",
+      "size": 162989,
+      "sha256": "9737acce19a1ab11c8d69414f7b9d2f80438e9e4e3fdca0f75628258b3e43318"
+    },
+    {
+      "database": "fake_account_large",
+      "kind": "schema",
+      "path": "fake_account_large/fake_account_large_schema.txt",
+      "oid": "1a04decfc5dec8a58ef8ef71f69fba3efb4409c8",
+      "size": 158148,
+      "sha256": "56988ee44a30da2d808ae305795d42313185a0c14bfdcaa755db752ffaf4f479"
+    },
+    {
+      "database": "labor_certification_applications_large",
+      "kind": "column_meanings",
+      "path": "labor_certification_applications_large/labor_certification_applications_large_column_meaning_base.json",
+      "oid": "bcffde3936ca89c096ad8f90446594a11eaac25a",
+      "size": 165268,
+      "sha256": "6dd490222d1f115ea85a7380c625913ffbf104005e4af59035f0f355a2a1dc2f"
+    },
+    {
+      "database": "labor_certification_applications_large",
+      "kind": "schema",
+      "path": "labor_certification_applications_large/labor_certification_applications_large_schema.txt",
+      "oid": "1efe9cd9d858fdd237c184921417ca2e2dbfd53e",
+      "size": 137655,
+      "sha256": "1024062ef1495d3ad528cf30801ce9c4affcd483bc97783ad242d41fc7d50490"
+    },
+    {
+      "database": "mental_healths_large",
+      "kind": "column_meanings",
+      "path": "mental_healths_large/mental_healths_large_column_meaning_base.json",
+      "oid": "7e66aac06ed40fee086e5a1590a2e52ef4458c89",
+      "size": 186989,
+      "sha256": "a6466a4f2863a01b4e114ae8fec549007e24d58244144f2bdd3abdcd0e90a119"
+    },
+    {
+      "database": "mental_healths_large",
+      "kind": "schema",
+      "path": "mental_healths_large/mental_healths_large_schema.txt",
+      "oid": "fed5077b72b95702b6c18b41a255d3efdf33dd43",
+      "size": 142399,
+      "sha256": "0b98ba1068f97d1c7c7c972753eb144834ca0b5656d71b16a93f7b8ac3cb0090"
+    },
+    {
+      "database": "museum_artifact_large",
+      "kind": "column_meanings",
+      "path": "museum_artifact_large/museum_artifact_large_column_meaning_base.json",
+      "oid": "10eda7540ff9dd009428617fee2aa58c161bd977",
+      "size": 130890,
+      "sha256": "0516422f99a0bae9706e57520e937e2fdc2f0ef970ae522738a380e54ae08392"
+    },
+    {
+      "database": "museum_artifact_large",
+      "kind": "schema",
+      "path": "museum_artifact_large/museum_artifact_large_schema.txt",
+      "oid": "7835be5e387d9cffb18a2235baa5c4b66d58a5d1",
+      "size": 145870,
+      "sha256": "4cf4b39e4d7f4a7cfc98d5e9d2ba0d6a99592a0180e7087aafaffbab3e8c7ca5"
+    },
+    {
+      "database": "organ_transplant_large",
+      "kind": "column_meanings",
+      "path": "organ_transplant_large/organ_transplant_large_column_meaning_base.json",
+      "oid": "1a03c337ebfbb6efacfba305d5212b5e583d7ed0",
+      "size": 184126,
+      "sha256": "50b5597ea24a3ddf5eff1414ab89f5487534a39fdec2cc4eb33308c50163f8a3"
+    },
+    {
+      "database": "organ_transplant_large",
+      "kind": "schema",
+      "path": "organ_transplant_large/organ_transplant_large_schema.txt",
+      "oid": "b8fc0cc7efbc4fd15d7b3494c003105e0673dd92",
+      "size": 152626,
+      "sha256": "cbe23d45bfb3e2a90f6b40cb0151a3f7e593b374f0aca5d6a3214f7fb1c688d7"
+    },
+    {
+      "database": "planets_data_large",
+      "kind": "column_meanings",
+      "path": "planets_data_large/planets_data_large_column_meaning_base.json",
+      "oid": "adcbe77aecf99d452605b2ef89fda507db1a0f7d",
+      "size": 202047,
+      "sha256": "2d95b3f1e8aceea219fe4d230f18f9a2db0c60d49a9f5c40f082ccc23375c6bb"
+    },
+    {
+      "database": "planets_data_large",
+      "kind": "schema",
+      "path": "planets_data_large/planets_data_large_schema.txt",
+      "oid": "b9e7f4ca35dcedb1a8529f34fac14bc6c8d917cf",
+      "size": 166895,
+      "sha256": "528ac9095b3a4a3ef65e9eb321deaa3b4578c01ee2946a06802c29d393e8382b"
+    },
+    {
+      "database": "polar_equipment_large",
+      "kind": "column_meanings",
+      "path": "polar_equipment_large/polar_equipment_large_column_meaning_base.json",
+      "oid": "133034de237e4b5067a5714f0ff8c2c56694825b",
+      "size": 186190,
+      "sha256": "95d5adc3f3c2cf7ec587bc4353d52221aedf2f8f34295a78d95bca18c01db75e"
+    },
+    {
+      "database": "polar_equipment_large",
+      "kind": "schema",
+      "path": "polar_equipment_large/polar_equipment_large_schema.txt",
+      "oid": "1133e55e08b7c33a7727a6f790bae68c32a0d9bf",
+      "size": 158214,
+      "sha256": "d9be12e91b9e1d4acab408d4b5ecfa3afa8d27228fa135706b58f63fbb21f90e"
+    },
+    {
+      "database": "residential_data_large",
+      "kind": "column_meanings",
+      "path": "residential_data_large/residential_data_large_column_meaning_base.json",
+      "oid": "975bc8182caca10dd10799a5119c9170f8c590b8",
+      "size": 206048,
+      "sha256": "cfb83057d7ba30be3cd15471456ef298a058d9f990da212d38a8f118f2ef9ed1"
+    },
+    {
+      "database": "residential_data_large",
+      "kind": "schema",
+      "path": "residential_data_large/residential_data_large_schema.txt",
+      "oid": "0eef40316db984348908d7a9de2e1ff454d8e8b5",
+      "size": 186757,
+      "sha256": "085a5f01e0b1bb438a0f8bf5df5e357f38b55867cfc88d9f1d290d778543238f"
+    },
+    {
+      "database": "reverse_logistics_large",
+      "kind": "column_meanings",
+      "path": "reverse_logistics_large/reverse_logistics_large_column_meaning_base.json",
+      "oid": "7d5b6cd485cdbf03d396c12f960403aedacd30ee",
+      "size": 160930,
+      "sha256": "e4bbefe6b74fe9a3dc387313a47604de16f6118aa40acf73d0cc98fe6434dbe8"
+    },
+    {
+      "database": "reverse_logistics_large",
+      "kind": "schema",
+      "path": "reverse_logistics_large/reverse_logistics_large_schema.txt",
+      "oid": "7e6b7e1704ff9bc591f5a1e61af0e226aae7e803",
+      "size": 159099,
+      "sha256": "34ec52b1690cce13190cba126ee9090bc266e127e6f4a03fbe3303c9d934afc6"
+    },
+    {
+      "database": "robot_fault_prediction_large",
+      "kind": "column_meanings",
+      "path": "robot_fault_prediction_large/robot_fault_prediction_large_column_meaning_base.json",
+      "oid": "9d1ee091b41d91ad3b3a401cd5d0bd0d377051b1",
+      "size": 128359,
+      "sha256": "79c0579cac7dfef458a8c22c1b9ec1900cbd1ee0e45b734d081e70a2e85676ec"
+    },
+    {
+      "database": "robot_fault_prediction_large",
+      "kind": "schema",
+      "path": "robot_fault_prediction_large/robot_fault_prediction_large_schema.txt",
+      "oid": "4b8b6fc3f3059271a8e35585362acd363c2868f3",
+      "size": 121029,
+      "sha256": "df21cba17520b1e98e29781c5cd8b8e0bda084aa4db734b7d7b0aa3ef5549137"
+    },
+    {
+      "database": "solar_panel_large",
+      "kind": "column_meanings",
+      "path": "solar_panel_large/solar_panel_large_column_meaning_base.json",
+      "oid": "a902d1442aefa8bdc6737ddbe81c9037884c2c7f",
+      "size": 110888,
+      "sha256": "7914cba4f7bd9751dea0b5a831c4eab4dd4cb53f5191acaa690fef620838d0f1"
+    },
+    {
+      "database": "solar_panel_large",
+      "kind": "schema",
+      "path": "solar_panel_large/solar_panel_large_schema.txt",
+      "oid": "6da43b3b09d2170feb9b0ef78c8394382a43b87e",
+      "size": 119710,
+      "sha256": "b62620a82325ab631f2ae8b982d987f34196129d12d29fa6c5bcafe1418651a6"
+    },
+    {
+      "database": "sports_events_large",
+      "kind": "column_meanings",
+      "path": "sports_events_large/sports_events_large_column_meaning_base.json",
+      "oid": "07df9d272962db70585f545a78bb943bd37835fa",
+      "size": 160640,
+      "sha256": "2c1d6eb032659ce5c518f462b1a12baff822eb94a0f69f6ac91230152f83c859"
+    },
+    {
+      "database": "sports_events_large",
+      "kind": "schema",
+      "path": "sports_events_large/sports_events_large_schema.txt",
+      "oid": "8937aa8f8c78eadf519c02e1b765d2b1d6def208",
+      "size": 157893,
+      "sha256": "9ce860c2cbfab8a662fcb61d9dd8bf8cce0351cdce1444e473bea56749810536"
+    },
+    {
+      "database": "virtual_idol_large",
+      "kind": "column_meanings",
+      "path": "virtual_idol_large/virtual_idol_large_column_meaning_base.json",
+      "oid": "c1dd0162000bcff70e9a2e7db241a41236b1914a",
+      "size": 170006,
+      "sha256": "f259f5c89d2a232a57c4ecaac1730d92ceccb54825e7515ebc7cb2293d90ac7b"
+    },
+    {
+      "database": "virtual_idol_large",
+      "kind": "schema",
+      "path": "virtual_idol_large/virtual_idol_large_schema.txt",
+      "oid": "d86d87ce6512b2eb08ec9bbc77ca1cbb91177a9f",
+      "size": 187194,
+      "sha256": "64c946b4d633f604388089d3a0b0799ee2745cc8985ee0142584dc35e39c98c1"
+    }
+  ]
+}

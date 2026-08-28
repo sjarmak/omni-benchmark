@@ -1509,3 +1509,104 @@ implication from public structure, not yet a measured Omni product finding.
 Compile one public database's schema, column meanings, and HKB IR into a
 conservative Omni extension bundle with explicit representability/loss records;
 validate it locally and on an isolated Omni branch before fan-out.
+
+## 2026-08-27 — D-022: Pin schema semantics before compiling Omni objects
+
+### Decision / experiment
+
+Add the official schema and column-meaning corpus to the public-only source
+boundary before attempting the canary HKB-to-Omni compilation.
+
+### Observation
+
+The first canary has 54 HKB definitions, but its 51 tables include 14 JSONB
+columns whose nested field names are not recoverable from the PostgreSQL catalog
+alone. The previously committed HKB IR preserved business-definition lineage but
+the repository did not yet pin the official `*_column_meaning_base.json` or
+`*_schema.txt` objects. Catalog names alone could not support a defensible,
+reproducible binding from several HKB definitions to nested fields.
+
+### Hypothesis
+
+Hash-pinning the official public DDL and column descriptions will make semantic
+bindings reproducible and distinguish source semantics from later interpretive
+mapping decisions. Excluding the public example rows embedded in the schema text
+will retain necessary type and constraint information without adding accidental
+value exemplars to the modeled baseline.
+
+### Decision
+
+Pin both public source kinds for every database at the same revision as the HKB,
+require exact database-set parity, and verify the complete download before
+publication. Use only DDL and column meanings in later compilation; do not expose
+the schema files' example-row sections to the compiler or evaluated agents.
+
+### Rationale
+
+Compiling the canary immediately from catalog names would force undocumented
+semantic guesses, while hand-copying only the fields needed by the canary would
+make the source boundary selective. The complete 18-database inventory is small,
+general, and required eventually. Parsing or modeling all 18 databases remains
+deferred until one canary proves the representation contract.
+
+### Intervention
+
+Added a strict 36-object inventory, a bounded hash/OID-verifying downloader, a
+row-separating structural inspection command, a thin CLI, artifact and
+acquisition tests, and source-boundary documentation. An adversarial review
+found that the shared nested-file publisher could overwrite an early database
+before rejecting a later invalid destination; a RED regression reproduced the
+mixed output and the publisher now preflights every child before replacing any
+file. A second adversarial pass found that source files were no-follow and
+bounded while the caller-selected inventory was not; shared HKB/schema inventory
+reads now reject symlinks, nonregular files, inputs over one MiB, and excessive
+structured-description depth. A final path audit reproduced an intermediate-
+parent symlink escape and a canonical-source FIFO hang; the shared reader now
+walks every absolute component through held no-follow directory descriptors and
+opens final inputs nonblocking before checking that they are regular files.
+Experiment ID: public baseline D-022; commit: this experiment commit; affected subsystem:
+public semantic-source acquisition. Change type: general system improvement.
+Content provenance: public schema and public column metadata. Intervention
+provenance: mechanical baseline transformation.
+
+### Result
+
+The real fetch verified 6,003,364 bytes across 36 objects at revision
+`a418e108d5cbb4cf9b783a928eff5e924ad2460d`. The corpus contains 971 DDL table
+blocks, 17,749 top-level column descriptions, 212 structured JSON/JSONB
+descriptions, 1,008 immediate structured fields, and 1,925 leaf descriptions at
+maximum depth 3. All 18 database names match both the HKB inventory and
+eligible-question population. Exact-size hash corruption, Git-OID mismatch,
+late-source failure, and late-destination rejection are covered by regressions.
+The final exact staged-tree gate passes 493 tests with 85.82% branch coverage,
+Ruff lint/format, and package build. The larger shared worktree also passes 534
+tests with one database canary integration test explicitly environment-gated.
+Independent correctness, security, and
+simplification reviews approve the lane after actively reproducing and closing
+the partial-publication, symlink-parent, FIFO, and recursive-input failures.
+No question text, private label, hidden annotation, or gold SQL was accessed.
+
+### Interpretation
+
+The semantic-model problem is not only HKB translation: column semantics and
+nested-field identity are separate public inputs that must remain traceable.
+The source corpus also contains public sample rows, so “public schema access”
+must be operationally narrowed to DDL rather than treating the source file as an
+undifferentiated prompt artifact.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+Semantic import tooling needs field-level provenance, especially for structured
+columns that are opaque to warehouse catalogs. A model object should distinguish
+metadata imported from a source description from an interpretation introduced
+by the model author or transformation system.
+
+### Next step
+
+Compile a row-free, case-preserving schema/column intermediate representation
+for the canary, then map that IR and the HKB dependency graph into a conservative
+Omni extension with explicit representability and loss records.

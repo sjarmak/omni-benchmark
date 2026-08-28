@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .hkb_io import HKBFileSafetyError, read_regular_file
+
 
 class HKBInventoryError(ValueError):
     """Raised when the committed public HKB inventory is invalid."""
@@ -37,6 +39,7 @@ class HKBSourceInventory:
 _TOP_LEVEL_FIELDS = frozenset({"schema_version", "dataset", "revision", "files"})
 _FILE_FIELDS = frozenset({"database", "path", "oid", "size", "sha256"})
 PUBLIC_HKB_DATASET = "birdsql/livesqlbench-large-v1"
+_MAXIMUM_INVENTORY_BYTES = 1_048_576
 
 
 def _require_exact_fields(
@@ -99,7 +102,7 @@ def _parse_source_file(value: Any, index: int) -> HKBSourceFile:
 def _decode_inventory(content: bytes, source: Path) -> dict[str, Any]:
     try:
         value = json.loads(content, object_pairs_hook=_strict_json_object)
-    except (UnicodeError, json.JSONDecodeError) as error:
+    except (UnicodeError, json.JSONDecodeError, RecursionError) as error:
         raise HKBInventoryError(
             f"cannot parse HKB inventory {source}: {error}"
         ) from error
@@ -129,8 +132,11 @@ def load_hkb_source_inventory(path: Path | str) -> HKBSourceInventory:
 
     source = Path(path)
     try:
-        content = source.read_bytes()
-    except OSError as error:
+        content = read_regular_file(
+            source,
+            maximum_bytes=_MAXIMUM_INVENTORY_BYTES,
+        )
+    except HKBFileSafetyError as error:
         raise HKBInventoryError(
             f"cannot read HKB inventory {source}: {error}"
         ) from error

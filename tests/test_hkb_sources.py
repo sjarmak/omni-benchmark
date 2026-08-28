@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from omni_benchmark.hkb_inventory import HKBInventoryError, load_hkb_source_inventory
 from omni_benchmark.hkb_sources import HKBSourceError, fetch_public_hkb_sources
 
 
@@ -176,3 +177,11 @@ def test_fetch_rejects_git_blob_oid_mismatch(tmp_path: Path) -> None:
             tmp_path / "source",
             fetch=lambda _, __: content,
         )
+
+
+def test_inventory_normalizes_excessive_json_nesting(tmp_path: Path) -> None:
+    inventory = tmp_path / "inventory.json"
+    inventory.write_text("[" * 2_000 + "0" + "]" * 2_000)
+
+    with pytest.raises(HKBInventoryError, match="cannot parse"):
+        load_hkb_source_inventory(inventory)
