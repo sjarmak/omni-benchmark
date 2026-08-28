@@ -34,9 +34,9 @@ def test_run_rejects_sensitive_diagnostic_text(
             "failure_origin": "evaluated_system",
             "generated_query": None,
             "generation_outcome": "errored",
-            "harness_failure": "provider echoed live-secret-value",
+            "harness_failure": None,
             "outcome": "refused_or_error",
-            "terminal_failure_class": "provider_error",
+            "terminal_failure_class": "provider echoed live-secret-value",
         }
     )
     path = workspace / "runs" / "secret-diagnostic.jsonl"

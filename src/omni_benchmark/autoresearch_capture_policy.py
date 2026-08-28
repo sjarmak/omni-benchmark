@@ -50,9 +50,13 @@ def _validate_failure(record: Mapping[str, Any]) -> None:
             "failure_origin must be benchmark_infrastructure, evaluated_system, or null"
         )
     failure_class = record["terminal_failure_class"]
+    harness_failure = record["harness_failure"]
+    if harness_failure is not None and failure_origin != "benchmark_infrastructure":
+        raise AutoresearchError(
+            "non-null harness_failure requires failure_origin benchmark_infrastructure"
+        )
     if generation_outcome == "answered" and any(
-        value is not None
-        for value in (failure_origin, failure_class, record["harness_failure"])
+        value is not None for value in (failure_origin, failure_class, harness_failure)
     ):
         raise AutoresearchError(
             "answered attempts cannot declare a terminal evaluated-system failure"

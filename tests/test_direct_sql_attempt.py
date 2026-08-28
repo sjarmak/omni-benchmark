@@ -769,5 +769,8 @@ def test_attempt_rejects_condition_or_model_identity_mismatch(tmp_path: Path) ->
     )
     generation = json.loads(artifacts.generation.path.read_text())
     assert generation["generation_outcome"] == "refused"
+    assert generation["failure_origin"] == "evaluated_system"
+    assert generation["harness_failure"] is None
+    assert generation["terminal_failure_class"] == "agent_refusal"
     assert generation["database_query_count"] == 0
     assert generation["telemetry_unavailable"] == ["retry_count"]

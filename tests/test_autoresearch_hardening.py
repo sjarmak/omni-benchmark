@@ -247,7 +247,7 @@ def test_errored_attempt_may_have_no_generated_query(tmp_path: Path) -> None:
             "failure_origin": "evaluated_system",
             "generated_query": None,
             "generation_outcome": "errored",
-            "harness_failure": "model failed before query generation",
+            "harness_failure": None,
             "outcome": "refused_or_error",
             "terminal_failure_class": "query_generation_failure",
         }
@@ -265,6 +265,31 @@ def test_errored_attempt_may_have_no_generated_query(tmp_path: Path) -> None:
     assert run.errored_ids == frozenset({"dev_a_1"})
 
 
+def test_harness_failure_cannot_be_owned_by_evaluated_system(
+    tmp_path: Path,
+) -> None:
+    workspace, config = _workspace(tmp_path)
+    records = [_record("dev_a_1"), _record("dev_a_2")]
+    records[0].update(
+        {
+            "failure_origin": "evaluated_system",
+            "generated_query": None,
+            "generation_outcome": "errored",
+            "harness_failure": "adapter_transport_error",
+            "outcome": "refused_or_error",
+            "terminal_failure_class": "adapter_transport_error",
+        }
+    )
+    path = workspace / "runs" / "contradictory-harness-origin.jsonl"
+    _write_jsonl(path, records)
+
+    with pytest.raises(
+        AutoresearchError,
+        match="harness_failure.*benchmark_infrastructure",
+    ):
+        validate_run(config, path)
+
+
 def test_validated_run_preserves_refused_and_errored_as_distinct_outcomes(
     tmp_path: Path,
 ) -> None:
@@ -278,7 +303,7 @@ def test_validated_run_preserves_refused_and_errored_as_distinct_outcomes(
             "failure_origin": "evaluated_system",
             "generated_query": None,
             "generation_outcome": "refused",
-            "harness_failure": "model refused",
+            "harness_failure": None,
             "outcome": "refused_or_error",
             "terminal_failure_class": "direct_refusal",
         }
@@ -288,7 +313,7 @@ def test_validated_run_preserves_refused_and_errored_as_distinct_outcomes(
             "failure_origin": "evaluated_system",
             "generated_query": None,
             "generation_outcome": "errored",
-            "harness_failure": "model failed before query generation",
+            "harness_failure": None,
             "outcome": "refused_or_error",
             "terminal_failure_class": "query_generation_failure",
         }
@@ -320,7 +345,7 @@ def test_c4_manifest_marks_refusal_rate_unobservable(tmp_path: Path) -> None:
             "failure_origin": "evaluated_system",
             "generated_query": None,
             "generation_outcome": "errored",
-            "harness_failure": "governed result unavailable",
+            "harness_failure": None,
             "outcome": "refused_or_error",
             "terminal_failure_class": "response_contract_error",
         }
@@ -350,7 +375,7 @@ def test_c4_rejects_refusal_without_a_structured_product_signal(
             "failure_origin": "evaluated_system",
             "generated_query": None,
             "generation_outcome": "refused",
-            "harness_failure": "narrative looked like a refusal",
+            "harness_failure": None,
             "terminal_failure_class": "direct_refusal",
         }
     )
@@ -388,7 +413,7 @@ def test_answered_attempt_cannot_report_terminal_failure(tmp_path: Path) -> None
     records = [_record("dev_a_1"), _record("dev_a_2")]
     records[0].update(
         {
-            "failure_origin": "evaluated_system",
+            "failure_origin": "benchmark_infrastructure",
             "harness_failure": "crash",
             "terminal_failure_class": "timeout",
         }
@@ -683,7 +708,7 @@ def test_complete_trace_terminal_failure_must_match_attempt_envelope(
                 "failure_origin": "evaluated_system",
                 "generated_query": None,
                 "generation_outcome": generation_outcome,
-                "harness_failure": "provider failed",
+                "harness_failure": None,
                 "outcome": "refused_or_error",
                 "terminal_failure_class": terminal_failure_class,
             }

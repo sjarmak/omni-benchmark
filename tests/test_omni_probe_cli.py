@@ -89,6 +89,15 @@ class CancelledClient(FailedClient):
         self.statuses = iter(({"state": "CANCELLED"},))
 
 
+class StatusTransportClient(FakeClient):
+    def job_status(self, job_id: str) -> dict[str, Any]:
+        assert job_id == "job-private-1"
+        raise RuntimeError("observer transport unavailable")
+
+    def job_result(self, job_id: str) -> dict[str, Any]:
+        raise AssertionError("transport failures must not fetch a result")
+
+
 class NeverCompleteClient(FakeClient):
     def job_status(self, job_id: str) -> dict[str, Any]:
         assert job_id == "job-private-1"
@@ -453,12 +462,51 @@ def test_probe_persists_a_complete_unscored_error_attempt(
     record = json.loads(generation_path.read_text())
     assert record["generation_outcome"] == "errored"
     assert record["failure_origin"] == "evaluated_system"
+    assert record["harness_failure"] is None
     assert record["terminal_failure_class"] == "omni_job_terminal_failure"
     assert record["database_query_count"] is None
     assert record["tool_call_count"] is None
     assert record["validation_attempt_count"] is None
     assert "actual_result_hash" not in record
     assert "outcome" not in record
+    config = load_config(
+        workspace / "config" / "autoresearch.json",
+        workspace=workspace,
+        freeze_a_commit=freeze_a_commit,
+    )
+    assert (
+        validate_generation_outputs(
+            config,
+            Path(receipt["generation"]["path"]),
+            scope="dev-a",
+            manifest_path=Path(receipt["run_manifest"]["path"]),
+            expected_manifest_sha256=receipt["run_manifest"]["sha256"],
+        ).question_count
+        == 1
+    )
+
+
+def test_probe_persists_status_transport_as_benchmark_infrastructure(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    workspace, freeze_a_commit = _workspace(tmp_path)
+
+    status = probe_main(
+        _probe_arguments(workspace, freeze_a_commit),
+        environment=_environment(workspace),
+        client_factory=StatusTransportClient,
+        sleep=lambda _: None,
+        cli_version_observer=_observe_cli_version,
+    )
+
+    assert status == 0
+    receipt = json.loads(capsys.readouterr().out)
+    generation_path = workspace / receipt["generation"]["path"]
+    record = json.loads(generation_path.read_text())
+    assert record["generation_outcome"] == "errored"
+    assert record["failure_origin"] == "benchmark_infrastructure"
+    assert record["harness_failure"] == "adapter_transport_error"
+    assert record["terminal_failure_class"] == "adapter_transport_error"
     config = load_config(
         workspace / "config" / "autoresearch.json",
         workspace=workspace,

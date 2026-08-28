@@ -347,7 +347,9 @@ def _identity_fields(
         "failure_origin": probe.failure_origin,
         "finished_at": probe.finished_at,
         "generation_outcome": probe.generation_outcome,
-        "harness_failure": failure,
+        "harness_failure": (
+            failure if probe.failure_origin == "benchmark_infrastructure" else None
+        ),
         "instance_id": binding.question.instance_id,
         "latency_ms": probe.latency_ms,
         "model": {

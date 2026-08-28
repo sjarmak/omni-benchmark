@@ -580,7 +580,7 @@ def test_separate_scores_must_match_generation_terminal_state(
             record["attempt_id"] = record["attempt_id"].replace(":C4:", ":C1:")
         records[0]["failure_origin"] = "evaluated_system"
         records[0]["terminal_failure_class"] = "agent_refusal"
-        records[0]["harness_failure"] = "agent_refusal"
+        records[0]["harness_failure"] = None
     path = workspace / "runs" / f"{generation_outcome}-generation.jsonl"
     write_jsonl(path, records)
     generation = validate_generation_outputs(config, path, scope="dev-a")

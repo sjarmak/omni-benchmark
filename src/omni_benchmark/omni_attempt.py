@@ -82,13 +82,14 @@ def _identity_fields(
     answered: bool,
     failure_class: str | None,
 ) -> dict[str, object]:
+    failure_origin, harness_failure = _failure_ownership(answered, failure_class)
     return {
         "attempt_id": f"{spec.run_id}:{spec.instance_id}:C4:{spec.repetition}",
         "condition": "C4",
-        "failure_origin": None if answered else "evaluated_system",
+        "failure_origin": failure_origin,
         "finished_at": probe.finished_at,
         "generation_outcome": "answered" if answered else "errored",
-        "harness_failure": None if answered else failure_class,
+        "harness_failure": harness_failure,
         "instance_id": spec.instance_id,
         "latency_ms": probe.latency_ms,
         "model": {
@@ -104,6 +105,16 @@ def _identity_fields(
         "started_at": probe.started_at,
         "terminal_failure_class": failure_class,
     }
+
+
+def _failure_ownership(
+    answered: bool, failure_class: str | None
+) -> tuple[str | None, str | None]:
+    if answered:
+        return None, None
+    if failure_class == "omni_job_terminal_failure":
+        return "evaluated_system", None
+    return "benchmark_infrastructure", failure_class
 
 
 def _telemetry_fields(spec: C4AttemptSpec, probe: OmniProbeResult) -> dict[str, object]:
