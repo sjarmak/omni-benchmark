@@ -23,16 +23,18 @@ hidden annotation, or sealed-test result has been accessed.
   `2026-08-28T18:20:46Z` through `18:26:20Z` are recorded as authorized
   benchmark-infrastructure reruns and will not enter outcome metrics.
 
-  **Requested operator action:** dedicate accounts 1, 3, and 4 exclusively to
-  the benchmark until the direct continuation finishes. In each account's own
-  canonical `claude-N` environment, make sure no Claude session is still
-  running, perform one interactive `/login`, then exit without starting or
-  resuming other work. Do not run `ds-cred`, copy credential files, start Remote
-  Control, or open another Claude session under those identities afterward.
-  Notify the benchmark operator only when all three logins are complete.
-  Account 5 is intentionally excluded from this recovery because it currently
-  owns a live background Omni benchmark session; stopping that session is not
-  required if account 5 remains outside the comparator pool.
+  **Requested operator action:** dedicate accounts 3, 4, and 5 exclusively to
+  the benchmark until the direct continuation finishes. First stop the live
+  account-5 background Claude session shown by `claude agents`; do not kill its
+  files or delete its transcript. Confirm no other Claude session is using any
+  of the three identities. Then perform one interactive `/login` directly in
+  each external benchmark profile under
+  `/home/ds/.local/state/omni-benchmark-claude-oauth/claude-N`, and exit without
+  starting or resuming other work. Do not run `ds-cred`, copy credential files,
+  start Remote Control, or open another Claude session under those identities
+  afterward. Notify the benchmark operator only when all three direct-profile
+  logins are complete. Account 1 remains excluded because it is not one of the
+  three clean-room profiles frozen for the interrupted run.
 
 ## Approved actions in progress
 
