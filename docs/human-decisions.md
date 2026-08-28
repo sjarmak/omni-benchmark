@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T14:30:00-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T14:36:00-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -14,9 +14,11 @@ hidden annotation, or sealed-test result has been accessed.
   the server-side OAuth sessions used by `claude-3`, `claude-4`, and
   `claude-5`. Their later local expiry timestamps do not prove validity: a
   provider request returns `OAuth session expired and could not be refreshed`.
-  Reauthenticate account 3, account 4, and account 5 through the existing
-  credential workflow, without pasting credentials into chat, then notify the
-  benchmark operator. The direct baseline remains stopped. Its 112 valid
+  Account 5 was refreshed and independently passed the exact immutable
+  transport at 14:36 EDT. Reauthenticate **account 3 and account 4** through
+  the existing credential workflow, without pasting credentials into chat,
+  then notify the benchmark operator. Account 1 is optional and is not needed
+  for the current three-profile run. The direct baseline remains stopped. Its 112 valid
   pre-rotation attempts are preserved; 95 attempts from
   `2026-08-28T18:20:46Z` through `18:26:20Z` are recorded as authorized
   benchmark-infrastructure reruns and will not enter outcome metrics.
