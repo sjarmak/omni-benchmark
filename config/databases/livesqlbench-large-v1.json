@@ -1,0 +1,644 @@
+{
+  "format_version": 2,
+  "benchmark": "LiveSQLBench Large-v1",
+  "canary": "archeology_scan_large",
+  "postgres_major": 18,
+  "sources": {
+    "dataset_revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "public_dump_archive_sha256": "8af9a1459125bda5affe5b5b68211e458724b79a8da02825ec74fd896ff69258",
+    "public_dump_archive_size_bytes": 329482970,
+    "public_dump_url": "https://drive.google.com/file/d/1u1L-SvJtOZGfcIST-dINw8DnGEQDMu6C/view",
+    "repository_commit": "e15cd221267e06fabfaf6a3d4a69308280ce9a7c",
+    "restore_order_sha256": "7beda4adb008c816b633abd99ed0ad4aaee6bde23ebfecadaacc42b67fdcdb60",
+    "restore_script": "evaluation/env/init-databases_postgresql_large_v1.sh",
+    "restore_script_sha256": "b5c50cd51d235c6667923db44816be56cffa2d6b8a6d1e254a78dfb4403db66c"
+  },
+  "canary_verification": {
+    "database": "archeology_scan_large",
+    "postgres_server_version_num": "180006",
+    "postgres_image": "postgres@sha256:4ef4dbc939d61acea57712655ddb4b4ab27419c913f94cca0cd57cb3ea3c2280",
+    "extensions": [
+      "plpgsql:1.0"
+    ],
+    "table_count": 51,
+    "row_count": 98640,
+    "schema_sha256": "f62f8c43e32bdf053e3e58f023820667d98cb713a6cc52edf982e95537ce5bed",
+    "content_sha256": "cd9dcd2a6fc88e00093291d4a40e221bf97e85b4eb87088f331ccd8368e8aaba",
+    "repeat_restore_parity": true,
+    "readonly_role_verified": true,
+    "managed_mirror": {
+      "provider": "neon",
+      "organization_id": "org-steep-term-23543236",
+      "project_id": "rapid-block-84830089",
+      "branch_id": "br-billowing-fire-axx4b4qb",
+      "branch_name": "main",
+      "region_id": "aws-us-east-2",
+      "runtime_role": "omni_benchmark_reader"
+    },
+    "external_mirror_parity": true
+  },
+  "databases": [
+    {
+      "name": "archeology_scan_large",
+      "alias": "archeology_scan_large",
+      "dump_file_count": 53,
+      "dump_size_bytes": 123832975,
+      "dump_sha256": "f539b729b61c31533c61af5b742c56de6723ca878a9ed041f40c3a80246c5053",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "rapid-block-84830089",
+        "branch_id": "br-billowing-fire-axx4b4qb",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 51,
+        "row_count": 98640,
+        "schema_sha256": "f62f8c43e32bdf053e3e58f023820667d98cb713a6cc52edf982e95537ce5bed",
+        "content_sha256": "cd9dcd2a6fc88e00093291d4a40e221bf97e85b4eb87088f331ccd8368e8aaba",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "882eb33b-76d6-457c-b9fc-7977958de10e",
+        "name": "LiveSQLBench archeology_scan_large"
+      }
+    },
+    {
+      "name": "cross_border_large",
+      "alias": "cross_border_large",
+      "dump_file_count": 57,
+      "dump_size_bytes": 15574625,
+      "dump_sha256": "940d2f92c16527242ba9653a0465aee094d9cfb03bcf51956ff5a770f8ab767a",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "weathered-cherry-64598527",
+        "branch_id": "br-lively-math-ax06dkio",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 56,
+        "row_count": 14303,
+        "schema_sha256": "8d4344952118bba5adaf998b3c240ccc32d6e04af3b748a5d800f415ca5868e7",
+        "content_sha256": "35454e75250773100728a79674fd51742252b4364666072df2ffa46fb5689488",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "ceff107f-ab35-476e-922d-3ce3563d8a26",
+        "name": "LiveSQLBench cross_border_large"
+      }
+    },
+    {
+      "name": "cybermarket_pattern_large",
+      "alias": "cybermarket_pattern_large",
+      "dump_file_count": 58,
+      "dump_size_bytes": 251454448,
+      "dump_sha256": "04961a1249c6e876107d8e141d74c3f75ba1a5cb7bcda345455e449738e32b16",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "lucky-hat-89903302",
+        "branch_id": "br-shy-block-ax3fna5l",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 56,
+        "row_count": 183042,
+        "schema_sha256": "5d85b65f8cf2c3a5a3185f862090c107b8b3c337cddb002d98bc7069479f17c6",
+        "content_sha256": "09bae95db01886995ebcf42145ae0d87656ac278e3e40be25872dccb33f22306",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "34488141-876f-4b4a-8fde-cbb4b690e735",
+        "name": "LiveSQLBench cybermarket_pattern_large"
+      }
+    },
+    {
+      "name": "disaster_relief_large",
+      "alias": "disaster_relief_large",
+      "dump_file_count": 53,
+      "dump_size_bytes": 171520763,
+      "dump_sha256": "dac79093ce49941e1fac492a34ac30e80ceaaa6e7c6d3d2550911cf3bb4aa53a",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "old-fire-51414453",
+        "branch_id": "br-raspy-credit-a5w2pikc",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 50,
+        "row_count": 201600,
+        "schema_sha256": "d6ec133f04a315bc460e505fee521296095ff42d0f27ac73f822d0a249013370",
+        "content_sha256": "2621b3ecefbfbeb5e51bec6cc1248f16c0802fdbaab21e276cc85d6cee42c2db",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "ec479ed1-c9f6-4b43-8146-342e20176f0d",
+        "name": "LiveSQLBench disaster_relief_large"
+      }
+    },
+    {
+      "name": "exchange_traded_funds_large",
+      "alias": "exchange_traded_funds_large",
+      "dump_file_count": 59,
+      "dump_size_bytes": 711482709,
+      "dump_sha256": "11b79504ac34a705be410b070988cf4755058332954f3b56add7d5bc24dda73a",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "snowy-wind-15795055",
+        "branch_id": "br-late-fire-axggwu1b",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 57,
+        "row_count": 538932,
+        "schema_sha256": "6bfa42805e091ef8462ee0cdfefb45bb52b41a1e0334d751e5e89249dcb0f3a7",
+        "content_sha256": "ffddc88039095c155698a1a5a3cac351d04cca7ced08c9431a35829a76fe5965",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "586eb118-ebca-42e2-bf7a-b6da55d0b441",
+        "name": "LiveSQLBench exchange_traded_funds_large"
+      }
+    },
+    {
+      "name": "fake_account_large",
+      "alias": "fake_account_large",
+      "dump_file_count": 54,
+      "dump_size_bytes": 91716356,
+      "dump_sha256": "4e19ead323c7b56fbe14bb42a723fcde3bd055c6561e14856d9aff770cd8a05c",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "crimson-thunder-26503629",
+        "branch_id": "br-icy-mode-ayf7u00c",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 53,
+        "row_count": 112378,
+        "schema_sha256": "d420c6579e457f4dbb50ccb170e510b82326e8c577bf8dc02035107820a86089",
+        "content_sha256": "535a54a49c9c69d419af64d99b63b2ae691ca582cbfc8d0ee9780203c4e3fdc5",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "bbb67d38-ce2b-4a6a-99da-bc8b4bc6f72c",
+        "name": "LiveSQLBench fake_account_large"
+      }
+    },
+    {
+      "name": "labor_certification_applications_large",
+      "alias": "labor_certification_applications_large",
+      "dump_file_count": 51,
+      "dump_size_bytes": 168675545,
+      "dump_sha256": "7f903a5f1c01eedf68c8abcf73e02c693e60c7eec6cb7847db5424831bcb6000",
+      "scorer_omitted_tables": [
+        "training_program_worker_link"
+      ],
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "proud-cake-47511890",
+        "branch_id": "br-old-moon-ay3sqr4w",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 49,
+        "row_count": 125534,
+        "schema_sha256": "532cc7b3f18b29d310b2b505a4c3f00a773ef89a57b267f68c618c879c8b78fb",
+        "content_sha256": "7a7e3f7d62366d7272df2379b62e3e525d1082fb8532d3f2204fdffd255ae708",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "8a9190fe-ca07-4ed4-8cec-d6e254149847",
+        "name": "LiveSQLBench labor_certification_applications_large"
+      }
+    },
+    {
+      "name": "mental_healths_large",
+      "alias": "mental_healths_large",
+      "dump_file_count": 57,
+      "dump_size_bytes": 45445981,
+      "dump_sha256": "09937034a2a1b7c7ba5456b38822966d14b962ff6002552abab30dedb84b3e51",
+      "scorer_omitted_tables": [
+        "Facilities",
+        "Clinicians",
+        "Patients",
+        "AssessmentBasics",
+        "Encounters",
+        "AssessmentSymptomsAndRisk",
+        "AssessmentSocialAndDiagnosis",
+        "TreatmentBasics",
+        "TreatmentOutcomes",
+        "Medications",
+        "MedicalDevices",
+        "InsurancePlans",
+        "TrainingPrograms",
+        "QualityMetrics",
+        "Suppliers",
+        "MedicalTeams",
+        "RehabPrograms",
+        "Caregivers",
+        "CommunityResources",
+        "ClinicalTrials",
+        "ComplianceRecords",
+        "SystemLogs",
+        "Appointments",
+        "MedicalRecords",
+        "LabResults",
+        "ImagingStudies",
+        "CarePlans",
+        "EmergencyEvents",
+        "BillingRecords",
+        "PatientMedications",
+        "ClinicianTeams",
+        "PatientCaregivers",
+        "FacilitySuppliers",
+        "PatientClinicalTrials"
+      ],
+      "scorer_continues_after_sql_error": true,
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "aged-sun-66577820",
+        "branch_id": "br-morning-dream-ayuta2ad",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 21,
+        "row_count": 33582,
+        "schema_sha256": "d0758ce810a8bcc949121f55542e82e5a9fe2816bdd064a475f7d47643505a01",
+        "content_sha256": "4887ac64a13b2f164d50e55f64bf1e732e04adf9319e646680c98b836a0d3d89",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "bd6e7cfc-43e1-452e-be38-99b0488dccc8",
+        "name": "LiveSQLBench mental_healths_large"
+      }
+    },
+    {
+      "name": "museum_artifact_large",
+      "alias": "museum_artifact_large",
+      "dump_file_count": 53,
+      "dump_size_bytes": 388272307,
+      "dump_sha256": "b652769a925e1a6c8fe294ca4fc9572944a731451d9a512d48cffbccda52a7d8",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "rapid-shape-55298207",
+        "branch_id": "br-gentle-dream-aydaeaq7",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 51,
+        "row_count": 211988,
+        "schema_sha256": "7d3b88b59dffda40dc257eb564322f32875b129298cd65de7014d96ccc784119",
+        "content_sha256": "2a34a08dd881f427a2b7e9c63f34a9c0922bd2b401b28fd5477efe897e390761",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "422a5e1b-7d1a-4817-b65b-ae86ce034709",
+        "name": "LiveSQLBench museum_artifact_large"
+      }
+    },
+    {
+      "name": "organ_transplant_large",
+      "alias": "organ_transplant_large",
+      "dump_file_count": 59,
+      "dump_size_bytes": 17771633,
+      "dump_sha256": "e8fbf464d52b3faa9441856b66077868cfddffe26202cac204ef82b23c42b837",
+      "scorer_omitted_tables": [
+        "Demographics",
+        "Recipients_Demographics",
+        "Medical_History",
+        "HLA_Info",
+        "Function_and_Recovery",
+        "Clinical",
+        "Recipients_Immunology",
+        "Transplant_Matching",
+        "Compatibility_Metrics",
+        "Risk_Evaluation",
+        "Allocation_Details",
+        "Logistics",
+        "Administrative_and_Review",
+        "Data_Source_and_Quality",
+        "Hospitals",
+        "Surgeons",
+        "Medications",
+        "Complications",
+        "Insurance_Plans",
+        "Protocols",
+        "Training_Programs",
+        "Quality_Metrics",
+        "Rehabilitation_Programs",
+        "Support_Groups",
+        "Medical_Teams",
+        "Equipment",
+        "Transportation",
+        "Organ_Banks",
+        "Surgeon_Hospital_Affiliations",
+        "Team_Training_Participation",
+        "Tissue_Samples",
+        "Consent_Forms",
+        "Emergency_Contacts",
+        "Imaging_Studies",
+        "Genetic_Markers",
+        "Recipient_Medication_History",
+        "Recipient_Support_Group_Membership"
+      ],
+      "scorer_continues_after_sql_error": true,
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "solitary-flower-86538263",
+        "branch_id": "br-bitter-feather-ax6y57oc",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 20,
+        "row_count": 8970,
+        "schema_sha256": "061cffb1893b6c4e770e93a27b86f96c3221037fded630af0cff5bde914f7111",
+        "content_sha256": "39d5fb50801f758c6aa085995d4110ed3bc85b03f709aec62fd33e03612fd176",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "2d409144-d3a2-44d1-97e9-9ee995a90785",
+        "name": "LiveSQLBench organ_transplant_large"
+      }
+    },
+    {
+      "name": "planets_data_large",
+      "alias": "planets_data_large",
+      "dump_file_count": 59,
+      "dump_size_bytes": 13133813,
+      "dump_sha256": "615f93edbdd6d8e944729049f52551c2d000f320ad306eb6f06539a40216c637",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "orange-resonance-10480784",
+        "branch_id": "br-autumn-king-ayna9h48",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 58,
+        "row_count": 25734,
+        "schema_sha256": "0f67df9bfc49459bff2af0020541296894a66fec71de6fd6178d3d8e99d3a08a",
+        "content_sha256": "c2902c665fc7f96bbd4875d9b91f308fdff738cff7b89673a477cef86bc0bac6",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "72b06cb3-492a-4d3e-8097-4e93a842705d",
+        "name": "LiveSQLBench planets_data_large"
+      }
+    },
+    {
+      "name": "polar_equipment_large",
+      "alias": "polar_equipment_large",
+      "dump_file_count": 59,
+      "dump_size_bytes": 248134046,
+      "dump_sha256": "6a405d412f0748c055dbbcdf786e3486b4954f428058a30182e2165441e9b9e8",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "weathered-frost-90995252",
+        "branch_id": "br-steep-dew-ayweemhn",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 57,
+        "row_count": 181430,
+        "schema_sha256": "8487502c5a775cf86d3d3ca037810a49e03c4c56c219cbb55d3ff9ba2de5fb69",
+        "content_sha256": "7055ce15996fbe8158d6f024cf01ccb3a3bf1fff9600ad154447ccea9533641c",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "44585195-70c1-4c8c-a372-4524591b8608",
+        "name": "LiveSQLBench polar_equipment_large"
+      }
+    },
+    {
+      "name": "residential_data_large",
+      "alias": "residential_data_large",
+      "dump_file_count": 49,
+      "dump_size_bytes": 34771051,
+      "dump_sha256": "cbf930ef51785b92bdcc64bf770473697d600ed865a3cb7e00451e4e187afd95",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "old-pine-76683507",
+        "branch_id": "br-sparkling-dawn-ay85vrvm",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 48,
+        "row_count": 45291,
+        "schema_sha256": "1db86d723d347709ad41e76114de00930d041d86b19e5654d48fabf963098929",
+        "content_sha256": "c3a542689ac830b2291c98e1ba62a995f1c6b33a886a5f61e49d3d1a10f6b0e6",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "c112cc50-0ebf-47ad-8f2b-77d0676270c8",
+        "name": "LiveSQLBench residential_data_large"
+      }
+    },
+    {
+      "name": "reverse_logistics_large",
+      "alias": "reverse_logistics_large",
+      "dump_file_count": 49,
+      "dump_size_bytes": 62491041,
+      "dump_sha256": "f6ddc040c626c3dfae8fbb7d8ad2bb618e15eb557868a619720f85bedae8f816",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "soft-night-77409598",
+        "branch_id": "br-morning-pine-aefufr90",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 47,
+        "row_count": 48424,
+        "schema_sha256": "f0ec05b9f009795cf8b44b7c12edcb73b0f37b1ec52adfdabf1aad5348306398",
+        "content_sha256": "a94a891debd39d770be1a74b0a88cec06f7787c3eec7f537d923f28edb21aa9c",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "5d92284e-5dd8-4ec8-ae22-5a0164f7be48",
+        "name": "LiveSQLBench reverse_logistics_large"
+      }
+    },
+    {
+      "name": "robot_fault_prediction_large",
+      "alias": "robot_fault_prediction_large",
+      "dump_file_count": 52,
+      "dump_size_bytes": 48797735,
+      "dump_sha256": "8b7e93fc507c72c5b845d89b63d6f362cbb1052b30713aef0ccbcdd778d56050",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "noisy-sound-59262285",
+        "branch_id": "br-crimson-butterfly-ayx08nqs",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 51,
+        "row_count": 69057,
+        "schema_sha256": "9b2f87f353f43e8de117cd6ba85617f2aa9e5340f4319f85089df87f8e6a623f",
+        "content_sha256": "26f00b0f85aa25ace606b9543f147a60314bf457b91856b510d80ed44176aa11",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "a9e122bf-cbf3-42d2-a6c1-e5d75c83a8b1",
+        "name": "LiveSQLBench robot_fault_prediction_large"
+      }
+    },
+    {
+      "name": "solar_panel_large",
+      "alias": "solar_panel_large",
+      "dump_file_count": 54,
+      "dump_size_bytes": 31325648,
+      "dump_sha256": "dbbe8da2ace1f5d5eacc16070c79e1ee3e94e374c6bdbd95e95996be1369765a",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "frosty-violet-92904473",
+        "branch_id": "br-nameless-bread-aywuwh4q",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 52,
+        "row_count": 28864,
+        "schema_sha256": "b87458b494fa97bf961f9611bae2763eb5bfb2a7b92b4d98296ef10b4f58f058",
+        "content_sha256": "16f0f372035781d939d2fc8a4a5b2ec813e2a8fd0f3ea49983ec373cb8314555",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "e6f87ad3-6896-4ee4-a9e3-ffcbb8cc6a88",
+        "name": "LiveSQLBench solar_panel_large"
+      }
+    },
+    {
+      "name": "sports_events_large",
+      "alias": "sports_events_large",
+      "dump_file_count": 61,
+      "dump_size_bytes": 19712227,
+      "dump_sha256": "91639f871de801d0bd69ecf72042253919a1351538a358edec14891ee89e7429",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "aged-art-78228204",
+        "branch_id": "br-spring-darkness-a59b7k0g",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 60,
+        "row_count": 28535,
+        "schema_sha256": "8dd6a63a555b78fa014453de48087bb96d516623f466311132bd0eb408d608de",
+        "content_sha256": "673cd935c93c3e10a2c74a56963050d9428a0e8d4f6013dfdaa17c9ad20958b2",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "136d2070-af59-438b-89e8-04cf9ca10909",
+        "name": "LiveSQLBench sports_events_large"
+      }
+    },
+    {
+      "name": "virtual_idol_large",
+      "alias": "virtual_idol_large",
+      "dump_file_count": 65,
+      "dump_size_bytes": 30158983,
+      "dump_sha256": "b27098b62b97e51030b9048a8b2a08908b71535216d808a65b8705d4b2cbb015",
+      "managed_mirror": {
+        "provider": "neon",
+        "organization_id": "org-steep-term-23543236",
+        "project_id": "silent-hall-17509102",
+        "branch_id": "br-gentle-union-ayonal5c",
+        "branch_name": "main",
+        "region_id": "aws-us-east-2",
+        "runtime_role": "omni_benchmark_reader"
+      },
+      "verification": {
+        "postgres_server_version_num": "180006",
+        "table_count": 63,
+        "row_count": 25317,
+        "schema_sha256": "1492d6fbf341c645c5d02e7f882155bbbbcf21b7a9d0a65b8a77a9327edc5e1e",
+        "content_sha256": "02f74710378ef0b9ee44355665133a15f587352150eca7ba19c3c0833129e8b8",
+        "readonly_role_verified": true,
+        "external_parity": true
+      },
+      "omni_connection": {
+        "id": "29a185c5-a7e3-4ddc-bcfc-863c77b83e57",
+        "name": "LiveSQLBench virtual_idol_large"
+      }
+    }
+  ]
+}
