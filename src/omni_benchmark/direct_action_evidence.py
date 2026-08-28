@@ -20,6 +20,9 @@ from .sql_admission import single_query_sql_is_admissible
 _KIND = "direct-action-evidence"
 _SCHEMA_VERSION = 1
 _SHA256 = re.compile(r"[0-9a-f]{64}")
+_FOREIGN_KEY_STABLE_ID = re.compile(
+    r"(?P<database>[a-z][a-z0-9_]*):foreign-key:sha256:[0-9a-f]{64}"
+)
 _RETRIEVAL_TOOLS = frozenset({"inspect_schema", "search_hkb", "search_semantic_model"})
 _FIELDS = frozenset(
     {"kind", "records", "runtime_binding_sha256", "schema_version", "trace_sha256"}
@@ -338,11 +341,22 @@ def _canonical_public_ids(
         not isinstance(value, str)
         or not value
         or len(value) > _MAX_PUBLIC_ID_CHARS
-        or not policy.identifier_is_safe(value)
+        or not _public_id_is_safe(value, policy)
         for value in values
     ):
         raise DirectActionEvidenceError("retrieved public identifier is invalid")
     return tuple(sorted(set(values)))
+
+
+def _public_id_is_safe(value: str, policy: ContentPolicy) -> bool:
+    if policy.identifier_is_safe(value):
+        return True
+    foreign_key = _FOREIGN_KEY_STABLE_ID.fullmatch(value)
+    return (
+        foreign_key is not None
+        and not policy.field_name_is_sensitive(foreign_key["database"])
+        and policy.query_is_safe(value)
+    )
 
 
 def _is_sha256(value: object) -> bool:

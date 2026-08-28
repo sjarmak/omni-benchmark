@@ -163,6 +163,62 @@ def test_schema_retrieval_evidence_is_valid_for_every_direct_condition() -> None
         assert payload["records"][0]["retrieved_public_ids"] == [public_id]
 
 
+def test_public_foreign_key_hash_is_a_valid_schema_identifier() -> None:
+    public_id = "public:foreign-key:sha256:" + "a" * 64
+
+    evidence = retrieval_evidence(
+        trace_seq=1,
+        tool_name="inspect_schema",
+        query="public relationship",
+        retrieved_ids=(public_id,),
+        policy=ContentPolicy.from_environment({}),
+    )
+
+    assert evidence.retrieved_public_ids == (public_id,)
+
+
+@pytest.mark.parametrize(
+    "public_id",
+    [
+        "live-secret-value",
+        "sk-ant-abcdefghijklmnop",
+        "api_key=plainsecret",
+        "token:plainsecret",
+        "x" * 257,
+    ],
+)
+def test_public_schema_identifier_still_rejects_credentials(public_id: str) -> None:
+    policy = ContentPolicy.from_environment({"OMNI_API_TOKEN": "live-secret-value"})
+
+    with pytest.raises(DirectActionEvidenceError, match="identifier"):
+        retrieval_evidence(
+            trace_seq=1,
+            tool_name="inspect_schema",
+            query="public relationship",
+            retrieved_ids=(public_id,),
+            policy=policy,
+        )
+
+
+@pytest.mark.parametrize(
+    "public_id",
+    [
+        "public:foreign-key:sha256:not-a-digest",
+        "api_key:foreign-key:sha256:" + "a" * 64,
+        "public:foreign-key:sha256:" + "A" * 64,
+    ],
+)
+def test_public_foreign_key_identifier_requires_canonical_form(public_id: str) -> None:
+    with pytest.raises(DirectActionEvidenceError, match="identifier"):
+        retrieval_evidence(
+            trace_seq=1,
+            tool_name="inspect_schema",
+            query="public relationship",
+            retrieved_ids=(public_id,),
+            policy=ContentPolicy.from_environment({}),
+        )
+
+
 def test_reference_ids_are_extracted_by_exact_capability() -> None:
     policy = ContentPolicy.from_environment({})
     result = DirectReferenceResult(

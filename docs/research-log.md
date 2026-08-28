@@ -3532,7 +3532,7 @@ exact-commit worktree and artifact root.
 
 ## 2026-08-28 — D-045: Bound direct-schema discovery before raising budget
 
-_Last updated: 2026-08-28 11:18 EDT_
+_Last updated: 2026-08-28 11:38 EDT_
 
 ### Decision / experiment
 
@@ -3583,11 +3583,29 @@ small result/payload bound shared across C1–C3.
 
 ### Result
 
-Pending RED/GREEN implementation and immutable live replay.
+Commit `2b72244` implements the reviewed shared retrieval surface: the model
+must provide a query; unweighted FTS5 ranks committed public table records; a
+result contains at most four tables and 64 KiB; and the query plus returned
+schema IDs are bound into action evidence. The 455-test direct/Claude suite
+passed with 85.8% scoped branch coverage. Stress checks over all 18 public
+schemas stayed within both payload and evidence-ID bounds.
+
+The first exact-commit replay reduced the attempt from 173,365 total tokens and
+$1.7398935 to 1,585 tokens and $0.017715. Latency fell from 26.0 to 3.0 seconds.
+It then failed `forbidden_tool_payload` before a database query. Offline replay
+of the exact public tool result isolated six legitimate foreign-key stable IDs
+whose `foreign-key:sha256:...` text triggered a generic `KEY:<value>` secret
+heuristic. The bounded result itself contained the four relevant tables and 75
+public schema IDs.
 
 ### Interpretation
 
-Pending.
+The main hypothesis is strongly supported for context size, latency, and cost;
+end-to-end success remains unproven. The new failure is not a retrieval miss:
+the required public tables survived the bound. It is a mismatch between a
+provider/model identifier policy and the syntax of trusted public schema IDs.
+That boundary should be corrected narrowly rather than weakening payload or
+query secret scanning.
 
 ### Outcome
 
@@ -3595,11 +3613,90 @@ FOLLOW UP
 
 ### Product implication
 
-If confirmed, semantic-agent comparators need bounded schema discovery as a
-first-class scaffold primitive. Tool availability alone is insufficient when a
-single valid call can consume the entire inference budget.
+Semantic-agent comparators need bounded schema discovery as a first-class
+scaffold primitive. Tool availability alone is insufficient when a single
+valid call can consume the entire inference budget. Provenance validation also
+needs types appropriate to public semantic IDs; reusing provider-identifier
+redaction can reject valid relationship identifiers and turn useful telemetry
+into a terminal system error.
 
 ### Next step
 
-Write failing action, retrieval, dispatch, and payload-bound tests before
-changing the production path.
+Under Bead `omni-benchmark-dih.5.4.2.5.6.1`, add a RED case for the exact
+foreign-key stable-ID form, preserve exact-secret and credential-shape
+rejection, then replay C1 from a fresh immutable commit before releasing C2/C3.
+
+## 2026-08-28 — D-045.1: Type the public foreign-key provenance exception
+
+_Last updated: 2026-08-28 11:48 EDT_
+
+### Decision / experiment
+
+Permit only the canonical public foreign-key stable-ID form that was rejected
+by action-evidence validation, without weakening the policy for other IDs.
+
+### Observation
+
+The exact `2b72244` replay's bounded public result was usable, but six IDs of
+the form `<database>:foreign-key:sha256:<64 lowercase hex>` triggered the
+generic `KEY:<value>` secret-assignment heuristic. The IDs are generated
+mechanically by the committed public schema compiler and are not model input.
+
+### Hypothesis
+
+A typed exception matching the compiler's exact foreign-key identity grammar
+will let the public schema result cross the evidence boundary while preserving
+the existing credential and length checks for every other identifier.
+
+### Decision
+
+Keep `identifier_is_safe` as the default. Admit the foreign-key form only when
+its database component is not a sensitive key name, its digest is canonical
+lowercase SHA-256, and it contains no exact or known-shape credential value.
+
+### Rationale
+
+The first candidate replaced `identifier_is_safe` with `query_is_safe` for all
+public IDs. Independent review demonstrated that this would also accept
+`api_key=plainsecret` and `token:plainsecret`; that candidate was rejected
+before commit. Changing the global redaction regex was also rejected because
+it would weaken unrelated provider and diagnostic surfaces.
+
+### Intervention
+
+Optimization surface: action-evidence provenance validation; change type:
+general system correction. Add a canonical foreign-key stable-ID recognizer at
+the public-ID capability boundary and positive/negative regression cases.
+Query and payload secret scanning remain unchanged.
+
+### Result
+
+The RED test reproduced the live failure. The typed implementation passes 463
+direct/Claude tests with 83.68% scoped branch coverage, including exact-secret,
+known credential-shape, generic credential-assignment, malformed digest,
+sensitive database-prefix, uppercase-digest, and 257-character rejection.
+Ruff, formatting, and diff checks pass. A clean-worktree independent Codex
+review ran the full 1,296-test suite (five explicit environment-gated skips)
+and approved the narrow change with no critical or high findings. Immutable
+live replay remains pending.
+
+### Interpretation
+
+The review failure was useful: the failure mechanism called for a typed
+provenance rule, not a more permissive generic content policy.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Semantic provenance IDs benefit from typed validation separate from generic
+provider identifiers. Otherwise syntactic collisions between relationship IDs
+and credential redaction can make correct, public semantic context unusable.
+
+### Next step
+
+Commit the reviewed two-file correction and this contemporaneous record, then
+rerun C1 from a new exact-commit worktree and never-reused artifact root. Release
+C2/C3 only if C1 reaches SQL or produces a new evidenced failure.
