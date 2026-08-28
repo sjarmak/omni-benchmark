@@ -1,0 +1,22 @@
+{
+  "attempt_count": 924,
+  "conditions": [
+    "C1",
+    "C2",
+    "C3",
+    "C4"
+  ],
+  "cost_ceiling_usd": "2000.000000",
+  "database_count": 18,
+  "eligible_manifest_sha256": "ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e",
+  "live_execution": "disabled_pending_d045_replay",
+  "method": "uniform_observed_attempt_scenario",
+  "observed_attempt_cost_usd": "1.739894",
+  "projected_cost_usd": "1607.661594",
+  "projected_over_ceiling": false,
+  "projection_basis": "one_observed_failed_C1_attempt_applied_uniformly_for_capacity_planning",
+  "run_id": "public-baseline-v1",
+  "schedule_sha256": "e6e450ed53adf4d5c3e00ac63ff8f84328ce00a924e734702ec06a3deb75946f",
+  "source_commit": "50ebc31075f742fba4e7d4bbc6fc4da0b15d53ce",
+  "train_ids_sha256": "ecdd1e4cd425e41970d3d4e96d7c3cb044cb78d94e34621d320e3d542a5d1c46"
+}
