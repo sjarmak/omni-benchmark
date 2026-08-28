@@ -4122,3 +4122,79 @@ bulk rollouts.
 Commit and independently review the adapter and secret-free correction receipt,
 then rerun the 18-database deployment under a new immutable run ID and require
 zero validator issues plus exact semantic readback before closing D-047.
+
+## 2026-08-28 — D-050: Live validation separates field binding from rate limiting
+
+### Decision / experiment
+
+Rerun the full public-only deployment from the reviewed D-049 commit and retain
+all terminal statuses before diagnosing failures. Beads `omni-benchmark-dih.17`
+and `.17.3`; change type: general system integration.
+
+### Observation
+
+D-049 cleared exact connection selection and local bundle preflight, but only a
+live branch upload could establish whether the compiled documents extended the
+product-generated schema fields correctly.
+
+### Hypothesis
+
+The repaired logical/physical view mapping would allow all 18 branches to
+validate and read back exactly.
+
+### Decision
+
+Run one new append-only four-worker fan-out from commit `81e3807`; preserve the
+entire run even if a common product/compiler failure appears. Do not rewrite or
+reuse the failed D-047 records.
+
+### Rationale
+
+The complete immutable run distinguishes local preflight, product API, upload,
+validation, and readback stages without using benchmark questions or labels.
+
+### Intervention
+
+Created only isolated `livesqlbench-*` shared models/branches and uploaded the
+committed public bundles through the reviewed adapter.
+
+### Result
+
+REVERT is not applicable because the run is evidence; the hypothesis was false.
+Archeology again verified exactly. Seventeen records failed. Six branches
+uploaded fully and reached validation with 4, 6, 15, 26, 5, and 11 issues.
+Later attempts failed at the product API while Omni returned HTTP 429, including
+for immediate read-only validator requests. The run contains 19 immutable files;
+aggregate SHA-256 is
+`d2ad129051422e786773125b679e980ecc90c1795c595a89f2fe254fbd813433`.
+
+After the rate window cleared, validator payloads exposed two mechanical field
+binding problems. Omni schema refresh normalized a physical field such as
+`procComp` to `proc_comp`, while the compiler emitted/referenced `procComp`.
+Separately, semantic aliases such as `route_complexity`, bound to public source
+column `RouteComplex`, lacked explicit `${route_complex}` SQL, so Omni treated
+the alias as a nonexistent physical column.
+
+### Interpretation
+
+View identity is fixed, but field identity has the same physical/logical
+separation. The validator failures are compiler defects, while the later
+product API failures are rate-limit effects. Treating both as one deployment
+failure would have led to the wrong intervention.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Model tooling needs stable normalized schema field identifiers and explicit
+source bindings for aliases. Bulk model deployment also needs documented rate
+limits or structured retry guidance; HTTP 429 otherwise obscures which models
+have semantic defects versus transient infrastructure failures.
+
+### Next step
+
+Under Bead `omni-benchmark-dih.17.3`, mechanically normalize bound public field
+identifiers, emit explicit alias SQL, regenerate deterministically, then retry
+serially under a new append-only run ID.
