@@ -1,0 +1,346 @@
+"""Live, isolated deployment of authenticated public Omni semantic bundles."""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+from collections.abc import Mapping
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Protocol
+
+from .omni_semantic_deployment import (
+    OmniSemanticDeploymentError,
+    OmniSemanticDeploymentPlan,
+    build_semantic_deployment_plan,
+    verify_semantic_deployment_readback,
+)
+
+_SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,119}")
+_AUTO_EXTENSION_FILES = frozenset({"model", "relationships"})
+_ARCHAEOLOGY_DATABASE = "archeology_scan_large"
+
+
+class SemanticDeploymentClient(Protocol):
+    """The narrow product boundary required by one public deployment."""
+
+    def ensure_shared_model(
+        self, connection_id: str, name: str
+    ) -> tuple[str, bool]: ...
+
+    def ensure_branch(self, model_id: str, name: str) -> tuple[str, bool]: ...
+
+    def upload_yaml(
+        self, model_id: str, branch_id: str, path: str, content: str
+    ) -> None: ...
+
+    def validate(self, model_id: str, branch_id: str) -> object: ...
+
+    def readback(self, model_id: str, branch_id: str) -> Mapping[str, str]: ...
+
+
+@dataclass(frozen=True)
+class DeploymentRecord:
+    """Secret-free terminal status for one database deployment attempt."""
+
+    database: str
+    run_id: str
+    observed_at: str
+    source_commit: str
+    connection_id: str | None
+    model_id: str | None
+    branch_id: str | None
+    model_name: str
+    branch_name: str
+    manifest_sha256: str
+    file_sha256: Mapping[str, str]
+    file_count: int
+    uploaded_file_count: int
+    validation_issue_count: int | None
+    readback_file_count: int
+    readback_verified: bool
+    status: str
+    failure_stage: str | None
+    failure_detail: str | None
+
+    def to_json(self) -> str:
+        """Render the canonical append-only record."""
+        return (
+            json.dumps(
+                {
+                    "kind": "public-omni-semantic-deployment",
+                    "schema_version": 1,
+                    **asdict(self),
+                },
+                separators=(",", ":"),
+                sort_keys=True,
+            )
+            + "\n"
+        )
+
+
+class _StageFailure(RuntimeError):
+    def __init__(self, stage: str, detail: str) -> None:
+        super().__init__(detail)
+        self.stage = stage
+
+
+def isolated_model_name(database: str) -> str:
+    """Return the stable isolated shared-model name for a public baseline."""
+    _require_safe_id(database, "database")
+    if database == _ARCHAEOLOGY_DATABASE:
+        return "livesqlbench-archeology-public-baseline-20260828"
+    return f"livesqlbench-{database}-public-baseline-20260828"
+
+
+def isolated_branch_name(database: str) -> str:
+    """Return the stable isolated branch name for a public baseline."""
+    _require_safe_id(database, "database")
+    if database == _ARCHAEOLOGY_DATABASE:
+        return "livesqlbench-archeology-public-baseline-v1"
+    return f"livesqlbench-{database}-public-baseline-v1"
+
+
+def deploy_public_bundle(
+    *,
+    bundle_root: Path,
+    connection_id: str,
+    client: SemanticDeploymentClient,
+    run_id: str,
+    source_commit: str,
+    observed_at: str,
+) -> DeploymentRecord:
+    """Authenticate and deploy one public bundle."""
+    plan = build_semantic_deployment_plan(bundle_root)
+    return deploy_public_plan(
+        plan=plan,
+        connection_id=connection_id,
+        client=client,
+        run_id=run_id,
+        source_commit=source_commit,
+        observed_at=observed_at,
+    )
+
+
+def deploy_public_plan(
+    *,
+    plan: OmniSemanticDeploymentPlan,
+    connection_id: str,
+    client: SemanticDeploymentClient,
+    run_id: str,
+    source_commit: str,
+    observed_at: str,
+) -> DeploymentRecord:
+    """Deploy an authenticated immutable plan and retain terminal product failures."""
+    model_name = isolated_model_name(plan.database)
+    branch_name = isolated_branch_name(plan.database)
+    file_sha256 = {item.remote_path: item.sha256 for item in plan.files}
+    model_id: str | None = None
+    branch_id: str | None = None
+    uploaded = 0
+    validation_count: int | None = None
+    readback_count = 0
+    try:
+        model_id, model_created = client.ensure_shared_model(connection_id, model_name)
+        branch_id, branch_created = client.ensure_branch(model_id, branch_name)
+        if not model_created and not branch_created:
+            validation_count = _validation_issue_count(
+                client.validate(model_id, branch_id)
+            )
+            if validation_count:
+                raise _StageFailure(
+                    "validation", f"validator returned {validation_count} issue(s)"
+                )
+            try:
+                readback_count = _verify_readback(
+                    plan, client.readback(model_id, branch_id)
+                )
+                return _record(
+                    plan=plan,
+                    connection_id=connection_id,
+                    model_id=model_id,
+                    branch_id=branch_id,
+                    model_name=model_name,
+                    branch_name=branch_name,
+                    run_id=run_id,
+                    source_commit=source_commit,
+                    observed_at=observed_at,
+                    file_sha256=file_sha256,
+                    uploaded=0,
+                    validation_count=validation_count,
+                    readback_count=readback_count,
+                )
+            except (OmniSemanticDeploymentError, _StageFailure):
+                pass
+        for item in plan.files:
+            try:
+                content = item.content.decode("utf-8")
+            except UnicodeError as error:
+                raise _StageFailure("upload", "bundle file is not UTF-8") from error
+            client.upload_yaml(model_id, branch_id, item.remote_path, content)
+            uploaded += 1
+        validation_count = _validation_issue_count(client.validate(model_id, branch_id))
+        if validation_count:
+            raise _StageFailure(
+                "validation", f"validator returned {validation_count} issue(s)"
+            )
+        readback_count = _verify_readback(plan, client.readback(model_id, branch_id))
+        return _record(
+            plan=plan,
+            connection_id=connection_id,
+            model_id=model_id,
+            branch_id=branch_id,
+            model_name=model_name,
+            branch_name=branch_name,
+            run_id=run_id,
+            source_commit=source_commit,
+            observed_at=observed_at,
+            file_sha256=file_sha256,
+            uploaded=uploaded,
+            validation_count=validation_count,
+            readback_count=readback_count,
+        )
+    except _StageFailure as error:
+        stage, detail = error.stage, str(error)
+    except OmniSemanticDeploymentError as error:
+        stage, detail = "readback", str(error)
+    except Exception as error:  # Boundary errors must become durable per-DB statuses.
+        stage, detail = "product_api", type(error).__name__
+    return _record(
+        plan=plan,
+        connection_id=connection_id,
+        model_id=model_id,
+        branch_id=branch_id,
+        model_name=model_name,
+        branch_name=branch_name,
+        run_id=run_id,
+        source_commit=source_commit,
+        observed_at=observed_at,
+        file_sha256=file_sha256,
+        uploaded=uploaded,
+        validation_count=validation_count,
+        readback_count=readback_count,
+        status="failed",
+        failure_stage=stage,
+        failure_detail=detail,
+    )
+
+
+def bundle_preflight_failure_record(
+    *,
+    database: str,
+    run_id: str,
+    source_commit: str,
+    observed_at: str,
+    detail: str,
+) -> DeploymentRecord:
+    """Represent an invalid committed bundle as an explicit per-database blocker."""
+    return DeploymentRecord(
+        database=database,
+        run_id=run_id,
+        observed_at=observed_at,
+        source_commit=source_commit,
+        connection_id=None,
+        model_id=None,
+        branch_id=None,
+        model_name=isolated_model_name(database),
+        branch_name=isolated_branch_name(database),
+        manifest_sha256="",
+        file_sha256={},
+        file_count=0,
+        uploaded_file_count=0,
+        validation_issue_count=None,
+        readback_file_count=0,
+        readback_verified=False,
+        status="failed",
+        failure_stage="bundle_preflight",
+        failure_detail=detail,
+    )
+
+
+def write_deployment_record(root: Path, record: DeploymentRecord) -> Path:
+    """Create one mode-0600 status record without replacing prior evidence."""
+    path = deployment_record_path(root, record.run_id, record.database)
+    root.mkdir(parents=True, exist_ok=True)
+    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        os.write(descriptor, record.to_json().encode("utf-8"))
+    finally:
+        os.close(descriptor)
+    return path
+
+
+def deployment_record_path(root: Path, run_id: str, database: str) -> Path:
+    """Validate one append-only status identity before any product mutation."""
+    _require_safe_id(run_id, "run_id")
+    _require_safe_id(database, "database")
+    return root / f"{run_id}.{database}.json"
+
+
+def _verify_readback(
+    plan: OmniSemanticDeploymentPlan, readback: Mapping[str, str]
+) -> int:
+    if not isinstance(readback, Mapping):
+        raise _StageFailure("readback", "readback files must be a mapping")
+    expected = {item.remote_path for item in plan.files}
+    actual = set(readback)
+    unexpected = actual - expected - _AUTO_EXTENSION_FILES
+    if unexpected:
+        raise _StageFailure("readback", "isolated branch contains unexpected files")
+    selected = {path: readback[path] for path in expected if path in readback}
+    verify_semantic_deployment_readback(plan, selected)
+    return len(selected)
+
+
+def _validation_issue_count(value: object) -> int:
+    if not isinstance(value, list):
+        raise _StageFailure("validation", "validator response must be an array")
+    return len(value)
+
+
+def _record(
+    *,
+    plan: OmniSemanticDeploymentPlan,
+    connection_id: str,
+    model_id: str | None,
+    branch_id: str | None,
+    model_name: str,
+    branch_name: str,
+    run_id: str,
+    source_commit: str,
+    observed_at: str,
+    file_sha256: Mapping[str, str],
+    uploaded: int,
+    validation_count: int | None,
+    readback_count: int,
+    status: str = "verified",
+    failure_stage: str | None = None,
+    failure_detail: str | None = None,
+) -> DeploymentRecord:
+    return DeploymentRecord(
+        database=plan.database,
+        run_id=run_id,
+        observed_at=observed_at,
+        source_commit=source_commit,
+        connection_id=connection_id,
+        model_id=model_id,
+        branch_id=branch_id,
+        model_name=model_name,
+        branch_name=branch_name,
+        manifest_sha256=plan.manifest_sha256,
+        file_sha256=dict(file_sha256),
+        file_count=len(plan.files),
+        uploaded_file_count=uploaded,
+        validation_issue_count=validation_count,
+        readback_file_count=readback_count,
+        readback_verified=status == "verified",
+        status=status,
+        failure_stage=failure_stage,
+        failure_detail=failure_detail,
+    )
+
+
+def _require_safe_id(value: str, name: str) -> None:
+    if not isinstance(value, str) or _SAFE_ID.fullmatch(value) is None:
+        raise ValueError(f"{name} must be a bounded identifier")
