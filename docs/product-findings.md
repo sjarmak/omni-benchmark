@@ -678,6 +678,43 @@ execution mechanics rather than accuracy.
   correctness result was produced.
 - **Evaluator agreement/disagreement:** Not applicable.
 
+## PF-008: Analytical refusals are stochastic and need first-class observability
+
+- **Observed behavior:** The same public C1 question refused in two canaries and
+  answered in a third; nearby questions split between answers and refusals.
+- **Minimal non-private reproduction:** Run `fake_account_1` repeatedly through
+  the frozen C1 harness, then compare with `fake_account_2`, `_3`, and `_5`.
+- **Expected behavior:** Benign read-only analytical questions either answer or
+  expose a stable, actionable reason for declining.
+- **Actual behavior:** `fake_account_1` refused twice and then answered.
+  `fake_account_2` answered, while `_3` and `_5` refused. Auth4 separately
+  refused `cross_border_1:C3`.
+- **Why it matters to customers:** A stochastic refusal is operationally
+  different from wrong SQL, but repeated users cannot predict or diagnose it.
+- **Systematic evidence / frequency:** Four sampled fake-account C1 questions
+  produced one answer and three refusals in the diagnostic/canary evidence;
+  the clean auth4 proof produced one refusal across 12 attempts.
+- **Benchmark impact:** Refusals remain a distinct terminal outcome, are never
+  selectively rerun, and will be reported by condition/database alongside
+  all-attempt and answered-only accuracy.
+- **Severity:** Medium reliability and evaluation-interpretability impact.
+- **Proposed product change:** Surface structured refusal reason/origin and
+  expose refusal-rate monitoring in AI Hub/evaluation traces.
+- **Was the change tested?:** No product change; the outcome policy and
+  immutable diagnostic were tested.
+- **Measured effect:** The behavior was shown to be stochastic rather than a
+  database-wide block.
+- **Experiment / commit provenance:** D-051; diagnostic digest
+  `030c0b3898df2620cd1bb87ecce2238350604ff9ef928eb1d432560464c98174`;
+  auth4 system commit `62cb76f9`.
+- **Visible in AI Hub?:** Pending C4 comparison.
+- **AI Hub exposes relevant context/behavior?:** Pending.
+- **Fixable through current AI Hub/modeling workflow?:** Unknown.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** No correctness scoring; capture classified
+  answered/refused/errored independently of gold.
+- **Evaluator agreement/disagreement:** Not applicable yet.
+
 ## Entry template
 
 ### PF-XXX: Short finding title

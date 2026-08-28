@@ -4198,3 +4198,67 @@ have semantic defects versus transient infrastructure failures.
 Under Bead `omni-benchmark-dih.17.3`, mechanically normalize bound public field
 identifiers, emit explicit alias SQL, regenerate deterministically, then retry
 serially under a new append-only run ID.
+
+## 2026-08-28 — D-051: Refusals are stochastic outcomes, not infrastructure retries
+
+### Decision / experiment
+
+Establish whether the repeated `fake_account_1` C1 refusal was database-wide,
+then lock refusal accounting before the 231-question fan-out. Bead
+`omni-benchmark-dih.5.4.2.4.4.2.2.1`; change type: evaluation policy evidence,
+not a system intervention.
+
+### Observation
+
+`fake_account_1:C1` refused in two immutable canaries. A database-wide safety
+block would invalidate a large comparator slice, while a question-sensitive
+refusal is an evaluated-system reliability outcome.
+
+### Hypothesis
+
+If the behavior were database-wide, additional public `fake_account_large` C1
+questions would also refuse consistently.
+
+### Decision and rationale
+
+Run three predeclared dev-A questions (`fake_account_2`, `_3`, and `_5`) once
+through C1, without labels or correctness scoring. Refusals are thereafter
+terminal `refused` outcomes: never selectively rerun, never relabeled as wrong
+answers, and reported separately by condition and database. Report both
+all-attempt execution success and answered-only accuracy.
+
+### Intervention
+
+No system change. The three attempts used the frozen direct harness at commit
+`e1163753`, one proven OAuth profile each, and the exact public read-only mirror.
+
+### Result
+
+`fake_account_2` answered; `_3` and `_5` refused. The later auth4 proof also
+answered `fake_account_1:C1`, after that same attempt had refused twice. The
+auth4 four-database C1-C3 proof completed 12 attempts in 341.940 seconds
+(2.106 attempts/minute): 11 answered, one refused (`cross_border_1:C3`), zero
+errors, $16.799005, and 2,420,049 tokens. The three-question diagnostic digest
+is `030c0b3898df2620cd1bb87ecce2238350604ff9ef928eb1d432560464c98174`.
+
+### Interpretation
+
+The hypothesis was wrong: refusal is neither universal to the database nor
+deterministic for one question. It is a stochastic, content-sensitive system
+behavior. The baseline must preserve it as a reliability/safety co-outcome.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+Direct analytical agents can intermittently refuse benign business-analysis
+questions. Reliability analysis must distinguish safe no-answer behavior from
+confidently wrong SQL and expose the reason a refusal occurred.
+
+### Next step
+
+Run the complete C1-C3 public baseline under the locked taxonomy and report
+refusal counts/rates by condition and database before interpreting comparator
+accuracy.

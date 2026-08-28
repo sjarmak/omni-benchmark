@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T12:26:16-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T13:25:00-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -17,6 +17,13 @@ empty queue at the timestamp above.
 No approved human-gated action is currently in progress.
 
 ## Recently completed
+
+- Before the full direct baseline fan-out, refusal handling was locked on
+  2026-08-28: preserve `refused` separately from wrong answers and errors;
+  never selectively rerun it; report per-condition/per-database refusal rates,
+  all-attempt execution success, and answered-only accuracy. Three sealed
+  repetitions remain planned. The 14:00 EDT C4 coverage decision and $2,000
+  total cost ceiling are also recorded in Beads.
 
 - `omni-benchmark-dih.17.1` was authorized and completed on 2026-08-28. Safe
   readback proved the 17 non-canary connections selected `neondb` while the
