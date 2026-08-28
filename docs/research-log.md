@@ -4511,3 +4511,91 @@ bounded context selection.
 Freeze and score the public-only baseline, then execute E01--E04 in order unless
 the stopping rule fires. Preserve every full-dev-A result and keep/revert
 decision in the structured ledger.
+
+## 2026-08-28 — D-056: Quarantine mutable OAuth state and preserve the interrupted baseline
+
+### Decision / experiment
+
+Classify the direct-baseline interruption and construct a deterministic
+continuation without treating credential failures as evaluated-system outcomes.
+Beads `omni-benchmark-ddy` and `omni-benchmark-6tm`; change type: benchmark
+infrastructure recovery.
+
+### Observation
+
+At 14:20 EDT, credential-copy/rotation canaries rewrote the same Claude OAuth
+profiles held by the running direct baseline. The next 95 artifacts, spanning
+`2026-08-28T18:20:46Z` through `18:26:20Z`, all terminated as
+`model_setup_error`. The apparent throughput increase was fast failure, not
+faster inference. Active background sessions and independently writable copies
+of refresh state made later one-shot validation results unstable.
+
+### Hypothesis
+
+OAuth refresh state behaves as a mutable lease. Refreshing, copying, or
+validating one copy while another process holds the same identity can revoke or
+supersede the other copy. A benchmark process therefore cannot safely repair
+its own credentials, and a local expiry timestamp or one successful invocation
+does not prove run-duration stability.
+
+### Decision
+
+Stop the direct lane. Preserve the 112 attempts completed before the incident;
+authorize reruns only for the exact 95-attempt infrastructure window; never
+rotate, refresh, copy back, or validation-test a credential while a benchmark or
+background session may hold that identity. Future recovery requires a
+human-owned canonical login followed by an exclusive, run-duration credential
+lease. Authentication failure pauses the lane instead of triggering automated
+repair.
+
+### Rationale
+
+Rerunning wrong answers, refusals, or normal evaluated-system failures would
+violate the protocol. These 95 attempts are different: an external credential
+mutation invalidated every trial in a bounded, contemporaneously recorded
+window. Exact binding prevents the exception from becoming a general rerun
+mechanism.
+
+### Intervention
+
+Commit `0541c5c` adds a deterministic continuation manifest and launcher. It is
+hard-bound to the frozen direct-system commit, original run and schedule,
+incident class/window/count, source artifacts, and expected manifest hash. Each
+rerun receives fresh run and attempt provenance linked to its invalid
+predecessor. The credential policy is recorded in `AGENTS.md`, `CLAUDE.md`, the
+human decision queue, and Beads at commit `782a9d7`.
+
+### Result
+
+The continuation reconciles the original 630-trial schedule exactly once: 112
+valid attempts preserved (89 answered and 23 insufficient-context outcomes),
+95 authorized infrastructure reruns, and 423 never-attempted trials, producing
+518 fresh attempts. Manifest SHA-256:
+`751a2a7081958d3d35d051ca47d9f62481d3df082048c7644b125bc093179717`.
+The implementation passed 1,416 tests with five environment skips, 84.46%
+branch coverage, Ruff, and independent review. It has not been launched because
+exclusive OAuth ownership is not yet proven.
+
+### Interpretation
+
+Credential rotation was the failure mechanism, not a remedy. Benchmark
+reproducibility requires ownership and lifecycle isolation for OAuth state just
+as it requires database and artifact isolation. Throughput diagnostics must
+separate completed inference from fast setup failure.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+This is primarily a comparator-harness finding rather than evidence about Omni.
+Long-running agent evaluations need a credential broker or exclusive identity
+lease that exposes expiry and refresh ownership without cloning mutable OAuth
+state.
+
+### Next step
+
+Keep the direct lane paused until three comparator identities demonstrate
+stable repeated benchmark-transport invocations under exclusive ownership;
+then execute the committed 518-attempt continuation exactly once.

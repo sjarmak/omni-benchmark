@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T14:47:35-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T14:51:42-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -22,6 +22,17 @@ hidden annotation, or sealed-test result has been accessed.
   pre-rotation attempts are preserved; 95 attempts from
   `2026-08-28T18:20:46Z` through `18:26:20Z` are recorded as authorized
   benchmark-infrastructure reruns and will not enter outcome metrics.
+
+  **Requested operator action:** dedicate accounts 1, 3, and 4 exclusively to
+  the benchmark until the direct continuation finishes. In each account's own
+  canonical `claude-N` environment, make sure no Claude session is still
+  running, perform one interactive `/login`, then exit without starting or
+  resuming other work. Do not run `ds-cred`, copy credential files, start Remote
+  Control, or open another Claude session under those identities afterward.
+  Notify the benchmark operator only when all three logins are complete.
+  Account 5 is intentionally excluded from this recovery because it currently
+  owns a live background Omni benchmark session; stopping that session is not
+  required if account 5 remains outside the comparator pool.
 
 ## Approved actions in progress
 
