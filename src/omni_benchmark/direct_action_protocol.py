@@ -14,6 +14,10 @@ DIRECT_TOOL_NAMES = {
     "C3": ("inspect_schema", "search_semantic_model", "execute_sql"),
 }
 _REFUSAL_REASONS = frozenset({"cannot_answer_safely", "insufficient_information"})
+_REFUSAL_FAILURE_CLASSES = {
+    "cannot_answer_safely": "refused_content",
+    "insufficient_information": "no_answer_insufficient_context",
+}
 
 
 class DirectActionProtocolError(ValueError):
@@ -34,6 +38,11 @@ class DirectAnswerAction:
 @dataclass(frozen=True)
 class DirectRefusalAction:
     reason: str
+
+    @property
+    def failure_class(self) -> str:
+        """Return the telemetry class bound to the model's structured reason."""
+        return _REFUSAL_FAILURE_CLASSES[self.reason]
 
 
 def direct_tool_specs(condition: DirectCondition) -> tuple[Mapping[str, Any], ...]:

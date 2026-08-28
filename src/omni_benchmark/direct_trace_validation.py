@@ -52,6 +52,13 @@ _MODEL_FAILURES = frozenset(
 _PRE_QUERY_FAILURES = frozenset(
     {"database_identity_mismatch", "database_infrastructure_error"}
 )
+_REFUSAL_FAILURES = frozenset(
+    {
+        "agent_refusal",
+        "no_answer_insufficient_context",
+        "refused_content",
+    }
+)
 
 
 def validate_direct_trace(
@@ -220,7 +227,7 @@ def _validate_non_sql_event(event: Mapping[str, Any]) -> None:
     if event_type == "direct_capture_failure":
         if status != "ERROR" or failure not in _CAPTURE_FAILURES:
             raise ValueError("trace capture failure class is invalid")
-    elif status != "DENIED" or failure != "agent_refusal":
+    elif status != "DENIED" or failure not in _REFUSAL_FAILURES:
         raise ValueError("trace terminal event status is inconsistent")
     _validate_non_model_usage(event)
 

@@ -87,8 +87,22 @@ def test_conditions_expose_only_preregistered_capabilities(
 
     assert set(model.observed_tools[0]) == expected
     assert result.generation_outcome == "refused"
-    assert result.failure_class == "agent_refusal"
+    assert result.failure_class == "refused_content"
     assert result.failure_origin == "evaluated_system"
+
+
+def test_structured_insufficient_information_reason_is_preserved(
+    tmp_path: Path,
+) -> None:
+    result, _, _ = _run(
+        tmp_path,
+        [{"type": "refuse", "reason": "insufficient_information"}],
+    )
+
+    assert result.generation_outcome == "refused"
+    assert result.failure_class == "no_answer_insufficient_context"
+    trace = [json.loads(line) for line in result.trace.path.read_text().splitlines()]
+    assert trace[-1]["failure_class"] == "no_answer_insufficient_context"
 
 
 def test_harness_owned_loop_captures_full_telemetry_and_typed_result(

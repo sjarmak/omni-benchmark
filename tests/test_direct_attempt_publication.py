@@ -138,6 +138,37 @@ def test_answered_attempt_writes_binding_and_hash_bound_manifest(
     )
 
 
+@pytest.mark.parametrize(
+    ("reason", "expected_failure"),
+    [
+        ("cannot_answer_safely", "refused_content"),
+        ("insufficient_information", "no_answer_insufficient_context"),
+    ],
+)
+def test_refusal_reason_survives_into_generation_telemetry(
+    tmp_path: Path, reason: str, expected_failure: str
+) -> None:
+    workspace, artifact_store, binding, probe = capture_probe(
+        tmp_path,
+        actions=[{"type": "refuse", "reason": reason}],
+        instance_id=f"public-{reason}",
+        run_id="run-refusal-split",
+        system_commit=COMMIT,
+    )
+
+    artifacts = write_direct_attempt(
+        workspace=workspace,
+        store=artifact_store,
+        spec=attempt_spec(binding),
+        probe=probe,
+    )
+
+    generation = json.loads(artifacts.generation.path.read_text())
+    assert generation["generation_outcome"] == "refused"
+    assert generation["terminal_failure_class"] == expected_failure
+    assert generation["harness_failure"] == expected_failure
+
+
 class PreQueryInfrastructureFailure(SyntheticDatabase):
     def connect(self) -> object:
         self.events.append(("connect",))
