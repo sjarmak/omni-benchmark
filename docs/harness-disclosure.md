@@ -32,7 +32,7 @@ implementations actually isolate governed enforcement with model parity.
 | Compiler/query path | Agent emits SQL | Agent emits SQL | Agent emits SQL | Semantic query/objects compiled through Omni; generated SQL captured only if exposed |
 | Validation | Database execution/error handling only | Same | Same | Production validation behavior included |
 | Token/time ceilings | Pending; matched across C1-C3 | Same | Same | Production defaults where immutable; disclose any mismatch |
-| Current implementation state | Not yet connected | Not yet connected | Not yet connected | Complete unscored attempt producer and strict production-response adapter pass synthetic contract tests; Omni CLI 1.1.2 executable bytes are SHA-256 pinned; authenticated live smoke pending |
+| Current implementation state | Provider-neutral capture/publisher core passes synthetic and adversarial contract tests; public context, provider, and live database adapters pending | Same core; searchable public HKB adapter pending | Same core; searchable exported-model adapter pending | Complete unscored attempt producer and strict production-response adapter pass synthetic contract tests; Omni CLI 1.1.2 executable bytes are SHA-256 pinned; authenticated live smoke pending |
 
 Exact prompts, tool manifests, model identifiers, configuration hashes, retry
 ceilings, and version fingerprints are Freeze B artifacts. C1-C3 must be made
@@ -94,6 +94,19 @@ untruncated `trace-event-v2` traces reconcile token, tool-call, database-query,
 retry, and validation totals to the attempt envelope; truncated traces carry an
 explicit degraded reason. A count remains null if the provider does not expose
 enough event data to reconcile it.
+
+The C1-C3 capture core owns tool dispatch rather than trusting provider-reported
+tool totals. Each capture writes an immutable receipt binding the attempt ID,
+question digest, condition, provider/model, maximum turns, generated-SQL digest,
+trace, result, and artifact-root identity. Publication revalidates those bindings,
+the condition-specific capability surface, Query-only SQL admission, lifecycle,
+failure-specific database-query deltas, strict finite and non-negative telemetry,
+and the prospective run manifest before writing either `generation.jsonl` or
+`run.json`. An attested direct database transport must prove read-only role state
+and lack of non-system function-execution privileges before the first model turn.
+The live public-context, model-provider, and PostgreSQL adapters remain pending;
+this core therefore supports synthetic contract evaluation but not a baseline
+accuracy run yet.
 
 The production-agent contract probe uses the installed Omni CLI with argument
 arrays and JSON stdin. The committed C4 specification pins both the exact CLI
@@ -184,9 +197,11 @@ Before any 231-question baseline or expensive experiment:
 
 Current gate result: **not yet passed**. The C4 transport, strict result adapter,
 complete attempt envelope, run manifest, and secure capture boundary pass
-synthetic/adversarial tests. No live authenticated C4 response has been inspected
-and C1-C3 are not connected. Scaled runs remain blocked until four separately
-manifested smoke bundles validate together.
+synthetic/adversarial tests. The shared C1-C3 capture/publisher core also passes
+synthetic and adversarial tests, but its public-context, provider, and live
+database adapters are not connected. No live authenticated C4 response has been
+inspected. Scaled runs remain blocked until four separately manifested smoke
+bundles validate together.
 
 ## AI Hub diagnostic boundary
 

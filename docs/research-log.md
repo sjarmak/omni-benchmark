@@ -2101,3 +2101,189 @@ single incorrect/error bucket would hide materially different operator actions.
 Bind the evaluator and scorer versions into Freeze B. Until then, keep the gold
 attachment outside the workspace and continue the public-only C4 baseline once
 the Omni connection refresh succeeds.
+
+## 2026-08-28 — D-029: Build one traceable direct-SQL spine for C1–C3
+
+### Decision / experiment
+
+Implement the missing C1–C3 attempt producer as a shared provider-neutral,
+harness-owned tool loop before selecting a live model adapter.
+
+### Observation
+
+The frozen validation, telemetry, manifest, custody, and sealed-scoring layers
+already accept all four conditions, but only C4 can produce a real attempt. A
+focused audit found that C1–C3 exist only as protocol concepts and synthetic
+records. The local reference harnesses show that authoritative stream usage,
+partial-output recovery, immutable publication, and trace-derived tool counts
+are reusable patterns; none supplies the full SQL/query/retry/validation
+contract needed here.
+
+### Hypothesis
+
+If one small harness owns condition-specific tool dispatch, Query-only SQL
+admission, read-only execution, and trace accounting, C1–C3 can become competent
+comparators without duplicating the scorer or trusting provider-reported tool
+totals. Keeping the provider boundary replaceable should let us choose a pinned
+Claude or Codex OAuth transport from live evidence rather than baking one CLI
+into the experiment core.
+
+### Decision
+
+Add a shared direct-SQL capture and attempt layer for C1–C3. C1 may access only
+schema and database tools; C2 adds the public database-level HKB; C3 instead adds
+the exported Omni semantic model as optional reference. The harness will reject
+unauthorized tools structurally, derive operational counts from actual dispatch,
+and preserve null rather than inventing zero when provider telemetry is absent.
+Do not refactor the working C4 path, alter the protocol, or build a generalized
+optimizer framework.
+
+### Rationale
+
+This is the smallest change that unlocks the four-condition smoke gate and
+later baseline runs. It also protects the intended ablation: C1–C3 share one
+execution scaffold while differing only in the preregistered semantic resources.
+Alternatives considered were opaque adapters that self-report aggregate traces,
+which weaken auditability, and adopting a full agent SDK, which adds cost and
+surface area before it solves a demonstrated problem.
+
+### Intervention
+
+Bead `omni-benchmark-dih.5.4.2`; optimization surface: structural harness;
+candidate-generation method: trace-contract and reference-implementation audit;
+change type: general system improvement. The first slice is test-first and owns
+only SQL admission, direct capture, direct attempt serialization, and focused
+synthetic tests. Live provider and public context adapters follow as separate
+changes.
+
+### Result
+
+The provider-neutral core now emits a condition-bound trace, capture receipt,
+typed result sidecar, normalized attempt, and run manifest. The harness exposes
+only the preregistered tools for each condition, shares Query-only SQL admission
+with the scorer, requires an independently attested read-only database transport,
+and binds every published artifact to the exact attempt, question, condition,
+provider/model, turn ceiling, SQL, and artifact root.
+
+The implementation did not pass review on the first attempt. Independent reviews
+found valid cross-attempt artifact substitution, premature turn-limit claims,
+non-finite and negative telemetry, fabricated failure classifications and usage,
+and a late manifest-validation path that could strand an immutable partial run.
+Each finding received an adversarial regression and a minimal fix. The final full
+suite passes 823 tests with three opt-in integration skips and 84.97% branch
+coverage; the final affected suite passes 150 tests. Ruff, formatting, diff,
+package-build, independent code review, independent security review, and a scoped
+secret scan pass. No private package, benchmark labels, question outcomes, or
+hidden annotations were accessed. The user confirmed that the gold attachment
+remains unopened and undownloaded outside the workspace.
+
+### Interpretation
+
+A traceable comparator requires more than recording what the harness says it
+did. Publication must independently reconcile lifecycle, capability, counts,
+telemetry, and artifact identity against the configured attempt. The adversarial
+review trajectory materially strengthened the audit claim without changing the
+experimental conditions or adding benchmark-specific behavior.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+Not yet an Omni product finding. This comparator instrumentation is necessary to
+distinguish gains from business knowledge, semantic representation, and governed
+production behavior without treating unobservable scaffold differences as
+negligible.
+
+### Next step
+
+Commit the reviewed core, then add committed public context providers and a
+restricted Claude transport. Run one unscored `archeology_scan_3` C1/C2/C3
+canary after the direct Neon reader credentials are available outside git.
+
+## 2026-08-28 — D-030: Prefer a restricted Claude transport for direct comparators
+
+### Decision / experiment
+
+Audit the installed Claude and Codex OAuth CLIs as candidate transports for the
+shared C1–C3 direct-SQL harness without making a model call.
+
+### Observation
+
+Both CLIs expose structured JSONL usage events, but their isolation surfaces are
+not equivalent. Claude Code 2.1.250 can run in restricted mode with only an
+explicit MCP allowlist while retaining OAuth. The installed Codex CLI does not
+expose a verified way to remove shell execution while retaining MCP tools, and
+the convenient `codex` launcher on this host is a Gas City wrapper that injects
+unrelated configuration. Reference traces also showed that repeated Claude
+assistant events can duplicate per-message usage, so truncated-stream token
+recovery must deduplicate message identities rather than sum events naively.
+
+### Hypothesis
+
+A pinned restricted Claude CLI with a private per-slot configuration directory
+and credentials held outside the model-visible tool server will give C1–C3 the
+same capable model and tool loop without exposing shell, filesystem, database
+credentials, or ambient project customizations. Terminal provider usage should
+make cost and token telemetry more complete than the current alternatives.
+
+### Decision
+
+Use the exact Claude Code 2.1.250 binary as the first live C1–C3 adapter candidate,
+subject to one public-only canary. Pin its binary hash, model identifier, effort,
+turn limit, structured output schema, MCP inventory, and advertised tool surface.
+Use a scrubbed environment and per-slot OAuth state; keep database credentials in
+the supervised tool server. Do not use fallback models, session continuation,
+ambient skills/hooks, or the host's Codex wrapper. This is a provisional
+transport choice, not a claim that Claude is more accurate.
+
+### Rationale
+
+The deciding factor is credential and capability isolation, not expected model
+score. The direct comparator must be competent without gaining access to hidden
+files or unrelated tools. Building a new containerized Codex credential broker
+would not improve the core hiring-task evidence enough to justify delaying the
+baseline.
+
+### Intervention
+
+Read-only audit of installed CLI help, binary identities, EnterpriseBench
+invocation patterns, and codeprobe OAuth/telemetry handling. Bead:
+`omni-benchmark-dih.5.4.2`; optimization surface: structural harness; change type:
+general system improvement. No provider call or repository runtime change was
+made.
+
+### Result
+
+The candidate binary is
+`/home/ds/.local/share/claude/versions/2.1.250`, SHA-256
+`2be252a00ac56e704d7fbf7e5e9ef1243584093334a861945238a0c27e84bdac`.
+The canary must still verify restricted MCP access, the exact advertised tool
+set, structured output, observed model identity, terminal usage/cost fields,
+timeout recovery, and per-slot OAuth concurrency. No accuracy or cost result
+exists yet.
+
+### Interpretation
+
+Harness parity is not just a prompt/model choice. Credential placement,
+model-visible tools, retry ceilings, and telemetry semantics are part of the
+evaluated scaffold and must be disclosed even when C1–C3 share one model.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+This is comparator infrastructure rather than an Omni product finding. It
+reinforces why C4−C3 remains a system-level, scaffold-conditional comparison
+unless Omni exposes enough of its managed model and tool workflow to establish
+true parity.
+
+### Next step
+
+Add the committed condition/configuration and public-context adapters, then test
+the restricted transport against recorded provider envelopes. The first live
+call remains one unscored public canary; scaled context and concurrency decisions
+will use its observed cost, token, tool-surface, and latency evidence.

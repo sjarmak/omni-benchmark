@@ -7,12 +7,6 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Literal, Protocol
 
-import sqlglot
-from sqlglot import exp
-from sqlglot.dialects import Dialect
-from sqlglot.parsers.postgres import PostgresParser
-from sqlglot.tokens import Token, TokenType
-
 from .postgres_execution import (
     PostgreSQLConnection,
     PostgreSQLExecutionError,
@@ -27,6 +21,7 @@ from .scoring import (
     rewrite_sql_official,
     sensitivity_equal,
 )
+from .sql_admission import query_sql_is_admissible
 
 Outcome = Literal["correct", "wrong_answer", "refused_or_error"]
 FailureOrigin = Literal["evaluated_system", "benchmark_infrastructure"]
@@ -171,7 +166,7 @@ def score_query(
     validated = _validate_case(case)
     if not validated.candidate_sql:
         return system_no_answer(mode, failure_class=FailureClass.NO_QUERY)
-    if not _candidate_sql_is_admissible(validated.candidate_sql):
+    if not query_sql_is_admissible(validated.candidate_sql):
         return system_no_answer(
             mode, failure_class=FailureClass.CANDIDATE_DISALLOWED_STATEMENT
         )
@@ -495,87 +490,6 @@ def _statements(value: str | Sequence[str], *, allow_empty: bool) -> tuple[str, 
     if not allow_empty and not result:
         raise ValueError("SQL statements must not be empty")
     return result
-
-
-_SIDE_EFFECT_FUNCTIONS = frozenset(
-    {
-        "nextval",
-        "pg_cancel_backend",
-        "pg_create_restore_point",
-        "pg_export_snapshot",
-        "pg_log_backend_memory_contexts",
-        "pg_notify",
-        "pg_promote",
-        "pg_reload_conf",
-        "pg_rotate_logfile",
-        "pg_switch_wal",
-        "pg_terminate_backend",
-        "set_config",
-        "setseed",
-        "setval",
-    }
-)
-_SIDE_EFFECT_FUNCTION_PREFIXES = ("lo_", "pg_")
-
-
-class _QuietPostgresParser(PostgresParser):
-    """Reject unsupported commands without SQLGlot logging their source text."""
-
-    def _warn_unsupported(self) -> None:
-        return
-
-
-_POSTGRES_DIALECT = Dialect.get_or_raise("postgres")
-
-
-def _candidate_sql_is_admissible(statements: tuple[str, ...]) -> bool:
-    try:
-        parsed = tuple(
-            expression
-            for statement in statements
-            for expression in _parse_without_source_logging(statement)
-        )
-    except sqlglot.errors.SqlglotError:
-        return False
-    if not parsed or any(
-        not isinstance(expression, exp.Query) for expression in parsed
-    ):
-        return False
-    if any(
-        expression.find(exp.DML) is not None or expression.find(exp.Into) is not None
-        for expression in parsed
-    ):
-        return False
-    return not any(
-        _side_effect_function(function.name)
-        for expression in parsed
-        for function in expression.find_all(exp.Anonymous)
-    )
-
-
-def _parse_without_source_logging(statement: str) -> list[exp.Expr | None]:
-    parser = _QuietPostgresParser(dialect=_POSTGRES_DIALECT)
-    tokens = _POSTGRES_DIALECT.tokenize(statement)
-    if _has_unicode_identifier(tokens):
-        return [None]
-    return parser.parse(tokens, statement)
-
-
-def _has_unicode_identifier(tokens: list[Token]) -> bool:
-    return any(
-        first.token_type is TokenType.VAR
-        and first.text.casefold() == "u"
-        and second.token_type is TokenType.AMP
-        and third.token_type is TokenType.IDENTIFIER
-        for first, second, third in zip(tokens, tokens[1:], tokens[2:])
-    )
-
-
-def _side_effect_function(name: str) -> bool:
-    normalized = name.lower()
-    return normalized in _SIDE_EFFECT_FUNCTIONS or normalized.startswith(
-        _SIDE_EFFECT_FUNCTION_PREFIXES
-    )
 
 
 def _system_failure(

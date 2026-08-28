@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import stat
 import subprocess
@@ -11,7 +12,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .autoresearch_config import AutoresearchError, _canonical_bytes, _write_exclusive
+from .autoresearch_config import AutoresearchError, _write_exclusive
 from .content_policy import ContentPolicy
 
 ALLOWED_RAW_ROOTS = (
@@ -62,11 +63,42 @@ class ArtifactStore:
         else:
             _secure_directory(self._workspace, self._root)
 
+    @property
+    def root_identity(self) -> str:
+        """Return an opaque identity for this exact workspace/root pair."""
+        value = f"{self._workspace}\0{self._root.as_posix()}".encode()
+        return hashlib.sha256(value).hexdigest()
+
+    def relative_path(self, artifact: StoredArtifact) -> Path:
+        """Return a workspace-relative path only for an artifact under this root."""
+        try:
+            resolved = artifact.path.resolve(strict=True)
+            relative = resolved.relative_to(self._workspace / self._root)
+        except (OSError, ValueError) as error:
+            raise ArtifactStoreError(
+                "artifact does not belong to this store root"
+            ) from error
+        return self._root / relative
+
+    def root_relative_path(self, artifact: StoredArtifact) -> Path:
+        """Return a path relative to the exact artifact root."""
+        workspace_relative = self.relative_path(artifact)
+        return workspace_relative.relative_to(self._root)
+
+    def require_workspace(self, workspace: Path) -> None:
+        """Reject publishers configured for a different workspace."""
+        try:
+            resolved = workspace.resolve(strict=True)
+        except OSError as error:
+            raise ArtifactStoreError("artifact workspace is unavailable") from error
+        if resolved != self._workspace:
+            raise ArtifactStoreError("artifact store and publisher workspace differ")
+
     def write_json(self, relative_path: Path, value: Any) -> StoredArtifact:
         """Write canonical JSON only when it contains no sensitive material."""
         if self._content_policy.sanitize_json(value) != value:
             raise ArtifactStoreError("artifact contains sensitive content")
-        return self.write_bytes(relative_path, _canonical_bytes(value))
+        return self.write_bytes(relative_path, _strict_canonical_bytes(value))
 
     def write_jsonl(
         self, relative_path: Path, records: list[dict[str, Any]]
@@ -74,7 +106,7 @@ class ArtifactStore:
         """Write canonical ordered JSONL with the same content policy."""
         if self._content_policy.sanitize_json(records) != records:
             raise ArtifactStoreError("artifact contains sensitive content")
-        content = b"".join(_canonical_bytes(record) for record in records)
+        content = b"".join(_strict_canonical_bytes(record) for record in records)
         return self.write_bytes(relative_path, content)
 
     def write_bytes(self, relative_path: Path, content: bytes) -> StoredArtifact:
@@ -105,6 +137,20 @@ class ArtifactStore:
             sha256=hashlib.sha256(content).hexdigest(),
             size_bytes=len(content),
         )
+
+
+def _strict_canonical_bytes(value: Any) -> bytes:
+    try:
+        encoded = json.dumps(
+            value,
+            allow_nan=False,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+    except (TypeError, ValueError) as error:
+        raise ArtifactStoreError("artifact must contain finite JSON") from error
+    return (encoded + "\n").encode()
 
 
 def _validate_relative(path: Path, description: str) -> Path:

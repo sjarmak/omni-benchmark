@@ -133,3 +133,28 @@ def test_store_can_require_a_brand_new_collision_free_root(tmp_path: Path) -> No
             Path("runs/fresh-attempt"),
             require_new_root=True,
         )
+
+
+def test_store_binds_artifacts_to_the_exact_workspace_root(tmp_path: Path) -> None:
+    workspace = _workspace(tmp_path)
+    first = ArtifactStore(workspace, Path("runs/first"))
+    second = ArtifactStore(workspace, Path("runs/second"))
+    artifact = first.write_json(Path("value.json"), {"value": 1})
+
+    assert first.relative_path(artifact) == Path("runs/first/value.json")
+    assert first.root_identity != second.root_identity
+    first.require_workspace(workspace)
+    with pytest.raises(ArtifactStoreError, match="store root"):
+        second.relative_path(artifact)
+    with pytest.raises(ArtifactStoreError, match="publisher workspace"):
+        first.require_workspace(tmp_path)
+
+
+@pytest.mark.parametrize("constant", [float("nan"), float("inf"), float("-inf")])
+def test_store_rejects_nonfinite_json(tmp_path: Path, constant: float) -> None:
+    workspace = _workspace(tmp_path)
+    store = ArtifactStore(workspace, Path("runs/nonfinite"))
+
+    with pytest.raises(ArtifactStoreError, match="finite JSON"):
+        store.write_json(Path("value.json"), {"value": constant})
+    assert not (workspace / "runs/nonfinite/value.json").exists()
