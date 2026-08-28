@@ -3250,3 +3250,91 @@ harder to audit.
 
 Review and commit the exact-surface contract, rerun C1 from a fresh immutable
 worktree, then continue C2/C3 only if the live artifact passes capture checks.
+
+## 2026-08-28 — D-042: Preserve provider failure class ahead of synthetic partial identity
+
+### Decision / experiment
+
+Diagnose the exact-commit C1 rerun's terminal failure before changing the
+prompt, model, semantic inputs, or retry policy.
+
+### Observation
+
+The rerun passed database and Claude tool-surface preflight. Claude then
+returned a terminal provider error stating that its OAuth session had expired
+and could not be refreshed. The stream's init event identified the requested
+model, but its provider-generated partial assistant event used the literal
+model placeholder `<synthetic>`. The transport validated that placeholder
+before classifying the terminal error, so the raw artifact recorded
+`model_identity_mismatch` rather than the observed authentication failure.
+
+### Hypothesis
+
+Claude uses `<synthetic>` for provider-generated partial error messages that do
+not represent a model invocation. If the init event still proves the pinned
+model and the terminal result is explicitly an error, accepting only that exact
+placeholder for partial failure telemetry will preserve the real auth/rate/
+quota failure class without weakening successful model-identity enforcement.
+
+### Decision
+
+Add a focused transport compatibility experiment under Bead
+`omni-benchmark-dih.5.4.2.5.4`. Keep init and successful-response model checks
+strict. Classify a structured terminal provider error from its designated
+error result before a synthetic partial placeholder can mask it. Persist only
+the existing sanitized failure message and typed category.
+
+### Rationale
+
+This is the smallest reusable correction to the three-state and terminal
+failure telemetry required by the capture gate. Reauthenticating alone would
+hide the instrumentation defect and leave future expired-session attempts
+misclassified.
+
+### Intervention
+
+Optimization surface: direct transport telemetry; change type: general system
+integration. RED tests reproduced the live structured error and proved that
+successful synthetic partial output remains invalid.
+
+### Result
+
+The RED test reproduced the live misclassification: the structured OAuth
+failure was reported as `model_identity` while a successful synthetic partial
+was already rejected. The implementation now admits the exact `<synthetic>`
+partial placeholder only when the terminal result is explicitly an error and
+classifies that result through the existing provider-failure taxonomy. It does
+not retain the raw provider message. The successful synthetic case remains a
+`model_identity` failure. Failure classification was extracted into a focused
+module to keep the transport below the repository's 800-line limit. Review then
+added a RED guard proving structured-output errors cannot be reclassified from
+model-authored result text, plus a pinned-init-model failure case. All 54
+transport tests and the 432-test Claude/direct suite pass; scoped coverage is
+89.97%, and Ruff/format/diff/secret checks pass. Independent review found no
+actionable issue. A live rerun remains pending.
+
+### Interpretation
+
+The hypothesis is supported in synthetic replay. The correction changes only
+failure observability; it does not make an unauthenticated attempt successful
+or relax the identity contract for any successful attempt. EnterpriseBench's
+recent multi-account runner confirms the appropriate operational pattern:
+select an isolated OAuth account as a capacity resource, stage only its private
+credential material into the attempt environment, and keep account choice out
+of the experimental treatment. The local capacity picker selected account 3;
+no interactive login or raw token handling is needed.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Provider scaffolds can emit synthetic bookkeeping messages during failures.
+Observability should not attribute those to the evaluated model or let them
+overwrite the actionable terminal failure class.
+
+### Next step
+
+Commit the reviewed correction and rerun the public-only C1 canary with the
+capacity-selected isolated OAuth harness.

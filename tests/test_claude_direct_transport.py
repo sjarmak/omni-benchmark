@@ -677,6 +677,89 @@ def test_nonzero_structured_terminal_failure_is_classified_before_fallback(
     assert exc.value.retry_count == 1
 
 
+def test_structured_oauth_failure_ignores_synthetic_partial_model(
+    tmp_path: Path,
+) -> None:
+    assistant = _assistant_event(model="<synthetic>", input_tokens=0, output_tokens=0)
+    events = [
+        _init_event(),
+        assistant,
+        {
+            "is_error": True,
+            "modelUsage": {},
+            "result": (
+                "Failed to authenticate: OAuth session expired and could not be "
+                "refreshed"
+            ),
+            "session_id": "session-1",
+            "subtype": "success",
+            "total_cost_usd": 0.0,
+            "type": "result",
+        },
+    ]
+    transport, _ = _transport(
+        tmp_path,
+        "\n".join(json.dumps(event) for event in events),
+        returncode=0,
+    )
+
+    with pytest.raises(ClaudeDirectTransportError) as exc:
+        transport.next_turn(_messages(), _tool_specs())
+
+    assert exc.value.category == "auth"
+    assert "OAuth session expired" not in str(exc.value)
+    assert exc.value.partial_usage.models == ("<synthetic>",)
+    assert exc.value.terminal_usage is not None
+    assert exc.value.terminal_usage.input_tokens == 0
+
+
+def test_successful_synthetic_partial_model_remains_invalid(tmp_path: Path) -> None:
+    transport, _ = _transport(
+        tmp_path,
+        _success_stream(extra_events=(_assistant_event(model="<synthetic>"),)),
+    )
+
+    with pytest.raises(ClaudeDirectTransportError) as exc:
+        transport.next_turn(_messages(), _tool_specs())
+
+    assert exc.value.category == "model_identity"
+
+
+def test_structured_output_failure_is_not_reclassified_from_result_text(
+    tmp_path: Path,
+) -> None:
+    events = [
+        json.loads(line)
+        for line in _error_stream("error_max_structured_output_retries").splitlines()
+    ]
+    events[-1]["result"] = "model wrote: OAuth session expired"
+    transport, _ = _transport(
+        tmp_path,
+        "\n".join(json.dumps(event) for event in events),
+        returncode=1,
+    )
+
+    with pytest.raises(ClaudeDirectTransportError) as exc:
+        transport.next_turn(_messages(), _tool_specs())
+
+    assert exc.value.category == "structured_output"
+
+
+def test_provider_error_still_requires_pinned_init_model(tmp_path: Path) -> None:
+    events = [json.loads(line) for line in _error_stream("success").splitlines()]
+    events[0]["model"] = "claude-unexpected-9"
+    transport, _ = _transport(
+        tmp_path,
+        "\n".join(json.dumps(event) for event in events),
+        returncode=1,
+    )
+
+    with pytest.raises(ClaudeDirectTransportError) as exc:
+        transport.next_turn(_messages(), _tool_specs())
+
+    assert exc.value.category == "model_identity"
+
+
 @pytest.mark.parametrize("is_error", [None, 0, 1, "false"])
 def test_success_requires_is_error_to_be_exactly_false(
     tmp_path: Path, is_error: Any

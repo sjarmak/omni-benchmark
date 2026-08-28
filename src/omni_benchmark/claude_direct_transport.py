@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import hashlib
-import json
 import math
 import re
 import subprocess
@@ -10,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
 
+from .claude_failure_classification import classify_claude_failure
 from .claude_direct_contract import (
     ClaudeDirectConfig,
     ClaudeDirectModelTurn,
@@ -64,17 +64,6 @@ ADAPTER_ID = "claude-code-restricted-mcp"
 ADAPTER_VERSION = "1.0.0"
 
 _EFFORT_LEVELS = frozenset({"low", "medium", "high", "xhigh", "max"})
-_AUTH_PATTERN = re.compile(
-    r"(?i)(authentication\s+(?:failed|error)|invalid\s+(?:auth|oauth)|"
-    r"oauth\s+token\s+(?:expired|invalid)|api\s*key\s+(?:invalid|missing)|"
-    r"unauthorized|(?:http\s+|status\s*=?\s*)(?:401|403)\b)"
-)
-_RATE_LIMIT_PATTERN = re.compile(r"(?i)(?:http\s+|status\s*=?\s*)429\b")
-_QUOTA_PATTERN = re.compile(
-    r"(?i)(monthly\s+usage\s+limit|rate\s+limit\s+(?:exceeded|reached)|"
-    r"quota\s+(?:exceeded|exhausted)|usage\s+limit\s+reached|"
-    r"hit\s+your\s+session\s+limit)"
-)
 _SYSTEM_PROMPT = """You are a direct analytical SQL agent in a controlled evaluation.
 Return exactly one JSON action matching the supplied schema. The harness owns every
 tool: request a listed tool action when information or execution is needed. Do not
@@ -546,7 +535,7 @@ def _events_from_process(
     if events is None or (process.returncode != 0 and terminal_count == 0):
         if process.returncode == 0:
             return parse_events(process.stdout)  # pragma: no cover - always raises
-        category = _classify_literal_failure(process.stdout, process.stderr)
+        category = classify_claude_failure(process.stdout, process.stderr)
         partial, retries = best_effort_telemetry(process.stdout)
         raise ClaudeDirectTransportError(
             category,
@@ -608,7 +597,11 @@ def _validate_result_context(
         validate_session(events, init, evidence.result)
         validate_surface(init)
         realized_models = _realized_models(
-            init, evidence.terminal, evidence.partial, config.model
+            init,
+            evidence.terminal,
+            evidence.partial,
+            config.model,
+            allow_synthetic_partial=evidence.result.get("is_error") is True,
         )
         _reconcile_model_identity(model_identity, config, binary_sha256)
     except ClaudeDirectTransportError as error:
@@ -714,6 +707,15 @@ def _provider_failure_category(
         return "budget"
     if subtype == "error_max_structured_output_retries":
         return "structured_output"
+    detail = result.get("result")
+    if (
+        result.get("is_error") is True
+        and subtype == "success"
+        and isinstance(detail, str)
+    ):
+        category = classify_claude_failure(detail, "")
+        if category != "infrastructure":
+            return category
     if result.get("is_error") is False and subtype == "success" and returncode == 0:
         return None
     return "infrastructure"
@@ -749,45 +751,23 @@ def _realized_models(
     terminal: ClaudeTerminalTelemetry | None,
     partial: ClaudeUsage,
     expected: str,
+    *,
+    allow_synthetic_partial: bool,
 ) -> tuple[str, ...]:
     models = () if terminal is None else terminal.models
     if init.get("model") != expected or (models and models != (expected,)):
         raise ClaudeDirectTransportError(
             "model_identity", "realized Claude model does not match the pinned model"
         )
-    if partial.models and partial.models != (expected,):
+    if (
+        partial.models
+        and partial.models != (expected,)
+        and not (allow_synthetic_partial and partial.models == ("<synthetic>",))
+    ):
         raise ClaudeDirectTransportError(
             "model_identity", "partial Claude model does not match the pinned model"
         )
     return models or (expected,)
-
-
-def _classify_literal_failure(stdout: str, stderr: str) -> ClaudeFailureCategory:
-    literal = "\n".join((*_literal_lines(stdout), stderr))
-    if _AUTH_PATTERN.search(literal):
-        return "auth"
-    if _RATE_LIMIT_PATTERN.search(literal):
-        return "rate_limit"
-    if _QUOTA_PATTERN.search(literal):
-        return "quota"
-    return "infrastructure"
-
-
-def _literal_lines(raw: str) -> tuple[str, ...]:
-    literal: list[str] = []
-    for line in raw.splitlines():
-        try:
-            value = json.loads(line, parse_constant=_reject_json_constant)
-        except (json.JSONDecodeError, ValueError):
-            literal.append(line)
-            continue
-        if not isinstance(value, dict):
-            literal.append(line)
-    return tuple(literal)
-
-
-def _reject_json_constant(value: str) -> None:
-    raise ValueError(f"non-finite JSON constant: {value}")
 
 
 def _as_text(value: str | bytes | None) -> str:

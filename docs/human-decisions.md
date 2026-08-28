@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T08:57:28-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T10:51:34-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -18,6 +18,12 @@ No approved human-gated action is currently in progress.
 
 ## Recently completed
 
+- `omni-benchmark-dih.5.4.2.5.3` was dismissed at
+  `2026-08-28T10:51:34-04:00`. The user identified the existing isolated
+  `claude-1`, `claude-3`, `claude-4`, and `claude-5` OAuth harnesses, so no
+  interactive reauthentication is required. The capacity picker selected
+  account 3 for the next public-only C1-C3 canary; credentials remain outside
+  the repository and run artifacts.
 - `omni-benchmark-dih.5.4.2.4.4.1.1` was completed at
   `2026-08-28T08:57:28-04:00`. The credential-free bindings for all 18 direct
   databases and their fail-closed inventory loader were tested and committed in
