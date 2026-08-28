@@ -2243,7 +2243,7 @@ transport choice, not a claim that Claude is more accurate.
 The deciding factor is credential and capability isolation, not expected model
 score. The direct comparator must be competent without gaining access to hidden
 files or unrelated tools. Building a new containerized Codex credential broker
-would not improve the core hiring-task evidence enough to justify delaying the
+would not improve the core research evidence enough to justify delaying the
 baseline.
 
 ### Intervention

@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T08:40:56-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T08:47:33-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -17,14 +17,15 @@ empty queue at the timestamp above.
 | Bead | Approved scope | Boundary retained | Close the implementation work when |
 | --- | --- | --- | --- |
 | `omni-benchmark-dih.5.4.2.4.4.1.1` | Read the exact public Neon connection coordinates and generate credential-free SHA-256 target bindings for all 18 direct C1–C3 databases. | Persist only database name, physical database name, and digest—never host, endpoint, URL, password, or token. No connection mutation. | The inventory-bound sidecar and fail-closed loader are tested and committed. |
-| `omni-benchmark-dih.15` / `omni-benchmark-dih.16` | Use `https://github.com/sjarmak/omni-benchmark` as the public remote and perform the initial reviewed Git and Beads/Dolt pushes. | Publish only standalone research, reproducibility, and product-finding artifacts. Keep all non-public benchmark material, raw generated runs, local clutter, and the dirty worktree out of publication. | Public-readiness checks pass, reviewed commits are synchronized, and both remotes are verified. |
 
 ## Recently completed
 
-- `omni-benchmark-dih.15` was answered on 2026-08-28. The selected repository
-  is public, `origin` is configured, and the initial Git and Beads/Dolt pushes
-  were explicitly authorized. Publication verification remains in progress
-  under `omni-benchmark-dih.16`.
+- `omni-benchmark-dih.15` was completed at
+  `2026-08-28T08:47:33-04:00`. The public Git remote is configured and the
+  explicitly authorized, reviewed history was pushed to `main`; Beads/Dolt
+  state was pushed separately to `refs/dolt/data`. Git history and Beads data
+  share a repository but not a ref. No ignored, private, or dirty-worktree
+  artifact was published.
 - `omni-benchmark-dih.14.1` was approved and verified on 2026-08-28. The
   archeology connection now selects `archeology_scan_large`; one public-only
   refresh completed and readback returned one public schema with 51 views. No
