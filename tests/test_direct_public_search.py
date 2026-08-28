@@ -66,6 +66,28 @@ def test_schema_search_caps_matches_and_marks_truncation() -> None:
     assert len(canonical(result.payload)) <= MAX_SCHEMA_PAYLOAD_BYTES
 
 
+def test_schema_search_bounds_repeated_context_growth() -> None:
+    """Five exploratory searches cannot accumulate the prior 187 KiB payload."""
+    schema = _schema(
+        [_table(index, description="shared " + "x" * 10_000) for index in range(8)]
+    )
+    policy = ContentPolicy.from_environment({})
+
+    payload_sizes = [
+        len(canonical(search_schema(schema, policy, "c" * 64, query).payload))
+        for query in (
+            "shared value",
+            "shared public",
+            "value public",
+            "public shared value",
+            "shared public value",
+        )
+    ]
+
+    assert MAX_SCHEMA_MATCHES == 2
+    assert sum(payload_sizes) <= 5 * 24 * 1024
+
+
 def test_schema_search_shrinks_oversized_match_set_deterministically() -> None:
     schema = _schema(
         [_table(index, description="shared " + "x" * 39_000) for index in range(3)]

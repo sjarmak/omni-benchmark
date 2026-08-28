@@ -17,7 +17,7 @@ from .direct_public_parsing import (
 )
 
 MAX_QUERY_CHARS = 512
-MAX_SCHEMA_MATCHES = 4
+MAX_SCHEMA_MATCHES = 2
 MAX_SCHEMA_PAYLOAD_BYTES = 64 * 1024
 
 _TERM = re.compile(r"[^\W_]+", re.UNICODE)
