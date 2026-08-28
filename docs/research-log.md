@@ -2861,15 +2861,21 @@ refused-versus-errored distinction.
 
 ### Result
 
-IN PROGRESS. The pre-change tests failed because `OmniProbeResult` and the
+The pre-change tests failed because `OmniProbeResult` and the
 generation envelope had no observed model/token fields. A second RED test proved
 that validated run summaries discarded the raw refusal/error distinction; a
 third proved that a contradictory provider `queryCount` could under-report a
 successful query action. The fixes pass 165 focused tests and the 1,227-test
 repository suite (three explicit live-integration skips). Independent code,
-security/custody, and simplification reviews approved the final implementation.
-The exact-commit live rerun remains pending. No gold, hidden annotation, test
-outcome, or AI judge was accessed.
+security/custody, and simplification reviews approved the final implementation,
+committed as `dd8e7b1`. The exact-commit live rerun preserved the unscored
+`response_contract_error` while retaining Bedrock `claude-opus-5`, 247,676 input
+tokens, 1,110 output tokens, three tool calls, one governed database query, and
+29,338.859 ms latency. Its generation SHA-256 is
+`86814a6b5264cacc49d0ade910416b6521e4ab26f561819bfaa3701346914494` and its
+trace SHA-256 is
+`b9243d2a9f6e0d74d36b858282db79ee2fea482ee2b317f18826bd8d2ba4114d`.
+No gold, hidden annotation, test outcome, or AI judge was accessed.
 
 ### Interpretation
 
@@ -2883,7 +2889,7 @@ hide these mechanisms.
 
 ### Outcome
 
-FOLLOW UP
+KEEP
 
 ### Product implication
 
@@ -2893,9 +2899,8 @@ signal and scoreable-result status independent from telemetry availability.
 
 ### Next step
 
-Complete independent review, commit the narrow capture fix, rerun the public C4
-question from that exact commit, and update the capture-disclosure gate before
-resuming the C1–C3 driver.
+Run the same public question through C1-C3, then verify typed-result scorer
+parity and the four-condition capture bundle before baseline generation.
 
 ## 2026-08-28: Public-repository dotfile hygiene
 
@@ -2922,6 +2927,159 @@ private.
 
 ### Result
 
-IN PROGRESS. Validate representative paths with `git check-ignore`, confirm no
-intentional tracked path is newly ignored, and inspect the final repository
-status before closing the intervention.
+PASS. `git check-ignore --no-index` accepted representative paths for every new
+rule and rejected every intentional public dot-path tested, including
+`.beads/issues.jsonl`, `.beads/config.yaml`, the agent-tool configuration trees,
+`.env.example`, and both public `.gitignore` files. `git diff --check` also
+passed. The passive Beads export is now visible to Git; the separate Dolt remote
+still needs to be configured independently because ignore rules do not control
+Beads synchronization.
+
+## 2026-08-28 — D-038: Add the smallest executable C1-C3 vertical-slice driver
+
+### Decision / experiment
+
+Turn the reviewed direct-comparator library into one executable public dev-A
+attempt before adding any new semantic or custody machinery.
+
+### Observation
+
+The C1-C3 preparation, model, database, capture, and publication components each
+passed focused tests, but no command composed them. This blocked the archeology
+vertical slice and left the common retry/time/model policy as prose rather than
+an executable condition constraint.
+
+### Hypothesis
+
+A thin driver that loads one exact committed C1-C3 runtime policy, creates a
+fresh private invocation environment, and delegates to the existing pipeline
+will unblock live attempts without duplicating condition logic or weakening
+custody.
+
+### Decision
+
+Implement only the executable composition and its shared runtime policy. Keep
+scope hardcoded to public `dev-A`; pass no hidden fields; keep C1-C3 outcome
+states as `answered`, `refused`, or `errored`; and defer all broader runner
+abstractions until the live product slice supplies evidence that they are
+needed.
+
+### Rationale
+
+This is the shortest path to evidence about whether the tested abstractions work
+against Claude, Neon, and the real artifact contract. It also resolves the two
+pending direct-condition disclosure items: zero harness retries and a common
+12-turn, 120-second-per-turn policy with provider token ceilings explicitly
+unavailable.
+
+### Intervention
+
+Bead `omni-benchmark-dih.5.4.2.5`; optimization surface: comparator execution
+harness; change type: general system integration. Added
+`scripts/direct_probe.py`, a strict committed runtime policy, private ephemeral
+runtime directories, a safe receipt, and end-to-end composition tests.
+
+### Result
+
+Eight driver tests and 416 direct/Claude tests pass. Driver-local branch coverage
+is 80%; Ruff, formatting, and whitespace checks pass. Independent code,
+security/custody, and simplification reviews approved the implementation. The
+authenticated archeology attempts remain pending. No model call, gold data,
+hidden annotation, or correctness result was accessed.
+
+### Interpretation
+
+The direct comparator now has one auditable execution path rather than a set of
+uninvoked libraries. The real test is the live archeology attempt: any failure
+there should be diagnosed as a product/harness integration issue before the
+system is scaled.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+Comparator reliability depends on making provider runtime state and budgets
+explicit at invocation time. A reusable agent-evaluation product should expose
+these as first-class run configuration and telemetry rather than external
+wrapper conventions.
+
+### Next step
+
+Commit the reviewed driver, run C1-C3 on the same public archeology question,
+then verify parity, scoring transport, and failure traces before any 18-database
+fan-out.
+
+## 2026-08-28 — D-039: Optimize the remaining work for a results-ready evaluation
+
+### Decision / experiment
+
+Treat a submission-ready result today as the planning constraint while preserving
+every existing custody, split, baseline, freeze, and sealed-evaluation boundary.
+
+### Observation
+
+The protocol, scorers, database infrastructure, and condition adapters are
+sufficiently developed, but no database has yet completed the full generation →
+typed result → scorer → outcome-artifact path. More methodological machinery
+would not improve the immediate evidence.
+
+### Hypothesis
+
+Concentrating work on the archeology vertical slice, while mechanically building
+the remaining public-only semantic bundles in parallel, will surface real
+integration/product failures sooner and make the all-database baseline possible
+without weakening the experiment.
+
+### Decision
+
+Make Bead `omni-benchmark-ei0` the results-ready critical path. Keep the
+archeology C1-C4 canary, database parity, and scorer transport as the primary
+lane. Run the 17-database mechanical mapping fan-out independently under Bead
+tree `omni-benchmark-786`. After the baseline, run only enough supervised
+experiments to establish a useful failure taxonomy, a kept improvement, a
+failed/reverted intervention, transfer evidence, and product findings before
+Freeze B.
+
+### Rationale
+
+The vertical slice distinguishes integration defects from benchmark/modeling
+failures. The fan-out is the longest-lead public-only prerequisite and does not
+depend on gold or the capture gate. Work that does neither is deferred.
+
+### Intervention
+
+Execution prioritization only; no benchmark condition, endpoint, split, scorer,
+or custody rule changed. Deferred first under pressure: LODO, elaborate template
+audit/adjudication/statistics, perfect comparator parity, optimizer-framework
+integration, and protocol-paper polish.
+
+### Result
+
+IN PROGRESS. C4 capture passes on an unscored truncated archeology attempt;
+C1-C3 have a reviewed executable driver but no authenticated attempt yet;
+archeology database parity passes; the frozen scorers pass offline tests but
+have not yet consumed a live condition result. The semantic fan-out lane has
+started separately.
+
+### Interpretation
+
+The first reliable scored vertical slice is the decision gate. Until it exists,
+integration and failure observability dominate score optimization.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+The quality of Omni's development workflow is itself observable here: a useful
+product should let an operator move from a governed failure to a typed,
+externally verifiable result without building parallel diagnostic machinery.
+
+### Next step
+
+Commit and run the C1-C3 archeology probes, prove generation/scoring database
+parity and typed scorer ingestion, then preserve the mechanical all-database
+baseline as soon as the semantic bundles finish.
