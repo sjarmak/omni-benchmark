@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 
+import omni_benchmark.baseline_batch_cli as baseline_batch_cli
 from omni_benchmark.baseline_batch import (
     BASELINE_CONDITIONS,
     BaselineAttempt,
@@ -29,6 +30,18 @@ from omni_benchmark.run_manifest import RunManifest
 
 COMMIT_SHA = "a" * 40
 SHA256 = "b" * 64
+
+
+def test_live_child_environment_preserves_bytecode_suppression_only() -> None:
+    environment = baseline_batch_cli._child_environment(
+        {
+            "PATH": "/bin",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "UNAPPROVED_VALUE": "must-not-pass",
+        }
+    )
+
+    assert environment == {"PATH": "/bin", "PYTHONDONTWRITEBYTECODE": "1"}
 
 
 def _git(workspace: Path, *arguments: str) -> str:

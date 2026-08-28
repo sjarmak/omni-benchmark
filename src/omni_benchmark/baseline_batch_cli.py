@@ -41,6 +41,7 @@ _CHILD_ENVIRONMENT_KEYS = frozenset(
         "OMNI_CONFIG_PATH",
         "OMNI_PROFILE",
         "PATH",
+        "PYTHONDONTWRITEBYTECODE",
         "SSL_CERT_DIR",
         "SSL_CERT_FILE",
         "TMPDIR",
@@ -221,11 +222,7 @@ def _execute_live(
         database_environments=DatabaseEnvironmentDirectory(
             workspace, arguments.database_environment_dir
         ),
-        common_environment={
-            key: value
-            for key, value in os.environ.items()
-            if key in _CHILD_ENVIRONMENT_KEYS
-        },
+        common_environment=_child_environment(os.environ),
         timeout_seconds=arguments.subprocess_timeout_seconds,
         deployment_targets=targets,
     )
@@ -254,3 +251,11 @@ def _execute_live(
         )
     )
     return 0
+
+
+def _child_environment(environment: Mapping[str, str]) -> dict[str, str]:
+    return {
+        key: value
+        for key, value in environment.items()
+        if key in _CHILD_ENVIRONMENT_KEYS
+    }
