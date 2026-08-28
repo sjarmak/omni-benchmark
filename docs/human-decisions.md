@@ -4,12 +4,12 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T15:07:12-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T15:11:15-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
-- **Establish exclusive ownership of Claude comparator identities**
+- **Complete immutable Claude comparator lease handoff**
   (`omni-benchmark-ddy`, P0). No further rotation, refresh, credential copy, or
   validation canary is authorized while a Claude session or benchmark process
   may hold the same identity. OAuth refresh state is mutable: independent
@@ -23,28 +23,16 @@ hidden annotation, or sealed-test result has been accessed.
   `2026-08-28T18:20:46Z` through `18:26:20Z` are recorded as authorized
   benchmark-infrastructure reruns and will not enter outcome metrics.
 
-  **Requested operator action, narrowed after read-only verification:** do not
-  touch profiles 4 or 5; their benchmark access tokens remain valid until 22:20
-  and 22:33 EDT respectively. Stop the live account-5 background Claude session
-  `8cdefc68-337d-4b5d-98bf-98e568e1c6fb` through `claude agents`, preserving its
-  transcript. Profile 3 alone still has `expiresAt=0`, so enter the external
-  benchmark profile directly with:
-
-  ```text
-  env -u OPENAI_API_KEY -u ANTHROPIC_API_KEY -u ANTHROPIC_AUTH_TOKEN \
-    CLAUDE_CONFIG_DIR=/home/ds/.local/state/omni-benchmark-claude-oauth/claude-3 \
-    /home/ds/.local/bin/claude
-  ```
-
-  Run `/logout` and then `/login` once, authenticate account 3, and exit. Do not
-  run `ds-cred`, copy credential files, start Remote Control, or use accounts
-  3/4/5 afterward. Notify the benchmark operator when the account-5 session is
-  stopped and this profile-3 login is complete.
-
-  A single automated in-place recovery attempt at 15:07 EDT failed immediately
-  with `OAuth session expired and could not be refreshed`; it consumed zero
-  tokens and left `expiresAt=0`. It will not be retried automatically. The
-  refresh token itself requires the one interactive profile-3 login above.
+  **Current operator action:** another authorized lane is constructing private
+  0700 immutable leases for accounts 1, 3, and 4. Do not run `ds-cred`, refresh,
+  copy, or validate those identities from this workspace. The account-1 lease
+  proved the mechanism under Claude CLI 2.1.251, but the frozen C1--C3 transport
+  pins CLI 2.1.250 and its SHA. Before handoff, repeat the three sequential
+  immutable invocations for each candidate lease with the exact pinned binary
+  `/home/ds/.local/share/claude/versions/2.1.250`, verify source and lease bytes
+  remain unchanged, verify no attached session can rotate the identity, and
+  report access-token headroom beyond the run wall bound. The earlier request
+  for a direct profile-3 login is superseded by this lease lane.
 
 ## Approved actions in progress
 

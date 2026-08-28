@@ -4599,3 +4599,87 @@ state.
 Keep the direct lane paused until three comparator identities demonstrate
 stable repeated benchmark-transport invocations under exclusive ownership;
 then execute the committed 518-attempt continuation exactly once.
+
+## 2026-08-28 — D-057: Correct the OAuth lease mechanism from measurement
+
+### Decision / experiment
+
+Test whether an immutable copied OAuth profile is intrinsically incompatible
+with Claude Code, or whether the incident instead requires source quiescence,
+token headroom, and filesystem isolation. Bead `omni-benchmark-0e8`; change
+type: infrastructure-mechanism correction.
+
+### Observation
+
+D-056 inferred that cloned refresh state was the architectural error. A
+separate controlled account-1 lease test contradicted that inference. A new
+0700 lease containing one 0600 credential file and minimal onboarding/account
+configuration was pinned, mounted read-only, invoked successfully, and remained
+byte-identical. The source credential also remained unchanged. Conversely, all
+five canonical account configuration directories are mode 0775 and therefore
+fail `validate_private_directory`; they could never have been passed directly
+to the frozen transport. Accounts 3 and 4 also had attached sessions, making
+their identities non-quiescent regardless of credential freshness.
+
+### Hypothesis
+
+An immutable lease is safe when its access token has more headroom than the
+maximum run duration and no other process can refresh the same identity. The
+failure mechanism is leasing a non-quiescent or insufficient-headroom identity,
+not the mere presence of an unused refresh token in a read-only snapshot.
+
+### Decision
+
+Retract the benchmark-specific in-place refresh-broker proposal. Automate a
+preflight that refreshes before freezing when necessary, requires zero attached
+sessions, verifies token headroom beyond the run plus margin, creates a private
+minimal lease, pins the committed Claude binary, and forbids every writer until
+release. A general fleet broker remains useful only if it relinquishes the
+leased identity for the entire benchmark run.
+
+### Rationale
+
+Refreshing underneath `verify_unchanged()` would deliberately violate the
+identity invariant and could revoke the snapshotted access token. The measured
+read-only lease preserves both reproducibility and authentication without that
+race.
+
+### Intervention
+
+No benchmark code or credential was changed in this decision entry. Bead
+`omni-benchmark-0e8` was rewritten around immutable lease preflight. One open
+compatibility check remains: the successful lease canary used Claude CLI
+2.1.251, while the frozen C1--C3 transport may pin 2.1.250 and its exact SHA.
+
+### Result
+
+One account-1 lease passed private-directory validation, resource pinning,
+post-20-second identity verification, a completed read-only auth invocation,
+post-run byte identity, and 30 seconds of idle stability. Accounts 3 and 4 were
+not yet eligible because they had three and two attached sessions respectively.
+
+### Interpretation
+
+The earlier causal claim was too broad. Credential copying is hazardous only
+when another holder may rotate the identity or the lease outlives its access
+token. A frozen, adequately provisioned, exclusively owned lease is compatible
+with the benchmark's immutable transport.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+Long-running OAuth evaluations need explicit lease headroom and ownership
+telemetry. Automatic refresh is valuable for the shared fleet, but benchmark
+workers need an observable handoff from mutable fleet state to a quiescent
+immutable lease.
+
+### Next step
+
+Let the existing account-lane owner finish accounts 3 and 4. Before any direct
+continuation, verify zero attached sessions, three sequential immutable
+invocations per lease, exact frozen binary version/SHA compatibility, and token
+headroom beyond the scheduled wall bound. Do not mutate credentials from this
+workspace.
