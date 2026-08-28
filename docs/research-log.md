@@ -2011,3 +2011,93 @@ Have the infrastructure lane verify the Omni-stored reader connectivity after
 active restores complete, then retry one schema refresh. Once it succeeds,
 create the isolated shared model/branch, upload, validate, read back, and run the
 public-only canary.
+
+## 2026-08-28 — D-028: Harden sealed scoring before private data exists
+
+### Decision / experiment
+
+Implement and adversarially review the PostgreSQL execution boundary using only
+public and synthetic fixtures.
+
+### Observation
+
+The frozen result comparators did not yet define a safe database lifecycle for
+generated SQL, official-versus-sensitivity row caps, independent candidate/gold
+state, or the generate-all-before-score seal. Initial implementation reviews
+found several ways a superficially correct evaluator could produce invalid or
+unsafe results.
+
+### Hypothesis
+
+A disposable-clone lifecycle with restricted execution identities, explicit
+query admission, exact official compatibility, and immutable aggregate artifacts
+can score private records later without exposing labels or allowing candidate SQL
+to affect the gold execution.
+
+### Decision
+
+Build the live adapter now, but test only against synthetic fixtures and a
+separate disposable PostgreSQL 18 container. Treat security and correctness
+review failures as blockers rather than deferring them to Freeze B.
+
+### Rationale
+
+The gold package is available by email but remains unopened. This is the best
+time to test the sealed boundary: any accidental dependency on hidden data is
+impossible, and evaluator behavior can still be corrected without observing a
+benchmark outcome.
+
+### Intervention
+
+Added typed PostgreSQL execution, independent candidate/gold template clones,
+restricted-role attestation, fail-closed Query-only admission, client-owned
+timeouts, official and sensitivity scorer transports, closed failure taxonomy,
+transient-only reruns, complete-batch prevalidation, and an exact 1,212-output
+generation gate. Bead: `omni-benchmark-dih.10`; commit: `0c6f46a`; affected
+subsystem: sealed evaluation and scoring. Change type: general system
+improvement.
+
+### Result
+
+The first reviews blocked the implementation because candidate SQL ran with
+administrative credentials, candidate and gold could share mutated state, no
+result was conflated with an empty result, 10,000-row prefix truncation could
+hide unequal tails, artifacts could expose rows or arbitrary failure text, and
+late invalid batch records were discovered only after thousands of isolate
+acquisitions. A later review showed that transaction read-only settings were not
+a security boundary because a role could alter its own session or identity. The
+next review caught an incorrect attempt to make the official scorer safer by
+changing its truncation semantics, which would have broken benchmark
+comparability. A final operational review found ambiguous clone creation could
+leave an orphan database.
+
+Each finding received an adversarial regression and a narrower fix. Final gates:
+730 tests passed, three explicit opt-in skips, 85.15% branch coverage, two live
+PostgreSQL 18 checks, lint/format/build/secret/dependency scans, and independent
+code and security approval with no remaining findings.
+
+### Interpretation
+
+Evaluator correctness is part of the experiment, not plumbing. “Run both SQL
+queries and compare rows” was insufficient: isolation, privilege boundaries,
+overflow policy, failure ownership, artifact redaction, and compatibility each
+changed what result could legitimately be reported. Keeping official and
+sensitivity policies separately named preserves both comparability and a safer
+robustness analysis.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+This is primarily benchmark infrastructure, not an Omni product finding. It does
+reinforce that governed analytical systems should expose whether a failure came
+from query admission, execution, validation, infrastructure, or comparison; a
+single incorrect/error bucket would hide materially different operator actions.
+
+### Next step
+
+Bind the evaluator and scorer versions into Freeze B. Until then, keep the gold
+attachment outside the workspace and continue the public-only C4 baseline once
+the Omni connection refresh succeeds.
