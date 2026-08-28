@@ -4198,3 +4198,120 @@ have semantic defects versus transient infrastructure failures.
 Under Bead `omni-benchmark-dih.17.3`, mechanically normalize bound public field
 identifiers, emit explicit alias SQL, regenerate deterministically, then retry
 serially under a new append-only run ID.
+
+## 2026-08-28 — D-052: Freeze C4 baseline coverage after four diagnostic deployment runs
+
+### Decision / experiment
+
+Preserve the complete v3--v6 public-only deployment trajectory, accept the
+largest exact-readback subset for the time-boxed C4 baseline, and stop semantic
+deployment optimization before question generation. Bead
+`omni-benchmark-dih.17`; change type: general system integration. Last updated:
+2026-08-28 13:39 EDT.
+
+### Observation
+
+D-050 mixed semantic validation defects with request-rate failures. Subsequent
+runs isolated three additional mechanisms: stale invalid branches needed a
+corrected upload, the API required global request pacing even with one worker,
+direct physical dimensions needed exact public-column SQL, and Omni readback
+removed redundant direct-column SQL after accepting it.
+
+### Hypothesis
+
+Each general mechanical correction should remove its diagnosed failure class
+without changing HKB definitions or benchmark-question behavior. If a paced,
+content-addressed run still left substantial validator failures after those
+classes were removed, continuing to optimize deployment would yield less
+submission value than freezing the verified subset and measuring it.
+
+### Decision
+
+Run each correction under a new append-only run ID and preserve failures. Allow
+readback equivalence only when the compiler-attested manifest proves the exact
+view, semantic field, source-column stable ID, and identity SQL that Omni
+stripped. Do not normalize authored, structured-leaf, or derived SQL. After v6,
+freeze C4 baseline coverage at the ten databases with zero validator issues and
+exact semantic readback. Do not tune the remaining eight before baseline.
+
+### Rationale
+
+The sequence tests one mechanism at a time and retains the negative results.
+The cutoff favors an executable, interpretable baseline over broadening into
+table availability, structured-field extraction, type coercion, or parser
+exceptions without question-level evidence.
+
+### Intervention
+
+- `public-baseline-v3-20260828`, source `b5959dc`: re-upload corrected bundles
+  to stale invalid branches, with no request pacing.
+- `public-baseline-v4-20260828`, source `2713222`: serialize deployment and
+  enforce a 1.25-second global minimum between product API request starts.
+- `public-baseline-v5-20260828`, source `d359ae2`: bind direct physical fields to
+  exact public-schema identifiers while leaving authored and derived SQL
+  unchanged.
+- `public-baseline-v6-20260828`, source `7c669e5`: attest those mechanical
+  identity bindings in the bundle manifest and treat only Omni's omission of
+  their redundant `sql` property as semantically equivalent on readback.
+
+### Result
+
+The v3 run verified 5/18 databases; 13 failed at the product API after request
+rate exhaustion. Aggregate artifact SHA-256:
+`c03c8f8a42c4e1206a7755100c0130d0a70583b8d1ec5b0ab76be1cf4853f729`.
+
+The paced v4 run verified 9/18 and converted every remaining failure into a
+stable validator result: 110 issues across nine databases, with no rate-limit
+or product-API terminal failure. Aggregate artifact SHA-256:
+`7b3679a1903ef32a33b425822b6843484ce9b8e23b8c3fb7490247302c7f94d7`.
+
+The exact-column v5 run removed 24 validator issues: labor fell from five to
+zero and polar from 29 to ten. It verified 7/18; cross-border, cybermarket, and
+labor were validator-clean but failed strict readback because Omni removed the
+now-redundant identity SQL. Eight databases retained 86 validation issues.
+Aggregate artifact SHA-256:
+`6bd7e7033801a20e18244db4fb55eae037d50b96cedca474f41550e97eb03525`.
+
+The attested-readback v6 run verified 10/18 with no semantic regression. It
+promoted exactly the three validator-clean readback failures and left the same
+86 issues on the same eight databases: mental health 6, organ transplant 7,
+planets 2, polar equipment 10, robot fault prediction 3, solar panel 26, sports
+events 7, and virtual idol 25. Aggregate artifact SHA-256:
+`f6b59ceac8d8a04d431d43d5d309fbb1be5451d0054b18ef07693d890dda8836`;
+claim SHA-256:
+`57575e40a15208391d67eb608d2efe213f673998a398cff8ee1e86ebbcd68319`.
+The frozen verified subset is archeology, cross-border, cybermarket, disaster
+relief, exchange-traded funds, fake account, labor certification, museum
+artifact, residential data, and reverse logistics. Each immutable record binds
+its exact model ID, branch ID, manifest SHA-256, source commit, validation count,
+and readback state.
+
+### Interpretation
+
+The hypotheses were partially correct. Request pacing and direct-column binding
+were general fixes with clean causal signatures. Exact byte-shaped readback was
+too strict for a product that canonicalizes redundant identity SQL, but a broad
+normalizer would have hidden real differences; compiler-attested equivalence
+closed only the observed product rewrite. The unchanged residual vector shows
+that the remaining eight databases have different representability or product
+validation problems, not another instance of the repaired identity mechanism.
+
+### Outcome
+
+KEEP the three general fixes and the ten-database C4 baseline subset. DEFER the
+eight residual validation classes until after the public-only baseline.
+
+### Product implication
+
+Omni model import/readback needs a documented canonical form or immutable
+semantic revision hash so automation can distinguish safe product normalization
+from drift. Bulk model workflows also need structured rate-limit guidance.
+Validator issue classes successfully separated field-binding defects from
+structured-field, table, type, and parser gaps, but those details currently
+require external trace collection.
+
+### Next step
+
+Attach the reviewed v6 deployment gate to C4 baseline dispatch for only the ten
+verified databases. Run no further semantic deployment optimization before the
+baseline evidence and failure taxonomy are preserved.

@@ -678,6 +678,59 @@ execution mechanics rather than accuracy.
   correctness result was produced.
 - **Evaluator agreement/disagreement:** Not applicable.
 
+## PF-012: Model readback canonicalizes redundant physical-column SQL
+
+- **Observed behavior:** After the compiler emitted exact public-column SQL for
+  direct physical dimensions, Omni accepted and validated the models but
+  omitted those redundant `sql` properties from extension readback.
+- **Minimal non-private reproduction:** On the isolated cross-border branch,
+  upload `proc_comp` with the exact identity binding `sql: '"procComp"'`.
+  Validation returns no issues; extension readback retains the field metadata
+  but omits `sql`.
+- **Expected behavior:** Programmatic publishing has either byte-stable readback
+  or a documented semantic canonicalization contract that distinguishes benign
+  product normalization from changed model meaning.
+- **Actual behavior:** Strict semantic readback rejected three validator-clean
+  databases until the external verifier used compiler-attested public-schema
+  identity provenance to recognize only this omission.
+- **Why it matters to customers:** CI/CD and model-generation tools need to know
+  whether a readback difference is harmless normalization, semantic drift, or a
+  lost definition. Accepting arbitrary missing SQL would be unsafe.
+- **Systematic evidence / frequency:** 3/18 databases in the exact-column v5
+  run: cross-border, cybermarket, and labor certification. No authored,
+  structured-leaf, or derived SQL difference was accepted.
+- **Benchmark impact:** The narrow equivalence rule increased exact verified C4
+  deployment coverage from 7/18 to 10/18 without changing the residual
+  validator issue vector or any benchmark question behavior.
+- **Severity:** Medium for model automation and provenance; high if strict
+  readback is used as a deployment gate without a product canonical form.
+- **Proposed product change:** Expose a content-addressed semantic revision or
+  documented canonical model export. Include field provenance that distinguishes
+  inferred physical identity from authored SQL and derived definitions.
+- **Was the change tested?:** Yes. The external adapter accepts only an omitted
+  SQL property attested by exact view, field, source-column stable ID, and
+  identity SQL in the authenticated bundle manifest. Adversarial tests preserve
+  rejection of derived and unattested alias SQL changes.
+- **Measured effect:** Three databases moved from zero-validator readback failure
+  to exact verified deployment; full tests reported 1,387 passed and five
+  environment-gated skips.
+- **Experiment / commit provenance:** D-052; runs
+  `public-baseline-v5-20260828` and `public-baseline-v6-20260828`; source commit
+  `7c669e521bba215101684d89e9ef78aabef5b855`.
+- **Visible in AI Hub?:** The final model is usable by AI Hub, but the reason for
+  the readback rewrite is not surfaced as a diagnostic event.
+- **AI Hub exposes relevant context/behavior?:** It exposes the resulting model,
+  not the import-time canonicalization provenance.
+- **Fixable through current AI Hub/modeling workflow?:** No; this is an
+  import/export and model-identity contract.
+- **AI Hub Eval outcome:** Not run; no question was required to reproduce it.
+- **External execution outcome:** Product validation and exact semantic readback
+  passed for the ten-database frozen subset; question scoring remains separate.
+- **Evaluator agreement/disagreement:** The product validator accepted all three
+  models while the original external exact-readback gate rejected them. The
+  attested canonicalizer reconciled the representations without treating the
+  validator as the correctness authority.
+
 ## Entry template
 
 ### PF-XXX: Short finding title
