@@ -4401,3 +4401,94 @@ exposes it later.
 Commit and independently review the arm identity and dispatcher. Report the
 notional cost scenario and exact launch path, then run the five-attempt canary
 before deciding whether to dispatch all 129 attempts.
+
+## 2026-08-28 — D-054: Adapt product-native failure and truncated-preview records
+
+### Decision / experiment
+
+Diagnose the uniform C4 capture-gate failure before dispatching the 129-question
+arm. Change type: general system integration. Last updated: 2026-08-28 14:32
+EDT.
+
+### Observation
+
+The first concurrency canary failed before authentication because its child
+environment omitted the already-configured Omni origin. A fresh infrastructure
+rerun then reached the origin but found that the existing OAuth session returned
+HTTP 403. Both attempts stopped before question generation and retained five
+immutable infrastructure diagnostics. After the human renewed OAuth, run
+`public-c4-concurrency-canary-v3-20260828-1425` completed five product jobs at
+concurrency five, but all five terminal artifacts were
+`errored / response_contract_error`.
+
+The completed jobs used 5,453,733 tokens, 63 tool calls, and 17 database queries.
+Their median latency was 80.2 seconds and their full concurrent wall span was
+175.3 seconds. Read-only retrieval of the five public canary job results showed
+two concrete response-contract differences: four jobs contained product-native
+`failure` actions without timestamps before later successful queries, and three
+final truncated CSV previews embedded one-column section records such as
+`# FIRST 63 ROWS:` among ordinary multi-column rows.
+
+### Hypothesis
+
+The governed queries completed, but the external capture adapter rejected two
+documented product response shapes before it could rerun the final semantic
+query for a complete typed result. Narrowly accepting the timestamp-free failure
+record and stripping only exact control records from an explicitly truncated
+preview should make all five preserved responses scoreable without relaxing
+ordinary action timestamps or ragged CSV validation.
+
+### Decision
+
+Do not launch the 129-question arm. Write failing tests for both observed shapes,
+make the smallest reusable result-adapter change, replay all five public-only
+responses locally, independently review the fix, and require a fresh live
+five-attempt canary before scale dispatch.
+
+### Rationale
+
+The five failures share the same adapter boundary but contain two structural
+variants. Treating the entire response as trusted, dropping all failure actions,
+or accepting arbitrary ragged CSV would conceal real contract problems. Exact
+shape handling preserves fail-closed behavior while separating product query
+failure/recovery from benchmark harness failure.
+
+### Intervention
+
+Accept a timestamp-free action only when its type is `failure`, `isError` is
+true, its tool name is present, and its finite duration is non-negative. For an
+explicitly truncated CSV preview only, remove exact `FIRST`, `SAMPLED ... FROM
+MIDDLE`, and `LAST` section-control rows before validating the remaining row
+shape. Untruncated and arbitrary ragged rows remain errors.
+
+### Result
+
+The two tests failed before the change and pass afterward. All five immutable
+public canary job responses now parse locally: expected final row counts are
+687, 5, 940, 10, and 178, with the original database-query counts 1, 3, 2, 5,
+and 6. The broader result/capture/attempt-adapter suite passes 61 tests. Live
+verification remains pending.
+
+### Interpretation
+
+The hypothesis is supported by preserved-response replay, not yet by a fresh
+product run. The governed jobs were not model failures; strict external parsing
+misclassified recoverable product-native action history and preview formatting
+as terminal harness errors.
+
+### Outcome
+
+FOLLOW UP.
+
+### Product implication
+
+AI Hub makes query attempts and failures visible, but machine clients need a
+stable action schema and explicit structured preview metadata. Formatting
+section labels as CSV rows forces every downstream client to rediscover a UI
+presentation convention, while failure actions omitting the timestamp required
+by other action types complicate uniform trace processing.
+
+### Next step
+
+Commit the reviewed adapter fix and rerun a fresh immutable five-attempt C4
+canary. Launch the 129-question arm only if capture verification passes.

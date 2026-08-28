@@ -21,6 +21,13 @@ class OmniResultContractError(ValueError):
     """Raised when a completed Omni job has no scoreable governed result."""
 
 
+_TRUNCATED_CSV_MARKER = re.compile(
+    r"# (?:FIRST [0-9]+ ROWS:|"
+    r"SAMPLED [0-9]+ ROWS FROM MIDDLE \(rows [0-9]+-[0-9]+\):|"
+    r"LAST [0-9]+ ROWS:)"
+)
+
+
 @dataclass(frozen=True)
 class ParsedOmniQuery:
     """Validated final agent query awaiting a type-faithful result rerun."""
@@ -153,12 +160,20 @@ def reject_forbidden_keys(value: Any) -> None:
 def _validated_action(value: object) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise OmniResultContractError("Omni actions must be objects")
-    for field in ("message", "timestamp", "type"):
+    for field in ("message", "type"):
         if field not in value:
             raise OmniResultContractError(f"Omni action {field} is missing")
         if not isinstance(value[field], str):
             raise OmniResultContractError(f"Omni action {field} must be a string")
-    _validate_timestamp(value["timestamp"])
+    timestamp = value.get("timestamp")
+    if timestamp is None and value["type"] == "failure":
+        _validate_failure_action(value)
+    elif timestamp is None:
+        raise OmniResultContractError("Omni action timestamp is missing")
+    elif not isinstance(timestamp, str):
+        raise OmniResultContractError("Omni action timestamp must be a string")
+    else:
+        _validate_timestamp(timestamp)
     if value["type"] == "generate_query":
         if "result" not in value or not isinstance(value["result"], Mapping):
             raise OmniResultContractError("Omni generate_query result is missing")
@@ -184,7 +199,9 @@ def _validated_query_result(value: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _validated_scoreable_query_result(value: Mapping[str, Any]) -> dict[str, Any]:
-    columns, row_count = _parse_csv(value["csvResult"])
+    columns, row_count = _parse_csv(
+        value["csvResult"], truncated=value["csvResultWasTruncated"]
+    )
     if value["csvResultWasTruncated"]:
         if row_count > value["totalRowCount"]:
             raise OmniResultContractError("Omni query preview exceeds total row count")
@@ -247,7 +264,7 @@ def _parsed_query(
     )
 
 
-def _parse_csv(value: str) -> tuple[tuple[str, ...], int]:
+def _parse_csv(value: str, *, truncated: bool) -> tuple[tuple[str, ...], int]:
     try:
         parsed = list(csv.reader(io.StringIO(value, newline=""), strict=True))
     except csv.Error as error:
@@ -257,11 +274,34 @@ def _parse_csv(value: str) -> tuple[tuple[str, ...], int]:
     columns = tuple(parsed[0])
     if len(set(columns)) != len(columns):
         raise OmniResultContractError("Omni query result CSV has duplicate columns")
-    if any(len(row) != len(columns) for row in parsed[1:]):
+    rows = [
+        row
+        for row in parsed[1:]
+        if not (
+            truncated
+            and len(row) == 1
+            and _TRUNCATED_CSV_MARKER.fullmatch(row[0]) is not None
+        )
+    ]
+    if any(len(row) != len(columns) for row in rows):
         raise OmniResultContractError("Omni query result CSV rows are ragged")
     for column in columns:
         reject_forbidden_keys({column: None})
-    return columns, len(parsed) - 1
+    return columns, len(rows)
+
+
+def _validate_failure_action(value: Mapping[str, Any]) -> None:
+    duration = value.get("durationMs")
+    if (
+        value.get("isError") is not True
+        or not isinstance(value.get("toolName"), str)
+        or not value["toolName"]
+        or isinstance(duration, bool)
+        or not isinstance(duration, (int, float))
+        or not math.isfinite(duration)
+        or duration < 0
+    ):
+        raise OmniResultContractError("Omni failure action is invalid")
 
 
 def _typed_row(

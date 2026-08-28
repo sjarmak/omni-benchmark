@@ -121,6 +121,81 @@ def test_truncated_final_preview_binds_complete_metadata_typed_rerun() -> None:
     )
 
 
+def test_parse_accepts_product_truncation_section_markers() -> None:
+    parsed = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result=(
+                        "Label,Value\n"
+                        "# FIRST 1 ROWS:\n"
+                        "first,1\n"
+                        "# SAMPLED 1 ROWS FROM MIDDLE (rows 2-9):\n"
+                        "middle,5\n"
+                        "# LAST 1 ROWS:\n"
+                        "last,10\n"
+                    ),
+                    query={"fields": ["answer.label", "answer.value"]},
+                    total_row_count=10,
+                    truncated=True,
+                )
+            ]
+        }
+    )
+
+    assert parsed.expected_columns == ("Label", "Value")
+    assert parsed.expected_row_count == 10
+
+
+def test_parse_accepts_product_failure_action_without_timestamp() -> None:
+    failure_action = {
+        "durationMs": 42,
+        "error": "The governed query failed validation.",
+        "isError": True,
+        "message": "Query failed",
+        "toolName": "generate_query",
+        "type": "failure",
+    }
+    parsed = parse_omni_job_result(
+        {
+            "actions": [
+                failure_action,
+                _query_action(
+                    csv_result="answer\n2\n",
+                    query={"fields": ["answer.value"]},
+                    total_row_count=1,
+                ),
+            ]
+        }
+    )
+
+    assert parsed.observed_actions_by_type == (("failure", 1), ("generate_query", 1))
+
+
+def test_parse_does_not_strip_truncation_markers_from_untruncated_csv() -> None:
+    action = _query_action(
+        csv_result="Label,Value\n# FIRST 1 ROWS:\nfirst,1\n",
+        query={"fields": ["answer.label", "answer.value"]},
+        total_row_count=2,
+    )
+
+    with pytest.raises(OmniResultContractError, match="ragged"):
+        parse_omni_job_result({"actions": [action]})
+
+
+def test_parse_rejects_malformed_timestamp_free_failure_action() -> None:
+    failure_action = {
+        "durationMs": 42,
+        "isError": False,
+        "message": "Query failed",
+        "toolName": "generate_query",
+        "type": "failure",
+    }
+
+    with pytest.raises(OmniResultContractError, match="failure action"):
+        parse_omni_job_result({"actions": [failure_action]})
+
+
 @pytest.mark.parametrize(
     ("plan", "message"),
     [

@@ -724,6 +724,52 @@ execution mechanics rather than accuracy.
 - **Fixable through current AI Hub/modeling workflow?:** No; this is an
   import/export and model-identity contract.
 - **AI Hub Eval outcome:** Not run; no question was required to reproduce it.
+
+## PF-013: Governed job previews mix data rows with presentation-control records
+
+- **Observed behavior:** Three of five public C4 concurrency canaries returned a
+  truncated CSV preview containing one-column `FIRST`, `SAMPLED ... FROM
+  MIDDLE`, and `LAST` section labels between ordinary multi-column rows. Four of
+  five also recorded timestamp-free `failure` actions before a later successful
+  governed query.
+- **Minimal non-private reproduction:** Run the five committed public C4 canary
+  questions against the isolated verified branches and retrieve their completed
+  AI job results. The behavior reproduced across archeology, cybermarket, and
+  ETF truncated previews and across four databases' recovered failure histories.
+- **Expected behavior:** Machine-facing results separate preview-control metadata
+  from CSV data, and action records expose a stable common envelope or an
+  explicit per-type schema.
+- **Actual behavior:** Presentation labels are serialized as ragged CSV rows and
+  product-native failure records omit the timestamp present on every other
+  observed action type.
+- **Why it matters to customers:** API consumers can misclassify a successfully
+  completed governed query as a harness failure or accidentally ingest preview
+  labels as business data.
+- **Systematic evidence / frequency:** Truncation labels affected 3/5 canaries;
+  timestamp-free failure actions affected 4/5. Together they caused 5/5 external
+  capture failures before the adapter correction.
+- **Benchmark impact:** The initial authenticated concurrency canary produced
+  five `response_contract_error` outcomes despite 63 tool calls and 17 database
+  queries. The narrow adapter correction parses all five preserved responses;
+  live verification is pending.
+- **Severity:** High for machine-to-machine analytics and external evaluation.
+- **Proposed product change:** Return preview section boundaries as structured
+  metadata outside the CSV payload and give every action a stable timestamped
+  envelope, including failure actions.
+- **Was the change tested?:** Yes on the external adapter with RED/GREEN tests
+  and all five preserved public responses; no product-side change was available.
+- **Measured effect:** Preserved-response parse success changed from 0/5 to 5/5.
+- **Experiment / commit provenance:** D-054; live source commit pending review.
+- **Visible in AI Hub?:** Partially. AI Hub exposes action history and truncated
+  results, but the schema mismatch is clearest in the machine API response.
+- **AI Hub exposes relevant context/behavior?:** It exposes the recovered query
+  sequence, but not why a strict external parser rejected the response.
+- **Fixable through current AI Hub/modeling workflow?:** No; this is an API
+  response-contract issue rather than semantic-model authoring.
+- **AI Hub Eval outcome:** Not run; external execution remains authoritative.
+- **External execution outcome:** Pending a fresh capture canary.
+- **Evaluator agreement/disagreement:** Not yet applicable; the failure occurred
+  before scorer input was produced.
 - **External execution outcome:** Product validation and exact semantic readback
   passed for the ten-database frozen subset; question scoring remains separate.
 - **Evaluator agreement/disagreement:** The product validator accepted all three
