@@ -1,0 +1,104 @@
+\section{Related work}
+\label{sec:related}
+
+\paragraph{Text-to-SQL benchmarks and the enterprise gap.}
+Cross-domain text-to-SQL evaluation was standardized by
+Spider~\cite{arxiv-1809-08887} and scaled by BIRD, which added dirty real-world
+values, efficiency measurement, and the observation that external knowledge is
+often required to bridge a question to a schema~\cite{arxiv-2305-03111}. Both
+established the metric inherited here: execute predicted and gold SQL, compare
+result sets. The gap to production analytics is documented from several
+directions. Spider 2.0 moves to enterprise workflows spanning dialects and
+multi-step transformation and reports that systems strong on earlier suites solve
+a small fraction of it~\cite{arxiv-2411-07763}, with a multimodal sibling
+covering the surrounding tooling~\cite{arxiv-2407-10956}. BEAVER builds questions
+from an actual warehouse and finds models perform poorly even with prompt
+engineering and retrieval, attributing the drop to complex schemas, complex
+business questions, and private data that cannot have been trained
+on~\cite{arxiv-2409-02038}. EntSQL isolates the knowledge dependency: across
+1,066 aligned examples in five business domains, 96.0\% require information
+beyond the question and schema, and the best evaluated system reaches 15.9\% with
+long-form documents and 21.4\% with concise expert evidence, against a human
+expert practical ceiling of 84.0\%~\cite{arxiv-2606-03363}. Recent suites push
+further into business reasoning and decision
+framing~\cite{arxiv-2510-07309,arxiv-2606-02109}, question whether SQL-string
+accuracy is the right target~\cite{arxiv-2608-09254}, extend to database
+operations agents~\cite{arxiv-2607-22165} and autonomous data-modeling
+agents~\cite{arxiv-2606-19319}, and propose continuous benchmark generation to
+keep pace with the systems~\cite{arxiv-2511-10049}.
+
+The intervention studied here has a direct antecedent. Sequeda, Allemang, and
+Jacob built an insurance-domain benchmark with an ontology and mappings defining
+a knowledge graph over a SQL database, and reported zero-shot accuracy of 16\%
+querying the SQL database directly against 54\% querying a knowledge-graph
+representation of the same data~\cite{arxiv-2311-07509}. That result motivates
+the question and also shows what a stronger design must add: a single contrast
+between ``raw database'' and ``semantic representation'' moves access,
+representation, and enforcement together, and the strength of the direct-SQL arm
+bounds how much the comparison can establish. LiveSQLBench Large-v1 is used here because it
+ships the intermediate rung: a structured, dependency-bearing knowledge base from
+which both a searchable-raw-knowledge and a searchable-semantic-model condition
+can be constructed from the same public source.
+
+\paragraph{What execution accuracy does not measure.}
+Pourreza and Rafiei show cross-domain text-to-SQL scores are sensitive to
+evaluation choices, so reported gains can be artifacts of the comparison
+procedure~\cite{arxiv-2310-18538}. SpotIt applies formal verification to the
+evaluation itself and finds disagreements between result-set equality and query
+equivalence~\cite{arxiv-2510-26840}, a question also attacked by asking whether
+models can decide SQL equivalence~\cite{arxiv-2312-10321}. NL2SQL-BUGs targets
+the complementary error, semantically wrong translations that survive
+execution-based scoring~\cite{arxiv-2503-11984}; ROSE proposes an intent-centered
+metric~\cite{arxiv-2604-12988}; SynSQL synthesizes databases to make
+execution-based evaluation less sensitive to which rows happen to be
+present~\cite{arxiv-2604-27261}. This is concrete here, because the official
+LiveSQLBench Query scorer is lossy in ways we reproduced from its pinned source
+(Section~\ref{sec:benchmark}). Rather than silently repair or silently inherit
+the metric, we freeze both a faithful reimplementation and a corrected comparator
+and commit in advance to reporting both.
+
+\paragraph{Contamination and holdout reuse.}
+The benchmark is public, so evaluated models may have seen it. Membership tests
+for black-box models~\cite{arxiv-2310-17623}, pretraining-data
+detection~\cite{arxiv-2310-16789}, leakage benchmarking~\cite{arxiv-2404-18824},
+open contamination reporting~\cite{arxiv-2310-17589}, and analyses of what
+training on a benchmark buys~\cite{arxiv-2409-01790} establish that contamination
+is measurable and common; the practical mitigations are live or continuously
+regenerated benchmarks~\cite{arxiv-2406-19314} and contamination-resistant
+construction~\cite{arxiv-2505-08389}. We treat the dataset card's
+contamination-free claim as an official claim, not an established result. The
+mitigation available to us is different in kind: all four conditions draw on the
+same public questions and comparisons are paired within question, so prior
+exposure inflates all rungs together and the contrasts remain interpretable where
+the absolute level does not. Development itself is adaptive data analysis. Dwork
+et al. quantify the validity lost under holdout reuse and give mechanisms that
+preserve it~\cite{arxiv-1506-02629}; Hardt analyzes ladder-style adaptive risk
+estimation~\cite{arxiv-1706-02733}; Feldman, Frostig, and Hardt show how outcome
+structure changes the overfitting rate~\cite{arxiv-1905-10360}; Chaibub Neto et
+al. address the same problem on public
+leaderboards~\cite{arxiv-1607-00091}. Hence the three-way partition of
+Section~\ref{sec:design}.
+
+\paragraph{Variance and the harness.}
+Single-run benchmark numbers understate their own uncertainty. Miller sets out
+error bars for language-model evaluations including clustered and paired
+analyses~\cite{arxiv-2411-00640}; Madaan et al. quantify benchmark score variance
+across seeds and configurations~\cite{arxiv-2406-10229}; Blackwell et al. measure
+the reproducibility cost of nondeterminism~\cite{arxiv-2410-03492}; Coqueret et
+al. state what randomness obliges researchers to report~\cite{arxiv-2607-24372};
+Leech et al. catalogue the practices that inflate reported results, including
+outcome selection after the fact~\cite{arxiv-2407-12220}. Separately, any claim
+about a condition is a claim about a condition inside a harness. Zhang et al.
+argue as a position that undisclosed harnesses make agent comparisons
+uninterpretable~\cite{arxiv-2605-23950}; that paper reports no effect size, and
+we attribute none to it. Two controlled studies bound the magnitude and disagree:
+Vats and Golev measure a 0 to 8 percentage point paired pass-rate difference
+across three coding harnesses but a 40-fold difference in tokens per solved
+task~\cite{arxiv-2607-22585}, while Starace, preregistered, measures an accuracy
+swing of up to 28 percentage points across three scaffolds on
+GAIA~\cite{arxiv-2606-08529}; Gorinova et al. argue coding benchmarks are
+misaligned with the agentic systems built on them~\cite{arxiv-2606-17799}. A 0 to
+28 point range is too wide to assume away in either direction, which is why this
+protocol neither assumes scaffold effects are negligible nor that they dominate,
+and why C4 minus C3 is declared a system-level comparison whenever model parity
+is unavailable.

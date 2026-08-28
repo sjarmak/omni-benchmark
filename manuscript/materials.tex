@@ -1,0 +1,32 @@
+The public dataset is LiveSQLBench Large-v1 at revision
+\hash{a418e108d5cbb4cf9b783a928eff5e924ad2460d}
+(\url{https://huggingface.co/datasets/birdsql/livesqlbench-large-v1}), and the
+official harness and evaluator are read at commit
+\hash{e15cd221267e06fabfaf6a3d4a69308280ce9a7c}
+(\url{https://github.com/bird-bench/livesqlbench}). The dataset card carries an
+internal license inconsistency, CC-BY-4.0 in its front matter and CC-BY-SA-4.0 in
+its footer, which is recorded here because it constrains redistribution of
+derived public artifacts.
+
+The preregistration artifacts required to reproduce the population and both
+splits are the committed eligible manifest, train and test identifier lists,
+manifest and split metadata, and the development split metadata, together with
+the preparation and split scripts and the pinned seeds
+\texttt{omni-livesqlbench-large-v1-split-v1} and
+\texttt{omni-livesqlbench-large-v1-development-split-v1}. Their content hashes are
+given in Section~\ref{sec:design}, and regeneration from the pinned source hash
+is verified by test rather than asserted.
+
+Private benchmark gold, hidden knowledge annotations, hidden test cases, run
+artifacts, raw traces, and credentials are not redistributed and are excluded
+from version control by construction: the custody tools never write held-out
+records into the workspace, artifact validators reject protected fields
+recursively at any nesting depth, and raw traces and generated SQL are confined
+to ignored run roots. Aggregate results, hashes, counts, and permitted summaries
+are the only correctness-adjacent material that appears in committed artifacts.
+
+The comparison that motivated this ablation is the published benchmark of Omni's
+agentic analytics harness
+(\url{https://omni.co/blog/benchmarking-omnis-agentic-analytics-harness}). This
+study is designed to test that claim under a design that separates knowledge
+access, representation, and enforcement, not to reproduce it.

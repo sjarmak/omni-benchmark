@@ -1,0 +1,85 @@
+\documentclass[11pt]{article}
+
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage{upquote}
+\usepackage{xcolor}
+\usepackage{framed}
+\usepackage{seqsplit}
+\usepackage{xurl}
+\usepackage[hidelinks,breaklinks=true]{hyperref}
+
+\hypersetup{
+  pdftitle={Does an Enforced Semantic Layer Improve Analytical Question Answering?},
+  pdfauthor={Stephanie Jarmak},
+  pdfsubject={Preregistered evaluation protocol for semantic-layer text-to-SQL systems}
+}
+
+% Long content hashes and commit identifiers must be allowed to break across
+% lines without a hyphen, which would corrupt the value being quoted.
+\newcommand{\hash}[1]{\texttt{\seqsplit{#1}}}
+
+\setlength{\emergencystretch}{6em}
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0.14\baselineskip plus 0.04\baselineskip minus 0.03\baselineskip}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist{
+  topsep=0.55\baselineskip,
+  partopsep=0.15\baselineskip,
+  itemsep=0.14\baselineskip,
+  parsep=0.04\baselineskip
+}
+\fvset{fontsize=\small}
+
+\definecolor{shadecolor}{gray}{0.955}
+\DefineVerbatimEnvironment{recordbody}{Verbatim}%
+  {fontsize=\small,xleftmargin=10pt,xrightmargin=6pt}
+\newenvironment{record}{\begin{shaded}\vspace{-2pt}}{\vspace{-2pt}\end{shaded}}
+
+\title{Does an Enforced Semantic Layer Improve Analytical Question
+Answering? A Preregistered Four-Condition Protocol on LiveSQLBench Large-v1}
+
+\author{Stephanie Jarmak}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+
+\tableofcontents
+
+\input{sections/introduction}
+\input{sections/related-work}
+\input{sections/benchmark}
+\input{sections/design}
+\input{sections/conditions}
+\input{sections/scoring}
+\input{sections/development}
+\input{sections/analysis}
+\input{sections/threats}
+\input{sections/status}
+
+\section*{Data and materials availability}
+\addcontentsline{toc}{section}{Data and materials availability}
+\input{materials}
+
+\input{references}
+
+\end{document}

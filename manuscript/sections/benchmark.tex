@@ -1,0 +1,163 @@
+\section{The benchmark: what the public release contains}
+\label{sec:benchmark}
+
+Everything below was established from pinned public artifacts and pinned public
+evaluator source. No private attachment, gold SQL, hidden knowledge annotation,
+or hidden test case was read. ``Observed'' means reproduced locally; ``official
+claim'' means the maintainers state it and this project has not independently
+established it.
+
+\paragraph{Pinned sources.}
+The dataset is LiveSQLBench Large-v1 at Hugging Face revision
+\hash{a418e108d5cbb4cf9b783a928eff5e924ad2460d}, with
+\texttt{livesqlbench\_large\_v1\_data.jsonl} verified at SHA-256
+\hash{f0e12218cb46f5b6e019908740a0b3303a1f8d1136c661545ad6dd1b4b5444f6}. The
+evaluator, database build, and reference agent were read at repository commit
+\hash{e15cd221267e06fabfaf6a3d4a69308280ce9a7c}. The dataset card describes the
+benchmark as continuously evolving, so the name ``Large-v1'' does not identify
+immutable bytes and every experiment record stores both revision and content
+hash.
+
+\paragraph{Eligibility.}
+The public JSONL holds 480 records with 480 unique \texttt{instance\_id} values.
+Filtering on the public \texttt{category} field alone yields exactly 332
+\texttt{Query} records and 148 \texttt{Management} records. \texttt{Query} is the
+SELECT-only analytical class; \texttt{Management} covers database-management and
+CRUD tasks, outside the scope of a semantic-layer comparison, and is excluded.
+All 18 databases contribute, with per-database eligible counts from 10 to 24.
+
+Public records carry \texttt{instance\_id}, \texttt{selected\_database},
+\texttt{query}, \texttt{normal\_query}, \texttt{category}, \texttt{high\_level},
+\texttt{conditions}, \texttt{preprocess\_sql}, and \texttt{clean\_up\_sqls}. The
+protected fields \texttt{sol\_sql}, \texttt{external\_knowledge}, and
+\texttt{test\_cases} appear as empty arrays in all 480 records; they are not
+omitted. The \texttt{difficulty\_tier} field documented on the card does not exist
+at this revision, so difficulty is used neither for splitting nor for subgroup
+analysis. Two naming inconsistencies require adapters, not assumptions:
+the released record uses \texttt{clean\_up\_sqls} while both card and pinned
+evaluator use \texttt{clean\_up\_sql}. All 332 eligible records have empty
+\texttt{preprocess\_sql} and \texttt{clean\_up\_sqls} arrays here, so the
+mismatch does not change current inputs, but the adapter handles the contract
+explicitly instead of relying on that emptiness persisting.
+
+Public metadata available for stratification: \texttt{high\_level} is 181 true
+and 151 false; \texttt{conditions.order} 194 true and 138 false;
+\texttt{conditions.distinct} 17 true and 315 false; and
+\texttt{conditions.decimal} takes values $-1$ (158), 0 (8), 1 (6), 2 (110), 3
+(24), 4 (22), 5 (1), 6 (2), and 8 (1). Database is the dominant stratum. Several
+joint \texttt{conditions} cells are too sparse to cross-stratify without building
+strata small enough to determine individual questions, so those marginals are
+audited and reported after allocation rather than used to construct strata.
+
+\paragraph{Scale and schema metadata.}
+The official documentation reports 18 PostgreSQL databases, 971 tables, 17,749
+columns, roughly 2,056 rows per table on average, and 746.33\,MB total. Counting
+\texttt{CREATE TABLE} statements across pinned public schema files independently
+reproduces 971 tables, and the column-meaning maps contain exactly 17,749 keys.
+Two properties shape the transformation work. First, 212 of those values are
+structured, not plain strings: for JSON and JSONB columns they carry a
+column-level description plus a \texttt{fields\_meaning} map describing nested
+properties, so a transformation that flattens only relational columns discards
+the definitions that JSON operations need. Second, the schema files are not clean
+DDL; they interleave \texttt{CREATE TABLE} statements with three sample rows per
+table and retain original quoting, casing, and key declarations, so preparation
+must parse DDL separately from examples while preserving both as inputs with
+different provenance.
+
+\paragraph{The knowledge base is a dependency graph.}
+Each database ships a \texttt{*\_kb.jsonl} whose records carry an integer
+\texttt{id} unique within the database, a \texttt{knowledge} concept name, a
+\texttt{description}, a \texttt{definition} giving the rule or formula in natural
+language, a \texttt{type}, and \texttt{children\_knowledge}. Despite the name,
+\texttt{children\_knowledge} lists the identifiers the entry \emph{depends on},
+with $-1$ documented as no dependency. Table~\ref{tab:hkb} gives the observed
+graph statistics; both $-1$ and the undocumented empty list are normalized to
+zero outgoing edges.
+
+\begin{table}[htbp]
+\centering
+\caption{Observed hierarchical knowledge base structure across all 18 databases.}
+\label{tab:hkb}
+\begin{tabular}{lr}
+\toprule
+Property & Count \\
+\midrule
+HKB entries (\texttt{calculation} 430, \texttt{domain} 462, \texttt{value\_illustration} 198) & 1,090 \\
+Entries using the documented no-dependency sentinel $-1$ & 509 \\
+Entries using the undocumented empty list & 21 \\
+Entries with one or more direct dependencies & 560 \\
+Direct dependency edges & 945 \\
+Maximum direct dependencies on one entry & 5 \\
+Edges whose target itself has dependencies & 344 \\
+Databases containing multi-hop dependencies & 18 of 18 \\
+Maximum dependency-chain length & 6 edges \\
+Duplicate identifiers / dangling refs / self-edges / cycles & 0 / 0 / 0 / 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is what makes the benchmark suitable for the question. An HKB entry cannot
+be treated as an isolated blob of prompt text: 344 edges lead to another derived
+entry and multi-hop resolution is required in every database. A transformation
+into a semantic layer must preserve a stable source key, the dependency edges,
+the original type, the source text, and the compiled objects implementing each
+entry, and it can be evaluated on whether that composition survives.
+
+Two documentation discrepancies are recorded rather than resolved by inference.
+The general card describes two HKB formats, structured JSON and an unstructured
+document, while this snapshot contains only \texttt{*\_kb.jsonl} and calls itself
+HKB-JSON. The card also advertises business-rule drift with versioned
+definitions, while observed records carry no version or validity field. Whether
+drift is encoded only in text, deferred to a later release, or present in
+protected data is unresolved, and will not be inferred from gold.
+
+\paragraph{Official evaluator behavior.}
+For \texttt{category == "Query"} the runner discards any customized test-case
+list and installs one default Soft EX result-equivalence test. At the pinned
+revision that path removes block and newline-terminated line comments; removes
+standalone \texttt{DISTINCT} while attempting to preserve \texttt{DISTINCT ON};
+replaces each \texttt{ROUND(expression, precision)} with its first argument
+including nested calls; executes both statements under a 60-second PostgreSQL
+statement timeout; fetches at most 10,000 rows; normalizes top-level
+\texttt{date} and \texttt{datetime} values to \texttt{YYYY-MM-DD}, recursively
+rounds floats and decimals to two places, and serializes lists and dictionaries
+with sorted keys; requires both normalized results to be non-empty; and compares
+normalized sequences exactly when \texttt{conditions.order} is true and Python
+sets of rows otherwise.
+
+Consequences that are load-bearing for interpretation follow directly. Unordered
+comparison discards duplicate multiplicity. Two empty result sets fail rather
+than match. Date-time normalization discards time of day. The default path
+hard-codes two decimal places and never consults \texttt{conditions.decimal}, and
+rewrites \texttt{DISTINCT} regardless of \texttt{conditions.distinct}. The scorer
+executes the prediction once to detect errors and again inside the comparison,
+and for a list of statements retains only the last statement's result. These come
+from the pinned implementation, not the README description, and any sealed
+reimplementation must reproduce or explicitly test each.
+
+\paragraph{Reference agent and the knowledge-access boundary.}
+The repository also ships LiveSQLBench-Agent, an orchestrator with eight tools, a
+30-step budget, SELECT-only exploration, one final SQL submission, and per-task
+database copies. It is a useful harness skeleton because schema inspection,
+column meanings, knowledge discovery, execution, and submission are separate
+operations. It is not usable unchanged: its documented configuration accepts only
+\texttt{lite} or \texttt{full} at this revision, and its knowledge endpoint omits
+\texttt{type} and \texttt{children\_knowledge} from what the agent sees, erasing
+precisely the dependency structure this study evaluates. It is nonetheless the
+best public evidence for the intended access boundary. Its tools let a model list
+database-level knowledge names, fetch a named definition, or fetch all
+definitions, and its instruction tells the model to discover relevant knowledge;
+no tool receives hidden per-question \texttt{external\_knowledge} identifiers as
+a runtime oracle. This protocol follows the same distinction for C2 through C4.
+
+\paragraph{Provisioning and parity.}
+The official from-scratch path downloads the Large-v1 dumps, builds a PostgreSQL
+18 image, imports 18 template databases, and clones from them; the prebuilt
+compose file declares no Large-v1 service, so the from-source build is the
+verified official path. The scoring authority is the official local snapshot even
+if the evaluated product must query a managed mirror. Because a mismatch between
+generation and scoring copies can manufacture both false gains and false
+failures, schema fingerprints and deterministic data canaries are compared across
+copies before any run, and the parity check reports pass, observed disagreement,
+and could-not-run as three distinct states, so missing access can never be
+recorded as a passed or failed benchmark question.

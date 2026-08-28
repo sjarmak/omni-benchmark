@@ -1,0 +1,61 @@
+\section{Supporting protocol status before the baseline}
+\label{sec:status}
+
+This manuscript is the supporting protocol record; the results report will be
+the primary research artifact once scored runs exist. The design above is
+frozen, but the experiment has not been run. Stating the exact boundary matters,
+because a protocol paper that blurs it invites its own hypotheses to be read as
+findings.
+
+Implemented and committed: the reproducible preparation of the eligible manifest
+from the pinned public release; both deterministic splits with byte-identical
+regeneration tests; the custody release tool and its verification against the
+externally recorded pre-gold commit; both scorers as pure comparators with
+synthetic conformance tests; the append-only ledger, experiment lifecycle,
+checkpoint metering, and receipt verification of the development control plane;
+the generation and score artifact schemas with recursive rejection of protected
+fields; and a credential-safe contract probe for the production system that
+verifies configuration and manifests against the recorded commit before
+authenticating, forwards only minimal authentication environment, projects
+responses into type and shape metadata, hashes response bodies, and writes only
+private artifacts under ignored roots. The sealed PostgreSQL execution layer is
+implemented and conformance-tested. All 18 public database mirrors have passed
+schema and content parity plus read-only-role verification. C1 through C3 now
+have committed condition configurations and a traceable direct-SQL runtime.
+
+One public-only governed-product canary has also run on an isolated model branch.
+Its semantic bundle passed product validation and exact semantic readback; one
+read-only governed query and one unscored AI Hub diagnostic completed. This was
+an integration check, not a benchmark question or correctness judgment.
+
+Not done: no sealed generation exists, no output has been scored, and no accuracy
+of any kind has been computed for any condition. The capture verification gate of
+Section~\ref{sec:conditions} has not been passed. C1 through C3 still lack the
+executable driver needed for a live attempt, and no condition has yet emitted the
+complete scaled-baseline envelope. The public-only semantic bundle covers one of
+18 databases and only the mechanically supported portion of that database's HKB.
+The guardian public-key hash is pinned in configuration while the private key
+remains outside the development workspace. Exact final model identifiers, retry
+and time ceilings, version fingerprints, immutable C3/C4 model identity, and the
+C4 result-set adaptation path remain pre-baseline or Freeze B work.
+
+The failure taxonomy currently contains risk hypotheses, not observations. The
+three we consider most likely, stated here so they can be scored against what is
+eventually measured, are HKB dependency composition (a mechanical compiler may
+represent nodes while losing dependency meaning, grain, or composition), semantic
+discoverability (a definition may be correct in the model yet absent from the
+retrieval surface the agent uses, producing an apparent reasoning failure that is
+really context selection), and compilation and validation fidelity (correct
+semantic intent may be altered during compilation or rejected by validation and
+retry behavior). Every taxonomy cell is currently marked unmeasured, and the
+highest-information next experiment is the public-only mechanical baseline with
+trace capture sufficient to classify each knowledge-linked development failure on
+the mechanism ladder of Section~\ref{sec:analysis}.
+
+A results paper will follow the sealed event. It will report the public-only
+mechanical baseline, the supervised experiment history including regressions and
+dead ends, the leave-one-database-out portability results on development data,
+the frozen held-out primary result and condition matrix, and the reliability,
+failure, cost, latency, and product analyses, each derivable from preserved
+machine-readable artifacts. Whatever it reports, the design it reports against is
+the one in this paper.

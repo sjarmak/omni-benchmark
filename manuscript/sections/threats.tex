@@ -1,0 +1,48 @@
+\section{Threats to validity and preregistered limitations}
+\label{sec:threats}
+
+These are stated before any result exists, so that none of them can be introduced
+later as an explanation for an inconvenient outcome.
+
+\begin{itemize}[leftmargin=1.2em]
+  \item \textbf{Scope.} Because all 18 databases appear in both partitions, the
+  headline estimates unseen-question performance inside a modeled database, not
+  cold-start performance on an unmodeled one.
+  \item \textbf{Supervision.} The final system uses training failures and
+  training gold offline. It is supervised on 231 questions and is not zero-shot.
+  \item \textbf{Contamination.} The benchmark is public. The maintainers' design
+  claim cannot rule out post-release model exposure, and this project cannot
+  inspect training provenance. Paired within-question contrasts are less
+  vulnerable than absolute levels.
+  \item \textbf{Power.} 101 held-out questions give roughly one percentage point
+  of resolution per question, with useful descriptive power but limited power for
+  small paired differences and for per-database or rare-condition cells.
+  \item \textbf{Metric.} Soft EX deliberately equates some semantically different
+  SQL and rejects some extensionally equal results. Accuracy is accuracy under a
+  pinned scorer, not proof of semantic equivalence, which is why a second
+  comparator is reported.
+  \item \textbf{Model parity.} When C4's underlying models cannot be matched,
+  C4 minus C3 is confounded and remains a system-level comparison rather than a
+  causal estimate of enforcement.
+  \item \textbf{Harness.} Published controlled studies place the scaffold effect
+  anywhere from 0 to 28 percentage points~\cite{arxiv-2607-22585,arxiv-2606-08529},
+  so all condition results are conditional on the disclosed harnesses, and effects
+  may appear in error type, cost, retries, or reliability rather than in aggregate
+  accuracy.
+  \item \textbf{Stochasticity.} Three repetitions characterize some instability
+  but do not fully identify provider or temporal variance.
+  \item \textbf{Environment parity.} Any mismatch between the database the
+  evaluated product queries and the scorer's snapshot can manufacture false gains
+  or false failures, which is why fingerprint and canary parity checks precede
+  every run.
+  \item \textbf{Version drift.} The product, the model providers, and the
+  evolving benchmark can all change during a 1,212-trial evaluation. Pinned
+  artifacts, timestamps, deterministic interleaving, and the sealed
+  generate-then-score boundary mitigate this without eliminating it.
+  \item \textbf{Scalability of the modeling claim.} Manual interpretive mappings
+  and benchmark-specific exceptions weaken any claim that semantic-model
+  construction is automatic, and are counted, not described qualitatively.
+  \item \textbf{Composite systems.} A production system that routes across
+  multiple opaque model tiers and includes a validation stage cannot be reduced to
+  one model label, and will not be reported as though it could.
+\end{itemize}

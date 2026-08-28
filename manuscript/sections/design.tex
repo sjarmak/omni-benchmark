@@ -1,0 +1,138 @@
+\section{Design, population, and custody}
+\label{sec:design}
+
+\paragraph{Estimand.}
+The primary estimand is question-level generalization within a modeled database:
+given an established semantic model for a database, how accurately does the
+production-governed system answer questions it has not seen during development,
+and do semantic-model and harness improvements developed on other questions
+generalize to those unseen questions? The held-out unit is the question, not the
+database. All 18 databases appear in both partitions, and full public schema,
+column meanings, HKB, and public question text are available during model
+construction. This matches the product setting in which a team models its data
+once and users then ask an open-ended stream of new questions. It is explicitly
+not cold-start performance on an unmodeled database.
+
+A secondary leave-one-database-out study, confined to the development partition,
+estimates whether general HKB-to-semantic-layer transformation rules transfer to
+a domain whose questions were excluded from rule development. Each fold develops
+rules from 17 databases, applies them to the held-out database's public schema,
+column meanings, and HKB without question-driven evidence from that database, and
+scores that database's development questions, rotating across all 18. We report
+pooled question accuracy and the macro-average across databases, with each fold's
+question count and modeling effort. If a held-out database receives manual
+modeling, the result is transformation portability, not zero-shot database
+generalization. This is a development-set study, not a second test set.
+
+\paragraph{Split.}
+Eligibility uses only the public \texttt{category} field: 332 \texttt{Query}
+records in, 148 \texttt{Management} records out. Algorithm version 1, under
+committed seed \texttt{omni-livesqlbench-large-v1-split-v1}, allocates test counts
+across \texttt{selected\_database} by Hamilton largest remainder, balances public
+\texttt{high\_level} within each database, and orders each stratum by SHA-256 of
+seed, database, \texttt{high\_level}, and \texttt{instance\_id}, yielding 231
+development and 101 sealed test questions. The 231 development questions are
+split again under seed
+\texttt{omni-livesqlbench-large-v1-development-split-v1} into 154 \texttt{dev-A}
+optimization questions and 77 \texttt{dev-B} checkpoint questions by the same
+database-first, \texttt{high\_level}-balanced procedure. Public
+\texttt{conditions} marginals are audited after allocation rather than crossed
+into sparse strata; the largest post-allocation deviation is \texttt{dev-B}
+\texttt{order}, expected 32 true and 45 false against an actual 37 and 40.
+
+The committed artifacts record source revision, source hash, seed, algorithm
+version, record identifiers, and subgroup counts. The eligible manifest hashes to
+\hash{ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e}, the
+train identifiers to
+\hash{ecdd1e4cd425e41970d3d4e96d7c3cb044cb78d94e34621d320e3d542a5d1c46}, and the
+test identifiers to
+\hash{c7d4eb1aff3e9be9ffa015adcae96bb9294adf138870db24cdfbed811a9de76f}. Tests
+establish that identifiers are unique, train and test are disjoint, their union
+is the 332-record eligible manifest, counts are 231 and 101, all 18 databases
+appear in both partitions, regeneration from the pinned seeds and source hash is
+byte-identical, and no protected field has entered a committed artifact.
+Manifests are regenerated, never hand-edited. Membership never changes in
+response to any observed outcome.
+
+\paragraph{Information tiers.}
+Table~\ref{tab:tiers} states what may be used where. The governing rule is that
+hidden training annotations may influence how a reusable system is built but may
+never become question-specific runtime input. Development
+\texttt{external\_knowledge} identifiers are privileged diagnostic-oracle
+metadata: they may be consulted \emph{after} a prediction, to test whether the
+required public HKB nodes were represented, whether dependencies compiled, and
+whether the system could reach them. They may not select runtime context.
+Question-identifier rules, hidden-identifier retrieval hints, and
+question-specific gold-derived transformations are prohibited; semantic changes
+must be reusable definitions, database-level modeling, transformation rules, or
+general harness behavior. If sample queries are used, each must encode a reusable
+pattern and not a question-to-gold pair, and material use requires an
+ablation.
+
+\begin{table}[htbp]
+\centering
+\caption{Information tiers.}
+\label{tab:tiers}
+\begin{tabular}{p{5.1cm}p{2.6cm}p{2.1cm}p{2.4cm}}
+\toprule
+Information & Development use & Runtime use & Held-out \\
+\midrule
+Public schema, HKB, column meanings, questions & Allowed & Allowed & Frozen \\
+Hidden train SQL, test cases, knowledge identifiers & Offline supervision only & Prohibited & Frozen \\
+Hidden test SQL, test cases, knowledge identifiers & Prohibited & Prohibited & Sealed evaluator only \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Gold custody.}
+The complete private attachment stays under human custody outside the repository
+and outside any agent-accessible workspace; its SHA-256 is computed without
+displaying or parsing its contents. Only after the split commit exists may a
+custodian-run extraction emit exactly the 231 training records into an ignored
+directory. The release tool verifies the canonical train identifiers and split
+metadata against the externally recorded pre-gold commit rather than the mutable
+current branch, rejects sources inside the workspace, refuses overwrites, writes
+mode \texttt{0600}, and reports only counts and hashes. It never releases the 101
+held-out records. Logs may contain identifiers, hashes, counts, status codes, and
+aggregate scores, never hidden SQL, hidden knowledge identifiers, or test-case
+bodies.
+
+Checkpoint correctness on \texttt{dev-B} sits behind a separate guardian
+boundary. The guardian signs exact receipt bytes with a private key held outside
+agent scope; the checkpoint capability verifies the detached signature against a
+separately recorded public-key digest that is part of the protocol-frozen
+configuration and cannot be supplied by a caller, rejects replayed receipt or
+output hashes, and irreversibly increments a counter. Each consumption writes
+both an immutable checkpoint manifest and a numbered allocation marker, and both
+must agree byte-for-byte and be present in the current commit before another
+checkpoint is permitted, so marker deletion, manifest deletion, receipt replay,
+and local counter reset all fail closed. The protocol maximum is ten
+\texttt{dev-B} evaluations, with five to ten intended over the project.
+
+\paragraph{Baseline ordering and the two freezes.}
+Before hidden training annotations are released, a public-only baseline is
+preserved: transform public schema, column meanings, and HKB into the semantic
+layer deterministically; validate the model structurally; freeze the mechanical
+transformation revision and model artifacts; generate baseline outputs on all 231
+development questions; and only then release train annotations for scoring and
+failure analysis. This separates initial transformation quality from improvement
+obtained through supervision. The baseline may be scored once its immutable
+outputs exist, but may never be regenerated retrospectively. The final system is
+supervised on 231 questions and must not be described as zero-shot.
+
+\emph{Freeze A}, the pre-gold protocol freeze, commits the eligible population,
+both splits, custody and information rules, the C1 through C4 definitions, both
+scoring policies, repetition, order, and failure rules, endpoints and statistics,
+unblinding and adjudication policy, the ledger schema, and the guardian
+public-key pin. Its commit hash is recorded before any hidden development label
+is released, and the control plane verifies configuration and manifests against
+that recorded commit, not the working tree. Freeze A deliberately does not
+freeze the final system. \emph{Freeze B}, the pre-test system freeze, occurs
+after all \texttt{dev-A} optimization and permitted checkpoints and before any
+test generation: it commits and hashes the semantic models and transformation
+code, all four harness configurations and prompts, retrieval configuration and
+allowed tools, model and provider information and budgets, retry and
+failure-classification policy, database snapshot identifiers, the trial schedule,
+and the evaluator version. All 1,212 generations then complete, and only then are
+they scored. No held-out result may feed a model, harness, prompt, retrieval, or
+retry change.

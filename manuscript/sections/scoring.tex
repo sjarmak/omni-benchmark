@@ -1,0 +1,55 @@
+\section{Two frozen scorers}
+\label{sec:scoring}
+
+Both comparators are frozen before hidden development labels are released, both
+consume already-executed rows, and neither reads benchmark records, question
+identifiers, gold SQL, or private annotations. Both are reported. Neither is
+selected after results are seen.
+
+\paragraph{Official-compatible Soft EX.}
+Version \texttt{livesqlbench-soft-ex-e15cd221-v1} reproduces the Query
+comparison path of the public evaluator at commit
+\hash{e15cd221267e06fabfaf6a3d4a69308280ce9a7c}, including the SQL rewrites,
+result normalization, empty-result rule, and ordered-versus-set comparison
+described in Section~\ref{sec:benchmark}. The reproduction is deliberate and
+extends to behavior we regard as lossy: a line comment at end of input without a
+trailing newline is retained, because that is what the pinned code does. This is
+the benchmark-comparability score, and it will not be quietly improved.
+
+\paragraph{Corrected sensitivity scorer.}
+Version \texttt{omni-multiset-decimal-v1} leaves authored SQL unchanged and
+compares results as stable typed values. Unordered results are compared as
+multisets, preserving duplicate rows; ordered results as sequences; two empty
+results match while one empty result does not; null, boolean, numeric, string,
+date, mapping, and sequence values retain distinct canonical representations;
+dates and datetimes normalize to \texttt{YYYY-MM-DD}; dictionary key order does
+not affect equality. Public \texttt{conditions.decimal} values receive frozen
+meanings: $-1$ preserves the canonical numeric value without rounding, and a
+nonnegative value rounds decimals, floats, and integers to that many places using
+decimal half-up rounding. Unknown values, booleans in place of integers, a
+missing \texttt{decimal}, and non-boolean \texttt{order} fail validation, so a
+future change in the public data becomes explicit rather than silently changing
+scoring.
+
+Pure result comparison and SQL execution and rewrite behavior are versioned
+separately and must pass public conformance fixtures before Freeze B. The current
+implementation stops at pure rewriting and comparison; the sealed evaluator still
+requires an integration layer that executes rewritten candidate and gold SQL
+against the same isolated PostgreSQL state for the official score and unchanged
+authored SQL against equivalent state for the sensitivity score, applies the
+public preprocessing and cleanup lifecycle, preserves multi-statement ordering
+with stable driver types, enforces the preregistered timeout and retry rules,
+distinguishes candidate-system failures from benchmark-infrastructure failures,
+records the three-state attempt outcome separately from result equality, and
+keeps hidden test SQL and rows inside the sealed boundary. A synthetic test suite
+alone does not establish database-execution equivalence.
+
+\paragraph{Post-hoc analyses.}
+After final scoring, a sealed audit normalizes development and test gold SQL into
+structural templates, reports overlap prevalence, and, if sample size permits,
+reports test accuracy on non-overlapping templates. Suspicious or
+condition-discordant items may enter a preregistered post-freeze gold-quality
+adjudication with condition identity blinded where practical. Neither audit can
+change the split, the primary result, or the development system, the original
+official score remains intact, and any adjudicated result is labeled a separate
+sensitivity analysis rather than replacing benchmark truth.

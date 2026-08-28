@@ -1,0 +1,94 @@
+\section{Conditions, parity, and telemetry}
+\label{sec:conditions}
+
+\paragraph{The four rungs.}
+All four conditions are reasonably developed on training data, frozen together,
+and evaluated in the same sealed event. Table~\ref{tab:conditions} states what
+each changes.
+
+\begin{table}[htbp]
+\centering
+\caption{The four frozen conditions.}
+\label{tab:conditions}
+\begin{tabular}{p{2.3cm}p{3.1cm}p{3.6cm}p{3.6cm}}
+\toprule
+Condition & Knowledge & Representation & Enforcement \\
+\midrule
+C1 Raw SQL & Public schema & Raw schema & None \\
+C2 HKB reference & Public schema and HKB & Searchable raw HKB & Optional \\
+C3 Model reference & Public schema and HKB & Searchable exported semantic model & Optional \\
+C4 Governed & Public schema and HKB & Semantic model & Production harness enforces semantic compilation and validation \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+C2 and C3 receive comparable programmatic search rather than being made to ingest
+a roughly 84K-token export in one prompt; the difference between them is the
+representation, not the retrieval budget. C1 through C3 share one pinned
+direct-SQL model and harness and match question wording, database, execution
+access, budgets, retries, and scorer. C2 is a substantive condition and not a
+bridge: business semantics supplied as searchable context may account for a
+material part of the total C4 minus C1 gap, and evidence about semantic context
+informs C2 minus C1 only.
+
+C4 uses the production-default configuration, because production fidelity
+outranks forcing model parity for the primary product endpoint. If the exact C4
+models can be observed and invoked independently, C1 through C3 match them.
+Otherwise, provider, observable model tiers and identifiers, reasoning settings,
+and retries are recorded and the interpretation is conservative: with model
+parity, C4 minus C3 is an approximate architectural contrast subject to remaining
+system differences; without it, C4 minus C3 is a production-system comparison and
+must not be called the causal effect of enforcement. All conditions receive real
+development rather than leaving C1 through C3 as straw comparators; per condition
+we record prompt revisions, training evaluations, major interventions,
+approximate effort, and the actor or automation that performed the work. Exact
+equal person-hours are not required.
+
+\paragraph{Parity policy.}
+Pre-treatment resources are matched where matching is meaningful: database
+snapshot, credentials and permissions, public information, task specification,
+model identity when possible, reasoning and token ceilings, and retry ceilings.
+Post-treatment behavior is not artificially equalized. Actual tool calls, tokens
+consumed, latency, database-query count, retries, and cost are measured as
+outcomes, because a governed system that spends more to be right and a direct
+agent that spends less to be wrong differ in a way an equalized budget would
+hide.
+
+\paragraph{Telemetry contract.}
+Every attempt produces an immutable generation envelope containing no correctness
+information. It records run and attempt identifiers, condition, repetition,
+partition, and timestamps; provider, model, and version; token counts and their
+source; cost and its source; wall-clock latency, tool calls, database queries,
+retries, and validation attempts; the generation outcome
+(\texttt{answered}, \texttt{refused}, or \texttt{errored}), terminal failure
+origin and class, the generated SQL or governed query, semantic objects, and
+fixed compiler, validation, and execution statuses; and a relative path, schema
+version, and SHA-256 for the ordered raw trace, or an explicit degraded reason
+when trace capture is unavailable.
+
+Unobserved counts are null and must be named in an explicit unavailability list;
+they are never encoded as zero. Token and cost values separately declare whether
+they are provider-reported, derived, or unavailable. Complete traces must
+reconcile token, tool-call, database-query, retry, and validation totals to the
+attempt envelope, and truncated traces carry an explicit degraded reason. Scoring
+produces a \emph{separate} record carrying \texttt{correct},
+\texttt{wrong\_answer}, or \texttt{refused\_or\_error}, hash-bound to both the
+generation file and every attempt record; it cannot mutate or copy the prompt,
+query, result, or telemetry. Raw traces and generated SQL live only under ignored
+run roots, and committed artifacts contain hashes and permitted summaries.
+
+Two consequences are worth stating explicitly. The three-state attempt outcome is
+distinct from the three-state generation outcome, so a confident wrong answer and
+a safe refusal are never collapsed even though both miss the benchmark. And for
+composite production workflows, an aggregate model label must not be presented as
+exact model parity when internal routing is opaque; where the product exposes
+per-stage model and usage, raw capture preserves them.
+
+\paragraph{Capture verification gate.}
+Before any 231-question baseline or expensive experiment, each implemented
+condition must produce one public unscored smoke attempt whose envelope
+validates, whose trace hashes and redaction verify (or whose unexposed fields
+carry an explicit degraded reason), whose system database-query counts exclude
+scorer and gold execution, and whose evaluated-system retries are distinguishable
+from benchmark-infrastructure reruns. Coverage is recorded per field and
+condition. This gate has not been passed (Section~\ref{sec:status}).

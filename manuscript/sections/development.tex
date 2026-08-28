@@ -1,0 +1,92 @@
+\section{Supervised development under an append-only control plane}
+\label{sec:development}
+
+Optimization on the development partition is the part of an evaluation most
+likely to leak, to overfit, or to be narrated favorably afterward. This protocol
+constrains it with a machine-checkable control plane whose records are
+append-only, so failed experiments remain in the record.
+
+\paragraph{Boundaries.}
+Routine optimization receives a derived public view containing only the 154
+\texttt{dev-A} identifiers, and never a \texttt{dev-B} or held-out outcome.
+Ordinary proposal and evaluation commands cannot accept \texttt{dev-B}
+identifiers or per-question outcomes at all. Training generation artifacts may
+contain generated SQL or a governed query, latency, token and cost observations,
+non-secret tool failures, and the semantic-object identifiers the system used.
+They may not contain gold SQL, test cases, hidden \texttt{external\_knowledge}
+identifiers, expected results, or scores; the validator rejects protected keys
+recursively, so nesting a hidden field does not bypass the boundary. Correctness
+arrives only in the separate immutable score artifact, whose path and expected
+digest are mandatory for every scored decision, and the control plane stores
+component hashes plus a combined candidate hash so that a guardian receipt cannot
+be rebound to a different generation or score artifact. Offline diagnostic
+tooling may read the train-only release under the custody contract and turn
+privileged annotations into aggregate conclusions such as
+\texttt{knowledge\_present\_but\_inaccessible}; it may not copy hidden identifiers
+or content into runtime requests or ordinary artifacts.
+
+\paragraph{Cycle.}
+Each iteration is a state transition, not an unstructured session. Observe the
+current complete \texttt{dev-A} run, traces, regression suite, and failure
+taxonomy. Propose: append an experiment proposal \emph{before} changing the
+system, stating the affected failure class, the mechanism, the predicted
+direction, regression risk, subsystem, parent state, and why the intervention is
+reusable. Modify one mechanism with the smallest patch that tests the hypothesis.
+Evaluate locally on the proposal's prespecified slice, declared before results
+and never chosen from favorable outcomes. Evaluate globally: a candidate can be
+accepted only after an exact 154-question run plus regression evidence, compared
+by question-level transitions rather than aggregate accuracy alone. Decide by
+appending exactly one of \texttt{KEEP}, \texttt{REVERT}, \texttt{INCONCLUSIVE},
+\texttt{INVESTIGATE}, or \texttt{ARCHIVE}, with fixed and regressed questions,
+accuracy, cost, latency, failure-class, complexity, and production-relevance
+evidence. Then checkpoint or continue.
+
+The objective is ordered rather than scalar: execution accuracy, reusable
+generality, low regression rate, reasonable latency and cost, low complexity, and
+production relevance. It is deliberately not collapsed into a weighted reward,
+and an accuracy increase alone cannot authorize acceptance.
+
+\paragraph{Surfaces and search.}
+The optimized artifact is the whole relevant system: HKB transformation, semantic
+model and descriptions, retrieval, instructions, planning, compilation,
+validation and retry, and harness code. Every proposal declares one surface.
+\emph{Textual} surfaces (prompts, instructions, object descriptions, aliases,
+textual HKB representations) use multi-candidate, trace-guided search on a
+prespecified slice, retaining strong alternatives. \emph{Structural} surfaces
+(dependency resolution, model generation, relationship inference, retrieval
+algorithms, planning, compilation, validation, fallback) use a mechanism-level
+hypothesis, the smallest change, targeted tests, and a full regression
+evaluation. \emph{Human-controlled} surfaces (protocol, membership, custody,
+endpoints, scorer choice, supervision legitimacy) cannot be changed by an agent
+and cannot be changed on the basis of an observed score at all.
+
+\paragraph{Lineage and promotion.}
+Experiments may descend from any preserved candidate, not only the current
+accuracy leader, so lineage forms an auditable branch graph. A small
+non-dominated set is maintained across execution accuracy, wrong-answer rate,
+refusal and error rate, regressions, cost, latency, stability, model complexity,
+special-case count, and generality; equal-accuracy candidates may both survive
+when one is safer or cheaper. Every kept intervention declares scope as
+\texttt{cross\_database\_general}, \texttt{database\_family}, or
+\texttt{database\_specific\_legitimate}. Question-specific changes are
+prohibited, and benchmark-specific candidates may be archived as exploratory
+evidence but are never promoted into the final system.
+
+\paragraph{Anti-reward-hacking.}
+The control plane rejects committed benchmark instance identifiers appearing in
+an intervention description or patch. Deterministic guards cannot prove the
+absence of subtler memorization, so code review remains responsible for
+near-verbatim question matching, answer templates, hidden-annotation-driven
+retrieval, and database rules whose only rationale is a single benchmark item.
+Training-derived example queries are a named experimental family whose proposals
+record generation method, provenance, reusable pattern, and count; they contain
+no identifiers or verbatim question-to-gold pairs, and material use requires a
+with-and-without ablation before freeze.
+
+\paragraph{Stopping.}
+After four consecutive non-accepted experiments the loop must explicitly review
+whether continued work is justified; this is a review trigger, not an automatic
+termination. Stopping requires an immutable reason record, after which the
+control plane rejects proposals, decisions, regression additions, and
+checkpoints. Selecting a final candidate triggers Freeze B. Test results never
+reopen the loop.

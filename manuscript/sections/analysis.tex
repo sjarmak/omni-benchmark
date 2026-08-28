@@ -1,0 +1,89 @@
+\section{Endpoints and analysis plan}
+\label{sec:analysis}
+
+\paragraph{Primary endpoints.}
+The product-performance endpoint is C4 mean one-shot execution accuracy across
+three sealed repetitions, estimated from 303 question-repetition attempts with
+question-clustered uncertainty. C4 repetition-one accuracy is reported separately
+as the intuitive single-invocation view. There is no majority vote, best-of-three,
+or selective-retry score. The comparative endpoint is the paired C4 minus C1
+execution-accuracy difference on the same trials, paired within question and
+repetition and clustered by question. It is a system-level contrast between two
+reasonably developed systems.
+
+\paragraph{Exploratory contrasts.}
+C2 minus C1, C3 minus C2, and C4 minus C3 are prespecified exploratory
+mechanistic evidence, reported with effect sizes, transition counts, and
+uncertainty. Modest rung differences will not be promoted on significance. Where
+C3 and C4 lack model or system parity, C4 minus C3 is explicitly system-level.
+Repetition-one McNemar analyses may appear as sensitivity checks; naive McNemar
+will not be applied to 303 correlated observations. With 101 questions, small
+paired deltas will be imprecise, and effect sizes and failure transitions take
+precedence over p-values.
+
+\paragraph{Repetitions and reliability.}
+Each condition runs three independent repetitions on every test question, for
+1,212 frozen outputs generated before any scoring. Trial order is a committed
+deterministic block-interleaved permutation over question, condition, and
+repetition, with repetitions of one question separated, and each trial records
+timestamps and observable model identifiers. The reliability analysis reports
+per-repetition and mean accuracy; per-question 3/3, 2/3, 1/3, and 0/3
+correctness; correctness-flip rate separately from result-set changes; refusal and
+error rate and its stability; latency and cost distributions; and
+question-clustered bootstrap intervals that resample questions as clusters
+retaining all condition and repetition outcomes. Correctness stability and answer
+stability are reported separately: the same wrong answer three times is stable and
+incorrect, while different SQL returning the same correct result is
+outcome-reliable. SQL-text variation is diagnostic only.
+
+\paragraph{Co-outcomes.}
+Alongside accuracy we report confidently-wrong rate, refusal and error rate,
+tokens per correct answer, median and interquartile range for tokens and latency,
+tool calls and database queries per attempt and per correct answer, retry and
+validation distributions, telemetry coverage, and terminal failure vectors by
+condition. Operational numerators include every valid attempt; comparative views
+use matched question-condition-repetition populations. Cost comparisons require
+equivalent output accounting, since a cheaper condition that fails to answer is
+not more efficient. Each major intervention reports whether it increased
+correctness, reduced confident errors, converted wrong answers into refusals, or
+only shifted the failure mode, so a flat accuracy result can still be
+product-relevant.
+
+\paragraph{Subgroups.}
+Prespecified descriptive subgroups are database, public \texttt{high\_level}, and
+public \texttt{conditions} values with adequate cell size. Rare cells and
+per-database test estimates are descriptive and will not be mined for
+significance. Relative improvement is reported only where the baseline
+denominator is nonzero.
+
+\paragraph{Failure taxonomy.}
+Failure categories are built from training evidence rather than forced into a
+prewritten list, and each records count, denominator, representative non-private
+examples, detection evidence, and a primary ownership hypothesis (model, semantic
+model, harness, product, environment, evaluator, or benchmark) that changes only
+with evidence. For a failed development question whose offline annotation
+references HKB knowledge, we classify the earliest supported failure point on a
+mechanism ladder: knowledge absent from the semantic model; knowledge present but
+the dependency graph wrong; knowledge correct but not retrieved; retrieved but
+misinterpreted; representation correct but compilation failed; compiled query
+correct but validation or harness behavior changed the outcome; or model
+reasoning failed despite a correct available representation. Hidden knowledge
+identifiers stay in offline diagnosis, and the published taxonomy records
+aggregate classifications only.
+
+Prioritization uses the qualitative product of prevalence, plausible fixability,
+and generality, with a model or reviewer supplying the semantic judgment and its
+evidence; application code validates record structure and enforces custody policy
+rather than embedding keyword heuristics for failure meaning.
+
+\paragraph{Retry and rerun policy.}
+The evaluated system's normal production retry policy is part of the frozen
+system. Exhausting it, returning no answer, generating invalid SQL, or timing out
+inside the agent or harness is an incorrect system outcome. A trial may be rerun
+only when failure is demonstrably outside the evaluated system: sealed-evaluator
+process failure, benchmark database unavailability, or transport failure before
+the evaluated service accepted the request. A rerun keeps the same trial
+identity and appends a reason with both attempt records. Rate limits, 5xx
+responses, and timeouts are classified in advance by which system owns the retry
+boundary, and are never reclassified after scoring. No trial is ever rerun
+because its answer was wrong.

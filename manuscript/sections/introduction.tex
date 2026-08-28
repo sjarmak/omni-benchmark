@@ -1,0 +1,69 @@
+\section{Introduction}
+
+An analytics team that adopts a semantic layer is making a testable bet: that
+encoding business definitions once, in governed objects a query engine compiles
+rather than a language model improvises, makes a downstream agent answer new
+questions more accurately than the same agent writing SQL against a raw schema.
+That bet is hard to evaluate from existing comparisons, which typically move
+several things at once and leave the harness, the question selection, and the
+number of scored runs unreported.
+
+Three separable things get bundled into such a comparison. \emph{Access}: whether
+the business knowledge needed to answer the question is available at all. A
+question about ``active high-value accounts'' cannot be answered from column
+names, and no architecture repairs a missing definition. \emph{Representation}:
+whether that knowledge is a paragraph of prose the model reads or a structured
+object with declared dependencies, grain, and join paths. \emph{Enforcement}:
+whether the system may ignore the representation and emit whatever SQL it likes,
+or must compile its intent through the governed layer and pass its validation.
+The three carry very different costs, so a comparison that moves all three at
+once cannot attribute the difference to any of them.
+
+This paper preregisters an experiment that holds them apart. We evaluate the Omni
+semantic layer on LiveSQLBench Large-v1, a BIRD-family text-to-SQL benchmark
+whose 18 PostgreSQL databases ship the material a semantic layer is supposed to
+encode: a hierarchical knowledge base (HKB) of 1,090 business definitions
+connected by 945 declared dependency edges, 344 of which point at another derived
+entry, with multi-hop resolution required in every database. A benchmark in which
+business knowledge composes is one where the difference between a prose blob and
+a dependency-aware model can actually show up.
+
+The design is a four-rung ladder, frozen together and evaluated in one sealed
+event. C1 gives a competent agent the raw schema and lets it write SQL. C2 adds
+programmatic search over the raw HKB, changing access alone. C3 replaces the raw
+HKB with a searchable export of the compiled semantic model, changing
+representation while the agent still writes its own SQL. C4 is the
+production-governed system, where semantic compilation and validation are
+enforced. The primary product endpoint is C4 mean one-shot execution accuracy
+across three independent repetitions of the 101 sealed questions; the primary
+comparative endpoint is the paired C4 minus C1 difference on the same trials.
+Rung-to-rung contrasts are prespecified but exploratory, and we state in advance
+which can carry a causal reading.
+
+Several commitments exist because of failure modes documented in the evaluation
+literature rather than anything specific to this product. All 1,212 generations
+complete before any output is scored, so no held-out outcome can reach a prompt,
+a retrieval configuration, or a retry policy. The development partition is split
+again, into questions adaptive optimization may reuse freely and a metered
+partition consulted at most ten times behind a signing boundary. Two scorers are
+frozen before any gold is released, one reproducing the official evaluator's
+known lossy behavior and one repairing it, with neither selectable after results
+are seen. Every attempt carries a telemetry envelope in which an unobserved token
+count is null with a named reason, never zero. Every condition's harness is
+disclosed, because controlled studies place the scaffold's effect on agent
+accuracy anywhere from negligible to decisive.
+
+The paper reports no accuracy, and that is the current state of the work: the
+split and protocol are frozen, custody tooling and both scorers are implemented,
+and the capture verification gate that must precede any scaled run has not been
+passed. Publishing the design before the numbers exist is the point. The
+contributions are a public-artifact reconnaissance of LiveSQLBench Large-v1
+including its knowledge-graph structure and the exact behavior of its pinned
+evaluator; a four-condition ablation separating access, representation, and
+enforcement, with an explicit account of which contrasts survive the absence of
+model parity; a custody and freeze protocol under which supervised development on
+231 questions cannot contaminate 101 sealed ones; a machine-checkable development
+control plane in which hypotheses precede changes and rejected experiments cannot
+be rewritten out of the record; and a telemetry contract that keeps correctness
+out of the immutable generation record and missing measurements distinguishable
+from measured zeros.
