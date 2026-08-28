@@ -74,7 +74,11 @@ These cost time if you discover them by hitting them.
 - **Two frozen scorers, both reported.** Official Soft EX (pinned to evaluator
   commit `e15cd221`) reproduces lossy behavior on purpose. Do not "fix" it, and do
   not choose between scorers after seeing results.
-- **No git remote is configured.** Local commits only. Never push or run remote sync.
+- **Public Git remote boundary.** `origin` is
+  `https://github.com/sjarmak/omni-benchmark`. Normal synchronization is allowed
+  only under approved publish beads `omni-benchmark-dih.15` / `.16` and current
+  per-action user authorization. Force-pushes, history rewrites, and every other
+  remote are prohibited.
 - Shell aliases may force `-i` on `cp`/`mv`/`rm` and hang the session. Use
   `cp -f`, `mv -f`, `rm -f`, `rm -rf`, and expand destructive paths literally.
 
