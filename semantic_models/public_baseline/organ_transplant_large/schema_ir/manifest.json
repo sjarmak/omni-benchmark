@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "columns": 927,
+    "foreign_keys": 70,
+    "primary_keys": 57,
+    "structured_columns": 13,
+    "structured_leaves": 75,
+    "tables": 57
+  },
+  "database": "organ_transplant_large",
+  "intentional_exclusions": [
+    {
+      "effect": "sample values are absent; DDL semantics are retained",
+      "reason": "protocol_excludes_public_value_examples",
+      "source_content": "First 3 rows sections"
+    }
+  ],
+  "kind": "public-schema-intermediate-representation",
+  "output": {
+    "file": "organ_transplant_large.schema.jsonl",
+    "sha256": "4a9942d829772a558f6bb2705c2eb76de263e4c8e4e7918b1706ca7f7b855086"
+  },
+  "schema_version": 1,
+  "semantic_mapping": {
+    "reason": "public_source_ir_only",
+    "status": "not_started"
+  },
+  "source": {
+    "column_meanings": {
+      "file": "organ_transplant_large/organ_transplant_large_column_meaning_base.json",
+      "sha256": "50b5597ea24a3ddf5eff1414ab89f5487534a39fdec2cc4eb33308c50163f8a3"
+    },
+    "companion_hkb_ir": {
+      "file": "organ_transplant_large.hkb.jsonl",
+      "manifest_file": "manifest.json",
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "9b6866b47749811eb869b6a0679e7d9138cb809ca00d23f7667988ba29bdb02c"
+    },
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "inventory_sha256": "2b833d1524695ac811bbeac2a78b00815767b793511a74f35ed913b521796c3a",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema": {
+      "file": "organ_transplant_large/organ_transplant_large_schema.txt",
+      "sha256": "cbe23d45bfb3e2a90f6b40cb0151a3f7e593b374f0aca5d6a3214f7fb1c688d7"
+    }
+  },
+  "validation": {
+    "all_ddl_columns_have_meanings": true,
+    "all_key_references_resolve": true,
+    "all_meanings_resolve_to_ddl_columns": true,
+    "sample_rows_emitted": 0,
+    "stable_ids_unique": true,
+    "status": "passed"
+  }
+}

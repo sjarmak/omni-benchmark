@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "columns": 931,
+    "foreign_keys": 49,
+    "primary_keys": 47,
+    "structured_columns": 11,
+    "structured_leaves": 77,
+    "tables": 47
+  },
+  "database": "reverse_logistics_large",
+  "intentional_exclusions": [
+    {
+      "effect": "sample values are absent; DDL semantics are retained",
+      "reason": "protocol_excludes_public_value_examples",
+      "source_content": "First 3 rows sections"
+    }
+  ],
+  "kind": "public-schema-intermediate-representation",
+  "output": {
+    "file": "reverse_logistics_large.schema.jsonl",
+    "sha256": "7c69b9193add6d4794a144056822b3e89fc7710cf7405dc2fb7622484bc0caf8"
+  },
+  "schema_version": 1,
+  "semantic_mapping": {
+    "reason": "public_source_ir_only",
+    "status": "not_started"
+  },
+  "source": {
+    "column_meanings": {
+      "file": "reverse_logistics_large/reverse_logistics_large_column_meaning_base.json",
+      "sha256": "e4bbefe6b74fe9a3dc387313a47604de16f6118aa40acf73d0cc98fe6434dbe8"
+    },
+    "companion_hkb_ir": {
+      "file": "reverse_logistics_large.hkb.jsonl",
+      "manifest_file": "manifest.json",
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "d94f49674eb056f2d1be68fe3d6fa233ee0167ab13c5fd67c51440c356a92065"
+    },
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "inventory_sha256": "2b833d1524695ac811bbeac2a78b00815767b793511a74f35ed913b521796c3a",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema": {
+      "file": "reverse_logistics_large/reverse_logistics_large_schema.txt",
+      "sha256": "34ec52b1690cce13190cba126ee9090bc266e127e6f4a03fbe3303c9d934afc6"
+    }
+  },
+  "validation": {
+    "all_ddl_columns_have_meanings": true,
+    "all_key_references_resolve": true,
+    "all_meanings_resolve_to_ddl_columns": true,
+    "sample_rows_emitted": 0,
+    "stable_ids_unique": true,
+    "status": "passed"
+  }
+}

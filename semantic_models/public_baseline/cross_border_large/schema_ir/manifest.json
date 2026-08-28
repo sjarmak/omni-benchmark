@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "columns": 1054,
+    "foreign_keys": 69,
+    "primary_keys": 56,
+    "structured_columns": 7,
+    "structured_leaves": 196,
+    "tables": 56
+  },
+  "database": "cross_border_large",
+  "intentional_exclusions": [
+    {
+      "effect": "sample values are absent; DDL semantics are retained",
+      "reason": "protocol_excludes_public_value_examples",
+      "source_content": "First 3 rows sections"
+    }
+  ],
+  "kind": "public-schema-intermediate-representation",
+  "output": {
+    "file": "cross_border_large.schema.jsonl",
+    "sha256": "a14b24b34963bb9e04a13a18599506c7c7f328d5a84f07a791b9dcf618185fd7"
+  },
+  "schema_version": 1,
+  "semantic_mapping": {
+    "reason": "public_source_ir_only",
+    "status": "not_started"
+  },
+  "source": {
+    "column_meanings": {
+      "file": "cross_border_large/cross_border_large_column_meaning_base.json",
+      "sha256": "f13b879315c674af9871bf75326f43fcadbb930ac0c4f04be093efcb7b6a1bd6"
+    },
+    "companion_hkb_ir": {
+      "file": "cross_border_large.hkb.jsonl",
+      "manifest_file": "manifest.json",
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "f3836b7422150807412e15079b546e0954264756a559ac38fcd1a2f8b621523f"
+    },
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "inventory_sha256": "2b833d1524695ac811bbeac2a78b00815767b793511a74f35ed913b521796c3a",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema": {
+      "file": "cross_border_large/cross_border_large_schema.txt",
+      "sha256": "b7d7c680dc66be04d29fcfe74c071b5cca2d08cade133dcaba10cce56eace9c2"
+    }
+  },
+  "validation": {
+    "all_ddl_columns_have_meanings": true,
+    "all_key_references_resolve": true,
+    "all_meanings_resolve_to_ddl_columns": true,
+    "sample_rows_emitted": 0,
+    "stable_ids_unique": true,
+    "status": "passed"
+  }
+}

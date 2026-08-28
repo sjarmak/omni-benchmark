@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "columns": 994,
+    "foreign_keys": 63,
+    "primary_keys": 50,
+    "structured_columns": 11,
+    "structured_leaves": 93,
+    "tables": 50
+  },
+  "database": "disaster_relief_large",
+  "intentional_exclusions": [
+    {
+      "effect": "sample values are absent; DDL semantics are retained",
+      "reason": "protocol_excludes_public_value_examples",
+      "source_content": "First 3 rows sections"
+    }
+  ],
+  "kind": "public-schema-intermediate-representation",
+  "output": {
+    "file": "disaster_relief_large.schema.jsonl",
+    "sha256": "e8e96d1dba8a44d82b13cf347628516448ac5ae25489425079970eab3dbd0b8a"
+  },
+  "schema_version": 1,
+  "semantic_mapping": {
+    "reason": "public_source_ir_only",
+    "status": "not_started"
+  },
+  "source": {
+    "column_meanings": {
+      "file": "disaster_relief_large/disaster_relief_large_column_meaning_base.json",
+      "sha256": "eada3b3467b13bf3bbec3c9cecf92df152500a95bf527ad3194c44b552854045"
+    },
+    "companion_hkb_ir": {
+      "file": "disaster_relief_large.hkb.jsonl",
+      "manifest_file": "manifest.json",
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "fa2d06c03b59b46f8689184a988602d79cb3473e1b6f6bca5da407502e1021a4"
+    },
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "inventory_sha256": "2b833d1524695ac811bbeac2a78b00815767b793511a74f35ed913b521796c3a",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema": {
+      "file": "disaster_relief_large/disaster_relief_large_schema.txt",
+      "sha256": "fb9cfabf82e7ec98b9d71ca69785b51ad15b7dc8a18732a4c32b325231f83257"
+    }
+  },
+  "validation": {
+    "all_ddl_columns_have_meanings": true,
+    "all_key_references_resolve": true,
+    "all_meanings_resolve_to_ddl_columns": true,
+    "sample_rows_emitted": 0,
+    "stable_ids_unique": true,
+    "status": "passed"
+  }
+}

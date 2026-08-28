@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "columns": 1194,
+    "foreign_keys": 101,
+    "primary_keys": 56,
+    "structured_columns": 17,
+    "structured_leaves": 128,
+    "tables": 56
+  },
+  "database": "cybermarket_pattern_large",
+  "intentional_exclusions": [
+    {
+      "effect": "sample values are absent; DDL semantics are retained",
+      "reason": "protocol_excludes_public_value_examples",
+      "source_content": "First 3 rows sections"
+    }
+  ],
+  "kind": "public-schema-intermediate-representation",
+  "output": {
+    "file": "cybermarket_pattern_large.schema.jsonl",
+    "sha256": "baa5789ad9d49017fe66c283205adba6cdda82760cb8bcc10d6a9e09cc85c3da"
+  },
+  "schema_version": 1,
+  "semantic_mapping": {
+    "reason": "public_source_ir_only",
+    "status": "not_started"
+  },
+  "source": {
+    "column_meanings": {
+      "file": "cybermarket_pattern_large/cybermarket_pattern_large_column_meaning_base.json",
+      "sha256": "46e210c66a0e0bb486b3fda6d91aa208a0812cc7b1142f155da454678205670c"
+    },
+    "companion_hkb_ir": {
+      "file": "cybermarket_pattern_large.hkb.jsonl",
+      "manifest_file": "manifest.json",
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "e60b16d3c8a343695e28123262e0dc69130eb37b359d91bb990dd72f02c3fc77"
+    },
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "inventory_sha256": "2b833d1524695ac811bbeac2a78b00815767b793511a74f35ed913b521796c3a",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema": {
+      "file": "cybermarket_pattern_large/cybermarket_pattern_large_schema.txt",
+      "sha256": "b1350cf725706bbb0112284f4a24a39b0cceceeb94420a8fc24590d27da86d56"
+    }
+  },
+  "validation": {
+    "all_ddl_columns_have_meanings": true,
+    "all_key_references_resolve": true,
+    "all_meanings_resolve_to_ddl_columns": true,
+    "sample_rows_emitted": 0,
+    "stable_ids_unique": true,
+    "status": "passed"
+  }
+}

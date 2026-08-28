@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "columns": 1051,
+    "foreign_keys": 68,
+    "primary_keys": 58,
+    "structured_columns": 10,
+    "structured_leaves": 69,
+    "tables": 58
+  },
+  "database": "planets_data_large",
+  "intentional_exclusions": [
+    {
+      "effect": "sample values are absent; DDL semantics are retained",
+      "reason": "protocol_excludes_public_value_examples",
+      "source_content": "First 3 rows sections"
+    }
+  ],
+  "kind": "public-schema-intermediate-representation",
+  "output": {
+    "file": "planets_data_large.schema.jsonl",
+    "sha256": "e74ec7a196263b00642f032b6bb2be400f242f7772c597ba44d8fac039cd31f2"
+  },
+  "schema_version": 1,
+  "semantic_mapping": {
+    "reason": "public_source_ir_only",
+    "status": "not_started"
+  },
+  "source": {
+    "column_meanings": {
+      "file": "planets_data_large/planets_data_large_column_meaning_base.json",
+      "sha256": "2d95b3f1e8aceea219fe4d230f18f9a2db0c60d49a9f5c40f082ccc23375c6bb"
+    },
+    "companion_hkb_ir": {
+      "file": "planets_data_large.hkb.jsonl",
+      "manifest_file": "manifest.json",
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "ceee5a74a9eae9c09e587ddf151bc657aa694e113386756c20affe5091538963"
+    },
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "inventory_sha256": "2b833d1524695ac811bbeac2a78b00815767b793511a74f35ed913b521796c3a",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema": {
+      "file": "planets_data_large/planets_data_large_schema.txt",
+      "sha256": "528ac9095b3a4a3ef65e9eb321deaa3b4578c01ee2946a06802c29d393e8382b"
+    }
+  },
+  "validation": {
+    "all_ddl_columns_have_meanings": true,
+    "all_key_references_resolve": true,
+    "all_meanings_resolve_to_ddl_columns": true,
+    "sample_rows_emitted": 0,
+    "stable_ids_unique": true,
+    "status": "passed"
+  }
+}

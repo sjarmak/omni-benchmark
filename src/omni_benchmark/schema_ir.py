@@ -22,6 +22,10 @@ from .schema_ddl import (
     TableDefinition,
     parse_public_ddl,
 )
+from .schema_identifier_resolution import (
+    SchemaIdentifierResolutionError,
+    canonicalize_metadata_identifiers,
+)
 from .schema_publication import SchemaPublicationError, publish_schema_ir
 from .schema_source_inventory import (
     SchemaSourceFile,
@@ -738,7 +742,13 @@ def generate_public_schema_ir(
         tables = parse_public_ddl(schema_bytes, database)
     except SchemaDDLDataError as error:
         raise SchemaIRDataError(str(error)) from error
-    meanings = _column_meanings(meaning_bytes, database)
+    try:
+        meanings = canonicalize_metadata_identifiers(
+            tables,
+            _column_meanings(meaning_bytes, database),
+        )
+    except SchemaIdentifierResolutionError as error:
+        raise SchemaIRDataError(str(error)) from error
     _validate_schema(tables, meanings)
     records, counts = _compile_records(
         database,

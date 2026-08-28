@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "columns": 1249,
+    "foreign_keys": 47,
+    "primary_keys": 57,
+    "structured_columns": 27,
+    "structured_leaves": 156,
+    "tables": 57
+  },
+  "database": "exchange_traded_funds_large",
+  "intentional_exclusions": [
+    {
+      "effect": "sample values are absent; DDL semantics are retained",
+      "reason": "protocol_excludes_public_value_examples",
+      "source_content": "First 3 rows sections"
+    }
+  ],
+  "kind": "public-schema-intermediate-representation",
+  "output": {
+    "file": "exchange_traded_funds_large.schema.jsonl",
+    "sha256": "8bb426f29a9a23182afc96a50119571573049eb761e8686fc7b2ae9be0d30411"
+  },
+  "schema_version": 1,
+  "semantic_mapping": {
+    "reason": "public_source_ir_only",
+    "status": "not_started"
+  },
+  "source": {
+    "column_meanings": {
+      "file": "exchange_traded_funds_large/exchange_traded_funds_large_column_meaning_base.json",
+      "sha256": "088d4790a2cf0ab251aeb0cff4a4bb97cb863c2af676b57e9762b95070325974"
+    },
+    "companion_hkb_ir": {
+      "file": "exchange_traded_funds_large.hkb.jsonl",
+      "manifest_file": "manifest.json",
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "7244910029a24127ad54223ad4d87fcb32a969cee4a5ab8f0807cd2861b3b7aa"
+    },
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "inventory_sha256": "2b833d1524695ac811bbeac2a78b00815767b793511a74f35ed913b521796c3a",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema": {
+      "file": "exchange_traded_funds_large/exchange_traded_funds_large_schema.txt",
+      "sha256": "a05d30f7503ffebf1d00a58ad9bc84eeec273582e2bed14f37c05f4ca448bdc4"
+    }
+  },
+  "validation": {
+    "all_ddl_columns_have_meanings": true,
+    "all_key_references_resolve": true,
+    "all_meanings_resolve_to_ddl_columns": true,
+    "sample_rows_emitted": 0,
+    "stable_ids_unique": true,
+    "status": "passed"
+  }
+}

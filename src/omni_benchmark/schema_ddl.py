@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Sequence
 
@@ -55,6 +56,9 @@ class _DDLBlock:
     byte_start: int
     byte_end_exclusive: int
     source_ordinal: int
+
+
+_LEADING_DIGIT_COLUMN = re.compile(r"(?m)^([ \t]*)([0-9][A-Za-z0-9_$]*)([ \t]+)")
 
 
 def _line_value(line: bytes) -> bytes:
@@ -294,9 +298,17 @@ def _table(block: _DDLBlock, database: str) -> TableDefinition:
     try:
         parsed = parse_one(block.ddl, read="postgres")
     except (errors.ParseError, RecursionError) as error:
-        raise SchemaDDLDataError(
-            f"cannot parse DDL table {block.source_ordinal} for {database}"
-        ) from error
+        repaired = _LEADING_DIGIT_COLUMN.sub(r'\1"\2"\3', block.ddl)
+        if repaired == block.ddl:
+            raise SchemaDDLDataError(
+                f"cannot parse DDL table {block.source_ordinal} for {database}"
+            ) from error
+        try:
+            parsed = parse_one(repaired, read="postgres")
+        except (errors.ParseError, RecursionError) as repaired_error:
+            raise SchemaDDLDataError(
+                f"cannot parse DDL table {block.source_ordinal} for {database}"
+            ) from repaired_error
     if not isinstance(parsed, exp.Create) or not isinstance(parsed.this, exp.Schema):
         raise SchemaDDLDataError("DDL block must contain exactly one CREATE TABLE")
     table_expression = parsed.this.this

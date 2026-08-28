@@ -41,6 +41,7 @@ def _write_public_sources(
     tmp_path: Path,
     *,
     id_definition: str = "id bigint DEFAULT nextval('sequence,one'::regclass)",
+    meaning_id_column: str = "id",
     meaning_table: str = "first_table",
     payload_type: str = "jsonb",
     primary_key_sql: str = "PRIMARY KEY (id),\n",
@@ -63,7 +64,7 @@ def _write_public_sources(
     )
     meanings = json.dumps(
         {
-            f"{DATABASE}|{meaning_table}|id": "BIGINT. Identifier.",
+            f"{DATABASE}|{meaning_table}|{meaning_id_column}": "BIGINT. Identifier.",
             f"{DATABASE}|{meaning_table}|Payload": {
                 "column_meaning": "JSONB payload.",
                 "fields_meaning": {
@@ -159,6 +160,22 @@ def test_postgres_identifier_identity_folds_only_unquoted_names() -> None:
     assert quoted.columns[0].identifier == schema_ir.IdentifierDefinition(
         name="bar", quoted=True, canonical_sql='"bar"'
     )
+
+
+def test_public_ddl_repairs_unquoted_leading_digit_column_identifier() -> None:
+    source = _ddl_source(
+        "CREATE TABLE measurements (\n3d_point_uncertainty_mm REAL NULL\n);"
+    )
+
+    table = parse_public_ddl(source, DATABASE)[0]
+
+    assert table.columns[0].identifier == schema_ir.IdentifierDefinition(
+        name="3d_point_uncertainty_mm",
+        quoted=True,
+        canonical_sql='"3d_point_uncertainty_mm"',
+    )
+    assert "3d_point_uncertainty_mm REAL NULL" in table.ddl
+    assert '"3d_point_uncertainty_mm" REAL NULL' not in table.ddl
 
 
 @pytest.mark.parametrize(
@@ -352,6 +369,64 @@ def test_generation_rejects_column_metadata_for_unknown_table(tmp_path: Path) ->
     )
 
     with pytest.raises(SchemaIRDataError, match="unknown DDL table missing_table"):
+        generate_public_schema_ir(
+            source_root,
+            inventory,
+            tmp_path / "output",
+            database=DATABASE,
+            companion_hkb_ir=hkb_ir,
+        )
+
+
+def test_generation_resolves_metadata_case_to_unquoted_ddl_identifiers(
+    tmp_path: Path,
+) -> None:
+    source_root, inventory, hkb_ir = _write_public_sources(
+        tmp_path,
+        meaning_id_column="ID",
+        meaning_table="First_Table",
+    )
+
+    generate_public_schema_ir(
+        source_root,
+        inventory,
+        tmp_path / "output",
+        database=DATABASE,
+        companion_hkb_ir=hkb_ir,
+    )
+
+    first_table = next(
+        record
+        for record in _records(tmp_path / "output")
+        if record["stable_id"] == f"{DATABASE}:table:first_table"
+    )
+    identifier = next(
+        record
+        for record in _records(tmp_path / "output")
+        if record["stable_id"] == f"{DATABASE}:column:first_table:id"
+    )
+    assert first_table["identifier"]["quoted"] is False
+    assert identifier["description"] == "BIGINT. Identifier."
+    assert identifier["provenance"]["sources"][1]["source_key"] == (
+        f"{DATABASE}|First_Table|ID"
+    )
+
+
+def test_generation_does_not_casefold_metadata_to_quoted_identifier(
+    tmp_path: Path,
+) -> None:
+    source_root, inventory, hkb_ir = _write_public_sources(
+        tmp_path,
+        meaning_table="FIRST_TABLE",
+        schema_override=(
+            'CREATE TABLE "First_Table" (\nid bigint\n);\n\nFirst 3 rows:\n...\n'
+        ).encode(),
+    )
+
+    with pytest.raises(
+        SchemaIRDataError,
+        match="column metadata references unknown DDL table FIRST_TABLE",
+    ):
         generate_public_schema_ir(
             source_root,
             inventory,

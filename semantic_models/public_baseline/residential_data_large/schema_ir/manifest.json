@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "columns": 1003,
+    "foreign_keys": 71,
+    "primary_keys": 48,
+    "structured_columns": 9,
+    "structured_leaves": 47,
+    "tables": 48
+  },
+  "database": "residential_data_large",
+  "intentional_exclusions": [
+    {
+      "effect": "sample values are absent; DDL semantics are retained",
+      "reason": "protocol_excludes_public_value_examples",
+      "source_content": "First 3 rows sections"
+    }
+  ],
+  "kind": "public-schema-intermediate-representation",
+  "output": {
+    "file": "residential_data_large.schema.jsonl",
+    "sha256": "6c198d68e43b734cd4a76a3b83b40e85a4cb4a58e791bae352303c7bb93386d6"
+  },
+  "schema_version": 1,
+  "semantic_mapping": {
+    "reason": "public_source_ir_only",
+    "status": "not_started"
+  },
+  "source": {
+    "column_meanings": {
+      "file": "residential_data_large/residential_data_large_column_meaning_base.json",
+      "sha256": "cfb83057d7ba30be3cd15471456ef298a058d9f990da212d38a8f118f2ef9ed1"
+    },
+    "companion_hkb_ir": {
+      "file": "residential_data_large.hkb.jsonl",
+      "manifest_file": "manifest.json",
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "9bd188a06b1d912296095d145a7d3f7199aa1a29be78eecceca11d0c07bc6930"
+    },
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "inventory_sha256": "2b833d1524695ac811bbeac2a78b00815767b793511a74f35ed913b521796c3a",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema": {
+      "file": "residential_data_large/residential_data_large_schema.txt",
+      "sha256": "085a5f01e0b1bb438a0f8bf5df5e357f38b55867cfc88d9f1d290d778543238f"
+    }
+  },
+  "validation": {
+    "all_ddl_columns_have_meanings": true,
+    "all_key_references_resolve": true,
+    "all_meanings_resolve_to_ddl_columns": true,
+    "sample_rows_emitted": 0,
+    "stable_ids_unique": true,
+    "status": "passed"
+  }
+}

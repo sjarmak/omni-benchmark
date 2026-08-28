@@ -1,0 +1,55 @@
+{
+  "counts": {
+    "columns": 764,
+    "foreign_keys": 39,
+    "primary_keys": 51,
+    "structured_columns": 11,
+    "structured_leaves": 70,
+    "tables": 51
+  },
+  "database": "museum_artifact_large",
+  "intentional_exclusions": [
+    {
+      "effect": "sample values are absent; DDL semantics are retained",
+      "reason": "protocol_excludes_public_value_examples",
+      "source_content": "First 3 rows sections"
+    }
+  ],
+  "kind": "public-schema-intermediate-representation",
+  "output": {
+    "file": "museum_artifact_large.schema.jsonl",
+    "sha256": "d98d4f61f7dcca078777adafbb1f35f92e6f758dab3f0778e1db8d6aee538a1c"
+  },
+  "schema_version": 1,
+  "semantic_mapping": {
+    "reason": "public_source_ir_only",
+    "status": "not_started"
+  },
+  "source": {
+    "column_meanings": {
+      "file": "museum_artifact_large/museum_artifact_large_column_meaning_base.json",
+      "sha256": "0516422f99a0bae9706e57520e937e2fdc2f0ef970ae522738a380e54ae08392"
+    },
+    "companion_hkb_ir": {
+      "file": "museum_artifact_large.hkb.jsonl",
+      "manifest_file": "manifest.json",
+      "manifest_sha256": "e6fa23fa6fcc821104c3854271e1cb6e8cfba7a841a16c9613d7e8a3c497e35d",
+      "sha256": "73cdad852963e950c727a2024504cbc6e47ee1870d3c156eebfcf87be6ccf393"
+    },
+    "dataset": "birdsql/livesqlbench-large-v1",
+    "inventory_sha256": "2b833d1524695ac811bbeac2a78b00815767b793511a74f35ed913b521796c3a",
+    "revision": "a418e108d5cbb4cf9b783a928eff5e924ad2460d",
+    "schema": {
+      "file": "museum_artifact_large/museum_artifact_large_schema.txt",
+      "sha256": "4cf4b39e4d7f4a7cfc98d5e9d2ba0d6a99592a0180e7087aafaffbab3e8c7ca5"
+    }
+  },
+  "validation": {
+    "all_ddl_columns_have_meanings": true,
+    "all_key_references_resolve": true,
+    "all_meanings_resolve_to_ddl_columns": true,
+    "sample_rows_emitted": 0,
+    "stable_ids_unique": true,
+    "status": "passed"
+  }
+}
