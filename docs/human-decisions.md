@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T14:57:00-04:00 (America/New_York). No gold package,
+Last updated: 2026-08-28T15:07:12-04:00 (America/New_York). No gold package,
 hidden annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -40,6 +40,11 @@ hidden annotation, or sealed-test result has been accessed.
   run `ds-cred`, copy credential files, start Remote Control, or use accounts
   3/4/5 afterward. Notify the benchmark operator when the account-5 session is
   stopped and this profile-3 login is complete.
+
+  A single automated in-place recovery attempt at 15:07 EDT failed immediately
+  with `OAuth session expired and could not be refreshed`; it consumed zero
+  tokens and left `expiresAt=0`. It will not be retried automatically. The
+  refresh token itself requires the one interactive profile-3 login above.
 
 ## Approved actions in progress
 
