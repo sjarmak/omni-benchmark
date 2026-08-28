@@ -1,0 +1,40 @@
+{
+  "attempt_count": 693,
+  "attempts_per_condition": 231,
+  "conditions": [
+    "C1",
+    "C2",
+    "C3"
+  ],
+  "cost_ceiling_usd": "2000.000000000",
+  "database_count": 18,
+  "execution_plan_sha256": "b46d820efd7a55fa08dafd47fadc8f983044c35c287c0499de4b64c11d90b65d",
+  "headroom_to_ceiling_usd": "1029.857461250",
+  "method": "condition_specific_auth4_observed_mean_scenario",
+  "observed_attempt_count": 12,
+  "observed_attempt_cost_mean_usd": "1.399917083333333333333333333",
+  "observed_attempt_cost_total_usd": "16.799005000",
+  "observed_condition_cost_mean_usd": {
+    "C1": "1.179256125",
+    "C2": "1.137693000",
+    "C3": "1.882802125"
+  },
+  "observed_condition_cost_total_usd": {
+    "C1": "4.717024500",
+    "C2": "4.550772000",
+    "C3": "7.531208500"
+  },
+  "projected_condition_cost_usd": {
+    "C1": "272.408164875",
+    "C2": "262.807083000",
+    "C3": "434.927290875"
+  },
+  "projected_cost_usd": "970.142538750",
+  "projected_over_ceiling": false,
+  "projection_basis": "four public questions across four databases, each run once under C1-C3",
+  "run_id": "public-baseline-v1-auth4",
+  "schedule_sha256": "009e51d815f6a806b654fb022db33a80f4862d6cef7b47588f05e32c7c61496b",
+  "scope": "complete C1-C3 public-only baseline; C4 is a separate partial-coverage run",
+  "source_commit": "62cb76f9cecd5ed3dda6709b9e31ec260006ef0b",
+  "warning": "The twelve-attempt sample is small and heterogeneous; the live runner must stop and report before the hard ceiling rather than silently truncate the schedule."
+}
