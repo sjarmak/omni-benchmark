@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 import os
 import re
-import sqlite3
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from functools import partial
@@ -23,16 +22,20 @@ from .direct_public_parsing import (
     text_list,
     validate_payload,
 )
+from .direct_public_search import (
+    rank_public_records as _rank_public_records,
+    search_query as _search_query,
+    search_schema,
+)
 from .direct_capture_contract import DirectReferenceResult
 from .direct_runtime_binding import DirectContextIdentity
 from .omni_probe_preflight import OmniProbePreflightError, committed_spec
 
 DirectPublicCondition = Literal["C1", "C2", "C3"]
 
-MAX_QUERY_CHARS = 512
 MAX_HKB_MATCHES = 8
 MAX_SEMANTIC_MATCHES = 8
-MAX_SCHEMA_PAYLOAD_BYTES = 2 * 1024 * 1024
+MAX_SCHEMA_SOURCE_PAYLOAD_BYTES = 2 * 1024 * 1024
 MAX_HKB_PAYLOAD_BYTES = 128 * 1024
 MAX_SEMANTIC_PAYLOAD_BYTES = 64 * 1024
 
@@ -48,7 +51,6 @@ _HKB_MANIFEST = Path("semantic_models/public_ir/manifest.json")
 _SEMANTIC_MANIFEST = Path("semantic_models/public_bundle/manifest.json")
 _SHA256 = re.compile(r"[0-9a-f]{64}")
 _DATABASE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_]{0,127}")
-_TERM = re.compile(r"[^\W_]+", re.UNICODE)
 _POLICY_METADATA_INSTRUCTION = (
     "Use only condition-specific public reference tools and read-only Query SQL; "
     "refuse when public information is insufficient."
@@ -60,7 +62,7 @@ class DirectPublicTools:
     """Condition-scoped callbacks passed to ``DirectSqlCapture``."""
 
     identity: DirectContextIdentity
-    inspect_schema: Callable[[], DirectReferenceResult]
+    inspect_schema: Callable[[str], DirectReferenceResult]
     search_hkb: Callable[[str], DirectReferenceResult] | None
     search_semantic_model: Callable[[str], DirectReferenceResult] | None
     render_question: Callable[[str], str]
@@ -155,7 +157,7 @@ def _load_public_base(
         _jsonl_records(schema_input.content, "schema IR"),
         schema_input.sha256,
         schema_manifest.sha256,
-        MAX_SCHEMA_PAYLOAD_BYTES,
+        MAX_SCHEMA_SOURCE_PAYLOAD_BYTES,
         policy,
     )
     return _PublicBaseInputs(
@@ -210,7 +212,7 @@ def _public_tools(
     return DirectPublicTools(
         identity=identity,
         inspect_schema=partial(
-            _schema_reference, base.schema_bytes, identity.context_sha256
+            search_schema, base.schema_bytes, base.policy, identity.context_sha256
         ),
         search_hkb=(
             partial(
@@ -235,14 +237,6 @@ def _public_tools(
             else None
         ),
         render_question=partial(_render_question, base.prompt.content, base.policy),
-    )
-
-
-def _schema_reference(
-    canonical_schema: bytes, context_sha256: str
-) -> DirectReferenceResult:
-    return DirectReferenceResult(
-        json.loads(canonical_schema), context_sha256, "inspect_schema"
     )
 
 
@@ -585,51 +579,6 @@ def _search_semantic(
         "search_semantic_model",
         semantic_objects=tuple(item["object_id"] for item in selected),
     )
-
-
-def _rank_public_records(
-    records: Sequence[Mapping[str, Any]],
-    terms: tuple[str, ...],
-    fields: tuple[str, ...],
-) -> tuple[Mapping[str, Any], ...]:
-    """Rank public text with unweighted FTS5 BM25 and canonical-order ties."""
-    documents = tuple(
-        " ".join(str(record[field]) for field in fields if field in record)
-        for record in records
-    )
-    try:
-        with sqlite3.connect(":memory:") as connection:
-            connection.execute(
-                "CREATE VIRTUAL TABLE public_search USING "
-                "fts5(content, tokenize='unicode61 remove_diacritics 2')"
-            )
-            connection.executemany(
-                "INSERT INTO public_search(content) VALUES (?)",
-                ((document,) for document in documents),
-            )
-            rows = connection.execute(
-                "SELECT rowid FROM public_search "
-                "WHERE public_search MATCH ? ORDER BY rank, rowid",
-                (_fts5_or_query(terms),),
-            ).fetchall()
-    except sqlite3.Error as error:
-        raise DirectPublicContextError("public FTS5 search is unavailable") from error
-    return tuple(records[rowid - 1] for (rowid,) in rows)
-
-
-def _fts5_or_query(terms: tuple[str, ...]) -> str:
-    return " OR ".join(f'"{term.replace(chr(34), chr(34) * 2)}"' for term in terms)
-
-
-def _search_query(query: str, policy: ContentPolicy) -> tuple[str, ...]:
-    if not isinstance(query, str) or not query.strip() or len(query) > MAX_QUERY_CHARS:
-        raise DirectPublicContextError("search query must be non-empty and bounded")
-    if not policy.query_is_safe(query):
-        raise DirectPublicContextError("search query contains sensitive content")
-    terms = tuple(sorted(set(_TERM.findall(query.casefold()))))
-    if not terms:
-        raise DirectPublicContextError("search query contains no searchable terms")
-    return terms
 
 
 def _identity(

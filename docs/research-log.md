@@ -3529,3 +3529,77 @@ zero-token system failure that synthetic validation did not reveal.
 
 Implement and review the minimal nested envelope, then rerun C1 from a fresh
 exact-commit worktree and artifact root.
+
+## 2026-08-28 — D-045: Bound direct-schema discovery before raising budget
+
+_Last updated: 2026-08-28 11:18 EDT_
+
+### Decision / experiment
+
+Replace the zero-argument, whole-database `inspect_schema` response shared by
+C1–C3 with deterministic, query-directed public-schema retrieval.
+
+### Observation
+
+The immutable C1 archeology canary at commit `349e0bb` passed the public
+question, database-identity, read-only, model-identity, and first-turn gates.
+Claude then called `inspect_schema`. The tool returned all 51 tables; the next
+turn consumed 169,995 input tokens and ended in `model_budget_error` before any
+SQL or database query. Across the attempt, usage was 171,423 input and 1,942
+output tokens, one tool call, zero database queries, 26.0 seconds, and
+$1.7398935 provider-reported cost.
+
+### Hypothesis
+
+The failure is caused by unbounded scaffold context, not by the question or
+database. Requiring a lexical schema query and returning a bounded set of
+matching public tables, columns, and relationships should preserve legitimate
+schema discovery while reducing context enough to complete the same one-shot
+attempt within the frozen budget. The same tool and bounds should improve all
+three direct comparators without changing their information hierarchy.
+
+### Decision
+
+Test the smallest shared retrieval change under Bead
+`omni-benchmark-dih.5.4.2.5.6`. Keep committed-input identity and strict action
+validation. Use deterministic public-schema search only; do not add
+question-specific aliases or hidden inputs. Do not raise the cost ceiling as
+the primary intervention.
+
+### Rationale
+
+Returning the entire schema makes a competent direct comparator needlessly
+expensive and can make C1–C3 look weak for scaffold reasons. A bounded retrieval
+surface directly unblocks the vertical slice and is interpretable as a general
+harness correction. Raising the budget would permit the pathological behavior
+and multiply baseline cost without testing its cause.
+
+### Intervention
+
+Optimization surface: structural harness/retrieval; change type: general system
+improvement. Planned intervention: make `inspect_schema` require a non-empty
+query, rank only committed public-schema records mechanically, and enforce a
+small result/payload bound shared across C1–C3.
+
+### Result
+
+Pending RED/GREEN implementation and immutable live replay.
+
+### Interpretation
+
+Pending.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+If confirmed, semantic-agent comparators need bounded schema discovery as a
+first-class scaffold primitive. Tool availability alone is insufficient when a
+single valid call can consume the entire inference budget.
+
+### Next step
+
+Write failing action, retrieval, dispatch, and payload-bound tests before
+changing the production path.

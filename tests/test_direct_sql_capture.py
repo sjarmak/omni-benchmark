@@ -95,7 +95,11 @@ def test_harness_owned_loop_captures_full_telemetry_and_typed_result(
     tmp_path: Path,
 ) -> None:
     actions = [
-        {"type": "tool", "name": "inspect_schema", "arguments": {}},
+        {
+            "type": "tool",
+            "name": "inspect_schema",
+            "arguments": {"query": "public schema"},
+        },
         {
             "type": "tool",
             "name": "search_hkb",
@@ -154,6 +158,13 @@ def test_harness_owned_loop_captures_full_telemetry_and_typed_result(
     assert evidence["runtime_binding_sha256"] == result.binding.sha256()
     assert evidence["trace_sha256"] == result.trace.sha256
     assert evidence["records"] == [
+        {
+            "exploratory_sql": None,
+            "retrieval_query": "public schema",
+            "retrieved_public_ids": [],
+            "tool_name": "inspect_schema",
+            "trace_seq": 1,
+        },
         {
             "exploratory_sql": None,
             "retrieval_query": "public metric",
@@ -489,14 +500,20 @@ def test_forbidden_nested_database_value_cannot_enter_result(tmp_path: Path) -> 
 def test_forbidden_reference_payload_is_not_persisted(tmp_path: Path) -> None:
     binding = runtime_binding()
     tools = BoundPublicTools(binding)
-    tools.inspect_schema = lambda: DirectReferenceResult(  # type: ignore[method-assign]
+    tools.inspect_schema = lambda query: DirectReferenceResult(  # type: ignore[method-assign]
         payload={"external_knowledge": ["hidden-marker"]},
         context_sha256=binding.context.context_sha256,
         capability="inspect_schema",
     )
     result, _, _ = _run(
         tmp_path,
-        [{"type": "tool", "name": "inspect_schema", "arguments": {}}],
+        [
+            {
+                "type": "tool",
+                "name": "inspect_schema",
+                "arguments": {"query": "public schema"},
+            }
+        ],
         tools=tools,
     )
 
@@ -550,7 +567,7 @@ def test_live_secret_in_reference_payload_is_not_returned_to_model(
     monkeypatch.setenv("OMNI_API_TOKEN", "live-secret-value")
     binding = runtime_binding()
     tools = BoundPublicTools(binding)
-    tools.inspect_schema = lambda: DirectReferenceResult(  # type: ignore[method-assign]
+    tools.inspect_schema = lambda query: DirectReferenceResult(  # type: ignore[method-assign]
         payload={"innocuous_field": "live-secret-value"},
         context_sha256=binding.context.context_sha256,
         capability="inspect_schema",
@@ -558,7 +575,11 @@ def test_live_secret_in_reference_payload_is_not_returned_to_model(
     result, model, _ = _run(
         tmp_path,
         [
-            {"type": "tool", "name": "inspect_schema", "arguments": {}},
+            {
+                "type": "tool",
+                "name": "inspect_schema",
+                "arguments": {"query": "public schema"},
+            },
             {"type": "refuse", "reason": "cannot_answer_safely"},
         ],
         tools=tools,
@@ -599,7 +620,13 @@ def test_partial_observability_preserves_raw_per_turn_telemetry(
 ) -> None:
     result, _, _ = _run(
         tmp_path,
-        [{"type": "tool", "name": "inspect_schema", "arguments": {}}],
+        [
+            {
+                "type": "tool",
+                "name": "inspect_schema",
+                "arguments": {"query": "public schema"},
+            }
+        ],
         model_class=PartiallyMeteredFailureModel,
         name="partial-observability",
     )

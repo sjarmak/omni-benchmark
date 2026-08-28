@@ -8,10 +8,12 @@ from omni_benchmark.content_policy import ContentPolicy
 from omni_benchmark.direct_action_evidence import (
     DirectActionEvidenceError,
     action_evidence_payload,
+    public_ids_from_reference,
     retrieval_evidence,
     sql_evidence,
     validate_action_evidence_payload,
 )
+from omni_benchmark.direct_capture_contract import DirectReferenceResult
 from tests.direct_capture_fixtures import runtime_binding
 
 
@@ -119,7 +121,7 @@ def test_action_evidence_rejects_forbidden_or_unbounded_content() -> None:
 def test_action_evidence_rejects_a_forged_identifier() -> None:
     binding, events, records = _evidence_fixture()
     policy = ContentPolicy.from_environment({})
-    forged = replace(records[0], retrieved_public_ids=("x" * 129,))
+    forged = replace(records[0], retrieved_public_ids=("x" * 257,))
 
     with pytest.raises(DirectActionEvidenceError, match="identifier"):
         action_evidence_payload(
@@ -129,6 +131,66 @@ def test_action_evidence_rejects_a_forged_identifier() -> None:
             trace_events=events,
             policy=policy,
         )
+
+
+def test_schema_retrieval_evidence_is_valid_for_every_direct_condition() -> None:
+    policy = ContentPolicy.from_environment({})
+    public_id = "labor_certification_applications_large:column:" + "x" * 94
+    retrieval = retrieval_evidence(
+        trace_seq=1,
+        tool_name="inspect_schema",
+        query="employer wage",
+        retrieved_ids=(public_id,),
+        policy=policy,
+    )
+    event = {
+        "event_type": "direct_tool_dispatch",
+        "failure_class": None,
+        "metadata_sha256": retrieval.sha256(),
+        "seq": 1,
+        "tool_name": "inspect_schema",
+    }
+
+    for condition in ("C1", "C2", "C3"):
+        binding = runtime_binding(condition)
+        payload = action_evidence_payload(
+            binding=binding,
+            trace_sha256=TRACE_SHA256,
+            records=(retrieval,),
+            trace_events=(event,),
+            policy=policy,
+        )
+        assert payload["records"][0]["retrieved_public_ids"] == [public_id]
+
+
+def test_reference_ids_are_extracted_by_exact_capability() -> None:
+    policy = ContentPolicy.from_environment({})
+    result = DirectReferenceResult(
+        payload={
+            "retrieved_schema_stable_ids": ["public:schema:table"],
+            "retrieved_hkb_stable_ids": ["public:hkb:must-not-cross"],
+        },
+        context_sha256="b" * 64,
+        capability="inspect_schema",
+    )
+
+    assert public_ids_from_reference(result, policy) == ("public:schema:table",)
+
+
+@pytest.mark.parametrize(
+    "payload", [{"tables": []}, {"retrieved_schema_stable_ids": {}}]
+)
+def test_schema_reference_requires_explicit_identifier_list(
+    payload: dict[str, object],
+) -> None:
+    result = DirectReferenceResult(
+        payload=payload,
+        context_sha256="b" * 64,
+        capability="inspect_schema",
+    )
+
+    with pytest.raises(DirectActionEvidenceError, match="identifier list"):
+        public_ids_from_reference(result, ContentPolicy.from_environment({}))
 
 
 def test_action_evidence_rejects_malformed_record_and_trace_shapes() -> None:

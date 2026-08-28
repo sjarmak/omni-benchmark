@@ -223,7 +223,9 @@ class BoundPublicTools:
     ) -> None:
         self.identity = binding.context
         self._schema_payload = (
-            {"tables": []} if schema_payload is None else schema_payload
+            {"retrieved_schema_stable_ids": [], "tables": []}
+            if schema_payload is None
+            else schema_payload
         )
         self._hkb_payload = {"matches": []} if hkb_payload is None else hkb_payload
         self._semantic_payload = (
@@ -237,8 +239,8 @@ class BoundPublicTools:
         else:
             self.search_hkb = None  # type: ignore[method-assign]
 
-    def inspect_schema(self) -> DirectReferenceResult:
-        return self._result("inspect_schema", self._schema_payload)
+    def inspect_schema(self, query: str) -> DirectReferenceResult:
+        return self._result("inspect_schema", {**self._schema_payload, "query": query})
 
     def search_hkb(self, query: str) -> DirectReferenceResult:
         return self._result("search_hkb", {**self._hkb_payload, "query": query})

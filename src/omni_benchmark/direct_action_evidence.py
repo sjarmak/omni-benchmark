@@ -20,7 +20,7 @@ from .sql_admission import single_query_sql_is_admissible
 _KIND = "direct-action-evidence"
 _SCHEMA_VERSION = 1
 _SHA256 = re.compile(r"[0-9a-f]{64}")
-_RETRIEVAL_TOOLS = frozenset({"search_hkb", "search_semantic_model"})
+_RETRIEVAL_TOOLS = frozenset({"inspect_schema", "search_hkb", "search_semantic_model"})
 _FIELDS = frozenset(
     {"kind", "records", "runtime_binding_sha256", "schema_version", "trace_sha256"}
 )
@@ -37,7 +37,7 @@ _MAX_RECORDS = 1_024
 _MAX_RETRIEVAL_QUERY_CHARS = 512
 _MAX_EXPLORATORY_SQL_CHARS = 65_536
 _MAX_RETRIEVED_IDS = 256
-_MAX_PUBLIC_ID_CHARS = 128
+_MAX_PUBLIC_ID_CHARS = 256
 
 
 class DirectActionEvidenceError(ValueError):
@@ -149,11 +149,24 @@ def public_ids_from_reference(
     result: DirectReferenceResult, policy: ContentPolicy
 ) -> tuple[str, ...]:
     """Extract only explicitly returned public provenance identifiers."""
-    identifiers: Sequence[str] = result.semantic_objects
-    if not identifiers and isinstance(result.payload, Mapping):
-        candidate = result.payload.get("retrieved_hkb_stable_ids", ())
-        if isinstance(candidate, list):
-            identifiers = candidate
+    identifiers: Sequence[str] = ()
+    payload_key = {
+        "inspect_schema": "retrieved_schema_stable_ids",
+        "search_hkb": "retrieved_hkb_stable_ids",
+    }.get(result.capability)
+    if payload_key is not None:
+        if not isinstance(result.payload, Mapping):
+            raise DirectActionEvidenceError(
+                "public reference identifier list is missing"
+            )
+        candidate = result.payload.get(payload_key)
+        if not isinstance(candidate, list):
+            raise DirectActionEvidenceError(
+                "public reference identifier list is invalid"
+            )
+        identifiers = candidate
+    elif result.capability == "search_semantic_model":
+        identifiers = result.semantic_objects
     return _canonical_public_ids(identifiers, policy)
 
 
@@ -267,7 +280,11 @@ def _parse_record(value: object, policy: ContentPolicy) -> DirectActionEvidence:
 def _validate_capability(
     record: DirectActionEvidence, binding: DirectRuntimeBinding
 ) -> None:
-    expected = {"C1": set(), "C2": {"search_hkb"}, "C3": {"search_semantic_model"}}
+    expected = {
+        "C1": {"inspect_schema"},
+        "C2": {"inspect_schema", "search_hkb"},
+        "C3": {"inspect_schema", "search_semantic_model"},
+    }
     if (
         record.tool_name in _RETRIEVAL_TOOLS
         and record.tool_name not in expected[binding.condition]

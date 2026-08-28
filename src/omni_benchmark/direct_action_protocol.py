@@ -39,7 +39,10 @@ class DirectRefusalAction:
 def direct_tool_specs(condition: DirectCondition) -> tuple[Mapping[str, Any], ...]:
     """Return the exact model-facing tool schema authorized for a condition."""
     definitions = {
-        "inspect_schema": ("Inspect the public database schema.", {}),
+        "inspect_schema": (
+            "Search the public database schema by table, column, or description.",
+            {"query": {"type": "string"}},
+        ),
         "search_hkb": (
             "Search the public database-level business knowledge base.",
             {"query": {"type": "string"}},
@@ -99,7 +102,7 @@ def _parse_tool_action(action: Mapping[str, Any]) -> DirectToolAction:
     if not isinstance(name, str) or not isinstance(arguments, Mapping):
         raise DirectActionProtocolError("tool action name and arguments are invalid")
     expected = {
-        "inspect_schema": set(),
+        "inspect_schema": {"query"},
         "search_hkb": {"query"},
         "search_semantic_model": {"query"},
         "execute_sql": {"sql"},

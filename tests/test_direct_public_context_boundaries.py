@@ -169,10 +169,16 @@ def test_c2_callback_rejects_nested_hidden_label_in_committed_provenance(
 
 def test_search_results_do_not_expose_mutable_cached_context(tmp_path: Path) -> None:
     workspace, commit = _fixture_repo(tmp_path)
+    c1 = load_direct_public_tools(workspace, commit, "archeology_scan_large", "C1")
     c2 = load_direct_public_tools(workspace, commit, "archeology_scan_large", "C2")
     c3 = load_direct_public_tools(workspace, commit, "archeology_scan_large", "C3")
     assert c2.search_hkb is not None
     assert c3.search_semantic_model is not None
+
+    first_schema = c1.inspect_schema("resolution measurements")
+    pristine_schema = json.loads(json.dumps(first_schema.payload))
+    first_schema.payload["tables"][0]["name"] = "mutated"
+    assert c1.inspect_schema("resolution measurements").payload == pristine_schema
 
     first_hkb = c2.search_hkb("premium quality")
     pristine_hkb = json.loads(json.dumps(first_hkb.payload))
@@ -183,3 +189,16 @@ def test_search_results_do_not_expose_mutable_cached_context(tmp_path: Path) -> 
     pristine_semantic = json.loads(json.dumps(first_semantic.payload))
     first_semantic.payload["matches"][0]["label"] = "mutated"
     assert c3.search_semantic_model("premium quality").payload == pristine_semantic
+
+
+def test_schema_search_is_identical_across_direct_conditions(tmp_path: Path) -> None:
+    workspace, commit = _fixture_repo(tmp_path)
+    payloads = []
+
+    for condition in ("C1", "C2", "C3"):
+        tools = load_direct_public_tools(
+            workspace, commit, "archeology_scan_large", condition
+        )
+        payloads.append(tools.inspect_schema("resolution measurements").payload)
+
+    assert payloads[0] == payloads[1] == payloads[2]

@@ -25,14 +25,14 @@ implementations actually isolate governed enforcement with model parity.
 | System instructions | Operative provider system prompt is code-bound; committed `direct-sql-v1.json` is non-operative policy metadata | Same operative provider prompt and condition-specific tool schema | Same operative provider prompt and condition-specific tool schema | Production agent instructions; export only if observable and permitted |
 | Available tools | Schema discovery, database query/execute, bounded error recovery | C1 plus database-level HKB search/get | C1 plus exported semantic-model search/get | Production Omni agent tools and governed query workflow |
 | Knowledge at runtime | Public schema/column metadata | Public schema plus database-level HKB; no hidden knowledge IDs | Public schema plus Omni model derived from public schema/HKB; no hidden knowledge IDs | Same public knowledge encoded in the governed model; no hidden knowledge IDs |
-| Retrieval/context | Complete committed public schema context | Public HKB search via unweighted SQLite FTS5 BM25 with canonical-order ties; not a whole-file prompt dump | Same retrieval algorithm over the searchable Omni semantic export | Production Omni discovery behavior |
+| Retrieval/context | Query-directed search over committed public tables/columns/relationships; maximum four tables and 64 KiB per result | Same bounded schema search plus public HKB search via unweighted SQLite FTS5 BM25 with canonical-order ties; neither is a whole-file prompt dump | Same bounded schema search plus the same retrieval algorithm over the searchable Omni semantic export | Production Omni discovery behavior |
 | Database access | Direct read-only benchmark database | Same | Same | Through Omni connection/governed query path |
 | Planning/orchestration | Direct agent, frozen after train-only tuning | Same base harness | Same base harness | Production composite workflow; stages disclosed when observable |
 | Retry behavior | Harness retry ceiling 0; provider-internal retry events are observed in the trace when exposed | Same | Same | Production-default retries; observed rather than artificially matched after treatment |
 | Compiler/query path | Agent emits SQL | Agent emits SQL | Agent emits SQL | Semantic query/objects compiled through Omni; generated SQL captured only if exposed |
 | Validation | Database execution/error handling only | Same | Same | Production validation behavior included |
 | Token/time ceilings | Claude Code 2.1.250 exposes no supported input/output-token ceiling; each turn is limited to 120 seconds, USD 1 provider cost, and 12 total turns | Same | Same | Production defaults where immutable; disclose any mismatch |
-| Current implementation state | Public context, pinned provider, attested PostgreSQL, capture, publisher, committed database bindings, and executable driver pass synthetic/adversarial tests; authenticated live smoke pending | Same, including searchable public HKB and dependency-closure provenance | Same, including searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the exact-commit capture rerun preserved full telemetry on its deliberately unscoreable truncated result; scorer-type parity remains pending |
+| Current implementation state | Public context, pinned provider, attested PostgreSQL, capture, publisher, committed database bindings, and executable driver pass synthetic/adversarial tests; the first authenticated live smoke reached schema discovery but exposed an unbounded-context budget failure, and the bounded replacement awaits immutable replay | Same, including searchable public HKB and dependency-closure provenance | Same, including searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the exact-commit capture rerun preserved full telemetry on its deliberately unscoreable truncated result; scorer-type parity remains pending |
 
 Exact prompts, tool manifests, model identifiers, configuration hashes, retry
 ceilings, and version fingerprints are Freeze B artifacts. C1-C3 must be made
@@ -46,10 +46,14 @@ prompt plus the condition-specific tool schemas. The only runtime user message
 is the exact committed public question. This distinction prevents the metadata
 hash from being misreported as an evaluated prompt treatment.
 
-C2 and C3 use the same dependency-free retrieval scaffold. The model chooses
-each query; no hidden annotation selects context. The adapter indexes the
-condition's committed public records in an in-memory SQLite FTS5 table, uses the
-built-in unweighted BM25 rank, and breaks equal ranks by canonical input order.
+C1-C3 use the same query-directed schema-retrieval scaffold. The model chooses
+each query; no hidden annotation selects context. Schema search ranks complete
+committed public table records and returns at most four tables and 64 KiB,
+shrinking deterministically with no complete-schema fallback. C2 and C3 add
+condition-specific knowledge retrieval through the same mechanical search
+primitive. The adapter indexes the condition's committed public records in an
+in-memory SQLite FTS5 table, uses the built-in unweighted BM25 rank, and breaks
+equal ranks by canonical input order.
 This is a narrow deterministic-ranking exception: it replaces the earlier
 hand-weighted phrase heuristic without introducing semantic policy in the
 harness. C2 tool results expose selected direct and dependency-closure IDs in
@@ -126,8 +130,8 @@ The C1-C3 capture core owns tool dispatch rather than trusting provider-reported
 tool totals. Each capture writes an immutable receipt binding the attempt ID,
 question digest, condition, provider/model, maximum turns, generated-SQL digest,
 trace, private action-evidence sidecar, result, and artifact-root identity. The
-bounded sidecar retains each model-authored public retrieval query, the stable HKB
-or semantic-object IDs actually returned when available, and every admitted
+bounded sidecar retains each model-authored public retrieval query, the stable
+schema, HKB, or semantic-object IDs actually returned when available, and every admitted
 exploratory `execute_sql` statement. Record digests bind these actions to exact
 trace sequence numbers. It excludes provider raw responses, result bodies,
 credentials, and hidden annotations; final generated SQL remains in the

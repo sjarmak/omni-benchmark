@@ -11,12 +11,15 @@ import pytest
 from omni_benchmark.direct_public_context import (
     MAX_HKB_MATCHES,
     MAX_HKB_PAYLOAD_BYTES,
-    MAX_SCHEMA_PAYLOAD_BYTES,
     MAX_SEMANTIC_MATCHES,
     MAX_SEMANTIC_PAYLOAD_BYTES,
     DirectPublicContextError,
     _rank_public_records,
     load_direct_public_tools,
+)
+from omni_benchmark.direct_public_search import (
+    MAX_SCHEMA_MATCHES,
+    MAX_SCHEMA_PAYLOAD_BYTES,
 )
 
 
@@ -193,6 +196,46 @@ def _fixture_repo(tmp_path: Path, *, secret: str | None = None) -> tuple[Path, s
                 "archeology_scan_large:structured-leaf:scan:metrics:k:Resolution"
             ),
         },
+        {
+            "database": "archeology_scan_large",
+            "identifier": {
+                "canonical_sql": "field_team",
+                "name": "field_team",
+                "quoted": False,
+            },
+            "primary_key_column_stable_ids": [],
+            "provenance": {
+                "content": ["public_schema"],
+                "intervention": "mechanical_baseline_transformation",
+            },
+            "record_kind": "table",
+            "schema_version": 1,
+            "source_ordinal": 1,
+            "stable_id": "archeology_scan_large:table:field_team",
+            "unique_keys": [],
+        },
+        {
+            "database": "archeology_scan_large",
+            "declared_type_sql": "TEXT",
+            "default_expression_sql": None,
+            "description": "Public field-team name.",
+            "identifier": {
+                "canonical_sql": "team_name",
+                "name": "team_name",
+                "quoted": False,
+            },
+            "nullable": False,
+            "provenance": {
+                "content": ["public_schema", "public_column_metadata"],
+                "intervention": "mechanical_baseline_transformation",
+            },
+            "record_kind": "column",
+            "schema_version": 1,
+            "source_ordinal": 0,
+            "stable_id": "archeology_scan_large:column:field_team:team_name",
+            "structured_leaf_stable_ids": [],
+            "table_stable_id": "archeology_scan_large:table:field_team",
+        },
     ]
     schema_path = (
         workspace
@@ -203,12 +246,12 @@ def _fixture_repo(tmp_path: Path, *, secret: str | None = None) -> tuple[Path, s
         workspace / "semantic_models/public_schema_ir/manifest.json",
         {
             "counts": {
-                "columns": 2,
+                "columns": 3,
                 "foreign_keys": 0,
                 "primary_keys": 1,
                 "structured_columns": 1,
                 "structured_leaves": 1,
-                "tables": 1,
+                "tables": 2,
             },
             "database": "archeology_scan_large",
             "intentional_exclusions": [],
@@ -392,21 +435,22 @@ def test_condition_scoped_tools_preserve_exact_information_isolation(
     assert tools.render_question("Public question") == "Public question"
 
 
-def test_schema_context_is_complete_deterministic_compact_and_bounded(
+def test_schema_search_is_selective_deterministic_compact_and_bounded(
     tmp_path: Path,
 ) -> None:
     workspace, commit = _fixture_repo(tmp_path)
     tools = load_direct_public_tools(workspace, commit, "archeology_scan_large", "C1")
 
-    first = tools.inspect_schema()
-    second = tools.inspect_schema()
+    first = tools.inspect_schema("resolution measurements")
+    second = tools.inspect_schema("resolution measurements")
     payload = first.payload
 
     assert first == second
     assert first.context_sha256 == tools.identity.context_sha256
     assert first.capability == "inspect_schema"
-    assert payload["kind"] == "public-schema-context"
+    assert payload["kind"] == "public-schema-search"
     assert payload["database"] == "archeology_scan_large"
+    assert payload["query"] == "resolution measurements"
     assert payload["truncated"] is False
     assert payload["tables"] == [
         {
@@ -452,7 +496,25 @@ def test_schema_context_is_complete_deterministic_compact_and_bounded(
             "unique_keys": [],
         }
     ]
+    assert payload["retrieved_schema_stable_ids"] == [
+        "archeology_scan_large:column:scan:metrics",
+        "archeology_scan_large:column:scan:scan_id",
+        "archeology_scan_large:structured-leaf:scan:metrics:k:Resolution",
+        "archeology_scan_large:table:scan",
+    ]
+    assert len(payload["tables"]) <= MAX_SCHEMA_MATCHES
     assert len(_canonical(payload)) <= MAX_SCHEMA_PAYLOAD_BYTES
+
+
+def test_schema_search_returns_deterministic_empty_result(tmp_path: Path) -> None:
+    workspace, commit = _fixture_repo(tmp_path)
+    tools = load_direct_public_tools(workspace, commit, "archeology_scan_large", "C1")
+
+    result = tools.inspect_schema("unmatchedlexeme")
+
+    assert result.payload["tables"] == []
+    assert result.payload["retrieved_schema_stable_ids"] == []
+    assert result.payload["truncated"] is False
 
 
 def test_hkb_search_returns_direct_matches_with_dependency_closure_provenance(
@@ -662,137 +724,3 @@ def test_search_returns_a_deterministic_empty_result_and_rejects_unsafe_question
         tools.render_question("")
     with pytest.raises(DirectPublicContextError, match="sensitive"):
         tools.render_question("live-secret-value")
-
-
-def test_hkb_rejects_a_dependency_closure_that_is_not_in_the_public_ir(
-    tmp_path: Path,
-) -> None:
-    workspace, _ = _fixture_repo(tmp_path)
-    hkb_path = workspace / "semantic_models/public_ir/archeology_scan_large.hkb.jsonl"
-    records = [json.loads(line) for line in hkb_path.read_text().splitlines()]
-    records[-1]["dependency_closure_stable_ids"].append("archeology_scan_large:hkb:999")
-    content = _write_jsonl(hkb_path, records)
-    manifest_path = workspace / "semantic_models/public_ir/manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    manifest["databases"]["archeology_scan_large"]["ir_sha256"] = _sha256(content)
-    _write_json(manifest_path, manifest)
-    _git(workspace, "add", ".")
-    _git(workspace, "commit", "-qm", "invalid public HKB closure")
-
-    with pytest.raises(DirectPublicContextError, match="missing record"):
-        load_direct_public_tools(
-            workspace,
-            _git(workspace, "rev-parse", "HEAD"),
-            "archeology_scan_large",
-            "C2",
-        )
-
-
-def test_schema_rejects_a_column_that_references_a_missing_table(
-    tmp_path: Path,
-) -> None:
-    workspace, _ = _fixture_repo(tmp_path)
-    schema_path = (
-        workspace
-        / "semantic_models/public_schema_ir/archeology_scan_large.schema.jsonl"
-    )
-    records = [json.loads(line) for line in schema_path.read_text().splitlines()]
-    records[1]["table_stable_id"] = "archeology_scan_large:table:missing"
-    content = _write_jsonl(schema_path, records)
-    manifest_path = workspace / "semantic_models/public_schema_ir/manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    manifest["output"]["sha256"] = _sha256(content)
-    _write_json(manifest_path, manifest)
-    _git(workspace, "add", ".")
-    _git(workspace, "commit", "-qm", "invalid public schema reference")
-
-    with pytest.raises(DirectPublicContextError, match="missing table"):
-        load_direct_public_tools(
-            workspace,
-            _git(workspace, "rev-parse", "HEAD"),
-            "archeology_scan_large",
-            "C1",
-        )
-
-
-def test_semantic_bundle_rejects_a_manifest_non_model_file(
-    tmp_path: Path,
-) -> None:
-    workspace, _ = _fixture_repo(tmp_path)
-    manifest_path = workspace / "semantic_models/public_bundle/manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    manifest["files"][0]["file"] = "mapping-ledger.json"
-    _write_json(manifest_path, manifest)
-    _git(workspace, "add", ".")
-    _git(workspace, "commit", "-qm", "invalid semantic bundle file")
-
-    with pytest.raises(DirectPublicContextError, match="file list"):
-        load_direct_public_tools(
-            workspace,
-            _git(workspace, "rev-parse", "HEAD"),
-            "archeology_scan_large",
-            "C3",
-        )
-
-
-def test_hkb_rejects_missing_direct_dependency_even_when_declared_closure_is_unchanged(
-    tmp_path: Path,
-) -> None:
-    workspace, _ = _fixture_repo(tmp_path)
-    hkb_path = workspace / "semantic_models/public_ir/archeology_scan_large.hkb.jsonl"
-    records = [json.loads(line) for line in hkb_path.read_text().splitlines()]
-    records[-1]["dependency_stable_ids"].append("archeology_scan_large:hkb:999")
-    content = _write_jsonl(hkb_path, records)
-    manifest_path = workspace / "semantic_models/public_ir/manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    manifest["databases"]["archeology_scan_large"]["ir_sha256"] = _sha256(content)
-    _write_json(manifest_path, manifest)
-    _git(workspace, "add", ".")
-    _git(workspace, "commit", "-qm", "invalid direct HKB dependency")
-
-    with pytest.raises(DirectPublicContextError, match="dependency"):
-        load_direct_public_tools(
-            workspace,
-            _git(workspace, "rev-parse", "HEAD"),
-            "archeology_scan_large",
-            "C2",
-        )
-
-
-@pytest.mark.parametrize(
-    ("mutation", "message"),
-    [
-        ("cycle", "cycle"),
-        ("inexact_closure", "closure"),
-        ("wrong_depth", "depth"),
-    ],
-)
-def test_hkb_rejects_dependency_graph_inconsistency(
-    tmp_path: Path, mutation: str, message: str
-) -> None:
-    workspace, _ = _fixture_repo(tmp_path)
-    hkb_path = workspace / "semantic_models/public_ir/archeology_scan_large.hkb.jsonl"
-    records = [json.loads(line) for line in hkb_path.read_text().splitlines()]
-    if mutation == "cycle":
-        records[0]["dependency_stable_ids"] = ["archeology_scan_large:hkb:3"]
-        records[0]["dependency_closure_stable_ids"] = ["archeology_scan_large:hkb:3"]
-        records[0]["dependency_depth"] = 1
-    elif mutation == "inexact_closure":
-        records[-1]["dependency_closure_stable_ids"] = ["archeology_scan_large:hkb:0"]
-    else:
-        records[-1]["dependency_depth"] = 2
-    content = _write_jsonl(hkb_path, records)
-    manifest_path = workspace / "semantic_models/public_ir/manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    manifest["databases"]["archeology_scan_large"]["ir_sha256"] = _sha256(content)
-    _write_json(manifest_path, manifest)
-    _git(workspace, "add", ".")
-    _git(workspace, "commit", "-qm", f"invalid public HKB {mutation}")
-
-    with pytest.raises(DirectPublicContextError, match=message):
-        load_direct_public_tools(
-            workspace,
-            _git(workspace, "rev-parse", "HEAD"),
-            "archeology_scan_large",
-            "C2",
-        )

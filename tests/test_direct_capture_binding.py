@@ -173,10 +173,16 @@ def test_reference_result_must_bind_capability_and_context(tmp_path: Path) -> No
     binding = runtime_binding()
     model = SequenceModel(
         binding,
-        [{"type": "tool", "name": "inspect_schema", "arguments": {}}],
+        [
+            {
+                "type": "tool",
+                "name": "inspect_schema",
+                "arguments": {"query": "public schema"},
+            }
+        ],
     )
     tools = BoundPublicTools(binding)
-    tools.inspect_schema = lambda: DirectReferenceResult(  # type: ignore[method-assign]
+    tools.inspect_schema = lambda query: DirectReferenceResult(  # type: ignore[method-assign]
         payload={"tables": []},
         context_sha256="f" * 64,
         capability="search_hkb",
@@ -194,12 +200,18 @@ def test_public_context_identity_is_rechecked_after_callback(tmp_path: Path) -> 
     binding = runtime_binding()
     model = SequenceModel(
         binding,
-        [{"type": "tool", "name": "inspect_schema", "arguments": {}}],
+        [
+            {
+                "type": "tool",
+                "name": "inspect_schema",
+                "arguments": {"query": "public schema"},
+            }
+        ],
     )
     tools = BoundPublicTools(binding)
     prepared_holder: dict[str, DirectPreparedAttempt] = {}
 
-    def mutate_context() -> DirectReferenceResult:
+    def mutate_context(query: str) -> DirectReferenceResult:
         object.__setattr__(
             prepared_holder["value"].public_tools,
             "identity",

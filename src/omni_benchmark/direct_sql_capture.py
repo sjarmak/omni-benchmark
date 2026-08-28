@@ -419,7 +419,7 @@ class DirectSqlCapture:
         require_public_identity(self._binding, self._public_tools)
         self._revalidate_prepared()
         if action.name == "inspect_schema":
-            result = self._public_tools.inspect_schema()
+            result = self._public_tools.inspect_schema(action.arguments["query"])
         elif action.name == "search_hkb":
             if self._public_tools.search_hkb is None:
                 raise DirectCaptureError("HKB search is unavailable")
