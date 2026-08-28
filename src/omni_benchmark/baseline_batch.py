@@ -134,6 +134,7 @@ class BatchBudget:
 
     cost_ceiling_usd: float
     attempt_cost_ceiling_usd: float
+    unobservable_cost_reservation_conditions: frozenset[str] = frozenset()
 
     def __post_init__(self) -> None:
         for value, name in (
@@ -149,6 +150,12 @@ class BatchBudget:
                 raise BaselineBatchError(f"batch {name} must be positive and finite")
         if self.attempt_cost_ceiling_usd > self.cost_ceiling_usd:
             raise BaselineBatchError("attempt cost ceiling exceeds batch cost ceiling")
+        if not self.unobservable_cost_reservation_conditions.issubset(
+            BASELINE_CONDITIONS
+        ):
+            raise BaselineBatchError(
+                "unobservable-cost reservation contains an invalid condition"
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -193,6 +200,7 @@ class BatchTelemetry:
 
 @dataclass(frozen=True, slots=True)
 class BaselineBatchReport:
+    budget_charge_usd: float
     budget_stop_reason: str | None
     completed_this_run: int
     failure_classes_by_condition: Mapping[str, Mapping[str, int]]
@@ -207,6 +215,7 @@ class BaselineBatchReport:
 
     def as_dict(self) -> dict[str, object]:
         return {
+            "budget_charge_usd": self.budget_charge_usd,
             "budget_stop_reason": self.budget_stop_reason,
             "completed_this_run": self.completed_this_run,
             "failure_classes_by_condition": {
@@ -267,6 +276,25 @@ def load_committed_baseline_schedule(
         eligible_manifest_sha256=eligible_spec.sha256,
         source_commit=commit,
         train_ids_sha256=train_spec.sha256,
+    )
+
+
+def direct_only_baseline_schedule(schedule: BaselineSchedule) -> BaselineSchedule:
+    """Return the fixed C1-C3 phase for all public development questions."""
+    attempts = tuple(
+        attempt for attempt in schedule.attempts if attempt.condition != "C4"
+    )
+    if (
+        len(attempts) != 693
+        or len({attempt.instance_id for attempt in attempts}) != 231
+        or {attempt.condition for attempt in attempts} != {"C1", "C2", "C3"}
+    ):
+        raise BaselineBatchError("direct baseline phase must be exactly 231 x C1-C3")
+    return BaselineSchedule(
+        attempts=attempts,
+        eligible_manifest_sha256=schedule.eligible_manifest_sha256,
+        source_commit=schedule.source_commit,
+        train_ids_sha256=schedule.train_ids_sha256,
     )
 
 
@@ -433,6 +461,7 @@ def run_baseline_batch(
         maximum_observed=maximum_observed,
         remaining=remaining,
         stopped=stopped,
+        budget=budget,
     )
 
 
@@ -596,6 +625,11 @@ def _observed_cost(
 def _hard_budget_cost(observation: AttemptObservation, budget: BatchBudget) -> float:
     cost = observation.cost_usd
     if cost is None:
+        if (
+            observation.attempt.condition
+            in budget.unobservable_cost_reservation_conditions
+        ):
+            return budget.attempt_cost_ceiling_usd
         raise BaselineBatchError("hard budget requires observable attempt cost")
     if cost > budget.attempt_cost_ceiling_usd:
         raise BaselineBatchError("attempt cost exceeded the hard budget reservation")
@@ -611,6 +645,7 @@ def _batch_report(
     maximum_observed: int,
     remaining: int,
     stopped: bool,
+    budget: BatchBudget,
 ) -> BaselineBatchReport:
     outcomes = Counter(value.generation_outcome for value in observations)
     failures: dict[str, Counter[str]] = {
@@ -620,6 +655,9 @@ def _batch_report(
         if value.terminal_failure_class is not None:
             failures[value.attempt.condition][value.terminal_failure_class] += 1
     return BaselineBatchReport(
+        budget_charge_usd=sum(
+            _hard_budget_cost(observation, budget) for observation in observations
+        ),
         budget_stop_reason=(
             "next_attempt_reservation_exceeds_ceiling" if stopped else None
         ),

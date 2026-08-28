@@ -1,0 +1,18 @@
+{
+  "attempt_count": 924,
+  "attempts_per_condition": 231,
+  "full_cost_high_scenario_usd": "526.301276",
+  "full_cost_low_scenario_usd": "407.847363",
+  "method": "condition_specific_successful_canary_scenario",
+  "observed_condition_cost_usd": {
+    "C1": "0.214778",
+    "C2": "0.6084515",
+    "C3": "0.7275655"
+  },
+  "observed_condition_subtotal_usd": "358.233645",
+  "source": "four-condition public canary recorded in docs/harness-disclosure.md",
+  "unobserved_condition_assumption": "C4 cost is unavailable; low and high scenarios apply the minimum and maximum observed successful direct-condition cost to each C4 attempt",
+  "unobserved_conditions": [
+    "C4"
+  ]
+}
