@@ -23,6 +23,7 @@ from .artifact_store import (
 from .autoresearch_config import AutoresearchError, _read_confined_private_bytes
 from .autoresearch_metrics import ValidatedGenerationOutputs
 from .content_policy import ContentPolicy
+from .run_quarantine import is_quarantined_run, quarantined_attempt
 
 SCORE_SCHEMA_VERSION = "score-artifact-v1"
 MAX_SCORE_ARTIFACT_BYTES = 16 * 1024 * 1024
@@ -252,6 +253,8 @@ def _private_bytes(
 def _generation_binding(
     workspace: Path, generation: ValidatedGenerationOutputs
 ) -> _GenerationBinding:
+    if is_quarantined_run(generation.run_id):
+        raise ScoreArtifactError("generation run is quarantined and non-scoreable")
     path = _confined_raw_path(workspace, generation.path, "generation artifact")
     content = _private_bytes(
         workspace,
@@ -285,6 +288,8 @@ def _generation_record_bindings(
             )
         record = _json_object(raw_line, f"generation artifact line {line_number}")
         attempt_id = _bounded_identifier(record.get("attempt_id"), "attempt_id")
+        if quarantined_attempt(attempt_id):
+            raise ScoreArtifactError("generation run is quarantined and non-scoreable")
         if attempt_id in seen:
             raise ScoreArtifactError(
                 "generation artifact has duplicate generation attempt_id"

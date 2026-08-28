@@ -510,6 +510,25 @@ def test_unscored_dev_a_generation_is_validated_separately_from_scoring(
     assert generation.condition == "C4"
 
 
+def test_generation_loader_rejects_quarantined_run(
+    configured_workspace: tuple[Path, Path],
+) -> None:
+    workspace, _ = configured_workspace
+    run_id = "public-c4-baseline-v1-20260828"
+    records = [unscored_record("train_1"), unscored_record("train_2")]
+    for record in records:
+        record["partition"] = "dev-a"
+        record["run_id"] = run_id
+        record["attempt_id"] = f"{run_id}:{record['instance_id']}:C4:1"
+    path = workspace / "runs" / "quarantined-dev-a.jsonl"
+    write_jsonl(path, records)
+
+    with pytest.raises(AutoresearchError, match="quarantined.*non-scoreable"):
+        validate_generation_outputs(
+            load_fixture_config(configured_workspace), path, scope="dev-a"
+        )
+
+
 def test_protocol_required_scoring_joins_only_a_bound_separate_artifact(
     configured_workspace: tuple[Path, Path],
 ) -> None:

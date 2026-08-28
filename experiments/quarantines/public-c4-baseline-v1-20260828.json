@@ -1,0 +1,122 @@
+{
+  "correctness_observed": false,
+  "counts": {
+    "answered_generation_records": 6,
+    "dispatcher_failures": 2,
+    "generation_records": 11,
+    "transport_failure_generation_records": 5
+  },
+  "dispatcher_failures": [
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:cross_border_14:C4:1",
+      "observed_at": "2026-08-28T19:05:14.200088Z",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/cross_border_large/c4/.failed-cross_border_14-r1-c6e117a6efc6b8f5/failure.json",
+      "sha256": "070cbaf7694c9a95110e6acfba47cb90ee170304eabc7c5f14241e6a2cf7c3cc",
+      "terminal_failure_class": "dispatcher_http_429_whoami"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:disaster_relief_11:C4:1",
+      "observed_at": "2026-08-28T19:05:14.453093Z",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/disaster_relief_large/c4/.failed-disaster_relief_11-r1-519c1cb148ac6362/failure.json",
+      "sha256": "89659afbfc710e9d9a01450d3bb054835bcd9940b3a37a94db37af8011579e06",
+      "terminal_failure_class": "dispatcher_http_429_whoami"
+    }
+  ],
+  "generation_records": [
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:archeology_scan_1:C4:1",
+      "finished_at": "2026-08-28T19:04:24.797546Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/archeology_scan_large/c4/archeology_scan_1-r1/generation.jsonl",
+      "sha256": "da5833174d985c2c50f910d02e482ddaa082aab392165d8312c291ca1a74858d",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:archeology_scan_10:C4:1",
+      "finished_at": "2026-08-28T19:05:16.625213Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/archeology_scan_large/c4/archeology_scan_10-r1/generation.jsonl",
+      "sha256": "88856e66f41b586c5c9f0f4eadeb161dd646e849bc123314466762daa8862f06",
+      "terminal_failure_class": "adapter_transport_error"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:cross_border_1:C4:1",
+      "finished_at": "2026-08-28T19:04:44.283744Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/cross_border_large/c4/cross_border_1-r1/generation.jsonl",
+      "sha256": "43c98748970b64f2ef1319cfd6d924c99a5e8f5d6419bee19bd0066e18c060a8",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:cross_border_10:C4:1",
+      "finished_at": "2026-08-28T19:05:13.504228Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/cross_border_large/c4/cross_border_10-r1/generation.jsonl",
+      "sha256": "1f00f79d3448fb09f9e5ce8135796c2eb2f7d2ac2685b9dcd4cfdd6ab0364825",
+      "terminal_failure_class": "adapter_transport_error"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:cybermarket_pattern_1:C4:1",
+      "finished_at": "2026-08-28T19:04:04.213862Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/cybermarket_pattern_large/c4/cybermarket_pattern_1-r1/generation.jsonl",
+      "sha256": "2a47ce9d8353a4d44046b0e6934bc1272eca6ef4c782ddd65ffd37b16a483670",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:cybermarket_pattern_10:C4:1",
+      "finished_at": "2026-08-28T19:04:35.260826Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/cybermarket_pattern_large/c4/cybermarket_pattern_10-r1/generation.jsonl",
+      "sha256": "1564ba712ea7b66a06d4147778deda72bda1e2aa245c74cada3d52ae19bee81c",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:cybermarket_pattern_11:C4:1",
+      "finished_at": "2026-08-28T19:05:14.504932Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/cybermarket_pattern_large/c4/cybermarket_pattern_11-r1/generation.jsonl",
+      "sha256": "bd88be5d020e872cfc7d41a6e79e17701c7aaf2ffec8e77170f301c4a73d67c9",
+      "terminal_failure_class": "adapter_transport_error"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:disaster_relief_1:C4:1",
+      "finished_at": "2026-08-28T19:04:54.779008Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/disaster_relief_large/c4/disaster_relief_1-r1/generation.jsonl",
+      "sha256": "9caa328d5f1803f650d300d3322991a277bbd9b77552196f6b78518dc966b88b",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:disaster_relief_10:C4:1",
+      "finished_at": "2026-08-28T19:05:13.778926Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/disaster_relief_large/c4/disaster_relief_10-r1/generation.jsonl",
+      "sha256": "a6ee51c13020f35517ef548526f21ec67a55eaa21aec934947bbb41bb61dd318",
+      "terminal_failure_class": "adapter_transport_error"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:exchange_traded_funds_1:C4:1",
+      "finished_at": "2026-08-28T19:04:24.444904Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/exchange_traded_funds_large/c4/exchange_traded_funds_1-r1/generation.jsonl",
+      "sha256": "e1a2946fd131ec3aeb06fd348d2512e33cf498af0c9dd391ec9a11598a66a5ec",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v1-20260828:exchange_traded_funds_12:C4:1",
+      "finished_at": "2026-08-28T19:05:15.394584Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828/exchange_traded_funds_large/c4/exchange_traded_funds_12-r1/generation.jsonl",
+      "sha256": "4afea0e8f27a8dc24c3a1d9fae4845057d11eb21fe5d9370691674510e97d6fe",
+      "terminal_failure_class": "adapter_transport_error"
+    }
+  ],
+  "gold_accessed": false,
+  "reason": "The public-only C4 dispatcher stopped after five persisted job-status transport failures and two separate pre-attempt HTTP 429 whoami failures. The five adapter transport failures are not attributed to authentication or to a more specific cause absent preserved transport detail. No correctness was observed. The run is infrastructure-interrupted diagnostic evidence only and may not be used as a baseline or scored.",
+  "run_id": "public-c4-baseline-v1-20260828",
+  "run_root": "experiments/autoresearch/raw/public-c4-baseline-v1-20260828",
+  "schema_version": "run-quarantine-v1",
+  "scoreable": false,
+  "status": "quarantined_non_scoreable"
+}

@@ -26,6 +26,7 @@ from .c4_baseline_arm import (
 from .omni_probe_preflight import OmniProbePreflightError, committed_spec
 from .omni_result_adapter import reject_forbidden_keys
 from .run_manifest import RunManifest, RunManifestError
+from .run_quarantine import is_quarantined_run
 
 BASELINE_CONDITIONS = ("C1", "C2", "C3", "C4")
 _TRAIN_IDS_PATH = Path("data/manifests/train_ids.txt")
@@ -272,6 +273,8 @@ def load_committed_baseline_schedule(
     workspace: Path, commit: str, *, run_id: str
 ) -> BaselineSchedule:
     """Derive all 231 x 4 attempts from committed public-only inputs."""
+    if is_quarantined_run(run_id):
+        raise BaselineBatchError("baseline run is quarantined and non-scoreable")
     try:
         resolved = workspace.resolve(strict=True)
         train_spec = committed_spec(resolved, commit, _TRAIN_IDS_PATH)

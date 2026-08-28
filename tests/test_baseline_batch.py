@@ -228,6 +228,17 @@ def test_committed_public_schedule_covers_all_231_questions_and_four_conditions(
     assert not hasattr(schedule.attempts[0], "question")
 
 
+def test_committed_schedule_rejects_quarantined_run_id(tmp_path: Path) -> None:
+    workspace, commit = _schedule_repo(tmp_path)
+
+    with pytest.raises(BaselineBatchError, match="quarantined.*non-scoreable"):
+        load_committed_baseline_schedule(
+            workspace,
+            commit,
+            run_id="public-c4-baseline-v1-20260828",
+        )
+
+
 def test_cost_projection_is_explicit_and_bound_to_the_full_schedule() -> None:
     projection = project_baseline_cost(
         _small_schedule(databases=18, attempts_per_database=1),

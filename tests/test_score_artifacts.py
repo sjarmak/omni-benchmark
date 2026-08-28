@@ -111,6 +111,79 @@ def test_score_artifact_is_minimal_private_and_hash_bound(tmp_path: Path) -> Non
     assert validated.refused_or_error_count == 0
 
 
+def test_score_artifact_rejects_quarantined_generation(tmp_path: Path) -> None:
+    workspace = _workspace(tmp_path)
+    run_id = "public-c4-baseline-v1-20260828"
+    generation = _generation(
+        workspace,
+        records=[
+            {
+                "attempt_id": f"{run_id}:q-1:C4:1",
+                "generated_sql": "SELECT 1",
+                "instance_id": "q-1",
+                "latency_ms": 120,
+            }
+        ],
+    )
+    generation = ValidatedGenerationOutputs(
+        path=generation.path,
+        sha256=generation.sha256,
+        question_count=1,
+        scope="train",
+        condition="C4",
+        run_id=run_id,
+        repetition=1,
+    )
+
+    with pytest.raises(ScoreArtifactError, match="quarantined.*non-scoreable"):
+        create_score_artifact(
+            workspace,
+            generation=generation,
+            destination=Path("runs/e01/quarantined-score.json"),
+            scorer_identity="official_soft_ex",
+            scorer_version="v1",
+            scores=[
+                {
+                    "attempt_id": f"{run_id}:q-1:C4:1",
+                    "outcome": "correct",
+                }
+            ],
+        )
+
+
+def test_score_artifact_rejects_quarantined_attempt_with_forged_run_metadata(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    quarantined = "public-c4-baseline-v1-20260828"
+    generation = _generation(
+        workspace,
+        records=[
+            {
+                "attempt_id": f"{quarantined}:q-1:C4:1",
+                "generated_sql": "SELECT 1",
+                "instance_id": "q-1",
+                "latency_ms": 120,
+            }
+        ],
+    )
+
+    with pytest.raises(ScoreArtifactError, match="quarantined.*non-scoreable"):
+        create_score_artifact(
+            workspace,
+            generation=generation,
+            destination=Path("runs/e01/forged-run-score.json"),
+            scorer_identity="official_soft_ex",
+            scorer_version="v1",
+            scores=[
+                {
+                    "attempt_id": f"{quarantined}:q-1:C4:1",
+                    "outcome": "correct",
+                }
+            ],
+        )
+
+
 @pytest.mark.parametrize(
     ("scores", "message"),
     [

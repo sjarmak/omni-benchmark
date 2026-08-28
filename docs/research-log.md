@@ -4579,3 +4579,81 @@ Independently review the narrow adapter change, commit it in the isolated C4
 branch, and run a fresh immutable five-attempt canary. Launch the 129-question
 arm only when remaining failures are explicitly classified evaluated-system
 outcomes rather than capture or infrastructure errors.
+
+## 2026-08-28 — D-056: Quarantine the interrupted C4 baseline arm
+
+### Decision / experiment
+
+Preserve the interrupted public-only C4 run as diagnostic evidence while
+preventing it from entering any baseline or score artifact. Change type:
+general system integrity. Experiment ID: `INFRA-C4-001`. Last updated:
+2026-08-28 15:05 EDT.
+
+### Observation
+
+Run `public-c4-baseline-v1-20260828` stopped after persisting 11 generation
+records: six answered and five ended with `adapter_transport_error`. Two
+additional dispatcher artifacts record separate pre-attempt HTTP 429 failures
+from `whoami`. No correctness result was observed and no gold data was
+accessed. The five adapter transport records do not retain enough transport
+detail to attribute their cause to authentication or to any more specific
+mechanism; the adjacent dispatcher 429s are separate evidence, not proof that
+all five shared that cause.
+
+### Hypothesis
+
+An incomplete, infrastructure-interrupted arm can be mistaken for a valid
+baseline if its answered records are later gathered or its run ID is reused.
+Content-hash quarantine plus fail-closed loader checks will preserve the raw
+evidence without allowing that ambiguity.
+
+### Decision
+
+Mark the entire run non-scoreable. Preserve every raw artifact unchanged. Bind
+the 11 generation records and two dispatcher failures by path and SHA-256 in a
+committed quarantine manifest, and reject this run ID at baseline schedule,
+generation-validation, and score-binding boundaries. Do not launch a
+replacement from this task.
+
+### Rationale
+
+The six answers are useful operational evidence but do not form the registered
+arm. Scoring a selectively completed subset would conflate infrastructure
+survival with C4 performance. Deletion would instead erase the incident trail.
+Quarantine preserves both facts.
+
+### Intervention
+
+Added
+`experiments/quarantines/public-c4-baseline-v1-20260828.json`, a fail-closed
+run registry, and loader checks in the baseline, autoresearch-generation, and
+score-artifact paths. The structured ledger row is `INFRA-C4-001`.
+
+### Result
+
+The manifest records exactly six answered generations, five adapter transport
+failures, and two dispatcher HTTP 429 failures. Its 13 entries bind the
+preserved files by SHA-256. Focused tests demonstrate that both baseline
+schedule loading and score-artifact creation reject the quarantined run ID.
+No generation was rerun and no live Omni action occurred.
+
+### Interpretation
+
+The run is evidence about benchmark infrastructure behavior only. It provides
+no accuracy evidence and cannot support a product conclusion about C4.
+
+### Outcome
+
+INCONCLUSIVE.
+
+### Product implication
+
+The distinction between a product-terminal failure and an observer/dispatcher
+failure must survive into persisted telemetry. Without it, a benchmark can
+silently penalize the evaluated system for its own control-plane interruption.
+
+### Next step
+
+Any future C4 launch requires a separately authorized run ID and its own gate.
+The quarantined records remain immutable diagnostic history and must never be
+promoted or scored.

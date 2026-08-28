@@ -56,6 +56,7 @@ from .score_artifacts import (
     ValidatedScoreArtifact,
     validate_score_artifact,
 )
+from .run_quarantine import is_quarantined_run
 
 if TYPE_CHECKING:
     from .autoresearch_smoke import (
@@ -728,6 +729,8 @@ def _validate_generation_for_scope(
         records, config, expected_partition, permitted_ids, scope
     )
     condition, run_id, repetition = _validate_run_identity(records, description)
+    if is_quarantined_run(run_id):
+        raise AutoresearchError("generation run is quarantined and non-scoreable")
     manifest = validate_manifest_binding(
         workspace=config.workspace,
         records=records,
