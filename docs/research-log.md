@@ -6412,3 +6412,10 @@ exact readback remain the product oracle and must preserve any next blocker.
 KEEP offline. The compiler now avoids emitting PostgreSQL decimal metadata that
 the public Omni validator explicitly cannot represent, while leaving supported
 numeric literals unchanged.
+
+The two compiler regenerations mechanically change the current E02 candidate
+set digest to
+`0111ce62001d6bb6f796a3912830529b8fae263353e62dd06111768c3147c3b8`.
+Current-commit tests bind that derived value. Historical deployment records,
+candidate hashes, approval files, and run artifacts remain unchanged and retain
+their fail-closed mismatch against the newly regenerated bundles.
