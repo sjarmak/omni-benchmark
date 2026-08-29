@@ -5735,3 +5735,63 @@ evidence rather than ambient account state.
 Close the adapter-wiring beads, update the shared frontier, and return to the
 human-authorized public C4/final-candidate sequence without launching either
 from this offline implementation lane.
+
+## 2026-08-29 — D-106: Close the C4 completion-to-score handoff offline
+
+### Pre-change hypothesis and boundary
+
+The exact public C4 v4 dispatcher writes one immutable generation and run
+manifest per attempt, but the completed direct-baseline scorer accepts only the
+C1--C3 continuation freeze. A deterministic C4 freezer should be able to
+reconcile the complete committed 129-attempt arm, bind its full private-file
+inventory plus approval identities, and produce a canonical selection without
+reading correctness. The dev-A scorer must then consume C4's hash-bound typed
+governed-result sidecar rather than misclassifying the intentionally absent
+`generated_sql` as `no_query`.
+
+Bead `omni-benchmark-ei0.4.8`; change class: general evaluation integration.
+Implementation is provider-inert and uses only synthetic fixtures and public
+membership/schema metadata. It may not launch C4, inspect a v4 result, consume
+an approval, access credentials or leases, or read dev-B/test/protected labels.
+
+### Result
+
+The new freezer derives the exact committed C4 schedule, requires 129 attempts
+across ten databases and the separately bound schedule, execution-plan, and
+deployment hashes, reconciles every generation/run manifest at its source
+commit, rejects quarantined/incomplete/cross-run/unexpected/symlinked/scored
+trees, hashes the complete allowed sidecar inventory, and writes one canonical
+mode-0600 non-overwriting selection. Its CLI prints counts and hashes only.
+
+The generalized scorer preserves the existing direct-selection default and
+adds an explicit confined C4 selection. It verifies every C4 result path,
+schema, generation binding, and SHA-256 before parsing the dev-A release. Typed
+rows are decoded through the existing Omni result contract and compared against
+a freshly executed gold query without fabricating SQL or re-executing the
+evaluated system. Only the exact product terminal failure is mapped to the
+closed candidate-execution category; benchmark-infrastructure generations are
+rejected. Precomputed scoring refuses any case with preprocess or cleanup SQL
+before database acquisition. Public aggregate verification finds 85 dev-A
+questions in the 129-question C4 arm and zero nonempty preprocess or cleanup
+sequences, so the exact arm satisfies that invariant.
+
+Focused freeze/custody/scoring coverage passes 51 tests. The complete isolated
+gate passes 1,754 tests with five expected environment/source skips and 84.10%
+branch coverage; repository Ruff, formatting, and diff checks pass. Running the
+exact v4 freeze command while v4 remains absent returned only
+`C4 baseline schedule is incomplete`, exit status 1, and left the destination
+absent. No provider, approval, credential, protected record, or live artifact
+was accessed.
+
+### Outcome
+
+KEEP. After an authorized v4 dispatch completes, the agent can freeze it with:
+
+```bash
+cd /tmp/omni-benchmark-c4-postrun && uv run python scripts/freeze_c4_baseline.py --workspace /tmp/omni-benchmark-c4-prerequisites-integrated --system-commit ae08ec8a1d76111302af8af6d04ad73dc64ff8e6 --run-id public-c4-baseline-v4 --output-root experiments/autoresearch/raw/public-c4-baseline-v4 --destination experiments/autoresearch/state/public-c4-baseline-v4-freeze.json --expected-schedule-sha256 b58485722980f292180d3a3a8c956dc6bad37583e494dcc580ea49ac7338442d --expected-execution-plan-sha256 5fab1f6967fc9e877aa333eaccd2ca9760f42646c93ad627d99b6b7c6da3d221 --expected-deployment-sha256 d805eb6869201f28f928a5774263062302b29a5d8786fc3c1c120cb27f19df80
+```
+
+The exact 85-question dev-A intersection can then use the existing dual-scorer
+CLI with the returned selection SHA-256 and expected official/sensitivity
+denominators 85/85. This implementation does not authorize or launch v4, E02,
+a dev-B checkpoint, Freeze B, or sealed evaluation.

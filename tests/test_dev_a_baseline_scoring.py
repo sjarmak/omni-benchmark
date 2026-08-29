@@ -241,6 +241,106 @@ def _initialize_workspace(tmp_path: Path) -> tuple[Path, str, str, str]:
     )
 
 
+def _install_c4_selection(workspace: Path, commit: str) -> tuple[Path, str]:
+    run_id = "public-c4-baseline-v4"
+    entries: list[dict[str, object]] = []
+    for instance_id in ("dev-a-1", "dev-a-2", "dev-b-1"):
+        attempt_id = f"{run_id}:{instance_id}:C4:1"
+        result = _canonical(
+            {
+                "columns": ["answer"],
+                "rows": [[{"type": "decimal", "value": "2"}]],
+                "schema_version": 1,
+                "truncated": False,
+            }
+        )
+        result_sha256 = hashlib.sha256(result).hexdigest()
+        result_path = (
+            Path("experiments/autoresearch/raw")
+            / run_id
+            / "fixture_large/c4"
+            / f"{instance_id}-r1/answer.result.json"
+        )
+        generation = _canonical(
+            {
+                "actual_result_hash": result_sha256,
+                "actual_result_status": "complete",
+                "attempt_id": attempt_id,
+                "condition": "C4",
+                "execution_status": "complete",
+                "failure_origin": None,
+                "generated_query": "fixture semantic query",
+                "generated_sql": None,
+                "generation_outcome": "answered",
+                "instance_id": instance_id,
+                "partition": "train",
+                "question": f"Question {instance_id}",
+                "repetition": 1,
+                "result_artifact_path": result_path.as_posix(),
+                "result_artifact_schema_version": 1,
+                "result_artifact_sha256": result_sha256,
+                "run_id": run_id,
+                "terminal_failure_class": None,
+            }
+        )
+        generation_sha256 = hashlib.sha256(generation).hexdigest()
+        run = _canonical(
+            _run_manifest(
+                generation_sha256=generation_sha256,
+                condition="C4",
+                commit=commit,
+            )
+        )
+        if instance_id.startswith("dev-a"):
+            root = (
+                workspace
+                / "experiments/autoresearch/raw"
+                / run_id
+                / "fixture_large/c4"
+                / f"{instance_id}-r1"
+            )
+            _write(root / "answer.result.json", result)
+            _write(root / "generation.jsonl", generation)
+            _write(root / "run.json", run)
+        entries.append(
+            {
+                "attempt_id": attempt_id,
+                "condition": "C4",
+                "database": "fixture_large",
+                "generation_sha256": generation_sha256,
+                "instance_id": instance_id,
+                "repetition": 1,
+                "run_manifest_sha256": hashlib.sha256(run).hexdigest(),
+            }
+        )
+    selection = {
+        "artifact_file_count": 10,
+        "artifact_inventory_sha256": "1" * 64,
+        "counts": {
+            "answered": 3,
+            "attempts": 3,
+            "databases": 1,
+            "errored": 0,
+            "refused": 0,
+        },
+        "deployment_sha256": "2" * 64,
+        "eligible_manifest_sha256": "3" * 64,
+        "entries": entries,
+        "execution_plan_sha256": "4" * 64,
+        "kind": "public-c4-baseline-freeze",
+        "output_root": f"experiments/autoresearch/raw/{run_id}",
+        "run_id": run_id,
+        "schema_version": 1,
+        "source_commit": commit,
+        "source_schedule_sha256": "5" * 64,
+        "train_ids_sha256": "6" * 64,
+    }
+    content = _canonical(selection)
+    path = Path(f"experiments/autoresearch/state/{run_id}-freeze.json")
+    _write(workspace / path, content)
+    return path, hashlib.sha256(content).hexdigest()
+
+
 def test_prepare_intersects_dev_a_before_opening_foreign_attempts(
     tmp_path: Path,
 ) -> None:
@@ -262,6 +362,80 @@ def test_prepare_intersects_dev_a_before_opening_foreign_attempts(
     assert {attempt.condition for attempt in plan.attempts} == {"C1", "C2", "C3"}
     assert all("dev-b-1" not in attempt.attempt_id for attempt in plan.attempts)
     assert "SELECT 1" not in repr(plan)
+
+
+def test_prepare_and_publish_accept_exact_c4_freeze_without_weakening_direct(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace, commit, direct_sha256, release_sha256 = _initialize_workspace(tmp_path)
+    selection_path, c4_sha256 = _install_c4_selection(workspace, commit)
+
+    c4_plan = prepare_dev_a_baseline_plan(
+        workspace,
+        freeze_a_commit=commit,
+        selection_path=selection_path,
+        expected_selection_sha256=c4_sha256,
+        expected_release_sha256=release_sha256,
+    )
+    direct_plan = prepare_dev_a_baseline_plan(
+        workspace,
+        freeze_a_commit=commit,
+        expected_selection_sha256=direct_sha256,
+        expected_release_sha256=release_sha256,
+    )
+
+    assert len(c4_plan.attempts) == 2
+    assert {attempt.condition for attempt in c4_plan.attempts} == {"C4"}
+    assert all(attempt.candidate_rows == ((2,),) for attempt in c4_plan.attempts)
+    assert len(direct_plan.attempts) == 6
+
+    monkeypatch.setattr(
+        "omni_benchmark.dev_a_baseline_scoring.score_query",
+        lambda case, mode, provider: _scoring_result(mode, outcome="correct"),
+    )
+    monkeypatch.setattr(
+        "omni_benchmark.dev_a_baseline_scoring.score_precomputed_result",
+        lambda case, rows, mode, provider: _scoring_result(mode, outcome="correct"),
+    )
+    results = score_dev_a_baseline_plan(c4_plan, object())
+    receipt = publish_dev_a_baseline_results(
+        workspace,
+        output_root=Path("experiments/autoresearch/raw/c4-score-fixture"),
+        plan=c4_plan,
+        results=results,
+        environment={},
+    )
+    assert receipt["official"]["by_condition"] == {
+        "C4": {
+            "correct": 2,
+            "refused_or_error": 0,
+            "scheduled_attempts": 2,
+            "scoreable_attempts": 2,
+            "unscorable_attempts": 0,
+            "wrong_answer": 0,
+        }
+    }
+
+
+def test_c4_result_artifact_mutation_fails_before_scoring(tmp_path: Path) -> None:
+    workspace, commit, _, release_sha256 = _initialize_workspace(tmp_path)
+    selection_path, c4_sha256 = _install_c4_selection(workspace, commit)
+    result = (
+        workspace
+        / "experiments/autoresearch/raw/public-c4-baseline-v4"
+        / "fixture_large/c4/dev-a-1-r1/answer.result.json"
+    )
+    result.write_bytes(result.read_bytes().replace(b'"2"', b'"3"'))
+    result.chmod(0o600)
+
+    with pytest.raises(DevABaselineScoringError, match="does not match"):
+        prepare_dev_a_baseline_plan(
+            workspace,
+            freeze_a_commit=commit,
+            selection_path=selection_path,
+            expected_selection_sha256=c4_sha256,
+            expected_release_sha256=release_sha256,
+        )
 
 
 def test_release_hash_fails_before_private_records_are_parsed(

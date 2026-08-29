@@ -13,6 +13,8 @@ import psycopg
 
 from .dev_a_baseline_scoring import (
     RAW_ROOT,
+    SELECTION_PATH,
+    SELECTION_ROOT,
     DevABaselineScoringError,
     prepare_dev_a_baseline_plan,
     publish_dev_a_baseline_results,
@@ -55,6 +57,7 @@ def dev_a_baseline_scoring_main(
     plan = prepare_dev_a_baseline_plan(
         workspace,
         freeze_a_commit=arguments.freeze_a_commit,
+        selection_path=_selection_path(arguments.selection),
         expected_selection_sha256=arguments.expected_selection_sha256,
         expected_release_sha256=arguments.expected_release_sha256,
         environment=process_environment,
@@ -96,6 +99,7 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--workspace", type=Path, required=True)
     parser.add_argument("--freeze-a-commit", required=True)
+    parser.add_argument("--selection", type=Path, default=SELECTION_PATH)
     parser.add_argument("--expected-selection-sha256", required=True)
     parser.add_argument("--expected-release-sha256", required=True)
     parser.add_argument(
@@ -125,6 +129,19 @@ def _output_root(value: Path) -> Path:
     ):
         raise DevABaselineScoringError(
             "output root must be a confined autoresearch raw path"
+        )
+    return selected
+
+
+def _selection_path(value: Path) -> Path:
+    selected = Path(value)
+    if (
+        selected.is_absolute()
+        or selected.parent != SELECTION_ROOT
+        or not selected.name.endswith(".json")
+    ):
+        raise DevABaselineScoringError(
+            "selection path must be a confined autoresearch state path"
         )
     return selected
 

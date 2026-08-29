@@ -9,6 +9,7 @@ from enum import Enum
 from typing import Any, Literal, Protocol
 
 from .postgres_execution import (
+    MAX_RESULT_ROWS,
     PostgreSQLConnection,
     PostgreSQLExecutionError,
     QuerySequenceResult,
@@ -213,6 +214,60 @@ def score_query_both(
         score_query(case, ScoringMode.OFFICIAL, provider),
         score_query(case, ScoringMode.SENSITIVITY, provider),
     )
+
+
+def score_precomputed_result(
+    case: SealedQueryCase,
+    candidate_rows: Sequence[Sequence[Any]],
+    mode: ScoringMode,
+    provider: PostgreSQLIsolationProvider,
+) -> SealedScoringResult:
+    """Score one already-executed typed result against a fresh gold isolate."""
+    if not isinstance(mode, ScoringMode):
+        raise ValueError("mode must be a ScoringMode")
+    validated = _validate_case(case)
+    if validated.candidate_sql or validated.preprocess_sql or validated.cleanup_sql:
+        raise ValueError("precomputed results require a stateless scoring case")
+    rows = _precomputed_rows(candidate_rows)
+    row_limit_exceeded = len(rows) > MAX_RESULT_ROWS
+    candidate = QuerySequenceResult(
+        rows=rows[: MAX_RESULT_ROWS + 1],
+        statement_count=0,
+        row_limit_exceeded=row_limit_exceeded,
+    )
+    if row_limit_exceeded and mode is ScoringMode.SENSITIVITY:
+        return _system_failure(
+            mode,
+            FailureClass.CANDIDATE_RESULT_OVERFLOW,
+            candidate_row_limit_exceeded=True,
+        )
+    if not validated.gold_sql:
+        return _infrastructure(mode, FailureClass.GOLD_QUERY_MISSING)
+    try:
+        gold_isolate = provider.acquire(validated.database)
+    except Exception:
+        return _infrastructure(mode, FailureClass.DATABASE_ACQUIRE_FAILED)
+    try:
+        gold = _run_gold(validated, mode, gold_isolate)
+        result = (
+            gold
+            if isinstance(gold, SealedScoringResult)
+            else _compare(mode, candidate, gold, validated.conditions)
+        )
+    finally:
+        finalization_failure = _reset_and_release(mode, gold_isolate)
+    return finalization_failure or result
+
+
+def _precomputed_rows(value: Sequence[Sequence[Any]]) -> tuple[tuple[Any, ...], ...]:
+    if isinstance(value, (str, bytes)) or not isinstance(value, Sequence):
+        raise ValueError("precomputed rows must be a sequence")
+    rows: list[tuple[Any, ...]] = []
+    for row in value:
+        if isinstance(row, (str, bytes)) or not isinstance(row, Sequence):
+            raise ValueError("precomputed rows must contain row sequences")
+        rows.append(tuple(row))
+    return tuple(rows)
 
 
 def system_no_answer(

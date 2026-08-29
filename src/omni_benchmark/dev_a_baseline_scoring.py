@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from .artifact_store import ArtifactStore, ArtifactStoreError
+from .artifact_store import MAX_ARTIFACT_BYTES, ArtifactStore, ArtifactStoreError
 from .content_policy import ContentPolicy
 from .custody import CustodyError, load_dev_a_records
 from .direct_question_loader import (
@@ -24,7 +24,11 @@ from .direct_question_loader import (
     _public_records,
     _validate_config_paths,
 )
-from .omni_result_adapter import reject_forbidden_keys
+from .omni_result_adapter import (
+    OmniResultContractError,
+    decode_result_artifact_rows,
+    reject_forbidden_keys,
+)
 from .scoring import OFFICIAL_SOFT_EX_VERSION, SENSITIVITY_SCORER_VERSION
 from .sealed_scoring import (
     FailureClass,
@@ -32,6 +36,7 @@ from .sealed_scoring import (
     ScoringMode,
     SealedQueryCase,
     SealedScoringResult,
+    score_precomputed_result,
     score_query,
     system_no_answer,
     validate_query_case,
@@ -40,6 +45,7 @@ from .sealed_scoring import (
 SELECTION_PATH = Path(
     "experiments/autoresearch/state/public-direct-baseline-freeze-v1.json"
 )
+SELECTION_ROOT = Path("experiments/autoresearch/state")
 RELEASE_PATH = Path("data/private/dev-a/labels.jsonl")
 DEV_A_IDS_PATH = Path("data/manifests/dev_a_ids.txt")
 CONFIG_PATH = Path("config/autoresearch.json")
@@ -78,6 +84,35 @@ ENTRY_FIELDS = frozenset(
         "trial_key",
     }
 )
+C4_SELECTION_FIELDS = frozenset(
+    {
+        "artifact_file_count",
+        "artifact_inventory_sha256",
+        "counts",
+        "deployment_sha256",
+        "eligible_manifest_sha256",
+        "entries",
+        "execution_plan_sha256",
+        "kind",
+        "output_root",
+        "run_id",
+        "schema_version",
+        "source_commit",
+        "source_schedule_sha256",
+        "train_ids_sha256",
+    }
+)
+C4_ENTRY_FIELDS = frozenset(
+    {
+        "attempt_id",
+        "condition",
+        "database",
+        "generation_sha256",
+        "instance_id",
+        "repetition",
+        "run_manifest_sha256",
+    }
+)
 RUN_REQUIRED_FIELDS = frozenset(
     {
         "condition",
@@ -113,6 +148,7 @@ class PreparedDevAAttempt:
     generation_record_sha256: str
     question_key: str
     case: SealedQueryCase = field(repr=False)
+    candidate_rows: tuple[tuple[Any, ...], ...] | None = field(default=None, repr=False)
     no_answer_failure: FailureClass | None = None
 
 
@@ -195,6 +231,7 @@ def prepare_dev_a_baseline_plan(
     workspace: Path,
     *,
     freeze_a_commit: str,
+    selection_path: Path = SELECTION_PATH,
     expected_selection_sha256: str,
     expected_release_sha256: str,
     environment: Mapping[str, str] | None = None,
@@ -207,12 +244,13 @@ def prepare_dev_a_baseline_plan(
         os.environ if environment is None else environment
     )
 
-    selection_bytes = _private_file(root, SELECTION_PATH, "selection manifest")
+    selected_path = _confined_selection_path(selection_path)
+    selection_bytes = _private_file(root, selected_path, "selection manifest")
     if hashlib.sha256(selection_bytes).hexdigest() != selection_digest:
         raise DevABaselineScoringError(
             "selection manifest does not match the expected selection SHA-256"
         )
-    selection, entries = _selection(selection_bytes, policy)
+    selection, entries, required_conditions = _selection(selection_bytes, policy)
     dev_a_ids, dev_a_ids_sha256, public_records = _committed_dev_a_inputs(
         root, freeze_a_commit, policy
     )
@@ -220,7 +258,9 @@ def prepare_dev_a_baseline_plan(
         entry for entry in entries if entry.instance_id in dev_a_ids
     )
     selected_ids = frozenset(entry.instance_id for entry in selected_entries)
-    _validate_selected_schedule(selected_entries, selected_ids)
+    _validate_selected_schedule(
+        selected_entries, selected_ids, required_conditions=required_conditions
+    )
 
     prepared_public = tuple(
         _prepare_public_attempt(
@@ -374,7 +414,11 @@ def _score_eligible_attempt(
 ) -> ModeAttemptScore:
     if unscorable_failure is not None:
         return ModeAttemptScore(unscorable_failure=unscorable_failure)
-    if attempt.no_answer_failure is None:
+    if attempt.candidate_rows is not None:
+        result = score_precomputed_result(
+            attempt.case, attempt.candidate_rows, mode, provider
+        )
+    elif attempt.no_answer_failure is None:
         result = score_query(attempt.case, mode, provider)
     else:
         result = system_no_answer(mode, failure_class=attempt.no_answer_failure)
@@ -478,8 +522,10 @@ def _committed_dev_a_inputs(
 
 def _selection(
     content: bytes, policy: ContentPolicy
-) -> tuple[Mapping[str, Any], tuple[_SelectionEntry, ...]]:
+) -> tuple[Mapping[str, Any], tuple[_SelectionEntry, ...], tuple[str, ...]]:
     value = _json(content, "selection manifest")
+    if isinstance(value, Mapping) and value.get("kind") == "public-c4-baseline-freeze":
+        return _c4_selection(value, policy)
     if not isinstance(value, Mapping) or set(value) != SELECTION_FIELDS:
         raise DevABaselineScoringError("selection manifest must use the exact schema")
     reject_forbidden_keys(value)
@@ -524,7 +570,88 @@ def _selection(
         or counts["total"] != len(entries)
     ):
         raise DevABaselineScoringError("selection counts do not match entries")
-    return value, entries
+    return value, entries, ("C1", "C2", "C3")
+
+
+def _c4_selection(
+    value: Mapping[str, Any], policy: ContentPolicy
+) -> tuple[Mapping[str, Any], tuple[_SelectionEntry, ...], tuple[str, ...]]:
+    if set(value) != C4_SELECTION_FIELDS:
+        raise DevABaselineScoringError(
+            "C4 selection manifest must use the exact schema"
+        )
+    reject_forbidden_keys(value)
+    if policy.sanitize_json(value) != value:
+        raise DevABaselineScoringError(
+            "C4 selection manifest contains sensitive content"
+        )
+    if value["schema_version"] != 1:
+        raise DevABaselineScoringError("C4 selection manifest identity is invalid")
+    source_commit = value["source_commit"]
+    if (
+        not isinstance(source_commit, str)
+        or COMMIT_PATTERN.fullmatch(source_commit) is None
+    ):
+        raise DevABaselineScoringError("C4 selection source commit is invalid")
+    for field_name in (
+        "artifact_inventory_sha256",
+        "deployment_sha256",
+        "eligible_manifest_sha256",
+        "execution_plan_sha256",
+        "source_schedule_sha256",
+        "train_ids_sha256",
+    ):
+        _digest(value[field_name], f"C4 selection {field_name}")
+    run_id = _path_component(value["run_id"], "C4 selection run ID")
+    if value["output_root"] != (RAW_ROOT / run_id).as_posix():
+        raise DevABaselineScoringError("C4 selection output root is invalid")
+    raw_entries = value["entries"]
+    if not isinstance(raw_entries, list) or not raw_entries:
+        raise DevABaselineScoringError("C4 selection entries must be a non-empty array")
+    entries = tuple(_c4_selection_entry(item, run_id) for item in raw_entries)
+    if len({entry.trial_key for entry in entries}) != len(entries):
+        raise DevABaselineScoringError("C4 selection has duplicate trial keys")
+    if len({entry.selected_attempt_id for entry in entries}) != len(entries):
+        raise DevABaselineScoringError("C4 selection has duplicate attempts")
+    counts = value["counts"]
+    if (
+        not isinstance(counts, Mapping)
+        or set(counts) != {"answered", "attempts", "databases", "errored", "refused"}
+        or any(type(item) is not int or item < 0 for item in counts.values())
+        or counts["attempts"] != len(entries)
+        or counts["databases"] != len({entry.database for entry in entries})
+        or counts["answered"] + counts["errored"] + counts["refused"] != len(entries)
+        or type(value["artifact_file_count"]) is not int
+        or value["artifact_file_count"] < 2 * len(entries)
+    ):
+        raise DevABaselineScoringError("C4 selection counts do not match entries")
+    return value, entries, ("C4",)
+
+
+def _c4_selection_entry(value: object, run_id: str) -> _SelectionEntry:
+    if not isinstance(value, Mapping) or set(value) != C4_ENTRY_FIELDS:
+        raise DevABaselineScoringError("C4 selection entry must use the exact schema")
+    if value["condition"] != "C4" or value["repetition"] != 1:
+        raise DevABaselineScoringError("C4 selection attempt identity is invalid")
+    instance_id = _path_component(value["instance_id"], "C4 selection instance ID")
+    database = _path_component(value["database"], "C4 selection database")
+    trial_key = f"{instance_id}:C4:1"
+    attempt_id = f"{run_id}:{trial_key}"
+    if value["attempt_id"] != attempt_id:
+        raise DevABaselineScoringError("C4 selection attempt identity is invalid")
+    return _SelectionEntry(
+        condition="C4",
+        database=database,
+        generation_sha256=_digest(value["generation_sha256"], "generation SHA-256"),
+        instance_id=instance_id,
+        repetition=1,
+        run_manifest_sha256=_digest(
+            value["run_manifest_sha256"], "run manifest SHA-256"
+        ),
+        run_id=run_id,
+        selected_attempt_id=attempt_id,
+        trial_key=trial_key,
+    )
 
 
 def _selection_entry(
@@ -571,17 +698,22 @@ def _selection_entry(
 
 
 def _validate_selected_schedule(
-    entries: Sequence[_SelectionEntry], selected_ids: frozenset[str]
+    entries: Sequence[_SelectionEntry],
+    selected_ids: frozenset[str],
+    *,
+    required_conditions: tuple[str, ...],
 ) -> None:
     by_id: Counter[str] = Counter(entry.instance_id for entry in entries)
-    if any(by_id[instance_id] != 3 for instance_id in selected_ids):
+    if any(
+        by_id[instance_id] != len(required_conditions) for instance_id in selected_ids
+    ):
         raise DevABaselineScoringError(
-            "represented dev-A questions must have all three direct conditions"
+            "represented dev-A questions must have every frozen condition"
         )
     expected = {
         (instance_id, condition)
         for instance_id in selected_ids
-        for condition in ("C1", "C2", "C3")
+        for condition in required_conditions
     }
     observed = {(entry.instance_id, entry.condition) for entry in entries}
     if observed != expected:
@@ -596,6 +728,7 @@ class _PublicAttempt:
     generation_record_sha256: str
     instance_id: str
     generated_sql: str | tuple[()] = field(repr=False)
+    candidate_rows: tuple[tuple[Any, ...], ...] | None = field(repr=False)
     no_answer_failure: FailureClass | None
 
 
@@ -652,21 +785,13 @@ def _prepare_public_attempt(
     outcome = record.get("generation_outcome")
     if outcome not in {"answered", "errored", "refused"}:
         raise DevABaselineScoringError("frozen generation outcome is invalid")
-    generated_sql = record.get("generated_sql")
-    if generated_sql is None or (
-        isinstance(generated_sql, str) and not generated_sql.strip()
-    ):
-        candidate: str | tuple[()] = ()
-        failure = (
-            FailureClass.AGENT_REFUSAL
-            if outcome == "refused"
-            else FailureClass.NO_QUERY
-        )
-    elif isinstance(generated_sql, str):
-        candidate = generated_sql
-        failure = None
-    else:
-        raise DevABaselineScoringError("generated SQL has an invalid type")
+    candidate, candidate_rows, failure = _candidate_input(
+        workspace,
+        root=root,
+        condition=entry.condition,
+        outcome=outcome,
+        record=record,
+    )
 
     run = _private_file(workspace, root / "run.json", "run manifest")
     if hashlib.sha256(run).hexdigest() != entry.run_manifest_sha256:
@@ -695,8 +820,82 @@ def _prepare_public_attempt(
         generation_record_sha256=hashlib.sha256(lines[0]).hexdigest(),
         instance_id=entry.instance_id,
         generated_sql=candidate,
+        candidate_rows=candidate_rows,
         no_answer_failure=failure,
     )
+
+
+def _candidate_input(
+    workspace: Path,
+    *,
+    root: Path,
+    condition: str,
+    outcome: str,
+    record: Mapping[str, Any],
+) -> tuple[str | tuple[()], tuple[tuple[Any, ...], ...] | None, FailureClass | None]:
+    if condition == "C4":
+        return _c4_candidate_input(workspace, root=root, outcome=outcome, record=record)
+    generated_sql = record.get("generated_sql")
+    if generated_sql is None or (
+        isinstance(generated_sql, str) and not generated_sql.strip()
+    ):
+        failure = (
+            FailureClass.AGENT_REFUSAL
+            if outcome == "refused"
+            else FailureClass.NO_QUERY
+        )
+        return (), None, failure
+    if not isinstance(generated_sql, str):
+        raise DevABaselineScoringError("generated SQL has an invalid type")
+    return generated_sql, None, None
+
+
+def _c4_candidate_input(
+    workspace: Path,
+    *,
+    root: Path,
+    outcome: str,
+    record: Mapping[str, Any],
+) -> tuple[tuple[()], tuple[tuple[Any, ...], ...] | None, FailureClass | None]:
+    if record.get("generated_sql") is not None:
+        raise DevABaselineScoringError("C4 generation must not contain direct SQL")
+    if outcome != "answered":
+        if (
+            outcome != "errored"
+            or record.get("failure_origin") != "evaluated_system"
+            or record.get("terminal_failure_class") != "omni_job_terminal_failure"
+        ):
+            raise DevABaselineScoringError(
+                "C4 terminal generation is not an evaluated-system outcome"
+            )
+        return (), None, FailureClass.CANDIDATE_EXECUTION_ERROR
+    expected_path = root / "answer.result.json"
+    expected_relative = expected_path.as_posix()
+    digest = record.get("result_artifact_sha256")
+    if (
+        not isinstance(record.get("generated_query"), str)
+        or not record["generated_query"].strip()
+        or record.get("failure_origin") is not None
+        or record.get("harness_failure") is not None
+        or record.get("query_unavailable_reason") is not None
+        or record.get("terminal_failure_class") is not None
+        or record.get("actual_result_status") != "complete"
+        or record.get("execution_status") != "complete"
+        or record.get("result_artifact_schema_version") != 1
+        or record.get("result_artifact_path") != expected_relative
+        or record.get("actual_result_hash") != digest
+    ):
+        raise DevABaselineScoringError("C4 result artifact binding is invalid")
+    expected_digest = _digest(digest, "C4 result artifact SHA-256")
+    content = _private_file(workspace, expected_path, "C4 result artifact")
+    if hashlib.sha256(content).hexdigest() != expected_digest:
+        raise DevABaselineScoringError("C4 result artifact does not match its binding")
+    artifact = _json(content, "C4 result artifact")
+    try:
+        rows = decode_result_artifact_rows(artifact)
+    except OmniResultContractError as error:
+        raise DevABaselineScoringError("C4 result artifact is invalid") from error
+    return (), rows, None
 
 
 def _attach_gold(
@@ -719,6 +918,7 @@ def _attach_gold(
             cleanup_sql=public_record["clean_up_sqls"],
             conditions=public_record["conditions"],
         ),
+        candidate_rows=attempt.candidate_rows,
         no_answer_failure=attempt.no_answer_failure,
     )
 
@@ -826,8 +1026,11 @@ def _receipt(
     sensitivity_sha256: str,
 ) -> dict[str, Any]:
     def aggregate(mode: ScoringMode) -> dict[str, Any]:
+        conditions = tuple(
+            sorted({item.attempt.condition for item in results.attempts})
+        )
         by_condition: dict[str, Counter[str]] = {
-            condition: Counter() for condition in ("C1", "C2", "C3")
+            condition: Counter() for condition in conditions
         }
         overall: Counter[str] = Counter()
         scoreable_questions: set[str] = set()
@@ -910,8 +1113,23 @@ def _workspace(value: Path) -> Path:
     return root
 
 
+def _confined_selection_path(value: Path) -> Path:
+    selected = Path(value)
+    if (
+        selected.is_absolute()
+        or selected.parent != SELECTION_ROOT
+        or not selected.name.endswith(".json")
+        or PATH_COMPONENT_PATTERN.fullmatch(selected.name) is None
+    ):
+        raise DevABaselineScoringError(
+            "selection path must be a confined autoresearch state freeze"
+        )
+    return selected
+
+
 def _private_file(workspace: Path, relative: Path, description: str) -> bytes:
     path = workspace / relative
+    descriptor: int | None = None
     try:
         metadata = path.lstat()
         if (
@@ -919,13 +1137,29 @@ def _private_file(workspace: Path, relative: Path, description: str) -> bytes:
             or metadata.st_nlink != 1
             or metadata.st_uid != os.getuid()
             or stat.S_IMODE(metadata.st_mode) != 0o600
+            or metadata.st_size < 1
+            or metadata.st_size > MAX_ARTIFACT_BYTES
         ):
             raise DevABaselineScoringError(f"{description} is not a private file")
-        content = path.read_bytes()
+        descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+        opened = os.fstat(descriptor)
+        if (opened.st_dev, opened.st_ino) != (metadata.st_dev, metadata.st_ino):
+            raise DevABaselineScoringError(f"{description} changed while opening")
+        chunks: list[bytes] = []
+        size = 0
+        while chunk := os.read(descriptor, 1024 * 1024):
+            size += len(chunk)
+            if size > MAX_ARTIFACT_BYTES:
+                raise DevABaselineScoringError(f"{description} is too large")
+            chunks.append(chunk)
+        content = b"".join(chunks)
     except DevABaselineScoringError:
         raise
     except OSError as error:
         raise DevABaselineScoringError(f"cannot read {description}") from error
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
     if not content:
         raise DevABaselineScoringError(f"{description} is empty")
     return content

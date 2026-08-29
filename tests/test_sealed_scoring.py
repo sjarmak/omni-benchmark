@@ -17,6 +17,7 @@ from omni_benchmark.sealed_scoring import (
     SealedQueryCase,
     ScoringMode,
     system_no_answer,
+    score_precomputed_result,
     score_query,
     score_query_both,
 )
@@ -98,6 +99,46 @@ def test_both_scorers_use_fresh_isolates_and_preserve_distinct_for_sensitivity()
     assert provider.events.count(("acquire", "public_fixture")) == 4
     assert provider.events.count(("reset",)) == 4
     assert provider.events.count(("release",)) == 4
+
+
+def test_precomputed_typed_result_scores_against_gold_without_candidate_execution() -> (
+    None
+):
+    provider = SyntheticIsolationProvider({"SELECT x FROM values_table": [(1,)]})
+    case = _case(candidate_sql=(), preprocess_sql=(), cleanup_sql=())
+
+    result = score_precomputed_result(case, ((1,),), ScoringMode.OFFICIAL, provider)
+
+    assert result.outcome == "correct"
+    assert provider.events.count(("acquire", "public_fixture")) == 1
+    executed = [event[1] for event in provider.events if event[0] == "execute"]
+    assert "SELECT DISTINCT x FROM values_table" not in executed
+    assert executed.count("SELECT x FROM values_table") == 1
+    assert provider.events[-2:] == [("reset",), ("release",)]
+
+
+def test_precomputed_result_rejects_stateful_case_before_database_acquisition() -> None:
+    provider = SyntheticIsolationProvider(_responses())
+
+    with pytest.raises(ValueError, match="precomputed"):
+        score_precomputed_result(
+            _case(candidate_sql=()), ((1,),), ScoringMode.OFFICIAL, provider
+        )
+
+    assert provider.events == []
+
+
+def test_precomputed_result_preserves_frozen_overflow_behavior() -> None:
+    rows = tuple((index,) for index in range(10_001))
+    provider = SyntheticIsolationProvider({"SELECT x FROM values_table": rows})
+    case = _case(candidate_sql=(), preprocess_sql=(), cleanup_sql=())
+
+    sensitivity = score_precomputed_result(
+        case, rows, ScoringMode.SENSITIVITY, provider
+    )
+
+    assert sensitivity.outcome == "refused_or_error"
+    assert sensitivity.failure_class is FailureClass.CANDIDATE_RESULT_OVERFLOW
 
 
 def test_empty_results_reproduce_official_failure_and_sensitivity_correction() -> None:
