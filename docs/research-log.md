@@ -9987,3 +9987,31 @@ tested.
 
 No evaluated answer, question, gold, hidden annotation, dev-B, test outcome,
 correctness, credential, OAuth, lease, shared/main model, or C4 action occurred.
+
+## 2026-08-29 — D-144: Extend exact readback observation to one minute
+
+### Hypothesis
+
+V10 refuted a 30-second convergence budget, then the same branch matched the
+frozen plan on the immediately subsequent read-only fetch. Adding one final
+30-second delay should cover that observed boundary while keeping the mechanism
+fixed, bounded, and general. Authenticated semantic equality and all immediate
+fail-closed cases remain unchanged.
+
+### Failure-first boundary
+
+Before implementation, update the persistent synthetic mismatch to require
+seven observations over exactly 60 seconds. The current six-observation helper
+must fail this test. A successor public validation may use a new Tier 1 run ID
+only after the focused boundary, Ruff, formatting, and diff checks pass on an
+exact commit.
+
+### Current result
+
+KEEP OFFLINE under `omni-benchmark-dih.17.13`. The fixed schedule now performs
+seven observations over exactly 60 seconds. The focused deployment/readback
+boundary passes 75 tests; Ruff, formatting, and diff checks pass. The only code
+change is the additional final delay; retry classification and authenticated
+semantic equality are unchanged. V10 remains immutable. No v11, evaluated
+answer, question, gold, hidden annotation, dev-B, test outcome, correctness,
+credential, OAuth, lease, shared/main model, or C4 action occurred.

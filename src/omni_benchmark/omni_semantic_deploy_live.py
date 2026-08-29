@@ -22,7 +22,7 @@ from .omni_semantic_deployment import (
 _SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,119}")
 _AUTO_EXTENSION_FILES = frozenset({"model", "relationships"})
 _ARCHAEOLOGY_DATABASE = "archeology_scan_large"
-_READBACK_RETRY_DELAYS_SECONDS = (1.0, 2.0, 4.0, 8.0, 15.0)
+_READBACK_RETRY_DELAYS_SECONDS = (1.0, 2.0, 4.0, 8.0, 15.0, 30.0)
 
 
 class SemanticDeploymentClient(Protocol):

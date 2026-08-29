@@ -238,10 +238,10 @@ def test_persistent_readback_mismatch_fails_after_bounded_observation(
     assert record.status == "failed"
     assert record.failure_stage == "readback"
     assert record.failure_detail == (
-        "readback did not converge after 6 observations: "
+        "readback did not converge after 7 observations: "
         f"readback semantic content differs for {VIEW_PATH}"
     )
-    assert delays == [1.0, 2.0, 4.0, 8.0, 15.0]
+    assert delays == [1.0, 2.0, 4.0, 8.0, 15.0, 30.0]
 
 
 def test_unexpected_readback_files_fail_without_retry(tmp_path: Path) -> None:
