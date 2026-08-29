@@ -44,8 +44,10 @@ Several commitments exist because of failure modes documented in the evaluation
 literature rather than anything specific to this product. All 1,212 generations
 complete before any output is scored, so no held-out outcome can reach a prompt,
 a retrieval configuration, or a retry policy. The development partition is split
-again, into questions adaptive optimization may reuse freely and a metered
-partition consulted at most ten times behind a signing boundary. Two scorers are
+again into a development partition that the protocol permits reusing and a
+metered partition available at most ten times behind a signing boundary. The
+executed final candidate uses neither question-level supervision nor a metered
+checkpoint. Two scorers are
 frozen before any gold is released, one reproducing the official evaluator's
 known lossy behavior and one repairing it, with neither selectable after results
 are seen. Every attempt carries a telemetry envelope in which an unobserved token

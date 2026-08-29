@@ -506,7 +506,7 @@ def test_restore_skips_a_declared_omission_whose_only_file_differs_in_case(
     ``mental_healths_large`` ships ``facilities.sql`` for a table its restore order
     spells ``Facilities``, so upstream builds its reference database without it.
     Loading the lowercase file here would put 34 tables in this database that the
-    scorer's does not have. See docs/research-log.md D-072.
+    scorer's does not have. See docs/research-log.md D-138.
     """
     (tmp_path / "facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
     client = RecordingClient()

@@ -1,6 +1,11 @@
 \section{Supervised development under an append-only control plane}
 \label{sec:development}
 
+This section records the preregistered development capability. The executed
+study does not promote a supervised intervention: the mechanical baseline is the
+final candidate, no question-level supervision enters that candidate, and no
+\texttt{dev-B} checkpoint is consumed.
+
 Optimization on the development partition is the part of an evaluation most
 likely to leak, to overfit, or to be narrated favorably afterward. This protocol
 constrains it with a machine-checkable control plane whose records are
@@ -47,7 +52,7 @@ production relevance. It is deliberately not collapsed into a weighted reward,
 and an accuracy increase alone cannot authorize acceptance.
 
 \paragraph{Surfaces and search.}
-The optimized artifact is the whole relevant system: HKB transformation, semantic
+If used, the optimization surface would be the whole relevant system: HKB transformation, semantic
 model and descriptions, retrieval, instructions, planning, compilation,
 validation and retry, and harness code. Every proposal declares one surface.
 \emph{Textual} surfaces (prompts, instructions, object descriptions, aliases,

@@ -131,3 +131,50 @@ into a candidate at a time. A dev-B guardian evaluates selected frozen candidate
 and never proposes changes. The sealed test evaluator receives labels only after
 Freeze B and releases no correctness until every output is generated. No agent
 both develops and certifies the same artifact.
+
+## Post-Freeze-A deviation, 2026-08-29: the optimization phase is cut
+
+**What changed.** The supervised development phase in "Baseline and supervised
+development" and the "Train-only autoresearch extension" are cut from the
+executed study. No dev-A-supervised intervention is promoted, no dev-B
+checkpoint is consumed, no experiment reaches a KEEP or REVERT decision, and the
+final candidate carried into Freeze B is the frozen mechanical baseline.
+
+**What the executed system is.** The mechanical public-only transformation plus
+general compiler corrections driven by the Omni validator: structured-leaf
+extraction operators, negative-scale numeric literals, physical identity
+collapse, case normalization, and alias handling. Each has content provenance
+`public schema` and intervention provenance `generic product improvement`. None
+has content provenance `development gold` or intervention provenance `dev-A
+failure`. The two provenance axes were preregistered precisely so this claim is
+checkable rather than asserted.
+
+**What dev-A was used for.** Diagnosis and reporting only: the C1-C3 accuracy
+figures, the refusal and budget-exhaustion census, the registered budget
+clustering test, the E01 audit. No dev-A outcome modified a runtime artifact.
+The released dev-A gold remains offline diagnostic input as the information
+tiers require.
+
+**Reason.** The deployment and authorization surface consumed the schedule. Five
+semantic deployment passes and five C4 run identities were spent before any
+governed accuracy existed, because each live defect cost a full single-use
+human-authorization cycle. The optimization phase sat behind that surface and
+was never reached. This is recorded as a product finding, not hidden as a gap.
+
+**Why it cannot bias the primary contrast.** The cut is decided on schedule
+cost, not on observed accuracy, and it removes a system-improvement step from
+every condition equally rather than selecting among outcomes. It can only lower
+expected C4, which is the condition the study exists to test; it cannot
+manufacture a favorable C4-C1 contrast. The alternative reading, that
+optimization was abandoned because C3 underperformed C2 on the direct baseline,
+is available to a reader and is answered by the contemporaneous ledger: the five
+spent identities and their failure classes predate and explain the decision.
+
+**What is still reported.** E01 as audited and inconclusive; E02 as a compiled,
+hash-bound, never-evaluated candidate; both with their artifacts intact. The
+sealed C1-C4 evaluation, dual scoring, endpoints, split, custody, and scorer
+definitions are unchanged. Freeze B still occurs; it records the baseline as the
+final candidate.
+
+**Consequence for description.** The executed system receives no question-level
+supervision. It must not be described as tuned, adapted, or dev-A-supervised.

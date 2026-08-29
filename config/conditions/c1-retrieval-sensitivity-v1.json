@@ -1,0 +1,26 @@
+{
+  "baseline_max_schema_matches": 4,
+  "condition": "C1",
+  "kind": "c1-schema-retrieval-sensitivity",
+  "launch_margin_seconds": 600,
+  "legacy_batch_capacity_usd": "1000000.000000",
+  "maximum_schema_payload_bytes": 65536,
+  "minimum_remaining_wall_clock_seconds": 1200,
+  "notional_maximum_cost_usd": "240.000000",
+  "output_root": "experiments/autoresearch/raw/c1-retrieval-sensitivity-v1",
+  "preserved_artifact_sha256": {
+    "c1_condition": "59e3aaabcb75d5080c956c8c52d923f6dec4b754507299c37b9c1b7857fb9b1c",
+    "database_targets": "1eeaec61d5f2f871b01f85d865d345a368ee0b137310d5d0700f07244487434a",
+    "direct_instructions": "0729cd488f90031c0bb196436ac1d59cb303c0f1e8b46a207c94b690548c3d0e",
+    "direct_prompt": "6ab836dd048ff99665d24fabd4de351c8a393a602bac07e5889bb10a29037e57",
+    "direct_runtime": "21cfc382ae24020d4a85c11de752dc2a1c59578ce07f9bccc98647f7eafca2d4"
+  },
+  "preserved_budget_id": "direct-sql-public-baseline-v1",
+  "question_count": 20,
+  "projected_full_arm_wall_clock_seconds": 600,
+  "remaining_wall_clock_rule": "strictly_greater_than_minimum",
+  "run_id": "c1-retrieval-sensitivity-v1",
+  "schema_version": 1,
+  "sensitivity_max_schema_matches": 8,
+  "source_baseline_commit": "5be315e44bea7ee1a39500380dcbc4c05976dd3e"
+}

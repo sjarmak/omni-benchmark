@@ -410,6 +410,60 @@ def _fixture_repo(tmp_path: Path, *, secret: str | None = None) -> tuple[Path, s
     return workspace, _git(workspace, "rev-parse", "HEAD")
 
 
+def _add_database_public_context(workspace: Path, database: str) -> str:
+    legacy_schema_root = workspace / "semantic_models/public_schema_ir"
+    schema_content = (
+        (legacy_schema_root / "archeology_scan_large.schema.jsonl")
+        .read_bytes()
+        .replace(b"archeology_scan_large", database.encode())
+    )
+    schema_root = workspace / f"semantic_models/public_baseline/{database}/schema_ir"
+    schema_path = schema_root / f"{database}.schema.jsonl"
+    schema_path.parent.mkdir(parents=True, exist_ok=True)
+    schema_path.write_bytes(schema_content)
+    schema_manifest = json.loads(
+        (legacy_schema_root / "manifest.json").read_text(encoding="utf-8")
+    )
+    schema_manifest["database"] = database
+    schema_manifest["output"] = {
+        "file": schema_path.name,
+        "sha256": _sha256(schema_content),
+    }
+    _write_json(schema_root / "manifest.json", schema_manifest)
+
+    legacy_bundle_root = workspace / "semantic_models/public_bundle"
+    bundle_root = workspace / f"semantic_models/public_baseline/{database}/bundle"
+    legacy_bundle_manifest = json.loads(
+        (legacy_bundle_root / "manifest.json").read_text(encoding="utf-8")
+    )
+    bundle_files: list[dict[str, object]] = []
+    for metadata in legacy_bundle_manifest["files"]:
+        source_name = metadata["file"]
+        target_name = source_name.replace("archeology_scan_large", database)
+        content = (
+            (legacy_bundle_root / source_name)
+            .read_bytes()
+            .replace(b"archeology_scan_large", database.encode())
+        )
+        target = bundle_root / target_name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(content)
+        bundle_files.append(
+            {
+                "file": target_name,
+                "sha256": _sha256(content),
+                "size_bytes": len(content),
+            }
+        )
+    legacy_bundle_manifest["database"] = database
+    legacy_bundle_manifest["files"] = bundle_files
+    _write_json(bundle_root / "manifest.json", legacy_bundle_manifest)
+
+    _git(workspace, "add", ".")
+    _git(workspace, "commit", "-qm", f"add public context for {database}")
+    return _git(workspace, "rev-parse", "HEAD")
+
+
 @pytest.mark.parametrize(
     ("condition", "has_hkb", "has_semantic"),
     [("C1", False, False), ("C2", True, False), ("C3", False, True)],
@@ -433,6 +487,30 @@ def test_condition_scoped_tools_preserve_exact_information_isolation(
     assert ("semantic_manifest" in components) is has_semantic
     assert len(tools.identity.context_sha256) == 64
     assert tools.render_question("Public question") == "Public question"
+
+
+@pytest.mark.parametrize("condition", ["C1", "C3"])
+def test_non_canary_context_uses_database_specific_public_baseline_manifests(
+    tmp_path: Path, condition: str
+) -> None:
+    workspace, _ = _fixture_repo(tmp_path)
+    commit = _add_database_public_context(workspace, "cross_border_large")
+
+    tools = load_direct_public_tools(workspace, commit, "cross_border_large", condition)
+
+    schema = tools.inspect_schema("resolution measurements")
+    assert schema.payload["database"] == "cross_border_large"
+    assert all(
+        stable_id.startswith("cross_border_large:")
+        for stable_id in schema.payload["retrieved_schema_stable_ids"]
+    )
+    if condition == "C3":
+        assert tools.search_semantic_model is not None
+        semantic = tools.search_semantic_model("premium quality")
+        assert (
+            "cross_border_large_public__scan.premium_scan_quality"
+            in semantic.semantic_objects
+        )
 
 
 def test_schema_search_is_selective_deterministic_compact_and_bounded(

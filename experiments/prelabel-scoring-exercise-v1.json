@@ -1,0 +1,39 @@
+{
+  "condition": "C2",
+  "evidence": {
+    "ignored_path": "experiments/autoresearch/raw/gold-free-scoring-exercise-v1/evidence.json",
+    "sha256": "6d4145491e4ae79ce435852f9c38ee36b99978a702fdd0d34f0177e4a0c35128"
+  },
+  "inputs": {
+    "left": {
+      "attempt_id": "archeology-vertical-v1:archeology_scan_3:C2:1",
+      "generation_sha256": "810a2d827d91b9deaa4ff5972bd50b534a094d9ab5e17352b9a0b2a08dfda23d",
+      "result_sha256": "8a3a81ec5432cc6132025c863d50d8f8a4067d2cdfbd50210b7727587c3526e1",
+      "row_count": 825,
+      "run_id": "archeology-vertical-v1"
+    },
+    "right": {
+      "attempt_id": "public-baseline-v1-auth4:archeology_scan_3:C2:1",
+      "generation_sha256": "dd598dcf1469f5fb57a0f46306a3e176a634bb3ddfe3aaa9ee19a50d7dd231cf",
+      "result_sha256": "e264f221c44061ab7565b17e8285d46281765e23efbb626dfa0323dfda299809",
+      "row_count": 825,
+      "run_id": "public-baseline-v1-auth4"
+    }
+  },
+  "instance_id": "archeology_scan_3",
+  "interpretation": "Agreement is a gold-free plumbing oracle, not benchmark correctness.",
+  "oracle": "result_set_self_consistency_not_correctness",
+  "schema_version": 1,
+  "scorers": {
+    "official": {
+      "agreement": true,
+      "score_artifact_sha256": "57b50dff24ec1ffbb3411a99f9e9d4d97b738726488f1121acc39c786bd824bf",
+      "version": "livesqlbench-soft-ex-e15cd221-v1"
+    },
+    "sensitivity": {
+      "agreement": true,
+      "score_artifact_sha256": "76d53626fd68b6a0d52906e2baf1cf2603f51cf61d922531456d836dcfc26d0a",
+      "version": "omni-multiset-decimal-v1"
+    }
+  }
+}

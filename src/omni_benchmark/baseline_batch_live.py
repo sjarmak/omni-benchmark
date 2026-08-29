@@ -38,6 +38,7 @@ from .omni_probe_preflight import OmniProbePreflightError, committed_spec
 _PG_FIELDS = frozenset(
     {"PGHOST", "PGDATABASE", "PGUSER", "PGPASSWORD", "PGPORT", "PGSSLMODE"}
 )
+_SYSTEM_ROOT_CERTIFICATE = "/etc/ssl/certs/ca-certificates.crt"
 _IDENTIFIER_CHARS = frozenset(
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.-"
 )
@@ -311,7 +312,7 @@ class DatabaseEnvironmentDirectory:
             raise BaselineBatchError("database environment must use the exact schema")
         if any(not isinstance(item, str) or not item for item in value.values()):
             raise BaselineBatchError("database environment values must be non-empty")
-        return dict(value)
+        return {**value, "PGSSLROOTCERT": _SYSTEM_ROOT_CERTIFICATE}
 
 
 class LiveBaselineDispatcher:

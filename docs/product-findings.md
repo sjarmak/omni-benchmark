@@ -761,7 +761,7 @@ execution mechanics rather than accuracy.
 - **Was the change tested?:** Yes on the external adapter with RED/GREEN tests
   and all five preserved public responses; no product-side change was available.
 - **Measured effect:** Preserved-response parse success changed from 0/5 to 5/5.
-- **Experiment / commit provenance:** D-054; source commit `9526505`; runs
+- **Experiment / commit provenance:** D-121; source commit `9526505`; runs
   `public-c4-concurrency-canary-v3-20260828-1425` and
   `public-c4-concurrency-canary-v4-20260828-1434`.
 - **Visible in AI Hub?:** Partially. AI Hub exposes action history and truncated
@@ -823,7 +823,7 @@ execution mechanics rather than accuracy.
 - **Measured effect:** Preserved disaster replay changed from contract failure to
   a 240-row typed result. Preserved ETF replay changed from an undifferentiated
   contract error to a distinct unsupported-type outcome.
-- **Experiment / commit provenance:** D-055; run
+- **Experiment / commit provenance:** D-132; run
   `public-c4-concurrency-canary-v4-20260828-1434`; source commit pending review.
 - **Visible in AI Hub?:** Partially. The governed query and result are visible,
   but the selected-versus-helper distinction and machine type-binding failure

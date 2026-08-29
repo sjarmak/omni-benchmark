@@ -39,6 +39,10 @@ from .c4_production_approval import (
     consume_c4_production_approval,
     validate_c4_production_approval,
 )
+from .c1_retrieval_sensitivity import (
+    load_committed_c1_retrieval_sensitivity_schedule,
+    validate_c1_retrieval_sensitivity_invocation,
+)
 from .omni_cli import OmniCliError, OmniCliSettings
 
 _C4_ARM_SPEC_PATH = Path("config/conditions/c4-public-baseline-arm-v1.json")
@@ -73,6 +77,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--observed-attempt-cost-usd", required=True)
     parser.add_argument("--cost-ceiling-usd", required=True)
+    parser.add_argument("--c1-retrieval-sensitivity", action="store_true")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--dry-run-execution-plan", action="store_true")
     mode.add_argument("--dry-run-c4-baseline", action="store_true")
@@ -94,6 +99,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--maximum-concurrency", type=int, default=4)
     parser.add_argument("--subprocess-timeout-seconds", type=float, default=1800.0)
     parser.add_argument("--maximum-wall-clock-seconds", type=float)
+    parser.add_argument("--remaining-wall-clock-seconds", type=float)
     parser.add_argument("--human-approval-receipt", type=Path)
     return parser
 
@@ -101,10 +107,27 @@ def _parser() -> argparse.ArgumentParser:
 def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
     """Project, dry-run, or explicitly dispatch the committed public baseline."""
     arguments = _parser().parse_args(argv)
-    schedule = load_committed_baseline_schedule(
-        arguments.workspace,
-        arguments.system_commit,
-        run_id=arguments.run_id,
+    if arguments.c1_retrieval_sensitivity:
+        validate_c1_retrieval_sensitivity_invocation(
+            run_id=arguments.run_id,
+            output_root=arguments.output_root,
+            cost_ceiling_usd=arguments.cost_ceiling_usd,
+            execute_live=arguments.execute_live_direct_baseline,
+            remaining_wall_clock_seconds=arguments.remaining_wall_clock_seconds,
+            attempt_cost_ceiling_usd=arguments.attempt_cost_ceiling_usd,
+        )
+    schedule = (
+        load_committed_c1_retrieval_sensitivity_schedule(
+            arguments.workspace,
+            arguments.system_commit,
+            run_id=arguments.run_id,
+        )
+        if arguments.c1_retrieval_sensitivity
+        else load_committed_baseline_schedule(
+            arguments.workspace,
+            arguments.system_commit,
+            run_id=arguments.run_id,
+        )
     )
     e02_mode = (
         arguments.dry_run_e02_dev_a_experiment
@@ -128,7 +151,10 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
             schedule = c4_concurrency_canary_schedule(schedule)
     elif arguments.execute_live_direct_concurrency_canary:
         schedule = direct_concurrency_canary_schedule(schedule)
-    elif arguments.execute_live_direct_baseline:
+    elif (
+        arguments.execute_live_direct_baseline
+        and not arguments.c1_retrieval_sensitivity
+    ):
         schedule = apply_committed_direct_baseline_exclusions(
             arguments.workspace,
             arguments.system_commit,
@@ -139,6 +165,12 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
         observed_attempt_cost_usd=arguments.observed_attempt_cost_usd,
         cost_ceiling_usd=arguments.cost_ceiling_usd,
     )
+    if arguments.c1_retrieval_sensitivity and not (
+        arguments.dry_run_execution_plan or arguments.execute_live_direct_baseline
+    ):
+        raise BaselineBatchError(
+            "C1 retrieval sensitivity requires planning or live direct execution"
+        )
     if (
         arguments.dry_run_execution_plan
         or arguments.dry_run_c4_baseline

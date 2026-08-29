@@ -39,6 +39,33 @@ uv run ruff check . && uv run ruff format --check .
 - Never rerun a trial because its answer was wrong. Reruns require a demonstrable
   failure outside the evaluated system (see the protocol's rerun policy).
 
+## Live-action authorization tiers
+
+Authorization scales with contamination risk, not with whether an action is
+"live". Recorded by Stephanie 2026-08-29 (`omni-benchmark-xeg`); this overrides
+the global per-action external-approval rule for tier 1 only.
+
+**Tier 1 - agent-autonomous.** Public semantic deployment, validation, and
+exact-readback passes. Preconditions: public schema and public HKB only; no
+questions, gold, hidden annotations, dev-B, test data, or correctness; isolated
+`livesqlbench-*` branches only, never shared or main models. Retries are
+permitted under a **new** run ID. Every terminal result is still preserved,
+records stay append-only, and the run-ID claim stays exclusive. A compiler fix
+between passes must still be general, tested, and free of any database name,
+question, or label; that is enforced by reviewing the diff, not by rationing
+passes.
+
+**Tier 2 - one exact human authorization per action.** Anything that generates
+evaluated answers (C1-C4 dispatch, E-series evaluation, sealed generation and
+scoring), consumes a dev-B checkpoint, reads or releases protected data, or
+mutates a shared/main Omni model. Single-use receipts, quarantine on failure,
+and the no-retry rule are unchanged here.
+
+Unchanged by this split: credentials, OAuth profiles, and leases remain
+operator-owned; `git push` and other external artifacts still follow the global
+per-action rule; the rerun policy still forbids rerunning a trial because its
+answer was wrong.
+
 ## Gotchas
 
 These cost time if you discover them by hitting them.
@@ -81,6 +108,26 @@ These cost time if you discover them by hitting them.
   remote are prohibited.
 - Shell aliases may force `-i` on `cp`/`mv`/`rm` and hang the session. Use
   `cp -f`, `mv -f`, `rm -f`, `rm -rf`, and expand destructive paths literally.
+- **OAuth profiles are leased, never repaired by benchmark agents.** Never
+  refresh, rotate, copy back, or validate credentials while any Claude session
+  or benchmark run may hold that identity; an auth failure pauses the lane for
+  human-owned canonical login because refresh-token copies can revoke live
+  sessions and turn benchmark attempts into infrastructure failures.
+- Credential rotation is an operator-controlled recovery action, not routine
+  benchmark maintenance. Establish exclusive ownership first, rotate once only
+  if required, and keep the leased credential state stable until the run ends.
+
+## Failure-mode preventions
+
+- Never interpolate text containing backticks or `$()` into a shell command,
+  including Beads fields; pass it through a file/stdin or literal-safe argument,
+  or command substitution can execute embedded operator commands.
+- Never treat a logged hypothesis or planned control as implemented; verify the
+  exact run commit contains and tests it before calling it frozen, or a missing
+  protection can invalidate the authorized trial.
+- Never consume a live approval based only on dry-run success; validate the exact
+  inherited provider environment first, or a missing `OMNI_BASE_URL` can spend
+  the one-time receipt before any evaluated answer.
 
 ## Working style
 

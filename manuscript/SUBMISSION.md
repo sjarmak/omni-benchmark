@@ -55,9 +55,10 @@ Replace the status section rather than leaving it in front of the results.
     dependency edges, with multi-hop resolution required in every database.
     From the pinned public release we derive 332 eligible Query tasks and
     split them deterministically into 231 development and 101 sealed test
-    questions, then split development again into 154 adaptively reused
-    questions and 77 metered checkpoint questions with a hard maximum of ten
-    checkpoint evaluations. Four conditions are frozen together and run
+    questions, then split development again into 154 development questions
+    and 77 metered checkpoint questions with a hard maximum of ten checkpoint
+    evaluations. The executed final candidate receives no question-level
+    supervision and consumes no checkpoint. Four conditions are frozen together and run
     three times over the sealed questions, producing 1,212 generations that
     are all completed before any output is scored: raw schema with direct
     SQL, direct SQL with a searchable raw knowledge base, direct SQL with a
@@ -67,7 +68,7 @@ Replace the status section rather than leaving it in front of the results.
     difference against the direct-SQL baseline, both with question-clustered
     uncertainty and no majority vote. We specify the custody boundary that
     keeps hidden gold out of the development workspace, the append-only
-    control plane that governs supervised development on the adaptive
+    control plane that can govern supervised development on the development
     partition, two independently versioned scorers (an official-compatible
     Soft EX that reproduces known lossy normalization, and a corrected
     multiset comparator reported as a prespecified sensitivity analysis),

@@ -1,0 +1,17 @@
+{
+  "attempt_cost_ceiling_usd": "12.000000000",
+  "launch_margin_seconds": 600,
+  "legacy_batch_capacity_role": "mathematically_nonbinding_scheduler_sentinel",
+  "legacy_batch_capacity_usd": "1000000.000000000",
+  "method": "observed_running_direct_baseline_mean",
+  "observed_attempt_cost_mean_usd": "2.190000000",
+  "projected_cost_usd": "43.800000000",
+  "projected_full_arm_wall_clock_seconds": 600,
+  "question_count": 20,
+  "run_id": "c1-retrieval-sensitivity-v1",
+  "scope": "C1 only; MAX_SCHEMA_MATCHES 8 versus frozen baseline 4",
+  "spend_interpretation": "OAuth dollars are telemetry, not a run-stop rule",
+  "minimum_remaining_wall_clock_seconds_at_launch": 1200,
+  "remaining_wall_clock_rule": "strictly_greater_than_minimum",
+  "notional_maximum_cost_usd": "240.000000000"
+}

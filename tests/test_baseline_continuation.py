@@ -136,7 +136,7 @@ def _write_attempt(
 
 def _authorization(expected: int = 1) -> ContinuationAuthorization:
     return ContinuationAuthorization(
-        authorization_id="D-055-oauth-rotation-window",
+        authorization_id="synthetic-oauth-rotation-window",
         expected_invalidated_attempts=expected,
         finished_at_start="2026-08-28T18:20:46Z",
         finished_at_end="2026-08-28T18:26:20Z",

@@ -4,9 +4,11 @@
 
 > **Status — 2026-08-29:** The immutable C1-C3 public baseline has been scored on
 > its exact dev-A intersection. E01 is an audited baseline no-op, and the E02
-> relationship candidate is locally authenticated but has not been deployed or
-> evaluated. The C4 baseline, dev-B checkpoint, final freeze, and sealed test are
-> pending. Every **Pending** entry below carries no numeric value. The 101
+> relationship artifact is locally authenticated but was neither deployed nor
+> evaluated. The optimization phase is closed: no intervention was promoted, no
+> dev-B checkpoint will be consumed, and the frozen mechanical baseline is the
+> final candidate. The C4 baseline, final freeze, and sealed test are pending.
+> Every **Pending** entry below carries no numeric value. The 101
 > held-out questions and their labels remain sealed. All 154 dev-A questions
 > remain scheduled; 18 fixed benchmark-invalid questions are preregistered as
 > unscorable, leaving 136 answerable questions for C4 promotion. Fourteen of the
@@ -20,9 +22,11 @@ This study asks whether an analytical agent becomes more accurate when business
 knowledge is represented and enforced through Omni's semantic layer instead of
 being left to direct SQL generation. We evaluate 332 analytical tasks from
 LiveSQLBench Large-v1: 231 development questions and 101 sealed questions. The
-development partition is further divided into 154 adaptively reused questions
-and 77 metered validation questions. Four systems separate access to raw schema,
-business knowledge, structured semantic knowledge, and governed execution.
+development partition is further divided into 154 development questions and 77
+metered validation questions. The protocol permitted supervised reuse, but the
+executed final candidate receives no question-level supervision and consumes no
+metered checkpoint. Four systems separate access to raw schema, business
+knowledge, structured semantic knowledge, and governed execution.
 
 The primary governed and sealed results remain pending. Development evidence
 now supports four findings:
@@ -54,9 +58,8 @@ now supports four findings:
    baseline telemetry averaged $1.48 to $1.84 per attempt across C1-C3. The hard
    payload bound and observed end-to-end cost are separate measurements.
 
-The remaining evaluation tests whether explicit relationship structure improves
-governed execution and whether any development result survives the frozen
-held-out comparison.
+The remaining evaluation tests whether the frozen mechanical semantic layer
+improves governed execution on the held-out comparison.
 
 ## 1. Research question
 
@@ -65,8 +68,8 @@ The primary question is:
 > Given a modeled database, how accurately does production-governed Omni answer
 > previously unseen analytical questions?
 
-The primary comparison is governed Omni against a reasonably tuned direct-SQL
-agent on the same sealed questions. Three additional contrasts help explain any
+The primary comparison is governed Omni against the frozen direct-SQL
+comparator on the same sealed questions. Three additional contrasts help explain any
 difference:
 
 | Condition | Information available at runtime | Query path |
@@ -91,10 +94,11 @@ deterministic split, based only on public metadata and stratified primarily by
 database and `high_level`, assigned 231 questions to development and 101 to the
 sealed final evaluation. Every database appears in both partitions.
 
-The 231 development questions are split into dev-A (154) and dev-B (77). System
-development may repeatedly use dev-A. Dev-B remains an internal generalization
-gate with a hard maximum of ten checkpoint evaluations and is unconsumed in the
-work reported here. The final 101-question set is inaccessible to development.
+The 231 development questions are split into dev-A (154) and dev-B (77). The
+protocol permits repeated use of dev-A and metered dev-B checkpoints. For the
+executed study, no supervised intervention is promoted and dev-B remains
+unconsumed by decision. The final 101-question set is inaccessible to
+development.
 All four frozen conditions will
 produce three independent, interleaved attempts per sealed question before any
 test output is scored.
@@ -104,8 +108,8 @@ The official Large-v1 Linux loader skips 34 declared tables in
 filenames differ in capitalization. The committed dev-A split assigns nine
 questions to each database, and their reference SQL cannot run in the official
 environment. The fixed development frame therefore schedules all 154 questions,
-reports those 18 as scorer-conformance exclusions, and evaluates C4 promotion
-on all 136 answerable questions. The exclusion identities and public-only
+reports those 18 as scorer-conformance exclusions, and evaluates C4 on all 136
+answerable questions. The exclusion identities and public-only
 derivation are bound in
 [`dev-a-scorer-conformance-exclusions-v1.json`](config/conditions/dev-a-scorer-conformance-exclusions-v1.json).
 
@@ -122,7 +126,7 @@ answer and missing-row categories.
 
 C4 development generation is budgeted and scheduled separately from this
 direct arm. It must schedule all 154 dev-A questions across all 18 databases;
-promotion requires complete coverage of the fixed 136 answerable questions.
+reporting requires complete coverage of the fixed 136 answerable questions.
 Condition comparisons use only matched question/database coverage. This leaves
 the preregistered sealed-test population unchanged and prohibits
 result-dependent C4 sampling.
@@ -259,7 +263,7 @@ than treating all identifiers as untrusted free text. The relevant commits are
 `2b72244de9fefa4d4f7329ba159f571a8242da79` (bounded retrieval) and
 `50ebc31075f742fba4e7d4bbc6fc4da0b15d53ce` (typed public relationship IDs).
 
-## 5. Baseline and optimization trajectory
+## 5. Baseline and development trajectory
 
 The 630-attempt C1-C3 baseline was frozen by content hash before the train-only
 release. Its exact dev-A intersection contains 420 attempts over 140 of the 154
@@ -300,7 +304,8 @@ compilation defect from being counted as a reasoning failure. The structural
 analysis above does not assign ladder categories; aggregate prevalence remains
 pending until the permitted diagnostic process supplies enough evidence.
 
-Four intervention families were fixed before supervised work: same-grain
+Four intervention families were fixed before the optimization phase was cut:
+same-grain
 dependency composition (E01), FK-backed grain relationships (E02), bounded
 semantic descriptions (E03), and a broad HKB-context negative control (E04).
 Their reusable changes and promotion rules are recorded in
@@ -309,9 +314,9 @@ Their reusable changes and promotion rules are recorded in
 | Experiment | Evidence completed | Decision | Remaining gate |
 | --- | --- | --- | --- |
 | E01: same-grain dependencies | The frozen baseline already has 48 dependency-bearing elements, 70 executable dependency edges, and depth three | Inconclusive; already baseline | No further E01 contrast |
-| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded candidate emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes | Keep as offline candidate | Isolated live deployment, then full dev-A C4 evaluation |
-| E03: bounded descriptions | Prespecified only | Not started | E02 live decision |
-| E04: broad HKB context | Prespecified negative control only | Deferred from MVP | Run only if it directly resolves the final candidate decision |
+| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes | Preserve as offline evidence; not promoted | None; deployment and evaluation were cut |
+| E03: bounded descriptions | Prespecified only | Not run | None; optimization phase closed |
+| E04: broad HKB context | Prespecified negative control only | Not run | None; optimization phase closed |
 
 The first corrected deployment pass validated 13 answerable databases. A
 seven-bundle successor validated five exact successors, including the repaired
@@ -324,14 +329,12 @@ mechanical rule changes bundle bytes across the full fan-out, all 16 answerable
 bundles require fresh product validation; the two fixed official-loader
 blockers remain explicit rather than fabricated as empty models.
 
-Those corrections change the current deployment-relevant E02 candidate-set
-SHA-256 to
+The separate offline E02 artifact has candidate-set SHA-256
 `db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`.
-All 18 integrated bundles publish and authenticate locally; historical
-deployment records remain immutable and correctly reject changed bundle hashes.
-Deployment and accuracy evaluation remain pending.
-The public C4 baseline must freeze under its separate launch authorization
-before this candidate can be evaluated. Dev-B remains reserved.
+It publishes and authenticates locally, but it is not the final candidate and
+will not be deployed or evaluated. Its historical artifacts remain immutable.
+The public C4 baseline evaluates the frozen mechanical baseline. Dev-B remains
+unconsumed.
 
 ## 6. Held-out results
 
@@ -422,8 +425,10 @@ improves governed answer accuracy.
   than an isolated estimate of semantic enforcement.
 - Execution equivalence remains the benchmark authority. AI Hub diagnostics and
   judge outcomes can explain behavior but do not replace result-set scoring.
-- E02 has passed deterministic local publication checks only. Its product
-  deployment, C4 baseline, dev-B gate, and sealed accuracy are pending.
+- E02 passed deterministic local publication checks only and is retained as
+  offline evidence. It was not promoted, deployed, or evaluated; the executed
+  final candidate receives no question-level supervision, and dev-B is
+  intentionally unconsumed.
 - Held-out accuracy, reliability, and confirmatory condition conclusions are
   pending. No placeholder in this report should be interpreted as a result.
 

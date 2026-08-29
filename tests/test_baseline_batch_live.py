@@ -131,6 +131,7 @@ def test_database_environments_are_external_private_and_never_materialized_in_pl
     environment = source.for_database("database_1")
 
     assert environment["PGPASSWORD"] == "private-password"
+    assert environment["PGSSLROOTCERT"] == "/etc/ssl/certs/ca-certificates.crt"
     assert "private-password" not in repr(source)
 
 
