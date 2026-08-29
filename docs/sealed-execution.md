@@ -362,6 +362,24 @@ receipt. Production execution additionally requires
 the C1-C3/C4 adapters are complete, the checked-in script refuses that flag
 before receipt consumption.
 
+### Sealed C4 capture adapter
+
+`SealedOmniConditionAdapter` is the sealed-only projection boundary over the
+existing `OmniProbeResult` contract. It is constructed after receipt consumption
+with the exact C4 `FreezeBCondition`, dispatch policy, private capture root, and
+a production probe runner. Each invocation receives only an opaque
+`SealedPreparedAttempt`, creates a unique mode-0700 ignored sidecar directory,
+and passes a mode-0600 `ArtifactStore` to the runner.
+
+The adapter constructs provenance from Freeze B and the dispatch policy, then
+rewrites only the generation identity to the exact sealed attempt/cohort and
+`partition=test`. It preserves the raw public question in the record while the
+production runner may render the separately frozen C4 prompt for submission.
+An Omni terminal job failure is an evaluated-system outcome and remains a valid
+unscored generation. Transport, polling, response-contract, or other benchmark-
+infrastructure outcomes remain unstaged for the separately governed incident
+path. The adapter contains no scoring or correctness interface.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

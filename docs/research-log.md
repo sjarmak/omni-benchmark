@@ -5326,3 +5326,75 @@ both inspection and execution.
 Implement sealed-only C1-C3 and C4 adapters over the existing capture contracts;
 do not broaden ordinary development loaders. Then wire their builder into the
 entry script and repeat the all-1,212 synthetic end-to-end gate.
+
+## 2026-08-29 — D-100: Add C4 without widening development scope
+
+### Decision / experiment
+
+Implement the C4 half of the concrete adapter boundary independently, and track
+the direct-SQL identity bridge separately. Change type: general evaluation
+integrity. Beads: `omni-benchmark-ei0.5.5.2` (C4) and
+`omni-benchmark-ei0.5.5.1` (direct bridge).
+
+### Hypothesis
+
+If a sealed-only adapter consumes `SealedPreparedAttempt` and projects the
+existing Omni capture result after receipt consumption, C4 can reuse proven
+telemetry and result capture without making the dev-A probe loader accept test.
+Evaluated-system terminal failures should remain immutable generations, while
+benchmark-infrastructure failures must remain unstaged.
+
+### Intervention
+
+Added `SealedOmniConditionAdapter`. Construction requires the exact frozen C4
+identity, canonical dispatch policy, safe workspace/capture root, and a probe
+runner. Each call creates a unique private ignored sidecar store, invokes the
+runner, derives the C4 record through the existing Omni attempt projection, and
+overlays only the exact sealed attempt/cohort plus `partition=test`. Provenance,
+cost reservation, budget-policy hash, versions, and semantic identity come from
+Freeze B and the dispatch policy.
+
+The adapter accepts the supported Omni terminal job failure as an evaluated-
+system outcome. Any transport/poll/contract class owned by benchmark
+infrastructure raises before staging. Wrong condition, forged prepared authority,
+wrong adapter identity, unsafe root, invalid runner/result, or runner exception
+also fail closed. The adapter source is included in the runtime-source digest.
+
+The existing direct runtime identity is intentionally restricted to train,
+dev-A, and dev-B. Rather than change that human-controlled scope surface or label
+test traffic as dev-A, child bead `omni-benchmark-ei0.5.5.1` now tracks a
+parallel sealed-only direct identity/preparer.
+
+### Result
+
+Six focused C4 adapter tests pass with 88.37% branch coverage. They cover
+successful staging-compatible test projection, evaluated-system failure,
+unstaged infrastructure failure, private sidecars, wrong-condition rejection
+before runner construction, invalid roots/runners/results/authorities, and
+runner exceptions. No live runner, provider, credential, real receipt, test
+generation, protected outcome, or score was used.
+
+The repository-wide gate passes 1,689 tests with five expected skips and 84.45%
+branch coverage. Ruff, formatting, and diff checks pass.
+
+### Interpretation
+
+C4's production runner can now be added as a dependency-injection closure over
+the already-proven Omni preflight/capture path. Direct SQL needs one explicit
+sealed identity type; treating that as a first-class boundary is safer than
+relaxing or lying about the development scope.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Partition scope belongs in the execution authority, not merely in the published
+record. Separate production adapters can share capture mechanics without sharing
+or broadening their authorization types.
+
+### Next step
+
+Build the sealed direct identity/preparer under `ei0.5.5.1`, then implement the
+production C4 probe-runner closure and final adapter-factory builder.
