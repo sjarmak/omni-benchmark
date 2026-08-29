@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T19:07:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T19:11:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -43,24 +43,30 @@ public extension files. The general fix authenticates all three returned view
 identity values before projecting them away; every other semantic difference
 remains exact. That prerequisite evidence remains unchanged.
 
-## No action needed — fixed-forward C4 v7 authorized
+## No action needed — fixed-forward C4 v8 authorized
 
 The exact v6 receipt was consumed, but all three initial child processes stopped
 before provider contact because the launch workspace HEAD did not equal the
 bound system commit. No evaluated answer or correctness exists. V6 and its three
 failure records are immutable; no v6 process remains and it will not be reused.
 
-Standing authorization materialized the fixed-forward v7 receipt under
-`omni-benchmark-ei0.4.13`. It runs from detached worktree
-`/tmp/omni-benchmark-c4-v7` whose HEAD exactly equals system commit
-`aab9eb512aeb021be42b1549a7634708d0c09fb8`. The receipt is mode `0600`, expires
-at `2026-08-30T00:06:21Z`, and has SHA-256
-`c7c49d006f38be8510ef7e70a3288b0e52eb57379056b36b1d7311a728246a0b`.
-At this update it is valid, unconsumed, and no v7 output exists. Schedule
+V7 then stopped at the next pre-provider boundary: parent imports had written
+ignored Python bytecode whose bytes differed under child hash seeds. Its three
+failure records and consumption marker are also immutable; no v7 process
+remains and it will not be reused.
+
+Standing authorization materialized v8 under `omni-benchmark-ei0.4.14`. It runs
+from fresh detached worktree `/tmp/omni-benchmark-c4-v8` at exact system commit
+`aab9eb512aeb021be42b1549a7634708d0c09fb8`, with
+`PYTHONDONTWRITEBYTECODE=1` set from the first Python process and zero
+source-tree bytecode. The receipt is mode `0600`, expires at
+`2026-08-30T00:10:14Z`, and has SHA-256
+`92757ebdbe10538ac3eb028008b838a8349eed0f9dfa3cb5b28673d4f174f2c7`.
+At this update it is valid, unconsumed, and no v8 output exists. Schedule
 SHA-256 is
-`038558ca8eeed9a59d8efb32940749e7243768920475c8955d5830cb1336ad3a`,
+`27dfb0f6e5cc61f3ce4afea8db031aa1da8b9f174e257844846259fc8f3935a7`,
 execution-plan SHA-256 is
-`a3fe6e79b8b66c35d8e644cefd9cd579d08acd56bc254e1765836951c73d5aad`,
+`7c315004fd04dba16c4b002f96c815aba1c2d4d514638d2ba98e2ad1b8d4d302`,
 and deployment SHA-256 is
 `6b65cf8e8d76d748f8438ecb62fcb379f302d0cb8bee68fe8864eba63cdb05c7`.
 The frame remains 154 scheduled / 136 executable / 18 fixed unscorable,

@@ -10196,3 +10196,16 @@ and execution-plan SHA-256
 Standing authorization created the exact v7 receipt under
 `omni-benchmark-ei0.4.13`; its SHA-256 is
 `c7c49d006f38be8510ef7e70a3288b0e52eb57379056b36b1d7311a728246a0b`.
+
+V7 consumed that receipt but all three children exited before provider contact
+because ignored source-tree bytecode differed across Python hash seeds. V7
+produced no evaluated answers or correctness, and its immutable artifacts remain.
+The fixed-forward hypothesis therefore adds no code change: start from another
+fresh exact-commit worktree and set `PYTHONDONTWRITEBYTECODE=1` before its first
+Python process. V8 has zero source-tree bytecode and two stable provider-inert
+plans at schedule SHA-256
+`27dfb0f6e5cc61f3ce4afea8db031aa1da8b9f174e257844846259fc8f3935a7`
+and execution-plan SHA-256
+`7c315004fd04dba16c4b002f96c815aba1c2d4d514638d2ba98e2ad1b8d4d302`.
+Its exact receipt is recorded under `omni-benchmark-ei0.4.14`, SHA-256
+`92757ebdbe10538ac3eb028008b838a8349eed0f9dfa3cb5b28673d4f174f2c7`.

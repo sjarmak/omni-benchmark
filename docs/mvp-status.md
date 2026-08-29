@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-29T19:01:00-04:00 (America/New_York).
+Last reconciled: 2026-08-29T19:11:00-04:00 (America/New_York).
 
 ## Current position
 
@@ -20,20 +20,21 @@ the final candidate is the frozen mechanical baseline. The deviation and its
 reasoning are recorded in [protocol-diff.md](protocol-diff.md). Live-action
 authorization is now tiered by contamination risk (`omni-benchmark-xeg`):
 public semantic deployment and validation passes are agent-autonomous and
-retryable under a new run ID, while evaluated-answer, dev-B, protected-data, and
-shared-model actions still need one exact human authorization each.
+retryable under a new run ID. Standing human authorization now lets agents
+materialize exact action receipts for evaluated, sealed, dev-B, protected-data,
+and shared-model actions without another prompt; every binding remains exact.
 
 The corrected C4 control plane is complete: it schedules all 154 dev-A
 identities, executes 136 answerable identities across 16 databases, and retains
 the 18 fixed scorer-conformance exclusions explicitly through freeze and score
 artifacts. The public deployment prerequisite is complete: v13 verified all 16
 answerable databases in one current evidence set with zero terminal or
-record-write failures. The immediate critical path is one exact human
-authorization for the 136-attempt C4 dispatch, followed by freeze and scoring.
+record-write failures. The immediate critical path is the authorized v8 C4
+dispatch, followed by freeze and scoring.
 
-The exact fixed-frame v6 receipt is authorized under
-`omni-benchmark-ei0.4.12`; the agent is responsible for immediate validation
-and launch. The obsolete v5 package must not be used.
+V6 and v7 each stopped at distinct pre-provider launch-context checks and remain
+immutable with no evaluated answers. The exact fixed-forward v8 receipt is
+authorized under `omni-benchmark-ei0.4.14`; no operator action is needed.
 
 ## Milestone map
 
@@ -43,7 +44,7 @@ and launch. The obsolete v5 package must not be used.
 | Public C1-C3 direct baseline | Complete for the frozen baseline | Immutable generation and dev-A scoring exist. Official accuracy on the 122 scoreable-question intersection is C1 7.4%, C2 23.8%, C3 13.1%. The append-only nine-question cybermarket recovery, `omni-benchmark-dih.5.4.2.4.4.2.2.6`, is still outstanding and must not rewrite the frozen artifacts. |
 | Train-only gold release | Complete | Exactly 154 dev-A records were released through custody; the complete source was removed from the host transfer area. Test gold and dev-B outcomes remain unavailable to development. |
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
-| C4 baseline | Ready for authorization | The 154-scheduled/136-answerable control path and all answerable deployments are ready. Obtain one exact C4 authorization, dispatch 136 attempts, freeze the run, and score it while reporting all 154 scheduled identities and 18 fixed exclusions. |
+| C4 baseline | V8 authorized | V6 and v7 preserved pre-provider failures. V8 uses a fresh exact-commit worktree with bytecode writes disabled; dispatch 136 attempts once, freeze, and score while reporting all 154 scheduled identities and 18 fixed exclusions. |
 | Minimal dev-A experiment set | **Cut from the MVP** | E01 audited as already present in the baseline, inconclusive. E02 compiled, hash-bound, never evaluated. Both are reported as-is with artifacts intact; neither enters the final system. Deviation recorded in `docs/protocol-diff.md`. |
 | Final candidate and Freeze B | Tooling ready; candidate now determined | With the optimization phase cut, the final candidate is the frozen mechanical baseline. Record the freeze and control commit and bind the human-controlled sealed schedule seed. |
 | Sealed C1-C4 evaluation | Tooling ready; not run | The 12-cohort generation, immutable manifests, dual scoring, and aggregate handoff are implemented and tested. They cannot run until Freeze B and the sealed custody gates are satisfied. |
@@ -74,7 +75,7 @@ is needed.
 
 ### Agent-owned work now
 
-- Validate and dispatch the exact C4 v6 receipt once, then freeze and score
+- Validate and dispatch the exact C4 v8 receipt once, then freeze and score
   without adding another development loop.
 - Commit and publish reviewed work through `main` only. Worktree cleanup under
   `omni-benchmark-9v3` is not on the MVP critical path.
