@@ -74,6 +74,14 @@ class FakeClient:
         }
 
 
+class ObserverRetryClient(FakeClient):
+    def observer_retry_telemetry(self) -> dict[str, object]:
+        return {
+            "observer_retry_count": 2,
+            "observer_retry_wait_ms": 3000.0,
+        }
+
+
 class FailedClient(FakeClient):
     def __init__(self, settings: OmniCliSettings) -> None:
         super().__init__(settings)
@@ -609,6 +617,28 @@ def test_probe_persists_live_metrics_and_recovers_truncated_preview_result(
         ).question_count
         == 1
     )
+
+
+def test_probe_persists_observer_retry_telemetry_separately(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    workspace, freeze_a_commit = _workspace(tmp_path)
+
+    status = probe_main(
+        _probe_arguments(workspace, freeze_a_commit),
+        environment=_environment(workspace),
+        client_factory=ObserverRetryClient,
+        sleep=lambda _: None,
+        cli_version_observer=_observe_cli_version,
+    )
+
+    assert status == 0
+    receipt = json.loads(capsys.readouterr().out)
+    record = json.loads((workspace / receipt["generation"]["path"]).read_text())
+    assert record["observer_retry_count"] == 2
+    assert record["observer_retry_wait_ms"] == 3000.0
+    assert record["retry_count"] is None
+    assert "retry_count" in record["telemetry_unavailable"]
 
 
 def test_probe_requires_explicit_execution_acknowledgement(tmp_path: Path) -> None:

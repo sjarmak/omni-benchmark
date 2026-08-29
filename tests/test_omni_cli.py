@@ -43,6 +43,24 @@ class FakeRunner:
         return self.returncode, self.stdout, self.stderr
 
 
+class ScriptedRunner:
+    def __init__(self, responses: list[tuple[int, str, str]]) -> None:
+        self.responses = iter(responses)
+        self.invocations: list[Invocation] = []
+
+    def __call__(
+        self,
+        arguments: Sequence[str],
+        environment: Mapping[str, str],
+        stdin: str | None,
+        timeout_seconds: float,
+    ) -> tuple[int, str, str]:
+        self.invocations.append(
+            Invocation(tuple(arguments), dict(environment), stdin, timeout_seconds)
+        )
+        return next(self.responses)
+
+
 def _token_environment() -> dict[str, str]:
     return {
         "OMNI_API_TOKEN": "super-secret-token",
@@ -108,6 +126,134 @@ def test_token_authentication_never_places_secret_in_arguments_or_settings() -> 
     assert invocation.environment["OMNI_API_TOKEN"] == "super-secret-token"
     assert "super-secret-token" not in repr(settings)
     assert "--token" not in invocation.arguments
+
+
+def test_whoami_retries_http_429_with_bounded_observer_telemetry() -> None:
+    environment = _token_environment()
+    runner = ScriptedRunner(
+        [
+            (1, "", '{"error":"throttled","status":429}'),
+            (1, "", "request failed with status code 429"),
+            (0, json.dumps({"user": {"id": "user-id"}}), ""),
+        ]
+    )
+    waits: list[float] = []
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+        observer_retry_schedule_seconds=(0.25, 0.5),
+        sleep=waits.append,
+    )
+
+    assert client.whoami() == {"user": {"id": "user-id"}}
+    assert len(runner.invocations) == 3
+    assert waits == [0.25, 0.5]
+    assert client.observer_retry_telemetry() == {
+        "observer_retry_count": 2,
+        "observer_retry_wait_ms": 750.0,
+    }
+
+
+def test_job_status_retries_http_429_but_result_fetch_remains_single_shot() -> None:
+    environment = _token_environment()
+    runner = ScriptedRunner(
+        [
+            (1, "", "request failed with status 429"),
+            (0, json.dumps({"state": "COMPLETE"}), ""),
+        ]
+    )
+    waits: list[float] = []
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+        observer_retry_schedule_seconds=(1.0,),
+        sleep=waits.append,
+    )
+
+    assert client.job_status("job-id") == {"state": "COMPLETE"}
+    assert waits == [1.0]
+    assert client.observer_retry_telemetry() == {
+        "observer_retry_count": 1,
+        "observer_retry_wait_ms": 1000.0,
+    }
+
+
+def test_observer_http_429_exhaustion_fails_closed_at_exact_bound() -> None:
+    environment = _token_environment()
+    runner = ScriptedRunner([(1, "", "HTTP 429") for _ in range(3)])
+    waits: list[float] = []
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+        observer_retry_schedule_seconds=(0.25, 0.5),
+        sleep=waits.append,
+    )
+
+    with pytest.raises(OmniCliError, match="429.*exhausted after 2 retries and 750 ms"):
+        client.whoami()
+
+    assert len(runner.invocations) == 3
+    assert waits == [0.25, 0.5]
+    assert client.observer_retry_telemetry() == {
+        "observer_retry_count": 2,
+        "observer_retry_wait_ms": 750.0,
+    }
+
+
+def test_non_429_observer_failure_is_not_retried() -> None:
+    environment = _token_environment()
+    runner = FakeRunner(returncode=1, stderr="request failed with HTTP 503")
+    waits: list[float] = []
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+        observer_retry_schedule_seconds=(0.25, 0.5),
+        sleep=waits.append,
+    )
+
+    with pytest.raises(OmniCliError, match="503"):
+        client.job_status("job-id")
+
+    assert len(runner.invocations) == 1
+    assert waits == []
+    assert client.observer_retry_telemetry() == {
+        "observer_retry_count": 0,
+        "observer_retry_wait_ms": 0.0,
+    }
+
+
+@pytest.mark.parametrize(
+    "operation",
+    [
+        lambda client: client.list_models(),
+        lambda client: client.read_semantic_model(),
+        lambda client: client.submit_job("Public benchmark question"),
+        lambda client: client.job_result("job-id"),
+        lambda client: client.plan_query({"fields": ["answers.value"]}),
+        lambda client: client.run_query_json({"fields": ["answers.value"]}),
+    ],
+)
+def test_operations_outside_observer_allowlist_remain_single_shot(operation) -> None:
+    environment = _token_environment()
+    runner = FakeRunner(returncode=1, stderr="request failed with HTTP 429")
+    waits: list[float] = []
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+        observer_retry_schedule_seconds=(0.25, 0.5),
+        sleep=waits.append,
+    )
+
+    with pytest.raises(OmniCliError, match="429"):
+        operation(client)
+
+    assert len(runner.invocations) == 1
+    assert waits == []
 
 
 def test_profile_is_passed_without_mutating_global_cli_configuration() -> None:

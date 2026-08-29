@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import subprocess
+import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any
@@ -41,6 +43,16 @@ PROFILE_CHILD_ENVIRONMENT_KEYS = frozenset(
 )
 MAX_RESPONSE_BYTES = 64 * 1024 * 1024
 JOB_ID_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:@/+~-]{0,199}")
+HTTP_429_PATTERN = re.compile(
+    r"(?:\bHTTP(?:/[0-9.]+)?\s*[:=-]?\s*429\b|"
+    r"\bstatus(?:\s+code|Code)?\b[\"']?\s*[:=-]?\s*429\b)",
+    re.IGNORECASE,
+)
+DEFAULT_OBSERVER_RETRY_SCHEDULE_SECONDS = (1.0, 2.0, 4.0)
+
+
+class _OmniHttp429Error(OmniCliError):
+    """Internal signal for a retryable idempotent observation throttle."""
 
 
 @dataclass(frozen=True)
@@ -102,15 +114,42 @@ class OmniCliClient:
         *,
         runner: CommandRunner | None = None,
         environment: Mapping[str, str] | None = None,
+        observer_retry_schedule_seconds: tuple[float, ...] = (
+            DEFAULT_OBSERVER_RETRY_SCHEDULE_SECONDS
+        ),
+        sleep: Callable[[float], None] = time.sleep,
     ) -> None:
+        if not observer_retry_schedule_seconds or any(
+            isinstance(delay, bool)
+            or not isinstance(delay, (int, float))
+            or not math.isfinite(delay)
+            or delay <= 0
+            for delay in observer_retry_schedule_seconds
+        ):
+            raise OmniCliError(
+                "observer retry schedule must contain positive finite delays"
+            )
         self._settings = settings
         self._runner = _subprocess_runner if runner is None else runner
         self._environment = dict(os.environ if environment is None else environment)
         self._content_policy = ContentPolicy.from_environment(self._environment)
+        self._observer_retry_schedule = tuple(
+            float(delay) for delay in observer_retry_schedule_seconds
+        )
+        self._sleep = sleep
+        self._observer_retry_count = 0
+        self._observer_retry_wait_ms = 0.0
 
     def whoami(self) -> dict[str, Any]:
         """Verify authentication and return the unmodified identity response."""
-        return self._run_json(("whoami", "whoami"))
+        return self._run_observer_json(("whoami", "whoami"))
+
+    def observer_retry_telemetry(self) -> dict[str, int | float]:
+        """Return observer-only retry totals without evaluated-system telemetry."""
+        return {
+            "observer_retry_count": self._observer_retry_count,
+            "observer_retry_wait_ms": self._observer_retry_wait_ms,
+        }
 
     def list_models(self) -> dict[str, Any]:
         """List shared models available to the authenticated identity."""
@@ -150,7 +189,7 @@ class OmniCliClient:
 
     def job_status(self, job_id: str) -> dict[str, Any]:
         """Read one asynchronous job's current state."""
-        return self._run_json(("ai", "job-status", _required_job_id(job_id)))
+        return self._run_observer_json(("ai", "job-status", _required_job_id(job_id)))
 
     def job_result(self, job_id: str) -> dict[str, Any]:
         """Read all actions and results for one completed job."""
@@ -201,6 +240,23 @@ class OmniCliClient:
             raise OmniCliError("Omni CLI JSON response must be an object")
         return value
 
+    def _run_observer_json(self, command: Sequence[str]) -> dict[str, Any]:
+        for delay in self._observer_retry_schedule:
+            try:
+                return self._run_json(command)
+            except _OmniHttp429Error:
+                self._sleep(delay)
+                self._observer_retry_count += 1
+                self._observer_retry_wait_ms += delay * 1000
+        try:
+            return self._run_json(command)
+        except _OmniHttp429Error as error:
+            wait_ms = f"{self._observer_retry_wait_ms:g}"
+            raise OmniCliError(
+                f"{error}; idempotent observer retries exhausted after "
+                f"{self._observer_retry_count} retries and {wait_ms} ms"
+            ) from error
+
     def _run_json_value(
         self, command: Sequence[str], *, stdin: str | None = None
     ) -> Any:
@@ -245,8 +301,14 @@ class OmniCliClient:
         except OSError as error:
             raise OmniCliError("Omni CLI request could not start") from error
         if returncode != 0:
-            detail = self._content_policy.safe_detail(stderr.strip() or stdout.strip())
-            raise OmniCliError(f"Omni CLI request failed: {detail}")
+            raw_detail = stderr.strip() or stdout.strip()
+            detail = self._content_policy.safe_detail(raw_detail)
+            error_type = (
+                _OmniHttp429Error
+                if HTTP_429_PATTERN.search(raw_detail) is not None
+                else OmniCliError
+            )
+            raise error_type(f"Omni CLI request failed: {detail}")
         if len(stdout.encode()) > MAX_RESPONSE_BYTES:
             raise OmniCliError("Omni CLI response exceeds the capture limit")
         return stdout

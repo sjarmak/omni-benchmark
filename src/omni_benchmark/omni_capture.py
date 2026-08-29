@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import math
 import time
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
@@ -87,6 +88,8 @@ class OmniProbeResult:
     started_at: str
     finished_at: str
     latency_ms: float
+    observer_retry_count: int = 0
+    observer_retry_wait_ms: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -239,6 +242,9 @@ class OmniJobCapture:
         return _CaptureOutcome(job_id, state, failure_class, None, None)
 
     def _finalize(self, outcome: _CaptureOutcome) -> OmniProbeResult:
+        observer_retry_count, observer_retry_wait_ms = _observer_retry_telemetry(
+            self._client
+        )
         self._backfill_observable_trace_counts()
         trace = self._store.write_jsonl("attempt.trace.jsonl", self._events)
         response_shape = self._store.write_json(
@@ -279,6 +285,8 @@ class OmniJobCapture:
             started_at=self._started_at,
             finished_at=_timestamp_after(self._started_at, latency_ms),
             latency_ms=latency_ms,
+            observer_retry_count=observer_retry_count,
+            observer_retry_wait_ms=observer_retry_wait_ms,
         )
 
     def _poll(self, job_id: str) -> str:
@@ -812,6 +820,32 @@ def _json_shape(
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def _observer_retry_telemetry(client: OmniJobClient) -> tuple[int, float]:
+    observer = getattr(client, "observer_retry_telemetry", None)
+    if observer is None:
+        return 0, 0.0
+    if not callable(observer):
+        raise OmniCaptureError("Omni observer retry telemetry is invalid")
+    value = observer()
+    expected = {"observer_retry_count", "observer_retry_wait_ms"}
+    if not isinstance(value, Mapping) or set(value) != expected:
+        raise OmniCaptureError("Omni observer retry telemetry is invalid")
+    count = value["observer_retry_count"]
+    wait_ms = value["observer_retry_wait_ms"]
+    if type(count) is not int or count < 0:
+        raise OmniCaptureError("Omni observer retry count is invalid")
+    if (
+        isinstance(wait_ms, bool)
+        or not isinstance(wait_ms, (int, float))
+        or not math.isfinite(wait_ms)
+        or wait_ms < 0
+    ):
+        raise OmniCaptureError("Omni observer retry wait is invalid")
+    if (count == 0) != (wait_ms == 0):
+        raise OmniCaptureError("Omni observer retry telemetry is inconsistent")
+    return count, float(wait_ms)
 
 
 def _timestamp_after(started_at: str, elapsed_ms: float) -> str:

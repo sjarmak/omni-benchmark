@@ -70,6 +70,14 @@ class FakeOmniClient:
         }
 
 
+class ObserverRetryClient(FakeOmniClient):
+    def observer_retry_telemetry(self) -> dict[str, object]:
+        return {
+            "observer_retry_count": 2,
+            "observer_retry_wait_ms": 3000.0,
+        }
+
+
 class TruncatedMetricsClient(FakeOmniClient):
     def job_result(self, job_id: str) -> dict[str, object]:
         response = super().job_result(job_id)
@@ -215,6 +223,25 @@ def test_capture_preserves_shape_and_trace_without_result_values(
     assert "authorization" not in shape_text
     assert "provider-secret" not in shape_text
     assert "private-result-id" not in shape_text
+
+
+def test_capture_keeps_observer_retries_separate_from_model_retry_telemetry(
+    tmp_path: Path,
+) -> None:
+    capture = OmniJobCapture(
+        ObserverRetryClient([{"state": "COMPLETE"}]),
+        _store(tmp_path),
+        clock=iter(index / 10 for index in range(12)).__next__,
+        sleep=lambda _: None,
+        utc_now=lambda: "2026-08-27T12:00:00Z",
+    )
+
+    result = capture.probe("Public benchmark question")
+
+    assert result.observer_retry_count == 2
+    assert result.observer_retry_wait_ms == 3000.0
+    trace = [json.loads(line) for line in result.trace.path.read_text().splitlines()]
+    assert all(event["retry_delta"] is None for event in trace)
 
 
 def test_capture_recovers_full_result_and_metrics_from_truncated_preview(

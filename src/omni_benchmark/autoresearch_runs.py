@@ -30,6 +30,7 @@ from .autoresearch_artifacts import (
     _number,
     _resolve_raw_run_path,
     _validate_diagnostic_trace,
+    _validate_observer_retry_telemetry,
     _validate_safe_record_content,
     _validate_timestamp,
     _verify_result_artifact,
@@ -79,6 +80,8 @@ ALLOWED_RUN_FIELDS = REQUIRED_RUN_FIELDS | {
     "generated_query",
     "generated_sql",
     "model_turn_provenance",
+    "observer_retry_count",
+    "observer_retry_wait_ms",
     "prior_experiment_ids",
     "prior_experiments",
     "public_hkb_nodes",
@@ -230,6 +233,7 @@ def _validate_telemetry(record: Mapping[str, Any]) -> None:
         "validation_attempt_count",
     ):
         _count(record[field], field)
+    _validate_observer_retry_telemetry(record)
     failure_class = record["terminal_failure_class"]
     if failure_class is not None and (
         not isinstance(failure_class, str) or not failure_class

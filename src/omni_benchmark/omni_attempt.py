@@ -134,6 +134,8 @@ def _telemetry_fields(spec: C4AttemptSpec, probe: OmniProbeResult) -> dict[str, 
         "cost_unavailable_reason": spec.cost_unavailable_reason,
         "cost_usd": None,
         "database_query_count": probe.database_query_count,
+        "observer_retry_count": probe.observer_retry_count,
+        "observer_retry_wait_ms": probe.observer_retry_wait_ms,
         "retry_count": None,
         "telemetry_unavailable": sorted(unavailable),
         "token_source": (

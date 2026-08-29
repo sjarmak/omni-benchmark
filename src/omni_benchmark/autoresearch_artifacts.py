@@ -83,6 +83,21 @@ def _count(value: Any, name: str, *, nullable: bool = True) -> int | None:
     return value
 
 
+def _validate_observer_retry_telemetry(record: Mapping[str, Any]) -> None:
+    fields = {"observer_retry_count", "observer_retry_wait_ms"}
+    present = fields & record.keys()
+    if present and present != fields:
+        raise AutoresearchError("observer retry telemetry must be complete")
+    if not present:
+        return
+    count = _count(
+        record["observer_retry_count"], "observer_retry_count", nullable=False
+    )
+    wait_ms = _number(record["observer_retry_wait_ms"], "observer_retry_wait_ms")
+    if (count == 0) != (wait_ms == 0):
+        raise AutoresearchError("observer retry telemetry is inconsistent")
+
+
 def _validate_timestamp(value: Any, field: str) -> datetime:
     if not isinstance(value, str) or not value:
         raise AutoresearchError(f"{field} must be an ISO-8601 timestamp")
