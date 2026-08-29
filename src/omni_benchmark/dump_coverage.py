@@ -1,14 +1,25 @@
-"""Resolve per-table dump files for a restore.
+"""Audit which dump files the official LiveSQLBench loader actually loads.
 
-Kept separate from the database client so the same resolution can be audited
-offline, without a live PostgreSQL connection.
+The pinned upstream script ``init-databases_postgresql_large_v1.sh`` builds each
+reference database with::
 
-Dump filenames are selectors only; each file carries its own authoritative
-``CREATE TABLE`` identifier. Upstream LiveSQLBench dumps spell some filenames in
-the table's declared case and others in lower case, so resolution is
-case-insensitive. It is deliberately not case-blind about omissions: a table
-declared absent from a dump must have no file under any capitalization, because
-treating a case variant as absence silently drops real data.
+    local sql_file="${db_folder}/${table}.sql"
+    if [[ -f "$sql_file" ]]; then psql ... -f "${sql_file}"
+    else echo "Warning: SQL file ${sql_file} not found for table ${table}"
+
+The lookup is exact, and the archive spells some filenames in the table's
+declared case and others in lower case. On the pinned Linux image the mismatched
+names do not resolve, so the official reference database is built without those
+tables and the questions that reference them cannot be answered there.
+
+This module reproduces that resolution rather than repairing it. Loading a
+lowercase file for a table the official loader skips would build a database that
+holds more than the scorer's, so results on those questions would stop being
+comparable to published LiveSQLBench numbers.
+
+What is worth checking is fidelity: every table the official loader skips must be
+recorded in the inventory's ``scorer_omitted_tables``, and nothing else may be.
+That invariant is what :func:`describe_dump_coverage` reports.
 """
 
 from __future__ import annotations
@@ -17,65 +28,72 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-class DumpCoverageError(RuntimeError):
-    """Raised when a dump directory cannot be resolved unambiguously."""
-
-
 @dataclass(frozen=True)
 class TableDump:
-    """One restore-order table and the dump file it resolved to, if any."""
+    """One restore-order table and how the official loader resolves it."""
 
     table: str
     path: Path | None
-    case_mismatch: bool
+    case_variant: Path | None
+
+    @property
+    def is_loaded(self) -> bool:
+        return self.path is not None
+
+    @property
+    def skipped_over_a_case_variant(self) -> bool:
+        """The official loader skips this table though the data is in the archive."""
+        return self.path is None and self.case_variant is not None
 
 
 @dataclass(frozen=True)
 class DumpCoverage:
-    """What a dump directory offers for one database's restore order."""
+    """How one database's restore order resolves against its dump directory."""
 
     database: str
     tables: tuple[TableDump, ...]
-    omitted: tuple[TableDump, ...]
+    declared_omitted: frozenset[str]
 
     @property
-    def load_paths(self) -> tuple[Path, ...]:
-        return tuple(entry.path for entry in self.tables if entry.path is not None)
+    def loaded(self) -> tuple[TableDump, ...]:
+        return tuple(entry for entry in self.tables if entry.is_loaded)
 
     @property
-    def missing(self) -> tuple[str, ...]:
-        return tuple(entry.table for entry in self.tables if entry.path is None)
+    def skipped(self) -> tuple[TableDump, ...]:
+        """Tables the official loader passes over, for any reason."""
+        return tuple(entry for entry in self.tables if not entry.is_loaded)
 
     @property
-    def case_mismatched(self) -> tuple[TableDump, ...]:
-        return tuple(entry for entry in self.tables if entry.case_mismatch)
+    def undeclared_skips(self) -> tuple[str, ...]:
+        """Skipped upstream but absent from ``scorer_omitted_tables``."""
+        return tuple(
+            entry.table
+            for entry in self.skipped
+            if entry.table not in self.declared_omitted
+        )
 
     @property
-    def contradicted_omissions(self) -> tuple[TableDump, ...]:
-        return tuple(entry for entry in self.omitted if entry.path is not None)
+    def overdeclared_omissions(self) -> tuple[str, ...]:
+        """Declared omitted though the official loader does load them."""
+        return tuple(
+            entry.table for entry in self.loaded if entry.table in self.declared_omitted
+        )
 
     @property
-    def is_complete(self) -> bool:
-        return not self.missing and not self.contradicted_omissions
+    def reproduces_official_loader(self) -> bool:
+        return not self.undeclared_skips and not self.overdeclared_omissions
 
 
-def index_dump_files(dump_root: Path) -> dict[str, Path]:
-    """Map each casefolded dump stem to its file.
+def index_case_variants(dump_root: Path) -> dict[str, tuple[Path, ...]]:
+    """Group dump files by casefolded stem.
 
-    Raises when two files differ only in capitalization, since no resolution of
-    such a pair can be justified from the filename alone.
+    Used only to explain a skip. Resolution itself never consults this, because
+    the official loader does not.
     """
-    index: dict[str, Path] = {}
+    variants: dict[str, list[Path]] = {}
     for path in sorted(dump_root.glob("*.sql")):
-        key = path.stem.casefold()
-        collision = index.get(key)
-        if collision is not None:
-            raise DumpCoverageError(
-                "dump directory has case-colliding files: "
-                f"{collision.name} and {path.name}"
-            )
-        index[key] = path
-    return index
+        variants.setdefault(path.stem.casefold(), []).append(path)
+    return {key: tuple(value) for key, value in variants.items()}
 
 
 def describe_dump_coverage(
@@ -85,21 +103,30 @@ def describe_dump_coverage(
     restore_order: tuple[str, ...],
     omitted_tables: tuple[str, ...] = (),
 ) -> DumpCoverage:
-    """Report how a restore order resolves against a dump directory.
+    """Report how the official loader resolves one database's restore order.
 
-    Reports rather than raises, so an audit can describe every database before
-    any of them is restored.
+    Reports rather than raises, so an audit can describe every database in one
+    pass.
     """
-    index = index_dump_files(dump_root)
-    omitted = set(omitted_tables)
-    loaded: list[TableDump] = []
-    skipped: list[TableDump] = []
+    variants = index_case_variants(dump_root)
+    entries: list[TableDump] = []
     for table in restore_order:
-        path = index.get(table.casefold())
-        entry = TableDump(
-            table=table,
-            path=path,
-            case_mismatch=path is not None and path.stem != table,
+        exact = dump_root / f"{table}.sql"
+        if exact.is_file():
+            entries.append(TableDump(table=table, path=exact, case_variant=None))
+            continue
+        others = tuple(
+            path for path in variants.get(table.casefold(), ()) if path != exact
         )
-        (skipped if table in omitted else loaded).append(entry)
-    return DumpCoverage(database=database, tables=tuple(loaded), omitted=tuple(skipped))
+        entries.append(
+            TableDump(
+                table=table,
+                path=None,
+                case_variant=others[0] if others else None,
+            )
+        )
+    return DumpCoverage(
+        database=database,
+        tables=tuple(entries),
+        declared_omitted=frozenset(omitted_tables),
+    )

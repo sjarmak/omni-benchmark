@@ -5,11 +5,6 @@ import re
 import subprocess
 from pathlib import Path
 
-from omni_benchmark.dump_coverage import (
-    DumpCoverageError,
-    describe_dump_coverage,
-)
-
 
 IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 PSQL_ENVIRONMENT_KEYS = frozenset(
@@ -158,37 +153,27 @@ def restore_database(
     omitted = set(omitted_tables)
     if len(omitted) != len(omitted_tables) or not omitted.issubset(restore_order):
         raise DatabaseOperationError("invalid explicitly omitted dump tables")
-    for table in (*restore_order, *omitted_tables):
+    for table in omitted_tables:
         validate_identifier(table)
-    try:
-        coverage = describe_dump_coverage(
-            database=database,
-            dump_root=dump_root,
-            restore_order=restore_order,
-            omitted_tables=omitted_tables,
-        )
-    except DumpCoverageError as error:
-        raise DatabaseOperationError(str(error)) from error
-    contradicted = coverage.contradicted_omissions
-    if contradicted:
-        raise DatabaseOperationError(
-            "explicitly omitted dump file exists: "
-            + ", ".join(
-                f"{entry.table} -> {entry.path.name}"
-                for entry in contradicted
-                if entry.path is not None
+    dump_files: list[Path] = []
+    for table in restore_order:
+        validate_identifier(table)
+        candidate = dump_root / f"{table}.sql"
+        if table in omitted:
+            if candidate.exists() or candidate.is_symlink():
+                raise DatabaseOperationError(
+                    f"explicitly omitted dump file exists: {candidate.name}"
+                )
+            continue
+        if candidate.is_symlink():
+            raise DatabaseOperationError(
+                f"dump file must not be a symlink: {candidate.name}"
             )
-        )
-    if coverage.missing:
+        dump_files.append(candidate)
+    missing = tuple(path.name for path in dump_files if not path.is_file())
+    if missing:
         raise DatabaseOperationError(
-            "missing ordered dump file(s): "
-            + ", ".join(f"{table}.sql" for table in coverage.missing)
-        )
-    dump_files = list(coverage.load_paths)
-    symlinked = tuple(path.name for path in dump_files if path.is_symlink())
-    if symlinked:
-        raise DatabaseOperationError(
-            "dump file must not be a symlink: " + ", ".join(symlinked)
+            "missing ordered dump file(s): " + ", ".join(missing)
         )
     database_literal = _quote_literal(database)
     client.run(

@@ -498,11 +498,35 @@ def test_fingerprint_compare_requires_same_postgres_version(tmp_path: Path) -> N
     assert compare_fingerprints(left, right) == 1
 
 
-def test_restore_rejects_omission_contradicted_by_a_case_variant_dump(
+def test_restore_skips_a_declared_omission_whose_only_file_differs_in_case(
     tmp_path: Path,
 ) -> None:
-    """Regression for omni-benchmark-39b, which dropped 71 tables this way."""
+    """The official loader resolves ``<table>.sql`` exactly and skips on a miss.
+
+    ``mental_healths_large`` ships ``facilities.sql`` for a table its restore order
+    spells ``Facilities``, so upstream builds its reference database without it.
+    Loading the lowercase file here would put 34 tables in this database that the
+    scorer's does not have. See docs/research-log.md D-072.
+    """
     (tmp_path / "facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
+    client = RecordingClient()
+
+    restore_database(
+        client,
+        database="fixture_db",
+        dump_directory=tmp_path,
+        restore_order=("Facilities",),
+        omitted_tables=("Facilities",),
+    )
+
+    assert not any(str(call).endswith("facilities.sql") for call in client.calls)
+
+
+def test_restore_rejects_an_omission_whose_exact_file_is_present(
+    tmp_path: Path,
+) -> None:
+    """A declared omission must describe a real upstream skip, not hide a file."""
+    (tmp_path / "Facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
     client = RecordingClient()
 
     with pytest.raises(DatabaseOperationError, match="omitted dump file exists"):
@@ -512,36 +536,5 @@ def test_restore_rejects_omission_contradicted_by_a_case_variant_dump(
             dump_directory=tmp_path,
             restore_order=("Facilities",),
             omitted_tables=("Facilities",),
-        )
-    assert client.calls == []
-
-
-def test_restore_loads_a_dump_file_differing_only_in_capitalization(
-    tmp_path: Path,
-) -> None:
-    (tmp_path / "facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
-    client = RecordingClient()
-
-    restore_database(
-        client,
-        database="fixture_db",
-        dump_directory=tmp_path,
-        restore_order=("Facilities",),
-    )
-
-    assert client.calls[-1][1].endswith("facilities.sql")
-
-
-def test_restore_rejects_case_colliding_dump_files(tmp_path: Path) -> None:
-    (tmp_path / "Facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
-    (tmp_path / "facilities.sql").write_text("SELECT 2;\n", encoding="utf-8")
-    client = RecordingClient()
-
-    with pytest.raises(DatabaseOperationError, match="case-colliding"):
-        restore_database(
-            client,
-            database="fixture_db",
-            dump_directory=tmp_path,
-            restore_order=("Facilities",),
         )
     assert client.calls == []
