@@ -309,6 +309,34 @@ duplicate response comments, and symlinked consumption roots fail closed. The
 receipt is not a gold/scoring authorization and must be consumed before any live
 adapter is constructed.
 
+### No-score dispatcher
+
+`omni_benchmark.sealed_dispatch` separates production generation into a
+read-only preflight and a single authority-consuming execution step. Preflight
+validates the exact Freeze-B plan, public question hashes, canonical dispatch
+policy, and loaded runtime-source bytes at frozen system commit `S`; reconciles
+every immutable attempt envelope; and authenticates the human receipt. It does
+not create the output root or construct an adapter.
+
+Execution first proves staged state has not changed since preflight and that the
+complete pending per-condition reservation fits the approved cost ceiling. It
+then consumes the receipt exactly once and constructs one adapter per condition.
+Each adapter must expose the complete matching `FreezeBCondition` identity before
+any attempt is called. A bounded worker pool enforces at most one in-flight
+attempt per database and stops admitting work at the approved wall deadline.
+Completed evaluated-system outcomes are staged atomically; infrastructure
+exceptions are not staged and a resume requires a fresh receipt. Once all 1,212
+attempts reconcile, the dispatcher emits the twelve condition × repetition
+cohorts through the offline finalizer. No correctness or score enters this API.
+
+The dispatch policy includes maximum concurrency, maximum wall seconds, an exact
+total cost ceiling, positive per-condition reservations, and software/CLI
+versions used by final manifests. Its canonical SHA-256 is receipt-bound. The
+runtime-source digest is an ordered manifest of committed source paths and their
+Git-blob digests; any loaded/committed byte mismatch fails before approval
+consumption. The final source list must be expanded to the concrete direct and
+Omni adapter dependencies before recording Freeze B.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

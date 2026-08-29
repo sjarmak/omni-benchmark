@@ -5159,6 +5159,9 @@ responses, private/canonical/unique JSON, exclusive consumption, replay, and
 symlink/path escape. No real receipt, human decision, consumption marker, live
 call, test output, gold, or score was created.
 
+The repository-wide gate passes 1,670 tests with five expected skips and 84.42%
+branch coverage. Ruff, formatting, and diff checks pass.
+
 ### Interpretation
 
 The final dispatcher can now have a narrower authority surface than either the
@@ -5180,3 +5183,79 @@ expanding concurrency, wall time, or cost.
 Build the synthetic-tested no-score orchestrator and condition adapters. Require
 all runtime-source and plan preflight checks before consuming the receipt, and
 consume it before constructing any live transport.
+
+## 2026-08-29 — D-098: Gate sealed dispatch before adapter construction
+
+### Decision / experiment
+
+Implement the no-score dispatcher core against synthetic adapters before adding
+any live condition transport. Change type: general evaluation integrity. Bead:
+`omni-benchmark-ei0.5.5`.
+
+### Hypothesis
+
+If read-only preflight reconciles all planned state and validates the exact
+runtime/plan/policy receipt before a single-use consumption transition, then no
+receipt failure can create run state or contact an evaluated system. If the
+executor reserves the complete pending cost and schedules at most one attempt
+per database, bounded concurrency and restart safety can be proven independently
+of provider behavior.
+
+### Intervention
+
+Added an immutable dispatch policy covering concurrency, wall clock, exact cost
+ceiling, per-condition reservations, and software/CLI versions. Its canonical
+hash is part of the human receipt. Runtime-source verification compares every
+declared loaded source byte with the corresponding Git object at frozen system
+commit `S` and hashes the ordered source manifest.
+
+The read-only preflight re-prepares all 1,212 attempts from the frozen plan and
+public questions, reconciles immutable staged envelopes, authenticates the exact
+receipt, and returns a process-local capability. Execution rechecks that state,
+admits the complete pending reservation before writing, consumes the receipt,
+and only then constructs four adapters whose full condition identity must equal
+Freeze B. A bounded worker pool allows at most one in-flight attempt per
+database. Successful outputs stage before completion; infrastructure exceptions
+remain unstaged and require a fresh receipt to resume. A complete run finalizes
+all twelve cohorts. The module has no score or correctness interface.
+
+### Result
+
+Eight dispatcher tests pass. The synthetic end-to-end case executes all 1,212
+C1-C4 attempts through fake adapters and emits twelve 101-record cohort/manifests.
+Additional cases cover receipt/runtime substitution before writes, insufficient
+cost admission before consumption, adapter-identity mismatch before calls,
+wall-clock stop, receipt replay, infrastructure interruption plus fresh-receipt
+resume, database isolation, concurrency bounds, and loaded-source substitution.
+
+The dispatcher plus adjacent sealed-boundary suite passes 104 tests with 84.08%
+dispatcher branch coverage. Ruff, formatting, and diff checks pass. No real
+receipt was created or consumed, no provider was contacted, and no real test
+generation, protected outcome, or score was accessed.
+
+The repository-wide gate passes 1,678 tests with five expected skips and 84.42%
+branch coverage.
+
+### Interpretation
+
+The orchestration state machine is now testable without importing a live
+transport into its authority boundary. The remaining production work is to map
+the already-frozen direct and Omni capture contracts into adapters, add a CLI
+that defaults to read-only validation, and expand the runtime-source set to those
+adapter dependencies before Freeze B.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+An evaluation runner should treat authorization as a capability transition, not
+as a boolean flag. Separating reconciliation from consumption makes both dry
+validation and incident resume mechanically safe.
+
+### Next step
+
+Build synthetic-tested C1-C3 direct and C4 Omni adapters without weakening the
+existing train/dev scope loaders. Then add the production CLI with a dry default,
+an explicit execute acknowledgement, and the final exact runtime-source set.
