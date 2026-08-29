@@ -7003,3 +7003,38 @@ bundles, the next live oracle must validate all 16 answerable deployments rather
 than only planets and polar; the two fixed official-loader blockers remain
 explicit. No live client, C4, E02, question, score, correctness, protected data,
 credential, OAuth, or lease action occurred.
+
+## D-130: Freeze the all-answerable v9 product-validation request
+
+### Hypothesis
+
+Because the D-129 structured-source representation changes authenticated
+semantic bytes across every database, validating only the two prior failures
+would leave fourteen answerable deployments bound to stale model content. One
+successor pass over the complete fixed 16-database answerable set is the
+smallest product oracle that can re-establish the C4 baseline prerequisite
+without attempting to repair or fabricate the two official-loader blockers.
+
+### Offline result
+
+The exact provider-inert request is committed as
+`experiments/public-baseline-v9-deployment-request.json` at
+`04cf67a6b5140bcdc59f678f5d88d2e15e7fa0c1`, request SHA-256
+`d519acde72f8386a814981cfa06994bc5e0b5e07b5a5e2f1be645d97978b88cc`.
+It loads source commit `f1923ceac636481220c019ce9e8399c28c839f7a`
+and binds 16 databases / 228 files / selected bundle-set SHA-256
+`68fe84c5bc724bf345cfebf8b74bff2e70e8d64f52a5172bf84a8cac4941e6b5`;
+the full 18-bundle set remains
+`8a5c9aae0d29c2ef7b7c768767aeaedc41f4f18f0f090035dc142478d5dfae66`.
+Mechanical verification reproduced every manifest and semantic deployment
+digest and proved the append-only v9 destination absent. No product client or
+credential surface was constructed or accessed.
+
+### Outcome
+
+WAITING on exact human A/B decision `omni-benchmark-dih.17.12`. A permits one
+append-only deployment, validation, and exact-readback pass with every terminal
+record preserved; B permits no claim or product contact. Neither choice grants
+C4, E02, question, scoring/correctness, protected-data, credential/OAuth/lease,
+shared/main model, or retry authority. The earlier standalone A predated this
+request and was not consumed.

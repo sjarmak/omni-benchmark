@@ -4,14 +4,41 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T15:31:00-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T15:19:00-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
-Nothing. `bd human list` is empty. Do not launch C4, E02, another deployment,
-or a live validator diagnostic without a new exact request. A standalone A or B
-when no request is open does not authorize an action.
+### Exact 16-answerable v9 validation pass — `omni-benchmark-dih.17.12`
+
+Reply **A** or **B** in this chat; do not run a command or send a profile,
+credential, callback URL, token, config file, or lease path.
+
+- **A** authorizes exactly one append-only deployment, product validation, and
+  exact-readback pass for the 16 answerable corrected public-baseline bundles.
+- **B** holds the request and permits no product contact or run claim.
+
+The pushed request is
+`experiments/public-baseline-v9-deployment-request.json` at exact request commit
+`04cf67a6b5140bcdc59f678f5d88d2e15e7fa0c1`, request SHA-256
+`d519acde72f8386a814981cfa06994bc5e0b5e07b5a5e2f1be645d97978b88cc`.
+It binds source commit `f1923ceac636481220c019ce9e8399c28c839f7a`,
+16 databases / 228 files, selected bundle-set SHA-256
+`68fe84c5bc724bf345cfebf8b74bff2e70e8d64f52a5172bf84a8cac4941e6b5`,
+full-18 bundle-set SHA-256
+`8a5c9aae0d29c2ef7b7c768767aeaedc41f4f18f0f090035dc142478d5dfae66`,
+run `public-baseline-v9-20260829`, absent output root
+`experiments/deployments/public-baseline-v9`, four workers, and 1.25-second
+global pacing. `mental_healths_large` and `organ_transplant_large` remain the
+two fixed official-loader blockers and are explicitly excluded.
+
+Provider-inert verification reproduced every record and digest from the exact
+source commit and proved the output absent. A authorizes no C4 or E02 question
+dispatch, benchmark question access, scoring/correctness, gold/hidden/dev-B/test
+access, credential/OAuth/lease operation, shared/main model mutation, retry, or
+deployment outside the exact 16-database set. Every terminal result will be
+preserved. Your earlier standalone A arrived before this request existed and
+was not consumed.
 
 ## Most recent authorized action completed
 
