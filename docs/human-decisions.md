@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T14:17:00-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T15:31:00-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -25,9 +25,10 @@ writes had zero failures. Its claim plus seven records have aggregate SHA-256
 
 Combining immutable v7 records with their v8 successors leaves 14 of 18 total
 deployments verified, or 14 of the 16 answerable databases under the fixed
-154-scheduled / 136-answerable frame. Sports is resolved. Planets and polar are
-the only answerable deployment blockers, and work on both is offline and
-general rather than database- or question-specific.
+154-scheduled / 136-answerable frame. Sports is resolved. General corrections
+for the prior planets and polar blockers are fully gated offline at exact source
+commit `aa1b82f39be705f1916823598fe65f7c47c8c57b` (1,891 passed, five expected
+skips, 83.58% branch coverage). A fresh exact validation request is not yet open.
 
 The completed authorization covered no retry, C4, E02, question dispatch,
 scoring/correctness, protected labels, credentials/OAuth/leases, shared/main

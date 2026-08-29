@@ -6994,9 +6994,12 @@ token.
 
 ### Outcome
 
-KEEP OFFLINE pending exact-commit repository gates and a fresh product
-validation authorization. Because the structured rule is general and changes
-authenticated bytes across all 18 bundles, the next live oracle must validate
-all 16 answerable deployments rather than only planets and polar; the two fixed
-official-loader blockers remain explicit. No live client, C4, E02, question,
-score, correctness, protected data, credential, OAuth, or lease action occurred.
+KEEP OFFLINE pending a fresh product validation authorization. Exact source
+commit `aa1b82f39be705f1916823598fe65f7c47c8c57b` passes 1,891 tests with five
+expected environment-dependent skips and 83.58% branch coverage; the 118-test
+compiler/candidate gate, Ruff, formatting, and diff checks also pass. Because
+the structured rule is general and changes authenticated bytes across all 18
+bundles, the next live oracle must validate all 16 answerable deployments rather
+than only planets and polar; the two fixed official-loader blockers remain
+explicit. No live client, C4, E02, question, score, correctness, protected data,
+credential, OAuth, or lease action occurred.
