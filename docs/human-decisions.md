@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T19:12:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T19:44:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -43,7 +43,7 @@ public extension files. The general fix authenticates all three returned view
 identity values before projecting them away; every other semantic difference
 remains exact. That prerequisite evidence remains unchanged.
 
-## No action needed — fixed-forward C4 v8 running
+## No action needed — C4 v8 resumed in place
 
 The exact v6 receipt was consumed, but all three initial child processes stopped
 before provider contact because the launch workspace HEAD did not equal the
@@ -55,17 +55,22 @@ ignored Python bytecode whose bytes differed under child hash seeds. Its three
 failure records and consumption marker are also immutable; no v7 process
 remains and it will not be reused.
 
-Standing authorization materialized v8 under `omni-benchmark-ei0.4.14`. It runs
-from fresh detached worktree `/tmp/omni-benchmark-c4-v8` at exact system commit
-`aab9eb512aeb021be42b1549a7634708d0c09fb8`, with
-`PYTHONDONTWRITEBYTECODE=1` set from the first Python process and zero
-source-tree bytecode. The receipt is mode `0600`, expires at
-`2026-08-30T00:10:14Z`, and has SHA-256
-`92757ebdbe10538ac3eb028008b838a8349eed0f9dfa3cb5b28673d4f174f2c7`.
-It was consumed exactly once before dispatcher construction. Live session
-`48207` is running; the first observation found no terminal output files and
-zero source-tree bytecode. No replacement process may be launched. Schedule
-SHA-256 is
+V8 started from detached worktree `/tmp/omni-benchmark-c4-v8` at exact system
+commit `aab9eb512aeb021be42b1549a7634708d0c09fb8`, with bytecode writes disabled.
+It preserved 59 complete immutable generations, then stopped when one labor
+attempt detected an obsolete public semantic view before question dispatch.
+No correctness was read. A fresh public-only v15 repair removed that obsolete
+view and verified the same labor branch/model with zero validation issues and
+exact six-file readback. The platform's empty `model` and `relationships` stubs
+are explicitly permitted and were not the mismatch.
+
+Under standing authorization, `omni-benchmark-ei0.4.15.1` recorded a fresh
+single-use continuation receipt, SHA-256
+`69fb9678aeee9ceaacac28fbd224fd5a92c329de40616c897b5a8a840db9284c`.
+Its preflight proved exactly 59 reconciled attempts and 77 pending before
+consumption. The same v8 run/output identity is now live as session `4212`; the
+immutable repository skips all 59 completed attempts. Do not launch a second
+dispatcher. Schedule SHA-256 is
 `27dfb0f6e5cc61f3ce4afea8db031aa1da8b9f174e257844846259fc8f3935a7`,
 execution-plan SHA-256 is
 `7c315004fd04dba16c4b002f96c815aba1c2d4d514638d2ba98e2ad1b8d4d302`,
@@ -75,9 +80,10 @@ The frame remains 154 scheduled / 136 executable / 18 fixed unscorable,
 concurrency three, six-hour wall bound, projected USD 98.948908, USD 7
 per-attempt ceiling, and USD 952 telemetry ceiling.
 
-This receipt binds one C4 generation dispatch only. Standing authorization lets
-the agent materialize later exact scoring, Freeze B, and sealed-action receipts
-without another prompt, but it does not broaden their bindings or relax custody.
+This receipt binds one continuation of the same C4 generation dispatch only.
+Standing authorization lets the agent materialize later exact scoring, Freeze
+B, and sealed-action receipts without another prompt, but it does not broaden
+their bindings or relax custody.
 
 ## Most recent authorized action completed
 

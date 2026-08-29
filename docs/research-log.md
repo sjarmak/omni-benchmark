@@ -10213,3 +10213,44 @@ The receipt was consumed exactly once and live dispatcher session `48207`
 remained active past both earlier pre-provider failure points. Its first
 observation had no terminal output files and zero source-tree bytecode; no
 replacement may be launched while that handle is live.
+
+## 2026-08-29 — D-150: Restore runtime semantic drift, then resume in place
+
+### Observation and hypothesis
+
+V8 terminated after preserving 59 complete immutable generations. One labor
+attempt failed before question dispatch because authenticated semantic readback
+returned a path set different from the exact public deployment plan; 77 attempts
+remain pending and no process remains. This is semantic-branch drift caught by
+the pre-answer gate, not an evaluated answer or a correctness result.
+
+The smallest valid recovery is to redeploy only
+`labor_certification_applications_large` from the same committed public bundle
+under a fresh Tier 1 run ID, require zero validation issues and exact readback at
+the same semantic digest, then resume the same v8 run identity. The immutable
+repository reconciliation already proves 59 attempts complete and 77 pending,
+so a continuation must skip all completed attempts and may retry only the one
+pre-answer infrastructure failure plus the 76 unstarted attempts. No evaluated
+code, bundle content, question, label, or scorer changes.
+
+### Result
+
+KEEP. Public-only v14 confirmed that the failed C4 target was the same branch
+and model previously verified by v13. Its readback contained one obsolete
+`apm.view` plus Omni's empty `model` and `relationships` extension stubs. The
+runtime and deployment comparators already permit those two platform stubs;
+the obsolete view was the sole blocker. It was deleted from the isolated
+branch, and the fresh append-only v15 labor record then returned zero validation
+issues and exact readback for the six committed semantic files at the unchanged
+semantic digest.
+
+The continuation preflight re-derived the unchanged schedule, execution plan,
+and 16-target deployment binding, found exactly 59 reconciled immutable attempts
+and 77 pending, and found no source-tree bytecode or competing dispatcher.
+Standing authorization recorded `omni-benchmark-ei0.4.15.1`; its receipt
+SHA-256 is
+`69fb9678aeee9ceaacac28fbd224fd5a92c329de40616c897b5a8a840db9284c`.
+The receipt was consumed once and the same v8 run/output identity resumed. The
+generation count advanced beyond 59, confirming that completed attempts were
+reconciled and new pending work began. No answer content or correctness was
+inspected.
