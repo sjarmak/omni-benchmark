@@ -4684,6 +4684,2181 @@ invocations per lease, exact frozen binary version/SHA compatibility, and token
 headroom beyond the scheduled wall bound. Do not mutate credentials from this
 workspace.
 
+## 2026-08-28 — D-058: Quarantine the unauthorized C4 production launch
+
+### Decision / experiment
+
+Stop and quarantine `public-c4-baseline-v1-20260828`; correct its failure-origin
+accounting before any future governed production run. Beads
+`omni-benchmark-aez.1` through `.3`; change type: benchmark-infrastructure
+correction.
+
+### Observation
+
+The run produced six answered records and then five consecutive
+`adapter_transport_error` records. The five traces reached `EXECUTING` and failed
+at approximately the same 51-second wall across independent databases. They had
+no captured 401, 403, 429, or HTTP status. Each nevertheless combined
+`harness_failure=adapter_transport_error` with
+`failure_origin=evaluated_system`. The launch also followed canary v6 without
+the required human production-run authorization.
+
+### Hypothesis
+
+The shared timeout shape is an adapter transport failure outside the evaluated
+system. Separately, C4 publication assigns every non-answer to the evaluated
+system instead of distinguishing product-terminal failures from capture-harness
+failures.
+
+### Decision
+
+Stop the run; preserve all records; make the run non-scoreable; reject any
+record with non-null `harness_failure` and `failure_origin=evaluated_system`;
+close the existing immutable deployment/cost/telemetry gap; and mechanically
+require explicit human approval for a production C4 dispatch. Do not launch a
+replacement run.
+
+### Rationale
+
+Charging adapter timeouts to Omni would corrupt the C4 result. The protocol
+permits reruns only for demonstrable benchmark-infrastructure failures, and the
+failed run cannot become an implicit authorization for its replacement.
+
+### Intervention
+
+The process was stopped. The original artifacts remain immutable. TDD work is
+in progress under `omni-benchmark-aez.1`; quarantine and dispatch-gate work are
+tracked separately so the correction does not silently broaden into new
+methodology.
+
+### Result
+
+The run is excluded from scoring pending a committed quarantine artifact. No
+correctness result, hidden annotation, or gold data was accessed. Two dispatcher
+failures elsewhere in the run do contain HTTP 429 evidence, but that separate
+evidence does not explain the five persisted generation-artifact timeouts.
+
+### Interpretation
+
+The earlier suggestion that all C4 failures were authentication-related was
+unsupported. Failure origin must follow the captured mechanism, not the
+condition being evaluated.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+This is primarily a benchmark-observability finding. Governed-system evidence
+is only credible when product-terminal failures and adapter/capture failures are
+separable in raw telemetry.
+
+### Next step
+
+Complete the classifier fix and quarantine, then resolve immutable deployment
+identity and cost/telemetry attribution. A new C4 production run remains human
+gated.
+
+## 2026-08-28 — D-059: Diagnose the first immutable-lease canary failure
+
+### Decision / experiment
+
+Run a three-slot direct canary from exact commit
+`5be315e44bea7ee1a39500380dcbc4c05976dd3e` using the three handed-off immutable
+OAuth leases and the frozen Claude 2.1.250 transport. Bead
+`omni-benchmark-0e8`; change type: comparator-infrastructure diagnosis.
+
+### Observation
+
+All three children failed before model invocation. The preflight reported
+`bytecode differs from source` for three ignored `.pyc` files. The source tree
+and commit were unchanged, and no generation record was created.
+
+### Hypothesis
+
+The integrity check compares complete compiled byte streams. Python hash
+randomization can change the serialized ordering of unordered constants between
+the parent and child interpreters, even when both compile identical source.
+Parent-created bytecode therefore becomes a false source-drift signal in a
+multi-process run.
+
+### Decision
+
+Classify the three records as benchmark-infrastructure preflight failures. Move
+the ignored bytecode out of the exact worktree and relaunch the same canary with
+`PYTHONDONTWRITEBYTECODE=1` inherited by parent and children. Do not modify or
+revalidate OAuth credentials.
+
+### Rationale
+
+Disabling an ignored runtime cache preserves the frozen source and avoids a
+nondeterministic artifact that is neither part of the committed system nor the
+evaluated model. It is smaller and more interpretable than changing the frozen
+transport during the canary.
+
+### Intervention
+
+The three failed records were preserved under run
+`public-baseline-v1-lease-canary-20260828-1514`. Retry run
+`public-baseline-v1-lease-canary-v2-20260828-1525` uses the same commit,
+questions, profiles, concurrency, and budgets with bytecode writes disabled.
+
+### Result
+
+Pending.
+
+### Interpretation
+
+Pending.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+This is comparator harness behavior, not evidence about Omni or direct-SQL
+answer quality. Runtime integrity gates should authenticate source content, not
+nondeterministic interpreter caches.
+
+### Next step
+
+Inspect the retry artifacts without changing credentials. Only a successful
+three-way canary can unblock the committed direct continuation.
+
+## 2026-08-28 — D-060: Validate the leases, expose continuation runtime leakage
+
+### Decision / experiment
+
+Complete the exact frozen-transport lease canary, then launch the already
+authorized deterministic continuation for the 95 invalidated and 423
+never-attempted direct trials. Beads `omni-benchmark-0e8` and
+`omni-benchmark-6tm`; change type: execution integration.
+
+### Observation
+
+With bytecode writes disabled, the three immutable leases completed the fixed
+12-attempt concurrency canary with no infrastructure error. The subsequent
+continuation stopped immediately on its first three dispatched children. Each
+child executed the script in the exact `5be315e` worktree but imported
+`omni_benchmark` from the parent continuation worktree, failing the runtime
+ownership gate with `direct comparator runtime package does not belong to the
+workspace`.
+
+### Hypothesis
+
+The continuation parent correctly needs its newer scheduling code, but its
+Python import path leaks into child processes. Child execution must explicitly
+resolve the package and script from the frozen execution workspace.
+
+### Decision
+
+Preserve the three failed diagnostics as benchmark-infrastructure failures. Do
+not advance or skip them. TDD the child-process environment boundary in the
+continuation launcher and relaunch only after focused/full tests and independent
+review.
+
+### Rationale
+
+This is a deterministic isolation defect, not a credential or model failure.
+Changing OAuth state or retrying unchanged would add noise without addressing
+the mechanism.
+
+### Intervention
+
+Canary run `public-baseline-v1-lease-canary-v2-20260828-1525` inherited
+`PYTHONDONTWRITEBYTECODE=1`. It completed all 12 scheduled attempts. Continuation
+run `public-baseline-v1-direct-16db-continuation-1` then stopped with zero
+generation records and three child diagnostics. A dedicated TDD lane owns the
+runtime-path correction.
+
+### Result
+
+Canary: 11 answered, one `no_answer_insufficient_context`, zero infrastructure
+failures, zero retries, maximum concurrency three, 2,161,895 tokens, 29 database
+queries, 52 tool calls, and $15.5811165 measured notional cost. Continuation:
+zero scoreable attempts; stopped before benchmark generation.
+
+### Interpretation
+
+The immutable OAuth leases are viable under the frozen transport. The remaining
+blocker is process isolation in our continuation harness, not authentication.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+This is comparator infrastructure, not Omni evidence. Exact-commit claims must
+bind the loaded runtime package, not only the child script path.
+
+### Next step
+
+Land and review the child import-path fix, then resume the same committed
+continuation manifest without changing questions, conditions, credentials, or
+system configuration. Schedule the long continuation within one immutable-token
+window; the standing 19:00 EDT refresh boundary makes a pre-boundary full run
+unsafe at observed throughput.
+
+## 2026-08-28 — D-061: Bind continuation children to the frozen runtime
+
+### Decision / experiment
+
+Correct the continuation child-process import boundary exposed by D-060. Bead
+`omni-benchmark-6tm.1`; change type: comparator infrastructure.
+
+### Observation
+
+The continuation parent imported its new scheduling implementation correctly,
+but each child inherited that parent package path even though its script and
+declared workspace pointed at the frozen `5be315e` execution worktree.
+
+### Hypothesis
+
+Giving child processes an explicit execution-workspace package path will let the
+parent retain continuation-only code while making the evaluated attempt load
+exactly the frozen comparator implementation.
+
+### Decision
+
+Set the child import boundary mechanically from `execution_workspace/src` and
+verify both sides in a subprocess test. Keep the continuation manifest, system
+commit, questions, and retry authorization unchanged.
+
+### Rationale
+
+The loaded runtime—not the script pathname alone—is the object the experiment
+claims to freeze. The fix addresses the observed process-isolation failure
+without changing evaluated behavior.
+
+### Intervention
+
+Commit `5748eba228bc8cca824ec94472a1b09da9b4c856` in the isolated continuation
+worktree sets and tests the child environment. The test proves the parent loads
+`baseline_continuation_cli.py` from the continuation worktree while the child
+loads `direct_prepared_attempt.py` from the exact execution worktree.
+
+### Result
+
+Focused tests passed. The full suite passed 1,417 tests with five environment
+skips and 84.46% branch coverage. Ruff passed, and independent review reported
+no findings. No live attempt or credential was touched.
+
+### Interpretation
+
+The continuation harness can now preserve its control-plane additions without
+contaminating the frozen evaluated runtime.
+
+### Outcome
+
+KEEP
+
+### Product implication
+
+This is evaluation infrastructure rather than Omni behavior. Reproducible agent
+benchmarks need provenance for the modules actually loaded by subprocesses.
+
+### Next step
+
+Wait for the standing 19:00 EDT credential refresh, rebuild the immutable leases
+while no attempt is active, run the bounded continuation canary, then launch the
+same 518-attempt continuation within the fresh token window.
+
+## 2026-08-28 — D-062: Resume the vanished direct-baseline dispatcher
+
+### Decision / experiment
+
+Diagnose the unexpected disappearance of the live
+`public-baseline-v1-direct-16db-continuation-1` parent and, if the immutable
+attempt repository is complete and consistent, resume the exact continuation
+without changing its manifest, run identity, output root, evaluated commit,
+conditions, questions, credentials, or budgets. Bead
+`omni-benchmark-dih.5.4.2.4.4.2.2`; change type: execution infrastructure.
+
+### Observation
+
+The continuation parent and its `uv` wrapper disappeared after 20 complete
+generation/run pairs had been captured. The process was not signaled by this
+orchestrator and no lease was rebuilt, refreshed, validated, or mutated. Process
+inspection found no remaining continuation child. The execution root contains no
+incomplete attempt directory and no new failure diagnostic beyond the three
+preserved D-060 runtime-path failures.
+
+### Hypothesis
+
+The launcher or owning session exited outside the evaluated system after the last
+captured attempt boundary. Because dispatch is reconciled from immutable complete
+attempt bundles, rerunning the exact command against the same root should preserve
+the 20 captures and schedule only the remaining manifest entries.
+
+### Decision
+
+Treat the parent disappearance as benchmark-infrastructure interruption, not as
+an evaluated-system result and not as authorization for a new run identity. First
+record the interruption, then resume the same authorized continuation under a
+durable launcher. Do not inspect answers or correctness and do not rebuild the
+unchanged leases.
+
+### Rationale
+
+The protocol permits rerun for a demonstrable failure outside the evaluated
+system. No attempt is selected based on its answer: repository reconciliation
+mechanically preserves every complete bundle and retries only entries with no
+immutable generation/run pair.
+
+### Intervention
+
+Exact reconciliation reported 20 completed continuation attempts, 498 missing,
+112 preserved source attempts, 132 reconciled trials, and the unchanged manifest
+and schedule identities. The same command was launched as durable user service
+`omni-public-baseline-continuation-1.service` from control commit `5748eba`
+against evaluated commit `5be315e`, with the three existing leases unchanged.
+
+### Result
+
+The service became active with exactly three frozen-worktree children. The first
+post-resume immutable capture advanced the repository from 20 to 21, completed
+normally with zero retry, and introduced no new infrastructure diagnostic.
+
+### Interpretation
+
+Immutable reconciliation behaved as intended: every existing complete attempt
+was preserved and dispatch resumed from the next missing entry. A durable service
+removes the owning-session lifetime failure without changing evaluated behavior.
+
+### Outcome
+
+FOLLOW UP
+
+### Product implication
+
+This is benchmark process-lifetime behavior, not evidence about Omni or the
+direct-SQL agent. Long evaluations require a durable launcher plus explicit
+attempt-boundary drain semantics.
+
+### Next step
+
+Monitor the sole service through completion, reconcile all 518 continuation
+attempts, and freeze the public-only baseline before any train-label release.
+
+## 2026-08-28 — D-063: Bind C4 semantic content and original budget policy
+
+### Decision / experiment
+
+Resolve the two C4-only provenance/accounting defects on bead
+`omni-benchmark-dih.5.4.2.4.4.2.3` in the isolated worktree
+`/tmp/omni-benchmark-c4-live-d9949d2`, without launching C4 or touching Omni,
+credentials, labels, or the running direct baseline. Change type: general
+evaluation infrastructure.
+
+### Hypothesis
+
+An authenticated semantic-plan digest plus an immediate branch re-read can bind
+each C4 attempt to immutable deployed content even though the model and branch
+IDs are mutable. Persisting the original reservation and budget-policy digest
+should make null-cost resume deterministic and reject policy drift.
+
+### Intervention
+
+Added a canonical digest over authenticated deployment-plan semantics; schema-v2
+deployment records retain it, while the immutable schema-v1 frozen records derive
+the same identity only after their committed manifest and per-file hashes match
+the exact committed bundles. C4 dispatch passes the database, semantic digest,
+reservation, and budget-policy digest to the child. Before submitting an Omni
+job, the child loads the exact system-commit bundle, re-reads the branch, and
+requires semantic equality and the expected digest. C4 artifacts persist the
+original reservation, policy digest, and explicit unavailable-cost reason;
+reconciliation rejects drift instead of substituting the current ceiling.
+
+### Result
+
+The focused suite passed 107 tests. The full suite passed 1,429 tests with five
+environment skips and 84.47% branch coverage; Ruff, formatting, and diff checks
+passed. Existing frozen deployment records were not rewritten. No C4 attempt,
+live Omni call, credential operation, gold/hidden/test/dev-B access, commit, or
+push occurred.
+
+### Outcome
+
+KEEP, pending reviewed commit/integration from the isolated worktree.
+
+### Next step
+
+Integrate this prerequisite before any future C4 production authorization, then
+rerun the combined suite. C4 remains quarantined.
+
+## 2026-08-28 — D-064: Require a single-use human receipt for C4 production
+
+### Decision / experiment
+
+Implement bead `omni-benchmark-aez.3` only in the isolated worktree
+`/tmp/omni-benchmark-c4-human-gate`. A technically passing canary must remain a
+precondition, never production authority. Change type: evaluation control-plane
+authorization.
+
+### Hypothesis
+
+A strict receipt recorded verbatim by the existing Beads human-decision flow,
+bound to the exact production identity and consumed exclusively before dispatcher
+construction, will make missing, stale, substituted, and replayed approvals fail
+before any Omni call.
+
+### Intervention
+
+Added a canonical C4 production receipt bound to run ID, C4 condition, schedule
+hash, system commit, output root, execution-plan hash, and deployment-target hash.
+The gate requires one closed `human` decision with close reason `Responded` and
+exactly one matching response comment, aligns its close time with `approved_at`,
+limits validity to 24 hours, and writes a mode-0600 `O_EXCL` consumption marker
+inside the workspace before constructing the live dispatcher. C4 concurrency
+canaries do not consume or mint production authority.
+
+### Result
+
+Authorization-focused tests passed 15/15; the wider focused suite passed 45/45.
+The full suite passed 1,430 tests with five environment skips and 84.31% branch
+coverage; Ruff, formatting, and diff checks passed. No live run, Omni call,
+credential access, label access, commit, or push occurred.
+
+### Outcome
+
+KEEP, pending reviewed commit/integration after D-063.
+
+### Next step
+
+Integrate D-063 first, resolve the small shared CLI seam, rerun combined gates,
+and require a newly answered exact decision receipt before any production C4 run.
+
+## 2026-08-28 — D-065: Freeze the reconciled direct baseline by content hash
+
+### Decision / experiment
+
+Add the smallest deterministic freeze artifact for the authorized direct
+baseline reconstructed from its preserved source attempts and infrastructure
+continuation. Bead `omni-benchmark-dih.5.4.2.4.4.2.2.5`; change type: general
+evaluation infrastructure. Work only in a new isolated worktree based on the
+live control commit; do not modify either active-run worktree.
+
+### Observation
+
+The continuation manifest partitions all 630 authorized trials and exact
+reconciliation validates each present attempt, but its terminal output records
+only aggregate counts. The 518 continuation-side generation/run hashes are not
+yet bound into one immutable selection manifest. Counts alone are insufficient
+evidence for the pre-label public-baseline freeze.
+
+### Hypothesis
+
+A deterministic manifest containing only each trial identity, disposition,
+selected run identity, and revalidated generation/run SHA-256 values can freeze
+the reconstructed baseline without copying run artifacts, reading correctness,
+changing scoring, or adding a new protocol layer.
+
+### Planned intervention
+
+Extend the existing result-independent continuation reconciliation with a
+complete-only freeze builder and canonical exclusive writer. Tests must first
+show that incomplete coverage, substituted content, duplicate trials, unsafe
+paths, and overwrite attempts fail closed. The live dispatcher remains untouched.
+
+### Result
+
+Implemented test-first in isolated worktree
+`/tmp/omni-benchmark-direct-baseline-freeze`, based on live control commit
+`5748eba`. The builder refuses incomplete reconciliation, revalidates every
+selected generation and run manifest, binds both SHA-256 values plus immutable
+trial/run identities, requires exactly 112 preserved and 518 continuation
+selections, and writes canonical mode-0600 state with the existing confined
+`O_EXCL` writer. The CLI accepts only the established source, continuation,
+manifest, system commit, and exact state path; it has no provider or credential
+path.
+
+Focused continuation coverage passed (17 tests), the wider affected slice
+passed (51 tests), Ruff and format checks passed, and the full isolated suite
+passed (1,424 tests, 5 skipped, 84.45% branch coverage). A live negative check
+at 146/518 continuation captures exited nonzero with `baseline freeze requires
+complete reconciliation` and created no state artifact. No run artifact,
+answer, correctness, lease, or live worktree was modified.
+
+The sole continuation later exited cleanly with 518/518 artifacts and the same
+three pre-resume infrastructure diagnostics. Result-independent reconciliation
+then passed at 630/630 (112 preserved, 518 continuation, zero missing). After
+exit, the ignored continuation tree was copied into durable workspace storage;
+the source and copy both contained 2,959 files / 22,308,271 bytes and matched
+normalized inventory SHA-256
+`633283e18867b48be8e476f7bbdfd048e4ce8e4f4a846ebb32f65cceeb3ae57f`.
+The exclusive freeze artifact
+`experiments/autoresearch/state/public-direct-baseline-freeze-v1.json` is mode
+`0600`, contains 630 unique trial and attempt selections, and has SHA-256
+`04c75eb40c6a8bbb59af07358733b59a10d9b28787443d622fae5f31887bd725`.
+Its forbidden/correctness-field scan is empty.
+
+### Outcome
+
+KEEP. The public-only direct baseline is immutable before label release. The
+freeze implementation remains uncommitted in its isolated worktree because the
+main worktree contains concurrent changes; integrate it deliberately rather
+than committing the dirty tree. Human train-only dev-A release may now be
+requested through the existing custody tool. No baseline output may be
+regenerated retrospectively.
+
+## 2026-08-28 — D-066: Failure-mode census separates the direct-SQL conditions before any scoring
+
+### Observation
+
+Mid-run census of the direct comparator continuation
+`public-baseline-v1-direct-16db-continuation-1` at 201 of 518 captures. Counts
+are terminal capture classes, not correctness; no gold has been opened.
+
+| condition | n | no failure class | executable-SQL errors | refusals | budget | turn limit |
+| --- | --- | --- | --- | --- | --- | --- |
+| C1 raw schema | 68 | 32 (47.1%, CI 35-59) | 14 | 17 | 4 | 1 |
+| C2 searchable raw HKB | 68 | 44 (64.7%, CI 53-76) | 22 | 2 | 0 | 0 |
+| C3 searchable exported Omni model | 67 | 26 (38.8%, CI 27-50) | 9 | 23 | 4 | 5 |
+
+C2 against C3 on the no-failure-class rate is z=3.01, two-sided p=0.0026. C1
+against C3 is z=0.97, p=0.33. Of the 44 attempts that produced no SQL at all
+(refusals plus budget exhaustion), 24 issued zero database queries.
+
+### Hypothesis
+
+The conditions differ in *how* they fail, not only in how often. C3 declines to
+emit SQL where C2 emits SQL that the database rejects. If this holds to
+completion, the exported semantic model is behaving conservatively: it withholds
+an answer rather than guessing a join or a grain it cannot substantiate. That is
+the same representability limit already recorded for HKB-to-semantic-object
+compilation, appearing at runtime instead of at build time.
+
+### Result
+
+Provisional and not yet actionable. Three constraints on reading it. The census
+measures answer *production*, and a condition can produce executable SQL that is
+wrong, so the ordering here may not survive scoring. C4, the governed Omni
+condition and the one carrying the preregistered primary contrasts, is absent
+from this run entirely. And the C2/C3 separation is an exploratory rung-level
+contrast under the preregistration, not a primary perspective.
+
+An earlier reading of this same data was wrong and is withdrawn: from
+model-budget errors alone I concluded C2 "avoids the failure". C2 avoids budget
+exhaustion and refusals while carrying the most executable-SQL errors of any
+condition. Tracking one failure class produced a conclusion the full census
+reverses. The monitor now reports the whole distribution.
+
+### Outcome
+
+CONTINUE. No intervention mid-run. At completion, test whether the C2/C3 gap
+holds across full condition arms, whether per-question failure counts track
+schema breadth, and re-examine the failure taxonomy: under Soft EX a refusal and
+a wrong answer both score zero, so C3's conservatism is not rewarded by the
+frozen scorers even where it is the better engineering behavior. Whether
+`no_answer_insufficient_context` belongs on the model-budget bead
+(`omni-benchmark-dih.5.4.2.4.4.2.2.2`) or its own is a classification question
+flagged for the human surface, not decided here.
+
+## D-067: The preregistered clustering test does not confirm; the condition separation does
+
+Date: 2026-08-28. Run `public-baseline-v1-direct-16db-continuation-1`, complete
+at 518 of 518 captures across C1/C2/C3, 14 databases, $870 total
+($1.68/attempt). No C4 arm in this run.
+
+### Preregistered test
+
+`experiments/analysis/budget_clustering_test.py`, registered 2026-08-28 22:00Z
+at 220 captures, before the remaining attempts were observed. Statistic, null,
+sample boundary, and threshold were fixed in that file and hashed
+(`dac0aa86154453e02f6b528566ae0d010aaf18c1ac103e71d47cdfbd3e966994`).
+
+```
+holdout captures       298
+questions in all 3      98
+budget errors            4
+questions failing >=2    1
+permutation p       0.0407
+verdict   NOT CONFIRMED at alpha=0.01
+```
+
+The post-hoc pattern that motivated it (budget exhaustion clustering by question
+rather than by scaffold; P=0.0073 and P=0.0053 in the first 216 captures) does
+not replicate on the confirmatory sample at the registered threshold. The
+holdout carried 4 budget errors against 7 in the registered prefix, so the test
+had less power than the registration assumed. That is a property of the test as
+registered; the threshold was fixed in advance and is not moved now, and no
+other statistic is substituted. The practical consequence is that there is no
+confirmed evidence for locating the P0 fix at the question level, so the
+scaffold-level fix on `omni-benchmark-dih.5.4.2.4.4.2.2.2` is not blocked.
+
+### Failure census at full n
+
+```
+ok                               366   c1:112 c2:143 c3:111
+no_answer_insufficient_context    80   c1:37  c2:3   c3:40
+database_statement_error          48   c1:15  c2:23  c3:10
+model_budget_error                17   c1:7   c2:3   c3:7
+turn_limit_exhausted               7   c1:1          c3:6
+```
+
+Capture-level completion rate, meaning an answer was produced at all, not a
+scored one:
+
+| | C1 | C2 | C3 |
+| --- | --- | --- | --- |
+| all 518 | 65.1% | 83.1% | 63.8% |
+| excluding the two broken databases (437) | 75.9% | 97.9% | 74.8% |
+
+C1 vs C2 z=-3.82, C2 vs C3 z=4.07, C1 vs C3 p=0.80. Excluding the two databases
+the separation widens (z=-5.57 and z=5.74) and C1 vs C3 stays indistinguishable
+(p=0.84). D-066 therefore holds at full n and strengthens: the searchable raw
+HKB separates from both the raw schema and the exported semantic model, while
+raw schema and exported model do not separate from each other.
+
+`database_statement_error` is 48 of 48 confined to `mental_healths_large` (24)
+and `organ_transplant_large` (24), which complete 4/42 and 0/39. Those two
+databases shift every absolute rate by roughly ten points and are the subject of
+`omni-benchmark-2j9`. Whether their 81 attempts are `evaluated_system` failures
+or infrastructure failures under the rerun policy is a human-controlled
+classification, still not decided here.
+
+63 of 518 attempts (12.2%) never issued a query at all: c1:32, c3:28, c2:3,
+composed of 51 refusals and 12 budget exhaustions. The refusal is the dominant
+never-queried mode, not budget exhaustion.
+
+### Outcome
+
+These are capture outcomes, not accuracy. Nothing here is scored; under Soft EX
+a refusal and a wrong answer both score zero, so the C2 advantage in completion
+does not transfer to accuracy without scoring. Next step is scoring this run
+under both frozen scorers, with the two broken databases reported separately
+rather than silently dropped.
+
+## 2026-08-28 — D-068: Request the train-only release after baseline freeze
+
+### Decision / experiment
+
+Open human decision `omni-benchmark-ei0.1` only after the public-only baseline
+freeze is complete. Change type: human-controlled custody action. The agent may
+prepare the exact command and verify the repository-side destination is absent,
+but may not locate, download, open, or name the external attachment path.
+
+### Observation
+
+The prerequisite now holds: the direct baseline has 630/630 reconciled trials
+and immutable freeze SHA-256
+`04c75eb40c6a8bbb59af07358733b59a10d9b28787443d622fae5f31887bd725`.
+`data/private/dev-a/labels.jsonl` is absent. Freeze A records full commit
+`7d39ee107338da1ce10e2553a4290e64bfc2f892`, and the existing extractor is
+restricted to the canonical 154 dev-A IDs, an external source, and an exclusive
+mode-0600 destination under `data/private/`.
+
+### Hypothesis
+
+A human running the existing release tool in a trusted external shell can
+provide the minimum train-only supervision needed for the MVP without exposing
+the full attachment, dev-B, test records, source path, or hidden content to an
+agent transcript.
+
+### Result
+
+Decision `omni-benchmark-ei0.1` is open with the exact repository-side arguments
+and safe response contract: report only success plus count/hash summary. No
+source path was discovered or requested, and no private record was accessed.
+
+### Outcome
+
+AWAIT HUMAN. Do not start scored dev-A analysis until the custodian reports a
+successful 154-record release. While waiting, only public/result-independent
+work may continue.
+
+## 2026-08-28 — D-069: Exact live parity refutes the two-database restore hypothesis
+
+### Decision / experiment
+
+Diagnose `omni-benchmark-2j9` without regenerating an attempt, reading an answer,
+or changing a failure classification. Change type: public evaluation
+infrastructure diagnosis. Recompute the established database fingerprint under
+the read-only runtime environment and compare only committed hashes/counts;
+separately audit the recorded runtime database bindings and fresh privilege
+attestation.
+
+### Observation
+
+All 48 `database_statement_error` captures were concentrated in
+`mental_healths_large` and `organ_transplant_large`, which suggested but did not
+prove a failed restore. The protocol permits a rerun only after a demonstrable
+failure outside the evaluated system, so distributional shape alone is not
+sufficient evidence.
+
+### Hypothesis
+
+If either restore or connection target is defective, its live schema/content
+fingerprint or recorded runtime identity will differ from the committed parity
+evidence. Exact agreement would refute the infrastructure hypothesis and leave
+the immutable attempts as recorded.
+
+### Result
+
+Both live databases match the committed PostgreSQL version, table count, row
+count, schema SHA-256, and full content SHA-256 exactly:
+
+- `mental_healths_large`: PostgreSQL `180006`, 21 tables, 33,582 rows, schema
+  `d0758ce810a8bcc949121f55542e82e5a9fe2816bdd064a475f7d47643505a01`,
+  content
+  `4887ac64a13b2f164d50e55f64bf1e732e04adf9319e646680c98b836a0d3d89`;
+- `organ_transplant_large`: PostgreSQL `180006`, 20 tables, 8,970 rows, schema
+  `061cffb1893b6c4e770e93a27b86f96c3221037fded630af0cff5bde914f7111`,
+  content
+  `39d5fb50801f758c6aa085995d4110ed3bc85b03f709aec62fd33e03612fd176`.
+
+All 42 mental-health and 39 organ-transplant capture receipts exactly match the
+committed runtime database identity, with zero binding mismatches. Fresh
+attestation confirms the execution role remains read-only and cannot execute
+non-system functions. The first local diagnostic invocation failed safely
+before remote access because its wrapper omitted the external environment; it
+created no benchmark attempt or artifact. The corrected read-only diagnostic
+produced the evidence above and persisted no row bodies or credentials.
+
+### Outcome
+
+REJECT the broken-restore hypothesis. No external infrastructure failure is
+demonstrated, so the rerun policy does not authorize replacement attempts. Keep
+the existing `evaluated_system` records unchanged; do not report the two
+databases as broken or exclude them from primary results. Bead
+`omni-benchmark-2j9` is closed with this evidence. This updates the interpretation
+of D-066 without changing any scorer, classification field, or frozen output.
+
+## D-068: The system/infrastructure boundary is mechanical, and the artifacts can be made to answer it
+
+Date: 2026-08-28. Prompted by a question I had twice deferred to the human
+surface: are the 81 attempts on `organ_transplant_large` and
+`mental_healths_large` evaluated-system failures or infrastructure failures?
+Deferring was wrong. The classification is defined in code and the evidence is in
+the artifacts.
+
+### The definition
+
+`direct_capture_telemetry.failure_origin` is total and closed:
+
+```python
+if failure in {"database_identity_mismatch", "database_infrastructure_error"}:
+    return "benchmark_infrastructure"
+return "evaluated_system"
+```
+
+`database_infrastructure_error` is emitted when
+`postgres_execution._execution_error` sees a SQLSTATE beginning `08` (connection
+exception) or a `ConnectionError` / `OSError` / `TimeoutError`. SQLSTATE `57014`
+becomes `database_timeout_error`. Every other SQLSTATE becomes
+`database_statement_error`. The operative test is therefore: *did Postgres accept
+the connection and answer?* If it answered and rejected the statement, the
+outcome belongs to the evaluated system.
+
+By that definition the 81 attempts are correctly labelled `evaluated_system`.
+There is no misclassification bug. But the definition tests reachability, while
+the protocol's rerun clause speaks of "benchmark database unavailability", and
+those are not the same predicate. A database that connects and holds a catalog
+but exposes no data tables is reachable and unavailable at once.
+
+### The observation
+
+`attempt.action-evidence.json` retains `exploratory_sql` keyed by `trace_seq`;
+`attempt.trace.jsonl` retains per-`seq` `status` and `database_query_delta`.
+Joining them classifies every executed query by outcome and by whether it touches
+catalog relations or data tables. Successful data-table executions per database:
+
+```
+residential_data 73   virtual_idol 60   planets_data 51   labor_cert 44
+reverse_logistics 39  solar_panel 36    sports_events 34  fake_account 32
+robot_fault 21        museum_artifact 14 polar_equipment 6 cross_border 2
+mental_healths 0      organ_transplant 0
+```
+
+Twelve databases return rows from real tables. The two suspects return none, ever
+, across 39 and 42 attempts and all three conditions, while succeeding 45 and 23
+times against `information_schema` / `pg_class` / `pg_namespace` /
+`pg_attribute`. Every user table is zero-for-N: `transplant_matching` 0/46,
+`clinical` 0/27, `assessmentbasics` 0/47, `encounters` 0/42. The models kept
+proposing table names taken from the documented schema file, the behaviour
+expected when an `information_schema` probe returns zero rows.
+
+The environments connect and have nothing queryable behind them. This is an
+absent or partial restore, or tables outside the connection's `search_path`. It
+is not a capability difference between conditions, which would vary by condition
+rather than being uniformly total.
+
+I withdraw the weaker form of my earlier briefing claim in both directions: I
+first asserted "broken environment" from a uniform failure rate, which was
+under-evidenced, and then said the databases could not be at fault because 45
+queries succeeded on `organ_transplant_large`. Both readings were wrong. The
+successes are real and they are all catalog introspection.
+
+### The gap that made this look like a judgement call
+
+`direct_sql_capture.py:472` keeps only `error.kind` and discards the SQLSTATE
+that produced it. So `42P01 undefined_table` (the table is not there) and a
+genuine model SQL defect are the same value in every artifact, and
+`failure_origin` is computed from that value alone. The reconstruction above
+works, but a contract that forced a join across two files and a regex over SQL
+text to recover a code the system already computed is not doing its job. Filed as
+`omni-benchmark-bfb`, to be fixed before Freeze B commits the
+failure-classification policy.
+
+### The decisive comparison
+
+The catalog-only result still left a model-defect explanation open: perhaps the
+system invented table names. It did not. Comparing the names in executed queries
+against the benchmark's own published schema
+(`data/raw/livesqlbench-large-v1/schema/<db>/<db>_schema.txt`, the file that
+feeds C1's provided context):
+
+| | documented tables | refs in failed queries | refs in OK queries |
+| --- | --- | --- | --- |
+| `organ_transplant_large` | 37 | 168 across 11 tables | 0 |
+| `mental_healths_large` | 34 | 230 across 9 tables | 0 |
+| `planets_data_large` (control) | 29 | 0 | 122 across 7 tables |
+
+On the two suspects every documented table the system touched was rejected, and
+no documented table ever succeeded. On the control the relationship inverts
+exactly: documented names appear only in successful queries. The system used the
+names the benchmark publishes and the database rejected all of them while
+answering catalog queries normally. The environment does not match its own
+published schema, and no database access was required to establish it.
+
+### Outcome
+
+The classification question is not a matter of human judgement and should not
+have been posed as one. What remains for the human surface is narrow and real:
+`failure_origin`'s predicate is a frozen scoring surface, so widening it from
+"the server answered" to "the server answered from a populated schema" is a
+proposal, not a change I make. Recommendation is to fix the telemetry
+(`omni-benchmark-bfb`), confirm the restore against the live databases
+(`omni-benchmark-2j9`, one `information_schema.tables` query, credentials are
+outside both worktrees), and until then report the 437-capture figures as primary
+with the two databases stated separately rather than silently dropped.
+
+## 2026-08-28 — D-070: Probe only the values-free dev-A shape before adapting the release
+
+### Hypothesis
+
+The first authorized train-only release failed before publication because the
+delivered `external_knowledge` JSON shape differs from the integration
+contract. Guessing a conversion from the validator message would risk a lossy
+or over-broad adapter. A human-run probe can determine only the aggregate outer
+type signature required for a minimal adapter without exposing hidden values or
+foreign-partition structure to an agent.
+
+### Intervention and boundary
+
+Added `sealed_tools/probe_private_structure.py` and a custody-library probe. The
+CLI verifies the full canonical Freeze-A commit, provisioned guardian pin, and
+committed dev-A manifest before resolving the external source. It parses record
+membership, inspects `external_knowledge` only for committed dev-A IDs, and
+reports only source/inspected/ignored counts, aggregate JSON type signatures,
+and the full-source SHA-256. It writes no artifact. It never emits source paths,
+instance IDs, object keys, SQL, knowledge values, record bodies, or dev-B/test
+field shapes. The existing array-of-strings release contract is unchanged.
+
+This is benchmark-integration and custody infrastructure, not a system change.
+No question-specific runtime input is introduced.
+
+### Evidence
+
+Tests preceded implementation. Focused custody tests pass 52/52, including
+foreign-shape non-inspection, every JSON outer type, mixed/empty arrays, exact
+dev-A membership, external-source enforcement, Freeze-A-before-source ordering,
+safe output, and traceback/path/value suppression. The full repository suite is
+1,456 passed with 3 explicit live-integration skips and 84.51% branch coverage.
+Repository-wide Ruff check and format-check pass, as does `git diff --check`.
+
+The human reported successful cleanup of the transferred source and directory
+(`file=0`, `directory=0`); the train-only destination remains absent. No agent
+accessed the source or hidden values.
+
+### Outcome
+
+Pause agents for a second human-only transfer and run only the structure probe.
+After cleanup, the human may report the one-line aggregate JSON and probe status.
+Implement the smallest lossless adapter only from that safe signature, retest,
+and then issue a fresh release command. Do not rerun the release yet.
+
+## 2026-08-28 — D-071: Bind a lossless integer-ID adapter to the probed source
+
+### Observation
+
+The human-run probe completed successfully and the remote source was removed
+before agents resumed. Its permitted aggregate output covered all 480 records
+and exactly 154 committed dev-A records. Of those dev-A records, 152 have
+homogeneous integer `external_knowledge` arrays and 2 have empty arrays. The
+reported full-source SHA-256 is
+`be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1`.
+No hidden value, record ID, object key, SQL, test case, path, dev-B shape, or test
+shape entered agent scope.
+
+### Hypothesis and intervention
+
+JSON integer-to-decimal-string conversion is lossless for this ID field and is
+the smallest adapter that restores the preregistered downstream string contract.
+The release validator now preserves homogeneous string arrays unchanged,
+converts homogeneous JSON integer arrays with exact `str(integer)` semantics,
+and rejects mixed arrays, booleans, floats, nulls, and objects. Empty arrays stay
+empty. No other private field is transformed.
+
+The human release CLI now requires the probed source SHA-256 and compares it to
+the bytes actually read before atomic publication. This prevents a different
+attachment from silently entering the newly broadened structural path. Invalid
+hash syntax fails before source resolution, and a valid-but-mismatched hash fails
+before destination publication. Controlled release failures now emit one
+sanitized line rather than a traceback.
+
+This remains a post-Freeze-A format adapter explicitly permitted by the protocol.
+It changes custody integration only, not split membership, scoring, runtime
+inputs, or system behavior.
+
+### Evidence and outcome
+
+Tests preceded the adapter. The final focused custody suite passes 66/66,
+covering exact large/negative/zero integer conversion, original string-array
+compatibility, malformed and mixed fail-closed behavior, source-hash binding,
+hash validation before source access, atomic mode-0600 publication, foreign
+record exclusion, Freeze-A binding, and sanitized failures. The full repository
+suite passes 1,469 tests with 3 explicit live-integration skips and 84.53% branch
+coverage. Repository-wide Ruff check, format-check, and `git diff --check` pass.
+
+The train-only destination is still absent. The next action is one human-only
+transfer and the exact hash-bound release command in `docs/human-decisions.md`.
+Expected safe counts are source 480, released 154, ignored 326. Agents remain
+paused while the full source is present; C4 remains stopped and quarantined.
+
+## D-069: What the bounded retrieval actually cost, measured at full n
+
+Date: 2026-08-28. Prompted by an external stakeholder repeating the token
+reduction from a progress email. The figure needed a denominator.
+
+### The original measurement
+
+At commit `349e0bb` the archeology canary called `inspect_schema`, received all
+51 tables, and the following turn consumed 169,995 input tokens and terminated in
+`model_budget_error` before any SQL. After the bounded retrieval landed at
+`2b72244`, the exact-commit replay of the same task came in at 1,585 tokens and
+$0.017715. Both figures are correct as recorded.
+
+They do not form a like-for-like ratio. The replay terminated at
+`forbidden_tool_payload` before issuing a database query, which the entry that
+recorded it states directly: "end-to-end success remains unproven." The
+comparison is 170K-before-failing against 1.6K-before-failing. Neither run
+answered its question.
+
+### Ground truth from the completed run
+
+518 captures, all reporting token usage.
+
+| | C1 | C2 | C3 |
+| --- | --- | --- | --- |
+| median input tokens | 127,310 | 198,968 | 152,976 |
+| mean input tokens | 195,082 | 238,095 | 276,190 |
+| p90 input tokens | 464,542 | 467,018 | 683,080 |
+| mean cost | $1.48 | $1.71 | $1.84 |
+
+Median 5 model turns per attempt, maximum 12. Successful attempts alone: median
+135,910 input tokens, p90 448,661. Budget-exhausted attempts: median 619,092.
+
+Cumulative attempt totals are not comparable to the canary's single turn, since
+each turn resends context. The comparable quantity is the largest single turn per
+attempt: median 61,892, p90 131,891, p99 184,543, max 193,879. Twelve attempts of
+518 (2.3%) still reach a single turn as large as the canary's, but from
+accumulated conversation rather than a schema dump.
+
+### What the intervention did and did not do
+
+It did not reduce a working attempt to 1,585 tokens; the shipped system runs
+about $1.68 per attempt. What it did is structural and stronger than a statistic:
+`inspect_schema` returns at most four tables and 64 KiB by construction, against
+a previous whole-schema response of 51 tables. That bound is enforced in code and
+bound into action evidence, so it holds regardless of question or database.
+`model_budget_error` is now 17 of 518 (3.3%), against deterministic failure on
+the canary.
+
+### Outcome
+
+The bounded-payload claim and the system-cost claim are separate and must be
+reported separately, since the first is roughly two orders of magnitude and the
+second is not. Tracked as `omni-benchmark-wes` so the write-up states the bound
+with its actual limit and gives per-attempt cost alongside it.
+
+## 2026-08-28 — D-072: Accept the exact dev-A release and preserve the remaining seal
+
+The human ran the hash-bound release against the same source that produced the
+values-free probe. The command exited 0 and reported source 480, released 154,
+ignored 326, source SHA-256
+`be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1`, and
+output SHA-256
+`34794127f6f34f5214eedf652b86d870fb2c4e8f67d364bbd8d333897acf2c3d`.
+The human then removed the remote full source and dedicated directory; both
+cleanup statuses were 0.
+
+Agent-side verification used only the authorized extracted destination. It is a
+regular file owned by the benchmark user, mode 0600, 168,496 bytes, and exactly
+154 lines. Its SHA-256 equals the human-reported output hash. The custody loader
+validated all records and proved exact set equality with the committed dev-A
+manifest; therefore no dev-B or test record entered the release.
+
+Human decision `omni-benchmark-ei0.1` is responded/closed, and format-adapter
+task `omni-benchmark-ei0.2` is complete. The released file is now authorized
+offline dev-A supervision. The complete attachment remains outside agent scope;
+dev-B remains guardian-only and test remains sealed. Next, score the already
+frozen public baseline without regenerating any attempt, then select only a
+small MVP-focused dev-A experiment set.
+
+## 2026-08-28 — D-073: Score the exact frozen-baseline/dev-A intersection
+
+### Hypothesis and boundary
+
+The immutable 630-attempt public-only baseline selection contains 420 attempts
+covering 140 of the 154 committed dev-A questions, with one C1, C2, and C3
+attempt for every represented question. Scoring that exact intersection will
+establish the supervised baseline without regenerating an answer or filling the
+14-question coverage gap after labels are visible. The gap will be reported as
+coverage, not silently imputed.
+
+The scoring input is bound to selection SHA-256
+`04c75eb40c6a8bbb59af07358733b59a10d9b28787443d622fae5f31887bd725`
+and dev-A release SHA-256
+`34794127f6f34f5214eedf652b86d870fb2c4e8f67d364bbd8d333897acf2c3d`.
+Only selection entries whose IDs are in the exact committed dev-A manifest are
+opened. Every selected generation and run-manifest hash is verified before the
+private release is parsed, and all 420 scorer cases are validated before the
+first database clone is acquired. Foreign dev-B generation artifacts and all
+test artifacts remain unopened.
+
+Both frozen scorers will execute against independent disposable clones of the
+existing public PostgreSQL 18.6 databases. No score artifact will be published
+unless the complete paired run finishes without benchmark-infrastructure
+failure. Outputs contain only attempt/hash bindings, three-state correctness,
+the closed failure category when applicable, scorer identity/version, and
+aggregate coverage. They contain no SQL, rows, test cases, external knowledge,
+or hidden annotations. A wrong answer is a measurement and never authorizes a
+rerun; any infrastructure failure will stop publication and be handled only
+under the protocol's rerun rule.
+
+### Pre-run evidence
+
+Tests preceded implementation. Seven focused tests cover exact dev-A
+intersection before artifact access, release-hash validation before private
+parsing, complete-case validation before database acquisition, pinned scorer
+identity, SQL-free hash-bound exclusive publication, infrastructure-failure
+publication refusal, and environment-only connection strings. A public-only
+isolation probe created, attested, reset, and dropped one disposable clone and
+left zero score clones behind. Real preparation validated 420 attempts, 140
+represented questions, and 14 unrepresented questions without emitting labels
+or SQL. Full quality-gate and scored-run outcomes follow below.
+
+### Infrastructure abort and authorized restart
+
+The first scored invocation stopped closed before publication. The output root
+remained absent and all disposable clones were removed. A gold-only conformance
+check failed on the first public database under both scorers; the sanitized
+driver diagnostic was SQLSTATE `42501` (insufficient privilege), not a gold-SQL
+or model-answer defect. An aggregate public ACL audit then found that the local
+scorer role could read all 51 archeology tables but zero tables in each of the
+other 17 restored databases. The container had retained only its original
+single-database canary provisioning.
+
+Applied the repository's existing hardened read-only database policy to the
+same dedicated scorer role across all 18 local public databases. This changed
+only database/schema/table/sequence/function ACLs and default privileges; it did
+not change rows or schema objects. Post-repair aggregate verification found
+exact SELECT coverage in every database (938/938 public relations overall), and
+the role retained its no-superuser/no-create/no-membership/default-read-only
+attestation. The exact previously failing gold-self-check then passed under both
+scorers, and clone cleanup again returned to zero.
+
+This is a demonstrable benchmark-infrastructure failure outside the evaluated
+system. No wrong-answer result was inspected, no score artifact existed, and no
+model answer was regenerated. The protocol therefore permits one clean restart
+against the corrected scorer ACL state.
+
+### Deterministic gold limit and human-authorized coverage rule
+
+The corrected restart also stopped closed before candidate correctness results
+or score artifacts were published. A complete aggregate gold-phase audit of the
+140 represented questions found 18 questions unscorable under both frozen
+scorers: all nine represented questions in each of `mental_healths_large` and
+`organ_transplant_large` fail with `gold_statement_error` / PostgreSQL `42P01`.
+Sensitivity additionally has one `polar_equipment_large`
+`gold_result_overflow`. This leaves 122 questions / 366 attempts scoreable for
+official Soft EX and 121 / 363 for sensitivity.
+
+Human decision `omni-benchmark-ei0.3.1` selected option A. The scorer now freezes
+gold conformance across every represented question and both modes before any
+candidate correctness execution. Only `gold_query_missing`, `gold_timeout`,
+`gold_statement_error`, `gold_no_result`, and `gold_result_overflow` produce an
+unscorable disposition; all database, preprocess, cleanup, candidate, and
+scorer-policy failures continue to abort publication. Candidate SQL is not
+executed for an unscorable mode/question pair. Both score artifacts retain all
+420 attempt/hash bindings, distinguish `scored` from `unscorable`, and receipts
+report scheduled/scoreable/unscorable attempts and question counts separately.
+The command-line boundary refuses publication unless the frozen denominators
+are exactly 122 official and 121 sensitivity. The identical evaluator-only rule
+will apply later to sealed test without exposing identities or outcomes.
+
+Tests were extended before implementation to require a full conformance sweep
+before candidate calls, mode-specific skipping, exact denominator enforcement,
+SQL-free immutable publication, and infrastructure-failure refusal. The focused
+custody suite is 8/8 and Ruff passes. Full repository gates and the authorized
+production scoring outcome follow below.
+
+### Scorer-policy abort and closed-boundary repair
+
+The first option-A production invocation completed gold conformance and then
+failed closed during official candidate-result normalization with Python
+`decimal.InvalidOperation`. The frozen official comparator can raise this for a
+numeric value outside the active decimal context; the sealed lifecycle caught
+`ScoringPolicyError` but not the standard-library decimal signal. This was a
+benchmark scorer-boundary defect, not an evaluated-system correctness outcome.
+The output root remained absent and clone cleanup returned to zero. No
+per-question correctness was emitted or inspected.
+
+The existing closed taxonomy already defines `scorer_policy_error` as a
+benchmark-infrastructure result. A regression test now supplies an oversized
+decimal through the synthetic sealed lifecycle and requires that exact class.
+The lifecycle catches `decimal.InvalidOperation` at comparison only and maps it
+to `scorer_policy_error`; it does not alter numeric normalization or correctness
+semantics. The command entrypoint now also suppresses tracebacks and details for
+any unexpected internal exception. Focused regressions are 2/2. The failed
+batch's absent artifact and demonstrably external defect satisfy the rerun
+policy only after an authorized repair actually removes the deterministic
+failure and the full quality gates pass.
+
+Further review before restart found that classification alone would reproduce
+the same deterministic abort. The written frozen policy requires half-up
+rounding for finite decimal values and states no 28-digit limit; the limit comes
+only from Python's ambient decimal context. An operand-sized local context makes
+the documented operation total for finite PostgreSQL numerics, and a proposed
+general regression passed for both scorers. However, this changes executable
+scorer behavior after dev-A release. The proposal was reverted from the working
+implementation and human decision `omni-benchmark-ei0.3.2` now blocks restart:
+authorize that contract-conformance repair while retaining scorer identities,
+or retain exact implementation behavior and accept that dev-A scoring remains
+blocked. No question identity, private value, or correctness was inspected.
+
+The human selected option A. The finite-value regression was restored first and
+reproduced `decimal.InvalidOperation` under the ambient context. The authorized
+implementation sizes a temporary local decimal context from the operand's
+coefficient and adjusted integer width, then performs the same half-up
+quantization. Non-finite values remain on the existing path, and any decimal
+signal that still escapes normalization is classified as `scorer_policy_error`.
+Both frozen scorer identities are retained because the written semantic policy
+is unchanged. The focused scorer/custody suite is 55/55; Ruff and formatting
+pass. Full gates must pass before the authorized clean restart.
+
+### Frozen baseline result
+
+Full gates passed before restart: 1,480 tests passed, three explicit
+integration-only tests skipped, branch coverage was 84.20%, and Ruff,
+formatting, and diff checks passed. The single authorized clean restart exited
+0 and atomically published the three mode-0600 artifacts under
+`experiments/autoresearch/raw/public-direct-baseline-dev-a-scores-v1/`.
+
+Official Soft EX retained all 420 scheduled attempts: 366 were scoreable across
+122 questions and 54 were unscorable across 18 questions. Correct counts by
+condition were C1 9/122 (7.4%), C2 29/122 (23.8%), and C3 16/122 (13.1%); overall
+54/366 (14.8%). The remaining scoreable outcomes were 245 wrong answers and 67
+refused/errors. Sensitivity retained the same 420 attempts: 363 scoreable across
+121 questions and 57 unscorable across 19 questions. Correct counts were C1
+9/121 (7.4%), C2 28/121 (23.1%), and C3 14/121 (11.6%); overall 51/363 (14.0%).
+The remaining scoreable outcomes were 249 wrong answers and 63 refused/errors.
+
+The official, sensitivity, and receipt SHA-256 values are respectively
+`8eb81f50c2c6fcd4c7a3d6aacb82f2b2bb30f76b58622bf3e970962723021b04`,
+`69ff59d002c60d9b6c9c6d9a330381a1f21975ba3b3622b29567c426f2f267df`, and
+`b8faf76c60fc62d9df2b3f8d63e450e0e3aaddaf76a68dd60d030a40bf13fa3c`.
+Independent verification confirmed exact receipt hash bindings, 420 unique
+attempt records per scorer, exact authorized denominators and arithmetic,
+mode-0600 regular files in a mode-0700 directory, no forbidden SQL/annotation/
+row fields, and zero leftover score clones.
+
+The baseline establishes a large C2 advantage over both C1 and C3 on the exact
+frozen intersection, while the sensitivity scorer gives the same ordering and
+similar magnitudes. This is the starting point for the deliberately small
+dev-A experiment set; it does not authorize dev-B or sealed-test access.
+
+## 2026-08-28 — D-074: Revalidate the two C4 prerequisites without reopening C4
+
+**Hypothesis.** The two already-authorized C4 prerequisite implementations can
+be made freeze-ready entirely in isolated worktrees, without contacting Omni or
+reopening the quarantined C4 lane. The deployment lane should bind immutable
+verified semantic content and the original cost reservation; the independent
+human gate should fail before dispatcher construction unless a current,
+single-use approval exactly matches the frozen run. This is a general
+control-plane/provenance intervention, not a benchmark-question-specific one.
+
+Both isolated implementations are full-suite green. The semantic-content and
+cost-reservation lane passes 1,429 tests with five explicit integration skips.
+The approval lane passes 1,430 tests with the same five skips. Focused approval
+and C4-arm coverage passes 15/15, and both lanes pass Ruff, formatting, and diff
+checks. No C4 job, Omni request, credential/lease operation, private-label
+access, commit, push, or dirty-main mutation occurred.
+
+A security regression exposed one fail-closed gap before integration: when the
+approval directory's parent was a symlink, the first implementation rejected
+the path only after `mkdir(parents=True)` had created a directory outside the
+workspace. The RED test requires that no external directory be created. The
+repair now walks and creates path components relative to directory descriptors
+using `O_DIRECTORY|O_NOFOLLOW`, validates ownership and type, and creates the
+single-use marker with `O_EXCL|O_NOFOLLOW` and mode 0600. The regression and
+full suite pass.
+
+The prerequisites are not yet frozen. They overlap at the baseline CLI seam,
+and the approval lane was developed against the earlier lineage. Correct merge
+order is semantic/cost first, then approval; the combined approval deployment
+identity must additionally bind `semantic_model_sha256`. Under the repository's
+conservative git policy, human decision `omni-benchmark-ei0.4.1` now asks only
+for authority to create two scoped local commits and combine them in a fresh
+clean integration worktree. It does not authorize a push or any C4 dispatch.
+
+The human selected option A. The semantic-content/cost implementation became
+local commit `d6337c1`; the approval implementation was then integrated as
+`da84b4a` on the fresh clean branch `codex/c4-prerequisites-integrated`. The
+shared CLI resolution constructs the persisted budget policy and requires the
+approval before dispatcher construction. Its canonical deployment identity
+now hashes each target's branch ID, model ID, and `semantic_model_sha256`. A new
+focused regression first failed because the integrated digest helper did not
+exist, then passed after that exact binding was implemented. The four combined
+C4/control-plane suites pass 49/49. The full repository passes 1,438 tests with
+five explicit integration skips and 84.33% branch coverage; Ruff, formatting,
+and diff checks pass. Both prerequisite beads are closed. Nothing was pushed,
+main's dirty code state was not used or overwritten, and C4 remains stopped
+pending a separate fresh production authorization.
+
+## 2026-08-28 — D-075: Prepare an exact C4 authority without dispatching C4
+
+**Hypothesis.** A new public C4 run can be made human-authorizable without
+reopening the quarantined lane during preparation by binding authority to a
+fresh run/output identity and deriving every permitted hash from the clean
+integrated prerequisite commit. Preparation must make no Omni request, create
+no dispatcher, consume no receipt, and leave the output root absent. This is a
+general control-plane intervention; it does not use benchmark labels or change
+the evaluated system.
+
+The fresh identity is `public-c4-baseline-v2` at system commit
+`da84b4ae2305cba0f6b31a87f1545b2fdff8d29c`, with output root
+`experiments/autoresearch/raw/public-c4-baseline-v2`. A public-only dry run
+resolved 129 frozen attempts and ten verified deployment targets, reported
+`live_execution=not_started`, and produced schedule SHA-256
+`3dc74f45730079a5da635388a955b5a3c87059decc9cd57989a90c715bc0c12d` and
+execution-plan SHA-256
+`c7df1706cedc53256754b15942b357855c2e9163978641b2d0c45dac6c4bd59b`.
+The canonical target map, including each semantic-content digest, hashes to
+`d805eb6869201f28f928a5774263062302b29a5d8786fc3c1c120cb27f19df80`.
+
+Human decision `omni-benchmark-ei0.4.2.1` now carries that exact binding and the
+planned launch policy: concurrency three, 21,600-second wall bound with started
+blocks completed, USD 7 per-attempt reservation, USD 560 telemetry ceiling,
+and observed C4 cost basis USD 0.7275655. Because the receipt's `approved_at`
+must be within one minute of the durable Beads response, a fixed JSON blob would
+be operationally unsafe. A mode-0600 operator helper instead checks the clean
+commit, absent output and receipt, and open exact decision; only an explicit
+`--authorize` creates the one-hour canonical receipt, records the exact response,
+and validates it without consumption or launch. Its SHA-256 and one-line command
+are in `docs/human-decisions.md`.
+
+The helper's no-authority check reports
+`ready_not_authorized_not_launched`. Four focused receipt/gate tests pass. Final
+checks confirm the receipt, output root, and consumption marker remain absent.
+No C4/Omni/network, credential/lease, gold/dev-B/test-label, push, or dirty-main
+code action occurred.
+
+## 2026-08-28 — D-076: Run the one authorized public C4 v2 identity once
+
+**Pre-launch hypothesis.** The quarantined v1 failure was public API observer
+pressure at sustained concurrency five, not an evaluated-system answer defect.
+Running the exact frozen 129-attempt arm at concurrency three should reduce that
+pressure while leaving prompts, tools, deployment content, model behavior, and
+answer eligibility unchanged. The run must stop rather than substitute an
+identity or retry an evaluated answer if its existing Omni profile fails. This
+is a general infrastructure pacing choice and not a benchmark-specific semantic
+intervention.
+
+Human decision `omni-benchmark-ei0.4.2.1` authenticated the canonical one-hour
+receipt with SHA-256
+`d9869dfc57a4c8fc1ef536644228fd6f858b841d18af5ccd3262bfbdd42e0ed2`.
+Independent pre-launch validation matched the exact commit, run ID, output,
+schedule, execution-plan, and semantic-content deployment hashes recorded in
+D-075. The integrated worktree is clean; the v2 output root and single-use
+consumption marker are absent; no competing C4 process exists. The existing
+`benchmark-infra` Omni profile and its recorded HTTPS origin will be passed to
+the child environment without login, refresh, validation canary, copying, or
+other credential mutation. The authorized launch policy is concurrency three,
+21,600-second wall bound with started database-condition blocks completed, USD
+7 reservation per attempt, and USD 560 telemetry ceiling. No dev-B, test, gold,
+or sealed correctness input is in scope.
+
+### Closed infrastructure failure
+
+The gate consumed the exact receipt, then the three initially staged children
+all exited within seconds with the same stderr SHA-256 and sanitized Omni HTTP
+403. The batch stopped on the first surfaced child failure. It produced three
+mode-0600 child-failure diagnostics, zero generation artifacts, and zero
+correctness results; no C4 process remains. This does not test the concurrency
+hypothesis because authentication failed before governed execution. The spent
+receipt and v2 output root are immutable and cannot authorize or host a retry.
+
+While creating the follow-up human-login decision, an orchestration quoting bug
+placed Markdown backticks inside a double-quoted shell command. The shell
+interpreted the embedded text and started two unintended interactive `omni
+config login` processes. Both were identified and terminated before any browser
+flow completed; no agent supplied credentials or observed a success response.
+This was itself a violation of the agent-side no-login boundary and is recorded
+as a near-miss, not hidden as part of the original 403. `AGENTS.md` and
+`CLAUDE.md` now prohibit interpolating backticks or `$()` into shell commands and
+require file/stdin or literal-safe argument transport for Beads fields.
+
+Human decision `omni-benchmark-ei0.4.2.2` now requests one canonical,
+human-owned interactive login for the existing `benchmark-infra` profile after
+all agent work stops. It explicitly forbids an agent validation call and does
+not authorize a replacement run. After successful human recovery, v2 must be
+quarantined and a separately bound v3 package prepared.
+
+## 2026-08-28 — D-077: Quarantine the spent v2 identity before preparing v3
+
+**Pre-change hypothesis.** A consumed authorization plus pre-answer child
+failures must be excluded by the same mechanical registry as an interrupted
+generation run; relying on the absence of generation files would allow a later
+forged or misbound artifact to reuse the v2 identity. The smallest general fix
+is to bind all three immutable child-failure diagnostics and the approval
+consumption marker in a quarantine manifest, add the exact run ID to the closed
+registry, and reuse the existing baseline/autoresearch/scorer rejection paths.
+This is infrastructure provenance, not a semantic intervention.
+
+Human decision `omni-benchmark-ei0.4.2.2` records that the canonical
+`benchmark-infra` login completed successfully without an agent validation
+request. The login does not authorize a run. Work proceeds only on v2
+quarantine evidence in the isolated integration worktree; no Omni request,
+credential operation, protected-label access, or v3 launch is permitted.
+
+The RED quarantine test first failed because no v2 manifest existed. The
+implementation adds `public-c4-baseline-v2` to the closed quarantine registry
+and a schema-v1 manifest that binds all three child-failure paths and SHA-256
+values, their common stderr hash and pre-answer `child_exit` class, the consumed
+decision/receipt marker and its SHA-256, zero generation records, and explicit
+false correctness/gold access. The existing baseline, autoresearch, and scorer
+rejection paths now cover the v2 identity and forged v2 attempt IDs.
+
+An existing approval-gate test had used the now-real v2 identifier as synthetic
+input; the first full suite correctly failed earlier at the new quarantine
+check. Its synthetic identity was renamed to a non-production test value rather
+than weakening quarantine ordering. Focused quarantine/downstream checks pass
+6/6, focused C4/quarantine checks pass 11/11, and the corrected full suite
+passes 1,439 tests with five explicit integration skips and 84.33% branch
+coverage. Ruff, formatting, and diff checks pass. Human decision
+`omni-benchmark-aez.4.1` selected the scoped local-commit option. Commit
+`f1efd00ae49824b6eb13e6655157f83a022004f3` contains exactly the quarantine
+manifest, registry entry, and two related test files. The spent approval marker
+and raw v2 diagnostics remain untracked; nothing was pushed.
+
+## 2026-08-28 — D-078: Prepare an exact no-launch C4 v3 authority
+
+**Hypothesis.** After mechanically quarantining v2, a fresh v3 authority can be
+prepared from the new committed state without contacting Omni or weakening the
+single-use production gate. The new package must bind the changed run identity
+and commit-derived schedule/plan hashes, retain the unchanged authenticated
+semantic deployment digest, and refuse authorization when any tracked state,
+decision state, output identity, or receipt identity is unexpected. This is a
+general control-plane intervention, not a benchmark-question-specific change.
+
+The public-only dry run at commit
+`f1efd00ae49824b6eb13e6655157f83a022004f3` resolved 129 attempts and ten
+deployment targets and reported `live_execution=not_started`. The fresh run ID
+is `public-c4-baseline-v3`, with output root
+`experiments/autoresearch/raw/public-c4-baseline-v3`, schedule SHA-256
+`d9f9ea201e77f9e57e9a7859a983571ed35d45d2802b815cb48b2e2f5ec063b3`,
+execution-plan SHA-256
+`a875a10f5e0597aed2a14187418cee008144d7f4c950f44bf7c9fb3a098b7876`, and
+semantic deployment SHA-256
+`d805eb6869201f28f928a5774263062302b29a5d8786fc3c1c120cb27f19df80`.
+Human decision `omni-benchmark-ei0.4.2.3` carries the exact binding and planned
+concurrency-three, 21,600-second, USD 7 reservation / USD 560 telemetry policy.
+
+A RED helper test first failed because the v3 operator helper did not exist.
+The mode-0600 helper now checks the exact worktree, branch, commit, tracked and
+allowed-untracked state, open human decision, private approval directory, and
+absent v3 receipt/output identity. It uses argument-vector subprocesses rather
+than a shell, writes the canonical receipt with exclusive mode-0600 creation,
+records its byte-identical Beads response, and locally validates the result
+without consuming it. Its SHA-256 is
+`e586c44d3ee2c341423f1cbdadf911c418b8e8f09246954b0f27c007f48bd565`.
+The three focused helper tests pass, Ruff and format checks pass, and the
+no-authority check reports `ready_not_authorized_not_launched`. The receipt,
+v3 output root, and v3 consumption marker remain absent. No Omni/network,
+credential/lease, protected-label, push, or dispatch action occurred.
+
+## 2026-08-29 — D-079: Run the one authorized public C4 v3 identity once
+
+**Pre-launch hypothesis.** The v2 failure occurred before governed execution
+because the canonical Omni profile session was stale. After the human-owned
+canonical login, the exact fresh v3 identity should cross authentication; the
+already-frozen observer retry policy and concurrency-three pacing should then
+allow the 129-attempt public C4 arm to complete without changing prompts,
+semantic content, managed model behavior, or answer eligibility. Any new
+pre-answer infrastructure failure must stop and be preserved rather than
+triggering an identity substitution or answer-dependent rerun. This is a
+general authentication/pacing hypothesis, not a semantic intervention.
+
+Human decision `omni-benchmark-ei0.4.2.3` authenticated the canonical one-hour
+receipt with SHA-256
+`6f139bea9803a20d337bdb1ba1ee1325236c4b3953d181d75d5ed63b48136416`.
+Independent local validation matched the exact commit, v3 run/output identity,
+schedule, execution-plan, and semantic-deployment hashes recorded in D-078.
+The integration branch is at the exact committed state with only the spent v2
+approval marker untracked; the v3 output and consumption marker are absent;
+no competing v3 process exists. The child environment will use only the
+human-recovered `benchmark-infra` profile and previously recorded HTTPS origin,
+without login, refresh, credential inspection, or validation canary. The exact
+authorized launch policy remains concurrency three, a 21,600-second wall bound
+that finishes started database-condition blocks, USD 7 per-attempt reservation,
+and USD 560 C4 telemetry ceiling. No dev-B, test, gold, or sealed correctness
+input is in scope.
+
+### Closed infrastructure interruption
+
+The gate consumed the exact receipt before dispatcher construction. The
+human-recovered profile crossed authentication and the scheduler completed its
+already-started blocks, publishing 18 immutable generation/run records before
+one new pre-attempt `whoami` call returned sanitized Omni HTTP 429. The run then
+stopped fail-closed with one mode-0600 dispatcher diagnostic and no remaining
+process or staging directory. It contains 12 answered and six ordinary errored
+generation outcomes, but no correctness was inspected. All 85 preserved files
+are mode 0600, the aggregate inventory SHA-256 is
+`a060042bc053dee03af7c67f7672ea95fc62ae37abadff1ccb788bd2dec65588`,
+and the recursive forbidden-field count is zero. The dispatcher failure file
+SHA-256 is
+`8d29256298554263d16eb0e6dc079bfb79ca1af3f2ae8501ace2d5dfa2a9915c`;
+its stderr SHA-256 is
+`4d0716e29ee966ee9a2068052261c5e77382f980cc528945cc6f30f1303378bf`.
+
+The pacing/authentication hypothesis is only partially supported: login fixed
+the v2 403, but concurrency three did not prevent observer throttling. More
+importantly, source inspection after the stop refuted the premise that the
+observer retry policy was frozen in the exact run commit. The parent bead and
+research log contained a **pre-change hypothesis**, but no retry implementation
+or tests exist; pre-attempt `whoami` calls the CLI directly and treats HTTP 429
+as terminal. No v3 rerun or replacement is authorized. Beads
+`omni-benchmark-aez.5` and `omni-benchmark-aez.6` now track exact v3 quarantine
+and a prospective bounded retry limited to idempotent `whoami`/job-status
+observations. Any commit/freeze and production replacement require separate
+human authority.
+
+## 2026-08-29 — D-080: Bound retries to idempotent C4 observations
+
+**Pre-change hypothesis.** The v3 interruption was caused by a transient HTTP
+429 on the pre-attempt identity observation, not by an evaluated answer or a
+semantic-system action. A strict deterministic retry schedule of 1, 2, and 4
+seconds, applied only to idempotent `whoami` and job-status observations, should
+absorb short observer throttles without changing job submission, generated
+queries, result retrieval, planning, typed execution, answer eligibility, or
+question-specific behavior. Exhaustion must remain terminal. Observer retry
+count and wait time must be recorded separately from the evaluated system's
+`retry_count`, which remains unavailable for C4. RED tests will first prove the
+two permitted retry paths, strict exhaustion, non-429 single-shot behavior, and
+single-shot behavior for every non-idempotent/evaluated operation. This is a
+general infrastructure-control hypothesis. No Omni request, credential action,
+protected-label access, commit, or production dispatch is authorized by this
+development work.
+
+**Result.** The RED suite first failed only on the absent observer-retry and
+separate-telemetry contracts. The implementation retries sanitized HTTP 429
+responses on `whoami` and job-status only, using the exact 1/2/4-second default
+schedule and a maximum of three retries. It recognizes both textual and
+JSON-shaped status diagnostics, emits an explicit bounded-exhaustion detail,
+and leaves model `retry_count` null. Cumulative `observer_retry_count` and
+`observer_retry_wait_ms` are carried separately into C4 generation telemetry;
+the strict artifact validator rejects partial or inconsistent pairs. Tests
+prove that non-429 observer failures and list/read, job submission, job-result,
+plan, and typed-query operations remain single-shot. A first full gate exposed
+only the repository's 800-line module-focus limit; moving the new validator to
+the existing artifact-validation module resolved it without behavior change.
+The final full gate passes 1,452 tests with five expected skips and 84.33%
+branch coverage; Ruff, format, and diff checks pass. No Omni request,
+credential/lease action, protected-label access, correctness inspection, or
+production dispatch occurred.
+
+## 2026-08-29 — D-081: Prepare exact no-launch public C4 v4 authority
+
+**Preparation hypothesis.** With v3 quarantined and the bounded observer retry
+committed, a fresh v4 identity at `ae08ec8a1d76111302af8af6d04ad73dc64ff8e6`
+should resolve the same 129-question, ten-database public arm and unchanged
+semantic deployment while changing schedule/execution-plan hashes to bind the
+new run ID, output root, and system commit. A mode-0600 exact helper should fail
+closed unless the branch, commit, clean tracked state, two prior immutable
+consumption markers, open human decision, and absent v4 receipt/output all
+match. Package preparation must not contact Omni or create/consume a receipt.
+
+**Result.** The public-only dry run resolved 129 attempts and ten deployment
+targets with `live_execution=not_started`. The exact hashes are schedule
+`b58485722980f292180d3a3a8c956dc6bad37583e494dcc580ea49ac7338442d`,
+execution plan
+`5fab1f6967fc9e877aa333eaccd2ca9760f42646c93ad627d99b6b7c6da3d221`,
+and unchanged deployment
+`d805eb6869201f28f928a5774263062302b29a5d8786fc3c1c120cb27f19df80`.
+Human decision `omni-benchmark-ei0.4.2.4` is open. The helper at
+`/home/ds/.omni-benchmark-approvals/authorize-public-c4-baseline-v4.py` is mode
+0600 with SHA-256
+`67b214e91851b9dfecf946986a85845ccbebf20768f503e0aa124ae9a78a2f4c`.
+Seven recomputed binding/state checks pass; Ruff and format checks pass; two
+no-authority invocations report `ready_not_authorized_not_launched`. The v4
+receipt, output, and consumption identities remain absent. No Omni request,
+credential/lease action, protected-label access, correctness inspection,
+receipt creation/consumption, push, or dispatch occurred.
+
+## 2026-08-29 — D-082: Diagnose the dominant wrong-answer class without gold content
+
+**Pre-analysis hypothesis and fixed diagnostic.** Official dev-A scoring shows
+245 wrong answers among 366 scoreable direct-comparator attempts. The leading
+general mechanism is likely structural query construction—relation selection,
+join/grain handling, or aggregation—rather than inability to emit runnable SQL.
+Before reading any question-level outcome, join the immutable official score
+records to their hash-bound generation records and derive only SQL-shape
+features: relation count, join count, aggregate functions, grouping, distinct,
+windows, nesting, and filters. Report condition-stratified correct/wrong
+aggregates and paired C1/C2/C3 outcome transitions; do not print question IDs,
+SQL text, gold, values, or hidden annotations. The analysis may prioritize one
+of preregistered E01--E03 only if the aggregate evidence matches its mechanism;
+it cannot invent question-specific logic or change a human-controlled surface.
+The scorer artifacts remain immutable, C4 is awaiting exact authority, and
+dev-B/test are out of scope.
+
+**Result.** The reproducible SQL-shape analyzer is
+`experiments/analysis/wrong_answer_structure.py` at SHA-256
+`fbd8c05818f0470607f09b58af767212bd2232e886637cae3d9085c8cbef3c27`;
+its deterministic aggregate output SHA-256 is
+`ce34aabad46026f122e21b7449549a4a751bc10650f01dfd3abbb43cb48eb0fc`.
+Two focused tests pass and Ruff/format/diff checks are clean. It hash-verifies
+the official score artifact, resolves only the two frozen baseline run roots,
+verifies each generation-record digest, and emits no identifiers or SQL text.
+
+All 299 correct-or-wrong SQL records parse. Of 122 fully scoreable questions,
+61 are wrong in all three conditions and only nine are correct in all three;
+13 are corrected by C2 while both C1 and C3 remain wrong/refused. Mean relation
+count is consistently higher for wrong than correct SQL: C1 3.163 versus 2.000,
+C2 3.275 versus 2.483, and C3 3.041 versus 1.812. Small complex-shape groups are
+especially fragile: 30/31 window queries, 25/28 distinct queries, and 16/19
+nested queries are wrong. Mere aggregation or join presence is not itself a
+strong separator—aggregate-present and join-present wrong rates remain close to
+their absent groups—so the evidence does not justify a simplistic “ban joins”
+or “add aggregation” intervention. It instead supports the preregistered
+relationship/grain/dependency family while leaving E01 versus E02 causality
+unresolved. Preserve the E01-first order; use this result as a mechanism
+diagnostic, not outcome-selected question logic. No gold content, hidden
+annotation, result value, dev-B/test record, or C4 correctness was read.
+
+## D-070: First scored accuracy on dev-A, and the scorer settles the database question
+
+Date: 2026-08-29. Artifact `public-direct-baseline-dev-a-scores-v1`, both frozen
+scorers over 420 dev-A attempts (140 selected questions of 154 released, 14
+unrepresented, three direct conditions). No C4 arm: this is comparator baseline
+only, and neither primary perspective is available yet.
+
+### The two broken databases are a gold failure, not a system failure
+
+54 attempts returned `status=unscorable` with
+`failure_category=gold_statement_error`, and they are exactly `mental_healths`
+(27) and `organ_transplant` (27). Nothing else in the partition is unscorable.
+The benchmark's own reference SQL does not execute against those two databases.
+
+This is independent of the D-068 reconstruction from action evidence and lands in
+the same place by a different route: the environments reject the published table
+names, and they reject the gold query too. The evaluated system was never the
+variable. The classification question raised in D-068 is now moot for scoring,
+because the scorer excludes these questions rather than counting them as wrong,
+so the figures below rest on 122 clean questions per condition.
+
+### Accuracy
+
+Official Soft EX, correct over scoreable attempts, Wald 95%:
+
+| | correct | rate | 95% CI | wrong | refused/error |
+| --- | --- | --- | --- | --- | --- |
+| C1 raw schema | 9/122 | 7.4% | [2.7, 12.0] | 80 | 33 |
+| C2 searchable raw HKB | 29/122 | 23.8% | [16.2, 31.3] | 91 | 2 |
+| C3 exported semantic model | 16/122 | 13.1% | [7.1, 19.1] | 74 | 32 |
+
+C1 vs C2 z=-3.53 p=0.0004; C2 vs C3 z=+2.15 p=0.0319; C1 vs C3 z=-1.48 p=0.1395.
+
+Sensitivity scorer (`omni-multiset-decimal-v1`) over 121 scoreable: C1 7.4%, C2
+23.1%, C3 11.6%, with the same ordering and the same significant contrasts
+(C1 vs C2 p=0.0007, C2 vs C3 p=0.0175, C1 vs C3 p=0.2731). The two frozen scorers
+agree on the structure, which is the reason for reporting both.
+
+### What changes from the capture-level reading
+
+D-067 found C1 and C3 statistically indistinguishable on capture completion
+(p=0.80, and p=0.84 excluding the broken databases). On accuracy C3 nearly
+doubles C1 (16 against 9), though the contrast does not reach significance
+(p=0.14). Completion and correctness are not the same ranking, which is the
+concrete form of the warning recorded in D-066: under Soft EX a refusal and a
+wrong answer both score zero, so a condition that refuses less is not thereby
+more accurate.
+
+C2's completion advantage was 97.9% against roughly 75%. Its accuracy advantage
+is 23.8% against 7.4%, and 91 of its 122 attempts produce runnable SQL with wrong
+results. The advantage is real and it is much smaller than completion suggested.
+
+### The dominant outcome is a wrong answer
+
+Across all scored attempts: 245 wrong, 67 refused or errored, 54 correct. The
+direct comparators mostly answer, and mostly answer incorrectly. Absolute
+accuracy of 7-24% means the interesting question for the write-up is why runnable
+SQL returns wrong results, not why attempts fail to produce SQL. That reorients
+the failure work: `omni-benchmark-dx3` (refusal) and
+`omni-benchmark-dih.5.4.2.4.4.2.2.2` (budget) together cover 67 of 366 scored
+attempts, while 245 sit in a class none of the open beads addresses.
+
+### Outcome
+
+File the wrong-answer class as its own investigation, since it is now the largest
+by a factor of three and has no owner. Nothing here touches C4, so no primary
+endpoint has been estimated and none of these contrasts is confirmatory: C2-C1
+and C3-C2 are exploratory rung-level comparisons under the preregistration.
+
+## 2026-08-29 — D-083: E01 is already part of the frozen baseline
+
+### Pre-audit hypothesis
+
+Before implementing E01, verify whether its proposed contrast exists. The
+public semantic compiler may already topologically materialize acyclic,
+same-grain HKB dependencies, preserve exact source provenance, and reject
+missing, undeclared, cyclic, unresolved, and cross-grain dependency references.
+If so, E01 cannot identify an intervention effect and must be recorded as a
+no-op/inconclusive experiment rather than altered after baseline scoring.
+
+Bead `omni-benchmark-ei0.4.3`; change class: experiment-integrity audit. The
+audit is restricted to committed public HKB, schema, mapping, bundle, and
+manifest artifacts. It may emit aggregate counts only and may not access
+question-level outcomes, gold SQL or values, hidden annotations, dev-B/test,
+Omni, or credential/lease state.
+
+### Result
+
+The hypothesis is confirmed. Commit `4622f0f`, which predates the E01--E04
+preregistration, added fail-closed exact dependency-reference validation and
+expressed dependent formulas through compiled semantic fields. The current
+compiler also topologically orders dependency nodes and rejects cycles,
+unresolved dependencies, non-compiled dependencies, and dependencies outside
+the target table.
+
+The reproducible public-only audit
+`experiments/analysis/e01_baseline_collision.py` regenerated all 254 bundle
+files across all 18 databases byte-for-byte. The frozen baseline contains 193
+compiled elements, including 48 dependency-bearing elements and 70 executable
+same-grain dependency edges; compiled dependency depth reaches three. Its
+aggregate output SHA-256 is
+`fa620c48856abf7a6acefa0ae09150522b0399c270d397c904d1ce66d7ee0a51`.
+Two focused tests pass; Ruff, formatting, and diff checks are clean.
+
+### Outcome
+
+INCONCLUSIVE — ALREADY BASELINE. E01 has no baseline-versus-intervention
+contrast and cannot be run honestly as written. Do not relabel the existing
+mechanism as a new candidate, weaken its guardrails to manufacture a contrast,
+or change the preregistered definition. Treat the baseline itself as evidence
+that conservative same-grain dependency composition alone does not resolve the
+observed accuracy gap, and advance to E02 in the frozen sequence.
+
+### Product implication
+
+Experiment registries should mechanically diff proposed intervention surfaces
+against the frozen system before registration. A semantic-model provenance
+view that explicitly enumerates already-active transformation mechanisms would
+make no-op experiments easier to catch before evaluation begins.
+
+## 2026-08-29 — D-084: Start E02 with a public relationship contract
+
+### Pre-change hypothesis
+
+A deterministic planner can safely identify a conservative subset of
+cross-table relationships using public schema structure alone: accept a foreign
+key only when its target columns exactly match a declared primary or unique key
+and both source and target entity grains are explicit. Encode many-to-one
+cardinality, nullable-source optionality, exact join columns, and public-schema
+provenance. Defer non-unique targets, missing grains, unresolved references, and
+all other ambiguous edges with explicit reasons instead of guessing.
+
+Bead `omni-benchmark-ei0.4.4`; generality: cross-database/general;
+optimization surface: structural relationship and grain modeling. RED tests
+must cover primary and unique targets, composite-key order, source optionality,
+unknown source grain, non-unique targets, determinism, and protected-field
+rejection before implementation. The first artifact is a candidate relationship
+contract only: it does not deploy to Omni or reclassify an HKB metric. A metric
+may move out of `defer_cross_grain` only when the public HKB supplies the exact
+required aggregation. No question-level outcome, gold SQL/value, hidden
+annotation, dev-B/test, live-system, or credential/lease input is permitted.
+
+### Result
+
+The candidate contract is implemented without deployment. Across all 18 public
+schema IRs, the deterministic inventory finds 1,228 declared foreign keys.
+Exactly 1,049 target a declared primary/unique key and have resolvable source
+and target entity grains; 179 target non-unique columns and remain explicitly
+deferred. Of the eligible relationships, 281 require exactly one target and 768
+permit zero or one because at least one source FK column is nullable. No public
+schema contains a multi-column eligible FK.
+
+The planner retains exact join columns and public-schema provenance, encodes
+`many_to_one` cardinality and source optionality, and rejects or defers
+protected fields, non-public provenance, unresolved/wrong-table columns,
+unresolved grains, missing tables, non-unique targets, malformed column pairs,
+and invalid nullability. It does not emit Omni files or change mapping
+dispositions. Seven focused tests pass, and the repository-wide gate passes
+1,491 tests with three expected skips and 84.18% branch coverage; Ruff,
+formatting, and diff checks are clean. The deterministic aggregate inventory
+SHA-256 is
+`767754900926f760b7f1bb1e482d679789bd0eb0b30fdb7dfca2eae8f74aa45f`.
+
+### Outcome
+
+KEEP as an E02 prerequisite. Relationship structure is much less sparse than
+the baseline semantic model suggests, but optionality is dominant and 179
+declared edges fail the conservative uniqueness gate. The next E02 step may
+compile only this accepted contract into an isolated candidate bundle and must
+still leave every metric deferred unless its public HKB provides an explicit
+aggregation contract.
+
+## 2026-08-29 — D-085: Compile the bounded E02 relationship candidate
+
+### Pre-change hypothesis
+
+The first deployable E02 candidate should include only accepted public
+relationship contracts whose source and target tables already have views in
+the frozen semantic bundle. This bounds the candidate to 91 relationships
+across 16 databases; the other two databases have no eligible modeled edge,
+and no modeled source-target pair is duplicated. Emit Omni's documented global
+relationship form using `always_left`, `many_to_one`, and explicit
+`reversible: false`, then expose only direct outbound target views from each
+source topic. Preserve exact public provenance in the bundle manifest.
+
+Bead `omni-benchmark-ei0.4.5`; generality: cross-database/general;
+optimization surface: relationship-aware semantic bundle compilation. The
+existing baseline compiler must remain byte-identical; E02 is an opt-in
+candidate compiler. RED tests must cover relationship SQL, direction,
+cardinality, topic exposure, unmodeled-edge exclusion, deterministic manifest
+provenance, and safe deployment-plan parsing of Omni's top-level relationship
+sequence without relaxing the mapping-only contract for views and topics.
+This step does not reclassify any HKB metric, deploy to Omni, inspect outcomes,
+or access gold, hidden annotations, dev-B/test, or credential/lease state.
+
+### Result
+
+The opt-in compiler emits 91 deterministic global relationships across 16
+databases and exposes them from 67 direct source topics. The 18 candidate
+bundles contain 272 files including one explicit `relationships` sequence per
+database. Every emitted edge uses `always_left`, `many_to_one`, and
+`reversible: false`, with bounded equality predicates over exact modeled field
+references. This matches Omni's documented global relationship schema and
+cardinality semantics:
+<https://docs.omni.co/modeling/relationships/index> and
+<https://docs.omni.co/modeling/relationships/parameters/relationship-type>.
+
+All baseline semantic elements remain byte-for-byte equal at the manifest
+level (`metric_disposition_changes=0`); E02 adds relationship structure only.
+The baseline compiler remains unchanged as the default path. Exact public
+foreign-key provenance and source optionality stay in the candidate manifest.
+A shared protected-field guard removes the prospective compiler import cycle
+without weakening the existing `SemanticBundleError` boundary.
+
+The deployment planner now recognizes only the exact `relationships` file name,
+requires a top-level YAML sequence, rejects mappings or malformed entries,
+permits only the fixed non-reversible many-to-one shape, and bounds `on_sql` to
+one or more exact field-reference equalities. View and topic files remain
+mapping-only. The deterministic aggregate candidate SHA-256 is
+`cc1f3f81e9c387a3ce1358dddf17073fa0506bce0318f59a07bf7044002ed06a`.
+The focused relationship/bundle/deployment suite passes 124 tests; the full
+repository gate passes 1,497 tests with three expected skips and 84.17% branch
+coverage; Ruff, formatting, and diff checks are clean.
+
+### Outcome
+
+KEEP as the frozen offline E02 candidate implementation. No bundle was written
+to a production model, no Omni request was made, and no metric was promoted.
+The next authorized experiment step is immutable candidate publication plus an
+isolated public-only deployment/validation; accuracy evaluation still requires
+the established C4 experiment authorization and full dev-A gate.
+
+## 2026-08-29 — D-086: Hash-bind and locally authenticate E02 publication
+
+### Pre-change hypothesis
+
+The existing public bundle publication boundary can expose a separate opt-in
+E02 build/publish API while retaining byte-identical baseline behavior. Both
+paths must authenticate the same bundle spec, HKB IR, schema IR, mapping, and
+mapping-manifest inputs; recursively reject protected fields; hash every output
+file; refuse symlinked inputs and unsafe/existing destinations; and retain the
+same source-provenance manifest. E02 output must additionally pass the strict
+local deployment-plan parser, including its relationship sequence contract.
+
+Bead `omni-benchmark-ei0.4.6`; change class: general publication integration.
+RED tests must prove separate E02 build and publication, unchanged baseline
+output, relationship-file hash binding, and deployment-plan acceptance. Then
+build all 18 public candidates in ephemeral local directories and authenticate
+them without any Omni request. No credential, deployment, scoring, outcome,
+gold, hidden annotation, dev-B, or test action is permitted.
+
+### Result
+
+Separate `build_e02_bundle_artifacts` and `publish_e02_bundle_artifacts` APIs
+now reuse the unchanged authentication, input-size, protected-field,
+source-hash, exclusive-publication, and manifest boundaries. The existing
+baseline build/publish API remains the default and its tests remain
+byte-identical. E02 publication includes the exact `relationships` file in the
+file manifest and SHA-binds it alongside every view and topic.
+
+The reproducible ephemeral validator published all 18 public candidates, then
+successfully rebuilt 18 strict deployment plans over 272 files and 91
+relationships. Temporary outputs were destroyed on context exit. The aggregate
+candidate-set SHA-256 is
+`16ee2a02f994d3f90234e24366fe6ddefd041b3b0d2a7e63c001b4803a0fe6da`;
+the canonical aggregate validation-output SHA-256 is
+`658c71d8c7f6c93317790e5986d8530ec3caab671b1cb8586d9a945d896d6f72`.
+Twelve focused publication tests pass. The full repository gate passes 1,500
+tests with three expected skips and 84.18% branch coverage; Ruff, formatting,
+and diff checks are clean.
+
+### Outcome
+
+KEEP. E02 is now reproducibly publishable and locally deployment-ready without
+committing generated run artifacts or contacting Omni. The remaining boundary
+is genuinely external: isolated candidate deployment/validation and later
+full-dev-A evaluation require the appropriate live authority and stable
+credential ownership. No such action occurred here.
+
+## 2026-08-29 — D-087: Advance the results report without crossing the live gate
+
+### Pre-edit hypothesis
+
+The standalone results report can absorb the frozen direct dev-A baseline and
+the completed E01/E02 offline trajectory now, while leaving C4, dev-B, and
+sealed endpoints visibly pending. Doing so will shorten the post-evaluation
+critical path and expose narrative gaps without turning development evidence
+into a held-out claim.
+
+The edit is restricted to already-recorded aggregate evidence. It may report
+the immutable official and sensitivity denominators, condition-level counts,
+SQL-shape aggregates, and public-only E01/E02 artifacts. It may not inspect or
+report question identities, SQL text, result values, hidden annotations,
+dev-B/test outcomes, C4 correctness, or any sealed result. The bounded schema
+retrieval claim must remain separate from per-attempt token and cost telemetry.
+
+### Planned outcome
+
+Update `RESULTS.md` so its status, executive summary, baseline table,
+experiment trajectory, recommendations, and limitations match the frozen
+evidence as of D-086. Preserve explicit pending cells for every result that has
+not passed its established custody or live-execution gate. Validate links,
+arithmetic, prose, and the absence of accidental hidden-result claims before a
+narrow commit.
+
+### Result
+
+Commit `c6073bc` updates only `RESULTS.md`. The report now gives the exact
+official and sensitivity denominators and C1-C3 counts, separates capture
+completion from accuracy, records the SQL-shape diagnostic, marks E01
+inconclusive because it was already active, and records E02 as a locally
+authenticated offline candidate. C4, dev-B, final-candidate, and sealed tables
+remain pending. The schema-retrieval section distinguishes the four-table/64
+KiB payload bound from the observed $1.48-$1.84 mean per-attempt costs.
+
+All local Markdown link targets exist; the disposition and baseline arithmetic
+recompute exactly; `git diff --check` passes; and the report SHA-256 is
+`3206c66343ef999f5e9b1611625be7d20a3262772278a8aa8ff8a098da439d86`.
+The edit used only existing aggregate/public evidence. No run artifact, private
+record, question identity, SQL text, result value, hidden annotation, dev-B/test
+record, credential, or live service was accessed.
+
+### Outcome
+
+KEEP. The primary report is materially closer to submission-ready and can be
+filled forward after C4 and sealed evaluation without restructuring. Bead
+`omni-benchmark-zjp` remains open because its held-out sections are still
+blocked by the established live and custody gates.
+
+## 2026-08-29 — D-088: Restore the report's mechanism context
+
+### Pre-edit hypothesis
+
+The results report still omits two public-method facts required by its durable
+brief: the HKB's multi-hop dependency topology and the ordered failure-mechanism
+ladder. Adding them will make the grain/relationship finding interpretable and
+will show how later error attribution avoids collapsing every failure into model
+reasoning.
+
+Use only the aggregate public reconnaissance already recorded in
+`docs/benchmark-notes.md` and the preregistered ladder in
+`docs/failure-taxonomy.md`. Do not classify any question from hidden
+annotations, access a private record, or imply that ladder prevalence has been
+measured. Preserve every live and sealed placeholder.
+
+### Result and outcome
+
+KEEP in commit `8ebb05b`. Section 3 now records 1,090 public HKB entries, 945
+dependency edges, 560 dependency-bearing entries, 344 edges into another
+derived entry, multi-hop structure in 18/18 databases, and a maximum six-edge
+chain. Section 5 states the fixed earliest-supported mechanism sequence from
+absence through residual reasoning and explicitly leaves its prevalence
+pending.
+
+The final `RESULTS.md` SHA-256 is
+`dd7e713778b74430408fa16c60bf7ef33657688ef0a6c3b21499b5afbdc2356f`.
+Local links, aggregate arithmetic, prose review, and `git diff --check` pass.
+No hidden annotation or private/run artifact was opened, and all live and sealed
+gates remain unchanged.
+
+## 2026-08-29 — D-089: Integrate E02 with the exact C4 control plane offline
+
+### Pre-integration hypothesis and boundary
+
+The already-reviewed E02 commits can be replayed onto exact public C4 v4 system
+commit `ae08ec8a1d76111302af8af6d04ad73dc64ff8e6` in a new isolated worktree,
+preserving the immutable deployment-content, budget, human-approval, quarantine,
+and bounded-observer controls. The resulting branch should be ready for a
+separately authorized post-baseline E02 deployment without replaying unrelated
+main history.
+
+Bead `omni-benchmark-ei0.4.7`; generality: cross-database experiment
+integration. This step is offline only. It may compile, publish ephemerally, and
+authenticate public candidate bundles, but it may not contact Omni, inspect or
+alter credentials, consume an approval, deploy a model, launch a run, or access
+gold, hidden annotations, dev-B, or test records.
+
+### Result
+
+Clean isolated branch `codex/e02-c4-integrated` at
+`0fc539bf8d9889e922c79a6d83d0c158bdbaa797` descends directly from `ae08ec8`
+through four scoped commits: `e41c366` (relationship contracts), `b26b624`
+(bounded compiler), `9fc21c6` (authenticated publication), and `0fc539b`
+(combined readback regression). Only the semantic deployment parser overlapped.
+The resolution retains attested physical-field SQL restoration for view
+readback while admitting only the fixed, bounded global relationship sequence.
+A regression covers both mechanisms in the same deployment plan and passes
+under normal and optimized Python execution.
+
+The exact C4 approval, batch, live-dispatch, live-deployment, and quarantine
+paths are byte-identical to `ae08ec8`, which remains an ancestor. The final
+branch changes only the three E02 implementation/test surfaces plus the one
+combined regression. Baseline committed-artifact regeneration stays green.
+
+Public-only validation still finds 1,228 foreign keys, 1,049 conservative
+contracts, 179 non-unique deferrals, 91 modeled relationships across 16
+databases, 67 joined source topics, 272 files, and zero metric-disposition
+changes. All 18 candidates publish ephemerally and authenticate. The integrated
+candidate-set SHA-256 is
+`c08ee8c10e4b2c26a142da5f36971dbb19488a827febf0514f5876e75b3a6f61`;
+the canonical publication-validation output SHA-256 is
+`d110586b0e163af9a4a7e6500aed2e3e9200e213198a96ad6905cfc27e736a16`.
+
+Final gates pass: 1,469 tests, five explicit integration skips, 84.30% branch
+coverage, Ruff, formatting, and diff checks. The worktree is clean. No live
+request, credential action, approval consumption, deployment, run, protected
+label, push, or main-worktree code mutation occurred.
+
+### Outcome
+
+KEEP. The post-baseline E02 experiment now has a clean, tested system branch.
+This branch is not a launch authorization. Public C4 v4 must first complete and
+freeze under its exact human receipt; E02 deployment and evaluation still need
+a later, separately bound authorization package.
+
+Main documentation commit `b3c7b03` updates only `RESULTS.md` to preserve both
+the initial main-only candidate hash and the deployment-relevant integrated
+candidate hash. The resulting report SHA-256 is
+`599fa13bfc237aba7c07575a88ccbf2c4fa1ce1686b869f07f0fda6371553591`;
+links, arithmetic, prose, and diff checks pass.
+
+## 2026-08-29 — D-111: Dispatch the exact authorized public C4 v4 baseline
+
+### Pre-launch hypothesis and boundary
+
+The bounded HTTP-429 retry added at exact system commit
+`ae08ec8a1d76111302af8af6d04ad73dc64ff8e6` should allow the committed
+129-attempt, ten-deployment public C4 arm to complete without changing its
+semantic content, run identity, schedule, or execution plan. This run is needed
+to freeze the governed development baseline before the separately authorized
+E02 experiment.
+
+Human decision `omni-benchmark-ei0.4.2.4` supplied the exact one-hour v4
+receipt at 2026-08-29T12:05:28Z. Its file SHA-256 is
+`04d7c29f2f1fe481f3f41c6a605c08e286292c004b1ae350d0fdf1c38cc2523f`.
+Before launch, the receipt and byte-identical Beads response validate; the
+system branch and commit match; the v4 output and consumption identities are
+absent; and no competing C4 process exists. The authorized policy is concurrency
+three, a 21,600-second wall bound that finishes started database-condition
+blocks, a USD 7 per-attempt reservation, and a USD 560 telemetry ceiling.
+
+This is one public-only dispatch. It may consume only that receipt and write
+only the exact v4 run root. It may not access train gold, dev-B, test/sealed
+data, correctness, or hidden annotations; touch credentials or Claude leases;
+reuse a prior identity; rerun an attempt because of its answer; push; or mutate
+the dirty main worktree beyond this contemporaneous log. Any infrastructure
+failure remains governed by the preregistered rerun policy.
+
+### Result and infrastructure adjudication
+
+The exact receipt was consumed once. All three initially scheduled children
+then exited before any evaluated answer because `OMNI_BASE_URL` was absent from
+the inherited launch environment. Their sanitized failure sidecars share stderr
+SHA-256
+`db346d56108e1a2fcad01409cd9b8fe3d266bf3b7b3e1cfa5a35e6f85070f4ad`.
+The v4 root contains exactly three mode-0600 failure records, zero generation
+records, and zero correctness records; no process or staging directory remains.
+No OAuth call, protected-label access, correctness inspection, or answer-based
+decision occurred.
+
+This is a mechanically demonstrated benchmark-infrastructure failure outside
+the evaluated system. V4 is therefore incomplete and non-scoreable, but its
+receipt and run identity remain spent and may not be reused. The three failure
+file SHA-256 values are
+`0f2fa826cac99a11b9a3b43a53c7ec68c5579b3c13a480f8b826d979ee65d4b0`,
+`b419658c5207409dd55e1e011860069c289902f78bb6ec8d6252c2ab6fdb311d`,
+and `6d036d424da3d11245f55d8a0302191002842496cfd877e5d34de699642965c8`.
+
+### Preventive fix and outcome
+
+TDD reproduced the sequencing defect: with a syntactically absent Omni
+environment and a nominal receipt path, the live entry point reached approval
+validation instead of failing environment preflight. Local commit
+`e439b183a26a5d722a3317a7f89c650c8205ddb6` adds v4 to the closed quarantine
+registry, binds the spent consumption marker and all three diagnostics, and
+reuses the frozen `OmniCliSettings` validator before receipt validation or
+consumption. The preflight checks the HTTPS origin and exactly one authentication
+mode without opening or validating OAuth credentials and without making a
+network request.
+
+Focused gates pass 21 tests. The full repository gate passes 1,454 tests with
+five expected skips and 84.34% branch coverage; Ruff, formatting, and diff checks
+pass. Security review found no credential exposure, broader environment
+inheritance, or new network behavior. Outcome: DISCARD v4 as score evidence;
+KEEP its quarantine and the general pre-consumption preflight repair.
+
+### Fresh no-launch v5 package
+
+The provider-inert v5 dry run from exact commit `e439b18` resolves the same 129
+public attempts and ten deployment targets with `live_execution=not_started`.
+Run `public-c4-baseline-v5` binds schedule SHA-256
+`2b8108874603fe6a372b1cc137d642623f31b985ff1d9d2a25e368e522793190`,
+execution-plan SHA-256
+`2d03cd2357dba1fb8c00aa4716286bb6d2501538df0ea0a775d8f0249ed8b3b0`,
+and unchanged semantic-deployment SHA-256
+`d805eb6869201f28f928a5774263062302b29a5d8786fc3c1c120cb27f19df80`.
+Human decision `omni-benchmark-aez.7.1` is open. The mode-0600 exact helper has
+SHA-256
+`9a2502c0a81e48c556934d0419eca407aac76e1e4c3007aee7599badf96bfc3c`
+and twice reports `ready_not_authorized_not_launched` after recomputing all
+bindings and syntactically validating the recorded non-secret launch origin and
+profile. No receipt, consumption marker, v5 output, Omni request, credential
+action, or replacement dispatch exists.
+
+## 2026-08-29 — D-113: Prepare an exact fail-closed v5 runner
+
+### Pre-change hypothesis and boundary
+
+The v4 incident showed that a correct authorization helper is insufficient if
+the later launch is reconstructed manually from ambient shell state. A separate
+runner can eliminate that seam by recomputing every public/provider-inert v5
+binding, requiring the canonical private receipt, supplying the exact recorded
+non-secret Omni origin/profile through a minimal child environment, and invoking
+only a fixed argv. Default mode must remain incapable of consumption or launch.
+Bead `omni-benchmark-aez.8`; no provider, OAuth validation/mutation, protected
+label, receipt, dispatcher, or push action is permitted during preparation.
+
+### Result
+
+Mode-0600 runner
+`/home/ds/.omni-benchmark-approvals/launch_public_c4_baseline_v5.py` has SHA-256
+`ef673e9c9ecbe219ff9aef52e496ba44b4a260b99db0723e058428c9a1e3f3cc`.
+It requires the exact branch/commit, clean tracked state plus the three known
+prior consumption markers, absent v5 output/consumption, no exact v5 process,
+recomputed 129-attempt schedule/plan/deployment bindings, a mode-0600
+single-link receipt authenticated by the exact Beads response, and syntactically
+valid fixed profile settings. It accepts no token or binding argument. The child
+environment drops any ambient `OMNI_API_TOKEN`, and execution uses a tuple argv
+with no shell.
+
+RED began with the absent module. The initial 21-test suite covered default
+non-launch, missing/consumed/unsafe receipts, exact decision and binding checks,
+process matching, sanitized failures, token exclusion, and exact subprocess
+arguments at 82.16% branch-aware coverage. A final cross-directory rehearsal
+then exposed that caller-selected `uv` could import main's older package before
+the runner changed directory. A subprocess regression reproduced it, and the
+runner now prepends the exact C4 worktree source path before any project import.
+The final 22 tests pass at 82.96% branch-aware coverage; Ruff and formatting
+pass. Provider-inert invocations from both main and the C4 worktree report
+`waiting_for_human_receipt_not_launched`; receipt, consumption, and output remain
+absent. Security review found no embedded credential, secret-bearing argument,
+shell expansion, token forwarding, or sensitive error output.
+
+### Outcome
+
+KEEP. After the human creates and pastes the exact v5 receipt, the agent can use
+one reviewed command surface instead of reconstructing launch state. The runner
+does not expand human authority: `--execute` still fails without the fresh
+authenticated receipt, and approval consumption remains inside the frozen
+production gate before dispatcher construction.
+
+## 2026-08-29 — D-114: Promote the immutable direct-baseline freeze into the final lineage
+
+### Pre-integration hypothesis and boundary
+
+The 112-preserved plus 518-continuation direct baseline was already complete,
+content-addressed, and frozen before the train-only release, but its tested
+freezer remained uncommitted in the dedicated isolated worktree. Promoting that
+implementation and only its exact schedule/refusal prerequisites into the clean
+MVP lineage should make the public-baseline evidence reproducible without
+regenerating an attempt or importing deferred comparator experiments.
+
+Beads `omni-benchmark-dih.5.4.2.4.4.2.2.5` and
+`omni-benchmark-ei0.8`; generality: evaluation provenance. This step may inspect
+public code, Git objects, aggregate counts, and hashes. It may not open run
+answers or correctness, regenerate the frozen baseline, access protected labels,
+contact a provider, inspect or mutate credentials or leases, consume a receipt,
+launch C4, or push.
+
+### Result
+
+The stranded four-file implementation was reviewed and committed in its clean
+worktree as `615fd4c912fa51b2e58b0dd358df34e30fd24864`. Fresh isolated gates
+passed 17 focused tests at 81.37% branch-aware module coverage and 1,424 full
+tests with five expected skips at 84.45%; Ruff, formatting, and diff checks
+passed. The existing mode-0600 freeze artifact was not rewritten and remains
+SHA-256 `04c75eb40c6a8bbb59af07358733b59a10d9b28787443d622fae5f31887bd725`.
+
+The first final-lineage compatibility gate failed closed because the sealed
+branch forked before commit `5be315e`, which supplies the committed exclusion
+loader used to derive the exact 630-attempt schedule. Rather than merge the
+unrelated C1-sensitivity side branch, the final lineage now carries the exact
+historical exclusion/refusal patch in `b737f80` after freezer promotion
+`e1d17ac`. Conflict resolution preserved both the later C4 schedule controls and
+the earlier direct exclusion identity. Three historical test expectations were
+updated to the later contract: evaluated-system refusals retain
+`no_answer_insufficient_context`, set `failure_origin=evaluated_system`, and do
+not populate `harness_failure`. The exact script entrypoint and its red/green
+test were added in `cbc69ec`.
+
+Clean branch `codex/mvp-sealed-integrated` now ends at
+`cbc69ecced83f6c15abf384c9ce94b01d5f8e27f`. The final focused cross-lineage
+gate passed 283 tests; the complete gate passed 1,843 tests with five expected
+environment skips and 83.51% branch coverage. Repository-wide Ruff, formatting,
+diff, CLI-help, and clean-status checks passed. Code/security review found no
+credential, provider, shell-expansion, path-escape, overwrite, or protected-data
+path in the freezer.
+
+### Outcome
+
+KEEP. The clean final MVP lineage now contains the immutable direct-baseline
+freeze mechanism as well as the previously unified report, C4/E02 path, Freeze
+B, sealed generation, scoring custody, and report renderer. A later independent
+coverage audit opened `omni-benchmark-wk0`, which now blocks v5 until the human
+fixes the pre-result dev-A frame. The provider-inert v5 runner still reports
+`waiting_for_human_receipt_not_launched`; v5 receipt, output, and consumption
+remain absent. No live, protected, credential, lease, or remote action occurred.
+
 ## D-071: The two failing databases were never fully restored, and the omission mechanism hid it
 
 > **Retracted by D-072.** The conclusion below is wrong: the skipped tables are
@@ -4795,6 +6970,11 @@ sidecars, and it must land together with re-provisioning or the recorded
 
 ## D-072: D-071 was wrong. The missing tables are an upstream defect, and the omission mechanism reproduces it correctly
 
+> **Arithmetic corrected by D-073.** The upstream-loader diagnosis below
+> stands, but 14 plus 13 describes the broader train/direct-capture population,
+> not dev-A. The committed dev-A split contains nine plus nine affected
+> questions: 18 total.
+
 D-071 concluded that `mental_healths_large` and `organ_transplant_large` were
 never fully restored because of a case-sensitive dump lookup in this repository,
 and that the data was recoverable by fixing resolution. That conclusion is
@@ -4904,3 +7084,368 @@ code 0: 71 tables skipped over a case variant present in the archive, and one on
 
 No inventory field was changed, no database was re-provisioned, and no attempt was
 rerun. The `inventory_sha256` pin is untouched.
+
+## D-073: Correct D-072's dev-A arithmetic before changing the promotion frame
+
+### Hypothesis
+
+If D-072's 14 plus 13 count described dev-A, joining the committed
+`dev_a_ids.txt` membership to the public `selected_database` field would return
+those counts for `mental_healths_large` and `organ_transplant_large`.
+
+### Result
+
+It returns nine and nine: 18 dev-A questions total. The 14 and 13 counts are the
+broader train/direct-capture population and were mislabeled as dev-A in D-072.
+This agrees with the already frozen dev-A conformance result: exactly 18
+questions, or 54 C1-C3 attempts, are officially unscorable with
+`gold_statement_error`.
+
+The upstream-loader diagnosis in D-072 still stands. The arithmetic correction
+changes only the development-frame consequence: 154 scheduled dev-A questions
+contain 136 answerable and 18 benchmark-invalid questions. Current direct
+C1-C3 evidence has 122 official-scoreable questions because it also preserves
+the separate nine-question cybermarket and five-question archeology pre-run
+exclusions. The authorized cybermarket recovery can raise that direct
+intersection to 131; archeology remains an explicit five-question exclusion.
+
+### Outcome
+
+`omni-benchmark-1u8` is corrected before human response. Option A preserves the
+all-18-database and all-154-scheduled intent while preregistering the exact 18
+scorer-conformance exclusions and using 136 as C4's answerable promotion
+denominator. Option B keeps a literal all-154-scoreable rule, which makes the
+optimization phase inconclusive in the official environment. No private record,
+dev-B outcome, test label, database, attempt, or provider was accessed or
+changed to make this correction.
+
+## D-122: Freeze the 154-scheduled / 136-answerable dev-A frame
+
+### Hypothesis and authorization
+
+Human response A on `omni-benchmark-1u8` authorizes a fixed scorer-conformance
+frame before any all-18 C4 result exists: schedule all 154 dev-A questions,
+retain the 18 questions whose gold cannot run in the official environment as
+explicitly unscorable, and evaluate promotion on all 136 answerable questions.
+The exact 18 identities should be derivable from committed public split
+membership and public database fields, without reading private record values.
+
+### TDD and implementation
+
+A new test first failed because no public-only derivation module or exclusion
+artifact existed. The implementation joins `dev_a_ids.txt` to the public
+eligible-question manifest, requires exactly 154 unique dev-A IDs, exact
+manifest coverage, and nine affected IDs per database, then emits canonical
+JSON. The committed exclusion artifact regenerates byte-for-byte and has
+SHA-256 `0686255b77726ec5d5126ed53d42cf2af83e5746f34e49794381b06da805489a`.
+
+`experiments/planned-dev-a-interventions-v1.json` is now present on the clean
+MVP lineage at schema version 2. Every intervention retains all-154 scheduling,
+binds the exclusion artifact, and requires complete coverage of the fixed 136
+answerable questions. The stopping rule rejects any additional narrowing. Its
+canonical SHA-256 is
+`760cc8b7ded93168b12d402242531b9078f77b1d5f5dbe741cc8e77676293403`.
+
+The reproducible all-18 loader-fidelity audit is committed at
+`experiments/analysis/livesqlbench-loader-fidelity-v1.json`, SHA-256
+`3966d135a5fddfde6215ebc568bb26145ee4baaa9427864d41216740665dbc0c`.
+The separate upstream report remains a draft for human review and has not been
+sent.
+
+### Outcome
+
+KEEP. The three focused derivation/canonicalization tests pass. No question-
+specific runtime input, private label value, dev-B outcome, test label,
+database/provider call, credential, rerun, C4 action, or sealed action entered
+the change. Final repository gate: 1,884 passed, five expected environment-
+dependent skips, 83.59% branch coverage; Ruff, formatting, and diff checks pass.
+
+## D-123: Freeze the corrected all-18 baseline deployment request
+
+### Hypothesis
+
+The remaining `omni-benchmark-dih.17` live oracle can be authorized without
+conflating the C4 baseline with the E02 intervention if one provider-inert
+request binds the exact corrected baseline bundle set, one append-only run
+identity, isolated resources, pacing, and explicit negative scope before any
+Omni contact.
+
+### Offline result
+
+Loading semantic plans only from Git commit
+`a684a3ec9c1c36aeaf8648be76d0127f6597d696` yields 18 valid baseline plans,
+254 files, zero preflight failures, and bundle-set SHA-256
+`2487b4ad6bb6c82a49cca76f3487c76a8311b688fe22da06b8c2f4436de83a8b`.
+The separately regenerated E02 intervention has 272 files, 91 relationships,
+and candidate SHA-256
+`0111ce62001d6bb6f796a3912830529b8fae263353e62dd06111768c3147c3b8`;
+all 18 per-database semantic deployment hashes differ. This proves the two
+deployment identities must remain separate and the baseline must run first.
+
+The frozen baseline-only request is
+`experiments/public-baseline-v7-deployment-request.json`, SHA-256
+`cf228cd8cdbc0e8f974850ff4f86b0f826d963cc7af2d002654953656a421c36`.
+It specifies one append-only `public-baseline-v7-20260829` pass over all 18
+existing isolated baseline branches with four workers and a globally paced
+1.25-second minimum request interval. It prohibits C4, E02, questions, scoring,
+protected labels, credential/lease operations, shared/main mutations, and
+replacement runs.
+
+### Outcome
+
+WAITING on human decision `omni-benchmark-dih.17.8`. Preparation was entirely
+provider-inert: no client was constructed, no run claim was created, and no
+provider, credential, lease, question, label, score, or correctness surface was
+accessed.
+
+## D-124: Stop the authorized v7 preflight before guessing an Omni profile
+
+### Hypothesis
+
+The authorized v7 deployment can start only if the execution environment
+already supplies the canonical profile label while the exact request, source
+commit, bundle set, absent output, and single-owner process checks still pass.
+A missing label must stop before the append-only claim because guessing could
+waste the non-retryable run identity in the wrong tenant.
+
+### Observation
+
+Human response A on `omni-benchmark-dih.17.8` authorizes the exact request. The
+pushed request rehashed to
+`cf228cd8cdbc0e8f974850ff4f86b0f826d963cc7af2d002654953656a421c36`,
+the source commit resolved exactly, no competing deployment process existed,
+and the canonical v7 destination was absent. The shell did not export
+`OMNI_PROFILE`, and neither the repository nor any `/tmp` worktree contained an
+`.env`. A detached execution worktree was created at exact source commit
+`a684a3ec9c1c36aeaf8648be76d0127f6597d696`; no deployment claim or output was
+created.
+
+### Outcome
+
+PAUSE before provider contact. Human input `omni-benchmark-dih.17.9` requests
+only the non-secret profile label used for prior isolated semantic deployments.
+No credential/config store will be inspected, no profile will be guessed, and
+the existing authorization remains unconsumed. No Omni client, question,
+label, score, or correctness surface was accessed.
+
+## D-125: Preserve the one-pass v7 live oracle and isolate three compiler mechanisms
+
+### Hypothesis and authorization boundary
+
+The exact all-18 corrected baseline request can provide a clean product oracle
+without entering the evaluation surface if it is executed once under the
+recorded A authorization, preserves every terminal result, and uses only public
+semantic artifacts plus validation/readback. Failures should remain evidence
+for general compiler work, never a reason for an unapproved retry.
+
+### Result
+
+The canonical non-secret profile label was recovered from the existing
+`omni-benchmark-dih.7` record as `benchmark-infra`; no credential or config
+store was inspected. The authorized v7 pass ran once. Its append-only claim and
+18 records have aggregate SHA-256
+`f0ef40203ce3ae044587bf2678d5f74da84c7ee548197fc020a3870b4eb1dbe1`:
+13 databases validated with exact readback, five retained validator failures,
+and zero record-write failures. It was not retried.
+
+A separate read-only diagnostic pass captured the five failed validator
+surfaces with aggregate SHA-256
+`c9e347c374f112f945770a62af5a5e488b9b43ca1ec7ba8378de1ba1b87cbe6d`.
+The residuals are general and public: two negative DECIMAL scales on planets;
+nine unsupported structured-field operators plus one missing structured source
+on polar; six identity self-references on sports; and 13 table-not-found issues
+across the two official-loader-defective databases.
+
+### Outcome
+
+KEEP the immutable v7 evidence. Under the already-fixed 154-scheduled /
+136-answerable frame, `mental_healths_large` and `organ_transplant_large` are
+explicit per-database blockers rather than compiler targets. The answerable
+deployment gate is therefore 16 databases: 13 are verified, and planets,
+polar, and sports require only general compiler fixes before a newly authorized
+validation pass. No question, gold value, hidden annotation, dev-B/test outcome,
+correctness result, shared/main model, credential, OAuth profile, or lease was
+accessed or changed.
+
+## D-126: Compile the three v7 answerable failures as syntax classes
+
+### Hypothesis
+
+The remaining answerable failures do not require database-specific modeling.
+Three syntax classes explain them: an authored physical SQL identity such as
+`${field}` must collapse to the compiler's direct source-column binding instead
+of a semantic self-reference; an authored structured-leaf extraction must be
+rendered from its authenticated public path with Omni-supported chained `->` /
+`->>` operators instead of PostgreSQL `#>>`; and a negative-exponent
+scientific literal in a numeric derived field must be explicitly typed as
+`DOUBLE PRECISION` so Omni does not infer an invalid DECIMAL scale.
+
+### Test boundary
+
+Add synthetic public-schema tests for those three classes before changing the
+compiler. Preserve explicit semantic aliases, non-identity authored SQL,
+ordinary decimals, and supported nonnegative-scale scientific literals. Then
+regenerate every public bundle to expose the full mechanical blast radius. No
+database name, question, label, gold value, or outcome may enter the rule.
+
+### Outcome
+
+KEEP OFFLINE. The four new regressions fail before implementation and pass
+afterward. All 17 fan-out bundles regenerate deterministically; the compiler
+changes seven bundle directories because the same structured-operator class
+appears outside polar, while the target deltas remain exactly two planets
+expressions, nine polar extractions, and six sports identities. The corrected
+18-plan / 254-file baseline bundle-set SHA-256 is
+`2f4038a06522d84074649cb1795c43fe97efeac5c3d2deb46767915c477d7220`.
+The separately regenerated 18-plan / 272-file / 91-relationship E02 candidate
+SHA-256 is
+`b24302d6c8d8466e52b3f4483d3d4da7d7470d14e418ae767cd11fb80236297e`.
+
+The repository-wide gate passes 1,887 tests with five expected
+environment-dependent skips and 83.59% branch coverage; Ruff, formatting,
+deterministic regeneration, and diff checks pass. The live v7 evidence remains
+immutable. Product validation is still required under a new exact
+authorization; no retry, C4, E02, question, scoring, correctness, credential,
+OAuth, lease, or protected-data action occurred.
+
+## D-127: Freeze the seven-bundle successor validation request
+
+### Hypothesis
+
+The next live product oracle should redeploy exactly the semantic-hash delta
+from v7, not only the three previously failing databases and not all 18. That
+keeps nine unchanged verified answerable deployments intact while ensuring the
+four other bundles changed by the same general structured-operator rule are
+also validated against their current bytes.
+
+### Offline result
+
+Comparing authenticated semantic deployment hashes from v7 source
+`a684a3ec9c1c36aeaf8648be76d0127f6597d696` to corrected source
+`536e7256581e0b2c290af23838bbd6fbe8e5110a` yields exactly seven changed
+databases: cross-border, fake-account, labor-certification, planets,
+polar-equipment, robot-fault, and sports-events. Their 88 files have selected
+bundle-set SHA-256
+`9b6d6e8357b54b6f18d89c1d854136929d77dbdcd06b9f2fcd236bfe0b8a492f`;
+the full current 18-bundle set remains
+`2f4038a06522d84074649cb1795c43fe97efeac5c3d2deb46767915c477d7220`.
+
+The exact request is pushed at commit
+`8b6ab7e4ee02115d237fe606b2fbf2ac75903f57` as
+`experiments/public-baseline-v8-deployment-request.json`, SHA-256
+`a5d9fba11d8b4502cffce97d082c1e865a0401be54b494d5049f5e4d4d766834`.
+It binds an absent append-only destination, one run identity, isolated existing
+baseline branches, bounded concurrency and pacing, and explicit negative
+scope. The other eleven v7 records remain immutable.
+
+### Outcome
+
+WAITING on human A/B decision `omni-benchmark-dih.17.11`. Preparation was
+provider-inert. No client, claim, output, question, score, correctness result,
+credential, OAuth profile, lease, or protected data was accessed or changed.
+The request authorizes no C4 or E02 action.
+
+## 2026-08-29 — D-140: Retier live-action authorization and cut the optimization phase
+
+> Numbered D-140, not D-131, deliberately. The ledger has forked: this file and
+> the copy committed on `codex/mvp-current` share only 63 of their entry numbers
+> and collide on seven (D-054, D-055, D-056, D-071, D-072, D-073, D-131) where
+> the same number names a different decision in each lane. D-132 through D-139
+> are left unallocated as reconciliation headroom. See the reconciliation note
+> at the end of this entry.
+
+### Observation that forced the decision
+
+Stephanie's assessment: the process has been time-intensive out of proportion to
+the project requirements. The ledger supports it. Five semantic deployment
+identities (v1, v2, v7, v8, v9) and five C4 run identities (v1 through v5) were
+spent before any governed accuracy existed. Zero of the ten produced a scored
+result. The optimization phase sat behind that surface and was never reached, so
+`experiments/experiments.csv` still holds exactly one row, the gold-free
+PLUMBING-001 rehearsal, whose accuracy columns are empty by construction.
+
+### Mechanism
+
+The custody protocol was built to protect measurements and was applied to
+infrastructure. A `public-baseline-vN` pass compiles public schema into semantic
+bundles and deploys them to isolated branches; its own request file excludes
+questions, gold, dev-B, test data, correctness, and shared models. Contamination
+risk is zero. It was nonetheless gated one exact human A/B decision per pass,
+with a single-use non-retryable identity. Because the Omni validator is the only
+oracle for bundle validity, each defect class surfaced live, the general fix
+changed bundle bytes, changed bytes invalidated the prior validation, and a new
+authorization cycle followed. Three passes for one loop.
+
+The same rule cost C4 identity v4 to an unset `OMNI_BASE_URL`: zero evaluated
+answers, receipt spent. Identity v3 died on a pre-attempt HTTP 429.
+
+The one real counterargument is that free redeployment lets a bundle be iterated
+against validator feedback until it passes, quietly encoding database-specific
+knowledge. Rationing deployments is a weak proxy for that. The actual guard is
+that every fix must be a general compiler change with tests and no database
+name, question, or label in the rule, which is enforced by reviewing the diff.
+D-126 is the worked example: three syntax classes, four regressions, blast
+radius across seven bundles, target deltas unchanged.
+
+### Decisions
+
+Stephanie approved three changes.
+
+1. **Authorization is tiered by contamination risk, not liveness**
+   (`omni-benchmark-xeg`). Tier 1, agent-autonomous: public semantic deployment,
+   validation, and exact-readback passes, retryable under a new run ID, records
+   still append-only and every terminal result still preserved. Tier 2, one exact
+   human authorization per action: evaluated answers, dev-B checkpoints,
+   protected data, shared/main model mutation. Credentials, OAuth, leases, and
+   `git push` are unchanged. Written into `CLAUDE.md` and `AGENTS.md`.
+2. **The offline validator and launch preflight gate.** Verified rather than
+   assumed, per this repository's own prevention against treating a logged
+   control as implemented. On the live lane `codex/mvp-current`, the bounded
+   idempotent 429 observer retry is implemented with tests, and the C4
+   environment preflight runs at line 388 of `baseline_batch_cli.py`, ahead of
+   receipt validation at 413 and consumption at 418. Both controls are real and
+   correctly ordered. An earlier check against `main` suggested otherwise and was
+   wrong: `main` is deliberately stale and the commits were re-applied under
+   different hashes. The remaining piece is the general readback normalization
+   owned by `omni-benchmark-dih.17.13`, already claimed in another lane.
+3. **The optimization phase is cut** (`omni-benchmark-ivg`). No dev-A-supervised
+   intervention is promoted, no dev-B checkpoint is consumed, and the final
+   candidate is the frozen mechanical baseline. Recorded as a post-Freeze-A
+   deviation in `docs/protocol-diff.md` with its reason and with the argument
+   that it cannot bias the primary contrast: the cut is decided on schedule cost,
+   not observed accuracy, and it removes a system-improvement step from every
+   condition equally, so it can only lower expected C4.
+
+### Consequence
+
+The executed system receives no question-level supervision and must not be
+described as tuned or adapted. The remaining path is: resolve dih.17.13, finish
+`omni-benchmark-ei0.4.10`, one C4 dispatch under tier 2, Freeze B with the
+baseline as final candidate, the sealed run, then the report.
+
+No question, gold value, hidden annotation, dev-B or test outcome, correctness
+result, credential, OAuth profile, or lease was accessed or changed by this
+entry. No provider contact occurred.
+
+### Unreconciled state found while committing this entry
+
+Three findings, recorded because they are not visible from either lane alone.
+
+1. **The v7, v8, and v9 deployment records are committed on no branch.** All 44
+   files exist only as untracked files in the dirty `main` worktree. They are
+   the terminal output of authorized single-pass live oracles that may not be
+   retried, so a `git clean` in that worktree would destroy irreplaceable
+   evidence. Committed to `main` alongside this entry.
+2. **The research ledger has forked.** `main`'s worktree copy holds 97 entries,
+   the `codex/mvp-current` copy holds 96, they share 63 numbers, and seven
+   numbers name different decisions in each. Any citation of D-054, D-055,
+   D-056, D-071, D-072, D-073, or D-131 is currently ambiguous, and
+   `docs/protocol-diff.md` and `RESULTS.md` cite D-numbers. Reconciliation is a
+   human-controlled surface and is not attempted here.
+3. **`main` is 79 commits behind `codex/mvp-current`** and is not the lane the
+   working agent builds from, though it is the worktree that agent writes into.
+   That combination is what produced findings 1 and 2.
+
+No question, gold value, hidden annotation, dev-B or test outcome, correctness
+result, credential, OAuth profile, or lease was accessed or changed. No provider
+contact occurred.

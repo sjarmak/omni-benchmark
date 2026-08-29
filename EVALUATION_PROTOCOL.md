@@ -160,6 +160,18 @@ supervised development. The final system receives question-level supervision
 from 154 dev-A questions and a limited number of aggregate dev-B checkpoint
 outcomes spanning the other 77; it must not be described as zero-shot.
 
+> **Post-Freeze-A amendment, 2026-08-29.** The supervised development phase was
+> cut before it ran. No dev-A-supervised intervention is promoted and no dev-B
+> checkpoint is consumed, so the sentence above no longer describes the executed
+> study. The final system is the frozen mechanical baseline transformation plus
+> general compiler corrections whose content provenance is public schema and
+> whose intervention provenance is generic product improvement. Dev-A outcomes
+> were used for diagnosis and reporting only and never modified a runtime
+> artifact; the two provenance axes below make that checkable. The executed
+> system therefore receives no question-level supervision. Reason, and the
+> reason it cannot bias the primary contrast, are recorded in
+> [`docs/protocol-diff.md`](docs/protocol-diff.md).
+
 The baseline is generated once across all 231 development questions before any
 hidden label is released or scored. Its dev-A outputs are scored locally after
 the dev-A-only release; its dev-B outputs are scored by the guardian and return
@@ -426,6 +438,13 @@ insufficient. `dev-B` is available only through immutable, counted checkpoint
 events, never after every intervention. Once a final candidate is selected and
 the four conditions reach Freeze B, autoresearch terminates before any held-out
 generation is scored.
+
+> **Post-Freeze-A amendment, 2026-08-29.** This extension was never executed.
+> The optimization phase is cut from the study: E01 was audited and found already
+> present in the baseline (inconclusive), E02 was compiled and hash-bound but
+> never evaluated, no experiment reached a KEEP or REVERT decision, no checkpoint
+> was consumed, and the final candidate is the baseline. The section is retained
+> as the preregistered design so the deviation is legible against it.
 
 Optimization is evaluation-driven system improvement, not scalar hill climbing.
 Each experiment declares a textual, structural, or human/research-controlled
