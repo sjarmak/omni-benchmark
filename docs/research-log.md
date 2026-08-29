@@ -10075,3 +10075,28 @@ explicit.
 
 No evaluated answer, question, gold, hidden annotation, dev-B, test outcome,
 correctness, credential, OAuth, lease, shared/main model, or C4 action occurred.
+
+## 2026-08-29 — D-146: Use the thinnest defensible path to MVP results
+
+### Decision
+
+The evaluation apparatus has accumulated enough ceremony that it is delaying
+the evaluation itself. For the submission-ready MVP, use one thin end-to-end
+loop: make the smallest general fix needed for the current blocker, run focused
+risk-proportionate checks, preserve one immutable live result when required, and
+immediately advance to the next result-producing gate.
+
+Repeated full-suite runs, duplicate status updates, worktree staging ceremony,
+external-audit follow-ups, cleanup, and framework improvements are not MVP
+prerequisites unless they directly protect validity or block the next result.
+The irreducible controls remain unchanged: protected-data custody, frozen scorer
+semantics, append-only evaluated evidence, exact run lineage, and one exact human
+authorization for each evaluated or sealed action.
+
+### Operational consequence
+
+With public semantic validation complete, the direct path is now: bind and obtain
+the fixed-frame C4 authorization; dispatch once; freeze and score; record Freeze
+B; run the sealed evaluation through custody; finish `RESULTS.md`. The deferred
+audit and worktree-hygiene queues must not interrupt this sequence unless they
+surface a concrete blocker to one of those actions.

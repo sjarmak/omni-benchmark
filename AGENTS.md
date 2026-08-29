@@ -128,6 +128,8 @@ These cost time if you discover them by hitting them.
 - Never consume a live approval based only on dry-run success; validate the exact
   inherited provider environment first, or a missing `OMNI_BASE_URL` can spend
   the one-time receipt before any evaluated answer.
+- Never let evaluation apparatus displace evaluation: use the smallest defensible
+  check; defer all extra process unless it directly blocks MVP results.
 
 ## Working style
 
@@ -136,6 +138,11 @@ the ones that failed. Log contemporaneously in `docs/research-log.md`; do not
 reconstruct the story afterward. Classify each intervention's generality before
 making it: question-specific changes are prohibited, benchmark-specific ones stay
 out of the final system.
+
+For the MVP, use one thin loop: focused checks, one immutable live attempt when
+needed, then the next result-producing gate. Full-suite reruns, duplicate status,
+worktree ceremony, and non-blocking reviews are optional; custody, frozen scorers,
+append-only evidence, and exact evaluated/sealed authorization are not.
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:1105d646 -->
 ## Beads Issue Tracker
