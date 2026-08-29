@@ -46,7 +46,7 @@ dimensions:
   gravitational_parameter:
     label: Gravitational Parameter (μ)
     description: Calculates the standard gravitational parameter for a star, a constant used in orbital mechanics.
-    sql: 6.67430e-11 * (${stellar_mass_solar} * CAST(1.98847e30 AS DOUBLE PRECISION))
+    sql: CAST(6.67430e-11 AS DOUBLE PRECISION) * (${stellar_mass_solar} * CAST(1.98847e30 AS DOUBLE PRECISION))
     ai_context: Use this modeled field for Gravitational Parameter (μ); do not reconstruct its formula.
   multi_planetary_system:
     label: Multi-planetary System

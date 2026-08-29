@@ -4,33 +4,34 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T12:27:00-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T12:33:00-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
-### Omni CLI profile label — `omni-benchmark-dih.17.9`
+Nothing. `bd human list` is empty. Do not run a command or send a profile,
+credential, callback URL, token, config file, or lease path.
 
-Reply with only the non-secret Omni CLI profile label used for the prior
-isolated semantic deployments. Do not send a token, config file, OAuth
-callback, credential value, or lease path, and do not run a command.
+## Most recent authorized action completed
 
-The exact v7 deployment is already authorized. This is only the missing profile
-label needed to invoke the already-configured CLI. The launch preflight found
-no exported `OMNI_PROFILE` and no repository/worktree `.env`; it stopped before
-provider contact and before creating the v7 claim/output. The agent will not
-inspect Omni credential/config stores or guess a profile.
+Your response **A** to `omni-benchmark-dih.17.8` was consumed exactly once for
+the frozen v7 request. The append-only deployment/validation/readback pass
+completed without a retry: 13 databases validated with exact readback, five
+retained validator failures, and zero record-write failures. The non-secret
+profile label was recovered from an existing durable project record as
+`benchmark-infra`; no credential/config store was inspected.
 
-## Approved actions in progress
+Read-only diagnostics reduce the five failures to two explicit
+official-loader blockers (`mental_healths_large`, `organ_transplant_large`) and
+three general compiler blockers (planets numeric typing, polar structured-field
+SQL, and sports identity self-references). Under the already-fixed 154-scheduled
+/ 136-answerable frame, 13 of the 16 answerable database deployments are now
+verified. Agents are working offline on the remaining compiler rules.
 
-Your response **A** to `omni-benchmark-dih.17.8` authorizes exactly one
-append-only deployment, validation, and exact-readback pass matching
-`experiments/public-baseline-v7-deployment-request.json`, SHA-256
-`cf228cd8cdbc0e8f974850ff4f86b0f826d963cc7af2d002654953656a421c36`.
-The action is paused before provider contact and claim creation until the
-profile label above is supplied. The authorization does not extend to C4, E02,
-questions, scoring, protected labels, credentials/OAuth/leases, shared/main
-models, or a replacement run.
+The completed authorization did not cover a retry, C4, E02, questions,
+scoring, protected labels, credentials/OAuth/leases, shared/main models, or a
+replacement run. Any corrected live validation pass requires a new exact
+request.
 
 ## Recently completed
 

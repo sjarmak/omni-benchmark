@@ -7,16 +7,16 @@ dimensions:
   risk_value:
     description: 'REAL. Risk value score. **NULL means risk value not assigned.**. Example: 0.155.'
     label: Risk Value
-    sql: 'CAST(${risk_profile} #>> ''{risk_scores,risk_value}'' AS DOUBLE PRECISION)'
+    sql: CAST(${risk_profile} -> 'risk_scores' ->> 'risk_value' AS DOUBLE PRECISION)
   trust_value:
     description: 'REAL. Trust value score. Example: 0.353.'
     label: Trust Value
-    sql: 'CAST(${risk_profile} #>> ''{risk_scores,trust_score}'' AS DOUBLE PRECISION)'
+    sql: CAST(${risk_profile} -> 'risk_scores' ->> 'trust_score' AS DOUBLE PRECISION)
     ai_context: 'trust value: Ranges from 0 to 1. Values above 0.7 indicate highly trusted accounts, while values below 0.3 suggest untrusted or suspicious accounts.'
   impact_value:
     description: 'REAL. Impact value score. Example: 0.544.'
     label: Impact Value
-    sql: 'CAST(${risk_profile} #>> ''{risk_scores,impact_score}'' AS DOUBLE PRECISION)'
+    sql: CAST(${risk_profile} -> 'risk_scores' ->> 'impact_score' AS DOUBLE PRECISION)
     ai_context: 'impact value: Ranges from 0 to 1. Values above 0.7 indicate high-impact violations requiring immediate attention, while values below 0.3 suggest low-priority issues.'
   security_risk_score:
     label: Security Risk Score (SRS)

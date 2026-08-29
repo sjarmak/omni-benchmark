@@ -7,24 +7,24 @@ dimensions:
   cabin_temperature_c:
     description: 'REAL. Cabin temperature in Celsius. **NULL means no cabin temperature data recorded.**. Example: -0.3.'
     label: Cabin Temperature (C)
-    sql: 'CAST(${cabin_env_snapshot} #>> ''{air_metrics,temperature_c}'' AS DOUBLE PRECISION)'
+    sql: CAST(${cabin_env_snapshot} -> 'air_metrics' ->> 'temperature_c' AS DOUBLE PRECISION)
   co2_level_ppm:
     description: 'REAL. Cabin CO2 level in parts per million. Example: 557.'
     label: CO2 Level (ppm)
-    sql: 'CAST(${cabin_env_snapshot} #>> ''{air_metrics,co2_ppm}'' AS DOUBLE PRECISION)'
+    sql: CAST(${cabin_env_snapshot} -> 'air_metrics' ->> 'co2_ppm' AS DOUBLE PRECISION)
     ai_context: 'cabinclimate.co2_ppm: CO2 levels in enclosed spaces like cabins are measured in parts per million (ppm). Levels below 600 ppm indicate excellent ventilation, 600-1000 ppm represent good air quality, 1000-2500 ppm indicate poor ventilation that may cause drowsiness and reduced cognitive function, while levels above 2500 ppm may cause headaches, sleepiness, and significantly impaired cognitive performance.'
   oxygen_level_percent:
     description: 'REAL. Cabin oxygen level in percentage. Example: 19.9.'
     label: Oxygen Level Percent
-    sql: 'CAST(${cabin_env_snapshot} #>> ''{air_metrics,o2_pct}'' AS DOUBLE PRECISION)'
+    sql: CAST(${cabin_env_snapshot} -> 'air_metrics' ->> 'o2_pct' AS DOUBLE PRECISION)
   ventilation_status:
     description: 'TEXT. Ventilation status. **NULL means no ventilation status recorded.**. Possible values: Auto, Off, On.'
     label: Ventilation Status
-    sql: '${cabin_env_snapshot} #>> ''{hvac,vent_state}'''
+    sql: ${cabin_env_snapshot} -> 'hvac' ->> 'vent_state'
   heater_status:
     description: 'TEXT. Heater status. Possible values: Auto, Off, On.'
     label: Heater Status
-    sql: '${cabin_env_snapshot} #>> ''{hvac,heater_state}'''
+    sql: ${cabin_env_snapshot} -> 'hvac' ->> 'heater_state'
   meets_cabin_habitability_standard:
     label: Cabin Habitability Standard
     description: Defines the minimum standards for habitable cabin conditions in polar environments.

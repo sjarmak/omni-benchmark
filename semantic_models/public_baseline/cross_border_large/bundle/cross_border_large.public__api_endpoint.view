@@ -7,5 +7,5 @@ dimensions:
   success_pct:
     description: 'REAL. Percentage of successful responses. Example: 98.498.'
     label: Success Percentage
-    sql: 'CAST(${api_perf_obs} #>> ''{performance,success_pct}'' AS DOUBLE PRECISION)'
+    sql: CAST(${api_perf_obs} -> 'performance' ->> 'success_pct' AS DOUBLE PRECISION)
     ai_context: 'Success Percentage: Ranges from 0 to 100. Higher means more reliable transfers.'

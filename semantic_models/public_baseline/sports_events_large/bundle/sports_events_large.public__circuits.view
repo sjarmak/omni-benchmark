@@ -11,7 +11,7 @@ dimensions:
   location_metadata:
     description: JSONB column. Encapsulates all geographical and identification data related to the circuit’s location.
     label: Circuit location metadata
-    sql: ${location_metadata}
+    sql: location_metadata
     ai_context: 'Data Unavailability for Circuit Elevation: When a circuit''s elevation in meters is not provided, it signifies that this specific data point was not recorded for the circuit.'
   high_altitude_circuit:
     label: High-Altitude Circuit

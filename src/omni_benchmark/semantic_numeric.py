@@ -26,7 +26,7 @@ _NUMERIC_TYPE = re.compile(
 )
 _TEXT_TYPE = re.compile(r"^(?:CHAR|CHARACTER|CHARACTER VARYING|TEXT|VARCHAR)(?:\b|\()")
 _SCIENTIFIC_LITERAL = re.compile(
-    r"^(?:[0-9]+(?:\.([0-9]*))?|\.([0-9]+))[eE]\+?([0-9]+)$"
+    r"^(?:[0-9]+(?:\.([0-9]*))?|\.([0-9]+))[eE]([+-]?)([0-9]+)$"
 )
 _ARITHMETIC = (exp.Add, exp.Div, exp.Mod, exp.Mul, exp.Pow, exp.Sub)
 _COMPARISONS = (exp.EQ, exp.GT, exp.GTE, exp.LT, exp.LTE, exp.NEQ)
@@ -158,7 +158,9 @@ def _has_negative_decimal_scale(node: exp.Expression) -> bool:
     if match is None:
         return False
     fractional_digits = match.group(1) or match.group(2) or ""
-    return int(match.group(3)) > len(fractional_digits)
+    exponent_sign = match.group(3)
+    exponent = int(match.group(4))
+    return exponent_sign == "-" or exponent > len(fractional_digits)
 
 
 def _expectations(
@@ -280,7 +282,7 @@ def coerce_numeric_references(sql: str, field_kinds: Mapping[str, str]) -> str:
 
 
 def stabilize_negative_scale_decimals(sql: str) -> str:
-    """Cast scientific literals whose PostgreSQL decimal scale is negative."""
+    """Cast scientific literals that destabilize Omni decimal-scale inference."""
     rewritten = _parse_scalar(sql).copy()
     targets = [node for node in rewritten.walk() if _has_negative_decimal_scale(node)]
     for node in targets:

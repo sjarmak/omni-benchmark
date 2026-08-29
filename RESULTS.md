@@ -312,7 +312,7 @@ Their reusable changes and promotion rules are recorded in
 
 Later general compiler corrections changed the current deployment-relevant E02
 candidate-set SHA-256 to
-`0111ce62001d6bb6f796a3912830529b8fae263353e62dd06111768c3147c3b8`.
+`b24302d6c8d8466e52b3f4483d3d4da7d7470d14e418ae767cd11fb80236297e`.
 All 18 integrated bundles publish and authenticate locally; historical
 deployment records remain immutable and correctly reject the changed bundle
 hashes. Deployment and accuracy evaluation remain pending.

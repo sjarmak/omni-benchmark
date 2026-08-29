@@ -7,21 +7,21 @@ dimensions:
   power_source:
     description: 'TEXT. Source of the power for the battery. Possible values: Battery, Diesel, Hybrid, Solar, Wind.'
     label: Power Source
-    sql: '${battery_telemetry} #>> ''{power_state,primary_source}'''
+    sql: ${battery_telemetry} -> 'power_state' ->> 'primary_source'
   energy_efficiency_percent:
     description: 'REAL. Energy efficiency percentage of the battery. Example: 81.8.'
     label: Energy Efficiency Percent
-    sql: 'CAST(${battery_telemetry} #>> ''{power_state,conversion_eff_pct}'' AS DOUBLE PRECISION)'
+    sql: CAST(${battery_telemetry} -> 'power_state' ->> 'conversion_eff_pct' AS DOUBLE PRECISION)
     ai_context: 'energyefficiencypercent: Energy efficiency percentage typically ranges from 10% to 99%. Values below 30% indicate inefficient systems typical of older equipment, 30-60% represent standard efficiency for conventional equipment, 60-80% indicate high-efficiency modern systems, while values above 80% represent cutting-edge technology with optimal efficiency that minimizes energy waste and operational costs.'
   power_consumption_w:
     description: 'REAL. Power consumption in watts. Example: 4383.2.'
     label: Power Consumption (W)
-    sql: 'CAST(${battery_telemetry} #>> ''{power_state,instant_consumption_w}'' AS DOUBLE PRECISION)'
+    sql: CAST(${battery_telemetry} -> 'power_state' ->> 'instant_consumption_w' AS DOUBLE PRECISION)
     ai_context: 'powerconsumptionw: Power consumption measured in watts varies by equipment type. Small scientific instruments typically consume 5-50W, communication equipment 20-200W, heating systems 500-5000W, and vehicle systems 1000-10000W. Understanding consumption patterns is crucial for power budgeting and determining appropriate power source sizing in isolated polar environments.'
   battery_level_percent:
     description: 'REAL. Battery level percentage. Example: 19.'
     label: Battery Level Percent
-    sql: 'CAST(${battery_telemetry} #>> ''{battery_pack,soc_pct}'' AS DOUBLE PRECISION)'
+    sql: CAST(${battery_telemetry} -> 'battery_pack' ->> 'soc_pct' AS DOUBLE PRECISION)
   energy_sustainability_index:
     label: Energy Sustainability Index (ESI)
     description: Measures the sustainability of an equipment's energy usage by evaluating energy efficiency and renewable sources.

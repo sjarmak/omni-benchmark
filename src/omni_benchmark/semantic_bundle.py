@@ -432,6 +432,23 @@ def _field_references(sql: str) -> list[str]:
     return references
 
 
+def _is_authored_physical_identity(
+    field: Mapping[str, Any],
+    source: Mapping[str, Any],
+    schema_index: Mapping[str, Mapping[str, Any]],
+) -> bool:
+    if source.get("record_kind") != "column" or "sql" not in field:
+        return False
+    sql = _text(field.get("sql"), "physical field sql").strip()
+    match = _FIELD_REFERENCE.fullmatch(sql)
+    if match is None:
+        return False
+    field_name = _omni_name(field.get("name"), "physical field name")
+    _, source_name = _source_column_name(source, schema_index)
+    reference_name = _omni_name(match.group(1), "physical identity reference")
+    return field_name == source_name == reference_name
+
+
 def _validate_sql(sql: str, allowed_fields: set[str]) -> None:
     if _DO_NOT_PARSE_DIRECTIVE.lower() in sql.lower():
         raise SemanticBundleError("reserved Omni parser directive in field SQL")
@@ -953,11 +970,13 @@ def _direct_physical_bindings(
 ) -> list[dict[str, str]]:
     bindings: list[dict[str, str]] = []
     for field in physical_fields:
-        if "sql" in field:
-            continue
         schema_id = _text(field.get("schema_stable_id"), "schema_stable_id")
         source = schema_index[schema_id]
         if source.get("record_kind") != "column":
+            continue
+        if "sql" in field and not _is_authored_physical_identity(
+            field, source, schema_index
+        ):
             continue
         source_id = _text(source.get("stable_id"), "column stable_id")
         bindings.append(
@@ -1067,7 +1086,18 @@ def _table_dimensions(
         source = schema_index[schema_id]
         sql: str | None = None
         validate_sql = False
-        if "sql" in field:
+        if _is_authored_physical_identity(field, source, schema_index):
+            sql = _source_column_sql(source, schema_index)
+        elif "sql" in field and source.get("record_kind") == "structured_leaf":
+            authored_sql = _rewrite_field_references(
+                _text(field.get("sql"), "physical field sql"), reference_names
+            )
+            _validate_sql(authored_sql, allowed)
+            sql = _structured_leaf_sql(source, schema_index)
+            if physical_value_kind(source, authored_sql) == "numeric":
+                sql = f"CAST({sql} AS DOUBLE PRECISION)"
+            validate_sql = True
+        elif "sql" in field:
             sql = _rewrite_field_references(
                 _text(field.get("sql"), "physical field sql"), reference_names
             )

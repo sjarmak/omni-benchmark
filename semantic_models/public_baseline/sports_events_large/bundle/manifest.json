@@ -1,11 +1,48 @@
 {
   "database": "sports_events_large",
-  "direct_physical_bindings": [],
+  "direct_physical_bindings": [
+    {
+      "field_name": "location_metadata",
+      "file": "sports_events_large.public__circuits.view",
+      "source_stable_id": "sports_events_large:column:circuits:location_metadata",
+      "sql": "location_metadata"
+    },
+    {
+      "field_name": "ms_count",
+      "file": "sports_events_large.public__pit_stops.view",
+      "source_stable_id": "sports_events_large:column:pit_stops:ms_count",
+      "sql": "ms_count"
+    },
+    {
+      "field_name": "msec_val",
+      "file": "sports_events_large.public__lap_times.view",
+      "source_stable_id": "sports_events_large:column:lap_times:msec_val",
+      "sql": "msec_val"
+    },
+    {
+      "field_name": "driver_identity",
+      "file": "sports_events_large.public__drivers.view",
+      "source_stable_id": "sports_events_large:column:drivers:driver_identity",
+      "sql": "driver_identity"
+    },
+    {
+      "field_name": "naty",
+      "file": "sports_events_large.public__constructors.view",
+      "source_stable_id": "sports_events_large:column:constructors:naty",
+      "sql": "naty"
+    },
+    {
+      "field_name": "event_schedule",
+      "file": "sports_events_large.public__races.view",
+      "source_stable_id": "sports_events_large:column:races:event_schedule",
+      "sql": "event_schedule"
+    }
+  ],
   "files": [
     {
       "file": "sports_events_large.public__circuits.view",
-      "sha256": "1dcf8c63e12dea5f12d87ac2d6ed5b1dd7a4b18c6109ae2b4b7b5816f34661b5",
-      "size_bytes": 1117
+      "sha256": "53a7bbe51391277ad79bb5de0a37518f8f2abce8f6c2493f477ae73cc0e89404",
+      "size_bytes": 1114
     },
     {
       "file": "circuits_semantics.topic",
@@ -14,8 +51,8 @@
     },
     {
       "file": "sports_events_large.public__pit_stops.view",
-      "sha256": "e6792565636dacafc4712021b352c167a15e02a784c51b82afe062f79db56882",
-      "size_bytes": 866
+      "sha256": "661ca5edbc606bd760bb5bc0f28801a848a1e3d25e4c3803faea30dd6a908e4d",
+      "size_bytes": 863
     },
     {
       "file": "pit_stops_semantics.topic",
@@ -24,8 +61,8 @@
     },
     {
       "file": "sports_events_large.public__lap_times.view",
-      "sha256": "bfbc239da7adc269591e8abe3cf84023d464ab6231e36653a16533e0748bdb48",
-      "size_bytes": 551
+      "sha256": "7edf0f880faa9d6e08b3fa4be9523c4e3f833f25dbce08227acb7cde0e40900f",
+      "size_bytes": 548
     },
     {
       "file": "lap_times_semantics.topic",
@@ -34,8 +71,8 @@
     },
     {
       "file": "sports_events_large.public__drivers.view",
-      "sha256": "6ed8db3b3586edc67354abaf8dbba1fc52cbfba6daadebe5fccaee5d48da66db",
-      "size_bytes": 288
+      "sha256": "8696fdfe90596307847d8b5ace4e535b5a3073cce8098c38371b423e2545c541",
+      "size_bytes": 285
     },
     {
       "file": "drivers_semantics.topic",
@@ -44,8 +81,8 @@
     },
     {
       "file": "sports_events_large.public__constructors.view",
-      "sha256": "6996dd7ee0cb4abc51e9ca0a0b2cb1243f519ce84b0f2141e7db2f0c5d190ff3",
-      "size_bytes": 536
+      "sha256": "63007d67ae822e9bc1cc0e3f47a6b13fe986f30ae715e6b116791fe0beb16b2a",
+      "size_bytes": 533
     },
     {
       "file": "constructors_semantics.topic",
@@ -54,8 +91,8 @@
     },
     {
       "file": "sports_events_large.public__races.view",
-      "sha256": "bd3c44566e9aed55f93810efc96ad713cda2482f4f4eec8cccb9e30c20c9d386",
-      "size_bytes": 611
+      "sha256": "abbdb268e4ced383aa542c7d02814c382b3bc31a19bd821152629394fb2e3dfa",
+      "size_bytes": 608
     },
     {
       "file": "races_semantics.topic",

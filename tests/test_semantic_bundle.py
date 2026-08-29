@@ -486,6 +486,78 @@ def test_compile_bundle_does_not_mark_authored_or_derived_sql_as_direct_binding(
     assert bundle.manifest["direct_physical_bindings"] == []
 
 
+def test_compile_bundle_collapses_authored_physical_identity_to_direct_binding() -> (
+    None
+):
+    schema = copy.deepcopy(_schema_records())
+    schema.append(
+        {
+            "database": "db",
+            "description": "JSONB identity payload.",
+            "identifier": {"name": "identity_payload"},
+            "record_kind": "column",
+            "stable_id": "db:column:pointcloud:identity_payload",
+            "table_stable_id": "db:table:pointcloud",
+        }
+    )
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"].append(
+        {
+            "name": "identity_payload",
+            "omni_parser_mode": "do_not_parse",
+            "schema_stable_id": "db:column:pointcloud:identity_payload",
+            "sql": "${identity_payload}",
+        }
+    )
+
+    bundle = compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["identity_payload"]["sql"] == "identity_payload"
+    assert bundle.manifest["direct_physical_bindings"] == [
+        {
+            "field_name": "identity_payload",
+            "file": "db.public__pointcloud.view",
+            "source_stable_id": "db:column:pointcloud:identity_payload",
+            "sql": "identity_payload",
+        }
+    ]
+
+
+@pytest.mark.parametrize(
+    ("authored_sql", "expected_sql"),
+    (
+        (
+            "CAST(${cloud_metrics} #>> '{sensor,reading}' AS DOUBLE PRECISION)",
+            "CAST(${cloud_metrics} -> 'sensor' ->> 'reading' AS DOUBLE PRECISION)",
+        ),
+        (
+            "${cloud_metrics} #>> '{sensor,reading}'",
+            "${cloud_metrics} -> 'sensor' ->> 'reading'",
+        ),
+    ),
+)
+def test_compile_bundle_renders_authored_structured_leaf_from_public_path(
+    authored_sql: str, expected_sql: str
+) -> None:
+    schema = copy.deepcopy(_schema_records())
+    leaf = next(
+        record for record in schema if record["record_kind"] == "structured_leaf"
+    )
+    leaf["path"] = [
+        {"key": "sensor", "kind": "object_key"},
+        {"key": "reading", "kind": "object_key"},
+    ]
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"][0]["omni_parser_mode"] = "do_not_parse"
+    spec["physical_fields"][0]["sql"] = authored_sql
+
+    bundle = compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["scan_resolution_mm"]["sql"] == expected_sql
+
+
 def test_compile_bundle_rewrites_derived_references_to_normalized_physical_names() -> (
     None
 ):
@@ -779,7 +851,21 @@ def test_compile_bundle_casts_scientific_literal_with_negative_decimal_scale() -
     )
 
 
-@pytest.mark.parametrize("literal", ("1.25", "1.25e2", "6.67430e-11"))
+def test_compile_bundle_casts_negative_exponent_scientific_literal() -> None:
+    spec = copy.deepcopy(_spec())
+    spec["derived_fields"][0]["sql"] = "${scan_resolution_mm} * 6.67430e-11"
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["resolution_index"]["sql"] == (
+        "${scan_resolution_mm} * CAST(6.67430e-11 AS DOUBLE PRECISION)"
+    )
+
+
+@pytest.mark.parametrize("literal", ("1.25", "1.25e2"))
 def test_compile_bundle_keeps_supported_decimal_literal_unchanged(literal: str) -> None:
     spec = copy.deepcopy(_spec())
     spec["derived_fields"][0]["sql"] = f"${{scan_resolution_mm}} * {literal}"

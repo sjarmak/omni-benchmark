@@ -6786,3 +6786,83 @@ only the non-secret profile label used for prior isolated semantic deployments.
 No credential/config store will be inspected, no profile will be guessed, and
 the existing authorization remains unconsumed. No Omni client, question,
 label, score, or correctness surface was accessed.
+
+## D-125: Preserve the one-pass v7 live oracle and isolate three compiler mechanisms
+
+### Hypothesis and authorization boundary
+
+The exact all-18 corrected baseline request can provide a clean product oracle
+without entering the evaluation surface if it is executed once under the
+recorded A authorization, preserves every terminal result, and uses only public
+semantic artifacts plus validation/readback. Failures should remain evidence
+for general compiler work, never a reason for an unapproved retry.
+
+### Result
+
+The canonical non-secret profile label was recovered from the existing
+`omni-benchmark-dih.7` record as `benchmark-infra`; no credential or config
+store was inspected. The authorized v7 pass ran once. Its append-only claim and
+18 records have aggregate SHA-256
+`f0ef40203ce3ae044587bf2678d5f74da84c7ee548197fc020a3870b4eb1dbe1`:
+13 databases validated with exact readback, five retained validator failures,
+and zero record-write failures. It was not retried.
+
+A separate read-only diagnostic pass captured the five failed validator
+surfaces with aggregate SHA-256
+`c9e347c374f112f945770a62af5a5e488b9b43ca1ec7ba8378de1ba1b87cbe6d`.
+The residuals are general and public: two negative DECIMAL scales on planets;
+nine unsupported structured-field operators plus one missing structured source
+on polar; six identity self-references on sports; and 13 table-not-found issues
+across the two official-loader-defective databases.
+
+### Outcome
+
+KEEP the immutable v7 evidence. Under the already-fixed 154-scheduled /
+136-answerable frame, `mental_healths_large` and `organ_transplant_large` are
+explicit per-database blockers rather than compiler targets. The answerable
+deployment gate is therefore 16 databases: 13 are verified, and planets,
+polar, and sports require only general compiler fixes before a newly authorized
+validation pass. No question, gold value, hidden annotation, dev-B/test outcome,
+correctness result, shared/main model, credential, OAuth profile, or lease was
+accessed or changed.
+
+## D-126: Compile the three v7 answerable failures as syntax classes
+
+### Hypothesis
+
+The remaining answerable failures do not require database-specific modeling.
+Three syntax classes explain them: an authored physical SQL identity such as
+`${field}` must collapse to the compiler's direct source-column binding instead
+of a semantic self-reference; an authored structured-leaf extraction must be
+rendered from its authenticated public path with Omni-supported chained `->` /
+`->>` operators instead of PostgreSQL `#>>`; and a negative-exponent
+scientific literal in a numeric derived field must be explicitly typed as
+`DOUBLE PRECISION` so Omni does not infer an invalid DECIMAL scale.
+
+### Test boundary
+
+Add synthetic public-schema tests for those three classes before changing the
+compiler. Preserve explicit semantic aliases, non-identity authored SQL,
+ordinary decimals, and supported nonnegative-scale scientific literals. Then
+regenerate every public bundle to expose the full mechanical blast radius. No
+database name, question, label, gold value, or outcome may enter the rule.
+
+### Outcome
+
+KEEP OFFLINE. The four new regressions fail before implementation and pass
+afterward. All 17 fan-out bundles regenerate deterministically; the compiler
+changes seven bundle directories because the same structured-operator class
+appears outside polar, while the target deltas remain exactly two planets
+expressions, nine polar extractions, and six sports identities. The corrected
+18-plan / 254-file baseline bundle-set SHA-256 is
+`2f4038a06522d84074649cb1795c43fe97efeac5c3d2deb46767915c477d7220`.
+The separately regenerated 18-plan / 272-file / 91-relationship E02 candidate
+SHA-256 is
+`b24302d6c8d8466e52b3f4483d3d4da7d7470d14e418ae767cd11fb80236297e`.
+
+The repository-wide gate passes 1,887 tests with five expected
+environment-dependent skips and 83.59% branch coverage; Ruff, formatting,
+deterministic regeneration, and diff checks pass. The live v7 evidence remains
+immutable. Product validation is still required under a new exact
+authorization; no retry, C4, E02, question, scoring, correctness, credential,
+OAuth, lease, or protected-data action occurred.

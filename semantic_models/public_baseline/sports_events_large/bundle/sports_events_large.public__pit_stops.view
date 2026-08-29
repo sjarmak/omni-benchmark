@@ -7,7 +7,7 @@ dimensions:
   ms_count:
     description: 'INTEGER. Millisecond count for the pit stop. Example: 22936.'
     label: Pit stop duration in milliseconds
-    sql: ${ms_count}
+    sql: ms_count
   efficient_pit_stop:
     label: Efficient Pit Stop
     description: Defines a benchmark for an exceptionally fast pit stop.

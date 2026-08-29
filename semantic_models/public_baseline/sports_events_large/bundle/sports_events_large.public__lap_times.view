@@ -7,7 +7,7 @@ dimensions:
   msec_val:
     description: 'INTEGER. Lap time in milliseconds. Example: 103848.'
     label: Lap time in milliseconds
-    sql: ${msec_val}
+    sql: msec_val
   lap_time_seconds:
     label: Lap Time in Seconds
     description: Converts lap time measurements from milliseconds to seconds.
