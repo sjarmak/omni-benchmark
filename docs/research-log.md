@@ -5521,3 +5521,75 @@ provides that route without putting mutable filesystem state in authority.
 
 Construct the direct runtime dependencies and C4 probe runner from these exact
 paths, then wire the complete post-consumption adapter builder.
+
+## 2026-08-29 — D-103: Scope direct production resources to one sealed capture
+
+### Decision / experiment
+
+Construct direct transports only inside a context manager owned by one sealed
+adapter invocation. Change type: general evaluation integrity. Bead:
+`omni-benchmark-ei0.5.5.3.2`.
+
+### Hypothesis
+
+If adapter factories remain inert until dispatcher approval has been consumed,
+and every attempt owns its lease selection, private database environment,
+ephemeral runtime directories, and live transports for exactly the duration of
+capture, then dry validation cannot touch credentials and cleanup is guaranteed
+on success or failure.
+
+### Intervention
+
+Added `SealedDirectProductionConfig` and
+`build_sealed_direct_adapter_factory`. Configuration stores exactly three
+distinct absolute Claude lease paths (one per preregistered repetition), an
+external private per-database PostgreSQL environment directory, a private
+runtime parent, frozen system/input identity, and a confined capture root. It
+does not stat external resources during construction.
+
+After sealed adapter execution begins, the capture context validates only the
+selected repetition lease, reads one exact mode-0600 database environment,
+loads the committed direct runtime/public context/database identities, compares
+runtime policy and pinned CLI identity with Freeze B/dispatch policy, creates
+fresh mode-0700 HOME/TMP/work directories, constructs the pinned Claude and
+attested read-only PostgreSQL transports, and mints the opaque sealed capture
+authority. The directories are removed when capture exits. The database
+environment loader is narrow and local to the sealed factory, avoiding a broad
+baseline-runtime dependency. The factory source is included in the sealed
+runtime digest.
+
+Also corrected the sealed direct provenance comparison: Freeze B's committed
+prompt and harness hashes bind the public context components. The separate
+hardcoded Claude system prompt remains bound by model identity plus frozen
+runtime source; the two prompt concepts are no longer conflated.
+
+### Result
+
+Four factory tests pass at 87.88% branch coverage, and the fourteen sealed
+direct adapter tests remain green. Tests prove pre-attempt inertness,
+repetition-to-lease selection, runtime cleanup, construction ordering, frozen
+path/CLI/condition rejection, exact private database-file modes/schema, and
+external-path confinement. No real lease/database environment was inspected,
+no transport contacted a provider, and no receipt/test output/protected
+outcome/score was accessed.
+
+### Interpretation
+
+C1-C3 now have a complete production construction path whose first external
+read occurs inside the post-consumption attempt context. The remaining adapter
+work is the equivalent C4 runner and top-level four-condition builder.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Resource lifetime is part of evaluation provenance. Binding identities without
+also bounding when credentials and temporary state exist leaves a meaningful
+gap; a capture-owned context closes it.
+
+### Next step
+
+Implement the C4 production probe-runner closure against frozen specs and
+verified deployment targets, then wire all four factories into the entry point.

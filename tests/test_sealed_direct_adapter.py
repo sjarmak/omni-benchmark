@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from contextlib import contextmanager
 from dataclasses import replace
 from pathlib import Path
 
@@ -62,6 +63,7 @@ def _prepared(*, condition: str = "C1"):  # type: ignore[no-untyped-def]
 
 def _identities(prepared):  # type: ignore[no-untyped-def]
     components = {
+        "condition_config": prepared.condition_binding.harness_config_sha256,
         "instructions": prepared.condition_binding.instructions_sha256,
         "prompt": prepared.condition_binding.prompt_sha256,
         "public_context": SHA_E,
@@ -215,8 +217,9 @@ def test_sealed_direct_condition_adapter_is_dispatch_compatible(
     workspace = _workspace(tmp_path)
     prepared = _prepared(condition="C2")
 
+    @contextmanager
     def factory(value, store):  # type: ignore[no-untyped-def]
-        return _authority(
+        yield _authority(
             workspace,
             value,
             [{"type": "answer", "sql": "SELECT 42"}],

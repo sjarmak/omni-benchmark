@@ -404,6 +404,15 @@ the four ordered condition identities plus database snapshot identity. Dirty
 working-tree copies are ignored. This read-only specification loader does not
 inspect environment credentials or construct a transport.
 
+The direct production factory is inert before sealed approval consumption. For
+each C1-C3 attempt it selects the Claude lease assigned to that frozen
+repetition, reads only the matching mode-0600 external database environment,
+and owns fresh mode-0700 HOME/TMP/work directories for the capture lifetime. It
+then exact-checks committed runtime/context/database identities, pinned CLI
+identity, and Freeze B before constructing the Claude and attested read-only
+PostgreSQL transports. Context exit removes the ephemeral runtime tree on both
+success and failure; it never refreshes, repairs, copies, or mutates the lease.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

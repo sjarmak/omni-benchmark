@@ -9,6 +9,7 @@ import os
 import re
 import secrets
 from collections.abc import Callable, Mapping
+from contextlib import AbstractContextManager
 from dataclasses import dataclass, field
 from pathlib import Path
 from types import MappingProxyType
@@ -64,7 +65,8 @@ from .sealed_generation_staging import (
 
 SealedDirectCondition = Literal["C1", "C2", "C3"]
 SealedDirectCaptureFactory = Callable[
-    [SealedPreparedAttempt, ArtifactStore], "SealedDirectPreparedCapture"
+    [SealedPreparedAttempt, ArtifactStore],
+    AbstractContextManager["SealedDirectPreparedCapture"],
 ]
 
 _AUTHORITY_KEY = secrets.token_bytes(32)
@@ -476,14 +478,14 @@ class SealedDirectConditionAdapter:
             )
         store = self._new_capture_store(sealed)
         try:
-            authority = self._capture_factory(sealed, store)
-            probe = SealedDirectSqlCapture(prepared=authority).capture()
-            record = build_sealed_direct_generation_record(
-                workspace=self._workspace,
-                prepared=sealed,
-                authority=authority,
-                probe=probe,
-            )
+            with self._capture_factory(sealed, store) as authority:
+                probe = SealedDirectSqlCapture(prepared=authority).capture()
+                record = build_sealed_direct_generation_record(
+                    workspace=self._workspace,
+                    prepared=sealed,
+                    authority=authority,
+                    probe=probe,
+                )
         except SealedDirectAdapterError:
             raise
         except Exception as error:
@@ -649,9 +651,10 @@ def _require_freeze_b_identity(
     expected = {
         "budget_id": binding.budget.budget_id,
         "condition": binding.condition,
+        "harness_config_sha256": components.get("condition_config"),
         "instructions_sha256": components.get("instructions"),
         "model": binding.model.model,
-        "prompt_sha256": binding.model.system_prompt_sha256,
+        "prompt_sha256": components.get("prompt"),
         "provider": binding.model.provider,
         "semantic_model_sha256": semantic_sha,
     }
