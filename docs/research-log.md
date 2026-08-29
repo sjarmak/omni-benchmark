@@ -6064,3 +6064,58 @@ C4 post-run path, Freeze B, sealed dispatch and scoring custody, aggregate
 renderer, v4 quarantine, and the pre-consumption environment guard. The branch
 does not authorize v5 or any sealed action; fresh human and custody gates remain
 mandatory.
+
+## 2026-08-29 — D-115: Preserve bounded public validator diagnostics before retry
+
+### Pre-change hypothesis and boundary
+
+The v6 public semantic deployment preserved stable issue counts for eight
+databases, but discarded the product validator payloads needed to distinguish
+general compiler defects from representability limits. If a read-only,
+dry-default diagnostic command authenticates the committed v6 deployment
+records and their exact bundle manifests before requesting validation, then
+stores a bounded and recursively secret-rejecting copy in a new append-only
+artifact, the remaining all-18 deployment work can be classified without
+re-uploading models or using benchmark outcomes.
+
+This is a general deployment-observability intervention under Bead
+`omni-benchmark-dih.17.4`. Implementation and tests are provider-inert and use
+synthetic validator responses. The command may not upload YAML, create or modify
+models or branches, inspect or repair credentials, use questions, gold, hidden
+annotations, dev-B/test outcomes, or correctness, and it may not launch C4.
+
+### Intervention
+
+Added a narrow validator-only product boundary and a dry-default command that
+requires an explicit database list. Before constructing the client it loads each
+exact v6 append-only failure record, requires the failed-validation schema and
+positive prior issue count, verifies its source commit and manifest against a
+Git-archived committed bundle plan, and atomically claims a new diagnostic run.
+It never exposes upload, create-model, create-branch, readback, question, or
+scoring operations.
+
+Each response is recursively checked for protected and secret-bearing keys,
+common credential-shaped values, JSON type safety, finite numbers, bounded
+depth/node/string/issue/payload sizes, and then written mode 0600 with
+`O_EXCL|O_NOFOLLOW`. Records bind the source record SHA-256, commit, manifest,
+model/branch identity, old and observed issue counts, and a canonical issue
+digest. Unsafe payloads and product failures produce content-free terminal
+records; count drift is retained but cannot pass as a captured diagnostic.
+
+### Offline result
+
+All 18 committed bundle plans build with zero preflight failures. Their manifest
+hashes exactly match the v6 records, and the semantic tree is byte-unchanged from
+v6 source `7c669e5`. The compiler/regeneration/readback gate passes 175 tests at
+85.08% scoped branch coverage. The full repository gate passes 1,859 tests with
+five expected source/environment skips at 83.50% branch coverage; Ruff,
+formatting, command-help, and diff checks pass. Security review found no
+credential argument/output path, mutation method, protected-field path, or
+high-severity issue. No provider, profile, credential, lease, question, gold,
+hidden annotation, correctness result, or C4 action was accessed.
+
+### Outcome
+
+KEEP the diagnostic boundary. Its live execution remains a separate read-only
+public deployment observation and has not occurred in this implementation
+step. The v5 C4 runner remains blocked by `omni-benchmark-wk0` and untouched.
