@@ -267,7 +267,8 @@ def test_sealed_direct_binding_covers_each_direct_condition(
     assert authority.binding.condition == condition
     assert authority.binding.sealed_authority["plan_sha256"] == prepared.plan_sha256
     assert record["generation_outcome"] == "refused"
-    assert record["terminal_failure_class"] == "agent_refusal"
+    assert record["failure_origin"] == "evaluated_system"
+    assert record["terminal_failure_class"] == "no_answer_insufficient_context"
 
 
 def test_sealed_direct_preserves_evaluated_system_failure(tmp_path: Path) -> None:
