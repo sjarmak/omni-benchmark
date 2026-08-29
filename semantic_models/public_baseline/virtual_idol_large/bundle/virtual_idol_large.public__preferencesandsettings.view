@@ -20,5 +20,5 @@ dimensions:
   platform_stickiness_score:
     label: Platform Stickiness Score (PSS)
     description: Measures a fan's loyalty and connection to the platform based on their interaction consistency and session stability.
-    sql: (${interaction_consistency_score} + ${platform_stability_score}) / 2
+    sql: (CAST(${interaction_consistency_score} AS DOUBLE PRECISION) + CAST(${platform_stability_score} AS DOUBLE PRECISION)) / 2
     ai_context: Use this modeled field for Platform Stickiness Score (PSS); do not reconstruct its formula.

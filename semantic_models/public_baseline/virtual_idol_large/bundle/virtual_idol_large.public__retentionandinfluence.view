@@ -20,5 +20,5 @@ dimensions:
   viral_potential_score:
     label: Viral Potential Score (VPS)
     description: Assesses a fan's ability to create and participate in viral trends.
-    sql: ${viral_content_pieces} * (1 + ${trend_participation_count})
+    sql: CAST(${viral_content_pieces} AS DOUBLE PRECISION) * (1 + CAST(${trend_participation_count} AS DOUBLE PRECISION))
     ai_context: Use this modeled field for Viral Potential Score (VPS); do not reconstruct its formula.

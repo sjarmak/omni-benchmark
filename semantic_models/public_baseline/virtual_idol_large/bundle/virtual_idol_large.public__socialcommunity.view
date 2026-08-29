@@ -45,15 +45,15 @@ dimensions:
   social_capital_score:
     label: Social Capital Score (SCS)
     description: Represents the size and strength of a fan's social network on the platform.
-    sql: ${social_network_size} + (${friend_connections} * 1.5)
+    sql: CAST(${social_network_size} AS DOUBLE PRECISION) + (CAST(${friend_connections} AS DOUBLE PRECISION) * 1.5)
     ai_context: Use this modeled field for Social Capital Score (SCS); do not reconstruct its formula.
   follower_to_following_ratio:
     label: Follower-to-Following Ratio (FFR)
     description: Measures a fan's social influence by comparing the number of users who follow them to the number of users they follow.
-    sql: ${follower_count} / NULLIF(${following_count}, 0)
+    sql: CAST(${follower_count} AS DOUBLE PRECISION) / NULLIF(CAST(${following_count} AS DOUBLE PRECISION), 0)
     ai_context: Use this modeled field for Follower-to-Following Ratio (FFR); do not reconstruct its formula.
   content_creator_score:
     label: Content Creator Score (CCS)
     description: Evaluates a fan's contribution as a content creator by combining the volume and quality of their user-generated content.
-    sql: (${content_submissions} + ${collaborations}) * ${average_content_quality_rating}
+    sql: (CAST(${content_submissions} AS DOUBLE PRECISION) + CAST(${collaborations} AS DOUBLE PRECISION)) * CAST(${average_content_quality_rating} AS DOUBLE PRECISION)
     ai_context: Use this modeled field for Content Creator Score (CCS); do not reconstruct its formula.

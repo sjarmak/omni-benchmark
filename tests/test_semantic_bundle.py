@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import re
 
 import pytest
 import yaml
@@ -674,6 +675,93 @@ def test_compile_bundle_keeps_parser_mode_as_metadata_without_emitting_directive
     assert "-- DO NOT PARSE" not in raw_view
     assert view["dimensions"]["resolution_index"]["sql"] == (
         "${scan_resolution_mm} * 2.0"
+    )
+
+
+def test_compile_bundle_casts_numeric_structured_text_in_numeric_expression() -> None:
+    spec = copy.deepcopy(_spec())
+    spec["physical_fields"][0]["sql"] = "${cloud_metrics} ->> 'Scan_Resol_Mm'"
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["resolution_index"]["sql"] == (
+        "CAST(${scan_resolution_mm} AS DOUBLE PRECISION) * 2.0"
+    )
+
+
+def test_compile_bundle_safely_coerces_text_only_in_numeric_position() -> None:
+    spec = copy.deepcopy(_spec())
+    schema = copy.deepcopy(_schema_records())
+    schema.append(
+        {
+            "database": "db",
+            "declared_type_sql": "TEXT",
+            "description": "TEXT. Numeric-like amount. Example: 123.45.",
+            "identifier": {"name": "text_amount"},
+            "record_kind": "column",
+            "stable_id": "db:column:pointcloud:text_amount",
+            "table_stable_id": "db:table:pointcloud",
+        }
+    )
+    spec["physical_fields"].append(
+        {
+            "name": "TextAmount",
+            "schema_stable_id": "db:column:pointcloud:text_amount",
+        }
+    )
+    spec["derived_fields"][0]["sql"] = (
+        "${scan_resolution_mm} / NULLIF(${TextAmount}, 0.0)"
+    )
+
+    bundle = compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    sql = view["dimensions"]["resolution_index"]["sql"]
+    assert sql.startswith("${scan_resolution_mm} / NULLIF(CASE WHEN ")
+    assert "TRIM(${text_amount}) ~ '^[+-]?" in sql
+    assert "THEN CAST(TRIM(${text_amount}) AS DOUBLE PRECISION)" in sql
+    assert "ELSE NULL END, 0.0)" in sql
+    pattern_match = re.search(r"~ '([^']+)'", sql)
+    assert pattern_match is not None
+    pattern = pattern_match.group(1)
+    for numeric in ("0", "-12.5", "+.75", "6.02e23", " 42 "):
+        assert re.fullmatch(pattern, numeric.strip())
+    for unsafe in ("", "NaN", "Infinity", "$12.50", "1,000", "1-2", "ready"):
+        assert re.fullmatch(pattern, unsafe) is None
+
+
+def test_compile_bundle_does_not_cast_text_used_as_numeric_case_condition() -> None:
+    spec = copy.deepcopy(_spec())
+    schema = copy.deepcopy(_schema_records())
+    schema.append(
+        {
+            "database": "db",
+            "declared_type_sql": "TEXT",
+            "description": "TEXT. Processing state.",
+            "identifier": {"name": "state"},
+            "record_kind": "column",
+            "stable_id": "db:column:pointcloud:state",
+            "table_stable_id": "db:table:pointcloud",
+        }
+    )
+    spec["physical_fields"].append(
+        {
+            "name": "state",
+            "schema_stable_id": "db:column:pointcloud:state",
+        }
+    )
+    spec["derived_fields"][0]["sql"] = (
+        "CASE WHEN ${state} = 'Ready' THEN 1.0 ELSE 0.0 END"
+    )
+
+    bundle = compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["resolution_index"]["sql"] == (
+        "CASE WHEN ${state} = 'Ready' THEN 1.0 ELSE 0.0 END"
     )
 
 

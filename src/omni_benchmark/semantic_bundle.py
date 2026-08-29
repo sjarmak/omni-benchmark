@@ -15,6 +15,12 @@ import yaml
 from .protected_fields import ProtectedFieldError
 from .protected_fields import reject_protected_fields as _reject_protected_fields
 from .semantic_mapping import SemanticMappingError, validate_mapping_records
+from .semantic_numeric import (
+    NumericExpressionError,
+    coerce_numeric_references,
+    physical_value_kind,
+    schema_value_kind,
+)
 from .semantic_relationships import plan_relationship_contracts
 
 
@@ -1016,6 +1022,11 @@ def _table_dimensions(
 ) -> tuple[dict[str, Any], list[str]]:
     dimensions: dict[str, Any] = {}
     allowed = {name for name, stable_ids in base_fields.items() if len(stable_ids) == 1}
+    field_kinds = {
+        name: schema_value_kind(schema_index[stable_ids[0]])
+        for name, stable_ids in base_fields.items()
+        if len(stable_ids) == 1
+    }
     physical_names: dict[str, str] = {}
     reference_names: dict[str, str] = {}
     normalized_names: set[str] = set()
@@ -1070,6 +1081,7 @@ def _table_dimensions(
         dimensions[name] = _physical_dimension(
             field, source, contexts.get(schema_id, []), sql
         )
+        field_kinds[name] = physical_value_kind(source, sql)
         allowed.add(name)
         for hkb_id, mapping in context_mappings.items():
             bindings = _items(mapping.get("source_bindings"), "context bindings")
@@ -1089,11 +1101,21 @@ def _table_dimensions(
             _text(derived[hkb_id].get("sql"), "derived field sql"),
             reference_names,
         )
+        if mapping.get("representation") == "numeric_derived_dimension":
+            try:
+                sql = coerce_numeric_references(sql, field_kinds)
+            except NumericExpressionError as error:
+                raise SemanticBundleError(str(error)) from error
         _validate_sql(sql, allowed)
         hkb = hkb_index.get(hkb_id)
         if hkb is None:
             raise SemanticBundleError(f"HKB record {hkb_id} is missing")
         dimensions[name] = _derived_dimension(hkb, mapping, sql)
+        field_kinds[name] = {
+            "boolean_derived_dimension": "other",
+            "categorical_derived_dimension": "text",
+            "numeric_derived_dimension": "numeric",
+        }.get(str(mapping.get("representation")), "unknown")
         allowed.add(name)
         elements.append(_semantic_element(mapping, hkb_id, name, "derived_dimension"))
     return dimensions, list(dimensions)

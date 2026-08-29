@@ -123,8 +123,8 @@
     },
     {
       "file": "solar_panel_large.public__electrical_performance.view",
-      "sha256": "366677ea27d690e4df6bde3b4550492d20d944524f69c04e0b943334082cfece",
-      "size_bytes": 8579
+      "sha256": "0ad35ac2136b9f105dcbfcee0d6b7c2cbe2ab70798288ef7c57965014ddcc4e1",
+      "size_bytes": 8995
     },
     {
       "file": "electrical_performance_semantics.topic",
@@ -143,8 +143,8 @@
     },
     {
       "file": "solar_panel_large.public__operational_metrics.view",
-      "sha256": "41c9653f0b43cfcdf496c89fbbcb5855d654649720a5d93d09a2989da544312c",
-      "size_bytes": 2322
+      "sha256": "81a5b7b5e2455bc4d6e9d45a5063c1cf1da5ae88e0c9dee35818bb55f58b8cba",
+      "size_bytes": 2464
     },
     {
       "file": "operational_metrics_semantics.topic",

@@ -95,8 +95,8 @@
   "files": [
     {
       "file": "virtual_idol_large.public__interactions.view",
-      "sha256": "ddde4475a85580fe4e1c29ba3af7671caf72e9c59d2c17409bcb15ff24bef4d8",
-      "size_bytes": 2696
+      "sha256": "69c3a2831239e142bd9b6640039433ca003d99c845088605b53a766d67e7c182",
+      "size_bytes": 2748
     },
     {
       "file": "interactions_semantics.topic",
@@ -105,8 +105,8 @@
     },
     {
       "file": "virtual_idol_large.public__socialcommunity.view",
-      "sha256": "e7c8a1fdc1269e82506fff33d7f3f8a60d42e6a8f2c0d61fed6bad8a462362c4",
-      "size_bytes": 3516
+      "sha256": "c84760199045c6ccb507433e1a440ddca04a0ea6a70d3ed424326f9c4529fdcc",
+      "size_bytes": 3698
     },
     {
       "file": "socialcommunity_semantics.topic",
@@ -115,8 +115,8 @@
     },
     {
       "file": "virtual_idol_large.public__eventsandclub.view",
-      "sha256": "2af8ef5794c05a6fb5b1a211b7db088458a0cae96e3df7d3b35f3e83c89cf093",
-      "size_bytes": 1053
+      "sha256": "ff332dcc01b33c9a8cef002118b83ceb8dfa8de453e5af97cf3b85d6cb4d2b3a",
+      "size_bytes": 1131
     },
     {
       "file": "eventsandclub_semantics.topic",
@@ -125,8 +125,8 @@
     },
     {
       "file": "virtual_idol_large.public__preferencesandsettings.view",
-      "sha256": "20ec950ea96c4992b8765bb464d9f84150d07535bfe600c0c88b800fc9492ae5",
-      "size_bytes": 1363
+      "sha256": "f0ca17d5ef062a63a5448d94eb3fc8607fe7456acc9bb3221075d42ce1076897",
+      "size_bytes": 1415
     },
     {
       "file": "preferencesandsettings_semantics.topic",
@@ -145,8 +145,8 @@
     },
     {
       "file": "virtual_idol_large.public__supportandfeedback.view",
-      "sha256": "5c25a1df04a4ce2004cd7ab0bca447c478b72cdbbb3c2d2b251637b2c67bea94",
-      "size_bytes": 1364
+      "sha256": "80652249bfc01436672c2346271b039462ab51475f00bfa70afa4358630dcba8",
+      "size_bytes": 1442
     },
     {
       "file": "supportandfeedback_semantics.topic",
@@ -155,8 +155,8 @@
     },
     {
       "file": "virtual_idol_large.public__retentionandinfluence.view",
-      "sha256": "2cf4eefc17b0a6d141b6f183c8da4f943165e3220a037e762b436f07125adb7e",
-      "size_bytes": 1265
+      "sha256": "26ba67057b12d7ca9a1cbe2c0b7aeab412b979a2acbbd5fb26cd89371ff8dd03",
+      "size_bytes": 1317
     },
     {
       "file": "retentionandinfluence_semantics.topic",

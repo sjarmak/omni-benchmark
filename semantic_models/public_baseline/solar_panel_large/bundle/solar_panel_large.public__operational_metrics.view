@@ -32,7 +32,7 @@ dimensions:
   maintenance_cost_to_revenue_impact_ratio:
     label: Maintenance Cost to Revenue Impact Ratio
     description: Compares the cost of maintenance activities to the revenue lost during downtime for those repairs.
-    sql: ${maintcost} / NULLIF(${revloss}, 0.0)
+    sql: ${maintcost} / NULLIF(CASE WHEN TRIM(${revloss}) ~ '^[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?$' THEN CAST(TRIM(${revloss}) AS DOUBLE PRECISION) ELSE NULL END, 0.0)
     ai_context: Use this modeled field for Maintenance Cost to Revenue Impact Ratio; do not reconstruct its formula.
   system_unavailability:
     label: System Unavailability

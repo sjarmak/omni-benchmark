@@ -78,42 +78,42 @@ dimensions:
   specific_yield_metric:
     label: Specific Yield
     description: Measures the energy output of a solar plant relative to its rated power capacity over a period.
-    sql: ${specific_yield}
+    sql: CAST(${specific_yield} AS DOUBLE PRECISION)
     ai_context: Use this modeled field for Specific Yield; do not reconstruct its formula.
   power_capacity_factor:
     label: Power Capacity Factor
     description: Calculates the ratio of a plant's actual energy output over a period to its potential maximum output.
-    sql: ${capacity_factor}
+    sql: CAST(${capacity_factor} AS DOUBLE PRECISION)
     ai_context: Use this modeled field for Power Capacity Factor; do not reconstruct its formula.
   inverter_efficiency_loss:
     label: Inverter Efficiency Loss
     description: Calculates the percentage of DC power that is lost as heat during the conversion to AC power within the inverter.
-    sql: 100.0 - ${inverter_eff}
+    sql: 100.0 - CAST(${inverter_eff} AS DOUBLE PRECISION)
     ai_context: Use this modeled field for Inverter Efficiency Loss; do not reconstruct its formula.
   system_power_loss_ratio:
     label: System Power Loss Ratio
     description: Measures the proportion of power that is generated but lost within the system before reaching the grid.
-    sql: ${power_loss} / NULLIF(${power_now} + ${power_loss}, 0.0)
+    sql: CAST(${power_loss} AS DOUBLE PRECISION) / NULLIF(CAST(${power_now} AS DOUBLE PRECISION) + CAST(${power_loss} AS DOUBLE PRECISION), 0.0)
     ai_context: Use this modeled field for System Power Loss Ratio; do not reconstruct its formula.
   voltage_degradation_factor:
     label: Voltage Degradation Factor
     description: Quantifies the decline in a panel's maximum power point voltage (Vmp) over time.
-    sql: (${voc_initial} - ${voc_now}) / NULLIF(${voc_initial}, 0.0)
+    sql: (CAST(${voc_initial} AS DOUBLE PRECISION) - CAST(${voc_now} AS DOUBLE PRECISION)) / NULLIF(CAST(${voc_initial} AS DOUBLE PRECISION), 0.0)
     ai_context: Use this modeled field for Voltage Degradation Factor; do not reconstruct its formula.
   current_degradation_factor:
     label: Current Degradation Factor
     description: Quantifies the decline in a panel's maximum power point current (Imp) over time.
-    sql: (${isc_initial} - ${isc_now}) / NULLIF(${isc_initial}, 0.0)
+    sql: (CAST(${isc_initial} AS DOUBLE PRECISION) - CAST(${isc_now} AS DOUBLE PRECISION)) / NULLIF(CAST(${isc_initial} AS DOUBLE PRECISION), 0.0)
     ai_context: Use this modeled field for Current Degradation Factor; do not reconstruct its formula.
   effective_power_output:
     label: Effective Power Output
     description: Calculates the net power delivered by the system after accounting for internal power losses.
-    sql: ${power_now} * (1.0 - ${system_power_loss_ratio})
+    sql: CAST(${power_now} AS DOUBLE PRECISION) * (1.0 - ${system_power_loss_ratio})
     ai_context: Use this modeled field for Effective Power Output; do not reconstruct its formula.
   soiling_loss_index:
     label: Soiling Loss Index
     description: Quantifies the percentage of power loss due to the accumulation of dirt, dust, and other particulates on panel surfaces.
-    sql: ${soil_loss}
+    sql: CAST(${soil_loss} AS DOUBLE PRECISION)
     ai_context: Use this modeled field for Soiling Loss Index; do not reconstruct its formula.
   severe_soiling_condition:
     label: Severe Soiling Condition
@@ -133,5 +133,5 @@ dimensions:
   fill_factor_degradation:
     label: Fill Factor Degradation
     description: Measures the reduction in the IV curve's fill factor from its initial value, indicating a decline in solar cell quality.
-    sql: ${fill_initial} - ${fill_now}
+    sql: CAST(${fill_initial} AS DOUBLE PRECISION) - CAST(${fill_now} AS DOUBLE PRECISION)
     ai_context: Use this modeled field for Fill Factor Degradation; do not reconstruct its formula.

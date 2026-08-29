@@ -24,5 +24,5 @@ dimensions:
   support_load_score:
     label: Support Load Score (SLS)
     description: Quantifies the amount of support resources a fan utilizes, based on their submission of tickets and issue reports.
-    sql: ${support_tickets} + ${bug_reports} + ${technical_issue_reports}
+    sql: CAST(${support_tickets} AS DOUBLE PRECISION) + CAST(${bug_reports} AS DOUBLE PRECISION) + CAST(${technical_issue_reports} AS DOUBLE PRECISION)
     ai_context: Use this modeled field for Support Load Score (SLS); do not reconstruct its formula.

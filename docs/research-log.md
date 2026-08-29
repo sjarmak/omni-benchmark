@@ -6289,3 +6289,72 @@ KEEP. Parser-control intent remains explicit in reviewed source metadata while
 the product receives only locally admitted SQL. The change removes the general
 mechanism behind all 17 observed parser diagnostics without a per-database
 exception.
+
+## 2026-08-29 — D-119: Propagate numeric expectations through public formulas
+
+### Pre-change hypothesis and boundary
+
+The four observed `invalid_types_for_function` diagnostics are instances of a
+general compiler gap: PostgreSQL JSON scalar extraction produces text even when
+authenticated public leaf metadata declares a numeric type, and a physical text
+column can participate in a reviewed numeric formula without an explicit safe
+coercion. If the compiler propagates a numeric representation expectation only
+through numeric expression positions, it can cast numeric leaves, safely coerce
+text operands, and leave categorical predicates unchanged.
+
+This is a public-schema compiler intervention under Bead
+`omni-benchmark-dih.17.6`. Type evidence comes only from committed schema IR,
+structured-leaf descriptions, physical SQL, mapping representations, and
+derived formulas. The rule may not infer from a database name, validator path,
+question, gold, hidden annotation, dev-B/test outcome, or runtime value. Text
+coercion must fail safe to `NULL` for whitespace, categorical text, malformed
+numbers, infinities, and other nonnumeric content rather than stripping
+characters or raising a database cast error.
+
+### TDD evidence
+
+Red tests first reproduced two required cases: a `REAL` structured leaf whose
+physical expression returns text remained uncast in arithmetic, and a declared
+`TEXT` amount remained a string inside a numeric `NULLIF`. A control test kept a
+text-valued `CASE` predicate unchanged. The first two tests failed against the
+old compiler while the control passed.
+
+### Intervention and offline result
+
+A focused numeric-expression module now classifies public column declarations,
+structured-leaf type prefixes, and explicit root casts. It propagates numeric
+expectations through arithmetic, numeric functions, numeric `NULLIF` operands,
+numeric `CASE` result branches, and comparisons against numeric literals. It
+does not propagate those expectations into categorical predicates or through an
+existing explicit cast.
+
+Numeric structured leaves are cast to `DOUBLE PRECISION` only at numeric use
+sites. Declared text at a numeric use site receives a strict, whitespace-tolerant
+numeric grammar and a guarded cast; malformed values return `NULL`. The grammar
+accepts signed integers, decimals, and scientific notation while rejecting
+empty strings, `NaN`, infinity, currency, grouping separators, mixed tokens,
+and categorical text. Field identifiers remain constrained to the compiler's
+safe placeholder grammar and are normalized before type rewriting.
+
+Regenerating all 18 public bundles changes only four database bundles. Robot
+receives casts for its three reported averages plus the related temperature
+range. Solar receives the reported safe text denominator cast and numeric casts
+for structured fields whose earlier missing-column errors had masked their
+types. Virtual-idol receives the same mechanical casts for newly source-bound
+numeric leaves, and organ-transplant receives a safe numeric output for one
+reviewed numeric representation backed by text. No other bundle changes.
+
+The focused compiler, publication, committed-artifact, and deployment gate
+passes 144 tests at 87.42% scoped branch coverage. Ruff, formatting,
+deterministic regeneration, and diff checks pass. Review found no credential,
+injection, or unsafe-cast path; its maintainability finding moved the recursive
+transformer out of the already large bundle compiler and decomposed it into a
+focused module. Live validation and readback remain a separate append-only
+deployment step.
+
+### Outcome
+
+KEEP offline. The rule addresses the four observed type errors and latent
+instances of the same public mechanism without database-specific branches. The
+live product oracle remains pending; any next validator issue must be preserved
+rather than tuned away.

@@ -34,7 +34,7 @@ dimensions:
   estimated_glomerular_filtration_rate:
     label: Estimated Glomerular Filtration Rate (eGFR)
     description: Estimates the kidney's filtration capacity, a key indicator of renal function.
-    sql: ${donor_gfr}
+    sql: CASE WHEN TRIM(${donor_gfr}) ~ '^[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?$' THEN CAST(TRIM(${donor_gfr}) AS DOUBLE PRECISION) ELSE NULL END
     ai_context: Use this modeled field for Estimated Glomerular Filtration Rate (eGFR); do not reconstruct its formula.
   renal_function_score:
     label: Renal Function Score

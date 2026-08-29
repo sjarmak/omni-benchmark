@@ -33,7 +33,7 @@ dimensions:
   fan_monetization_index:
     label: Fan Monetization Index (FMI)
     description: Measures a fan's direct financial contribution per minute of engagement, indicating their propensity for in-session spending.
-    sql: ${total_gift_value_usd} / NULLIF(${session_duration_minutes}, 0)
+    sql: CAST(${total_gift_value_usd} AS DOUBLE PRECISION) / NULLIF(${session_duration_minutes}, 0)
     ai_context: Use this modeled field for Fan Monetization Index (FMI); do not reconstruct its formula.
   content_consumption_index:
     label: Content Consumption Index (CCI)
@@ -43,5 +43,5 @@ dimensions:
   chattiness_score:
     label: Chattiness Score (CS)
     description: Measures a fan's active communication during a session, reflecting their level of social interaction.
-    sql: ${chat_messages} / NULLIF(${session_duration_minutes}, 0)
+    sql: CAST(${chat_messages} AS DOUBLE PRECISION) / NULLIF(${session_duration_minutes}, 0)
     ai_context: Use this modeled field for Chattiness Score (CS); do not reconstruct its formula.

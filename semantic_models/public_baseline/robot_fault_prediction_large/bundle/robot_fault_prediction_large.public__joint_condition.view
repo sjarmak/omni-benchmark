@@ -79,12 +79,12 @@ dimensions:
   hkb_15:
     label: Average Backlash
     description: Calculates the average mechanical backlash across all of the robot's joints, an indicator of gear wear.
-    sql: (${jc_j1_backlash} + ${jc_j2_backlash} + ${jc_j3_backlash} + ${jc_j4_backlash} + ${jc_j5_backlash} + ${jc_j6_backlash}) / 6.0
+    sql: (CAST(${jc_j1_backlash} AS DOUBLE PRECISION) + CAST(${jc_j2_backlash} AS DOUBLE PRECISION) + CAST(${jc_j3_backlash} AS DOUBLE PRECISION) + CAST(${jc_j4_backlash} AS DOUBLE PRECISION) + CAST(${jc_j5_backlash} AS DOUBLE PRECISION) + CAST(${jc_j6_backlash} AS DOUBLE PRECISION)) / 6.0
     ai_context: Use this modeled field for Average Backlash; do not reconstruct its formula.
   hkb_5:
     label: Average Joint Vibration
     description: Calculates the average vibration level across all of the robot's joints.
-    sql: (${jc_j1_vibration} + ${jc_j2_vibration} + ${jc_j3_vibration} + ${jc_j4_vibration} + ${jc_j5_vibration} + ${jc_j6_vibration}) / 6.0
+    sql: (CAST(${jc_j1_vibration} AS DOUBLE PRECISION) + CAST(${jc_j2_vibration} AS DOUBLE PRECISION) + CAST(${jc_j3_vibration} AS DOUBLE PRECISION) + CAST(${jc_j4_vibration} AS DOUBLE PRECISION) + CAST(${jc_j5_vibration} AS DOUBLE PRECISION) + CAST(${jc_j6_vibration} AS DOUBLE PRECISION)) / 6.0
     ai_context: Use this modeled field for Average Joint Vibration; do not reconstruct its formula.
   hkb_18:
     label: Mechanical Wear Score
@@ -99,12 +99,12 @@ dimensions:
   hkb_4:
     label: Average Joint Temperature
     description: Calculates the average temperature across all of the robot's joints.
-    sql: (${jc_j1_temp} + ${jc_j2_temp} + ${jc_j3_temp} + ${jc_j4_temp} + ${jc_j5_temp} + ${jc_j6_temp}) / 6.0
+    sql: (CAST(${jc_j1_temp} AS DOUBLE PRECISION) + CAST(${jc_j2_temp} AS DOUBLE PRECISION) + CAST(${jc_j3_temp} AS DOUBLE PRECISION) + CAST(${jc_j4_temp} AS DOUBLE PRECISION) + CAST(${jc_j5_temp} AS DOUBLE PRECISION) + CAST(${jc_j6_temp} AS DOUBLE PRECISION)) / 6.0
     ai_context: Use this modeled field for Average Joint Temperature; do not reconstruct its formula.
   hkb_9:
     label: Joint Temperature Differential
     description: Measures the temperature difference between the hottest and coolest joints, which can indicate localized issues.
-    sql: GREATEST(${jc_j1_temp},${jc_j2_temp},${jc_j3_temp},${jc_j4_temp},${jc_j5_temp},${jc_j6_temp}) - LEAST(${jc_j1_temp},${jc_j2_temp},${jc_j3_temp},${jc_j4_temp},${jc_j5_temp},${jc_j6_temp})
+    sql: GREATEST(CAST(${jc_j1_temp} AS DOUBLE PRECISION), CAST(${jc_j2_temp} AS DOUBLE PRECISION), CAST(${jc_j3_temp} AS DOUBLE PRECISION), CAST(${jc_j4_temp} AS DOUBLE PRECISION), CAST(${jc_j5_temp} AS DOUBLE PRECISION), CAST(${jc_j6_temp} AS DOUBLE PRECISION)) - LEAST(CAST(${jc_j1_temp} AS DOUBLE PRECISION), CAST(${jc_j2_temp} AS DOUBLE PRECISION), CAST(${jc_j3_temp} AS DOUBLE PRECISION), CAST(${jc_j4_temp} AS DOUBLE PRECISION), CAST(${jc_j5_temp} AS DOUBLE PRECISION), CAST(${jc_j6_temp} AS DOUBLE PRECISION))
     ai_context: Use this modeled field for Joint Temperature Differential; do not reconstruct its formula.
   hkb_43:
     label: Thermal Anomaly
