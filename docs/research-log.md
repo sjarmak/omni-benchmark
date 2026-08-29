@@ -4657,3 +4657,58 @@ silently penalize the evaluated system for its own control-plane interruption.
 Any future C4 launch requires a separately authorized run ID and its own gate.
 The quarantined records remain immutable diagnostic history and must never be
 promoted or scored.
+
+## 2026-08-29 — D-090: Bind sealed scoring to Freeze B before gold admission
+
+### Decision / experiment
+
+Close the mechanical gap between the preregistered Freeze B and the existing
+generate-then-score gate using only public and synthetic fixtures. Change type:
+general evaluation integrity. Bead: `omni-benchmark-dih.5.4.1.1`.
+
+### Hypothesis
+
+Requiring one canonical system freeze, twelve condition/repetition run
+manifests, and per-generation provenance at the scoring boundary will prevent a
+stale or substituted generation from being scored without expanding the
+evaluator's access to hidden data.
+
+### Intervention
+
+Added exact-schema immutable Freeze B and sealed-run manifest types. Freeze B
+records the final commit, frozen-file hashes, all four condition specifications,
+non-null C3/C4 semantic-model hashes, scorer identity, database snapshot and
+versions, and an externally supplied schedule seed and digest. The sealed batch
+gate now reparses those manifests and verifies all 1,212 generations against the
+ordered schedule and twelve run bindings before indexing the gold collection.
+
+### Result
+
+Forty focused synthetic tests cover canonicalization plus schedule, condition,
+configuration, semantic-model, run-manifest, generation, and record-hash
+tampering. A sentinel proves provenance failures occur before any gold access;
+the database provider also remains untouched. The full suite passes with 1,501
+tests, five expected skips, and 84.32% branch coverage. Ruff and diff checks are
+clean. No schedule seed was chosen, no final manifest was instantiated, and no
+private data, credentials, live service, or approval receipt was accessed.
+
+### Interpretation
+
+The implementation makes Freeze B enforceable at scoring time; it does not
+perform the human-controlled freeze. Final candidate selection, the schedule
+seed, actual content hashes, and sealed execution remain pending.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Evaluation provenance should be a required input to scoring, not an adjacent
+document. Exact run-to-freeze bindings make results auditable without exposing
+the underlying questions or answers.
+
+### Next step
+
+After candidate selection, create and commit the actual Freeze B manifest and
+ordered schedule before starting any test generation.

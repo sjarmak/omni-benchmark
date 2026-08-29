@@ -107,16 +107,26 @@ never cross that interface.
 `omni_benchmark.sealed_batch.score_completed_generation` validates all inputs
 before acquiring any database:
 
-- the committed schedule has exactly 1,212 unique attempt IDs;
-- the frozen generation has exactly that attempt set;
+- the exact-schema Freeze B manifest fixes the system commit, scorer metadata,
+  database snapshot and versions, four condition configurations, and ordered
+  schedule hash;
+- C1 has no semantic-model content hash, while C3 and C4 require one;
+- twelve test-only run manifests cover C1-C4 and repetitions 1-3, and each
+  matches the frozen system, schedule, configuration, and semantic-model hash;
+- the committed schedule has exactly 1,212 unique attempt IDs and matches its
+  Freeze B digest;
+- the frozen generation has exactly that attempt set, with 101 records bound to
+  each run manifest and matching generation, run-manifest, and record hashes;
 - the sealed gold records have exactly that attempt set.
 
-Only then does it score the attempts, in committed schedule order, under both
-policies. This is the mechanical boundary behind “generate all 1,212 outputs
-before scoring any.” The final evaluator should pass each policy's score records
-to `create_score_artifact`, which adds generation-file and per-record hash
-bindings. An infrastructure failure blocks score-artifact materialization until
-the preregistered rerun procedure resolves it.
+Provenance failures occur before the gold collection is read. Only after all
+bindings pass does the evaluator validate the gold records and score attempts,
+in committed schedule order, under both policies. This is the mechanical
+boundary behind “generate all 1,212 outputs before scoring any.” The final
+evaluator should pass each policy's score records to `create_score_artifact`,
+which preserves generation-file and per-record hash bindings. An infrastructure
+failure blocks score-artifact materialization until the preregistered rerun
+procedure resolves it.
 
 ## Psycopg template connector
 

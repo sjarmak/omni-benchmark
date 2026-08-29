@@ -101,4 +101,5 @@ comparison. The integration layer is implemented in
 The public/synthetic suite covers each behavior, and an opt-in live conformance
 test passed against a disposable PostgreSQL 18 template clone. See
 `docs/sealed-execution.md` for the lifecycle, failure ownership, generate-then-
-score gate, and the remaining Freeze-B version-recording requirement.
+score gate, and the Freeze-B provenance contract. The final manifest is created
+only after candidate selection and before any held-out generation.
