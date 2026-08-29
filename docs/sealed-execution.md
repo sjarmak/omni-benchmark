@@ -397,6 +397,13 @@ projects an unscored `partition=test` record for immutable staging. Refusals and
 evaluated-system failures are retained; benchmark-infrastructure failures are
 not staged. No sealed direct API reads gold, correctness, or test annotations.
 
+Production adapter paths are not inferred from filenames. The builder reloads
+`config/freeze-b-input.json` and every path it names from Git at `S`, requires
+the complete frozen-path set and blob digests to match Freeze B, and regenerates
+the four ordered condition identities plus database snapshot identity. Dirty
+working-tree copies are ignored. This read-only specification loader does not
+inspect environment credentials or construct a transport.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

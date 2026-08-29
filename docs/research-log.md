@@ -5466,3 +5466,58 @@ unrepresentable while retaining the mature capture loop.
 Build the production direct dependency factory and C4 probe-runner closure, wire
 all four factories into the dry-default entry point, and expand the runtime
 source set to every transitive production dependency before Freeze B.
+
+## 2026-08-29 — D-102: Recover production paths from the frozen input spec
+
+### Decision / experiment
+
+Make the future `config/freeze-b-input.json` the sole source of production
+adapter paths rather than hard-code or infer them in the dispatcher. Change
+type: general evaluation integrity. Bead: `omni-benchmark-ei0.5.5.3.1`.
+
+### Hypothesis
+
+If the adapter builder reloads the input specification and every referenced
+file from Git at system commit `S`, then exact configuration paths can be
+recovered after receipt consumption without trusting dirty working-tree files or
+duplicating path declarations outside Freeze B.
+
+### Intervention
+
+Added `load_sealed_runtime_inputs`. It reads the input specification and all
+listed frozen files as Git blobs, requires the spec's complete frozen-path set
+and each blob digest to equal Freeze B, regenerates all four ordered condition
+identities with the recorder's strict parser, and exact-compares database
+snapshot, PostgreSQL, libpq, Freeze-A, and system-commit identity. It returns an
+immutable path record for each condition plus the snapshot path. Its public
+summary exposes hashes/counts only. Dirty substitutions are ignored. The loader
+is included in the sealed runtime-source digest.
+
+### Result
+
+Four focused tests pass with 82.71% branch coverage. They cover exact four-lane
+recovery, dirty substitution immunity, condition/frozen-blob/database/commit/path
+substitution, strict lookup, and public summary shape. No environment credential,
+provider, receipt, test output, protected outcome, or score was accessed.
+
+### Interpretation
+
+The production builder can now be driven by the same committed provenance input
+that created Freeze B. The remaining closures may load the returned paths with
+the existing condition-specific parsers, but cannot silently choose a different
+runtime or semantic artifact.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Provenance manifests are more useful when they preserve the route back to exact
+inputs, not only their final digests. A separately frozen path specification
+provides that route without putting mutable filesystem state in authority.
+
+### Next step
+
+Construct the direct runtime dependencies and C4 probe runner from these exact
+paths, then wire the complete post-consumption adapter builder.
