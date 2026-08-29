@@ -10100,3 +10100,37 @@ the fixed-frame C4 authorization; dispatch once; freeze and score; record Freeze
 B; run the sealed evaluation through custody; finish `RESULTS.md`. The deferred
 audit and worktree-hygiene queues must not interrupt this sequence unless they
 surface a concrete blocker to one of those actions.
+
+## 2026-08-29 — D-147: Bind C4 to one current 16-deployment evidence set
+
+### Hypothesis
+
+The approved C4 scheduler already emits 154 scheduled identities, 136 executable
+dev-A attempts, and 18 fixed unscorable exclusions. Its real provider-inert dry
+plan should therefore pass once the derived deployment gate references one
+current immutable record set covering the same 16 answerable databases. No new
+runtime mechanism or scoring decision is needed.
+
+### Failure-first observation
+
+At exact main commit `84908717b3df6687c628f972d1b81a978f994b2a`, the dry
+plan failed before provider contact with `scheduled databases exceed the derived
+deployment gate`. The committed arm still bound ten historical v6 deployments.
+This is a stale evidence binding upstream of the already-correct scheduler, not
+a reason to change the approved 154/136 frame.
+
+### Current result
+
+KEEP OFFLINE under `omni-benchmark-ei0.4.11`. One append-only Tier 1 v13 pass
+verified all 16 answerable databases with zero terminal failures and zero record
+write failures. Its claim plus 16 records have canonical sorted-file aggregate
+SHA-256
+`5698a4d23e5c7b2d99dca1488e7ebb7b2591d62a87a683373bc0af1ab1cdc3c6`.
+The existing arm now binds those exact records; its public full-train inventory
+regenerates to 204 answerable identities while the unchanged evaluated scheduler
+selects the approved 136 dev-A attempts. The 14-test focused arm/deployment gate
+passes. Commit-bound dry-plan verification remains before any authorization
+request.
+
+No C4 dispatch, evaluated answer, question, gold, hidden annotation, dev-B, test
+outcome, correctness, credential, OAuth, or lease action occurred.

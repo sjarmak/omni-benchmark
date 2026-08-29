@@ -81,24 +81,84 @@
       "selected_count": 14
     },
     {
-      "database": "residential_data_large",
+      "database": "planets_data_large",
       "first_ordinal": 101,
+      "high_level": {
+        "false": 10,
+        "true": 3
+      },
+      "last_ordinal": 113,
+      "selected_count": 13
+    },
+    {
+      "database": "polar_equipment_large",
+      "first_ordinal": 114,
+      "high_level": {
+        "false": 3,
+        "true": 11
+      },
+      "last_ordinal": 127,
+      "selected_count": 14
+    },
+    {
+      "database": "residential_data_large",
+      "first_ordinal": 128,
       "high_level": {
         "false": 4,
         "true": 11
       },
-      "last_ordinal": 115,
+      "last_ordinal": 142,
       "selected_count": 15
     },
     {
       "database": "reverse_logistics_large",
-      "first_ordinal": 116,
+      "first_ordinal": 143,
       "high_level": {
         "false": 14,
         "true": 0
       },
-      "last_ordinal": 129,
+      "last_ordinal": 156,
       "selected_count": 14
+    },
+    {
+      "database": "robot_fault_prediction_large",
+      "first_ordinal": 157,
+      "high_level": {
+        "false": 0,
+        "true": 7
+      },
+      "last_ordinal": 163,
+      "selected_count": 7
+    },
+    {
+      "database": "solar_panel_large",
+      "first_ordinal": 164,
+      "high_level": {
+        "false": 9,
+        "true": 5
+      },
+      "last_ordinal": 177,
+      "selected_count": 14
+    },
+    {
+      "database": "sports_events_large",
+      "first_ordinal": 178,
+      "high_level": {
+        "false": 8,
+        "true": 6
+      },
+      "last_ordinal": 191,
+      "selected_count": 14
+    },
+    {
+      "database": "virtual_idol_large",
+      "first_ordinal": 192,
+      "high_level": {
+        "false": 0,
+        "true": 13
+      },
+      "last_ordinal": 204,
+      "selected_count": 13
     }
   ],
   "databases": [
@@ -110,10 +170,16 @@
     "fake_account_large",
     "labor_certification_applications_large",
     "museum_artifact_large",
+    "planets_data_large",
+    "polar_equipment_large",
     "residential_data_large",
-    "reverse_logistics_large"
+    "reverse_logistics_large",
+    "robot_fault_prediction_large",
+    "solar_panel_large",
+    "sports_events_large",
+    "virtual_idol_large"
   ],
-  "full_ids_sha256": "ea6de0355419f912072b45ade4a7dda7b0f5b74a8b7a2020dc3534c66fbb9f05",
+  "full_ids_sha256": "aabd9cdc2e4b62ca0c831bdd867ba88ed60fecd05ec783715f49498452d6d72d",
   "kind": "public-c4-baseline-arm-metadata",
   "ordering": "selected_database_then_train_manifest_order",
   "paired_allocation": [
@@ -212,13 +278,13 @@
   "paired_selected_count": 108,
   "schema_version": 1,
   "seed": null,
-  "selected_count": 129,
+  "selected_count": 204,
   "selection": "all_public_train_questions_for_selected_databases",
   "source": {
     "eligible_manifest_path": "data/manifests/eligible_questions.jsonl",
     "eligible_manifest_sha256": "ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e",
     "spec_path": "config/conditions/c4-public-baseline-arm-v1.json",
-    "spec_sha256": "ea6b14c6eb68d3f22cb2524c00434f4b53fe0988facfe0cf7901f65d5e9476aa",
+    "spec_sha256": "da2c1b6da65e4f81fabc0b4f4d022c1e9bf60ca2a2d16c67bd7d9c9ffb52ccc1",
     "train_ids_path": "data/manifests/train_ids.txt",
     "train_ids_sha256": "ecdd1e4cd425e41970d3d4e96d7c3cb044cb78d94e34621d320e3d542a5d1c46"
   }

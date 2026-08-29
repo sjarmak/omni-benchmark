@@ -22,7 +22,6 @@ from omni_benchmark.baseline_batch_cli import (
     baseline_batch_main,
 )
 from omni_benchmark.c4_baseline_arm import render_c4_baseline_arm
-from omni_benchmark.omni_semantic_deploy_cli import committed_bundle_inventory
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,8 +35,14 @@ C4_DATABASES = (
     "fake_account_large",
     "labor_certification_applications_large",
     "museum_artifact_large",
+    "planets_data_large",
+    "polar_equipment_large",
     "residential_data_large",
     "reverse_logistics_large",
+    "robot_fault_prediction_large",
+    "solar_panel_large",
+    "sports_events_large",
+    "virtual_idol_large",
 )
 
 
@@ -55,9 +60,7 @@ def _git(workspace: Path, *arguments: str) -> str:
     return result.stdout.strip()
 
 
-def _fixture_repo(
-    tmp_path: Path, *, bind_records_to_current_bundles: bool = True
-) -> tuple[Path, str]:
+def _fixture_repo(tmp_path: Path) -> tuple[Path, str]:
     workspace = tmp_path / "repo"
     paths = (
         SPEC,
@@ -69,16 +72,16 @@ def _fixture_repo(
         Path("data/manifests/c4_paired_analysis_ids.txt"),
         Path("data/manifests/c4_public_baseline_metadata.json"),
     )
-    deployment = ROOT / "experiments/deployments/public-baseline-v6"
+    deployment = ROOT / "experiments/deployments/public-baseline-v13"
     for source in paths:
         destination = workspace / source
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / source, destination)
     shutil.copytree(
         deployment,
-        workspace / "experiments/deployments/public-baseline-v6",
+        workspace / "experiments/deployments/public-baseline-v13",
     )
-    for path in (workspace / "experiments/deployments/public-baseline-v6").iterdir():
+    for path in (workspace / "experiments/deployments/public-baseline-v13").iterdir():
         path.chmod(0o600)
     shutil.copytree(
         ROOT / "semantic_models/public_bundle",
@@ -94,47 +97,11 @@ def _fixture_repo(
     _git(workspace, "config", "user.name", "Test")
     _git(workspace, "add", ".")
     _git(workspace, "commit", "-qm", "fixture")
-    commit = _git(workspace, "rev-parse", "HEAD")
-    if not bind_records_to_current_bundles:
-        return workspace, commit
-
-    plans, failures = committed_bundle_inventory(workspace, commit)
-    assert not failures
-    record_digests: dict[str, str] = {}
-    for database in C4_DATABASES:
-        plan = plans[database]
-        record_path = (
-            workspace
-            / "experiments/deployments/public-baseline-v6"
-            / f"public-baseline-v6-20260828.{database}.json"
-        )
-        record = json.loads(record_path.read_text(encoding="utf-8"))
-        record["manifest_sha256"] = plan.manifest_sha256
-        record["file_sha256"] = {item.remote_path: item.sha256 for item in plan.files}
-        content = (
-            json.dumps(record, separators=(",", ":"), sort_keys=True) + "\n"
-        ).encode()
-        record_path.write_bytes(content)
-        record_digests[database] = _sha256(content)
-    spec_path = workspace / SPEC
-    spec = json.loads(spec_path.read_text(encoding="utf-8"))
-    spec["deployment"]["record_sha256"] = record_digests
-    spec_path.write_text(
-        json.dumps(spec, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
-    metadata_path = workspace / "data/manifests/c4_public_baseline_metadata.json"
-    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-    metadata["source"]["spec_sha256"] = _sha256(spec_path.read_bytes())
-    metadata_path.write_text(
-        json.dumps(metadata, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
-    _git(workspace, "add", ".")
-    _git(workspace, "commit", "-qm", "bind synthetic deployment evidence")
     return workspace, _git(workspace, "rev-parse", "HEAD")
 
 
 def _private_e02_deployment_gate(workspace: Path, source_commit: str) -> Path:
-    source = workspace / "experiments/deployments/public-baseline-v6"
+    source = workspace / "experiments/deployments/public-baseline-v13"
     destination = workspace / "experiments/private-e02-deployment"
     shutil.copytree(source, destination)
     for path in destination.iterdir():
@@ -161,7 +128,7 @@ def _private_e02_deployment_gate(workspace: Path, source_commit: str) -> Path:
 def test_public_c4_arm_regenerates_byte_identically() -> None:
     rendered = render_c4_baseline_arm(ROOT, SPEC)
 
-    assert len(rendered.full_ids) == 129
+    assert len(rendered.full_ids) == 204
     assert len(rendered.paired_ids) == 108
     assert rendered.full_ids_bytes == (ROOT / rendered.spec.full_ids_path).read_bytes()
     assert (
@@ -176,7 +143,7 @@ def test_public_c4_arm_regenerates_byte_identically() -> None:
     assert metadata["source"]["train_ids_sha256"] == _sha256(
         (ROOT / "data/manifests/train_ids.txt").read_bytes()
     )
-    assert sum(item["selected_count"] for item in metadata["allocation"]) == 129
+    assert sum(item["selected_count"] for item in metadata["allocation"]) == 204
     assert sum(item["selected_count"] for item in metadata["paired_allocation"]) == 108
 
 
@@ -193,10 +160,10 @@ def test_committed_schedule_selects_only_c4_in_committed_arm_order(
         .splitlines()
     )
 
-    assert len(selected.attempts) == 129
+    assert len(selected.attempts) == 204
     assert tuple(item.instance_id for item in selected.attempts) == expected_ids
     assert {item.condition for item in selected.attempts} == {"C4"}
-    assert len({item.database for item in selected.attempts}) == 10
+    assert len({item.database for item in selected.attempts}) == 16
 
 
 def test_derived_gate_rejects_any_changed_selected_record(
@@ -205,8 +172,8 @@ def test_derived_gate_rejects_any_changed_selected_record(
     workspace, _ = _fixture_repo(tmp_path)
     record = (
         workspace
-        / "experiments/deployments/public-baseline-v6"
-        / "public-baseline-v6-20260828.cross_border_large.json"
+        / "experiments/deployments/public-baseline-v13"
+        / "public-baseline-v13-20260829.cross_border_large.json"
     )
     value = json.loads(record.read_text(encoding="utf-8"))
     value["status"] = "failed"
@@ -230,8 +197,8 @@ def test_derived_gate_rejects_a_verified_record_with_changed_target(
     workspace, _ = _fixture_repo(tmp_path)
     record = (
         workspace
-        / "experiments/deployments/public-baseline-v6"
-        / "public-baseline-v6-20260828.cross_border_large.json"
+        / "experiments/deployments/public-baseline-v13"
+        / "public-baseline-v13-20260829.cross_border_large.json"
     )
     value = json.loads(record.read_text(encoding="utf-8"))
     value["branch_id"] = "different-but-well-formed-branch-id"
@@ -252,47 +219,34 @@ def test_derived_gate_rejects_a_verified_record_with_changed_target(
         )
 
 
-def test_derived_gate_resolves_all_ten_verified_targets(tmp_path: Path) -> None:
+def test_derived_gate_resolves_all_sixteen_verified_targets(tmp_path: Path) -> None:
     workspace, commit = _fixture_repo(tmp_path)
 
     targets = verify_derived_deployment_gate(
         workspace,
         commit,
         SPEC,
-        {
-            "archeology_scan_large",
-            "cross_border_large",
-            "cybermarket_pattern_large",
-            "disaster_relief_large",
-            "exchange_traded_funds_large",
-            "fake_account_large",
-            "labor_certification_applications_large",
-            "museum_artifact_large",
-            "residential_data_large",
-            "reverse_logistics_large",
-        },
+        set(C4_DATABASES),
     )
 
-    assert len(targets) == 10
+    assert len(targets) == 16
     assert all(target.branch_id and target.model_id for target in targets.values())
     assert all(len(target.semantic_model_sha256) == 64 for target in targets.values())
 
 
-def test_current_compiler_outputs_invalidate_the_historical_v6_gate(
+def test_current_compiler_outputs_match_the_v13_gate(
     tmp_path: Path,
 ) -> None:
-    workspace, commit = _fixture_repo(tmp_path, bind_records_to_current_bundles=False)
+    workspace, commit = _fixture_repo(tmp_path)
 
-    with pytest.raises(
-        BaselineBatchError,
-        match="derived deployment record is not verified: archeology_scan_large",
-    ):
-        verify_derived_deployment_gate(
-            workspace,
-            commit,
-            SPEC,
-            set(C4_DATABASES),
-        )
+    targets = verify_derived_deployment_gate(
+        workspace,
+        commit,
+        SPEC,
+        set(C4_DATABASES),
+    )
+
+    assert len(targets) == 16
 
 
 def test_c4_approval_deployment_identity_binds_semantic_content() -> None:
@@ -316,12 +270,12 @@ def test_c4_approval_deployment_identity_binds_semantic_content() -> None:
     )
 
 
-def test_c4_dry_run_rejects_obsolete_ten_database_deployment_spec(
+def test_c4_dry_run_accepts_current_sixteen_database_deployment_spec(
     tmp_path: Path,
 ) -> None:
     workspace, commit = _fixture_repo(tmp_path)
 
-    with pytest.raises(BaselineBatchError, match="scheduled databases exceed"):
+    assert (
         baseline_batch_main(
             [
                 "--workspace",
@@ -345,6 +299,8 @@ def test_c4_dry_run_rejects_obsolete_ten_database_deployment_spec(
                 "21600",
             ]
         )
+        == 0
+    )
 
 
 def test_c4_dry_run_rejects_a_nonpositive_wall_clock_bound(tmp_path: Path) -> None:
@@ -417,7 +373,7 @@ def test_e02_dry_run_projects_exact_full_dev_a_c4_experiment(
             "--deployment-root",
             str(deployment_root),
             "--deployment-run-id",
-            "public-baseline-v6-20260828",
+            "public-baseline-v13-20260829",
             "--observed-condition-cost",
             "C4=0.7275655",
             "--maximum-wall-clock-seconds",
@@ -472,7 +428,7 @@ def test_e02_dry_run_rejects_deployment_from_another_system_commit(
                 "--deployment-root",
                 str(deployment_root),
                 "--deployment-run-id",
-                "public-baseline-v6-20260828",
+                "public-baseline-v13-20260829",
                 "--observed-condition-cost",
                 "C4=0.7275655",
                 "--maximum-wall-clock-seconds",
@@ -505,9 +461,9 @@ def test_live_e02_generation_requires_a_separate_fresh_human_receipt(
                 "--output-root",
                 "experiments/autoresearch/raw/e02-dev-a-unapproved",
                 "--deployment-root",
-                str(workspace / "experiments/deployments/public-baseline-v6"),
+                str(workspace / "experiments/deployments/public-baseline-v13"),
                 "--deployment-run-id",
-                "public-baseline-v6-20260828",
+                "public-baseline-v13-20260829",
                 "--observed-condition-cost",
                 "C4=0.7275655",
                 "--maximum-wall-clock-seconds",
