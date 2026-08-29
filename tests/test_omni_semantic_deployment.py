@@ -280,6 +280,44 @@ def test_readback_accepts_only_attested_omni_stripped_direct_physical_sql(
     verify_semantic_deployment_readback(plan, readback)
 
 
+def test_readback_combines_relationships_with_attested_physical_sql_restore(
+    tmp_path: Path,
+) -> None:
+    direct_view = VIEW.replace(
+        "dimensions:\n",
+        "dimensions:\n  proc_comp:\n    label: Process Compliance\n    sql: '\"procComp\"'\n",
+    )
+    files = {
+        VIEW_NAME: direct_view.encode(),
+        TOPIC_NAME: TOPIC.encode(),
+        "relationships": RELATIONSHIPS.encode(),
+    }
+    root = _bundle(tmp_path, files)
+    manifest = _manifest(
+        files,
+        [
+            {
+                "field_name": "proc_comp",
+                "file": VIEW_NAME,
+                "source_stable_id": (
+                    "archeology_scan_large:column:pointcloud:procComp"
+                ),
+                "sql": '"procComp"',
+            }
+        ],
+    )
+    (root / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    plan = build_semantic_deployment_plan(root)
+    readback = _readback()
+    readback["relationships"] = RELATIONSHIPS
+    readback[VIEW_PATH] = readback[VIEW_PATH].replace(
+        "dimensions:\n",
+        "dimensions:\n  proc_comp:\n    label: Process Compliance\n",
+    )
+
+    verify_semantic_deployment_readback(plan, readback)
+
+
 @pytest.mark.parametrize(
     ("field_name", "sql"),
     [
