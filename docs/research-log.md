@@ -5593,3 +5593,68 @@ gap; a capture-owned context closes it.
 
 Implement the C4 production probe-runner closure against frozen specs and
 verified deployment targets, then wire all four factories into the entry point.
+
+## 2026-08-29 — D-104: Keep C4 construction provider-inert until execution
+
+### Decision / experiment
+
+Represent verified post-E02 deployment evidence as an explicit all-database
+gate and construct the Omni client only inside one sealed C4 adapter invocation.
+Change type: general evaluation integrity. Bead:
+`omni-benchmark-ei0.5.5.3.3`.
+
+### Hypothesis
+
+If C4's public committed specifications and verified deployment identities are
+validated while building the adapter factory, but environment authentication,
+CLI execution, and provider construction remain deferred to `execute`, then
+the sealed dispatcher can prove exact provenance before consuming a live
+attempt without making dry validation provider-active.
+
+### Intervention
+
+Added `SealedOmniDeploymentTarget`, `SealedOmniDeploymentGate`,
+`SealedOmniProductionConfig`, and `build_sealed_omni_adapter_factory`. The
+factory reloads the exact C4 condition, prompt, and managed instructions from
+Git at the frozen system commit. It exact-compares their hashes, provider,
+managed model, model configuration, pinned Omni CLI, semantic-model bundle,
+and deployment coverage with Freeze B and the dispatch policy.
+
+Each executed attempt selects one explicit branch/model/semantic-model target
+by public database, overlays that immutable target and the frozen budget on the
+existing Omni environment, rechecks the observed pinned CLI, renders the
+unchanged committed prompt, authenticates, and captures through the existing
+Omni job contract. No mutable environment value may substitute for a target
+identity. The factory source is included in the sealed runtime digest.
+
+### Result
+
+Nine focused tests pass at 88.76% branch coverage, and the adjacent sealed Omni
+adapter tests remain green. Tests prove pre-execution provider inertness,
+post-execution construction order, exact target overlays, deployment coverage,
+malformed evidence rejection, frozen path/spec/CLI/condition rejection, and
+settings/observed-CLI failures before client construction. No real Omni
+environment, credential, provider, receipt, test output, protected outcome, or
+score was accessed.
+
+### Interpretation
+
+C4 now has a fail-closed production runner with the same post-consumption
+resource boundary as C1-C3. One top-level closure remains: parse the reviewed
+post-E02 evidence into this immutable gate and wire all four factories into the
+sealed CLI without widening pre-consumption activity.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Deployment identity is part of the evaluated system. Carrying it as an
+explicit verified gate makes dry validation safe and prevents mutable account
+state from silently selecting a different semantic model at run time.
+
+### Next step
+
+Implement the top-level adapter-factory builder, including the strict
+deployment-evidence loader, and bind it to the sealed entry point.

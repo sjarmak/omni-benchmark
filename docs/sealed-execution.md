@@ -413,6 +413,22 @@ identity, and Freeze B before constructing the Claude and attested read-only
 PostgreSQL transports. Context exit removes the ephemeral runtime tree on both
 success and failure; it never refreshes, repairs, copies, or mutates the lease.
 
+The C4 production factory is likewise provider-inert before an approved
+attempt executes. It reloads the C4 condition, prompt, and managed instructions
+from the system commit; exact-compares their identities, the pinned Omni CLI,
+and a verified all-database deployment gate with Freeze B; and selects one
+explicit branch/model/semantic-model target by the attempt's public database.
+Only inside adapter execution does it load the existing Omni environment,
+overlay the frozen target and budget identities, authenticate, submit the
+unchanged public question template, and start a private capture. Provider and
+capture errors remain benchmark-infrastructure failures and do not become
+sealed generation records.
+
+The deployment gate is an immutable input to this factory, not an inference
+from mutable environment state. The top-level sealed builder must construct it
+from the separately verified post-E02 deployment evidence and require exact
+coverage of every database scheduled for C4 before dispatch.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

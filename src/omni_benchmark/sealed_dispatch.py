@@ -69,6 +69,7 @@ SEALED_RUNTIME_SOURCE_PATHS = (
     "src/omni_benchmark/sealed_execution_plan.py",
     "src/omni_benchmark/sealed_generation_staging.py",
     "src/omni_benchmark/sealed_omni_adapter.py",
+    "src/omni_benchmark/sealed_omni_factory.py",
     "src/omni_benchmark/sealed_production_approval.py",
     "src/omni_benchmark/sealed_runtime_inputs.py",
 )
