@@ -197,6 +197,31 @@ refusal subtypes, so content-refusal and insufficient-context rates are emitted
 as unavailable rather than inferred; raw terminal classes and the combined
 refusal/error rate remain available.
 
+After scoring succeeds, a separate aggregate-only renderer can create the
+report-ready held-out section without opening any of the 24 per-cohort score
+artifacts. It is dry by default, requires the two mode-0600 aggregate files to
+share their exact Freeze-B, plan, release, and test-manifest bindings, validates
+their complete fixed schemas and scorer identities, and writes a new mode-0600
+Markdown file without changing `RESULTS.md`:
+
+```bash
+uv run python sealed_tools/render_sealed_report.py \
+  --workspace "$PWD" \
+  --official runs/sealed-score-final/official_soft_ex/aggregate.json \
+  --sensitivity runs/sealed-score-final/sensitivity/aggregate.json \
+  --expected-official-sha256 "<scorer-emitted-official-aggregate-sha256>" \
+  --expected-sensitivity-sha256 "<scorer-emitted-sensitivity-aggregate-sha256>" \
+  --destination runs/sealed-score-final/held-out-results.md \
+  --render-sealed-report
+```
+
+The fragment contains both scorers, all primary endpoints, the four-condition
+matrix, paired contrasts, and the preregistered interval method. It contains no
+question identity, SQL, row value, or per-question correctness. A human still
+reviews the narrative interpretation and incorporates the fragment into the
+standalone report; the renderer never selects a scorer or infers the unavailable
+refusal subtypes.
+
 ## Recording Freeze B
 
 `sealed_tools/record_freeze_b.py` creates the manifest only from Git objects at

@@ -5968,3 +5968,59 @@ correctness result was accessed.
 KEEP. Production sealed scoring is now mechanically ready but remains unrun. It
 does not authorize C4, Freeze B, a sealed dispatch, the held-out release, or
 scoring; those actions remain behind their existing fresh human gates.
+
+## 2026-08-29 — D-110: Prepare deterministic aggregate-only report rendering
+
+### Pre-change hypothesis and boundary
+
+The production scorer emits two identity-free aggregate artifacts, but the
+standalone results report still requires manual numeric transcription. If one
+dry-default command validates the complete official and sensitivity aggregate
+envelopes, their shared custody bindings, exact frozen scorer identities, and
+absence of protected or question-level fields before rendering a new immutable
+Markdown fragment, then final reporting can be faster and less error-prone
+without opening score artifacts or exposing per-question correctness.
+
+Bead `omni-benchmark-zjp.1`; change class: evaluation reporting integration.
+Tests and development use synthetic aggregate fixtures only. This work may not
+open real sealed outputs, infer unavailable refusal subtypes, modify
+`RESULTS.md`, contact a provider, access a database, or authorize any live or
+custody action. The destination must be confined, owner-only, and
+non-overwriting.
+
+### Intervention
+
+Added a fixed-field renderer for the two scorer-produced aggregate envelopes.
+It authenticates the scorer-emitted SHA-256 of each mode-0600 source, requires
+their Freeze-B, plan, release, and test-manifest bindings to agree, validates
+the exact official and sensitivity scorer identities and complete aggregate
+schemas, recomputes count/rate consistency, and rejects protected keys or
+non-finite values recursively. Only preregistered aggregate fields enter the
+Markdown template; arbitrary input strings are never interpolated.
+
+The explicit command traverses private input paths with descriptor-relative
+`O_NOFOLLOW` opens and inode/owner/mode/link/size checks. It publishes only to a
+gitignored raw-run root through the hardened artifact store, producing a new
+mode-0600 non-overwriting Markdown fragment. The fragment reports both scorers,
+primary endpoints, condition summaries, paired contrasts, and the fixed
+bootstrap method, while marking the two unobservable refusal subtypes as
+unavailable. It does not modify `RESULTS.md`; narrative interpretation remains
+a reviewed post-score step.
+
+### Result
+
+RED tests preceded the renderer, strict schema/count validation, ancestor-
+symlink defense, aggregate-hash binding, explicit CLI, and sanitized error
+boundary. The focused scorer/report integration gate passes 34 tests with
+81.19% branch coverage for the new module. The full repository gate passes
+1,816 tests with five expected environment/source skips and 83.58% branch
+coverage. Repository-wide Ruff, formatting, CLI-help, and diff checks pass.
+No real aggregate, score artifact, test label, dev-B outcome, database,
+credential, provider, or live service was accessed.
+
+### Outcome
+
+KEEP. The final numeric transcription step is now deterministic and bound to
+the exact sealed scoring handoff. This preparation does not authorize C4,
+Freeze B, sealed generation, test release, scoring, or publication of the
+result narrative; all existing human and custody gates remain in force.
