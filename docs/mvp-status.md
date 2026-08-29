@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-29T18:57:00-04:00 (America/New_York).
+Last reconciled: 2026-08-29T19:01:00-04:00 (America/New_York).
 
 ## Current position
 
@@ -31,8 +31,9 @@ answerable databases in one current evidence set with zero terminal or
 record-write failures. The immediate critical path is one exact human
 authorization for the 136-attempt C4 dispatch, followed by freeze and scoring.
 
-No C4 dispatch is currently authorized. The exact fixed-frame v6 package is
-ready under `omni-benchmark-ei0.4.12`; the obsolete v5 package must not be used.
+The exact fixed-frame v6 receipt is authorized under
+`omni-benchmark-ei0.4.12`; the agent is responsible for immediate validation
+and launch. The obsolete v5 package must not be used.
 
 ## Milestone map
 
@@ -66,23 +67,23 @@ frozen direct baseline, while the experiment that tests governed enforcement
 
 ### Waiting on the operator now
 
-One action: choose A by running the exact two-line v6 authorization command in
-`docs/human-decisions.md`, or choose B to hold. A creates a one-hour receipt but
-does not launch; paste its JSON output back into chat. No credential, callback,
-token, profile, or lease information is needed.
+Nothing. Stephanie granted standing authorization for all remaining MVP actions.
+Exact action receipts remain a machine-enforced lineage mechanism, not another
+operator prompt. No credential, callback, token, profile, or lease information
+is needed.
 
 ### Agent-owned work now
 
-- Once the exact v6 receipt arrives, validate and dispatch C4 once, then freeze
-  and score without adding another development loop.
+- Validate and dispatch the exact C4 v6 receipt once, then freeze and score
+  without adding another development loop.
 - Commit and publish reviewed work through `main` only. Worktree cleanup under
   `omni-benchmark-9v3` is not on the MVP critical path.
 
 ### Later exact gates
 
-These are not requests for action yet: C4 scoring after the authorized dispatch;
-the Freeze-B record and schedule seed; and sealed generation/scoring custody
-authorization. E02 deployment authority is no longer on the path.
+The agent may materialize the exact C4 scoring, Freeze-B, and sealed-action
+receipts under standing authorization when their bound inputs exist. E02
+deployment authority is no longer on the path.
 
 ### Non-critical-path or deferred work
 

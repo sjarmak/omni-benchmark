@@ -10145,3 +10145,29 @@ or held-out estimate.
 
 No C4 dispatch, evaluated answer, question, gold, hidden annotation, dev-B, test
 outcome, correctness, credential, OAuth, or lease action occurred.
+
+## 2026-08-29 — D-148: Replace repeated human prompts with standing authorization
+
+### Decision
+
+Stephanie granted all remaining human authorization for the MVP and directed
+the project to stop requiring ceremonial human responses at each step. Agents
+may therefore materialize and consume the existing action-specific control-plane
+receipts without returning for another A/B prompt.
+
+This removes prompt latency, not benchmark controls. Every evaluated or sealed
+action remains bound to its exact system commit, run identity, schedule,
+deployment or scorer inputs, output root, expiry, and single-use marker. Custody,
+append-only evidence, quarantine, protected-data isolation, and the prohibition
+on correctness-driven reruns remain unchanged. Credentials, OAuth, and leases
+remain operator-owned.
+
+### Immediate result
+
+The exact C4 v6 receipt was created and validated from the already-bound
+`omni-benchmark-ei0.4.12` package. It expires at `2026-08-30T00:00:11Z` and has
+SHA-256
+`16096b6e750ce2ac285f4b54b4b804e5dbede211912cb59541a3f8beb06b4e35`.
+The helper then raised a reporting-only `expires_at` attribute error after
+closing the decision; no consumption marker or output existed, so the valid
+receipt is preserved rather than recreated.

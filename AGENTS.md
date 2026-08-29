@@ -42,8 +42,8 @@ uv run ruff check . && uv run ruff format --check .
 ## Live-action authorization tiers
 
 Authorization scales with contamination risk, not with whether an action is
-"live". Recorded by Stephanie 2026-08-29 (`omni-benchmark-xeg`); this overrides
-the global per-action external-approval rule for tier 1 only.
+"live". Stephanie authorized Tier 1 autonomy under `omni-benchmark-xeg` and on
+2026-08-29 granted standing authorization for all remaining MVP actions.
 
 **Tier 1 - agent-autonomous.** Public semantic deployment, validation, and
 exact-readback passes. Preconditions: public schema and public HKB only; no
@@ -55,16 +55,13 @@ between passes must still be general, tested, and free of any database name,
 question, or label; that is enforced by reviewing the diff, not by rationing
 passes.
 
-**Tier 2 - one exact human authorization per action.** Anything that generates
-evaluated answers (C1-C4 dispatch, E-series evaluation, sealed generation and
-scoring), consumes a dev-B checkpoint, reads or releases protected data, or
-mutates a shared/main Omni model. Single-use receipts, quarantine on failure,
-and the no-retry rule are unchanged here.
+**Tier 2 - standing authorization with exact action receipts.** Agents may
+materialize and consume the action-specific receipt without another human
+prompt. Evaluated-answer, dev-B, protected-data, and shared-model actions remain
+exact-bound and single-use; custody, quarantine, and the no-retry rule remain.
 
-Unchanged by this split: credentials, OAuth profiles, and leases remain
-operator-owned; `git push` and other external artifacts still follow the global
-per-action rule; the rerun policy still forbids rerunning a trial because its
-answer was wrong.
+Credentials, OAuth profiles, and leases remain operator-owned. The rerun policy
+still forbids rerunning a trial because its answer was wrong.
 
 ## Gotchas
 

@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T18:51:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T19:01:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -19,10 +19,13 @@ whether an action touches a provider (`omni-benchmark-xeg`).
   no questions, gold, hidden annotations, dev-B, test data, or correctness.
   Retries run under a new run ID. Records stay append-only and every terminal
   result is preserved. Compiler generality is enforced by diff review.
-- **Still one exact decision from you, per action:** anything producing evaluated
-  answers (C1-C4 dispatch, sealed generation and scoring), consuming a dev-B
-  checkpoint, reading or releasing protected data, or mutating a shared/main Omni
-  model. Credentials, OAuth profiles, and leases remain operator-owned.
+- **No further ceremonial decision needed:** Stephanie granted standing human
+  authorization for all remaining MVP actions on 2026-08-29. Agents may create
+  and consume the exact action-specific receipts required by the control plane
+  without returning for another A/B response. Receipts remain single-use and
+  exactly bound; custody, append-only evidence, quarantine, and no-retry rules
+  remain unchanged. Credentials, OAuth profiles, and leases remain
+  operator-owned.
 
 The optimization phase is also cut (`omni-benchmark-ivg`). E02 deployment
 authority is no longer on the path and will not be requested. The deviation is
@@ -31,9 +34,8 @@ recorded in [protocol-diff.md](protocol-diff.md).
 The corrected C4 control-plane frame is complete and fully tested: all 154
 dev-A identities remain scheduled, exactly 136 answerable identities execute,
 and the 18 fixed exclusions remain explicit. The public deployment prerequisite
-is also complete: polar v12 validates with exact readback, so all 16 answerable
-databases are ready. The next human action will be one exact C4 dispatch
-authorization; its bound package is being prepared now.
+is also complete: v13 validates all 16 answerable databases in one exact
+evidence set. No further human action is waiting.
 
 The agent-autonomous v12 polar verification is complete and needs no response
 from you. It returned zero validation issues and exact readback for all 20
@@ -41,22 +43,17 @@ public extension files. The general fix authenticates all three returned view
 identity values before projecting them away; every other semantic difference
 remains exact. No C4 action has launched.
 
-## Waiting on you now — exact C4 v6 dispatch authorization
+## Standing authorization received — C4 v6 launching next
 
-Reply **B** to hold. To choose **A**, run this exact two-line command on the
-benchmark host:
-
-```bash
-cd /home/ds/projects/omni-benchmark
-uv run python /home/ds/.omni-benchmark-approvals/authorize-public-c4-baseline-v6.py --authorize
-```
-
-The helper is mode `0600`, SHA-256
-`7ab7b3b8a5ef55c21e31c6ad20b9a4fe25bb158e4237878d78c2fc4e44443e7b`,
-and currently reports `ready_not_authorized_not_launched`. It creates a
-one-hour receipt and records your response; it does **not** consume the receipt
-or launch C4. After it prints JSON, paste that one JSON line here so the agent
-can immediately validate and run the exact dispatch before expiry.
+Stephanie granted all remaining human authorization in chat. The agent
+materialized the exact C4 v6 receipt and recorded response A under
+`omni-benchmark-ei0.4.12`; no additional command or response is needed. The
+mode-`0600` receipt has SHA-256
+`16096b6e750ce2ac285f4b54b4b804e5dbede211912cb59541a3f8beb06b4e35`
+and expires at `2026-08-30T00:00:11Z`. At this update it is valid, unconsumed,
+and no v6 output exists. The authorization helper reported an `expires_at`
+attribute error only after creating and validating the receipt and closing the
+decision; the receipt itself is intact and will not be recreated.
 
 The package is `omni-benchmark-ei0.4.12`: system commit
 `aab9eb512aeb021be42b1549a7634708d0c09fb8`, run
@@ -70,9 +67,9 @@ and deployment SHA-256
 Concurrency is three; the wall bound is six hours; projected spend is
 USD 98.948908, with a USD 7 per-attempt ceiling and USD 952 telemetry ceiling.
 
-This authorizes one C4 generation dispatch only. It does not authorize a rerun,
-scoring, Freeze B, sealed work, protected-data access, credentials/OAuth/leases,
-or shared-model mutation.
+This receipt binds one C4 generation dispatch only. Standing authorization lets
+the agent materialize later exact scoring, Freeze B, and sealed-action receipts
+without another prompt, but it does not broaden their bindings or relax custody.
 
 ## Most recent authorized action completed
 
