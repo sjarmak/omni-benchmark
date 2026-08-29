@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from collections.abc import Mapping, Sequence
@@ -22,6 +23,7 @@ from .baseline_batch import (
 )
 from .baseline_batch_live import (
     DatabaseEnvironmentDirectory,
+    DeploymentTarget,
     LiveBaselineDispatcher,
     build_execution_plan,
     c4_concurrency_canary_schedule,
@@ -29,6 +31,11 @@ from .baseline_batch_live import (
     project_condition_cost_scenario,
     verify_deployment_gate,
     verify_derived_deployment_gate,
+)
+from .c4_production_approval import (
+    C4ProductionApprovalError,
+    consume_c4_production_approval,
+    validate_c4_production_approval,
 )
 
 _C4_ARM_SPEC_PATH = Path("config/conditions/c4-public-baseline-arm-v1.json")
@@ -82,6 +89,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--maximum-concurrency", type=int, default=4)
     parser.add_argument("--subprocess-timeout-seconds", type=float, default=1800.0)
     parser.add_argument("--maximum-wall-clock-seconds", type=float)
+    parser.add_argument("--human-approval-receipt", type=Path)
     return parser
 
 
@@ -162,6 +170,7 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 scenario.as_dict(),
                 require_deployment=True,
                 derived_deployment=False,
+                require_human_approval=False,
             )
         if (
             arguments.execute_live_c4_baseline
@@ -174,6 +183,7 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 scenario.as_dict(),
                 require_deployment=True,
                 derived_deployment=True,
+                require_human_approval=arguments.execute_live_c4_baseline,
             )
         if (
             arguments.execute_live_direct_baseline
@@ -186,6 +196,7 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 scenario.as_dict(),
                 require_deployment=False,
                 derived_deployment=False,
+                require_human_approval=False,
             )
         deployment_targets = None
         if arguments.dry_run_c4_baseline:
@@ -261,6 +272,25 @@ def _successful_canary_scenario(schedule, values: Sequence[str]):
     )
 
 
+def _deployment_targets_sha256(
+    targets: Mapping[str, DeploymentTarget],
+) -> str:
+    return hashlib.sha256(
+        json.dumps(
+            {
+                database: {
+                    "branch_id": target.branch_id,
+                    "model_id": target.model_id,
+                    "semantic_model_sha256": target.semantic_model_sha256,
+                }
+                for database, target in sorted(targets.items())
+            },
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+    ).hexdigest()
+
+
 def _execute_live(
     arguments,
     schedule,
@@ -269,6 +299,7 @@ def _execute_live(
     *,
     require_deployment: bool,
     derived_deployment: bool,
+    require_human_approval: bool,
 ) -> int:
     required = {"attempt cost ceiling": arguments.attempt_cost_ceiling_usd}
     if any(attempt.condition != "C4" for attempt in schedule.attempts):
@@ -279,6 +310,8 @@ def _execute_live(
             "deployment root": arguments.deployment_root,
             "deployment run ID": arguments.deployment_run_id,
         }
+    if require_human_approval:
+        required["human approval receipt"] = arguments.human_approval_receipt
     missing = [name for name, value in required.items() if value is None]
     if missing:
         raise BaselineBatchError(f"live baseline requires {', '.join(missing)}")
@@ -309,6 +342,30 @@ def _execute_live(
             frozenset({"C4"}) if derived_deployment else frozenset()
         ),
     )
+    if require_human_approval:
+        assert targets is not None
+        binding = {
+            "condition": "C4",
+            "deployment_sha256": _deployment_targets_sha256(targets),
+            "execution_plan_sha256": plan.sha256,
+            "output_root": arguments.output_root.as_posix(),
+            "run_id": arguments.run_id,
+            "schedule_sha256": schedule.sha256,
+            "system_commit": arguments.system_commit,
+        }
+        try:
+            approval = validate_c4_production_approval(
+                workspace,
+                arguments.human_approval_receipt,
+                binding,
+            )
+            consume_c4_production_approval(
+                workspace,
+                Path("experiments/approvals/c4-production"),
+                approval,
+            )
+        except C4ProductionApprovalError as error:
+            raise BaselineBatchError(str(error)) from error
     dispatcher = LiveBaselineDispatcher(
         plan,
         database_environments=(

@@ -13,8 +13,14 @@ from omni_benchmark.baseline_batch import (
     c4_public_baseline_schedule,
     load_committed_baseline_schedule,
 )
-from omni_benchmark.baseline_batch_live import verify_derived_deployment_gate
-from omni_benchmark.baseline_batch_cli import baseline_batch_main
+from omni_benchmark.baseline_batch_live import (
+    DeploymentTarget,
+    verify_derived_deployment_gate,
+)
+from omni_benchmark.baseline_batch_cli import (
+    _deployment_targets_sha256,
+    baseline_batch_main,
+)
 from omni_benchmark.c4_baseline_arm import render_c4_baseline_arm
 
 
@@ -204,6 +210,27 @@ def test_derived_gate_resolves_all_ten_verified_targets(tmp_path: Path) -> None:
     assert all(len(target.semantic_model_sha256) == 64 for target in targets.values())
 
 
+def test_c4_approval_deployment_identity_binds_semantic_content() -> None:
+    first = {
+        "database": DeploymentTarget(
+            branch_id="branch-id",
+            model_id="model-id",
+            semantic_model_sha256="a" * 64,
+        )
+    }
+    changed_content = {
+        "database": DeploymentTarget(
+            branch_id="branch-id",
+            model_id="model-id",
+            semantic_model_sha256="b" * 64,
+        )
+    }
+
+    assert _deployment_targets_sha256(first) != _deployment_targets_sha256(
+        changed_content
+    )
+
+
 def test_c4_dry_run_projects_exact_product_arm_without_direct_credentials(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
@@ -274,5 +301,38 @@ def test_c4_dry_run_rejects_a_nonpositive_wall_clock_bound(tmp_path: Path) -> No
                 "C4=0.7275655",
                 "--maximum-wall-clock-seconds",
                 "-1",
+            ]
+        )
+
+
+def test_live_c4_production_requires_fresh_human_approval_before_dispatch(
+    tmp_path: Path,
+) -> None:
+    workspace, commit = _fixture_repo(tmp_path)
+
+    with pytest.raises(BaselineBatchError, match="human approval receipt"):
+        baseline_batch_main(
+            [
+                "--workspace",
+                str(workspace),
+                "--system-commit",
+                commit,
+                "--run-id",
+                "public-c4-baseline-v2",
+                "--observed-attempt-cost-usd",
+                "0.7275655",
+                "--cost-ceiling-usd",
+                "560",
+                "--execute-live-c4-baseline",
+                "--freeze-a-commit",
+                "7d39ee107338da1ce10e2553a4290e64bfc2f892",
+                "--output-root",
+                "experiments/autoresearch/raw/public-c4-baseline-v2",
+                "--observed-condition-cost",
+                "C4=0.7275655",
+                "--maximum-wall-clock-seconds",
+                "21600",
+                "--attempt-cost-ceiling-usd",
+                "7",
             ]
         )
