@@ -5,7 +5,10 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Any
 
-from omni_benchmark.semantic_bundle import SemanticBundleError, reject_protected_fields
+from omni_benchmark.protected_fields import (
+    ProtectedFieldError,
+    reject_protected_fields,
+)
 
 
 class SemanticRelationshipError(ValueError):
@@ -95,7 +98,7 @@ def plan_relationship_contracts(
         raise SemanticRelationshipError("schema records must be non-empty objects")
     try:
         reject_protected_fields(records)
-    except SemanticBundleError as error:
+    except ProtectedFieldError as error:
         raise SemanticRelationshipError(str(error)) from error
     for record in records:
         if record.get("schema_version") != 1:

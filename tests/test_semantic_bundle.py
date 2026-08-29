@@ -7,6 +7,7 @@ import yaml
 
 from omni_benchmark.semantic_bundle import (
     SemanticBundleError,
+    compile_e02_relationship_bundle,
     compile_semantic_bundle,
 )
 
@@ -195,6 +196,128 @@ def _spec() -> dict[str, object]:
             }
         ],
     }
+
+
+def _e02_inputs():
+    spec = copy.deepcopy(_spec())
+    spec["views"].append(
+        {
+            "description": "Sites referenced by point-cloud records.",
+            "file_name": "db.public__sites.view",
+            "label": "Sites",
+            "table_stable_id": "db:table:sites",
+            "topic_file_name": "sites_semantics.topic",
+            "view_name": "db_public__sites",
+        }
+    )
+    schema = copy.deepcopy(_schema_records())
+    for record in schema:
+        record["schema_version"] = 1
+    pointcloud = next(
+        record for record in schema if record["stable_id"] == "db:table:pointcloud"
+    )
+    pointcloud["primary_key_column_stable_ids"] = ["db:column:pointcloud:id"]
+    pointcloud["unique_keys"] = []
+    unmodeled = next(
+        record for record in schema if record["stable_id"] == "db:table:unmodeled"
+    )
+    unmodeled["primary_key_column_stable_ids"] = []
+    unmodeled["unique_keys"] = []
+    schema.extend(
+        [
+            {
+                "database": "db",
+                "description": "Point-cloud identifier.",
+                "identifier": {"name": "id"},
+                "nullable": False,
+                "record_kind": "column",
+                "schema_version": 1,
+                "stable_id": "db:column:pointcloud:id",
+                "table_stable_id": "db:table:pointcloud",
+            },
+            {
+                "database": "db",
+                "description": "Referenced site identifier.",
+                "identifier": {"name": "site_id"},
+                "nullable": True,
+                "record_kind": "column",
+                "schema_version": 1,
+                "stable_id": "db:column:pointcloud:site_id",
+                "table_stable_id": "db:table:pointcloud",
+            },
+            {
+                "database": "db",
+                "identifier": {"name": "sites"},
+                "primary_key_column_stable_ids": ["db:column:sites:id"],
+                "record_kind": "table",
+                "schema_version": 1,
+                "stable_id": "db:table:sites",
+                "unique_keys": [],
+            },
+            {
+                "database": "db",
+                "description": "Site identifier.",
+                "identifier": {"name": "id"},
+                "nullable": False,
+                "record_kind": "column",
+                "schema_version": 1,
+                "stable_id": "db:column:sites:id",
+                "table_stable_id": "db:table:sites",
+            },
+            {
+                "database": "db",
+                "provenance": {"content": ["public_schema"]},
+                "record_kind": "foreign_key",
+                "schema_version": 1,
+                "source_column_stable_ids": ["db:column:pointcloud:site_id"],
+                "source_table_stable_id": "db:table:pointcloud",
+                "stable_id": "db:foreign-key:site",
+                "target_column_stable_ids": ["db:column:sites:id"],
+                "target_table_stable_id": "db:table:sites",
+            },
+        ]
+    )
+    for record in schema:
+        if record.get("record_kind") == "column":
+            record.setdefault("nullable", False)
+    return spec, schema
+
+
+def test_e02_compiler_emits_only_directional_public_relationships() -> None:
+    spec, schema = _e02_inputs()
+
+    baseline = compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+    candidate = compile_e02_relationship_bundle(
+        spec, _hkb_records(), schema, _mapping_records()
+    )
+
+    assert "relationships" not in baseline.files
+    assert baseline.manifest["validation"]["joins_generated"] is False
+    assert yaml.safe_load(candidate.files["relationships"]) == [
+        {
+            "join_from_view": "db_public__pointcloud",
+            "join_to_view": "db_public__sites",
+            "join_type": "always_left",
+            "on_sql": "${db_public__pointcloud.site_id} = ${db_public__sites.id}",
+            "relationship_type": "many_to_one",
+            "reversible": False,
+        }
+    ]
+    source_topic = yaml.safe_load(candidate.files["pointcloud_semantics.topic"])
+    target_topic = yaml.safe_load(candidate.files["sites_semantics.topic"])
+    assert source_topic["joins"] == {"db_public__sites": {}}
+    assert target_topic["joins"] == {}
+    assert candidate.manifest["validation"]["joins_generated"] is True
+    assert candidate.manifest["relationship_contracts"] == [
+        {
+            "cardinality": "many_to_one",
+            "foreign_key_stable_id": "db:foreign-key:site",
+            "provenance": {"content": ["public_schema"]},
+            "source_match": "zero_or_one",
+            "source_table_stable_id": "db:table:pointcloud",
+            "target_table_stable_id": "db:table:sites",
+        }
+    ]
 
 
 def test_compile_bundle_emits_executable_field_context_topic_and_provenance() -> None:
