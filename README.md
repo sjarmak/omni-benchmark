@@ -148,6 +148,7 @@ uv run python sealed_tools/release_train.py \
   --source /path/outside/the/workspace/private-attachment.jsonl \
   --dev-a-ids data/manifests/dev_a_ids.txt \
   --destination data/private/dev-a/labels.jsonl \
+  --expected-source-sha256 "$PROBED_SOURCE_SHA256" \
   --freeze-a-commit "$FREEZE_A_COMMIT" \
   --workspace "$PWD"
 ```
@@ -155,8 +156,12 @@ uv run python sealed_tools/release_train.py \
 The human custodian supplies the externally recorded full Freeze A hash. The
 command verifies the canonical dev-A IDs and development-split metadata against
 that commit, not the mutable current branch; rejects sources inside the
-workspace; refuses overwrites; writes mode `0600`; and reports only counts and
-hashes. It releases neither the 77 dev-B records nor the 101 held-out records.
+workspace; requires the source SHA-256 reported by the preceding values-free
+structure probe; refuses overwrites; writes mode `0600`; and reports only counts
+and hashes. The official attachment's integer `external_knowledge` IDs are
+losslessly normalized to decimal strings; already-string arrays remain valid,
+while mixed or non-integer arrays fail closed. It releases neither the 77 dev-B
+records nor the 101 held-out records.
 The guardian scores dev-B checkpoints and returns signed aggregate receipts. The
 final sealed evaluator is a separate post-freeze component and does not expose
 test gold to development.

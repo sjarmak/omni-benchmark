@@ -13,6 +13,7 @@ from .test_custody import (
     current_git_commit,
     initialise_git_workspace,
     private_record,
+    source_sha256,
     write_jsonl,
 )
 
@@ -46,6 +47,8 @@ def test_release_cli_rejects_dev_a_ids_not_bound_by_committed_split_metadata(
                 str(id_file),
                 "--destination",
                 str(workspace / "data" / "private" / "dev-a.jsonl"),
+                "--expected-source-sha256",
+                source_sha256(source),
                 "--workspace",
                 str(workspace),
                 "--freeze-a-commit",
@@ -90,6 +93,8 @@ def test_release_cli_rejects_post_freeze_partition_reclassification(
                 str(id_file),
                 "--destination",
                 str(destination),
+                "--expected-source-sha256",
+                source_sha256(source),
                 "--workspace",
                 str(workspace),
                 "--freeze-a-commit",

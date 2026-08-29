@@ -9,6 +9,7 @@ import os
 import re
 import secrets
 import subprocess
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
@@ -48,6 +49,29 @@ class ReleaseReport:
                 "source": self.source_count,
             },
             "output_sha256": self.output_sha256,
+            "source_sha256": self.source_sha256,
+        }
+
+
+@dataclass(frozen=True)
+class PrivateStructureReport:
+    """Values-free aggregate shape summary for an external private source."""
+
+    source_sha256: str
+    source_count: int
+    inspected_count: int
+    ignored_count: int
+    external_knowledge_shapes: tuple[tuple[str, int], ...]
+
+    def as_dict(self) -> dict[str, object]:
+        """Return only aggregate fields safe for a human to report."""
+        return {
+            "counts": {
+                "ignored": self.ignored_count,
+                "inspected": self.inspected_count,
+                "source": self.source_count,
+            },
+            "external_knowledge_shapes": dict(self.external_knowledge_shapes),
             "source_sha256": self.source_sha256,
         }
 
@@ -120,8 +144,8 @@ def _validate_private_record(value: Any, line_number: int) -> dict[str, Any]:
         normalized_external_knowledge = [str(item) for item in external_knowledge]
     else:
         raise CustodyError(
-            f"line {line_number}: external_knowledge must be an array of strings "
-            "or an array of integers"
+            f"line {line_number}: external_knowledge must be an array of all strings "
+            "or all integers"
         )
     record = {field: value[field] for field in RELEASE_FIELDS}
     record["external_knowledge"] = normalized_external_knowledge
@@ -138,6 +162,103 @@ def _private_instance_id(value: Any, line_number: int) -> str:
             f"line {line_number}: instance_id must be a non-empty string"
         )
     return instance_id
+
+
+def _json_type_name(value: Any) -> str:
+    """Name a JSON value's type without retaining its value or object keys."""
+    if value is None:
+        return "null"
+    if isinstance(value, bool):
+        return "boolean"
+    if isinstance(value, int):
+        return "integer"
+    if isinstance(value, float):
+        return "number"
+    if isinstance(value, str):
+        return "string"
+    if isinstance(value, list):
+        return "array"
+    if isinstance(value, dict):
+        return "object"
+    raise CustodyError("private source contains an unsupported JSON value")
+
+
+def _external_knowledge_shape(record: Mapping[str, Any]) -> str:
+    """Summarize the field's outer shape without reading values or object keys."""
+    if "external_knowledge" not in record:
+        return "missing"
+    value = record["external_knowledge"]
+    if not isinstance(value, list):
+        return _json_type_name(value)
+    if not value:
+        return "array[empty]"
+    item_types = sorted({_json_type_name(item) for item in value})
+    return f"array[{','.join(item_types)}]"
+
+
+def _resolve_external_private_source(source: Path, workspace: Path) -> Path:
+    try:
+        resolved_workspace = Path(workspace).resolve(strict=True)
+        resolved_source = Path(source).resolve(strict=True)
+    except (OSError, RuntimeError) as error:
+        raise CustodyError("cannot resolve workspace or private source") from error
+    if resolved_source.is_relative_to(resolved_workspace):
+        raise CustodyError("source must resolve outside the workspace")
+    if not resolved_source.is_file():
+        raise CustodyError("private source must be a regular file")
+    return resolved_source
+
+
+def probe_private_structure(
+    *, source: Path, dev_a_ids: Iterable[str], workspace: Path
+) -> PrivateStructureReport:
+    """Inspect aggregate dev-A field shapes without exposing hidden values."""
+    resolved_source = _resolve_external_private_source(source, workspace)
+    permitted_ids = _normalise_train_ids(dev_a_ids)
+    source_hash = hashlib.sha256()
+    source_count = 0
+    seen: set[str] = set()
+    inspected: set[str] = set()
+    shapes: Counter[str] = Counter()
+
+    try:
+        with resolved_source.open("rb") as handle:
+            for line_number, raw_line in enumerate(handle, start=1):
+                source_hash.update(raw_line)
+                source_count += 1
+                if not raw_line.strip():
+                    raise CustodyError(f"line {line_number}: blank JSONL record")
+                try:
+                    decoded = json.loads(raw_line)
+                except (json.JSONDecodeError, UnicodeDecodeError) as error:
+                    raise CustodyError(
+                        f"line {line_number} is not valid JSON"
+                    ) from error
+                instance_id = _private_instance_id(decoded, line_number)
+                if instance_id in seen:
+                    raise CustodyError(f"line {line_number}: duplicate instance_id")
+                seen.add(instance_id)
+                if instance_id not in permitted_ids:
+                    continue
+                inspected.add(instance_id)
+                shapes[_external_knowledge_shape(decoded)] += 1
+    except CustodyError:
+        raise
+    except OSError as error:
+        raise CustodyError("cannot read private source") from error
+
+    if source_count == 0:
+        raise CustodyError("private source contains no records")
+    missing_count = len(permitted_ids - inspected)
+    if missing_count:
+        raise CustodyError(f"private source is missing {missing_count} dev-A records")
+    return PrivateStructureReport(
+        source_sha256=source_hash.hexdigest(),
+        source_count=source_count,
+        inspected_count=len(inspected),
+        ignored_count=source_count - len(inspected),
+        external_knowledge_shapes=tuple(sorted(shapes.items())),
+    )
 
 
 def _read_private_jsonl(
@@ -421,13 +542,9 @@ def _release_selected_records(
         )
     try:
         resolved_workspace = Path(workspace).resolve(strict=True)
-        resolved_source = Path(source).resolve(strict=True)
-    except OSError as error:
+    except (OSError, RuntimeError) as error:
         raise CustodyError("cannot resolve workspace or private source") from error
-    if resolved_source.is_relative_to(resolved_workspace):
-        raise CustodyError("source must resolve outside the workspace")
-    if not resolved_source.is_file():
-        raise CustodyError("private source must be a regular file")
+    resolved_source = _resolve_external_private_source(source, resolved_workspace)
 
     permitted_ids = _normalise_train_ids(train_ids)
     resolved_destination, resolved_private_root = _resolve_private_destination(
@@ -439,7 +556,7 @@ def _release_selected_records(
         reject_foreign_ids=False,
     )
     if expected_source_sha256 is not None and source_sha256 != expected_source_sha256:
-        raise CustodyError("private source does not match the expected source SHA-256")
+        raise CustodyError("private source does not match the probed source SHA-256")
     output_sha256 = _publish_atomically(
         resolved_destination, records, resolved_private_root
     )
@@ -595,6 +712,7 @@ def release_main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--dev-a-ids", type=Path, required=True)
     parser.add_argument("--destination", type=Path, required=True)
+    parser.add_argument("--expected-source-sha256", required=True)
     parser.add_argument("--workspace", type=Path, required=True)
     parser.add_argument("--freeze-a-commit", required=True)
     arguments = parser.parse_args(argv)
@@ -606,6 +724,30 @@ def release_main(argv: Sequence[str] | None = None) -> int:
         source=arguments.source,
         destination=arguments.destination,
         train_ids=dev_a_ids,
+        workspace=arguments.workspace,
+        expected_source_sha256=arguments.expected_source_sha256,
+    )
+    print(json.dumps(report.as_dict(), sort_keys=True))
+    return 0
+
+
+def structure_probe_main(argv: Sequence[str] | None = None) -> int:
+    """Run a human-custody, values-free probe of the delivered private format."""
+    parser = argparse.ArgumentParser(
+        description="Report aggregate dev-A JSON shapes without private values."
+    )
+    parser.add_argument("--source", type=Path, required=True)
+    parser.add_argument("--dev-a-ids", type=Path, required=True)
+    parser.add_argument("--workspace", type=Path, required=True)
+    parser.add_argument("--freeze-a-commit", required=True)
+    arguments = parser.parse_args(argv)
+
+    dev_a_ids = _verify_committed_dev_a_ids(
+        arguments.dev_a_ids, arguments.workspace, arguments.freeze_a_commit
+    )
+    report = probe_private_structure(
+        source=arguments.source,
+        dev_a_ids=dev_a_ids,
         workspace=arguments.workspace,
     )
     print(json.dumps(report.as_dict(), sort_keys=True))

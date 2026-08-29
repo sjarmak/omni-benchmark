@@ -4,6 +4,7 @@ import hashlib
 import json
 import stat
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -12,8 +13,10 @@ import omni_benchmark.custody as custody
 from omni_benchmark.custody import (
     CustodyError,
     load_dev_a_records,
+    probe_private_structure,
     read_id_file,
     release_main,
+    structure_probe_main,
 )
 
 
@@ -35,6 +38,10 @@ def write_jsonl(path: Path, records: list[dict[str, object]]) -> None:
         "".join(json.dumps(record, sort_keys=True) + "\n" for record in records),
         encoding="utf-8",
     )
+
+
+def source_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def test_release_emits_only_train_records_with_hashes_and_mode_0600(
@@ -70,6 +77,109 @@ def test_release_emits_only_train_records_with_hashes_and_mode_0600(
     assert report.source_count == 3
     assert report.released_count == 2
     assert report.ignored_count == 1
+
+
+def test_release_losslessly_adapts_integer_external_knowledge_ids(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    source = tmp_path / "attachment.jsonl"
+    destination = workspace / "data" / "private" / "dev-a.jsonl"
+    record = private_record("dev-a-1", "SECRET")
+    record["external_knowledge"] = [0, -7, 9_007_199_254_740_993]
+    write_jsonl(source, [record])
+
+    release_train_records(
+        source=source,
+        destination=destination,
+        train_ids={"dev-a-1"},
+        workspace=workspace,
+    )
+
+    released = json.loads(destination.read_text(encoding="utf-8"))
+    assert released["external_knowledge"] == ["0", "-7", "9007199254740993"]
+
+
+@pytest.mark.parametrize(
+    "external_knowledge",
+    [
+        [1, "1"],
+        [True],
+        [1.0],
+        [None],
+        [{}],
+    ],
+)
+def test_release_rejects_mixed_or_non_integer_external_knowledge_adapters(
+    tmp_path: Path, external_knowledge: list[object]
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    source = tmp_path / "attachment.jsonl"
+    destination = workspace / "data" / "private" / "dev-a.jsonl"
+    record = private_record("dev-a-1", "SECRET")
+    record["external_knowledge"] = external_knowledge
+    write_jsonl(source, [record])
+
+    with pytest.raises(
+        CustodyError,
+        match="external_knowledge must be an array of all strings or all integers",
+    ) as error:
+        release_train_records(
+            source=source,
+            destination=destination,
+            train_ids={"dev-a-1"},
+            workspace=workspace,
+        )
+
+    assert "SECRET" not in str(error.value)
+    assert not destination.exists()
+
+
+def test_release_refuses_a_source_that_does_not_match_the_probed_hash(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    source = tmp_path / "attachment.jsonl"
+    destination = workspace / "data" / "private" / "dev-a.jsonl"
+    write_jsonl(source, [private_record("dev-a-1", "SECRET")])
+
+    with pytest.raises(CustodyError, match="does not match the probed source") as error:
+        release_train_records(
+            source=source,
+            destination=destination,
+            train_ids={"dev-a-1"},
+            workspace=workspace,
+            expected_source_sha256="0" * 64,
+        )
+
+    assert "SECRET" not in str(error.value)
+    assert not destination.exists()
+
+
+@pytest.mark.parametrize(
+    "expected_source_sha256",
+    ["0" * 63, "0" * 63 + "G", "A" * 64],
+)
+def test_release_rejects_invalid_expected_hash_before_source_access(
+    tmp_path: Path, expected_source_sha256: str
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    destination = workspace / "data" / "private" / "dev-a.jsonl"
+
+    with pytest.raises(CustodyError, match="must be 64 lowercase hex characters"):
+        release_train_records(
+            source=tmp_path / "source-must-not-be-resolved.jsonl",
+            destination=destination,
+            train_ids={"dev-a-1"},
+            workspace=workspace,
+            expected_source_sha256=expected_source_sha256,
+        )
+
+    assert not destination.exists()
 
 
 def test_release_projects_exact_private_contract_fields(tmp_path: Path) -> None:
@@ -284,7 +394,7 @@ def test_release_refuses_to_overwrite_an_existing_destination(tmp_path: Path) ->
                 }
             ],
             {"train-1"},
-            "external_knowledge must be an array of strings",
+            "external_knowledge must be an array of all strings or all integers",
         ),
         (
             [
@@ -352,6 +462,334 @@ def test_release_rejects_malformed_json_without_echoing_the_line(
         )
 
     assert "DO-NOT-LEAK" not in str(error.value)
+
+
+def test_structure_probe_reports_only_aggregate_dev_a_shape_counts(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    source = tmp_path / "human-custody" / "attachment.jsonl"
+    source.parent.mkdir()
+    write_jsonl(
+        source,
+        [
+            {
+                **private_record("dev-a-1", "DEV-A-ONE-MUST-NOT-LEAK"),
+                "external_knowledge": [701, 702],
+            },
+            {
+                **private_record("dev-a-2", "DEV-A-TWO-MUST-NOT-LEAK"),
+                "external_knowledge": [],
+            },
+            {
+                "instance_id": "dev-b-1",
+                "external_knowledge": {
+                    "DEV-B-HIDDEN-KEY-MUST-NOT-BE-INSPECTED": "SECRET"
+                },
+            },
+        ],
+    )
+
+    report = probe_private_structure(
+        source=source,
+        dev_a_ids={"dev-a-1", "dev-a-2"},
+        workspace=workspace,
+    ).as_dict()
+
+    assert report == {
+        "counts": {"ignored": 1, "inspected": 2, "source": 3},
+        "external_knowledge_shapes": {
+            "array[empty]": 1,
+            "array[integer]": 1,
+        },
+        "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+    }
+    encoded = json.dumps(report, sort_keys=True)
+    for forbidden in (
+        "dev-a-1",
+        "dev-a-2",
+        "dev-b-1",
+        "DEV-A-ONE-MUST-NOT-LEAK",
+        "DEV-A-TWO-MUST-NOT-LEAK",
+        "DEV-B-HIDDEN-KEY-MUST-NOT-BE-INSPECTED",
+        "SECRET",
+    ):
+        assert forbidden not in encoded
+
+
+@pytest.mark.parametrize(
+    ("external_knowledge", "expected_shape"),
+    [
+        (None, "null"),
+        (True, "boolean"),
+        (3, "integer"),
+        (3.5, "number"),
+        ("HIDDEN-MUST-NOT-LEAK", "string"),
+        ([1, "HIDDEN-MUST-NOT-LEAK", None], "array[integer,null,string]"),
+        ({"HIDDEN-KEY-MUST-NOT-LEAK": 1}, "object"),
+    ],
+)
+def test_structure_probe_type_signatures_never_include_values_or_object_keys(
+    tmp_path: Path,
+    external_knowledge: object,
+    expected_shape: str,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    source = tmp_path / "attachment.jsonl"
+    record = private_record("dev-a-1", "SOL-SQL-MUST-NOT-LEAK")
+    record["external_knowledge"] = external_knowledge
+    write_jsonl(source, [record])
+
+    report = probe_private_structure(
+        source=source,
+        dev_a_ids={"dev-a-1"},
+        workspace=workspace,
+    ).as_dict()
+
+    assert report["external_knowledge_shapes"] == {expected_shape: 1}
+    encoded = json.dumps(report, sort_keys=True)
+    assert "HIDDEN-MUST-NOT-LEAK" not in encoded
+    assert "HIDDEN-KEY-MUST-NOT-LEAK" not in encoded
+    assert "SOL-SQL-MUST-NOT-LEAK" not in encoded
+    assert "dev-a-1" not in encoded
+
+
+def test_structure_probe_requires_exact_dev_a_membership_without_leaking(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    source = tmp_path / "attachment.jsonl"
+    write_jsonl(
+        source,
+        [
+            {
+                **private_record("dev-a-1", "DEV-A-MUST-NOT-LEAK"),
+                "external_knowledge": [11],
+            },
+            {
+                "instance_id": "dev-b-1",
+                "external_knowledge": "DEV-B-MUST-NOT-BE-INSPECTED",
+            },
+        ],
+    )
+
+    with pytest.raises(CustodyError, match="missing 1 dev-A records") as error:
+        probe_private_structure(
+            source=source,
+            dev_a_ids={"dev-a-1", "dev-a-2"},
+            workspace=workspace,
+        )
+
+    assert "DEV-A-MUST-NOT-LEAK" not in str(error.value)
+    assert "DEV-B-MUST-NOT-BE-INSPECTED" not in str(error.value)
+
+
+def test_structure_probe_rejects_source_inside_workspace(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    source = workspace / "attachment.jsonl"
+    write_jsonl(
+        source,
+        [
+            {
+                **private_record("dev-a-1", "MUST-NOT-LEAK"),
+                "external_knowledge": [1],
+            }
+        ],
+    )
+
+    with pytest.raises(CustodyError, match="source must resolve outside the workspace"):
+        probe_private_structure(
+            source=source,
+            dev_a_ids={"dev-a-1"},
+            workspace=workspace,
+        )
+
+
+def test_structure_probe_cli_verifies_freeze_a_and_prints_safe_json(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    workspace = tmp_path / "workspace"
+    id_file = initialise_git_workspace(workspace, "dev-a-1\n")
+    source = tmp_path / "attachment.jsonl"
+    write_jsonl(
+        source,
+        [
+            {
+                **private_record("dev-a-1", "DEV-A-MUST-NOT-LEAK"),
+                "external_knowledge": [17, 23],
+            },
+            {
+                "instance_id": "dev-b-1",
+                "external_knowledge": {
+                    "DEV-B-HIDDEN-KEY-MUST-NOT-BE-INSPECTED": "SECRET"
+                },
+            },
+        ],
+    )
+
+    assert (
+        structure_probe_main(
+            [
+                "--source",
+                str(source),
+                "--dev-a-ids",
+                str(id_file),
+                "--workspace",
+                str(workspace),
+                "--freeze-a-commit",
+                current_git_commit(workspace),
+            ]
+        )
+        == 0
+    )
+
+    output = capsys.readouterr().out
+    summary = json.loads(output)
+    assert set(summary) == {
+        "counts",
+        "external_knowledge_shapes",
+        "source_sha256",
+    }
+    assert summary["counts"] == {"ignored": 1, "inspected": 1, "source": 2}
+    assert summary["external_knowledge_shapes"] == {"array[integer]": 1}
+    for forbidden in (
+        str(source),
+        "dev-a-1",
+        "dev-b-1",
+        "DEV-A-MUST-NOT-LEAK",
+        "DEV-B-HIDDEN-KEY-MUST-NOT-BE-INSPECTED",
+        "SECRET",
+    ):
+        assert forbidden not in output
+
+
+def test_structure_probe_rejects_unprovisioned_guardian_before_source_read(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace = tmp_path / "workspace"
+    id_file = initialise_git_workspace(
+        workspace,
+        "dev-a-1\n",
+        guardian_pin="UNPROVISIONED",
+    )
+    source = tmp_path / "attachment.jsonl"
+    write_jsonl(
+        source,
+        [
+            {
+                **private_record("dev-a-1", "MUST-NOT-BE-READ"),
+                "external_knowledge": [1],
+            }
+        ],
+    )
+    source_read = False
+
+    def reject_private_read(*args, **kwargs):
+        nonlocal source_read
+        source_read = True
+        raise AssertionError("private source was opened before Freeze A validation")
+
+    monkeypatch.setattr(custody, "probe_private_structure", reject_private_read)
+
+    with pytest.raises(CustodyError, match="guardian key.*provisioned"):
+        structure_probe_main(
+            [
+                "--source",
+                str(source),
+                "--dev-a-ids",
+                str(id_file),
+                "--workspace",
+                str(workspace),
+                "--freeze-a-commit",
+                current_git_commit(workspace),
+            ]
+        )
+
+    assert source_read is False
+
+
+def test_structure_probe_script_returns_sanitized_errors_without_traceback(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    id_file = initialise_git_workspace(workspace, "dev-a-1\n")
+    source = tmp_path / "PRIVATE-PATH-MUST-NOT-LEAK.jsonl"
+    source.write_text(
+        '{"instance_id":"dev-a-1","SECRET-MUST-NOT-LEAK"\n', encoding="utf-8"
+    )
+    repository = Path(__file__).resolve().parents[1]
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(repository / "sealed_tools" / "probe_private_structure.py"),
+            "--source",
+            str(source),
+            "--dev-a-ids",
+            str(id_file),
+            "--workspace",
+            str(workspace),
+            "--freeze-a-commit",
+            current_git_commit(workspace),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 1
+    assert completed.stdout == ""
+    assert completed.stderr == "probe failed: line 1 is not valid JSON\n"
+    assert "PRIVATE-PATH-MUST-NOT-LEAK" not in completed.stderr
+    assert "SECRET-MUST-NOT-LEAK" not in completed.stderr
+    assert "Traceback" not in completed.stderr
+
+
+def test_release_script_returns_sanitized_errors_without_traceback(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    id_file = initialise_git_workspace(workspace, "dev-a-1\n")
+    source = tmp_path / "PRIVATE-PATH-MUST-NOT-LEAK.jsonl"
+    source.write_text(
+        '{"instance_id":"dev-a-1","SECRET-MUST-NOT-LEAK"\n', encoding="utf-8"
+    )
+    destination = workspace / "data" / "private" / "dev-a.jsonl"
+    repository = Path(__file__).resolve().parents[1]
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(repository / "sealed_tools" / "release_train.py"),
+            "--source",
+            str(source),
+            "--dev-a-ids",
+            str(id_file),
+            "--destination",
+            str(destination),
+            "--expected-source-sha256",
+            source_sha256(source),
+            "--workspace",
+            str(workspace),
+            "--freeze-a-commit",
+            current_git_commit(workspace),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 1
+    assert completed.stdout == ""
+    assert completed.stderr == "release failed: line 1 is not valid JSON\n"
+    assert "PRIVATE-PATH-MUST-NOT-LEAK" not in completed.stderr
+    assert "SECRET-MUST-NOT-LEAK" not in completed.stderr
+    assert "Traceback" not in completed.stderr
+    assert not destination.exists()
 
 
 @pytest.mark.parametrize(
@@ -562,6 +1000,7 @@ def test_documented_release_exposes_only_dev_a_labels() -> None:
     protocol = (repository / "EVALUATION_PROTOCOL.md").read_text(encoding="utf-8")
 
     assert "--dev-a-ids data/manifests/dev_a_ids.txt" in readme
+    assert "--expected-source-sha256" in readme
     assert "--train-ids" not in readme
     assert "data/private/dev-a/labels.jsonl" in readme
     assert "only the 154 dev-A records" in protocol
@@ -590,6 +1029,34 @@ def test_release_cli_rejects_a_committed_non_dev_a_id_manifest(tmp_path: Path) -
                 str(source),
                 "--dev-a-ids",
                 str(train_ids),
+                "--destination",
+                str(destination),
+                "--expected-source-sha256",
+                source_sha256(source),
+                "--workspace",
+                str(workspace),
+                "--freeze-a-commit",
+                current_git_commit(workspace),
+            ]
+        )
+
+    assert not destination.exists()
+
+
+def test_release_cli_requires_the_probed_source_hash(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    id_file = initialise_git_workspace(workspace, "train-1\n")
+    source = tmp_path / "attachment.jsonl"
+    destination = workspace / "data" / "private" / "dev-a.jsonl"
+    write_jsonl(source, [private_record("train-1", "SECRET")])
+
+    with pytest.raises(SystemExit, match="2"):
+        release_main(
+            [
+                "--source",
+                str(source),
+                "--dev-a-ids",
+                str(id_file),
                 "--destination",
                 str(destination),
                 "--workspace",
@@ -631,6 +1098,8 @@ def test_release_cli_accepts_only_committed_ids_and_prints_counts_and_hashes(
                 str(id_file),
                 "--destination",
                 str(destination),
+                "--expected-source-sha256",
+                source_sha256(source),
                 "--workspace",
                 str(workspace),
                 "--freeze-a-commit",
@@ -685,6 +1154,8 @@ def test_release_cli_uses_committed_id_snapshot_after_worktree_swap(
                 str(id_file),
                 "--destination",
                 str(destination),
+                "--expected-source-sha256",
+                source_sha256(source),
                 "--workspace",
                 str(workspace),
                 "--freeze-a-commit",
@@ -728,6 +1199,8 @@ def test_release_cli_rejects_unprovisioned_guardian_before_private_source_read(
                 str(id_file),
                 "--destination",
                 str(workspace / "data" / "private" / "dev-a.jsonl"),
+                "--expected-source-sha256",
+                source_sha256(source),
                 "--workspace",
                 str(workspace),
                 "--freeze-a-commit",
@@ -754,6 +1227,8 @@ def test_release_cli_rejects_dev_a_ids_changed_since_commit(tmp_path: Path) -> N
                 str(id_file),
                 "--destination",
                 str(workspace / "data" / "private" / "dev-a.jsonl"),
+                "--expected-source-sha256",
+                source_sha256(source),
                 "--workspace",
                 str(workspace),
                 "--freeze-a-commit",
