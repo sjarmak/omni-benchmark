@@ -9,10 +9,14 @@ import pytest
 from omni_benchmark.semantic_bundle_publication import (
     SemanticBundlePublicationError,
     build_bundle_artifacts,
+    build_e02_bundle_artifacts,
     publish_bundle_artifacts,
+    publish_e02_bundle_artifacts,
 )
+from omni_benchmark.omni_semantic_deployment import build_semantic_deployment_plan
 
 from tests.test_semantic_bundle import (
+    _e02_inputs,
     _hkb_records,
     _mapping_records,
     _schema_records,
@@ -69,6 +73,53 @@ def _inputs() -> tuple[bytes, bytes, bytes, bytes, bytes]:
         }
     )
     return spec, hkb, schema, mapping, manifest
+
+
+def _e02_publication_inputs() -> tuple[bytes, bytes, bytes, bytes, bytes]:
+    spec_value, schema_value = _e02_inputs()
+    _, hkb, _, mapping, manifest = _inputs()
+    spec = _json_bytes(spec_value)
+    schema = _jsonl_bytes(schema_value)
+    parsed_manifest = json.loads(manifest)
+    parsed_manifest["source"]["schema_ir"]["sha256"] = hashlib.sha256(
+        schema
+    ).hexdigest()
+    return spec, hkb, schema, mapping, _json_bytes(parsed_manifest)
+
+
+def test_build_e02_bundle_artifacts_hash_binds_relationship_candidate() -> None:
+    baseline_files, _ = build_bundle_artifacts(*_e02_publication_inputs())
+    files, manifest = build_e02_bundle_artifacts(*_e02_publication_inputs())
+
+    assert "relationships" not in baseline_files
+    assert "relationships" in files
+    assert manifest["validation"]["relationship_contracts_public_only"] is True
+    relationship_record = next(
+        record for record in manifest["files"] if record["file"] == "relationships"
+    )
+    assert (
+        relationship_record["sha256"]
+        == hashlib.sha256(files["relationships"]).hexdigest()
+    )
+
+
+def test_publish_e02_bundle_is_locally_deployment_ready(tmp_path: Path) -> None:
+    paths = []
+    for index, content in enumerate(_e02_publication_inputs()):
+        path = tmp_path / f"e02-input-{index}.json"
+        path.write_bytes(content)
+        paths.append(path)
+    output = tmp_path / "e02-bundle"
+
+    manifest = publish_e02_bundle_artifacts(*paths, output)
+    plan = build_semantic_deployment_plan(output)
+
+    assert any(item.local_name == "relationships" for item in plan.files)
+    assert (
+        plan.manifest_sha256
+        == hashlib.sha256((output / "manifest.json").read_bytes()).hexdigest()
+    )
+    assert json.loads((output / "manifest.json").read_bytes()) == manifest
 
 
 def test_build_bundle_artifacts_authenticates_sources_and_hashes_every_file() -> None:

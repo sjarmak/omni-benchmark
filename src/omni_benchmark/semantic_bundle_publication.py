@@ -6,7 +6,7 @@ import hashlib
 import json
 import tempfile
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from .hkb_io import (
     HKBFileSafetyError,
@@ -15,7 +15,9 @@ from .hkb_io import (
     read_regular_file,
 )
 from .semantic_bundle import (
+    SemanticBundle,
     SemanticBundleError,
+    compile_e02_relationship_bundle,
     compile_semantic_bundle,
     reject_protected_fields,
 )
@@ -175,6 +177,50 @@ def build_bundle_artifacts(
     mapping_manifest_bytes: bytes,
 ) -> tuple[dict[str, bytes], dict[str, Any]]:
     """Authenticate public inputs and compile a hash-bound Omni bundle."""
+    return _build_bundle_artifacts(
+        spec_bytes,
+        hkb_bytes,
+        schema_bytes,
+        mapping_bytes,
+        mapping_manifest_bytes,
+        compile_semantic_bundle,
+    )
+
+
+def build_e02_bundle_artifacts(
+    spec_bytes: bytes,
+    hkb_bytes: bytes,
+    schema_bytes: bytes,
+    mapping_bytes: bytes,
+    mapping_manifest_bytes: bytes,
+) -> tuple[dict[str, bytes], dict[str, Any]]:
+    """Authenticate public inputs and compile the opt-in E02 candidate."""
+    return _build_bundle_artifacts(
+        spec_bytes,
+        hkb_bytes,
+        schema_bytes,
+        mapping_bytes,
+        mapping_manifest_bytes,
+        compile_e02_relationship_bundle,
+    )
+
+
+def _build_bundle_artifacts(
+    spec_bytes: bytes,
+    hkb_bytes: bytes,
+    schema_bytes: bytes,
+    mapping_bytes: bytes,
+    mapping_manifest_bytes: bytes,
+    compiler: Callable[
+        [
+            Mapping[str, Any],
+            list[dict[str, Any]],
+            list[dict[str, Any]],
+            list[dict[str, Any]],
+        ],
+        SemanticBundle,
+    ],
+) -> tuple[dict[str, bytes], dict[str, Any]]:
     spec = _json_object(spec_bytes, "bundle specification")
     hkb_records = _jsonl_objects(hkb_bytes, "HKB IR")
     schema_records = _jsonl_objects(schema_bytes, "schema IR")
@@ -190,9 +236,7 @@ def build_bundle_artifacts(
     if spec.get("database") != database:
         raise SemanticBundlePublicationError("bundle/mapping database mismatch")
     try:
-        compiled = compile_semantic_bundle(
-            spec, hkb_records, schema_records, mapping_records
-        )
+        compiled = compiler(spec, hkb_records, schema_records, mapping_records)
     except SemanticBundleError as error:
         raise SemanticBundlePublicationError(str(error)) from error
     files = {name: content.encode() for name, content in compiled.files.items()}
@@ -241,10 +285,53 @@ def publish_bundle_artifacts(
     output_root: Path,
 ) -> dict[str, Any]:
     """Publish exactly one flat semantic bundle and its provenance manifest."""
+    return _publish_bundle_artifacts(
+        spec_path,
+        hkb_path,
+        schema_path,
+        mapping_path,
+        mapping_manifest_path,
+        output_root,
+        build_bundle_artifacts,
+    )
+
+
+def publish_e02_bundle_artifacts(
+    spec_path: Path,
+    hkb_path: Path,
+    schema_path: Path,
+    mapping_path: Path,
+    mapping_manifest_path: Path,
+    output_root: Path,
+) -> dict[str, Any]:
+    """Publish one flat, hash-bound E02 candidate bundle."""
+    return _publish_bundle_artifacts(
+        spec_path,
+        hkb_path,
+        schema_path,
+        mapping_path,
+        mapping_manifest_path,
+        output_root,
+        build_e02_bundle_artifacts,
+    )
+
+
+def _publish_bundle_artifacts(
+    spec_path: Path,
+    hkb_path: Path,
+    schema_path: Path,
+    mapping_path: Path,
+    mapping_manifest_path: Path,
+    output_root: Path,
+    builder: Callable[
+        [bytes, bytes, bytes, bytes, bytes],
+        tuple[dict[str, bytes], dict[str, Any]],
+    ],
+) -> dict[str, Any]:
     inputs = _read_inputs(
         spec_path, hkb_path, schema_path, mapping_path, mapping_manifest_path
     )
-    files, manifest = build_bundle_artifacts(*inputs)
+    files, manifest = builder(*inputs)
     output_names = (*files, "manifest.json")
     try:
         prepare_safe_parent(output_root)
