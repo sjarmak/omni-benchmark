@@ -4712,3 +4712,70 @@ the underlying questions or answers.
 
 After candidate selection, create and commit the actual Freeze B manifest and
 ordered schedule before starting any test generation.
+
+## 2026-08-29 — D-091: Derive Freeze B from Git objects, not the working tree
+
+### Decision / experiment
+
+Add the smallest operator path needed to instantiate the already-defined
+Freeze-B contract after final-candidate selection. Change type: general
+evaluation integrity. Bead: `omni-benchmark-dih.5.4.1.2`.
+
+### Hypothesis
+
+If the recorder derives every content hash from the exact system commit and
+validates the complete identity-only trial matrix before writing, then a dirty
+working-tree substitution, stale configuration, or incomplete schedule cannot
+silently enter the final freeze.
+
+### Intervention
+
+Added a committed-input specification and `sealed_tools/record_freeze_b.py`.
+The recorder requires the exact current 40-character commit, verifies Freeze A
+as an ancestor, accepts only regular Git blobs from bounded safe paths, and
+derives condition, semantic-model, database-snapshot, and frozen-file SHA-256
+values from those blobs. The schedule must be canonical JSONL containing all
+101 identities under four conditions and three repetitions. Output creation is
+exclusive, confined, no-follow, and mode 0600.
+
+The security pass also strips inherited `GIT_*` variables from subprocesses and
+requires the loaded recorder, scorer, content-policy, Freeze-B, and exclusive-
+writer source bytes to match the system commit. The command reports hashes and
+counts only; it does not print the seed or schedule identities.
+
+### Result
+
+Twenty-one focused tests pass with 81.47% branch coverage of the new module.
+They cover dirty working-tree substitution, abbreviated/stale commits,
+uncommitted and symlink Git entries, missing provenance, malformed schedule
+matrices, Git-environment redirection, runtime-source substitution, symlinked
+output parents, overwrite refusal, mode 0600, and the real script entry point.
+The full suite passes 1,522 tests with five expected skips and 84.30% branch
+coverage; Ruff, formatting, and diff checks pass.
+
+No actual schedule seed, final input specification, Freeze-B manifest, or test
+generation was created. No hidden data, live service, credentials, approval
+receipt, or protected result was accessed.
+
+### Interpretation
+
+Freeze B can now be created reproducibly once the final candidate and
+human-controlled seed exist. This removes hand-authored hashes from the sealed
+critical path without moving candidate selection or schedule authority into the
+agent.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+An evaluation freeze should be derived from immutable source objects and should
+bind the code performing the derivation. A manifest that merely repeats
+operator-supplied hashes does not prove which system was evaluated.
+
+### Next step
+
+After the public C4 baseline and the authorized E02 dev-A experiment, select the
+final candidate. Then commit the final schedule/specification with the human
+seed and invoke the recorder exactly once before sealed generation.

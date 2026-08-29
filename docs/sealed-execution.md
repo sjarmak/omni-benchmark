@@ -128,6 +128,44 @@ which preserves generation-file and per-record hash bindings. An infrastructure
 failure blocks score-artifact materialization until the preregistered rerun
 procedure resolves it.
 
+## Recording Freeze B
+
+`sealed_tools/record_freeze_b.py` creates the manifest only from Git objects at
+the exact current 40-character system commit. It does not read the working-tree
+versions of declared files. The committed input specification names every
+frozen file, the database snapshot manifest, condition-specific harness,
+runtime-policy, prompt, instruction, and semantic-model provenance files, plus
+the externally supplied schedule seed and schedule path. C3 and C4 require a
+semantic-model file; C1 forbids one.
+
+The schedule is canonical JSONL with exactly these identity-only fields:
+`attempt_id`, `condition`, `instance_id`, and `repetition`. It must contain all
+101 instance identities exactly once under each of C1-C4 and repetitions 1-3.
+The recorder hashes the ordered attempt IDs without printing them. It also
+proves that Freeze A is an ancestor, rejects Git symlink entries and uncommitted
+paths, and binds its loaded recorder, content-policy, scorer, and Freeze-B source
+bytes to the system commit.
+
+After final-candidate selection, the operator first commits the complete system,
+human-approved seed, and schedule. From that exact checkout, the one-time record
+command is:
+
+```bash
+uv run python sealed_tools/record_freeze_b.py \
+  --workspace "$PWD" \
+  --system-commit "<full-system-commit>" \
+  --input-spec config/freeze-b-input.json \
+  --recorded-at "<RFC3339-UTC>" \
+  --destination experiments/freeze-b.json
+```
+
+The destination and any symlinked parent fail closed; an existing destination
+is never overwritten. A successful invocation writes canonical mode-0600 JSON
+and prints only the system commit, Freeze-B SHA-256, frozen-file count, and
+schedule-attempt count. Commit that record before any held-out generation. This
+procedure accepts a previously chosen seed; it does not choose one or create a
+final candidate.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It
