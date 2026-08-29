@@ -120,6 +120,14 @@ def record_freeze_b(
     schedule_path = _relative_path(schedule["path"], "schedule path")
     if schedule_path not in frozen_paths:
         raise FreezeBRecordError("frozen_files must include the schedule path")
+    from .freeze_b_schedule import (
+        TEST_IDS_PATH,
+        FreezeBScheduleError,
+        expected_schedule_bytes,
+    )
+
+    if TEST_IDS_PATH not in frozen_paths:
+        raise FreezeBRecordError("frozen_files must include the committed test IDs")
     committed = {
         path: _committed_input(
             root,
@@ -131,6 +139,16 @@ def record_freeze_b(
         )
         for path in frozen_paths
     }
+    try:
+        registered_schedule = expected_schedule_bytes(
+            committed[TEST_IDS_PATH].content, schedule["seed"]
+        )
+    except FreezeBScheduleError as error:
+        raise FreezeBRecordError(str(error)) from error
+    if committed[schedule_path].content != registered_schedule:
+        raise FreezeBRecordError(
+            "schedule does not match the registered algorithm, seed, and test IDs"
+        )
     attempt_ids = _schedule_attempt_ids(committed[schedule_path].content)
     database, snapshot_path = _database(spec["database"])
     if snapshot_path not in committed:
@@ -235,6 +253,8 @@ def _ancestor_commit(workspace: Path, supplied: object, descendant: str) -> str:
 
 
 def _verify_runtime_sources(workspace: Path, commit: str) -> None:
+    from . import freeze_b_schedule
+
     sources = {
         "src/omni_benchmark/autoresearch_config.py": Path(
             _write_exclusive.__code__.co_filename
@@ -246,6 +266,7 @@ def _verify_runtime_sources(workspace: Path, commit: str) -> None:
             FreezeBManifest.from_dict.__func__.__code__.co_filename
         ),
         "src/omni_benchmark/freeze_b_record.py": Path(__file__),
+        "src/omni_benchmark/freeze_b_schedule.py": Path(freeze_b_schedule.__file__),
         "src/omni_benchmark/scoring.py": Path(scorer_metadata.__code__.co_filename),
     }
     for relative, loaded_path in sources.items():

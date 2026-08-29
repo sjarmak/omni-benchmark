@@ -16,6 +16,7 @@ from omni_benchmark.freeze_b_record import (
     record_freeze_b,
     record_main,
 )
+from omni_benchmark.freeze_b_schedule import expected_schedule_bytes
 
 
 RECORDED_AT = "2026-08-29T06:00:00Z"
@@ -34,16 +35,15 @@ def _git(repo: Path, *arguments: str) -> str:
 
 def _schedule() -> list[dict[str, object]]:
     return [
-        {
-            "attempt_id": f"sealed:q-{question:03d}:{condition}:{repetition}",
-            "condition": condition,
-            "instance_id": f"q-{question:03d}",
-            "repetition": repetition,
-        }
-        for question in range(1, 102)
-        for condition in ("C1", "C2", "C3", "C4")
-        for repetition in (1, 2, 3)
+        json.loads(line)
+        for line in expected_schedule_bytes(
+            _test_ids(), "human-approved-seed-v1"
+        ).splitlines()
     ]
+
+
+def _test_ids() -> bytes:
+    return "".join(f"q-{question:03d}\n" for question in range(1, 102)).encode()
 
 
 def _condition(condition: str) -> dict[str, object]:
@@ -110,6 +110,7 @@ def _repository(tmp_path: Path) -> tuple[Path, str, bytes]:
         "data/database-snapshot.json": b'{"snapshot":"public-v1"}\n',
         "models/c3-export.json": b'{"model":"c3"}\n',
         "models/c4-export.json": b'{"model":"c4"}\n',
+        "data/manifests/test_ids.txt": _test_ids(),
     }
     project = Path(__file__).parents[1]
     for relative in (
@@ -117,6 +118,7 @@ def _repository(tmp_path: Path) -> tuple[Path, str, bytes]:
         "src/omni_benchmark/content_policy.py",
         "src/omni_benchmark/freeze_b.py",
         "src/omni_benchmark/freeze_b_record.py",
+        "src/omni_benchmark/freeze_b_schedule.py",
         "src/omni_benchmark/scoring.py",
     ):
         files[relative] = (project / relative).read_bytes()
@@ -124,10 +126,7 @@ def _repository(tmp_path: Path) -> tuple[Path, str, bytes]:
         path = repo / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(content)
-    schedule_bytes = b"".join(
-        json.dumps(record, separators=(",", ":"), sort_keys=True).encode() + b"\n"
-        for record in _schedule()
-    )
+    schedule_bytes = expected_schedule_bytes(_test_ids(), "human-approved-seed-v1")
     schedule_path = repo / "data/final-schedule.jsonl"
     schedule_path.write_bytes(schedule_bytes)
     frozen_paths = sorted(
@@ -165,7 +164,7 @@ def test_record_uses_exact_commit_and_writes_canonical_mode_0600(
     manifest = FreezeBManifest.from_dict(json.loads(destination.read_text()))
     assert result.manifest == manifest
     assert result.schedule_attempt_count == 1_212
-    assert result.frozen_file_count == 17
+    assert result.frozen_file_count == 19
     assert (
         dict(manifest.frozen_files)["config/conditions/c1.json"]
         == hashlib.sha256(committed_c1).hexdigest()
@@ -288,7 +287,9 @@ def test_record_rejects_an_incomplete_or_inconsistent_schedule(
         "missing_input_spec",
         "wrong_algorithm",
         "missing_schedule",
+        "missing_test_ids",
         "missing_snapshot",
+        "wrong_seed",
     ],
 )
 def test_record_rejects_noncanonical_or_incomplete_input_spec(
@@ -315,6 +316,12 @@ def test_record_rejects_noncanonical_or_incomplete_input_spec(
     elif case == "missing_schedule":
         spec["frozen_files"].remove("data/final-schedule.jsonl")
         message = "schedule path"
+    elif case == "missing_test_ids":
+        spec["frozen_files"].remove("data/manifests/test_ids.txt")
+        message = "committed test IDs"
+    elif case == "wrong_seed":
+        spec["schedule"]["seed"] = "substituted-human-seed-v1"
+        message = "registered algorithm"
     else:
         spec["frozen_files"].remove("data/database-snapshot.json")
         message = "database snapshot"
@@ -467,6 +474,6 @@ def test_script_entrypoint_records_the_same_public_summary(tmp_path: Path) -> No
 
     output = json.loads(completed.stdout)
     assert output["schedule_attempt_count"] == 1_212
-    assert output["frozen_file_count"] == 17
+    assert output["frozen_file_count"] == 19
     assert output["system_commit"] == commit
     assert completed.stderr == ""

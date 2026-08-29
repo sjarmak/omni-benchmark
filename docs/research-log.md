@@ -4779,3 +4779,77 @@ operator-supplied hashes does not prove which system was evaluated.
 After the public C4 baseline and the authorized E02 dev-A experiment, select the
 final candidate. Then commit the final schedule/specification with the human
 seed and invoke the recorder exactly once before sealed generation.
+
+## 2026-08-29 — D-092: Derive the sealed schedule from committed identities
+
+### Decision / experiment
+
+Remove the remaining hand-authored schedule step from the Freeze-B critical
+path without choosing the human-controlled seed or reading test content. Change
+type: general evaluation integrity. Bead: `omni-benchmark-dih.5.4.1.3`.
+
+### Hypothesis
+
+If the final 1,212-attempt order is deterministically derived from the exact Git
+blob containing the 101 test identities and a later human-supplied seed, and the
+Freeze-B recorder reproduces those bytes independently, then dirty-tree
+substitution, missing trials, adjacent repetitions, and a structurally valid but
+hand-reordered schedule cannot silently enter sealed execution.
+
+### Intervention
+
+Added `sealed_tools/generate_freeze_b_schedule.py` and a small identity-only
+schedule module. `committed_block_interleaved_v1` first orders questions by a
+domain-separated SHA-256 of the seed and identity. At each of 101 positions it
+emits four-condition blocks for repetitions one through three using offsets 0,
+34, and 67; condition order receives a separate domain. This yields exactly
+1,212 unique attempts and keeps repetitions of one question at least 98 blocks
+apart.
+
+The generator requires the exact full current commit, reads only the committed
+regular-file blob at `data/manifests/test_ids.txt`, strips inherited `GIT_*`
+redirections, binds all loaded critical sources to that commit, and writes
+canonical JSONL exclusively with mode 0600. Its summary exposes only hashes and
+counts. The recorder now requires the committed test-ID manifest in
+`frozen_files` and recomputes the complete schedule from its recorded seed; byte
+inequality fails before Freeze B is written.
+
+### Result
+
+Ninety focused Freeze-B, recorder, schedule, and sealed-scoring tests pass. The
+new schedule module has 97% branch coverage and the combined recorder/schedule
+coverage is 84.28%. Adversarial cases cover dirty substitutions, abbreviated or
+stale commits, malformed, duplicate, unsorted, wrong-count, symlinked, or
+non-newline-terminated identity manifests, seed substitution, schedule
+reordering, Git-environment redirection, runtime-source replacement, symlinked
+output parents, overwrite refusal, mode 0600, and both CLI entry points.
+
+The repository-wide gate passes 1,539 tests with five expected skips and 84.35%
+branch coverage. Ruff, formatting, and diff checks pass. No actual seed, final
+schedule, input specification, Freeze-B manifest, hidden field, protected
+result, live service, credential, approval receipt, or test generation was
+accessed or created.
+
+### Interpretation
+
+The final schedule is now reproducible and mechanically bound to the frozen
+split identities while seed choice remains outside agent authority. This closes
+the gap between a declared schedule algorithm and the exact order accepted by
+the Freeze-B recorder.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+For sealed evaluations, validating that a schedule has the right rows is weaker
+than proving how those rows were ordered. Recomputing the order at the freeze
+boundary makes randomization auditable without exposing question content.
+
+### Next step
+
+After C4 and the authorized E02 dev-A experiment, select the final candidate.
+Then obtain the human seed, generate and commit the one schedule and Freeze-B
+input specification, record Freeze B once, and begin sealed generation only
+after the freeze record is committed.

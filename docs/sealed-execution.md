@@ -139,16 +139,37 @@ the externally supplied schedule seed and schedule path. C3 and C4 require a
 semantic-model file; C1 forbids one.
 
 The schedule is canonical JSONL with exactly these identity-only fields:
-`attempt_id`, `condition`, `instance_id`, and `repetition`. It must contain all
-101 instance identities exactly once under each of C1-C4 and repetitions 1-3.
-The recorder hashes the ordered attempt IDs without printing them. It also
-proves that Freeze A is an ancestor, rejects Git symlink entries and uncommitted
-paths, and binds its loaded recorder, content-policy, scorer, and Freeze-B source
-bytes to the system commit.
+`attempt_id`, `condition`, `instance_id`, and `repetition`. It contains all 101
+committed test identities exactly once under each of C1-C4 and repetitions 1-3.
+`sealed_tools/generate_freeze_b_schedule.py` constructs it from the exact Git
+blob at `data/manifests/test_ids.txt` and a human-supplied seed. It never reads
+question content or labels and prints no seed or identity.
 
-After final-candidate selection, the operator first commits the complete system,
-human-approved seed, and schedule. From that exact checkout, the one-time record
-command is:
+The registered `committed_block_interleaved_v1` algorithm orders questions by a
+domain-separated SHA-256 of the seed and identity. At each of 101 positions it
+emits one four-condition block for each repetition, using question-order offsets
+0, 34, and 67 and a separately domain-separated condition order. Thus each
+question's repetitions are at least 98 four-attempt blocks apart. Repetition is
+assigned before scheduling; completion order never changes its label.
+
+After final-candidate selection, first commit the complete candidate and the
+schedule generator. The human then supplies the schedule seed. From that exact
+checkout, create the schedule once:
+
+```bash
+uv run python sealed_tools/generate_freeze_b_schedule.py \
+  --workspace "$PWD" \
+  --system-commit "<full-current-commit>" \
+  --seed "<human-supplied-seed>" \
+  --destination data/final-schedule.jsonl
+```
+
+Commit the schedule together with `config/freeze-b-input.json`, which records
+the same seed and includes both the schedule and committed test-ID manifest in
+`frozen_files`. The generator refuses overwrite and writes mode-0600 canonical
+JSONL. Its public summary contains only the system commit, hashes, and counts.
+
+From the resulting exact checkout, run the one-time recorder:
 
 ```bash
 uv run python sealed_tools/record_freeze_b.py \
@@ -162,9 +183,12 @@ uv run python sealed_tools/record_freeze_b.py \
 The destination and any symlinked parent fail closed; an existing destination
 is never overwritten. A successful invocation writes canonical mode-0600 JSON
 and prints only the system commit, Freeze-B SHA-256, frozen-file count, and
-schedule-attempt count. Commit that record before any held-out generation. This
-procedure accepts a previously chosen seed; it does not choose one or create a
-final candidate.
+schedule-attempt count. Before writing, it reproduces the schedule byte-for-byte
+from the committed test IDs and seed; a hand-reordered but structurally complete
+matrix fails. It also proves that Freeze A is an ancestor, rejects Git symlinks
+and uncommitted paths, and binds the loaded generator, recorder, content-policy,
+scorer, and Freeze-B sources to the system commit. Commit the record before any
+held-out generation. Neither tool chooses a seed or creates a final candidate.
 
 ## Psycopg template connector
 
