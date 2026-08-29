@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
 from omni_benchmark.dev_a_baseline_scoring import DevABaselineScoringError
 from omni_benchmark.dev_a_baseline_scoring_cli import (
+    _expected_counts,
     _selection_path,
     dev_a_baseline_scoring_entrypoint,
     dev_a_baseline_scoring_main,
@@ -119,3 +121,43 @@ def test_entrypoint_sanitizes_unexpected_failures(
     captured = capsys.readouterr()
     assert captured.out == ""
     assert captured.err == "dev-A baseline scoring failed: internal scorer error\n"
+
+
+def test_conformance_receipt_binds_plan_before_candidate_scoring(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    captured: dict[str, object] = {}
+
+    def load(workspace: Path, path: Path, **kwargs: object) -> tuple[int, int]:
+        captured["workspace"] = workspace
+        captured["path"] = path
+        captured.update(kwargs)
+        return 136, 135
+
+    monkeypatch.setattr(
+        "omni_benchmark.dev_a_baseline_scoring_cli.load_dev_a_gold_conformance_receipt",
+        load,
+    )
+    arguments = SimpleNamespace(
+        expected_official_scoreable_questions=None,
+        expected_sensitivity_scoreable_questions=None,
+        gold_conformance_receipt=Path(
+            "experiments/autoresearch/state/dev-a-gold-conformance-v1.json"
+        ),
+        expected_gold_conformance_sha256="a" * 64,
+    )
+    plan = SimpleNamespace(
+        freeze_a_commit="b" * 40,
+        release_sha256="c" * 64,
+        dev_a_ids_sha256="d" * 64,
+    )
+
+    assert _expected_counts(arguments, tmp_path, plan) == (136, 135)
+    assert captured == {
+        "dev_a_ids_sha256": "d" * 64,
+        "expected_sha256": "a" * 64,
+        "freeze_a_commit": "b" * 40,
+        "path": arguments.gold_conformance_receipt,
+        "release_sha256": "c" * 64,
+        "workspace": tmp_path,
+    }

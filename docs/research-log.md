@@ -5858,3 +5858,49 @@ The exact full-154 scoreable denominators are intentionally not guessed from
 the prior 140-question direct arm; a custody-safe aggregate conformance step or
 equivalent human-controlled evidence remains necessary before final E02 score
 publication. This implementation does not change that scoring definition.
+
+## 2026-08-29 — D-108: Prepare aggregate-only full-dev-A gold conformance
+
+### Pre-change hypothesis and boundary
+
+The prior direct score receipt freezes gold eligibility for only 140 represented
+dev-A questions, so its 122 official / 121 sensitivity denominators cannot be
+assumed for E02's complete 154-question arm. The already human-approved frozen
+eligibility rule can be applied in a distinct, explicit custody command before
+candidate correctness execution, publishing only an immutable aggregate receipt
+that the final scorer authenticates.
+
+Bead `omni-benchmark-ei0.4.9.1`; change class: evaluation custody integration.
+Implementation and tests may use synthetic fixtures only. This preparation may
+not open the real release, acquire PostgreSQL, read a candidate artifact, run
+E02, or expose a question identity, SQL string, row value, per-question status,
+hidden annotation, or correctness result.
+
+### Result
+
+The new command requires explicit execution acknowledgement, the exact Freeze A
+commit, the expected 154-record release SHA-256, both in-memory scorer DSNs, and
+the pinned PostgreSQL version. It validates exact committed dev-A membership,
+executes the same frozen sentinel conformance rule under both scorers, and writes
+one canonical mode-0600 non-overwriting receipt in the confined state directory.
+The receipt contains only input hashes, scorer identities, total scoreable and
+unscorable counts, and aggregate totals for the already closed gold-failure
+categories. It contains no IDs, SQL, result rows, or candidate evidence.
+
+The complete E02 scorer can now authenticate that receipt against its own
+Freeze-A, release, and dev-A-manifest bindings. It recomputes conformance and
+compares the receipt-bound denominators before executing any candidate; a drift
+or mismatch aborts before candidate scoring. Existing explicit-denominator
+commands and direct, public-C4, and sealed defaults remain available and
+unchanged.
+
+Focused gold-conformance/E02/freeze/scoring/sealed coverage passes 155 tests.
+The full repository gate passes 1,782 tests with five expected
+environment/source skips and 84.06% branch coverage. Ruff, formatting, and diff
+checks pass. No protected or live input was opened.
+
+### Outcome
+
+KEEP. The real aggregate sweep remains unexecuted and will be documented as a
+separate custody action; preparing this command does not authorize E02
+deployment or generation.

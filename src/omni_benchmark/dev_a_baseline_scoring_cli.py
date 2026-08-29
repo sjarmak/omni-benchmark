@@ -21,6 +21,10 @@ from .dev_a_baseline_scoring import (
     require_scoreable_question_counts,
     score_dev_a_baseline_plan,
 )
+from .dev_a_gold_conformance import (
+    DevAGoldConformanceError,
+    load_dev_a_gold_conformance_receipt,
+)
 from .postgres_isolation import PsycopgTemplateIsolationProvider
 
 ADMIN_DSN_ENV = "OMNI_BENCHMARK_SCORER_ADMIN_DSN"
@@ -63,6 +67,7 @@ def dev_a_baseline_scoring_main(
         expected_release_sha256=arguments.expected_release_sha256,
         environment=process_environment,
     )
+    expected_counts = _expected_counts(arguments, workspace, plan)
     _require_pinned_postgres(admin_dsn)
     templates = {
         attempt.case.database: attempt.case.database for attempt in plan.attempts
@@ -77,11 +82,15 @@ def dev_a_baseline_scoring_main(
         raise DevABaselineScoringError(
             "PostgreSQL scorer configuration is invalid"
         ) from error
-    results = score_dev_a_baseline_plan(plan, provider)
+    results = score_dev_a_baseline_plan(
+        plan,
+        provider,
+        expected_scoreable_question_counts=expected_counts,
+    )
     require_scoreable_question_counts(
         results,
-        official=arguments.expected_official_scoreable_questions,
-        sensitivity=arguments.expected_sensitivity_scoreable_questions,
+        official=expected_counts[0],
+        sensitivity=expected_counts[1],
     )
     receipt = publish_dev_a_baseline_results(
         workspace,
@@ -111,14 +120,44 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--selection", type=Path, default=SELECTION_PATH)
     parser.add_argument("--expected-selection-sha256", required=True)
     parser.add_argument("--expected-release-sha256", required=True)
-    parser.add_argument(
-        "--expected-official-scoreable-questions", type=int, required=True
-    )
-    parser.add_argument(
-        "--expected-sensitivity-scoreable-questions", type=int, required=True
-    )
+    parser.add_argument("--expected-official-scoreable-questions", type=int)
+    parser.add_argument("--expected-sensitivity-scoreable-questions", type=int)
+    parser.add_argument("--gold-conformance-receipt", type=Path)
+    parser.add_argument("--expected-gold-conformance-sha256")
     parser.add_argument("--output-root", type=Path, required=True)
     return parser
+
+
+def _expected_counts(arguments, workspace: Path, plan) -> tuple[int, int]:
+    direct = (
+        arguments.expected_official_scoreable_questions,
+        arguments.expected_sensitivity_scoreable_questions,
+    )
+    if arguments.gold_conformance_receipt is None:
+        if arguments.expected_gold_conformance_sha256 is not None or any(
+            value is None for value in direct
+        ):
+            raise DevABaselineScoringError(
+                "exact scoreable denominators or a conformance receipt are required"
+            )
+        return direct
+    if any(value is not None for value in direct) or (
+        arguments.expected_gold_conformance_sha256 is None
+    ):
+        raise DevABaselineScoringError(
+            "gold-conformance receipt arguments are mutually exclusive with denominators"
+        )
+    try:
+        return load_dev_a_gold_conformance_receipt(
+            workspace,
+            arguments.gold_conformance_receipt,
+            expected_sha256=arguments.expected_gold_conformance_sha256,
+            freeze_a_commit=plan.freeze_a_commit,
+            release_sha256=plan.release_sha256,
+            dev_a_ids_sha256=plan.dev_a_ids_sha256,
+        )
+    except DevAGoldConformanceError as error:
+        raise DevABaselineScoringError(str(error)) from error
 
 
 def _required_dsn(environment: Mapping[str, str], name: str) -> str:

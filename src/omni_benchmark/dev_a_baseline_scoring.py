@@ -159,6 +159,7 @@ class DevABaselinePlan:
     selection_sha256: str
     release_sha256: str
     dev_a_ids_sha256: str
+    freeze_a_commit: str
     released_question_count: int
     selected_question_count: int
     unrepresented_question_count: int
@@ -304,6 +305,7 @@ def prepare_dev_a_baseline_plan(
         selection_sha256=selection_digest,
         release_sha256=release_digest,
         dev_a_ids_sha256=dev_a_ids_sha256,
+        freeze_a_commit=freeze_a_commit,
         released_question_count=len(dev_a_ids),
         selected_question_count=len(selected_ids),
         unrepresented_question_count=len(dev_a_ids - selected_ids),
@@ -314,6 +316,8 @@ def prepare_dev_a_baseline_plan(
 def score_dev_a_baseline_plan(
     plan: DevABaselinePlan,
     provider: PostgreSQLIsolationProvider,
+    *,
+    expected_scoreable_question_counts: tuple[int, int] | None = None,
 ) -> DevABaselineResults:
     """Freeze gold eligibility for both modes, then score eligible candidates."""
     if not isinstance(plan, DevABaselinePlan):
@@ -325,6 +329,28 @@ def score_dev_a_baseline_plan(
         raise DevABaselineScoringError("invalid scoring input") from error
 
     eligibility = _freeze_gold_conformance(plan, provider)
+    if expected_scoreable_question_counts is not None:
+        if (
+            not isinstance(expected_scoreable_question_counts, tuple)
+            or len(expected_scoreable_question_counts) != 2
+            or any(
+                type(value) is not int or value < 1
+                for value in expected_scoreable_question_counts
+            )
+        ):
+            raise DevABaselineScoringError("authorized denominator is invalid")
+        observed = tuple(
+            sum(
+                failure is None
+                for (question_key, selected_mode), failure in eligibility.items()
+                if selected_mode is mode
+            )
+            for mode in (ScoringMode.OFFICIAL, ScoringMode.SENSITIVITY)
+        )
+        if observed != expected_scoreable_question_counts:
+            raise DevABaselineScoringError(
+                "scoreable questions do not match the authorized denominator"
+            )
     scored: list[DevAAttemptResult] = []
     for attempt in plan.attempts:
         official = _score_eligible_attempt(

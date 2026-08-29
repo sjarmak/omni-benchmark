@@ -677,6 +677,38 @@ def test_gold_conformance_is_frozen_before_candidate_scoring(
     } == {"gold_statement_error"}
 
 
+def test_bound_denominator_mismatch_aborts_before_candidate_scoring(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace, commit, selection_sha256, release_sha256 = _initialize_workspace(
+        tmp_path
+    )
+    plan = prepare_dev_a_baseline_plan(
+        workspace,
+        freeze_a_commit=commit,
+        expected_selection_sha256=selection_sha256,
+        expected_release_sha256=release_sha256,
+    )
+    calls = 0
+
+    def score(case: object, mode: ScoringMode, provider: object) -> SealedScoringResult:
+        nonlocal calls
+        calls += 1
+        assert getattr(case, "candidate_sql") == "SELECT 1"
+        return _scoring_result(mode, outcome="wrong_answer")
+
+    monkeypatch.setattr("omni_benchmark.dev_a_baseline_scoring.score_query", score)
+
+    with pytest.raises(DevABaselineScoringError, match="authorized denominator"):
+        score_dev_a_baseline_plan(
+            plan,
+            object(),
+            expected_scoreable_question_counts=(1, 1),
+        )
+
+    assert calls == 4
+
+
 def test_publish_is_sql_free_hash_bound_and_exclusive(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
