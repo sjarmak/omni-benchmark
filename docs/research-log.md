@@ -6024,3 +6024,43 @@ KEEP. The final numeric transcription step is now deterministic and bound to
 the exact sealed scoring handoff. This preparation does not authorize C4,
 Freeze B, sealed generation, test release, scoring, or publication of the
 result narrative; all existing human and custody gates remain in force.
+
+## 2026-08-29 — D-112: Unify the C4 preflight repair with sealed readiness
+
+### Integration hypothesis and boundary
+
+The exact C4 v4 quarantine and pre-consumption environment preflight can be
+replayed onto the complete E02, Freeze-B, sealed-dispatch, sealed-scoring, and
+aggregate-report lineage without weakening either side. This is an offline
+control-plane integration under Bead `omni-benchmark-ei0.7`; it may not create
+or consume a receipt, contact a provider, inspect credentials or protected
+labels, run scoring, mutate leases, or push.
+
+### Result
+
+Clean branch `codex/mvp-sealed-integrated` descends from sealed report commit
+`301d45fdf808384708811220b436b904e48e57be`. Patch-equivalent commit `db7faae`
+adds the exact v4 quarantine plus required Omni environment validation before
+approval validation or consumption. The integration cherry-pick was conflict
+free.
+
+The first full gate correctly exposed five freezer-fixture failures: synthetic
+success tests reused the now-real quarantined v4 run ID. Production behavior
+was correct; the tests were coupled to a production identity. The fixture now
+uses dedicated non-production ID `public-c4-baseline-freeze-test`, while the
+explicit quarantine test retains real v3. This prevents future production
+quarantines from changing unrelated freezer tests.
+
+The focused cross-lineage gate passes 208 tests. After the fixture correction,
+the C4 freezer/quarantine gate passes 24 tests and the full repository gate
+passes 1,818 tests with five expected environment/source skips and 83.59%
+branch coverage. Ruff, formatting, and diff checks pass. No live, credential,
+receipt, gold, dev-B/test-label, correctness, lease, or push action occurred.
+
+### Outcome
+
+KEEP. One clean local lineage now contains the current report, E02 candidate,
+C4 post-run path, Freeze B, sealed dispatch and scoring custody, aggregate
+renderer, v4 quarantine, and the pre-consumption environment guard. The branch
+does not authorize v5 or any sealed action; fresh human and custody gates remain
+mandatory.

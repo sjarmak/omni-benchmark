@@ -20,6 +20,7 @@ from omni_benchmark.run_manifest import RunManifest
 
 COMMIT = "a" * 40
 DIGEST = "b" * 64
+TEST_RUN_ID = "public-c4-baseline-freeze-test"
 
 
 def _canonical(value: object) -> bytes:
@@ -37,7 +38,7 @@ def _workspace(tmp_path: Path) -> Path:
 
 
 def _schedule(
-    run_id: str = "public-c4-baseline-v4", *, attempts: int = 2, databases: int = 2
+    run_id: str = TEST_RUN_ID, *, attempts: int = 2, databases: int = 2
 ) -> BaselineSchedule:
     return BaselineSchedule(
         attempts=tuple(
@@ -149,7 +150,7 @@ def test_complete_c4_schedule_freezes_canonical_hash_bound_selection(
 ) -> None:
     workspace = _workspace(tmp_path)
     schedule = _schedule()
-    output_root = Path("experiments/autoresearch/raw/public-c4-baseline-v4")
+    output_root = Path(f"experiments/autoresearch/raw/{TEST_RUN_ID}")
     _write_attempt(workspace, output_root, schedule.attempts[0])
     _write_attempt(
         workspace,
@@ -168,8 +169,8 @@ def test_complete_c4_schedule_freezes_canonical_hash_bound_selection(
         "artifact_file_count": 6,
         "attempt_count": 2,
         "database_count": 2,
-        "path": "experiments/autoresearch/state/public-c4-baseline-v4-freeze.json",
-        "run_id": "public-c4-baseline-v4",
+        "path": f"experiments/autoresearch/state/{TEST_RUN_ID}-freeze.json",
+        "run_id": TEST_RUN_ID,
         "selection_sha256": hashlib.sha256(content).hexdigest(),
         "source_schedule_sha256": schedule.sha256,
     }
@@ -196,7 +197,7 @@ def test_freeze_refuses_incomplete_schedule_without_writing(tmp_path: Path) -> N
     schedule = _schedule()
     _write_attempt(
         workspace,
-        Path("experiments/autoresearch/raw/public-c4-baseline-v4"),
+        Path(f"experiments/autoresearch/raw/{TEST_RUN_ID}"),
         schedule.attempts[0],
     )
 
@@ -204,14 +205,14 @@ def test_freeze_refuses_incomplete_schedule_without_writing(tmp_path: Path) -> N
         _freeze(workspace, schedule)
 
     assert not (
-        workspace / "experiments/autoresearch/state/public-c4-baseline-v4-freeze.json"
+        workspace / f"experiments/autoresearch/state/{TEST_RUN_ID}-freeze.json"
     ).exists()
 
 
 def test_freeze_refuses_unexpected_or_symlinked_artifact_tree(tmp_path: Path) -> None:
     workspace = _workspace(tmp_path)
     schedule = _schedule()
-    output_root = Path("experiments/autoresearch/raw/public-c4-baseline-v4")
+    output_root = Path(f"experiments/autoresearch/raw/{TEST_RUN_ID}")
     for attempt in schedule.attempts:
         _write_attempt(workspace, output_root, attempt)
     unexpected = workspace / output_root / "database_0/c4/.failed-question_0-r1-x"
@@ -237,7 +238,7 @@ def test_freeze_refuses_quarantined_run_and_overwrite(tmp_path: Path) -> None:
         _freeze(workspace, quarantined)
 
     schedule = _schedule()
-    output_root = Path("experiments/autoresearch/raw/public-c4-baseline-v4")
+    output_root = Path(f"experiments/autoresearch/raw/{TEST_RUN_ID}")
     for attempt in schedule.attempts:
         _write_attempt(workspace, output_root, attempt)
     _freeze(workspace, schedule)
@@ -248,7 +249,7 @@ def test_freeze_refuses_quarantined_run_and_overwrite(tmp_path: Path) -> None:
 def test_freeze_refuses_score_or_other_extra_artifact(tmp_path: Path) -> None:
     workspace = _workspace(tmp_path)
     schedule = _schedule()
-    output_root = Path("experiments/autoresearch/raw/public-c4-baseline-v4")
+    output_root = Path(f"experiments/autoresearch/raw/{TEST_RUN_ID}")
     for attempt in schedule.attempts:
         _write_attempt(workspace, output_root, attempt)
     score = workspace / output_root / "database_0/c4/question_0-r1/official.score.json"
@@ -286,11 +287,11 @@ def test_cli_requires_exact_committed_129_attempt_identity(
         "--system-commit",
         COMMIT,
         "--run-id",
-        "public-c4-baseline-v4",
+        TEST_RUN_ID,
         "--output-root",
-        "experiments/autoresearch/raw/public-c4-baseline-v4",
+        f"experiments/autoresearch/raw/{TEST_RUN_ID}",
         "--destination",
-        "experiments/autoresearch/state/public-c4-baseline-v4-freeze.json",
+        f"experiments/autoresearch/state/{TEST_RUN_ID}-freeze.json",
         "--expected-schedule-sha256",
         schedule.sha256,
         "--expected-execution-plan-sha256",
