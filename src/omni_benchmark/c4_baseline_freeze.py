@@ -220,7 +220,12 @@ def _artifact_inventory(root: Path, attempt_roots: set[Path]) -> tuple[int, str]
         root_metadata = root.lstat()
     except OSError as error:
         raise C4BaselineFreezeError("C4 artifact root is unavailable") from error
-    if root.is_symlink() or not stat.S_ISDIR(root_metadata.st_mode):
+    if (
+        root.is_symlink()
+        or not stat.S_ISDIR(root_metadata.st_mode)
+        or stat.S_IMODE(root_metadata.st_mode) != 0o700
+        or root_metadata.st_uid != os.getuid()
+    ):
         raise C4BaselineFreezeError("C4 artifact root is not a regular directory")
 
     allowed_directories = {Path(".")}
@@ -244,6 +249,8 @@ def _artifact_inventory(root: Path, attempt_roots: set[Path]) -> tuple[int, str]
                 if (
                     child.is_symlink()
                     or not stat.S_ISDIR(metadata.st_mode)
+                    or stat.S_IMODE(metadata.st_mode) != 0o700
+                    or metadata.st_uid != os.getuid()
                     or relative not in allowed_directories
                 ):
                     raise C4BaselineFreezeError(

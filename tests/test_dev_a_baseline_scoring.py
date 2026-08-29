@@ -438,6 +438,37 @@ def test_c4_result_artifact_mutation_fails_before_scoring(tmp_path: Path) -> Non
         )
 
 
+def test_c4_stateful_case_fails_during_preparation_before_any_database(
+    tmp_path: Path,
+) -> None:
+    workspace, _, _, release_sha256 = _initialize_workspace(tmp_path)
+    manifest = workspace / "data/manifests/eligible_questions.jsonl"
+    records = [json.loads(line) for line in manifest.read_text().splitlines()]
+    records[0]["preprocess_sql"] = ["CREATE TEMP VIEW forbidden AS SELECT 1"]
+    _write(manifest, b"".join(_canonical(record) for record in records), mode=0o644)
+    subprocess.run(["git", "add", str(manifest)], cwd=workspace, check=True)
+    subprocess.run(
+        ["git", "commit", "-qm", "stateful public fixture"], cwd=workspace, check=True
+    )
+    commit = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=workspace,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    selection_path, c4_sha256 = _install_c4_selection(workspace, commit)
+
+    with pytest.raises(DevABaselineScoringError, match="stateless"):
+        prepare_dev_a_baseline_plan(
+            workspace,
+            freeze_a_commit=commit,
+            selection_path=selection_path,
+            expected_selection_sha256=c4_sha256,
+            expected_release_sha256=release_sha256,
+        )
+
+
 def test_release_hash_fails_before_private_records_are_parsed(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

@@ -68,6 +68,12 @@ def _write_attempt(
         workspace / output_root / attempt.database / "c4" / f"{attempt.instance_id}-r1"
     )
     root.mkdir(parents=True, mode=0o700)
+    current = workspace / output_root
+    while current != root:
+        current.chmod(0o700)
+        relative = root.relative_to(current)
+        current = current / relative.parts[0]
+    root.chmod(0o700)
     record = {
         "attempt_id": attempt.attempt_id,
         "condition": "C4",

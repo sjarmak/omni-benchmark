@@ -904,6 +904,12 @@ def _attach_gold(
     labels: Mapping[str, Mapping[str, Any]],
 ) -> PreparedDevAAttempt:
     private_record = labels[attempt.instance_id]
+    if attempt.candidate_rows is not None and (
+        public_record["preprocess_sql"] or public_record["clean_up_sqls"]
+    ):
+        raise DevABaselineScoringError(
+            "precomputed C4 result requires a stateless public scoring case"
+        )
     return PreparedDevAAttempt(
         attempt_id=attempt.attempt_id,
         condition=attempt.condition,

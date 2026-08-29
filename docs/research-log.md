@@ -5775,7 +5775,7 @@ before database acquisition. Public aggregate verification finds 85 dev-A
 questions in the 129-question C4 arm and zero nonempty preprocess or cleanup
 sequences, so the exact arm satisfies that invariant.
 
-Focused freeze/custody/scoring coverage passes 51 tests. The complete isolated
+Focused freeze/custody/scoring coverage passes 52 tests. The complete isolated
 gate passes 1,754 tests with five expected environment/source skips and 84.10%
 branch coverage; repository Ruff, formatting, and diff checks pass. Running the
 exact v4 freeze command while v4 remains absent returned only
