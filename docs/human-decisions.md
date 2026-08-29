@@ -4,39 +4,33 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T12:11:57-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T12:27:00-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
-### One exact all-18 corrected-baseline deployment — `omni-benchmark-dih.17.8`
+### Omni CLI profile label — `omni-benchmark-dih.17.9`
 
-Reply with **A** or **B** in this chat; do not run a command:
+Reply with only the non-secret Omni CLI profile label used for the prior
+isolated semantic deployments. Do not send a token, config file, OAuth
+callback, credential value, or lease path, and do not run a command.
 
-- **A (recommended):** authorize exactly one append-only deployment,
-  validation, and exact-readback pass for the corrected C4 baseline.
-- **B:** hold without contacting Omni or creating the run claim.
-
-The request is frozen at
-`experiments/public-baseline-v7-deployment-request.json`, SHA-256
-`cf228cd8cdbc0e8f974850ff4f86b0f826d963cc7af2d002654953656a421c36`.
-It binds source commit `a684a3ec9c1c36aeaf8648be76d0127f6597d696`, all
-18 databases, 254 authenticated files, bundle-set SHA-256
-`2487b4ad6bb6c82a49cca76f3487c76a8311b688fe22da06b8c2f4436de83a8b`,
-run `public-baseline-v7-20260829`, the absent append-only output root
-`experiments/deployments/public-baseline-v7`, four workers, and a global
-1.25-second minimum request interval. Every terminal per-database result will
-be preserved; failures will not be retried.
-
-This authorizes only upload/validation/readback on the existing isolated
-`livesqlbench-*` baseline branches. It does **not** authorize C4 question
-dispatch, E02 deployment, scoring or correctness access, gold/hidden labels,
-dev-B/test, shared/main models, credentials/OAuth/leases, or any replacement
-run. The obsolete ten-target v5 package remains prohibited.
+The exact v7 deployment is already authorized. This is only the missing profile
+label needed to invoke the already-configured CLI. The launch preflight found
+no exported `OMNI_PROFILE` and no repository/worktree `.env`; it stopped before
+provider contact and before creating the v7 claim/output. The agent will not
+inspect Omni credential/config stores or guess a profile.
 
 ## Approved actions in progress
 
-No approved human-gated action is currently in progress.
+Your response **A** to `omni-benchmark-dih.17.8` authorizes exactly one
+append-only deployment, validation, and exact-readback pass matching
+`experiments/public-baseline-v7-deployment-request.json`, SHA-256
+`cf228cd8cdbc0e8f974850ff4f86b0f826d963cc7af2d002654953656a421c36`.
+The action is paused before provider contact and claim creation until the
+profile label above is supplied. The authorization does not extend to C4, E02,
+questions, scoring, protected labels, credentials/OAuth/leases, shared/main
+models, or a replacement run.
 
 ## Recently completed
 

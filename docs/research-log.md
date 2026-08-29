@@ -6756,3 +6756,33 @@ WAITING on human decision `omni-benchmark-dih.17.8`. Preparation was entirely
 provider-inert: no client was constructed, no run claim was created, and no
 provider, credential, lease, question, label, score, or correctness surface was
 accessed.
+
+## D-124: Stop the authorized v7 preflight before guessing an Omni profile
+
+### Hypothesis
+
+The authorized v7 deployment can start only if the execution environment
+already supplies the canonical profile label while the exact request, source
+commit, bundle set, absent output, and single-owner process checks still pass.
+A missing label must stop before the append-only claim because guessing could
+waste the non-retryable run identity in the wrong tenant.
+
+### Observation
+
+Human response A on `omni-benchmark-dih.17.8` authorizes the exact request. The
+pushed request rehashed to
+`cf228cd8cdbc0e8f974850ff4f86b0f826d963cc7af2d002654953656a421c36`,
+the source commit resolved exactly, no competing deployment process existed,
+and the canonical v7 destination was absent. The shell did not export
+`OMNI_PROFILE`, and neither the repository nor any `/tmp` worktree contained an
+`.env`. A detached execution worktree was created at exact source commit
+`a684a3ec9c1c36aeaf8648be76d0127f6597d696`; no deployment claim or output was
+created.
+
+### Outcome
+
+PAUSE before provider contact. Human input `omni-benchmark-dih.17.9` requests
+only the non-secret profile label used for prior isolated semantic deployments.
+No credential/config store will be inspected, no profile will be guessed, and
+the existing authorization remains unconsumed. No Omni client, question,
+label, score, or correctness surface was accessed.
