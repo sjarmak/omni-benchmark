@@ -16,9 +16,7 @@ dimensions:
   escrow_usage_state:
     description: 'TEXT. Indicator describing escrow usage for the transaction. **NULL means escrow usage detail is unavailable.**. Possible values: No, Yes.'
     label: Escrow Usage State
-    sql: '-- DO NOT PARSE
-
-      ${transaction_financials} ->> ''escrow_used_stat'''
+    sql: ${transaction_financials} ->> 'escrow_used_stat'
     ai_context: 'Escrow Usage States: Values: Yes, No.
 
       Label descriptions:

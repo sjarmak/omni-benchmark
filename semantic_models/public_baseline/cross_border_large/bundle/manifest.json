@@ -153,8 +153,8 @@
     },
     {
       "file": "cross_border_large.public__api_endpoint.view",
-      "sha256": "7d45eb1b3063514431f78b9be4074a277a64da21a1f952461b2b6b1300edd190",
-      "size_bytes": 536
+      "sha256": "bad5894e9df03699a21650a62c76bbddd99aafc7d2127113e57a1dd4d023c5fb",
+      "size_bytes": 513
     },
     {
       "file": "api_endpoint_semantics.topic",

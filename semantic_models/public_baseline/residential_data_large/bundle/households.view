@@ -7,16 +7,12 @@ dimensions:
   tenure_status:
     description: Household tenure classification indicating the ownership or occupancy status. Contains NULL when tenure status is unknown, transitional, or under legal dispute. Ex. OWNED, RENTED, OCCUPIED
     label: Tenure Status
-    sql: '-- DO NOT PARSE
-
-      ${socioeconomic} ->> ''Tenure_Type'''
+    sql: ${socioeconomic} ->> 'Tenure_Type'
     ai_context: 'Household Tenure Status: Values based on schema include ''OWNED'', ''RENTED'', ''OCCUPIED''. The ''OWNED'' status corresponds to owner-occupied properties.'
   income_bracket:
     description: 'Income classification level representing the household''s economic status and earning capacity. Contains NULL when income information is not disclosed, not available, or household income is irregular/informal. Ex.More than R$ 1,760 and less than R$ 2,640 '
     label: Income Bracket
-    sql: '-- DO NOT PARSE
-
-      ${socioeconomic} ->> ''Income_Bracket'''
+    sql: ${socioeconomic} ->> 'Income_Bracket'
     ai_context: 'Income Classification: Ranges from ''Low Income'' to ''Very High Income''. Null indicates undisclosed or irregular income.'
   resident_count:
     description: Number of people currently residing in the household, representing the total household size including all family members and occupants. EX. 1,2 3

@@ -46,9 +46,7 @@ def test_public_canary_bundle_materializes_only_approved_same_grain_semantics() 
             assert "joins" not in document, name
 
 
-def test_public_canary_marks_only_structured_json_physical_sql_for_omni_bypass() -> (
-    None
-):
+def test_public_canary_keeps_structured_json_parser_metadata_out_of_sql() -> None:
     spec = json.loads(
         (ROOT / "config/archeology_scan_public_bundle.json").read_text(encoding="utf-8")
     )
@@ -81,7 +79,9 @@ def test_public_canary_marks_only_structured_json_physical_sql_for_omni_bypass()
         for dimension in yaml.safe_load(content)["dimensions"].values()
         if "sql" in dimension
     ]
-    assert sum(sql.startswith("-- DO NOT PARSE\n") for sql in emitted_sql) == 16
+    assert all(not sql.startswith("-- DO NOT PARSE\n") for sql in emitted_sql)
+    marked_sql = {field["sql"] for field in marked_fields}
+    assert marked_sql.issubset(emitted_sql)
     derived_sql = {field["sql"] for field in spec["derived_fields"]}
     assert derived_sql.issubset(emitted_sql)
     assert all(not sql.startswith("-- DO NOT PARSE\n") for sql in derived_sql)

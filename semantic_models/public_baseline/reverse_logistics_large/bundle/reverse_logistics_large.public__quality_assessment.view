@@ -7,7 +7,5 @@ dimensions:
   item_condition:
     description: 'TEXT. Condition of the item during inspection. Possible values: Damaged, Like New, New, Used.'
     label: Item Condition
-    sql: '-- DO NOT PARSE
-
-      ${assessment_summary} -> ''condition'' ->> ''item_condition'''
+    sql: ${assessment_summary} -> 'condition' ->> 'item_condition'
     ai_context: 'Item Condition States: There are 4 different states: ''New'', ''Like New'', ''Used'' and ''Damaged''.'

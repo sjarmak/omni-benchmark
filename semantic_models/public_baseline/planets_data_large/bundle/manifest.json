@@ -65,8 +65,8 @@
   "files": [
     {
       "file": "planets_data_large.public__stars.view",
-      "sha256": "0199154e56cf8a4a316e8481c6e8b5d40d7d0083bf306be6b264868c4668a99e",
-      "size_bytes": 5718
+      "sha256": "000a960fc23a9b9653ac5305478b8d0a1bf6b112db376ec58abcbbef7033de01",
+      "size_bytes": 5602
     },
     {
       "file": "stars_semantics.topic",

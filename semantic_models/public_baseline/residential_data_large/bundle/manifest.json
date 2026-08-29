@@ -59,8 +59,8 @@
   "files": [
     {
       "file": "households.view",
-      "sha256": "5f046f4225f6951485ff6017fb3bcce57ef73c6ca5abc6256d2c29b25127f422",
-      "size_bytes": 1771
+      "sha256": "fb022aca583a1ffa0e23e5a41443abd28ad9eea244edb709e3e5a95886cab97f",
+      "size_bytes": 1717
     },
     {
       "file": "households.topic",
@@ -79,8 +79,8 @@
     },
     {
       "file": "properties.view",
-      "sha256": "6d9ad2b81c1499938d9d05831e7fd8eeabe50966303ab113d78f3959e74f1a65",
-      "size_bytes": 668
+      "sha256": "d5553fd685278b28188f0b021051b2a0f53116cfc18f07df0ea3640ee787e994",
+      "size_bytes": 641
     },
     {
       "file": "properties.topic",
@@ -109,8 +109,8 @@
     },
     {
       "file": "transportation_assets.view",
-      "sha256": "50abbec8b4b2da4f22514f9eb5648ea6e21ed8944a4aa0379b87330f4bf70dce",
-      "size_bytes": 1255
+      "sha256": "408768f6e46cba4e9f6d54bc82a1ddc74aa25287a272ab6b22ed39ffea4d1f24",
+      "size_bytes": 1228
     },
     {
       "file": "transportation_assets.topic",

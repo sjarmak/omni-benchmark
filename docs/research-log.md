@@ -6219,3 +6219,55 @@ approval files remain untouched.
 KEEP. The development promotion frame and sealed all-database requirement are
 aligned at the cost of waiting for the longest-lead compiler and restore work.
 This decision supplies no launch authority.
+## 2026-08-29 — D-118: Keep parser-control metadata out of emitted Omni SQL
+
+### Pre-change hypothesis and boundary
+
+The 17 `unparseable_sql` diagnostics on polar-equipment and sports-events are
+caused by the compiler prefixing otherwise locally admitted public expressions
+with `-- DO NOT PARSE`. The Omni validator treats that marker as an instruction
+that the SQL is unparseable, so the compiler's attempted bypass creates the
+failure it was intended to avoid. If `omni_parser_mode` remains reviewed source
+metadata while the compiler emits only the already validated expression, the
+bundles should remain deterministic and become parser-safe without weakening
+local SQL admission.
+
+This is a general public-schema compiler correction under Bead
+`omni-benchmark-dih.17.5`. It applies mechanically to every marked field and may
+not special-case a database, infer SQL from validator messages, relax reserved
+directive rejection, use questions/gold/hidden outcomes, or contact Omni during
+implementation.
+
+### TDD evidence
+
+The focused compiler test was changed first to require the admitted expression
+without a directive. It failed against the old compiler because the emitted SQL
+still began with `-- DO NOT PARSE`. After removing only the emission prefix, the
+focused parser-mode and reserved-directive gate passes nine tests. The existing
+canary regeneration test then failed at its historical expectation of 16
+emitted directives, demonstrating that committed bundle outputs and the canary
+contract must be regenerated together rather than patched per database.
+
+### Intervention and offline result
+
+The compiler no longer prefixes physical-field SQL with the reserved marker.
+It still requires `omni_parser_mode` to be exactly `do_not_parse`, requires an
+authored expression when that metadata is present, validates the expression
+through the existing reference allowlist and PostgreSQL parser, and rejects any
+attempt to place the reserved directive directly in authored SQL.
+
+All 18 committed public bundles were regenerated from their authenticated
+public specifications. Only marked view files and their bound manifests
+changed; no question, database-specific rule, hidden field, or runtime outcome
+entered generation. No emitted public bundle contains `-- DO NOT PARSE`. The
+focused compiler/publication/deployment gate passes 141 tests at 86.67% scoped
+branch coverage. Ruff, formatting, deterministic canary regeneration, and diff
+checks pass. Live validation and exact readback remain a separate append-only
+deployment step.
+
+### Outcome
+
+KEEP. Parser-control intent remains explicit in reviewed source metadata while
+the product receives only locally admitted SQL. The change removes the general
+mechanism behind all 17 observed parser diagnostics without a per-database
+exception.

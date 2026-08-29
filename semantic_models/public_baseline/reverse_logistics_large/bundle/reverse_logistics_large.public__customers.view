@@ -7,7 +7,5 @@ dimensions:
   total_returns:
     description: 'BIGINT. Total number of returns made by the customer. example: 10'
     label: Total Returns
-    sql: '-- DO NOT PARSE
-
-      CAST(${return_behavior_profile} ->> ''total_returns'' AS DOUBLE PRECISION)'
+    sql: CAST(${return_behavior_profile} ->> 'total_returns' AS DOUBLE PRECISION)
     ai_context: 'Total Returns: Cumulative tally of processed return cases associated with a single customer account.'

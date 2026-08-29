@@ -32,9 +32,7 @@ dimensions:
   readmission_risk_score:
     description: 'REAL. Readmission risk assessment score. Example: 0.747.'
     label: Readmission Risk Score
-    sql: '-- DO NOT PARSE
-
-      CAST(${riskmetrics} ->> ''Readmit_Risk'' AS DOUBLE PRECISION)'
+    sql: CAST(${riskmetrics} ->> 'Readmit_Risk' AS DOUBLE PRECISION)
     ai_context: 'Readmission Risk Index: A risk index calculated from the number of pre-existing medical conditions and the Surgical Risk Score. Formula: $I_{readmission} = 0.1 + (0.05 \times N_{conditions}) + (0.2 \times S_{surgical})$'
   center_performance_score:
     label: Center Performance Score

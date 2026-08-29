@@ -7,7 +7,5 @@ dimensions:
   safety_index:
     description: 'REAL. Safety index for the equipment type. Example: 75.9.'
     label: Safety Index
-    sql: '-- DO NOT PARSE
-
-      CAST(${type_indices} ->> ''safety_idx'' AS DOUBLE PRECISION)'
+    sql: CAST(${type_indices} ->> 'safety_idx' AS DOUBLE PRECISION)
     ai_context: 'safetyindex: Safety index typically ranges from 0 to 1, where values below 0.5 indicate equipment with significant safety concerns requiring immediate attention or limited operation, values between 0.5-0.7 represent equipment with acceptable safety for normal operations with appropriate precautions, and values above 0.7 indicate equipment with excellent safety features suitable for all operational conditions including those with elevated risks.'

@@ -7,15 +7,11 @@ dimensions:
   treatment_response:
     description: 'Treatment response assessment. Contains values: ''Poor'', ''Partial'', ''Good'', ''Excellent''. Contains NULL when treatment response is not evaluated.'
     label: Treatment Response
-    sql: '-- DO NOT PARSE
-
-      ${txprogmet} ->> ''Tx_Resp'''
+    sql: ${txprogmet} ->> 'Tx_Resp'
   treatment_adherence:
     description: 'Treatment adherence level. Contains values: ''Non-compliant'', ''Medium'', ''High'', ''Compliant''.'
     label: Treatment Adherence
-    sql: '-- DO NOT PARSE
-
-      ${txprogmet} ->> ''Tx_Adh'''
+    sql: ${txprogmet} ->> 'Tx_Adh'
     ai_context: 'Treatment Adherence: Ranges from Non-compliant to High/Compliant. Non-compliant indicates no adherence, Low indicates occasional adherence, Medium indicates regular adherence, and High/Compliant indicates consistent adherence.'
   is_treatment_resistant_outcome:
     label: Treatment-Resistant Patient

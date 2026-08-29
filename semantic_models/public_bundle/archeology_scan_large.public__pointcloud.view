@@ -7,36 +7,26 @@ dimensions:
   scan_resolution_mm:
     description: 'REAL. Scanning resolution in millimeters. Example: 2.4.'
     label: Scan Resolution (mm)
-    sql: '-- DO NOT PARSE
-
-      CAST(${cloud_metrics} ->> ''Scan_Resol_Mm'' AS DOUBLE PRECISION)'
+    sql: CAST(${cloud_metrics} ->> 'Scan_Resol_Mm' AS DOUBLE PRECISION)
     ai_context: 'Scan Resolution: Measured in millimeters, representing the smallest feature that can be distinguished in the scan. Values like 0.5mm enable documentation of fine tool marks on artifacts, while 2.0mm might only capture general shape and macroscopic features.'
   point_density:
     description: 'BIGINT. Point density per square meter. Example: 42812.'
     label: Point Density (points/m²)
-    sql: '-- DO NOT PARSE
-
-      CAST(${cloud_metrics} ->> ''Point_Dense'' AS DOUBLE PRECISION)'
+    sql: CAST(${cloud_metrics} ->> 'Point_Dense' AS DOUBLE PRECISION)
     ai_context: 'Point Density: Measured as points per square meter. Values around 100 capture basic site topography, 1,000 can document structural details, while 10,000+ enables analysis of surface textures and fine engravings across multiple scales of inquiry.'
   coverage_pct:
     description: 'REAL. Percentage of surface area covered by scan. Example: 91.2.'
     label: Coverage (%)
-    sql: '-- DO NOT PARSE
-
-      CAST(${cloud_metrics} ->> ''Cover_Pct'' AS DOUBLE PRECISION)'
+    sql: CAST(${cloud_metrics} ->> 'Cover_Pct' AS DOUBLE PRECISION)
     ai_context: 'Coverage Percentage: Percentage of target area successfully captured in scan data. Values above 95% indicate near-complete documentation, while 80% might have significant gaps requiring additional scanning or interpolation methods for comprehensive site analysis.'
   overlap_pct:
     description: 'REAL. Overlap percentage between scan segments. Example: 31.3.'
     label: Overlap (%)
-    sql: '-- DO NOT PARSE
-
-      CAST(${cloud_metrics} ->> ''Lap_Pct'' AS DOUBLE PRECISION)'
+    sql: CAST(${cloud_metrics} ->> 'Lap_Pct' AS DOUBLE PRECISION)
   noise_db:
     description: 'REAL. Noise level measurement in decibels. Example: 1.318.'
     label: Noise Level (dB)
-    sql: '-- DO NOT PARSE
-
-      CAST(${cloud_metrics} ->> ''Noise_Db'' AS DOUBLE PRECISION)'
+    sql: CAST(${cloud_metrics} ->> 'Noise_Db' AS DOUBLE PRECISION)
     ai_context: 'Noise Level: Measured in decibels, representing signal-to-noise ratio in scan data. Values below 1.0 indicate clean data suitable for detailed analysis, while values above 3.0 suggest significant noise that may obscure small features and introduce measurement uncertainty.'
   scan_resolution_index:
     label: Scan Resolution Index (SRI)

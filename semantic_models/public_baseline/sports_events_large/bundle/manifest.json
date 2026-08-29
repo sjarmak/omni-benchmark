@@ -4,8 +4,8 @@
   "files": [
     {
       "file": "sports_events_large.public__circuits.view",
-      "sha256": "453df4780c23fe5de41d54be49eb7e86d9d596db0989f4245403920b03556c42",
-      "size_bytes": 1171
+      "sha256": "1dcf8c63e12dea5f12d87ac2d6ed5b1dd7a4b18c6109ae2b4b7b5816f34661b5",
+      "size_bytes": 1117
     },
     {
       "file": "circuits_semantics.topic",
@@ -14,8 +14,8 @@
     },
     {
       "file": "sports_events_large.public__pit_stops.view",
-      "sha256": "4c43e1900236c6ec9a2cc96529cfd1bd24970465a9329cd73fbf887e2361510a",
-      "size_bytes": 891
+      "sha256": "e6792565636dacafc4712021b352c167a15e02a784c51b82afe062f79db56882",
+      "size_bytes": 866
     },
     {
       "file": "pit_stops_semantics.topic",
@@ -24,8 +24,8 @@
     },
     {
       "file": "sports_events_large.public__lap_times.view",
-      "sha256": "da96b62bff366751785289204398b094c61bf71c0aa6e98cd4c1dbefcf8d82af",
-      "size_bytes": 576
+      "sha256": "bfbc239da7adc269591e8abe3cf84023d464ab6231e36653a16533e0748bdb48",
+      "size_bytes": 551
     },
     {
       "file": "lap_times_semantics.topic",
@@ -34,8 +34,8 @@
     },
     {
       "file": "sports_events_large.public__drivers.view",
-      "sha256": "11a7a88d856de3bfa4d74f29d2c31b598191e34afac7625061a22dc94d199f81",
-      "size_bytes": 313
+      "sha256": "6ed8db3b3586edc67354abaf8dbba1fc52cbfba6daadebe5fccaee5d48da66db",
+      "size_bytes": 288
     },
     {
       "file": "drivers_semantics.topic",
@@ -44,8 +44,8 @@
     },
     {
       "file": "sports_events_large.public__constructors.view",
-      "sha256": "13036ba74080a07118e81f37d895959a4f73f1c00c08ff505d7d2714153db3b7",
-      "size_bytes": 561
+      "sha256": "6996dd7ee0cb4abc51e9ca0a0b2cb1243f519ce84b0f2141e7db2f0c5d190ff3",
+      "size_bytes": 536
     },
     {
       "file": "constructors_semantics.topic",
@@ -54,8 +54,8 @@
     },
     {
       "file": "sports_events_large.public__races.view",
-      "sha256": "bff62da875f7da3e7f557a99f46a14c8f75091c966db24fd270977cecb602dbb",
-      "size_bytes": 636
+      "sha256": "bd3c44566e9aed55f93810efc96ad713cda2482f4f4eec8cccb9e30c20c9d386",
+      "size_bytes": 611
     },
     {
       "file": "races_semantics.topic",

@@ -119,8 +119,8 @@
   "files": [
     {
       "file": "disaster_relief_large.public__disasterevents.view",
-      "sha256": "52fbb834d6990075ed4f19d81f72a6e14618b8f3c7b37c7feb36ec1ef04e4437",
-      "size_bytes": 6220
+      "sha256": "58343bf8c96687ed138c2cbf5f1dd507968b8abdce6cae8ffd0a7dc45a40419a",
+      "size_bytes": 5988
     },
     {
       "file": "disasterevents_semantics.topic",
@@ -129,8 +129,8 @@
     },
     {
       "file": "disaster_relief_large.public__transportation.view",
-      "sha256": "6c2b1a84f01ec2b8dc534ad023f539234deb742013be9f69528b9133552724d7",
-      "size_bytes": 1442
+      "sha256": "539b2d9906fbf3232022f149e3af492baff2e6ccc8e3b164addd3bb3d5fa966f",
+      "size_bytes": 1413
     },
     {
       "file": "transportation_semantics.topic",
@@ -149,8 +149,8 @@
     },
     {
       "file": "disaster_relief_large.public__humanresources.view",
-      "sha256": "2df122a7e068f1337a2d01952a45175124f3de444ab7f52a2387f3a12976327b",
-      "size_bytes": 1068
+      "sha256": "8d26921dabfd43593385026e08fad2bc072ea8197ffeccbcd4ad8bf4659f6b4e",
+      "size_bytes": 1010
     },
     {
       "file": "humanresources_semantics.topic",

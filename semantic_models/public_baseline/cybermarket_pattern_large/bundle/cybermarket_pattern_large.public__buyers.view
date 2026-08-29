@@ -12,9 +12,7 @@ dimensions:
   spend_pattern:
     description: 'TEXT. Categorised spending pattern for the buyer. Possible values: High, Low, Medium, Variable.'
     label: Spend Pattern
-    sql: '-- DO NOT PARSE
-
-      ${buyer_risk_profile} ->> ''spend_pattern'''
+    sql: ${buyer_risk_profile} ->> 'spend_pattern'
     ai_context: 'Spend Pattern Categories: Values: High, Low, Medium, Variable.
 
       Label descriptions:

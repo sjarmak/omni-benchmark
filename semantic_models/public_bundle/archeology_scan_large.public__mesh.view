@@ -7,33 +7,23 @@ dimensions:
   mesh_vertices:
     description: 'BIGINT. Number of vertices in the 3D mesh. Example: 7234721.'
     label: Mesh Vertices
-    sql: '-- DO NOT PARSE
-
-      CAST(${mesh_specs} ->> ''Facet_Verts'' AS DOUBLE PRECISION)'
+    sql: CAST(${mesh_specs} ->> 'Facet_Verts' AS DOUBLE PRECISION)
   mesh_faces:
     description: 'BIGINT. Number of faces in the 3D mesh. Example: 5997318.'
     label: Mesh Faces
-    sql: '-- DO NOT PARSE
-
-      CAST(${mesh_specs} ->> ''Facet_Faces'' AS DOUBLE PRECISION)'
+    sql: CAST(${mesh_specs} ->> 'Facet_Faces' AS DOUBLE PRECISION)
   mesh_resolution_mm:
     description: 'REAL. Mesh resolution in millimeters. Example: 3.2.'
     label: Mesh Resolution (mm)
-    sql: '-- DO NOT PARSE
-
-      CAST(${mesh_specs} ->> ''Facet_Res_Mm'' AS DOUBLE PRECISION)'
+    sql: CAST(${mesh_specs} ->> 'Facet_Res_Mm' AS DOUBLE PRECISION)
   texture_size_px:
     description: 'BIGINT. Texture size in pixels. Possible values: 1024, 2048, 4096, 8192.'
     label: Texture Size (px)
-    sql: '-- DO NOT PARSE
-
-      CAST(${mesh_specs} ->> ''Tex_Pix'' AS DOUBLE PRECISION)'
+    sql: CAST(${mesh_specs} ->> 'Tex_Pix' AS DOUBLE PRECISION)
   geometric_accuracy_mm:
     description: 'REAL. Geometric accuracy measurement in millimeters. Example: 2.74.'
     label: Geometric Accuracy (mm)
-    sql: '-- DO NOT PARSE
-
-      CAST(${mesh_specs} ->> ''Geom_Delta_Mm'' AS DOUBLE PRECISION)'
+    sql: CAST(${mesh_specs} ->> 'Geom_Delta_Mm' AS DOUBLE PRECISION)
     ai_context: 'Geometric Accuracy: Measured in millimeters, representing the average deviation between the scan data and final 3D model. Values below 0.1mm indicate museum-quality accuracy, while values around 1.0mm are suitable for general documentation but introduce uncertainty in fine feature analysis.'
   mesh_complexity_ratio:
     label: Mesh Complexity Ratio (MCR)

@@ -556,8 +556,6 @@ def _physical_dimension(
     if "label" in field:
         dimension["label"] = _text(field.get("label"), "physical field label")
     if sql is not None:
-        if field.get("omni_parser_mode") == "do_not_parse":
-            sql = f"{_DO_NOT_PARSE_DIRECTIVE}\n{sql}"
         dimension["sql"] = sql
     if contexts:
         dimension["ai_context"] = "\n".join(contexts)

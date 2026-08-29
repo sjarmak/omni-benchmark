@@ -7,15 +7,11 @@ dimensions:
   elevation_m:
     description: 'INTEGER. Circuit elevation in metres. **NULL means elevation data were not provided for this circuit.**. Example: 10.0.'
     label: Elevation (m)
-    sql: '-- DO NOT PARSE
-
-      CAST(${location_metadata} -> ''coordinates'' ->> ''elevation_m'' AS DOUBLE PRECISION)'
+    sql: CAST(${location_metadata} -> 'coordinates' ->> 'elevation_m' AS DOUBLE PRECISION)
   location_metadata:
     description: JSONB column. Encapsulates all geographical and identification data related to the circuit’s location.
     label: Circuit location metadata
-    sql: '-- DO NOT PARSE
-
-      ${location_metadata}'
+    sql: ${location_metadata}
     ai_context: 'Data Unavailability for Circuit Elevation: When a circuit''s elevation in meters is not provided, it signifies that this specific data point was not recorded for the circuit.'
   high_altitude_circuit:
     label: High-Altitude Circuit

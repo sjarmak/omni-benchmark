@@ -53,7 +53,7 @@ def test_committed_public_bundle_regenerates_byte_for_byte() -> None:
 
     assert json.loads((BUNDLE_ROOT / "manifest.json").read_bytes()) == manifest
     assert hashlib.sha256((BUNDLE_ROOT / "manifest.json").read_bytes()).hexdigest() == (
-        "eaca980f23421f9da69ab93de5dcc6f396e64d91631455e694b36ee0696aa6fa"
+        "0b1d0ac859d98e51ba2fbcea69c8a02de0950b4d8b1f79987802e249987ace13"
     )
     assert {path.name for path in BUNDLE_ROOT.iterdir()} == {
         *files,

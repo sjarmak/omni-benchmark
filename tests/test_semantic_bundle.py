@@ -656,7 +656,9 @@ def test_compile_bundle_rejects_alias_that_shadows_another_source_column() -> No
         compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
 
 
-def test_compile_bundle_emits_parser_bypass_only_for_allowlisted_physical_sql() -> None:
+def test_compile_bundle_keeps_parser_mode_as_metadata_without_emitting_directive() -> (
+    None
+):
     spec = copy.deepcopy(_spec())
     spec["physical_fields"][0]["omni_parser_mode"] = "do_not_parse"
 
@@ -667,10 +669,9 @@ def test_compile_bundle_emits_parser_bypass_only_for_allowlisted_physical_sql() 
     raw_view = bundle.files["db.public__pointcloud.view"]
     view = yaml.safe_load(raw_view)
     assert view["dimensions"]["scan_resolution_mm"]["sql"] == (
-        "-- DO NOT PARSE\n"
         "CAST(${cloud_metrics} ->> 'Scan_Resol_Mm' AS DOUBLE PRECISION)"
     )
-    assert "-- DO NOT PARSE" in raw_view
+    assert "-- DO NOT PARSE" not in raw_view
     assert view["dimensions"]["resolution_index"]["sql"] == (
         "${scan_resolution_mm} * 2.0"
     )

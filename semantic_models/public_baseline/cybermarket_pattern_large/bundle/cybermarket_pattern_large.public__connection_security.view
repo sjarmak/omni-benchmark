@@ -7,9 +7,7 @@ dimensions:
   authentication_protocol:
     description: 'TEXT. Authentication protocol used during the session. Possible values: 2FA, Basic, Multi-factor.'
     label: Authentication Protocol
-    sql: '-- DO NOT PARSE
-
-      ${connection_security_metrics} ->> ''auth_protocol_type'''
+    sql: ${connection_security_metrics} ->> 'auth_protocol_type'
   anonymity_level:
     description: 'TEXT. Level of anonymity observed. Possible values: High, Low, Medium.'
     label: Anonymity Level

@@ -12,9 +12,7 @@ dimensions:
   social_support_level:
     description: 'Level of social support available to the patient. Contains values: ''Strong'', ''Limited'', ''Adequate'', ''Weak''. Contains NULL when social support is not evaluated.'
     label: Social Support Level
-    sql: '-- DO NOT PARSE
-
-      ${funcassess} ->> ''Soc_Sup'''
+    sql: ${funcassess} ->> 'Soc_Sup'
     ai_context: 'Social Support Level: Ranges from Weak to Strong. Weak indicates minimal support, Limited indicates some support, Adequate indicates good support, and Strong indicates robust support.'
   previous_hospitalizations:
     description: Number of previous psychiatric hospitalizations or inpatient admissions for mental health treatment.
@@ -31,9 +29,7 @@ dimensions:
   resilience_score:
     description: Resilience score rating typically ranging from 1 to 10.
     label: Resilience Score
-    sql: '-- DO NOT PARSE
-
-      CAST(${funcassess} ->> ''Res_Scr'' AS DOUBLE PRECISION)'
+    sql: CAST(${funcassess} ->> 'Res_Scr' AS DOUBLE PRECISION)
   primary_diagnosis:
     description: 'Patient''s primary mental health diagnosis. Contains values: ''Anxiety'', ''PTSD'', ''Bipolar'', ''Schizophrenia'', ''Depression''.'
     label: Primary Diagnosis

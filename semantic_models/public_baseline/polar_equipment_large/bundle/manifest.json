@@ -143,8 +143,8 @@
   "files": [
     {
       "file": "polar_equipment_large.public__equipmenttype.view",
-      "sha256": "38989a79f81a38c531699f98d5dd12af3f3a0a42c2fe3d18303e74e513066f17",
-      "size_bytes": 862
+      "sha256": "790b9b03d71dea82540bb6361785b5d58cbf041724bf9167334296474cf49e32",
+      "size_bytes": 835
     },
     {
       "file": "equipmenttype_semantics.topic",
@@ -173,8 +173,8 @@
     },
     {
       "file": "polar_equipment_large.public__powerbattery.view",
-      "sha256": "7baddf9943cdac35f0c8ea84f056c877f5b76031f522ab307ae488b41ac9a062",
-      "size_bytes": 3100
+      "sha256": "210ccaedde4c71a7a1c9f00bd6cb2653074eb3a7bcae72955f78adae139ba4b0",
+      "size_bytes": 3008
     },
     {
       "file": "powerbattery_semantics.topic",
@@ -233,8 +233,8 @@
     },
     {
       "file": "polar_equipment_large.public__cabinenvironment.view",
-      "sha256": "64e73b4c9bd5165bb4d763bac6b338055ddad9ad0faa0215876eafff543550b1",
-      "size_bytes": 2359
+      "sha256": "90d01090b66b737e24f5b3a8686b8e2f8386971f8d6e0a3a6fcd0b01eecbe412",
+      "size_bytes": 2244
     },
     {
       "file": "cabinenvironment_semantics.topic",

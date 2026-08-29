@@ -7,15 +7,11 @@ dimensions:
   total_staff:
     description: 'BIGINT. Total number of staff. **NULL means staff count not recorded.**. Example: 234.0.'
     label: Total Staff
-    sql: '-- DO NOT PARSE
-
-      CAST(${staffing_details} -> ''staff_counts'' ->> ''total'' AS DOUBLE PRECISION)'
+    sql: CAST(${staffing_details} -> 'staff_counts' ->> 'total' AS DOUBLE PRECISION)
   volunteer_count:
     description: 'BIGINT. Total number of volunteers. Example: 435.0.'
     label: Volunteer Count
-    sql: '-- DO NOT PARSE
-
-      CAST(${staffing_details} -> ''staff_counts'' ->> ''volunteers'' AS DOUBLE PRECISION)'
+    sql: CAST(${staffing_details} -> 'staff_counts' ->> 'volunteers' AS DOUBLE PRECISION)
   total_humanitarian_footprint:
     label: Total Humanitarian Footprint (THF)
     description: A measure of the total personnel involved in the response, including staff and volunteers.

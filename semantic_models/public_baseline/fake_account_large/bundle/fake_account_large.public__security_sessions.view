@@ -7,7 +7,5 @@ dimensions:
   ip_reputation_score:
     description: 'REAL. IP reputation score. Example: 0.729.'
     label: IP Reputation Score
-    sql: '-- DO NOT PARSE
-
-      CAST(${session_telemetry} #>> ''{ip_reputation,ip_reputation_score}'' AS DOUBLE PRECISION)'
+    sql: 'CAST(${session_telemetry} #>> ''{ip_reputation,ip_reputation_score}'' AS DOUBLE PRECISION)'
     ai_context: 'reputation scoring: Ranges from 0 to 1. Scores above 0.8 indicate trusted IPs, while scores below 0.3 suggest potentially malicious or compromised IPs.'

@@ -7,7 +7,5 @@ dimensions:
   regulatory_compliance_status:
     description: 'VARCHAR(50). Regulatory compliance status of the product. **NULL means no regulatory compliance status available.**. Possible values: Compliant, Non-compliant.'
     label: Regulatory Compliance Status
-    sql: '-- DO NOT PARSE
-
-      ${product_traceability} -> ''compliance'' ->> ''regulatory_compliance'''
+    sql: ${product_traceability} -> 'compliance' ->> 'regulatory_compliance'
     ai_context: 'Regulatory Compliance Statuses: ''Compliant'' means meeting all relevant safety/environmental standards; ''Non-compliant'' means failing certification, recall notice, or missing documentation, triggering quarantine or disposal penalty.'

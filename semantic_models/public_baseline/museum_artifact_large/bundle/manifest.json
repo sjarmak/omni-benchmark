@@ -41,8 +41,8 @@
   "files": [
     {
       "file": "museum_artifact_large.public__exhibition_halls.view",
-      "sha256": "d18719de40358a334acd5661398514e48f180fb750bd89e448ab23c7d27f7b43",
-      "size_bytes": 1877
+      "sha256": "2f0722f285951a8dcfa1caaec39ddf1f5b5e5ae8c18fc2a14ee3d2bca73b9c64",
+      "size_bytes": 1761
     },
     {
       "file": "exhibition_halls_semantics.topic",
@@ -61,8 +61,8 @@
     },
     {
       "file": "museum_artifact_large.public__sensitivity_data.view",
-      "sha256": "de04b5d2e836fbc2dee59d0280b99bae03baccefac0e18dfcc97967206066552",
-      "size_bytes": 1196
+      "sha256": "21f5f5e78aa4a6c8b4accf5050ce0cbd2c3d24797bfd57889eeb2e306e9b1c6c",
+      "size_bytes": 1138
     },
     {
       "file": "sensitivity_data_semantics.topic",
@@ -91,8 +91,8 @@
     },
     {
       "file": "museum_artifact_large.public__air_quality_readings.view",
-      "sha256": "9506131235ea12ef8ccc6e1b822c7ac84a1fc395980d31fc3fe96e267d665692",
-      "size_bytes": 645
+      "sha256": "4741627e57aefc896c0a6f3a93110dd3af57ce421d6ed066490f6ada79c51e22",
+      "size_bytes": 616
     },
     {
       "file": "air_quality_readings_semantics.topic",

@@ -7,111 +7,75 @@ dimensions:
   jc_j1_temp:
     description: 'REAL. Joint 1 temperature value in Celsius. Example: 20.57.'
     label: JC.J1_temp
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J1,temperature_C}'''
+    sql: '${joint_health} #>> ''{J1,temperature_C}'''
   jc_j2_temp:
     description: 'REAL. Joint 2 temperature value in Celsius. Example: 39.54.'
     label: JC.J2_temp
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J2,temperature_C}'''
+    sql: '${joint_health} #>> ''{J2,temperature_C}'''
   jc_j3_temp:
     description: 'REAL. Joint 3 temperature value in Celsius. Example: 42.16.'
     label: JC.J3_temp
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J3,temperature_C}'''
+    sql: '${joint_health} #>> ''{J3,temperature_C}'''
   jc_j4_temp:
     description: 'REAL. Joint 4 temperature value in Celsius. Example: 34.88.'
     label: JC.J4_temp
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J4,temperature_C}'''
+    sql: '${joint_health} #>> ''{J4,temperature_C}'''
   jc_j5_temp:
     description: 'REAL. Joint 5 temperature value in Celsius. Example: 70.15.'
     label: JC.J5_temp
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J5,temperature_C}'''
+    sql: '${joint_health} #>> ''{J5,temperature_C}'''
   jc_j6_temp:
     description: 'REAL. Joint 6 temperature value in Celsius. Example: 64.39.'
     label: JC.J6_temp
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J6,temperature_C}'''
+    sql: '${joint_health} #>> ''{J6,temperature_C}'''
   jc_j1_vibration:
     description: 'REAL. Joint 1 vibration value in mm/s. Example: 1.14.'
     label: JC.J1_vibration
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J1,vibration_mmps}'''
+    sql: '${joint_health} #>> ''{J1,vibration_mmps}'''
   jc_j2_vibration:
     description: 'REAL. Joint 2 vibration value in mm/s. Example: 1.636.'
     label: JC.J2_vibration
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J2,vibration_mmps}'''
+    sql: '${joint_health} #>> ''{J2,vibration_mmps}'''
   jc_j3_vibration:
     description: 'REAL. Joint 3 vibration value in mm/s. Example: 1.687.'
     label: JC.J3_vibration
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J3,vibration_mmps}'''
+    sql: '${joint_health} #>> ''{J3,vibration_mmps}'''
   jc_j4_vibration:
     description: 'REAL. Joint 4 vibration value in mm/s. Example: 3.264.'
     label: JC.J4_vibration
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J4,vibration_mmps}'''
+    sql: '${joint_health} #>> ''{J4,vibration_mmps}'''
   jc_j5_vibration:
     description: 'REAL. Joint 5 vibration value in mm/s. Example: 2.052.'
     label: JC.J5_vibration
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J5,vibration_mmps}'''
+    sql: '${joint_health} #>> ''{J5,vibration_mmps}'''
   jc_j6_vibration:
     description: 'REAL. Joint 6 vibration value in mm/s. Example: 6.422.'
     label: JC.J6_vibration
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J6,vibration_mmps}'''
+    sql: '${joint_health} #>> ''{J6,vibration_mmps}'''
   jc_j1_backlash:
     description: 'REAL. Joint 1 backlash value in mm. Example: 0.0352.'
     label: JC.J1_backlash
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J1,backlash_deg}'''
+    sql: '${joint_health} #>> ''{J1,backlash_deg}'''
   jc_j2_backlash:
     description: 'REAL. Joint 2 backlash value in mm. Example: 0.0272.'
     label: JC.J2_backlash
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J2,backlash_deg}'''
+    sql: '${joint_health} #>> ''{J2,backlash_deg}'''
   jc_j3_backlash:
     description: 'REAL. Joint 3 backlash value in mm. Example: 0.0946.'
     label: JC.J3_backlash
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J3,backlash_deg}'''
+    sql: '${joint_health} #>> ''{J3,backlash_deg}'''
   jc_j4_backlash:
     description: 'REAL. Joint 4 backlash value in mm. Example: 0.056.'
     label: JC.J4_backlash
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J4,backlash_deg}'''
+    sql: '${joint_health} #>> ''{J4,backlash_deg}'''
   jc_j5_backlash:
     description: 'REAL. Joint 5 backlash value in mm. Example: 0.0907.'
     label: JC.J5_backlash
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J5,backlash_deg}'''
+    sql: '${joint_health} #>> ''{J5,backlash_deg}'''
   jc_j6_backlash:
     description: 'REAL. Joint 6 backlash value in mm. Example: 0.046.'
     label: JC.J6_backlash
-    sql: '-- DO NOT PARSE
-
-      ${joint_health} #>> ''{J6,backlash_deg}'''
+    sql: '${joint_health} #>> ''{J6,backlash_deg}'''
   hkb_15:
     label: Average Backlash
     description: Calculates the average mechanical backlash across all of the robot's joints, an indicator of gear wear.
