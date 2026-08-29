@@ -4,19 +4,31 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-28T12:26:16-04:00 (America/New_York). No gold package,
-hidden annotation, or sealed-test result has been accessed.
+Last updated: 2026-08-29T10:19:43-04:00 (America/New_York). No test gold,
+dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
 No decisions are currently waiting on the user. `bd human list` returned an
-empty queue at the timestamp above.
+empty queue at the timestamp above. The user's response `B` to
+`omni-benchmark-wk0` has already been recorded; no further response or command
+is needed for that decision.
 
 ## Approved actions in progress
 
 No approved human-gated action is currently in progress.
 
 ## Recently completed
+
+- `omni-benchmark-wk0` was answered **B** and closed on 2026-08-29. The
+  preregistered promotion frame remains all 154 dev-A questions. The prepared
+  ten-database/85-question `public-c4-baseline-v5` dispatch is therefore not
+  launchable and must not be authorized, rehearsed, or run. C4 remains blocked
+  until `omni-benchmark-dih.17` records all 18 isolated semantic deployments
+  validated with exact readback. That deployment bead now also depends on the
+  operator-owned `omni-benchmark-39b` repair of the two incomplete public
+  database restores. The separate append-only cybermarket direct-baseline
+  recovery remains part of the MVP path.
 
 - `omni-benchmark-dih.17.1` was authorized and completed on 2026-08-28. Safe
   readback proved the 17 non-canary connections selected `neondb` while the
@@ -56,11 +68,16 @@ No approved human-gated action is currently in progress.
 
 ## No action requested yet
 
-- Keep the gold email unopened and undownloaded. The package remains outside
-  agent scope until the public-only baseline is preserved and the train-only
-  guardian release is ready.
-- Do not change Neon grants or database contents. All 18 public mirrors already
-  passed exact scorer parity and read-only-role verification.
+- Do not run any existing C4 authorization helper or launch command. The v5
+  package binds only ten targets and is obsolete under decision B. A new exact
+  all-18 package can be prepared only after the deployment and restore blockers
+  are complete.
+- Do not change Neon grants, database contents, credentials, OAuth profiles, or
+  leases. `omni-benchmark-39b` is operator-owned infrastructure work and will
+  request separate authority when its external action is ready.
+- The train-only release is complete. Keep the unreleased private source and all
+  test gold outside agent-accessible workspaces; development may use only the
+  established train-only custody output.
 - The resumed long-running goal changes orchestration state only; it does not
   broaden service permissions or evaluation custody.
 

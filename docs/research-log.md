@@ -6186,3 +6186,36 @@ bundle spec contains an unauthored structured-leaf physical field. The focused
 compiler/regeneration/deployment gate passes 163 tests at 85.47% branch
 coverage; Ruff and diff checks pass after formatting. Live validation and
 readback remain a separate append-only deployment step.
+
+## 2026-08-29 — D-117: Retain the all-154 dev-A promotion frame
+
+### Pre-result decision boundary
+
+Before any C4 result existed, the human selected option B on
+`omni-benchmark-wk0`: retain the preregistered requirement that a promotable
+intervention be evaluable on all 154 dev-A questions. This is a human-controlled
+scoring-frame decision, not an optimization chosen after observing an outcome.
+No C4 receipt was consumed and no C4 dispatch, score, provider request, hidden
+annotation, dev-B outcome, or test result was accessed to make it.
+
+### Consequence
+
+The prepared `public-c4-baseline-v5` package resolves ten deployment targets and
+an 85-question scoring frame, so it cannot satisfy the retained rule and is not
+launchable. `omni-benchmark-aez.7.1` remains blocked on the all-18 deployment
+bead `omni-benchmark-dih.17`. The latter now explicitly depends on
+operator-owned restore bug `omni-benchmark-39b`, because complete validation is
+not possible while 71 public tables are absent from two mirrors.
+
+No intervention preregistration file changed: option B preserves its existing
+all-154 rule. The independent cybermarket recovery remains an append-only rerun
+of the public direct baseline, and the incomplete two-database restore remains
+outside this compiler lane. A fresh C4 package may be prepared only after all 18
+isolated deployments validate with exact readback; the existing v5 helper and
+approval files remain untouched.
+
+### Outcome
+
+KEEP. The development promotion frame and sealed all-database requirement are
+aligned at the cost of waiting for the longest-lead compiler and restore work.
+This decision supplies no launch authority.
