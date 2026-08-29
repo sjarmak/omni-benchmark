@@ -1,13 +1,13 @@
 # Sealed PostgreSQL execution
 
-Status: public/synthetic conformance implementation. No hidden label was used to
-build or test this adapter.
+Status: production generation and score-publication paths implemented with
+public/synthetic conformance only. No hidden label was used to build or test
+either path.
 
 This layer joins the frozen pure comparators in `omni_benchmark.scoring` to
 PostgreSQL without making the development workspace a gold-package reader. The
-package deliberately contains no attachment parser. A dedicated evaluator must
-construct evaluator-only `SealedGoldRecord` values inside the custody boundary
-after Freeze B.
+dedicated release command projects only frozen test membership after Freeze B;
+the score command constructs evaluator-only cases inside that custody boundary.
 
 ## Execution contract
 
@@ -122,11 +122,80 @@ before acquiring any database:
 Provenance failures occur before the gold collection is read. Only after all
 bindings pass does the evaluator validate the gold records and score attempts,
 in committed schedule order, under both policies. This is the mechanical
-boundary behind “generate all 1,212 outputs before scoring any.” The final
-evaluator should pass each policy's score records to `create_score_artifact`,
-which preserves generation-file and per-record hash bindings. An infrastructure
-failure blocks score-artifact materialization until the preregistered rerun
-procedure resolves it.
+boundary behind “generate all 1,212 outputs before scoring any.” The production
+evaluator writes one immutable score artifact per policy and cohort, preserving
+generation-file and per-record hash bindings. An infrastructure failure blocks
+score-artifact materialization until the preregistered rerun procedure resolves
+it.
+
+## Final test-label release and score publication
+
+The production scorer is dry by default. It validates the exact clean Freeze-B
+control checkout and all twelve mode-0600 finalized cohorts before it can open a
+private release or connect to PostgreSQL. Dry validation prints only batch
+counts and hashes:
+
+```bash
+uv run python sealed_tools/score_sealed_evaluation.py \
+  --workspace "$PWD" \
+  --control-commit "<full-F-commit>" \
+  --system-commit "<full-S-commit>" \
+  --freeze-b experiments/freeze-b.json \
+  --schedule data/final-schedule.jsonl \
+  --public-manifest data/manifests/eligible_questions.jsonl \
+  --cohort-root runs/sealed-final
+```
+
+After all 1,212 generations are frozen and a separate human custody action is
+authorized, the custodian transfers the complete private attachment to an
+external path and projects only the 101 committed test records. The source stays
+outside the repository; the canonical release is ignored and mode 0600. The
+command refuses overwrite, a changed source hash, any Freeze-B/control mismatch,
+or any destination other than `data/private/test/labels.jsonl`:
+
+```bash
+uv run python sealed_tools/release_sealed_test.py \
+  --workspace "$PWD" \
+  --source "<external-private-jsonl>" \
+  --destination data/private/test/labels.jsonl \
+  --expected-source-sha256 "<full-source-sha256>" \
+  --control-commit "<full-F-commit>" \
+  --system-commit "<full-S-commit>" \
+  --freeze-b experiments/freeze-b.json \
+  --schedule data/final-schedule.jsonl \
+  --public-manifest data/manifests/eligible_questions.jsonl \
+  --release-sealed-test
+```
+
+The custodian records the emitted release SHA-256, then explicitly scores once:
+
+```bash
+uv run python sealed_tools/score_sealed_evaluation.py \
+  --workspace "$PWD" \
+  --control-commit "<full-F-commit>" \
+  --system-commit "<full-S-commit>" \
+  --freeze-b experiments/freeze-b.json \
+  --schedule data/final-schedule.jsonl \
+  --public-manifest data/manifests/eligible_questions.jsonl \
+  --cohort-root runs/sealed-final \
+  --release data/private/test/labels.jsonl \
+  --expected-release-sha256 "<released-test-sha256>" \
+  --output-root runs/sealed-score-final \
+  --execute-sealed-scoring
+```
+
+The scorer first freezes mode/question gold eligibility under the already
+authorized coverage-limited rule, then executes candidates only for eligible
+mode/question pairs. Any non-gold infrastructure failure blocks publication. A
+successful invocation atomically publishes 24 private cohort score artifacts,
+two identity-free aggregate reports, and one correctness-free receipt. The
+aggregate reports contain the preregistered primary estimates, deterministic
+10,000-replicate clustered intervals, reliability counts/rates, paired
+contrasts, discordant transitions, and repetition-one McNemar/Holm sensitivity
+analyses. The frozen generation schema does not preserve the direct agent's two
+refusal subtypes, so content-refusal and insufficient-context rates are emitted
+as unavailable rather than inferred; raw terminal classes and the combined
+refusal/error rate remain available.
 
 ## Recording Freeze B
 

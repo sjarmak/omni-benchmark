@@ -5904,3 +5904,67 @@ checks pass. No protected or live input was opened.
 KEEP. The real aggregate sweep remains unexecuted and will be documented as a
 separate custody action; preparing this command does not authorize E02
 deployment or generation.
+## 2026-08-29 — D-109: Close the sealed score-publication boundary
+
+### Pre-change hypothesis and boundary
+
+The final generation control plane can prove all 1,212 outputs complete, but the
+repository has no production caller for the in-memory sealed batch scorer. If a
+new custody entry point first authenticates Freeze B and all twelve immutable
+cohorts, only then opens an exact 101-record test release, freezes scorer-specific
+gold eligibility, and publishes private labels plus a separate identity-free
+aggregate receipt, the held-out report can be completed without exposing sealed
+correctness or weakening the generate-then-score gate.
+
+This is a general evaluation-integrity intervention under
+`omni-benchmark-ei0.6`. Development and tests use synthetic/public fixtures only.
+No test gold, test annotation, dev-B outcome, live generation artifact,
+credential, provider, or sealed correctness result may be opened or executed.
+The previously authorized coverage-limited gold-conformance rule and the
+preregistered endpoint definitions are inputs, not surfaces this change may
+revise.
+
+### Intervention
+
+Added a dry-default final evaluator that authenticates the exact clean F/S
+Freeze-B control checkout, the committed 1,212-attempt plan, and all twelve
+private finalized cohorts before opening any release or constructing a database
+provider. Added a separate explicit custody extractor that projects only the 101
+frozen test records from the externally held source, verifies the expected source
+hash before publication, normalizes the attachment's homogeneous integer
+`external_knowledge` arrays to the existing string release contract, and refuses
+overwrite or any noncanonical private destination.
+
+Inside custody, the evaluator exact-loads the canonical 101-record release from
+one already verified byte snapshot, freezes mode/question gold eligibility under
+the human-approved coverage-limited rule, and executes each eligible candidate
+once under both frozen scorers. It atomically publishes 24 private cohort score
+artifacts, two identity-free aggregates, and one correctness-free receipt. The
+aggregates implement the preregistered deterministic 10,000-replicate question-clustered
+percentile intervals, primary and rung contrasts, repetition-one McNemar/Holm
+sensitivity, per-run and pass^3 reliability, flips, outcome rates, and raw
+terminal classes. Content-refusal versus insufficient-context subtype rates are
+explicitly unavailable because that distinction is not retained in the frozen
+generation contract; no subtype is inferred after the fact.
+
+A security pass replaced ordinary final-directory rename with Linux
+`renameat2(RENAME_NOREPLACE)`, preventing a raced empty destination from being
+silently replaced. Paths are allowlisted and symlink-confined, all private files
+are owner-only/single-link, credentials remain environment-only, operator output
+contains hashes/counts only, and unexpected errors cross a sanitized no-traceback
+boundary.
+
+### Result
+
+RED tests preceded each layer. The focused custody/scoring suite passes 83 tests;
+the post-security affected suite passes 12 tests. The full repository gate passes
+1,793 tests with five expected environment/source skips at 83.63% branch
+coverage. Ruff, formatting, and diff checks pass. No test gold, test annotation,
+dev-B outcome, live generation artifact, credential, provider, or sealed
+correctness result was accessed.
+
+### Outcome
+
+KEEP. Production sealed scoring is now mechanically ready but remains unrun. It
+does not authorize C4, Freeze B, a sealed dispatch, the held-out release, or
+scoring; those actions remain behind their existing fresh human gates.

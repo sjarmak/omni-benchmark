@@ -114,11 +114,18 @@ def _validate_private_record(value: Any, line_number: int) -> dict[str, Any]:
     external_knowledge = value["external_knowledge"]
     if not isinstance(external_knowledge, list):
         raise CustodyError(f"line {line_number}: external_knowledge must be an array")
-    if not all(isinstance(item, str) for item in external_knowledge):
+    if all(isinstance(item, str) for item in external_knowledge):
+        normalized_external_knowledge = list(external_knowledge)
+    elif all(type(item) is int for item in external_knowledge):
+        normalized_external_knowledge = [str(item) for item in external_knowledge]
+    else:
         raise CustodyError(
-            f"line {line_number}: external_knowledge must be an array of strings"
+            f"line {line_number}: external_knowledge must be an array of strings "
+            "or an array of integers"
         )
-    return {field: value[field] for field in RELEASE_FIELDS}
+    record = {field: value[field] for field in RELEASE_FIELDS}
+    record["external_knowledge"] = normalized_external_knowledge
+    return record
 
 
 def _private_instance_id(value: Any, line_number: int) -> str:
@@ -402,8 +409,16 @@ def _release_selected_records(
     destination: Path,
     train_ids: Iterable[str],
     workspace: Path,
+    expected_source_sha256: str | None = None,
 ) -> ReleaseReport:
     """Copy only caller-selected records from an externally held JSONL source."""
+    if (
+        expected_source_sha256 is not None
+        and re.fullmatch(r"[0-9a-f]{64}", expected_source_sha256) is None
+    ):
+        raise CustodyError(
+            "expected source SHA-256 must be 64 lowercase hex characters"
+        )
     try:
         resolved_workspace = Path(workspace).resolve(strict=True)
         resolved_source = Path(source).resolve(strict=True)
@@ -423,6 +438,8 @@ def _release_selected_records(
         permitted_ids=permitted_ids,
         reject_foreign_ids=False,
     )
+    if expected_source_sha256 is not None and source_sha256 != expected_source_sha256:
+        raise CustodyError("private source does not match the expected source SHA-256")
     output_sha256 = _publish_atomically(
         resolved_destination, records, resolved_private_root
     )
