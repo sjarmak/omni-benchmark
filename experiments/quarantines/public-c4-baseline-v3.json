@@ -1,0 +1,186 @@
+{
+  "approval_consumption": {
+    "decision_bead_id": "omni-benchmark-ei0.4.2.3",
+    "path": "experiments/approvals/c4-production/6f139bea9803a20d337bdb1ba1ee1325236c4b3953d181d75d5ed63b48136416.consumed.json",
+    "receipt_sha256": "6f139bea9803a20d337bdb1ba1ee1325236c4b3953d181d75d5ed63b48136416",
+    "sha256": "aabaee2c35e2b23f8b84594d6872c14f137e26b245f124b16261840bcd7c3ea9"
+  },
+  "artifact_inventory": {
+    "file_count": 85,
+    "forbidden_field_occurrences": 0,
+    "mode": "0600",
+    "sha256": "a060042bc053dee03af7c67f7672ea95fc62ae37abadff1ccb788bd2dec65588"
+  },
+  "correctness_observed": false,
+  "counts": {
+    "answered_generation_records": 12,
+    "approval_consumption_records": 1,
+    "dispatcher_failures": 1,
+    "errored_generation_records": 6,
+    "generation_records": 18
+  },
+  "dispatcher_failures": [
+    {
+      "attempt_id": "public-c4-baseline-v3:cross_border_17:C4:1",
+      "failure_kind": "child_exit",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cross_border_large/c4/.failed-cross_border_17-r1-dcd65cc25cca8921/failure.json",
+      "returncode": 1,
+      "sha256": "8d29256298554263d16eb0e6dc079bfb79ca1af3f2ae8501ace2d5dfa2a9915c",
+      "stderr_sha256": "4d0716e29ee966ee9a2068052261c5e77382f980cc528945cc6f30f1303378bf",
+      "terminal_failure_class": "dispatcher_http_429_whoami"
+    }
+  ],
+  "generation_records": [
+    {
+      "attempt_id": "public-c4-baseline-v3:archeology_scan_1:C4:1",
+      "finished_at": "2026-08-29T04:02:02.482936Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/archeology_scan_large/c4/archeology_scan_1-r1/generation.jsonl",
+      "sha256": "11d79b9768b9924c7dd43a9da2f47821d30e4e8e4474a098e1947fc3fd0b370d",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:archeology_scan_10:C4:1",
+      "finished_at": "2026-08-29T04:02:54.576273Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/archeology_scan_large/c4/archeology_scan_10-r1/generation.jsonl",
+      "sha256": "140d1d001cf931c1508798c6ae2bd6b924b121ba4929efaf939848497a95c312",
+      "terminal_failure_class": "unsupported_semantic_result_type"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:archeology_scan_3:C4:1",
+      "finished_at": "2026-08-29T04:03:26.255082Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/archeology_scan_large/c4/archeology_scan_3-r1/generation.jsonl",
+      "sha256": "f0158deb8c5e3eebef72bba7e53c91f14491dfce71ef1605ab6c3ef3d47e57cb",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:archeology_scan_5:C4:1",
+      "finished_at": "2026-08-29T04:04:18.068056Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/archeology_scan_large/c4/archeology_scan_5-r1/generation.jsonl",
+      "sha256": "663893c943a7f865582ae81a7f126da9dd72013a17ea3692f4b1135cc5e7b8ad",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:archeology_scan_6:C4:1",
+      "finished_at": "2026-08-29T04:05:00.195073Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/archeology_scan_large/c4/archeology_scan_6-r1/generation.jsonl",
+      "sha256": "ce055ec1340e7c6a4296d17e5efa25d3896c967f40c1e93a919e8d7fc0984530",
+      "terminal_failure_class": "unsupported_semantic_result_type"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:archeology_scan_7:C4:1",
+      "finished_at": "2026-08-29T04:05:30.156461Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/archeology_scan_large/c4/archeology_scan_7-r1/generation.jsonl",
+      "sha256": "312c461ddee06e00a1002c63688221cb6093a8800369c6374a5a5534cb392aea",
+      "terminal_failure_class": "adapter_transport_error"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cross_border_1:C4:1",
+      "finished_at": "2026-08-29T04:02:43.176360Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cross_border_large/c4/cross_border_1-r1/generation.jsonl",
+      "sha256": "6571d6125132c348abf8761a4dd42cfbce2761a927dc05cce804b6e471b938ea",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cross_border_10:C4:1",
+      "finished_at": "2026-08-29T04:03:45.263326Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cross_border_large/c4/cross_border_10-r1/generation.jsonl",
+      "sha256": "af5cab88aa9bc02fe8a7d4718327761ec2ee4e1174d90cc1d9a08533c175c731",
+      "terminal_failure_class": "response_contract_error"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cross_border_14:C4:1",
+      "finished_at": "2026-08-29T04:04:27.001641Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cross_border_large/c4/cross_border_14-r1/generation.jsonl",
+      "sha256": "64a3cd35124dbc770d03233cfe6e1522414217c917c753e182a73fbb2b2f132e",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cross_border_15:C4:1",
+      "finished_at": "2026-08-29T04:05:08.565277Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cross_border_large/c4/cross_border_15-r1/generation.jsonl",
+      "sha256": "537c0d0db8a75c90af861baae4f88e3d875f0a759209afccb97df7f1d32a8cd6",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cross_border_16:C4:1",
+      "finished_at": "2026-08-29T04:05:28.512078Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cross_border_large/c4/cross_border_16-r1/generation.jsonl",
+      "sha256": "bd64bbfd96706b9d0c48683d8be68f27c95097950375f65bd1fe8deea48d1411",
+      "terminal_failure_class": "adapter_transport_error"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cybermarket_pattern_1:C4:1",
+      "finished_at": "2026-08-29T04:01:52.088692Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cybermarket_pattern_large/c4/cybermarket_pattern_1-r1/generation.jsonl",
+      "sha256": "7fe3f0290c3fca6389da26aad21b08053f991be727417196a61266a1f31ae00e",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cybermarket_pattern_10:C4:1",
+      "finished_at": "2026-08-29T04:02:33.644665Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cybermarket_pattern_large/c4/cybermarket_pattern_10-r1/generation.jsonl",
+      "sha256": "83ef6425de2d7d9af9517be579f56390eed9a5abac2b05e9da6e1693f95c0412",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cybermarket_pattern_11:C4:1",
+      "finished_at": "2026-08-29T04:03:56.125214Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cybermarket_pattern_large/c4/cybermarket_pattern_11-r1/generation.jsonl",
+      "sha256": "3e4bd4bf46808522fcb70990584898a033dd0fab6361f0e6bf20e02af95da1bb",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cybermarket_pattern_12:C4:1",
+      "finished_at": "2026-08-29T04:04:27.410340Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cybermarket_pattern_large/c4/cybermarket_pattern_12-r1/generation.jsonl",
+      "sha256": "314bed333cb758d869f05f33b3a934b8fed0e16a445d0d3957cc97f23d27e3cd",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cybermarket_pattern_13:C4:1",
+      "finished_at": "2026-08-29T04:04:48.540836Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cybermarket_pattern_large/c4/cybermarket_pattern_13-r1/generation.jsonl",
+      "sha256": "e00e105f873cba0047fcf516c979239c2cc6f92a6772b8c31cc02fd9d50e6739",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cybermarket_pattern_14:C4:1",
+      "finished_at": "2026-08-29T04:05:09.592833Z",
+      "generation_outcome": "answered",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cybermarket_pattern_large/c4/cybermarket_pattern_14-r1/generation.jsonl",
+      "sha256": "cfcdffb06054ce8446284da71ecdca6ee55800286d963632a0ba9713f14bbea0",
+      "terminal_failure_class": null
+    },
+    {
+      "attempt_id": "public-c4-baseline-v3:cybermarket_pattern_15:C4:1",
+      "finished_at": "2026-08-29T04:05:29.384110Z",
+      "generation_outcome": "errored",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v3/cybermarket_pattern_large/c4/cybermarket_pattern_15-r1/generation.jsonl",
+      "sha256": "db53b613def7d318f60c2f4c9429bcd2b14e5531acd7c5c4df33959b6ce7b150",
+      "terminal_failure_class": "adapter_transport_error"
+    }
+  ],
+  "gold_accessed": false,
+  "reason": "The exact public C4 v3 approval was consumed and the recovered profile crossed authentication. After 18 immutable generation records, a new attempt failed before governed execution when pre-attempt whoami returned Omni HTTP 429. The scheduler finished already-started blocks and stopped with no staging directory or process. No correctness was observed. The run is incomplete infrastructure-interrupted diagnostic evidence only and may not be resumed, replaced in place, scored, or used as a baseline.",
+  "run_id": "public-c4-baseline-v3",
+  "run_root": "experiments/autoresearch/raw/public-c4-baseline-v3",
+  "schema_version": "run-quarantine-v1",
+  "scoreable": false,
+  "status": "quarantined_non_scoreable"
+}

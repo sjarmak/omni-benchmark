@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections import Counter
 from pathlib import Path
 
 from omni_benchmark.run_quarantine import is_quarantined_run, quarantined_attempt
@@ -94,3 +95,75 @@ def test_spent_v2_authorization_and_pre_answer_failures_are_quarantined() -> Non
     }
     assert is_quarantined_run(run_id)
     assert quarantined_attempt(f"{run_id}:archeology_scan_1:C4:1")
+
+
+def test_spent_v3_authorization_and_http_429_interruption_are_quarantined() -> None:
+    workspace = Path(__file__).resolve().parents[1]
+    run_id = "public-c4-baseline-v3"
+    path = workspace / f"experiments/quarantines/{run_id}.json"
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+
+    assert manifest["run_id"] == run_id
+    assert manifest["run_root"] == f"experiments/autoresearch/raw/{run_id}"
+    assert manifest["status"] == "quarantined_non_scoreable"
+    assert manifest["scoreable"] is False
+    assert manifest["correctness_observed"] is False
+    assert manifest["gold_accessed"] is False
+    assert manifest["counts"] == {
+        "answered_generation_records": 12,
+        "approval_consumption_records": 1,
+        "dispatcher_failures": 1,
+        "errored_generation_records": 6,
+        "generation_records": 18,
+    }
+    assert manifest["artifact_inventory"] == {
+        "file_count": 85,
+        "forbidden_field_occurrences": 0,
+        "mode": "0600",
+        "sha256": ("a060042bc053dee03af7c67f7672ea95fc62ae37abadff1ccb788bd2dec65588"),
+    }
+    records = manifest["generation_records"]
+    assert len(records) == 18
+    assert len({record["attempt_id"] for record in records}) == 18
+    assert Counter(record["generation_outcome"] for record in records) == {
+        "answered": 12,
+        "errored": 6,
+    }
+    assert all(SHA256.fullmatch(record["sha256"]) for record in records)
+    assert all(
+        record["path"].startswith(f"experiments/autoresearch/raw/{run_id}/")
+        for record in records
+    )
+    assert manifest["dispatcher_failures"] == [
+        {
+            "attempt_id": "public-c4-baseline-v3:cross_border_17:C4:1",
+            "failure_kind": "child_exit",
+            "path": (
+                "experiments/autoresearch/raw/public-c4-baseline-v3/"
+                "cross_border_large/c4/"
+                ".failed-cross_border_17-r1-dcd65cc25cca8921/failure.json"
+            ),
+            "returncode": 1,
+            "sha256": (
+                "8d29256298554263d16eb0e6dc079bfb79ca1af3f2ae8501ace2d5dfa2a9915c"
+            ),
+            "stderr_sha256": (
+                "4d0716e29ee966ee9a2068052261c5e77382f980cc528945cc6f30f1303378bf"
+            ),
+            "terminal_failure_class": "dispatcher_http_429_whoami",
+        }
+    ]
+    assert manifest["approval_consumption"] == {
+        "decision_bead_id": "omni-benchmark-ei0.4.2.3",
+        "path": (
+            "experiments/approvals/c4-production/"
+            "6f139bea9803a20d337bdb1ba1ee1325236c4b3953d181d75d5ed63b48136416."
+            "consumed.json"
+        ),
+        "receipt_sha256": (
+            "6f139bea9803a20d337bdb1ba1ee1325236c4b3953d181d75d5ed63b48136416"
+        ),
+        "sha256": "aabaee2c35e2b23f8b84594d6872c14f137e26b245f124b16261840bcd7c3ea9",
+    }
+    assert is_quarantined_run(run_id)
+    assert quarantined_attempt(f"{run_id}:cross_border_17:C4:1")
