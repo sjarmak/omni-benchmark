@@ -10119,18 +10119,26 @@ deployment gate`. The committed arm still bound ten historical v6 deployments.
 This is a stale evidence binding upstream of the already-correct scheduler, not
 a reason to change the approved 154/136 frame.
 
-### Current result
+### Result
 
-KEEP OFFLINE under `omni-benchmark-ei0.4.11`. One append-only Tier 1 v13 pass
+KEEP. One append-only Tier 1 v13 pass
 verified all 16 answerable databases with zero terminal failures and zero record
 write failures. Its claim plus 16 records have canonical sorted-file aggregate
 SHA-256
 `5698a4d23e5c7b2d99dca1488e7ebb7b2591d62a87a683373bc0af1ab1cdc3c6`.
 The existing arm now binds those exact records; its public full-train inventory
 regenerates to 204 answerable identities while the unchanged evaluated scheduler
-selects the approved 136 dev-A attempts. The 14-test focused arm/deployment gate
-passes. Commit-bound dry-plan verification remains before any authorization
-request.
+selects the approved 136 dev-A attempts. The 15-test focused arm/deployment gate
+passes. At exact system commit
+`aab9eb512aeb021be42b1549a7634708d0c09fb8`, the provider-inert v6 plan now
+passes with 154 scheduled, 136 executable, 18 unscorable, and 16 deployment
+targets. Schedule SHA-256 is
+`fa4675408574a610d495ed0fd99b4542eddf9f6f77127af1ce42f6207c7ec7ba`;
+execution-plan SHA-256 is
+`a83b0042170227b1294f5a354ccb71c9d066bc069d8120724c6a252cd38662dd`;
+deployment SHA-256 is
+`6b65cf8e8d76d748f8438ecb62fcb379f302d0cb8bee68fe8864eba63cdb05c7`.
+The exact no-launch human package is ready as `omni-benchmark-ei0.4.12`.
 
 No C4 dispatch, evaluated answer, question, gold, hidden annotation, dev-B, test
 outcome, correctness, credential, OAuth, or lease action occurred.

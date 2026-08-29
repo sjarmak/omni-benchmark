@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T18:38:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T18:51:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -40,6 +40,39 @@ from you. It returned zero validation issues and exact readback for all 20
 public extension files. The general fix authenticates all three returned view
 identity values before projecting them away; every other semantic difference
 remains exact. No C4 action has launched.
+
+## Waiting on you now — exact C4 v6 dispatch authorization
+
+Reply **B** to hold. To choose **A**, run this exact two-line command on the
+benchmark host:
+
+```bash
+cd /home/ds/projects/omni-benchmark
+uv run python /home/ds/.omni-benchmark-approvals/authorize-public-c4-baseline-v6.py --authorize
+```
+
+The helper is mode `0600`, SHA-256
+`7ab7b3b8a5ef55c21e31c6ad20b9a4fe25bb158e4237878d78c2fc4e44443e7b`,
+and currently reports `ready_not_authorized_not_launched`. It creates a
+one-hour receipt and records your response; it does **not** consume the receipt
+or launch C4. After it prints JSON, paste that one JSON line here so the agent
+can immediately validate and run the exact dispatch before expiry.
+
+The package is `omni-benchmark-ei0.4.12`: system commit
+`aab9eb512aeb021be42b1549a7634708d0c09fb8`, run
+`public-c4-baseline-v6`, 154 scheduled / 136 executable / 18 fixed unscorable,
+16 verified deployment targets, schedule SHA-256
+`fa4675408574a610d495ed0fd99b4542eddf9f6f77127af1ce42f6207c7ec7ba`,
+execution-plan SHA-256
+`a83b0042170227b1294f5a354ccb71c9d066bc069d8120724c6a252cd38662dd`,
+and deployment SHA-256
+`6b65cf8e8d76d748f8438ecb62fcb379f302d0cb8bee68fe8864eba63cdb05c7`.
+Concurrency is three; the wall bound is six hours; projected spend is
+USD 98.948908, with a USD 7 per-attempt ceiling and USD 952 telemetry ceiling.
+
+This authorizes one C4 generation dispatch only. It does not authorize a rerun,
+scoring, Freeze B, sealed work, protected-data access, credentials/OAuth/leases,
+or shared-model mutation.
 
 ## Most recent authorized action completed
 

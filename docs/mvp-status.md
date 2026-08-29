@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-29T18:38:00-04:00 (America/New_York).
+Last reconciled: 2026-08-29T18:51:00-04:00 (America/New_York).
 
 ## Current position
 
@@ -31,8 +31,8 @@ with zero validation issues and exact readback, bringing the answerable frame to
 16 of 16 databases. The immediate critical path is one exact human authorization
 for the 136-attempt C4 dispatch, followed by freeze and scoring.
 
-No C4 dispatch is currently authorized. The obsolete ten-database v5 package
-must not be used.
+No C4 dispatch is currently authorized. The exact fixed-frame v6 package is
+ready under `omni-benchmark-ei0.4.12`; the obsolete v5 package must not be used.
 
 ## Milestone map
 
@@ -66,14 +66,15 @@ frozen direct baseline, while the experiment that tests governed enforcement
 
 ### Waiting on the operator now
 
-Nothing. The human queue is empty. No command, credential, callback, token,
-profile, or lease information is needed.
+One action: choose A by running the exact two-line v6 authorization command in
+`docs/human-decisions.md`, or choose B to hold. A creates a one-hour receipt but
+does not launch; paste its JSON output back into chat. No credential, callback,
+token, profile, or lease information is needed.
 
 ### Agent-owned work now
 
-- Prepare the exact fixed-frame C4 package and request its one Tier 2 human
-  authorization. Once authorized, dispatch, freeze, and score without adding
-  another development loop.
+- Once the exact v6 receipt arrives, validate and dispatch C4 once, then freeze
+  and score without adding another development loop.
 - Commit and publish reviewed work through `main` only. Worktree cleanup under
   `omni-benchmark-9v3` is not on the MVP critical path.
 
