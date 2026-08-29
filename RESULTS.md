@@ -295,12 +295,15 @@ Their reusable changes and promotion rules are recorded in
 | E03: bounded descriptions | Prespecified only | Not started | E02 live decision |
 | E04: broad HKB context | Prespecified negative control only | Deferred from MVP | Run only if it directly resolves the final candidate decision |
 
-E02's 18 candidate bundles publish and authenticate locally as 272 files. The
-candidate set is bound by SHA-256
+E02's initial main-only publication produced candidate-set SHA-256
 `16ee2a02f994d3f90234e24366fe6ddefd041b3b0d2a7e63c001b4803a0fe6da`.
-No bundle has been deployed and no E02 accuracy run has occurred. The public C4
-baseline must freeze under its separate launch authorization before this
-candidate can be evaluated. Dev-B remains reserved.
+Replaying the same three scoped changes onto the exact C4 control-plane commit
+produced the deployment-relevant local candidate at
+`c08ee8c10e4b2c26a142da5f36971dbb19488a827febf0514f5876e75b3a6f61`.
+All 18 integrated bundles publish and authenticate locally as 272 files, and the
+full combined gate passes. Deployment and accuracy evaluation remain pending.
+The public C4 baseline must freeze under its separate launch authorization
+before this candidate can be evaluated. Dev-B remains reserved.
 
 ## 6. Held-out results
 
