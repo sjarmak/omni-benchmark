@@ -38,7 +38,12 @@ def _write_exclusive(path: Path, value: object) -> None:
 def _describe_database_coverage(
     *, database: object, restore_order: tuple[str, ...], dump_root: Path
 ) -> dict[str, object]:
-    """Summarize one database's dump resolution without contacting PostgreSQL."""
+    """Summarize how the official loader resolves one database, offline.
+
+    Reports fidelity to the pinned upstream loader, not completeness: a table the
+    official script skips is expected to be skipped here too, and must be recorded
+    in ``scorer_omitted_tables`` so the omission is declared rather than silent.
+    """
     coverage = describe_dump_coverage(
         database=database.name,
         dump_root=dump_root,
@@ -48,15 +53,19 @@ def _describe_database_coverage(
     return {
         "database": coverage.database,
         "ordered_tables": len(restore_order),
-        "resolvable": len(coverage.load_paths),
-        "missing": list(coverage.missing),
-        "case_mismatched": [entry.table for entry in coverage.case_mismatched],
-        "contradicted_omissions": [
-            {"table": entry.table, "dump_file": entry.path.name}
-            for entry in coverage.contradicted_omissions
-            if entry.path is not None
+        "loaded_by_official_loader": len(coverage.loaded),
+        "skipped_by_official_loader": len(coverage.skipped),
+        "skipped_over_a_case_variant": [
+            {"table": entry.table, "archive_file": entry.case_variant.name}
+            for entry in coverage.skipped
+            if entry.case_variant is not None
         ],
-        "complete": coverage.is_complete,
+        "skipped_and_absent_from_archive": [
+            entry.table for entry in coverage.skipped if entry.case_variant is None
+        ],
+        "undeclared_skips": list(coverage.undeclared_skips),
+        "overdeclared_omissions": list(coverage.overdeclared_omissions),
+        "reproduces_official_loader": coverage.reproduces_official_loader,
     }
 
 
@@ -153,7 +162,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             for database in inventory.databases
         ]
         print(json.dumps(report, indent=2, sort_keys=True))
-        return 0 if all(entry["complete"] for entry in report) else 1
+        return 0 if all(entry["reproduces_official_loader"] for entry in report) else 1
 
     database_by_name = {database.name: database for database in inventory.databases}
     if args.database not in database_by_name:

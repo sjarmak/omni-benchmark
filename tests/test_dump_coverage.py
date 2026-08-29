@@ -1,100 +1,127 @@
+"""Fidelity of the dump audit to the pinned upstream loader.
+
+The official ``init-databases_postgresql_large_v1.sh`` resolves each table as
+``<table>.sql`` with an exact filename match and skips with a warning on a miss.
+These tests pin that reproduction, not a repair of it.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
-from omni_benchmark.dump_coverage import (
-    DumpCoverageError,
-    describe_dump_coverage,
-    index_dump_files,
-)
+from omni_benchmark.dump_coverage import describe_dump_coverage, index_case_variants
 
 
-def _write(root: Path, *names: str) -> None:
+def _dump(root: Path, *names: str) -> None:
     for name in names:
-        (root / f"{name}.sql").write_text(f"-- {name}\n", encoding="utf-8")
+        (root / name).write_text("SELECT 1;\n", encoding="utf-8")
 
 
-def test_index_rejects_case_colliding_dump_files(tmp_path: Path) -> None:
-    _write(tmp_path, "Facilities", "facilities")
-
-    with pytest.raises(DumpCoverageError, match="case-colliding"):
-        index_dump_files(tmp_path)
-
-
-def test_index_ignores_files_that_are_not_dumps(tmp_path: Path) -> None:
-    _write(tmp_path, "present")
-    (tmp_path / "notes.txt").write_text("ignored\n", encoding="utf-8")
-
-    assert set(index_dump_files(tmp_path)) == {"present"}
-
-
-def test_coverage_resolves_a_dump_file_differing_only_in_capitalization(
-    tmp_path: Path,
-) -> None:
-    _write(tmp_path, "facilities")
+def test_a_table_whose_file_matches_exactly_is_loaded(tmp_path: Path) -> None:
+    _dump(tmp_path, "Facilities.sql")
 
     coverage = describe_dump_coverage(
-        database="fixture_db", dump_root=tmp_path, restore_order=("Facilities",)
+        database="fixture", dump_root=tmp_path, restore_order=("Facilities",)
     )
 
-    assert coverage.load_paths == (tmp_path / "facilities.sql",)
-    assert coverage.missing == ()
-    assert [entry.table for entry in coverage.case_mismatched] == ["Facilities"]
+    assert [entry.table for entry in coverage.loaded] == ["Facilities"]
+    assert coverage.skipped == ()
 
 
-def test_coverage_reports_an_omission_contradicted_by_a_case_variant(
-    tmp_path: Path,
-) -> None:
-    """Regression for omni-benchmark-39b, which dropped 71 tables this way."""
-    _write(tmp_path, "facilities")
+def test_a_lowercase_file_does_not_satisfy_a_capitalized_table(tmp_path: Path) -> None:
+    """The upstream defect: the data ships, and the official loader cannot see it."""
+    _dump(tmp_path, "facilities.sql")
 
     coverage = describe_dump_coverage(
-        database="fixture_db",
+        database="fixture",
         dump_root=tmp_path,
         restore_order=("Facilities",),
         omitted_tables=("Facilities",),
     )
 
-    assert [entry.table for entry in coverage.contradicted_omissions] == ["Facilities"]
-    assert coverage.load_paths == ()
+    (skipped,) = coverage.skipped
+    assert skipped.path is None
+    assert skipped.case_variant is not None
+    assert skipped.case_variant.name == "facilities.sql"
+    assert skipped.skipped_over_a_case_variant
 
 
-def test_coverage_keeps_a_genuine_upstream_omission(tmp_path: Path) -> None:
-    _write(tmp_path, "present")
-
+def test_a_table_absent_from_the_archive_is_skipped_without_a_variant(
+    tmp_path: Path,
+) -> None:
+    """The genuine omission on labor_certification_applications_large."""
     coverage = describe_dump_coverage(
-        database="fixture_db",
+        database="fixture",
         dump_root=tmp_path,
-        restore_order=("present", "upstream_missing"),
-        omitted_tables=("upstream_missing",),
+        restore_order=("Missing",),
+        omitted_tables=("Missing",),
     )
 
-    assert coverage.contradicted_omissions == ()
-    assert coverage.missing == ()
-    assert coverage.load_paths == (tmp_path / "present.sql",)
+    (skipped,) = coverage.skipped
+    assert skipped.case_variant is None
+    assert not skipped.skipped_over_a_case_variant
+    assert coverage.reproduces_official_loader
 
 
-def test_coverage_reports_a_dump_missing_from_the_restore_order(tmp_path: Path) -> None:
-    _write(tmp_path, "parent")
+def test_an_undeclared_skip_breaks_fidelity(tmp_path: Path) -> None:
+    _dump(tmp_path, "facilities.sql")
 
     coverage = describe_dump_coverage(
-        database="fixture_db", dump_root=tmp_path, restore_order=("parent", "child")
+        database="fixture", dump_root=tmp_path, restore_order=("Facilities",)
     )
 
-    assert coverage.missing == ("child",)
-    assert coverage.load_paths == (tmp_path / "parent.sql",)
+    assert coverage.undeclared_skips == ("Facilities",)
+    assert not coverage.reproduces_official_loader
 
 
-def test_coverage_preserves_restore_order(tmp_path: Path) -> None:
-    _write(tmp_path, "child", "parent")
+def test_declaring_an_omission_the_loader_actually_loads_breaks_fidelity(
+    tmp_path: Path,
+) -> None:
+    _dump(tmp_path, "Facilities.sql")
 
     coverage = describe_dump_coverage(
-        database="fixture_db", dump_root=tmp_path, restore_order=("parent", "child")
+        database="fixture",
+        dump_root=tmp_path,
+        restore_order=("Facilities",),
+        omitted_tables=("Facilities",),
     )
 
-    assert coverage.load_paths == (
-        tmp_path / "parent.sql",
-        tmp_path / "child.sql",
+    assert coverage.overdeclared_omissions == ("Facilities",)
+    assert not coverage.reproduces_official_loader
+
+
+def test_both_capitalizations_present_resolves_to_the_exact_name(
+    tmp_path: Path,
+) -> None:
+    """No ambiguity exists: the official loader names one file and finds it."""
+    _dump(tmp_path, "Facilities.sql", "facilities.sql")
+
+    coverage = describe_dump_coverage(
+        database="fixture", dump_root=tmp_path, restore_order=("Facilities",)
     )
+
+    (loaded,) = coverage.loaded
+    assert loaded.path is not None
+    assert loaded.path.name == "Facilities.sql"
+
+
+def test_case_variants_are_grouped_and_non_sql_files_ignored(tmp_path: Path) -> None:
+    _dump(tmp_path, "Facilities.sql", "facilities.sql", "notes.txt")
+
+    variants = index_case_variants(tmp_path)
+
+    assert [path.name for path in variants["facilities"]] == [
+        "Facilities.sql",
+        "facilities.sql",
+    ]
+    assert "notes" not in variants
+
+
+def test_restore_order_is_preserved(tmp_path: Path) -> None:
+    _dump(tmp_path, "a.sql", "b.sql", "c.sql")
+
+    coverage = describe_dump_coverage(
+        database="fixture", dump_root=tmp_path, restore_order=("c", "a", "b")
+    )
+
+    assert [entry.table for entry in coverage.tables] == ["c", "a", "b"]

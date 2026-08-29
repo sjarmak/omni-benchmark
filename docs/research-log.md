@@ -6421,6 +6421,11 @@ candidate hashes, approval files, and run artifacts remain unchanged and retain
 their fail-closed mismatch against the newly regenerated bundles.
 ## D-071: The two failing databases were never fully restored, and the omission mechanism hid it
 
+> **Retracted by D-072.** The conclusion below is wrong: the skipped tables are
+> an upstream defect that the inventory reproduces on purpose, not a provisioning
+> defect in this repository. The measurements stand; the diagnosis does not. Do
+> not act on the fix described here.
+
 ### Hypothesis
 
 D-070 concluded that the benchmark's own gold SQL does not execute on
@@ -6522,3 +6527,115 @@ coverage; the three touched modules are at 100%, 92%, and 89%. Clearing
 SHA-256 is pinned as `inventory_sha256` and verified against published run
 sidecars, and it must land together with re-provisioning or the recorded
 `verification.table_count` becomes inconsistent.
+
+## D-072: D-071 was wrong. The missing tables are an upstream defect, and the omission mechanism reproduces it correctly
+
+D-071 concluded that `mental_healths_large` and `organ_transplant_large` were
+never fully restored because of a case-sensitive dump lookup in this repository,
+and that the data was recoverable by fixing resolution. That conclusion is
+refuted. The behavior is upstream's, the inventory reproduces it faithfully, and
+the fix committed as `f5f756b` would have broken comparability with published
+LiveSQLBench results.
+
+### Hypothesis
+
+If the case-sensitive lookup were a defect local to this repository, the pinned
+official loader would resolve those dump files successfully on its own image, and
+its reference database would contain all 55 and 57 tables.
+
+### Result
+
+It does not. `data/raw/livesqlbench-large-v1/init-databases_postgresql_large_v1.sh`
+lines 118-127 load each table with an exact filename match and skip on a miss:
+
+    for table in $tables; do
+        local sql_file="${db_folder}/${table}.sql"
+        if [[ -f "$sql_file" ]]; then
+            psql -U root -d "${db_template}" -f "${sql_file}" ...
+        else
+            echo "Warning: SQL file ${sql_file} not found for table ${table}"
+        fi
+    done
+
+Its table list for `mental_healths_large_template` spells the first entry
+`Facilities`. The archive ships `facilities.sql` and no `Facilities.sql`. The
+pinned image is Linux, so `[[ -f ]]` fails, the loader warns, and the table never
+enters the reference database. The same holds for 34 tables there and 37 in
+`organ_transplant_large`.
+
+The arithmetic closes it. `mental_healths_large_template` holds 57 dump files, 21
+of which carry capital letters. The committed `verification.table_count` is 21.
+Those are exactly the files whose spelling matches the restore order, which is
+exactly the set upstream loads. 55 declared minus 21 loaded is 34, which is the
+committed `scorer_omitted_tables` list element for element. `organ_transplant_large`
+gives 20 loaded against 57 declared and 37 omitted, and its recorded table_count
+is 20.
+
+So the restore was never truncated relative to its target. It reproduced the
+official environment, which is what it was built to do.
+
+`docs/database-setup.md` already recorded this and the investigation read past it:
+"The pinned scorer script silently skips those paths. To reproduce that behavior
+without weakening restore checks, the public inventory lists every scorer-omitted
+table explicitly." The mechanism is deliberate, and it is the same principle as the
+frozen Soft EX scorer that reproduces lossy behavior on purpose.
+
+### What D-071 got wrong, and why
+
+Three claims in D-071 are false and are retracted:
+
+- "This is a provisioning defect in this repository, not an upstream benchmark
+  defect." It is the reverse.
+- "The data is present locally and fully recoverable." The bytes are in the
+  archive, but the tables are not recoverable into a database that stays
+  comparable to the scorer's.
+- "Every downstream check passed because the verification fingerprints were
+  computed after the truncated restore." The fingerprints match because they
+  describe the correct database.
+
+The error was method, not evidence. Every measurement in D-071 is reproducible and
+still correct. What was never checked was the one artifact that defines the target:
+the pinned upstream loader. The investigation compared the archive against the
+restore order and inferred intent from the mismatch, when the script that consumes
+both was sitting in `data/raw/` and answers the question directly. A finding about
+whether behavior is a defect cannot rest on the behavior alone; it needs the
+specification the behavior is supposed to meet.
+
+Reading `docs/database-setup.md` before rewriting the code it describes would also
+have caught it. The doc stated the intent plainly.
+
+### Consequence for the evaluation
+
+Twenty-seven dev-A questions, 14 on `mental_healths_large` and 13 on
+`organ_transplant_large`, reference tables that do not exist in the official
+reference database. Their gold SQL fails there as it fails here, which is what the
+`gold_statement_error` classification on those attempts records. Ninety-six attempt
+directories across C1, C2, and C3 cover them, and 92 hold no `answer.result.json`
+at all.
+
+These questions are not answerable by any system evaluated against the official
+environment. They are not a deployment gap and no reruns will recover them. The
+disposition is an exclusion record with the same evidence discipline as
+`public-baseline-exclusions-v1.json`, and the finding belongs in the writeup as a
+property of the benchmark.
+
+The gold for those questions was presumably authored against a database where the
+files did resolve, which suggests development on a case-insensitive filesystem. That
+does not change what the official scorer does, and the protocol says to reproduce the
+official scorer.
+
+### Outcome
+
+`f5f756b` is reverted in behavior. `restore_database` returns to exact-match
+resolution, and the two databases are restorable again; under the reverted code they
+were not, because it refused the correct configuration.
+
+Kept in corrected form: `dump_coverage` and the `verify-dump-coverage` subcommand,
+reframed from completeness to fidelity. They now check that `scorer_omitted_tables`
+equals the set the official loader actually skips, and separate the two kinds of
+skip. Against the real archive all 18 databases reproduce the official loader, exit
+code 0: 71 tables skipped over a case variant present in the archive, and one on
+`labor_certification_applications_large` absent under any spelling.
+
+No inventory field was changed, no database was re-provisioned, and no attempt was
+rerun. The `inventory_sha256` pin is untouched.

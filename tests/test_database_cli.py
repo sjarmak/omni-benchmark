@@ -5,7 +5,10 @@ import json
 from pathlib import Path
 
 import omni_benchmark.database_cli as database_cli
-from omni_benchmark.database_cli import main
+from omni_benchmark.database_cli import DEFAULT_INVENTORY, main
+from omni_benchmark.database_inventory import load_database_inventory
+
+RESTORE_ORDER = Path("config/databases/restore-order-large-v1.json")
 
 
 def test_cli_validates_inventory(capsys) -> None:
@@ -160,82 +163,78 @@ def test_cli_role_and_database_fingerprint_dispatch(
     }
 
 
-def _lowercase_dump_tree(root: Path, orders: dict[str, tuple[str, ...]]) -> None:
-    """Mirror the upstream layout, spelling every dump file in lower case."""
-    for database, tables in orders.items():
-        directory = root / f"{database}_template"
+def _upstream_dump_tree(root: Path, inventory) -> None:
+    """Mirror the archive: exact-case files load, case-variant files are skipped.
+
+    The upstream archive spells some dump files in the table's declared case and
+    others in lower case. Reproducing that split here keeps these tests honest
+    about what the official loader can and cannot see.
+    """
+    orders = json.loads(RESTORE_ORDER.read_text(encoding="utf-8"))
+    for database in inventory.databases:
+        directory = root / f"{database.name}_template"
         directory.mkdir(parents=True)
-        for table in tables:
-            (directory / f"{table.lower()}.sql").write_text(
-                f"-- {table}\n", encoding="utf-8"
-            )
+        omitted = set(database.scorer_omitted_tables)
+        for table in orders[database.name]:
+            name = table.lower() if table in omitted else table
+            if name == table and table in omitted:
+                continue  # absent from the archive under any spelling
+            (directory / f"{name}.sql").write_text(f"-- {table}\n", encoding="utf-8")
 
 
-def test_cli_dump_coverage_reports_omissions_contradicted_by_case_variants(
+def test_cli_dump_coverage_confirms_the_inventory_reproduces_the_official_loader(
     tmp_path: Path, capsys
 ) -> None:
-    """Regression for omni-benchmark-39b, which dropped 71 tables this way."""
-    inventory_path = Path("config/databases/livesqlbench-large-v1.json")
-    order_path = Path("config/databases/restore-order-large-v1.json")
-    inventory = database_cli.load_database_inventory(inventory_path)
-    orders = json.loads(order_path.read_text(encoding="utf-8"))
-    _lowercase_dump_tree(tmp_path, {name: tuple(t) for name, t in orders.items()})
+    """The committed omissions must match what upstream actually skips."""
+    inventory = load_database_inventory(DEFAULT_INVENTORY)
+    _upstream_dump_tree(tmp_path, inventory)
 
     exit_code = main(
         [
-            "--inventory",
-            str(inventory_path),
             "verify-dump-coverage",
             "--dump-root",
             str(tmp_path),
             "--restore-order",
-            str(order_path),
-        ]
-    )
-    report = {entry["database"]: entry for entry in json.loads(capsys.readouterr().out)}
-
-    assert len(report) == len(inventory.databases)
-    for database in inventory.databases:
-        entry = report[database.name]
-        assert entry["missing"] == []
-        contradicted = entry["contradicted_omissions"]
-        assert sorted(item["table"] for item in contradicted) == sorted(
-            database.scorer_omitted_tables
-        )
-        for item in contradicted:
-            assert item["dump_file"] == f"{item['table'].lower()}.sql"
-        assert entry["complete"] is (not database.scorer_omitted_tables)
-    assert exit_code == (
-        0 if all(not d.scorer_omitted_tables for d in inventory.databases) else 1
-    )
-
-
-def test_cli_dump_coverage_resolves_case_differences_and_reports_them(
-    tmp_path: Path, capsys
-) -> None:
-    inventory_path = Path("config/databases/livesqlbench-large-v1.json")
-    order_path = Path("config/databases/restore-order-large-v1.json")
-    orders = json.loads(order_path.read_text(encoding="utf-8"))
-    _lowercase_dump_tree(tmp_path, {name: tuple(t) for name, t in orders.items()})
-
-    main(
-        [
-            "--inventory",
-            str(inventory_path),
-            "verify-dump-coverage",
-            "--dump-root",
-            str(tmp_path),
-            "--restore-order",
-            str(order_path),
+            str(RESTORE_ORDER),
         ]
     )
     report = json.loads(capsys.readouterr().out)
 
-    mixed_case = [
-        entry for entry in report if entry["case_mismatched"] and entry["resolvable"]
-    ]
-    assert mixed_case, "lower-cased dump files must resolve and be reported"
-    for entry in report:
-        assert entry["resolvable"] == entry["ordered_tables"] - len(
-            entry["contradicted_omissions"]
-        )
+    assert exit_code == 0
+    assert all(entry["reproduces_official_loader"] for entry in report)
+    assert [entry["database"] for entry in report] == sorted(
+        database.name for database in inventory.databases
+    )
+    skipped = {
+        entry["database"]: entry["skipped_by_official_loader"] for entry in report
+    }
+    assert skipped["mental_healths_large"] == 34
+    assert skipped["organ_transplant_large"] == 37
+
+
+def test_cli_dump_coverage_flags_a_skip_the_inventory_does_not_declare(
+    tmp_path: Path, capsys
+) -> None:
+    inventory = load_database_inventory(DEFAULT_INVENTORY)
+    _upstream_dump_tree(tmp_path, inventory)
+    orders = json.loads(RESTORE_ORDER.read_text(encoding="utf-8"))
+    database = inventory.databases[0]
+    declared = set(database.scorer_omitted_tables)
+    loaded = next(t for t in orders[database.name] if t not in declared)
+    (tmp_path / f"{database.name}_template" / f"{loaded}.sql").unlink()
+
+    exit_code = main(
+        [
+            "verify-dump-coverage",
+            "--dump-root",
+            str(tmp_path),
+            "--restore-order",
+            str(RESTORE_ORDER),
+        ]
+    )
+    report = json.loads(capsys.readouterr().out)
+    entry = next(e for e in report if e["database"] == database.name)
+
+    assert exit_code == 1
+    assert entry["undeclared_skips"] == [loaded]
+    assert not entry["reproduces_official_loader"]
