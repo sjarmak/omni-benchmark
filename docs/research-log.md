@@ -6358,3 +6358,57 @@ KEEP offline. The rule addresses the four observed type errors and latent
 instances of the same public mechanism without database-specific branches. The
 live product oracle remains pending; any next validator issue must be preserved
 rather than tuned away.
+
+## 2026-08-29 — D-120: Stabilize unsupported negative-scale decimal literals
+
+### Pre-change hypothesis and boundary
+
+The two planets validator diagnostics are produced by a general representation
+boundary, not by either modeled concept: positive-exponent scientific literals
+whose exponent exceeds the mantissa's fractional digits have a negative
+PostgreSQL decimal scale. Omni's validator accepts decimal scales only from 0
+through 19, so it rejects those formulas before evaluating them. Casting only
+such literals to `DOUBLE PRECISION` should preserve the public formula while
+giving Omni supported type metadata; ordinary decimals, scientific literals
+with nonnegative scale, field references, and formula structure should remain
+unchanged.
+
+This intervention is scoped to public numeric-derived expressions under Bead
+`omni-benchmark-dih.17.7`. It is driven only by authored public SQL and the
+documented validator type boundary. It may not branch on database, field,
+question, gold, annotation, dev-B/test outcome, or runtime value, and it may not
+contact Omni until the offline compiler slice and all-18 regeneration pass.
+
+### TDD evidence
+
+A red integration test first requires `1.25e6`, whose decimal scale is -4, to
+be explicitly represented as double precision. A paired control requires the
+ordinary decimal `1.25` to remain byte-for-byte unchanged. The negative-scale
+case fails against the existing compiler while the control passes.
+
+### Intervention and offline result
+
+The numeric-expression module now parses numeric-derived SQL and identifies
+only non-string scientific literals whose positive exponent is greater than
+the number of fractional mantissa digits. It wraps each such literal in an
+explicit `DOUBLE PRECISION` cast. Negative exponents, ordinary decimals, and
+scientific literals whose resulting decimal scale is zero or positive are
+returned byte-for-byte unchanged. Existing placeholder admission and reserved
+identifier checks remain in force.
+
+All 18 public bundles were regenerated from their authenticated public inputs.
+Only the planets bundle changed: the three public constants with scales -25,
+-20, and -3 now carry explicit casts. The small negative-exponent gravitational
+constant remains unchanged. This is a syntactic type-representation rule; it
+does not inspect data values or contain database or field branches.
+
+The focused compiler, publication, committed-artifact, and deployment gate
+passes 148 tests at 87.73% scoped branch coverage. Ruff, formatting,
+deterministic regeneration, and diff checks pass. Live planets validation and
+exact readback remain the product oracle and must preserve any next blocker.
+
+### Outcome
+
+KEEP offline. The compiler now avoids emitting PostgreSQL decimal metadata that
+the public Omni validator explicitly cannot represent, while leaving supported
+numeric literals unchanged.

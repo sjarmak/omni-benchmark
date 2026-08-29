@@ -765,6 +765,35 @@ def test_compile_bundle_does_not_cast_text_used_as_numeric_case_condition() -> N
     )
 
 
+def test_compile_bundle_casts_scientific_literal_with_negative_decimal_scale() -> None:
+    spec = copy.deepcopy(_spec())
+    spec["derived_fields"][0]["sql"] = "${scan_resolution_mm} * 1.25e6"
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["resolution_index"]["sql"] == (
+        "${scan_resolution_mm} * CAST(1.25e6 AS DOUBLE PRECISION)"
+    )
+
+
+@pytest.mark.parametrize("literal", ("1.25", "1.25e2", "6.67430e-11"))
+def test_compile_bundle_keeps_supported_decimal_literal_unchanged(literal: str) -> None:
+    spec = copy.deepcopy(_spec())
+    spec["derived_fields"][0]["sql"] = f"${{scan_resolution_mm}} * {literal}"
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["resolution_index"]["sql"] == (
+        f"${{scan_resolution_mm}} * {literal}"
+    )
+
+
 @pytest.mark.parametrize("parser_mode", (None, "", "parse", True, 1))
 def test_compile_bundle_rejects_unknown_physical_parser_mode(
     parser_mode: object,

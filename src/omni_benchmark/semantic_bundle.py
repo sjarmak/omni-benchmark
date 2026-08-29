@@ -20,6 +20,7 @@ from .semantic_numeric import (
     coerce_numeric_references,
     physical_value_kind,
     schema_value_kind,
+    stabilize_negative_scale_decimals,
 )
 from .semantic_relationships import plan_relationship_contracts
 
@@ -1104,6 +1105,7 @@ def _table_dimensions(
         if mapping.get("representation") == "numeric_derived_dimension":
             try:
                 sql = coerce_numeric_references(sql, field_kinds)
+                sql = stabilize_negative_scale_decimals(sql)
             except NumericExpressionError as error:
                 raise SemanticBundleError(str(error)) from error
         _validate_sql(sql, allowed)

@@ -25,6 +25,9 @@ _NUMERIC_TYPE = re.compile(
     r"NUMERIC|REAL|SERIAL|SMALLINT|SMALLSERIAL)(?:\b|\()"
 )
 _TEXT_TYPE = re.compile(r"^(?:CHAR|CHARACTER|CHARACTER VARYING|TEXT|VARCHAR)(?:\b|\()")
+_SCIENTIFIC_LITERAL = re.compile(
+    r"^(?:[0-9]+(?:\.([0-9]*))?|\.([0-9]+))[eE]\+?([0-9]+)$"
+)
 _ARITHMETIC = (exp.Add, exp.Div, exp.Mod, exp.Mul, exp.Pow, exp.Sub)
 _COMPARISONS = (exp.EQ, exp.GT, exp.GTE, exp.LT, exp.LTE, exp.NEQ)
 
@@ -85,6 +88,31 @@ def _replace_references(sql: str) -> str:
     )
 
 
+def _parse_scalar(sql: str) -> exp.Expression:
+    try:
+        statement = sqlglot.parse_one(
+            f"SELECT {_replace_references(sql)}", read="postgres"
+        )
+    except sqlglot.errors.ParseError as error:
+        raise NumericExpressionError(
+            "field SQL is not valid PostgreSQL syntax"
+        ) from error
+    if not isinstance(statement, exp.Select) or len(statement.expressions) != 1:
+        raise NumericExpressionError("field SQL must be one modeled scalar expression")
+    return statement.expressions[0]
+
+
+def _render_scalar(node: exp.Expression) -> str:
+    restored = _FIELD_SENTINEL_CALL.sub(
+        lambda match: f"${{{match.group(1)}}}", node.sql(dialect="postgres")
+    )
+    if _FIELD_SENTINEL in restored.lower():
+        raise NumericExpressionError(
+            "numeric expression transformation left a reserved identifier"
+        )
+    return restored
+
+
 def _sentinel_field(node: exp.Expression) -> str | None:
     if not isinstance(node, exp.Anonymous) or node.name.lower() != _FIELD_SENTINEL:
         return None
@@ -121,6 +149,16 @@ def _numeric_literal(node: exp.Expression | None) -> bool:
     if isinstance(node, exp.Neg):
         return _numeric_literal(node.this)
     return False
+
+
+def _has_negative_decimal_scale(node: exp.Expression) -> bool:
+    if not isinstance(node, exp.Literal) or node.is_string:
+        return False
+    match = _SCIENTIFIC_LITERAL.fullmatch(str(node.this))
+    if match is None:
+        return False
+    fractional_digits = match.group(1) or match.group(2) or ""
+    return int(match.group(3)) > len(fractional_digits)
 
 
 def _expectations(
@@ -234,27 +272,19 @@ def _coerce_node(
 
 def coerce_numeric_references(sql: str, field_kinds: Mapping[str, str]) -> str:
     """Cast only field references used in numeric expression positions."""
-    try:
-        statement = sqlglot.parse_one(
-            f"SELECT {_replace_references(sql)}", read="postgres"
-        )
-    except sqlglot.errors.ParseError as error:
-        raise NumericExpressionError(
-            "field SQL is not valid PostgreSQL syntax"
-        ) from error
-    if not isinstance(statement, exp.Select) or len(statement.expressions) != 1:
-        raise NumericExpressionError("field SQL must be one modeled scalar expression")
-    rewritten, changed = _coerce_node(
-        statement.expressions[0], field_kinds, expected_numeric=True
-    )
+    expression = _parse_scalar(sql)
+    rewritten, changed = _coerce_node(expression, field_kinds, expected_numeric=True)
     if not changed:
         return sql
-    rendered = rewritten.sql(dialect="postgres")
-    restored = _FIELD_SENTINEL_CALL.sub(
-        lambda match: f"${{{match.group(1)}}}", rendered
-    )
-    if _FIELD_SENTINEL in restored.lower():
-        raise NumericExpressionError(
-            "numeric field coercion left a reserved identifier"
-        )
-    return restored
+    return _render_scalar(rewritten)
+
+
+def stabilize_negative_scale_decimals(sql: str) -> str:
+    """Cast scientific literals whose PostgreSQL decimal scale is negative."""
+    rewritten = _parse_scalar(sql).copy()
+    targets = [node for node in rewritten.walk() if _has_negative_decimal_scale(node)]
+    for node in targets:
+        node.replace(exp.Cast(this=node.copy(), to=_double_type()))
+    if not targets:
+        return sql
+    return _render_scalar(rewritten)

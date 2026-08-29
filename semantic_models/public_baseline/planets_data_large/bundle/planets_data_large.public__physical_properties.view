@@ -32,7 +32,7 @@ dimensions:
   planet_escape_velocity:
     label: Planet Escape Velocity
     description: Calculates the minimum speed needed for an object to escape a planet's gravitational pull.
-    sql: CASE WHEN ${planet_radius_earth} > 0 THEN SQRT((2.0 * 6.67430e-11 * (${planet_mass_earth} * 5.9722e24)) / (${planet_radius_earth} * 6.371e6)) END
+    sql: CASE WHEN ${planet_radius_earth} > 0 THEN SQRT((2.0 * 6.67430e-11 * (${planet_mass_earth} * CAST(5.9722e24 AS DOUBLE PRECISION))) / (${planet_radius_earth} * CAST(6.371e6 AS DOUBLE PRECISION))) END
     ai_context: Use this modeled field for Planet Escape Velocity; do not reconstruct its formula.
   mass_radius_relationship:
     label: Mass-Radius Relationship
