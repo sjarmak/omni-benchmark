@@ -35,8 +35,8 @@
   "files": [
     {
       "file": "reverse_logistics_large.public__returns.view",
-      "sha256": "46c20fc0ee1d9ee573bc0540a0e47db45df2afe10178dcff39bc64aeb24cdf64",
-      "size_bytes": 2083
+      "sha256": "1a73d0e7fa1efaac8f7e4601bd9d3453cce5a4e5ab48c457ba4cb91b03b3ce87",
+      "size_bytes": 2134
     },
     {
       "file": "returns_semantics.topic",
@@ -45,8 +45,8 @@
     },
     {
       "file": "reverse_logistics_large.public__financial_management.view",
-      "sha256": "ecb28d46d9b744eabe1f6d87724f5dabe4b28de5b8e88b76e6ab38746265374a",
-      "size_bytes": 3371
+      "sha256": "b8eae5bc49b746b81b0cdcc37431c4a00738a61494c472d4dbdedc0e11c35521",
+      "size_bytes": 3507
     },
     {
       "file": "financial_management_semantics.topic",
@@ -55,8 +55,8 @@
     },
     {
       "file": "reverse_logistics_large.public__customers.view",
-      "sha256": "568fb002547920b4fcc2c53cd17fcb700b031e36c36930b19143795adbebff63",
-      "size_bytes": 500
+      "sha256": "aaea7f7f64500115451162bf2254f78a6abc517cfdf365d2d6f9e51fcff06c38",
+      "size_bytes": 519
     },
     {
       "file": "customers_semantics.topic",
@@ -65,8 +65,8 @@
     },
     {
       "file": "reverse_logistics_large.public__quality_assessment.view",
-      "sha256": "a760c579206e1cbcc46492c0de39c88150940b2b55b0648945335f54fb2d8522",
-      "size_bytes": 528
+      "sha256": "85ea34364d6ef747a72ec02cc2d4c6d767d762b254aad36b9b98fa735df0329e",
+      "size_bytes": 545
     },
     {
       "file": "quality_assessment_semantics.topic",
@@ -95,8 +95,8 @@
     },
     {
       "file": "reverse_logistics_large.public__products.view",
-      "sha256": "b156038e48d7000bd3ca479725f4362d5351d820776daf6b405bfebee855aaeb",
-      "size_bytes": 750
+      "sha256": "c4388ea37a845441e1ac28aa8429618eeaaa7bc31341ef02ade9d14edd0d7e2e",
+      "size_bytes": 767
     },
     {
       "file": "products_semantics.topic",

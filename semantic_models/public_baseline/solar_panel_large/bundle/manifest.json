@@ -123,8 +123,8 @@
     },
     {
       "file": "solar_panel_large.public__electrical_performance.view",
-      "sha256": "0ad35ac2136b9f105dcbfcee0d6b7c2cbe2ab70798288ef7c57965014ddcc4e1",
-      "size_bytes": 8995
+      "sha256": "b818f61f97bd501e379507ca7a403b84be6b3601680d061a8017688918266f35",
+      "size_bytes": 9284
     },
     {
       "file": "electrical_performance_semantics.topic",
@@ -133,8 +133,8 @@
     },
     {
       "file": "solar_panel_large.public__environmental_conditions.view",
-      "sha256": "045518dc04653cc7c71b671013c5b18a91d64bb89c9351b09db8bf7131aa48aa",
-      "size_bytes": 825
+      "sha256": "112e69eb9ef947c3ae6ed182bf22e645b04cd7a88e582907992e034bd614750b",
+      "size_bytes": 859
     },
     {
       "file": "environmental_conditions_semantics.topic",
@@ -173,8 +173,8 @@
     },
     {
       "file": "solar_panel_large.public__mechanical_condition.view",
-      "sha256": "7b170577f57ed29096c92d2ba270dd99b868920706fa8cc12a7a239582f31589",
-      "size_bytes": 4158
+      "sha256": "6cdb692a6f7d1361a658a973b8cd7102694cdaa3fd931491999639970d58608e",
+      "size_bytes": 4277
     },
     {
       "file": "mechanical_condition_semantics.topic",

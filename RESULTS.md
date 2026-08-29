@@ -9,7 +9,10 @@
 > pending. Every **Pending** entry below carries no numeric value. The 101
 > held-out questions and their labels remain sealed. All 154 dev-A questions
 > remain scheduled; 18 fixed benchmark-invalid questions are preregistered as
-> unscorable, leaving 136 answerable questions for C4 promotion.
+> unscorable, leaving 136 answerable questions for C4 promotion. Fourteen of the
+> 16 answerable database bundles have immutable product validation and exact
+> readback; general offline corrections for the remaining planets and polar
+> failures await a fresh all-answerable validation pass.
 
 ## Executive summary
 
@@ -310,12 +313,23 @@ Their reusable changes and promotion rules are recorded in
 | E03: bounded descriptions | Prespecified only | Not started | E02 live decision |
 | E04: broad HKB context | Prespecified negative control only | Deferred from MVP | Run only if it directly resolves the final candidate decision |
 
-Later general compiler corrections changed the current deployment-relevant E02
-candidate-set SHA-256 to
-`b24302d6c8d8466e52b3f4483d3d4da7d7470d14e418ae767cd11fb80236297e`.
+The first corrected deployment pass validated 13 answerable databases. A
+seven-bundle successor validated five exact successors, including the repaired
+sports identity bindings, and preserved two planets and ten polar validator
+issues without retry. Combined immutable evidence therefore covers 14 of 16
+answerable databases. The next general compiler revision constructs
+out-of-range scientific constants from ordinary-scale literals and anchors
+structured extraction in authenticated physical source columns. Because that
+mechanical rule changes bundle bytes across the full fan-out, all 16 answerable
+bundles require fresh product validation; the two fixed official-loader
+blockers remain explicit rather than fabricated as empty models.
+
+Those corrections change the current deployment-relevant E02 candidate-set
+SHA-256 to
+`db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`.
 All 18 integrated bundles publish and authenticate locally; historical
-deployment records remain immutable and correctly reject the changed bundle
-hashes. Deployment and accuracy evaluation remain pending.
+deployment records remain immutable and correctly reject changed bundle hashes.
+Deployment and accuracy evaluation remain pending.
 The public C4 baseline must freeze under its separate launch authorization
 before this candidate can be evaluated. Dev-B remains reserved.
 

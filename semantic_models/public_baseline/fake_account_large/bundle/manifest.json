@@ -45,8 +45,8 @@
     },
     {
       "file": "fake_account_large.public__risk_and_moderation.view",
-      "sha256": "81da697c16ef005e7e7c9ee7e120e3ecc3569aae1b043921f4f6ad113e27cb11",
-      "size_bytes": 1482
+      "sha256": "167e888c032c4d22c7fa3a9e92f495be207d2c70e831f303f11d65fbd21b6336",
+      "size_bytes": 1533
     },
     {
       "file": "risk_and_moderation_semantics.topic",
@@ -75,8 +75,8 @@
     },
     {
       "file": "fake_account_large.public__content_activity.view",
-      "sha256": "63262788f288d6f117b145ab4d651ffcc9c0d7c7ff3220312a7d9e643ec075ac",
-      "size_bytes": 601
+      "sha256": "d4df6541ed305acab1886c3473d27a2165f7f513f6679ca78d4f0e78b843600b",
+      "size_bytes": 618
     },
     {
       "file": "content_activity_semantics.topic",
@@ -95,8 +95,8 @@
     },
     {
       "file": "fake_account_large.public__security_sessions.view",
-      "sha256": "0a6ed1a9d4ec1661edda6e9f67a8c2471fbcde633edda45270c5164052425b08",
-      "size_bytes": 586
+      "sha256": "67470f5409f108f85559709e05f01810bdfb2697409a851b2aed4c05357fb382",
+      "size_bytes": 603
     },
     {
       "file": "security_sessions_semantics.topic",

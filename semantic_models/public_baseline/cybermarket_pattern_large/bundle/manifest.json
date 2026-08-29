@@ -79,8 +79,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__buyers.view",
-      "sha256": "b0f46e66d7e1ee20078058d5daa746e8a0adb4cde55d802716fc504cdd5190a3",
-      "size_bytes": 1391
+      "sha256": "16dad1a3cf514e54bcb85301d7c7274b60ff0a8442b9b2f5cdf036c435de287d",
+      "size_bytes": 1410
     },
     {
       "file": "buyers_semantics.topic",
@@ -99,8 +99,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__transactions.view",
-      "sha256": "37661d2f3f400b10d72c07fca3456b1504c7f82b4b069c0450ca1e6ee43b4d8f",
-      "size_bytes": 1514
+      "sha256": "14f9c304fc72c38425a7aac80a48f95574785970e74d8aaf65c65ee3120712ef",
+      "size_bytes": 1533
     },
     {
       "file": "transactions_semantics.topic",
@@ -109,8 +109,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__communications.view",
-      "sha256": "752a87e5aa3120809d4d4010640bfe73f0f49d64bf46064fd7fa3c52d8a1b839",
-      "size_bytes": 1700
+      "sha256": "142c1e99d04cdff68da5bc71965b320c3ec7cee2d40ef14dfbafc3055dbe52cb",
+      "size_bytes": 1757
     },
     {
       "file": "communications_semantics.topic",
@@ -119,8 +119,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__connection_security.view",
-      "sha256": "d5f97cc4708fe289878d6f2c9247248feaf6bf22e397ec1296e57c0b0b504f0e",
-      "size_bytes": 982
+      "sha256": "31f545aa59dc4ca17bcb151b00b75eca5af4c2f42e3af74dbe350659dd20892a",
+      "size_bytes": 1001
     },
     {
       "file": "connection_security_semantics.topic",
@@ -129,8 +129,8 @@
     },
     {
       "file": "cybermarket_pattern_large.public__alerts.view",
-      "sha256": "40d71b6dc42e523c8e1b7355b0ff8b95c7d3224eb8cfd69568d63afb48b84bf5",
-      "size_bytes": 455
+      "sha256": "57bd4051930c5ce3bd98a56e469860637e12e99864256bdd960d9d6e10b379e1",
+      "size_bytes": 474
     },
     {
       "file": "alerts_semantics.topic",

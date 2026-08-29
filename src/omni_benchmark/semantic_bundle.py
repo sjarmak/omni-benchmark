@@ -392,31 +392,29 @@ def _structured_leaf_sql(
 ) -> str:
     if source.get("record_kind") != "structured_leaf":
         raise SemanticBundleError("structured leaf SQL requires a structured leaf")
-    _, source_name = _source_column_name(source, schema_index)
     path = _items(source.get("path"), "structured leaf path")
     if not path:
         raise SemanticBundleError("structured leaf path must not be empty")
-    sql = f"${{{source_name}}}"
-    for position, raw_segment in enumerate(path):
+    arguments = [_source_column_sql(source, schema_index)]
+    for raw_segment in path:
         segment = _mapping(raw_segment, "structured leaf path segment")
-        operator = "->>" if position == len(path) - 1 else "->"
         kind = segment.get("kind")
         if kind == "object_key":
             if not set(segment) <= {"key", "kind", "ordinal"}:
                 raise SemanticBundleError("structured object path segment is malformed")
             key = _text(segment.get("key"), "structured leaf object key")
             quoted_key = key.replace("'", "''")
-            sql += f" {operator} '{quoted_key}'"
+            arguments.append(f"'{quoted_key}'")
         elif kind == "array_index":
             if set(segment) != {"index", "kind"}:
                 raise SemanticBundleError("structured array path segment is malformed")
             index = segment.get("index")
             if isinstance(index, bool) or not isinstance(index, int) or index < 0:
                 raise SemanticBundleError("structured leaf array index is invalid")
-            sql += f" {operator} {index}"
+            arguments.append(f"'{index}'")
         else:
             raise SemanticBundleError("structured leaf path kind is invalid")
-    return sql
+    return f"JSONB_EXTRACT_PATH_TEXT({', '.join(arguments)})"
 
 
 def _rewrite_field_references(sql: str, names: Mapping[str, str]) -> str:
@@ -1096,7 +1094,6 @@ def _table_dimensions(
             sql = _structured_leaf_sql(source, schema_index)
             if physical_value_kind(source, authored_sql) == "numeric":
                 sql = f"CAST({sql} AS DOUBLE PRECISION)"
-            validate_sql = True
         elif "sql" in field:
             sql = _rewrite_field_references(
                 _text(field.get("sql"), "physical field sql"), reference_names
@@ -1106,7 +1103,6 @@ def _table_dimensions(
             sql = _source_column_sql(source, schema_index)
         elif source.get("record_kind") == "structured_leaf":
             sql = _structured_leaf_sql(source, schema_index)
-            validate_sql = True
         if sql is not None and validate_sql:
             _validate_sql(sql, allowed)
         dimensions[name] = _physical_dimension(

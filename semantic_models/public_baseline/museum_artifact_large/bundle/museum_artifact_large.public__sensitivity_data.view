@@ -7,10 +7,10 @@ dimensions:
   light_sensitivity_level:
     description: 'TEXT. Light sensitivity data for the artifact. **NULL means no light sensitivity data provided.**. Possible values: High, Low, Medium.'
     label: Light Sensitivity Level
-    sql: ${env_handling_sensitivity} -> 'environment' ->> 'light'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'environment', 'light')
     ai_context: 'Light Sensitivity Levels: Values include ''Low'' (can tolerate up to 300 lux), ''Medium'' (should be limited to 150-200 lux), and ''High'' (restricted to 50 lux or less).'
   humidity_sensitivity_level:
     description: 'TEXT. Humidity sensitivity data for the artifact. Possible values: High, Low, Medium.'
     label: Humidity Sensitivity Level
-    sql: ${env_handling_sensitivity} -> 'environment' ->> 'humidity'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'environment', 'humidity')
     ai_context: 'Humidity Sensitivity Levels: Values include ''Low'' (can tolerate a wide range of humidity), ''Medium'' (requires a controlled humidity range), and ''High'' (requires a very stable and narrow humidity range).'

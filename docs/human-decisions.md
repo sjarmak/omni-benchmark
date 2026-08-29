@@ -4,58 +4,35 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T13:16:00-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T14:17:00-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
-### Exact seven-bundle v8 validation pass — `omni-benchmark-dih.17.11`
-
-Reply **A** or **B** in this chat; do not run a command or send a profile,
-credential, callback URL, token, config file, or lease path.
-
-- **A** authorizes exactly one append-only deployment, validation, and exact
-  readback pass for the seven changed public-baseline bundles.
-- **B** holds the request and permits no product contact or run claim.
-
-The pushed request is
-`experiments/public-baseline-v8-deployment-request.json` at exact commit
-`8b6ab7e4ee02115d237fe606b2fbf2ac75903f57`, request SHA-256
-`a5d9fba11d8b4502cffce97d082c1e865a0401be54b494d5049f5e4d4d766834`.
-It binds source commit `536e7256581e0b2c290af23838bbd6fbe8e5110a`,
-seven databases / 88 files, selected bundle-set SHA-256
-`9b6d6e8357b54b6f18d89c1d854136929d77dbdcd06b9f2fcd236bfe0b8a492f`,
-run `public-baseline-v8-20260829`, the absent append-only output root
-`experiments/deployments/public-baseline-v8`, four workers, and 1.25-second
-global pacing. The seven are exactly the semantic-hash delta from v7:
-cross-border, fake-account, labor-certification, planets, polar-equipment,
-robot-fault, and sports-events. The other eleven v7 records remain immutable.
-
-A authorizes no C4 or E02 deployment, question dispatch, scoring/correctness,
-gold/hidden/dev-B/test access, credential/OAuth/lease operation, shared/main
-mutation, retry, or unlisted database deployment. Every terminal result will
-be preserved; there is no automatic retry.
+Nothing. `bd human list` is empty. Do not launch C4, E02, another deployment,
+or a live validator diagnostic without a new exact request. A standalone A or B
+when no request is open does not authorize an action.
 
 ## Most recent authorized action completed
 
-Your response **A** to `omni-benchmark-dih.17.8` was consumed exactly once for
-the frozen v7 request. The append-only deployment/validation/readback pass
-completed without a retry: 13 databases validated with exact readback, five
-retained validator failures, and zero record-write failures. The non-secret
-profile label was recovered from an existing durable project record as
-`benchmark-infra`; no credential/config store was inspected.
+Your response **A** to `omni-benchmark-dih.17.11` was consumed exactly once for
+the frozen v8 request. The append-only seven-bundle deployment, validation, and
+readback pass completed without a retry: cross-border, fake-account,
+labor-certification, robot-fault, and sports-events validated with exact
+readback; planets retained two validator issues; polar retained ten; and record
+writes had zero failures. Its claim plus seven records have aggregate SHA-256
+`bb375d7e74353836a61597638814fac27bdbb9424510d1459eb2fd65e9639190`.
 
-Read-only diagnostics reduce the five failures to two explicit
-official-loader blockers (`mental_healths_large`, `organ_transplant_large`) and
-three general compiler blockers (planets numeric typing, polar structured-field
-SQL, and sports identity self-references). Under the already-fixed 154-scheduled
-/ 136-answerable frame, 13 of the 16 answerable database deployments are now
-verified. Agents are working offline on the remaining compiler rules.
+Combining immutable v7 records with their v8 successors leaves 14 of 18 total
+deployments verified, or 14 of the 16 answerable databases under the fixed
+154-scheduled / 136-answerable frame. Sports is resolved. Planets and polar are
+the only answerable deployment blockers, and work on both is offline and
+general rather than database- or question-specific.
 
-The completed authorization did not cover a retry, C4, E02, questions,
-scoring, protected labels, credentials/OAuth/leases, shared/main models, or a
-replacement run. Any corrected live validation pass requires a new exact
-request.
+The completed authorization covered no retry, C4, E02, question dispatch,
+scoring/correctness, protected labels, credentials/OAuth/leases, shared/main
+models, or further live diagnostics. Any subsequent product contact requires a
+new exact request.
 
 ## Recently completed
 
@@ -133,8 +110,9 @@ request.
 2. The exact action and scope appear on this page before execution.
 3. A response is recorded with `bd human respond <bead-id>` (or dismissed with
    `bd human dismiss <bead-id>`).
-4. The implementation bead remains open until the approved action is executed
+4. In the same authorization-consumption step, this page is updated so the
+   operator view never continues to show the answered request as pending.
+5. The implementation bead remains open until the approved action is executed
    and verified; answering a decision is not treated as completing the work.
-5. Closed decisions are removed from “Waiting for a response” at the next doc
-   update, with the outcome preserved in Beads and the research log when it
-   affects the experiment.
+6. The outcome is preserved in Beads and the research log when it affects the
+   experiment.

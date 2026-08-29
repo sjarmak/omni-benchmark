@@ -171,8 +171,8 @@
     },
     {
       "file": "robot_fault_prediction_large.public__joint_condition.view",
-      "sha256": "2442af21b043edf49396f3a55eb5c48599c76764850d7a48406c48a9fa804bcf",
-      "size_bytes": 7085
+      "sha256": "bd760c1b592fb422b136ea6ffb99bb5c8f8ab4edfdb42d6eb239fac057a3733c",
+      "size_bytes": 7391
     },
     {
       "file": "joint_condition_semantics.topic",

@@ -27,7 +27,7 @@ dimensions:
   largest_holding_weight:
     description: Percentage (0-1) of total assets represented by the single largest holding in the fund. Contains  NULL when holdings data is not available or not disclosed.
     label: Largest Holding Weight
-    sql: CAST(${histstats} ->> 'Top_Weight' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(histstats, 'Top_Weight') AS DOUBLE PRECISION)
   is_high_conviction_portfolio:
     label: High-Conviction Portfolio
     description: A portfolio where the manager allocates a significant portion of assets to a small number of their best ideas.

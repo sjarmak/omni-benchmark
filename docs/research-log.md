@@ -6903,3 +6903,100 @@ WAITING on human A/B decision `omni-benchmark-dih.17.11`. Preparation was
 provider-inert. No client, claim, output, question, score, correctness result,
 credential, OAuth profile, lease, or protected data was accessed or changed.
 The request authorizes no C4 or E02 action.
+
+## D-128: Preserve v8 and move the answerable gate to two general compiler residuals
+
+### Hypothesis and authorization boundary
+
+The exact seven-bundle successor can test the D-126 mechanisms without
+replacing v7 evidence if the recorded A response is consumed once, every
+terminal result is retained, and no failed validation is retried. The expected
+mechanical result is seven exact readbacks; any residual remains public
+compiler/product evidence rather than a reason to inspect benchmark questions
+or correctness.
+
+### Result
+
+Human decision `omni-benchmark-dih.17.11` was answered A and consumed exactly
+once. Run `public-baseline-v8-20260829` retained one claim and seven terminal
+records. SHA-256
+`bb375d7e74353836a61597638814fac27bdbb9424510d1459eb2fd65e9639190`
+is computed over canonical JSON for the filename-sorted array of each artifact
+filename and byte SHA-256, including the claim. Request, source-commit,
+database, file-count, manifest, pacing, and prior isolated model/branch/
+connection identities all match exactly.
+
+Five bundles validated with exact readback: cross-border, fake-account,
+labor-certification, robot-fault, and sports-events. Planets retained two
+validation issues and polar retained ten; record-write failures were zero. The
+run was not retried. Combining immutable v7 records with their exact v8
+successors gives 14/18 verified deployments, or 14/16 across the fixed
+answerable gate after the two official-loader exclusions.
+
+### Interpretation and next test boundary
+
+Sports proves the general physical-identity collapse fixed all six circular
+self-references. The two remaining classes falsify narrower D-126 assumptions:
+wrapping an out-of-range scientific literal in `DOUBLE PRECISION` does not
+prevent the product from inferring the literal's DECIMAL scale first, and a
+structured leaf cannot rely on an unmaterialized `${base_json_field}` semantic
+reference. Before any new live request, add synthetic regressions that require
+scientific constants with out-of-range inferred scales to be constructed from
+ordinary-scale literals, and require structured paths to begin from the
+compiler-attested physical source identifier while retaining safe public path
+escaping. The rules must remain database-independent and regenerate the full
+fan-out deterministically.
+
+### Outcome
+
+KEEP v8 immutable and continue offline on `omni-benchmark-dih.17.5` and `.7`.
+No C4, E02, question, score, correctness, gold/hidden/dev-B/test, credential,
+OAuth, lease, or shared/main model action occurred. Any new product validation
+requires a fresh exact human authorization.
+
+## D-129: Remove unsafe literal metadata and semantic structured-base dependencies
+
+### Hypothesis
+
+The two remaining answerable validation classes arise before expression result
+typing. An out-of-range scientific token can be assigned invalid DECIMAL
+metadata before an enclosing cast is considered, while `${base_field}` requires
+that a semantic base dimension exist even when the public schema proves the
+physical JSONB source. Both can be removed mechanically: construct scientific
+values from ordinary-scale literals and a typed power of ten, and construct
+structured extraction directly from the compiler-attested physical column and
+authenticated path.
+
+### Test boundary
+
+Add regressions before implementation for positive- and negative-exponent
+construction, the actual planets-scale constants, mixed-case physical JSONB
+sources, nested paths, array indices, and quote escaping. Preserve supported
+ordinary/scientific literals and validate authored input before compiler-owned
+structured regeneration. Regenerate all 18 public bundles and reject any
+remaining scientific-literal or PostgreSQL JSON-operator syntax in emitted
+views. No database-specific branch, benchmark question, gold, label, or outcome
+may enter either rule.
+
+### Offline result
+
+The four initial regressions failed and pass after implementation. Unsafe
+scientific tokens now compile as multiplication or division by
+`POWER(CAST(10.0 AS DOUBLE PRECISION), n.0)`. Structured leaves compile as
+`JSONB_EXTRACT_PATH_TEXT(raw_physical_column, ...)`, with physical identifier
+quoting and path escaping derived only from authenticated public schema. The
+18-plan / 254-file baseline regenerates with bundle-set SHA-256
+`8a5c9aae0d29c2ef7b7c768767aeaedc41f4f18f0f090035dc142478d5dfae66`;
+the separate 18-plan / 272-file / 91-relationship E02 candidate has SHA-256
+`db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`.
+No emitted view retains `#>>`, chained `->` / `->>`, or a scientific-literal
+token.
+
+### Outcome
+
+KEEP OFFLINE pending exact-commit repository gates and a fresh product
+validation authorization. Because the structured rule is general and changes
+authenticated bytes across all 18 bundles, the next live oracle must validate
+all 16 answerable deployments rather than only planets and polar; the two fixed
+official-loader blockers remain explicit. No live client, C4, E02, question,
+score, correctness, protected data, credential, OAuth, or lease action occurred.

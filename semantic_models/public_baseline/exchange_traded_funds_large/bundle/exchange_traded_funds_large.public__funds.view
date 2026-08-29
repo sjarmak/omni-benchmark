@@ -39,7 +39,7 @@ dimensions:
   geographic_focus:
     description: Geographic region or market focus of the fund (e.g., 'US', 'International', 'Emerging Markets', 'Global'). Contains  NULL when geographic focus is not specified or fund has global diversification without specific regional focus.
     label: Geographic Focus
-    sql: ${fundclass} ->> 'GeoZone_Class'
+    sql: JSONB_EXTRACT_PATH_TEXT(fundclass, 'GeoZone_Class')
     ai_context: 'Geographic Focus: Funds are categorized by their geographic scope, such as ''UNITED_STATES'', ''International'', ''Global'', ''Pacific/Asia ex-Japan Stk'', and ''Emerging Markets''.'
   duration:
     description: 'DECIMAL. Modified duration of the fund''s bond portfolio, measuring sensitivity to interest rate changes in years. Higher values indicate greater interest rate risk. Example: 3.12, 2.73, 11.58. Contains NULL when the fund does not hold fixed-income securities or duration calculation is not applicable.'

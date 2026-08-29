@@ -451,7 +451,41 @@ def test_compile_bundle_mechanically_extracts_an_unauthored_structured_leaf() ->
 
     view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
     assert view["dimensions"]["scan_resolution_mm"]["sql"] == (
-        "${cloud_metrics} ->> 'Scan_Resol_Mm'"
+        "JSONB_EXTRACT_PATH_TEXT(cloud_metrics, 'Scan_Resol_Mm')"
+    )
+
+
+def test_compile_bundle_anchors_structured_leaf_to_attested_physical_column() -> None:
+    spec = copy.deepcopy(_spec())
+    del spec["physical_fields"][0]["sql"]
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    sql = view["dimensions"]["scan_resolution_mm"]["sql"]
+    assert sql == "JSONB_EXTRACT_PATH_TEXT(cloud_metrics, 'Scan_Resol_Mm')"
+    assert "${cloud_metrics}" not in sql
+    assert "->" not in sql
+
+
+def test_compile_bundle_quotes_attested_structured_source_column() -> None:
+    schema = copy.deepcopy(_schema_records())
+    column = next(
+        record
+        for record in schema
+        if record["stable_id"] == "db:column:pointcloud:cloud_metrics"
+    )
+    column["identifier"] = {"name": "cloudMetrics", "quoted": True}
+    spec = copy.deepcopy(_spec())
+    del spec["physical_fields"][0]["sql"]
+
+    bundle = compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["scan_resolution_mm"]["sql"] == (
+        "JSONB_EXTRACT_PATH_TEXT(\"cloudMetrics\", 'Scan_Resol_Mm')"
     )
 
 
@@ -472,7 +506,7 @@ def test_compile_bundle_extracts_nested_object_and_array_paths_safely() -> None:
 
     view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
     assert view["dimensions"]["scan_resolution_mm"]["sql"] == (
-        "${cloud_metrics} -> 'sensor''s' -> 2 ->> 'reading'"
+        "JSONB_EXTRACT_PATH_TEXT(cloud_metrics, 'sensor''s', '2', 'reading')"
     )
 
 
@@ -529,11 +563,12 @@ def test_compile_bundle_collapses_authored_physical_identity_to_direct_binding()
     (
         (
             "CAST(${cloud_metrics} #>> '{sensor,reading}' AS DOUBLE PRECISION)",
-            "CAST(${cloud_metrics} -> 'sensor' ->> 'reading' AS DOUBLE PRECISION)",
+            "CAST(JSONB_EXTRACT_PATH_TEXT(cloud_metrics, 'sensor', 'reading') "
+            "AS DOUBLE PRECISION)",
         ),
         (
             "${cloud_metrics} #>> '{sensor,reading}'",
-            "${cloud_metrics} -> 'sensor' ->> 'reading'",
+            "JSONB_EXTRACT_PATH_TEXT(cloud_metrics, 'sensor', 'reading')",
         ),
     ),
 )
@@ -742,7 +777,8 @@ def test_compile_bundle_keeps_parser_mode_as_metadata_without_emitting_directive
     raw_view = bundle.files["db.public__pointcloud.view"]
     view = yaml.safe_load(raw_view)
     assert view["dimensions"]["scan_resolution_mm"]["sql"] == (
-        "CAST(${cloud_metrics} ->> 'Scan_Resol_Mm' AS DOUBLE PRECISION)"
+        "CAST(JSONB_EXTRACT_PATH_TEXT(cloud_metrics, 'Scan_Resol_Mm') "
+        "AS DOUBLE PRECISION)"
     )
     assert "-- DO NOT PARSE" not in raw_view
     assert view["dimensions"]["resolution_index"]["sql"] == (
@@ -837,7 +873,9 @@ def test_compile_bundle_does_not_cast_text_used_as_numeric_case_condition() -> N
     )
 
 
-def test_compile_bundle_casts_scientific_literal_with_negative_decimal_scale() -> None:
+def test_compile_bundle_constructs_scientific_literal_with_negative_decimal_scale() -> (
+    None
+):
     spec = copy.deepcopy(_spec())
     spec["derived_fields"][0]["sql"] = "${scan_resolution_mm} * 1.25e6"
 
@@ -847,11 +885,44 @@ def test_compile_bundle_casts_scientific_literal_with_negative_decimal_scale() -
 
     view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
     assert view["dimensions"]["resolution_index"]["sql"] == (
-        "${scan_resolution_mm} * CAST(1.25e6 AS DOUBLE PRECISION)"
+        "${scan_resolution_mm} * 1.25 * POWER(CAST(10.0 AS DOUBLE PRECISION), 6.0)"
     )
 
 
-def test_compile_bundle_casts_negative_exponent_scientific_literal() -> None:
+def test_compile_bundle_constructs_out_of_range_scientific_literal_without_scientific_syntax() -> (
+    None
+):
+    spec = copy.deepcopy(_spec())
+    spec["derived_fields"][0]["sql"] = "${scan_resolution_mm} * 1.25e6"
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    sql = view["dimensions"]["resolution_index"]["sql"]
+    assert "1.25e6" not in sql.lower()
+    assert "POWER(CAST(10.0 AS DOUBLE PRECISION), 6.0)" in sql
+
+
+def test_compile_bundle_constructs_planet_scale_constants_from_safe_literals() -> None:
+    spec = copy.deepcopy(_spec())
+    spec["derived_fields"][0]["sql"] = (
+        "${scan_resolution_mm} * 6.67430e-11 * 1.98847e30"
+    )
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    sql = view["dimensions"]["resolution_index"]["sql"]
+    assert re.search(r"[0-9.]+[eE][+-]?[0-9]+", sql) is None
+    assert "POWER(CAST(10.0 AS DOUBLE PRECISION), 11.0)" in sql
+    assert "POWER(CAST(10.0 AS DOUBLE PRECISION), 30.0)" in sql
+
+
+def test_compile_bundle_constructs_negative_exponent_scientific_literal() -> None:
     spec = copy.deepcopy(_spec())
     spec["derived_fields"][0]["sql"] = "${scan_resolution_mm} * 6.67430e-11"
 
@@ -861,7 +932,8 @@ def test_compile_bundle_casts_negative_exponent_scientific_literal() -> None:
 
     view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
     assert view["dimensions"]["resolution_index"]["sql"] == (
-        "${scan_resolution_mm} * CAST(6.67430e-11 AS DOUBLE PRECISION)"
+        "${scan_resolution_mm} * CAST(6.67430 AS DOUBLE PRECISION) / "
+        "POWER(CAST(10.0 AS DOUBLE PRECISION), 11.0)"
     )
 
 

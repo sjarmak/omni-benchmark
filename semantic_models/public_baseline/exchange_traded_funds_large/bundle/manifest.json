@@ -177,8 +177,8 @@
     },
     {
       "file": "exchange_traded_funds_large.public__funds.view",
-      "sha256": "409ba7fc5dc70e88dbad0a7de7748f1f5abf6cb67afda17d7b8134b658af3eb1",
-      "size_bytes": 11323
+      "sha256": "4e19dcf4cdf295435412d3935a08195a884b2eec721e9fb3678bf9d394a39feb",
+      "size_bytes": 11342
     },
     {
       "file": "funds_semantics.topic",
@@ -187,8 +187,8 @@
     },
     {
       "file": "exchange_traded_funds_large.public__performance.view",
-      "sha256": "24ce8ffcc8bf98a1f1a56d16bd2ef32ec82f6bd7d9a72d75a5ac70fa5e171238",
-      "size_bytes": 3827
+      "sha256": "4a4f680cef0a9a271fb1956fd91d25344eaa9190dbb299fcb0815f181a6b7a60",
+      "size_bytes": 3846
     },
     {
       "file": "performance_semantics.topic",
@@ -197,8 +197,8 @@
     },
     {
       "file": "exchange_traded_funds_large.public__risk_metrics.view",
-      "sha256": "f13c9203612b2e972eb5d9ad1a6fc7551ab764e8ef5077dc74b9646c921e3dbb",
-      "size_bytes": 3038
+      "sha256": "00086c7e16180f8cacb455ed47bf04bb0188ff0efc1e9455e38cba26467f11fc",
+      "size_bytes": 3055
     },
     {
       "file": "risk_metrics_semantics.topic",

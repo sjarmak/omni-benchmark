@@ -163,6 +163,23 @@ def _has_negative_decimal_scale(node: exp.Expression) -> bool:
     return exponent_sign == "-" or exponent > len(fractional_digits)
 
 
+def _construct_scientific_literal(node: exp.Literal) -> exp.Expression:
+    literal = str(node.this)
+    coefficient, raw_exponent = re.split(r"[eE]", literal, maxsplit=1)
+    exponent = int(raw_exponent)
+    magnitude = exp.Pow(
+        this=exp.Cast(
+            this=exp.Literal.number("10.0"),
+            to=_double_type(),
+        ),
+        expression=exp.Literal.number(f"{abs(exponent)}.0"),
+    )
+    value = exp.Literal.number(coefficient)
+    if exponent < 0:
+        return exp.Div(this=value, expression=magnitude)
+    return exp.Mul(this=value, expression=magnitude)
+
+
 def _expectations(
     node: exp.Expression, expected_numeric: bool
 ) -> tuple[set[str], set[str]]:
@@ -282,11 +299,12 @@ def coerce_numeric_references(sql: str, field_kinds: Mapping[str, str]) -> str:
 
 
 def stabilize_negative_scale_decimals(sql: str) -> str:
-    """Cast scientific literals that destabilize Omni decimal-scale inference."""
+    """Construct unstable scientific literals without invalid DECIMAL metadata."""
     rewritten = _parse_scalar(sql).copy()
     targets = [node for node in rewritten.walk() if _has_negative_decimal_scale(node)]
     for node in targets:
-        node.replace(exp.Cast(this=node.copy(), to=_double_type()))
+        assert isinstance(node, exp.Literal)
+        node.replace(_construct_scientific_literal(node))
     if not targets:
         return sql
     return _render_scalar(rewritten)

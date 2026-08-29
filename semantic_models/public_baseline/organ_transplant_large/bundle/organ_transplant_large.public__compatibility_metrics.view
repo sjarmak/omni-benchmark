@@ -16,12 +16,12 @@ dimensions:
   size_compatibility_score:
     description: 'REAL. Size compatibility score based on donor-recipient measurements. Example: 0.228.'
     label: Size Compatibility Score
-    sql: CAST(${compatscores} ->> 'Size_Score' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(compatscores, 'Size_Score') AS DOUBLE PRECISION)
     ai_context: 'Size Compatibility Score: A score derived from the ratio of donor and recipient BMI. Formula: $S_{size} = 1 - |\frac{BMI_{donor}}{BMI_{recipient}} - 1|$.'
   age_compatibility_score:
     description: 'REAL. Age compatibility score for optimal matching. Example: 0.327.'
     label: Age Compatibility Score
-    sql: CAST(${compatscores} ->> 'Age_Score' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(compatscores, 'Age_Score') AS DOUBLE PRECISION)
     ai_context: 'Age Compatibility Score: A normalized score based on the Donor-Recipient Age Difference. Formula: $S_{age} = e^{-0.03 \times |Age_{recipient} - Age_{donor}|}$, using a standard scaling factor.'
   hla_mismatch_score:
     label: HLA Mismatch Score

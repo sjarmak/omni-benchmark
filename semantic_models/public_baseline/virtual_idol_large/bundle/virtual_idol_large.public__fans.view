@@ -20,12 +20,12 @@ dimensions:
   fan_age:
     description: SMALLINT. Fan's age in years for demographic analysis and content targeting.
     label: Fan Age
-    sql: ${demo_profile} ->> 'Age_Count'
+    sql: JSONB_EXTRACT_PATH_TEXT(demo_profile, 'Age_Count')
     ai_context: 'Fan Age Category: Fan age is categorized as: Teen (<=18), Young Adult (19-29), Adult (30-49), Senior (>=50).'
   occupation_path:
     description: 'TEXT. Fan''s occupation or professional background. **NULL means occupation information not provided or privacy setting enabled.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
     label: Occupation Path
-    sql: ${demo_profile} ->> 'Occu_Path'
+    sql: JSONB_EXTRACT_PATH_TEXT(demo_profile, 'Occu_Path')
     ai_context: 'Occupation Path: Represents the declared occupation category of a fan, such as ''Professional'', ''Student'', ''Creative'', or ''Technical''.'
   language_preference:
     description: 'TEXT. Fan''s preferred language for platform interface and content. **NULL means language preference not specified or using platform default.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'

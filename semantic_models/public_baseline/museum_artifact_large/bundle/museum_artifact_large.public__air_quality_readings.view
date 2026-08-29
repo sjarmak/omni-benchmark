@@ -7,5 +7,5 @@ dimensions:
   pm25_ug_m3:
     description: 'REAL. Particulate Matter (PM2.5) concentration in µg/m³. Example: 16.7.'
     label: PM2.5 (µg/m³)
-    sql: CAST(${air_quality_metrics} -> 'particulates' ->> 'pm25_ug_m3' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(air_quality_metrics, 'particulates', 'pm25_ug_m3') AS DOUBLE PRECISION)
     ai_context: 'Fine Particulate Matter Implications: Represents PM2.5 concentration. Clean museum air should be below 5 µg/m³. Values above 15 indicate potential risk, and above 30 are hazardous.'

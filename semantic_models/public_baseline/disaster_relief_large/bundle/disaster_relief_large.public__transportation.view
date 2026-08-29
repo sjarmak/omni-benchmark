@@ -7,7 +7,7 @@ dimensions:
   daily_tons:
     description: 'REAL. Daily delivery tonnage. Example: 227.'
     label: Daily Delivery Tonnage
-    sql: CAST(${delivery_metrics} -> 'delivery_capacity' ->> 'daily_tons' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'delivery_capacity', 'daily_tons') AS DOUBLE PRECISION)
   vehicle_count:
     description: 'BIGINT. Number of vehicles available. **NULL means vehicle count not recorded.**. Example: 141.0.'
     label: Vehicle Count

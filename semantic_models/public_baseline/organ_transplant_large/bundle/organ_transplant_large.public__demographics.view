@@ -7,11 +7,11 @@ dimensions:
   donor_height_cm:
     description: 'SMALLINT. Donor''s height measurement in centimeters. Example: 171.'
     label: Donor Height (cm)
-    sql: CAST(${physicalstats} ->> 'Height_Cm' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(physicalstats, 'Height_Cm') AS DOUBLE PRECISION)
   donor_weight_kg:
     description: 'SMALLINT. Donor''s weight measurement in kilograms. Example: 55.'
     label: Donor Weight (kg)
-    sql: CAST(${physicalstats} ->> 'Weight_Kg' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(physicalstats, 'Weight_Kg') AS DOUBLE PRECISION)
   body_mass_index:
     label: Body Mass Index (BMI)
     description: Calculates a person's body mass index from their weight and height.

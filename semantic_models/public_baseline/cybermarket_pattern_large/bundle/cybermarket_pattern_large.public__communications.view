@@ -7,15 +7,15 @@ dimensions:
   keyword_matches:
     description: 'BIGINT. Count of significant keyword matches detected. Example: 20.'
     label: Keyword Matches
-    sql: CAST(${communication_details} ->> 'keyword_match_count' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(communication_details, 'keyword_match_count') AS DOUBLE PRECISION)
   total_messages:
     description: 'BIGINT. Number of messages exchanged in the communication thread. Example: 36.'
     label: Total Messages
-    sql: CAST(${communication_details} ->> 'msg_count_total' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(communication_details, 'msg_count_total') AS DOUBLE PRECISION)
   language_pattern:
     description: 'TEXT. Language pattern or grammar classification inferred from messages. Possible values: Consistent, Suspicious, Variable.'
     label: Language Pattern
-    sql: ${communication_details} ->> 'lang_pattern_type'
+    sql: JSONB_EXTRACT_PATH_TEXT(communication_details, 'lang_pattern_type')
     ai_context: 'Language Patterns: Values: Consistent, Suspicious, Variable.
 
       Label descriptions:

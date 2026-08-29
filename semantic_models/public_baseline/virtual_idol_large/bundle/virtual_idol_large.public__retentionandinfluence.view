@@ -12,11 +12,11 @@ dimensions:
   viral_content_pieces:
     description: SMALLINT. Number of viral content pieces created or shared.
     label: Viral Content Pieces
-    sql: ${infl_impact} ->> 'Viral_Cont'
+    sql: JSONB_EXTRACT_PATH_TEXT(infl_impact, 'Viral_Cont')
   trend_participation_count:
     description: SMALLINT. Number of trending topics or events participated in.
     label: Trend Participation Count
-    sql: ${infl_impact} ->> 'Trend_Part'
+    sql: JSONB_EXTRACT_PATH_TEXT(infl_impact, 'Trend_Part')
   viral_potential_score:
     label: Viral Potential Score (VPS)
     description: Assesses a fan's ability to create and participate in viral trends.

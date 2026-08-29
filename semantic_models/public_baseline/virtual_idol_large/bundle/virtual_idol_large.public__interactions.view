@@ -15,20 +15,20 @@ dimensions:
   total_gift_value_usd:
     description: REAL. Total monetary value in USD of gifts sent during interaction.
     label: Total Gift Value (USD)
-    sql: ${gift_metrics} ->> 'Gift_Val_Usd'
+    sql: JSONB_EXTRACT_PATH_TEXT(gift_metrics, 'Gift_Val_Usd')
   chat_messages:
     description: BIGINT. Number of chat messages sent by the fan during this interaction.
     label: Chat Messages
-    sql: ${chat_activity} ->> 'Chat_Msg'
+    sql: JSONB_EXTRACT_PATH_TEXT(chat_activity, 'Chat_Msg')
   gift_frequency:
     description: TEXT. Frequency classification of gift-giving behavior during interaction.
     label: Gift Frequency
-    sql: ${gift_metrics} ->> 'Gift_Freq'
+    sql: JSONB_EXTRACT_PATH_TEXT(gift_metrics, 'Gift_Freq')
     ai_context: 'Gift Frequency: Classifies how often a fan gives virtual gifts during interactions. Categories include ''Often'', ''Frequently'', ''Occasionally'', and ''Rarely''.'
   interaction_tone:
     description: TEXT. Sentiment or tone analysis result of messages sent during interaction.
     label: Interaction Tone
-    sql: ${chat_activity} ->> 'Msg_Tone'
+    sql: JSONB_EXTRACT_PATH_TEXT(chat_activity, 'Msg_Tone')
     ai_context: 'Interaction Tone: Indicates the overall sentiment of a fan''s chat messages. Common values are ''Positive'', ''Negative'', ''Neutral'', or ''Mixed''.'
   fan_monetization_index:
     label: Fan Monetization Index (FMI)

@@ -7,19 +7,19 @@ dimensions:
   average_daily_visitors:
     description: 'BIGINT. Daily visitor count for the exhibition hall. Example: 308.'
     label: Average Daily Visitors
-    sql: CAST(${security_visitor_overview} -> 'visitor_statistics' ->> 'avg_daily_visitors' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(security_visitor_overview, 'visitor_statistics', 'avg_daily_visitors') AS DOUBLE PRECISION)
   visitor_flow:
     description: 'TEXT. Visitor flow data in the hall. Possible values: High, Low, Medium.'
     label: Visitor Flow
-    sql: ${security_visitor_overview} -> 'visitor_statistics' ->> 'visitor_flow'
+    sql: JSONB_EXTRACT_PATH_TEXT(security_visitor_overview, 'visitor_statistics', 'visitor_flow')
   average_dwell_minutes:
     description: 'BIGINT. Dwell time of visitors in minutes. Example: 16.'
     label: Average Dwell Time (minutes)
-    sql: CAST(${security_visitor_overview} -> 'visitor_statistics' ->> 'avg_dwell_minutes' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(security_visitor_overview, 'visitor_statistics', 'avg_dwell_minutes') AS DOUBLE PRECISION)
   cctv_coverage_level:
     description: 'TEXT. CCTV coverage status in the exhibition hall. Possible values: Full, Limited, Partial.'
     label: CCTV Coverage Level
-    sql: ${security_visitor_overview} -> 'security' ->> 'cctv_coverage'
+    sql: JSONB_EXTRACT_PATH_TEXT(security_visitor_overview, 'security', 'cctv_coverage')
     ai_context: 'CCTV Coverage Levels: ''Full'' indicates 100% space coverage, ''Partial'' indicates 60-90% coverage, and ''Limited'' indicates less than 60% coverage.'
   visitor_impact_risk:
     label: Visitor Impact Risk (VIR)

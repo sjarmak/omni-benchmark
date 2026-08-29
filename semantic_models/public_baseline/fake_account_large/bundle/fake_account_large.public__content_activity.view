@@ -7,5 +7,5 @@ dimensions:
   content_uniqueness_score:
     description: 'REAL. Content uniqueness score. Example: 0.858.'
     label: Content Uniqueness Score
-    sql: CAST(${content_metrics} -> 'content_quality' ->> 'content_uniqueness' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(content_metrics, 'content_quality', 'content_uniqueness') AS DOUBLE PRECISION)
     ai_context: 'content uniqueness scoring: Ranges from 0 to 1. Scores above 0.8 indicate highly unique content, while scores below 0.3 suggest duplicate or templated content.'

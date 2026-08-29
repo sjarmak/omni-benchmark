@@ -23,7 +23,7 @@ dimensions:
   r_squared_3_year_decimal:
     description: 3-year R-squared statistic (0-1) measuring how closely the fund's performance correlates with its benchmark. Contains  NULL when fund has less than 3 years of history or benchmark data is not available.
     label: 3-Year R-Squared (0-1)
-    sql: CAST(${risk3y} -> 'risk_measures_3y' ->> 'R_Squared_3Y' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(risk3y, 'risk_measures_3y', 'R_Squared_3Y') AS DOUBLE PRECISION)
   is_alpha_generator:
     label: Alpha Generator
     description: A fund that has demonstrated an ability to outperform its benchmark on a risk-adjusted basis.

@@ -103,8 +103,8 @@
     },
     {
       "file": "labor_certification_applications_large.public__prevailing_wage.view",
-      "sha256": "5f6e47af711ca5efbddeadef36a23c0235ccca4f9a5583997162f697c5be551c",
-      "size_bytes": 913
+      "sha256": "af78f88e2c36005bcffe44dedd6951558c705908d25a829e910e89f2b0c0ce9e",
+      "size_bytes": 930
     },
     {
       "file": "prevailing_wage_semantics.topic",

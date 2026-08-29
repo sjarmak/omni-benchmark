@@ -7,33 +7,33 @@ dimensions:
   tracker:
     description: 'TEXT. Tracking system operational status. Possible values: Error, Maintenance, Normal.'
     label: Tracker State
-    sql: ${mech_health_snapshot} -> 'tracker' ->> 'tracker_state'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'tracker', 'tracker_state')
     ai_context: 'Tracker System State: Describes the current status of the solar tracking system. Common states include: ''Normal'' (actively tracking the sun), ''Maintenance'' (undergoing service), ''Error'' (malfunctioning), or ''Stow'' (locked in a safe, fixed position due to high winds).'
   mount:
     description: 'TEXT. Mounting structure condition. Possible values: Check Required, Stable, Unstable.'
     label: Mount Structure Status
-    sql: ${mech_health_snapshot} -> 'mount_cleaning' ->> 'mount_structure_status'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'mount_cleaning', 'mount_structure_status')
   busbar:
     description: 'TEXT. Busbar corrosion status. NULL means the encoder does not report status or data are missing. Possible values: Severe, Visible.'
     label: Busbar Corrosion
-    sql: ${mech_health_snapshot} -> 'module_surface' ->> 'busbar_corrosion'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'busbar_corrosion')
     ai_context: 'Busbar Corrosion Severity: Describes the extent of corrosion on the metallic strips (busbars) that conduct electricity within a solar panel. Levels can range from ''None'' to ''Light'' (minor discoloration), ''Visible'' (clear corrosion affecting small areas), and ''Severe'' (widespread corrosion that can disrupt conductivity and reduce power output).'
   delam:
     description: 'TEXT. Delamination status. NULL means the encoder does not report status or data are missing. Possible values: Major, Minor.'
     label: Delamination Status
-    sql: ${mech_health_snapshot} -> 'module_surface' ->> 'delamination_status'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'delamination_status')
   microcrack:
     description: 'BIGINT. Count of microcracks detected. Example: 7.0.'
     label: Microcrack Count
-    sql: ${mech_health_snapshot} -> 'module_surface' ->> 'microcrack_count'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'microcrack_count')
   ground:
     description: 'TEXT. Grounding system status. Possible values: Check Required, Failed, Normal.'
     label: Grounding Status
-    sql: ${mech_health_snapshot} -> 'electrical_integrity' ->> 'grounding_status'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'electrical_integrity', 'grounding_status')
   diode:
     description: 'TEXT. Bypass diode functionality status. Possible values: Failed, Normal, Partial.'
     label: Bypass Diode Status
-    sql: ${mech_health_snapshot} -> 'electrical_integrity' ->> 'bypass_diode_status'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'electrical_integrity', 'bypass_diode_status')
   tracker_malfunction:
     label: Tracker Malfunction
     description: Indicates that a solar tracking system is not functioning correctly and may be stuck, in maintenance, or reporting an error.

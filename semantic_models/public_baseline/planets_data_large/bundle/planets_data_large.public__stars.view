@@ -16,22 +16,22 @@ dimensions:
   apparent_magnitude:
     description: Optical magnitude of the host star from 'st_optmag'. REAL covering magnitude range typically from -1.5 to 20+ magnitudes. Contains  NULL when stellar magnitude measurements are not available.
     label: Apparent Magnitude
-    sql: CAST(${stellarprops} -> 'photometry' ->> 'Opt_Mag' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(stellarprops, 'photometry', 'Opt_Mag') AS DOUBLE PRECISION)
     ai_context: 'Apparent Magnitude Value: This is a logarithmic scale where smaller numbers are brighter. A magnitude of 1.0 is 100 times brighter than a magnitude of 6.0. The brightest stars have negative magnitudes (e.g., Sirius is -1.46).'
   stellar_temperature_k:
     description: Effective temperature from 'st_teff' measured in Kelvin. REAL covering range from 575K to 57000K. Contains  NULL when stellar temperature measurements are not available or unreliable.
     label: Stellar Temperature (K)
-    sql: CAST(${stellarprops} -> 'physical' ->> 'Temp_Value' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(stellarprops, 'physical', 'Temp_Value') AS DOUBLE PRECISION)
     ai_context: 'Stellar Temperature Value: Measured in Kelvin (K). Cool red dwarfs can be around 3,000 K, a Sun-like star is about 5,800 K, and very hot blue stars can exceed 30,000 K.'
   stellar_mass_solar:
     description: Stellar mass from 'st_mass' in solar mass units (M☉). REAL covering range from low-mass stars to massive stars. Contains  NULL when stellar mass cannot be determined from available data.
     label: Stellar Mass (Solar Masses)
-    sql: CAST(${stellarprops} -> 'physical' ->> 'Mass_Value' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(stellarprops, 'physical', 'Mass_Value') AS DOUBLE PRECISION)
     ai_context: 'Stellar Mass Value: Measured in solar masses ($M_{\odot}$), where 1 is the mass of our Sun. Most known host stars range from low-mass red dwarfs (~0.1 $M_{\odot}$) to stars several times more massive than the Sun.'
   stellar_radius_solar:
     description: Stellar radius from 'st_rad' in solar radius units (R☉). REAL covering range from sub-solar to giant stars. Contains  NULL when stellar radius measurements are not available.
     label: Stellar Radius (Solar Radii)
-    sql: CAST(${stellarprops} -> 'physical' ->> 'Radius_Value' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(stellarprops, 'physical', 'Radius_Value') AS DOUBLE PRECISION)
     ai_context: 'Stellar Radius Value: Measured in solar radii ($R_{\odot}$), where 1 is the radius of our Sun. Values range from small neutron stars to giant stars like Betelgeuse, which would extend beyond the orbit of Mars if in our solar system.'
   distance_light_years:
     label: Distance in Light-Years
@@ -46,7 +46,7 @@ dimensions:
   gravitational_parameter:
     label: Gravitational Parameter (μ)
     description: Calculates the standard gravitational parameter for a star, a constant used in orbital mechanics.
-    sql: CAST(6.67430e-11 AS DOUBLE PRECISION) * (${stellar_mass_solar} * CAST(1.98847e30 AS DOUBLE PRECISION))
+    sql: CAST(6.67430 AS DOUBLE PRECISION) / POWER(CAST(10.0 AS DOUBLE PRECISION), 11.0) * (${stellar_mass_solar} * 1.98847 * POWER(CAST(10.0 AS DOUBLE PRECISION), 30.0))
     ai_context: Use this modeled field for Gravitational Parameter (μ); do not reconstruct its formula.
   multi_planetary_system:
     label: Multi-planetary System

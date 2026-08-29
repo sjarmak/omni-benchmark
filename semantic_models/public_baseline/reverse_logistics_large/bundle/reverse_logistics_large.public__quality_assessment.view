@@ -7,5 +7,5 @@ dimensions:
   item_condition:
     description: 'TEXT. Condition of the item during inspection. Possible values: Damaged, Like New, New, Used.'
     label: Item Condition
-    sql: ${assessment_summary} -> 'condition' ->> 'item_condition'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'condition', 'item_condition')
     ai_context: 'Item Condition States: There are 4 different states: ''New'', ''Like New'', ''Used'' and ''Damaged''.'

@@ -7,35 +7,35 @@ dimensions:
   affected_population:
     description: 'BIGINT. Number of affected population. Example: 228943.'
     label: Affected Population
-    sql: CAST(${impact_summary} -> 'population_impact' ->> 'affected' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'affected') AS DOUBLE PRECISION)
   displaced_population:
     description: 'BIGINT. Number of displaced individuals. **NULL means displacement data not available.**. Example: 31578.0.'
     label: Displaced Population
-    sql: CAST(${impact_summary} -> 'population_impact' ->> 'displaced' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'displaced') AS DOUBLE PRECISION)
   casualties:
     description: 'BIGINT. Number of casualties due to the disaster. Example: 174.'
     label: Confirmed Deaths / Casualties
-    sql: CAST(${impact_summary} -> 'population_impact' ->> 'casualties' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'casualties') AS DOUBLE PRECISION)
   injured_population:
     description: 'BIGINT. Number of injuries caused by the disaster. **NULL means injury data not available.**. Example: 4524.0.'
     label: Injured Population
-    sql: CAST(${impact_summary} -> 'population_impact' ->> 'injured' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'injured') AS DOUBLE PRECISION)
   missing_population:
     description: 'BIGINT. Number of missing persons. **NULL means missing persons data not recorded.**. Example: 212.0.'
     label: Missing Population
-    sql: CAST(${impact_summary} -> 'population_impact' ->> 'missing' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'missing') AS DOUBLE PRECISION)
   infrastructure_damage_pct:
     description: 'REAL. Percentage of infrastructure damaged. Example: 19.0.'
     label: Infrastructure Damage (%)
-    sql: CAST(${impact_summary} -> 'infrastructure_damage' ->> 'infra_damage_pct' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'infrastructure_damage', 'infra_damage_pct') AS DOUBLE PRECISION)
   power_outage_pct:
     description: 'REAL. Percentage of power outages. **NULL means power outage data not recorded.**. Example: 93.2.'
     label: Power Outage (%)
-    sql: CAST(${impact_summary} -> 'infrastructure_damage' ->> 'power_outage_pct' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'infrastructure_damage', 'power_outage_pct') AS DOUBLE PRECISION)
   water_damage_pct:
     description: 'BIGINT. Percentage of water infrastructure damage. **NULL means water damage data not available.**. Example: 77.4.'
     label: Water Infrastructure Damage (%)
-    sql: CAST(${impact_summary} -> 'infrastructure_damage' ->> 'water_damage_pct' AS DOUBLE PRECISION)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'infrastructure_damage', 'water_damage_pct') AS DOUBLE PRECISION)
   hazard_level:
     description: 'TEXT. Severity level of the disaster event. Possible values: Severity-1, Severity-2, Severity-3, Severity-4, Severity-5.'
     label: Hazard Severity Level

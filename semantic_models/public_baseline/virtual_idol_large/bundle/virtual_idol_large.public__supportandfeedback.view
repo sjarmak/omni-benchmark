@@ -7,19 +7,19 @@ dimensions:
   support_tickets:
     description: SMALLINT. Number of support tickets opened by the fan.
     label: Support Tickets
-    sql: ${feedback_data} ->> 'Supp_Tix'
+    sql: JSONB_EXTRACT_PATH_TEXT(feedback_data, 'Supp_Tix')
   bug_reports:
     description: SMALLINT. Number of bug reports submitted by the fan.
     label: Bug Reports
-    sql: ${feedback_data} ->> 'Bug_Subs'
+    sql: JSONB_EXTRACT_PATH_TEXT(feedback_data, 'Bug_Subs')
   technical_issue_reports:
     description: SMALLINT. Number of technical issues reported by the fan.
     label: Technical Issue Reports
-    sql: ${feedback_data} ->> 'Tech_Issue_Rpt'
+    sql: JSONB_EXTRACT_PATH_TEXT(feedback_data, 'Tech_Issue_Rpt')
   nps_score:
     description: SMALLINT. Net Promoter Score value indicating likelihood to recommend platform.
     label: NPS Score
-    sql: ${feedback_data} ->> 'NPS_Val'
+    sql: JSONB_EXTRACT_PATH_TEXT(feedback_data, 'NPS_Val')
     ai_context: 'NPS Score Tiers: Net Promoter Score (NPS) is categorized as: Promoters (score 9-10), Passives (score 7-8), and Detractors (score 0-6).'
   support_load_score:
     label: Support Load Score (SLS)

@@ -72,18 +72,24 @@ def test_public_canary_keeps_structured_json_parser_metadata_out_of_sql() -> Non
     )
     assert all("sql" in field for field in marked_fields)
 
-    emitted_sql = [
-        dimension["sql"]
+    emitted_sql = {
+        dimension_name: dimension["sql"]
         for name, content in bundle.files.items()
         if name.endswith(".view")
-        for dimension in yaml.safe_load(content)["dimensions"].values()
+        for dimension_name, dimension in yaml.safe_load(content)["dimensions"].items()
         if "sql" in dimension
-    ]
-    assert all(not sql.startswith("-- DO NOT PARSE\n") for sql in emitted_sql)
-    marked_sql = {field["sql"] for field in marked_fields}
-    assert marked_sql.issubset(emitted_sql)
+    }
+    assert all(not sql.startswith("-- DO NOT PARSE\n") for sql in emitted_sql.values())
+    marked_names = {field["name"] for field in marked_fields}
+    regenerated_sql = {
+        name: emitted_sql[name] for name in marked_names if name in emitted_sql
+    }
+    assert set(regenerated_sql) == marked_names
+    assert all("JSONB_EXTRACT_PATH_TEXT(" in sql for sql in regenerated_sql.values())
+    assert all("${" not in sql for sql in regenerated_sql.values())
+    assert all("->" not in sql for sql in regenerated_sql.values())
     derived_sql = {field["sql"] for field in spec["derived_fields"]}
-    assert derived_sql.issubset(emitted_sql)
+    assert derived_sql.issubset(emitted_sql.values())
     assert all(not sql.startswith("-- DO NOT PARSE\n") for sql in derived_sql)
 
 

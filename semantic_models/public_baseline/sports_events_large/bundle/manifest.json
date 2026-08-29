@@ -41,8 +41,8 @@
   "files": [
     {
       "file": "sports_events_large.public__circuits.view",
-      "sha256": "53a7bbe51391277ad79bb5de0a37518f8f2abce8f6c2493f477ae73cc0e89404",
-      "size_bytes": 1114
+      "sha256": "a632676dac8c5435791af38f4a1c3924608d2441ecd008ea0191de635f8f2c92",
+      "size_bytes": 1131
     },
     {
       "file": "circuits_semantics.topic",

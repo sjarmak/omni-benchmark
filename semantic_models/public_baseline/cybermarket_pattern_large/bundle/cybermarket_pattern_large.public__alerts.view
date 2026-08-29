@@ -7,5 +7,5 @@ dimensions:
   severity_level:
     description: 'TEXT. Severity level assigned to the alert. Possible values: Critical, High, Low, Medium.'
     label: Alert Severity Level
-    sql: ${alert_case_management} ->> 'severity_level_stat'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'severity_level_stat')
     ai_context: 'Alert Severity Levels: Values: Critical, High, Medium, Low.'
