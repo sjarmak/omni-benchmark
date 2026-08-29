@@ -215,6 +215,36 @@ the manifest and scorer to name `S`, and binds its loaded critical sources to
 prints hashes and counts only. Neither tool chooses a seed, creates a candidate,
 or begins held-out generation.
 
+## Planning sealed generation
+
+After validating the `S` → `F` boundary, construct the generation plan without
+executing an attempt:
+
+```bash
+uv run python sealed_tools/plan_sealed_generation.py \
+  --workspace "$PWD" \
+  --control-commit "<full-F-commit>" \
+  --system-commit "<full-S-commit>" \
+  --freeze-b experiments/freeze-b.json \
+  --schedule data/final-schedule.jsonl \
+  --public-manifest data/manifests/eligible_questions.jsonl
+```
+
+The planner reads only Git objects: Freeze B from `F`, then the registered
+schedule, committed test identities, and public eligible-question manifest from
+`S`. All three public inputs must have their exact SHA-256 recorded in Freeze B.
+The schedule must reproduce byte-for-byte from the human seed and committed test
+identities. Public records are recursively rejected if a protected field appears
+before the planner interprets their identity, database, or question fields.
+
+The in-memory plan contains only attempt and cohort identities, condition,
+repetition, database, and a SHA-256 of the public question. Its CLI prints only
+hashes and aggregate counts—never the seed, question text, or test identities.
+It requires all 1,212 unique coordinates and the twelve 101-attempt condition ×
+repetition cohorts, and binds its own loaded source to `S`. This command neither
+authorizes nor performs held-out generation; dispatch remains a separately
+authorized post-Freeze-B operation.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

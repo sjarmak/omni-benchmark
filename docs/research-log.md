@@ -4918,3 +4918,67 @@ Build the no-execution sealed plan from validated `F`, frozen `S`, the committed
 identity-only schedule, and the public eligible-question manifest. Then add the
 separately human-authorized dispatcher without admitting gold or scoring during
 generation.
+
+## 2026-08-29 — D-094: Materialize the sealed plan without execution
+
+### Decision / experiment
+
+Build the exact sealed-generation plan before introducing any live dispatch
+authority. Change type: general evaluation integrity. Bead:
+`omni-benchmark-ei0.5.2`.
+
+### Hypothesis
+
+If a no-execution planner derives every attempt from the validated `S` → `F`
+boundary and exact frozen public Git objects, then the later dispatcher can
+receive a complete, content-addressed plan without widening ordinary test-scope
+loaders or admitting gold, correctness, or question-specific runtime state.
+
+### Intervention
+
+Added `sealed_tools/plan_sealed_generation.py` and a sealed-only planner. It
+loads canonical Freeze B from control commit `F`, requires `F` to be the current
+otherwise-empty direct child of frozen system `S`, and reads the schedule, test
+identities, and public eligible-question manifest from Git objects at `S`. Each
+input must match its Freeze-B frozen-file digest. The schedule is independently
+regenerated from the committed identities and human seed before its rows are
+interpreted.
+
+The public manifest is canonical JSONL with its exact public schema. Recursive
+protected-field rejection runs before record interpretation. The resulting
+in-memory plan retains attempt/cohort identity, condition, repetition, database,
+and SHA-256 of public question text, but no question text. The CLI exposes only
+hashes and aggregate counts. The planner binds its loaded source to `S` and does
+not execute, authorize, contact a service, read gold, or create run artifacts.
+
+### Result
+
+Twenty synthetic TDD tests pass. They prove the exact 1,212-attempt order,
+twelve 101-attempt cohorts, database mapping, question digests, deterministic
+plan hash, and dirty-working-tree independence. Adversarial cases cover absent
+or mismatched frozen digests, recursive protected fields, duplicate or missing
+public identities, invalid database/question values, noncanonical manifests,
+reordered/missing/duplicate/noncanonical schedules, Git symlinks, runtime-source
+drift, stale control commits, and CLI disclosure.
+
+### Interpretation
+
+The sealed critical path now has a deterministic boundary between Freeze B and
+future execution. A dispatcher can consume one already-validated plan rather
+than rediscovering test membership or joining mutable working-tree inputs.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Held-out execution is safer when planning and execution are separate
+capabilities. A hash-only planning surface provides an auditable handoff while
+keeping live authority absent.
+
+### Next step
+
+Add the sealed-only prepared-attempt and immutable staging layer behind an exact
+human production receipt. Keep generation separate from scoring and gold, and
+prove the complete path with public/synthetic dry runs before any sealed launch.
