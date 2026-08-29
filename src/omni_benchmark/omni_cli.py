@@ -116,6 +116,21 @@ class OmniCliClient:
         """List shared models available to the authenticated identity."""
         return self._run_json(("models", "list", "--modelkind", "SHARED"))
 
+    def read_semantic_model(self) -> dict[str, str]:
+        """Read the complete selected branch extension layer without mutation."""
+        command = ["models", "yaml-get", self._settings.model_id]
+        if self._settings.branch_id is not None:
+            command.extend(("--branchid", self._settings.branch_id))
+        command.extend(("--mode", "extension"))
+        response = self._run_json(tuple(command))
+        files = response.get("files")
+        if not isinstance(files, Mapping) or any(
+            not isinstance(path, str) or not isinstance(content, str)
+            for path, content in files.items()
+        ):
+            raise OmniCliError("Omni semantic readback files are malformed")
+        return dict(files)
+
     def submit_job(self, question: str) -> dict[str, Any]:
         """Submit a fresh production-agent job using JSON stdin."""
         prompt = _required_string(question, "question")

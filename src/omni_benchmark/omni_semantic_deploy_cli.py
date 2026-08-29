@@ -530,6 +530,30 @@ def _committed_bundle_inventory(
         ) from error
 
 
+def committed_bundle_inventory(
+    workspace: Path, source_commit: str
+) -> tuple[dict[str, OmniSemanticDeploymentPlan], dict[str, str]]:
+    """Load authenticated semantic plans from one exact committed Git tree."""
+    return _committed_bundle_inventory(workspace, source_commit)
+
+
+def committed_bundle_plan(
+    workspace: Path, source_commit: str, database: str
+) -> OmniSemanticDeploymentPlan:
+    """Load one authenticated semantic plan from an exact committed Git tree."""
+    plans, failures = committed_bundle_inventory(workspace, source_commit)
+    if database in failures:
+        raise OmniDeploymentCliError(
+            f"committed semantic bundle is invalid: {database}: {failures[database]}"
+        )
+    try:
+        return plans[database]
+    except KeyError as error:
+        raise OmniDeploymentCliError(
+            f"committed semantic bundle is unavailable: {database}"
+        ) from error
+
+
 def _extract_bundle_archive(content: bytes, destination: Path) -> None:
     with tarfile.open(fileobj=io.BytesIO(content), mode="r:") as archive:
         for member in archive.getmembers():

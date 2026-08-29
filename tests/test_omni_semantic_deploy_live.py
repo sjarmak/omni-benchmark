@@ -7,12 +7,17 @@ from pathlib import Path
 
 import pytest
 
+import omni_benchmark.omni_semantic_deploy_live as deploy_live
 from omni_benchmark.omni_semantic_deploy_live import (
     DeploymentRecord,
     deploy_public_bundle,
     isolated_branch_name,
     isolated_model_name,
     write_deployment_record,
+)
+from omni_benchmark.omni_semantic_deployment import (
+    build_semantic_deployment_plan,
+    semantic_deployment_sha256,
 )
 
 
@@ -123,9 +128,10 @@ class FakeDeploymentClient:
 
 def test_existing_exact_branch_is_verified_without_reupload(tmp_path: Path) -> None:
     client = FakeDeploymentClient(existing=True)
+    bundle = _bundle(tmp_path)
 
     record = deploy_public_bundle(
-        bundle_root=_bundle(tmp_path),
+        bundle_root=bundle,
         connection_id="connection-id",
         client=client,
         run_id="deployment-1",
@@ -142,6 +148,30 @@ def test_existing_exact_branch_is_verified_without_reupload(tmp_path: Path) -> N
         TOPIC_NAME: hashlib.sha256(TOPIC.encode()).hexdigest(),
         VIEW_PATH: hashlib.sha256(VIEW.encode()).hexdigest(),
     }
+    assert record.semantic_model_sha256 == semantic_deployment_sha256(
+        build_semantic_deployment_plan(bundle)
+    )
+    assert json.loads(record.to_json())["schema_version"] == 2
+
+
+def test_verified_digest_is_stable_across_equivalent_readback_formatting(
+    tmp_path: Path,
+) -> None:
+    plan = build_semantic_deployment_plan(_bundle(tmp_path))
+    reordered = {
+        **_readback(),
+        TOPIC_NAME: """base_view: sample_large_public__events
+fields:
+  - sample_large_public__events.*
+joins: { }
+label: Events
+""",
+    }
+
+    first = deploy_live._verify_readback(plan, _readback())[1]
+    second = deploy_live._verify_readback(plan, reordered)[1]
+
+    assert first == second == semantic_deployment_sha256(plan)
 
 
 def test_new_branch_uploads_all_files_then_requires_exact_readback(
@@ -286,6 +316,7 @@ def test_record_rejects_unsafe_identifiers_before_path_construction(
         branch_name=isolated_branch_name(DATABASE),
         manifest_sha256="0" * 64,
         file_sha256={},
+        semantic_model_sha256=None,
         file_count=0,
         uploaded_file_count=0,
         validation_issue_count=0,

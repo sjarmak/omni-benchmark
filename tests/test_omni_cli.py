@@ -140,6 +140,46 @@ def test_profile_is_passed_without_mutating_global_cli_configuration() -> None:
     )
 
 
+def test_semantic_model_readback_uses_exact_model_branch_and_extension_mode() -> None:
+    environment = {
+        **_token_environment(),
+        "OMNI_BRANCH_ID": "branch-id",
+    }
+    runner = FakeRunner(
+        stdout=json.dumps({"files": {"orders.view": "label: Orders\n"}})
+    )
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+    )
+
+    files = client.read_semantic_model()
+
+    assert files == {"orders.view": "label: Orders\n"}
+    assert runner.invocations[0].arguments[-7:] == (
+        "models",
+        "yaml-get",
+        environment["OMNI_MODEL_ID"],
+        "--branchid",
+        "branch-id",
+        "--mode",
+        "extension",
+    )
+
+
+def test_semantic_model_readback_rejects_malformed_files() -> None:
+    environment = _token_environment()
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=FakeRunner(stdout=json.dumps({"files": {"orders.view": 7}})),
+        environment=environment,
+    )
+
+    with pytest.raises(OmniCliError, match="readback files"):
+        client.read_semantic_model()
+
+
 def test_cli_errors_redact_exact_secret_values() -> None:
     environment = _token_environment()
     runner = FakeRunner(

@@ -297,6 +297,18 @@ def _execute_live(
     else:
         targets = None
     workspace = arguments.workspace.resolve(strict=True)
+    budget = BatchBudget(
+        cost_ceiling_usd=float(arguments.cost_ceiling_usd),
+        attempt_cost_ceiling_usd=arguments.attempt_cost_ceiling_usd,
+        unobservable_cost_reservation_conditions=(
+            frozenset({"C4"})
+            if require_deployment and not derived_deployment
+            else frozenset()
+        ),
+        telemetry_only_conditions=(
+            frozenset({"C4"}) if derived_deployment else frozenset()
+        ),
+    )
     dispatcher = LiveBaselineDispatcher(
         plan,
         database_environments=(
@@ -309,24 +321,14 @@ def _execute_live(
         common_environment=_child_environment(os.environ),
         timeout_seconds=arguments.subprocess_timeout_seconds,
         deployment_targets=targets,
+        c4_budget=budget if targets is not None else None,
     )
     report = run_baseline_batch(
         schedule,
         repository=ImmutableAttemptRepository(workspace, arguments.output_root),
         executor=dispatcher,
         maximum_concurrency=arguments.maximum_concurrency,
-        budget=BatchBudget(
-            cost_ceiling_usd=float(arguments.cost_ceiling_usd),
-            attempt_cost_ceiling_usd=arguments.attempt_cost_ceiling_usd,
-            unobservable_cost_reservation_conditions=(
-                frozenset({"C4"})
-                if require_deployment and not derived_deployment
-                else frozenset()
-            ),
-            telemetry_only_conditions=(
-                frozenset({"C4"}) if derived_deployment else frozenset()
-            ),
-        ),
+        budget=budget,
         stop_policy=(
             BatchStopPolicy(arguments.maximum_wall_clock_seconds)
             if derived_deployment

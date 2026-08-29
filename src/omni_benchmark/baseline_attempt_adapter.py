@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import importlib.metadata
 import json
+import math
 import os
+import re
 from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -42,6 +44,11 @@ from .omni_probe_preflight import (
     verify_system_commit,
 )
 from .omni_result_adapter import reject_forbidden_keys
+from .omni_semantic_deploy_cli import OmniDeploymentCliError, committed_bundle_plan
+from .omni_semantic_deployment import (
+    OmniSemanticDeploymentError,
+    verified_semantic_deployment_sha256,
+)
 from .run_manifest import RunManifest
 
 ClientFactory = Callable[[Any], OmniJobClient]
@@ -278,6 +285,30 @@ def _capture_public_baseline_omni(
     )
     client = factory(plan.settings)
     omni_probe._verify_authentication(client)
+    expected_semantic_sha256 = _required_sha256_environment(
+        plan.environment, "OMNI_SEMANTIC_MODEL_SHA256"
+    )
+    database = _required_environment(plan.environment, "OMNI_SEMANTIC_DATABASE")
+    try:
+        semantic_plan = committed_bundle_plan(
+            plan.workspace, plan.arguments.system_commit, database
+        )
+        observed_semantic_sha256 = verified_semantic_deployment_sha256(
+            semantic_plan,
+            {
+                path: content
+                for path, content in client.read_semantic_model().items()
+                if path not in {"model", "relationships"}
+            },
+        )
+    except (OmniDeploymentCliError, OmniSemanticDeploymentError) as error:
+        raise omni_probe.OmniProbeCliError(
+            "C4 semantic model drifted after verified deployment"
+        ) from error
+    if observed_semantic_sha256 != expected_semantic_sha256:
+        raise omni_probe.OmniProbeCliError(
+            "C4 semantic model drifted after verified deployment"
+        )
     options: dict[str, Any] = {
         "maximum_status_checks": plan.specs.condition.maximum_status_checks,
         "poll_schedule_seconds": plan.specs.condition.poll_schedule_seconds,
@@ -303,12 +334,52 @@ def _c4_attempt_spec(plan: ProbePlan) -> C4AttemptSpec:
         prompt_sha256=plan.specs.prompt_sha256,
         instructions_sha256=plan.specs.instructions_sha256,
         semantic_model_ref=plan.semantic_model_ref,
-        semantic_model_sha256=None,
+        semantic_model_sha256=_required_sha256_environment(
+            plan.environment, "OMNI_SEMANTIC_MODEL_SHA256"
+        ),
         model_config_id=condition.model_config_id,
         budget_id=arguments.budget_id,
         software_versions=plan.software_versions,
         cli_versions=plan.cli_versions,
+        cost_reservation_usd=_required_nonnegative_environment_number(
+            plan.environment, "OMNI_COST_RESERVATION_USD"
+        ),
+        budget_policy_sha256=_required_sha256_environment(
+            plan.environment, "OMNI_BUDGET_POLICY_SHA256"
+        ),
+        cost_unavailable_reason="omni_job_api_does_not_expose_cost",
     )
+
+
+def _required_sha256_environment(environment: Mapping[str, str], name: str) -> str:
+    value = environment.get(name)
+    if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+        raise omni_probe.OmniProbeCliError(f"{name} must be a lowercase SHA-256")
+    return value
+
+
+def _required_environment(environment: Mapping[str, str], name: str) -> str:
+    value = environment.get(name)
+    if not isinstance(value, str) or not value:
+        raise omni_probe.OmniProbeCliError(f"{name} is required")
+    return value
+
+
+def _required_nonnegative_environment_number(
+    environment: Mapping[str, str], name: str
+) -> float:
+    value = environment.get(name)
+    try:
+        number = float(value) if isinstance(value, str) else math.nan
+    except ValueError as error:
+        raise omni_probe.OmniProbeCliError(
+            f"{name} must be a non-negative finite number"
+        ) from error
+    if not math.isfinite(number) or number < 0:
+        raise omni_probe.OmniProbeCliError(
+            f"{name} must be a non-negative finite number"
+        )
+    return number
 
 
 def _prevalidate_train_manifest(

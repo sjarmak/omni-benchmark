@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import queue
+import re
 import secrets
 import stat
 import subprocess
@@ -21,11 +22,17 @@ from .baseline_batch import (
     BaselineAttempt,
     BaselineBatchError,
     BaselineSchedule,
+    BatchBudget,
     _money,
     _positive_decimal,
 )
 from .c4_baseline_arm import C4BaselineArmError, parse_c4_baseline_arm_spec
 from .content_policy import ContentPolicy
+from .omni_semantic_deploy_cli import (
+    OmniDeploymentCliError,
+    committed_bundle_inventory,
+)
+from .omni_semantic_deployment import semantic_deployment_sha256
 from .omni_probe_preflight import OmniProbePreflightError, committed_spec
 
 _PG_FIELDS = frozenset(
@@ -103,6 +110,7 @@ class ExecutionPlan:
 class DeploymentTarget:
     branch_id: str
     model_id: str
+    semantic_model_sha256: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -318,6 +326,7 @@ class LiveBaselineDispatcher:
         runner: SubprocessRunner | None = None,
         timeout_seconds: float,
         deployment_targets: Mapping[str, DeploymentTarget] | None = None,
+        c4_budget: BatchBudget | None = None,
     ) -> None:
         self._planned = {attempt.attempt_id: attempt for attempt in plan.attempts}
         self._database_environments = database_environments
@@ -327,6 +336,7 @@ class LiveBaselineDispatcher:
         self._deployment_targets = (
             None if deployment_targets is None else dict(deployment_targets)
         )
+        self._c4_budget = c4_budget
         self._claude_slots: queue.Queue[Path] = queue.Queue()
         for path in plan.claude_config_directories:
             self._claude_slots.put(path)
@@ -373,6 +383,8 @@ class LiveBaselineDispatcher:
     ) -> None:
         if self._deployment_targets is None:
             raise BaselineBatchError("C4 dispatch requires a verified deployment gate")
+        if self._c4_budget is None:
+            raise BaselineBatchError("C4 dispatch requires a bound budget policy")
         try:
             target = self._deployment_targets[attempt.database]
         except KeyError as error:
@@ -382,7 +394,16 @@ class LiveBaselineDispatcher:
         environment = {
             **self._common_environment,
             "OMNI_BRANCH_ID": target.branch_id,
+            "OMNI_BUDGET_POLICY_SHA256": self._c4_budget.sha256,
+            "OMNI_COST_RESERVATION_USD": _money(
+                Decimal(str(self._c4_budget.attempt_cost_ceiling_usd))
+                if attempt.condition
+                in self._c4_budget.unobservable_cost_reservation_conditions
+                else Decimal("0")
+            ),
             "OMNI_MODEL_ID": target.model_id,
+            "OMNI_SEMANTIC_DATABASE": attempt.database,
+            "OMNI_SEMANTIC_MODEL_SHA256": target.semantic_model_sha256,
         }
         self._run_staged(attempt, root, planned.command, environment)
 
@@ -448,9 +469,10 @@ def verify_deployment_gate(
         database = record.get("database")
         branch_id = record.get("branch_id")
         model_id = record.get("model_id")
+        semantic_model_sha256 = record.get("semantic_model_sha256")
         if (
             record.get("kind") != "public-omni-semantic-deployment"
-            or record.get("schema_version") != 1
+            or record.get("schema_version") != 2
             or record.get("run_id") != run_id
             or record.get("source_commit") != source_commit
             or record.get("status") != "verified"
@@ -460,9 +482,15 @@ def verify_deployment_gate(
             or database in targets
             or not isinstance(branch_id, str)
             or not isinstance(model_id, str)
+            or not isinstance(semantic_model_sha256, str)
+            or re.fullmatch(r"[0-9a-f]{64}", semantic_model_sha256) is None
         ):
             raise BaselineBatchError("deployment record is not verified")
-        targets[database] = DeploymentTarget(branch_id=branch_id, model_id=model_id)
+        targets[database] = DeploymentTarget(
+            branch_id=branch_id,
+            model_id=model_id,
+            semantic_model_sha256=semantic_model_sha256,
+        )
     if set(targets) != expected_databases:
         raise BaselineBatchError(
             "deployment records do not have exact database coverage"
@@ -507,6 +535,10 @@ def verify_derived_deployment_gate(
         raise BaselineBatchError("derived deployment claim is invalid")
     targets: dict[str, DeploymentTarget] = {}
     record_digests = dict(spec.deployment.record_sha256)
+    try:
+        plans, plan_failures = committed_bundle_inventory(root, commit)
+    except OmniDeploymentCliError as error:
+        raise BaselineBatchError("derived semantic bundles are unavailable") from error
     for database in spec.databases:
         record_path = (
             spec.deployment.record_root / f"{spec.deployment.run_id}.{database}.json"
@@ -526,9 +558,16 @@ def verify_derived_deployment_gate(
             raise BaselineBatchError("derived deployment record is invalid")
         branch_id = record.get("branch_id")
         model_id = record.get("model_id")
+        plan = plans.get(database)
+        if plan is None or database in plan_failures:
+            raise BaselineBatchError(f"derived semantic bundle is invalid: {database}")
+        plan_file_sha256 = {item.remote_path: item.sha256 for item in plan.files}
+        semantic_model_sha256 = semantic_deployment_sha256(plan)
+        record_schema = record.get("schema_version")
+        recorded_semantic_sha256 = record.get("semantic_model_sha256")
         if (
             record.get("kind") != "public-omni-semantic-deployment"
-            or record.get("schema_version") != 1
+            or record_schema not in {1, 2}
             or record.get("run_id") != spec.deployment.run_id
             or record.get("source_commit") != source_commit
             or record.get("database") != database
@@ -537,11 +576,20 @@ def verify_derived_deployment_gate(
             or record.get("readback_verified") is not True
             or not isinstance(branch_id, str)
             or not isinstance(model_id, str)
+            or record.get("manifest_sha256") != plan.manifest_sha256
+            or record.get("file_sha256") != plan_file_sha256
+            or (
+                record_schema == 2 and recorded_semantic_sha256 != semantic_model_sha256
+            )
         ):
             raise BaselineBatchError(
                 f"derived deployment record is not verified: {database}"
             )
-        targets[database] = DeploymentTarget(branch_id=branch_id, model_id=model_id)
+        targets[database] = DeploymentTarget(
+            branch_id=branch_id,
+            model_id=model_id,
+            semantic_model_sha256=semantic_model_sha256,
+        )
     return targets
 
 

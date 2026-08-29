@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from types import SimpleNamespace
+
+import pytest
 
 import omni_benchmark.baseline_attempt_adapter as adapter
 
@@ -296,7 +299,12 @@ def test_baseline_omni_plan_reuses_committed_probe_preflight(
 def test_baseline_omni_capture_and_spec_reuse_product_components(monkeypatch) -> None:
     observed: dict[str, object] = {}
     result = object()
-    client = object()
+
+    class Client:
+        def read_semantic_model(self):
+            return {"view.view": "label: View\n"}
+
+    client = Client()
     condition = SimpleNamespace(
         maximum_status_checks=4,
         poll_schedule_seconds=(0.0,),
@@ -306,7 +314,13 @@ def test_baseline_omni_capture_and_spec_reuse_product_components(monkeypatch) ->
     )
     plan = SimpleNamespace(
         settings="settings",
-        environment={},
+        workspace=Path("/workspace"),
+        environment={
+            "OMNI_SEMANTIC_DATABASE": "sample_large",
+            "OMNI_SEMANTIC_MODEL_SHA256": "e" * 64,
+            "OMNI_COST_RESERVATION_USD": "7.000000",
+            "OMNI_BUDGET_POLICY_SHA256": "f" * 64,
+        },
         store="store",
         question="Question",
         specs=SimpleNamespace(
@@ -341,6 +355,24 @@ def test_baseline_omni_capture_and_spec_reuse_product_components(monkeypatch) ->
             return result
 
     monkeypatch.setattr(adapter, "OmniJobCapture", Capture)
+    semantic_plan = object()
+    monkeypatch.setattr(
+        adapter,
+        "committed_bundle_plan",
+        lambda workspace, commit, database: (
+            observed.update(
+                semantic_workspace=workspace,
+                semantic_commit=commit,
+                semantic_database=database,
+            )
+            or semantic_plan
+        ),
+    )
+    monkeypatch.setattr(
+        adapter,
+        "verified_semantic_deployment_sha256",
+        lambda plan, readback: "e" * 64,
+    )
 
     captured = adapter._capture_public_baseline_omni(
         plan, client_factory=lambda _: client, sleep=lambda _: None
@@ -351,4 +383,58 @@ def test_baseline_omni_capture_and_spec_reuse_product_components(monkeypatch) ->
     assert observed["client"] is client
     assert observed["question"] == "Question"
     assert spec.semantic_model_ref == "branch:one"
+    assert spec.semantic_model_sha256 == "e" * 64
+    assert spec.cost_reservation_usd == 7.0
+    assert spec.budget_policy_sha256 == "f" * 64
+    assert spec.cost_unavailable_reason == "omni_job_api_does_not_expose_cost"
     assert spec.git_commit == "d" * 40
+    assert observed["semantic_commit"] == "d" * 40
+    assert observed["semantic_database"] == "sample_large"
+
+
+def test_baseline_omni_refuses_semantic_branch_drift_before_job_capture(
+    monkeypatch,
+) -> None:
+    capture_started = False
+
+    class Client:
+        def read_semantic_model(self):
+            return {"view.view": "label: Drifted\n"}
+
+    def capture(*_args, **_kwargs):
+        nonlocal capture_started
+        capture_started = True
+        raise AssertionError("job capture must not start after semantic drift")
+
+    plan = SimpleNamespace(
+        settings="settings",
+        workspace=Path("/workspace"),
+        environment={
+            "OMNI_SEMANTIC_DATABASE": "sample_large",
+            "OMNI_SEMANTIC_MODEL_SHA256": "a" * 64,
+        },
+        store="store",
+        question="Question",
+        specs=SimpleNamespace(
+            condition=SimpleNamespace(
+                maximum_status_checks=4,
+                poll_schedule_seconds=(0.0,),
+            )
+        ),
+        arguments=SimpleNamespace(system_commit="d" * 40),
+    )
+    monkeypatch.setattr(adapter.omni_probe, "_verify_authentication", lambda _: None)
+    monkeypatch.setattr(adapter, "OmniJobCapture", capture)
+    monkeypatch.setattr(adapter, "committed_bundle_plan", lambda *_: object())
+    monkeypatch.setattr(
+        adapter,
+        "verified_semantic_deployment_sha256",
+        lambda *_: "b" * 64,
+    )
+
+    with pytest.raises(adapter.omni_probe.OmniProbeCliError, match="semantic.*drift"):
+        adapter._capture_public_baseline_omni(
+            plan, client_factory=lambda _: Client(), sleep=None
+        )
+
+    assert capture_started is False

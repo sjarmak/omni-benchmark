@@ -129,6 +129,9 @@ def _write_attempt(
     latency_ms: float = 100.0,
     manifest_commit: str = COMMIT_SHA,
     terminal_failure_class: str | None = None,
+    cost_reservation_usd: float | None = None,
+    budget_policy_sha256: str | None = None,
+    cost_unavailable_reason: str | None = None,
 ) -> None:
     root.mkdir(parents=True, mode=0o700)
     os.chmod(root, 0o700)
@@ -153,6 +156,12 @@ def _write_attempt(
         "tool_call_count": 2,
         "validation_attempt_count": 0,
     }
+    if cost_reservation_usd is not None:
+        record["cost_reservation_usd"] = cost_reservation_usd
+    if budget_policy_sha256 is not None:
+        record["budget_policy_sha256"] = budget_policy_sha256
+    if cost_unavailable_reason is not None:
+        record["cost_unavailable_reason"] = cost_unavailable_reason
     generation = _canonical_json(record)
     manifest = RunManifest.from_dict(
         {
@@ -321,6 +330,7 @@ def test_scheduler_serializes_each_database_while_using_cross_database_paralleli
         "C3": ("errored", "model_infrastructure_error"),
         "C4": ("answered", None),
     }
+    budget = BatchBudget(cost_ceiling_usd=100, attempt_cost_ceiling_usd=1)
 
     def execute(attempt: BaselineAttempt, root: Path) -> None:
         nonlocal maximum_parallel
@@ -335,6 +345,8 @@ def test_scheduler_serializes_each_database_while_using_cross_database_paralleli
             attempt,
             generation_outcome=outcome,
             terminal_failure_class=failure,
+            cost_reservation_usd=(1.0 if attempt.condition == "C4" else None),
+            budget_policy_sha256=(budget.sha256 if attempt.condition == "C4" else None),
         )
         with lock:
             active_databases[attempt.database] -= 1
@@ -344,7 +356,7 @@ def test_scheduler_serializes_each_database_while_using_cross_database_paralleli
         repository=repository,
         executor=execute,
         maximum_concurrency=3,
-        budget=BatchBudget(cost_ceiling_usd=100, attempt_cost_ceiling_usd=1),
+        budget=budget,
     )
 
     assert report.status == "complete"
@@ -547,21 +559,91 @@ def test_explicit_c4_reservation_preserves_hard_budget_when_cost_is_unobservable
         workspace, Path("experiments/autoresearch/raw/public-baseline-v1")
     )
 
+    budget = BatchBudget(
+        cost_ceiling_usd=10,
+        attempt_cost_ceiling_usd=1,
+        unobservable_cost_reservation_conditions=frozenset({"C4"}),
+    )
+
+    def execute(item: BaselineAttempt, root: Path) -> None:
+        _write_attempt(
+            root,
+            item,
+            cost_usd=None,
+            cost_reservation_usd=1.0,
+            budget_policy_sha256=budget.sha256,
+            cost_unavailable_reason="omni_job_api_does_not_expose_cost",
+        )
+
     report = run_baseline_batch(
         schedule,
         repository=repository,
-        executor=_executor(cost_usd=None),
+        executor=execute,
         maximum_concurrency=1,
-        budget=BatchBudget(
-            cost_ceiling_usd=10,
-            attempt_cost_ceiling_usd=1,
-            unobservable_cost_reservation_conditions=frozenset({"C4"}),
-        ),
+        budget=budget,
     )
 
     assert report.status == "complete"
     assert report.budget_charge_usd == 1.0
     assert report.telemetry.total_cost_usd is None
+
+
+def test_resumed_null_cost_c4_attempt_rejects_budget_policy_drift(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    attempt = BaselineAttempt(
+        condition="C4",
+        database="database_1",
+        instance_id="question_1",
+        repetition=1,
+        run_id="public-baseline-v1",
+    )
+    schedule = BaselineSchedule(
+        attempts=(attempt,),
+        eligible_manifest_sha256="c" * 64,
+        source_commit=COMMIT_SHA,
+        train_ids_sha256="d" * 64,
+    )
+    repository = ImmutableAttemptRepository(
+        workspace, Path("experiments/autoresearch/raw/public-baseline-v1")
+    )
+    original = BatchBudget(
+        cost_ceiling_usd=10,
+        attempt_cost_ceiling_usd=1,
+        unobservable_cost_reservation_conditions=frozenset({"C4"}),
+    )
+    _write_attempt(
+        repository.attempt_root(attempt),
+        attempt,
+        cost_usd=None,
+        cost_reservation_usd=1.0,
+        budget_policy_sha256=original.sha256,
+        cost_unavailable_reason="omni_job_api_does_not_expose_cost",
+    )
+
+    same = run_baseline_batch(
+        schedule,
+        repository=repository,
+        executor=lambda *_: pytest.fail("reconciled attempt must not execute"),
+        maximum_concurrency=1,
+        budget=original,
+    )
+    assert same.budget_charge_usd == 1.0
+
+    with pytest.raises(BaselineBatchError, match="budget policy.*changed"):
+        run_baseline_batch(
+            schedule,
+            repository=repository,
+            executor=lambda *_: pytest.fail("reconciled attempt must not execute"),
+            maximum_concurrency=1,
+            budget=BatchBudget(
+                cost_ceiling_usd=10,
+                attempt_cost_ceiling_usd=2,
+                unobservable_cost_reservation_conditions=frozenset({"C4"}),
+            ),
+        )
 
 
 def test_wall_clock_stop_finishes_started_database_block(tmp_path: Path) -> None:
@@ -585,9 +667,21 @@ def test_wall_clock_stop_finishes_started_database_block(tmp_path: Path) -> None
         train_ids_sha256="d" * 64,
     )
     clock = [0.0]
+    budget = BatchBudget(
+        cost_ceiling_usd=1,
+        attempt_cost_ceiling_usd=1,
+        telemetry_only_conditions=frozenset({"C4"}),
+    )
 
     def execute(attempt: BaselineAttempt, root: Path) -> None:
-        _write_attempt(root, attempt, cost_usd=None)
+        _write_attempt(
+            root,
+            attempt,
+            cost_usd=None,
+            cost_reservation_usd=0.0,
+            budget_policy_sha256=budget.sha256,
+            cost_unavailable_reason="omni_job_api_does_not_expose_cost",
+        )
         clock[0] += 1.0
 
     report = run_baseline_batch(
@@ -597,11 +691,7 @@ def test_wall_clock_stop_finishes_started_database_block(tmp_path: Path) -> None
         ),
         executor=execute,
         maximum_concurrency=1,
-        budget=BatchBudget(
-            cost_ceiling_usd=1,
-            attempt_cost_ceiling_usd=1,
-            telemetry_only_conditions=frozenset({"C4"}),
-        ),
+        budget=budget,
         stop_policy=BatchStopPolicy(maximum_wall_clock_seconds=1.5),
         monotonic=lambda: clock[0],
     )

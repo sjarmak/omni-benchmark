@@ -68,8 +68,11 @@ TRACE_SCHEMA_VERSION = _TRACE_SCHEMA_VERSION
 ALLOWED_RUN_FIELDS = REQUIRED_RUN_FIELDS | {
     "actual_result_hash",
     "actual_result_status",
+    "budget_policy_sha256",
     "compiler_failure_class",
     "compiler_status",
+    "cost_reservation_usd",
+    "cost_unavailable_reason",
     "execution_failure_class",
     "execution_status",
     "failure_category",

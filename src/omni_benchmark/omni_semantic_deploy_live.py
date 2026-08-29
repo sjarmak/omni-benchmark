@@ -14,6 +14,7 @@ from .omni_semantic_deployment import (
     OmniSemanticDeploymentError,
     OmniSemanticDeploymentPlan,
     build_semantic_deployment_plan,
+    semantic_deployment_sha256,
     verify_semantic_deployment_readback,
 )
 
@@ -55,6 +56,7 @@ class DeploymentRecord:
     branch_name: str
     manifest_sha256: str
     file_sha256: Mapping[str, str]
+    semantic_model_sha256: str | None
     file_count: int
     uploaded_file_count: int
     validation_issue_count: int | None
@@ -70,7 +72,7 @@ class DeploymentRecord:
             json.dumps(
                 {
                     "kind": "public-omni-semantic-deployment",
-                    "schema_version": 1,
+                    "schema_version": 2,
                     **asdict(self),
                 },
                 separators=(",", ":"),
@@ -150,7 +152,7 @@ def deploy_public_plan(
             )
             if validation_count == 0:
                 try:
-                    readback_count = _verify_readback(
+                    readback_count, semantic_model_sha256 = _verify_readback(
                         plan, client.readback(model_id, branch_id)
                     )
                     return _record(
@@ -167,6 +169,7 @@ def deploy_public_plan(
                         uploaded=0,
                         validation_count=validation_count,
                         readback_count=readback_count,
+                        semantic_model_sha256=semantic_model_sha256,
                     )
                 except (OmniSemanticDeploymentError, _StageFailure):
                     pass
@@ -182,7 +185,9 @@ def deploy_public_plan(
             raise _StageFailure(
                 "validation", f"validator returned {validation_count} issue(s)"
             )
-        readback_count = _verify_readback(plan, client.readback(model_id, branch_id))
+        readback_count, semantic_model_sha256 = _verify_readback(
+            plan, client.readback(model_id, branch_id)
+        )
         return _record(
             plan=plan,
             connection_id=connection_id,
@@ -197,6 +202,7 @@ def deploy_public_plan(
             uploaded=uploaded,
             validation_count=validation_count,
             readback_count=readback_count,
+            semantic_model_sha256=semantic_model_sha256,
         )
     except _StageFailure as error:
         stage, detail = error.stage, str(error)
@@ -218,6 +224,7 @@ def deploy_public_plan(
         uploaded=uploaded,
         validation_count=validation_count,
         readback_count=readback_count,
+        semantic_model_sha256=None,
         status="failed",
         failure_stage=stage,
         failure_detail=detail,
@@ -245,6 +252,7 @@ def bundle_preflight_failure_record(
         branch_name=isolated_branch_name(database),
         manifest_sha256="",
         file_sha256={},
+        semantic_model_sha256=None,
         file_count=0,
         uploaded_file_count=0,
         validation_issue_count=None,
@@ -277,7 +285,7 @@ def deployment_record_path(root: Path, run_id: str, database: str) -> Path:
 
 def _verify_readback(
     plan: OmniSemanticDeploymentPlan, readback: Mapping[str, str]
-) -> int:
+) -> tuple[int, str]:
     if not isinstance(readback, Mapping):
         raise _StageFailure("readback", "readback files must be a mapping")
     expected = {item.remote_path for item in plan.files}
@@ -287,7 +295,7 @@ def _verify_readback(
         raise _StageFailure("readback", "isolated branch contains unexpected files")
     selected = {path: readback[path] for path in expected if path in readback}
     verify_semantic_deployment_readback(plan, selected)
-    return len(selected)
+    return len(selected), semantic_deployment_sha256(plan)
 
 
 def _validation_issue_count(value: object) -> int:
@@ -311,6 +319,7 @@ def _record(
     uploaded: int,
     validation_count: int | None,
     readback_count: int,
+    semantic_model_sha256: str | None,
     status: str = "verified",
     failure_stage: str | None = None,
     failure_detail: str | None = None,
@@ -327,6 +336,7 @@ def _record(
         branch_name=branch_name,
         manifest_sha256=plan.manifest_sha256,
         file_sha256=dict(file_sha256),
+        semantic_model_sha256=semantic_model_sha256,
         file_count=len(plan.files),
         uploaded_file_count=uploaded,
         validation_issue_count=validation_count,

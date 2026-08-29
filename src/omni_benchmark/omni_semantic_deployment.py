@@ -143,6 +143,37 @@ def verify_semantic_deployment_readback(
             )
 
 
+def semantic_deployment_sha256(plan: OmniSemanticDeploymentPlan) -> str:
+    """Hash the authenticated semantic projection deployed to Omni."""
+    if not isinstance(plan, OmniSemanticDeploymentPlan):
+        raise OmniSemanticDeploymentError("semantic digest requires a deployment plan")
+    documents = {
+        item.remote_path: _expected_remote_document(item) for item in plan.files
+    }
+    try:
+        content = json.dumps(
+            documents,
+            allow_nan=False,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+    except (TypeError, ValueError) as error:
+        raise OmniSemanticDeploymentError(
+            "semantic deployment content is not canonical JSON"
+        ) from error
+    return hashlib.sha256(content).hexdigest()
+
+
+def verified_semantic_deployment_sha256(
+    plan: OmniSemanticDeploymentPlan,
+    readback: Mapping[str, str | bytes],
+) -> str:
+    """Verify a branch readback, then return its authenticated plan digest."""
+    verify_semantic_deployment_readback(plan, readback)
+    return semantic_deployment_sha256(plan)
+
+
 def _require_bundle_root(root: Path) -> Path:
     if not isinstance(root, Path):
         raise OmniSemanticDeploymentError("bundle root must be a Path")

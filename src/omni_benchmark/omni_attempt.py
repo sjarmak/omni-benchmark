@@ -41,6 +41,9 @@ class C4AttemptSpec:
     budget_id: str
     software_versions: Mapping[str, str]
     cli_versions: Mapping[str, str]
+    cost_reservation_usd: float | None = None
+    budget_policy_sha256: str | None = None
+    cost_unavailable_reason: str | None = None
 
 
 def write_c4_attempt(
@@ -125,7 +128,10 @@ def _telemetry_fields(spec: C4AttemptSpec, probe: OmniProbeResult) -> dict[str, 
         + (("database_query_count",) if probe.database_query_count is None else ())
     )
     return {
+        "budget_policy_sha256": spec.budget_policy_sha256,
+        "cost_reservation_usd": spec.cost_reservation_usd,
         "cost_source": "unavailable",
+        "cost_unavailable_reason": spec.cost_unavailable_reason,
         "cost_usd": None,
         "database_query_count": probe.database_query_count,
         "retry_count": None,

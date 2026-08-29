@@ -36,6 +36,7 @@ _IDENTIFIER_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}")
 _COMMIT_PATTERN = re.compile(r"[0-9a-f]{40,64}")
 _MAX_PRIVATE_FILE_BYTES = 16 * 1024 * 1024
 _SCORED_FIELDS = frozenset({"accuracy", "correctness", "outcome", "scored_outcome"})
+_C4_COST_UNAVAILABLE_REASON = "omni_job_api_does_not_expose_cost"
 
 
 class BaselineBatchError(RuntimeError):
@@ -171,6 +172,24 @@ class BatchBudget:
         ):
             raise BaselineBatchError("telemetry-only cost conditions are invalid")
 
+    @property
+    def sha256(self) -> str:
+        """Bind every persisted reservation to the complete batch policy."""
+        return hashlib.sha256(
+            _canonical_json(
+                {
+                    "attempt_cost_ceiling_usd": _money(
+                        Decimal(str(self.attempt_cost_ceiling_usd))
+                    ),
+                    "cost_ceiling_usd": _money(Decimal(str(self.cost_ceiling_usd))),
+                    "telemetry_only_conditions": sorted(self.telemetry_only_conditions),
+                    "unobservable_cost_reservation_conditions": sorted(
+                        self.unobservable_cost_reservation_conditions
+                    ),
+                }
+            )
+        ).hexdigest()
+
 
 @dataclass(frozen=True, slots=True)
 class BatchStopPolicy:
@@ -201,6 +220,9 @@ class AttemptObservation:
     token_count: int | None
     tool_call_count: int | None
     validation_attempt_count: int | None
+    cost_reservation_usd: float | None
+    budget_policy_sha256: str | None
+    cost_unavailable_reason: str | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -709,9 +731,21 @@ def _reconciled_observation(
         raise BaselineBatchError("attempt outcome and failure class are inconsistent")
     if failure is not None and (not isinstance(failure, str) or not failure):
         raise BaselineBatchError("attempt failure class is invalid")
+    cost_usd = _optional_number(record.get("cost_usd"), "cost_usd")
+    cost_unavailable_reason = record.get("cost_unavailable_reason")
+    if cost_unavailable_reason is not None and (
+        not isinstance(cost_unavailable_reason, str) or not cost_unavailable_reason
+    ):
+        raise BaselineBatchError("cost unavailable reason is invalid")
+    budget_policy_sha256 = record.get("budget_policy_sha256")
+    if budget_policy_sha256 is not None and (
+        not isinstance(budget_policy_sha256, str)
+        or re.fullmatch(r"[0-9a-f]{64}", budget_policy_sha256) is None
+    ):
+        raise BaselineBatchError("budget policy digest is invalid")
     return AttemptObservation(
         attempt=attempt,
-        cost_usd=_optional_number(record.get("cost_usd"), "cost_usd"),
+        cost_usd=cost_usd,
         database_query_count=_optional_count(
             record.get("database_query_count"), "database_query_count"
         ),
@@ -726,6 +760,11 @@ def _reconciled_observation(
         validation_attempt_count=_optional_count(
             record.get("validation_attempt_count"), "validation_attempt_count"
         ),
+        cost_reservation_usd=_optional_number(
+            record.get("cost_reservation_usd"), "cost_reservation_usd"
+        ),
+        budget_policy_sha256=budget_policy_sha256,
+        cost_unavailable_reason=cost_unavailable_reason,
     )
 
 
@@ -784,8 +823,18 @@ def _observed_cost(
 
 
 def _hard_budget_cost(observation: AttemptObservation, budget: BatchBudget) -> float:
-    if observation.attempt.condition in budget.telemetry_only_conditions:
-        return 0.0
+    if observation.attempt.condition == "C4":
+        expected_reservation = _reservation_cost(observation.attempt, budget)
+        if observation.budget_policy_sha256 != budget.sha256:
+            raise BaselineBatchError("C4 budget policy changed after attempt capture")
+        if observation.cost_reservation_usd != expected_reservation:
+            raise BaselineBatchError("C4 budget reservation changed after capture")
+        if observation.cost_usd is None and (
+            observation.cost_unavailable_reason != _C4_COST_UNAVAILABLE_REASON
+        ):
+            raise BaselineBatchError("C4 unavailable cost reason is not preserved")
+        if observation.attempt.condition in budget.telemetry_only_conditions:
+            return expected_reservation
     cost = observation.cost_usd
     if cost is None:
         if (

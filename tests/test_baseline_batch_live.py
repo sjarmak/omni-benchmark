@@ -17,6 +17,7 @@ from omni_benchmark.baseline_batch import (
 )
 from omni_benchmark.baseline_batch_live import (
     DatabaseEnvironmentDirectory,
+    DeploymentTarget,
     LiveBaselineDispatcher,
     build_execution_plan,
     c4_concurrency_canary_schedule,
@@ -158,7 +159,8 @@ def test_deployment_gate_requires_one_verified_record_for_every_scheduled_databa
             "model_id": "model-1",
             "readback_verified": True,
             "run_id": "deploy-v1",
-            "schema_version": 1,
+            "schema_version": 2,
+            "semantic_model_sha256": "d" * 64,
             "source_commit": source_commit,
             "status": "verified",
             "validation_issue_count": 0,
@@ -167,6 +169,121 @@ def test_deployment_gate_requires_one_verified_record_for_every_scheduled_databa
 
     with pytest.raises(BaselineBatchError, match="exact database coverage"):
         verify_deployment_gate(root, "deploy-v1", {"database_1", "database_2"})
+
+
+def test_deployment_gate_binds_verified_semantic_content_digest(tmp_path: Path) -> None:
+    root = tmp_path / "deployments"
+    root.mkdir(mode=0o700)
+    source_commit = "c" * 40
+    _private_json(
+        root / "deploy-v1.claim",
+        {
+            "databases": ["database_1"],
+            "kind": "public-omni-semantic-deployment-claim",
+            "run_id": "deploy-v1",
+            "schema_version": 1,
+            "source_commit": source_commit,
+        },
+    )
+    _private_json(
+        root / "deploy-v1.database_1.json",
+        {
+            "branch_id": "branch-1",
+            "database": "database_1",
+            "kind": "public-omni-semantic-deployment",
+            "model_id": "model-1",
+            "readback_verified": True,
+            "run_id": "deploy-v1",
+            "schema_version": 2,
+            "semantic_model_sha256": "d" * 64,
+            "source_commit": source_commit,
+            "status": "verified",
+            "validation_issue_count": 0,
+        },
+    )
+
+    targets = verify_deployment_gate(root, "deploy-v1", {"database_1"})
+
+    assert targets == {
+        "database_1": DeploymentTarget(
+            branch_id="branch-1",
+            model_id="model-1",
+            semantic_model_sha256="d" * 64,
+        )
+    }
+
+
+def test_c4_dispatch_passes_content_and_budget_binding_to_child(tmp_path: Path) -> None:
+    attempt = BaselineAttempt(
+        condition="C4",
+        database="database_1",
+        instance_id="question_1",
+        repetition=1,
+        run_id="c4-baseline-v1",
+    )
+    schedule = BaselineSchedule(
+        attempts=(attempt,),
+        eligible_manifest_sha256="a" * 64,
+        source_commit=COMMIT_SHA,
+        train_ids_sha256="b" * 64,
+    )
+    plan = build_execution_plan(
+        schedule,
+        workspace=tmp_path,
+        output_root=Path("experiments/autoresearch/raw/c4-baseline-v1"),
+        claude_config_directories=(tmp_path / "unused-claude",),
+        freeze_a_commit="f" * 40,
+    )
+    budget = BatchBudget(
+        cost_ceiling_usd=100,
+        attempt_cost_ceiling_usd=7,
+        unobservable_cost_reservation_conditions=frozenset({"C4"}),
+    )
+    observed: dict[str, str] = {}
+
+    def runner(command, environment, _timeout):
+        observed.update(environment)
+        root = tmp_path / command[command.index("--output-root") + 1]
+        _write_attempt(
+            root,
+            attempt,
+            cost_usd=None,
+            cost_reservation_usd=7.0,
+            budget_policy_sha256=budget.sha256,
+            cost_unavailable_reason="omni_job_api_does_not_expose_cost",
+        )
+        return batch_live.SubprocessOutcome(returncode=0, stdout=b"{}\n", stderr=b"")
+
+    dispatcher = LiveBaselineDispatcher(
+        plan,
+        database_environments=None,
+        common_environment={"OMNI_BASE_URL": "https://example.test"},
+        runner=runner,
+        timeout_seconds=10,
+        deployment_targets={
+            "database_1": DeploymentTarget(
+                branch_id="branch-1",
+                model_id="model-1",
+                semantic_model_sha256="d" * 64,
+            )
+        },
+        c4_budget=budget,
+    )
+
+    report = run_baseline_batch(
+        schedule,
+        repository=ImmutableAttemptRepository(
+            tmp_path, Path("experiments/autoresearch/raw/c4-baseline-v1")
+        ),
+        executor=dispatcher,
+        maximum_concurrency=1,
+        budget=budget,
+    )
+
+    assert report.budget_charge_usd == 7.0
+    assert observed["OMNI_SEMANTIC_MODEL_SHA256"] == "d" * 64
+    assert observed["OMNI_COST_RESERVATION_USD"] == "7.000000"
+    assert observed["OMNI_BUDGET_POLICY_SHA256"] == budget.sha256
 
 
 def test_dispatcher_runs_direct_subprocesses_with_database_specific_environment(

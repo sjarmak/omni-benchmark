@@ -20,6 +20,18 @@ from omni_benchmark.c4_baseline_arm import render_c4_baseline_arm
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = Path("config/conditions/c4-public-baseline-arm-v1.json")
+C4_DATABASES = (
+    "archeology_scan_large",
+    "cross_border_large",
+    "cybermarket_pattern_large",
+    "disaster_relief_large",
+    "exchange_traded_funds_large",
+    "fake_account_large",
+    "labor_certification_applications_large",
+    "museum_artifact_large",
+    "residential_data_large",
+    "reverse_logistics_large",
+)
 
 
 def _sha256(content: bytes) -> str:
@@ -55,6 +67,15 @@ def _fixture_repo(tmp_path: Path) -> tuple[Path, str]:
         deployment,
         workspace / "experiments/deployments/public-baseline-v6",
     )
+    shutil.copytree(
+        ROOT / "semantic_models/public_bundle",
+        workspace / "semantic_models/public_bundle",
+    )
+    for database in C4_DATABASES[1:]:
+        shutil.copytree(
+            ROOT / "semantic_models/public_baseline" / database / "bundle",
+            workspace / "semantic_models/public_baseline" / database / "bundle",
+        )
     _git(workspace, "init", "-q")
     _git(workspace, "config", "user.email", "test@example.com")
     _git(workspace, "config", "user.name", "Test")
@@ -180,6 +201,7 @@ def test_derived_gate_resolves_all_ten_verified_targets(tmp_path: Path) -> None:
 
     assert len(targets) == 10
     assert all(target.branch_id and target.model_id for target in targets.values())
+    assert all(len(target.semantic_model_sha256) == 64 for target in targets.values())
 
 
 def test_c4_dry_run_projects_exact_product_arm_without_direct_credentials(
