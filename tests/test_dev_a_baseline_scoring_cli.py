@@ -1,0 +1,64 @@
+"""CLI security boundary for frozen-baseline dev-A scoring."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from omni_benchmark.dev_a_baseline_scoring import DevABaselineScoringError
+from omni_benchmark.dev_a_baseline_scoring_cli import (
+    dev_a_baseline_scoring_entrypoint,
+    dev_a_baseline_scoring_main,
+)
+
+
+def test_cli_requires_in_memory_dsn_environment(tmp_path: Path) -> None:
+    with pytest.raises(DevABaselineScoringError, match="SCORER_ADMIN_DSN") as captured:
+        dev_a_baseline_scoring_main(
+            [
+                "--workspace",
+                str(tmp_path),
+                "--freeze-a-commit",
+                "a" * 40,
+                "--expected-selection-sha256",
+                "b" * 64,
+                "--expected-release-sha256",
+                "c" * 64,
+                "--expected-official-scoreable-questions",
+                "122",
+                "--expected-sensitivity-scoreable-questions",
+                "121",
+                "--output-root",
+                "experiments/autoresearch/raw/score-v1",
+            ],
+            environment={},
+        )
+
+    assert "host=" not in str(captured.value)
+    assert "password=" not in str(captured.value)
+
+
+def test_cli_rejects_dsn_in_command_line() -> None:
+    with pytest.raises(SystemExit):
+        dev_a_baseline_scoring_main(
+            ["--admin-dsn", "host=secret.example password=do-not-print"],
+            environment={},
+        )
+
+
+def test_entrypoint_sanitizes_unexpected_failures(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    def failed() -> int:
+        raise RuntimeError("candidate SQL and secret result must not print")
+
+    monkeypatch.setattr(
+        "omni_benchmark.dev_a_baseline_scoring_cli.dev_a_baseline_scoring_main",
+        failed,
+    )
+
+    assert dev_a_baseline_scoring_entrypoint() == 1
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert captured.err == "dev-A baseline scoring failed: internal scorer error\n"

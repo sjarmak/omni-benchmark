@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from decimal import Decimal, InvalidOperation
 from typing import Any
 
 import pytest
@@ -195,6 +196,30 @@ def test_gold_row_limit_overflow_is_non_rerunnable_infrastructure() -> None:
     assert result.failure_origin == "benchmark_infrastructure"
     assert result.failure_class is FailureClass.GOLD_RESULT_OVERFLOW
     assert not result.rerun_eligible
+
+
+def test_official_decimal_normalization_failure_is_scorer_policy_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def invalid_decimal(*args: object, **kwargs: object) -> bool:
+        raise InvalidOperation
+
+    monkeypatch.setattr(
+        "omni_benchmark.sealed_scoring.official_soft_ex_equal", invalid_decimal
+    )
+    responses = _responses() | {
+        "SELECT candidate": [(Decimal("1"),)],
+        "SELECT gold": [(Decimal("1"),)],
+    }
+    case = _case(candidate_sql="SELECT candidate", gold_sql="SELECT gold")
+
+    result = score_query(
+        case, ScoringMode.OFFICIAL, SyntheticIsolationProvider(responses)
+    )
+
+    assert result.outcome is None
+    assert result.failure_origin == "benchmark_infrastructure"
+    assert result.failure_class is FailureClass.SCORER_POLICY_ERROR
 
 
 class MutableConnection(SyntheticConnection):
