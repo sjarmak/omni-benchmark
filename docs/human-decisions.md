@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T19:11:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T19:12:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -43,7 +43,7 @@ public extension files. The general fix authenticates all three returned view
 identity values before projecting them away; every other semantic difference
 remains exact. That prerequisite evidence remains unchanged.
 
-## No action needed — fixed-forward C4 v8 authorized
+## No action needed — fixed-forward C4 v8 running
 
 The exact v6 receipt was consumed, but all three initial child processes stopped
 before provider contact because the launch workspace HEAD did not equal the
@@ -62,7 +62,9 @@ from fresh detached worktree `/tmp/omni-benchmark-c4-v8` at exact system commit
 source-tree bytecode. The receipt is mode `0600`, expires at
 `2026-08-30T00:10:14Z`, and has SHA-256
 `92757ebdbe10538ac3eb028008b838a8349eed0f9dfa3cb5b28673d4f174f2c7`.
-At this update it is valid, unconsumed, and no v8 output exists. Schedule
+It was consumed exactly once before dispatcher construction. Live session
+`48207` is running; the first observation found no terminal output files and
+zero source-tree bytecode. No replacement process may be launched. Schedule
 SHA-256 is
 `27dfb0f6e5cc61f3ce4afea8db031aa1da8b9f174e257844846259fc8f3935a7`,
 execution-plan SHA-256 is

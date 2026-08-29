@@ -10209,3 +10209,7 @@ and execution-plan SHA-256
 `7c315004fd04dba16c4b002f96c815aba1c2d4d514638d2ba98e2ad1b8d4d302`.
 Its exact receipt is recorded under `omni-benchmark-ei0.4.14`, SHA-256
 `92757ebdbe10538ac3eb028008b838a8349eed0f9dfa3cb5b28673d4f174f2c7`.
+The receipt was consumed exactly once and live dispatcher session `48207`
+remained active past both earlier pre-provider failure points. Its first
+observation had no terminal output files and zero source-tree bytecode; no
+replacement may be launched while that handle is live.
