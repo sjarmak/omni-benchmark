@@ -4,13 +4,35 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T11:46:28-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T12:11:57-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
-No decisions are currently waiting on the user. `bd human list` returned an
-empty queue at the timestamp above.
+### One exact all-18 corrected-baseline deployment — `omni-benchmark-dih.17.8`
+
+Reply with **A** or **B** in this chat; do not run a command:
+
+- **A (recommended):** authorize exactly one append-only deployment,
+  validation, and exact-readback pass for the corrected C4 baseline.
+- **B:** hold without contacting Omni or creating the run claim.
+
+The request is frozen at
+`experiments/public-baseline-v7-deployment-request.json`, SHA-256
+`cf228cd8cdbc0e8f974850ff4f86b0f826d963cc7af2d002654953656a421c36`.
+It binds source commit `a684a3ec9c1c36aeaf8648be76d0127f6597d696`, all
+18 databases, 254 authenticated files, bundle-set SHA-256
+`2487b4ad6bb6c82a49cca76f3487c76a8311b688fe22da06b8c2f4436de83a8b`,
+run `public-baseline-v7-20260829`, the absent append-only output root
+`experiments/deployments/public-baseline-v7`, four workers, and a global
+1.25-second minimum request interval. Every terminal per-database result will
+be preserved; failures will not be retried.
+
+This authorizes only upload/validation/readback on the existing isolated
+`livesqlbench-*` baseline branches. It does **not** authorize C4 question
+dispatch, E02 deployment, scoring or correctness access, gold/hidden labels,
+dev-B/test, shared/main models, credentials/OAuth/leases, or any replacement
+run. The obsolete ten-target v5 package remains prohibited.
 
 ## Approved actions in progress
 

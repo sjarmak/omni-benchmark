@@ -6718,3 +6718,41 @@ specific runtime input, private label value, dev-B outcome, test label,
 database/provider call, credential, rerun, C4 action, or sealed action entered
 the change. Final repository gate: 1,884 passed, five expected environment-
 dependent skips, 83.59% branch coverage; Ruff, formatting, and diff checks pass.
+
+## D-123: Freeze the corrected all-18 baseline deployment request
+
+### Hypothesis
+
+The remaining `omni-benchmark-dih.17` live oracle can be authorized without
+conflating the C4 baseline with the E02 intervention if one provider-inert
+request binds the exact corrected baseline bundle set, one append-only run
+identity, isolated resources, pacing, and explicit negative scope before any
+Omni contact.
+
+### Offline result
+
+Loading semantic plans only from Git commit
+`a684a3ec9c1c36aeaf8648be76d0127f6597d696` yields 18 valid baseline plans,
+254 files, zero preflight failures, and bundle-set SHA-256
+`2487b4ad6bb6c82a49cca76f3487c76a8311b688fe22da06b8c2f4436de83a8b`.
+The separately regenerated E02 intervention has 272 files, 91 relationships,
+and candidate SHA-256
+`0111ce62001d6bb6f796a3912830529b8fae263353e62dd06111768c3147c3b8`;
+all 18 per-database semantic deployment hashes differ. This proves the two
+deployment identities must remain separate and the baseline must run first.
+
+The frozen baseline-only request is
+`experiments/public-baseline-v7-deployment-request.json`, SHA-256
+`cf228cd8cdbc0e8f974850ff4f86b0f826d963cc7af2d002654953656a421c36`.
+It specifies one append-only `public-baseline-v7-20260829` pass over all 18
+existing isolated baseline branches with four workers and a globally paced
+1.25-second minimum request interval. It prohibits C4, E02, questions, scoring,
+protected labels, credential/lease operations, shared/main mutations, and
+replacement runs.
+
+### Outcome
+
+WAITING on human decision `omni-benchmark-dih.17.8`. Preparation was entirely
+provider-inert: no client was constructed, no run claim was created, and no
+provider, credential, lease, question, label, score, or correctness surface was
+accessed.
