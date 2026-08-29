@@ -61,6 +61,61 @@ _MONEY = Decimal("0.000001")
 
 SEALED_RUNTIME_SOURCE_PATHS = (
     "sealed_tools/dispatch_sealed_generation.py",
+    "src/omni_benchmark/__init__.py",
+    "src/omni_benchmark/artifact_store.py",
+    "src/omni_benchmark/autoresearch_artifacts.py",
+    "src/omni_benchmark/autoresearch_capture_policy.py",
+    "src/omni_benchmark/autoresearch_config.py",
+    "src/omni_benchmark/autoresearch_metrics.py",
+    "src/omni_benchmark/autoresearch_provenance.py",
+    "src/omni_benchmark/autoresearch_runs.py",
+    "src/omni_benchmark/autoresearch_smoke.py",
+    "src/omni_benchmark/claude_direct_contract.py",
+    "src/omni_benchmark/claude_direct_transport.py",
+    "src/omni_benchmark/claude_failure_classification.py",
+    "src/omni_benchmark/claude_process_runtime.py",
+    "src/omni_benchmark/claude_resource_identity.py",
+    "src/omni_benchmark/content_policy.py",
+    "src/omni_benchmark/direct_action_evidence.py",
+    "src/omni_benchmark/direct_action_protocol.py",
+    "src/omni_benchmark/direct_attempt_binding.py",
+    "src/omni_benchmark/direct_capture_binding.py",
+    "src/omni_benchmark/direct_capture_contract.py",
+    "src/omni_benchmark/direct_capture_receipt.py",
+    "src/omni_benchmark/direct_capture_telemetry.py",
+    "src/omni_benchmark/direct_capture_validation.py",
+    "src/omni_benchmark/direct_database_loader.py",
+    "src/omni_benchmark/direct_model_observability.py",
+    "src/omni_benchmark/direct_postgres.py",
+    "src/omni_benchmark/direct_prepared_attempt.py",
+    "src/omni_benchmark/direct_probe_cli.py",
+    "src/omni_benchmark/direct_public_context.py",
+    "src/omni_benchmark/direct_public_parsing.py",
+    "src/omni_benchmark/direct_public_search.py",
+    "src/omni_benchmark/direct_question_loader.py",
+    "src/omni_benchmark/direct_run_metrics.py",
+    "src/omni_benchmark/direct_runtime_binding.py",
+    "src/omni_benchmark/direct_sql_attempt.py",
+    "src/omni_benchmark/direct_sql_capture.py",
+    "src/omni_benchmark/direct_sql_result.py",
+    "src/omni_benchmark/direct_trace_validation.py",
+    "src/omni_benchmark/freeze_b.py",
+    "src/omni_benchmark/freeze_b_control.py",
+    "src/omni_benchmark/freeze_b_record.py",
+    "src/omni_benchmark/freeze_b_schedule.py",
+    "src/omni_benchmark/omni_attempt.py",
+    "src/omni_benchmark/omni_capture.py",
+    "src/omni_benchmark/omni_cli.py",
+    "src/omni_benchmark/omni_probe_cli.py",
+    "src/omni_benchmark/omni_probe_preflight.py",
+    "src/omni_benchmark/omni_result_adapter.py",
+    "src/omni_benchmark/postgres_execution.py",
+    "src/omni_benchmark/postgres_isolation.py",
+    "src/omni_benchmark/protected_fields.py",
+    "src/omni_benchmark/run_manifest.py",
+    "src/omni_benchmark/run_quarantine.py",
+    "src/omni_benchmark/score_artifacts.py",
+    "src/omni_benchmark/scoring.py",
     "src/omni_benchmark/sealed_cohort_finalization.py",
     "src/omni_benchmark/sealed_dispatch.py",
     "src/omni_benchmark/sealed_dispatch_cli.py",
@@ -70,8 +125,10 @@ SEALED_RUNTIME_SOURCE_PATHS = (
     "src/omni_benchmark/sealed_generation_staging.py",
     "src/omni_benchmark/sealed_omni_adapter.py",
     "src/omni_benchmark/sealed_omni_factory.py",
+    "src/omni_benchmark/sealed_production_factory.py",
     "src/omni_benchmark/sealed_production_approval.py",
     "src/omni_benchmark/sealed_runtime_inputs.py",
+    "src/omni_benchmark/sql_admission.py",
 )
 
 RuntimeSourceVerifier = Callable[[Path, str], str]
@@ -474,7 +531,11 @@ def preflight_sealed_dispatch(
 def execute_sealed_dispatch(
     preflight: SealedDispatchPreflight,
     *,
-    adapter_factories: Mapping[str, AdapterFactory],
+    adapter_factories: Mapping[str, AdapterFactory] | None = None,
+    adapter_factories_builder: Callable[
+        [SealedDispatchPreflight], Mapping[str, AdapterFactory]
+    ]
+    | None = None,
     monotonic: Callable[[], float] = time.monotonic,
 ) -> SealedDispatchReport:
     """Consume approval, construct exact adapters, and stage unscored generations."""
@@ -496,6 +557,8 @@ def execute_sealed_dispatch(
     ceiling = Decimal(value.policy.cost_ceiling_usd)
     if required > ceiling:
         raise SealedDispatchError("sealed pending attempts exceed the cost ceiling")
+    if (adapter_factories is None) == (adapter_factories_builder is None):
+        raise SealedDispatchError("exactly one sealed adapter source is required")
     try:
         consume_sealed_production_approval(
             value.workspace,
@@ -506,6 +569,13 @@ def execute_sealed_dispatch(
         raise SealedDispatchError(
             "sealed production approval consumption failed"
         ) from error
+    if adapter_factories_builder is not None:
+        try:
+            adapter_factories = adapter_factories_builder(value)
+        except Exception as error:
+            raise SealedDispatchError(
+                "sealed adapter factory construction failed"
+            ) from error
     adapters = _construct_adapters(value.freeze_b, adapter_factories)
     completed, maximum_observed, stopped = _run_pending(
         pending,
@@ -606,8 +676,10 @@ def _run_pending(
 def _construct_adapters(
     freeze_b: FreezeBManifest, factories: Mapping[str, AdapterFactory]
 ) -> dict[str, SealedConditionAdapter]:
-    if set(factories) != set(CONDITIONS) or any(
-        not callable(factory) for factory in factories.values()
+    if (
+        not isinstance(factories, Mapping)
+        or set(factories) != set(CONDITIONS)
+        or any(not callable(factory) for factory in factories.values())
     ):
         raise SealedDispatchError("sealed adapter factory set is invalid")
     adapters: dict[str, SealedConditionAdapter] = {}

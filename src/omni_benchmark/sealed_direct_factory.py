@@ -233,6 +233,9 @@ def _capture_dependencies(
             "prepared direct attempt does not match frozen condition"
         )
     profile = config.claude_config_directories[prepared.repetition - 1]
+    _validate_external_private_directory(
+        config.workspace, profile, "Claude lease directory"
+    )
     _validate_oauth_directory(profile)
     database_directory = DatabaseEnvironmentDirectory(
         config.workspace, config.database_environment_root
@@ -254,7 +257,10 @@ def _capture_dependencies(
         selected_database=prepared.database,
         environment=process_environment,
     )
-    with private_runtime_directories(parent=config.runtime_parent) as directories:
+    runtime_parent = _validate_external_private_directory(
+        config.workspace, config.runtime_parent, "runtime parent"
+    )
+    with private_runtime_directories(parent=runtime_parent) as directories:
         runtime_home, temp_directory, working_directory = directories
         model_transport = ClaudeDirectTransport(
             ClaudeDirectConfig(
@@ -309,6 +315,28 @@ def _validated_config(value: object) -> SealedDirectProductionConfig:
             "direct production configuration is not canonical"
         )
     return reparsed
+
+
+def _validate_external_private_directory(
+    workspace: Path, value: Path, description: str
+) -> Path:
+    supplied = Path(value)
+    try:
+        metadata = supplied.stat(follow_symlinks=False)
+        resolved = supplied.resolve(strict=True)
+    except OSError as error:
+        raise SealedDirectFactoryError(f"{description} is unavailable") from error
+    if (
+        resolved.is_relative_to(workspace)
+        or supplied.is_symlink()
+        or not stat.S_ISDIR(metadata.st_mode)
+        or stat.S_IMODE(metadata.st_mode) != 0o700
+        or metadata.st_uid != os.getuid()
+    ):
+        raise SealedDirectFactoryError(
+            f"{description} must be an external private directory"
+        )
+    return resolved
 
 
 def _require_direct_paths(value: SealedConditionRuntimeInput) -> None:

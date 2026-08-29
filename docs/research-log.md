@@ -5658,3 +5658,80 @@ state from silently selecting a different semantic model at run time.
 
 Implement the top-level adapter-factory builder, including the strict
 deployment-evidence loader, and bind it to the sealed entry point.
+
+## 2026-08-29 — D-105: Cross the production boundary only after receipt consumption
+
+### Decision / experiment
+
+Move the complete C1-C4 factory builder inside dispatcher execution after the
+one-time approval marker is written, and freeze a separately verified C4
+deployment gate. Change type: general evaluation integrity. Bead:
+`omni-benchmark-ei0.5.5.3.4`.
+
+### Hypothesis
+
+If dry preflight never constructs production configuration, receipt consumption
+precedes all exact runtime/deployment loading, and the C4 target map is itself a
+frozen evidence graph, then the same entry point can be safe for both operator
+inspection and eventual sealed execution without permitting mutable provider
+state to choose an evaluated system.
+
+### Intervention
+
+Added `SealedProductionAdapterConfig`,
+`load_sealed_omni_deployment_gate`, and
+`build_sealed_production_adapter_factories`. The deployment loader reads a
+canonical gate and every referenced schema-v2 verified deployment record from
+Git at S, requires every path/digest to be in Freeze B, rejects protected
+fields, binds one deployment run/source commit plus the aggregate semantic
+identity, and requires exact sorted coverage of all scheduled C4 databases.
+
+The dry-default CLI now accepts the frozen input/gate paths and three lease,
+private database-environment, and runtime-parent paths needed for explicit
+execution. It only parses those paths before receipt consumption. The dispatcher
+then consumes the receipt before invoking the builder, which constructs the
+three direct factories and one Omni factory. Factory failure produces no
+provider call or generation and requires a fresh receipt.
+
+Expanded the runtime-source binding from the sealed surface modules to all 69
+entry-point and statically imported local source files, with a closure test that
+fails if a future local import is omitted. A security pass also made direct
+execution reject repository-internal, symlinked, non-owner, or non-0700 Claude
+lease and runtime-parent directories before transport construction. The
+synthetic sealed-plan fixture now uses database names valid under the production
+PostgreSQL identity grammar.
+
+### Result
+
+The real production builder and real C1-C4 adapters completed all 1,212
+synthetic attempts, staged no scores, and finalized all twelve 101-record
+cohorts; only the terminal provider/capture boundaries were synthetic. The
+production-factory module passes six focused tests at 82.70% branch coverage.
+The full repository gate passes 1,730 tests with five expected environment
+skips at 84.45% branch coverage. Ruff, format, and diff checks pass. No real
+receipt, provider, credential, protected outcome, gold, test annotation, or
+sealed correctness value was accessed.
+
+### Interpretation
+
+The sealed no-score generation path is now production-wired without weakening
+its dry mode or custody boundary. Remaining work is operational, not adapter
+implementation: finish/freeze the public baseline and E02 candidate, create the
+actual final deployment gate and Freeze B under their human controls, then use
+the separately authorized sealed run.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+A production command can be inspectable by default and still exact at execution
+when its live dependency graph is a post-consumption function of frozen public
+evidence rather than ambient account state.
+
+### Next step
+
+Close the adapter-wiring beads, update the shared frontier, and return to the
+human-authorized public C4/final-candidate sequence without launching either
+from this offline implementation lane.

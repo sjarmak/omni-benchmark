@@ -53,7 +53,7 @@ def _attempts() -> tuple[SealedPlannedAttempt, ...]:
             attempt_id=f"sealed:q-{question:03d}:{condition}:{repetition}",
             cohort_id=f"sealed-{condition.lower()}-r{repetition}",
             condition=condition,
-            database=f"db-{((question - 1) % 7) + 1}",
+            database=f"db_{((question - 1) % 7) + 1}",
             instance_id=f"q-{question:03d}",
             repetition=repetition,
             question_sha256=hashlib.sha256(

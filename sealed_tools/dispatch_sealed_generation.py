@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate sealed dispatch inputs; production execution is fail-closed."""
+"""Dry-default, receipt-gated sealed generation dispatch."""
 
 from omni_benchmark.sealed_dispatch_cli import dispatch_main
 

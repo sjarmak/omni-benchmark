@@ -244,7 +244,9 @@ def test_cli_requires_explicit_execute_and_available_factory_builder(
     monkeypatch.setattr(
         cli_module,
         "execute_sealed_dispatch",
-        lambda preflight, adapter_factories: calls.append("execute") or _FakeReport(),
+        lambda preflight, adapter_factories_builder: (
+            calls.append("execute") or _FakeReport()
+        ),
     )
     status = cli_module.dispatch_main(
         _argv(tmp_path, execute=True),
@@ -253,4 +255,53 @@ def test_cli_requires_explicit_execute_and_available_factory_builder(
 
     assert status == 0
     assert calls == ["execute"]
+    assert json.loads(capsys.readouterr().out)["remaining_count"] == 0
+
+
+def test_cli_wires_default_production_builder_only_on_execute(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    plan, freeze = _plan()
+    policy = SealedDispatchPolicy.from_dict(POLICY_VALUE)
+    preflight = _FakePreflight()
+    events: list[object] = []
+    monkeypatch.setattr(
+        cli_module,
+        "load_freeze_b_control",
+        lambda *a, **k: SimpleNamespace(manifest=freeze),
+    )
+    monkeypatch.setattr(cli_module, "load_sealed_execution_plan", lambda *a, **k: plan)
+    monkeypatch.setattr(cli_module, "load_sealed_public_questions", lambda *a, **k: {})
+    monkeypatch.setattr(
+        cli_module, "load_sealed_dispatch_policy", lambda *a, **k: policy
+    )
+    monkeypatch.setattr(
+        cli_module, "preflight_sealed_dispatch", lambda **kwargs: preflight
+    )
+    monkeypatch.setattr(
+        cli_module,
+        "_production_config",
+        lambda arguments: events.append("config") or "production-config",
+    )
+    monkeypatch.setattr(
+        cli_module,
+        "build_sealed_production_adapter_factories",
+        lambda config, value: events.append((config, value)) or {"C1": object()},
+    )
+
+    def execute(value, *, adapter_factories_builder):  # type: ignore[no-untyped-def]
+        events.append("execute")
+        adapter_factories_builder(value)
+        return _FakeReport()
+
+    monkeypatch.setattr(cli_module, "execute_sealed_dispatch", execute)
+
+    status = cli_module.dispatch_main(_argv(tmp_path, execute=True))
+
+    assert status == 0
+    assert events == [
+        "config",
+        "execute",
+        ("production-config", preflight),
+    ]
     assert json.loads(capsys.readouterr().out)["remaining_count"] == 0

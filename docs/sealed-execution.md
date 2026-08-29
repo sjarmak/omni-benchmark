@@ -429,6 +429,36 @@ from mutable environment state. The top-level sealed builder must construct it
 from the separately verified post-E02 deployment evidence and require exact
 coverage of every database scheduled for C4 before dispatch.
 
+### Production factory wiring
+
+The checked-in entry point now owns the complete post-consumption builder. Dry
+mode performs no production-config construction. Explicit execution additionally
+requires `--input-spec`, `--omni-deployment-gate`, exactly three
+`--claude-config-dir` arguments, `--database-environments`, and
+`--runtime-parent`. The three lease paths, database environment directory, and
+runtime parent must be distinct absolute operator paths; their filesystem state
+is first inspected inside an approved attempt. Lease/runtime/database directories
+must be external to the repository, owner-controlled, and mode 0700; database
+environment files must be mode 0600.
+
+The C4 deployment gate is canonical JSON with kind
+`sealed-omni-deployment-gate`, schema version 1, one deployment run/source
+commit, the Freeze-B semantic-model reference and aggregate digest, and a sorted
+target for every scheduled database. Each target binds database, branch, model,
+per-database semantic-model digest, and the path/digest of a canonical schema-v2
+verified readback record. The gate and every record must be separate frozen
+files at system commit S. Exact scheduled coverage is mandatory; mixed runs,
+mixed source commits, mutable working-tree substitutions, invalid readback, and
+protected benchmark fields fail closed.
+
+Dispatcher preflight still validates only public/opaque state. After cost
+admission it consumes the one-time receipt, invokes this builder, reloads the
+frozen runtime/deployment inputs from Git, and constructs all four adapters.
+The runtime-source digest now covers the entry point and the complete static
+local import closure used by this production path. Construction failures consume
+that receipt but make no provider call or generation record; recovery therefore
+requires the existing fresh-receipt process.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

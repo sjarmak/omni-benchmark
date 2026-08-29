@@ -62,7 +62,11 @@ def _runtime_inputs() -> SealedRuntimeInputs:
                     if name != "C4"
                     else "config/prompts/c4-user-prompt-v1.txt"
                 ),
-                runtime_policy_path=Path("config/conditions/direct-runtime-v1.json"),
+                runtime_policy_path=Path(
+                    "config/conditions/direct-runtime-v1.json"
+                    if name != "C4"
+                    else "config/conditions/c4-production-v1.json"
+                ),
                 semantic_model_path=semantic,
                 freeze_b_condition=freeze.condition(name),
             )
@@ -173,6 +177,11 @@ def test_factory_is_inert_until_attempt_and_cleans_runtime_context(
         factory_module,
         "_validate_oauth_directory",
         lambda path: events.append(("lease", path)),
+    )
+    monkeypatch.setattr(
+        factory_module,
+        "_validate_external_private_directory",
+        lambda workspace, path, description: path,
     )
 
     class FakeDirectory:
@@ -317,4 +326,31 @@ def test_production_config_rejects_ambiguous_external_paths(tmp_path: Path) -> N
                 Path("/external/lease-2"),
                 Path("/external/lease-3"),
             ),
+        )
+
+
+def test_runtime_and_lease_directories_must_be_external_private(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    external = tmp_path / "external-runtime"
+    external.mkdir(mode=0o700)
+
+    assert (
+        factory_module._validate_external_private_directory(  # noqa: SLF001
+            workspace, external, "runtime parent"
+        )
+        == external.resolve()
+    )
+
+    external.chmod(0o755)
+    with pytest.raises(SealedDirectFactoryError, match="external private"):
+        factory_module._validate_external_private_directory(  # noqa: SLF001
+            workspace, external, "runtime parent"
+        )
+    internal = workspace / "lease"
+    internal.mkdir(mode=0o700)
+    with pytest.raises(SealedDirectFactoryError, match="external private"):
+        factory_module._validate_external_private_directory(  # noqa: SLF001
+            workspace, internal, "Claude lease directory"
         )

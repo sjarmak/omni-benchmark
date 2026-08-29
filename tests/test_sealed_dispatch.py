@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import hashlib
 import json
 import subprocess
@@ -310,6 +311,48 @@ def test_adapter_identity_mismatch_consumes_receipt_but_makes_no_calls(
     assert len(markers) == 1
 
 
+def test_production_factory_builder_runs_only_after_receipt_consumption(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    preflight = _preflight(workspace)
+    state = _state()
+    events: list[str] = []
+
+    def builder(value):  # type: ignore[no-untyped-def]
+        markers = list((workspace / "runs/sealed-final-v1/approvals").glob("*.json"))
+        assert len(markers) == 1
+        events.append("builder")
+        return _factories(value.freeze_b, state)
+
+    ticks = iter((0.0, 50_000.0))
+    report = execute_sealed_dispatch(
+        preflight,
+        adapter_factories_builder=builder,
+        monotonic=lambda: next(ticks, 50_000.0),
+    )
+
+    assert events == ["builder"]
+    assert report.remaining_count == 1_212
+    assert state["calls"] == []
+
+
+def test_production_factory_builder_rejects_invalid_return_after_consumption(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    preflight = _preflight(workspace)
+
+    with pytest.raises(SealedDispatchError, match="factory set"):
+        execute_sealed_dispatch(
+            preflight,
+            adapter_factories_builder=lambda _value: None,  # type: ignore[arg-type,return-value]
+        )
+
+    markers = list((workspace / "runs/sealed-final-v1/approvals").glob("*.json"))
+    assert len(markers) == 1
+
+
 def test_wall_clock_stop_is_bounded_and_receipt_cannot_be_replayed(
     tmp_path: Path,
 ) -> None:
@@ -420,3 +463,40 @@ def test_runtime_source_digest_requires_loaded_bytes_at_system_commit(
 
     with pytest.raises(SealedDispatchError, match="does not match"):
         verify_sealed_runtime_sources(workspace, changed_commit)
+
+
+def test_runtime_source_set_is_closed_over_static_local_imports() -> None:
+    source_root = Path(dispatch_module.__file__).resolve().parents[2]
+    listed = set(dispatch_module.SEALED_RUNTIME_SOURCE_PATHS)
+    assert "sealed_tools/dispatch_sealed_generation.py" in listed
+    assert "src/omni_benchmark/__init__.py" in listed
+
+    missing: set[str] = set()
+    for relative in listed:
+        tree = ast.parse((source_root / relative).read_text(encoding="utf-8"))
+        for node in ast.walk(tree):
+            module: str | None = None
+            if isinstance(node, ast.ImportFrom):
+                if node.level and relative.startswith("src/omni_benchmark/"):
+                    module = node.module
+                elif node.module and node.module.startswith("omni_benchmark."):
+                    module = node.module.removeprefix("omni_benchmark.")
+            elif isinstance(node, ast.Import):
+                for alias in node.names:
+                    if alias.name.startswith("omni_benchmark."):
+                        candidate = (
+                            "src/omni_benchmark/"
+                            + alias.name.removeprefix("omni_benchmark.").replace(
+                                ".", "/"
+                            )
+                            + ".py"
+                        )
+                        if (
+                            source_root / candidate
+                        ).is_file() and candidate not in listed:
+                            missing.add(candidate)
+            if module:
+                candidate = "src/omni_benchmark/" + module.replace(".", "/") + ".py"
+                if (source_root / candidate).is_file() and candidate not in listed:
+                    missing.add(candidate)
+    assert missing == set()
