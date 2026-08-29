@@ -9955,3 +9955,35 @@ branch coverage. Ruff, formatting, and diff checks pass.
 No deployment, upload, validation, evaluated answer, question, gold, hidden
 annotation, dev-B, test outcome, correctness, credential, OAuth, lease,
 shared/main mutation, or push occurred.
+
+## 2026-08-29 — D-143: Preserve v10 and reject the 30-second convergence budget
+
+### Hypothesis
+
+If six exact readback observations over 30 seconds cover the product's extension
+convergence lag, the Tier 1 v10 polar pass should verify the existing isolated
+branch without changing authenticated semantic equality. A terminal mismatch
+must remain evidence and may not be overwritten or retried under the same run
+identity.
+
+### Result
+
+REFUTED. At exact source commit
+`42039fe565ea715d424c6bac0937c414f19797ac`, v10 validation returned zero issues
+but both the pre-upload observation and the post-upload observation failed to
+converge. The final record preserves 20 uploaded public extension files and the
+six-observation terminal mismatch. Claim SHA-256 is
+`2a717ee7423dc12eab354a8b6900e7d294608953ea1f77b4c623f1cefaf9653e`; record
+SHA-256 is
+`48795b9d26be2dc8480993d7a42d87064d7d1cf23cd2e6857ecfa7eeb1c64d23`.
+There was no retry.
+
+A separate Tier 1 read-only fetch immediately after the terminal record matched
+the same committed plan with zero semantic differences. That retains the causal
+finding—delayed readback convergence—but rejects 30 seconds as a sufficient
+bound. The authenticated comparator remains unchanged. A successor may use a
+new run ID only after a longer general bounded observer is implemented and
+tested.
+
+No evaluated answer, question, gold, hidden annotation, dev-B, test outcome,
+correctness, credential, OAuth, lease, shared/main model, or C4 action occurred.

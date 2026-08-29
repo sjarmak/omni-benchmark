@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T17:18:01-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T17:46:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -34,6 +34,13 @@ and the 18 fixed exclusions remain explicit. This completion needs no human
 response. The remaining pre-C4 product task is the public-only polar readback
 fix and a new-run validation pass, both agent-owned under Tier 1. A human C4
 dispatch decision will be requested only after that prerequisite is complete.
+
+The agent-autonomous v10 polar pass is complete and needs no response from you.
+It preserved one terminal failure after validation returned zero issues but
+exact readback did not converge within six observations over 30 seconds. The
+same isolated branch matched the frozen plan on a subsequent read-only fetch,
+so the remaining task is a general convergence-window correction, not a relaxed
+semantic comparison. No v11 or C4 action has launched.
 
 ## Most recent authorized action completed
 
