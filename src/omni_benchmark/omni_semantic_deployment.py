@@ -150,6 +150,7 @@ def verify_semantic_deployment_readback(
         if item.local_name != "relationships":
             assert isinstance(actual, Mapping)
             assert isinstance(expected, Mapping)
+            actual = _project_attested_view_identity(actual, item)
             actual = _restore_stripped_direct_physical_sql(
                 actual,
                 expected,
@@ -472,6 +473,29 @@ def _expected_remote_document(item: OmniSemanticDeploymentFile) -> object:
     )
     if not item.local_name.endswith(".view"):
         return document
+    return {
+        key: value for key, value in document.items() if key not in _VIEW_IDENTITY_KEYS
+    }
+
+
+def _project_attested_view_identity(
+    document: Mapping[str, object], item: OmniSemanticDeploymentFile
+) -> Mapping[str, object]:
+    if not item.local_name.endswith(".view"):
+        return document
+    present = set(document) & _VIEW_IDENTITY_KEYS
+    if not present:
+        return document
+    if present != _VIEW_IDENTITY_KEYS:
+        raise OmniSemanticDeploymentError(
+            f"readback view identity is incomplete for {item.remote_path}"
+        )
+    local = _parse_yaml(item.content, f"local file {item.local_name}")
+    assert isinstance(local, Mapping)
+    if any(document[key] != local[key] for key in _VIEW_IDENTITY_KEYS):
+        raise OmniSemanticDeploymentError(
+            f"readback view identity differs for {item.remote_path}"
+        )
     return {
         key: value for key, value in document.items() if key not in _VIEW_IDENTITY_KEYS
     }

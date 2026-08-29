@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-29T17:46:00-04:00 (America/New_York).
+Last reconciled: 2026-08-29T18:18:00-04:00 (America/New_York).
 
 ## Current position
 
@@ -29,9 +29,10 @@ the 18 fixed scorer-conformance exclusions explicitly through freeze and score
 artifacts. The immediate critical path is now one prerequisite: resolve
 `omni-benchmark-dih.17.13`, the remaining public deployment blocker. The
 immutable v9 pass verified 15 of 16 answerable databases. Polar validates with
-zero issues, but exact readback is eventually consistent: v10 exhausted a
-strict 30-second observation budget and its preserved terminal record failed,
-while the same branch matched the frozen plan on a subsequent read-only fetch.
+zero issues. Immutable v11 refuted the longer-wait hypothesis: its readback was
+stable across the full minute and five later observations. The exact residual
+is product-added view identity; the general authenticated projection is now
+implemented and offline-gated, with a new-run validation pass still required.
 
 No C4 dispatch is currently authorized. The obsolete ten-database v5 package
 must not be used.
@@ -43,7 +44,7 @@ must not be used.
 | Evaluation design, public manifests, splits, and Freeze A | Complete | 332 eligible questions; 154 dev-A, 77 dev-B, and 101 sealed test identities; custody boundaries and two scorers are frozen. |
 | Public C1-C3 direct baseline | Complete for the frozen baseline | Immutable generation and dev-A scoring exist. Official accuracy on the 122 scoreable-question intersection is C1 7.4%, C2 23.8%, C3 13.1%. The append-only nine-question cybermarket recovery, `omni-benchmark-dih.5.4.2.4.4.2.2.6`, is still outstanding and must not rewrite the frozen artifacts. |
 | Train-only gold release | Complete | Exactly 154 dev-A records were released through custody; the complete source was removed from the host transfer area. Test gold and dev-B outcomes remain unavailable to development. |
-| Public semantic compiler and deployment preparation | One exact-readback convergence blocker remains | Immutable v9 verified 15 of 16 answerable databases. Planets is resolved. Polar v10 validated with zero issues but exhausted six exact observations over 30 seconds; the branch matched immediately after the preserved terminal failure. `omni-benchmark-dih.17.13` owns the bounded convergence fix. |
+| Public semantic compiler and deployment preparation | One live validation pass remains | Immutable v9 verified 15 of 16 answerable databases. Planets is resolved. Polar v11 validated with zero issues and isolated stable product-added view identity as the residual. `omni-benchmark-dih.17.13` owns the offline-gated authenticated projection and its new-run verification. |
 | C4 baseline | Frame complete; not run | The 154-scheduled/136-answerable control path is implemented and fully tested. Resolve polar exact readback, then prepare and obtain a fresh exact C4 authorization, dispatch 136 answerable attempts, freeze the run, and score it while reporting all 154 scheduled identities and 18 fixed exclusions. |
 | Minimal dev-A experiment set | **Cut from the MVP** | E01 audited as already present in the baseline, inconclusive. E02 compiled, hash-bound, never evaluated. Both are reported as-is with artifacts intact; neither enters the final system. Deviation recorded in `docs/protocol-diff.md`. |
 | Final candidate and Freeze B | Tooling ready; candidate now determined | With the optimization phase cut, the final candidate is the frozen mechanical baseline. Record the freeze and control commit and bind the human-controlled sealed schedule seed. |
@@ -73,12 +74,13 @@ profile, or lease information is needed.
 
 ### Agent-owned work now
 
-- Extend the general polar exact-readback convergence mechanism under
-  `omni-benchmark-dih.17.13`; v9 and failed v10 remain immutable, and any
+- Finish the general authenticated view-identity projection under
+  `omni-benchmark-dih.17.13`; failed v10 and v11 remain immutable, and the
   successor validation uses a new run ID under the agent-autonomous Tier 1
   policy.
-- Consolidate reviewed work onto `main` without discarding its dirty state.
-  Only `main` may be pushed; feature/worktree branches are local staging lanes.
+- Commit, verify, and publish reviewed work through `main` only. Preserve the
+  quarantined unrelated main-worktree state and audit stale worktrees
+  individually under `omni-benchmark-9v3`.
 
 ### Later exact gates
 

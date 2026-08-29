@@ -10015,3 +10015,51 @@ change is the additional final delay; retry classification and authenticated
 semantic equality are unchanged. V10 remains immutable. No v11, evaluated
 answer, question, gold, hidden annotation, dev-B, test outcome, correctness,
 credential, OAuth, lease, shared/main model, or C4 action occurred.
+
+## 2026-08-29 — D-145: Authenticate product-added view identity before projection
+
+### Observation
+
+The append-only Tier 1 v11 pass at source commit
+`80ca78ad9e55d19973ed7e62cb5a1bc5551650e2` validated polar with zero issues
+but failed exact readback after seven observations over 60 seconds. Claim
+SHA-256 is
+`b5022f939e7e433df325b8e89abd1c7fe3f20627c605885486edd75221507c72`;
+record SHA-256 is
+`5919e6a3760bc6515fe1b9856d5ae99d3b696c8814c5228ca82195d078dcca79`.
+Five subsequent Tier 1 read-only observations were stably identical, so the
+one-minute convergence hypothesis is refuted rather than merely underbudgeted.
+
+Instrumenting the existing authenticated comparator identified the only
+difference in `public/cabinenvironment.view`: Omni returned the top-level
+`catalog`, `schema`, and `table_name` identity fields that the expected remote
+projection omits. The public readback bytes were stable across the five
+observations. No question, label, correctness, gold, hidden annotation, dev-B,
+or test outcome was inspected.
+
+### Hypothesis and failure-first boundary
+
+An exact remote view identity is safe to project away only when all three
+identity fields are present and byte-for-value equal to the compiler-attested
+local view identity. A missing subset or any differing catalog, schema, or
+physical table must continue to fail closed. After that authenticated
+projection, every other semantic key remains subject to the existing exact
+comparison.
+
+Before implementation, require synthetic readback with the complete matching
+identity triplet to pass, while a partial triplet and a wrong value for each
+identity field still fail. The current comparator must fail the matching case.
+The general rule may not contain a database name, benchmark question, or label.
+
+### Current result
+
+KEEP OFFLINE under `omni-benchmark-dih.17.13`. The failure-first matching case
+failed on the prior comparator. The general implementation now requires the
+complete identity triplet, compares each value with the authenticated local
+view, and only then removes those three keys before the unchanged exact semantic
+comparison. Partial and differing identities fail closed. The focused
+deployment/readback boundary passes 54 tests; Ruff, formatting, and diff checks
+pass. V11 remains immutable and no successor deployment has launched.
+
+No evaluated answer, question, gold, hidden annotation, dev-B, test outcome,
+correctness, credential, OAuth, lease, shared/main model, or C4 action occurred.

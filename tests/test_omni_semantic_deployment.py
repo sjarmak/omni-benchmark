@@ -236,6 +236,43 @@ def test_readback_allows_only_safe_yaml_semantics_and_view_projection(
     verify_semantic_deployment_readback(plan, _readback())
 
 
+def test_readback_projects_complete_attested_view_identity(tmp_path: Path) -> None:
+    plan = build_semantic_deployment_plan(_bundle(tmp_path))
+    readback = _readback()
+    readback[VIEW_PATH] += (
+        "\ncatalog: archeology_scan_large\nschema: public\ntable_name: pointcloud\n"
+    )
+
+    verify_semantic_deployment_readback(plan, readback)
+
+
+@pytest.mark.parametrize(
+    ("key", "value"),
+    [
+        ("catalog", "other_catalog"),
+        ("schema", "private"),
+        ("table_name", "other_table"),
+    ],
+)
+def test_readback_rejects_unattested_complete_view_identity(
+    tmp_path: Path, key: str, value: str
+) -> None:
+    plan = build_semantic_deployment_plan(_bundle(tmp_path))
+    identity = {
+        "catalog": "archeology_scan_large",
+        "schema": "public",
+        "table_name": "pointcloud",
+    }
+    identity[key] = value
+    readback = _readback()
+    readback[VIEW_PATH] += "\n" + "".join(
+        f"{name}: {identity[name]}\n" for name in ("catalog", "schema", "table_name")
+    )
+
+    with pytest.raises(OmniSemanticDeploymentError, match="readback"):
+        verify_semantic_deployment_readback(plan, readback)
+
+
 def test_readback_accepts_utf8_bytes_and_terminal_newline_serialization(
     tmp_path: Path,
 ) -> None:
