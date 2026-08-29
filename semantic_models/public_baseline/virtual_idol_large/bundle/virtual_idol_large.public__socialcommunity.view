@@ -7,24 +7,31 @@ dimensions:
   follower_count:
     description: BIGINT. Number of other users following this fan.
     label: Follower Count
+    sql: ${network_stats} ->> 'Foll_Count'
   following_count:
     description: BIGINT. Number of users this fan is following.
     label: Following Count
+    sql: ${network_stats} ->> 'Fing_Count'
   social_network_size:
     description: BIGINT. Size of fan's social network within the platform.
     label: Social Network Size
+    sql: ${network_stats} ->> 'Soc_Net_Sz'
   friend_connections:
     description: BIGINT. Number of mutual friend connections within the platform.
     label: Friend Connections
+    sql: ${network_stats} ->> 'Friend_Con'
   content_submissions:
     description: BIGINT. Total user-generated content value or count created by fan.
     label: Content Submissions
+    sql: ${content_creation} ->> 'UGC_Val'
   collaborations:
     description: SMALLINT. Number of collaborative projects participated in by the fan.
     label: Collaborations
+    sql: ${content_creation} ->> 'Collab_Count'
   average_content_quality_rating:
     description: REAL. Quality rating of content created by the fan.
     label: Average Content Quality Rating
+    sql: ${content_creation} ->> 'Cont_Qual_Rate'
   community_contribution_level:
     description: 'TEXT. Type and level of contribution to community activities. **NULL means contribution assessment incomplete or minimal community participation.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
     label: Community Contribution Level
@@ -33,6 +40,7 @@ dimensions:
   community_role:
     description: TEXT. Role or position held within community groups. **NULL means no specific group role assigned or participating as regular member.**
     label: Community Role
+    sql: ${network_stats} ->> 'Grp_Role'
     ai_context: 'Community Role Hierarchy: Defines a fan''s position within a community group. ''Member'' is a standard participant. ''Moderator'' helps enforce rules. ''Leader'' manages the group.'
   social_capital_score:
     label: Social Capital Score (SCS)

@@ -11,54 +11,70 @@ dimensions:
   capacity_factor:
     description: 'REAL. Capacity factor percentage. Example: 27.47.'
     label: Capacity Factor
+    sql: ${elec_perf_snapshot} -> 'energy_yield' ->> 'capacity_factor_pct'
   performance_ratio:
     description: 'REAL. Performance ratio. NULL means the encoder does not report status or data are missing. Example: 0.846.'
     label: Performance Ratio
+    sql: ${elec_perf_snapshot} -> 'energy_yield' ->> 'performance_ratio'
   availability:
     description: 'REAL. System availability percentage. Example: 97.73.'
     label: Availability
+    sql: ${elec_perf_snapshot} -> 'energy_yield' ->> 'availability_pct'
   power_now:
     description: 'REAL. Current power output in watts. NULL means the encoder does not report status or data are missing. Example: 554.51.'
     label: Power Output
+    sql: ${elec_perf_snapshot} -> 'power' ->> 'power_now_w'
   power_loss:
     description: 'REAL. Power loss since installation. NULL means the encoder does not report status or data are missing. Example: 95.49.'
     label: Power Loss
+    sql: ${elec_perf_snapshot} -> 'power' ->> 'power_loss_w'
   inverter_eff:
     description: 'REAL. Inverter efficiency percentage. Example: 98.43.'
     label: Inverter Efficiency
+    sql: ${elec_perf_snapshot} -> 'inverter' ->> 'inverter_eff_pct'
   power_factor:
     description: 'REAL. Inverter power factor. NULL means the encoder does not report status or data are missing. Example: 0.979.'
     label: Power Factor
+    sql: ${elec_perf_snapshot} -> 'inverter' ->> 'power_factor'
     ai_context: 'Power Factor: A dimensionless ratio ranging from -1 to 1 that represents the ratio of real power (doing work) to apparent power (flowing in the circuit). A value of 1.0 indicates perfect efficiency, while a value of 0.95 is typical for high-efficiency systems. Lower values indicate more reactive power, which does not perform work.'
   harmonic:
     description: 'REAL. Harmonic distortion percentage. Example: 4.01.'
     label: Harmonic Distortion
+    sql: ${elec_perf_snapshot} -> 'grid' ->> 'harmonic_distortion_pct'
     ai_context: 'Total Harmonic Distortion (THD): A measurement of the harmonic distortion present in a signal, defined as the ratio of the sum of the powers of all harmonic components to the power of the fundamental frequency. In power systems, a low THD (e.g., <5%) is desirable for good power quality, while higher values can indicate potential problems for connected equipment.'
   voc_initial:
     description: 'REAL. Initial open-circuit voltage. NULL means the encoder does not report status or data are missing. Example: 49.74.'
     label: Initial Open-Circuit Voltage
+    sql: ${elec_perf_snapshot} -> 'iv_curve' ->> 'voc_initial_v'
   voc_now:
     description: 'REAL. Current open-circuit voltage. Example: 43.32.'
     label: Current Open-Circuit Voltage
+    sql: ${elec_perf_snapshot} -> 'iv_curve' ->> 'voc_now_v'
   isc_initial:
     description: 'REAL. Initial short-circuit current. Example: 9.09.'
     label: Initial Short-Circuit Current
+    sql: ${elec_perf_snapshot} -> 'iv_curve' ->> 'isc_initial_a'
   isc_now:
     description: 'REAL. Current short-circuit current. Example: 8.51.'
     label: Current Short-Circuit Current
+    sql: ${elec_perf_snapshot} -> 'iv_curve' ->> 'isc_now_a'
   fill_initial:
     description: 'REAL. Initial fill factor. Example: 0.773.'
     label: Initial Fill Factor
+    sql: ${elec_perf_snapshot} -> 'iv_curve' ->> 'fill_factor_initial'
   fill_now:
     description: 'REAL. Current fill factor. Example: 0.71.'
     label: Current Fill Factor
+    sql: ${elec_perf_snapshot} -> 'iv_curve' ->> 'fill_factor_now'
     ai_context: 'IV Curve Fill Factor: A measure of the ''squareness'' of the current-voltage (IV) curve, indicating the quality of the solar cell. It is the ratio of the maximum actual power to the theoretical maximum power. A higher value (e.g., >0.8) indicates a higher quality cell with low internal power losses.'
   soil_loss:
     description: 'REAL. Power loss due to soiling. Example: 13.41.'
     label: Soiling Loss
+    sql: ${elec_perf_snapshot} -> 'efficiency' ->> 'soil_loss_pct'
   cumulative_deg:
     description: 'REAL. Cumulative degradation percentage. Example: 14.69.'
     label: Cumulative Degradation
+    sql: ${elec_perf_snapshot} -> 'efficiency' ->> 'cumulative_deg_pct'
   specific_yield_metric:
     label: Specific Yield
     description: Measures the energy output of a solar plant relative to its rated power capacity over a period.

@@ -7,9 +7,11 @@ dimensions:
   interaction_consistency_score:
     description: REAL. Interaction consistency score measuring regular engagement patterns.
     label: Interaction Consistency Score
+    sql: ${usage_metrics} ->> 'Int_Consist'
   platform_stability_score:
     description: REAL. Platform stability score based on session reliability and connection quality.
     label: Platform Stability Score
+    sql: ${usage_metrics} ->> 'Plat_Stable'
   privacy_setting:
     description: TEXT. Privacy settings configuration chosen by the fan.
     label: Privacy Setting

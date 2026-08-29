@@ -7,7 +7,9 @@ dimensions:
   cell_temp:
     description: 'REAL. Solar cell temperature. NULL means the encoder does not report status or data are missing. Example: 47.3.'
     label: Cell Temperature
+    sql: ${env_snapshot} -> 'temperatures' ->> 'cell_temp_c'
   uv:
     description: 'REAL. UV index measurement. Example: 1.1.'
     label: UV Index
+    sql: ${env_snapshot} -> 'atmospheric' ->> 'uv_index'
     ai_context: 'UV Index: An international standard measurement of the strength of the sunburn-producing ultraviolet (UV) radiation at a particular place and time. The scale is open-ended, where 1-2 is Low, 3-5 is Moderate, 6-7 is High, 8-10 is Very High, and 11+ is Extreme.'

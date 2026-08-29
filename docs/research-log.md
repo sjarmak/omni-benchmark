@@ -6154,3 +6154,35 @@ The next compiler slice is therefore general and evidence-driven: remove
 product-invalid parser markers without weakening local SQL admission, finish
 explicit source bindings for fields that are not actual physical columns, and
 make derived numeric expressions type-aware or explicitly unrepresentable.
+
+## 2026-08-29 — D-116: Compile structured-leaf bindings from public schema paths
+
+### Pre-change hypothesis and boundary
+
+All 50 `column_not_found` diagnostics come from physical fields bound to public
+`structured_leaf` records whose bundle specs omit authored SQL. The compiler
+only synthesized SQL for whole physical columns, so Omni interpreted each
+semantic name as a nonexistent base column. If the same general compiler derives
+a PostgreSQL JSON traversal mechanically from the authenticated leaf path and
+its owning column, those fields should become real source-bound dimensions
+without database- or question-specific rules.
+
+This is a mechanical public-schema compiler correction under Bead
+`omni-benchmark-dih.17.3`. It uses only structured leaf `path` records already
+in the committed public IR. It may not infer paths from validator strings,
+change mappings, use questions/gold/hidden outcomes, or weaken SQL admission.
+
+### Intervention and offline result
+
+The compiler now emits a `${normalized_source_column}` JSON traversal for an
+unauthored structured leaf. Intermediate object/array segments use `->`; the
+terminal segment uses `->>`. Object keys are SQL-quoted, array indices are
+non-negative integers, segment shapes are validated, and the synthesized scalar
+must pass the same field-reference allowlist and PostgreSQL parser as authored
+SQL. Authored structured expressions remain unchanged.
+
+Exactly the affected 25 solar and 25 virtual-idol fields regenerated; no other
+bundle spec contains an unauthored structured-leaf physical field. The focused
+compiler/regeneration/deployment gate passes 163 tests at 85.47% branch
+coverage; Ruff and diff checks pass after formatting. Live validation and
+readback remain a separate append-only deployment step.

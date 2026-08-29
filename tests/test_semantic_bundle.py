@@ -440,6 +440,41 @@ def test_compile_bundle_normalizes_physical_names_and_emits_explicit_alias_sql()
     ]
 
 
+def test_compile_bundle_mechanically_extracts_an_unauthored_structured_leaf() -> None:
+    spec = copy.deepcopy(_spec())
+    del spec["physical_fields"][0]["sql"]
+
+    bundle = compile_semantic_bundle(
+        spec, _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["scan_resolution_mm"]["sql"] == (
+        "${cloud_metrics} ->> 'Scan_Resol_Mm'"
+    )
+
+
+def test_compile_bundle_extracts_nested_object_and_array_paths_safely() -> None:
+    schema = _schema_records()
+    leaf = next(
+        record for record in schema if record["record_kind"] == "structured_leaf"
+    )
+    leaf["path"] = [
+        {"key": "sensor's", "kind": "object_key"},
+        {"index": 2, "kind": "array_index"},
+        {"key": "reading", "kind": "object_key"},
+    ]
+    spec = copy.deepcopy(_spec())
+    del spec["physical_fields"][0]["sql"]
+
+    bundle = compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+
+    view = yaml.safe_load(bundle.files["db.public__pointcloud.view"])
+    assert view["dimensions"]["scan_resolution_mm"]["sql"] == (
+        "${cloud_metrics} -> 'sensor''s' -> 2 ->> 'reading'"
+    )
+
+
 def test_compile_bundle_does_not_mark_authored_or_derived_sql_as_direct_binding() -> (
     None
 ):

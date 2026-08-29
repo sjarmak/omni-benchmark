@@ -95,8 +95,8 @@
   "files": [
     {
       "file": "virtual_idol_large.public__interactions.view",
-      "sha256": "a09a16ea104a6cc4f9d7865224d9f1807572658e109d40bb406dca4ef0d175cc",
-      "size_bytes": 2529
+      "sha256": "ddde4475a85580fe4e1c29ba3af7671caf72e9c59d2c17409bcb15ff24bef4d8",
+      "size_bytes": 2696
     },
     {
       "file": "interactions_semantics.topic",
@@ -105,8 +105,8 @@
     },
     {
       "file": "virtual_idol_large.public__socialcommunity.view",
-      "sha256": "66ffe553f3fa929c8fccbe11cb906fdcb4d8f11ba7922320e24f8a4593aba3f0",
-      "size_bytes": 3162
+      "sha256": "e7c8a1fdc1269e82506fff33d7f3f8a60d42e6a8f2c0d61fed6bad8a462362c4",
+      "size_bytes": 3516
     },
     {
       "file": "socialcommunity_semantics.topic",
@@ -115,8 +115,8 @@
     },
     {
       "file": "virtual_idol_large.public__eventsandclub.view",
-      "sha256": "93c6b0c4e0093807694b65ecacc5fcced3fb17226bfe31c44ab9e930a83ec9f4",
-      "size_bytes": 913
+      "sha256": "2af8ef5794c05a6fb5b1a211b7db088458a0cae96e3df7d3b35f3e83c89cf093",
+      "size_bytes": 1053
     },
     {
       "file": "eventsandclub_semantics.topic",
@@ -125,8 +125,8 @@
     },
     {
       "file": "virtual_idol_large.public__preferencesandsettings.view",
-      "sha256": "cefe3e5650c23d250cca0b38e6348fc6c4ce2946be3bb5e2f3ed22b4deccbdb3",
-      "size_bytes": 1275
+      "sha256": "20ec950ea96c4992b8765bb464d9f84150d07535bfe600c0c88b800fc9492ae5",
+      "size_bytes": 1363
     },
     {
       "file": "preferencesandsettings_semantics.topic",
@@ -135,8 +135,8 @@
     },
     {
       "file": "virtual_idol_large.public__fans.view",
-      "sha256": "82a8011de334f4918e1a350955a346eea821233d74703a62950638371c19433b",
-      "size_bytes": 2589
+      "sha256": "bc97b0c652f236e0dfc560574defdf4297c4cdab72b611bf342061b3eeabb6f0",
+      "size_bytes": 2671
     },
     {
       "file": "fans_semantics.topic",
@@ -145,8 +145,8 @@
     },
     {
       "file": "virtual_idol_large.public__supportandfeedback.view",
-      "sha256": "ac531d72249b5ab4e541a2a392d94c087f6938b4f7e82035832f21335be26a27",
-      "size_bytes": 1195
+      "sha256": "5c25a1df04a4ce2004cd7ab0bca447c478b72cdbbb3c2d2b251637b2c67bea94",
+      "size_bytes": 1364
     },
     {
       "file": "supportandfeedback_semantics.topic",
@@ -155,8 +155,8 @@
     },
     {
       "file": "virtual_idol_large.public__retentionandinfluence.view",
-      "sha256": "2a06ec0d5ae944d9f6ff8a8de0a0682705847da62e344ea4f5d3a697e97a8b61",
-      "size_bytes": 1183
+      "sha256": "2cf4eefc17b0a6d141b6f183c8da4f943165e3220a037e762b436f07125adb7e",
+      "size_bytes": 1265
     },
     {
       "file": "retentionandinfluence_semantics.topic",

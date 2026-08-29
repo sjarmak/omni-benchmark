@@ -7,12 +7,15 @@ dimensions:
   online_events:
     description: SMALLINT. Number of online events attended by the fan.
     label: Online Events
+    sql: ${evt_participation} ->> 'On_Evt_Att'
   offline_events:
     description: SMALLINT. Number of offline events attended by the fan.
     label: Offline Events
+    sql: ${evt_participation} ->> 'Off_Evt_Att'
   meet_and_greets:
     description: SMALLINT. Number of meet-and-greet events attended.
     label: Meet-and-Greets
+    sql: ${evt_participation} ->> 'Meet_Att'
   event_participation_score:
     label: Event Participation Score (EPS)
     description: A weighted score that measures a fan's engagement with platform events, prioritizing in-person attendance.

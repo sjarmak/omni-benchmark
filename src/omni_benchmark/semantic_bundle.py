@@ -380,6 +380,38 @@ def _source_column_sql(
     return f'"{name}"' if quoted else name
 
 
+def _structured_leaf_sql(
+    source: Mapping[str, Any], schema_index: Mapping[str, Mapping[str, Any]]
+) -> str:
+    if source.get("record_kind") != "structured_leaf":
+        raise SemanticBundleError("structured leaf SQL requires a structured leaf")
+    _, source_name = _source_column_name(source, schema_index)
+    path = _items(source.get("path"), "structured leaf path")
+    if not path:
+        raise SemanticBundleError("structured leaf path must not be empty")
+    sql = f"${{{source_name}}}"
+    for position, raw_segment in enumerate(path):
+        segment = _mapping(raw_segment, "structured leaf path segment")
+        operator = "->>" if position == len(path) - 1 else "->"
+        kind = segment.get("kind")
+        if kind == "object_key":
+            if not set(segment) <= {"key", "kind", "ordinal"}:
+                raise SemanticBundleError("structured object path segment is malformed")
+            key = _text(segment.get("key"), "structured leaf object key")
+            quoted_key = key.replace("'", "''")
+            sql += f" {operator} '{quoted_key}'"
+        elif kind == "array_index":
+            if set(segment) != {"index", "kind"}:
+                raise SemanticBundleError("structured array path segment is malformed")
+            index = segment.get("index")
+            if isinstance(index, bool) or not isinstance(index, int) or index < 0:
+                raise SemanticBundleError("structured leaf array index is invalid")
+            sql += f" {operator} {index}"
+        else:
+            raise SemanticBundleError("structured leaf path kind is invalid")
+    return sql
+
+
 def _rewrite_field_references(sql: str, names: Mapping[str, str]) -> str:
     return _FIELD_REFERENCE.sub(
         lambda match: f"${{{names.get(match.group(1), match.group(1))}}}", sql
@@ -1032,6 +1064,9 @@ def _table_dimensions(
             validate_sql = True
         elif source.get("record_kind") == "column":
             sql = _source_column_sql(source, schema_index)
+        elif source.get("record_kind") == "structured_leaf":
+            sql = _structured_leaf_sql(source, schema_index)
+            validate_sql = True
         if sql is not None and validate_sql:
             _validate_sql(sql, allowed)
         dimensions[name] = _physical_dimension(
