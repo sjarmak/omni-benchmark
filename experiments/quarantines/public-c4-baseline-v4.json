@@ -1,0 +1,51 @@
+{
+  "approval_consumption": {
+    "decision_bead_id": "omni-benchmark-ei0.4.2.4",
+    "path": "experiments/approvals/c4-production/04d7c29f2f1fe481f3f41c6a605c08e286292c004b1ae350d0fdf1c38cc2523f.consumed.json",
+    "receipt_sha256": "04d7c29f2f1fe481f3f41c6a605c08e286292c004b1ae350d0fdf1c38cc2523f",
+    "sha256": "17ad2fc5b37897f7d7a7b71fd619da8ac0b2f5ff9c32491683370e73bd225cf5"
+  },
+  "correctness_observed": false,
+  "counts": {
+    "approval_consumption_records": 1,
+    "dispatcher_failures": 3,
+    "generation_records": 0
+  },
+  "dispatcher_failures": [
+    {
+      "attempt_id": "public-c4-baseline-v4:archeology_scan_1:C4:1",
+      "failure_kind": "child_exit",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v4/archeology_scan_large/c4/.failed-archeology_scan_1-r1-e5b6e29df632329e/failure.json",
+      "returncode": 1,
+      "sha256": "0f2fa826cac99a11b9a3b43a53c7ec68c5579b3c13a480f8b826d979ee65d4b0",
+      "stderr_sha256": "db346d56108e1a2fcad01409cd9b8fe3d266bf3b7b3e1cfa5a35e6f85070f4ad",
+      "terminal_failure_class": "missing_omni_base_url_pre_answer"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v4:cross_border_1:C4:1",
+      "failure_kind": "child_exit",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v4/cross_border_large/c4/.failed-cross_border_1-r1-23f232c4bbed7de0/failure.json",
+      "returncode": 1,
+      "sha256": "b419658c5207409dd55e1e011860069c289902f78bb6ec8d6252c2ab6fdb311d",
+      "stderr_sha256": "db346d56108e1a2fcad01409cd9b8fe3d266bf3b7b3e1cfa5a35e6f85070f4ad",
+      "terminal_failure_class": "missing_omni_base_url_pre_answer"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v4:cybermarket_pattern_1:C4:1",
+      "failure_kind": "child_exit",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v4/cybermarket_pattern_large/c4/.failed-cybermarket_pattern_1-r1-360fbf946f420b72/failure.json",
+      "returncode": 1,
+      "sha256": "6d036d424da3d11245f55d8a0302191002842496cfd877e5d34de699642965c8",
+      "stderr_sha256": "db346d56108e1a2fcad01409cd9b8fe3d266bf3b7b3e1cfa5a35e6f85070f4ad",
+      "terminal_failure_class": "missing_omni_base_url_pre_answer"
+    }
+  ],
+  "generation_records": [],
+  "gold_accessed": false,
+  "reason": "The exact public C4 v4 approval was consumed, then all three initially staged children failed before any evaluated answer because OMNI_BASE_URL was absent from the inherited launch environment. No generation or correctness artifact exists. The run is infrastructure-failed diagnostic evidence only and may not be resumed, replaced in place, scored, or used as a baseline.",
+  "run_id": "public-c4-baseline-v4",
+  "run_root": "experiments/autoresearch/raw/public-c4-baseline-v4",
+  "schema_version": "run-quarantine-v1",
+  "scoreable": false,
+  "status": "quarantined_non_scoreable"
+}

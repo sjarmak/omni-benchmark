@@ -8,6 +8,7 @@ QUARANTINED_RUN_IDS = frozenset(
         "public-c4-baseline-v1-20260828",
         "public-c4-baseline-v2",
         "public-c4-baseline-v3",
+        "public-c4-baseline-v4",
     }
 )
 

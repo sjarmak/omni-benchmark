@@ -481,3 +481,48 @@ def test_live_c4_production_requires_fresh_human_approval_before_dispatch(
                 "7",
             ]
         )
+
+
+def test_live_c4_rejects_missing_omni_environment_before_approval_consumption(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace, commit = _fixture_repo(tmp_path)
+    receipt = tmp_path / "unused-approval.json"
+    for name in ("OMNI_API_TOKEN", "OMNI_BASE_URL", "OMNI_PROFILE"):
+        monkeypatch.delenv(name, raising=False)
+
+    with pytest.raises(BaselineBatchError, match="OMNI_BASE_URL must be set"):
+        baseline_batch_main(
+            [
+                "--workspace",
+                str(workspace),
+                "--system-commit",
+                commit,
+                "--run-id",
+                "public-c4-baseline-environment-preflight-test",
+                "--observed-attempt-cost-usd",
+                "0.7275655",
+                "--cost-ceiling-usd",
+                "560",
+                "--execute-live-c4-baseline",
+                "--freeze-a-commit",
+                "7d39ee107338da1ce10e2553a4290e64bfc2f892",
+                "--output-root",
+                (
+                    "experiments/autoresearch/raw/"
+                    "public-c4-baseline-environment-preflight-test"
+                ),
+                "--observed-condition-cost",
+                "C4=0.7275655",
+                "--maximum-wall-clock-seconds",
+                "21600",
+                "--attempt-cost-ceiling-usd",
+                "7",
+                "--human-approval-receipt",
+                str(receipt),
+            ]
+        )
+
+    assert not receipt.exists()
+    assert not (workspace / "experiments/approvals").exists()
+    assert not (workspace / "experiments/autoresearch/raw").exists()

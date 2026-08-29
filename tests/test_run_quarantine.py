@@ -167,3 +167,55 @@ def test_spent_v3_authorization_and_http_429_interruption_are_quarantined() -> N
     }
     assert is_quarantined_run(run_id)
     assert quarantined_attempt(f"{run_id}:cross_border_17:C4:1")
+
+
+def test_spent_v4_authorization_and_missing_environment_are_quarantined() -> None:
+    workspace = Path(__file__).resolve().parents[1]
+    run_id = "public-c4-baseline-v4"
+    path = workspace / f"experiments/quarantines/{run_id}.json"
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+
+    assert manifest["run_id"] == run_id
+    assert manifest["run_root"] == f"experiments/autoresearch/raw/{run_id}"
+    assert manifest["status"] == "quarantined_non_scoreable"
+    assert manifest["scoreable"] is False
+    assert manifest["correctness_observed"] is False
+    assert manifest["gold_accessed"] is False
+    assert manifest["counts"] == {
+        "approval_consumption_records": 1,
+        "dispatcher_failures": 3,
+        "generation_records": 0,
+    }
+    assert manifest["generation_records"] == []
+    assert [item["sha256"] for item in manifest["dispatcher_failures"]] == [
+        "0f2fa826cac99a11b9a3b43a53c7ec68c5579b3c13a480f8b826d979ee65d4b0",
+        "b419658c5207409dd55e1e011860069c289902f78bb6ec8d6252c2ab6fdb311d",
+        "6d036d424da3d11245f55d8a0302191002842496cfd877e5d34de699642965c8",
+    ]
+    assert all(
+        item["terminal_failure_class"] == "missing_omni_base_url_pre_answer"
+        for item in manifest["dispatcher_failures"]
+    )
+    assert all(
+        item["failure_kind"] == "child_exit" for item in manifest["dispatcher_failures"]
+    )
+    assert all(item["returncode"] == 1 for item in manifest["dispatcher_failures"])
+    assert all(
+        item["stderr_sha256"]
+        == "db346d56108e1a2fcad01409cd9b8fe3d266bf3b7b3e1cfa5a35e6f85070f4ad"
+        for item in manifest["dispatcher_failures"]
+    )
+    assert manifest["approval_consumption"] == {
+        "decision_bead_id": "omni-benchmark-ei0.4.2.4",
+        "path": (
+            "experiments/approvals/c4-production/"
+            "04d7c29f2f1fe481f3f41c6a605c08e286292c004b1ae350d0fdf1c38cc2523f."
+            "consumed.json"
+        ),
+        "receipt_sha256": (
+            "04d7c29f2f1fe481f3f41c6a605c08e286292c004b1ae350d0fdf1c38cc2523f"
+        ),
+        "sha256": "17ad2fc5b37897f7d7a7b71fd619da8ac0b2f5ff9c32491683370e73bd225cf5",
+    }
+    assert is_quarantined_run(run_id)
+    assert quarantined_attempt(f"{run_id}:archeology_scan_1:C4:1")

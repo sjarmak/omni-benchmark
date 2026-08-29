@@ -38,6 +38,7 @@ from .c4_production_approval import (
     consume_c4_production_approval,
     validate_c4_production_approval,
 )
+from .omni_cli import OmniCliError, OmniCliSettings
 
 _C4_ARM_SPEC_PATH = Path("config/conditions/c4-public-baseline-arm-v1.json")
 
@@ -376,6 +377,9 @@ def _execute_live(
     else:
         targets = None
     workspace = arguments.workspace.resolve(strict=True)
+    common_environment = _child_environment(os.environ)
+    if derived_deployment:
+        common_environment = _validated_c4_child_environment(common_environment)
     budget = BatchBudget(
         cost_ceiling_usd=float(arguments.cost_ceiling_usd),
         attempt_cost_ceiling_usd=arguments.attempt_cost_ceiling_usd,
@@ -421,7 +425,7 @@ def _execute_live(
                 workspace, arguments.database_environment_dir
             )
         ),
-        common_environment=_child_environment(os.environ),
+        common_environment=common_environment,
         timeout_seconds=arguments.subprocess_timeout_seconds,
         deployment_targets=targets,
         c4_budget=budget if targets is not None else None,
@@ -463,3 +467,14 @@ def _child_environment(environment: Mapping[str, str]) -> dict[str, str]:
         for key, value in environment.items()
         if key in _CHILD_ENVIRONMENT_KEYS
     }
+
+
+def _validated_c4_child_environment(
+    environment: Mapping[str, str],
+) -> dict[str, str]:
+    child = _child_environment(environment)
+    try:
+        OmniCliSettings.from_environment({**child, "OMNI_MODEL_ID": "preflight"})
+    except OmniCliError as error:
+        raise BaselineBatchError(str(error)) from error
+    return child
