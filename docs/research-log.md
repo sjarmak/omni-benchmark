@@ -4683,3 +4683,107 @@ continuation, verify zero attached sessions, three sequential immutable
 invocations per lease, exact frozen binary version/SHA compatibility, and token
 headroom beyond the scheduled wall bound. Do not mutate credentials from this
 workspace.
+
+## D-071: The two failing databases were never fully restored, and the omission mechanism hid it
+
+### Hypothesis
+
+D-070 concluded that the benchmark's own gold SQL does not execute on
+`mental_healths_large` and `organ_transplant_large`, and `omni-benchmark-2j9`
+was closed as refuted after live parity matched the committed fingerprints. The
+leading remaining explanation was that the per-database read-only reader held
+catalog access but lacked SELECT on data tables, which would fit catalog-only
+success, uniform data-table failure across all three conditions, and a
+catalog-based fingerprint that still matches. That hypothesis predicted a live
+permission error and required a live diagnostic query to test.
+
+### Result
+
+The question resolved offline and the permission hypothesis is refuted. Two
+earlier candidates fell first. No question in any of the 18 databases carries a
+non-empty `preprocess_sql`, so no missing preparation step is involved. Both
+committed schema files create unqualified public-schema tables and neither
+`postgres_execution.py` nor `direct_sql_capture.py` sets `search_path`, so
+schema qualification is not involved either.
+
+Comparing declared tables in
+`data/raw/livesqlbench-large-v1/schema/<db>/<db>_schema.txt` against
+`verification.table_count` in `config/databases/livesqlbench-large-v1.json`
+shows the two databases are truncated and the other sixteen are not:
+
+| Database | Declared | Restored | Missing |
+| --- | ---: | ---: | ---: |
+| mental_healths_large | 55 | 21 | 34 |
+| organ_transplant_large | 57 | 20 | 37 |
+| other 16 databases | | | 0 |
+
+The missing sets are exactly the recorded `scorer_omitted_tables` entries, 34
+and 37. Case-insensitively every declared table has a dump file, 55 of 55 and 57
+of 57. Case-sensitively none of the omitted names resolve, 0 of 34 and 0 of 37,
+and each has a dump file differing only in capitalization: `Facilities` against
+`facilities.sql`, `HLA_Info` against `hla_info.sql`.
+
+`restore_database` in `database_postgres.py` builds each candidate as
+`dump_root / f"{table}.sql"` and, for any table in `omitted_tables`, asserts the
+candidate does not exist before skipping it. On a case-sensitive filesystem that
+assertion passes for all 71 tables, so real data was dropped as a declared
+omission instead of raising a restore failure. Both `scorer_omitted_tables` and
+`scorer_continues_after_sql_error` date to `de7ed6d`.
+
+Every downstream check passed because `verification.schema_sha256`,
+`content_sha256`, `readonly_role_verified`, and `external_parity` were all
+computed against the truncated state. D-068's classification work and 2j9's
+parity check were each correct about what they compared; neither could have
+detected a defect that the fingerprint itself encodes.
+
+### Outcome
+
+Filed as `omni-benchmark-39b`, which blocks `omni-benchmark-wk0` and therefore
+`omni-benchmark-aez.7.1`. 18 dev-A questions are recoverable rather than
+permanently lost, so the coverage frame `wk0` decides should be settled after
+the repair, not against present numbers. The 54 `gold_statement_error` attempts
+in the completed direct baseline were correctly classified and become
+re-runnable under the protocol's rerun policy as a demonstrable failure outside
+the evaluated system. Freeze B must not commit these two snapshot identifiers as
+they stand, since the sealed split is stratified by database. No live query,
+credential, lease, or remote action was required to reach this result.
+
+The generalizable lesson is that a verification fingerprint computed after a
+provisioning step can only confirm self-consistency, never completeness. The
+declared-versus-restored reconciliation that found this took one comparison and
+was never part of the provisioning gate. Step 5 of `39b` extends it to all 18
+databases.
+
+### Fix
+
+`src/omni_benchmark/dump_coverage.py` now resolves a restore order against a
+dump directory independently of the database client, so the same resolution can
+be audited without a live connection. `index_dump_files` maps each casefolded
+dump stem to its file and rejects two files differing only in capitalization.
+`describe_dump_coverage` reports rather than raises, returning load paths in
+restore order alongside missing tables, case mismatches, and contradicted
+omissions. `restore_database` delegates to it and refuses any omission that a
+dump file contradicts, naming both the table and the file.
+
+The bead was filed asking that resolution reject capitalization-only mismatches.
+That would have left the restore broken, because the mismatch is in the restore
+order rather than in the dump: `facilities.sql` contains
+`CREATE TABLE public.facilities`, and the schema file declares the table
+unquoted and lower case. The filename is only a selector and the file carries
+the authoritative identifier, so resolution is case-insensitive and the
+strictness moved to where the data loss actually occurred.
+
+`database_cli verify-dump-coverage` reports every inventory database and exits
+non-zero when any is incomplete. Against the real upstream dumps it returns exit
+code 1 with 71 contradicted omissions and zero genuinely missing files, confined
+to the two known databases. The single omission on
+`labor_certification_applications_large` is genuine, has no file under any
+capitalization, and that database reports complete. No other database is
+silently truncated.
+
+Full suite 1,512 passed with three expected environment skips at 84.23% branch
+coverage; the three touched modules are at 100%, 92%, and 89%. Clearing
+`scorer_omitted_tables` was deliberately left undone: it changes a file whose
+SHA-256 is pinned as `inventory_sha256` and verified against published run
+sidecars, and it must land together with re-provisioning or the recorded
+`verification.table_count` becomes inconsistent.
