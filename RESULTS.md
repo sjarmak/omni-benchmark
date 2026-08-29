@@ -60,8 +60,8 @@ The primary question is:
 > Given a modeled database, how accurately does production-governed Omni answer
 > previously unseen analytical questions?
 
-The primary comparison is governed Omni against a competent direct-SQL agent on
-the same sealed questions. Three additional contrasts help explain any
+The primary comparison is governed Omni against a reasonably tuned direct-SQL
+agent on the same sealed questions. Three additional contrasts help explain any
 difference:
 
 | Condition | Information available at runtime | Query path |
@@ -146,18 +146,20 @@ content hashes.
 
 Experiment [D-043](docs/research-log.md#2026-08-28--d-043-preserve-cross-database-hkb-representability-as-baseline-evidence)
 applied the canary's no-guess classification discipline to all 17 remaining
-databases.
+databases. Combining those records with the 54-node canary gives the complete
+18-database picture below.
 
 | Disposition | Definitions | Share |
 | --- | ---: | ---: |
-| Compiled | 179 | 17.3% |
-| Context only | 183 | 17.7% |
-| Deferred cross-grain | 491 | 47.4% |
-| Unsupported | 183 | 17.7% |
-| **Total** | **1,036** | **100.0%** |
+| Compiled | 193 | 17.7% |
+| Context only | 193 | 17.7% |
+| Deferred cross-grain | 511 | 46.9% |
+| Unsupported | 193 | 17.7% |
+| **Total** | **1,090** | **100.0%** |
 
-The three most frequent loss codes were `cardinality_unknown` (398),
-`aggregation_unspecified` (314), and `cross_grain_no_identity` (308). Domains
+Within the 17-database fan-out, the three most frequent loss codes were
+`cardinality_unknown` (398), `aggregation_unspecified` (314), and
+`cross_grain_no_identity` (308). Domains
 with many row-local physical or sensor definitions, such as planets and solar
 panels, compiled comparatively well. Residential and reverse-logistics models
 retained useful context but compiled no HKB definitions safely under the same
@@ -174,7 +176,7 @@ was compiled, retained as context, deferred, or rejected. Without that report,
 users choose between silently guessed semantics and large amounts of prose with
 uncertain agent discovery.
 
-The deterministic artifacts and review corrections landed in commits
+The deterministic fan-out artifacts and review corrections landed in commits
 `d3f84f6ea5d15b247e3d1ffba739cd220289e72a` and
 `dcdd1a08a3d45a4a14978fe39f66542938fa5f32`. The detailed product record is
 [PF-009](docs/product-findings.md#pf-009-missing-grain-contracts-dominate-public-only-hkb-translation).
@@ -186,7 +188,7 @@ The slice validated that each condition could generate an answer, preserve a
 trace, reach its read-only database, and produce an artifact compatible with the
 frozen evaluation path. Correctness remained uninspected.
 
-### Finding 2: bounded schema discovery fixed a cost-driven direct-SQL failure
+### Finding 2: bounded schema discovery exposed a scaffold-sensitivity risk
 
 The initial C1 attempt passed public-question, database-parity, read-only,
 model-identity, and first-turn gates. Its first schema inspection returned all
@@ -319,12 +321,12 @@ releases permitted aggregate results.
 
 ### Four-condition matrix
 
-| Condition | Mean accuracy | Wrong-answer rate | Refusal rate | Error rate | Pass³ | Correctness flips |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| C1 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
-| C2 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
-| C3 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
-| C4 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
+| Condition | Mean accuracy | Wrong rate | Content-refusal rate | Insufficient-context rate | Error rate | Pass³ | Correctness flips |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| C1 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
+| C2 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
+| C3 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
+| C4 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
 
 ### Exploratory contrasts
 
@@ -359,8 +361,8 @@ The development evidence supports four immediate recommendations:
    1,049 conservative PK- or unique-backed relationships, while the bounded
    modeled candidate could expose 91 across 16 databases. A model author needs a
    dry-run view of accepted, deferred, and unreachable relationships before
-deciding whether the semantic model has enough structure for governed
-queries.
+   deciding whether the semantic model has enough structure for governed
+   queries.
 
 The direct baseline associates these mechanisms with development failures. C4
 and the held-out evaluation will determine whether the relationship candidate
@@ -401,3 +403,7 @@ telemetry contracts, experiment history, and two frozen scorers. Private gold
 and hidden annotations remain outside the repository. See
 [README.md](README.md) for reproduction commands and
 [manuscript/main.pdf](manuscript/main.pdf) for the supporting protocol paper.
+The C1 sensitivity subset, allocation diagnostics, preserved-artifact hashes,
+and notional cost/time projection are committed separately from its future raw
+run artifacts; OAuth dollars remain telemetry rather than a run-selection
+rule.
