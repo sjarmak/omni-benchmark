@@ -4,13 +4,37 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T12:33:00-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T13:16:00-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
-Nothing. `bd human list` is empty. Do not run a command or send a profile,
+### Exact seven-bundle v8 validation pass — `omni-benchmark-dih.17.11`
+
+Reply **A** or **B** in this chat; do not run a command or send a profile,
 credential, callback URL, token, config file, or lease path.
+
+- **A** authorizes exactly one append-only deployment, validation, and exact
+  readback pass for the seven changed public-baseline bundles.
+- **B** holds the request and permits no product contact or run claim.
+
+The pushed request is
+`experiments/public-baseline-v8-deployment-request.json` at exact commit
+`8b6ab7e4ee02115d237fe606b2fbf2ac75903f57`, request SHA-256
+`a5d9fba11d8b4502cffce97d082c1e865a0401be54b494d5049f5e4d4d766834`.
+It binds source commit `536e7256581e0b2c290af23838bbd6fbe8e5110a`,
+seven databases / 88 files, selected bundle-set SHA-256
+`9b6d6e8357b54b6f18d89c1d854136929d77dbdcd06b9f2fcd236bfe0b8a492f`,
+run `public-baseline-v8-20260829`, the absent append-only output root
+`experiments/deployments/public-baseline-v8`, four workers, and 1.25-second
+global pacing. The seven are exactly the semantic-hash delta from v7:
+cross-border, fake-account, labor-certification, planets, polar-equipment,
+robot-fault, and sports-events. The other eleven v7 records remain immutable.
+
+A authorizes no C4 or E02 deployment, question dispatch, scoring/correctness,
+gold/hidden/dev-B/test access, credential/OAuth/lease operation, shared/main
+mutation, retry, or unlisted database deployment. Every terminal result will
+be preserved; there is no automatic retry.
 
 ## Most recent authorized action completed
 

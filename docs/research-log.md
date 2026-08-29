@@ -6866,3 +6866,40 @@ deterministic regeneration, and diff checks pass. The live v7 evidence remains
 immutable. Product validation is still required under a new exact
 authorization; no retry, C4, E02, question, scoring, correctness, credential,
 OAuth, lease, or protected-data action occurred.
+
+## D-127: Freeze the seven-bundle successor validation request
+
+### Hypothesis
+
+The next live product oracle should redeploy exactly the semantic-hash delta
+from v7, not only the three previously failing databases and not all 18. That
+keeps nine unchanged verified answerable deployments intact while ensuring the
+four other bundles changed by the same general structured-operator rule are
+also validated against their current bytes.
+
+### Offline result
+
+Comparing authenticated semantic deployment hashes from v7 source
+`a684a3ec9c1c36aeaf8648be76d0127f6597d696` to corrected source
+`536e7256581e0b2c290af23838bbd6fbe8e5110a` yields exactly seven changed
+databases: cross-border, fake-account, labor-certification, planets,
+polar-equipment, robot-fault, and sports-events. Their 88 files have selected
+bundle-set SHA-256
+`9b6d6e8357b54b6f18d89c1d854136929d77dbdcd06b9f2fcd236bfe0b8a492f`;
+the full current 18-bundle set remains
+`2f4038a06522d84074649cb1795c43fe97efeac5c3d2deb46767915c477d7220`.
+
+The exact request is pushed at commit
+`8b6ab7e4ee02115d237fe606b2fbf2ac75903f57` as
+`experiments/public-baseline-v8-deployment-request.json`, SHA-256
+`a5d9fba11d8b4502cffce97d082c1e865a0401be54b494d5049f5e4d4d766834`.
+It binds an absent append-only destination, one run identity, isolated existing
+baseline branches, bounded concurrency and pacing, and explicit negative
+scope. The other eleven v7 records remain immutable.
+
+### Outcome
+
+WAITING on human A/B decision `omni-benchmark-dih.17.11`. Preparation was
+provider-inert. No client, claim, output, question, score, correctness result,
+credential, OAuth profile, lease, or protected data was accessed or changed.
+The request authorizes no C4 or E02 action.
