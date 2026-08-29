@@ -417,6 +417,31 @@ def test_prepare_and_publish_accept_exact_c4_freeze_without_weakening_direct(
     }
 
 
+def test_prepare_keeps_c4_artifacts_separate_from_private_release(
+    tmp_path: Path,
+) -> None:
+    custody_workspace, commit, _, release_sha256 = _initialize_workspace(tmp_path)
+    selection_path, c4_sha256 = _install_c4_selection(custody_workspace, commit)
+    artifact_workspace = tmp_path / "artifact-workspace"
+    artifact_workspace.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=artifact_workspace, check=True)
+    (custody_workspace / "experiments").rename(artifact_workspace / "experiments")
+
+    assert not (artifact_workspace / "data/private/dev-a/labels.jsonl").exists()
+    assert not (custody_workspace / selection_path).exists()
+    plan = prepare_dev_a_baseline_plan(
+        custody_workspace,
+        artifact_workspace=artifact_workspace,
+        freeze_a_commit=commit,
+        selection_path=selection_path,
+        expected_selection_sha256=c4_sha256,
+        expected_release_sha256=release_sha256,
+    )
+
+    assert len(plan.attempts) == 2
+    assert {attempt.condition for attempt in plan.attempts} == {"C4"}
+
+
 def test_c4_result_artifact_mutation_fails_before_scoring(tmp_path: Path) -> None:
     workspace, commit, _, release_sha256 = _initialize_workspace(tmp_path)
     selection_path, c4_sha256 = _install_c4_selection(workspace, commit)

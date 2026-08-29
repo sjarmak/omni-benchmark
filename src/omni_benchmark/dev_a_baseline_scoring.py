@@ -230,14 +230,18 @@ class _SelectionEntry:
 def prepare_dev_a_baseline_plan(
     workspace: Path,
     *,
+    artifact_workspace: Path | None = None,
     freeze_a_commit: str,
     selection_path: Path = SELECTION_PATH,
     expected_selection_sha256: str,
     expected_release_sha256: str,
     environment: Mapping[str, str] | None = None,
 ) -> DevABaselinePlan:
-    """Validate all public/hash boundaries before parsing the dev-A release."""
+    """Validate public artifacts separately from the dev-A custody workspace."""
     root = _workspace(workspace)
+    artifact_root = (
+        root if artifact_workspace is None else _workspace(artifact_workspace)
+    )
     selection_digest = _digest(expected_selection_sha256, "selection SHA-256")
     release_digest = _digest(expected_release_sha256, "release SHA-256")
     policy = ContentPolicy.from_environment(
@@ -245,7 +249,7 @@ def prepare_dev_a_baseline_plan(
     )
 
     selected_path = _confined_selection_path(selection_path)
-    selection_bytes = _private_file(root, selected_path, "selection manifest")
+    selection_bytes = _private_file(artifact_root, selected_path, "selection manifest")
     if hashlib.sha256(selection_bytes).hexdigest() != selection_digest:
         raise DevABaselineScoringError(
             "selection manifest does not match the expected selection SHA-256"
@@ -264,7 +268,7 @@ def prepare_dev_a_baseline_plan(
 
     prepared_public = tuple(
         _prepare_public_attempt(
-            root,
+            artifact_root,
             selection=selection,
             entry=entry,
             public_record=public_records[entry.instance_id],

@@ -22,6 +22,54 @@ def test_selection_path_is_confined_to_autoresearch_state() -> None:
         _selection_path(Path("../private-selection.json"))
 
 
+def test_cli_accepts_separate_artifact_workspace(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    custody = tmp_path / "custody"
+    artifacts = tmp_path / "artifacts"
+    custody.mkdir()
+    artifacts.mkdir()
+    captured: dict[str, object] = {}
+
+    def prepare(workspace: Path, **kwargs: object) -> object:
+        captured["workspace"] = workspace
+        captured.update(kwargs)
+        raise DevABaselineScoringError("stop after argument capture")
+
+    monkeypatch.setattr(
+        "omni_benchmark.dev_a_baseline_scoring_cli.prepare_dev_a_baseline_plan",
+        prepare,
+    )
+    with pytest.raises(DevABaselineScoringError, match="argument capture"):
+        dev_a_baseline_scoring_main(
+            [
+                "--workspace",
+                str(custody),
+                "--artifact-workspace",
+                str(artifacts),
+                "--freeze-a-commit",
+                "a" * 40,
+                "--expected-selection-sha256",
+                "b" * 64,
+                "--expected-release-sha256",
+                "c" * 64,
+                "--expected-official-scoreable-questions",
+                "85",
+                "--expected-sensitivity-scoreable-questions",
+                "85",
+                "--output-root",
+                "experiments/autoresearch/raw/score-v1",
+            ],
+            environment={
+                "OMNI_BENCHMARK_SCORER_ADMIN_DSN": "host=admin",
+                "OMNI_BENCHMARK_SCORER_EXECUTION_DSN": "host=execution",
+            },
+        )
+
+    assert captured["workspace"] == custody.resolve()
+    assert captured["artifact_workspace"] == artifacts
+
+
 def test_cli_requires_in_memory_dsn_environment(tmp_path: Path) -> None:
     with pytest.raises(DevABaselineScoringError, match="SCORER_ADMIN_DSN") as captured:
         dev_a_baseline_scoring_main(

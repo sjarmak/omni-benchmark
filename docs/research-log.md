@@ -5771,11 +5771,15 @@ a freshly executed gold query without fabricating SQL or re-executing the
 evaluated system. Only the exact product terminal failure is mapped to the
 closed candidate-execution category; benchmark-infrastructure generations are
 rejected. Precomputed scoring refuses any case with preprocess or cleanup SQL
-before database acquisition. Public aggregate verification finds 85 dev-A
+before database acquisition. An explicit artifact workspace keeps the frozen
+C4 selection and outputs in the isolated C4 worktree while the train-only
+release remains in its existing custody workspace; scoring verifies both git
+roots and reads each artifact in place, so neither private release copying nor
+an ad hoc C4 artifact transfer is required. Public aggregate verification finds 85 dev-A
 questions in the 129-question C4 arm and zero nonempty preprocess or cleanup
 sequences, so the exact arm satisfies that invariant.
 
-Focused freeze/custody/scoring coverage passes 52 tests. The complete isolated
+Focused freeze/custody/scoring coverage passes 54 tests. The complete isolated
 gate passes 1,754 tests with five expected environment/source skips and 84.10%
 branch coverage; repository Ruff, formatting, and diff checks pass. Running the
 exact v4 freeze command while v4 remains absent returned only

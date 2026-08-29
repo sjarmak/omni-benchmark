@@ -56,6 +56,7 @@ def dev_a_baseline_scoring_main(
 
     plan = prepare_dev_a_baseline_plan(
         workspace,
+        artifact_workspace=arguments.artifact_workspace,
         freeze_a_commit=arguments.freeze_a_commit,
         selection_path=_selection_path(arguments.selection),
         expected_selection_sha256=arguments.expected_selection_sha256,
@@ -98,6 +99,14 @@ def _parser() -> argparse.ArgumentParser:
         description="Score the exact frozen public baseline on authorized dev-A"
     )
     parser.add_argument("--workspace", type=Path, required=True)
+    parser.add_argument(
+        "--artifact-workspace",
+        type=Path,
+        help=(
+            "git worktree containing the frozen selection and generation artifacts; "
+            "defaults to --workspace"
+        ),
+    )
     parser.add_argument("--freeze-a-commit", required=True)
     parser.add_argument("--selection", type=Path, default=SELECTION_PATH)
     parser.add_argument("--expected-selection-sha256", required=True)
