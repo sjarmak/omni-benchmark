@@ -380,6 +380,23 @@ unscored generation. Transport, polling, response-contract, or other benchmark-
 infrastructure outcomes remain unstaged for the separately governed incident
 path. The adapter contains no scoring or correctness interface.
 
+### Sealed direct capture adapter
+
+`SealedDirectConditionAdapter` is the C1-C3 production boundary. It does not use
+or widen `DirectDevelopmentScope`, `DirectQuestionIdentity`, or
+`load_committed_direct_question`; those remain restricted to train/dev-A/dev-B.
+Instead, an opaque `SealedPreparedAttempt` mints a distinct test-only runtime
+binding that carries the exact plan, Freeze-B, schedule, condition, question,
+database, model, context, budget, and system/control commit identities.
+
+After dispatcher approval consumption, an injected dependency factory must
+exact-match live transports and public tools to that binding. The adapter then
+reuses the direct tool/capture loop under a sealed HMAC authority, writes a
+separate canonical sealed receipt in a unique private sidecar directory, and
+projects an unscored `partition=test` record for immutable staging. Refusals and
+evaluated-system failures are retained; benchmark-infrastructure failures are
+not staged. No sealed direct API reads gold, correctness, or test annotations.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

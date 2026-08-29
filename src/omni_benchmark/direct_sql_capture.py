@@ -121,14 +121,18 @@ class DirectSqlCapture:
     ) -> None:
         try:
             authorized = validate_direct_prepared_attempt(prepared)
-            self._prepared = authorized
-            self._binding = authorized.binding
-            self._model_transport = authorized.model_transport
-            self._database = authorized.database
-            self._public_tools = authorized.public_tools
-            self._store = authorized.store
         except (DirectCaptureBindingError, DirectPreparedAttemptError) as error:
             raise DirectCaptureError(str(error)) from error
+        self._initialize_authorized(authorized)
+
+    def _initialize_authorized(self, authorized: Any) -> None:
+        """Initialize shared mechanics from an already validated opaque authority."""
+        self._prepared = authorized
+        self._binding = authorized.binding
+        self._model_transport = authorized.model_transport
+        self._database = authorized.database
+        self._public_tools = authorized.public_tools
+        self._store = authorized.store
         self._condition = self._binding.condition
         self._provider = self._binding.model.provider
         self._model = self._binding.model.model

@@ -64,6 +64,7 @@ SEALED_RUNTIME_SOURCE_PATHS = (
     "src/omni_benchmark/sealed_cohort_finalization.py",
     "src/omni_benchmark/sealed_dispatch.py",
     "src/omni_benchmark/sealed_dispatch_cli.py",
+    "src/omni_benchmark/sealed_direct_adapter.py",
     "src/omni_benchmark/sealed_execution_plan.py",
     "src/omni_benchmark/sealed_generation_staging.py",
     "src/omni_benchmark/sealed_omni_adapter.py",

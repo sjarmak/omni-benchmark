@@ -5398,3 +5398,71 @@ or broadening their authorization types.
 
 Build the sealed direct identity/preparer under `ei0.5.5.1`, then implement the
 production C4 probe-runner closure and final adapter-factory builder.
+
+## 2026-08-29 — D-101: Give sealed direct execution its own authority type
+
+### Decision / experiment
+
+Add a parallel C1-C3 sealed runtime binding and opaque capture authority instead
+of broadening the development-only direct identity. Change type: general
+evaluation integrity. Bead: `omni-benchmark-ei0.5.5.1`.
+
+### Hypothesis
+
+If the sealed direct lane binds the exact public test question, plan, Freeze B,
+schedule, system/control commits, condition context, database, model, and budget
+before reusing direct capture mechanics, it can preserve the ordinary loader's
+negative test-scope contract while producing staging-compatible generations.
+
+### Intervention
+
+Added `SealedDirectRuntimeBinding`, whose question scope is exactly `test` and
+whose sealed authority includes the plan, Freeze-B, schedule, control-commit,
+and condition-binding hashes. Added an HMAC-backed
+`SealedDirectPreparedCapture` that exact-compares those identities with live
+model, database, and public-tool transports. A sealed subclass reuses the
+existing direct tool loop but revalidates the sealed authority at every runtime
+boundary and emits its own canonical receipt; no ordinary direct parser or
+development loader accepts test.
+
+Added `SealedDirectConditionAdapter` for dispatcher compatibility. It creates a
+unique private capture store after adapter construction, invokes an injected
+post-receipt dependency factory, preserves evaluated-system refusal/error
+outcomes, rejects benchmark-infrastructure failures before staging, and projects
+only an unscored `partition=test` generation record. The module is now included
+in the sealed runtime-source digest.
+
+### Result
+
+Fourteen focused tests pass; the module reaches 82% branch coverage in the full
+gate. They cover all C1-C3
+identities, dispatcher-compatible execution, answered staging, refusal,
+evaluated-system error, infrastructure quarantine, receipt/artifact binding,
+runtime substitution, invalid construction, and the unchanged ordinary
+test-scope rejection. The hardened focused-plus-adjacent regression gate passes
+67 tests. The repository-wide gate passes 1,703 tests with five expected skips
+and 84.43% branch coverage. No provider, credential, real receipt, real test
+generation, protected outcome, or score was accessed.
+
+### Interpretation
+
+The direct lane no longer needs either of the two unsafe shortcuts: labeling
+test traffic as dev-A or widening a human-controlled development loader. The
+remaining production step is dependency construction from exact frozen Git
+inputs after receipt consumption.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Reusable execution mechanics do not require reusable authorization types.
+Keeping the authority partition-specific makes an invalid scope transition
+unrepresentable while retaining the mature capture loop.
+
+### Next step
+
+Build the production direct dependency factory and C4 probe-runner closure, wire
+all four factories into the dry-default entry point, and expand the runtime
+source set to every transitive production dependency before Freeze B.
