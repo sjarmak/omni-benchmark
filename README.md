@@ -11,6 +11,11 @@ Current status: Freeze A protocol frozen; its hash record is created in the
 required follow-up commit. No private label or gold data belongs in this
 repository or agent-accessible workspace.
 
+For the current execution frontier, completed milestones, blockers, and the
+remaining path to shareable results, see
+[docs/mvp-status.md](docs/mvp-status.md). For the exact live human authorization
+queue, see [docs/human-decisions.md](docs/human-decisions.md).
+
 ## Experimental design
 
 The pinned public release contains 480 tasks. The reproducible preparation step

@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T15:19:00-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T15:30:00-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
@@ -55,7 +55,8 @@ deployments verified, or 14 of the 16 answerable databases under the fixed
 154-scheduled / 136-answerable frame. Sports is resolved. General corrections
 for the prior planets and polar blockers are fully gated offline at exact source
 commit `aa1b82f39be705f1916823598fe65f7c47c8c57b` (1,891 passed, five expected
-skips, 83.58% branch coverage). A fresh exact validation request is not yet open.
+skips, 83.58% branch coverage). The fresh exact v9 validation request is the
+current `omni-benchmark-dih.17.12` A/B decision described above.
 
 The completed authorization covered no retry, C4, E02, question dispatch,
 scoring/correctness, protected labels, credentials/OAuth/leases, shared/main
@@ -122,8 +123,8 @@ new exact request.
 
 - Do not run any existing C4 authorization helper or launch command. The v5
   package binds only ten targets and is obsolete under decision B. A new exact
-  all-18 package can be prepared only after the deployment blocker and the
-  scorer-conformance frame decision above are complete.
+  154-scheduled/136-answerable C4 package can be prepared only after the v9
+  validation gate and the corrected active control-plane implementation pass.
 - Do not change Neon grants, database contents, credentials, OAuth profiles, or
   leases. The refuted `omni-benchmark-39b` recovery must not be executed.
 - The train-only release is complete. Keep the unreleased private source and all

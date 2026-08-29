@@ -7038,3 +7038,36 @@ record preserved; B permits no claim or product contact. Neither choice grants
 C4, E02, question, scoring/correctness, protected-data, credential/OAuth/lease,
 shared/main model, or retry authority. The earlier standalone A predated this
 request and was not consumed.
+
+## D-131: Correct the active C4 denominator before dispatch
+
+### Hypothesis
+
+The human-approved dev-A frame is already fixed at 154 scheduled questions, 18
+fixed scorer-conformance exclusions, and 136 answerable questions, but the
+active public C4 schedule and freezer may still encode the obsolete
+ten-database v5 arm. If so, launching it would produce a validly recorded run
+against the wrong experimental denominator and leave no intervention promotable
+under the approved frame.
+
+### Test boundary
+
+Before implementation, require the committed dev-A schedule to expose all 154
+scheduled identities, execute exactly the 136 non-excluded identities across
+16 databases, bind the committed scorer-conformance manifest, and reject a
+substituted exclusion identity. Extend the failure-first boundary through
+freezing and scoring before any provider action. Preserve the historical v5
+artifacts for provenance, but remove them from the active C4 execution path.
+
+### Current result
+
+The first focused tests fail on the current implementation as expected:
+`BaselineSchedule` has no scheduled-attempt frame, and a substituted exclusion
+identity is accepted. The correction is tracked by
+`omni-benchmark-ei0.4.10` and remains offline. No C4, E02, provider, question,
+score, correctness, protected-data, credential, OAuth, or lease action occurred.
+
+Separately, [mvp-status.md](mvp-status.md) now provides a high-level operator
+rollup that distinguishes implemented infrastructure from obtained benchmark
+evidence. Beads remains the task source of truth; the rollup is refreshed only
+at material evidence, blocker, authorization, freeze, and sealed-run gates.
