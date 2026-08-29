@@ -22,6 +22,7 @@ from .omni_semantic_deployment import OmniSemanticDeploymentPlan
 _SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,119}")
 _HEX_40 = re.compile(r"[0-9a-f]{40}")
 _HEX_64 = re.compile(r"[0-9a-f]{64}")
+_SOURCE_SCHEMA_VERSIONS = frozenset({1, 2})
 _MAX_SOURCE_BYTES = 1024 * 1024
 _MAX_DIAGNOSTIC_BYTES = 1024 * 1024
 _MAX_ISSUES = 512
@@ -221,7 +222,7 @@ def _load_source_deployment(
         )
     if (
         value.get("kind") != "public-omni-semantic-deployment"
-        or value.get("schema_version") != 2
+        or value.get("schema_version") not in _SOURCE_SCHEMA_VERSIONS
     ):
         raise PublicValidatorDiagnosticError("source deployment schema is invalid")
     if value.get("database") != database or value.get("run_id") != source_run_id:

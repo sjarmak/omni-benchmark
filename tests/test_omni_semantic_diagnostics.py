@@ -30,7 +30,7 @@ def _source_record(root: Path, **changes: object) -> Path:
         "model_id": "model-id",
         "readback_verified": False,
         "run_id": SOURCE_RUN_ID,
-        "schema_version": 2,
+        "schema_version": 1,
         "source_commit": SOURCE_COMMIT,
         "status": "failed",
         "validation_issue_count": 2,
@@ -145,7 +145,7 @@ def test_exact_failed_deployment_identity_is_validated_before_read_only_request(
         ({"manifest_sha256": "c" * 64}, "manifest"),
         ({"model_id": None}, "model and branch"),
         ({"validation_issue_count": 0}, "positive issue count"),
-        ({"schema_version": 1}, "schema"),
+        ({"schema_version": 3}, "schema"),
     ],
 )
 def test_source_identity_failures_happen_before_client_construction(

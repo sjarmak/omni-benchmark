@@ -6119,3 +6119,10 @@ hidden annotation, correctness result, or C4 action was accessed.
 KEEP the diagnostic boundary. Its live execution remains a separate read-only
 public deployment observation and has not occurred in this implementation
 step. The v5 C4 runner remains blocked by `omni-benchmark-wk0` and untouched.
+
+The first production-path invocation failed closed before client construction:
+the immutable v6 records are deployment schema v1, while the initial loader
+accepted only the current v2 writer schema. No diagnostic claim, output, profile
+access, or provider request occurred. A red regression using a v1 source record
+preceded widening the loader to the two explicit supported public deployment
+schemas; all other identity and manifest checks remain unchanged.
