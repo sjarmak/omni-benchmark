@@ -73,7 +73,7 @@ difference:
 
 C2−C1 tests the value associated with making business knowledge available.
 C3−C2 tests the value associated with structuring that knowledge. C4−C3 is a
-system-level, scaffold-conditional comparison unless model and harness parity
+system-level, scaffold-conditional comparison unless model and runtime parity
 can genuinely isolate enforcement. The direct conditions use one pinned Claude
 OAuth scaffold, while C4 preserves Omni's production-managed workflow and may
 use a composite model system.
@@ -120,7 +120,14 @@ disclosure are in [EVALUATION_PROTOCOL.md](EVALUATION_PROTOCOL.md),
 
 Before using hidden development labels, we transformed only public schema,
 column metadata, and the hierarchical knowledge base into deterministic Omni
-artifacts. Every knowledge node received exactly one disposition:
+artifacts. The HKB forms a dependency graph. Its 1,090 entries
+declare 945 direct dependency edges; 560 entries depend on at least one other
+entry, and 344 edges point to another derived entry. Every database contains a
+multi-hop dependency, and the longest chain spans six edges. A transformation
+that indexes each definition independently therefore loses part of the public
+business logic before an agent sees a question.
+
+Every knowledge node received exactly one disposition:
 
 - `compile`: a defensible same-table, same-grain scalar definition;
 - `context_only`: useful semantic text with one exact field target but no safe
@@ -264,6 +271,14 @@ in C3. Windows, `DISTINCT`, and nesting were fragile, but join and aggregate
 presence alone had similar wrong rates to their absence. This supports
 relationship, grain, and dependency handling as the next mechanism family;
 causality and question-specific fixes remain unresolved.
+
+Later trace diagnosis uses the earliest supported failure point in a fixed
+mechanism ladder: required knowledge absent, dependency graph wrong, retrieval
+miss, interpretation error, compilation failure, validation or adapter
+alteration, then residual model reasoning. This order prevents a retrieval or
+compilation defect from being counted as a reasoning failure. The structural
+analysis above does not assign ladder categories; aggregate prevalence remains
+pending until the permitted diagnostic process supplies enough evidence.
 
 Four intervention families were fixed before supervised work: same-grain
 dependency composition (E01), FK-backed grain relationships (E02), bounded
