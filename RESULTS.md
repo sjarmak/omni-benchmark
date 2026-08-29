@@ -2,10 +2,12 @@
 
 ## Results report
 
-> **Status — 2026-08-28:** Public-only modeling and the first four-condition
-> integration slice are complete. Development and sealed-test accuracy have not
-> yet been computed. Tables marked **Pending** are deliberate placeholders, not
-> zeroes. The 101 held-out questions and their labels remain sealed.
+> **Status — 2026-08-29:** The immutable C1-C3 public baseline has been scored on
+> its exact dev-A intersection. E01 is an audited baseline no-op, and the E02
+> relationship candidate is locally authenticated but has not been deployed or
+> evaluated. The C4 baseline, dev-B checkpoint, final freeze, and sealed test are
+> pending. Every **Pending** entry below carries no numeric value. The 101
+> held-out questions and their labels remain sealed.
 
 ## Executive summary
 
@@ -17,33 +19,39 @@ development partition is further divided into 154 adaptively reused questions
 and 77 metered validation questions. Four systems separate access to raw schema,
 business knowledge, structured semantic knowledge, and governed execution.
 
-The headline execution results are pending. Two findings already emerged from
-building and validating the public-only baseline:
+The primary governed and sealed results remain pending. Development evidence
+now supports four findings:
 
-1. **Grain and relationship contracts, not scalar expression syntax, were the
-   main obstacle to converting business knowledge into executable semantic
-   objects.** Across 1,036 definitions in the 17 databases beyond the initial
-   canary, 179 (17.3%) compiled, 183 (17.7%) were retained as searchable context,
-   491 (47.4%) were deferred because they crossed an unresolved grain, and 183
-   (17.7%) were unsupported. The most common recorded losses were unknown
-   cardinality, unspecified aggregation, and missing cross-grain identity.
+1. Grain and relationship contracts were the main recorded obstacle to
+   converting business knowledge into executable semantic objects. Across all
+   1,090 definitions, 193 (17.7%) compiled, 193 (17.7%)
+   were retained as searchable context, 511 (46.9%) were deferred because they
+   crossed an unresolved grain, and 193 (17.7%) were unsupported. The most
+   common recorded losses in the 17-database fan-out were unknown cardinality,
+   unspecified aggregation, and missing cross-grain identity.
 
-2. **The direct-SQL scaffold initially failed because schema discovery was
-   unbounded.** On one public canary, returning all 51 tables caused a failed
-   attempt to consume 173,365 tokens and $1.7398935 before issuing any database
-   query. Query-directed retrieval capped at four tables reduced the next
-   diagnostic attempt to 1,585 tokens and $0.017715, revealing a separate public
-   identifier-validation defect. After that defect was corrected, the frozen C1
-   canary reached SQL execution at 33,445 tokens and $0.214778. This is one
-   integration case, not an accuracy estimate, but it demonstrates that scaffold
-   design can dominate whether an otherwise competent comparator completes at
-   all.
+2. Searchable raw business knowledge produced the strongest direct-SQL
+   development baseline. Official accuracy on 122 scoreable dev-A questions was
+   7.4% for C1, 23.8% for C2, and 13.1% for C3. The sensitivity scorer preserved
+   that ordering. These are exploratory development results; C4 and the sealed
+   comparison have not run.
 
-These early results already narrow the product question. Supplying definitions
-is not enough if their grain cannot be represented safely, and offering a tool
-is not enough if one valid call exhausts the model's context or budget. The
-remaining evaluation tests whether correcting those problems translates into
-execution accuracy on unseen questions.
+3. Wrong answers dominate the direct baseline. Across the three conditions, 245
+   of 366 scoreable attempts were wrong, 67 refused or errored, and 54 were
+   correct. Wrong SQL used more relations on average in every condition, while
+   30 of 31 window-query attempts and 25 of 28 distinct-query attempts were
+   wrong. Join or aggregate presence alone did not separate correct from wrong
+   answers.
+
+4. Bounded schema retrieval made the direct comparator runnable and established
+   a hard payload limit. The schema tool now returns at most four tables and 64
+   KiB per call, compared with a 51-table response on the original canary. Full
+   baseline telemetry averaged $1.48 to $1.84 per attempt across C1-C3. The hard
+   payload bound and observed end-to-end cost are separate measurements.
+
+The remaining evaluation tests whether explicit relationship structure improves
+governed execution and whether any development result survives the frozen
+held-out comparison.
 
 ## 1. Research question
 
@@ -64,9 +72,11 @@ difference:
 | C4 | Omni semantic model | Production-governed Omni |
 
 C2−C1 tests the value associated with making business knowledge available.
-C3−C2 tests the value associated with structuring that knowledge. C4−C3 is
-reported as a system-level, scaffold-conditional comparison unless model and
-harness parity can genuinely isolate enforcement.
+C3−C2 tests the value associated with structuring that knowledge. C4−C3 is a
+system-level, scaffold-conditional comparison unless model and harness parity
+can genuinely isolate enforcement. The direct conditions use one pinned Claude
+OAuth scaffold, while C4 preserves Omni's production-managed workflow and may
+use a composite model system.
 
 ## 2. Experimental design
 
@@ -78,11 +88,28 @@ sealed final evaluation. Every database appears in both partitions.
 
 The 231 development questions are split into dev-A (154) and dev-B (77). System
 development may repeatedly use dev-A. Dev-B remains an internal generalization
-gate with a hard maximum of ten checkpoint evaluations, but it is deliberately
-reserved and unconsumed in the same-day execution described here. The final 101-
-question set is inaccessible to development. All four frozen conditions will
+gate with a hard maximum of ten checkpoint evaluations and is unconsumed in the
+work reported here. The final 101-question set is inaccessible to development.
+All four frozen conditions will
 produce three independent, interleaved attempts per sealed question before any
 test output is scored.
+
+Two database exclusions apply only to the public C1−C3 baseline-generation
+frame. `archeology_scan_large` repeatedly failed to return a usable direct
+answer across distinct retrieval settings; `cybermarket_pattern_large` was
+excluded after its first immutable launch failed read-only privilege
+attestation, even though the external credential was subsequently repaired.
+The resulting direct baseline contains 630 attempts over 210 development
+questions and 16 databases. Both exclusions are fixed in
+[`public-baseline-exclusions-v1.json`](config/conditions/public-baseline-exclusions-v1.json)
+and will be reported as scope limitations. Their records stay outside the wrong
+answer and missing-row categories.
+
+C4 development generation is budgeted and scheduled separately from this
+direct arm. Its question subset must be stratified and committed before launch,
+and condition comparisons will use only matched question/database coverage.
+This development-scope choice leaves the preregistered sealed-test population
+unchanged and prohibits result-dependent C4 sampling.
 
 The complete preregistration, custody rules, scorer definitions, and condition
 disclosure are in [EVALUATION_PROTOCOL.md](EVALUATION_PROTOCOL.md),
@@ -129,17 +156,16 @@ panels, compiled comparatively well. Residential and reverse-logistics models
 retained useful context but compiled no HKB definitions safely under the same
 rules.
 
-This supports a **representation** conclusion, not an answer-accuracy
-conclusion. The transformation has not yet shown which deferred definitions are
-needed by benchmark questions or whether searchable context compensates for
-their absence. Those questions require scored development runs.
+This establishes transformation coverage only. The benchmark relevance of
+deferred definitions and the compensating value of searchable context remain
+unknown until scored runs.
 
 The product implication is concrete: an HKB-import workflow needs first-class
 metric grain, entity identity, relationship/cardinality, and aggregation
 contracts. A useful compiler dry run should also explain why each definition
-was compiled, retained as context, deferred, or rejected. Otherwise users must
-choose between silently guessed semantics and large amounts of prose that the
-agent may or may not discover.
+was compiled, retained as context, deferred, or rejected. Without that report,
+users choose between silently guessed semantics and large amounts of prose with
+uncertain agent discovery.
 
 The deterministic artifacts and review corrections landed in commits
 `d3f84f6ea5d15b247e3d1ffba739cd220289e72a` and
@@ -149,10 +175,9 @@ The deterministic artifacts and review corrections landed in commits
 ## 4. First end-to-end vertical slice
 
 We tested one public dev-A question on `archeology_scan_large` before scaling.
-The purpose was integration validation, not correctness measurement: prove that
-each condition could generate an answer, preserve a trace, reach its read-only
-database, and produce an artifact compatible with the frozen evaluation path.
-No correctness result was inspected.
+The slice validated that each condition could generate an answer, preserve a
+trace, reach its read-only database, and produce an artifact compatible with the
+frozen evaluation path. Correctness remained uninspected.
 
 ### Finding 2: bounded schema discovery fixed a cost-driven direct-SQL failure
 
@@ -172,25 +197,34 @@ retrieval contract is shared by C1−C3.
 | First bounded diagnostic | Public-ID validation error | 1,585 | $0.017715 | 3.0 s | 0 |
 | Reviewed bounded C1 canary | Answered | 33,445 | $0.214778 | 40.9 s | 2 |
 
-The first bounded attempt did not answer: it exposed a second defect in which a
+The first bounded attempt exposed a second defect and returned no answer. A
 generic secret heuristic rejected canonical public foreign-key IDs. A typed,
-fail-closed validation rule fixed that boundary without weakening credential
+fail-closed validation rule fixed that boundary while retaining the credential
 checks. The subsequent immutable canary reached SQL and produced a complete
-trace. This sequence matters because it preserves the failed intermediate
-experiment instead of attributing the entire improvement to retrieval alone.
+trace. This sequence preserves the failed intermediate experiment and prevents
+the full change from being attributed to retrieval alone.
 
 The evidence supports three limited conclusions:
 
-- the original failure was caused by unbounded scaffold context rather than an
-  inability to inspect the relevant schema;
+- the original failure came from unbounded scaffold context;
 - bounded retrieval reduced the diagnostic context and cost enough to expose
   the next failure mechanism; and
 - after the independent identifier fix, the direct comparator completed the
   same public integration slice.
 
-It does **not** establish that bounded retrieval improves execution accuracy,
-nor that the cost ratios generalize beyond this one question and database.
-Scaled telemetry will test both.
+The four-match value remains unvalidated. A later attempt on a
+different archeology question reached five four-table searches, consumed
+$7.49, and ended in `model_budget_error`. Reducing the window to two tables cut
+that attempt to four searches and $4.32, but it still returned no answer. The
+cheaper failure provided no evidence for adopting the smaller window, so the
+change was reverted. Archeology was then excluded under the predeclared rule.
+
+This sequence establishes a payload bound on one question and database. It
+provides no execution-accuracy estimate or population cost ratio. D-054 froze a
+20-question public-development sensitivity subset spanning all 16 included
+databases. That arm changes only the match cap from four to eight and preserves the 64 KiB
+per-call ceiling. It was deferred from the MVP critical path before execution;
+membership remains fixed without reference to question-level outcomes.
 
 The product lesson is broader than this comparator. Tool payload bounds are
 part of agent quality: a semantically valid tool call can still make the system
@@ -202,23 +236,54 @@ than treating all identifiers as untrusted free text. The relevant commits are
 
 ## 5. Baseline and optimization trajectory
 
-The public-only baseline will be preserved before hidden dev-A supervision is
-used. Subsequent changes will be evaluated through the existing research loop:
-observe a recurring failure, state a mechanism, make the smallest reusable
-intervention, and measure targeted and global regressions on dev-A. Dev-B is
-kept in reserve rather than consumed during this same-day optimization cycle.
+The 630-attempt C1-C3 baseline was frozen by content hash before the train-only
+release. Its exact dev-A intersection contains 420 attempts over 140 of the 154
+dev-A questions. Fourteen questions have no baseline output and were left
+missing. Gold conformance left 122 questions per condition scoreable under the
+official scorer; the other 18 failed because the benchmark reference SQL did
+not execute. The sensitivity scorer retained 121 questions per condition.
 
-| Stage | Accuracy | Wrong answer | Refused | Errored | Median latency | Tokens/correct |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Public-only baseline, dev-A | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
-| Final candidate, dev-A | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
-| dev-B internal validation | **Reserved; not consumed** | — | — | — | — | — |
+| Condition | Correct | Wrong | Refused/error | Official accuracy | Sensitivity accuracy |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| C1: raw schema | 9 | 80 | 33 | 9/122 (7.4%) | 9/121 (7.4%) |
+| C2: searchable raw HKB | 29 | 91 | 2 | 29/122 (23.8%) | 28/121 (23.1%) |
+| C3: searchable exported model | 16 | 74 | 32 | 16/122 (13.1%) | 14/121 (11.6%) |
+| **All direct conditions** | **54** | **245** | **67** | **54/366 (14.8%)** | **51/363 (14.0%)** |
 
-Meaningful kept, reverted, and inconclusive interventions will be summarized
-here from the append-only [experiment ledger](experiments/experiments.csv) and
-the contemporaneous [research log](docs/research-log.md). A flat accuracy result
-will still be reported when it changes confident errors into explicit refusals
-or materially changes cost and reliability.
+C2 also had the highest capture-level completion rate on the 16-database frame:
+97.9%, compared with 75.9% for C1 and 74.8% for C3. Scoring changes the size of
+that apparent advantage. Ninety-one of C2's 122 scoreable attempts returned a
+wrong result, so completion cannot stand in for correctness. These rung-level
+development contrasts are exploratory, and no C4 accuracy estimate exists yet.
+
+The failure diagnostic then examined SQL structure without exposing question
+identities, SQL text, result values, or hidden annotations. All 299 correct-or-
+wrong records parsed. Wrong answers used more relations on average in every
+condition: 3.16 versus 2.00 in C1, 3.28 versus 2.48 in C2, and 3.04 versus 1.81
+in C3. Windows, `DISTINCT`, and nesting were fragile, but join and aggregate
+presence alone had similar wrong rates to their absence. This supports
+relationship, grain, and dependency handling as the next mechanism family;
+causality and question-specific fixes remain unresolved.
+
+Four intervention families were fixed before supervised work: same-grain
+dependency composition (E01), FK-backed grain relationships (E02), bounded
+semantic descriptions (E03), and a broad HKB-context negative control (E04).
+Their reusable changes and promotion rules are recorded in
+[`planned-dev-a-interventions-v1.json`](experiments/planned-dev-a-interventions-v1.json).
+
+| Experiment | Evidence completed | Decision | Remaining gate |
+| --- | --- | --- | --- |
+| E01: same-grain dependencies | The frozen baseline already has 48 dependency-bearing elements, 70 executable dependency edges, and depth three | Inconclusive; already baseline | No further E01 contrast |
+| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded candidate emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes | Keep as offline candidate | Isolated live deployment, then full dev-A C4 evaluation |
+| E03: bounded descriptions | Prespecified only | Not started | E02 live decision |
+| E04: broad HKB context | Prespecified negative control only | Deferred from MVP | Run only if it directly resolves the final candidate decision |
+
+E02's 18 candidate bundles publish and authenticate locally as 272 files. The
+candidate set is bound by SHA-256
+`16ee2a02f994d3f90234e24366fe6ddefd041b3b0d2a7e63c001b4803a0fe6da`.
+No bundle has been deployed and no E02 accuracy run has occurred. The public C4
+baseline must freeze under its separate launch authorization before this
+candidate can be evaluated. Dev-B remains reserved.
 
 ## 6. Held-out results
 
@@ -257,7 +322,7 @@ changed in response to the held-out result.
 
 ## 7. Product recommendations
 
-The pre-scoring evidence supports two immediate recommendations:
+The development evidence supports four immediate recommendations:
 
 1. **Make grain contracts explicit and inspectable.** Model import and AI-facing
    authoring should represent metric grain, entity identity, relationship
@@ -267,11 +332,21 @@ The pre-scoring evidence supports two immediate recommendations:
    semantic search tools should be query-directed, bounded, and observable.
    Telemetry should identify context volume per tool call and use typed public
    provenance IDs so safety filters do not reject legitimate semantic metadata.
+3. **Separate why an agent did not answer.** A content-based refusal, an explicit
+   statement that available schema is insufficient, model-budget exhaustion,
+   and infrastructure failure imply different product actions. Omni and
+   comparator telemetry should retain those raw states even when a report also
+   groups them into broader reliability categories.
+4. **Expose relationship coverage before deployment.** Public schema contained
+   1,049 conservative PK- or unique-backed relationships, while the bounded
+   modeled candidate could expose 91 across 16 databases. A model author needs a
+   dry-run view of accepted, deferred, and unreachable relationships before
+deciding whether the semantic model has enough structure for governed
+queries.
 
-These recommendations remain provisional with respect to answer accuracy. The
-scored baseline and supervised experiments will determine how often each issue
-causes a wrong answer, refusal, or product error, and whether the proposed fixes
-generalize beyond the canary.
+The direct baseline associates these mechanisms with development failures. C4
+and the held-out evaluation will determine whether the relationship candidate
+improves governed answer accuracy.
 
 ## 8. Limitations
 
@@ -280,13 +355,25 @@ generalize beyond the canary.
   retrieved or interpreted incorrectly.
 - D-045 is a single-question integration sequence. Its token and cost changes
   should not be treated as population estimates.
+- The reported accuracy covers 140 of 154 dev-A questions at generation time and
+  122 official-scoreable questions per condition after reference-SQL
+  conformance. These adaptively reusable development results are neither a full
+  dev-A estimate nor held-out evidence.
+- The public direct baseline excludes archeology and cybermarket and therefore
+  estimates C1−C3 behavior on 16 databases, not the full 18-database population.
+  Any comparison to a broader C4 arm must use matched coverage or disclose the
+  mismatch.
+- The four-table schema window is a comparator scaffold choice. D-054 fixes a
+  20-question sensitivity arm, but the MVP deferral leaves that arm unexecuted.
 - C4 is a composite production system. Unless its underlying model and resource
   settings can be matched exactly, C4−C3 is a system-level comparison rather
   than an isolated estimate of semantic enforcement.
 - Execution equivalence remains the benchmark authority. AI Hub diagnostics and
   judge outcomes can explain behavior but do not replace result-set scoring.
-- Held-out accuracy, reliability, and condition-level conclusions are pending;
-  no placeholder in this report should be interpreted as a result.
+- E02 has passed deterministic local publication checks only. Its product
+  deployment, C4 baseline, dev-B gate, and sealed accuracy are pending.
+- Held-out accuracy, reliability, and confirmatory condition conclusions are
+  pending. No placeholder in this report should be interpreted as a result.
 
 ## 9. Reproducibility
 
