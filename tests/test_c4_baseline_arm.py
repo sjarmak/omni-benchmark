@@ -22,6 +22,7 @@ from omni_benchmark.baseline_batch_cli import (
     baseline_batch_main,
 )
 from omni_benchmark.c4_baseline_arm import render_c4_baseline_arm
+from omni_benchmark.omni_semantic_deploy_cli import committed_bundle_inventory
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -54,7 +55,9 @@ def _git(workspace: Path, *arguments: str) -> str:
     return result.stdout.strip()
 
 
-def _fixture_repo(tmp_path: Path) -> tuple[Path, str]:
+def _fixture_repo(
+    tmp_path: Path, *, bind_records_to_current_bundles: bool = True
+) -> tuple[Path, str]:
     workspace = tmp_path / "repo"
     paths = (
         SPEC,
@@ -90,6 +93,42 @@ def _fixture_repo(tmp_path: Path) -> tuple[Path, str]:
     _git(workspace, "config", "user.name", "Test")
     _git(workspace, "add", ".")
     _git(workspace, "commit", "-qm", "fixture")
+    commit = _git(workspace, "rev-parse", "HEAD")
+    if not bind_records_to_current_bundles:
+        return workspace, commit
+
+    plans, failures = committed_bundle_inventory(workspace, commit)
+    assert not failures
+    record_digests: dict[str, str] = {}
+    for database in C4_DATABASES:
+        plan = plans[database]
+        record_path = (
+            workspace
+            / "experiments/deployments/public-baseline-v6"
+            / f"public-baseline-v6-20260828.{database}.json"
+        )
+        record = json.loads(record_path.read_text(encoding="utf-8"))
+        record["manifest_sha256"] = plan.manifest_sha256
+        record["file_sha256"] = {item.remote_path: item.sha256 for item in plan.files}
+        content = (
+            json.dumps(record, separators=(",", ":"), sort_keys=True) + "\n"
+        ).encode()
+        record_path.write_bytes(content)
+        record_digests[database] = _sha256(content)
+    spec_path = workspace / SPEC
+    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    spec["deployment"]["record_sha256"] = record_digests
+    spec_path.write_text(
+        json.dumps(spec, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    metadata_path = workspace / "data/manifests/c4_public_baseline_metadata.json"
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata["source"]["spec_sha256"] = _sha256(spec_path.read_bytes())
+    metadata_path.write_text(
+        json.dumps(metadata, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    _git(workspace, "add", ".")
+    _git(workspace, "commit", "-qm", "bind synthetic deployment evidence")
     return workspace, _git(workspace, "rev-parse", "HEAD")
 
 
@@ -236,6 +275,23 @@ def test_derived_gate_resolves_all_ten_verified_targets(tmp_path: Path) -> None:
     assert len(targets) == 10
     assert all(target.branch_id and target.model_id for target in targets.values())
     assert all(len(target.semantic_model_sha256) == 64 for target in targets.values())
+
+
+def test_current_compiler_outputs_invalidate_the_historical_v6_gate(
+    tmp_path: Path,
+) -> None:
+    workspace, commit = _fixture_repo(tmp_path, bind_records_to_current_bundles=False)
+
+    with pytest.raises(
+        BaselineBatchError,
+        match="derived deployment record is not verified: archeology_scan_large",
+    ):
+        verify_derived_deployment_gate(
+            workspace,
+            commit,
+            SPEC,
+            set(C4_DATABASES),
+        )
 
 
 def test_c4_approval_deployment_identity_binds_semantic_content() -> None:

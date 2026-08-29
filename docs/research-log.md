@@ -6265,6 +6265,24 @@ branch coverage. Ruff, formatting, deterministic canary regeneration, and diff
 checks pass. Live validation and exact readback remain a separate append-only
 deployment step.
 
+The integrated full-suite gate correctly exposed five C4-arm test failures:
+the immutable v6 deployment records bind the pre-fix bundle manifests, while
+the fixture had copied newly regenerated bundles into the same synthetic Git
+commit. Production behavior was fail-closed, and this is further evidence that
+the prepared v5 package is obsolete. Positive-path unit fixtures now derive
+synthetic record bindings from the copied current public bundles, while a
+separate regression requires the real historical v6 records to reject those
+current bundles. This keeps tests independent of local Git history and shallow
+clone depth. No v6 artifact, C4 arm, runner, approval file, or receipt was
+changed.
+
+The same regeneration changes the mechanically derived current E02 candidate
+set digest from the historical value recorded for its earlier source commit to
+`a4facbd0edcfd5e458e90e2abbabd12d42563bc3ac1da2c57fd516d30d3aa667`.
+Current-commit tests now bind that derived value; the historical result and
+research-log entries remain unchanged. No E02 deployment, receipt, run, or
+promotion decision occurred.
+
 ### Outcome
 
 KEEP. Parser-control intent remains explicit in reviewed source metadata while
