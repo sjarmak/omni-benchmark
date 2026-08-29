@@ -61,6 +61,7 @@ def _fixture_repo(
     workspace = tmp_path / "repo"
     paths = (
         SPEC,
+        Path("config/conditions/dev-a-scorer-conformance-exclusions-v1.json"),
         Path("data/manifests/train_ids.txt"),
         Path("data/manifests/dev_a_ids.txt"),
         Path("data/manifests/eligible_questions.jsonl"),
@@ -315,47 +316,35 @@ def test_c4_approval_deployment_identity_binds_semantic_content() -> None:
     )
 
 
-def test_c4_dry_run_projects_exact_product_arm_without_direct_credentials(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+def test_c4_dry_run_rejects_obsolete_ten_database_deployment_spec(
+    tmp_path: Path,
 ) -> None:
     workspace, commit = _fixture_repo(tmp_path)
 
-    result = baseline_batch_main(
-        [
-            "--workspace",
-            str(workspace),
-            "--system-commit",
-            commit,
-            "--run-id",
-            "public-c4-baseline-v1",
-            "--observed-attempt-cost-usd",
-            "0.7275655",
-            "--cost-ceiling-usd",
-            "560",
-            "--dry-run-c4-baseline",
-            "--freeze-a-commit",
-            "7d39ee107338da1ce10e2553a4290e64bfc2f892",
-            "--output-root",
-            "experiments/autoresearch/raw/public-c4-baseline-v1",
-            "--observed-condition-cost",
-            "C4=0.7275655",
-            "--maximum-wall-clock-seconds",
-            "21600",
-        ]
-    )
-
-    assert result == 0
-    output = json.loads(capsys.readouterr().out)
-    assert output["execution_plan"]["attempt_count"] == 129
-    assert {item["condition"] for item in output["execution_plan"]["attempts"]} == {
-        "C4"
-    }
-    assert output["execution_plan"]["claude_oauth_slot_count"] == 0
-    assert output["cost_role"] == "telemetry_only_not_an_operational_stop"
-    assert output["operational_stop"] == {
-        "maximum_wall_clock_seconds": 21600.0,
-        "policy": "finish_started_database_condition_blocks",
-    }
+    with pytest.raises(BaselineBatchError, match="scheduled databases exceed"):
+        baseline_batch_main(
+            [
+                "--workspace",
+                str(workspace),
+                "--system-commit",
+                commit,
+                "--run-id",
+                "public-c4-baseline-v1",
+                "--observed-attempt-cost-usd",
+                "0.7275655",
+                "--cost-ceiling-usd",
+                "560",
+                "--dry-run-c4-baseline",
+                "--freeze-a-commit",
+                "7d39ee107338da1ce10e2553a4290e64bfc2f892",
+                "--output-root",
+                "experiments/autoresearch/raw/public-c4-baseline-v1",
+                "--observed-condition-cost",
+                "C4=0.7275655",
+                "--maximum-wall-clock-seconds",
+                "21600",
+            ]
+        )
 
 
 def test_c4_dry_run_rejects_a_nonpositive_wall_clock_bound(tmp_path: Path) -> None:
@@ -390,10 +379,23 @@ def test_c4_dry_run_rejects_a_nonpositive_wall_clock_bound(tmp_path: Path) -> No
 
 
 def test_e02_dry_run_projects_exact_full_dev_a_c4_experiment(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     workspace, commit = _fixture_repo(tmp_path)
     deployment_root = _private_e02_deployment_gate(workspace, commit)
+    monkeypatch.setattr(
+        "omni_benchmark.baseline_batch_cli.verify_deployment_gate",
+        lambda _root, _run_id, databases, **kwargs: {
+            database: DeploymentTarget(
+                branch_id=f"branch-{index}",
+                model_id=f"model-{index}",
+                semantic_model_sha256=hashlib.sha256(database.encode()).hexdigest(),
+            )
+            for index, database in enumerate(sorted(databases))
+        },
+    )
 
     result = baseline_batch_main(
         [
@@ -425,19 +427,29 @@ def test_e02_dry_run_projects_exact_full_dev_a_c4_experiment(
 
     assert result == 0
     output = json.loads(capsys.readouterr().out)
-    assert output["execution_plan"]["attempt_count"] == 154
+    assert output["execution_plan"]["attempt_count"] == 136
     assert {item["condition"] for item in output["execution_plan"]["attempts"]} == {
         "C4"
     }
-    assert output["deployment_target_count"] == 18
+    assert output["deployment_target_count"] == 16
+    assert output["schedule_identity"]["scheduled_attempt_count"] == 154
+    assert output["schedule_identity"]["unscorable_attempt_count"] == 18
     assert output["cost_role"] == "telemetry_only_not_an_operational_stop"
 
 
 def test_e02_dry_run_rejects_deployment_from_another_system_commit(
-    tmp_path: Path,
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     workspace, commit = _fixture_repo(tmp_path)
     deployment_root = _private_e02_deployment_gate(workspace, "f" * 40)
+
+    def reject_source(*args, expected_source_commit=None, **kwargs):
+        assert expected_source_commit == commit
+        raise BaselineBatchError("deployment record source commit changed")
+
+    monkeypatch.setattr(
+        "omni_benchmark.baseline_batch_cli.verify_deployment_gate", reject_source
+    )
 
     with pytest.raises(BaselineBatchError, match="source commit"):
         baseline_batch_main(
@@ -546,6 +558,17 @@ def test_live_c4_rejects_missing_omni_environment_before_approval_consumption(
     receipt = tmp_path / "unused-approval.json"
     for name in ("OMNI_API_TOKEN", "OMNI_BASE_URL", "OMNI_PROFILE"):
         monkeypatch.delenv(name, raising=False)
+    monkeypatch.setattr(
+        "omni_benchmark.baseline_batch_cli.verify_derived_deployment_gate",
+        lambda _workspace, _commit, _spec, databases: {
+            database: DeploymentTarget(
+                branch_id=f"branch-{index}",
+                model_id=f"model-{index}",
+                semantic_model_sha256=hashlib.sha256(database.encode()).hexdigest(),
+            )
+            for index, database in enumerate(sorted(databases))
+        },
+    )
 
     with pytest.raises(BaselineBatchError, match="OMNI_BASE_URL must be set"):
         baseline_batch_main(

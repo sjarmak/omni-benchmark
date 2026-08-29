@@ -40,20 +40,50 @@ def _workspace(tmp_path: Path) -> Path:
 def _schedule(
     run_id: str = TEST_RUN_ID, *, attempts: int = 2, databases: int = 2
 ) -> BaselineSchedule:
+    selected = tuple(
+        BaselineAttempt(
+            condition="C4",
+            database=f"database_{index % databases}",
+            instance_id=f"question_{index}",
+            repetition=1,
+            run_id=run_id,
+        )
+        for index in range(attempts)
+    )
     return BaselineSchedule(
-        attempts=tuple(
-            BaselineAttempt(
-                condition="C4",
-                database=f"database_{index % databases}",
-                instance_id=f"question_{index}",
-                repetition=1,
-                run_id=run_id,
-            )
-            for index in range(attempts)
-        ),
+        attempts=selected,
         eligible_manifest_sha256="c" * 64,
         source_commit=COMMIT,
         train_ids_sha256="d" * 64,
+        scheduled_attempts=selected,
+        scorer_conformance_manifest_sha256="1" * 64,
+    )
+
+
+def _production_frame(run_id: str = TEST_RUN_ID) -> BaselineSchedule:
+    scheduled = tuple(
+        BaselineAttempt(
+            condition="C4",
+            database=(
+                "database_00"
+                if index < 9
+                else "database_01"
+                if index < 18
+                else f"database_{2 + ((index - 18) % 16):02d}"
+            ),
+            instance_id=f"question_{index:03d}",
+            repetition=1,
+            run_id=run_id,
+        )
+        for index in range(154)
+    )
+    return BaselineSchedule(
+        attempts=scheduled[18:],
+        eligible_manifest_sha256="c" * 64,
+        source_commit=COMMIT,
+        train_ids_sha256="d" * 64,
+        scheduled_attempts=scheduled,
+        scorer_conformance_manifest_sha256="1" * 64,
     )
 
 
@@ -171,16 +201,22 @@ def test_complete_c4_schedule_freezes_canonical_hash_bound_selection(
         "database_count": 2,
         "path": f"experiments/autoresearch/state/{TEST_RUN_ID}-freeze.json",
         "run_id": TEST_RUN_ID,
+        "scheduled_attempt_count": 2,
         "selection_sha256": hashlib.sha256(content).hexdigest(),
         "source_schedule_sha256": schedule.sha256,
+        "unscorable_attempt_count": 0,
     }
     assert manifest["kind"] == "public-c4-baseline-freeze"
     assert manifest["counts"] == {
+        "answerable_attempts": 2,
         "answered": 1,
         "attempts": 2,
         "databases": 2,
         "errored": 0,
         "refused": 1,
+        "scheduled_attempts": 2,
+        "scheduled_databases": 2,
+        "unscorable_attempts": 0,
     }
     assert [entry["attempt_id"] for entry in manifest["entries"]] == [
         attempt.attempt_id for attempt in schedule.attempts
@@ -188,6 +224,17 @@ def test_complete_c4_schedule_freezes_canonical_hash_bound_selection(
     assert all(entry["condition"] == "C4" for entry in manifest["entries"])
     assert manifest["execution_plan_sha256"] == "e" * 64
     assert manifest["deployment_sha256"] == "f" * 64
+    assert manifest["scorer_conformance_manifest_sha256"] == "1" * 64
+    assert manifest["scheduled_entries"] == [
+        {
+            "attempt_id": attempt.attempt_id,
+            "condition": "C4",
+            "database": attempt.database,
+            "instance_id": attempt.instance_id,
+            "repetition": 1,
+        }
+        for attempt in schedule.scheduled_attempts
+    ]
     assert content == _canonical(manifest)
     assert stat.S_IMODE(path.stat().st_mode) == 0o600
 
@@ -260,11 +307,11 @@ def test_freeze_refuses_score_or_other_extra_artifact(tmp_path: Path) -> None:
         _freeze(workspace, schedule)
 
 
-def test_cli_requires_exact_committed_129_attempt_identity(
+def test_cli_requires_exact_committed_154_scheduled_136_answerable_identity(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     workspace = _workspace(tmp_path)
-    schedule = _schedule(attempts=129, databases=10)
+    schedule = _production_frame()
     captured: dict[str, object] = {}
 
     monkeypatch.setattr(
@@ -273,12 +320,12 @@ def test_cli_requires_exact_committed_129_attempt_identity(
         lambda *args, **kwargs: schedule,
     )
     monkeypatch.setattr(
-        freeze_module, "c4_public_baseline_schedule", lambda *args, **kwargs: schedule
+        freeze_module, "c4_dev_a_experiment_schedule", lambda *args, **kwargs: schedule
     )
 
     def fake_freeze(*args, **kwargs):  # type: ignore[no-untyped-def]
         captured.update(kwargs)
-        return {"attempt_count": 129, "selection_sha256": "9" * 64}
+        return {"attempt_count": 136, "selection_sha256": "9" * 64}
 
     monkeypatch.setattr(freeze_module, "freeze_c4_baseline_selection", fake_freeze)
     arguments = [
@@ -302,7 +349,7 @@ def test_cli_requires_exact_committed_129_attempt_identity(
 
     assert c4_baseline_freeze_main(arguments) == 0
     assert json.loads(capsys.readouterr().out) == {
-        "attempt_count": 129,
+        "attempt_count": 136,
         "selection_sha256": "9" * 64,
     }
     assert captured["schedule"] is schedule
@@ -312,11 +359,11 @@ def test_cli_requires_exact_committed_129_attempt_identity(
         c4_baseline_freeze_main(arguments)
 
 
-def test_cli_freezes_exact_154_attempt_e02_dev_a_identity(
+def test_cli_freezes_exact_154_scheduled_136_answerable_e02_identity(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     workspace = _workspace(tmp_path)
-    schedule = _schedule("e02-dev-a-v1", attempts=154, databases=18)
+    schedule = _production_frame("e02-dev-a-v1")
     captured: dict[str, object] = {}
 
     monkeypatch.setattr(
@@ -330,7 +377,7 @@ def test_cli_freezes_exact_154_attempt_e02_dev_a_identity(
 
     def fake_freeze(*args, **kwargs):  # type: ignore[no-untyped-def]
         captured.update(kwargs)
-        return {"attempt_count": 154, "selection_sha256": "9" * 64}
+        return {"attempt_count": 136, "selection_sha256": "9" * 64}
 
     monkeypatch.setattr(freeze_module, "freeze_c4_baseline_selection", fake_freeze)
     arguments = [
@@ -355,5 +402,38 @@ def test_cli_freezes_exact_154_attempt_e02_dev_a_identity(
     ]
 
     assert c4_baseline_freeze_main(arguments) == 0
-    assert json.loads(capsys.readouterr().out)["attempt_count"] == 154
+    assert json.loads(capsys.readouterr().out)["attempt_count"] == 136
     assert captured["selection_kind"] == "e02-dev-a-c4-freeze"
+
+
+def test_freeze_binds_all_scheduled_ids_without_executing_fixed_exclusions(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    schedule = _production_frame()
+    output_root = Path(f"experiments/autoresearch/raw/{TEST_RUN_ID}")
+    for attempt in schedule.attempts:
+        _write_attempt(workspace, output_root, attempt)
+
+    receipt = _freeze(workspace, schedule)
+    manifest = json.loads((workspace / receipt["path"]).read_bytes())
+
+    assert receipt["attempt_count"] == 136
+    assert receipt["scheduled_attempt_count"] == 154
+    assert receipt["unscorable_attempt_count"] == 18
+    assert manifest["counts"] == {
+        "answerable_attempts": 136,
+        "answered": 136,
+        "attempts": 136,
+        "databases": 16,
+        "errored": 0,
+        "refused": 0,
+        "scheduled_attempts": 154,
+        "scheduled_databases": 18,
+        "unscorable_attempts": 18,
+    }
+    assert len(manifest["scheduled_entries"]) == 154
+    assert len(manifest["entries"]) == 136
+    assert {item["instance_id"] for item in manifest["scheduled_entries"]} - {
+        item["instance_id"] for item in manifest["entries"]
+    } == {f"question_{index:03d}" for index in range(18)}

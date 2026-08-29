@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T16:51:23-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T17:18:01-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -27,6 +27,13 @@ whether an action touches a provider (`omni-benchmark-xeg`).
 The optimization phase is also cut (`omni-benchmark-ivg`). E02 deployment
 authority is no longer on the path and will not be requested. The deviation is
 recorded in [protocol-diff.md](protocol-diff.md).
+
+The corrected C4 control-plane frame is complete and fully tested: all 154
+dev-A identities remain scheduled, exactly 136 answerable identities execute,
+and the 18 fixed exclusions remain explicit. This completion needs no human
+response. The remaining pre-C4 product task is the public-only polar readback
+fix and a new-run validation pass, both agent-owned under Tier 1. A human C4
+dispatch decision will be requested only after that prerequisite is complete.
 
 ## Most recent authorized action completed
 

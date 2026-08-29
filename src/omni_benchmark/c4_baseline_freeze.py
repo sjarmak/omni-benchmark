@@ -21,7 +21,6 @@ from .baseline_batch import (
     BaselineSchedule,
     ImmutableAttemptRepository,
     c4_dev_a_experiment_schedule,
-    c4_public_baseline_schedule,
     load_committed_baseline_schedule,
 )
 from .run_quarantine import is_quarantined_run
@@ -65,20 +64,16 @@ def c4_baseline_freeze_main(argv: Sequence[str] | None = None) -> int:
         full_schedule = load_committed_baseline_schedule(
             root, arguments.system_commit, run_id=arguments.run_id
         )
-        schedule = (
-            c4_dev_a_experiment_schedule(root, arguments.system_commit, full_schedule)
-            if arguments.schedule_kind == "e02-dev-a"
-            else c4_public_baseline_schedule(
-                root, arguments.system_commit, full_schedule
-            )
+        schedule = c4_dev_a_experiment_schedule(
+            root, arguments.system_commit, full_schedule
         )
     except BaselineBatchError as error:
         raise C4BaselineFreezeError(str(error)) from error
     if (
-        len(schedule.attempts)
-        != (154 if arguments.schedule_kind == "e02-dev-a" else 129)
-        or len({attempt.database for attempt in schedule.attempts})
-        != (18 if arguments.schedule_kind == "e02-dev-a" else 10)
+        len(schedule.scheduled_attempts) != 154
+        or len(schedule.attempts) != 136
+        or len({attempt.database for attempt in schedule.scheduled_attempts}) != 18
+        or len({attempt.database for attempt in schedule.attempts}) != 16
         or schedule.sha256 != arguments.expected_schedule_sha256
     ):
         raise C4BaselineFreezeError("committed C4 schedule identity is invalid")
@@ -177,15 +172,31 @@ def freeze_c4_baseline_selection(
         root / output_root, attempt_roots
     )
     outcomes = Counter(item.generation_outcome for item in observations)
+    scheduled_entries = [
+        {
+            "attempt_id": attempt.attempt_id,
+            "condition": "C4",
+            "database": attempt.database,
+            "instance_id": attempt.instance_id,
+            "repetition": 1,
+        }
+        for attempt in schedule.scheduled_attempts
+    ]
     payload = {
         "artifact_file_count": file_count,
         "artifact_inventory_sha256": inventory_sha256,
         "counts": {
+            "answerable_attempts": len(entries),
             "answered": outcomes["answered"],
             "attempts": len(entries),
             "databases": len({item.attempt.database for item in observations}),
             "errored": outcomes["errored"],
             "refused": outcomes["refused"],
+            "scheduled_attempts": len(scheduled_entries),
+            "scheduled_databases": len(
+                {item["database"] for item in scheduled_entries}
+            ),
+            "unscorable_attempts": len(scheduled_entries) - len(entries),
         },
         "deployment_sha256": deployment_sha256,
         "eligible_manifest_sha256": schedule.eligible_manifest_sha256,
@@ -194,7 +205,11 @@ def freeze_c4_baseline_selection(
         "kind": selection_kind,
         "output_root": Path(output_root).as_posix(),
         "run_id": run_id,
+        "scheduled_entries": scheduled_entries,
         "schema_version": SCHEMA_VERSION,
+        "scorer_conformance_manifest_sha256": (
+            schedule.scorer_conformance_manifest_sha256
+        ),
         "source_commit": schedule.source_commit,
         "source_schedule_sha256": schedule.sha256,
         "train_ids_sha256": schedule.train_ids_sha256,
@@ -210,8 +225,10 @@ def freeze_c4_baseline_selection(
         "database_count": payload["counts"]["databases"],
         "path": stored.relative_to(root).as_posix(),
         "run_id": run_id,
+        "scheduled_attempt_count": payload["counts"]["scheduled_attempts"],
         "selection_sha256": hashlib.sha256(content).hexdigest(),
         "source_schedule_sha256": schedule.sha256,
+        "unscorable_attempt_count": payload["counts"]["unscorable_attempts"],
     }
 
 
@@ -220,6 +237,13 @@ def _validate_identity(
 ) -> str:
     if not isinstance(schedule, BaselineSchedule):
         raise C4BaselineFreezeError("C4 baseline schedule is invalid")
+    if (
+        not schedule.scheduled_attempts
+        or schedule.scorer_conformance_manifest_sha256 is None
+    ):
+        raise C4BaselineFreezeError(
+            "freeze requires a scorer-conformance framed schedule"
+        )
     run_ids = {attempt.run_id for attempt in schedule.attempts}
     if len(run_ids) != 1 or any(
         attempt.condition != "C4" for attempt in schedule.attempts

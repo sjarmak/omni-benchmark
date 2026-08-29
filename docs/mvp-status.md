@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-29T16:51:23-04:00 (America/New_York).
+Last reconciled: 2026-08-29T17:18:01-04:00 (America/New_York).
 
 ## Current position
 
@@ -23,16 +23,14 @@ public semantic deployment and validation passes are agent-autonomous and
 retryable under a new run ID, while evaluated-answer, dev-B, protected-data, and
 shared-model actions still need one exact human authorization each.
 
-The immediate critical path has two parallel prerequisites:
-
-1. Finish `omni-benchmark-ei0.4.10`, which corrects the active C4 control plane
-   from the obsolete 129-attempt/10-database frame to the human-approved frame:
-   154 dev-A questions scheduled, 136 answerable questions executed across 16
-   databases, and 18 fixed scorer-conformance exclusions retained explicitly.
-2. Resolve `omni-benchmark-dih.17.13`, the one remaining public deployment
-   blocker. The immutable v9 pass verified 15 of 16 answerable databases;
-   polar now validates with zero issues but its cabin-environment view does not
-   round-trip to semantically identical readback content.
+The corrected C4 control plane is complete: it schedules all 154 dev-A
+identities, executes 136 answerable identities across 16 databases, and retains
+the 18 fixed scorer-conformance exclusions explicitly through freeze and score
+artifacts. The immediate critical path is now one prerequisite: resolve
+`omni-benchmark-dih.17.13`, the remaining public deployment blocker. The
+immutable v9 pass verified 15 of 16 answerable databases; polar validates with
+zero issues but its cabin-environment view does not round-trip to semantically
+identical readback content.
 
 No C4 dispatch is currently authorized. The obsolete ten-database v5 package
 must not be used.
@@ -45,7 +43,7 @@ must not be used.
 | Public C1-C3 direct baseline | Complete for the frozen baseline | Immutable generation and dev-A scoring exist. Official accuracy on the 122 scoreable-question intersection is C1 7.4%, C2 23.8%, C3 13.1%. The append-only nine-question cybermarket recovery, `omni-benchmark-dih.5.4.2.4.4.2.2.6`, is still outstanding and must not rewrite the frozen artifacts. |
 | Train-only gold release | Complete | Exactly 154 dev-A records were released through custody; the complete source was removed from the host transfer area. Test gold and dev-B outcomes remain unavailable to development. |
 | Public semantic compiler and deployment preparation | One exact-readback blocker remains | Immutable v9 verified 15 of 16 answerable databases. Planets is resolved. Polar validates with zero issues but `public/cabinenvironment.view` differs after product readback; `omni-benchmark-dih.17.13` owns the general round-trip fix. |
-| C4 baseline | Not run | First finish the corrected 154/136 frame and resolve polar exact readback. Then prepare and obtain a fresh exact C4 authorization, dispatch 136 answerable attempts, freeze the run, and score it while reporting all 154 scheduled identities and 18 fixed exclusions. |
+| C4 baseline | Frame complete; not run | The 154-scheduled/136-answerable control path is implemented and fully tested. Resolve polar exact readback, then prepare and obtain a fresh exact C4 authorization, dispatch 136 answerable attempts, freeze the run, and score it while reporting all 154 scheduled identities and 18 fixed exclusions. |
 | Minimal dev-A experiment set | **Cut from the MVP** | E01 audited as already present in the baseline, inconclusive. E02 compiled, hash-bound, never evaluated. Both are reported as-is with artifacts intact; neither enters the final system. Deviation recorded in `docs/protocol-diff.md`. |
 | Final candidate and Freeze B | Tooling ready; candidate now determined | With the optimization phase cut, the final candidate is the frozen mechanical baseline. Record the freeze and control commit and bind the human-controlled sealed schedule seed. |
 | Sealed C1-C4 evaluation | Tooling ready; not run | The 12-cohort generation, immutable manifests, dual scoring, and aggregate handoff are implemented and tested. They cannot run until Freeze B and the sealed custody gates are satisfied. |
@@ -74,8 +72,6 @@ profile, or lease information is needed.
 
 ### Agent-owned work now
 
-- Complete and fully test `omni-benchmark-ei0.4.10` without any provider or
-  protected-data access.
 - Diagnose and correct the general polar round-trip mismatch offline under
   `omni-benchmark-dih.17.13`; v9 remains immutable, and any successor validation
   uses a new run ID under the agent-autonomous Tier 1 policy.

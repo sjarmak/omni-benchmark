@@ -317,11 +317,15 @@ def _install_c4_selection(workspace: Path, commit: str) -> tuple[Path, str]:
         "artifact_file_count": 10,
         "artifact_inventory_sha256": "1" * 64,
         "counts": {
+            "answerable_attempts": 3,
             "answered": 3,
             "attempts": 3,
             "databases": 1,
             "errored": 0,
             "refused": 0,
+            "scheduled_attempts": 3,
+            "scheduled_databases": 1,
+            "unscorable_attempts": 0,
         },
         "deployment_sha256": "2" * 64,
         "eligible_manifest_sha256": "3" * 64,
@@ -330,7 +334,18 @@ def _install_c4_selection(workspace: Path, commit: str) -> tuple[Path, str]:
         "kind": "public-c4-baseline-freeze",
         "output_root": f"experiments/autoresearch/raw/{run_id}",
         "run_id": run_id,
+        "scheduled_entries": [
+            {
+                "attempt_id": entry["attempt_id"],
+                "condition": "C4",
+                "database": entry["database"],
+                "instance_id": entry["instance_id"],
+                "repetition": 1,
+            }
+            for entry in entries
+        ],
         "schema_version": 1,
+        "scorer_conformance_manifest_sha256": "7" * 64,
         "source_commit": commit,
         "source_schedule_sha256": "5" * 64,
         "train_ids_sha256": "6" * 64,
@@ -435,6 +450,78 @@ def test_prepare_accepts_exact_e02_dev_a_c4_freeze(tmp_path: Path) -> None:
 
     assert len(plan.attempts) == 2
     assert {attempt.condition for attempt in plan.attempts} == {"C4"}
+
+
+def test_c4_receipt_reports_fixed_scheduled_unscorable_without_candidate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace, commit, _, release_sha256 = _initialize_workspace(tmp_path)
+    selection_path, _ = _install_c4_selection(workspace, commit)
+    selection = json.loads((workspace / selection_path).read_text())
+    selection["entries"] = [
+        entry for entry in selection["entries"] if entry["instance_id"] != "dev-a-2"
+    ]
+    selection["counts"].update(
+        {
+            "answerable_attempts": 2,
+            "answered": 2,
+            "attempts": 2,
+            "scheduled_attempts": 3,
+            "unscorable_attempts": 1,
+        }
+    )
+    content = _canonical(selection)
+    _write(workspace / selection_path, content)
+
+    plan = prepare_dev_a_baseline_plan(
+        workspace,
+        freeze_a_commit=commit,
+        selection_path=selection_path,
+        expected_selection_sha256=hashlib.sha256(content).hexdigest(),
+        expected_release_sha256=release_sha256,
+    )
+
+    assert plan.selected_question_count == 1
+    assert plan.scheduled_question_count == 2
+    assert plan.fixed_unscorable_question_count == 1
+    assert len(plan.attempts) == 1
+    monkeypatch.setattr(
+        "omni_benchmark.dev_a_baseline_scoring.score_query",
+        lambda case, mode, provider: _scoring_result(mode, outcome="correct"),
+    )
+    monkeypatch.setattr(
+        "omni_benchmark.dev_a_baseline_scoring.score_precomputed_result",
+        lambda case, rows, mode, provider: _scoring_result(mode, outcome="correct"),
+    )
+    results = score_dev_a_baseline_plan(plan, object())
+    receipt = publish_dev_a_baseline_results(
+        workspace,
+        output_root=Path("experiments/autoresearch/raw/c4-framed-score-fixture"),
+        plan=plan,
+        results=results,
+        environment={},
+    )
+
+    assert receipt["official"]["scheduled_attempts"] == 2
+    assert receipt["official"]["scoreable_attempts"] == 1
+    assert receipt["official"]["unscorable_attempts"] == 1
+    assert receipt["official"]["scoreable_questions"] == 1
+    assert receipt["official"]["unscorable_questions"] == 1
+    assert receipt["official"]["by_condition"]["C4"] == {
+        "correct": 1,
+        "refused_or_error": 0,
+        "scheduled_attempts": 2,
+        "scoreable_attempts": 1,
+        "unscorable_attempts": 1,
+        "wrong_answer": 0,
+    }
+    score = json.loads(
+        (
+            workspace
+            / "experiments/autoresearch/raw/c4-framed-score-fixture/official.score.json"
+        ).read_text()
+    )
+    assert len(score["attempts"]) == 1
 
 
 def test_prepare_keeps_c4_artifacts_separate_from_private_release(
@@ -741,6 +828,9 @@ def test_publish_is_sql_free_hash_bound_and_exclusive(
     assert receipt["selection_sha256"] == selection_sha256
     assert receipt["release_sha256"] == release_sha256
     assert receipt["coverage"]["attempts"] == 6
+    assert receipt["coverage"]["fixed_unscorable_questions"] == 0
+    assert receipt["coverage"]["scheduled_questions"] == 2
+    assert receipt["scorer_conformance_manifest_sha256"] is None
     assert receipt["official"]["scoreable_attempts"] == 6
     assert receipt["official"]["unscorable_attempts"] == 0
     assert receipt["official"]["correct"] == 6

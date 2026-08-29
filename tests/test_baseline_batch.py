@@ -71,11 +71,19 @@ def _schedule_repo(tmp_path: Path) -> tuple[Path, str]:
             "query": f"Public question {index}",
             "selected_database": (
                 "database_00"
-                if index < 7
+                if index < 9
                 else (
                     "database_01"
-                    if index < 21
-                    else f"database_{2 + ((index - 21) % 16):02d}"
+                    if index < 18
+                    else (
+                        "database_00"
+                        if index == 154
+                        else (
+                            "database_01"
+                            if index in {155, 156}
+                            else f"database_{2 + ((index - 18) % 16):02d}"
+                        )
+                    )
                 )
             ),
         }
@@ -94,6 +102,68 @@ def _schedule_repo(tmp_path: Path) -> tuple[Path, str]:
     _git(workspace, "add", ".")
     _git(workspace, "commit", "-qm", "public schedule inputs")
     return workspace, _git(workspace, "rev-parse", "HEAD")
+
+
+def _commit_dev_a_conformance_manifest(
+    workspace: Path, *, excluded_ids: tuple[str, ...] | None = None
+) -> str:
+    ids = tuple((workspace / "data/manifests/dev_a_ids.txt").read_text().splitlines())
+    eligible_content = (
+        workspace / "data/manifests/eligible_questions.jsonl"
+    ).read_bytes()
+    ids_content = (workspace / "data/manifests/dev_a_ids.txt").read_bytes()
+    excluded = excluded_ids or (*ids[:9], *ids[9:18])
+    path = workspace / "config/conditions/dev-a-scorer-conformance-exclusions-v1.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "counts": {
+                    "answerable_questions": 136,
+                    "scheduled_questions": 154,
+                    "unscorable_questions": 18,
+                },
+                "databases": [
+                    {
+                        "database": "database_00",
+                        "official_loader_omitted_tables": 34,
+                        "unscorable_questions": 9,
+                    },
+                    {
+                        "database": "database_01",
+                        "official_loader_omitted_tables": 37,
+                        "unscorable_questions": 9,
+                    },
+                ],
+                "disposition": "scheduled_but_unscorable",
+                "failure_class": "gold_statement_error",
+                "human_decision": {"bead_id": "omni-benchmark-1u8", "response": "A"},
+                "instance_ids": sorted(excluded),
+                "kind": "dev-a-scorer-conformance-exclusions",
+                "official_loader": {
+                    "path": "data/raw/livesqlbench-large-v1/init-databases_postgresql_large_v1.sh",
+                    "semantics": "exact_case_sensitive_filename_match_on_linux",
+                },
+                "schema_version": 1,
+                "scope": "c4-promotion-and-dev-a-reporting",
+                "scorers": ["official_soft_ex", "corrected_multiset_sensitivity"],
+                "sources": {
+                    "dev_a_ids_path": "data/manifests/dev_a_ids.txt",
+                    "dev_a_ids_sha256": hashlib.sha256(ids_content).hexdigest(),
+                    "eligible_manifest_path": "data/manifests/eligible_questions.jsonl",
+                    "eligible_manifest_sha256": hashlib.sha256(
+                        eligible_content
+                    ).hexdigest(),
+                },
+            },
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    _git(workspace, "add", ".")
+    _git(workspace, "commit", "-qm", "bind dev-a scorer conformance frame")
+    return _git(workspace, "rev-parse", "HEAD")
 
 
 def _commit_exclusion_manifest(
@@ -307,7 +377,8 @@ def test_committed_public_schedule_covers_all_231_questions_and_four_conditions(
 def test_committed_dev_a_c4_schedule_is_exact_complete_and_ordered(
     tmp_path: Path,
 ) -> None:
-    workspace, commit = _schedule_repo(tmp_path)
+    workspace, _ = _schedule_repo(tmp_path)
+    commit = _commit_dev_a_conformance_manifest(workspace)
     full = load_committed_baseline_schedule(workspace, commit, run_id="e02-dev-a-v1")
 
     selected = c4_dev_a_experiment_schedule(workspace, commit, full)
@@ -315,10 +386,49 @@ def test_committed_dev_a_c4_schedule_is_exact_complete_and_ordered(
     expected_ids = tuple(
         (workspace / "data/manifests/dev_a_ids.txt").read_text().splitlines()
     )
-    assert len(selected.attempts) == 154
-    assert tuple(attempt.instance_id for attempt in selected.attempts) == expected_ids
+    excluded_ids = set(expected_ids[:18])
+    assert len(selected.scheduled_attempts) == 154
+    assert tuple(attempt.instance_id for attempt in selected.scheduled_attempts) == (
+        expected_ids
+    )
+    assert len(selected.attempts) == 136
+    assert tuple(attempt.instance_id for attempt in selected.attempts) == tuple(
+        instance_id for instance_id in expected_ids if instance_id not in excluded_ids
+    )
     assert {attempt.condition for attempt in selected.attempts} == {"C4"}
-    assert len({attempt.database for attempt in selected.attempts}) == 18
+    assert len({attempt.database for attempt in selected.attempts}) == 16
+    assert selected.public_identity() == {
+        "answerable_attempt_count": 136,
+        "attempt_count": 136,
+        "database_count": 16,
+        "excluded_databases": [],
+        "exclusion_manifest_sha256": None,
+        "question_count": 136,
+        "schedule_sha256": selected.sha256,
+        "scheduled_attempt_count": 154,
+        "scorer_conformance_manifest_sha256": hashlib.sha256(
+            (
+                workspace
+                / "config/conditions/dev-a-scorer-conformance-exclusions-v1.json"
+            ).read_bytes()
+        ).hexdigest(),
+        "unscorable_attempt_count": 18,
+    }
+
+
+def test_committed_dev_a_c4_schedule_rejects_substituted_exclusion_identity(
+    tmp_path: Path,
+) -> None:
+    workspace, _ = _schedule_repo(tmp_path)
+    ids = tuple((workspace / "data/manifests/dev_a_ids.txt").read_text().splitlines())
+    commit = _commit_dev_a_conformance_manifest(
+        workspace,
+        excluded_ids=(*ids[:17], ids[18]),
+    )
+    full = load_committed_baseline_schedule(workspace, commit, run_id="c4-dev-a-v1")
+
+    with pytest.raises(BaselineBatchError, match="scorer-conformance"):
+        c4_dev_a_experiment_schedule(workspace, commit, full)
 
 
 def test_committed_schedule_rejects_quarantined_run_id(tmp_path: Path) -> None:
@@ -1070,3 +1180,58 @@ def test_direct_live_cli_passes_only_the_commit_bound_excluded_schedule(
     assert result == 0
     assert captured[0].public_identity()["attempt_count"] == 630
     assert captured[0].public_identity()["database_count"] == 16
+
+
+def test_public_c4_dry_plan_uses_authorized_154_scheduled_136_answerable_frame(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    workspace, _ = _schedule_repo(tmp_path)
+    commit = _commit_dev_a_conformance_manifest(workspace)
+    captured_databases: list[set[str]] = []
+
+    def fake_deployment_gate(_workspace, _commit, _spec_path, databases):
+        captured_databases.append(set(databases))
+        return {database: object() for database in databases}
+
+    monkeypatch.setattr(
+        baseline_batch_cli,
+        "verify_derived_deployment_gate",
+        fake_deployment_gate,
+    )
+
+    assert (
+        baseline_batch_main(
+            [
+                "--workspace",
+                str(workspace),
+                "--system-commit",
+                commit,
+                "--run-id",
+                "public-c4-current-v1",
+                "--observed-attempt-cost-usd",
+                "1.00",
+                "--cost-ceiling-usd",
+                "560",
+                "--dry-run-c4-baseline",
+                "--freeze-a-commit",
+                "f" * 40,
+                "--output-root",
+                "experiments/autoresearch/raw/public-c4-current-v1",
+                "--observed-condition-cost",
+                "C4=1.00",
+                "--maximum-wall-clock-seconds",
+                "3600",
+            ]
+        )
+        == 0
+    )
+    output = json.loads(capsys.readouterr().out)
+    assert output["deployment_target_count"] == 16
+    assert output["execution_plan"]["attempt_count"] == 136
+    assert output["schedule_identity"]["scheduled_attempt_count"] == 154
+    assert output["schedule_identity"]["answerable_attempt_count"] == 136
+    assert output["schedule_identity"]["unscorable_attempt_count"] == 18
+    assert len(captured_databases) == 1
+    assert len(captured_databases[0]) == 16

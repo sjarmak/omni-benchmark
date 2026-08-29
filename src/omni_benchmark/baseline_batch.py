@@ -34,6 +34,9 @@ _DEV_A_IDS_PATH = Path("data/manifests/dev_a_ids.txt")
 _ELIGIBLE_MANIFEST_PATH = Path("data/manifests/eligible_questions.jsonl")
 _C4_ARM_SPEC_PATH = Path("config/conditions/c4-public-baseline-arm-v1.json")
 _BASELINE_EXCLUSIONS_PATH = Path("config/conditions/public-baseline-exclusions-v1.json")
+_DEV_A_CONFORMANCE_EXCLUSIONS_PATH = Path(
+    "config/conditions/dev-a-scorer-conformance-exclusions-v1.json"
+)
 _IDENTIFIER_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}")
 _COMMIT_PATTERN = re.compile(r"[0-9a-f]{40,64}")
 _MAX_PRIVATE_FILE_BYTES = 16 * 1024 * 1024
@@ -152,6 +155,8 @@ class BaselineSchedule:
     train_ids_sha256: str
     exclusion_manifest_sha256: str | None = None
     exclusions: tuple[BaselineExclusion, ...] = ()
+    scheduled_attempts: tuple[BaselineAttempt, ...] = ()
+    scorer_conformance_manifest_sha256: str | None = None
 
     def __post_init__(self) -> None:
         if not self.attempts:
@@ -174,6 +179,42 @@ class BaselineSchedule:
         excluded = tuple(item.database for item in self.exclusions)
         if tuple(sorted(set(excluded))) != excluded:
             raise BaselineBatchError("baseline exclusions must be unique and sorted")
+        framed = bool(self.scheduled_attempts)
+        if framed != (self.scorer_conformance_manifest_sha256 is not None):
+            raise BaselineBatchError(
+                "baseline scorer-conformance identity is incomplete"
+            )
+        if not framed:
+            return
+        if self.exclusions:
+            raise BaselineBatchError(
+                "baseline database exclusions cannot be combined with a scorer frame"
+            )
+        if (
+            re.fullmatch(r"[0-9a-f]{64}", self.scorer_conformance_manifest_sha256 or "")
+            is None
+        ):
+            raise BaselineBatchError(
+                "baseline scorer-conformance manifest digest is invalid"
+            )
+        scheduled_ids = tuple(attempt.attempt_id for attempt in self.scheduled_attempts)
+        if len(set(scheduled_ids)) != len(scheduled_ids):
+            raise BaselineBatchError(
+                "baseline scorer-conformance schedule contains duplicate attempts"
+            )
+        if {attempt.condition for attempt in self.scheduled_attempts} != {"C4"}:
+            raise BaselineBatchError(
+                "baseline scorer-conformance schedule must contain only C4"
+            )
+        executable = set(attempt_ids)
+        if self.attempts != tuple(
+            attempt
+            for attempt in self.scheduled_attempts
+            if attempt.attempt_id in executable
+        ):
+            raise BaselineBatchError(
+                "baseline answerable attempts must preserve scheduled order"
+            )
 
     @property
     def sha256(self) -> str:
@@ -186,10 +227,17 @@ class BaselineSchedule:
         if self.exclusion_manifest_sha256 is not None:
             payload["exclusion_manifest_sha256"] = self.exclusion_manifest_sha256
             payload["exclusions"] = [item.canonical_dict() for item in self.exclusions]
+        if self.scorer_conformance_manifest_sha256 is not None:
+            payload["scheduled_attempts"] = [
+                attempt.canonical_dict() for attempt in self.scheduled_attempts
+            ]
+            payload["scorer_conformance_manifest_sha256"] = (
+                self.scorer_conformance_manifest_sha256
+            )
         return hashlib.sha256(_canonical_json(payload)).hexdigest()
 
     def public_identity(self) -> dict[str, object]:
-        return {
+        identity = {
             "attempt_count": len(self.attempts),
             "database_count": len({attempt.database for attempt in self.attempts}),
             "excluded_databases": [item.database for item in self.exclusions],
@@ -197,6 +245,20 @@ class BaselineSchedule:
             "question_count": len({attempt.instance_id for attempt in self.attempts}),
             "schedule_sha256": self.sha256,
         }
+        if self.scorer_conformance_manifest_sha256 is not None:
+            identity.update(
+                {
+                    "answerable_attempt_count": len(self.attempts),
+                    "scheduled_attempt_count": len(self.scheduled_attempts),
+                    "scorer_conformance_manifest_sha256": (
+                        self.scorer_conformance_manifest_sha256
+                    ),
+                    "unscorable_attempt_count": (
+                        len(self.scheduled_attempts) - len(self.attempts)
+                    ),
+                }
+            )
+        return identity
 
 
 @dataclass(frozen=True, slots=True)
@@ -562,6 +624,9 @@ def c4_dev_a_experiment_schedule(
         root = workspace.resolve(strict=True)
         ids_input = committed_spec(root, commit, _DEV_A_IDS_PATH)
         ids = _parse_subset_ids(ids_input.content, expected=154)
+        conformance_input = committed_spec(
+            root, commit, _DEV_A_CONFORMANCE_EXCLUSIONS_PATH
+        )
     except (OSError, OmniProbePreflightError, UnicodeError) as error:
         raise BaselineBatchError("committed dev-A membership is unavailable") from error
     indexed = {
@@ -571,14 +636,32 @@ def c4_dev_a_experiment_schedule(
     }
     if len(indexed) != 231 or any(instance_id not in indexed for instance_id in ids):
         raise BaselineBatchError("dev-A IDs are absent from the public schedule")
-    attempts = tuple(indexed[instance_id] for instance_id in ids)
-    if len({attempt.database for attempt in attempts}) != 18:
+    scheduled_attempts = tuple(indexed[instance_id] for instance_id in ids)
+    if len({attempt.database for attempt in scheduled_attempts}) != 18:
         raise BaselineBatchError("dev-A C4 experiment must span 18 databases")
+    excluded_ids = _parse_dev_a_conformance_exclusions(
+        conformance_input.content,
+        dev_a_ids=ids,
+        dev_a_ids_sha256=ids_input.sha256,
+        eligible_manifest_sha256=schedule.eligible_manifest_sha256,
+        scheduled_attempts=scheduled_attempts,
+    )
+    attempts = tuple(
+        attempt
+        for attempt in scheduled_attempts
+        if attempt.instance_id not in excluded_ids
+    )
+    if len(attempts) != 136 or len({attempt.database for attempt in attempts}) != 16:
+        raise BaselineBatchError(
+            "dev-A scorer-conformance answerable coverage is invalid"
+        )
     return BaselineSchedule(
         attempts=attempts,
         eligible_manifest_sha256=schedule.eligible_manifest_sha256,
         source_commit=schedule.source_commit,
         train_ids_sha256=schedule.train_ids_sha256,
+        scheduled_attempts=scheduled_attempts,
+        scorer_conformance_manifest_sha256=conformance_input.sha256,
     )
 
 
@@ -822,6 +905,137 @@ def _validate_c4_arm_metadata(
         or source.get("train_ids_sha256") != schedule.train_ids_sha256
     ):
         raise BaselineBatchError("C4 arm metadata does not bind public sources")
+
+
+def _parse_dev_a_conformance_exclusions(
+    content: bytes,
+    *,
+    dev_a_ids: tuple[str, ...],
+    dev_a_ids_sha256: str,
+    eligible_manifest_sha256: str,
+    scheduled_attempts: tuple[BaselineAttempt, ...],
+) -> frozenset[str]:
+    try:
+        value = json.loads(content)
+    except json.JSONDecodeError as error:
+        raise BaselineBatchError(
+            "committed dev-A scorer-conformance manifest is invalid"
+        ) from error
+    expected_keys = {
+        "counts",
+        "databases",
+        "disposition",
+        "failure_class",
+        "human_decision",
+        "instance_ids",
+        "kind",
+        "official_loader",
+        "schema_version",
+        "scope",
+        "scorers",
+        "sources",
+    }
+    if (
+        not isinstance(value, dict)
+        or set(value) != expected_keys
+        or value.get("kind") != "dev-a-scorer-conformance-exclusions"
+        or value.get("schema_version") != 1
+        or value.get("disposition") != "scheduled_but_unscorable"
+        or value.get("failure_class") != "gold_statement_error"
+        or value.get("scope") != "c4-promotion-and-dev-a-reporting"
+        or value.get("scorers")
+        != ["official_soft_ex", "corrected_multiset_sensitivity"]
+        or value.get("human_decision")
+        != {"bead_id": "omni-benchmark-1u8", "response": "A"}
+        or value.get("official_loader")
+        != {
+            "path": (
+                "data/raw/livesqlbench-large-v1/init-databases_postgresql_large_v1.sh"
+            ),
+            "semantics": "exact_case_sensitive_filename_match_on_linux",
+        }
+        or value.get("counts")
+        != {
+            "answerable_questions": 136,
+            "scheduled_questions": 154,
+            "unscorable_questions": 18,
+        }
+        or value.get("sources")
+        != {
+            "dev_a_ids_path": _DEV_A_IDS_PATH.as_posix(),
+            "dev_a_ids_sha256": dev_a_ids_sha256,
+            "eligible_manifest_path": _ELIGIBLE_MANIFEST_PATH.as_posix(),
+            "eligible_manifest_sha256": eligible_manifest_sha256,
+        }
+    ):
+        raise BaselineBatchError(
+            "committed dev-A scorer-conformance manifest does not bind sources"
+        )
+    records = value.get("databases")
+    if not isinstance(records, list) or len(records) != 2:
+        raise BaselineBatchError(
+            "committed dev-A scorer-conformance databases are invalid"
+        )
+    databases: list[str] = []
+    for record in records:
+        if (
+            not isinstance(record, dict)
+            or set(record)
+            != {
+                "database",
+                "official_loader_omitted_tables",
+                "unscorable_questions",
+            }
+            or not isinstance(record.get("database"), str)
+            or _IDENTIFIER_PATTERN.fullmatch(record["database"]) is None
+            or type(record.get("official_loader_omitted_tables")) is not int
+            or record["official_loader_omitted_tables"] <= 0
+            or record.get("unscorable_questions") != 9
+        ):
+            raise BaselineBatchError(
+                "committed dev-A scorer-conformance database is invalid"
+            )
+        databases.append(record["database"])
+    if databases != sorted(set(databases)):
+        raise BaselineBatchError(
+            "committed dev-A scorer-conformance databases are not canonical"
+        )
+    instance_ids = value.get("instance_ids")
+    if (
+        not isinstance(instance_ids, list)
+        or len(instance_ids) != 18
+        or instance_ids != sorted(set(instance_ids))
+        or any(
+            not isinstance(instance_id, str)
+            or _IDENTIFIER_PATTERN.fullmatch(instance_id) is None
+            for instance_id in instance_ids
+        )
+    ):
+        raise BaselineBatchError(
+            "committed dev-A scorer-conformance instance IDs are invalid"
+        )
+    scheduled_by_id = {attempt.instance_id: attempt for attempt in scheduled_attempts}
+    if tuple(scheduled_by_id) != dev_a_ids:
+        raise BaselineBatchError(
+            "committed dev-A scorer-conformance schedule order is invalid"
+        )
+    expected_excluded = {
+        instance_id
+        for instance_id in dev_a_ids
+        if scheduled_by_id[instance_id].database in set(databases)
+    }
+    if set(instance_ids) != expected_excluded or any(
+        sum(
+            scheduled_by_id[instance_id].database == database
+            for instance_id in instance_ids
+        )
+        != 9
+        for database in databases
+    ):
+        raise BaselineBatchError(
+            "committed dev-A scorer-conformance identity is substituted"
+        )
+    return frozenset(instance_ids)
 
 
 def _parse_baseline_exclusions(content: bytes) -> tuple[BaselineExclusion, ...]:

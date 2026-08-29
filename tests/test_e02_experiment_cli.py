@@ -65,7 +65,7 @@ def test_dry_e02_plan_is_exact_public_and_provider_inert(
     assert output["database_count"] == 18
     assert output["file_count"] == 272
     assert output["relationship_count"] == 91
-    assert output["schedule_attempt_count"] == 154
+    assert output["schedule_attempt_count"] == 136
     assert output["live_execution"] == "not_started"
     assert output["approval_binding"]["condition"] == "C4"
     assert len(output["approval_binding"]["execution_plan_sha256"]) == 64

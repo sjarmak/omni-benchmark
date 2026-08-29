@@ -96,7 +96,9 @@ C4_SELECTION_FIELDS = frozenset(
         "kind",
         "output_root",
         "run_id",
+        "scheduled_entries",
         "schema_version",
+        "scorer_conformance_manifest_sha256",
         "source_commit",
         "source_schedule_sha256",
         "train_ids_sha256",
@@ -112,6 +114,9 @@ C4_ENTRY_FIELDS = frozenset(
         "repetition",
         "run_manifest_sha256",
     }
+)
+C4_SCHEDULED_ENTRY_FIELDS = frozenset(
+    {"attempt_id", "condition", "database", "instance_id", "repetition"}
 )
 RUN_REQUIRED_FIELDS = frozenset(
     {
@@ -164,6 +169,9 @@ class DevABaselinePlan:
     selected_question_count: int
     unrepresented_question_count: int
     attempts: tuple[PreparedDevAAttempt, ...] = field(repr=False)
+    scheduled_question_count: int | None = None
+    fixed_unscorable_question_count: int = 0
+    scorer_conformance_manifest_sha256: str | None = None
 
 
 @dataclass(frozen=True)
@@ -228,6 +236,14 @@ class _SelectionEntry:
     trial_key: str
 
 
+@dataclass(frozen=True)
+class _ScheduledC4Entry:
+    attempt_id: str
+    database: str
+    instance_id: str
+    trial_key: str
+
+
 def prepare_dev_a_baseline_plan(
     workspace: Path,
     *,
@@ -266,6 +282,21 @@ def prepare_dev_a_baseline_plan(
     _validate_selected_schedule(
         selected_entries, selected_ids, required_conditions=required_conditions
     )
+    fixed_unscorable_question_count = 0
+    scorer_conformance_manifest_sha256 = None
+    scheduled_question_count = len(selected_ids)
+    if required_conditions == ("C4",):
+        fixed_unscorable_question_count = _validate_c4_scorer_frame(
+            selection,
+            dev_a_ids=dev_a_ids,
+            selected_ids=selected_ids,
+            public_records=public_records,
+        )
+        scorer_conformance_manifest_sha256 = _digest(
+            selection["scorer_conformance_manifest_sha256"],
+            "C4 scorer-conformance manifest SHA-256",
+        )
+        scheduled_question_count = len(dev_a_ids)
 
     prepared_public = tuple(
         _prepare_public_attempt(
@@ -310,6 +341,9 @@ def prepare_dev_a_baseline_plan(
         selected_question_count=len(selected_ids),
         unrepresented_question_count=len(dev_a_ids - selected_ids),
         attempts=attempts,
+        scheduled_question_count=scheduled_question_count,
+        fixed_unscorable_question_count=fixed_unscorable_question_count,
+        scorer_conformance_manifest_sha256=scorer_conformance_manifest_sha256,
     )
 
 
@@ -631,6 +665,7 @@ def _c4_selection(
         "deployment_sha256",
         "eligible_manifest_sha256",
         "execution_plan_sha256",
+        "scorer_conformance_manifest_sha256",
         "source_schedule_sha256",
         "train_ids_sha256",
     ):
@@ -646,13 +681,43 @@ def _c4_selection(
         raise DevABaselineScoringError("C4 selection has duplicate trial keys")
     if len({entry.selected_attempt_id for entry in entries}) != len(entries):
         raise DevABaselineScoringError("C4 selection has duplicate attempts")
+    raw_scheduled = value["scheduled_entries"]
+    if not isinstance(raw_scheduled, list) or not raw_scheduled:
+        raise DevABaselineScoringError("C4 scheduled entries must be a non-empty array")
+    scheduled = tuple(_c4_scheduled_entry(item, run_id) for item in raw_scheduled)
+    if len({entry.trial_key for entry in scheduled}) != len(scheduled) or len(
+        {entry.attempt_id for entry in scheduled}
+    ) != len(scheduled):
+        raise DevABaselineScoringError("C4 scheduled entries contain duplicates")
+    executable_ids = {entry.selected_attempt_id for entry in entries}
+    if tuple(entry.selected_attempt_id for entry in entries) != tuple(
+        entry.attempt_id for entry in scheduled if entry.attempt_id in executable_ids
+    ):
+        raise DevABaselineScoringError(
+            "C4 answerable entries do not preserve the scheduled frame"
+        )
     counts = value["counts"]
     if (
         not isinstance(counts, Mapping)
-        or set(counts) != {"answered", "attempts", "databases", "errored", "refused"}
+        or set(counts)
+        != {
+            "answerable_attempts",
+            "answered",
+            "attempts",
+            "databases",
+            "errored",
+            "refused",
+            "scheduled_attempts",
+            "scheduled_databases",
+            "unscorable_attempts",
+        }
         or any(type(item) is not int or item < 0 for item in counts.values())
         or counts["attempts"] != len(entries)
+        or counts["answerable_attempts"] != len(entries)
         or counts["databases"] != len({entry.database for entry in entries})
+        or counts["scheduled_attempts"] != len(scheduled)
+        or counts["scheduled_databases"] != len({entry.database for entry in scheduled})
+        or counts["unscorable_attempts"] != len(scheduled) - len(entries)
         or counts["answered"] + counts["errored"] + counts["refused"] != len(entries)
         or type(value["artifact_file_count"]) is not int
         or value["artifact_file_count"] < 2 * len(entries)
@@ -683,6 +748,25 @@ def _c4_selection_entry(value: object, run_id: str) -> _SelectionEntry:
         ),
         run_id=run_id,
         selected_attempt_id=attempt_id,
+        trial_key=trial_key,
+    )
+
+
+def _c4_scheduled_entry(value: object, run_id: str) -> _ScheduledC4Entry:
+    if not isinstance(value, Mapping) or set(value) != C4_SCHEDULED_ENTRY_FIELDS:
+        raise DevABaselineScoringError("C4 scheduled entry must use the exact schema")
+    if value["condition"] != "C4" or value["repetition"] != 1:
+        raise DevABaselineScoringError("C4 scheduled attempt identity is invalid")
+    instance_id = _path_component(value["instance_id"], "C4 scheduled instance ID")
+    database = _path_component(value["database"], "C4 scheduled database")
+    trial_key = f"{instance_id}:C4:1"
+    attempt_id = f"{run_id}:{trial_key}"
+    if value["attempt_id"] != attempt_id:
+        raise DevABaselineScoringError("C4 scheduled attempt identity is invalid")
+    return _ScheduledC4Entry(
+        attempt_id=attempt_id,
+        database=database,
+        instance_id=instance_id,
         trial_key=trial_key,
     )
 
@@ -751,6 +835,42 @@ def _validate_selected_schedule(
     observed = {(entry.instance_id, entry.condition) for entry in entries}
     if observed != expected:
         raise DevABaselineScoringError("selected dev-A schedule is incomplete")
+
+
+def _validate_c4_scorer_frame(
+    selection: Mapping[str, Any],
+    *,
+    dev_a_ids: frozenset[str],
+    selected_ids: frozenset[str],
+    public_records: Mapping[str, Mapping[str, Any]],
+) -> int:
+    run_id = _path_component(selection["run_id"], "C4 selection run ID")
+    scheduled = tuple(
+        _c4_scheduled_entry(item, run_id) for item in selection["scheduled_entries"]
+    )
+    scheduled_dev = tuple(item for item in scheduled if item.instance_id in dev_a_ids)
+    if (
+        len(scheduled_dev) != len(dev_a_ids)
+        or {item.instance_id for item in scheduled_dev} != dev_a_ids
+    ):
+        raise DevABaselineScoringError(
+            "C4 scheduled frame does not cover exact dev-A membership"
+        )
+    if any(
+        public_records[item.instance_id]["selected_database"] != item.database
+        for item in scheduled_dev
+    ):
+        raise DevABaselineScoringError(
+            "C4 scheduled database does not match the committed public question"
+        )
+    if not selected_ids.issubset(dev_a_ids):
+        raise DevABaselineScoringError("C4 answerable frame is outside dev-A")
+    fixed_ids = dev_a_ids - selected_ids
+    if len(fixed_ids) != selection["counts"]["unscorable_attempts"]:
+        raise DevABaselineScoringError(
+            "C4 fixed unscorable frame does not match the selection"
+        )
+    return len(fixed_ids)
 
 
 @dataclass(frozen=True)
@@ -1085,24 +1205,27 @@ def _receipt(
             assert disposition.result.outcome is not None
             by_condition[item.attempt.condition][disposition.result.outcome] += 1
             overall[disposition.result.outcome] += 1
+        fixed_unscorable = plan.fixed_unscorable_question_count
+        scheduled_attempts = len(results.attempts) + fixed_unscorable
         payload: dict[str, Any] = {
             "correct": overall["correct"],
             "refused_or_error": overall["refused_or_error"],
-            "scheduled_attempts": len(results.attempts),
+            "scheduled_attempts": scheduled_attempts,
             "scoreable_attempts": len(results.attempts) - overall["unscorable"],
             "scoreable_questions": len(scoreable_questions),
-            "unscorable_attempts": overall["unscorable"],
-            "unscorable_questions": len(unscorable_questions),
+            "unscorable_attempts": overall["unscorable"] + fixed_unscorable,
+            "unscorable_questions": len(unscorable_questions) + fixed_unscorable,
             "wrong_answer": overall["wrong_answer"],
             "by_condition": {},
         }
         for condition, counts in by_condition.items():
+            condition_fixed = fixed_unscorable if condition == "C4" else 0
             payload["by_condition"][condition] = {
                 "correct": counts["correct"],
                 "refused_or_error": counts["refused_or_error"],
-                "scheduled_attempts": sum(counts.values()),
+                "scheduled_attempts": sum(counts.values()) + condition_fixed,
                 "scoreable_attempts": sum(counts.values()) - counts["unscorable"],
-                "unscorable_attempts": counts["unscorable"],
+                "unscorable_attempts": counts["unscorable"] + condition_fixed,
                 "wrong_answer": counts["wrong_answer"],
             }
         return payload
@@ -1120,7 +1243,13 @@ def _receipt(
         },
         "coverage": {
             "attempts": len(plan.attempts),
+            "fixed_unscorable_questions": plan.fixed_unscorable_question_count,
             "released_questions": plan.released_question_count,
+            "scheduled_questions": (
+                plan.scheduled_question_count
+                if plan.scheduled_question_count is not None
+                else plan.selected_question_count
+            ),
             "selected_questions": plan.selected_question_count,
             "unrepresented_questions": plan.unrepresented_question_count,
         },
@@ -1128,6 +1257,7 @@ def _receipt(
         "official": aggregate(ScoringMode.OFFICIAL),
         "release_sha256": plan.release_sha256,
         "schema_version": RECEIPT_SCHEMA_VERSION,
+        "scorer_conformance_manifest_sha256": (plan.scorer_conformance_manifest_sha256),
         "selection_sha256": plan.selection_sha256,
         "sensitivity": aggregate(ScoringMode.SENSITIVITY),
     }

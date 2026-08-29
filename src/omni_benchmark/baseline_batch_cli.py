@@ -17,7 +17,6 @@ from .baseline_batch import (
     ImmutableAttemptRepository,
     apply_committed_direct_baseline_exclusions,
     c4_dev_a_experiment_schedule,
-    c4_public_baseline_schedule,
     direct_only_baseline_schedule,
     load_committed_baseline_schedule,
     project_baseline_cost,
@@ -144,7 +143,7 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
             arguments.workspace, arguments.system_commit, schedule
         )
     elif c4_mode:
-        schedule = c4_public_baseline_schedule(
+        schedule = c4_dev_a_experiment_schedule(
             arguments.workspace, arguments.system_commit, schedule
         )
         if arguments.execute_live_c4_concurrency_canary:

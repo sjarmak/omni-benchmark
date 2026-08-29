@@ -9868,3 +9868,48 @@ map at the top of this file. All 142 decision entries from both lanes are
 retained; the 140 whole-number decisions occupy D-001 through D-140 exactly,
 and in-repository citations use the canonical numbers. The original observation
 is preserved here as the reason the reconciliation was required.
+
+## 2026-08-29 — D-141: Bind C4 execution to the fixed 154/136 frame
+
+### Hypothesis
+
+D-131 identified a live-path mismatch: the human-controlled frame schedules all
+154 dev-A identities, fixes 18 official-loader failures as unscorable, and
+executes 136 answerable identities across 16 databases, while the active C4
+runner and freezer still selected the obsolete 129-attempt, ten-database arm.
+Representing scheduled and executable identities separately at every boundary
+should make substitution or partial coverage fail closed without executing an
+excluded identity.
+
+### Intervention
+
+`BaselineSchedule` now binds the complete scheduled frame and the committed
+scorer-conformance manifest in addition to its executable attempts. The C4
+runner derives 154 scheduled attempts from committed dev-A membership, validates
+the exact exclusion manifest without naming a database or question in code, and
+executes only the resulting 136 attempts. The freezer preserves both ordered
+identity sets and their counts. The dev-A scorer authenticates the scheduled
+frame, the 18 fixed exclusions, and the conformance-manifest digest, then reports
+scheduled, scoreable, and unscorable totals separately. Missing, substituted,
+duplicated, or reordered identities are rejected.
+
+The lane merge at `a4a9168` also retains main's C1 retrieval-sensitivity path and
+the complete D-001 through D-140 ledger concordance. E02 remains unpromoted and
+off the critical path; no deployment or evaluation authority was added.
+
+### Result
+
+The focused C4 frame and compatibility gate passes 75 tests. The complete suite
+passes 1,917 tests with five expected environment-dependent skips. Branch
+coverage is 83.53%, above the 80% gate; Ruff, formatting, and diff checks pass.
+Diff review found no database name, benchmark instance, hidden label, or
+question-specific rule in the implementation.
+
+### Outcome
+
+KEEP OFFLINE and close `omni-benchmark-ei0.4.10`. The obsolete v5 arm remains
+historical and cannot enter the active C4 path. The next C4 prerequisite is the
+general polar exact-readback correction under `omni-benchmark-dih.17.13`; C4
+dispatch still requires one exact Tier 2 human authorization. No provider,
+question, gold, hidden annotation, dev-B, test outcome, correctness, credential,
+OAuth, lease, or push action occurred.
