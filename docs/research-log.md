@@ -4853,3 +4853,68 @@ After C4 and the authorized E02 dev-A experiment, select the final candidate.
 Then obtain the human seed, generate and commit the one schedule and Freeze-B
 input specification, record Freeze B once, and begin sealed generation only
 after the freeze record is committed.
+
+## 2026-08-29 — D-093: Separate the frozen system from its control record
+
+### Decision / experiment
+
+Resolve the Freeze-B manifest's unavoidable Git self-reference before building
+the sealed dispatcher. Change type: general evaluation integrity. Bead:
+`omni-benchmark-ei0.5.1`.
+
+### Hypothesis
+
+If frozen system commit `S` is followed by direct control commit `F` that adds
+only the canonical Freeze-B manifest, then the record can be committed before
+held-out generation without changing any evaluated code, configuration,
+schedule, or semantic artifact after the freeze.
+
+### Intervention
+
+Added `sealed_tools/validate_freeze_b_control.py` and an exact committed-record
+loader. It requires `F` to be the current full commit and a direct non-merge
+child of full commit `S`. The Git-object diff from `S` to `F` must be exactly one
+added `100644` manifest blob; modified, deleted, renamed, executable, symlinked,
+or additional paths fail. The loader reads the committed blob rather than the
+working tree, enforces its byte limit and canonical Freeze-B schema, requires
+both manifest and scorer source identities to equal `S`, and verifies all
+loaded critical runtime sources against `S`.
+
+### Result
+
+One hundred five focused Freeze-B control, schedule, recorder, manifest, and
+sealed-scoring tests pass with 86.95% combined branch coverage; the new control
+module has 96% branch coverage. Tests cover dirty substitution, abbreviated,
+stale, unavailable, or mismatched commits, non-direct ancestry, merge commits,
+extra or modified paths, unsafe manifest paths, Git symlinks, executable blobs,
+noncanonical and oversized JSON, runtime-source drift, inherited `GIT_*`
+redirection, symlinked workspaces, and both CLI entry points.
+
+The repository-wide gate passes 1,554 tests with five expected skips and 84.42%
+branch coverage. Ruff, formatting, and diff checks pass. No real Freeze B,
+schedule seed, test generation, hidden field, protected result, live service,
+credential, approval receipt, or push was accessed or created.
+
+### Interpretation
+
+The committed control record is now an auditable envelope around an unchanged
+frozen system rather than an impossible member of its own hash. A later sealed
+dispatcher can load `F` while requiring every evaluated input and runtime source
+to remain exactly `S`.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Content-addressed release manifests need an explicit control-plane commit
+boundary. Requiring the control commit to be otherwise empty makes post-freeze
+administration visible without silently changing the evaluated product.
+
+### Next step
+
+Build the no-execution sealed plan from validated `F`, frozen `S`, the committed
+identity-only schedule, and the public eligible-question manifest. Then add the
+separately human-authorized dispatcher without admitting gold or scoring during
+generation.

@@ -187,8 +187,33 @@ schedule-attempt count. Before writing, it reproduces the schedule byte-for-byte
 from the committed test IDs and seed; a hand-reordered but structurally complete
 matrix fails. It also proves that Freeze A is an ancestor, rejects Git symlinks
 and uncommitted paths, and binds the loaded generator, recorder, content-policy,
-scorer, and Freeze-B sources to the system commit. Commit the record before any
-held-out generation. Neither tool chooses a seed or creates a final candidate.
+scorer, and Freeze-B sources to the system commit.
+
+The record cannot be part of the system commit it names without a hash
+self-reference. Use the exact two-commit boundary:
+
+1. `S` is the frozen system commit containing the schedule, input specification,
+   code, configuration, and semantic artifacts.
+2. Run the recorder at `S`.
+3. Create direct child `F` by adding only `experiments/freeze-b.json`; do not
+   change, delete, or rename any other path.
+4. From the checkout at `F`, validate the boundary before planning generation:
+
+```bash
+uv run python sealed_tools/validate_freeze_b_control.py \
+  --workspace "$PWD" \
+  --control-commit "<full-F-commit>" \
+  --system-commit "<full-S-commit>" \
+  --manifest experiments/freeze-b.json
+```
+
+The validator reads both commits through Git objects. It requires `F` to be the
+current, direct, non-merge child of `S`; their diff must be exactly one added,
+non-executable regular manifest blob. It validates canonical Freeze B, requires
+the manifest and scorer to name `S`, and binds its loaded critical sources to
+`S`. Dirty working-tree substitutions do not affect the result. The command
+prints hashes and counts only. Neither tool chooses a seed, creates a candidate,
+or begins held-out generation.
 
 ## Psycopg template connector
 
