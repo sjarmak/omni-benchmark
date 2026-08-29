@@ -158,3 +158,84 @@ def test_cli_role_and_database_fingerprint_dispatch(
     assert json.loads(output.read_text(encoding="utf-8")) == {
         "database": "archeology_scan_large"
     }
+
+
+def _lowercase_dump_tree(root: Path, orders: dict[str, tuple[str, ...]]) -> None:
+    """Mirror the upstream layout, spelling every dump file in lower case."""
+    for database, tables in orders.items():
+        directory = root / f"{database}_template"
+        directory.mkdir(parents=True)
+        for table in tables:
+            (directory / f"{table.lower()}.sql").write_text(
+                f"-- {table}\n", encoding="utf-8"
+            )
+
+
+def test_cli_dump_coverage_reports_omissions_contradicted_by_case_variants(
+    tmp_path: Path, capsys
+) -> None:
+    """Regression for omni-benchmark-39b, which dropped 71 tables this way."""
+    inventory_path = Path("config/databases/livesqlbench-large-v1.json")
+    order_path = Path("config/databases/restore-order-large-v1.json")
+    inventory = database_cli.load_database_inventory(inventory_path)
+    orders = json.loads(order_path.read_text(encoding="utf-8"))
+    _lowercase_dump_tree(tmp_path, {name: tuple(t) for name, t in orders.items()})
+
+    exit_code = main(
+        [
+            "--inventory",
+            str(inventory_path),
+            "verify-dump-coverage",
+            "--dump-root",
+            str(tmp_path),
+            "--restore-order",
+            str(order_path),
+        ]
+    )
+    report = {entry["database"]: entry for entry in json.loads(capsys.readouterr().out)}
+
+    assert len(report) == len(inventory.databases)
+    for database in inventory.databases:
+        entry = report[database.name]
+        assert entry["missing"] == []
+        contradicted = entry["contradicted_omissions"]
+        assert sorted(item["table"] for item in contradicted) == sorted(
+            database.scorer_omitted_tables
+        )
+        for item in contradicted:
+            assert item["dump_file"] == f"{item['table'].lower()}.sql"
+        assert entry["complete"] is (not database.scorer_omitted_tables)
+    assert exit_code == (
+        0 if all(not d.scorer_omitted_tables for d in inventory.databases) else 1
+    )
+
+
+def test_cli_dump_coverage_resolves_case_differences_and_reports_them(
+    tmp_path: Path, capsys
+) -> None:
+    inventory_path = Path("config/databases/livesqlbench-large-v1.json")
+    order_path = Path("config/databases/restore-order-large-v1.json")
+    orders = json.loads(order_path.read_text(encoding="utf-8"))
+    _lowercase_dump_tree(tmp_path, {name: tuple(t) for name, t in orders.items()})
+
+    main(
+        [
+            "--inventory",
+            str(inventory_path),
+            "verify-dump-coverage",
+            "--dump-root",
+            str(tmp_path),
+            "--restore-order",
+            str(order_path),
+        ]
+    )
+    report = json.loads(capsys.readouterr().out)
+
+    mixed_case = [
+        entry for entry in report if entry["case_mismatched"] and entry["resolvable"]
+    ]
+    assert mixed_case, "lower-cased dump files must resolve and be reported"
+    for entry in report:
+        assert entry["resolvable"] == entry["ordered_tables"] - len(
+            entry["contradicted_omissions"]
+        )

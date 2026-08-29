@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Sequence
 
 from .database_fingerprint import compare_fingerprints, fingerprint_database
+from .dump_coverage import describe_dump_coverage
 from .database_inventory import (
     fingerprint_dump_directory,
     load_database_inventory,
@@ -34,6 +35,31 @@ def _write_exclusive(path: Path, value: object) -> None:
         handle.write("\n")
 
 
+def _describe_database_coverage(
+    *, database: object, restore_order: tuple[str, ...], dump_root: Path
+) -> dict[str, object]:
+    """Summarize one database's dump resolution without contacting PostgreSQL."""
+    coverage = describe_dump_coverage(
+        database=database.name,
+        dump_root=dump_root,
+        restore_order=restore_order,
+        omitted_tables=database.scorer_omitted_tables,
+    )
+    return {
+        "database": coverage.database,
+        "ordered_tables": len(restore_order),
+        "resolvable": len(coverage.load_paths),
+        "missing": list(coverage.missing),
+        "case_mismatched": [entry.table for entry in coverage.case_mismatched],
+        "contradicted_omissions": [
+            {"table": entry.table, "dump_file": entry.path.name}
+            for entry in coverage.contradicted_omissions
+            if entry.path is not None
+        ],
+        "complete": coverage.is_complete,
+    }
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Public LiveSQLBench database tooling")
     parser.add_argument("--inventory", type=Path, default=DEFAULT_INVENTORY)
@@ -46,6 +72,11 @@ def _parser() -> argparse.ArgumentParser:
     order = commands.add_parser("prepare-restore-order")
     order.add_argument("--source", type=Path, required=True)
     order.add_argument("--output", type=Path, required=True)
+
+    coverage = commands.add_parser("verify-dump-coverage")
+    coverage.add_argument("--dump-root", type=Path, required=True)
+    coverage.add_argument("--restore-order", type=Path, required=True)
+    coverage.add_argument("--template-suffix", default="_template")
 
     restore = commands.add_parser("restore")
     restore.add_argument("--database", required=True)
@@ -110,6 +141,19 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         )
         return 0
+
+    if args.command == "verify-dump-coverage":
+        orders = verify_restore_order(inventory, args.restore_order)
+        report = [
+            _describe_database_coverage(
+                database=database,
+                restore_order=orders[database.name],
+                dump_root=args.dump_root / f"{database.name}{args.template_suffix}",
+            )
+            for database in inventory.databases
+        ]
+        print(json.dumps(report, indent=2, sort_keys=True))
+        return 0 if all(entry["complete"] for entry in report) else 1
 
     database_by_name = {database.name: database for database in inventory.databases}
     if args.database not in database_by_name:
