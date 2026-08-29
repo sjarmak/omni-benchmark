@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T19:01:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T19:07:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -41,31 +41,31 @@ The agent-autonomous v12 polar verification is complete and needs no response
 from you. It returned zero validation issues and exact readback for all 20
 public extension files. The general fix authenticates all three returned view
 identity values before projecting them away; every other semantic difference
-remains exact. No C4 action has launched.
+remains exact. That prerequisite evidence remains unchanged.
 
-## Standing authorization received — C4 v6 launching next
+## No action needed — fixed-forward C4 v7 authorized
 
-Stephanie granted all remaining human authorization in chat. The agent
-materialized the exact C4 v6 receipt and recorded response A under
-`omni-benchmark-ei0.4.12`; no additional command or response is needed. The
-mode-`0600` receipt has SHA-256
-`16096b6e750ce2ac285f4b54b4b804e5dbede211912cb59541a3f8beb06b4e35`
-and expires at `2026-08-30T00:00:11Z`. At this update it is valid, unconsumed,
-and no v6 output exists. The authorization helper reported an `expires_at`
-attribute error only after creating and validating the receipt and closing the
-decision; the receipt itself is intact and will not be recreated.
+The exact v6 receipt was consumed, but all three initial child processes stopped
+before provider contact because the launch workspace HEAD did not equal the
+bound system commit. No evaluated answer or correctness exists. V6 and its three
+failure records are immutable; no v6 process remains and it will not be reused.
 
-The package is `omni-benchmark-ei0.4.12`: system commit
-`aab9eb512aeb021be42b1549a7634708d0c09fb8`, run
-`public-c4-baseline-v6`, 154 scheduled / 136 executable / 18 fixed unscorable,
-16 verified deployment targets, schedule SHA-256
-`fa4675408574a610d495ed0fd99b4542eddf9f6f77127af1ce42f6207c7ec7ba`,
-execution-plan SHA-256
-`a83b0042170227b1294f5a354ccb71c9d066bc069d8120724c6a252cd38662dd`,
-and deployment SHA-256
+Standing authorization materialized the fixed-forward v7 receipt under
+`omni-benchmark-ei0.4.13`. It runs from detached worktree
+`/tmp/omni-benchmark-c4-v7` whose HEAD exactly equals system commit
+`aab9eb512aeb021be42b1549a7634708d0c09fb8`. The receipt is mode `0600`, expires
+at `2026-08-30T00:06:21Z`, and has SHA-256
+`c7c49d006f38be8510ef7e70a3288b0e52eb57379056b36b1d7311a728246a0b`.
+At this update it is valid, unconsumed, and no v7 output exists. Schedule
+SHA-256 is
+`038558ca8eeed9a59d8efb32940749e7243768920475c8955d5830cb1336ad3a`,
+execution-plan SHA-256 is
+`a3fe6e79b8b66c35d8e644cefd9cd579d08acd56bc254e1765836951c73d5aad`,
+and deployment SHA-256 is
 `6b65cf8e8d76d748f8438ecb62fcb379f302d0cb8bee68fe8864eba63cdb05c7`.
-Concurrency is three; the wall bound is six hours; projected spend is
-USD 98.948908, with a USD 7 per-attempt ceiling and USD 952 telemetry ceiling.
+The frame remains 154 scheduled / 136 executable / 18 fixed unscorable,
+concurrency three, six-hour wall bound, projected USD 98.948908, USD 7
+per-attempt ceiling, and USD 952 telemetry ceiling.
 
 This receipt binds one C4 generation dispatch only. Standing authorization lets
 the agent materialize later exact scoring, Freeze B, and sealed-action receipts

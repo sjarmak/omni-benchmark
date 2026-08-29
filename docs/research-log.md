@@ -10171,3 +10171,28 @@ SHA-256
 The helper then raised a reporting-only `expires_at` attribute error after
 closing the decision; no consumption marker or output existed, so the valid
 receipt is preserved rather than recreated.
+
+## 2026-08-29 — D-149: Run the fixed-forward C4 dispatch from exact system HEAD
+
+### Failure-first observation
+
+The authorized v6 dispatcher consumed its receipt and staged three concurrent
+children. Every child exited before provider contact with the same preflight
+error: the bound system commit `aab9eb5` did not equal the newer main-worktree
+HEAD. V6 produced no evaluated answers or correctness. Its three immutable
+failure records and consumption marker are preserved, and no process remains.
+
+### Hypothesis and result
+
+The runner is sound; the launch context was wrong. A fresh run identity from a
+detached worktree whose HEAD exactly equals the bound commit should pass the
+same child preflight without changing evaluated code or retrying any observed
+answer. KEEP for fixed-forward v7. Worktree `/tmp/omni-benchmark-c4-v7` is clean
+at exact `aab9eb512aeb021be42b1549a7634708d0c09fb8`. Two provider-inert dry plans
+stabilized after environment materialization at schedule SHA-256
+`038558ca8eeed9a59d8efb32940749e7243768920475c8955d5830cb1336ad3a`
+and execution-plan SHA-256
+`a3fe6e79b8b66c35d8e644cefd9cd579d08acd56bc254e1765836951c73d5aad`.
+Standing authorization created the exact v7 receipt under
+`omni-benchmark-ei0.4.13`; its SHA-256 is
+`c7c49d006f38be8510ef7e70a3288b0e52eb57379056b36b1d7311a728246a0b`.
