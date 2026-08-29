@@ -5821,8 +5821,40 @@ records, launch C4/E02, or read a live experiment artifact.
 
 ### Result
 
-In progress. The first test-first slice adds an exact committed dev-A C4
-schedule and reproduces the 18-database, 272-file, 91-relationship E02 candidate
-set from an exact canonical Git commit. The reproduced candidate-set SHA-256 is
+The test-first implementation adds an exact committed dev-A C4 schedule and
+reproduces the 18-database, 272-file, 91-relationship E02 candidate set from an
+exact canonical Git commit. The reproduced candidate-set SHA-256 is
 `c08ee8c10e4b2c26a142da5f36971dbb19488a827febf0514f5876e75b3a6f61`, matching
-the previously frozen offline validation.
+the previously frozen offline validation. Archive extraction is bounded and
+rejects non-file members, traversal, oversized members, noncanonical commits,
+and incomplete database coverage.
+
+The new E02 preparation command is dry by default. It requires the exact
+mode-0600 public C4 freeze and its expected SHA-256 before it will even print a
+plan, binds that freeze into the plan identity, and requires a separate current
+human receipt before deployment construction. Its 18 models and branches use
+candidate-specific identities rather than mutating the public-baseline
+resources. The subsequent generation mode schedules exactly 154 committed
+dev-A IDs under C4, requires a second one-time receipt, binds the verified
+deployment evidence to the exact E02 system commit, and retains the existing
+wall-clock stop with C4 cost as telemetry rather than an operational abort.
+
+The C4 freezer now has an explicit nondefault `e02-dev-a` schedule kind. It
+requires exactly 154 attempts across 18 databases and emits a distinct frozen
+selection kind that the existing dual scorer accepts through the already
+separate artifact and gold-custody workspaces. The public 129-attempt C4 and all
+sealed defaults are unchanged.
+
+Focused E02, deployment, batch, freeze, scoring, and sealed regressions pass 148
+tests. The full repository gate passes 1,775 tests with five expected
+environment/source skips and 84.14% branch coverage. Ruff, formatting, and diff
+checks pass.
+
+### Outcome
+
+KEEP. No live action occurred. Public C4 must complete and freeze first, after
+which E02 deployment and E02 generation each require a new exact human receipt.
+The exact full-154 scoreable denominators are intentionally not guessed from
+the prior 140-question direct arm; a custody-safe aggregate conformance step or
+equivalent human-controlled evidence remains necessary before final E02 score
+publication. This implementation does not change that scoring definition.

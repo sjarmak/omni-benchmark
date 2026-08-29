@@ -438,10 +438,19 @@ class LiveBaselineDispatcher:
 
 
 def verify_deployment_gate(
-    root: Path, run_id: str, expected_databases: set[str]
+    root: Path,
+    run_id: str,
+    expected_databases: set[str],
+    *,
+    expected_source_commit: str | None = None,
 ) -> dict[str, DeploymentTarget]:
     """Require a complete immutable 18-database readback gate before execution."""
     _identifier(run_id, "deployment run ID")
+    if (
+        expected_source_commit is not None
+        and re.fullmatch(r"[0-9a-f]{40}", expected_source_commit) is None
+    ):
+        raise BaselineBatchError("expected deployment source commit is invalid")
     claim = _read_private_json(Path(root) / f"{run_id}.claim")
     if not isinstance(claim, dict):
         raise BaselineBatchError("deployment claim is invalid")
@@ -455,6 +464,10 @@ def verify_deployment_gate(
     ):
         raise BaselineBatchError(
             "deployment claim does not bind exact database coverage"
+        )
+    if expected_source_commit is not None and source_commit != expected_source_commit:
+        raise BaselineBatchError(
+            "deployment source commit does not match system commit"
         )
     record_paths = tuple(sorted(Path(root).glob(f"{run_id}.*.json")))
     if len(record_paths) != len(expected_databases):

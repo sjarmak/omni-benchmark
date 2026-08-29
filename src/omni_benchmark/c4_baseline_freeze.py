@@ -20,6 +20,7 @@ from .baseline_batch import (
     BaselineBatchError,
     BaselineSchedule,
     ImmutableAttemptRepository,
+    c4_dev_a_experiment_schedule,
     c4_public_baseline_schedule,
     load_committed_baseline_schedule,
 )
@@ -64,14 +65,20 @@ def c4_baseline_freeze_main(argv: Sequence[str] | None = None) -> int:
         full_schedule = load_committed_baseline_schedule(
             root, arguments.system_commit, run_id=arguments.run_id
         )
-        schedule = c4_public_baseline_schedule(
-            root, arguments.system_commit, full_schedule
+        schedule = (
+            c4_dev_a_experiment_schedule(root, arguments.system_commit, full_schedule)
+            if arguments.schedule_kind == "e02-dev-a"
+            else c4_public_baseline_schedule(
+                root, arguments.system_commit, full_schedule
+            )
         )
     except BaselineBatchError as error:
         raise C4BaselineFreezeError(str(error)) from error
     if (
-        len(schedule.attempts) != 129
-        or len({attempt.database for attempt in schedule.attempts}) != 10
+        len(schedule.attempts)
+        != (154 if arguments.schedule_kind == "e02-dev-a" else 129)
+        or len({attempt.database for attempt in schedule.attempts})
+        != (18 if arguments.schedule_kind == "e02-dev-a" else 10)
         or schedule.sha256 != arguments.expected_schedule_sha256
     ):
         raise C4BaselineFreezeError("committed C4 schedule identity is invalid")
@@ -82,6 +89,11 @@ def c4_baseline_freeze_main(argv: Sequence[str] | None = None) -> int:
         destination=arguments.destination,
         expected_execution_plan_sha256=arguments.expected_execution_plan_sha256,
         expected_deployment_sha256=arguments.expected_deployment_sha256,
+        selection_kind=(
+            "e02-dev-a-c4-freeze"
+            if arguments.schedule_kind == "e02-dev-a"
+            else "public-c4-baseline-freeze"
+        ),
     )
     print(json.dumps(receipt, allow_nan=False, separators=(",", ":"), sort_keys=True))
     return 0
@@ -92,6 +104,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--workspace", type=Path, required=True)
     parser.add_argument("--system-commit", required=True)
     parser.add_argument("--run-id", required=True)
+    parser.add_argument(
+        "--schedule-kind",
+        choices=("public-c4-baseline", "e02-dev-a"),
+        default="public-c4-baseline",
+    )
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--destination", type=Path, required=True)
     parser.add_argument("--expected-schedule-sha256", required=True)
@@ -108,6 +125,7 @@ def freeze_c4_baseline_selection(
     destination: Path,
     expected_execution_plan_sha256: str,
     expected_deployment_sha256: str,
+    selection_kind: str = "public-c4-baseline-freeze",
 ) -> dict[str, Any]:
     """Reconcile and freeze every scheduled C4 attempt exactly once."""
     root = _workspace(workspace)
@@ -120,6 +138,11 @@ def freeze_c4_baseline_selection(
         expected_execution_plan_sha256, "execution-plan SHA-256"
     )
     deployment_sha256 = _digest(expected_deployment_sha256, "deployment SHA-256")
+    if selection_kind not in {
+        "public-c4-baseline-freeze",
+        "e02-dev-a-c4-freeze",
+    }:
+        raise C4BaselineFreezeError("C4 selection kind is invalid")
     repository = ImmutableAttemptRepository(root, Path(output_root))
     observations = []
     entries = []
@@ -168,7 +191,7 @@ def freeze_c4_baseline_selection(
         "eligible_manifest_sha256": schedule.eligible_manifest_sha256,
         "entries": entries,
         "execution_plan_sha256": execution_plan_sha256,
-        "kind": "public-c4-baseline-freeze",
+        "kind": selection_kind,
         "output_root": Path(output_root).as_posix(),
         "run_id": run_id,
         "schema_version": SCHEMA_VERSION,

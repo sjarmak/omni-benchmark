@@ -11,6 +11,7 @@ import omni_benchmark.omni_semantic_deploy_live as deploy_live
 from omni_benchmark.omni_semantic_deploy_live import (
     DeploymentRecord,
     deploy_public_bundle,
+    deploy_public_plan,
     isolated_branch_name,
     isolated_model_name,
     write_deployment_record,
@@ -193,6 +194,32 @@ def test_new_branch_uploads_all_files_then_requires_exact_readback(
     assert {upload[2] for upload in client.uploads} == {VIEW_PATH, TOPIC_NAME}
     assert client.created_models == [("connection-id", isolated_model_name(DATABASE))]
     assert client.created_branches == [("model-id", isolated_branch_name(DATABASE))]
+
+
+def test_candidate_deployment_uses_an_explicit_isolated_model_and_branch(
+    tmp_path: Path,
+) -> None:
+    client = FakeDeploymentClient(existing=False)
+    plan = build_semantic_deployment_plan(_bundle(tmp_path))
+
+    record = deploy_public_plan(
+        plan=plan,
+        connection_id="connection-id",
+        client=client,
+        run_id="e02-deployment-v1",
+        source_commit="b" * 40,
+        observed_at="2026-08-29T10:00:00-04:00",
+        model_name="livesqlbench-sample_large-e02-relationships-v1",
+        branch_name="livesqlbench-sample_large-e02-relationships-v1",
+    )
+
+    assert record.status == "verified"
+    assert client.created_models == [
+        ("connection-id", "livesqlbench-sample_large-e02-relationships-v1")
+    ]
+    assert client.created_branches == [
+        ("model-id", "livesqlbench-sample_large-e02-relationships-v1")
+    ]
 
 
 def test_partial_existing_branch_is_repaired_but_unexpected_files_fail_closed(

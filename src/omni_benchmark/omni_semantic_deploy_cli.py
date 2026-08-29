@@ -40,6 +40,7 @@ BundleInventoryLoader = Callable[
     [Path, str],
     tuple[dict[str, OmniSemanticDeploymentPlan], dict[str, str]],
 ]
+DeploymentIdentityFactory = Callable[[str], tuple[str, str]]
 _LIVE_CONNECTION_PREFIX = "LiveSQLBench "
 _ARCHAEOLOGY_DATABASE = "archeology_scan_large"
 _MAX_RESPONSE_BYTES = 64 * 1024 * 1024
@@ -305,6 +306,7 @@ def deployment_main(
     client_factory: ClientFactory | None = None,
     commit_observer: CommitObserver | None = None,
     bundle_loader: BundleInventoryLoader | None = None,
+    identity_factory: DeploymentIdentityFactory | None = None,
 ) -> int:
     """Deploy selected public bundles in bounded parallel batches."""
     arguments = _parser().parse_args(argv)
@@ -380,18 +382,24 @@ def deployment_main(
     )
     connections = client.connection_ids(tuple(plans))
     with ThreadPoolExecutor(max_workers=arguments.max_workers) as executor:
-        futures = {
-            executor.submit(
-                deploy_public_plan,
-                plan=plan,
-                connection_id=connections[database],
-                client=client,
-                run_id=arguments.run_id,
-                source_commit=source_commit,
-                observed_at=observed_at,
-            ): database
-            for database, plan in plans.items()
-        }
+        futures = {}
+        for database, plan in plans.items():
+            identity = (
+                (None, None) if identity_factory is None else identity_factory(database)
+            )
+            futures[
+                executor.submit(
+                    deploy_public_plan,
+                    plan=plan,
+                    connection_id=connections[database],
+                    client=client,
+                    run_id=arguments.run_id,
+                    source_commit=source_commit,
+                    observed_at=observed_at,
+                    model_name=identity[0],
+                    branch_name=identity[1],
+                )
+            ] = database
         for future in as_completed(futures):
             record = future.result()
             records.append(record)

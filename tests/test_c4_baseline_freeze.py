@@ -309,3 +309,50 @@ def test_cli_requires_exact_committed_129_attempt_identity(
     arguments[arguments.index(schedule.sha256)] = "0" * 64
     with pytest.raises(C4BaselineFreezeError, match="schedule identity"):
         c4_baseline_freeze_main(arguments)
+
+
+def test_cli_freezes_exact_154_attempt_e02_dev_a_identity(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    workspace = _workspace(tmp_path)
+    schedule = _schedule("e02-dev-a-v1", attempts=154, databases=18)
+    captured: dict[str, object] = {}
+
+    monkeypatch.setattr(
+        freeze_module,
+        "load_committed_baseline_schedule",
+        lambda *args, **kwargs: schedule,
+    )
+    monkeypatch.setattr(
+        freeze_module, "c4_dev_a_experiment_schedule", lambda *args: schedule
+    )
+
+    def fake_freeze(*args, **kwargs):  # type: ignore[no-untyped-def]
+        captured.update(kwargs)
+        return {"attempt_count": 154, "selection_sha256": "9" * 64}
+
+    monkeypatch.setattr(freeze_module, "freeze_c4_baseline_selection", fake_freeze)
+    arguments = [
+        "--workspace",
+        str(workspace),
+        "--system-commit",
+        COMMIT,
+        "--run-id",
+        "e02-dev-a-v1",
+        "--schedule-kind",
+        "e02-dev-a",
+        "--output-root",
+        "experiments/autoresearch/raw/e02-dev-a-v1",
+        "--destination",
+        "experiments/autoresearch/state/e02-dev-a-v1-freeze.json",
+        "--expected-schedule-sha256",
+        schedule.sha256,
+        "--expected-execution-plan-sha256",
+        "e" * 64,
+        "--expected-deployment-sha256",
+        "f" * 64,
+    ]
+
+    assert c4_baseline_freeze_main(arguments) == 0
+    assert json.loads(capsys.readouterr().out)["attempt_count"] == 154
+    assert captured["selection_kind"] == "e02-dev-a-c4-freeze"

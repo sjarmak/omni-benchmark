@@ -528,7 +528,10 @@ def _selection(
     content: bytes, policy: ContentPolicy
 ) -> tuple[Mapping[str, Any], tuple[_SelectionEntry, ...], tuple[str, ...]]:
     value = _json(content, "selection manifest")
-    if isinstance(value, Mapping) and value.get("kind") == "public-c4-baseline-freeze":
+    if isinstance(value, Mapping) and value.get("kind") in {
+        "public-c4-baseline-freeze",
+        "e02-dev-a-c4-freeze",
+    }:
         return _c4_selection(value, policy)
     if not isinstance(value, Mapping) or set(value) != SELECTION_FIELDS:
         raise DevABaselineScoringError("selection manifest must use the exact schema")

@@ -59,6 +59,7 @@ def _fixture_repo(tmp_path: Path) -> tuple[Path, str]:
     paths = (
         SPEC,
         Path("data/manifests/train_ids.txt"),
+        Path("data/manifests/dev_a_ids.txt"),
         Path("data/manifests/eligible_questions.jsonl"),
         Path("data/manifests/c4_public_baseline_ids.txt"),
         Path("data/manifests/c4_paired_analysis_ids.txt"),
@@ -73,6 +74,8 @@ def _fixture_repo(tmp_path: Path) -> tuple[Path, str]:
         deployment,
         workspace / "experiments/deployments/public-baseline-v6",
     )
+    for path in (workspace / "experiments/deployments/public-baseline-v6").iterdir():
+        path.chmod(0o600)
     shutil.copytree(
         ROOT / "semantic_models/public_bundle",
         workspace / "semantic_models/public_bundle",
@@ -88,6 +91,31 @@ def _fixture_repo(tmp_path: Path) -> tuple[Path, str]:
     _git(workspace, "add", ".")
     _git(workspace, "commit", "-qm", "fixture")
     return workspace, _git(workspace, "rev-parse", "HEAD")
+
+
+def _private_e02_deployment_gate(workspace: Path, source_commit: str) -> Path:
+    source = workspace / "experiments/deployments/public-baseline-v6"
+    destination = workspace / "experiments/private-e02-deployment"
+    shutil.copytree(source, destination)
+    for path in destination.iterdir():
+        if path.suffix == ".json" or path.suffix == ".claim":
+            value = json.loads(path.read_text(encoding="utf-8"))
+            value["source_commit"] = source_commit
+        if path.suffix == ".json":
+            value["schema_version"] = 2
+            value["status"] = "verified"
+            value["validation_issue_count"] = 0
+            value["readback_verified"] = True
+            value["semantic_model_sha256"] = hashlib.sha256(
+                value["database"].encode()
+            ).hexdigest()
+        if path.suffix in {".json", ".claim"}:
+            path.write_text(
+                json.dumps(value, separators=(",", ":"), sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+        path.chmod(0o600)
+    return destination
 
 
 def test_public_c4_arm_regenerates_byte_identically() -> None:
@@ -301,6 +329,123 @@ def test_c4_dry_run_rejects_a_nonpositive_wall_clock_bound(tmp_path: Path) -> No
                 "C4=0.7275655",
                 "--maximum-wall-clock-seconds",
                 "-1",
+            ]
+        )
+
+
+def test_e02_dry_run_projects_exact_full_dev_a_c4_experiment(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    workspace, commit = _fixture_repo(tmp_path)
+    deployment_root = _private_e02_deployment_gate(workspace, commit)
+
+    result = baseline_batch_main(
+        [
+            "--workspace",
+            str(workspace),
+            "--system-commit",
+            commit,
+            "--run-id",
+            "e02-dev-a-v1",
+            "--observed-attempt-cost-usd",
+            "0.7275655",
+            "--cost-ceiling-usd",
+            "700",
+            "--dry-run-e02-dev-a-experiment",
+            "--freeze-a-commit",
+            "7d39ee107338da1ce10e2553a4290e64bfc2f892",
+            "--output-root",
+            "experiments/autoresearch/raw/e02-dev-a-v1",
+            "--deployment-root",
+            str(deployment_root),
+            "--deployment-run-id",
+            "public-baseline-v6-20260828",
+            "--observed-condition-cost",
+            "C4=0.7275655",
+            "--maximum-wall-clock-seconds",
+            "21600",
+        ]
+    )
+
+    assert result == 0
+    output = json.loads(capsys.readouterr().out)
+    assert output["execution_plan"]["attempt_count"] == 154
+    assert {item["condition"] for item in output["execution_plan"]["attempts"]} == {
+        "C4"
+    }
+    assert output["deployment_target_count"] == 18
+    assert output["cost_role"] == "telemetry_only_not_an_operational_stop"
+
+
+def test_e02_dry_run_rejects_deployment_from_another_system_commit(
+    tmp_path: Path,
+) -> None:
+    workspace, commit = _fixture_repo(tmp_path)
+    deployment_root = _private_e02_deployment_gate(workspace, "f" * 40)
+
+    with pytest.raises(BaselineBatchError, match="source commit"):
+        baseline_batch_main(
+            [
+                "--workspace",
+                str(workspace),
+                "--system-commit",
+                commit,
+                "--run-id",
+                "e02-dev-a-v1",
+                "--observed-attempt-cost-usd",
+                "0.7275655",
+                "--cost-ceiling-usd",
+                "700",
+                "--dry-run-e02-dev-a-experiment",
+                "--freeze-a-commit",
+                "7d39ee107338da1ce10e2553a4290e64bfc2f892",
+                "--output-root",
+                "experiments/autoresearch/raw/e02-dev-a-v1",
+                "--deployment-root",
+                str(deployment_root),
+                "--deployment-run-id",
+                "public-baseline-v6-20260828",
+                "--observed-condition-cost",
+                "C4=0.7275655",
+                "--maximum-wall-clock-seconds",
+                "21600",
+            ]
+        )
+
+
+def test_live_e02_generation_requires_a_separate_fresh_human_receipt(
+    tmp_path: Path,
+) -> None:
+    workspace, commit = _fixture_repo(tmp_path)
+
+    with pytest.raises(BaselineBatchError, match="human approval receipt"):
+        baseline_batch_main(
+            [
+                "--workspace",
+                str(workspace),
+                "--system-commit",
+                commit,
+                "--run-id",
+                "e02-dev-a-unapproved",
+                "--observed-attempt-cost-usd",
+                "0.7275655",
+                "--cost-ceiling-usd",
+                "700",
+                "--execute-live-e02-dev-a-experiment",
+                "--freeze-a-commit",
+                "7d39ee107338da1ce10e2553a4290e64bfc2f892",
+                "--output-root",
+                "experiments/autoresearch/raw/e02-dev-a-unapproved",
+                "--deployment-root",
+                str(workspace / "experiments/deployments/public-baseline-v6"),
+                "--deployment-run-id",
+                "public-baseline-v6-20260828",
+                "--observed-condition-cost",
+                "C4=0.7275655",
+                "--maximum-wall-clock-seconds",
+                "21600",
+                "--attempt-cost-ceiling-usd",
+                "7",
             ]
         )
 

@@ -133,10 +133,18 @@ def deploy_public_plan(
     run_id: str,
     source_commit: str,
     observed_at: str,
+    model_name: str | None = None,
+    branch_name: str | None = None,
 ) -> DeploymentRecord:
     """Deploy an authenticated immutable plan and retain terminal product failures."""
-    model_name = isolated_model_name(plan.database)
-    branch_name = isolated_branch_name(plan.database)
+    if model_name is None:
+        model_name = isolated_model_name(plan.database)
+    else:
+        _require_safe_id(model_name, "model name")
+    if branch_name is None:
+        branch_name = isolated_branch_name(plan.database)
+    else:
+        _require_safe_id(branch_name, "branch name")
     file_sha256 = {item.remote_path: item.sha256 for item in plan.files}
     model_id: str | None = None
     branch_id: str | None = None

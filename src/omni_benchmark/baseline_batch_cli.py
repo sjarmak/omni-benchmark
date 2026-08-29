@@ -15,6 +15,7 @@ from .baseline_batch import (
     BatchBudget,
     BatchStopPolicy,
     ImmutableAttemptRepository,
+    c4_dev_a_experiment_schedule,
     c4_public_baseline_schedule,
     direct_only_baseline_schedule,
     load_committed_baseline_schedule,
@@ -73,11 +74,13 @@ def _parser() -> argparse.ArgumentParser:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--dry-run-execution-plan", action="store_true")
     mode.add_argument("--dry-run-c4-baseline", action="store_true")
+    mode.add_argument("--dry-run-e02-dev-a-experiment", action="store_true")
     mode.add_argument("--execute-live-baseline", action="store_true")
     mode.add_argument("--execute-live-direct-baseline", action="store_true")
     mode.add_argument("--execute-live-direct-concurrency-canary", action="store_true")
     mode.add_argument("--execute-live-c4-baseline", action="store_true")
     mode.add_argument("--execute-live-c4-concurrency-canary", action="store_true")
+    mode.add_argument("--execute-live-e02-dev-a-experiment", action="store_true")
     parser.add_argument("--freeze-a-commit")
     parser.add_argument("--output-root", type=Path)
     parser.add_argument("--claude-config-dir", type=Path, action="append")
@@ -101,12 +104,21 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
         arguments.system_commit,
         run_id=arguments.run_id,
     )
+    e02_mode = (
+        arguments.dry_run_e02_dev_a_experiment
+        or arguments.execute_live_e02_dev_a_experiment
+    )
     c4_mode = (
         arguments.dry_run_c4_baseline
         or arguments.execute_live_c4_baseline
         or arguments.execute_live_c4_concurrency_canary
+        or e02_mode
     )
-    if c4_mode:
+    if e02_mode:
+        schedule = c4_dev_a_experiment_schedule(
+            arguments.workspace, arguments.system_commit, schedule
+        )
+    elif c4_mode:
         schedule = c4_public_baseline_schedule(
             arguments.workspace, arguments.system_commit, schedule
         )
@@ -129,6 +141,7 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
         or arguments.execute_live_direct_concurrency_canary
         or arguments.execute_live_c4_baseline
         or arguments.execute_live_c4_concurrency_canary
+        or e02_mode
     ):
         required = {
             "freeze A commit": arguments.freeze_a_commit,
@@ -145,6 +158,9 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 raise BaselineBatchError(
                     "C4 concurrency cannot exceed Omni's limit of 5"
                 )
+        if e02_mode:
+            required["deployment root"] = arguments.deployment_root
+            required["deployment run ID"] = arguments.deployment_run_id
         missing = [name for name, value in required.items() if value is None]
         if missing:
             raise BaselineBatchError(
@@ -171,6 +187,20 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 require_deployment=True,
                 derived_deployment=False,
                 require_human_approval=False,
+                telemetry_only_c4=False,
+                expected_deployment_source_commit=None,
+            )
+        if arguments.execute_live_e02_dev_a_experiment:
+            return _execute_live(
+                arguments,
+                schedule,
+                plan,
+                scenario.as_dict(),
+                require_deployment=True,
+                derived_deployment=False,
+                require_human_approval=True,
+                telemetry_only_c4=True,
+                expected_deployment_source_commit=arguments.system_commit,
             )
         if (
             arguments.execute_live_c4_baseline
@@ -184,6 +214,8 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 require_deployment=True,
                 derived_deployment=True,
                 require_human_approval=arguments.execute_live_c4_baseline,
+                telemetry_only_c4=True,
+                expected_deployment_source_commit=None,
             )
         if (
             arguments.execute_live_direct_baseline
@@ -197,6 +229,8 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 require_deployment=False,
                 derived_deployment=False,
                 require_human_approval=False,
+                telemetry_only_c4=False,
+                expected_deployment_source_commit=None,
             )
         deployment_targets = None
         if arguments.dry_run_c4_baseline:
@@ -205,6 +239,13 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 arguments.system_commit,
                 _C4_ARM_SPEC_PATH,
                 {attempt.database for attempt in schedule.attempts},
+            )
+        elif arguments.dry_run_e02_dev_a_experiment:
+            deployment_targets = verify_deployment_gate(
+                arguments.deployment_root,
+                arguments.deployment_run_id,
+                {attempt.database for attempt in schedule.attempts},
+                expected_source_commit=arguments.system_commit,
             )
         print(
             json.dumps(
@@ -300,6 +341,8 @@ def _execute_live(
     require_deployment: bool,
     derived_deployment: bool,
     require_human_approval: bool,
+    telemetry_only_c4: bool,
+    expected_deployment_source_commit: str | None,
 ) -> int:
     required = {"attempt cost ceiling": arguments.attempt_cost_ceiling_usd}
     if any(attempt.condition != "C4" for attempt in schedule.attempts):
@@ -325,7 +368,10 @@ def _execute_live(
         )
     elif require_deployment:
         targets = verify_deployment_gate(
-            arguments.deployment_root, arguments.deployment_run_id, databases
+            arguments.deployment_root,
+            arguments.deployment_run_id,
+            databases,
+            expected_source_commit=expected_deployment_source_commit,
         )
     else:
         targets = None
@@ -335,11 +381,11 @@ def _execute_live(
         attempt_cost_ceiling_usd=arguments.attempt_cost_ceiling_usd,
         unobservable_cost_reservation_conditions=(
             frozenset({"C4"})
-            if require_deployment and not derived_deployment
+            if require_deployment and not derived_deployment and not telemetry_only_c4
             else frozenset()
         ),
         telemetry_only_conditions=(
-            frozenset({"C4"}) if derived_deployment else frozenset()
+            frozenset({"C4"}) if telemetry_only_c4 else frozenset()
         ),
     )
     if require_human_approval:
@@ -388,7 +434,7 @@ def _execute_live(
         budget=budget,
         stop_policy=(
             BatchStopPolicy(arguments.maximum_wall_clock_seconds)
-            if derived_deployment
+            if all(attempt.condition == "C4" for attempt in schedule.attempts)
             else None
         ),
     )
@@ -397,7 +443,7 @@ def _execute_live(
             {
                 "cost_role": (
                     "telemetry_only_not_an_operational_stop"
-                    if derived_deployment
+                    if telemetry_only_c4
                     else "operational_budget"
                 ),
                 "execution_plan_sha256": plan.sha256,
