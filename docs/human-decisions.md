@@ -4,42 +4,27 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T11:39:34-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T11:46:28-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
-### Dev-A scorer-conformance frame — `omni-benchmark-1u8`
-
-Reply **A** or **B** in this chat. No command, receipt, database change, rerun,
-credential action, dev-B access, or sealed access is requested.
-
-- **A — schedule 154, score the 136 answerable questions (recommended).** Keep
-  the all-18-database intent of the earlier response B. Schedule all 154 dev-A
-  questions, preregister the exact 18 benchmark-invalid questions as
-  scorer-conformance exclusions, and report scheduled, scoreable, and
-  unscorable counts separately. C4 promotion is evaluated on the remaining 136
-  answerable questions.
-- **B — require all 154 to be scoreable.** The official LiveSQLBench database
-  cannot satisfy this requirement, so E01-E03 remain inconclusive and the
-  optimization phase stops. C4 would not be launched as a promotion baseline.
-
-The pinned upstream Linux loader intentionally reproduces a case-sensitive
-filename mismatch and omits 34 tables from `mental_healths_large` and 37 from
-`organ_transplant_large`. Restoring them would make this environment differ
-from the official benchmark. The frozen dev-A scorer already shows the nine
-represented questions from each database—18 total—are unscorable. An earlier
-follow-up incorrectly called the broader 14+13 train counts “dev-A”; the public
-dev-A manifest proves the correct count is 9+9. No repair or affected rerun will
-be performed. Current direct C1-C3 coverage is 122 official-scoreable; the
-separately authorized cybermarket recovery can add nine, while the five-question
-archeology pre-run exclusion remains explicit.
+No decisions are currently waiting on the user. `bd human list` returned an
+empty queue at the timestamp above.
 
 ## Approved actions in progress
 
 No approved human-gated action is currently in progress.
 
 ## Recently completed
+
+- `omni-benchmark-1u8` was answered **A** on 2026-08-29. All 154 dev-A
+  questions remain scheduled across all 18 databases; the exact 18 questions
+  assigned to `mental_healths_large` and `organ_transplant_large` are fixed
+  scorer-conformance exclusions, and C4 promotion uses all 136 answerable
+  questions. Scheduled, scoreable, and unscorable counts remain separate. The
+  response did not authorize C4, database changes, reruns, credentials, dev-B,
+  or sealed access. The refuted 71-table recovery remains prohibited.
 
 - `omni-benchmark-wk0` was answered **B** and closed on 2026-08-29. The
   preregistered promotion frame remains all 154 dev-A questions. The prepared

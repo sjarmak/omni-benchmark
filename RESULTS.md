@@ -7,7 +7,9 @@
 > relationship candidate is locally authenticated but has not been deployed or
 > evaluated. The C4 baseline, dev-B checkpoint, final freeze, and sealed test are
 > pending. Every **Pending** entry below carries no numeric value. The 101
-> held-out questions and their labels remain sealed.
+> held-out questions and their labels remain sealed. All 154 dev-A questions
+> remain scheduled; 18 fixed benchmark-invalid questions are preregistered as
+> unscorable, leaving 136 answerable questions for C4 promotion.
 
 ## Executive summary
 
@@ -94,6 +96,16 @@ All four frozen conditions will
 produce three independent, interleaved attempts per sealed question before any
 test output is scored.
 
+The official Large-v1 Linux loader skips 34 declared tables in
+`mental_healths_large` and 37 in `organ_transplant_large` because their archive
+filenames differ in capitalization. The committed dev-A split assigns nine
+questions to each database, and their reference SQL cannot run in the official
+environment. The fixed development frame therefore schedules all 154 questions,
+reports those 18 as scorer-conformance exclusions, and evaluates C4 promotion
+on all 136 answerable questions. The exclusion identities and public-only
+derivation are bound in
+[`dev-a-scorer-conformance-exclusions-v1.json`](config/conditions/dev-a-scorer-conformance-exclusions-v1.json).
+
 Two database exclusions apply only to the public C1−C3 baseline-generation
 frame. `archeology_scan_large` repeatedly failed to return a usable direct
 answer across distinct retrieval settings; `cybermarket_pattern_large` was
@@ -106,10 +118,11 @@ and will be reported as scope limitations. Their records stay outside the wrong
 answer and missing-row categories.
 
 C4 development generation is budgeted and scheduled separately from this
-direct arm. Its question subset must be stratified and committed before launch,
-and condition comparisons will use only matched question/database coverage.
-This development-scope choice leaves the preregistered sealed-test population
-unchanged and prohibits result-dependent C4 sampling.
+direct arm. It must schedule all 154 dev-A questions across all 18 databases;
+promotion requires complete coverage of the fixed 136 answerable questions.
+Condition comparisons use only matched question/database coverage. This leaves
+the preregistered sealed-test population unchanged and prohibits
+result-dependent C4 sampling.
 
 The complete preregistration, custody rules, scorer definitions, and condition
 disclosure are in [EVALUATION_PROTOCOL.md](EVALUATION_PROTOCOL.md),
@@ -249,8 +262,10 @@ The 630-attempt C1-C3 baseline was frozen by content hash before the train-only
 release. Its exact dev-A intersection contains 420 attempts over 140 of the 154
 dev-A questions. Fourteen questions have no baseline output and were left
 missing. Gold conformance left 122 questions per condition scoreable under the
-official scorer; the other 18 failed because the benchmark reference SQL did
-not execute. The sensitivity scorer retained 121 questions per condition.
+official scorer; the other 18 failed because the official loader omitted tables
+required by the benchmark reference SQL. The sensitivity scorer retained 121
+questions per condition because one additional result exceeded its fixed
+normalization limit.
 
 | Condition | Correct | Wrong | Refused/error | Official accuracy | Sensitivity accuracy |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -295,13 +310,12 @@ Their reusable changes and promotion rules are recorded in
 | E03: bounded descriptions | Prespecified only | Not started | E02 live decision |
 | E04: broad HKB context | Prespecified negative control only | Deferred from MVP | Run only if it directly resolves the final candidate decision |
 
-E02's initial main-only publication produced candidate-set SHA-256
-`16ee2a02f994d3f90234e24366fe6ddefd041b3b0d2a7e63c001b4803a0fe6da`.
-Replaying the same three scoped changes onto the exact C4 control-plane commit
-produced the deployment-relevant local candidate at
-`c08ee8c10e4b2c26a142da5f36971dbb19488a827febf0514f5876e75b3a6f61`.
-All 18 integrated bundles publish and authenticate locally as 272 files, and the
-full combined gate passes. Deployment and accuracy evaluation remain pending.
+Later general compiler corrections changed the current deployment-relevant E02
+candidate-set SHA-256 to
+`0111ce62001d6bb6f796a3912830529b8fae263353e62dd06111768c3147c3b8`.
+All 18 integrated bundles publish and authenticate locally; historical
+deployment records remain immutable and correctly reject the changed bundle
+hashes. Deployment and accuracy evaluation remain pending.
 The public C4 baseline must freeze under its separate launch authorization
 before this candidate can be evaluated. Dev-B remains reserved.
 
@@ -379,6 +393,10 @@ improves governed answer accuracy.
   122 official-scoreable questions per condition after reference-SQL
   conformance. These adaptively reusable development results are neither a full
   dev-A estimate nor held-out evidence.
+- Eighteen dev-A questions are unscorable in the official Large-v1 environment,
+  not system failures. The evaluation schedules and reports them but excludes
+  them from the fixed 136-question C4 promotion denominator. Loading the omitted
+  archive files would break comparability with the official environment.
 - The public direct baseline excludes archeology and cybermarket and therefore
   estimates C1−C3 behavior on 16 databases, not the full 18-database population.
   Any comparison to a broader C4 arm must use matched coverage or disclose the

@@ -6677,3 +6677,44 @@ denominator. Option B keeps a literal all-154-scoreable rule, which makes the
 optimization phase inconclusive in the official environment. No private record,
 dev-B outcome, test label, database, attempt, or provider was accessed or
 changed to make this correction.
+
+## D-122: Freeze the 154-scheduled / 136-answerable dev-A frame
+
+### Hypothesis and authorization
+
+Human response A on `omni-benchmark-1u8` authorizes a fixed scorer-conformance
+frame before any all-18 C4 result exists: schedule all 154 dev-A questions,
+retain the 18 questions whose gold cannot run in the official environment as
+explicitly unscorable, and evaluate promotion on all 136 answerable questions.
+The exact 18 identities should be derivable from committed public split
+membership and public database fields, without reading private record values.
+
+### TDD and implementation
+
+A new test first failed because no public-only derivation module or exclusion
+artifact existed. The implementation joins `dev_a_ids.txt` to the public
+eligible-question manifest, requires exactly 154 unique dev-A IDs, exact
+manifest coverage, and nine affected IDs per database, then emits canonical
+JSON. The committed exclusion artifact regenerates byte-for-byte and has
+SHA-256 `0686255b77726ec5d5126ed53d42cf2af83e5746f34e49794381b06da805489a`.
+
+`experiments/planned-dev-a-interventions-v1.json` is now present on the clean
+MVP lineage at schema version 2. Every intervention retains all-154 scheduling,
+binds the exclusion artifact, and requires complete coverage of the fixed 136
+answerable questions. The stopping rule rejects any additional narrowing. Its
+canonical SHA-256 is
+`760cc8b7ded93168b12d402242531b9078f77b1d5f5dbe741cc8e77676293403`.
+
+The reproducible all-18 loader-fidelity audit is committed at
+`experiments/analysis/livesqlbench-loader-fidelity-v1.json`, SHA-256
+`3966d135a5fddfde6215ebc568bb26145ee4baaa9427864d41216740665dbc0c`.
+The separate upstream report remains a draft for human review and has not been
+sent.
+
+### Outcome
+
+KEEP. The three focused derivation/canonicalization tests pass. No question-
+specific runtime input, private label value, dev-B outcome, test label,
+database/provider call, credential, rerun, C4 action, or sealed action entered
+the change. Final repository gate: 1,884 passed, five expected environment-
+dependent skips, 83.59% branch coverage; Ruff, formatting, and diff checks pass.
