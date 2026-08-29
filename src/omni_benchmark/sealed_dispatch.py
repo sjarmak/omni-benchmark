@@ -28,6 +28,7 @@ from .freeze_b_record import (
     MAX_RUNTIME_SOURCE_BYTES,
     FreezeBRecordError,
     _committed_input,
+    _relative_path,
     _runtime_source_bytes,
 )
 from .sealed_cohort_finalization import (
@@ -59,8 +60,10 @@ _IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,159}")
 _MONEY = Decimal("0.000001")
 
 SEALED_RUNTIME_SOURCE_PATHS = (
+    "sealed_tools/dispatch_sealed_generation.py",
     "src/omni_benchmark/sealed_cohort_finalization.py",
     "src/omni_benchmark/sealed_dispatch.py",
+    "src/omni_benchmark/sealed_dispatch_cli.py",
     "src/omni_benchmark/sealed_execution_plan.py",
     "src/omni_benchmark/sealed_generation_staging.py",
     "src/omni_benchmark/sealed_production_approval.py",
@@ -99,6 +102,45 @@ class SealedDispatchPolicy:
     reservation_usd_by_condition: tuple[tuple[str, str], ...]
     software_versions: tuple[tuple[str, str], ...]
     cli_versions_by_condition: tuple[tuple[str, tuple[tuple[str, str], ...]], ...]
+
+    @classmethod
+    def from_dict(cls, value: object) -> SealedDispatchPolicy:
+        fields = {
+            "cli_versions_by_condition",
+            "cost_ceiling_usd",
+            "maximum_concurrency",
+            "maximum_wall_clock_seconds",
+            "reservation_usd_by_condition",
+            "software_versions",
+        }
+        if not isinstance(value, Mapping) or set(value) != fields:
+            raise SealedDispatchError("sealed dispatch policy schema is invalid")
+        reservations = value["reservation_usd_by_condition"]
+        software = value["software_versions"]
+        cli = value["cli_versions_by_condition"]
+        if (
+            not isinstance(reservations, Mapping)
+            or not isinstance(software, Mapping)
+            or not isinstance(cli, Mapping)
+            or any(not isinstance(item, Mapping) for item in cli.values())
+        ):
+            raise SealedDispatchError("sealed dispatch policy schema is invalid")
+        try:
+            return cls.create(
+                maximum_concurrency=value["maximum_concurrency"],
+                maximum_wall_clock_seconds=value["maximum_wall_clock_seconds"],
+                cost_ceiling_usd=value["cost_ceiling_usd"],
+                reservation_usd_by_condition=dict(reservations),
+                software_versions=dict(software),
+                cli_versions_by_condition={
+                    str(condition): dict(versions)
+                    for condition, versions in cli.items()
+                },
+            )
+        except (TypeError, ValueError) as error:
+            raise SealedDispatchError(
+                "sealed dispatch policy schema is invalid"
+            ) from error
 
     @classmethod
     def create(
@@ -173,6 +215,24 @@ class SealedDispatchPreflight:
     runtime_sources_sha256: str
     _authorization: str = field(repr=False)
 
+    def public_summary(self) -> dict[str, object]:
+        reconciled = len(self.observed)
+        return {
+            "attempt_count": len(self.prepared),
+            "control_commit": self.plan.control_commit,
+            "freeze_b_sha256": self.freeze_b.sha256(),
+            "live_execution": "not_started",
+            "output_root": self.output_root.as_posix(),
+            "pending_count": len(self.prepared) - reconciled,
+            "plan_sha256": self.plan.sha256,
+            "policy_sha256": self.policy.sha256,
+            "reconciled_count": reconciled,
+            "run_id": self.run_id,
+            "runtime_sources_sha256": self.runtime_sources_sha256,
+            "schedule_sha256": self.plan.schedule_sha256,
+            "system_commit": self.plan.system_commit,
+        }
+
 
 @dataclass(frozen=True, slots=True)
 class SealedDispatchReport:
@@ -229,6 +289,47 @@ def verify_sealed_runtime_sources(workspace: Path, system_commit: str) -> str:
             "sealed runtime source verification failed"
         ) from error
     return hashlib.sha256(_canonical_bytes(records)).hexdigest()
+
+
+def load_sealed_dispatch_policy(
+    workspace: Path,
+    *,
+    system_commit: str,
+    policy_path: Path,
+    freeze_b: FreezeBManifest,
+) -> SealedDispatchPolicy:
+    """Load the canonical policy only from its frozen Git object at system S."""
+    root = _workspace_root(workspace)
+    try:
+        relative = _relative_path(policy_path, "sealed dispatch policy path")
+        committed = _committed_input(
+            root,
+            system_commit,
+            relative,
+            maximum_bytes=64 * 1024,
+        )
+        validated_freeze = _validated_freeze(freeze_b)
+    except (FreezeBRecordError, SealedGenerationStagingError) as error:
+        raise SealedDispatchError(
+            "sealed dispatch policy could not be loaded"
+        ) from error
+    if (
+        validated_freeze.system_commit != system_commit
+        or dict(validated_freeze.frozen_files).get(relative) != committed.sha256
+    ):
+        raise SealedDispatchError("sealed dispatch policy is not frozen")
+    try:
+        value = json.loads(
+            committed.content,
+            object_pairs_hook=_unique_object,
+            parse_constant=_reject_json_constant,
+        )
+    except (UnicodeError, json.JSONDecodeError) as error:
+        raise SealedDispatchError("sealed dispatch policy is invalid JSON") from error
+    policy = SealedDispatchPolicy.from_dict(value)
+    if committed.content != _canonical_bytes(policy.as_dict()):
+        raise SealedDispatchError("sealed dispatch policy is not canonical")
+    return policy
 
 
 def build_sealed_dispatch_binding(
@@ -723,3 +824,16 @@ def _canonical_bytes(value: object) -> bytes:
         )
         + "\n"
     ).encode("utf-8")
+
+
+def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise SealedDispatchError("sealed dispatch policy has duplicate keys")
+        result[key] = value
+    return result
+
+
+def _reject_json_constant(value: str) -> None:
+    raise SealedDispatchError(f"sealed dispatch policy forbids {value}")

@@ -14,7 +14,13 @@ from pathlib import Path
 from typing import Any
 
 from .content_policy import ContentPolicy
-from .freeze_b import CONDITIONS, EXPECTED_TEST_OUTPUTS, REPETITIONS, schedule_sha256
+from .freeze_b import (
+    CONDITIONS,
+    EXPECTED_TEST_OUTPUTS,
+    REPETITIONS,
+    FreezeBManifest,
+    schedule_sha256,
+)
 from .freeze_b_control import FreezeBControlError, load_freeze_b_control
 from .freeze_b_record import (
     MAX_RUNTIME_SOURCE_BYTES,
@@ -48,6 +54,7 @@ PUBLIC_RECORD_FIELDS = frozenset(
     }
 )
 PLAN_SOURCE_PATH = "src/omni_benchmark/sealed_execution_plan.py"
+PUBLIC_MANIFEST_PATH = "data/manifests/eligible_questions.jsonl"
 
 _IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:@/+~-]{0,199}")
 _SCHEDULE_FIELDS = frozenset({"attempt_id", "condition", "instance_id", "repetition"})
@@ -230,6 +237,53 @@ def load_sealed_execution_plan(
     )
 
 
+def load_sealed_public_questions(
+    workspace: Path,
+    *,
+    plan: SealedExecutionPlan,
+    freeze_b: FreezeBManifest,
+    public_manifest_path: Path,
+) -> dict[str, str]:
+    """Load exact public test questions from S after plan/Freeze-B binding."""
+    if type(plan) is not SealedExecutionPlan or type(freeze_b) is not FreezeBManifest:
+        raise SealedExecutionPlanError(
+            "validated sealed plan and Freeze B are required"
+        )
+    if (
+        plan.freeze_b_sha256 != freeze_b.sha256()
+        or plan.system_commit != freeze_b.system_commit
+    ):
+        raise SealedExecutionPlanError("sealed plan does not match Freeze B")
+    try:
+        relative = _relative_path(public_manifest_path, "public manifest path")
+        committed = _committed_input(
+            workspace,
+            plan.system_commit,
+            relative,
+            maximum_bytes=MAX_PUBLIC_MANIFEST_BYTES,
+        )
+    except FreezeBRecordError as error:
+        raise SealedExecutionPlanError(str(error)) from error
+    if (
+        relative != PUBLIC_MANIFEST_PATH
+        or committed.sha256 != plan.public_manifest_sha256
+        or dict(freeze_b.frozen_files).get(relative) != committed.sha256
+    ):
+        raise SealedExecutionPlanError(
+            "public questions do not match the frozen sealed plan"
+        )
+    records = _public_records(committed.content)
+    planned = {item.instance_id: item for item in plan.attempts}
+    if set(records) != set(planned) or any(
+        records[instance_id][:2] != (item.database, item.question_sha256)
+        for instance_id, item in planned.items()
+    ):
+        raise SealedExecutionPlanError(
+            "public questions do not match the frozen sealed plan"
+        )
+    return {instance_id: record[2] for instance_id, record in records.items()}
+
+
 def _verify_plan_runtime_source(workspace: Path, system_commit: str) -> None:
     committed = _committed_input(
         workspace,
@@ -284,8 +338,8 @@ def _schedule_records(content: bytes) -> tuple[dict[str, Any], ...]:
     return tuple(records)
 
 
-def _public_records(content: bytes) -> dict[str, tuple[str, str]]:
-    records: dict[str, tuple[str, str]] = {}
+def _public_records(content: bytes) -> dict[str, tuple[str, str, str]]:
+    records: dict[str, tuple[str, str, str]] = {}
     for raw_line in content.splitlines(keepends=True):
         if not raw_line.endswith(b"\n") or raw_line == b"\n":
             raise SealedExecutionPlanError(
@@ -322,12 +376,16 @@ def _public_records(content: bytes) -> dict[str, tuple[str, str]]:
             or not policy.query_is_safe(question)
         ):
             raise SealedExecutionPlanError("frozen public question is invalid")
-        records[instance_id] = (database, hashlib.sha256(question.encode()).hexdigest())
+        records[instance_id] = (
+            database,
+            hashlib.sha256(question.encode()).hexdigest(),
+            question,
+        )
     return records
 
 
 def _planned_attempt(
-    schedule_record: Mapping[str, Any], public_record: tuple[str, str]
+    schedule_record: Mapping[str, Any], public_record: tuple[str, str, str]
 ) -> SealedPlannedAttempt:
     condition = str(schedule_record["condition"])
     repetition = int(schedule_record["repetition"])

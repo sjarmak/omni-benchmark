@@ -5259,3 +5259,70 @@ validation and incident resume mechanically safe.
 Build synthetic-tested C1-C3 direct and C4 Omni adapters without weakening the
 existing train/dev scope loaders. Then add the production CLI with a dry default,
 an explicit execute acknowledgement, and the final exact runtime-source set.
+
+## 2026-08-29 — D-099: Make sealed production command dry by default
+
+### Decision / experiment
+
+Add the final command boundary before concrete live adapters, leaving the
+execute path deliberately unavailable until those adapters are compiled in.
+Change type: general evaluation integrity. Bead: `omni-benchmark-ei0.5.5`.
+
+### Hypothesis
+
+If dispatch policy and public questions are reloaded from frozen Git objects and
+the command defaults to the complete read-only preflight, operators can validate
+the final package without consuming its receipt. Requiring both an explicit
+execute acknowledgement and a concrete adapter builder prevents an incomplete
+checkout from crossing the live boundary.
+
+### Intervention
+
+Added a strict canonical dispatch-policy loader. The policy file must be present
+in Freeze B with the exact Git-object digest at `S`; dirty working-tree content
+is ignored. Added a public-question loader that rechecks all 101 question texts,
+database identities, and hashes against the 1,212-attempt plan and frozen public
+manifest.
+
+Added `sealed_tools/dispatch_sealed_generation.py`. It loads F/S, the plan,
+public questions, and policy, then performs receipt-authenticated preflight and
+prints only public hashes/counts. Without `--execute-sealed-generation` it cannot
+consume the receipt. With that flag, the current script still fails closed before
+consumption because concrete adapters are not yet installed. Both the CLI module
+and entry script are now part of the runtime-source digest.
+
+### Result
+
+Thirty-three focused dispatch/CLI/plan tests pass at 84.46% combined branch
+coverage. They include canonical committed-policy loading despite dirty
+substitution, unfrozen/noncanonical rejection, exact frozen public-question
+loading, dry-default behavior without adapter construction, and refusal of an
+explicit execute when a builder is unavailable. Ruff and formatting checks pass.
+No real receipt was consumed, no output root was created, and no provider was
+contacted.
+
+The repository-wide gate passes 1,683 tests with five expected skips and 84.40%
+branch coverage.
+
+### Interpretation
+
+The operator-facing boundary now has a safe package-validation mode. The final
+production-enabling change is mechanically narrow: provide exact direct/Omni
+adapter factories and extend the frozen runtime-source list to their transitive
+execution dependencies.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Dry-run should be the default semantics of production evaluation tooling, not a
+separate best-effort command. The identical parser and preflight should guard
+both inspection and execution.
+
+### Next step
+
+Implement sealed-only C1-C3 and C4 adapters over the existing capture contracts;
+do not broaden ordinary development loaders. Then wire their builder into the
+entry script and repeat the all-1,212 synthetic end-to-end gate.

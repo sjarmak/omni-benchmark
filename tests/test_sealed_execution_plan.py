@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 from collections import Counter
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -16,6 +17,7 @@ from omni_benchmark.scoring import scorer_metadata
 from omni_benchmark.sealed_execution_plan import (
     SealedExecutionPlanError,
     load_sealed_execution_plan,
+    load_sealed_public_questions,
     plan_main,
 )
 
@@ -279,6 +281,38 @@ def test_plan_binds_exact_order_cohorts_databases_and_question_digests(
         f"db-{index}" for index in range(1, 8)
     }
     assert len(plan.sha256) == 64
+
+
+def test_public_questions_load_from_frozen_git_and_match_every_plan_row(
+    tmp_path: Path,
+) -> None:
+    repo, system, control, manifest = _repository(tmp_path)
+    plan = _load(repo, system, control)
+    (repo / "data/manifests/eligible_questions.jsonl").write_text(
+        "substituted\n", encoding="utf-8"
+    )
+
+    questions = load_sealed_public_questions(
+        repo,
+        plan=plan,
+        freeze_b=manifest,
+        public_manifest_path=Path("data/manifests/eligible_questions.jsonl"),
+    )
+
+    assert len(questions) == 101
+    assert questions["q-001"] == "Public synthetic question 1?"
+    assert all(
+        hashlib.sha256(questions[item.instance_id].encode()).hexdigest()
+        == item.question_sha256
+        for item in plan.attempts
+    )
+    with pytest.raises(SealedExecutionPlanError, match="frozen sealed plan"):
+        load_sealed_public_questions(
+            repo,
+            plan=replace(plan, public_manifest_sha256="0" * 64),
+            freeze_b=manifest,
+            public_manifest_path=Path("data/manifests/eligible_questions.jsonl"),
+        )
 
 
 @pytest.mark.parametrize("case", ["missing", "mismatch"])

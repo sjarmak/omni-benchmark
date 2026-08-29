@@ -337,6 +337,31 @@ Git-blob digests; any loaded/committed byte mismatch fails before approval
 consumption. The final source list must be expanded to the concrete direct and
 Omni adapter dependencies before recording Freeze B.
 
+The command boundary is intentionally dry by default:
+
+```bash
+uv run python sealed_tools/dispatch_sealed_generation.py \
+  --workspace "$PWD" \
+  --control-commit "<full-F-commit>" \
+  --system-commit "<full-S-commit>" \
+  --freeze-b experiments/freeze-b.json \
+  --schedule data/final-schedule.jsonl \
+  --public-manifest data/manifests/eligible_questions.jsonl \
+  --policy config/sealed-dispatch-v1.json \
+  --receipt "/path/to/private/sealed-approval.json" \
+  --output-root runs/sealed-final-v1 \
+  --run-id sealed-final-v1
+```
+
+The policy is loaded from its exact Git object at `S`, must be canonical JSON,
+and must have its file SHA-256 in Freeze B. Working-tree substitutions are
+ignored. The dry command performs the complete read-only preflight and prints
+only hashes/counts with `live_execution=not_started`; it does not consume the
+receipt. Production execution additionally requires
+`--execute-sealed-generation` and a compiled concrete-adapter builder. Until
+the C1-C3/C4 adapters are complete, the checked-in script refuses that flag
+before receipt consumption.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It
