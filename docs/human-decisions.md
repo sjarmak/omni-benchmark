@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T18:18:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T18:38:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -30,19 +30,16 @@ recorded in [protocol-diff.md](protocol-diff.md).
 
 The corrected C4 control-plane frame is complete and fully tested: all 154
 dev-A identities remain scheduled, exactly 136 answerable identities execute,
-and the 18 fixed exclusions remain explicit. This completion needs no human
-response. The remaining pre-C4 product task is the public-only polar readback
-fix and a new-run validation pass, both agent-owned under Tier 1. A human C4
-dispatch decision will be requested only after that prerequisite is complete.
+and the 18 fixed exclusions remain explicit. The public deployment prerequisite
+is also complete: polar v12 validates with exact readback, so all 16 answerable
+databases are ready. The next human action will be one exact C4 dispatch
+authorization; its bound package is being prepared now.
 
-The agent-autonomous v11 polar pass is complete and needs no response from you.
-It preserved one terminal failure after validation returned zero issues and
-seven exact observations over 60 seconds. Five later read-only observations
-were stable: Omni adds a complete view-identity triplet to this readback. The
-general fix authenticates all three returned values against the committed local
-view before projecting them away; every other semantic difference remains
-exact. The offline boundary is green. A new-run Tier 1 validation remains
-agent-owned. No C4 action has launched.
+The agent-autonomous v12 polar verification is complete and needs no response
+from you. It returned zero validation issues and exact readback for all 20
+public extension files. The general fix authenticates all three returned view
+identity values before projecting them away; every other semantic difference
+remains exact. No C4 action has launched.
 
 ## Most recent authorized action completed
 

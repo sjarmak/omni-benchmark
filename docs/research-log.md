@@ -10051,15 +10051,27 @@ identity triplet to pass, while a partial triplet and a wrong value for each
 identity field still fail. The current comparator must fail the matching case.
 The general rule may not contain a database name, benchmark question, or label.
 
-### Current result
+### Result
 
-KEEP OFFLINE under `omni-benchmark-dih.17.13`. The failure-first matching case
+KEEP. The failure-first matching case
 failed on the prior comparator. The general implementation now requires the
 complete identity triplet, compares each value with the authenticated local
 view, and only then removes those three keys before the unchanged exact semantic
 comparison. Partial and differing identities fail closed. The focused
 deployment/readback boundary passes 54 tests; Ruff, formatting, and diff checks
-pass. V11 remains immutable and no successor deployment has launched.
+pass.
+
+The append-only Tier 1 v12 verification at exact source commit
+`46a0c59d4927b4d16d55d4a9c4da7aea4fb82f9b` completed without a retry:
+validation returned zero issues and all 20 public extension files passed exact
+readback. No upload was needed because the isolated branch already contained
+the authenticated files. Claim SHA-256 is
+`f48fcf758756601b1507240774935aba70c0995d3239ffdf16cc51a0e4bf0e7e`;
+verified-record SHA-256 is
+`68a04df036230c1873dffa13a0f6c82c60555da3014f67519a707ea811cfd6b1`.
+V9 through v11 remain immutable. The 16 answerable public deployments are now
+validated with exact readback; the two fixed official-loader exclusions remain
+explicit.
 
 No evaluated answer, question, gold, hidden annotation, dev-B, test outcome,
 correctness, credential, OAuth, lease, shared/main model, or C4 action occurred.
