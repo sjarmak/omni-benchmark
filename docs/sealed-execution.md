@@ -270,6 +270,28 @@ infrastructure failure is not accepted as a completed staged generation, leaving
 any retry to the protocol's separately governed path. The staging layer does not
 dispatch, contact a provider, emit a run manifest, score, or read gold.
 
+### Cohort finalization
+
+`omni_benchmark.sealed_cohort_finalization` turns staged attempts into the exact
+twelve generation/run pairs expected by the sealed batch gate. For one condition
+and repetition, it selects the 101 plan rows in committed schedule order,
+re-prepares each row from the exact public question, and reconciles its private
+attempt envelope. Any missing, conflicting, cross-plan, or invalid attempt blocks
+the whole cohort.
+
+The finalizer concatenates the 101 canonical generation records in schedule
+order, derives the generation SHA-256, derives the cohort start/finish bounds
+from those records, and constructs `SealedRunManifest` exclusively from the
+matching Freeze-B condition plus explicit software/CLI versions. It writes
+`generation.jsonl` and `run.json` as mode-0600 files in a temporary mode-0700
+directory, then atomically renames the complete directory into place. Failed
+temporary writes are removed; an existing destination is accepted only when
+both files are byte-identical to the recomputed outputs.
+
+Finalization is offline and per-cohort. It neither decides whether an attempt may
+run nor accesses gold or correctness. Scoring remains blocked until all twelve
+cohorts exist and the separate batch gate validates all 1,212 records.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

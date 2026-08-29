@@ -11,6 +11,7 @@ import secrets
 import stat
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -38,6 +39,7 @@ _SHA256 = re.compile(r"[0-9a-f]{64}")
 _COMMIT = re.compile(r"[0-9a-f]{40}")
 _IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:@/+~-]{0,199}")
 _PATH_COMPONENT = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,159}")
+_UTC_TIMESTAMP = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z")
 _AUTHORITY_KEY = secrets.token_bytes(32)
 _SCORED_FIELDS = frozenset({"accuracy", "correctness", "outcome", "scored_outcome"})
 _ENVELOPE_FIELDS = frozenset({"binding", "generation_record", "kind", "schema_version"})
@@ -110,6 +112,7 @@ class SealedStagedAttempt:
     path: Path
     envelope_sha256: str
     generation_record_sha256: str
+    generation_record_bytes: bytes = field(repr=False)
     candidate_sql: str | None = field(repr=False)
     already_present: bool = False
 
@@ -224,6 +227,19 @@ class SealedAttemptRepository:
             / f"{value.instance_id}-r{value.repetition}"
             / STAGED_FILENAME
         )
+
+    def require_workspace(self, workspace: Path) -> None:
+        """Reject a finalizer configured for a different private workspace."""
+        try:
+            resolved = workspace.resolve(strict=True)
+        except OSError as error:
+            raise SealedGenerationStagingError(
+                "sealed artifact workspace is unavailable"
+            ) from error
+        if resolved != self._workspace:
+            raise SealedGenerationStagingError(
+                "sealed attempt repository workspace does not match"
+            )
 
     def stage(
         self, prepared: SealedPreparedAttempt, generation_record: Mapping[str, Any]
@@ -523,6 +539,13 @@ def _validated_generation_record(
         raise SealedGenerationStagingError(
             "answered sealed outcome requires a candidate output"
         )
+    started_at = record.get("started_at")
+    finished_at = record.get("finished_at")
+    if any(
+        not isinstance(value, str) or _UTC_TIMESTAMP.fullmatch(value) is None
+        for value in (started_at, finished_at)
+    ) or _parse_timestamp(finished_at) < _parse_timestamp(started_at):
+        raise SealedGenerationStagingError("sealed generation timestamps are invalid")
     policy = ContentPolicy.from_environment(os.environ)
     if policy.sanitize_json(record) != record:
         raise SealedGenerationStagingError(
@@ -568,6 +591,7 @@ def _staged(
         generation_record_sha256=hashlib.sha256(
             _canonical_bytes(dict(record))
         ).hexdigest(),
+        generation_record_bytes=_canonical_bytes(dict(record)),
         candidate_sql=output if isinstance(output, str) else None,
         already_present=already_present,
     )
@@ -630,3 +654,12 @@ def _reject_constant(value: str) -> None:
     raise SealedGenerationStagingError(
         f"non-finite JSON constant is forbidden: {value}"
     )
+
+
+def _parse_timestamp(value: str) -> datetime:
+    try:
+        return datetime.fromisoformat(value[:-1] + "+00:00")
+    except ValueError as error:
+        raise SealedGenerationStagingError(
+            "sealed generation timestamps are invalid"
+        ) from error

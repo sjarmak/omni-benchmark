@@ -150,7 +150,9 @@ def _record(prepared, *, output: str = "SELECT 1") -> dict[str, object]:  # type
         "question": prepared.question,
         "repetition": prepared.repetition,
         "run_id": prepared.cohort_id,
+        "started_at": "2026-08-29T07:00:00Z",
         "terminal_failure_class": None,
+        "finished_at": "2026-08-29T07:00:01Z",
     }
 
 
@@ -404,6 +406,24 @@ def test_boolean_repetition_cannot_alias_integer_identity(tmp_path: Path) -> Non
     record["repetition"] = True
 
     with pytest.raises(SealedGenerationStagingError, match="identity"):
+        repository.stage(prepared, record)
+
+
+@pytest.mark.parametrize("case", ["malformed", "reversed"])
+def test_generation_timestamps_must_be_valid_and_ordered(
+    tmp_path: Path, case: str
+) -> None:
+    repository = SealedAttemptRepository(
+        _workspace(tmp_path), Path("runs/sealed-final")
+    )
+    prepared = _prepared()
+    record = _record(prepared)
+    if case == "malformed":
+        record["started_at"] = "not-a-time"
+    else:
+        record["finished_at"] = "2026-08-29T06:59:59Z"
+
+    with pytest.raises(SealedGenerationStagingError, match="timestamps"):
         repository.stage(prepared, record)
 
 

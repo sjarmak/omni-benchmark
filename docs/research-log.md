@@ -5055,3 +5055,72 @@ Build the separately production-authorized dispatcher adapters for C1-C3 and C4,
 then finalize each complete 101-attempt cohort into one generation hash and one
 Freeze-B-bound `SealedRunManifest`. Keep gold and scoring unreachable during the
 entire generation phase.
+
+## 2026-08-29 — D-096: Finalize sealed cohorts in schedule order
+
+### Decision / experiment
+
+Build the offline cohort aggregation and `SealedRunManifest` emission boundary
+before adding live dispatcher authority. Change type: general evaluation
+integrity. Bead: `omni-benchmark-ei0.5.4`.
+
+### Hypothesis
+
+If each condition/repetition cohort is recomputed from exactly 101 valid staged
+attempts in committed schedule order and published through one atomic directory
+rename, then completion order, partial writes, and stale artifacts cannot change
+the generation hash or create an apparently complete run.
+
+### Intervention
+
+Added a cohort finalizer that verifies the exact question set, re-prepares and
+reconciles each staged attempt, concatenates canonical generation records in
+plan order, and derives start/finish timestamps from the records. It constructs
+the run manifest from the matching Freeze-B condition, generation digest,
+schedule/system/freeze identities, and explicit software/CLI versions.
+
+The finalizer writes `generation.jsonl` and `run.json` into a fresh private
+temporary directory and atomically renames the complete pair. Both files are
+mode 0600 and the directory is mode 0700. Failed second writes remove the
+temporary directory. Existing output is accepted without rewriting only when
+both files match recomputed bytes; conflict, partial state, permission drift, or
+symlinks fail closed.
+
+### Result
+
+Thirty cohort-finalization tests plus forty-nine staging tests pass. They cover
+all twelve C1-C4 × repetition cohorts, exact 101-record order,
+generation and run-manifest digests, question/plan/cohort drift, timestamp and
+version validation, identical replay, conflict, partial output, protected-field
+mutation, symlinks, permissions, unsafe roots, and cleanup after a synthetic
+second-write failure. Focused finalization coverage is 87% branch coverage.
+
+The repository-wide gate passes 1,653 tests with five expected skips and 84.45%
+branch coverage. Ruff, formatting, and diff checks pass. No real freeze, seed,
+test generation, live service, credential, receipt, gold, protected outcome, or
+score was accessed or created.
+
+### Interpretation
+
+The sealed pipeline now has a deterministic offline path from validated Freeze B
+through plan, per-attempt immutable state, and twelve batch-compatible run
+manifests. Only the production-authorized condition adapters and top-level
+orchestrator remain before a synthetic end-to-end dry run.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Final-run manifests should bind schedule-ordered content, not filesystem or job
+completion order. Publishing a generation/manifest pair atomically makes the
+meaning of “complete run” mechanically testable.
+
+### Next step
+
+Add the C1-C3 direct and C4 Omni sealed adapters behind one exact, single-use
+production receipt and a top-level no-score orchestrator. Bind all loaded runtime
+sources to frozen system `S`, preserve one-database-at-a-time isolation and hard
+budget/wall controls, and exercise only synthetic/public dry runs until fresh
+human authorization permits the real sealed launch.
