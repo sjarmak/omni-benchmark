@@ -6126,3 +6126,31 @@ accepted only the current v2 writer schema. No diagnostic claim, output, profile
 access, or provider request occurred. A red regression using a v1 source record
 preceded widening the loader to the two explicit supported public deployment
 schemas; all other identity and manifest checks remain unchanged.
+
+### Live read-only result
+
+The corrected command authenticated all eight v6 failures and issued exactly
+one validator-only request per existing branch at a 1.25-second global minimum
+interval. All eight issue counts reproduced exactly, 86/86 total, with no
+drift: 13 `table_not_found`, 50 `column_not_found`, 17 `unparseable_sql`, four
+`invalid_types_for_function`, and two `unexpected_validation_error`. The nine
+mode-0600 append-only files under
+`experiments/deployments/public-validator-diagnostics-v1/` have deterministic
+aggregate SHA-256
+`3d5dc0cffcc1c1fc754a51d3f80233bebb705501d1738f2f4f163a7ae2eef2da`.
+
+The evidence separates five mechanisms. Mental-health and organ-transplant
+report 13 missing tables, consistent with the operator-owned restore blocker
+`omni-benchmark-2j9`; they are not compiler work. Polar and sports report 17
+failures caused by emitted `DO NOT PARSE` markers. Solar and virtual-idol report
+50 unresolved physical/semantic field bindings, with one additional solar
+type error. Robot reports three string/numeric division errors. Planets reports
+two product decimal-scale validation errors. These are public schema/model
+diagnostics only; no question, gold, hidden annotation, correctness result,
+model upload, branch/model creation, credential repair, lease mutation, or C4
+action occurred.
+
+The next compiler slice is therefore general and evidence-driven: remove
+product-invalid parser markers without weakening local SQL admission, finish
+explicit source bindings for fields that are not actual physical columns, and
+make derived numeric expressions type-aware or explicitly unrepresentable.
