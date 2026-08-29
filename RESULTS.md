@@ -11,10 +11,10 @@
 > Every **Pending** entry below carries no numeric value. The 101
 > held-out questions and their labels remain sealed. All 154 dev-A questions
 > remain scheduled; 18 fixed benchmark-invalid questions are preregistered as
-> unscorable, leaving 136 answerable questions for C4 promotion. Fourteen of the
-> 16 answerable database bundles have immutable product validation and exact
-> readback; general offline corrections for the remaining planets and polar
-> failures await a fresh all-answerable validation pass.
+> unscorable, leaving 136 answerable questions for C4 evaluation. All 16
+> answerable database bundles now have one current immutable validation and
+> exact-readback evidence set. The exact C4 development dispatch is prepared
+> and awaiting its single-use human authorization; it has not launched.
 
 ## Executive summary
 
@@ -318,16 +318,16 @@ Their reusable changes and promotion rules are recorded in
 | E03: bounded descriptions | Prespecified only | Not run | None; optimization phase closed |
 | E04: broad HKB context | Prespecified negative control only | Not run | None; optimization phase closed |
 
-The first corrected deployment pass validated 13 answerable databases. A
-seven-bundle successor validated five exact successors, including the repaired
-sports identity bindings, and preserved two planets and ten polar validator
-issues without retry. Combined immutable evidence therefore covers 14 of 16
-answerable databases. The next general compiler revision constructs
-out-of-range scientific constants from ordinary-scale literals and anchors
-structured extraction in authenticated physical source columns. Because that
-mechanical rule changes bundle bytes across the full fan-out, all 16 answerable
-bundles require fresh product validation; the two fixed official-loader
-blockers remain explicit rather than fabricated as empty models.
+The deployment sequence preserved each failed pass rather than retrying it away.
+Earlier records exposed sports identity errors, scientific-literal compilation
+failures in planets, and exact-readback identity differences in polar. General
+compiler and readback corrections addressed those mechanisms without adding a
+database name, question, or hidden label to any rule. The final public-only v13
+pass then validated and exactly read back all 16 answerable database bundles in
+one current evidence set, with zero terminal or record-write failures. The two
+fixed official-loader blockers remain explicit rather than fabricated as empty
+models. The C4 plan binds that exact 16-deployment evidence set and retains all
+154 scheduled identities, of which 136 are executable.
 
 The separate offline E02 artifact has candidate-set SHA-256
 `db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`.
@@ -396,8 +396,8 @@ The development evidence supports four immediate recommendations:
    queries.
 
 The direct baseline associates these mechanisms with development failures. C4
-and the held-out evaluation will determine whether the relationship candidate
-improves governed answer accuracy.
+development evidence and the held-out evaluation will determine whether the
+frozen mechanical semantic layer improves governed answer accuracy.
 
 ## 8. Limitations
 

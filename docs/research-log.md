@@ -10139,6 +10139,9 @@ execution-plan SHA-256 is
 deployment SHA-256 is
 `6b65cf8e8d76d748f8438ecb62fcb379f302d0cb8bee68fe8864eba63cdb05c7`.
 The exact no-launch human package is ready as `omni-benchmark-ei0.4.12`.
+`RESULTS.md` now carries this verified 16-deployment state and identifies the
+single-use C4 authorization as the next unresolved evidence gate; it adds no C4
+or held-out estimate.
 
 No C4 dispatch, evaluated answer, question, gold, hidden annotation, dev-B, test
 outcome, correctness, credential, OAuth, or lease action occurred.
