@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
+from decimal import InvalidOperation
 from enum import Enum
 from typing import Any, Literal, Protocol
 
@@ -436,7 +437,7 @@ def _compare(
             if mode is ScoringMode.OFFICIAL
             else sensitivity_equal(candidate.rows, gold.rows, conditions=conditions)
         )
-    except ScoringPolicyError:
+    except (InvalidOperation, ScoringPolicyError):
         return _infrastructure(mode, FailureClass.SCORER_POLICY_ERROR)
     identity, version = _scorer(mode)
     return SealedScoringResult(

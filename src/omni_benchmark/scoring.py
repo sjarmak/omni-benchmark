@@ -7,7 +7,7 @@ import re
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from datetime import date, datetime
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal, ROUND_HALF_UP, localcontext
 from typing import Any, Callable
 
 
@@ -42,7 +42,15 @@ def scorer_metadata() -> dict[str, dict[str, str | None]]:
 def _quantize_number(value: Decimal | float | int, decimal_places: int) -> Decimal:
     quantizer = Decimal(1).scaleb(-decimal_places)
     decimal_value = value if isinstance(value, Decimal) else Decimal(str(value))
-    return decimal_value.quantize(quantizer, rounding=ROUND_HALF_UP)
+    if not decimal_value.is_finite():
+        return decimal_value.quantize(quantizer, rounding=ROUND_HALF_UP)
+    integer_digits = max(decimal_value.adjusted() + 1, 1)
+    required_precision = max(
+        len(decimal_value.as_tuple().digits), integer_digits + decimal_places
+    )
+    with localcontext() as context:
+        context.prec = max(context.prec, required_precision)
+        return decimal_value.quantize(quantizer, rounding=ROUND_HALF_UP)
 
 
 def _official_recursive(value: Any, decimal_places: int) -> Any:

@@ -57,6 +57,21 @@ def test_official_soft_ex_normalizes_dates_numbers_and_json_recursively() -> Non
     assert official_soft_ex_equal(predicted, gold, conditions={"order": True})
 
 
+def test_finite_decimals_larger_than_default_context_still_round_half_up() -> None:
+    large = Decimal("123456789012345678901234567890.125")
+
+    assert official_soft_ex_equal(
+        [(large,)],
+        [(Decimal("123456789012345678901234567890.13"),)],
+        conditions={"order": True},
+    )
+    assert sensitivity_equal(
+        [(large,)],
+        [(Decimal("123456789012345678901234567890.13"),)],
+        conditions={"decimal": 2, "order": True},
+    )
+
+
 def test_official_soft_ex_uses_sequence_or_duplicate_losing_set_semantics() -> None:
     duplicated = [(1,), (1,), (2,)]
     unique_reordered = [(2,), (1,)]
