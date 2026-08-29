@@ -292,6 +292,23 @@ Finalization is offline and per-cohort. It neither decides whether an attempt ma
 run nor accesses gold or correctness. Scoring remains blocked until all twelve
 cohorts exist and the separate batch gate validates all 1,212 records.
 
+### Production authorization
+
+Sealed generation has a receipt type separate from the public C4 baseline gate.
+The canonical, mode-0600 receipt binds exactly one decision response to the
+frozen system/control commits, Freeze-B/plan/schedule hashes, all four
+conditions, 1,212 attempts, output root, runtime-source-set hash, complete
+concurrency/wall/cost policy hash, and explicit cost ceiling. Its validity window
+is at most one hour.
+
+`validate_sealed_production_approval` authenticates the byte-identical receipt
+against one closed human Beads decision. `consume_sealed_production_approval`
+then writes one exclusive private marker under a confined ignored run root.
+Replay, expiration, binding substitution, noncanonical or nonprivate receipts,
+duplicate response comments, and symlinked consumption roots fail closed. The
+receipt is not a gold/scoring authorization and must be consumed before any live
+adapter is constructed.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

@@ -5124,3 +5124,59 @@ production receipt and a top-level no-score orchestrator. Bind all loaded runtim
 sources to frozen system `S`, preserve one-database-at-a-time isolation and hard
 budget/wall controls, and exercise only synthetic/public dry runs until fresh
 human authorization permits the real sealed launch.
+
+## 2026-08-29 — D-097: Separate sealed production authority from C4 baseline authority
+
+### Decision / experiment
+
+Define the exact sealed-generation receipt before building the dispatcher.
+Change type: general evaluation integrity. Bead: `omni-benchmark-ei0.5.5`.
+
+### Hypothesis
+
+If sealed generation requires a distinct single-use human response binding the
+entire frozen plan, runtime, output, and resource policy, then earlier C4
+baseline receipts or a generic approval cannot be replayed or broadened into
+held-out execution authority.
+
+### Intervention
+
+Added strict validation and exclusive consumption for a canonical private sealed
+production receipt. The binding fixes F/S, Freeze B, plan, schedule, runtime
+source set, all four conditions, 1,212 attempts, run/output identity,
+concurrency, wall bound, exact cost ceiling, and the hash of the complete policy.
+The receipt must match the sole response on a closed human Beads decision, has a
+maximum one-hour window, and can create only one consumption marker beneath an
+ignored no-follow root.
+
+### Result
+
+Seventeen focused tests pass with 82% branch coverage. They cover current exact
+approval, expiry/future and
+overlong windows, every binding substitution class, boolean/integer ambiguity,
+unsafe output paths, non-finite/extreme cost strings, unanswered or duplicate
+responses, private/canonical/unique JSON, exclusive consumption, replay, and
+symlink/path escape. No real receipt, human decision, consumption marker, live
+call, test output, gold, or score was created.
+
+### Interpretation
+
+The final dispatcher can now have a narrower authority surface than either the
+public baseline scheduler or the evaluator. Receipt validation remains
+read-only; consumption is the single transition into authorized execution.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Production evaluation permissions should be capability-specific. Binding the
+full resource policy as well as the target prevents an approval from silently
+expanding concurrency, wall time, or cost.
+
+### Next step
+
+Build the synthetic-tested no-score orchestrator and condition adapters. Require
+all runtime-source and plan preflight checks before consuming the receipt, and
+consume it before constructing any live transport.
