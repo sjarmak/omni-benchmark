@@ -245,6 +245,31 @@ repetition cohorts, and binds its own loaded source to `S`. This command neither
 authorizes nor performs held-out generation; dispatch remains a separately
 authorized post-Freeze-B operation.
 
+### Prepared attempts and private staging
+
+`omni_benchmark.sealed_generation_staging` is the offline handoff between the
+validated plan and a future authorized dispatcher. `prepare_sealed_attempt`
+selects exactly one plan row, verifies the complete ordered plan and its three
+public frozen-file bindings against Freeze B, verifies the public question by
+SHA-256, and binds the matching frozen condition configuration. The resulting
+in-memory authority includes question text for execution but excludes it from
+representations and public summaries.
+
+After a condition adapter completes an evaluated-system attempt, the sealed
+repository stores one canonical `attempt.json` envelope beneath an ignored
+mode-0700 run root. The single mode-0600 file contains the private generation
+record plus a SQL-free binding to the plan, Freeze B, schedule, system/control
+commits, condition, repetition, database, and question digest. Recursive
+protected/scored-field checks and sensitive-content checks run before the
+exclusive write.
+
+Resume is reconciliation, not overwrite: an identical envelope is recognized
+without changing the file, while a conflict, symlink, partial directory,
+noncanonical encoding, or binding mismatch blocks the attempt. A benchmark-
+infrastructure failure is not accepted as a completed staged generation, leaving
+any retry to the protocol's separately governed path. The staging layer does not
+dispatch, contact a provider, emit a run manifest, score, or read gold.
+
 ## Psycopg template connector
 
 `PsycopgTemplateIsolationProvider` is the concrete PostgreSQL 18 connector. It

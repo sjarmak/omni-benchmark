@@ -4982,3 +4982,76 @@ keeping live authority absent.
 Add the sealed-only prepared-attempt and immutable staging layer behind an exact
 human production receipt. Keep generation separate from scoring and gold, and
 prove the complete path with public/synthetic dry runs before any sealed launch.
+
+## 2026-08-29 — D-095: Make sealed resume an immutable reconciliation
+
+### Decision / experiment
+
+Build the sealed-only prepared-attempt and private staging boundary before live
+dispatch. Change type: general evaluation integrity. Bead:
+`omni-benchmark-ei0.5.3`.
+
+### Hypothesis
+
+If each future generation is prepared from one validated plan row and persisted
+as one atomic, Freeze-B-bound private envelope, then interrupted orchestration can
+distinguish absent, identical, conflicting, and incomplete state without
+answer-dependent reruns or weakening the dev-only attempt loaders.
+
+### Intervention
+
+Added an offline sealed preparation/staging module. Preparation verifies the
+complete ordered plan, its schedule hash, the three required public frozen-file
+digests, the exact Freeze B, public question hash, and matching condition
+configuration. It mints a process-local opaque authority binding the plan,
+system/control commits, condition, repetition, database, and question. Question
+text is excluded from representations and public summaries.
+
+Staging writes one canonical mode-0600 `attempt.json` beneath a confined,
+gitignored mode-0700 run root. The envelope holds the private generation record
+and a SQL-free binding digest. Recursive protected/scored-field rejection,
+sensitive-content filtering, finite-JSON validation, identity and condition-lane
+checks, no-follow metadata checks, and exclusive writes precede acceptance.
+Identical replay reconciles without rewriting; conflicting, cross-plan,
+symlinked, partial, or mutated state fails closed. Benchmark-infrastructure
+failures remain unstaged so retry authority stays with the protocol.
+
+### Result
+
+Forty-seven synthetic staging tests and ninety combined planning/staging/freeze
+tests pass; combined focused branch coverage is 83.63%, with 82% for the new
+module. Cases cover all four conditions and all three repetitions, every binding
+substitution, plan/order/public-input drift, protected and scored fields,
+answered/refused/error consistency, condition-specific candidate transport,
+boolean/integer ambiguity, opaque-authority forgery, path traversal, private
+permissions, identical replay, conflict, noncanonical/tampered content,
+symlinks, and partial directories.
+
+The repository-wide gate passes 1,621 tests with five expected skips and 84.40%
+branch coverage. Ruff, formatting, and diff checks pass. No real freeze, seed,
+test generation, live service, credential, receipt, gold, protected outcome, or
+score was accessed or created.
+
+### Interpretation
+
+The future dispatcher can now treat every attempt directory as a four-state
+machine: absent, valid/complete, conflicting, or corrupt/incomplete. Only absence
+is eligible for first execution; only an explicitly governed infrastructure
+incident may authorize a rerun.
+
+### Outcome
+
+KEEP.
+
+### Product implication
+
+Durable agent evaluation needs atomic attempt state, not a best-effort collection
+of sidecars. A single content-addressed envelope makes resume decisions local,
+deterministic, and auditable.
+
+### Next step
+
+Build the separately production-authorized dispatcher adapters for C1-C3 and C4,
+then finalize each complete 101-attempt cohort into one generation hash and one
+Freeze-B-bound `SealedRunManifest`. Keep gold and scoring unreachable during the
+entire generation phase.
