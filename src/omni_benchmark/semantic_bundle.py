@@ -12,7 +12,10 @@ import sqlglot
 from sqlglot import expressions as exp
 import yaml
 
+from .protected_fields import ProtectedFieldError
+from .protected_fields import reject_protected_fields as _reject_protected_fields
 from .semantic_mapping import SemanticMappingError, validate_mapping_records
+from .semantic_relationships import plan_relationship_contracts
 
 
 class SemanticBundleError(ValueError):
@@ -29,20 +32,6 @@ class SemanticBundle:
 
 _NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 _FIELD_REFERENCE = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)\}")
-_PROTECTED_KEYS = frozenset(
-    {
-        "external_knowledge",
-        "expected_result",
-        "gold_sql",
-        "gold_result",
-        "oracle_hint",
-        "oracle_sql",
-        "sol_sql",
-        "test_correctness",
-        "test_cases",
-        "test_case",
-    }
-)
 _SPEC_KEYS = frozenset(
     {
         "catalog",
@@ -119,14 +108,10 @@ _FIELD_SENTINEL = "__omni_modeled_field_reference__"
 
 def reject_protected_fields(value: Any) -> None:
     """Reject hidden benchmark fields recursively before interpreting input."""
-    if isinstance(value, dict):
-        for key, item in value.items():
-            if str(key).lower() in _PROTECTED_KEYS:
-                raise SemanticBundleError(f"protected field {key} is not allowed")
-            reject_protected_fields(item)
-    elif isinstance(value, list):
-        for item in value:
-            reject_protected_fields(item)
+    try:
+        _reject_protected_fields(value)
+    except ProtectedFieldError as error:
+        raise SemanticBundleError(str(error)) from error
 
 
 def _exact_keys(value: Mapping[str, Any], allowed: frozenset[str], label: str) -> None:
@@ -683,6 +668,131 @@ def compile_semantic_bundle(
         physical_by_table,
         contexts,
     )
+
+
+def compile_e02_relationship_bundle(
+    spec: Mapping[str, Any],
+    hkb_records: Sequence[Mapping[str, Any]],
+    schema_records: Sequence[Mapping[str, Any]],
+    mapping_records: Sequence[Mapping[str, Any]],
+) -> SemanticBundle:
+    """Compile the opt-in E02 bundle without changing the frozen baseline."""
+    baseline = compile_semantic_bundle(
+        spec, hkb_records, schema_records, mapping_records
+    )
+    views = _validated_views(spec)
+    schema_index = _index(schema_records, "stable_id", "schema record")
+    bindings = _column_bindings_by_table(schema_records, frozenset(views))
+    plan = plan_relationship_contracts(schema_records)
+    emitted: list[dict[str, Any]] = []
+    contracts: list[dict[str, Any]] = []
+    outgoing: dict[str, set[str]] = {}
+    seen_pairs: set[tuple[str, str]] = set()
+
+    for contract in plan["relationships"]:
+        source_table = contract["source_table_stable_id"]
+        target_table = contract["target_table_stable_id"]
+        if source_table not in views or target_table not in views:
+            continue
+        pair = (source_table, target_table)
+        if pair in seen_pairs:
+            raise SemanticBundleError(
+                "E02 requires an explicit alias for duplicate source-target joins"
+            )
+        source_fields = _relationship_fields(
+            contract["source_column_stable_ids"],
+            source_table,
+            schema_index,
+            bindings,
+        )
+        target_fields = _relationship_fields(
+            contract["target_column_stable_ids"],
+            target_table,
+            schema_index,
+            bindings,
+        )
+        if source_fields is None or target_fields is None:
+            continue
+        source_view = _safe_name(views[source_table].get("view_name"), "view_name")
+        target_view = _safe_name(views[target_table].get("view_name"), "view_name")
+        predicates = [
+            f"${{{source_view}.{source_field}}} = ${{{target_view}.{target_field}}}"
+            for source_field, target_field in zip(
+                source_fields, target_fields, strict=True
+            )
+        ]
+        emitted.append(
+            {
+                "join_from_view": source_view,
+                "join_to_view": target_view,
+                "join_type": "always_left",
+                "on_sql": " AND ".join(predicates),
+                "relationship_type": "many_to_one",
+                "reversible": False,
+            }
+        )
+        contracts.append(
+            {
+                "cardinality": contract["cardinality"],
+                "foreign_key_stable_id": contract["foreign_key_stable_id"],
+                "provenance": contract["provenance"],
+                "source_match": contract["source_match"],
+                "source_table_stable_id": source_table,
+                "target_table_stable_id": target_table,
+            }
+        )
+        outgoing.setdefault(source_table, set()).add(target_view)
+        seen_pairs.add(pair)
+
+    files = dict(baseline.files)
+    for table_id, targets in sorted(outgoing.items()):
+        topic_file = _text(views[table_id].get("topic_file_name"), "topic file_name")
+        topic = yaml.safe_load(files[topic_file])
+        if not isinstance(topic, dict):
+            raise SemanticBundleError("compiled topic must be an object")
+        topic["joins"] = {target: {} for target in sorted(targets)}
+        context = _text(topic.get("ai_context"), "topic ai_context")
+        topic["ai_context"] = context.replace(
+            "This topic intentionally models no cross-table joins.",
+            "This topic exposes only declared PK/unique-backed many-to-one joins.",
+        )
+        files[topic_file] = _yaml(topic)
+    files["relationships"] = yaml.safe_dump(
+        emitted, allow_unicode=True, sort_keys=False, width=1000
+    )
+
+    manifest = dict(baseline.manifest)
+    manifest["files"] = _file_manifest(files)
+    manifest["relationship_contracts"] = contracts
+    manifest["validation"] = {
+        **baseline.manifest["validation"],
+        "joins_generated": bool(emitted),
+        "relationship_contracts_public_only": True,
+    }
+    return SemanticBundle(files=files, manifest=manifest)
+
+
+def _relationship_fields(
+    stable_ids: Sequence[str],
+    table_id: str,
+    schema_index: Mapping[str, Mapping[str, Any]],
+    bindings: Mapping[str, Mapping[str, tuple[str, ...]]],
+) -> list[str] | None:
+    fields: list[str] = []
+    for stable_id in stable_ids:
+        column = schema_index.get(stable_id)
+        if column is None or column.get("record_kind") != "column":
+            raise SemanticBundleError(f"relationship column {stable_id} is missing")
+        if column.get("table_stable_id") != table_id:
+            raise SemanticBundleError(
+                f"relationship column {stable_id} is outside its table"
+            )
+        identifier = _mapping(column.get("identifier"), "column identifier")
+        field = _omni_name(identifier.get("name"), "relationship field")
+        if bindings.get(table_id, {}).get(field) != (stable_id,):
+            return None
+        fields.append(field)
+    return fields
 
 
 def _validated_bundle_inputs(

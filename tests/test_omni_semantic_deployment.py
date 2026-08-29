@@ -31,6 +31,13 @@ label: Point Cloud
 fields:
 - archeology_scan_large_public__pointcloud.*
 """
+RELATIONSHIPS = """- join_from_view: archeology_scan_large_public__pointcloud
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__pointcloud.site_id} = ${archeology_scan_large_public__sites.id}
+  relationship_type: many_to_one
+  reversible: false
+"""
 
 
 def _manifest(files: dict[str, bytes]) -> dict[str, object]:
@@ -93,6 +100,66 @@ def test_plan_authenticates_and_maps_every_repository_bundle_file() -> None:
     assert mapped[VIEW_NAME] == VIEW_PATH
     assert mapped[TOPIC_NAME] == TOPIC_NAME
     assert set(mapped) == {item["file"] for item in manifest["files"]}
+
+
+def test_plan_accepts_and_verifies_exact_global_relationship_sequence(
+    tmp_path: Path,
+) -> None:
+    files = {
+        VIEW_NAME: VIEW.encode(),
+        TOPIC_NAME: TOPIC.encode(),
+        "relationships": RELATIONSHIPS.encode(),
+    }
+    root = _bundle(tmp_path, files)
+
+    plan = build_semantic_deployment_plan(root)
+
+    mapped = {item.local_name: item.remote_path for item in plan.files}
+    assert mapped["relationships"] == "relationships"
+    readback = _readback()
+    readback["relationships"] = RELATIONSHIPS
+    verify_semantic_deployment_readback(plan, readback)
+
+
+def test_plan_still_rejects_a_sequence_for_a_topic(tmp_path: Path) -> None:
+    root = _bundle(
+        tmp_path,
+        {VIEW_NAME: VIEW.encode(), TOPIC_NAME: b"- not-a-topic\n"},
+    )
+
+    with pytest.raises(OmniSemanticDeploymentError, match="mapping"):
+        build_semantic_deployment_plan(root)
+
+
+def test_plan_requires_a_sequence_for_global_relationships(tmp_path: Path) -> None:
+    root = _bundle(
+        tmp_path,
+        {
+            VIEW_NAME: VIEW.encode(),
+            TOPIC_NAME: TOPIC.encode(),
+            "relationships": b"not: a-sequence\n",
+        },
+    )
+
+    with pytest.raises(OmniSemanticDeploymentError, match="sequence"):
+        build_semantic_deployment_plan(root)
+
+
+def test_plan_rejects_unbounded_global_relationship_sql(tmp_path: Path) -> None:
+    root = _bundle(
+        tmp_path,
+        {
+            VIEW_NAME: VIEW.encode(),
+            TOPIC_NAME: TOPIC.encode(),
+            "relationships": RELATIONSHIPS.replace(
+                "${archeology_scan_large_public__pointcloud.site_id} = ${archeology_scan_large_public__sites.id}",
+                "1 = 1",
+            ).encode(),
+        },
+    )
+
+    with pytest.raises(OmniSemanticDeploymentError, match="on_sql"):
+        build_semantic_deployment_plan(root)
 
 
 @pytest.mark.parametrize("change", ["digest", "size", "missing", "extra"])

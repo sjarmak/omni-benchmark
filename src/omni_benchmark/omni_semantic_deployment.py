@@ -17,6 +17,11 @@ _MANIFEST_NAME = "manifest.json"
 _MANIFEST_KIND = "public-omni-semantic-bundle"
 _SHA256 = re.compile(r"[0-9a-f]{64}")
 _IDENTIFIER = r"[A-Za-z_][A-Za-z0-9_]*"
+_FIELD_REFERENCE = rf"\$\{{{_IDENTIFIER}\.{_IDENTIFIER}\}}"
+_RELATIONSHIP_ON_SQL = re.compile(
+    rf"{_FIELD_REFERENCE} = {_FIELD_REFERENCE}"
+    rf"(?: AND {_FIELD_REFERENCE} = {_FIELD_REFERENCE})*"
+)
 _VIEW_NAME = re.compile(
     rf"(?P<catalog>{_IDENTIFIER})\."
     rf"(?P<schema>{_IDENTIFIER})__(?P<table>{_IDENTIFIER})\.view"
@@ -25,6 +30,16 @@ _FLAT_VIEW_NAME = re.compile(rf"(?P<table>{_IDENTIFIER})\.view")
 _TOPIC_NAME = re.compile(rf"{_IDENTIFIER}\.topic")
 _VIEW_IDENTITY_KEYS = frozenset({"catalog", "schema", "table_name"})
 _FILE_FIELDS = frozenset({"file", "sha256", "size_bytes"})
+_RELATIONSHIP_FIELDS = frozenset(
+    {
+        "join_from_view",
+        "join_to_view",
+        "join_type",
+        "on_sql",
+        "relationship_type",
+        "reversible",
+    }
+)
 
 
 class OmniSemanticDeploymentError(ValueError):
@@ -110,7 +125,11 @@ def verify_semantic_deployment_readback(
         raise OmniSemanticDeploymentError("readback path set does not match plan")
     for item in plan.files:
         expected = _expected_remote_document(item)
-        actual = _parse_yaml(remote[item.remote_path], f"readback {item.remote_path}")
+        actual = _parse_yaml(
+            remote[item.remote_path],
+            f"readback {item.remote_path}",
+            allow_sequence=item.local_name == "relationships",
+        )
         if not _semantic_documents_equal(actual, expected):
             raise OmniSemanticDeploymentError(
                 f"readback semantic content differs for {item.remote_path}"
@@ -187,7 +206,7 @@ def _require_local_name(value: object) -> str:
         raise OmniSemanticDeploymentError("local file name is invalid")
     if "/" in value or "\\" in value or ".." in value or Path(value).name != value:
         raise OmniSemanticDeploymentError("local file path is not confined")
-    if (
+    if value != "relationships" and (
         _VIEW_NAME.fullmatch(value) is None
         and _FLAT_VIEW_NAME.fullmatch(value) is None
         and _TOPIC_NAME.fullmatch(value) is None
@@ -214,18 +233,24 @@ def _deployment_file(
     digest = hashlib.sha256(content).hexdigest()
     if digest != record["sha256"]:
         raise OmniSemanticDeploymentError(f"bundle file hash mismatch for {name}")
-    document = _parse_yaml(content, f"local file {name}")
+    document = _parse_yaml(
+        content, f"local file {name}", allow_sequence=name == "relationships"
+    )
+    if name == "relationships":
+        _validate_relationship_document(document)
     remote_path = _remote_path(name, database, document)
     deployment_file = OmniSemanticDeploymentFile(name, remote_path, content, digest)
     _expected_remote_document(deployment_file)
     return deployment_file
 
 
-def _remote_path(name: str, database: str, document: Mapping[str, Any]) -> str:
+def _remote_path(name: str, database: str, document: object) -> str:
     match = _VIEW_NAME.fullmatch(name)
     flat_match = _FLAT_VIEW_NAME.fullmatch(name)
     if match is None and flat_match is None:
         return name
+    if not isinstance(document, Mapping):
+        raise OmniSemanticDeploymentError("view YAML must be a mapping")
     if match is not None and match["catalog"] != database:
         raise OmniSemanticDeploymentError(
             "view catalog does not match manifest database"
@@ -287,8 +312,12 @@ def _text_bytes(value: object, path: str) -> bytes:
     raise OmniSemanticDeploymentError(f"readback {path} must be text or bytes")
 
 
-def _expected_remote_document(item: OmniSemanticDeploymentFile) -> Mapping[str, Any]:
-    document = _parse_yaml(item.content, f"local file {item.local_name}")
+def _expected_remote_document(item: OmniSemanticDeploymentFile) -> object:
+    document = _parse_yaml(
+        item.content,
+        f"local file {item.local_name}",
+        allow_sequence=item.local_name == "relationships",
+    )
     if not item.local_name.endswith(".view"):
         return document
     return {
@@ -296,16 +325,50 @@ def _expected_remote_document(item: OmniSemanticDeploymentFile) -> Mapping[str, 
     }
 
 
-def _parse_yaml(content: bytes, description: str) -> Mapping[str, Any]:
+def _parse_yaml(
+    content: bytes, description: str, *, allow_sequence: bool = False
+) -> object:
     try:
         text = content.decode("utf-8")
         value = yaml.load(text, Loader=_UniqueSafeLoader)
     except (UnicodeError, yaml.YAMLError) as error:
         raise OmniSemanticDeploymentError(f"{description} YAML is unsafe") from error
-    if not isinstance(value, Mapping):
+    if allow_sequence and not isinstance(value, list):
+        raise OmniSemanticDeploymentError(f"{description} YAML must be a sequence")
+    if not allow_sequence and not isinstance(value, Mapping):
         raise OmniSemanticDeploymentError(f"{description} YAML must be a mapping")
     _require_string_mapping_keys(value, description)
     return value
+
+
+def _validate_relationship_document(value: object) -> None:
+    if not isinstance(value, list):
+        raise OmniSemanticDeploymentError("relationships YAML must be a sequence")
+    for relationship in value:
+        if not isinstance(relationship, Mapping) or set(relationship) != (
+            _RELATIONSHIP_FIELDS
+        ):
+            raise OmniSemanticDeploymentError("relationship entry is malformed")
+        _require_identifier(
+            relationship.get("join_from_view"), "relationship join_from_view"
+        )
+        _require_identifier(
+            relationship.get("join_to_view"), "relationship join_to_view"
+        )
+        if relationship.get("join_type") != "always_left":
+            raise OmniSemanticDeploymentError(
+                "relationship join_type must be always_left"
+            )
+        if relationship.get("relationship_type") != "many_to_one":
+            raise OmniSemanticDeploymentError("relationship_type must be many_to_one")
+        if relationship.get("reversible") is not False:
+            raise OmniSemanticDeploymentError("relationship reversible must be false")
+        on_sql = relationship.get("on_sql")
+        if (
+            not isinstance(on_sql, str)
+            or _RELATIONSHIP_ON_SQL.fullmatch(on_sql) is None
+        ):
+            raise OmniSemanticDeploymentError("relationship on_sql is invalid")
 
 
 def _semantic_documents_equal(left: object, right: object) -> bool:
