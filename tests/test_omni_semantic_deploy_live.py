@@ -196,6 +196,97 @@ def test_new_branch_uploads_all_files_then_requires_exact_readback(
     assert client.created_branches == [("model-id", isolated_branch_name(DATABASE))]
 
 
+def test_new_branch_waits_for_exact_readback_to_converge(tmp_path: Path) -> None:
+    stale = _readback()
+    stale[VIEW_PATH] = stale[VIEW_PATH].replace("Events", "Stale Events")
+    client = FakeDeploymentClient(existing=False, readbacks=[stale, _readback()])
+    delays: list[float] = []
+
+    record = deploy_public_bundle(
+        bundle_root=_bundle(tmp_path),
+        connection_id="connection-id",
+        client=client,
+        run_id="deployment-1",
+        source_commit="b" * 40,
+        observed_at="2026-08-28T12:00:00-04:00",
+        readback_sleep=delays.append,
+    )
+
+    assert record.status == "verified"
+    assert delays == [1.0]
+    assert client.readbacks == [_readback()]
+
+
+def test_persistent_readback_mismatch_fails_after_bounded_observation(
+    tmp_path: Path,
+) -> None:
+    stale = _readback()
+    stale[VIEW_PATH] = stale[VIEW_PATH].replace("Events", "Stale Events")
+    client = FakeDeploymentClient(existing=False, readbacks=[stale])
+    delays: list[float] = []
+
+    record = deploy_public_bundle(
+        bundle_root=_bundle(tmp_path),
+        connection_id="connection-id",
+        client=client,
+        run_id="deployment-1",
+        source_commit="b" * 40,
+        observed_at="2026-08-28T12:00:00-04:00",
+        readback_sleep=delays.append,
+    )
+
+    assert record.status == "failed"
+    assert record.failure_stage == "readback"
+    assert record.failure_detail == (
+        "readback did not converge after 6 observations: "
+        f"readback semantic content differs for {VIEW_PATH}"
+    )
+    assert delays == [1.0, 2.0, 4.0, 8.0, 15.0]
+
+
+def test_unexpected_readback_files_fail_without_retry(tmp_path: Path) -> None:
+    unexpected = {**_readback(), "unrelated.topic": "label: Unexpected\n"}
+    client = FakeDeploymentClient(existing=False, readbacks=[unexpected])
+    delays: list[float] = []
+
+    record = deploy_public_bundle(
+        bundle_root=_bundle(tmp_path),
+        connection_id="connection-id",
+        client=client,
+        run_id="deployment-1",
+        source_commit="b" * 40,
+        observed_at="2026-08-28T12:00:00-04:00",
+        readback_sleep=delays.append,
+    )
+
+    assert record.status == "failed"
+    assert record.failure_stage == "readback"
+    assert record.failure_detail == "isolated branch contains unexpected files"
+    assert delays == []
+
+
+def test_malformed_readback_fails_without_retry(tmp_path: Path) -> None:
+    malformed = _readback()
+    malformed[VIEW_PATH] = "label: First\nlabel: Second\n"
+    client = FakeDeploymentClient(existing=False, readbacks=[malformed])
+    delays: list[float] = []
+
+    record = deploy_public_bundle(
+        bundle_root=_bundle(tmp_path),
+        connection_id="connection-id",
+        client=client,
+        run_id="deployment-1",
+        source_commit="b" * 40,
+        observed_at="2026-08-28T12:00:00-04:00",
+        readback_sleep=delays.append,
+    )
+
+    assert record.status == "failed"
+    assert record.failure_stage == "readback"
+    assert record.failure_detail == "YAML contains duplicate key 'label'"
+    assert delays == []
+
+
 def test_candidate_deployment_uses_an_explicit_isolated_model_and_branch(
     tmp_path: Path,
 ) -> None:

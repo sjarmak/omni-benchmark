@@ -9913,3 +9913,45 @@ general polar exact-readback correction under `omni-benchmark-dih.17.13`; C4
 dispatch still requires one exact Tier 2 human authorization. No provider,
 question, gold, hidden annotation, dev-B, test outcome, correctness, credential,
 OAuth, lease, or push action occurred.
+
+## 2026-08-29 — D-142: Distinguish readback convergence from semantic normalization
+
+### Hypothesis
+
+The immutable v9 record shows that polar validated with zero issues but its
+cabin-environment view differed on the immediate exact readback. If this is an
+eventually consistent extension snapshot rather than a compiler or product
+canonicalization, the same isolated branch should later match the exact frozen
+v9 semantic plan without any mutation. The general correction should then
+observe readback convergence for a fixed bounded interval, never broaden the
+authenticated equivalence relation.
+
+### Observation and failure-first boundary
+
+A Tier 1 read-only fetch of the existing isolated v9 polar extension layer used
+the established non-secret `benchmark-infra` profile without inspecting or
+changing any credential, OAuth, or lease state. Against source commit
+`f1923ceac636481220c019ce9e8399c28c839f7a`, the same branch and manifest now
+have zero semantic differences after the existing attested projection. This
+refutes the structured-SQL-normalization hypothesis and identifies delayed
+readback convergence as the external failure.
+
+Before implementation, require a synthetic first readback mismatch followed by
+an exact snapshot to verify successfully, and require a persistent mismatch to
+fail closed after the fixed observation budget. The first focused test must fail
+on the current single-read implementation.
+
+### Current result
+
+KEEP the bounded observer under `omni-benchmark-dih.17.13`. It performs at most
+six exact observations over 30 seconds, preserves the first mismatch in a
+terminal failure, and retries only a missing or semantically different expected
+document. Unexpected files, malformed response shapes, duplicate keys, and
+unsafe YAML still fail immediately. The authenticated semantic comparison is
+unchanged. The focused deployment boundary passes 75 tests; the complete suite
+passes 1,921 tests with five expected environment-dependent skips and 83.55%
+branch coverage. Ruff, formatting, and diff checks pass.
+
+No deployment, upload, validation, evaluated answer, question, gold, hidden
+annotation, dev-B, test outcome, correctness, credential, OAuth, lease,
+shared/main mutation, or push occurred.

@@ -5,7 +5,8 @@ from __future__ import annotations
 import json
 import os
 import re
-from collections.abc import Mapping
+import time
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Protocol
@@ -21,6 +22,7 @@ from .omni_semantic_deployment import (
 _SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,119}")
 _AUTO_EXTENSION_FILES = frozenset({"model", "relationships"})
 _ARCHAEOLOGY_DATABASE = "archeology_scan_large"
+_READBACK_RETRY_DELAYS_SECONDS = (1.0, 2.0, 4.0, 8.0, 15.0)
 
 
 class SemanticDeploymentClient(Protocol):
@@ -112,6 +114,7 @@ def deploy_public_bundle(
     run_id: str,
     source_commit: str,
     observed_at: str,
+    readback_sleep: Callable[[float], None] = time.sleep,
 ) -> DeploymentRecord:
     """Authenticate and deploy one public bundle."""
     plan = build_semantic_deployment_plan(bundle_root)
@@ -122,6 +125,7 @@ def deploy_public_bundle(
         run_id=run_id,
         source_commit=source_commit,
         observed_at=observed_at,
+        readback_sleep=readback_sleep,
     )
 
 
@@ -135,6 +139,7 @@ def deploy_public_plan(
     observed_at: str,
     model_name: str | None = None,
     branch_name: str | None = None,
+    readback_sleep: Callable[[float], None] = time.sleep,
 ) -> DeploymentRecord:
     """Deploy an authenticated immutable plan and retain terminal product failures."""
     if model_name is None:
@@ -160,8 +165,12 @@ def deploy_public_plan(
             )
             if validation_count == 0:
                 try:
-                    readback_count, semantic_model_sha256 = _verify_readback(
-                        plan, client.readback(model_id, branch_id)
+                    readback_count, semantic_model_sha256 = _observe_exact_readback(
+                        plan=plan,
+                        client=client,
+                        model_id=model_id,
+                        branch_id=branch_id,
+                        sleep=readback_sleep,
                     )
                     return _record(
                         plan=plan,
@@ -193,8 +202,12 @@ def deploy_public_plan(
             raise _StageFailure(
                 "validation", f"validator returned {validation_count} issue(s)"
             )
-        readback_count, semantic_model_sha256 = _verify_readback(
-            plan, client.readback(model_id, branch_id)
+        readback_count, semantic_model_sha256 = _observe_exact_readback(
+            plan=plan,
+            client=client,
+            model_id=model_id,
+            branch_id=branch_id,
+            sleep=readback_sleep,
         )
         return _record(
             plan=plan,
@@ -304,6 +317,40 @@ def _verify_readback(
     selected = {path: readback[path] for path in expected if path in readback}
     verify_semantic_deployment_readback(plan, selected)
     return len(selected), semantic_deployment_sha256(plan)
+
+
+def _observe_exact_readback(
+    *,
+    plan: OmniSemanticDeploymentPlan,
+    client: SemanticDeploymentClient,
+    model_id: str,
+    branch_id: str,
+    sleep: Callable[[float], None],
+    retry_delays: Sequence[float] = _READBACK_RETRY_DELAYS_SECONDS,
+) -> tuple[int, str]:
+    first_mismatch: OmniSemanticDeploymentError | None = None
+    for delay in (*retry_delays, None):
+        try:
+            return _verify_readback(plan, client.readback(model_id, branch_id))
+        except OmniSemanticDeploymentError as error:
+            if not _is_retryable_readback_mismatch(error):
+                raise
+            if first_mismatch is None:
+                first_mismatch = error
+            if delay is None:
+                raise OmniSemanticDeploymentError(
+                    "readback did not converge after "
+                    f"{len(retry_delays) + 1} observations: {first_mismatch}"
+                ) from error
+            sleep(delay)
+    raise AssertionError("readback observation loop did not terminate")
+
+
+def _is_retryable_readback_mismatch(error: OmniSemanticDeploymentError) -> bool:
+    detail = str(error)
+    return detail == "readback path set does not match plan" or detail.startswith(
+        "readback semantic content differs for "
+    )
 
 
 def _validation_issue_count(value: object) -> int:
