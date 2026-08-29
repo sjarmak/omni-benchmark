@@ -1,0 +1,48 @@
+{
+  "approval_consumption": {
+    "decision_bead_id": "omni-benchmark-ei0.4.2.1",
+    "path": "experiments/approvals/c4-production/d9869dfc57a4c8fc1ef536644228fd6f858b841d18af5ccd3262bfbdd42e0ed2.consumed.json",
+    "receipt_sha256": "d9869dfc57a4c8fc1ef536644228fd6f858b841d18af5ccd3262bfbdd42e0ed2",
+    "sha256": "5f3603f4f0ba2a71cce0a996d7cd4cae6d54bd9fa388232f02140dc5e27f02ba"
+  },
+  "correctness_observed": false,
+  "counts": {
+    "approval_consumption_records": 1,
+    "dispatcher_failures": 3,
+    "generation_records": 0
+  },
+  "dispatcher_failures": [
+    {
+      "attempt_id": "public-c4-baseline-v2:archeology_scan_1:C4:1",
+      "failure_kind": "child_exit",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v2/archeology_scan_large/c4/.failed-archeology_scan_1-r1-e474a1529f763339/failure.json",
+      "returncode": 1,
+      "sha256": "534605ae972afaa90c6953d406638618b7b7b3bf0e61bd162a3a15dc954ffb77",
+      "stderr_sha256": "da92545f8bb4de27489c9e01d8b21caf02be7b9ade28d9fa9baac1eba73d2c55"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v2:cross_border_1:C4:1",
+      "failure_kind": "child_exit",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v2/cross_border_large/c4/.failed-cross_border_1-r1-61ec1cf36a0e9103/failure.json",
+      "returncode": 1,
+      "sha256": "bdc7df5a5b06bbfe3e2378e89c7ae912395b5e34ea318179d945a85b4be38c31",
+      "stderr_sha256": "da92545f8bb4de27489c9e01d8b21caf02be7b9ade28d9fa9baac1eba73d2c55"
+    },
+    {
+      "attempt_id": "public-c4-baseline-v2:cybermarket_pattern_1:C4:1",
+      "failure_kind": "child_exit",
+      "path": "experiments/autoresearch/raw/public-c4-baseline-v2/cybermarket_pattern_large/c4/.failed-cybermarket_pattern_1-r1-451b0e865f6a6ad2/failure.json",
+      "returncode": 1,
+      "sha256": "36a4df3bda7f0882a264070fa48dd24b7604bf66924685ba8c95c8b68b30b490",
+      "stderr_sha256": "da92545f8bb4de27489c9e01d8b21caf02be7b9ade28d9fa9baac1eba73d2c55"
+    }
+  ],
+  "generation_records": [],
+  "gold_accessed": false,
+  "reason": "The exact public C4 v2 approval was consumed, then all three initially staged children failed before any evaluated answer with identical Omni HTTP 403 diagnostics. No generation or correctness artifact exists. The run is infrastructure-failed diagnostic evidence only and may not be resumed, replaced in place, scored, or used as a baseline.",
+  "run_id": "public-c4-baseline-v2",
+  "run_root": "experiments/autoresearch/raw/public-c4-baseline-v2",
+  "schema_version": "run-quarantine-v1",
+  "scoreable": false,
+  "status": "quarantined_non_scoreable"
+}
