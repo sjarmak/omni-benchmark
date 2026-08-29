@@ -5799,3 +5799,30 @@ The exact 85-question dev-A intersection can then use the existing dual-scorer
 CLI with the returned selection SHA-256 and expected official/sensitivity
 denominators 85/85. This implementation does not authorize or launch v4, E02,
 a dev-B checkpoint, Freeze B, or sealed evaluation.
+
+## 2026-08-29 — D-107: Close the E02 full-dev-A execution handoff offline
+
+### Pre-change hypothesis and boundary
+
+The E02 relationship candidate is reproducible and locally deployment-ready,
+but reproducibility alone is not an executable experiment. The production
+deployment command currently snapshots only the frozen baseline bundle roots,
+and the receipt-gated C4 scheduler currently selects only the 129-question
+public baseline arm. A distinct provider-inert handoff should reproduce all 18
+E02 deployment plans from exact Git objects, schedule exactly the committed 154
+dev-A IDs under C4, require fresh human authority at each live boundary, and
+freeze/score the resulting complete arm without copying the train-only release.
+
+Bead `omni-benchmark-ei0.4.9`; change class: general evaluation integration.
+RED tests precede each implementation slice. This work may use public committed
+inputs and synthetic fixtures only. It may not create or consume a real
+approval, contact Omni, access credentials or leases, inspect protected
+records, launch C4/E02, or read a live experiment artifact.
+
+### Result
+
+In progress. The first test-first slice adds an exact committed dev-A C4
+schedule and reproduces the 18-database, 272-file, 91-relationship E02 candidate
+set from an exact canonical Git commit. The reproduced candidate-set SHA-256 is
+`c08ee8c10e4b2c26a142da5f36971dbb19488a827febf0514f5876e75b3a6f61`, matching
+the previously frozen offline validation.

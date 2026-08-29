@@ -30,6 +30,7 @@ from .run_quarantine import is_quarantined_run
 
 BASELINE_CONDITIONS = ("C1", "C2", "C3", "C4")
 _TRAIN_IDS_PATH = Path("data/manifests/train_ids.txt")
+_DEV_A_IDS_PATH = Path("data/manifests/dev_a_ids.txt")
 _ELIGIBLE_MANIFEST_PATH = Path("data/manifests/eligible_questions.jsonl")
 _C4_ARM_SPEC_PATH = Path("config/conditions/c4-public-baseline-arm-v1.json")
 _IDENTIFIER_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}")
@@ -399,6 +400,41 @@ def c4_public_baseline_schedule(
     attempts = tuple(indexed[instance_id] for instance_id in ids)
     if {attempt.database for attempt in attempts} != set(spec.databases):
         raise BaselineBatchError("C4 arm database coverage is invalid")
+    return BaselineSchedule(
+        attempts=attempts,
+        eligible_manifest_sha256=schedule.eligible_manifest_sha256,
+        source_commit=schedule.source_commit,
+        train_ids_sha256=schedule.train_ids_sha256,
+    )
+
+
+def c4_dev_a_experiment_schedule(
+    workspace: Path, commit: str, schedule: BaselineSchedule
+) -> BaselineSchedule:
+    """Select exactly the committed dev-A membership for one C4 experiment."""
+    if (
+        len(schedule.attempts) != 924
+        or len({attempt.instance_id for attempt in schedule.attempts}) != 231
+        or {attempt.condition for attempt in schedule.attempts}
+        != set(BASELINE_CONDITIONS)
+    ):
+        raise BaselineBatchError("dev-A C4 experiment requires the complete schedule")
+    try:
+        root = workspace.resolve(strict=True)
+        ids_input = committed_spec(root, commit, _DEV_A_IDS_PATH)
+        ids = _parse_subset_ids(ids_input.content, expected=154)
+    except (OSError, OmniProbePreflightError, UnicodeError) as error:
+        raise BaselineBatchError("committed dev-A membership is unavailable") from error
+    indexed = {
+        attempt.instance_id: attempt
+        for attempt in schedule.attempts
+        if attempt.condition == "C4"
+    }
+    if len(indexed) != 231 or any(instance_id not in indexed for instance_id in ids):
+        raise BaselineBatchError("dev-A IDs are absent from the public schedule")
+    attempts = tuple(indexed[instance_id] for instance_id in ids)
+    if len({attempt.database for attempt in attempts}) != 18:
+        raise BaselineBatchError("dev-A C4 experiment must span 18 databases")
     return BaselineSchedule(
         attempts=attempts,
         eligible_manifest_sha256=schedule.eligible_manifest_sha256,

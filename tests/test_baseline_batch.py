@@ -20,6 +20,7 @@ from omni_benchmark.baseline_batch import (
     BatchStopPolicy,
     BatchBudget,
     ImmutableAttemptRepository,
+    c4_dev_a_experiment_schedule,
     direct_only_baseline_schedule,
     load_committed_baseline_schedule,
     project_baseline_cost,
@@ -61,6 +62,7 @@ def _schedule_repo(tmp_path: Path) -> tuple[Path, str]:
     manifests.mkdir(parents=True)
     ids = tuple(f"public_{index:03d}" for index in range(231))
     (manifests / "train_ids.txt").write_text("\n".join(ids) + "\n")
+    (manifests / "dev_a_ids.txt").write_text("\n".join(ids[:154]) + "\n")
     rows = [
         {
             "category": "Query",
@@ -235,6 +237,23 @@ def test_committed_public_schedule_covers_all_231_questions_and_four_conditions(
     assert len(schedule.sha256) == 64
     assert schedule.source_commit == commit
     assert not hasattr(schedule.attempts[0], "question")
+
+
+def test_committed_dev_a_c4_schedule_is_exact_complete_and_ordered(
+    tmp_path: Path,
+) -> None:
+    workspace, commit = _schedule_repo(tmp_path)
+    full = load_committed_baseline_schedule(workspace, commit, run_id="e02-dev-a-v1")
+
+    selected = c4_dev_a_experiment_schedule(workspace, commit, full)
+
+    expected_ids = tuple(
+        (workspace / "data/manifests/dev_a_ids.txt").read_text().splitlines()
+    )
+    assert len(selected.attempts) == 154
+    assert tuple(attempt.instance_id for attempt in selected.attempts) == expected_ids
+    assert {attempt.condition for attempt in selected.attempts} == {"C4"}
+    assert len({attempt.database for attempt in selected.attempts}) == 18
 
 
 def test_committed_schedule_rejects_quarantined_run_id(tmp_path: Path) -> None:
