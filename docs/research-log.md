@@ -6530,6 +6530,11 @@ sidecars, and it must land together with re-provisioning or the recorded
 
 ## D-072: D-071 was wrong. The missing tables are an upstream defect, and the omission mechanism reproduces it correctly
 
+> **Arithmetic corrected by D-073.** The upstream-loader diagnosis below
+> stands, but 14 plus 13 describes the broader train/direct-capture population,
+> not dev-A. The committed dev-A split contains nine plus nine affected
+> questions: 18 total.
+
 D-071 concluded that `mental_healths_large` and `organ_transplant_large` were
 never fully restored because of a case-sensitive dump lookup in this repository,
 and that the data was recoverable by fixing resolution. That conclusion is
@@ -6639,3 +6644,36 @@ code 0: 71 tables skipped over a case variant present in the archive, and one on
 
 No inventory field was changed, no database was re-provisioned, and no attempt was
 rerun. The `inventory_sha256` pin is untouched.
+
+## D-073: Correct D-072's dev-A arithmetic before changing the promotion frame
+
+### Hypothesis
+
+If D-072's 14 plus 13 count described dev-A, joining the committed
+`dev_a_ids.txt` membership to the public `selected_database` field would return
+those counts for `mental_healths_large` and `organ_transplant_large`.
+
+### Result
+
+It returns nine and nine: 18 dev-A questions total. The 14 and 13 counts are the
+broader train/direct-capture population and were mislabeled as dev-A in D-072.
+This agrees with the frozen dev-A conformance result: exactly 18 questions, or
+54 C1-C3 attempts, are officially unscorable with `gold_statement_error`.
+
+The upstream-loader diagnosis in D-072 still stands. The arithmetic correction
+changes only the development-frame consequence: 154 scheduled dev-A questions
+contain 136 answerable and 18 benchmark-invalid questions. Current direct
+C1-C3 evidence has 122 official-scoreable questions because it also preserves
+the separate nine-question cybermarket and five-question archeology pre-run
+exclusions. The authorized cybermarket recovery can raise that direct
+intersection to 131; archeology remains an explicit five-question exclusion.
+
+### Outcome
+
+`omni-benchmark-1u8` is corrected before human response. Option A preserves the
+all-18-database and all-154-scheduled intent while preregistering the exact 18
+scorer-conformance exclusions and using 136 as C4's answerable promotion
+denominator. Option B keeps a literal all-154-scoreable rule, which makes the
+optimization phase inconclusive in the official environment. No private record,
+dev-B outcome, test label, database, attempt, or provider was accessed or
+changed to make this correction.

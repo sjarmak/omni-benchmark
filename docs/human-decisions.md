@@ -4,15 +4,36 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T10:19:43-04:00 (America/New_York). No test gold,
+Last updated: 2026-08-29T11:39:34-04:00 (America/New_York). No test gold,
 dev-B outcome, hidden test annotation, or sealed-test result has been accessed.
 
 ## Waiting for a response
 
-No decisions are currently waiting on the user. `bd human list` returned an
-empty queue at the timestamp above. The user's response `B` to
-`omni-benchmark-wk0` has already been recorded; no further response or command
-is needed for that decision.
+### Dev-A scorer-conformance frame — `omni-benchmark-1u8`
+
+Reply **A** or **B** in this chat. No command, receipt, database change, rerun,
+credential action, dev-B access, or sealed access is requested.
+
+- **A — schedule 154, score the 136 answerable questions (recommended).** Keep
+  the all-18-database intent of the earlier response B. Schedule all 154 dev-A
+  questions, preregister the exact 18 benchmark-invalid questions as
+  scorer-conformance exclusions, and report scheduled, scoreable, and
+  unscorable counts separately. C4 promotion is evaluated on the remaining 136
+  answerable questions.
+- **B — require all 154 to be scoreable.** The official LiveSQLBench database
+  cannot satisfy this requirement, so E01-E03 remain inconclusive and the
+  optimization phase stops. C4 would not be launched as a promotion baseline.
+
+The pinned upstream Linux loader intentionally reproduces a case-sensitive
+filename mismatch and omits 34 tables from `mental_healths_large` and 37 from
+`organ_transplant_large`. Restoring them would make this environment differ
+from the official benchmark. The frozen dev-A scorer already shows the nine
+represented questions from each database—18 total—are unscorable. An earlier
+follow-up incorrectly called the broader 14+13 train counts “dev-A”; the public
+dev-A manifest proves the correct count is 9+9. No repair or affected rerun will
+be performed. Current direct C1-C3 coverage is 122 official-scoreable; the
+separately authorized cybermarket recovery can add nine, while the five-question
+archeology pre-run exclusion remains explicit.
 
 ## Approved actions in progress
 
@@ -25,10 +46,10 @@ No approved human-gated action is currently in progress.
   ten-database/85-question `public-c4-baseline-v5` dispatch is therefore not
   launchable and must not be authorized, rehearsed, or run. C4 remains blocked
   until `omni-benchmark-dih.17` records all 18 isolated semantic deployments
-  validated with exact readback. That deployment bead now also depends on the
-  operator-owned `omni-benchmark-39b` repair of the two incomplete public
-  database restores. The separate append-only cybermarket direct-baseline
-  recovery remains part of the MVP path.
+  validated with exact readback. The proposed `omni-benchmark-39b` database
+  recovery is withdrawn because it would break official comparability; no
+  inventory change, re-provisioning, or affected rerun is valid. The separate
+  append-only cybermarket direct-baseline recovery remains part of the MVP path.
 
 - `omni-benchmark-dih.17.1` was authorized and completed on 2026-08-28. Safe
   readback proved the 17 non-canary connections selected `neondb` while the
@@ -70,11 +91,10 @@ No approved human-gated action is currently in progress.
 
 - Do not run any existing C4 authorization helper or launch command. The v5
   package binds only ten targets and is obsolete under decision B. A new exact
-  all-18 package can be prepared only after the deployment and restore blockers
-  are complete.
+  all-18 package can be prepared only after the deployment blocker and the
+  scorer-conformance frame decision above are complete.
 - Do not change Neon grants, database contents, credentials, OAuth profiles, or
-  leases. `omni-benchmark-39b` is operator-owned infrastructure work and will
-  request separate authority when its external action is ready.
+  leases. The refuted `omni-benchmark-39b` recovery must not be executed.
 - The train-only release is complete. Keep the unreleased private source and all
   test gold outside agent-accessible workspaces; development may use only the
   established train-only custody output.
