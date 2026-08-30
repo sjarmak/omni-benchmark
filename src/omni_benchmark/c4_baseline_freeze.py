@@ -30,6 +30,9 @@ RAW_ROOT = Path("experiments/autoresearch/raw")
 STATE_ROOT = Path("experiments/autoresearch/state")
 SCHEMA_VERSION = 1
 _SHA256 = re.compile(r"[0-9a-f]{64}")
+_FAILED_DIRECTORY = re.compile(
+    r"\.failed-(?P<instance>[A-Za-z0-9][A-Za-z0-9._-]{0,119})-r1-[0-9a-f]{16}"
+)
 _C4_ARTIFACT_NAMES = frozenset(
     {
         "answer.result.json",
@@ -279,6 +282,7 @@ def _artifact_inventory(root: Path, attempt_roots: set[Path]) -> tuple[int, str]
     for attempt_root in attempt_roots:
         for parent in (attempt_root.parent.parent, attempt_root.parent, attempt_root):
             allowed_directories.add(parent)
+    diagnostic_roots: set[Path] = set()
 
     inventory: list[dict[str, object]] = []
     try:
@@ -294,6 +298,12 @@ def _artifact_inventory(root: Path, attempt_roots: set[Path]) -> tuple[int, str]
                 metadata = child.lstat()
                 relative = child.relative_to(root)
                 if (
+                    relative not in allowed_directories
+                    and _is_scheduled_diagnostic_directory(relative, attempt_roots)
+                ):
+                    allowed_directories.add(relative)
+                    diagnostic_roots.add(relative)
+                if (
                     child.is_symlink()
                     or not stat.S_ISDIR(metadata.st_mode)
                     or stat.S_IMODE(metadata.st_mode) != 0o700
@@ -306,10 +316,13 @@ def _artifact_inventory(root: Path, attempt_roots: set[Path]) -> tuple[int, str]
             for name in files:
                 path = current_path / name
                 relative = path.relative_to(root)
-                if (
-                    relative.parent not in attempt_roots
-                    or name not in _C4_ARTIFACT_NAMES
-                ):
+                attempt_artifact = (
+                    relative.parent in attempt_roots and name in _C4_ARTIFACT_NAMES
+                )
+                diagnostic_artifact = (
+                    relative.parent in diagnostic_roots and name == "failure.json"
+                )
+                if not attempt_artifact and not diagnostic_artifact:
                     raise C4BaselineFreezeError(
                         "C4 artifact tree contains an unexpected file"
                     )
@@ -323,6 +336,15 @@ def _artifact_inventory(root: Path, attempt_roots: set[Path]) -> tuple[int, str]
         raise C4BaselineFreezeError("cannot inventory C4 artifacts") from error
     inventory.sort(key=lambda item: str(item["path"]))
     return len(inventory), hashlib.sha256(_canonical_json(inventory)).hexdigest()
+
+
+def _is_scheduled_diagnostic_directory(
+    relative: Path, attempt_roots: set[Path]
+) -> bool:
+    match = _FAILED_DIRECTORY.fullmatch(relative.name)
+    return match is not None and (
+        relative.parent / f"{match.group('instance')}-r1" in attempt_roots
+    )
 
 
 def _private_digest(path: Path) -> str:

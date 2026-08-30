@@ -9,6 +9,7 @@ import pytest
 from omni_benchmark.omni_result_adapter import (
     OmniResultContractError,
     bind_typed_query_result,
+    build_replayed_result_artifact,
     decode_result_artifact_rows,
     parse_omni_job_result,
 )
@@ -119,6 +120,138 @@ def test_truncated_final_preview_binds_complete_metadata_typed_rerun() -> None:
             datetime(2026, 8, 28, 13, 14, 15, tzinfo=timezone.utc),
         ),
     )
+
+
+def test_typed_binding_accepts_omni_boolean_metadata() -> None:
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result="Enabled\ntrue\n",
+                    query={"fields": ["answer.enabled"]},
+                    total_row_count=1,
+                )
+            ]
+        }
+    )
+
+    parsed = bind_typed_query_result(
+        parsed_query,
+        [{"Enabled": True}],
+        _plan(("answer.enabled", "BOOLEAN")),
+    )
+
+    assert parsed.as_result_artifact()["rows"] == [[True]]
+
+
+@pytest.mark.parametrize(
+    "data_type", ["BOOLEAN", "DATE", "JSON", "NUMBER", "TIMESTAMP"]
+)
+def test_typed_binding_treats_empty_non_string_cell_as_null(data_type: str) -> None:
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result='Value\n""\n',
+                    query={"fields": ["answer.value"]},
+                    total_row_count=1,
+                )
+            ]
+        }
+    )
+
+    parsed = bind_typed_query_result(
+        parsed_query,
+        [{"Value": ""}],
+        _plan(("answer.value", data_type)),
+    )
+
+    assert parsed.as_result_artifact()["rows"] == [[None]]
+
+
+def test_typed_binding_preserves_empty_string_cell() -> None:
+    parsed_query = parse_omni_job_result(
+        {
+            "actions": [
+                _query_action(
+                    csv_result='Value\n""\n',
+                    query={"fields": ["answer.value"]},
+                    total_row_count=1,
+                )
+            ]
+        }
+    )
+
+    parsed = bind_typed_query_result(
+        parsed_query,
+        [{"Value": ""}],
+        _plan(("answer.value", "STRING")),
+    )
+
+    assert parsed.as_result_artifact()["rows"] == [[""]]
+
+
+def test_replayed_semantic_query_builds_type_faithful_artifact_without_csv() -> None:
+    artifact = build_replayed_result_artifact(
+        {"fields": ["answer.label", "answer.amount", "answer.enabled"]},
+        [{"Label": "A", "Amount": "12.50", "Enabled": False}],
+        _plan(
+            ("answer.label", "STRING"),
+            ("answer.amount", "NUMBER"),
+            ("answer.enabled", "BOOLEAN"),
+        ),
+    )
+
+    assert artifact == {
+        "columns": ["Label", "Amount", "Enabled"],
+        "rows": [["A", {"type": "decimal", "value": "12.50"}, False]],
+        "schema_version": 1,
+        "truncated": False,
+    }
+
+
+def test_replayed_semantic_query_uses_field_ids_for_empty_results() -> None:
+    artifact = build_replayed_result_artifact(
+        {"fields": ["answer.label"]},
+        [],
+        _plan(("answer.label", "STRING")),
+    )
+
+    assert artifact["columns"] == ["answer.label"]
+    assert artifact["rows"] == []
+
+
+@pytest.mark.parametrize(
+    ("query", "rows", "plan", "message"),
+    [
+        (
+            {"fields": ["answer.value"]},
+            [{"Value": 1}],
+            _plan(("answer.value", "UNKNOWN")),
+            "unsupported",
+        ),
+        (
+            {"fields": ["answer.left", "answer.right"]},
+            [{"Only": 1}],
+            _plan(("answer.left", "NUMBER"), ("answer.right", "NUMBER")),
+            "columns",
+        ),
+        (
+            {"fields": ["answer.value"]},
+            [{"Value": 1}, {"Other": 2}],
+            _plan(("answer.value", "NUMBER")),
+            "columns",
+        ),
+    ],
+)
+def test_replayed_semantic_query_rejects_ambiguous_results(
+    query: dict[str, object],
+    rows: list[dict[str, object]],
+    plan: dict[str, object],
+    message: str,
+) -> None:
+    with pytest.raises(OmniResultContractError, match=message):
+        build_replayed_result_artifact(query, rows, plan)
 
 
 def test_parse_accepts_product_truncation_section_markers() -> None:

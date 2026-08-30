@@ -59,7 +59,7 @@ class _OmniHttp429Error(OmniCliError):
 class OmniCliSettings:
     """Non-secret, frozen settings; authentication remains in process environment."""
 
-    base_url: str
+    base_url: str | None
     model_id: str
     profile: str | None
     branch_id: str | None
@@ -102,6 +102,26 @@ class OmniCliSettings:
             model_id=model_id,
             profile=profile,
             branch_id=branch_id,
+        )
+
+    @classmethod
+    def from_profile(
+        cls, *, profile: str, model_id: str, branch_id: str | None = None
+    ) -> OmniCliSettings:
+        """Use an existing CLI profile without reading or copying its configuration."""
+        if not isinstance(profile, str) or not profile.strip():
+            raise OmniCliError("Omni CLI profile must be a non-empty string")
+        if not isinstance(model_id, str) or not model_id.strip():
+            raise OmniCliError("Omni model ID must be a non-empty string")
+        if branch_id is not None and (
+            not isinstance(branch_id, str) or not branch_id.strip()
+        ):
+            raise OmniCliError("Omni branch ID must be a non-empty string")
+        return cls(
+            base_url=None,
+            model_id=model_id.strip(),
+            profile=profile.strip(),
+            branch_id=None if branch_id is None else branch_id.strip(),
         )
 
 
@@ -314,12 +334,9 @@ class OmniCliClient:
         return stdout
 
     def _base_arguments(self) -> tuple[str, ...]:
-        arguments = (
-            self._settings.binary,
-            "--compact",
-            "--base-url",
-            self._settings.base_url,
-        )
+        arguments = (self._settings.binary, "--compact")
+        if self._settings.base_url is not None:
+            arguments = (*arguments, "--base-url", self._settings.base_url)
         if self._settings.profile is not None:
             return (*arguments, "--profile", self._settings.profile)
         return arguments

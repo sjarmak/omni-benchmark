@@ -256,15 +256,42 @@ def test_freeze_refuses_incomplete_schedule_without_writing(tmp_path: Path) -> N
     ).exists()
 
 
+def test_freeze_inventories_preserved_scheduled_attempt_diagnostic(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    schedule = _schedule()
+    output_root = Path(f"experiments/autoresearch/raw/{TEST_RUN_ID}")
+    for attempt in schedule.attempts:
+        _write_attempt(workspace, output_root, attempt)
+    diagnostic = (
+        workspace / output_root / "database_0/c4/.failed-question_0-r1-0123456789abcdef"
+    )
+    diagnostic.mkdir(mode=0o700)
+    failure = diagnostic / "failure.json"
+    failure.write_text('{"attempt_id":"diagnostic"}\n')
+    failure.chmod(0o600)
+
+    receipt = _freeze(workspace, schedule)
+
+    assert receipt["artifact_file_count"] == 7
+
+
 def test_freeze_refuses_unexpected_or_symlinked_artifact_tree(tmp_path: Path) -> None:
     workspace = _workspace(tmp_path)
     schedule = _schedule()
     output_root = Path(f"experiments/autoresearch/raw/{TEST_RUN_ID}")
     for attempt in schedule.attempts:
         _write_attempt(workspace, output_root, attempt)
-    unexpected = workspace / output_root / "database_0/c4/.failed-question_0-r1-x"
-    unexpected.mkdir()
-    (unexpected / "failure.json").write_text("{}\n")
+    unexpected = (
+        workspace
+        / output_root
+        / "database_0/c4/.failed-not-scheduled-r1-0123456789abcdef"
+    )
+    unexpected.mkdir(mode=0o700)
+    failure = unexpected / "failure.json"
+    failure.write_text("{}\n")
+    failure.chmod(0o600)
 
     with pytest.raises(C4BaselineFreezeError, match="unexpected"):
         _freeze(workspace, schedule)

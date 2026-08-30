@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T19:44:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T21:30:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -43,7 +43,31 @@ public extension files. The general fix authenticates all three returned view
 identity values before projecting them away; every other semantic difference
 remains exact. That prerequisite evidence remains unchanged.
 
-## No action needed — C4 v8 resumed in place
+## No action needed — C4 v8 completed, frozen, and scored
+
+The sole C4 v8 dispatcher completed all 136 executable dev-A attempts and no
+dispatcher remains. The frozen frame is 154 scheduled / 136 scoreable / 18
+fixed unscorable. Append-only recovery v5 replayed only already-generated
+semantic queries for the 45 capture failures: 11 yielded typed result artifacts
+and 34 remain explicit evaluated-system contract failures. It did not rerun
+question-level model reasoning.
+
+The official aggregate is 9 correct, 93 wrong, 34 refused/system-error, and 18
+fixed unscorable. Selection SHA-256 is
+`256145c13cfae7142d92f108b4ee9dd93e658a44cafb683e5aec90170b8315cc`,
+recovery-manifest SHA-256 is
+`5d6ff474f30d3de6d703ad5c6c59373fe8093515eabb83473bdb352c4f30fd9f`,
+and score-receipt SHA-256 is
+`0296753e8fcbf826a99ed2f86088ecdfb61981db8dea47d93e7871cef2690a78`.
+No command, credential, callback, profile action, or additional authorization is
+needed from you. One actual experimental input—not an authorization ceremony—is
+needed before Freeze B: the protocol requires the sealed schedule seed to come
+from the human-controlled surface. Send one safe, non-secret identifier in chat,
+for example `omni-sealed-mvp-20260830-a`. The agent will generate the
+identity-only schedule and record Freeze B; you should not run a command or
+handle any protected file.
+
+### Historical execution record
 
 The exact v6 receipt was consumed, but all three initial child processes stopped
 before provider contact because the launch workspace HEAD did not equal the

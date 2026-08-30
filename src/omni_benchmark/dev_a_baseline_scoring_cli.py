@@ -65,6 +65,9 @@ def dev_a_baseline_scoring_main(
         selection_path=_selection_path(arguments.selection),
         expected_selection_sha256=arguments.expected_selection_sha256,
         expected_release_sha256=arguments.expected_release_sha256,
+        c4_recovery_workspace=arguments.c4_recovery_workspace,
+        c4_recovery_manifest_path=arguments.c4_recovery_manifest,
+        expected_c4_recovery_sha256=arguments.expected_c4_recovery_sha256,
         environment=process_environment,
     )
     expected_counts = _expected_counts(arguments, workspace, plan)
@@ -120,6 +123,9 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--selection", type=Path, default=SELECTION_PATH)
     parser.add_argument("--expected-selection-sha256", required=True)
     parser.add_argument("--expected-release-sha256", required=True)
+    parser.add_argument("--c4-recovery-workspace", type=Path)
+    parser.add_argument("--c4-recovery-manifest", type=Path)
+    parser.add_argument("--expected-c4-recovery-sha256")
     parser.add_argument("--expected-official-scoreable-questions", type=int)
     parser.add_argument("--expected-sensitivity-scoreable-questions", type=int)
     parser.add_argument("--gold-conformance-receipt", type=Path)

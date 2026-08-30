@@ -112,6 +112,37 @@ def test_profile_authentication_does_not_require_a_token() -> None:
     assert settings.profile == "benchmark"
 
 
+def test_explicit_profile_settings_defer_origin_to_the_cli_profile() -> None:
+    settings = OmniCliSettings.from_profile(
+        profile="benchmark",
+        model_id="model-id",
+        branch_id="branch-id",
+    )
+    runner = FakeRunner(stdout=json.dumps({"user": {"id": "user-id"}}))
+    client = OmniCliClient(settings, runner=runner, environment={})
+
+    client.whoami()
+
+    assert runner.invocations[0].arguments == (
+        "omni",
+        "--compact",
+        "--profile",
+        "benchmark",
+        "whoami",
+        "whoami",
+    )
+
+
+@pytest.mark.parametrize("profile", ["", " "])
+def test_explicit_profile_settings_reject_empty_profile(profile: str) -> None:
+    with pytest.raises(OmniCliError, match="profile"):
+        OmniCliSettings.from_profile(
+            profile=profile,
+            model_id="model-id",
+            branch_id="branch-id",
+        )
+
+
 def test_token_authentication_never_places_secret_in_arguments_or_settings() -> None:
     environment = _token_environment()
     runner = FakeRunner(stdout=json.dumps({"user": {"id": "user-id"}}))

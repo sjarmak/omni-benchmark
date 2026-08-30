@@ -25,6 +25,11 @@ class OmniUnsupportedResultTypeError(OmniResultContractError):
     """Raised when Omni does not expose a type-faithful result field type."""
 
 
+SUPPORTED_OMNI_RESULT_TYPES = frozenset(
+    {"BOOLEAN", "DATE", "JSON", "NUMBER", "STRING", "TIMESTAMP", "YESNO"}
+)
+
+
 _TRUNCATED_CSV_MARKER = re.compile(
     r"# (?:FIRST [0-9]+ ROWS:|"
     r"SAMPLED [0-9]+ ROWS FROM MIDDLE \(rows [0-9]+-[0-9]+\):|"
@@ -119,6 +124,51 @@ def bind_typed_query_result(
         observed_actions_by_type=parsed.observed_actions_by_type,
         database_query_count=parsed.agent_database_query_count,
     )
+
+
+def build_replayed_result_artifact(
+    semantic_query: Mapping[str, Any],
+    rows: Sequence[Mapping[str, Any]],
+    plan: Mapping[str, Any],
+) -> dict[str, object]:
+    """Build a typed sidecar by replaying an already-generated semantic query."""
+    if not isinstance(semantic_query, Mapping) or not semantic_query:
+        raise OmniResultContractError("replayed Omni query must be a non-empty object")
+    fields = _semantic_query_fields(semantic_query)
+    if not isinstance(rows, list):
+        raise OmniResultContractError("typed Omni result must be an array")
+    columns = _typed_columns(rows, tuple(fields))
+    parsed = ParsedOmniQuery(
+        semantic_query=dict(semantic_query),
+        generated_query=json.dumps(
+            semantic_query, ensure_ascii=False, separators=(",", ":"), sort_keys=True
+        ),
+        semantic_objects=(),
+        expected_columns=columns,
+        expected_row_count=len(rows),
+        expected_has_results=bool(rows),
+        observed_actions_by_type=(),
+        agent_database_query_count=0,
+    )
+    return bind_typed_query_result(parsed, rows, plan).as_result_artifact()
+
+
+def planned_query_data_types(
+    semantic_query: Mapping[str, Any], plan: Mapping[str, Any]
+) -> tuple[str, ...]:
+    """Return authoritative planner types before deciding whether replay is safe."""
+    fields = _semantic_query_fields(semantic_query)
+    parsed = ParsedOmniQuery(
+        semantic_query=dict(semantic_query),
+        generated_query="",
+        semantic_objects=(),
+        expected_columns=fields,
+        expected_row_count=0,
+        expected_has_results=False,
+        observed_actions_by_type=(),
+        agent_database_query_count=0,
+    )
+    return _planned_data_types(parsed, plan, fields, require_supported=False)
 
 
 def decode_result_artifact_rows(
@@ -385,6 +435,8 @@ def _planned_data_types(
     parsed: ParsedOmniQuery,
     plan: Mapping[str, Any],
     columns: tuple[str, ...],
+    *,
+    require_supported: bool = True,
 ) -> tuple[str, ...]:
     if not isinstance(plan, Mapping) or plan.get("status") != "PLANNED":
         raise OmniResultContractError("Omni query plan must reach PLANNED")
@@ -420,7 +472,7 @@ def _planned_data_types(
             raise OmniResultContractError(
                 f"Omni query plan has invalid data type metadata for {field_name}"
             )
-        if data_type not in {"DATE", "JSON", "NUMBER", "STRING", "TIMESTAMP", "YESNO"}:
+        if require_supported and data_type not in SUPPORTED_OMNI_RESULT_TYPES:
             raise OmniUnsupportedResultTypeError(
                 f"Omni query plan has unsupported data type for {field_name}"
             )
@@ -428,16 +480,30 @@ def _planned_data_types(
     return tuple(data_types)
 
 
+def _semantic_query_fields(semantic_query: Mapping[str, Any]) -> tuple[str, ...]:
+    if not isinstance(semantic_query, Mapping) or not semantic_query:
+        raise OmniResultContractError("replayed Omni query must be a non-empty object")
+    fields = semantic_query.get("fields")
+    if (
+        not isinstance(fields, list)
+        or not fields
+        or any(not isinstance(field, str) or not field for field in fields)
+        or len(set(fields)) != len(fields)
+    ):
+        raise OmniResultContractError("replayed Omni query fields are invalid")
+    return tuple(fields)
+
+
 def _typed_cell(value: Any, data_type: str) -> Any:
-    if value is None:
+    if value is None or (value == "" and data_type != "STRING"):
         return None
     if data_type == "STRING":
         if not isinstance(value, str):
             raise OmniResultContractError("Omni STRING result must be a string")
         return value
-    if data_type == "YESNO":
+    if data_type in {"BOOLEAN", "YESNO"}:
         if not isinstance(value, bool):
-            raise OmniResultContractError("Omni YESNO result must be boolean")
+            raise OmniResultContractError("Omni Boolean result must be boolean")
         return value
     if data_type == "NUMBER":
         if isinstance(value, bool) or not isinstance(value, (str, int, float)):

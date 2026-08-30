@@ -7,14 +7,16 @@
 > relationship artifact is locally authenticated but was neither deployed nor
 > evaluated. The optimization phase is closed: no intervention was promoted, no
 > dev-B checkpoint will be consumed, and the frozen mechanical baseline is the
-> final candidate. The C4 baseline, final freeze, and sealed test are pending.
+> final candidate. The C4 development baseline is complete and scored; final
+> Freeze B and the sealed test are pending.
 > Every **Pending** entry below carries no numeric value. The 101
 > held-out questions and their labels remain sealed. All 154 dev-A questions
 > remain scheduled; 18 fixed benchmark-invalid questions are preregistered as
 > unscorable, leaving 136 answerable questions for C4 evaluation. All 16
-> answerable database bundles now have one current immutable validation and
-> exact-readback evidence set. The exact C4 development dispatch is prepared
-> and awaiting its single-use human authorization; it has not launched.
+> answerable database bundles have one current immutable validation and
+> exact-readback evidence set. C4 completed all 136 executable attempts: 9 were
+> correct, 93 wrong, and 34 refused or ended in a system-contract error under
+> the official scorer.
 
 ## Executive summary
 
@@ -28,8 +30,8 @@ executed final candidate receives no question-level supervision and consumes no
 metered checkpoint. Four systems separate access to raw schema, business
 knowledge, structured semantic knowledge, and governed execution.
 
-The primary governed and sealed results remain pending. Development evidence
-now supports four findings:
+The primary sealed results remain pending. Development evidence now supports
+five findings:
 
 1. Grain and relationship contracts were the main recorded obstacle to
    converting business knowledge into executable semantic objects. Across all
@@ -42,8 +44,9 @@ now supports four findings:
 2. Searchable raw business knowledge produced the strongest direct-SQL
    development baseline. Official accuracy on 122 scoreable dev-A questions was
    7.4% for C1, 23.8% for C2, and 13.1% for C3. The sensitivity scorer preserved
-   that ordering. These are exploratory development results; C4 and the sealed
-   comparison have not run.
+   that ordering. Governed C4 separately scored 9/136 (6.6%), with 34 explicit
+   refused/system-error outcomes. These are exploratory development results;
+   the sealed comparison has not run.
 
 3. Wrong answers dominate the direct baseline. Across the three conditions, 245
    of 366 scoreable attempts were wrong, 67 refused or errored, and 54 were
@@ -57,6 +60,13 @@ now supports four findings:
    KiB per call, compared with a 51-table response on the original canary. Full
    baseline telemetry averaged $1.48 to $1.84 per attempt across C1-C3. The hard
    payload bound and observed end-to-end cost are separate measurements.
+
+5. The governed semantic path exposed a distinct product-reliability failure
+   surface. Thirty-four of 136 scoreable C4 attempts ended in a semantic-layer
+   or system-contract failure rather than a scored result mismatch. Eleven
+   additional capture gaps were recoverable by replaying only an
+   already-generated semantic query; question-level model reasoning was never
+   rerun.
 
 The remaining evaluation tests whether the frozen mechanical semantic layer
 improves governed execution on the held-out comparison.
@@ -284,8 +294,17 @@ normalization limit.
 C2 also had the highest capture-level completion rate on the 16-database frame:
 97.9%, compared with 75.9% for C1 and 74.8% for C3. Scoring changes the size of
 that apparent advantage. Ninety-one of C2's 122 scoreable attempts returned a
-wrong result, so completion cannot stand in for correctness. These rung-level
-development contrasts are exploratory, and no C4 accuracy estimate exists yet.
+wrong result, so completion cannot stand in for correctness.
+
+The governed C4 arm uses the full fixed 154-question schedule rather than the
+direct arm's 140-question represented frame. Under the official scorer, 136
+questions were scoreable: 9 correct, 93 wrong, and 34 refused or
+system-error, for 9/136 (6.6%) accuracy. The sensitivity scorer retained 135
+scoreable questions and the same 9 correct and 93 wrong outcomes, for 9/135
+(6.7%); 33 were refused or system-error. These development contrasts are
+exploratory. Because the direct percentages above use a 122-question
+intersection, the report does not treat their unaligned difference from C4 as
+a paired effect.
 
 The failure diagnostic then examined SQL structure without exposing question
 identities, SQL text, result values, or hidden annotations. All 299 correct-or-
@@ -333,8 +352,15 @@ The separate offline E02 artifact has candidate-set SHA-256
 `db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`.
 It publishes and authenticates locally, but it is not the final candidate and
 will not be deployed or evaluated. Its historical artifacts remain immutable.
-The public C4 baseline evaluates the frozen mechanical baseline. Dev-B remains
-unconsumed.
+The public C4 baseline evaluates the frozen mechanical baseline. Its immutable
+selection SHA-256 is
+`256145c13cfae7142d92f108b4ee9dd93e658a44cafb683e5aec90170b8315cc`.
+An append-only recovery manifest accounts for all 45 original capture failures:
+11 result-only replays and 34 explicit evaluated-system failures, SHA-256
+`5d6ff474f30d3de6d703ad5c6c59373fe8093515eabb83473bdb352c4f30fd9f`.
+The official aggregate receipt SHA-256 is
+`0296753e8fcbf826a99ed2f86088ecdfb61981db8dea47d93e7871cef2690a78`.
+Dev-B remains unconsumed.
 
 ## 6. Held-out results
 
@@ -373,7 +399,7 @@ changed in response to the held-out result.
 
 ## 7. Product recommendations
 
-The development evidence supports four immediate recommendations:
+The development evidence supports five immediate recommendations:
 
 1. **Make grain contracts explicit and inspectable.** Model import and AI-facing
    authoring should represent metric grain, entity identity, relationship
@@ -394,10 +420,15 @@ The development evidence supports four immediate recommendations:
    dry-run view of accepted, deferred, and unreachable relationships before
    deciding whether the semantic model has enough structure for governed
    queries.
+5. **Make semantic result contracts total and typed.** Production planning and
+   execution should expose a stable representation for unknown, Boolean,
+   temporal, and null values. An unsupported planner type should be a visible
+   product outcome, not an adapter exception that obscures whether the governed
+   query itself succeeded.
 
-The direct baseline associates these mechanisms with development failures. C4
-development evidence and the held-out evaluation will determine whether the
-frozen mechanical semantic layer improves governed answer accuracy.
+The direct and C4 development baselines associate these mechanisms with
+failures. The held-out evaluation will determine the frozen system's final
+comparative result.
 
 ## 8. Limitations
 
@@ -423,6 +454,9 @@ frozen mechanical semantic layer improves governed answer accuracy.
 - C4 is a composite production system. Unless its underlying model and resource
   settings can be matched exactly, C4−C3 is a system-level comparison rather
   than an isolated estimate of semantic enforcement.
+- C4 development accuracy is 9/136 on its full answerable frame, while the
+  direct C1-C3 percentages use a 122-question intersection. Their raw difference
+  is not a matched or paired development contrast.
 - Execution equivalence remains the benchmark authority. AI Hub diagnostics and
   judge outcomes can explain behavior but do not replace result-set scoring.
 - E02 passed deterministic local publication checks only and is retained as

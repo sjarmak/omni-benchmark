@@ -10254,3 +10254,175 @@ The receipt was consumed once and the same v8 run/output identity resumed. The
 generation count advanced beyond 59, confirming that completed attempts were
 reconciled and new pending work began. No answer content or correctness was
 inspected.
+
+## 2026-08-29 — D-151: Restore polar runtime drift, then resume in place
+
+### Observation and hypothesis
+
+The v8 continuation advanced from 59 to 103 complete immutable generations.
+While another in-flight attempt completed, one polar attempt stopped before
+question dispatch when authenticated readback found changed
+semantic content for polar's `operationmaintenance.view`. One new diagnostic
+failure envelope was preserved; no answer content or correctness was inspected.
+
+As with the resolved labor drift, the smallest valid recovery is a fresh
+public-only polar deployment from the unchanged committed bundle, requiring zero
+validation issues and exact readback on the same isolated branch/model. If that
+passes, resume the same v8 identity only after reconciliation proves 103
+complete attempts and 33 pending. No evaluated code, question, scorer, or
+completed artifact changes.
+
+### Result
+
+KEEP. Public-only polar v16 returned zero validation issues and exact readback
+on the same isolated branch/model. Reconciliation found 103 complete attempts
+and 33 pending. Standing authorization bound and consumed one same-run
+continuation receipt, SHA-256
+`a0fe362c2855b1dabb819bf414bbcbfa00e49be861599f63fd6f1524d343f2d7`.
+The continuation passed the repaired polar gate and advanced the immutable run.
+
+## 2026-08-30 — D-152: Resume after pre-answer Omni rate limiting
+
+### Observation and hypothesis
+
+The second continuation preserved 117 complete generations, then one solar
+attempt stopped before question dispatch because Omni returned HTTP 429 during
+the authenticated semantic readback. The failure envelope contains no answer;
+no correctness was inspected. Nineteen attempts remain pending.
+
+This is a demonstrable provider-rate infrastructure failure, not semantic drift
+or an evaluated result. Resume the same run after exact 117/19 reconciliation
+with maximum concurrency reduced from three to two to lower request bursts. The
+schedule, execution plan, semantic deployments, evaluated code, prompts, and
+outputs remain unchanged; all 117 complete attempts must be skipped.
+
+### Result
+
+KEEP. Standing authorization bound the continuation to 117 reconciled and 19
+pending attempts. Reducing infrastructure concurrency to two avoided another
+request burst. The immutable run completed all 136 executable C4 generations:
+91 answered and 45 retained explicit system/runtime error outcomes. The final
+reconciliation is 136 complete and zero pending. No correctness was read during
+capture.
+
+## 2026-08-30 — D-153: Inventory preserved pre-answer diagnostics at freeze
+
+### Observation and hypothesis
+
+The completed C4 freezer reconciles all 136 attempts but rejects the artifact
+tree because it contains the three immutable `.failed-*` directories preserved
+by sanctioned pre-answer infrastructure continuations. Moving or deleting those
+records would weaken provenance; treating them as attempts would be false.
+
+Extend the freezer's general artifact inventory rule to accept only private
+`.failed-<scheduled-instance>-r1-<nonce>` directories under that scheduled
+database/condition, containing only a private `failure.json`. Hash those files
+into the inventory while retaining the unchanged 136-attempt selection. Every
+unrelated directory, unscheduled identity, extra file, or symlink must still
+fail closed.
+
+### Result
+
+KEEP. The focused freezer tests pass, including acceptance of a private
+scheduled-attempt diagnostic and rejection of an unscheduled diagnostic. The
+completed v8 tree froze without moving or deleting evidence: 154 scheduled,
+136 answerable, 18 fixed unscorable, 638 hash-inventoried files, selection
+SHA-256
+`256145c13cfae7142d92f108b4ee9dd93e658a44cafb683e5aec90170b8315cc`.
+
+The aggregate-only full-dev-A conformance sweep then established 136 official
+and 135 sensitivity scoreable questions. Its receipt SHA-256 is
+`d9387e4b64c8d5160648b149374c0b9f9365438e350399d788cfd3db3d0fc6e5`.
+No per-question identity, SQL, row value, or correctness left custody.
+
+## 2026-08-30 — D-154: Resolve promoted C4 result paths without rewriting evidence
+
+### Observation and hypothesis
+
+C4 scoring failed closed before database acquisition because every one of the
+91 answered generation records binds `answer.result.json` to its original
+private `.staging-<attempt>-<nonce>` path. The dispatcher atomically promoted
+that directory to the canonical attempt path after capture, so the file and its
+recorded SHA-256 are present and correct while the immutable path string names
+the pre-promotion location.
+
+Accept only the exact sanctioned staging-path shape for the same
+run/database/condition/instance/repetition and final filename. Continue reading
+the promoted canonical artifact and require its bytes to match the immutable
+recorded digest. Cross-attempt, cross-database, malformed nonce, traversal,
+wrong filename, or hash mismatch must fail. This is provenance-preserving path
+resolution, not artifact repair or scorer-semantic change.
+
+### Result
+
+KEEP. The scorer now accepts only the exact same-attempt private staging-path
+shape while loading the canonical promoted file and verifying the immutable
+recorded digest. Cross-attempt, cross-database, malformed-nonce, traversal,
+wrong-filename, and hash-mismatch cases fail closed. The focused affected
+surface passes 143 tests and Ruff; no generation or result artifact was
+rewritten.
+
+## 2026-08-30 — D-155: Recover only C4 infrastructure failures
+
+### Observation and hypothesis
+
+After the staging-path provenance correction, scoring still fails closed before
+database acquisition because 45 of the 136 immutable C4 generations are labeled
+benchmark-infrastructure outcomes: 34 unsupported semantic result types, ten
+response-contract failures, and one adapter transport failure. Counting those
+attempts as wrong would change the frozen system/infrastructure boundary; leaving
+them in the selected set prevents a complete comparison.
+
+Classify the 45 cases using only aggregate runtime metadata. If the failures are
+general capture-adapter gaps, correct those mechanisms with failure-first tests
+and run an append-only continuation containing exactly the demonstrably affected
+attempts. The 91 answered attempts and all v8 evidence remain immutable and are
+never regenerated. No question text, result rows, labels, correctness, credential,
+OAuth, or lease state may be inspected. The recovered selection must preserve the
+unchanged C4 system, schedule, deployments, and scorers while making every selected
+attempt an evaluated-system outcome.
+
+### Result
+
+KEEP. Aggregate-only classification found that 32 failures exposed an `UNKNOWN`
+planner type, one completed Omni job lacked a parseable generated query, and one
+additional persistent plan rejection was an evaluated-system contract failure.
+The remaining 11 attempts were recoverable by single-shot result execution of
+their already-generated semantic queries. General adapter changes add Boolean
+support, preserve empty strings for string fields, interpret empty non-string
+cells as typed nulls, and bind every recovery entry to the original selection,
+generation digest, deployment, branch, and model. The recovery never resubmitted
+a benchmark question or model-reasoning request.
+
+Append-only recovery v5 accounts for all 45 source failures as 11 recovered
+typed results and 34 explicit evaluated-system failures. Its manifest SHA-256 is
+`5d6ff474f30d3de6d703ad5c6c59373fe8093515eabb83473bdb352c4f30fd9f`.
+Recovery v1-v4 remain immutable incomplete diagnostics and have no manifest, so
+the scorer cannot consume them.
+
+The unchanged official scorer then completed C4 dev-A scoring: 154 scheduled,
+136 scoreable, 18 fixed unscorable, 9 correct, 93 wrong, and 34 refused or
+system-error. The official score artifact SHA-256 is
+`57d45346de0a98384207d350f163dfcf812e677cf3719b4a3008b5e0f3f222d8`;
+the aggregate receipt SHA-256 is
+`0296753e8fcbf826a99ed2f86088ecdfb61981db8dea47d93e7871cef2690a78`.
+The frozen sensitivity scorer reports 9 correct, 93 wrong, 33 refused or
+system-error over 135 scoreable attempts, with artifact SHA-256
+`af333cc78bde8827dfd5f6b092b5c319492ba7554c9c18ed40710ca26d6d4251`.
+
+## 2026-08-30 — D-156: Freeze the mechanical baseline despite low C4 accuracy
+
+### Observation and hypothesis
+
+The preregistered optimization phase was cut before C4 outcomes existed, making
+the public mechanical baseline the final candidate. C4 subsequently scored 9 of
+136 scoreable dev-A attempts correct. That low result is evidence about the
+frozen governed system, not permission to tune, rerun question-level reasoning,
+or select a different candidate after seeing correctness.
+
+Record the actual Freeze B through the existing two-commit Git-object boundary:
+an exact system commit containing the identity-only sealed schedule and complete
+frozen input specification, followed by a direct child adding only the canonical
+Freeze-B manifest. Use the human-controlled seed surface exactly once and expose
+only hashes and counts. Then validate and plan all 1,212 sealed attempts without
+provider contact or protected-data access before any production dispatch.

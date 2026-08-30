@@ -9,6 +9,11 @@ from pathlib import Path
 
 import pytest
 
+from omni_benchmark.artifact_store import ArtifactStore
+from omni_benchmark.c4_result_recovery import (
+    C4RecoveryEntry,
+    write_c4_recovery_manifest,
+)
 from omni_benchmark.dev_a_baseline_scoring import (
     DevABaselineScoringError,
     prepare_dev_a_baseline_plan,
@@ -356,6 +361,101 @@ def _install_c4_selection(workspace: Path, commit: str) -> tuple[Path, str]:
     return path, hashlib.sha256(content).hexdigest()
 
 
+def _install_c4_recovery(
+    workspace: Path,
+    selection_path: Path,
+    *,
+    disposition: str,
+) -> tuple[str, Path, str]:
+    attempt_root = (
+        workspace
+        / "experiments/autoresearch/raw/public-c4-baseline-v4"
+        / "fixture_large/c4/dev-a-1-r1"
+    )
+    generation_path = attempt_root / "generation.jsonl"
+    generation = json.loads(generation_path.read_text())
+    generation.update(
+        {
+            "actual_result_hash": None,
+            "actual_result_status": "unavailable",
+            "execution_status": "error",
+            "failure_origin": "benchmark_infrastructure",
+            "generation_outcome": "errored",
+            "result_artifact_path": None,
+            "result_artifact_schema_version": None,
+            "result_artifact_sha256": None,
+            "terminal_failure_class": "response_contract_error",
+        }
+    )
+    generation_bytes = _canonical(generation)
+    _write(generation_path, generation_bytes)
+    generation_sha256 = hashlib.sha256(generation_bytes).hexdigest()
+    run_path = attempt_root / "run.json"
+    run = json.loads(run_path.read_text())
+    run["generation_sha256"] = generation_sha256
+    run_bytes = _canonical(run)
+    _write(run_path, run_bytes)
+    selection = json.loads((workspace / selection_path).read_text())
+    entry = next(
+        item for item in selection["entries"] if item["instance_id"] == "dev-a-1"
+    )
+    entry["generation_sha256"] = generation_sha256
+    entry["run_manifest_sha256"] = hashlib.sha256(run_bytes).hexdigest()
+    selection["counts"].update({"answered": 2, "errored": 1})
+    selection_bytes = _canonical(selection)
+    _write(workspace / selection_path, selection_bytes)
+
+    store = ArtifactStore(
+        workspace,
+        Path("experiments/autoresearch/raw/c4-recovery-fixture"),
+        require_new_root=True,
+        environment={},
+    )
+    if disposition == "recovered_result":
+        result = store.write_json(
+            Path("attempts/recovered/answer.result.json"),
+            {
+                "columns": ["answer"],
+                "rows": [[{"type": "decimal", "value": "3"}]],
+                "schema_version": 1,
+                "truncated": False,
+            },
+        )
+        recovery_entry = C4RecoveryEntry(
+            attempt_id=generation["attempt_id"],
+            disposition=disposition,
+            plan_sha256="9" * 64,
+            reason="adapter_semantic_query_replay",
+            result_artifact_path=store.relative_path(result),
+            result_artifact_sha256=result.sha256,
+            source_failure_class="response_contract_error",
+            source_generation_sha256=generation_sha256,
+        )
+    else:
+        recovery_entry = C4RecoveryEntry(
+            attempt_id=generation["attempt_id"],
+            disposition=disposition,
+            plan_sha256=None,
+            reason="omni_completed_job_contract_invalid",
+            result_artifact_path=None,
+            result_artifact_sha256=None,
+            source_failure_class="response_contract_error",
+            source_generation_sha256=generation_sha256,
+        )
+    manifest = write_c4_recovery_manifest(
+        store,
+        source_commit=selection["source_commit"],
+        source_run_id=selection["run_id"],
+        source_selection_sha256=hashlib.sha256(selection_bytes).hexdigest(),
+        entries=(recovery_entry,),
+    )
+    return (
+        hashlib.sha256(selection_bytes).hexdigest(),
+        store.relative_path(manifest),
+        manifest.sha256,
+    )
+
+
 def test_prepare_intersects_dev_a_before_opening_foreign_attempts(
     tmp_path: Path,
 ) -> None:
@@ -430,6 +530,107 @@ def test_prepare_and_publish_accept_exact_c4_freeze_without_weakening_direct(
             "wrong_answer": 0,
         }
     }
+
+
+def test_prepare_accepts_hash_bound_c4_recovered_result(tmp_path: Path) -> None:
+    workspace, commit, _, release_sha256 = _initialize_workspace(tmp_path)
+    selection_path, _ = _install_c4_selection(workspace, commit)
+    selection_sha256, recovery_path, recovery_sha256 = _install_c4_recovery(
+        workspace, selection_path, disposition="recovered_result"
+    )
+
+    plan = prepare_dev_a_baseline_plan(
+        workspace,
+        freeze_a_commit=commit,
+        selection_path=selection_path,
+        expected_selection_sha256=selection_sha256,
+        expected_release_sha256=release_sha256,
+        c4_recovery_workspace=workspace,
+        c4_recovery_manifest_path=recovery_path,
+        expected_c4_recovery_sha256=recovery_sha256,
+    )
+
+    recovered = next(
+        attempt
+        for attempt in plan.attempts
+        if attempt.attempt_id.endswith("dev-a-1:C4:1")
+    )
+    assert recovered.candidate_rows == ((3,),)
+    assert recovered.no_answer_failure is None
+    assert plan.c4_recovery_sha256 == recovery_sha256
+
+
+def test_prepare_accepts_pre_correctness_c4_system_adjudication(
+    tmp_path: Path,
+) -> None:
+    workspace, commit, _, release_sha256 = _initialize_workspace(tmp_path)
+    selection_path, _ = _install_c4_selection(workspace, commit)
+    selection_sha256, recovery_path, recovery_sha256 = _install_c4_recovery(
+        workspace, selection_path, disposition="evaluated_system_failure"
+    )
+
+    plan = prepare_dev_a_baseline_plan(
+        workspace,
+        freeze_a_commit=commit,
+        selection_path=selection_path,
+        expected_selection_sha256=selection_sha256,
+        expected_release_sha256=release_sha256,
+        c4_recovery_workspace=workspace,
+        c4_recovery_manifest_path=recovery_path,
+        expected_c4_recovery_sha256=recovery_sha256,
+    )
+
+    adjudicated = next(
+        attempt
+        for attempt in plan.attempts
+        if attempt.attempt_id.endswith("dev-a-1:C4:1")
+    )
+    assert adjudicated.candidate_rows is None
+    assert adjudicated.no_answer_failure is FailureClass.CANDIDATE_EXECUTION_ERROR
+
+
+def test_prepare_accepts_hash_bound_result_promoted_from_attempt_staging(
+    tmp_path: Path,
+) -> None:
+    workspace, commit, _, release_sha256 = _initialize_workspace(tmp_path)
+    selection_path, _ = _install_c4_selection(workspace, commit)
+    attempt_root = (
+        workspace
+        / "experiments/autoresearch/raw/public-c4-baseline-v4"
+        / "fixture_large/c4/dev-a-1-r1"
+    )
+    generation_path = attempt_root / "generation.jsonl"
+    generation = json.loads(generation_path.read_text())
+    generation["result_artifact_path"] = (
+        "experiments/autoresearch/raw/public-c4-baseline-v4/fixture_large/c4/"
+        ".staging-dev-a-1-r1-0123456789abcdef/answer.result.json"
+    )
+    generation_bytes = _canonical(generation)
+    _write(generation_path, generation_bytes)
+    run_path = attempt_root / "run.json"
+    run = json.loads(run_path.read_text())
+    run["generation_sha256"] = hashlib.sha256(generation_bytes).hexdigest()
+    run_bytes = _canonical(run)
+    _write(run_path, run_bytes)
+    selection = json.loads((workspace / selection_path).read_text())
+    entry = next(
+        item for item in selection["entries"] if item["instance_id"] == "dev-a-1"
+    )
+    entry["generation_sha256"] = hashlib.sha256(generation_bytes).hexdigest()
+    entry["run_manifest_sha256"] = hashlib.sha256(run_bytes).hexdigest()
+    selection_bytes = _canonical(selection)
+    _write(workspace / selection_path, selection_bytes)
+
+    plan = prepare_dev_a_baseline_plan(
+        workspace,
+        freeze_a_commit=commit,
+        selection_path=selection_path,
+        expected_selection_sha256=hashlib.sha256(selection_bytes).hexdigest(),
+        expected_release_sha256=release_sha256,
+    )
+
+    assert len(plan.attempts) == 2
+    assert all(attempt.candidate_rows == ((2,),) for attempt in plan.attempts)
 
 
 def test_prepare_accepts_exact_e02_dev_a_c4_freeze(tmp_path: Path) -> None:

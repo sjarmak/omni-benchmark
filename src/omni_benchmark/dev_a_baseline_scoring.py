@@ -16,6 +16,12 @@ from typing import Any
 
 from .artifact_store import MAX_ARTIFACT_BYTES, ArtifactStore, ArtifactStoreError
 from .content_policy import ContentPolicy
+from .c4_result_recovery import (
+    C4RecoveryEntry,
+    C4RecoveryError,
+    C4RecoveryManifest,
+    load_c4_recovery_manifest,
+)
 from .custody import CustodyError, load_dev_a_records
 from .direct_question_loader import (
     DirectQuestionLoadError,
@@ -172,6 +178,7 @@ class DevABaselinePlan:
     scheduled_question_count: int | None = None
     fixed_unscorable_question_count: int = 0
     scorer_conformance_manifest_sha256: str | None = None
+    c4_recovery_sha256: str | None = None
 
 
 @dataclass(frozen=True)
@@ -252,6 +259,9 @@ def prepare_dev_a_baseline_plan(
     selection_path: Path = SELECTION_PATH,
     expected_selection_sha256: str,
     expected_release_sha256: str,
+    c4_recovery_workspace: Path | None = None,
+    c4_recovery_manifest_path: Path | None = None,
+    expected_c4_recovery_sha256: str | None = None,
     environment: Mapping[str, str] | None = None,
 ) -> DevABaselinePlan:
     """Validate public artifacts separately from the dev-A custody workspace."""
@@ -272,6 +282,20 @@ def prepare_dev_a_baseline_plan(
             "selection manifest does not match the expected selection SHA-256"
         )
     selection, entries, required_conditions = _selection(selection_bytes, policy)
+    recovery_root, recovery_manifest = _c4_recovery_manifest(
+        root,
+        required_conditions=required_conditions,
+        recovery_workspace=c4_recovery_workspace,
+        recovery_manifest_path=c4_recovery_manifest_path,
+        expected_recovery_sha256=expected_c4_recovery_sha256,
+        selection=selection,
+        selection_sha256=selection_digest,
+    )
+    recovery_entries = (
+        {}
+        if recovery_manifest is None
+        else {entry.attempt_id: entry for entry in recovery_manifest.entries}
+    )
     dev_a_ids, dev_a_ids_sha256, public_records = _committed_dev_a_inputs(
         root, freeze_a_commit, policy
     )
@@ -305,9 +329,20 @@ def prepare_dev_a_baseline_plan(
             entry=entry,
             public_record=public_records[entry.instance_id],
             policy=policy,
+            recovery_entry=recovery_entries.get(entry.selected_attempt_id),
+            recovery_workspace=recovery_root,
         )
         for entry in selected_entries
     )
+    used_recovery_ids = {
+        entry.selected_attempt_id
+        for entry in selected_entries
+        if entry.selected_attempt_id in recovery_entries
+    }
+    if used_recovery_ids != set(recovery_entries):
+        raise DevABaselineScoringError(
+            "C4 recovery manifest contains an unselected attempt"
+        )
 
     release_bytes = _private_file(root, RELEASE_PATH, "dev-A release")
     if hashlib.sha256(release_bytes).hexdigest() != release_digest:
@@ -344,7 +379,51 @@ def prepare_dev_a_baseline_plan(
         scheduled_question_count=scheduled_question_count,
         fixed_unscorable_question_count=fixed_unscorable_question_count,
         scorer_conformance_manifest_sha256=scorer_conformance_manifest_sha256,
+        c4_recovery_sha256=(
+            None if recovery_manifest is None else recovery_manifest.sha256
+        ),
     )
+
+
+def _c4_recovery_manifest(
+    workspace: Path,
+    *,
+    required_conditions: tuple[str, ...],
+    recovery_workspace: Path | None,
+    recovery_manifest_path: Path | None,
+    expected_recovery_sha256: str | None,
+    selection: Mapping[str, Any],
+    selection_sha256: str,
+) -> tuple[Path | None, C4RecoveryManifest | None]:
+    supplied = (
+        recovery_workspace is not None,
+        recovery_manifest_path is not None,
+        expected_recovery_sha256 is not None,
+    )
+    if not any(supplied):
+        return None, None
+    if not all(supplied) or required_conditions != ("C4",):
+        raise DevABaselineScoringError(
+            "C4 recovery arguments must accompany one C4 selection"
+        )
+    root = _workspace(recovery_workspace)
+    try:
+        manifest = load_c4_recovery_manifest(
+            root,
+            recovery_manifest_path,
+            expected_sha256=expected_recovery_sha256,
+        )
+    except C4RecoveryError as error:
+        raise DevABaselineScoringError(str(error)) from error
+    if (
+        manifest.source_selection_sha256 != selection_sha256
+        or manifest.source_commit != selection.get("source_commit")
+        or manifest.source_run_id != selection.get("run_id")
+    ):
+        raise DevABaselineScoringError(
+            "C4 recovery manifest does not match the frozen selection"
+        )
+    return root, manifest
 
 
 def score_dev_a_baseline_plan(
@@ -892,6 +971,8 @@ def _prepare_public_attempt(
     entry: _SelectionEntry,
     public_record: Mapping[str, Any],
     policy: ContentPolicy,
+    recovery_entry: C4RecoveryEntry | None,
+    recovery_workspace: Path | None,
 ) -> _PublicAttempt:
     if public_record["selected_database"] != entry.database:
         raise DevABaselineScoringError(
@@ -944,6 +1025,9 @@ def _prepare_public_attempt(
         condition=entry.condition,
         outcome=outcome,
         record=record,
+        recovery_entry=recovery_entry,
+        recovery_workspace=recovery_workspace,
+        source_generation_sha256=entry.generation_sha256,
     )
 
     run = _private_file(workspace, root / "run.json", "run manifest")
@@ -985,9 +1069,22 @@ def _candidate_input(
     condition: str,
     outcome: str,
     record: Mapping[str, Any],
+    recovery_entry: C4RecoveryEntry | None,
+    recovery_workspace: Path | None,
+    source_generation_sha256: str,
 ) -> tuple[str | tuple[()], tuple[tuple[Any, ...], ...] | None, FailureClass | None]:
     if condition == "C4":
-        return _c4_candidate_input(workspace, root=root, outcome=outcome, record=record)
+        return _c4_candidate_input(
+            workspace,
+            root=root,
+            outcome=outcome,
+            record=record,
+            recovery_entry=recovery_entry,
+            recovery_workspace=recovery_workspace,
+            source_generation_sha256=source_generation_sha256,
+        )
+    if recovery_entry is not None or recovery_workspace is not None:
+        raise DevABaselineScoringError("C4 recovery cannot apply to direct conditions")
     generated_sql = record.get("generated_sql")
     if generated_sql is None or (
         isinstance(generated_sql, str) and not generated_sql.strip()
@@ -1009,10 +1106,26 @@ def _c4_candidate_input(
     root: Path,
     outcome: str,
     record: Mapping[str, Any],
+    recovery_entry: C4RecoveryEntry | None,
+    recovery_workspace: Path | None,
+    source_generation_sha256: str,
 ) -> tuple[tuple[()], tuple[tuple[Any, ...], ...] | None, FailureClass | None]:
     if record.get("generated_sql") is not None:
         raise DevABaselineScoringError("C4 generation must not contain direct SQL")
     if outcome != "answered":
+        if recovery_entry is not None:
+            if (
+                recovery_workspace is None
+                or record.get("failure_origin") != "benchmark_infrastructure"
+                or record.get("terminal_failure_class")
+                != recovery_entry.source_failure_class
+                or recovery_entry.source_generation_sha256 != source_generation_sha256
+                or recovery_entry.attempt_id != record.get("attempt_id")
+            ):
+                raise DevABaselineScoringError("C4 recovery binding is invalid")
+            if recovery_entry.disposition == "evaluated_system_failure":
+                return (), None, FailureClass.CANDIDATE_EXECUTION_ERROR
+            return (), _c4_recovered_rows(recovery_workspace, recovery_entry), None
         if (
             outcome != "errored"
             or record.get("failure_origin") != "evaluated_system"
@@ -1022,8 +1135,9 @@ def _c4_candidate_input(
                 "C4 terminal generation is not an evaluated-system outcome"
             )
         return (), None, FailureClass.CANDIDATE_EXECUTION_ERROR
+    if recovery_entry is not None:
+        raise DevABaselineScoringError("answered C4 generation cannot be recovered")
     expected_path = root / "answer.result.json"
-    expected_relative = expected_path.as_posix()
     digest = record.get("result_artifact_sha256")
     if (
         not isinstance(record.get("generated_query"), str)
@@ -1035,7 +1149,9 @@ def _c4_candidate_input(
         or record.get("actual_result_status") != "complete"
         or record.get("execution_status") != "complete"
         or record.get("result_artifact_schema_version") != 1
-        or record.get("result_artifact_path") != expected_relative
+        or not _c4_result_artifact_path_matches(
+            record.get("result_artifact_path"), expected_path
+        )
         or record.get("actual_result_hash") != digest
     ):
         raise DevABaselineScoringError("C4 result artifact binding is invalid")
@@ -1049,6 +1165,50 @@ def _c4_candidate_input(
     except OmniResultContractError as error:
         raise DevABaselineScoringError("C4 result artifact is invalid") from error
     return (), rows, None
+
+
+def _c4_recovered_rows(
+    workspace: Path, entry: C4RecoveryEntry
+) -> tuple[tuple[Any, ...], ...]:
+    if (
+        entry.disposition != "recovered_result"
+        or entry.result_artifact_path is None
+        or entry.result_artifact_sha256 is None
+    ):
+        raise DevABaselineScoringError("C4 recovered result binding is invalid")
+    content = _private_file(
+        workspace, entry.result_artifact_path, "C4 recovered result artifact"
+    )
+    if hashlib.sha256(content).hexdigest() != entry.result_artifact_sha256:
+        raise DevABaselineScoringError(
+            "C4 recovered result artifact does not match its binding"
+        )
+    artifact = _json(content, "C4 recovered result artifact")
+    try:
+        return decode_result_artifact_rows(artifact)
+    except OmniResultContractError as error:
+        raise DevABaselineScoringError(
+            "C4 recovered result artifact is invalid"
+        ) from error
+
+
+def _c4_result_artifact_path_matches(value: object, expected: Path) -> bool:
+    if not isinstance(value, str) or not value:
+        return False
+    recorded = Path(value)
+    if recorded.is_absolute() or ".." in recorded.parts:
+        return False
+    if recorded == expected:
+        return True
+    staging_prefix = f".staging-{expected.parent.name}-"
+    staging_name = recorded.parent.name
+    return (
+        recorded.name == expected.name
+        and recorded.parent.parent == expected.parent.parent
+        and staging_name.startswith(staging_prefix)
+        and re.fullmatch(r"[0-9a-f]{16}", staging_name[len(staging_prefix) :])
+        is not None
+    )
 
 
 def _attach_gold(
@@ -1164,6 +1324,7 @@ def _score_payload(
         attempts.append(record)
     return {
         "attempts": attempts,
+        "c4_recovery_sha256": plan.c4_recovery_sha256,
         "dev_a_ids_sha256": plan.dev_a_ids_sha256,
         "release_sha256": plan.release_sha256,
         "schema_version": SCORE_SCHEMA_VERSION,
@@ -1254,6 +1415,7 @@ def _receipt(
             "unrepresented_questions": plan.unrepresented_question_count,
         },
         "dev_a_ids_sha256": plan.dev_a_ids_sha256,
+        "c4_recovery_sha256": plan.c4_recovery_sha256,
         "official": aggregate(ScoringMode.OFFICIAL),
         "release_sha256": plan.release_sha256,
         "schema_version": RECEIPT_SCHEMA_VERSION,
