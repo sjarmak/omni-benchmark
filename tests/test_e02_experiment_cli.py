@@ -23,7 +23,7 @@ from omni_benchmark.e02_experiment_cli import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CANDIDATE_SHA256 = "831f4521778ef33470b92e4943ab7f683bc6641e7feb81e769129c6ebe524829"
+CANDIDATE_SHA256 = "12c4e1a8cab38f0f47e14b5c553c87c800ca07f27bae568171f1d7caaf7589a7"
 
 
 def _head() -> str:

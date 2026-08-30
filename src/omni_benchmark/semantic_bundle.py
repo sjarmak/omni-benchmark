@@ -919,9 +919,7 @@ def _materialize_relationship_endpoint_aliases(
             if stable_id in published_identity_fields:
                 continue
             column = schema_index[stable_id]
-            raw_name, field_name = _source_column_name(column, schema_index)
-            if raw_name.lower() == field_name:
-                continue
+            _raw_name, field_name = _source_column_name(column, schema_index)
             if field_name in dimensions:
                 raise SemanticBundleError(
                     f"relationship endpoint alias {field_name} collides in {table_id}"

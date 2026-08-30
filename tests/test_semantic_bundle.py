@@ -386,6 +386,36 @@ def test_e02_materializes_unpublished_camel_case_relationship_endpoint() -> None
     } in candidate.manifest["direct_physical_bindings"]
 
 
+def test_e02_materializes_unpublished_already_normalized_relationship_endpoint() -> (
+    None
+):
+    spec, schema = _e02_inputs()
+    spec["physical_fields"] = [
+        field
+        for field in spec["physical_fields"]
+        if field["schema_stable_id"] != "db:column:pointcloud:site_id"
+    ]
+
+    candidate = compile_e02_relationship_bundle(
+        spec, _hkb_records(), schema, _mapping_records()
+    )
+
+    assert yaml.safe_load(candidate.files["relationships"])[0]["on_sql"] == (
+        "${db_public__pointcloud.site_id} = ${db_public__sites.id}"
+    )
+    source_view = yaml.safe_load(candidate.files["db.public__pointcloud.view"])
+    assert source_view["dimensions"]["site_id"] == {
+        "description": "Referenced site identifier.",
+        "sql": "site_id",
+    }
+    assert {
+        "field_name": "site_id",
+        "file": "db.public__pointcloud.view",
+        "source_stable_id": "db:column:pointcloud:site_id",
+        "sql": "site_id",
+    } in candidate.manifest["direct_physical_bindings"]
+
+
 def test_e02_omits_relationship_with_ambiguous_normalized_endpoint() -> None:
     spec, schema = _e02_inputs()
     spec["physical_fields"] = [

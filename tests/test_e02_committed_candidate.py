@@ -31,7 +31,7 @@ def test_exact_committed_e02_candidate_reproduces_all_deployment_plans() -> None
 
     assert candidate.source_commit == _head()
     assert candidate.candidate_set_sha256 == (
-        "831f4521778ef33470b92e4943ab7f683bc6641e7feb81e769129c6ebe524829"
+        "12c4e1a8cab38f0f47e14b5c553c87c800ca07f27bae568171f1d7caaf7589a7"
     )
     assert len(candidate.plans) == 18
     assert sum(len(plan.files) for plan in candidate.plans.values()) == 272
