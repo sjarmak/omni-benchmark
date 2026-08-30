@@ -11582,3 +11582,49 @@ E02 is reported as a pre-specified dev-A mechanism contrast, not as a sealed
 optimized-candidate comparison. The full-source cleanup confirmation remains a
 custody closeout item; the private projection and all per-question score files
 remain unopened by benchmark agents.
+
+## 2026-08-30 — D-188: Publish every absent E02 relationship endpoint and verify v5 exactly
+
+### Observation and hypothesis
+
+The immutable E02 deployment v4 verified 15 of 16 public targets. A bounded
+public-only diagnostic on the remaining target found six `broken_reference`
+issues, all for relationship endpoints that were absent from the published
+topic even though their normalized spelling already matched the physical field
+name. The compiler's endpoint materializer handled changed spellings but
+skipped this already-normalized case. Every absent relationship endpoint should
+instead become an explicit identity dimension, independent of its spelling.
+
+This diagnosis uses only public schema, generated public semantic bundles, and
+validator output. Although sealed aggregates were already visible, neither
+their values nor any question, label, correctness value, database-specific
+branch, or per-target rule entered the hypothesis or implementation.
+
+### Intervention and result
+
+A failure-first test reproduced the missing already-normalized endpoint. The
+general compiler rule now materializes every absent relationship endpoint while
+retaining the existing physical/semantic-binding reuse and collision checks.
+Focused compiler and deployment coverage passes 121 tests with 86.95% branch
+coverage for the touched module, and the tracked repository gate passes 2,042
+tests with three expected skips and 83.43% branch coverage. Ruff is clean. The
+only broader-worktree failures came from an unrelated untracked quarantined
+lease-preflight test lane and are not part of this change. Commit
+`f62d261e76e7fb9fc3bedd87e49983c111cc153a` contains no database name,
+question, label, or sealed-outcome rule.
+
+The correction-forward candidate-set SHA-256 is
+`12c4e1a8cab38f0f47e14b5c553c87c800ca07f27bae568171f1d7caaf7589a7`.
+Public deployment `e02-dev-a-deployment-v5` authenticated that exact commit and
+candidate, then verified all 16 selected targets with all 16 exact readbacks and
+zero validation issues. Its selected-deployment-set, execution-plan, and
+schedule SHA-256 values are respectively
+`6c0bca35074210452b418218b02944f42b7010df9de228e14bce0663c5324792`,
+`53b2915d224522e100886f05bbaad28efb0291ea4974202c38acb773e836b899`,
+and `4662bc11264fcf8ea648011d73e0e0269d2cfa508107baaf1fc02b3b5d31ab16`.
+The immutable v4 failure and diagnostic remain preserved.
+
+**Decision: KEEP as public compiler correctness and proceed to the fixed dev-A
+mechanism contrast.** This correction is required to make the preregistered
+E02 candidate evaluable; it is not a result-driven intervention or evidence of
+held-out improvement.

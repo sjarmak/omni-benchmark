@@ -14,10 +14,10 @@
 > on the 16 databases with verified C4 deployments. All 154 dev-A questions
 > remain scheduled; 18 fixed benchmark-invalid questions are preregistered as
 > unscorable, leaving 136 answerable questions for C4 evaluation. All 16
-> answerable database bundles have one current immutable validation and
-> exact-readback evidence set. C4 completed all 136 executable attempts: 9 were
-> correct, 93 wrong, and 34 refused or ended in a system-contract error under
-> the official scorer.
+> answerable baseline and E02 database bundles have current immutable
+> validation and exact-readback evidence sets. C4 completed all 136 executable
+> attempts: 9 were correct, 93 wrong, and 34 refused or ended in a
+> system-contract error under the official scorer.
 
 ## Executive summary
 
@@ -411,7 +411,7 @@ Their reusable changes and promotion rules are recorded in
 | Experiment | Evidence completed | Decision | Remaining gate |
 | --- | --- | --- | --- |
 | E01: same-grain dependencies | The frozen baseline already has 48 dependency-bearing elements, 70 executable dependency edges, and depth three | Inconclusive; already baseline | No further E01 contrast |
-| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes | Pre-specified dev-A mechanism contrast; no held-out promotion permitted after sealed scoring | Verify the pre-result candidate and run its fixed eligible dev-A evaluation unchanged |
+| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes; deployment v5 verified all 16 targets with exact readback | Pre-specified dev-A mechanism contrast; no held-out promotion permitted after sealed scoring | Run its fixed eligible dev-A evaluation unchanged |
 | E03: bounded descriptions | Prespecified only | Not run | Candidate mechanism for the lean loop |
 | E04: broad HKB context | Prespecified negative control only | Not run | Optional negative control; run only if it directly informs promotion |
 
@@ -434,10 +434,12 @@ fixed official-loader blockers remain explicit rather than fabricated as empty
 models. The C4 plan binds that exact 16-deployment evidence set and retains all
 154 scheduled identities, of which 136 are executable.
 
-The corrected offline E02 artifact has candidate-set SHA-256
-`831f4521778ef33470b92e4943ab7f683bc6641e7feb81e769129c6ebe524829`.
-It publishes and authenticates locally, but it is not yet a promoted candidate.
-Its historical artifacts remain immutable.
+The corrected E02 artifact has candidate-set SHA-256
+`12c4e1a8cab38f0f47e14b5c553c87c800ca07f27bae568171f1d7caaf7589a7`.
+Public deployment v5 verified and exactly read back all 16 selected targets with
+zero validation issues. The post-score correction only generalized endpoint
+publication for public-schema relationships and did not use held-out outcomes;
+it is not a promoted candidate. Its historical artifacts remain immutable.
 The public C4 baseline evaluates the frozen mechanical baseline. Its immutable
 selection SHA-256 is
 `256145c13cfae7142d92f108b4ee9dd93e658a44cafb683e5aec90170b8315cc`.
@@ -508,11 +510,13 @@ The untuned arm was scored before E02 dev-A execution completed, contrary to the
 ordering in the later lean optimization extension. E02 had already been
 selected and preregistered as a relationship-path mechanism contrast, and its
 general compiler change predates these results. It may still be executed on
-dev-A unchanged, but the sealed aggregates may not drive a new edit, dev-B
-checkpoint, promotion decision, or optimized held-out arm. The MVP therefore
-reports a valid frozen C1−C4 held-out comparison and a separate pre-specified
-dev-A optimization experiment; it does not claim held-out improvement from
-tuning.
+dev-A, but the sealed aggregates may not drive a new intervention edit, dev-B
+checkpoint, promotion decision, or optimized held-out arm. A correction required
+by public validator evidence subsequently generalized publication of
+already-normalized relationship endpoints; it used no outcome evidence and
+changed no experiment choice. The MVP therefore reports a valid frozen C1−C4
+held-out comparison and a separate pre-specified dev-A optimization experiment;
+it does not claim held-out improvement from tuning.
 
 ## 7. Product recommendations
 
@@ -595,8 +599,8 @@ comparative result.
   is not a matched or paired development contrast.
 - Execution equivalence remains the benchmark authority. AI Hub diagnostics and
   judge outcomes can explain behavior but do not replace result-set scoring.
-- E02 passed deterministic local publication checks and was selected as the
-  first bounded dev-A candidate, but its corrected pre-result candidate has not
+- E02 passed public deployment validation and exact readback on all 16 selected
+  targets and was selected as the first bounded dev-A candidate, but it has not
   yet been evaluated. Its declared FK-backed relationships are the ingredient whose
   absence forced the governed rewrite path, which makes it a direct test of that
   mechanism; it is not yet evidence that the mechanism moves, and its topics

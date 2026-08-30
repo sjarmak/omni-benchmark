@@ -337,3 +337,19 @@ wrong outcome was rerun. The sequencing deviation limits the optimization claim;
 it does not bias the already-generated C1–C4 comparison. The report must state
 this limitation directly rather than implying that the MVP completed the
 original optimized-arm design.
+
+### Correction-forward public validation after scoring
+
+E02 deployment v4 subsequently exposed six public validator failures caused by
+a general compiler omission: an absent relationship endpoint was materialized
+only when normalization changed its spelling. The correction in commit
+`f62d261e76e7fb9fc3bedd87e49983c111cc153a` publishes every absent endpoint as
+an identity dimension and contains no database, question, label, or outcome
+rule. Deployment v5 then verified and exactly read back all 16 public targets
+with zero validation issues.
+
+This is permitted only as public-schema compiler hygiene required to make the
+already-preregistered E02 mechanism evaluable. It does not authorize a new
+intervention, result-driven candidate selection, dev-B use, or a held-out
+optimized arm. The sealed aggregates were not an input, and the immutable v4
+failure remains part of the evidence.

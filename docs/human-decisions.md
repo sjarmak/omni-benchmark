@@ -6,7 +6,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T15:28:12-04:00 (America/New_York). The sealed scorer
+Last updated: 2026-08-30T16:19:19-04:00 (America/New_York). The sealed scorer
 opened the human-produced 89-record test projection only inside the custody
 workflow. Benchmark agents have read only its identity-free aggregates; no
 agent opened the complete gold package, dev-B annotations, test annotations,
