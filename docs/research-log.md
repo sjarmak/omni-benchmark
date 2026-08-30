@@ -10551,3 +10551,19 @@ pre-outcome scope deviation, and uses 1,068 as the pending generation count. No
 held-out value was added or inferred. The edit preserves the existing report
 structure and direct wording; its headings, opening status, held-out table,
 limitations, and closing reproducibility section were manually reread.
+
+## 2026-08-30 — D-161: Freeze the sealed schedule from the human seed
+
+### Observation and hypothesis
+
+Stephanie approved the exact non-secret seed
+`omni-livesqlbench-large-v1-sealed-mvp-v1` in
+`omni-benchmark-ei0.9.1.3`. The 89-question identity manifest, selected final
+candidate, two scorers, production adapters, and dynamic count gates are already
+committed.
+
+Generate the canonical 1,068-coordinate schedule from committed identities and
+the approved seed, then record Freeze B only from exact Git objects. Provider-
+inert planning must reproduce every schedule byte and bind the complete runtime,
+deployment, model, budget, database-snapshot, and scorer inputs before any
+sealed generation or label release.

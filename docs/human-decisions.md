@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T22:26:18-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T22:34:27-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -80,21 +80,18 @@ the two excluded databases, and the narrower estimand. It will not describe the
 12 questions as model failures, gold failures, or condition-specific missing
 data. No sealed correctness or protected label was accessed to make this choice.
 
-## Waiting for your response — sealed schedule seed
+## Decision completed — sealed schedule seed
 
-Respond to `omni-benchmark-ei0.9.1.3` with one choice:
+Stephanie responded **A** to `omni-benchmark-ei0.9.1.3` on 2026-08-29. The
+human-controlled, non-secret seed is exactly
+`omni-livesqlbench-large-v1-sealed-mvp-v1`. It controls only deterministic
+ordering of the already-selected 89 public identities and does not change
+membership, conditions, repetitions, models, scoring, or custody.
 
-- **A** — approve the suggested non-secret seed
-  `omni-livesqlbench-large-v1-sealed-mvp-v1`.
-- **B** — supply a different safe seed identifier using letters, numbers, dots,
-  underscores, colons, slashes, at signs, pluses, or hyphens.
-
-This seed controls only the deterministic ordering of the already-selected 89
-public identities. It does not change membership, conditions, repetitions,
-models, scoring, or custody. After the response, agents can generate and commit
-the schedule and Freeze B under standing authorization. You do not need to run
-a command, handle a credential, provide a callback, select a profile, manage a
-lease, transfer a protected file, or grant another action authorization.
+No response is waiting now. Agents may generate and commit the schedule and
+Freeze B under standing authorization. You do not need to run a command, handle
+a credential, provide a callback, select a profile, manage a lease, transfer a
+protected file, or grant another action authorization.
 
 ### Historical execution record
 

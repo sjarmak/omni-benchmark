@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-29T22:26:18-04:00 (America/New_York).
+Last reconciled: 2026-08-29T22:34:27-04:00 (America/New_York).
 
 ## Current position
 
@@ -53,7 +53,7 @@ limitation, not as system or gold failures.
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
 | Minimal dev-A experiment set | **Cut from the MVP** | E01 audited as already present in the baseline, inconclusive. E02 compiled, hash-bound, never evaluated. Both are reported as-is with artifacts intact; neither enters the final system. Deviation recorded in `docs/protocol-diff.md`. |
-| Final candidate and Freeze B | Frame and plumbing complete; waiting on seed | The candidate is fixed, the reproducible matched 89-question manifest is committed, and all exact-count custody gates pass. Record the human-controlled schedule seed, then generate and commit the schedule and Freeze-B control. |
+| Final candidate and Freeze B | Seed recorded; schedule/Freeze B in progress | The candidate is fixed, the reproducible matched 89-question manifest is committed, all exact-count custody gates pass, and the approved seed is `omni-livesqlbench-large-v1-sealed-mvp-v1`. Generate and commit the schedule and Freeze-B control. |
 | Sealed C1-C4 evaluation | Tooling verified for the selected frame; not run | The complete 89-question/1,068-coordinate synthetic path passes through 12 cohorts, private-release membership, both scorers, and identity-free publication. The next result-producing gate is Freeze B. |
 | Results/product report | Draft only | `RESULTS.md` already contains the design, direct baseline, failure analysis, and product findings. Replace every pending governed/sealed result after the immutable aggregates exist, then finish the concise submission-ready report. |
 
@@ -80,16 +80,14 @@ the held-out comparison.
 
 ### Waiting on the operator now
 
-Respond to `omni-benchmark-ei0.9.1.3` with **A** to approve the suggested safe,
-non-secret seed `omni-livesqlbench-large-v1-sealed-mvp-v1`, or **B** followed by
-a different safe identifier. This controls deterministic schedule ordering
-only. No command, credential, callback, token, profile, lease, protected file,
-or additional action authorization is needed.
+No operator response is waiting. The approved non-secret schedule seed is
+recorded. No command, credential, callback, token, profile, lease, protected
+file, or additional action authorization is needed.
 
 ### Agent-owned work now
 
-- After the seed response, record Freeze B for the already-determined mechanical
-  baseline and run sealed C1-C4 evaluation and dual scoring through custody.
+- Record Freeze B for the already-determined mechanical baseline and run sealed
+  C1-C4 evaluation and dual scoring through custody.
 - Finish the aligned development comparison table and concise results/product
   report from immutable aggregates.
 - Commit and publish reviewed work through `main` only. Worktree cleanup under
