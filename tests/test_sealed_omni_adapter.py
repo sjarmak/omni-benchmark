@@ -38,6 +38,7 @@ def _probe(
     store: ArtifactStore,
     *,
     failure_class: str | None = None,
+    generated_query: str | None = None,
     job_result_observed: bool | None = None,
 ) -> OmniProbeResult:
     trace = store.write_jsonl(
@@ -100,7 +101,9 @@ def _probe(
         trace=trace,
         response_shape=shape,
         result_artifact=result,
-        generated_query="{fields:[answers.value]}" if failure_class is None else None,
+        generated_query=(
+            "{fields:[answers.value]}" if failure_class is None else generated_query
+        ),
         semantic_objects=("answers",) if failure_class is None else (),
         model_name=None,
         model_provider=None,
@@ -239,6 +242,32 @@ def test_c4_adapter_keeps_pre_result_contract_error_unstaged(tmp_path: Path) -> 
 
     with pytest.raises(SealedOmniAdapterError, match="infrastructure"):
         adapter.execute(prepared)
+
+
+def test_c4_adapter_preserves_unsupported_semantic_result_type(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    _, freeze, prepared = _prepared()
+    adapter = _adapter(
+        workspace,
+        freeze,
+        lambda _prepared, store: _probe(
+            store,
+            failure_class="unsupported_semantic_result_type",
+            generated_query="{fields:[answers.unknown_value]}",
+            job_result_observed=True,
+        ),
+    )
+
+    result = adapter.execute(prepared)
+    record = dict(result.generation_record)
+
+    assert record["generation_outcome"] == "errored"
+    assert record["failure_origin"] == "evaluated_system"
+    assert record["harness_failure"] is None
+    assert record["terminal_failure_class"] == "unsupported_semantic_result_type"
+    assert record["generated_query"] == "{fields:[answers.unknown_value]}"
 
 
 def test_c4_adapter_rejects_wrong_condition_before_capture(tmp_path: Path) -> None:

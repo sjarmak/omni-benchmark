@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T08:01:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-30T08:21:11-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -163,7 +163,22 @@ cohorts, two consumed receipts, and no dispatcher. Existing dev-A recovery
 semantics classify a completed job with no parseable query as an evaluated-
 system contract failure, so the sealed adapter now carries that same general
 rule instead of regenerating it. The correction passes 302 boundary tests and
-is being frozen under a fresh full run identity. No response or operator action
+is frozen at successor system `d18ce328e8e63e6c03d9ac727c5e2992cfcd71ec`,
+direct-child control `2bc9dc1950be5013ef725d4f262918431f9d90f6`, and
+Freeze-B SHA-256
+`581a8c1022c36dd65cef3a9bb4e49f6a68bf784a51cf21d2359a9b0d729d57c2`.
+The provider-inert 1,068-attempt plan validates under fresh run identity
+`sealed-final-v4`. Decision `omni-benchmark-ei0.10.10` authenticated its exact
+receipt, SHA-256
+`3c037372e361f9d70840ee9c137b34a85cb4f14b045c01beb28ed316a22e8d7f`.
+The complete dry preflight passed with 1,068 pending and zero reconciled; the
+receipt was consumed exactly once. The sole `sealed-final-v4` dispatcher is
+running as session `47654`. It preserved 51 attempts and zero cohorts, then
+stopped on `unsupported_semantic_result_type`; no dispatcher remains. Existing
+dev-A recovery semantics already classify this governed `UNKNOWN` planner-type
+outcome as an evaluated-system failure rather than retryable infrastructure.
+The sealed adapter now carries that same general rule; 303 boundary tests pass
+and a fresh successor freeze is being prepared. No response or operator action
 is waiting.
 
 ### Historical execution record

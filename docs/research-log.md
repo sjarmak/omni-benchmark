@@ -10785,3 +10785,30 @@ sealed, capture, and C4-recovery boundary gate passes 302 tests in 313.27
 seconds. Ruff and format checks pass. V3 remains immutable with 48 staged
 attempts, zero cohorts, two consumed receipts, and no dispatcher; it is excluded
 from the successor full run.
+
+## 2026-08-30 — D-169: Preserve unsupported governed result types in sealed C4
+
+### Observation and hypothesis
+
+V4 proved D-168 in production by preserving the first previously unstaged
+completed/no-query coordinate, then stopped after 51 immutable attempts on
+`unsupported_semantic_result_type`. Existing dev-A C4 recovery had already
+classified 32 `UNKNOWN` planner-type outcomes as evaluated-system failures:
+the governed query existed, but the product did not expose a type that the
+frozen execution contract could score. Regenerating model reasoning cannot fix
+that product contract.
+
+Carry that exact established rule into sealed C4. Require an observed job
+result, terminal `ERROR`, `unsupported_semantic_result_type`, a generated query,
+and no result artifact. Preserve it as an evaluated-system failure. Leave
+pre-result, transport, and other result-contract failures unstaged. This is a
+general product-contract classification already used by the frozen development
+scoring path; it uses no question, database, label, or correctness rule.
+
+### Result
+
+The failure-first unsupported-type test failed against D-168 and now passes.
+The focused capture/adapter/recovery gate passes 36 tests; the full sealed,
+capture, and C4-recovery boundary gate passes 303 tests in 234.25 seconds.
+Ruff and format checks pass. V4 remains immutable and excluded with 51 staged
+attempts, zero cohorts, one consumed receipt, and no dispatcher.

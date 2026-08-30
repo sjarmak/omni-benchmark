@@ -124,7 +124,7 @@ class SealedOmniConditionAdapter:
             "run_id": value.cohort_id,
         }
         if record.get("failure_origin") == "benchmark_infrastructure":
-            if _completed_unparseable_job(probe):
+            if _established_system_failure(probe):
                 record["failure_origin"] = "evaluated_system"
                 record["harness_failure"] = None
             else:
@@ -173,8 +173,8 @@ def _capture_root(value: Path) -> Path:
     return root
 
 
-def _completed_unparseable_job(probe: OmniProbeResult) -> bool:
-    return (
+def _established_system_failure(probe: OmniProbeResult) -> bool:
+    completed_unparseable = (
         probe.job_id is not None
         and probe.terminal_state == "CONTRACT_ERROR"
         and probe.failure_class == "response_contract_error"
@@ -182,3 +182,12 @@ def _completed_unparseable_job(probe: OmniProbeResult) -> bool:
         and probe.generated_query is None
         and probe.result_artifact is None
     )
+    unsupported_result = (
+        probe.job_id is not None
+        and probe.terminal_state == "ERROR"
+        and probe.failure_class == "unsupported_semantic_result_type"
+        and probe.job_result_observed
+        and probe.generated_query is not None
+        and probe.result_artifact is None
+    )
+    return completed_unparseable or unsupported_result
