@@ -38,7 +38,7 @@ def _test_ids(count: int = 101) -> bytes:
     return "".join(f"q-{index:03d}\n" for index in range(1, count + 1)).encode()
 
 
-def _repository(tmp_path: Path) -> tuple[Path, str]:
+def _repository(tmp_path: Path, *, matched_frame: bool = False) -> tuple[Path, str]:
     repo = tmp_path / "repo"
     repo.mkdir()
     _git(repo, "init", "-q")
@@ -59,6 +59,8 @@ def _repository(tmp_path: Path) -> tuple[Path, str]:
             )
         },
     }
+    if matched_frame:
+        files["data/manifests/sealed_mvp_ids.txt"] = _test_ids(89)
     for relative, content in files.items():
         path = repo / relative
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -146,6 +148,33 @@ def test_schedule_is_complete_canonical_separated_and_commit_derived(
         )
         >= MIN_REPETITION_BLOCK_GAP
     )
+
+
+def test_schedule_supports_explicit_matched_89_question_frame(
+    tmp_path: Path,
+) -> None:
+    repo, commit = _repository(tmp_path, matched_frame=True)
+
+    result = generate_freeze_b_schedule(
+        repo,
+        system_commit=commit,
+        seed=SEED,
+        destination=Path("experiments/matched-frame.jsonl"),
+        test_ids_path=Path("data/manifests/sealed_mvp_ids.txt"),
+        question_count=89,
+    )
+
+    records = _records(result.path)
+    assert result.question_count == 89
+    assert result.attempt_count == 1_068
+    assert len(records) == 1_068
+    assert len({str(record["instance_id"]) for record in records}) == 89
+    assert Counter(str(record["condition"]) for record in records) == {
+        condition: 267 for condition in CONDITIONS
+    }
+    assert Counter(int(record["repetition"]) for record in records) == {
+        repetition: 356 for repetition in range(1, REPETITIONS + 1)
+    }
 
 
 def test_same_seed_is_reproducible_and_different_seed_changes_order(

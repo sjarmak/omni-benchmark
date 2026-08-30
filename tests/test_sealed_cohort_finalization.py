@@ -24,10 +24,10 @@ SOFTWARE = {"omni-benchmark": "0.1.0", "python": "3.11.15"}
 CLI = {"synthetic": "1.0.0"}
 
 
-def _questions() -> dict[str, str]:
+def _questions(question_count: int = 101) -> dict[str, str]:
     return {
         f"q-{question:03d}": f"Public synthetic question {question}?"
-        for question in range(1, 102)
+        for question in range(1, question_count + 1)
     }
 
 

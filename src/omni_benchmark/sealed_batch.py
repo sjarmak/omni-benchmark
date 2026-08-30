@@ -24,7 +24,6 @@ from .sealed_scoring import (
     validate_query_case,
 )
 
-FINAL_GENERATION_TRIALS = 1_212
 _SHA256 = re.compile(r"[0-9a-f]{64}")
 
 
@@ -88,14 +87,18 @@ def score_completed_generation(
 ) -> SealedBatchResult:
     """Validate frozen provenance and full presence before touching hidden labels."""
     validated_freeze = _validated_freeze(freeze_b)
-    expected = _expected_ids(expected_attempt_ids)
+    expected = _expected_ids(
+        expected_attempt_ids, validated_freeze.expected_test_outputs
+    )
     if schedule_sha256(expected) != validated_freeze.schedule_sha256:
         raise ValueError("attempt schedule does not match Freeze B")
     manifests = _validated_run_manifests(run_manifests, validated_freeze)
     generation_by_id = _unique_by_id(generations, "generation")
     if set(generation_by_id) != set(expected):
         raise ValueError("generation attempt set does not match frozen schedule")
-    _validate_generations(generation_by_id, manifests)
+    _validate_generations(
+        generation_by_id, manifests, question_count=validated_freeze.question_count
+    )
     gold_by_id = _unique_by_id(gold_records, "gold")
     if set(gold_by_id) != set(expected):
         raise ValueError("gold attempt set does not match frozen schedule")
@@ -113,10 +116,12 @@ def score_completed_generation(
     )
 
 
-def _expected_ids(values: Sequence[str]) -> tuple[str, ...]:
+def _expected_ids(values: Sequence[str], expected_count: int) -> tuple[str, ...]:
     result = tuple(values)
-    if len(result) != FINAL_GENERATION_TRIALS:
-        raise ValueError("frozen schedule must contain exactly 1,212 attempts")
+    if len(result) != expected_count:
+        raise ValueError(
+            f"frozen schedule must contain exactly {expected_count:,} attempts"
+        )
     if any(not isinstance(value, str) or not value for value in result):
         raise ValueError("expected attempt IDs must be non-empty strings")
     if len(set(result)) != len(result):
@@ -178,6 +183,8 @@ def _validated_run_manifests(
 def _validate_generations(
     generation_by_id: Mapping[str, FrozenGenerationAttempt],
     manifests: Mapping[tuple[str, int], SealedRunManifest],
+    *,
+    question_count: int,
 ) -> None:
     counts = {key: 0 for key in manifests}
     for attempt_id, generation in generation_by_id.items():
@@ -196,8 +203,8 @@ def _validate_generations(
             raise ValueError("generation run_manifest_sha256 does not match")
         _digest(generation.generation_record_sha256, "generation_record_sha256")
         counts[key] += 1
-    if any(count != 101 for count in counts.values()):
-        raise ValueError("each sealed run manifest must bind exactly 101 generations")
+    if any(count != question_count for count in counts.values()):
+        raise ValueError("each sealed run manifest must bind the frozen question count")
 
 
 def _attempt_coordinates(attempt_id: str) -> tuple[str, int]:

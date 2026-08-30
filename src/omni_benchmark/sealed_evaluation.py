@@ -102,6 +102,14 @@ class SealedOutputBatch:
     cohorts: tuple[SealedValidatedCohort, ...]
     attempts: tuple[SealedFrozenAttempt, ...] = field(repr=False)
 
+    @property
+    def question_count(self) -> int:
+        return len({attempt.instance_id for attempt in self.attempts})
+
+    @property
+    def expected_test_outputs(self) -> int:
+        return self.question_count * len(CONDITIONS) * REPETITIONS
+
 
 @dataclass(frozen=True)
 class SealedEvaluationPlan:
@@ -113,6 +121,14 @@ class SealedEvaluationPlan:
     test_ids_sha256: str
     batch: SealedOutputBatch = field(repr=False)
     attempts: tuple[PreparedDevAAttempt, ...] = field(repr=False)
+
+    @property
+    def question_count(self) -> int:
+        return self.batch.question_count
+
+    @property
+    def expected_test_outputs(self) -> int:
+        return self.batch.expected_test_outputs
 
 
 def load_sealed_output_batch(
@@ -134,6 +150,9 @@ def load_sealed_output_batch(
         validated_plan.freeze_b_sha256 != validated_freeze.sha256()
         or validated_plan.system_commit != validated_freeze.system_commit
         or validated_plan.schedule_sha256 != validated_freeze.schedule_sha256
+        or validated_plan.question_count != validated_freeze.question_count
+        or validated_plan.expected_test_outputs
+        != validated_freeze.expected_test_outputs
     ):
         raise SealedEvaluationError("sealed plan does not match Freeze B")
     question_map = _questions(questions, validated_plan)
@@ -159,7 +178,10 @@ def load_sealed_output_batch(
                     )
                 attempts_by_id[attempt.attempt_id] = attempt
     expected_ids = tuple(item.attempt_id for item in validated_plan.attempts)
-    if set(attempts_by_id) != set(expected_ids) or len(attempts_by_id) != 1_212:
+    if (
+        set(attempts_by_id) != set(expected_ids)
+        or len(attempts_by_id) != validated_plan.expected_test_outputs
+    ):
         raise SealedEvaluationError("sealed cohort attempt set is incomplete")
     return SealedOutputBatch(
         freeze_b_sha256=validated_freeze.sha256(),
@@ -179,7 +201,7 @@ def prepare_sealed_evaluation_plan(
     expected_release_sha256: str,
     public_records: Mapping[str, Mapping[str, Any]],
 ) -> SealedEvaluationPlan:
-    """Open exactly 101 test labels only after complete output preflight."""
+    """Open exactly the frozen test labels after complete output preflight."""
     root = _workspace(workspace)
     validated_batch = _validated_batch(batch)
     release_digest = _digest(expected_release_sha256, "test release SHA-256")
@@ -193,8 +215,8 @@ def prepare_sealed_evaluation_plan(
     expected_ids = frozenset(
         attempt.instance_id for attempt in validated_batch.attempts
     )
-    if len(expected_ids) != 101:
-        raise SealedEvaluationError("sealed test membership must contain 101 IDs")
+    if len(expected_ids) != validated_batch.question_count:
+        raise SealedEvaluationError("sealed test membership is incomplete")
     public = _validated_public_records(public_records, validated_batch, expected_ids)
     try:
         release_content = _private_file(root, selected, "sealed test release")
@@ -204,9 +226,7 @@ def prepare_sealed_evaluation_plan(
         raise SealedEvaluationError("sealed test release hash does not match")
     labels = _exact_release_records(release_content, expected_ids)
     if frozenset(labels) != expected_ids:
-        raise SealedEvaluationError(
-            "sealed test release must contain exactly 101 records"
-        )
+        raise SealedEvaluationError("sealed test release membership is incomplete")
     attempts = tuple(
         _attach_gold(attempt, public[attempt.instance_id], labels[attempt.instance_id])
         for attempt in validated_batch.attempts
@@ -230,15 +250,18 @@ def score_sealed_evaluation(
     plan: SealedEvaluationPlan, provider: PostgreSQLIsolationProvider
 ) -> tuple[SealedScoredAttempt, ...]:
     """Freeze gold eligibility, then score every eligible candidate once."""
-    if not isinstance(plan, SealedEvaluationPlan) or len(plan.attempts) != 1_212:
+    if (
+        not isinstance(plan, SealedEvaluationPlan)
+        or len(plan.attempts) != plan.expected_test_outputs
+    ):
         raise SealedEvaluationError("sealed evaluation plan is invalid")
     dev_plan = DevABaselinePlan(
         selection_sha256=plan.plan_sha256,
         release_sha256=plan.release_sha256,
         dev_a_ids_sha256=plan.test_ids_sha256,
         freeze_a_commit="0" * 40,
-        released_question_count=101,
-        selected_question_count=101,
+        released_question_count=plan.question_count,
+        selected_question_count=plan.question_count,
         unrepresented_question_count=0,
         attempts=plan.attempts,
     )
@@ -345,12 +368,12 @@ def publish_sealed_evaluation(
                     }
                     for mode in (ScoringMode.OFFICIAL, ScoringMode.SENSITIVITY)
                 },
-                "attempt_count": 1_212,
+                "attempt_count": plan.expected_test_outputs,
                 "cohort_count": 12,
                 "freeze_b_sha256": plan.freeze_b_sha256,
                 "kind": "sealed-evaluation-receipt",
                 "plan_sha256": plan.plan_sha256,
-                "question_count": 101,
+                "question_count": plan.question_count,
                 "release_sha256": plan.release_sha256,
                 "schema_version": 1,
                 "score_artifacts": {
@@ -382,7 +405,7 @@ def _validated_results(
     if isinstance(value, (str, bytes)) or not isinstance(value, Sequence):
         raise SealedEvaluationError("sealed score results are invalid")
     results = tuple(value)
-    if len(results) != 1_212 or any(
+    if len(results) != plan.expected_test_outputs or any(
         not isinstance(result, SealedScoredAttempt) for result in results
     ):
         raise SealedEvaluationError("sealed score results are incomplete")
@@ -403,10 +426,10 @@ def _exact_release_records(
     content: bytes, expected_ids: frozenset[str]
 ) -> dict[str, dict[str, Any]]:
     lines = content.splitlines(keepends=True)
-    if len(lines) != 101 or any(not line.endswith(b"\n") for line in lines):
-        raise SealedEvaluationError(
-            "sealed test release must contain exactly 101 records"
-        )
+    if len(lines) != len(expected_ids) or any(
+        not line.endswith(b"\n") for line in lines
+    ):
+        raise SealedEvaluationError("sealed test release membership is incomplete")
     records: dict[str, dict[str, Any]] = {}
     try:
         for line_number, raw_line in enumerate(lines, start=1):
@@ -435,7 +458,7 @@ def _score_payload(
     results: Sequence[SealedScoredAttempt],
     mode: ScoringMode,
 ) -> dict[str, Any]:
-    if len(results) != 101:
+    if len(results) != cohort.run_manifest.question_count:
         raise SealedEvaluationError("sealed score cohort is incomplete")
     attempts = []
     for item in results:
@@ -539,10 +562,17 @@ def _cleanup_temporary(path: Path) -> None:
 def _validated_batch(value: object) -> SealedOutputBatch:
     if not isinstance(value, SealedOutputBatch):
         raise SealedEvaluationError("complete sealed output preflight is required")
+    question_count = len({attempt.instance_id for attempt in value.attempts})
+    expected_outputs = question_count * len(CONDITIONS) * REPETITIONS
     if (
         len(value.cohorts) != 12
-        or len(value.attempts) != 1_212
-        or len({attempt.attempt_id for attempt in value.attempts}) != 1_212
+        or question_count <= 0
+        or len(value.attempts) != expected_outputs
+        or len({attempt.attempt_id for attempt in value.attempts}) != expected_outputs
+        or any(
+            cohort.run_manifest.question_count != question_count
+            for cohort in value.cohorts
+        )
         or {(cohort.condition, cohort.repetition) for cohort in value.cohorts}
         != {
             (condition, repetition)
@@ -590,7 +620,7 @@ def _validated_public_records(
         if database != planned_database[instance_id]:
             raise SealedEvaluationError("frozen public test database is invalid")
         result[instance_id] = record
-    if len(planned_database) != 101:
+    if len(planned_database) != len(expected_ids):
         raise SealedEvaluationError("frozen public test records are incomplete")
     return result
 
@@ -683,11 +713,13 @@ def _load_cohort(
     )
     lines = generation_content.splitlines(keepends=True)
     if (
-        len(planned) != 101
-        or len(lines) != 101
+        len(planned) != plan.question_count
+        or len(lines) != plan.question_count
         or any(not line.endswith(b"\n") for line in lines)
     ):
-        raise SealedEvaluationError("sealed cohort must contain exactly 101 records")
+        raise SealedEvaluationError(
+            "sealed cohort must contain the frozen question count"
+        )
     attempts = tuple(
         _generation_attempt(
             workspace,
@@ -703,7 +735,7 @@ def _load_cohort(
     generation = ValidatedGenerationOutputs(
         path=generation_path,
         sha256=manifest.generation_sha256,
-        question_count=101,
+        question_count=plan.question_count,
         scope="test",
         condition=condition,
         run_id=f"sealed-{condition.lower()}-r{repetition}",

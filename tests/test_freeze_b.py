@@ -146,10 +146,44 @@ def test_freeze_b_manifest_is_exact_canonical_and_immutable() -> None:
         manifest.system_commit = "0" * 40  # type: ignore[misc]
 
 
+def test_freeze_b_accepts_and_binds_matched_89_question_frame() -> None:
+    schedule_ids = tuple(
+        f"sealed:q-{question}:{condition}:{repetition}"
+        for question in range(1, 90)
+        for condition in ("C1", "C2", "C3", "C4")
+        for repetition in (1, 2, 3)
+    )
+    freeze = FreezeBManifest.from_dict(
+        _freeze_value(
+            question_count=89,
+            expected_test_outputs=1_068,
+            schedule={
+                "algorithm": "committed_block_interleaved_v1",
+                "seed": "human-supplied-final-seed",
+                "sha256": schedule_sha256(schedule_ids),
+            },
+        )
+    )
+
+    assert freeze.question_count == 89
+    assert freeze.expected_test_outputs == 1_068
+    run = SealedRunManifest.from_dict(
+        _run_value(freeze, question_count=89), freeze_b=freeze
+    )
+    assert run.question_count == 89
+
+
+def test_freeze_b_rejects_output_count_inconsistent_with_frame() -> None:
+    with pytest.raises(FreezeBError, match="expected_test_outputs"):
+        FreezeBManifest.from_dict(
+            _freeze_value(question_count=89, expected_test_outputs=1_212)
+        )
+
+
 @pytest.mark.parametrize(
     ("mutate", "message"),
     [
-        (lambda value: value.update(question_count=100), "question_count"),
+        (lambda value: value.update(question_count=0), "question_count"),
         (lambda value: value.update(repetitions=2), "repetitions"),
         (
             lambda value: value.update(expected_test_outputs=404),

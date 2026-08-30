@@ -37,11 +37,11 @@ def _git(repo: Path, *arguments: str) -> str:
     return result.stdout.strip()
 
 
-def _test_ids() -> bytes:
-    return "".join(f"q-{index:03d}\n" for index in range(1, 102)).encode()
+def _test_ids(count: int = 101) -> bytes:
+    return "".join(f"q-{index:03d}\n" for index in range(1, count + 1)).encode()
 
 
-def _eligible_records() -> list[dict[str, object]]:
+def _eligible_records(count: int = 101) -> list[dict[str, object]]:
     return [
         {
             "category": "synthetic-public",
@@ -55,7 +55,7 @@ def _eligible_records() -> list[dict[str, object]]:
             "selected_database": f"db-{((index - 1) % 7) + 1}",
             "source_index": index,
         }
-        for index in range(1, 102)
+        for index in range(1, count + 1)
     ]
 
 
@@ -98,9 +98,13 @@ def _manifest(
     schedule_content: bytes,
     test_ids_content: bytes,
     eligible_content: bytes,
+    ids_path: str = "data/manifests/test_ids.txt",
     frozen_override: dict[str, str] | None = None,
 ) -> FreezeBManifest:
-    registered_schedule = expected_schedule_bytes(test_ids_content, seed)
+    question_count = len(test_ids_content.splitlines())
+    registered_schedule = expected_schedule_bytes(
+        test_ids_content, seed, question_count=question_count
+    )
     attempt_ids = tuple(
         str(json.loads(line)["attempt_id"]) for line in registered_schedule.splitlines()
     )
@@ -109,7 +113,7 @@ def _manifest(
         "data/manifests/eligible_questions.jsonl": hashlib.sha256(
             eligible_content
         ).hexdigest(),
-        "data/manifests/test_ids.txt": hashlib.sha256(test_ids_content).hexdigest(),
+        ids_path: hashlib.sha256(test_ids_content).hexdigest(),
     }
     if frozen_override is not None:
         frozen = frozen_override
@@ -123,11 +127,11 @@ def _manifest(
                 "postgresql_version": "18.6",
                 "snapshot_manifest_sha256": SHA_A,
             },
-            "expected_test_outputs": 1_212,
+            "expected_test_outputs": question_count * 12,
             "freeze_a_commit": freeze_a_commit,
             "frozen_files": frozen,
             "kind": "freeze-b-manifest",
-            "question_count": 101,
+            "question_count": question_count,
             "recorded_at": "2026-08-29T06:35:00Z",
             "repetitions": 3,
             "schedule": {
@@ -156,6 +160,8 @@ def _repository(
     frozen_override: dict[str, str] | None = None,
     plan_source_override: bytes | None = None,
     symlink_input: str | None = None,
+    question_count: int = 101,
+    ids_path: str = "data/manifests/test_ids.txt",
 ) -> tuple[Path, str, str, FreezeBManifest]:
     repo = tmp_path / "repo"
     repo.mkdir(parents=True)
@@ -186,21 +192,25 @@ def _repository(
             content = plan_source_override
         destination.write_bytes(content)
 
-    ids = _test_ids() if test_ids_content is None else test_ids_content
+    ids = _test_ids(question_count) if test_ids_content is None else test_ids_content
     schedule = (
-        expected_schedule_bytes(ids, seed)
+        expected_schedule_bytes(ids, seed, question_count=question_count)
         if schedule_content is None
         else schedule_content
     )
     eligible = (
-        _jsonl(_eligible_records() if eligible_records is None else eligible_records)
+        _jsonl(
+            _eligible_records(question_count)
+            if eligible_records is None
+            else eligible_records
+        )
         if eligible_raw is None
         else eligible_raw
     )
     inputs = {
         "data/final-schedule.jsonl": schedule,
         "data/manifests/eligible_questions.jsonl": eligible,
-        "data/manifests/test_ids.txt": ids,
+        ids_path: ids,
     }
     for relative, content in inputs.items():
         path = repo / relative
@@ -221,6 +231,7 @@ def _repository(
         schedule_content=schedule,
         test_ids_content=ids,
         eligible_content=eligible,
+        ids_path=ids_path,
         frozen_override=frozen_override,
     )
     manifest_path = repo / "experiments/freeze-b.json"
@@ -231,7 +242,13 @@ def _repository(
     return repo, system_commit, _git(repo, "rev-parse", "HEAD"), manifest
 
 
-def _load(repo: Path, system: str, control: str):  # type: ignore[no-untyped-def]
+def _load(
+    repo: Path,
+    system: str,
+    control: str,
+    *,
+    ids_path: str = "data/manifests/test_ids.txt",
+):  # type: ignore[no-untyped-def]
     return load_sealed_execution_plan(
         repo,
         control_commit=control,
@@ -239,6 +256,7 @@ def _load(repo: Path, system: str, control: str):  # type: ignore[no-untyped-def
         freeze_b_path=Path("experiments/freeze-b.json"),
         schedule_path=Path("data/final-schedule.jsonl"),
         public_manifest_path=Path("data/manifests/eligible_questions.jsonl"),
+        test_ids_path=Path(ids_path),
     )
 
 
@@ -281,6 +299,35 @@ def test_plan_binds_exact_order_cohorts_databases_and_question_digests(
         f"db-{index}" for index in range(1, 8)
     }
     assert len(plan.sha256) == 64
+
+
+def test_plan_binds_matched_89_question_frame(tmp_path: Path) -> None:
+    ids_path = "data/manifests/sealed_mvp_ids.txt"
+    repo, system, control, manifest = _repository(
+        tmp_path,
+        question_count=89,
+        ids_path=ids_path,
+        eligible_records=_eligible_records(),
+    )
+
+    plan = _load(repo, system, control, ids_path=ids_path)
+
+    assert manifest.question_count == 89
+    assert manifest.expected_test_outputs == 1_068
+    assert len(plan.attempts) == 1_068
+    assert len({attempt.instance_id for attempt in plan.attempts}) == 89
+    assert Counter(attempt.cohort_id for attempt in plan.attempts) == {
+        f"sealed-{condition.lower()}-r{repetition}": 89
+        for condition in ("C1", "C2", "C3", "C4")
+        for repetition in (1, 2, 3)
+    }
+    questions = load_sealed_public_questions(
+        repo,
+        plan=plan,
+        freeze_b=manifest,
+        public_manifest_path=Path("data/manifests/eligible_questions.jsonl"),
+    )
+    assert len(questions) == 89
 
 
 def test_public_questions_load_from_frozen_git_and_match_every_plan_row(

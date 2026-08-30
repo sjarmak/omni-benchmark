@@ -19,11 +19,11 @@ from .autoresearch_config import AutoresearchError, _write_exclusive
 from .content_policy import ContentPolicy
 from .freeze_b import (
     CONDITIONS,
-    EXPECTED_TEST_OUTPUTS,
     REPETITIONS,
     SCHEDULE_ALGORITHM,
     FreezeBError,
     FreezeBManifest,
+    expected_test_output_count,
     schedule_sha256,
 )
 from .scoring import scorer_metadata
@@ -52,7 +52,9 @@ _INPUT_FIELDS = frozenset(
 _DATABASE_FIELDS = frozenset(
     {"libpq_version", "postgresql_version", "snapshot_manifest_path"}
 )
-_SCHEDULE_FIELDS = frozenset({"algorithm", "path", "seed"})
+_SCHEDULE_FIELDS = frozenset(
+    {"algorithm", "ids_path", "path", "question_count", "seed"}
+)
 _CONDITION_FIELDS = frozenset(
     {
         "budget_id",
@@ -120,13 +122,13 @@ def record_freeze_b(
     schedule_path = _relative_path(schedule["path"], "schedule path")
     if schedule_path not in frozen_paths:
         raise FreezeBRecordError("frozen_files must include the schedule path")
-    from .freeze_b_schedule import (
-        TEST_IDS_PATH,
-        FreezeBScheduleError,
-        expected_schedule_bytes,
-    )
+    from .freeze_b_schedule import FreezeBScheduleError, expected_schedule_bytes
 
-    if TEST_IDS_PATH not in frozen_paths:
+    ids_path = _relative_path(schedule["ids_path"], "schedule IDs path")
+    question_count = schedule["question_count"]
+    if type(question_count) is not int or question_count <= 0:
+        raise FreezeBRecordError("schedule question_count must be a positive integer")
+    if ids_path not in frozen_paths:
         raise FreezeBRecordError("frozen_files must include the committed test IDs")
     committed = {
         path: _committed_input(
@@ -141,7 +143,9 @@ def record_freeze_b(
     }
     try:
         registered_schedule = expected_schedule_bytes(
-            committed[TEST_IDS_PATH].content, schedule["seed"]
+            committed[ids_path].content,
+            schedule["seed"],
+            question_count=question_count,
         )
     except FreezeBScheduleError as error:
         raise FreezeBRecordError(str(error)) from error
@@ -149,7 +153,9 @@ def record_freeze_b(
         raise FreezeBRecordError(
             "schedule does not match the registered algorithm, seed, and test IDs"
         )
-    attempt_ids = _schedule_attempt_ids(committed[schedule_path].content)
+    attempt_ids = _schedule_attempt_ids(
+        committed[schedule_path].content, question_count=question_count
+    )
     database, snapshot_path = _database(spec["database"])
     if snapshot_path not in committed:
         raise FreezeBRecordError(
@@ -163,11 +169,11 @@ def record_freeze_b(
             "postgresql_version": database["postgresql_version"],
             "snapshot_manifest_sha256": committed[snapshot_path].sha256,
         },
-        "expected_test_outputs": EXPECTED_TEST_OUTPUTS,
+        "expected_test_outputs": expected_test_output_count(question_count),
         "freeze_a_commit": freeze_a_commit,
         "frozen_files": {path: committed[path].sha256 for path in sorted(committed)},
         "kind": "freeze-b-manifest",
-        "question_count": 101,
+        "question_count": question_count,
         "recorded_at": recorded_at,
         "repetitions": REPETITIONS,
         "schedule": {
@@ -441,7 +447,7 @@ def _digest_for(committed: Mapping[str, _CommittedInput], path: str) -> str:
     return value.sha256
 
 
-def _schedule_attempt_ids(content: bytes) -> tuple[str, ...]:
+def _schedule_attempt_ids(content: bytes, *, question_count: int) -> tuple[str, ...]:
     records: list[tuple[str, str, int, str]] = []
     for line_number, raw_line in enumerate(content.splitlines(keepends=True), start=1):
         if not raw_line.endswith(b"\n") or not raw_line.strip():
@@ -474,15 +480,22 @@ def _schedule_attempt_ids(content: bytes) -> tuple[str, ...]:
         if not attempt_id.endswith(f":{instance_id}:{condition}:{repetition}"):
             raise FreezeBRecordError("schedule attempt identity is inconsistent")
         records.append((instance_id, condition, repetition, attempt_id))
-    if len(records) != EXPECTED_TEST_OUTPUTS:
-        raise FreezeBRecordError("schedule must contain exactly 1,212 attempts")
+    expected_outputs = expected_test_output_count(question_count)
+    if len(records) != expected_outputs:
+        raise FreezeBRecordError(
+            f"schedule must contain exactly {expected_outputs:,} attempts"
+        )
     attempt_ids = tuple(record[3] for record in records)
     if len(set(attempt_ids)) != len(attempt_ids):
         raise FreezeBRecordError("schedule contains a duplicate attempt_id")
     combinations = Counter((record[0], record[1], record[2]) for record in records)
     instances = {record[0] for record in records}
-    if len(instances) != 101 or any(count != 1 for count in combinations.values()):
-        raise FreezeBRecordError("schedule must contain 101 complete question blocks")
+    if len(instances) != question_count or any(
+        count != 1 for count in combinations.values()
+    ):
+        raise FreezeBRecordError(
+            f"schedule must contain {question_count} complete question blocks"
+        )
     expected = {
         (instance, condition, repetition)
         for instance in instances

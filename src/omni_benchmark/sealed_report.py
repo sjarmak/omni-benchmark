@@ -121,13 +121,18 @@ def render_sealed_report(
     ):
         if official[key] != sensitivity[key]:
             raise SealedReportError("sealed aggregates have different custody bindings")
+    question_count = official_report["question_count"]
+    if question_count != sensitivity_report["question_count"]:
+        raise SealedReportError("sealed aggregates have different question counts")
+    scheduled_attempts = question_count * len(CONDITIONS) * 3
 
     lines = [
         "# Sealed held-out results",
         "",
         (
-            "This aggregate-only report covers 101 held-out questions and 1212 "
-            "scheduled attempts (four conditions, three repetitions). It contains "
+            f"This aggregate-only report covers {question_count} held-out questions "
+            f"and {scheduled_attempts} scheduled attempts (four conditions, three "
+            "repetitions). It contains "
             "no question identities, SQL, result rows, or per-question correctness."
         ),
         "",
@@ -346,7 +351,10 @@ def _validate_aggregate(
     if set(report) != _REPORT_KEYS:
         raise SealedReportError("sealed aggregate report schema is invalid")
     _reject_nonfinite(report)
-    if report["question_count"] != 101:
+    question_count = report["question_count"]
+    if isinstance(question_count, bool) or not isinstance(question_count, int):
+        raise SealedReportError("sealed aggregate question count is invalid")
+    if question_count <= 0:
         raise SealedReportError("sealed aggregate question count is invalid")
     scorer = _mapping(report["scorer"], "scorer")
     if set(scorer) != {"identity", "version"}:
@@ -401,8 +409,10 @@ def _validate_aggregate(
             "not_observable_from_frozen_generation_contract"
         ):
             raise SealedReportError("refusal subtype status is invalid")
-        if row["scheduled_attempts"] != 303:
-            raise SealedReportError("sealed aggregate scheduled count is invalid")
+        if row["scheduled_attempts"] != question_count * 3:
+            raise SealedReportError(
+                "sealed aggregate question count and scheduled count are inconsistent"
+            )
         generation = _count_mapping(
             row["generation_outcomes"], f"{condition} generation outcomes"
         )
@@ -477,7 +487,7 @@ def _validate_aggregate(
             f"{condition} error rate",
         )
         scheduled += row["scheduled_attempts"]
-    if scheduled != 1_212:
+    if scheduled != question_count * len(CONDITIONS) * 3:
         raise SealedReportError("sealed aggregate attempt count is invalid")
 
     contrasts = _mapping(report["contrasts"], "contrasts")

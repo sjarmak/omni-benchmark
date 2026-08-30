@@ -15,9 +15,9 @@ from .autoresearch_config import AutoresearchError, _write_exclusive
 from .content_policy import ContentPolicy
 from .freeze_b import (
     CONDITIONS,
-    EXPECTED_TEST_OUTPUTS,
     QUESTION_COUNT,
     SCHEDULE_ALGORITHM,
+    expected_test_output_count,
     schedule_sha256,
 )
 from .freeze_b_record import (
@@ -36,7 +36,6 @@ MAX_TEST_IDS_BYTES = 64 * 1024
 
 _SEED = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:/@+-]{0,159}")
 _INSTANCE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:@/+~-]{0,199}")
-_OFFSETS = (0, 34, 67)
 _DOMAIN = b"omni-livesqlbench-large-v1-sealed-schedule-v1"
 
 
@@ -63,20 +62,23 @@ def generate_freeze_b_schedule(
     system_commit: str,
     seed: str,
     destination: Path,
+    test_ids_path: Path = Path(TEST_IDS_PATH),
+    question_count: int = QUESTION_COUNT,
 ) -> FreezeBScheduleResult:
     """Write one deterministic schedule without reading question content or labels."""
     try:
         root = _repository_root(workspace)
         commit = _current_exact_commit(root, system_commit)
         _verify_runtime_sources(root, commit)
+        ids_relative = _relative_path(test_ids_path, "test IDs path")
         committed_ids = _committed_input(
             root,
             commit,
-            TEST_IDS_PATH,
+            ids_relative,
             maximum_bytes=MAX_TEST_IDS_BYTES,
         )
         instance_ids, records, content = _schedule_components(
-            committed_ids.content, seed
+            committed_ids.content, seed, question_count=question_count
         )
         destination_path = Path(_relative_path(destination, "destination path"))
         output = _write_exclusive(destination_path, content, workspace=root)
@@ -94,16 +96,26 @@ def generate_freeze_b_schedule(
     )
 
 
-def expected_schedule_bytes(committed_test_ids: bytes, seed: str) -> bytes:
+def expected_schedule_bytes(
+    committed_test_ids: bytes,
+    seed: str,
+    *,
+    question_count: int = QUESTION_COUNT,
+) -> bytes:
     """Return the canonical registered schedule for one committed ID blob and seed."""
-    return _schedule_components(committed_test_ids, seed)[2]
+    return _schedule_components(
+        committed_test_ids, seed, question_count=question_count
+    )[2]
 
 
 def _schedule_components(
-    committed_test_ids: bytes, seed: str
+    committed_test_ids: bytes,
+    seed: str,
+    *,
+    question_count: int = QUESTION_COUNT,
 ) -> tuple[tuple[str, ...], tuple[dict[str, object], ...], bytes]:
     approved_seed = _approved_seed(seed)
-    instance_ids = _committed_test_ids(committed_test_ids)
+    instance_ids = _committed_test_ids(committed_test_ids, question_count)
     records = _ordered_records(instance_ids, approved_seed)
     content = b"".join(_canonical_bytes(record) for record in records)
     return instance_ids, records, content
@@ -119,7 +131,7 @@ def _approved_seed(value: object) -> str:
     return value
 
 
-def _committed_test_ids(content: bytes) -> tuple[str, ...]:
+def _committed_test_ids(content: bytes, question_count: int) -> tuple[str, ...]:
     lines = content.splitlines(keepends=True)
     if not lines or any(not line.endswith(b"\n") or line == b"\n" for line in lines):
         raise FreezeBScheduleError(
@@ -138,9 +150,11 @@ def _committed_test_ids(content: bytes) -> tuple[str, ...]:
         for instance_id in instance_ids
     ):
         raise FreezeBScheduleError("committed test identity is invalid")
-    if len(instance_ids) != QUESTION_COUNT:
+    if type(question_count) is not int or question_count <= 0:
+        raise FreezeBScheduleError("question_count must be a positive integer")
+    if len(instance_ids) != question_count:
         raise FreezeBScheduleError(
-            "committed test manifest must contain exactly 101 IDs"
+            f"committed test manifest must contain exactly {question_count} IDs"
         )
     if len(set(instance_ids)) != len(instance_ids):
         raise FreezeBScheduleError("committed test manifest contains a duplicate ID")
@@ -152,14 +166,16 @@ def _committed_test_ids(content: bytes) -> tuple[str, ...]:
 def _ordered_records(
     instance_ids: tuple[str, ...], seed: str
 ) -> tuple[dict[str, object], ...]:
+    question_count = len(instance_ids)
+    offsets = (0, (question_count + 2) // 3, (2 * question_count) // 3)
     question_order = sorted(
         instance_ids,
         key=lambda instance_id: _order_key(seed, "question", instance_id),
     )
     records: list[dict[str, object]] = []
-    for position in range(QUESTION_COUNT):
-        for repetition, offset in enumerate(_OFFSETS, start=1):
-            instance_id = question_order[(position + offset) % QUESTION_COUNT]
+    for position in range(question_count):
+        for repetition, offset in enumerate(offsets, start=1):
+            instance_id = question_order[(position + offset) % question_count]
             condition_order = sorted(
                 CONDITIONS,
                 key=lambda condition: _order_key(
@@ -181,7 +197,7 @@ def _ordered_records(
                 }
                 for condition in condition_order
             )
-    if len(records) != EXPECTED_TEST_OUTPUTS:
+    if len(records) != expected_test_output_count(question_count):
         raise FreezeBScheduleError("sealed schedule construction is incomplete")
     return tuple(records)
 
@@ -215,6 +231,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--system-commit", required=True)
     parser.add_argument("--seed", required=True)
     parser.add_argument("--destination", type=Path, required=True)
+    parser.add_argument("--test-ids", type=Path, default=Path(TEST_IDS_PATH))
+    parser.add_argument("--question-count", type=int, default=QUESTION_COUNT)
     return parser
 
 
@@ -225,6 +243,8 @@ def schedule_main(argv: Sequence[str] | None = None) -> int:
         system_commit=arguments.system_commit,
         seed=arguments.seed,
         destination=arguments.destination,
+        test_ids_path=arguments.test_ids,
+        question_count=arguments.question_count,
     )
     print(
         json.dumps(

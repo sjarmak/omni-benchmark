@@ -1,0 +1,10 @@
+{
+  "decision_bead_id": "omni-benchmark-ei0.9.1.1",
+  "excluded_databases": [
+    "mental_healths_large",
+    "organ_transplant_large"
+  ],
+  "expected_question_count": 89,
+  "kind": "sealed-mvp-frame-spec",
+  "schema_version": 1
+}

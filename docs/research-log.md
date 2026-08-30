@@ -10508,3 +10508,21 @@ a provider.
 Option A was then selected before implementation. The target exercised frame is
 therefore 89 questions and 1,068 coordinates, but the mechanism remains general
 and the existing 101-question default must continue to validate unchanged.
+
+### Result
+
+The sealed custody stack now derives question and coordinate counts from the
+Freeze-B manifest and exact execution plan through scheduling, recording,
+dispatch, cohort finalization, private release, dual scoring, approval, and
+aggregate reporting. The original 101-question / 1,212-coordinate defaults and
+schedule bytes remain unchanged. Synthetic end-to-end evidence exercises the
+selected 89-question / 1,068-coordinate frame through immutable cohort loading,
+private-release membership checks, both scorers, and identity-free publication.
+
+The selected identity manifest is reproducibly generated from the committed
+public eligible manifest, original frozen test IDs, and the human decision spec.
+It contains 89 identities across the 16 verified databases and records the 12
+excluded identities only as aggregate public database counts. The focused
+provider-inert suite passed 250 tests with 80.00% branch coverage; Ruff, format,
+and diff checks passed. No provider, protected label, sealed outcome, credential,
+OAuth profile, or lease was accessed.

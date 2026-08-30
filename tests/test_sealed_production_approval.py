@@ -85,6 +85,25 @@ def test_exact_current_human_receipt_binds_sealed_dispatch(tmp_path: Path) -> No
     assert len(approval.receipt_sha256) == 64
 
 
+def test_matched_frame_receipt_accepts_1068_bound_attempts(tmp_path: Path) -> None:
+    binding = {**BINDING, "attempt_count": 1_068}
+    path = tmp_path / "sealed-approval.json"
+    content = _receipt(path, binding=binding)
+
+    def decision(_workspace: Path, decision_id: str):
+        return _issue(decision_id), ("Response: " + content.decode().strip(),)
+
+    approval = validate_sealed_production_approval(
+        tmp_path,
+        path,
+        binding,
+        now=NOW,
+        decision_loader=decision,
+    )
+
+    assert approval.binding["attempt_count"] == 1_068
+
+
 @pytest.mark.parametrize(
     ("changes", "message"),
     [

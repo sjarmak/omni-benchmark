@@ -226,7 +226,8 @@ def _validated_binding(value: object) -> dict[str, Any]:
     root = Path(output_root) if isinstance(output_root, str) else Path()
     if (
         type(binding.get("attempt_count")) is not int
-        or binding["attempt_count"] != 1_212
+        or binding["attempt_count"] <= 0
+        or binding["attempt_count"] % 12 != 0
         or binding.get("conditions") != ["C1", "C2", "C3", "C4"]
         or type(binding.get("maximum_concurrency")) is not int
         or binding["maximum_concurrency"] < 1

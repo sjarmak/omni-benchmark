@@ -71,7 +71,7 @@ def finalize_sealed_cohort(
     started_at: str,
     finished_at: str,
 ) -> SealedCohortResult:
-    """Aggregate exactly one 101-attempt cohort in committed schedule order."""
+    """Aggregate one complete cohort in committed schedule order."""
     try:
         root = _workspace_root(workspace)
         validated_plan = _validated_plan(plan)
@@ -142,9 +142,12 @@ def _cohort_attempts(
         for attempt in plan.attempts
         if (attempt.condition, attempt.repetition) == (condition, repetition)
     )
-    if len(result) != 101 or len({attempt.instance_id for attempt in result}) != 101:
+    if (
+        len(result) != plan.question_count
+        or len({attempt.instance_id for attempt in result}) != plan.question_count
+    ):
         raise SealedCohortFinalizationError(
-            "sealed cohort must contain exactly 101 planned attempts"
+            "sealed cohort must contain the frozen question count"
         )
     return result
 
@@ -202,7 +205,7 @@ def _run_manifest(
                 "model_config_id": frozen.model_config_id,
                 "prompt_sha256": frozen.prompt_sha256,
                 "provider": frozen.provider,
-                "question_count": 101,
+                "question_count": freeze_b.question_count,
                 "repetition": repetition,
                 "runtime_policy_sha256": frozen.runtime_policy_sha256,
                 "schedule_sha256": freeze_b.schedule_sha256,
@@ -335,7 +338,7 @@ class _CohortRepository:
         return SealedCohortResult(
             condition=manifest.condition,
             repetition=manifest.repetition,
-            attempt_count=101,
+            attempt_count=manifest.question_count,
             generation_path=generation_path,
             generation_sha256=hashlib.sha256(generation).hexdigest(),
             run_manifest_path=manifest_path,

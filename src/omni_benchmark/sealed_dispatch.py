@@ -20,7 +20,6 @@ from typing import Any, Protocol
 from .artifact_store import ALLOWED_RAW_ROOTS
 from .freeze_b import (
     CONDITIONS,
-    EXPECTED_TEST_OUTPUTS,
     FreezeBCondition,
     FreezeBManifest,
 )
@@ -414,13 +413,16 @@ def build_sealed_dispatch_binding(
     if (
         validated_plan.freeze_b_sha256 != validated_freeze.sha256()
         or validated_plan.system_commit != validated_freeze.system_commit
+        or validated_plan.question_count != validated_freeze.question_count
+        or validated_plan.expected_test_outputs
+        != validated_freeze.expected_test_outputs
         or not isinstance(run_id, str)
         or _IDENTIFIER.fullmatch(run_id) is None
         or _SHA256.fullmatch(runtime_sources_sha256) is None
     ):
         raise SealedDispatchError("sealed dispatch binding is invalid")
     return {
-        "attempt_count": EXPECTED_TEST_OUTPUTS,
+        "attempt_count": validated_plan.expected_test_outputs,
         "conditions": list(CONDITIONS),
         "control_commit": validated_plan.control_commit,
         "cost_ceiling_usd": validated_policy.cost_ceiling_usd,
@@ -586,7 +588,7 @@ def execute_sealed_dispatch(
         monotonic=monotonic,
     )
     reconciled = _reconcile_prepared(repository, value.prepared)
-    remaining = EXPECTED_TEST_OUTPUTS - len(reconciled)
+    remaining = value.plan.expected_test_outputs - len(reconciled)
     cohorts: tuple[SealedCohortResult, ...] = ()
     if remaining == 0:
         cohorts = _finalize_all(value, repository)
@@ -794,7 +796,7 @@ def _validated_questions(value: object, plan: SealedExecutionPlan) -> dict[str, 
         raise SealedDispatchError("sealed public question map is invalid")
     result = dict(value)
     expected = {item.instance_id for item in plan.attempts}
-    if set(result) != expected or len(expected) != 101:
+    if set(result) != expected or len(expected) != plan.question_count:
         raise SealedDispatchError("sealed public question map is invalid")
     return result
 

@@ -30,7 +30,7 @@ def _interval(estimate: float) -> dict[str, float]:
     }
 
 
-def _aggregate(identity: str) -> dict[str, object]:
+def _aggregate(identity: str, question_count: int = 101) -> dict[str, object]:
     version = (
         OFFICIAL_SOFT_EX_VERSION
         if identity == "official_soft_ex"
@@ -38,39 +38,46 @@ def _aggregate(identity: str) -> dict[str, object]:
     )
     conditions = {}
     for index, condition in enumerate(("C1", "C2", "C3", "C4"), start=1):
-        accuracy = index / 10
-        correct = index * 30
+        scheduled_attempts = question_count * 3
+        scoreable_attempts = scheduled_attempts - 3
+        scoreable_questions = question_count - 1
+        correct = index * scoreable_attempts // 10
+        accuracy = correct / scoreable_attempts
+        pass_3_count = min(21, scoreable_questions - index)
         conditions[condition] = {
             "content_refusal_rate": None,
             "correct": correct,
             "correctness_flip_count": index,
-            "correctness_flip_rate": index / 100,
-            "error_rate": index / 303,
-            "generation_outcomes": {"answered": 303 - index, "errored": index},
+            "correctness_flip_rate": index / scoreable_questions,
+            "error_rate": index / scheduled_attempts,
+            "generation_outcomes": {
+                "answered": scheduled_attempts - index,
+                "errored": index,
+            },
             "insufficient_context_rate": None,
             "mean_accuracy": accuracy,
-            "pass_0_count": 79 - index,
+            "pass_0_count": scoreable_questions - index - pass_3_count,
             "pass_1_count": index,
             "pass_2_count": 0,
-            "pass_3_count": 21,
-            "pass_3_rate": 21 / 100,
+            "pass_3_count": pass_3_count,
+            "pass_3_rate": pass_3_count / scoreable_questions,
             "per_repetition_accuracy": {
                 "1": accuracy,
                 "2": accuracy,
                 "3": accuracy,
             },
             "refused_or_error": index,
-            "refused_or_error_rate": index / 300,
+            "refused_or_error_rate": index / scoreable_attempts,
             "refusal_subtype_status": (
                 "not_observable_from_frozen_generation_contract"
             ),
-            "scheduled_attempts": 303,
-            "scoreable_attempts": 300,
-            "scoreable_questions": 100,
+            "scheduled_attempts": scheduled_attempts,
+            "scoreable_attempts": scoreable_attempts,
+            "scoreable_questions": scoreable_questions,
             "terminal_failure_classes": {},
             "unscorable_attempts": 3,
-            "wrong_answer": 300 - correct - index,
-            "wrong_rate": 1 - accuracy - index / 300,
+            "wrong_answer": scoreable_attempts - correct - index,
+            "wrong_rate": 1 - accuracy - index / scoreable_attempts,
         }
     contrasts = {
         label: {
@@ -106,7 +113,7 @@ def _aggregate(identity: str) -> dict[str, object]:
             "c4_minus_c1": contrasts["C4-C1"],
             "c4_repetition_one": _interval(0.5),
         },
-        "question_count": 101,
+        "question_count": question_count,
         "scorer": {"identity": identity, "version": version},
     }
     return {
@@ -145,6 +152,15 @@ def test_render_sealed_report_contains_both_scorers_and_no_identities() -> None:
     assert "1212 scheduled attempts" in markdown
     assert "question-" not in markdown
     assert "sealed:" not in markdown
+
+
+def test_render_sealed_report_accepts_matched_89_question_frame() -> None:
+    markdown = render_sealed_report(
+        _aggregate("official_soft_ex", 89),
+        _aggregate("sensitivity", 89),
+    )
+
+    assert "89 held-out questions and 1068 scheduled attempts" in markdown
 
 
 @pytest.mark.parametrize(

@@ -1,0 +1,38 @@
+{
+  "decision_bead_id": "omni-benchmark-ei0.9.1.1",
+  "excluded_count": 12,
+  "excluded_databases": [
+    "mental_healths_large",
+    "organ_transplant_large"
+  ],
+  "kind": "sealed-mvp-frame-metadata",
+  "schema_version": 1,
+  "selected_count": 89,
+  "selected_database_counts": {
+    "archeology_scan_large": 3,
+    "cross_border_large": 6,
+    "cybermarket_pattern_large": 6,
+    "disaster_relief_large": 4,
+    "exchange_traded_funds_large": 6,
+    "fake_account_large": 7,
+    "labor_certification_applications_large": 6,
+    "museum_artifact_large": 6,
+    "planets_data_large": 6,
+    "polar_equipment_large": 6,
+    "residential_data_large": 6,
+    "reverse_logistics_large": 6,
+    "robot_fault_prediction_large": 3,
+    "solar_panel_large": 6,
+    "sports_events_large": 6,
+    "virtual_idol_large": 6
+  },
+  "selected_ids_sha256": "9d2f19c36dce1ea88f0f057bf9b6a0f2488301f1567469e0f215385438a5de39",
+  "source": {
+    "eligible_manifest_path": "data/manifests/eligible_questions.jsonl",
+    "eligible_manifest_sha256": "ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e",
+    "frame_spec_path": "config/sealed-mvp-frame-v1.json",
+    "frame_spec_sha256": "bde96a4d925ba437b7f8ba9b85b9d29b3c8bbbc35088bfae753e338493d6c0a7",
+    "test_ids_path": "data/manifests/test_ids.txt",
+    "test_ids_sha256": "c7d4eb1aff3e9be9ffa015adcae96bb9294adf138870db24cdfbed811a9de76f"
+  }
+}

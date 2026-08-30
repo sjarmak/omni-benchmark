@@ -47,7 +47,7 @@ def _condition(condition: str) -> dict[str, object]:
     }
 
 
-def _attempts() -> tuple[SealedPlannedAttempt, ...]:
+def _attempts(question_count: int = 101) -> tuple[SealedPlannedAttempt, ...]:
     return tuple(
         SealedPlannedAttempt(
             attempt_id=f"sealed:q-{question:03d}:{condition}:{repetition}",
@@ -60,13 +60,14 @@ def _attempts() -> tuple[SealedPlannedAttempt, ...]:
                 f"Public synthetic question {question}?".encode()
             ).hexdigest(),
         )
-        for question in range(1, 102)
+        for question in range(1, question_count + 1)
         for condition in ("C1", "C2", "C3", "C4")
         for repetition in (1, 2, 3)
     )
 
 
 def _freeze(attempts: tuple[SealedPlannedAttempt, ...]) -> FreezeBManifest:
+    question_count = len({attempt.instance_id for attempt in attempts})
     return FreezeBManifest.from_dict(
         {
             "conditions": [_condition(value) for value in ("C1", "C2", "C3", "C4")],
@@ -75,7 +76,7 @@ def _freeze(attempts: tuple[SealedPlannedAttempt, ...]) -> FreezeBManifest:
                 "postgresql_version": "18.6",
                 "snapshot_manifest_sha256": SHA_A,
             },
-            "expected_test_outputs": 1_212,
+            "expected_test_outputs": question_count * 12,
             "freeze_a_commit": "1" * 40,
             "frozen_files": {
                 "data/final-schedule.jsonl": SHA_A,
@@ -83,7 +84,7 @@ def _freeze(attempts: tuple[SealedPlannedAttempt, ...]) -> FreezeBManifest:
                 "data/manifests/test_ids.txt": SHA_C,
             },
             "kind": "freeze-b-manifest",
-            "question_count": 101,
+            "question_count": question_count,
             "recorded_at": "2026-08-29T07:00:00Z",
             "repetitions": 3,
             "schedule": {
@@ -100,8 +101,10 @@ def _freeze(attempts: tuple[SealedPlannedAttempt, ...]) -> FreezeBManifest:
     )
 
 
-def _plan() -> tuple[SealedExecutionPlan, FreezeBManifest]:
-    attempts = _attempts()
+def _plan(
+    question_count: int = 101,
+) -> tuple[SealedExecutionPlan, FreezeBManifest]:
+    attempts = _attempts(question_count)
     freeze = _freeze(attempts)
     return (
         SealedExecutionPlan(
@@ -116,6 +119,22 @@ def _plan() -> tuple[SealedExecutionPlan, FreezeBManifest]:
         ),
         freeze,
     )
+
+
+def test_matched_frame_plan_prepares_without_relaxing_membership() -> None:
+    plan, freeze = _plan(89)
+
+    prepared = prepare_sealed_attempt(
+        plan=plan,
+        freeze_b=freeze,
+        attempt_id="sealed:q-089:C4:3",
+        question="Public synthetic question 89?",
+    )
+
+    assert plan.question_count == 89
+    assert plan.expected_test_outputs == 1_068
+    assert freeze.question_count == 89
+    assert prepared.instance_id == "q-089"
 
 
 def _prepared(*, condition: str = "C1", repetition: int = 1, question: int = 1):  # type: ignore[no-untyped-def]

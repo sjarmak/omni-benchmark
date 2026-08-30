@@ -15,7 +15,7 @@ from omni_benchmark.sealed_test_release import release_sealed_test_records
 from tests.test_sealed_generation_staging import _plan, _workspace
 
 
-def _source(tmp_path: Path) -> tuple[Path, str]:
+def _source(tmp_path: Path, question_count: int = 101) -> tuple[Path, str]:
     source = tmp_path / "outside-private.jsonl"
     records = [
         {
@@ -24,7 +24,7 @@ def _source(tmp_path: Path) -> tuple[Path, str]:
             "sol_sql": [f"SELECT {question}"],
             "test_cases": [],
         }
-        for question in range(1, 102)
+        for question in range(1, question_count + 1)
     ] + [
         {
             "external_knowledge": [999],
@@ -105,3 +105,34 @@ def test_source_hash_mismatch_publishes_nothing(
             public_manifest_path=Path("data/manifests/eligible_questions.jsonl"),
         )
     assert not (workspace / "data/private/test/labels.jsonl").exists()
+
+
+def test_release_accepts_the_frozen_89_question_frame(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace = _workspace(tmp_path)
+    plan, freeze = _plan(89)
+    source, digest = _source(tmp_path, 89)
+    monkeypatch.setattr(
+        release_module, "load_sealed_execution_plan", lambda *a, **k: plan
+    )
+    monkeypatch.setattr(
+        release_module,
+        "load_freeze_b_control",
+        lambda *a, **k: SimpleNamespace(manifest=freeze),
+    )
+
+    report = release_sealed_test_records(
+        workspace,
+        source=source,
+        destination=Path("data/private/test/labels.jsonl"),
+        expected_source_sha256=digest,
+        control_commit=plan.control_commit,
+        system_commit=plan.system_commit,
+        freeze_b_path=Path("experiments/freeze-b.json"),
+        schedule_path=Path("data/final-schedule.jsonl"),
+        public_manifest_path=Path("data/manifests/eligible_questions.jsonl"),
+    )
+
+    assert report.released_count == 89
+    assert report.ignored_count == 1

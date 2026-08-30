@@ -1,4 +1,4 @@
-"""Freeze-B-bound human-custody release of exactly 101 sealed test labels."""
+"""Freeze-B-bound human-custody release of the frozen sealed test labels."""
 
 from __future__ import annotations
 
@@ -62,11 +62,12 @@ def release_sealed_test_records(
     if (
         plan.freeze_b_sha256 != control.manifest.sha256()
         or plan.system_commit != control.manifest.system_commit
+        or plan.question_count != control.manifest.question_count
     ):
         raise SealedTestReleaseError("sealed plan does not match Freeze B")
     test_ids = tuple(dict.fromkeys(attempt.instance_id for attempt in plan.attempts))
-    if len(test_ids) != 101:
-        raise SealedTestReleaseError("sealed test membership must contain 101 IDs")
+    if len(test_ids) != plan.question_count:
+        raise SealedTestReleaseError("sealed test membership is incomplete")
     try:
         report = _release_selected_records(
             source=source,
@@ -77,7 +78,7 @@ def release_sealed_test_records(
         )
     except CustodyError as error:
         raise SealedTestReleaseError(str(error)) from error
-    if report.released_count != 101:
+    if report.released_count != plan.question_count:
         raise SealedTestReleaseError("sealed test release count is invalid")
     return report
 

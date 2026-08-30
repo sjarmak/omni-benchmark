@@ -19,7 +19,6 @@ from .artifact_store import ALLOWED_RAW_ROOTS, ArtifactStore, ArtifactStoreError
 from .content_policy import ContentPolicy
 from .freeze_b import (
     CONDITIONS,
-    EXPECTED_TEST_OUTPUTS,
     FreezeBCondition,
     FreezeBError,
     FreezeBManifest,
@@ -27,7 +26,6 @@ from .freeze_b import (
 )
 from .protected_fields import ProtectedFieldError, reject_protected_fields
 from .sealed_execution_plan import SealedExecutionPlan, SealedPlannedAttempt
-from .freeze_b_schedule import TEST_IDS_PATH
 
 SCHEDULE_PATH = "data/final-schedule.jsonl"
 PUBLIC_MANIFEST_PATH = "data/manifests/eligible_questions.jsonl"
@@ -144,10 +142,12 @@ def prepare_sealed_attempt(
     frozen = dict(validated_freeze.frozen_files)
     expected_frozen = {
         SCHEDULE_PATH: validated_plan.schedule_file_sha256,
-        TEST_IDS_PATH: validated_plan.test_ids_sha256,
         PUBLIC_MANIFEST_PATH: validated_plan.public_manifest_sha256,
     }
-    if any(frozen.get(path) != digest for path, digest in expected_frozen.items()):
+    if (
+        any(frozen.get(path) != digest for path, digest in expected_frozen.items())
+        or validated_plan.test_ids_sha256 not in frozen.values()
+    ):
         raise SealedGenerationStagingError(
             "sealed plan public inputs do not match Freeze B"
         )
@@ -367,8 +367,9 @@ def _validated_plan(value: object) -> SealedExecutionPlan:
     if any(type(item) is not SealedPlannedAttempt for item in value.attempts):
         raise SealedGenerationStagingError("sealed plan attempt is invalid")
     if (
-        len(value.attempts) != EXPECTED_TEST_OUTPUTS
-        or len({item.attempt_id for item in value.attempts}) != EXPECTED_TEST_OUTPUTS
+        len(value.attempts) != value.expected_test_outputs
+        or len({item.attempt_id for item in value.attempts})
+        != value.expected_test_outputs
     ):
         raise SealedGenerationStagingError("sealed plan is incomplete")
     try:

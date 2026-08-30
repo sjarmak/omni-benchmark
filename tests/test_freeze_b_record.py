@@ -42,8 +42,8 @@ def _schedule() -> list[dict[str, object]]:
     ]
 
 
-def _test_ids() -> bytes:
-    return "".join(f"q-{question:03d}\n" for question in range(1, 102)).encode()
+def _test_ids(count: int = 101) -> bytes:
+    return "".join(f"q-{question:03d}\n" for question in range(1, count + 1)).encode()
 
 
 def _condition(condition: str) -> dict[str, object]:
@@ -81,7 +81,9 @@ def _spec(paths: list[str], freeze_a_commit: str) -> dict[str, object]:
         "kind": "freeze-b-input",
         "schedule": {
             "algorithm": "committed_block_interleaved_v1",
+            "ids_path": "data/manifests/test_ids.txt",
             "path": "data/final-schedule.jsonl",
+            "question_count": 101,
             "seed": "human-approved-seed-v1",
         },
         "schema_version": 1,
@@ -172,6 +174,46 @@ def test_record_uses_exact_commit_and_writes_canonical_mode_0600(
     assert manifest.system_commit == commit
     assert destination.read_bytes() == manifest.canonical_bytes()
     assert stat.S_IMODE(destination.stat().st_mode) == 0o600
+
+
+def test_record_binds_matched_89_question_frame(tmp_path: Path) -> None:
+    repo, _, _ = _repository(tmp_path)
+    matched_ids_path = repo / "data/manifests/sealed_mvp_ids.txt"
+    matched_ids_path.write_bytes(_test_ids(89))
+    (repo / "data/final-schedule.jsonl").write_bytes(
+        expected_schedule_bytes(
+            _test_ids(89), "human-approved-seed-v1", question_count=89
+        )
+    )
+    spec_path = repo / "config/freeze-b-input.json"
+    spec = json.loads(spec_path.read_text())
+    spec["schedule"]["ids_path"] = "data/manifests/sealed_mvp_ids.txt"
+    spec["schedule"]["question_count"] = 89
+    spec["frozen_files"].append("data/manifests/sealed_mvp_ids.txt")
+    spec["frozen_files"] = sorted(spec["frozen_files"])
+    spec_path.write_text(json.dumps(spec, indent=2, sort_keys=True) + "\n")
+    _git(
+        repo,
+        "add",
+        "config/freeze-b-input.json",
+        "data/final-schedule.jsonl",
+        "data/manifests/sealed_mvp_ids.txt",
+    )
+    _git(repo, "commit", "-qm", "select matched sealed frame")
+    commit = _git(repo, "rev-parse", "HEAD")
+
+    result = record_freeze_b(
+        repo,
+        system_commit=commit,
+        input_spec_path=Path("config/freeze-b-input.json"),
+        recorded_at=RECORDED_AT,
+        destination=Path("experiments/freeze-b.json"),
+    )
+
+    assert result.manifest.question_count == 89
+    assert result.manifest.expected_test_outputs == 1_068
+    assert result.schedule_attempt_count == 1_068
+    assert "data/manifests/sealed_mvp_ids.txt" in dict(result.manifest.frozen_files)
 
 
 def test_record_refuses_overwrite_and_abbreviated_or_non_head_commit(

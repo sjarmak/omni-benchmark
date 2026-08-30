@@ -28,10 +28,10 @@ NOW = datetime(2026, 8, 29, 8, 0, tzinfo=timezone.utc)
 RUNTIME_SHA256 = "9" * 64
 
 
-def _questions() -> dict[str, str]:
+def _questions(question_count: int = 101) -> dict[str, str]:
     return {
         f"q-{question:03d}": f"Public synthetic question {question}?"
-        for question in range(1, 102)
+        for question in range(1, question_count + 1)
     }
 
 
@@ -148,8 +148,9 @@ def _preflight(
     output_root: Path = Path("runs/sealed-final-v1"),
     receipt_name: str = "approval.json",
     receipt_changes: Mapping[str, object] | None = None,
+    question_count: int = 101,
 ):  # type: ignore[no-untyped-def]
-    plan, freeze = _plan()
+    plan, freeze = _plan(question_count)
     chosen_policy = _policy() if policy is None else policy
     binding = build_sealed_dispatch_binding(
         plan=plan,
@@ -174,7 +175,7 @@ def _preflight(
         run_id="sealed-final-v1",
         plan=plan,
         freeze_b=freeze,
-        questions=_questions(),
+        questions=_questions(question_count),
         policy=chosen_policy,
         receipt_path=receipt_path,
         now=NOW,
@@ -219,6 +220,19 @@ def test_synthetic_dispatch_stages_1212_and_finalizes_twelve_cohorts(
     assert 1 < report.maximum_observed_concurrency <= 4
     assert int(state["maximum_active"]) <= 4
     assert all(path.exists() for path in report.cohort_manifest_paths)
+
+
+def test_matched_frame_preflight_binds_exact_1068_attempts(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+
+    preflight = _preflight(workspace, question_count=89)
+
+    assert preflight.approval.binding["attempt_count"] == 1_068
+    assert len(preflight.prepared) == 1_068
+    assert preflight.plan.question_count == 89
+    assert preflight.freeze_b.question_count == 89
 
 
 def test_receipt_or_runtime_failure_precedes_writes_and_adapter_construction(

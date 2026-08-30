@@ -16,9 +16,9 @@ from typing import Any
 from .content_policy import ContentPolicy
 from .freeze_b import (
     CONDITIONS,
-    EXPECTED_TEST_OUTPUTS,
     REPETITIONS,
     FreezeBManifest,
+    expected_test_output_count,
     schedule_sha256,
 )
 from .freeze_b_control import FreezeBControlError, load_freeze_b_control
@@ -102,6 +102,14 @@ class SealedExecutionPlan:
     public_manifest_sha256: str
 
     @property
+    def question_count(self) -> int:
+        return len({attempt.instance_id for attempt in self.attempts})
+
+    @property
+    def expected_test_outputs(self) -> int:
+        return expected_test_output_count(self.question_count)
+
+    @property
     def sha256(self) -> str:
         value = {
             "attempts": [attempt.as_dict() for attempt in self.attempts],
@@ -151,6 +159,7 @@ def load_sealed_execution_plan(
     freeze_b_path: Path,
     schedule_path: Path,
     public_manifest_path: Path,
+    test_ids_path: Path = Path(TEST_IDS_PATH),
 ) -> SealedExecutionPlan:
     """Validate and materialize the no-execution plan from frozen Git objects."""
     try:
@@ -162,6 +171,7 @@ def load_sealed_execution_plan(
         )
         schedule_relative = _relative_path(schedule_path, "schedule path")
         public_relative = _relative_path(public_manifest_path, "public manifest path")
+        ids_relative = _relative_path(test_ids_path, "test IDs path")
         committed_schedule = _committed_input(
             workspace,
             control.system_commit,
@@ -171,7 +181,7 @@ def load_sealed_execution_plan(
         committed_ids = _committed_input(
             workspace,
             control.system_commit,
-            TEST_IDS_PATH,
+            ids_relative,
             maximum_bytes=MAX_TEST_IDS_BYTES,
         )
         committed_public = _committed_input(
@@ -187,7 +197,7 @@ def load_sealed_execution_plan(
     frozen = dict(control.manifest.frozen_files)
     for path, committed in (
         (schedule_relative, committed_schedule),
-        (TEST_IDS_PATH, committed_ids),
+        (ids_relative, committed_ids),
         (public_relative, committed_public),
     ):
         if frozen.get(path) != committed.sha256:
@@ -197,7 +207,9 @@ def load_sealed_execution_plan(
 
     try:
         registered_schedule = expected_schedule_bytes(
-            committed_ids.content, control.manifest.schedule_seed
+            committed_ids.content,
+            control.manifest.schedule_seed,
+            question_count=control.manifest.question_count,
         )
     except FreezeBScheduleError as error:
         raise SealedExecutionPlanError(str(error)) from error
@@ -224,7 +236,12 @@ def load_sealed_execution_plan(
         _planned_attempt(record, public_records[record["instance_id"]])
         for record in schedule_records
     )
-    _validate_plan_shape(attempts, scheduled_ids)
+    _validate_plan_shape(
+        attempts,
+        scheduled_ids,
+        question_count=control.manifest.question_count,
+        expected_outputs=control.manifest.expected_test_outputs,
+    )
     return SealedExecutionPlan(
         attempts=attempts,
         control_commit=control.control_commit,
@@ -274,14 +291,14 @@ def load_sealed_public_questions(
         )
     records = _public_records(committed.content)
     planned = {item.instance_id: item for item in plan.attempts}
-    if set(records) != set(planned) or any(
+    if not set(planned).issubset(records) or any(
         records[instance_id][:2] != (item.database, item.question_sha256)
         for instance_id, item in planned.items()
     ):
         raise SealedExecutionPlanError(
             "public questions do not match the frozen sealed plan"
         )
-    return {instance_id: record[2] for instance_id, record in records.items()}
+    return {instance_id: records[instance_id][2] for instance_id in planned}
 
 
 def _verify_plan_runtime_source(workspace: Path, system_commit: str) -> None:
@@ -401,15 +418,19 @@ def _planned_attempt(
 
 
 def _validate_plan_shape(
-    attempts: tuple[SealedPlannedAttempt, ...], scheduled_ids: set[str]
+    attempts: tuple[SealedPlannedAttempt, ...],
+    scheduled_ids: set[str],
+    *,
+    question_count: int,
+    expected_outputs: int,
 ) -> None:
-    if len(attempts) != EXPECTED_TEST_OUTPUTS or len(scheduled_ids) != 101:
+    if len(attempts) != expected_outputs or len(scheduled_ids) != question_count:
         raise SealedExecutionPlanError("sealed execution plan is incomplete")
     coordinates = {
         (attempt.instance_id, attempt.condition, attempt.repetition)
         for attempt in attempts
     }
-    if len(coordinates) != EXPECTED_TEST_OUTPUTS:
+    if len(coordinates) != expected_outputs:
         raise SealedExecutionPlanError(
             "sealed execution plan has duplicate coordinates"
         )
@@ -419,7 +440,9 @@ def _validate_plan_shape(
         for repetition in range(1, REPETITIONS + 1)
     }
     cohort_counts = Counter(attempt.cohort_id for attempt in attempts)
-    if set(cohort_counts) != expected_cohorts or set(cohort_counts.values()) != {101}:
+    if set(cohort_counts) != expected_cohorts or set(cohort_counts.values()) != {
+        question_count
+    }:
         raise SealedExecutionPlanError("sealed execution plan cohorts are incomplete")
 
 
@@ -451,6 +474,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--freeze-b", type=Path, required=True)
     parser.add_argument("--schedule", type=Path, required=True)
     parser.add_argument("--public-manifest", type=Path, required=True)
+    parser.add_argument("--test-ids", type=Path, default=Path(TEST_IDS_PATH))
     return parser
 
 
@@ -463,6 +487,7 @@ def plan_main(argv: Sequence[str] | None = None) -> int:
         freeze_b_path=arguments.freeze_b,
         schedule_path=arguments.schedule,
         public_manifest_path=arguments.public_manifest,
+        test_ids_path=arguments.test_ids,
     )
     print(json.dumps(result.public_summary(), sort_keys=True))
     return 0

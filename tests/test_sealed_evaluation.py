@@ -42,9 +42,9 @@ def test_atomic_directory_publish_never_replaces_existing_destination(
     assert destination.is_dir()
 
 
-def _complete_batch(workspace: Path):  # type: ignore[no-untyped-def]
-    plan, freeze = _plan()
-    questions = _questions()
+def _complete_batch(workspace: Path, question_count: int = 101):  # type: ignore[no-untyped-def]
+    plan, freeze = _plan(question_count)
+    questions = _questions(question_count)
     repository = SealedAttemptRepository(workspace, Path("runs/sealed-attempts"))
     for planned in plan.attempts:
         prepared = prepare_sealed_attempt(
@@ -122,7 +122,9 @@ def test_partial_or_changed_cohort_fails_closed(tmp_path: Path) -> None:
         )
 
 
-def _private_release(workspace: Path, *, foreign: bool = False) -> tuple[Path, str]:
+def _private_release(
+    workspace: Path, *, foreign: bool = False, question_count: int = 101
+) -> tuple[Path, str]:
     destination = workspace / "data/private/test/labels.jsonl"
     destination.parent.mkdir(parents=True)
     records = [
@@ -132,7 +134,7 @@ def _private_release(workspace: Path, *, foreign: bool = False) -> tuple[Path, s
             "sol_sql": [f"SELECT 'q-{question:03d}'"],
             "test_cases": [],
         }
-        for question in range(1, 102)
+        for question in range(1, question_count + 1)
     ]
     if foreign:
         records.append(
@@ -265,3 +267,50 @@ def test_score_freezes_gold_then_returns_complete_sql_free_results(
             plan=scoring_plan,
             results=results,
         )
+
+
+def test_matched_frame_scores_and_publishes_all_1068_attempts(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    plan, freeze, questions = _complete_batch(workspace, 89)
+    batch = load_sealed_output_batch(
+        workspace,
+        output_root=Path("runs/sealed-cohorts"),
+        plan=plan,
+        freeze_b=freeze,
+        questions=questions,
+    )
+    release, digest = _private_release(workspace, question_count=89)
+    scoring_plan = prepare_sealed_evaluation_plan(
+        workspace,
+        batch=batch,
+        release_path=release,
+        expected_release_sha256=digest,
+        public_records=_public_records(plan),
+    )
+    provider = SyntheticIsolationProvider(
+        {
+            **{
+                f"SELECT 'q-{question:03d}'": [(f"q-{question:03d}",)]
+                for question in range(1, 90)
+            },
+            "SELECT 1": [(1,)],
+        }
+    )
+
+    results = score_sealed_evaluation(scoring_plan, provider)
+    summary = publish_sealed_evaluation(
+        workspace,
+        output_root=Path("runs/sealed-score-final"),
+        plan=scoring_plan,
+        results=results,
+    )
+
+    assert len(results) == 1_068
+    receipt = json.loads(
+        (workspace / "runs/sealed-score-final/receipt.json").read_text(encoding="utf-8")
+    )
+    assert receipt["question_count"] == 89
+    assert receipt["attempt_count"] == 1_068
+    assert summary["output_root"] == "runs/sealed-score-final"

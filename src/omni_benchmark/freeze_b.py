@@ -100,6 +100,13 @@ class FreezeBError(ValueError):
     """Raised when Freeze-B or final-run provenance is incomplete or mutable."""
 
 
+def expected_test_output_count(question_count: int) -> int:
+    """Return the complete C1-C4 by repetition coordinate count for a frame."""
+    if type(question_count) is not int or question_count <= 0:
+        raise FreezeBError("question_count must be a positive integer")
+    return question_count * len(CONDITIONS) * REPETITIONS
+
+
 @dataclass(frozen=True)
 class FreezeBCondition:
     """One frozen condition specification shared by all final repetitions."""
@@ -220,6 +227,8 @@ class FreezeBManifest:
             libpq_version=libpq_version,
             scorer_source_commit=scorer_source_commit,
             scorer_metadata_json=scorer_metadata_json,
+            question_count=materialized["question_count"],
+            expected_test_outputs=materialized["expected_test_outputs"],
         )
 
     def condition(self, condition: str) -> FreezeBCondition:
@@ -319,11 +328,8 @@ class SealedRunManifest:
             raise FreezeBError("sealed run schema_version is invalid")
         if materialized["scope"] != "test":
             raise FreezeBError("sealed run scope must be test")
-        if (
-            materialized["question_count"] != QUESTION_COUNT
-            or type(materialized["question_count"]) is not int
-        ):
-            raise FreezeBError("sealed run question_count must equal 101")
+        if materialized["question_count"] != freeze_b.question_count:
+            raise FreezeBError("sealed run question_count does not match Freeze B")
         repetition = materialized["repetition"]
         if type(repetition) is not int or repetition not in range(1, REPETITIONS + 1):
             raise FreezeBError("sealed run repetition must be 1, 2, or 3")
@@ -379,6 +385,7 @@ class SealedRunManifest:
             cli_versions=cli_versions,
             started_at=started_at,
             finished_at=finished_at,
+            question_count=materialized["question_count"],
         )
 
     def as_dict(self) -> dict[str, object]:
@@ -430,13 +437,16 @@ def _require_fixed(value: Mapping[str, Any]) -> None:
     fixed = {
         "kind": KIND,
         "schema_version": SCHEMA_VERSION,
-        "question_count": QUESTION_COUNT,
         "repetitions": REPETITIONS,
-        "expected_test_outputs": EXPECTED_TEST_OUTPUTS,
     }
     for field, expected in fixed.items():
         if type(value[field]) is not type(expected) or value[field] != expected:
             raise FreezeBError(f"{field} must equal {expected!r}")
+    question_count = value["question_count"]
+    expected_outputs = value["expected_test_outputs"]
+    expected = expected_test_output_count(question_count)
+    if type(expected_outputs) is not int or expected_outputs != expected:
+        raise FreezeBError(f"expected_test_outputs must equal {expected!r}")
 
 
 def _conditions(value: object, policy: ContentPolicy) -> tuple[FreezeBCondition, ...]:
