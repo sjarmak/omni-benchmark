@@ -29,6 +29,7 @@ from .direct_probe_cli import (
 )
 from .direct_sql_attempt import write_direct_attempt
 from .direct_sql_capture import DirectCaptureError, DirectSqlCapture
+from .e02_candidate import E02CandidateError, load_committed_e02_candidate
 from .omni_attempt import C4AttemptArtifacts, C4AttemptSpec
 from .omni_capture import OmniJobCapture, OmniJobClient, OmniProbeResult
 from .omni_cli import OmniCliClient
@@ -290,8 +291,11 @@ def _capture_public_baseline_omni(
     )
     database = _required_environment(plan.environment, "OMNI_SEMANTIC_DATABASE")
     try:
-        semantic_plan = committed_bundle_plan(
-            plan.workspace, plan.arguments.system_commit, database
+        semantic_plan = _committed_semantic_plan(
+            plan.workspace,
+            plan.arguments.system_commit,
+            database,
+            plan.environment.get("OMNI_SEMANTIC_CANDIDATE_KIND", "baseline"),
         )
         observed_semantic_sha256 = verified_semantic_deployment_sha256(
             semantic_plan,
@@ -301,7 +305,13 @@ def _capture_public_baseline_omni(
                 if path not in {"model", "relationships"}
             },
         )
-    except (OmniDeploymentCliError, OmniSemanticDeploymentError) as error:
+    except (
+        E02CandidateError,
+        KeyError,
+        OmniDeploymentCliError,
+        OmniSemanticDeploymentError,
+        ValueError,
+    ) as error:
         raise omni_probe.OmniProbeCliError(
             "C4 semantic model drifted after verified deployment"
         ) from error
@@ -316,6 +326,19 @@ def _capture_public_baseline_omni(
     if sleep is not None:
         options["sleep"] = sleep
     return OmniJobCapture(client, plan.store, **options).probe(plan.question)
+
+
+def _committed_semantic_plan(
+    workspace: Path,
+    system_commit: str,
+    database: str,
+    candidate_kind: object,
+) -> object:
+    if candidate_kind == "baseline":
+        return committed_bundle_plan(workspace, system_commit, database)
+    if candidate_kind == "e02":
+        return load_committed_e02_candidate(workspace, system_commit).plans[database]
+    raise ValueError("semantic candidate kind is invalid")
 
 
 def _c4_attempt_spec(plan: ProbePlan) -> C4AttemptSpec:

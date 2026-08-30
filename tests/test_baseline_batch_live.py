@@ -261,6 +261,7 @@ def test_c4_dispatch_passes_content_and_budget_binding_to_child(tmp_path: Path) 
         common_environment={"OMNI_BASE_URL": "https://example.test"},
         runner=runner,
         timeout_seconds=10,
+        semantic_candidate_kind="e02",
         deployment_targets={
             "database_1": DeploymentTarget(
                 branch_id="branch-1",
@@ -285,6 +286,7 @@ def test_c4_dispatch_passes_content_and_budget_binding_to_child(tmp_path: Path) 
     assert observed["OMNI_SEMANTIC_MODEL_SHA256"] == "d" * 64
     assert observed["OMNI_COST_RESERVATION_USD"] == "7.000000"
     assert observed["OMNI_BUDGET_POLICY_SHA256"] == budget.sha256
+    assert observed["OMNI_SEMANTIC_CANDIDATE_KIND"] == "e02"
 
 
 def test_dispatcher_runs_direct_subprocesses_with_database_specific_environment(

@@ -466,6 +466,9 @@ def _execute_live(
         timeout_seconds=arguments.subprocess_timeout_seconds,
         deployment_targets=targets,
         c4_budget=budget if targets is not None else None,
+        semantic_candidate_kind=(
+            "e02" if arguments.execute_live_e02_dev_a_experiment else "baseline"
+        ),
     )
     report = run_baseline_batch(
         schedule,

@@ -328,7 +328,10 @@ class LiveBaselineDispatcher:
         timeout_seconds: float,
         deployment_targets: Mapping[str, DeploymentTarget] | None = None,
         c4_budget: BatchBudget | None = None,
+        semantic_candidate_kind: str = "baseline",
     ) -> None:
+        if semantic_candidate_kind not in {"baseline", "e02"}:
+            raise BaselineBatchError("semantic candidate kind is invalid")
         self._planned = {attempt.attempt_id: attempt for attempt in plan.attempts}
         self._database_environments = database_environments
         self._common_environment = dict(common_environment)
@@ -338,6 +341,7 @@ class LiveBaselineDispatcher:
             None if deployment_targets is None else dict(deployment_targets)
         )
         self._c4_budget = c4_budget
+        self._semantic_candidate_kind = semantic_candidate_kind
         self._claude_slots: queue.Queue[Path] = queue.Queue()
         for path in plan.claude_config_directories:
             self._claude_slots.put(path)
@@ -403,6 +407,7 @@ class LiveBaselineDispatcher:
                 else Decimal("0")
             ),
             "OMNI_MODEL_ID": target.model_id,
+            "OMNI_SEMANTIC_CANDIDATE_KIND": self._semantic_candidate_kind,
             "OMNI_SEMANTIC_DATABASE": attempt.database,
             "OMNI_SEMANTIC_MODEL_SHA256": target.semantic_model_sha256,
         }

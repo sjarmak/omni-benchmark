@@ -11628,3 +11628,29 @@ The immutable v4 failure and diagnostic remain preserved.
 mechanism contrast.** This correction is required to make the preregistered
 E02 candidate evaluable; it is not a result-driven intervention or evidence of
 held-out improvement.
+
+## 2026-08-30 — D-189: Bind E02 runtime readback to the E02 candidate
+
+### Observation and hypothesis
+
+E02 generation v2 and v3 each preserved four zero-provider infrastructure
+failures: v2 ran from a workspace whose HEAD no longer matched the exact system
+commit, while v3 found stale ignored bytecode in the isolated exact-commit
+worktree. V4 passed both preflights and authenticated to Omni, but all four
+started workers failed before job creation because the attempt adapter rebuilt
+the baseline semantic bundle and compared it with the verified E02 deployment.
+The batch dispatcher passes the E02 model, branch, and authenticated semantic
+digest but not the candidate kind, so the child cannot select the E02 plan for
+exact readback.
+
+The minimal general fix is to bind a validated semantic-candidate kind through
+E02 orchestration and load the committed E02 plan only for that kind. Baseline
+C4 must retain its existing committed baseline-plan path. Failure-first tests
+must cover both branches and reject unknown kinds. The change may use only the
+public committed bundle and deployment evidence; no question, label,
+correctness, database-specific rule, dev-B data, test data, or sealed aggregate
+is an input.
+
+### Intervention and result
+
+Pending.

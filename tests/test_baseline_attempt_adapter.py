@@ -9,6 +9,40 @@ import pytest
 import omni_benchmark.baseline_attempt_adapter as adapter
 
 
+def test_e02_semantic_readback_uses_the_committed_e02_plan(monkeypatch) -> None:
+    observed: dict[str, object] = {}
+    e02_plan = object()
+    candidate = SimpleNamespace(plans={"sample_large": e02_plan})
+
+    monkeypatch.setattr(
+        adapter,
+        "load_committed_e02_candidate",
+        lambda workspace, commit: (
+            observed.update(workspace=workspace, commit=commit) or candidate
+        ),
+        raising=False,
+    )
+    monkeypatch.setattr(
+        adapter,
+        "committed_bundle_plan",
+        lambda *_: pytest.fail("E02 must not rebuild the baseline bundle"),
+    )
+
+    result = adapter._committed_semantic_plan(
+        Path("/workspace"), "a" * 40, "sample_large", "e02"
+    )
+
+    assert result is e02_plan
+    assert observed == {"workspace": Path("/workspace"), "commit": "a" * 40}
+
+
+def test_semantic_readback_rejects_an_unknown_candidate_kind() -> None:
+    with pytest.raises(ValueError, match="candidate kind"):
+        adapter._committed_semantic_plan(
+            Path("/workspace"), "a" * 40, "sample_large", "unknown"
+        )
+
+
 def test_baseline_preparer_reuses_direct_preflight_with_public_train_scope(
     monkeypatch,
 ) -> None:
