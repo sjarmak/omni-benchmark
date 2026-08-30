@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import stat
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -29,11 +30,12 @@ FEATURES = (
     "where",
     "window",
 )
+OMNI_REFERENCE = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_.]*)\}")
 
 
 def sql_features(sql: str) -> dict[str, bool | int]:
     """Return value-free structural features for one PostgreSQL query."""
-    tree = sqlglot.parse_one(sql, read="postgres")
+    tree = sqlglot.parse_one(OMNI_REFERENCE.sub(r"\1", sql), read="postgres")
     relations = {table.sql(dialect="postgres") for table in tree.find_all(exp.Table)}
     return {
         "aggregate": any(tree.find_all(exp.AggFunc)),
@@ -96,8 +98,8 @@ def _record_for_attempt(
 
 def _attempt_identity(attempt_id: str) -> tuple[str, str]:
     parts = attempt_id.rsplit(":", 3)
-    if len(parts) != 4 or parts[2] not in {"C1", "C2", "C3"}:
-        raise ValueError("invalid direct attempt identity")
+    if len(parts) != 4 or parts[2] not in {"C1", "C2", "C3", "C4"}:
+        raise ValueError("invalid attempt identity")
     return parts[1], parts[2]
 
 
@@ -131,7 +133,7 @@ def _summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 def _wrong_rates(rows: list[dict[str, Any]]) -> dict[str, Any]:
     result: dict[str, Any] = {}
-    for condition in ("C1", "C2", "C3"):
+    for condition in sorted({row["condition"] for row in rows}):
         values = [
             row
             for row in rows
@@ -153,6 +155,84 @@ def _wrong_rates(rows: list[dict[str, Any]]) -> dict[str, Any]:
             }
         result[condition] = condition_result
     return result
+
+
+def _semantic_query_sql(record: dict[str, Any]) -> str | None:
+    generated_sql = record.get("generated_sql")
+    if isinstance(generated_sql, str) and generated_sql:
+        return generated_sql
+    generated_query = record.get("generated_query")
+    if isinstance(generated_query, str):
+        try:
+            generated_query = json.loads(generated_query)
+        except json.JSONDecodeError:
+            return None
+    if not isinstance(generated_query, dict):
+        return None
+    user_edited_sql = generated_query.get("userEditedSQL")
+    if isinstance(user_edited_sql, str) and user_edited_sql:
+        return user_edited_sql
+    return None
+
+
+def _verified_official_score(
+    workspace: Path, score_root_name: str
+) -> tuple[dict[str, Any], str]:
+    score_root = workspace / "experiments/autoresearch/raw" / score_root_name
+    receipt = _json(score_root / "receipt.json")
+    score_path = workspace / receipt["artifacts"]["official"]["path"]
+    score_content = _bounded_bytes(score_path)
+    expected_sha256 = receipt["artifacts"]["official"]["sha256"]
+    if hashlib.sha256(score_content).hexdigest() != expected_sha256:
+        raise ValueError("official score artifact hash changed")
+    score = json.loads(score_content)
+    if not isinstance(score, dict):
+        raise ValueError("official score artifact must be an object")
+    return score, expected_sha256
+
+
+def analyze_c4(workspace: Path, generation_root: Path) -> dict[str, Any]:
+    """Summarize frozen C4 dev-A query structure without emitting identities."""
+    score, score_sha256 = _verified_official_score(
+        workspace, "public-c4-baseline-v8-dev-a-scores-v2"
+    )
+    index = _generation_index([generation_root])
+    rows: list[dict[str, Any]] = []
+    for attempt in score["attempts"]:
+        if attempt.get("status") != "scored" or attempt.get("outcome") not in {
+            "correct",
+            "wrong_answer",
+            "refused_or_error",
+        }:
+            continue
+        paths = index.get(attempt["generation_sha256"], [])
+        record = _record_for_attempt(
+            paths, attempt["attempt_id"], attempt["generation_record_sha256"]
+        )
+        _, condition = _attempt_identity(attempt["attempt_id"])
+        if condition != "C4":
+            raise ValueError("C4 score artifact contains another condition")
+        sql = _semantic_query_sql(record)
+        features = None
+        if sql is not None:
+            try:
+                features = sql_features(sql)
+            except sqlglot.errors.SqlglotError:
+                features = None
+        rows.append(
+            {
+                "condition": condition,
+                "features": features,
+                "outcome": attempt["outcome"],
+            }
+        )
+    return {
+        "artifact_sha256": score_sha256,
+        "row_count": len(rows),
+        "schema_version": 1,
+        "sql_shape_summary": _summarize(rows),
+        "wrong_rates_by_feature": _wrong_rates(rows),
+    }
 
 
 def _paired_patterns(score_attempts: list[dict[str, Any]]) -> dict[str, int]:
@@ -233,8 +313,15 @@ def analyze(workspace: Path) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, required=True)
+    parser.add_argument("--c4-generation-root", type=Path)
     arguments = parser.parse_args()
-    print(json.dumps(analyze(arguments.workspace.resolve(strict=True)), sort_keys=True))
+    workspace = arguments.workspace.resolve(strict=True)
+    result = (
+        analyze(workspace)
+        if arguments.c4_generation_root is None
+        else analyze_c4(workspace, arguments.c4_generation_root.resolve(strict=True))
+    )
+    print(json.dumps(result, sort_keys=True))
     return 0
 
 

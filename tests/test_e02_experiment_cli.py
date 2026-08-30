@@ -10,6 +10,10 @@ from pathlib import Path
 
 import pytest
 
+from omni_benchmark.baseline_batch import (
+    c4_dev_a_experiment_schedule,
+    load_committed_baseline_schedule,
+)
 from omni_benchmark.e02_experiment_cli import (
     E02ExperimentError,
     _e02_deployment_identity,
@@ -45,7 +49,7 @@ def _arguments() -> list[str]:
         "--expected-candidate-set-sha256",
         CANDIDATE_SHA256,
         "--baseline-freeze",
-        "experiments/autoresearch/state/public-c4-baseline-v4-freeze.json",
+        "experiments/autoresearch/state/public-c4-baseline-v8-freeze.json",
         "--expected-baseline-selection-sha256",
         "b" * 64,
     ]
@@ -62,12 +66,19 @@ def test_dry_e02_plan_is_exact_public_and_provider_inert(
     output = json.loads(capsys.readouterr().out)
     assert output["candidate_set_sha256"] == CANDIDATE_SHA256
     assert output["baseline_selection_sha256"] == "b" * 64
-    assert output["database_count"] == 18
-    assert output["file_count"] == 272
+    assert output["candidate_database_count"] == 18
+    assert output["database_count"] == 16
+    assert output["deployment_database_count"] == 16
+    assert output["file_count"] == 244
     assert output["relationship_count"] == 91
     assert output["schedule_attempt_count"] == 136
     assert output["live_execution"] == "not_started"
     assert output["approval_binding"]["condition"] == "C4"
+    assert (
+        output["approval_binding"]["deployment_sha256"]
+        == output["deployment_set_sha256"]
+    )
+    assert output["deployment_set_sha256"] != output["candidate_set_sha256"]
     assert len(output["approval_binding"]["execution_plan_sha256"]) == 64
 
 
@@ -110,7 +121,15 @@ def test_exact_receipt_is_consumed_before_deployment_construction() -> None:
         events.append("consumed")
         return ROOT / "synthetic-consumption.json"
 
-    def deploy(*_args: object, **_kwargs: object) -> int:
+    def deploy(*_args: object, **kwargs: object) -> int:
+        bundle_loader = kwargs["bundle_loader"]
+        plans, diagnostics = bundle_loader(ROOT, _head())  # type: ignore[operator]
+        full = load_committed_baseline_schedule(
+            ROOT, _head(), run_id="e02-dev-a-deployment-v1"
+        )
+        schedule = c4_dev_a_experiment_schedule(ROOT, _head(), full)
+        assert set(plans) == {attempt.database for attempt in schedule.attempts}
+        assert diagnostics == {}
         events.append("deployment-constructed")
         return 0
 
@@ -149,7 +168,7 @@ def test_missing_c4_baseline_freeze_blocks_e02_plan() -> None:
 
 
 def _baseline_freeze(workspace: Path, content: bytes) -> tuple[Path, str]:
-    relative = Path("experiments/autoresearch/state/public-c4-baseline-v4-freeze.json")
+    relative = Path("experiments/autoresearch/state/public-c4-baseline-v8-freeze.json")
     target = workspace / relative
     target.parent.mkdir(parents=True)
     target.write_bytes(content)
@@ -158,6 +177,33 @@ def _baseline_freeze(workspace: Path, content: bytes) -> tuple[Path, str]:
 
 
 def test_baseline_freeze_validator_accepts_exact_private_public_freeze(
+    tmp_path: Path,
+) -> None:
+    content = json.dumps(
+        {
+            "counts": {
+                "answerable_attempts": 136,
+                "answered": 91,
+                "attempts": 136,
+                "databases": 16,
+                "errored": 45,
+                "refused": 0,
+                "scheduled_attempts": 154,
+                "scheduled_databases": 18,
+                "unscorable_attempts": 18,
+            },
+            "entries": [{} for _ in range(136)],
+            "kind": "public-c4-baseline-freeze",
+            "schema_version": 1,
+        },
+        separators=(",", ":"),
+    ).encode()
+    relative, digest = _baseline_freeze(tmp_path, content)
+
+    assert validate_c4_baseline_freeze(tmp_path, relative, digest) == digest
+
+
+def test_baseline_freeze_validator_rejects_obsolete_129_attempt_frame(
     tmp_path: Path,
 ) -> None:
     content = json.dumps(
@@ -171,15 +217,19 @@ def test_baseline_freeze_validator_accepts_exact_private_public_freeze(
     ).encode()
     relative, digest = _baseline_freeze(tmp_path, content)
 
-    assert validate_c4_baseline_freeze(tmp_path, relative, digest) == digest
+    with pytest.raises(E02ExperimentError, match="freeze identity"):
+        validate_c4_baseline_freeze(tmp_path, relative, digest)
 
 
 def test_baseline_freeze_validator_rejects_duplicate_keys(tmp_path: Path) -> None:
     content = (
         b'{"kind":"public-c4-baseline-freeze","kind":"public-c4-baseline-freeze",'
         b'"schema_version":1,"entries":['
-        + b",".join(b"{}" for _ in range(129))
-        + b'],"counts":{"attempts":129,"databases":10}}'
+        + b",".join(b"{}" for _ in range(136))
+        + b'],"counts":{"answerable_attempts":136,"answered":91,'
+        + b'"attempts":136,"databases":16,"errored":45,"refused":0,'
+        + b'"scheduled_attempts":154,"scheduled_databases":18,'
+        + b'"unscorable_attempts":18}}'
     )
     relative, digest = _baseline_freeze(tmp_path, content)
 
@@ -192,7 +242,7 @@ def test_baseline_freeze_validator_rejects_symlink(tmp_path: Path) -> None:
     private = tmp_path / "private-freeze.json"
     private.write_bytes(content)
     private.chmod(0o600)
-    relative = Path("experiments/autoresearch/state/public-c4-baseline-v4-freeze.json")
+    relative = Path("experiments/autoresearch/state/public-c4-baseline-v8-freeze.json")
     target = tmp_path / relative
     target.parent.mkdir(parents=True)
     os.symlink(private, target)

@@ -53,6 +53,8 @@ class E02DeploymentPlan:
 
     candidate: E02CommittedCandidate
     baseline_selection_sha256: str
+    deployment_databases: tuple[str, ...]
+    deployment_set_sha256: str
     execution_plan_sha256: str
     file_count: int
     output_root: Path
@@ -64,7 +66,7 @@ class E02DeploymentPlan:
     def approval_binding(self) -> dict[str, str]:
         return {
             "condition": "C4",
-            "deployment_sha256": self.candidate.candidate_set_sha256,
+            "deployment_sha256": self.deployment_set_sha256,
             "execution_plan_sha256": self.execution_plan_sha256,
             "output_root": self.output_root.as_posix(),
             "run_id": self.run_id,
@@ -77,7 +79,10 @@ class E02DeploymentPlan:
             "approval_binding": self.approval_binding,
             "candidate_set_sha256": self.candidate.candidate_set_sha256,
             "baseline_selection_sha256": self.baseline_selection_sha256,
-            "database_count": len(self.candidate.plans),
+            "candidate_database_count": len(self.candidate.plans),
+            "database_count": len(self.deployment_databases),
+            "deployment_database_count": len(self.deployment_databases),
+            "deployment_set_sha256": self.deployment_set_sha256,
             "execution_plan_sha256": self.execution_plan_sha256,
             "file_count": self.file_count,
             "live_execution": "not_started",
@@ -121,18 +126,38 @@ def prepare_e02_deployment_plan(
         raise E02ExperimentError("E02 public inputs are invalid") from error
     if candidate.candidate_set_sha256 != expected_candidate:
         raise E02ExperimentError("E02 candidate set does not match expectation")
+    deployment_databases = tuple(
+        sorted({attempt.database for attempt in schedule.attempts})
+    )
+    if any(database not in candidate.plans for database in deployment_databases):
+        raise E02ExperimentError("E02 candidate does not cover the execution schedule")
     database_plans = {
         database: {
-            "manifest_sha256": plan.manifest_sha256,
-            "semantic_deployment_sha256": semantic_deployment_sha256(plan),
+            "manifest_sha256": candidate.plans[database].manifest_sha256,
+            "semantic_deployment_sha256": semantic_deployment_sha256(
+                candidate.plans[database]
+            ),
         }
-        for database, plan in sorted(candidate.plans.items())
+        for database in deployment_databases
     }
-    file_count = sum(len(plan.files) for plan in candidate.plans.values())
+    deployment_set_sha256 = hashlib.sha256(
+        _canonical(
+            {
+                "candidate_set_sha256": candidate.candidate_set_sha256,
+                "databases": database_plans,
+                "kind": "e02-dev-a-selected-deployment-set",
+                "schema_version": 1,
+            }
+        )
+    ).hexdigest()
+    file_count = sum(
+        len(candidate.plans[database].files) for database in deployment_databases
+    )
     identity = {
         "baseline_selection_sha256": baseline_selection_sha256,
         "candidate_set_sha256": candidate.candidate_set_sha256,
         "databases": database_plans,
+        "deployment_set_sha256": deployment_set_sha256,
         "file_count": file_count,
         "kind": "e02-dev-a-deployment-plan",
         "output_root": selected_output.as_posix(),
@@ -145,6 +170,8 @@ def prepare_e02_deployment_plan(
     return E02DeploymentPlan(
         candidate=candidate,
         baseline_selection_sha256=baseline_selection_sha256,
+        deployment_databases=deployment_databases,
+        deployment_set_sha256=deployment_set_sha256,
         execution_plan_sha256=hashlib.sha256(_canonical(identity)).hexdigest(),
         file_count=file_count,
         output_root=selected_output,
@@ -222,7 +249,13 @@ def e02_experiment_main(
             ],
             client_factory=client_factory,
             commit_observer=lambda _workspace: plan.candidate.source_commit,
-            bundle_loader=lambda _workspace, _commit: (dict(plan.candidate.plans), {}),
+            bundle_loader=lambda _workspace, _commit: (
+                {
+                    database: plan.candidate.plans[database]
+                    for database in plan.deployment_databases
+                },
+                {},
+            ),
             identity_factory=_e02_deployment_identity,
         )
     except (C4ProductionApprovalError, OmniDeploymentCliError) as error:
@@ -323,15 +356,27 @@ def validate_c4_baseline_freeze(
         reject_forbidden_keys(value)
     except (UnicodeError, json.JSONDecodeError, ValueError) as error:
         raise E02ExperimentError("C4 baseline freeze is invalid") from error
+    counts = value.get("counts") if isinstance(value, Mapping) else None
+    terminal_counts = (
+        tuple(counts.get(key) for key in ("answered", "errored", "refused"))
+        if isinstance(counts, Mapping)
+        else ()
+    )
     if (
         not isinstance(value, Mapping)
         or value.get("kind") != "public-c4-baseline-freeze"
         or value.get("schema_version") != 1
         or not isinstance(value.get("entries"), list)
-        or len(value["entries"]) != 129
-        or not isinstance(value.get("counts"), Mapping)
-        or value["counts"].get("attempts") != 129
-        or value["counts"].get("databases") != 10
+        or len(value["entries"]) != 136
+        or not isinstance(counts, Mapping)
+        or counts.get("answerable_attempts") != 136
+        or counts.get("attempts") != 136
+        or counts.get("databases") != 16
+        or counts.get("scheduled_attempts") != 154
+        or counts.get("scheduled_databases") != 18
+        or counts.get("unscorable_attempts") != 18
+        or any(type(item) is not int or item < 0 for item in terminal_counts)
+        or sum(terminal_counts) != 136
     ):
         raise E02ExperimentError("C4 baseline freeze identity is invalid")
     return observed
