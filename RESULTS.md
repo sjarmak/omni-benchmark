@@ -500,10 +500,10 @@ telemetry contracts, experiment history, and two frozen scorers. Private gold
 and hidden annotations remain outside the repository. See
 [README.md](README.md) for reproduction commands and
 [manuscript/main.pdf](manuscript/main.pdf) for the supporting protocol paper.
-The final system is frozen at commit
-`d8d1a9335fe2107157f8ef0814f99e80ffd7ef1e`; its direct-child control commit is
-`079e4ce8399b3c29545c60753e5e2da6e68ca582`, and the Freeze-B manifest SHA-256
-is `902fb1be70fd20fb193a8f302b25d5c68a7d6a37b78db6124d84868b92151a80`.
+The final system is frozen at successor commit
+`c8a784f8cd4a03e8ccc22b1ea007a2cf3e56a631`; its direct-child control commit is
+`e094c7c7c5a481106046f6c30e2eb77a14502eea`, and the Freeze-B manifest SHA-256
+is `7fd65b9a619d07fdf76e6f04cf608f8be09b7a9a8af9b71d9757aa1106c699d5`.
 The C1 sensitivity subset, allocation diagnostics, preserved-artifact hashes,
 and notional cost/time projection are committed separately from its future raw
 run artifacts; OAuth dollars remain telemetry rather than a run-selection

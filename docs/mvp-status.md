@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-30T07:13:59-04:00 (America/New_York).
+Last reconciled: 2026-08-30T07:23:43-04:00 (America/New_York).
 
 ## Current position
 
@@ -54,8 +54,8 @@ limitation, not as system or gold failures.
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
 | Minimal dev-A experiment set | **Cut from the MVP** | E01 audited as already present in the baseline, inconclusive. E02 compiled, hash-bound, never evaluated. Both are reported as-is with artifacts intact; neither enters the final system. Deviation recorded in `docs/protocol-diff.md`. |
-| Final candidate and Freeze B | **Complete** | System `d8d1a93…`, direct-child control `079e4ce…`, Freeze-B SHA-256 `902fb1be…51a80`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
-| Sealed C1-C4 evaluation | Exact provider-inert plan passes; not run | Plan SHA-256 `af9674b9…1a884`; four runtime conditions and all 16 C4 deployment targets exact-match Freeze B. The next result-producing gate is the standing-authorized sealed generation run. |
+| Final candidate and Freeze B | **Complete** | Successor system `c8a784f…`, direct-child control `e094c7c…`, Freeze-B SHA-256 `7fd65b9a…c699d5`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
+| Sealed C1-C4 evaluation | Continuation preparation | The first dispatch preserved one generation, zero cohorts, and one consumed receipt before a missing system-CA infrastructure failure. The general fix passes 170 frozen-boundary tests; a successor Freeze B and fresh receipt are next. |
 | Results/product report | Draft only | `RESULTS.md` already contains the design, direct baseline, failure analysis, and product findings. Replace every pending governed/sealed result after the immutable aggregates exist, then finish the concise submission-ready report. |
 
 ## What is already usable
@@ -82,16 +82,17 @@ the held-out comparison.
 ### Waiting on the operator now
 
 Nothing. The lease rebuild completed just after the 07:00 credential refresh on
-2026-08-30. No callback, protected file, or additional action authorization is
-needed; the one-hour exact receipt has not been created or consumed.
+2026-08-30. The first sealed-final-v1 dispatch stopped on a general missing-CA
+infrastructure bug after one generation staged and before any cohort finalized.
+No dispatcher is running. A tested fix and fresh exact continuation boundary
+are agent-owned; no callback, protected file, or additional authorization is
+needed.
 
 ### Agent-owned work now
 
-- Materialize the exact standing-authorized sealed-action receipt, run sealed
-  C1-C4 generation, and complete dual scoring through custody.
-- First record a successor Freeze B containing the general selected-ID CLI fix
-  found by exact pre-consumption planning; its 130-test frozen-boundary suite
-  passes and no receipt or provider contact occurred.
+- Freeze the general sealed PostgreSQL CA fix, materialize a fresh exact
+  continuation receipt, reconcile the one staged generation, and run the
+  remaining 1,067 attempts before dual scoring through custody.
 - Finish the aligned development comparison table and concise results/product
   report from immutable aggregates.
 - Commit and publish reviewed work through `main` only. Worktree cleanup under

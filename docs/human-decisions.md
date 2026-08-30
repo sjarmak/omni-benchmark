@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T07:13:59-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-30T07:23:43-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -103,8 +103,25 @@ authorization action is waiting. Exact pre-consumption planning then found an
 agent-owned matched-frame bug: the production dispatch CLI defaulted to the
 original 101-ID manifest instead of accepting the frozen 89-ID manifest. No
 receipt was created or consumed and no provider was contacted. The general CLI
-fix passes its focused frozen-boundary regression suite; recording and
-validating a successor Freeze B is now agent-owned.
+fix passes its focused frozen-boundary regression suite. Successor system
+commit `c8a784f8cd4a03e8ccc22b1ea007a2cf3e56a631`, direct-child control commit
+`e094c7c7c5a481106046f6c30e2eb77a14502eea`, and Freeze-B SHA-256
+`7fd65b9a619d07fdf76e6f04cf608f8be09b7a9a8af9b71d9757aa1106c699d5`
+now validate. The first exact receipt under `omni-benchmark-ei0.10.2` was
+rejected provider-inertly because the Beads file-response path retained a
+trailing newline in its comment; it remains invalid and unconsumed.
+Correction-forward decision `omni-benchmark-ei0.10.3` authenticated receipt
+SHA-256 `de65da7f791c0d882def16e8946cd4a18e90f5db2b329404913216f5638da031`.
+The complete dry production preflight passed with 1,068 pending and zero
+reconciled attempts. That receipt was consumed exactly once and the sole
+sealed-final-v1 dispatcher started as session `96363` at approximately 07:19
+ET. It stopped on a pre-query PostgreSQL privilege-attestation failure because
+the sealed private-environment loader omitted the fixed system CA that the
+already-proven direct loader adds. Concurrency allowed one unrelated generation
+to stage before the failure propagated; it remains immutable, and zero cohorts
+finalized. The general CA fix passes 170 frozen-boundary tests. No dispatcher is
+running and no response is waiting from the operator; only a fresh exact
+continuation receipt may resume the remaining 1,067 attempts.
 
 ### Historical execution record
 

@@ -56,6 +56,7 @@ _SEMANTIC_PATHS = {
 _PG_FIELDS = frozenset(
     {"PGHOST", "PGDATABASE", "PGUSER", "PGPASSWORD", "PGPORT", "PGSSLMODE"}
 )
+_SYSTEM_ROOT_CERTIFICATE = "/etc/ssl/certs/ca-certificates.crt"
 _DATABASE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_]{0,127}")
 
 
@@ -117,7 +118,7 @@ class DatabaseEnvironmentDirectory:
             raise SealedDirectFactoryError(
                 "private database environment schema is invalid"
             )
-        return dict(value)
+        return {**value, "PGSSLROOTCERT": _SYSTEM_ROOT_CERTIFICATE}
 
 
 @dataclass(frozen=True)

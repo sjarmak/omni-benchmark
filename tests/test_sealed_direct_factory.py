@@ -283,7 +283,10 @@ def test_database_environment_directory_requires_external_private_exact_files(
 
     directory = DatabaseEnvironmentDirectory(workspace, root)
 
-    assert directory.for_database("db_1") == value
+    assert directory.for_database("db_1") == {
+        **value,
+        "PGSSLROOTCERT": "/etc/ssl/certs/ca-certificates.crt",
+    }
     assert "synthetic-secret" not in repr(directory)
 
     path.chmod(0o644)

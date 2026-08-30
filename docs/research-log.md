@@ -10661,3 +10661,38 @@ passes six tests; the broader dispatch, plan, production-factory, runtime-input,
 and Freeze-B boundary suite passes 130 tests in 102.78 seconds. Ruff and format
 checks pass. No receipt, consumption marker, output root, provider request,
 credential content, protected field, or sealed outcome was created or accessed.
+
+## 2026-08-30 — D-165: Restore the proven system CA in sealed PostgreSQL setup
+
+### Observation and hypothesis
+
+The first exact sealed-final-v1 dispatch consumed its receipt, then stopped on
+the first direct PostgreSQL privilege attestation before that worker reached an
+evaluated query. Code comparison found one general difference from the proven
+public direct loader: both private JSON schemas contain the same six PostgreSQL
+fields, but the public loader adds
+`PGSSLROOTCERT=/etc/ssl/certs/ca-certificates.crt` before constructing the
+attested transport, while the sealed duplicate did not. The transport requires
+that field and otherwise sanitizes connection failures into the observed
+attestation error.
+
+Make the sealed loader add the same fixed system CA after validating the exact
+mode-0600 six-field private file. Do not change the private schema, database
+identity, privilege checks, credentials, query path, or any database-specific
+rule.
+
+### Result
+
+A failure-first test reproduced the missing field. The sealed loader now returns
+the six validated private values plus the same fixed system CA used by the
+proven direct baseline. The focused factory, PostgreSQL transport, and baseline
+loader gate passes 51 tests; the broader dispatch, plan, production-factory,
+runtime-input, direct-factory, transport, and Freeze-B suite passes 170 tests in
+105.96 seconds. Ruff and format checks pass.
+
+The failed run is immutable: its correction-forward receipt was consumed once,
+one concurrent generation staged before the error propagated, zero cohorts
+finalized, and no dispatcher remains. No generation was rerun, no correctness
+or protected field was read, and no credential or lease content was inspected.
+A continuation must record a successor Freeze B, reconcile the one staged
+envelope, and use a fresh exact receipt for the remaining attempts.
