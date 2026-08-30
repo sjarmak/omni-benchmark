@@ -19,7 +19,7 @@ def test_quality_workflow_enforces_the_local_contract_without_live_access() -> N
 
     job = document["jobs"]["quality"]
     assert job["runs-on"] == "ubuntu-24.04"
-    assert int(job["timeout-minutes"]) <= 20
+    assert int(job["timeout-minutes"]) <= 30
     steps = job["steps"]
     uses = [step["uses"] for step in steps if "uses" in step]
     commands = [step["run"] for step in steps if "run" in step]

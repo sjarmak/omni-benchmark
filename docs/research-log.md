@@ -11769,5 +11769,11 @@ host's private Claude executable path; they now use a test-created executable
 while a separate metadata assertion retains the production pin. The focused
 suite passed 81 tests, and the full tracked suite passed 2,045 tests with three
 expected skips and 83.24% combined branch coverage. The external CI signal is
-pending the scoped push. The sole E02 identity continues unchanged, and no
-additional experiment is authorized or planned.
+pending the scoped push. The first clean runner completed setup and dependency
+installation but was cancelled during the still-active test step by the
+20-minute whole-job timeout; it emitted no test failure. The failure-first
+workflow assertion confirmed that raising the existing bound requires an
+explicit contract change. The audited 30-minute bound is the only follow-up;
+test selection, permissions, dependencies, and commands remain unchanged. The
+sole E02 identity continues unchanged, and no additional experiment is
+authorized or planned.
