@@ -290,20 +290,17 @@ def _capture_public_baseline_omni(
         plan.environment, "OMNI_SEMANTIC_MODEL_SHA256"
     )
     database = _required_environment(plan.environment, "OMNI_SEMANTIC_DATABASE")
+    candidate_kind = plan.environment.get("OMNI_SEMANTIC_CANDIDATE_KIND", "baseline")
     try:
         semantic_plan = _committed_semantic_plan(
             plan.workspace,
             plan.arguments.system_commit,
             database,
-            plan.environment.get("OMNI_SEMANTIC_CANDIDATE_KIND", "baseline"),
+            candidate_kind,
         )
         observed_semantic_sha256 = verified_semantic_deployment_sha256(
             semantic_plan,
-            {
-                path: content
-                for path, content in client.read_semantic_model().items()
-                if path not in {"model", "relationships"}
-            },
+            _semantic_readback_documents(client.read_semantic_model(), candidate_kind),
         )
     except (
         E02CandidateError,
@@ -339,6 +336,17 @@ def _committed_semantic_plan(
     if candidate_kind == "e02":
         return load_committed_e02_candidate(workspace, system_commit).plans[database]
     raise ValueError("semantic candidate kind is invalid")
+
+
+def _semantic_readback_documents(
+    readback: Mapping[str, str | bytes], candidate_kind: object
+) -> dict[str, str | bytes]:
+    if candidate_kind not in {"baseline", "e02"}:
+        raise ValueError("semantic candidate kind is invalid")
+    excluded = {"model"}
+    if candidate_kind == "baseline":
+        excluded.add("relationships")
+    return {path: content for path, content in readback.items() if path not in excluded}
 
 
 def _c4_attempt_spec(plan: ProbePlan) -> C4AttemptSpec:

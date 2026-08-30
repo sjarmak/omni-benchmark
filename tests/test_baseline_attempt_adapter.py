@@ -43,6 +43,22 @@ def test_semantic_readback_rejects_an_unknown_candidate_kind() -> None:
         )
 
 
+def test_e02_semantic_readback_retains_relationships() -> None:
+    readback = {
+        "model": "metadata",
+        "relationships": "- join: one",
+        "sample.view": "label: Sample",
+    }
+
+    assert adapter._semantic_readback_documents(readback, "e02") == {
+        "relationships": "- join: one",
+        "sample.view": "label: Sample",
+    }
+    assert adapter._semantic_readback_documents(readback, "baseline") == {
+        "sample.view": "label: Sample"
+    }
+
+
 def test_baseline_preparer_reuses_direct_preflight_with_public_train_scope(
     monkeypatch,
 ) -> None:
