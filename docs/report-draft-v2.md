@@ -2,9 +2,15 @@
 
 **Findings from an independent evaluation of Omni on LiveSQLBench Large-v1**
 
-Draft v2, 2026-08-30. Held-out numbers are not yet released; every unavailable
-value in this document is a typed slot, not an estimate. See
-[Slot register](#slot-register) for what fills each one.
+> **Superseded, 2026-08-30.** This working draft predates sealed scoring and
+> contains deliberately unresolved slots plus an obsolete optimized-held-out
+> plan. It must not be used as a result or submission artifact. The sole current
+> primary report is [`RESULTS.md`](../RESULTS.md); unique mechanism prose is
+> retained here only as drafting history.
+
+Draft v2, 2026-08-30. At the time of drafting, held-out numbers had not been
+released; every unavailable value below was a typed slot, not an estimate. See
+[Slot register](#slot-register) for the historical fill-in design.
 
 Supporting material: [`manuscript/main.pdf`](../manuscript/main.pdf) carries the
 preregistered protocol, custody design, and statistical plan. This report is the

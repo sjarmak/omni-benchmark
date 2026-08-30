@@ -1,12 +1,17 @@
 # Human decision queue
 
-Sections marked [FROZEN 2026-08-30] are a closed historical record of past decisions and work, no longer reconciled or rewritten; only the live-gates section at the top and "No action requested yet" remains maintained. For the live operator queue, run `bd human list`.
+Sections marked [FROZEN 2026-08-30] are a closed historical record of past
+decisions and work, no longer reconciled or rewritten. Only the live gate at
+the top, the standing-policy summary, "No other action requested," and the
+decision-handling procedure remain maintained. For the live operator queue,
+run `bd human list`.
 
-This page is the concise operator view of work waiting on human authority.
+This page is the concise operator view of work waiting on human confirmation or
+authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T16:19:19-04:00 (America/New_York). The sealed scorer
+Last updated: 2026-08-30T17:36:22-04:00 (America/New_York). The sealed scorer
 opened the human-produced 89-record test projection only inside the custody
 workflow. Benchmark agents have read only its identity-free aggregates; no
 agent opened the complete gold package, dev-B annotations, test annotations,
@@ -22,10 +27,10 @@ projection SHA-256
 and exit status 0. Both frozen scorers then completed all 1,068 attempts and
 published aggregate-only results. Nothing needs to be rerun.
 
-The sole remaining human action is to confirm that the transferred full
-`source.jsonl` and its temporary `/var/tmp/omni-sealed-gold-human.*` directory
-were removed. In the same Linux terminal where the release ran, execute this
-only if cleanup was not already done:
+The sole potentially remaining human action is to confirm that the last
+transferred full source file and its temporary transfer directory were removed.
+In the same Linux terminal where the release ran, execute this only if cleanup
+was not already done:
 
 ```bash
 unlink -- "$OMNI_GOLD_SOURCE"; file_cleanup_status=$?
@@ -35,9 +40,9 @@ unset OMNI_GOLD_SOURCE OMNI_GOLD_TRANSFER_DIR
 ```
 
 Reply with only `remote cleanup status: file=0 directory=0`. Do **not** remove
-`/tmp/omni-benchmark-sealed-v10-preflight/data/private/test/labels.jsonl`; that
-is the private 89-record custody projection and remains part of the immutable
-scoring evidence. Do not paste the source path or any file contents.
+the private 89-record custody projection retained by the completed scorer; it
+remains part of the immutable scoring evidence. Do not paste the source path or
+any file contents.
 
 ## Standing policy change — 2026-08-29
 
@@ -55,7 +60,8 @@ whether an action touches a provider (`omni-benchmark-xeg`).
   without returning for another A/B response. Receipts remain single-use and
   exactly bound; custody, append-only evidence, quarantine, and no-retry rules
   remain unchanged. Credentials, OAuth profiles, and leases remain
-  operator-owned.
+  operator-owned. That ownership creates no current request to refresh, rotate,
+  rebuild, validate, or expose them.
 
 The 2026-08-29 decision to cut optimization (`omni-benchmark-ivg`) remains an
 important historical decision, but it is superseded for MVP scope by the
@@ -1077,7 +1083,7 @@ remain outside agent scope.
   authorization after its prerequisites are integrated. A passing canary will
   remain a precondition, not authorization.
 
-## Approved actions in progress
+## [FROZEN 2026-08-30] Historical approved action
 
 - The Omni `benchmark-infra` browser OAuth flow was completed at approximately
   14:25 EDT. Server-side `whoami` succeeds, and the five-way C4 capture canary
@@ -1140,8 +1146,12 @@ remain outside agent scope.
   completed. No shared/main model was merged or changed, and no hidden label,
   gold data, or benchmark correctness result was accessed.
 
-## No action requested yet
+## No other action requested
 
+- Standing authorization covers all remaining MVP actions, including the exact
+  E02 continuation, freeze, dev-A scoring, evidence preservation, and report
+  completion. No additional A/B authorization, callback, credential, OAuth, or
+  lease action is requested.
 - Production sealed score custody completed on the matched 89-question frame.
   Both frozen scorers and the identity-free report are published under the
   hashes recorded in D-187. Do not rerun scoring or open the private

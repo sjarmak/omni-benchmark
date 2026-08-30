@@ -5,7 +5,9 @@ correct, 93 wrong, and 34 refused or ended in an evaluated-system error. The
 aggregate structural diagnostic below is hash-bound to that score and the
 immutable generation records; it emits no question identity, SQL, result value,
 gold, or hidden annotation. Public-only compiler dispositions remain
-representation evidence and must not be reported as answer failures.
+representation evidence and must not be reported as answer failures. Sealed
+C1-C4 scoring is also complete, but its aggregate-only custody boundary cannot
+revise the development mechanism ranking or localize per-question causes.
 
 ## Current top three observed risk mechanisms
 
@@ -17,8 +19,9 @@ representation evidence and must not be reported as answer failures.
 2. **Semantic result-contract reliability.** Thirty-four attempts are explicit
    evaluated-system failures. Thirty-two still contain parseable governed SQL;
    most failed because the governed result exposed an unsupported/unknown type,
-   not because no query was generated. This is a product capability limit, not
-   benchmark infrastructure to retry away.
+   not because no query was generated. These are evaluated-system outcomes, not
+   benchmark infrastructure to retry away. Causal ownership remains unresolved
+   across the authored semantic model and Omni's planning/result contract.
 3. **Representation, discoverability, and reasoning remain conflated within 93
    wrong answers.** Aggregate query shape alone cannot tell whether knowledge
    was absent, inaccessible, misinterpreted, or correctly available but reasoned
@@ -62,7 +65,8 @@ knowledge, classify the earliest supported failure point:
 3. knowledge represented correctly but not retrieved;
 4. knowledge retrieved but misinterpreted;
 5. semantic representation correct but compilation failed;
-6. compiled query correct but validation/harness changed the outcome;
+6. generated query or result failed to reach a scoreable answer at the
+   validation or result-contract stage;
 7. model reasoning failed despite a correct, available representation.
 
 Hidden `external_knowledge` IDs stay in offline diagnosis. This document records
@@ -72,19 +76,19 @@ aggregate classifications and non-private references, never hidden content.
 
 | Category | Definition | Count / prevalence | Representative examples | Affected databases | Suspected mechanism | Experiments attempted | Status | Product implication |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| HKB absent/mistransformed | Required public business definition is missing or semantically wrong in Omni | Not measured | Await baseline | Await baseline | Transformation coverage or interpretation | None | Unmeasured | Semantic-model authoring/automation |
-| HKB dependency | Nodes exist but prerequisite edges, recursion, grain, or composition are wrong | Not measured | Await baseline | Await baseline | Dependency compiler | None | Unmeasured | Hierarchical metric composition |
-| Retrieval/discoverability | Correct modeled object is not surfaced/selected | Not measured | Await baseline | Await baseline | Topic/context/retrieval behavior | None | Unmeasured | Agent discoverability and debugging |
-| Retrieved but misinterpreted | Correct object is selected but agent uses it incorrectly | Not measured | Await baseline | Await baseline | Model reasoning or description ambiguity | None | Unmeasured | Description quality / reasoning support |
+| HKB absent/mistransformed | Required public business definition is missing or semantically wrong in Omni | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Transformation coverage or interpretation | None | Not measured under the permitted evidence boundary | Semantic-model authoring/automation |
+| HKB dependency | Nodes exist but prerequisite edges, recursion, grain, or composition are wrong | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Dependency compiler | None | Not measured under the permitted evidence boundary | Hierarchical metric composition |
+| Retrieval/discoverability | Correct modeled object is not surfaced/selected | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Topic/context/retrieval behavior | None | Not measured under the permitted evidence boundary | Agent discoverability and debugging |
+| Retrieved but misinterpreted | Correct object is selected but agent uses it incorrectly | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Model reasoning or description ambiguity | None | Not measured under the permitted evidence boundary | Description quality / reasoning support |
 | Relationship/join | Wrong or missing join path, cardinality, or entity relationship | Join present in 41/92 parseable wrong and 18/32 parseable error attempts, versus 2/9 correct; descriptive, non-exclusive | Identity-free aggregate only | 16-database eligible frame | Model relationship representation/planning | E02 selected next | Observed hypothesis | Relationship authoring and guardrails |
 | Metric/aggregation/grain | Wrong measure, aggregation, grouping, or grain | Aggregate present in 58/92 parseable wrong and 22/32 parseable error attempts, versus 5/9 correct; descriptive, non-exclusive | Identity-free aggregate only | 16-database eligible frame | Measure translation or reasoning | None | Observed hypothesis | Metric semantics and compiler checks |
-| Time semantics | Wrong period, boundary, timezone, or comparison window | Not measured | Await baseline | Await baseline | Temporal modeling/planning | None | Unmeasured | First-class time semantics |
-| Filter/value/alias | Wrong business filter, value interpretation, synonym, or alias | Not measured | Await baseline | Await baseline | HKB translation/retrieval/model reasoning | None | Unmeasured | Search and semantic authoring ergonomics |
-| Semantic compilation | Intended semantic query is correct but compiled SQL is wrong/unsupported | Not measured | Await baseline | Await baseline | Omni compiler | None | Unmeasured | Compiler correctness/coverage |
-| Validation/retry | A viable answer is rejected, corrupted, or not recovered | 34/136 evaluated-system failures; 32 retain parseable governed SQL | Identity-free aggregate only | 16-database eligible frame | Omni result types and query/result contract | D-155 recovery; D-168–D-170 classification/fallback | Measured baseline | Validation observability and recovery |
-| Direct reasoning | Required representation and tools are correct/available but reasoning fails | Not measured | Await baseline | Await baseline | Model planning/reasoning | None | Unmeasured | Agent workflow/model routing |
-| Refusal/error | System returns no usable answer after its allowed retry policy | Public diagnostics: 3/4 sampled fake-account C1 attempts refused across immutable runs; auth4 proof: 1/12 refused and 0 errored | `fake_account_1` changed from refusal to answer across runs; `fake_account_3`, `_5`, and `cross_border_1:C3` refused | fake_account_large, cross_border_large | Stochastic/content-sensitive model behavior; infrastructure errors remain separate | D-051 refusal-scope diagnostic and auth4 proof | Measured pre-baseline; full prevalence pending | Reliability, refusal observability, and safe-failure reporting |
-| Scorer/data ambiguity | System result may be reasonable but benchmark comparison or question is anomalous | Not measured | Await baseline | Await baseline | Benchmark/evaluator | None | Unmeasured | Evaluation limitation, not presumed product defect |
+| Time semantics | Wrong period, boundary, timezone, or comparison window | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Temporal modeling/planning | None | Not measured under the permitted evidence boundary | First-class time semantics |
+| Filter/value/alias | Wrong business filter, value interpretation, synonym, or alias | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | HKB translation/retrieval/model reasoning | None | Not measured under the permitted evidence boundary | Search and semantic authoring ergonomics |
+| Semantic compilation | Intended semantic query is correct but compiled SQL is wrong/unsupported | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Omni compiler | None | Not measured under the permitted evidence boundary | Compiler correctness/coverage |
+| Validation/retry | A generated query or result fails to reach a scoreable answer at the validation or result-contract stage | 34/136 evaluated-system failures; 32 retain parseable governed SQL | Identity-free aggregate only | 16-database eligible frame | Authored-model and Omni result-contract ownership unresolved | D-155 recovery; D-168–D-170 classification/fallback | Measured baseline | Validation observability and recovery |
+| Direct reasoning | Required representation and tools are correct/available but reasoning fails | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Model planning/reasoning | None | Not measured under the permitted evidence boundary | Agent workflow/model routing |
+| Refusal/error | System returns no usable answer after its allowed retry policy | Sealed scorer disposition: C1 90/267, C2 73/267, C3 102/267, C4 38/267 | Identity-free aggregate only | Matched 16-database sealed frame | Mixed model, context, contract, and infrastructure mechanisms; aggregate custody cannot localize them | D-051 diagnostic plus sealed aggregate | Measured aggregate prevalence | Reliability, refusal observability, and safe-failure reporting |
+| Scorer/data ambiguity | System result may be reasonable but benchmark comparison or question is anomalous | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Benchmark/evaluator | None | Not measured under the permitted evidence boundary | Evaluation limitation, not presumed product defect |
 
 ## Checkpoint update template
 
@@ -188,5 +192,46 @@ E02's conservative PK/unique-backed many-to-one relationship candidate (91
 relationships, 16 databases, 67 source topics), run on the full eligible dev-A
 frame with regression accounting before promotion.
 
-Next taxonomy update is due at the sealed or optimization checkpoint, per
-`omni-benchmark-1mh`.
+## 2026-08-30 checkpoint — sealed C1--C4 comparison
+
+The sealed run contains 89 questions, three repetitions, and 267 scoreable
+attempts per condition. The table below is the official-compatible aggregate;
+it contains no question identity, SQL, rows, annotations, or per-question
+correctness.
+
+| Condition | Correct | Wrong | Refused/error | Raw generation errors | Pass³ | Correctness flips |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| C1 | 27 | 150 | 90 | 50 | 6 | 6 |
+| C2 | 59 | 135 | 73 | 53 | 14 | 12 |
+| C3 | 23 | 142 | 102 | 43 | 4 | 6 |
+| C4 | 23 | 206 | 38 | 38 | 6 | 4 |
+
+`Refused/error` is the scorer's three-state disposition. Raw generation errors
+are the narrower count whose generation outcome is `errored`; refusals are not
+included. Pass³ counts questions correct in all three repetitions, while a flip
+is correct in only one or two. Every condition has 267 scoreable attempts and
+89 questions in these denominators.
+
+C2 is the strongest accuracy condition and also reaches 14 all-three-pass
+questions. C4 has fewer refused/error outcomes than the direct conditions but
+converts that completion advantage mainly into wrong answers: 206 of 267. Its
+38 terminal classes are 32 unsupported semantic result types, four response-
+contract errors, and two Omni job terminal failures. Those are measured
+dispositions, not a causal allocation between the authored semantic model and
+the product's planning/result contract. For the raw direct-condition terminal
+outcomes, C1 records 38 insufficient-context, 33 model-budget, 13
+model-rate-limit, and four database errors; C2 records 31 model-budget, 16
+insufficient-context, 15 rate-limit, three database, two identity, one SQL, and
+one turn-limit outcome; C3 records 55 insufficient-context, 22 model-budget, 16
+rate-limit, two database, one identity, one SQL, and one turn-limit outcome.
+These are terminal dispositions, not per-question causal findings.
+
+The sealed aggregate supports reliability and condition-level interpretation,
+not per-question mechanism attribution. It cannot determine which individual
+wrong answers arose from absent knowledge, retrieval, interpretation,
+compilation, or reasoning. E02 remains the one preregistered dev-A mechanism
+contrast; append its terminal failure vector and query-path delta here only
+after its unchanged run is frozen and scored.
+
+Stable artifact locations and preservation hashes are indexed in
+[`evidence-index.md`](evidence-index.md).

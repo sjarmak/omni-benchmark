@@ -1,11 +1,28 @@
 # C4 query path: what the governed arm actually executed
 
-Status: disclosure finding. Companion to `docs/c4-mechanism-measurements.md` §2,
+Status: resolved disclosure finding. Companion to
+`docs/c4-mechanism-measurements.md` §2,
 which first measured the flag distribution. This document establishes who chose
-the rewrite path, whether an alternative existed, whether the sealed arm behaves
-the same way, what survives of the C4 versus C3 contrast, and what disclosure
-language the published documents now require. It changes no protocol surface, no
-scorer, and no frozen artifact.
+the rewrite path, whether an alternative existed, how the sealed arm was bound to
+the same configuration, what survives of the C4 versus C3 contrast, and what
+disclosure language the published documents required. It changes no protocol
+surface, no scorer, and no frozen artifact.
+
+## Resolution status — 2026-08-30
+
+This document began as an audit of inaccurate reader-facing language. The
+measurement and reinterpretation are now incorporated into `README.md`,
+`RESULTS.md`, `docs/harness-disclosure.md`, `docs/methodology.md`,
+`EVALUATION_PROTOCOL.md`, and `docs/report-draft-v2.md`. Section 2 preserves the
+historical audit that motivated those corrections; it no longer describes the
+current published state.
+
+The untuned sealed comparison subsequently completed and was scored. This memo
+did not inspect sealed per-attempt query content, so Section 3 proves
+configuration and code-path binding rather than a measured sealed rewrite rate.
+The only remaining intervention is the already selected, fixed E02 relationship
+contrast on dev-A. Because sealed aggregates became visible before that contrast
+completed, no optimized held-out arm may be constructed or promoted from it.
 
 Evidence boundary: the immutable v8 generation records, the committed public
 semantic bundles and schema IR, the committed condition/prompt/instruction
@@ -78,7 +95,7 @@ does so is a product-internal decision the benchmark cannot observe.
 
 ---
 
-## 2. Is this already disclosed? No, and one published claim is wrong
+## 2. Was this disclosed at the time of audit? No
 
 ### 2.1 The inaccurate claim
 
@@ -168,41 +185,42 @@ declare."
 query went through Omni's raw-SQL rewrite path.** All 135 carry `rewriteSql:
 true` together with hand-authored SQL text."
 
-Both files are untracked working documents (`git status` shows them as `??`).
-Neither `RESULTS.md`, `docs/harness-disclosure.md`, nor `EVALUATION_PROTOCOL.md`
-carries any statement about `rewriteSql`, `userEditedSQL`, raw-SQL rewrite, or
-agent-authored SQL in C4.
+At the time of this audit, both files were untracked working documents and none
+of `RESULTS.md`, `docs/harness-disclosure.md`, or `EVALUATION_PROTOCOL.md`
+carried a statement about `rewriteSql`, `userEditedSQL`, raw-SQL rewrite, or
+agent-authored SQL in C4. They are now tracked and the reader-facing disclosures
+have been corrected as recorded in the resolution status above.
 
-**Plain statement: the current published disclosure is not accurate.** The
-finding is measured, it is material to what the headline number means, and it is
-absent from every reader-facing surface.
+**Finding at the time of audit:** the published disclosure was not accurate. The
+finding is measured and material to what the headline number means; the current
+reader-facing surfaces now include it.
 
-### 2.6 Inventory of claims that are now inaccurate
+### 2.6 Inventory of claims that were inaccurate at audit
 
 | Location | Claim | Why it fails |
 | --- | --- | --- |
-| `docs/methodology.md:63` | "Production harness enforces semantic compilation/validation" | No compilation occurred on any of 135 attempts |
-| `docs/methodology.md:331-333` | "production semantic compilation and validation behavior" | Same |
-| `docs/harness-disclosure.md:32` | "Semantic query/objects compiled through Omni; generated SQL captured only if exposed" | Not compiled; SQL was captured, in `userEditedSQL` |
-| `EVALUATION_PROTOCOL.md:212` | C4 enforcement "Enforced production harness" | Enforcement is over surface and name resolution, not composition |
-| `RESULTS.md:100` | Query path "Production-governed Omni" against three "Direct SQL" rows | C4's query path is also agent-authored SQL |
-| `README.md:35` | Same row | Same |
-| `docs/report-draft-v2.md:33` | Same row | Same |
-| `docs/report-draft-v2.md:368` | "The shape-only check that would resolve it is offline and has not been run" | It was run |
-| `RESULTS.md:343-350` | C4 relation aggregates presented beside C1-C3 with no source note | Computed from `userEditedSQL` while `generated_sql` is `null` |
-| `docs/c4-failure-attribution.md:170` | "133 of 136 governed attempts carried a non-empty `userEditedSQL`" | 135 carry one; 133 parse |
-| `docs/research-log.md:10883` | "C4 could differ because it generates governed semantic queries" | Premise overturned, never revisited, no ledger entry for the measurement |
+| `docs/methodology.md`, condition table | "Production harness enforces semantic compilation/validation" | No compilation occurred on any of 135 attempts |
+| `docs/methodology.md`, C4 discussion | "production semantic compilation and validation behavior" | Same |
+| `docs/harness-disclosure.md`, condition table | "Semantic query/objects compiled through Omni; generated SQL captured only if exposed" | Not compiled; SQL was captured, in `userEditedSQL` |
+| `EVALUATION_PROTOCOL.md`, condition table | C4 enforcement "Enforced production harness" | Enforcement is over surface and name resolution, not composition |
+| `RESULTS.md`, research-question table | Query path "Production-governed Omni" against three "Direct SQL" rows | C4's query path is also agent-authored SQL |
+| `README.md`, condition table | Same row | Same |
+| `docs/report-draft-v2.md`, condition table | Same row | Same |
+| `docs/report-draft-v2.md`, query-path discussion | "The shape-only check that would resolve it is offline and has not been run" | It was run |
+| `RESULTS.md`, structural analysis | C4 relation aggregates presented beside C1-C3 with no source note | Computed from `userEditedSQL` while `generated_sql` is `null` |
+| `docs/c4-failure-attribution.md`, governed-query count | "133 of 136 governed attempts carried a non-empty `userEditedSQL`" | 135 carry one; 133 parse |
+| `docs/research-log.md`, D-172 | "C4 could differ because it generates governed semantic queries" | Premise overturned and resolved by D-178 |
 
 `docs/scoring.md`, `docs/benchmark-notes.md`, and `docs/protocol-diff.md` make no
 C4 query-path claim and need no change.
 
 ---
 
-## 3. The sealed arm behaves the same way
+## 3. The sealed arm is bound to the same path configuration
 
-The sealed C4 arm is bound to the identical configuration by hash, not merely by
-convention. Three independent bindings establish this without touching the live
-run.
+The completed sealed C4 arm was bound to the identical configuration by hash,
+not merely by convention. Three independent bindings establish this without
+opening its per-attempt query content.
 
 **Same three config files.** `src/omni_benchmark/sealed_omni_factory.py:33-35`
 pins `_C4_CONDITION_PATH = config/conditions/c4-production-v1.json`,
@@ -226,12 +244,12 @@ the same `OmniProbeResult` type and hands it to the same `write_c4_attempt`
 (`omni_attempt.py:49-62`), so `generated_sql` is `None` and `generated_query` is
 Omni's verbatim object in the sealed arm too.
 
-**Expectation: the sealed arm is producing `rewriteSql: true` with
-agent-authored SQL at essentially the same rate.** Same agent, same prompt, same
-model deployment, same absence of declared joins and measures. Nothing in the
-configuration could push it toward a compiled path. This is a prediction from
-committed configuration, not a measurement; the sealed records have not been and
-must not be read until the arm completes.
+**Configuration-bound expectation:** the sealed arm uses `rewriteSql: true` with
+agent-authored SQL at essentially the same rate. It has the same agent, prompt,
+model deployment, and absence of declared joins and measures; nothing in the
+configuration pushes it toward a compiled path. Completion and aggregate scoring
+do not turn that expectation into a per-attempt measurement. This memo did not
+inspect the sealed semantic-query objects.
 
 ---
 
@@ -384,9 +402,9 @@ composition.
 
 ---
 
-## 6. Recommended disclosure language
+## 6. Disclosure language (applied)
 
-### 6.1 `docs/harness-disclosure.md`, replace the C4 cell at line 32
+### 6.1 `docs/harness-disclosure.md`, replace the C4 condition cell
 
 Current C4 cell:
 
@@ -401,7 +419,7 @@ Replacement:
 > resolved by Omni against the deployed model. `generated_sql` is recorded as
 > `null` by design; the executed SQL is the semantic query's `userEditedSQL`.
 
-### 6.2 `docs/harness-disclosure.md`, add after the paragraph ending at line 40
+### 6.2 `docs/harness-disclosure.md`, add after the condition table
 
 > **Governed query path, measured.** The C4 condition is labeled
 > `"semantic_enforcement": "governed"`, and that label describes name resolution
@@ -418,7 +436,7 @@ Replacement:
 > so the sealed arm is expected to show the same path. See
 > `docs/c4-query-path-disclosure.md`.
 
-### 6.3 `RESULTS.md`, replace the C4 row of the table at lines 96-100
+### 6.3 `RESULTS.md`, replace the C4 row of the research-question table
 
 > | C4 | Omni semantic model | Omni agent emits SQL through the product's rewrite path over model-resolved field references |
 
@@ -437,7 +455,7 @@ Replacement:
 > surface, and execution contract, not a compiled-query condition against a
 > direct-SQL one. Full measurement in `docs/c4-query-path-disclosure.md`.
 
-### 6.5 `RESULTS.md`, qualify the structural paragraph at lines 343-346
+### 6.5 `RESULTS.md`, qualify the structural-analysis paragraph
 
 Insert before "The same identity-free analysis covered all 136 governed C4
 outcomes":
@@ -448,7 +466,7 @@ outcomes":
 > queries in both C4 and C1-C3 rather than a compiled path against authored
 > ones.
 
-### 6.6 `docs/methodology.md:63`, replace the C4 Enforcement cell
+### 6.6 `docs/methodology.md`, replace the C4 Enforcement cell
 
 Current: `Production harness enforces semantic compilation/validation`
 
@@ -458,11 +476,11 @@ Replacement:
 > references; measured on the development baseline it performs no query
 > compilation
 
-And at `docs/methodology.md:331-333`, replace "including its production semantic
+And in the later C4 discussion, replace "including its production semantic
 compilation and validation behavior" with "including its production query-rewrite
 and validation behavior".
 
-### 6.7 `EVALUATION_PROTOCOL.md:212`, replace the C4 Enforcement cell
+### 6.7 `EVALUATION_PROTOCOL.md`, replace the C4 Enforcement cell
 
 Current: `Enforced production harness`
 
@@ -475,11 +493,11 @@ The protocol's custody, freeze, split, scorer, and receipt surfaces are
 unaffected. This is a single descriptive cell, and it is a human-controlled
 surface: propose the change, do not make it.
 
-### 6.8 `README.md:35` and `docs/report-draft-v2.md:33`
+### 6.8 `README.md` and `docs/report-draft-v2.md` condition tables
 
 Apply the same replacement as §6.3, so all four condition tables agree.
 
-### 6.9 `docs/report-draft-v2.md:363-369`, replace the stale conditional
+### 6.9 `docs/report-draft-v2.md`, replace the stale query-path conditional
 
 Delete "The shape-only check that would resolve it is offline and has not been
 run" and replace the whole conditional with the measured result:
@@ -491,22 +509,21 @@ run" and replace the whole conditional with the measured result:
 > That narrows what C4's result says about enforcement. See
 > `docs/c4-query-path-disclosure.md`.
 
-### 6.10 `docs/research-log.md`, add a ledger entry
+### 6.10 `docs/research-log.md`, ledger resolution
 
-The measurement that produced `docs/c4-mechanism-measurements.md` has no log
-entry. D-172 at `docs/research-log.md:10878-10914` states the premise this
-finding overturns, "C4 could differ because it generates governed semantic
-queries," and was never revisited. A contemporaneous entry should record the
-measurement, the overturned premise, and the disclosure decision taken. The
-research log has uncommitted changes; this is a recommendation, not an edit.
+D-178 now records the measurement from `docs/c4-mechanism-measurements.md`, the
+D-172 premise it overturned, and the resulting disclosure decision. This audit
+item is resolved.
 
 ---
 
-## 7. Options, ranked
+## 7. Historical options, ranked
 
-The untuned sealed arm is nearly complete and is bound to the frozen
-configuration by hash. No option can change it. Every fix applies only to the
-optimized arm.
+The untuned sealed arm is complete, scored, and immutable. The options below are
+preserved as the pre-result decision analysis. The disclosure correction was
+adopted. E02 survives only as the fixed, pre-specified dev-A mechanism contrast;
+sealed results may not drive another intervention, a dev-B checkpoint, or an
+optimized held-out arm.
 
 ### Recommended: disclose and reinterpret, do not call it a defect
 
@@ -516,7 +533,7 @@ is wrong, only the frame around it.
 
 **Why this ranks first.** The rewrite path was not a scaffold error. The harness
 sends only the question, sets no mode flag, and cannot select a path. Omni's
-agent chose it, and for the multi-relation majority it was the only available
+agent chose it, and for multi-relation attempts it was the only available
 choice given a model that declares no joins. Calling that a defect would
 misattribute a product behavior, and a model-declaration change is an
 intervention on the evaluated system that the protocol treats as benchmark-
@@ -527,32 +544,33 @@ survives with a narrower claim attached. The framing loss is real: the study can
 no longer say it isolated the value of semantic-layer query composition, only the
 value of a governed vocabulary plus a different agent and execution contract.
 
-### Second: declare joins in the optimized arm and run it as a named intervention
+### Historical second option: declare joins as a named intervention
 
-Emit real join declarations and measures in the deployed model for the optimized
-arm, and report untuned-versus-optimized as a measured contrast on whether a
-model that can compile cross-table access changes the path Omni's agent takes.
+E02 now supplies the declared-join portion of this option on dev-A only. The
+measures portion was not implemented, and no untuned-versus-optimized held-out
+contrast is permitted after the scoring-order deviation.
 
-**Why second.** This is the scientifically most interesting move and directly
-tests the study's actual research question. It is also the largest change, it
-touches `semantic_bundle.py` (currently being edited in another worktree), it
-must be general rather than database-specific to satisfy the protocol, and it
-proves nothing about whether Omni's agent would use a declared join even when one
-exists. It does not substitute for §6; the disclosure is required either way.
+**Why it ranked second.** This was the most direct test of the study's intended
+mechanism, but it was also the largest change and could not establish in advance
+that Omni's agent would use a declared join. The fixed E02 dev-A contrast now
+tests the join-path question without authorizing a measures intervention or a
+held-out successor. It does not substitute for the disclosure correction.
 
-**Cost.** Compiler work, redeployment, a full optimized-arm run, and a generality
-review of the diff. Schedule risk is the binding constraint.
+**Historical cost assessment.** Compiler work, redeployment, a full evaluation,
+and a generality review. Only the already frozen E02 dev-A evaluation remains in
+scope.
 
-### Third: a Tier 1 public-only probe on whether a declared join changes the path
+### Historical third option: a public-only join-path probe
 
 On one public database, deploy a model with a declared join and submit a
 public-schema-only multi-table prompt, observing whether the returned query
 carries `join_via_map` or falls back to rewrite. Public schema and public HKB
 only, no question, no gold, no correctness.
 
-**Why third.** It answers the one question §7's second option assumes the answer
-to, at a fraction of the cost, and it de-risks that option. It is a probe, not a
-result, and it does not change any published number.
+**Why it ranked third.** It would have answered the path-selection question at a
+fraction of the cost. The deployed, exact-readback E02 candidate and its fixed
+dev-A contrast now provide the stronger in-scope test, so this probe is not an
+MVP dependency.
 
 **Cost.** One isolated branch, one deployment, one prompt. Small.
 
@@ -569,20 +587,22 @@ evaluated system. The only lever is the deployed model, which is option two.
 `omni_attempt.py:171` records `generated_sql: None` while the executed SQL sits
 in `generated_query.userEditedSQL`. A reader auditing C4 looks in the empty
 field. This is a genuine harness defect, it is independent of the rewrite
-finding, and it can be fixed in the optimized arm without touching the evaluated
-system. It does not change any recorded value in the frozen baseline or the
-sealed arm, which keep `null` as recorded.
+finding, and it can be fixed in future capture tooling without touching the
+evaluated system. It does not change any recorded value in the frozen baseline
+or sealed arm, which keep `null` as recorded.
 
 ---
 
 ## 8. What this does not decide
 
-Whether Omni's agent would use a declared join path if one existed. Nothing in
-the artifacts held speaks to it; §7's third option is the way to find out.
+Whether Omni's agent uses a declared join path when one exists. The pre-E02
+artifacts analyzed here do not decide it; the fixed E02 dev-A contrast is the
+registered test.
 
-Whether the sealed arm's rate matches the development baseline's exactly. The
-configuration binding makes the same behavior near-certain, but it is a
-prediction until the sealed records are released.
+Whether the sealed arm's realized rewrite rate matches the development baseline
+exactly. The configuration binding makes the same behavior highly likely, but
+aggregate completion and scoring do not answer it, and this memo did not inspect
+sealed per-attempt query content.
 
 Whether the `sorts`, `filters`, and `calculations` values on the semantic queries
 are compilation inputs or echoes of a parse. Unmeasurable from the artifacts

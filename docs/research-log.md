@@ -11653,4 +11653,75 @@ is an input.
 
 ### Intervention and result
 
-Pending.
+Failure-first tests added an explicit `baseline`/`e02` candidate-kind binding
+from orchestration through the dispatcher. The attempt adapter now rebuilds the
+exact committed E02 plan for E02 readback while retaining the baseline plan for
+ordinary C4. Commit `1fdccf4aa273e60f32c8f2faa56da6d851489eb5` passed 2,030
+tracked tests with three expected skips, 83.24% branch coverage, and clean Ruff
+checks. Public deployment v6 then verified all 16 targets with exact readback
+and zero validation issues; the candidate hash remained
+`12c4e1a8cab38f0f47e14b5c553c87c800ca07f27bae568171f1d7caaf7589a7`.
+
+Generation v5 reached the correct E02-plan branch but exposed the second half of
+the same general wiring defect before job creation: the baseline-era readback
+filter discarded the `relationships` document, so the E02 plan and readback
+path sets could never match. A second failure-first test now requires E02 to
+retain that document while baseline continues to exclude it. Commit
+`2dc10d36836ccf2b19fcb364247aa22476aa8cf4` passes all 39 focused
+E02/baseline/runtime tests with clean Ruff checks. Public deployment v7 again
+verified all 16 targets with exact readback, zero issues, and unchanged
+candidate bytes.
+
+Generation v6 crossed every prior preflight and completed 17 immutable evaluated
+attempts before four concurrent workers received HTTP 429 on the pre-job
+`whoami` call. Those four attempts produced no answer. The same-identity
+continuation preserves their diagnostics, reconciles and skips all completed
+attempts, and runs with one worker to avoid another simultaneous authentication
+burst. Final generation, freeze, score, and KEEP/REVERT/INCONCLUSIVE decision
+remain pending.
+
+## 2026-08-30 — D-190: Consolidate the submission packet around measured results
+
+### Hypothesis
+
+The product handoff will be more useful and less error-prone if one current
+results report owns the reader-facing narrative, while the product and failure
+appendices expose the underlying mechanisms and one evidence index points to
+verified artifacts. Keeping the obsolete slot-filled draft beside the completed
+report risks publishing stale claims about unreleased held-out results and an
+optimized sealed arm that no longer exists. Leaving C4 efficiency telemetry out
+would also discard provider-reported token and timing evidence already captured
+by the immutable runs.
+
+### Planned intervention
+
+Keep `RESULTS.md` as the sole primary report and mark
+`docs/report-draft-v2.md` superseded rather than filling its obsolete slots.
+Add sealed C1--C4 efficiency and operational telemetry using only aggregate,
+non-content fields; distinguish exact, estimated, and unavailable cost. Correct
+the failure taxonomy so an evaluated-system result-contract disposition is not
+silently converted into causal product attribution. Refresh the product ledger,
+query-path disclosure, MVP status, and a compact evidence index from verified
+main-workspace paths. E02 receives one append-only outcome block only after its
+unchanged dev-A run is terminal and frozen.
+
+### Current result
+
+In progress while the sole E02 continuation runs. The public C4 baseline and
+sealed-final-v6 raw evidence have already been copied into ignored main-workspace
+destinations and independently verified under `omni-benchmark-vbt`; E02 remains
+the only live and unpreserved evidence root.
+
+The report packet is now consolidated around `RESULTS.md`, with the obsolete
+slot draft explicitly marked superseded. An aggregate-only telemetry analyzer
+reads exactly the 12 sealed generation cohorts and emits no question, SQL, row,
+result, score, correctness, gold, or hidden-annotation field. Thirteen tests
+pass at 80% branch coverage and fresh output is byte-identical to
+`sealed-telemetry-summary-v1.json`, SHA-256
+`7a614d6c861d4d2a982501ea8c89b2817820d965671caf800cc155759be481a8`.
+The report now includes latency, provider tokens, tool and database-query
+activity, terminal outcomes, coverage, and provider cost where observed; C4
+refusal and dollar cost remain explicitly unavailable. README, the product
+findings, failure taxonomy, query-path disclosure, MVP status, human queue, and
+stable evidence index are current. E02's terminal outcome block and final
+packet freeze remain pending the sole live continuation.

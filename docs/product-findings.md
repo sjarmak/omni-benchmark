@@ -17,6 +17,27 @@ Each finding must include:
 Private SQL, hidden knowledge annotations, test-case bodies, credentials, and
 customer data must not appear in this file.
 
+## Current product handoff — 2026-08-30
+
+The entries below are append-only observations recorded as the evaluation
+progressed. Their local words such as "pending", "blocked", and "not yet" are
+historical state, not the current project status. The current evaluation result
+and scope are in [`RESULTS.md`](../RESULTS.md). This index groups the findings by
+the product decision they support; its priority is for follow-up from this study,
+not an incident-severity classification.
+
+| Priority | Product surface | Current evidence | Product action | Detailed record |
+| --- | --- | --- | --- | --- |
+| Now | Rewritten-SQL output contract | 31 of 34 governed development non-answer outcomes shared an `UNKNOWN` selected-field type. Attribution remains unresolved at the interface between the authored model and the planner; the product also mixed selected output fields with dependency metadata. | Define a total typed result contract for rewritten SQL, separate selected and dependency fields, and surface unresolved output types during validation. | [PF-006](#pf-006-unformatted-json-results-still-stringify-numeric-measures), [PF-014](#pf-014-query-plan-summaries-conflate-output-and-dependency-field-metadata) |
+| Now | Complete machine-readable results | Truncation and presentation-control records caused all five strict concurrency-canary captures to fail before narrow adapter corrections; incomplete previews must not be accepted as analytical results. | Return complete results or a stable paginated/content-addressed handle, and keep preview metadata outside data rows. | [PF-010](#pf-010-truncated-governed-results-are-observable-but-not-execution-scorable), [PF-013](#pf-013-governed-job-previews-mix-data-rows-with-presentation-control-records) |
+| Next | Grain and relationship authoring | Across all 18 public HKBs, 511 of 1,090 definitions were deferred because they crossed an unresolved grain. The frozen governed model declared no joins or measures. | Make grain, identity, cardinality, relationship, and aggregation contracts explicit; provide a predeployment coverage report with accepted and deferred reasons. | [PF-004](#pf-004-topic-readback-adds-joins-unless-no-join-intent-is-explicit), [PF-009](#pf-009-missing-grain-contracts-dominate-public-only-hkb-translation) |
+| Next | Deployment identity and diagnostics | A selected-database mismatch affected all 17 non-canary connections and became actionable only after external diagnosis; model publishing also exposed logical/physical identity and canonical-readback gaps. | Validate database access at save time, return structured refresh failures, and expose stable logical and physical model identities with a canonical export contract. | [PF-001](#pf-001-schema-refresh-failures-lack-actionable-diagnostics-in-the-cliapi), [PF-002](#pf-002-model-upload-can-silently-create-a-near-duplicate-schema-view), [PF-011](#pf-011-physical-table-identity-and-semantic-extension-identity-diverge), [PF-012](#pf-012-model-readback-canonicalizes-redundant-physical-column-sql) |
+| Next | Run provenance and outcome telemetry | Completed AI jobs expose useful provider token buckets, timings, tool/query activity, and phase events. Raw AI jobs do not expose dollar cost, an immutable model revision, or a structured refusal reason. | Echo immutable model/branch revision, retries and validation attempts; expose raw-job cost when available; add a typed refusal outcome. | [PF-007](#pf-007-ai-hub-exposes-rich-run-telemetry-but-not-an-immutable-branch-revision), [PF-008](#pf-008-governed-ai-jobs-do-not-expose-a-structured-refusal-outcome) |
+
+Scoring disposition and causal attribution remain separate. In particular, an
+attempt can count against the evaluated system while the evidence still does not
+assign its cause exclusively to Omni or to the external model authoring path.
+
 ## PF-001: Schema-refresh failures lack actionable diagnostics in the CLI/API
 
 - **Observed behavior:** A newly created schema model reached terminal `FAILED`
@@ -777,12 +798,6 @@ execution mechanics rather than accuracy.
 - **Evaluator agreement/disagreement:** External capture distinguished the API
   representation issue from governed query completion; no correctness score was
   consulted.
-- **External execution outcome:** Product validation and exact semantic readback
-  passed for the ten-database frozen subset; question scoring remains separate.
-- **Evaluator agreement/disagreement:** The product validator accepted all three
-  models while the original external exact-readback gate rejected them. The
-  attested canonicalizer reconciled the representations without treating the
-  validator as the correctness authority.
 
 ## PF-014: Query-plan summaries conflate output and dependency field metadata
 
@@ -839,6 +854,29 @@ execution mechanics rather than accuracy.
   disaster and produced the explicit unsupported-type classification for ETF.
 - **Evaluator agreement/disagreement:** No evaluator correctness outcome was
   consulted; this finding concerns the product-to-harness result contract.
+
+## PF-007 update: Scaled raw-job telemetry remains rich but cost-incomplete
+
+- **Observation time:** 2026-08-30, after the immutable development and sealed
+  baselines completed.
+- **Observed behavior:** The completed-job API exposes provider-reported token
+  buckets, detailed timing, tool-call and database-query counts, and timestamped
+  phase events. The harness preserves normalized input, output, and total tokens;
+  start, finish, and latency; tool/query activity; and coverage/missingness.
+- **Current limitation:** The raw AI-job endpoint used by this benchmark does
+  not expose dollar cost or an immutable semantic-model content revision. Omni
+  AI Eval executions have a cost surface, but they are a different product path
+  and are not a substitute for raw-job cost.
+- **Why it matters to customers:** Tokens, latency, and tool behavior make the
+  governed workflow diagnosable, but model comparisons still need external
+  revision binding and cannot honestly report raw-job dollars.
+- **Proposed product change:** Echo branch plus immutable model revision and add
+  exact raw-job cost, retries, and validation-attempt counts when available.
+- **Benchmark treatment:** Report observed telemetry distributions and coverage;
+  keep `cost_usd` unavailable rather than zero or estimated from AI Eval.
+- **Experiment / commit provenance:** This is a scale-out update to PF-007 from
+  the completed immutable baseline contract; correctness remains in separate
+  score artifacts.
 
 ## Entry template
 

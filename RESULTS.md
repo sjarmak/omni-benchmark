@@ -11,8 +11,9 @@
 > cannot now be promoted into a held-out optimized arm; no intervention edit or
 > dev-B checkpoint may use these results. Before any sealed outcome existed, the
 > original 101-question frame was narrowed to the matched 89 questions
-> on the 16 databases with verified C4 deployments. All 154 dev-A questions
-> remain scheduled; 18 fixed benchmark-invalid questions are preregistered as
+> on the 16 databases with verified C4 deployments. The fixed E02 dev-A
+> schedule still lists all 154 questions; 18 benchmark-invalid questions are
+> preregistered as
 > unscorable, leaving 136 answerable questions for C4 evaluation. All 16
 > answerable baseline and E02 database bundles have current immutable
 > validation and exact-readback evidence sets. C4 completed all 136 executable
@@ -62,13 +63,17 @@ The sealed comparison and development evidence support seven findings:
 
 4. Bounded schema retrieval made the direct comparator runnable and established
    a hard payload limit. The schema tool now returns at most four tables and 64
-   KiB per call, compared with a 51-table response on the original canary. Full
-   baseline telemetry averaged $1.48 to $1.84 per attempt across C1-C3. The hard
-   payload bound and observed end-to-end cost are separate measurements.
+   KiB per call, compared with a 51-table response on the original canary. The
+   direct development baseline averaged $1.48 to $1.84 per attempt across
+   C1-C3. The hard payload bound and observed end-to-end cost are separate
+   measurements. On the sealed frame, C4 used 3.9 times C1's median tokens, 1.5
+   times its latency, and 2.3 times its tool calls without an accuracy gain.
 
-5. The governed semantic path exposed a distinct product-reliability failure
-   surface. Thirty-four of 136 scoreable C4 attempts ended in a semantic-layer
-   or system-contract failure rather than a scored result mismatch. Eleven
+5. The governed path exposed a distinct evaluated-system reliability surface.
+   Thirty-four of 136 scoreable C4 attempts failed to reach a scoreable answer
+   at the validation or result-contract stage rather than ending in a result
+   mismatch. Causal ownership remains unresolved between the authored model,
+   agent behavior, and Omni's planning/result contract. Eleven
    additional capture gaps were recoverable by replaying only an
    already-generated semantic query; question-level model reasoning was never
    rerun.
@@ -84,8 +89,9 @@ The sealed comparison and development evidence support seven findings:
    attempts. It did not compose the query. The study can no longer claim that
    C4 minus C3 isolates semantic-layer query composition.
 
-7. The held-out comparison confirms the value of searchable raw business
-   knowledge but not the governed mechanical system. Official mean accuracy is
+7. On the matched 89-question, 16-database held-out frame, the comparison
+   supports the value of searchable raw business knowledge but not the governed
+   mechanical system. Official mean accuracy is
    10.1% for C1, 22.1% for C2, 8.6% for C3, and 8.6% for C4; corrected
    sensitivity gives 10.1%, 19.5%, 8.6%, and 9.7%. C2−C1 is +12.0 percentage
    points (95% interval 5.6 to 18.7) under the official scorer and +9.4 points
@@ -412,8 +418,8 @@ Their reusable changes and promotion rules are recorded in
 | --- | --- | --- | --- |
 | E01: same-grain dependencies | The frozen baseline already has 48 dependency-bearing elements, 70 executable dependency edges, and depth three | Inconclusive; already baseline | No further E01 contrast |
 | E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes; deployment v5 verified all 16 targets with exact readback | Pre-specified dev-A mechanism contrast; no held-out promotion permitted after sealed scoring | Run its fixed eligible dev-A evaluation unchanged |
-| E03: bounded descriptions | Prespecified only | Not run | Candidate mechanism for the lean loop |
-| E04: broad HKB context | Prespecified negative control only | Not run | Optional negative control; run only if it directly informs promotion |
+| E03: bounded descriptions | Prespecified only | Not run | Out of MVP scope after the scoring-order deviation |
+| E04: broad HKB context | Prespecified negative control only | Not run | Out of MVP scope after the scoring-order deviation |
 
 A fifth family, E05, was registered later against the 31 `UNKNOWN`-type contract
 failures: declare explicit output types on compiled semantic fields. Its
@@ -482,8 +488,56 @@ per-question correctness left custody.
 | Corrected multiset sensitivity | C3 | 8.6% | 54.7% | 36.7% | 16.1% | 4.5% | 6 |
 | Corrected multiset sensitivity | C4 | 9.7% | 76.0% | 14.2% | 14.2% | 7.9% | 4 |
 
+`Refused/error` is the scorer's third outcome among the 267 scoreable attempts
+per condition; it complements correct and wrong. `Error rate` is narrower: the
+share of all 267 scheduled generations whose raw terminal outcome was
+`errored`, rather than `answered` or `refused`. Pass³ is the share of the 89
+questions answered correctly in all three repetitions. Correctness flips count
+questions correct in only one or two repetitions. These columns therefore
+measure different reliability properties and should not be added together.
+
 The frozen generation contract does not distinguish content refusal from
 insufficient context, so those two rates are unavailable rather than inferred.
+
+### Efficiency and operational reliability
+
+The same 1,068 immutable attempts preserve provider-reported token usage where
+available, end-to-end latency, tool activity, and terminal state. These are
+workload measurements of each complete condition, not estimates of the semantic
+layer's isolated causal cost. Dollar cost is available for the C1-C3 provider
+surface and unavailable for C4's raw Omni job endpoint; unavailable does not
+mean zero.
+
+| Condition | Answered | Raw error | Raw refusal | Median latency, s (Tukey IQR) | Median tokens (Tukey IQR) | Median tool calls | Median DB queries | Mean cost/attempt | Total cost |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| C1 | 67.0% | 18.7% | 14.2% | 33.4 (19.6-48.5) | 147.6k (63.9k-288.2k) | 3 | 1 | $1.43 | $381.28 |
+| C2 | 74.2% | 19.9% | 6.0% | 44.0 (27.6-60.4) | 256.8k (137.8k-371.2k) | 4 | 2 | $1.90 | $506.66 |
+| C3 | 63.3% | 16.1% | 20.6% | 39.2 (23.5-68.6) | 195.3k (89.1k-429.4k) | 3 | 2 | $1.84 | $491.70 |
+| C4 | 85.8% | 14.2% | unavailable | 51.1 (39.8-91.6) | 580.8k (410.1k-1,029.3k) | 7 | 2 | unavailable | unavailable |
+
+Latency coverage is complete. Token, tool-call, and database-query coverage is
+267/267 for C1-C3 and 265/267 for C4. Provider-reported cost coverage is
+267/267 for C1-C3 and 0/267 for C4. C4 therefore used 3.9 times C1's median
+tokens, 1.5 times its median latency, and 2.3 times its median tool calls. Most
+of the difference was input-token volume: median input/output tokens were
+145.8k/2.0k for C1 and 580.0k/3.0k for C4. This larger workload did not produce
+an accuracy improvement. It is a product-level efficiency result, but scaffold,
+agent, and execution-path differences prevent attributing all of the overhead
+to semantic enforcement.
+
+Errors were also more expensive than answers. Median observed total tokens for
+answered versus errored attempts were 134k versus 335k in C1, 249k versus 367k
+in C2, 195k versus 403k in C3, and 574k versus 815k in C4. C4 error latency was
+87.5 seconds versus 50.5 seconds for answered attempts; its error-token median
+uses the 36 of 38 errors with token telemetry. Model version, retry count, and
+validation-attempt count are unavailable for all 267 C4 attempts. The product
+opportunity is therefore not only reducing failures, but detecting terminal
+contract and unsupported-result failures earlier in an already costly execution
+path.
+The deterministic aggregate is
+[`experiments/analysis/sealed-telemetry-summary-v1.json`](experiments/analysis/sealed-telemetry-summary-v1.json),
+with file SHA-256
+`7a614d6c861d4d2a982501ea8c89b2817820d965671caf800cc155759be481a8`.
 
 ### Exploratory contrasts
 
@@ -551,8 +605,14 @@ The development evidence supports five immediate recommendations:
    semantic model never declared.
 
 The direct and C4 development baselines associate these mechanisms with
-failures. The held-out evaluation will determine the frozen system's final
-comparative result.
+failures. On the matched 89-question, 16-database held-out frame, the comparison
+supports the value of searchable raw HKB context, but it does not show an
+accuracy gain for the frozen governed system.
+The detailed product handoff is in
+[`docs/product-findings.md`](docs/product-findings.md); supporting mechanism
+evidence is in [`docs/failure-taxonomy.md`](docs/failure-taxonomy.md), the
+[`C4 query-path disclosure`](docs/c4-query-path-disclosure.md), and the
+[`E02 join-path assessment`](docs/e02-join-path-assessment.md).
 
 ## 8. Limitations
 
@@ -620,7 +680,9 @@ HKB/schema inputs and hashes, transformation artifacts, condition disclosure,
 telemetry contracts, experiment history, and two frozen scorers. Private gold
 and hidden annotations remain outside the repository. See
 [README.md](README.md) for reproduction commands and
-[manuscript/main.pdf](manuscript/main.pdf) for the supporting protocol paper.
+[docs/evidence-index.md](docs/evidence-index.md) for the stable evidence map and
+[manuscript/main.tex](manuscript/main.tex) for the portable supporting protocol
+source; [`manuscript/build.sh`](manuscript/build.sh) produces its pinned PDF.
 The untuned baseline system is frozen at successor commit
 `8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d`; its direct-child control commit is
 `94cc0d9483c944d7dc13ed651c8fc2ef077f33ab`, and the Freeze-B manifest SHA-256
@@ -633,7 +695,7 @@ while preserving the generation binding above. The correctness-free scoring
 receipt SHA-256 is
 `534e28b954d4d13dfdd9100fc6a184fba3eb3720d8cd7cf7d43c92713cb258f7`.
 No optimized held-out candidate is constructed after the sealed result.
-The C1 sensitivity subset, allocation diagnostics, preserved-artifact hashes,
-and notional cost/time projection are committed separately from its future raw
-run artifacts; OAuth dollars remain telemetry rather than a run-selection
-rule.
+The deferred D-054 comparator sensitivity subset, allocation diagnostics,
+preserved-artifact hashes, and notional cost/time projection remain supporting
+artifacts; observed provider dollars remain telemetry rather than a
+run-selection rule.

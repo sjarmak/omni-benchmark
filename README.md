@@ -7,14 +7,18 @@ mean one-shot execution accuracy across three sealed repetitions; repetition-one
 accuracy is reported separately. The primary comparison is governed Omni versus
 a reasonably developed direct-SQL agent on the same held-out attempts.
 
-Current status: Freeze A protocol frozen; its hash record is created in the
-required follow-up commit. No private label or gold data belongs in this
-repository or agent-accessible workspace.
+Current status: the matched untuned sealed C1-C4 evaluation is complete and
+scored under both frozen scorers. The pre-specified E02 candidate is the sole
+remaining live dev-A mechanism contrast; it is not an optimized held-out arm,
+and sealed outcomes may not inform it. Protected held-out and dev-B values
+remain outside development, and ignored custody/run artifacts must never be
+committed.
 
-For the current execution frontier, completed milestones, blockers, and the
-remaining path to shareable results, see
-[docs/mvp-status.md](docs/mvp-status.md). For the exact live human authorization
-queue, see [docs/human-decisions.md](docs/human-decisions.md).
+Start with [RESULTS.md](RESULTS.md) for the product-facing findings and
+[docs/evidence-index.md](docs/evidence-index.md) for stable artifact lineage.
+For the current execution frontier, completed milestones, and blockers, see
+[docs/mvp-status.md](docs/mvp-status.md). For the exact live human queue, see
+[docs/human-decisions.md](docs/human-decisions.md).
 
 ## Experimental design
 
