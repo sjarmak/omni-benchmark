@@ -10,9 +10,8 @@ from typing import Any
 
 import pytest
 
+import omni_benchmark.claude_direct_transport as claude_transport
 from omni_benchmark.claude_direct_transport import (
-    PINNED_CLAUDE_BINARY,
-    PINNED_CLAUDE_BINARY_SHA256,
     ClaudeDirectTransport,
     ClaudeDirectTransportError,
     ClaudeProcessResult,
@@ -185,7 +184,7 @@ def test_provider_provenance_is_immutable_and_content_bound(tmp_path: Path) -> N
     assert provenance.provider == "anthropic_claude_code_oauth"
     assert provenance.requested_model == MODEL
     assert provenance.realized_models == (MODEL,)
-    assert provenance.binary_sha256 == PINNED_CLAUDE_BINARY_SHA256
+    assert provenance.binary_sha256 == claude_transport.PINNED_CLAUDE_BINARY_SHA256
     assert provenance.cli_version == "2.1.250"
     assert len(provenance.stream_sha256) == 64
     assert len(provenance.request_sha256) == 64
@@ -228,4 +227,4 @@ def test_no_live_process_is_used_by_fixture_suite(
         raise AssertionError("fixture tests must not launch Claude")
 
     monkeypatch.setattr(subprocess, "run", fail)
-    assert os.path.isfile(PINNED_CLAUDE_BINARY)
+    assert os.path.isfile(claude_transport.PINNED_CLAUDE_BINARY)

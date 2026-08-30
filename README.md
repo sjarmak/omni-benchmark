@@ -1,24 +1,54 @@
 # Omni on LiveSQLBench Large-v1
 
-This repository evaluates whether Omni answers analytical questions more
-accurately when LiveSQLBench business knowledge is represented and enforced
-through Omni's semantic layer. The primary product result is governed Omni's
-mean one-shot execution accuracy across three sealed repetitions; repetition-one
-accuracy is reported separately. The primary comparison is governed Omni versus
-a reasonably developed direct-SQL agent on the same held-out attempts.
+[![Quality](https://github.com/sjarmak/omni-benchmark/actions/workflows/quality.yml/badge.svg)](https://github.com/sjarmak/omni-benchmark/actions/workflows/quality.yml)
 
-Current status: the matched untuned sealed C1-C4 evaluation is complete and
-scored under both frozen scorers. The pre-specified E02 candidate is the sole
-remaining live dev-A mechanism contrast; it is not an optimized held-out arm,
-and sealed outcomes may not inform it. Protected held-out and dev-B values
-remain outside development, and ignored custody/run artifacts must never be
-committed.
+**What did I test?** Whether business knowledge and Omni's semantic model improve
+analytical-agent accuracy on LiveSQLBench Large-v1, using four conditions that
+separate raw schema, searchable knowledge, structured model context, and Omni's
+governed runtime.
 
-Start with [RESULTS.md](RESULTS.md) for the product-facing findings and
-[docs/evidence-index.md](docs/evidence-index.md) for stable artifact lineage.
-For the current execution frontier, completed milestones, and blockers, see
-[docs/mvp-status.md](docs/mvp-status.md). For the exact live human queue, see
-[docs/human-decisions.md](docs/human-decisions.md).
+**What did I find?** Searchable raw HKB context materially improved the direct-SQL
+agent: official sealed accuracy was 22.1% for C2 versus 10.1% for raw-schema C1.
+Governed Omni C4 scored 8.6% and did not outperform C1. These headline results
+use the same pre-outcome matched frame for every arm: 89 of the original 101
+held-out questions across 16 deployable databases.
+
+**Why?** The public HKB carried useful semantics, but only 17.7% of its 1,090
+definitions compiled into executable objects and 46.9% were deferred around
+missing grain contracts. The deployed model consequently had no declared joins
+or measures, and Omni's production path used agent-authored SQL rather than
+semantic query composition.
+
+**What did I do next?** E02 adds only defensible foreign-key-backed relationships
+and tests on dev-A whether that missing mechanism changes behavior. It was fixed
+before sealed outcomes were visible, cannot become an optimized held-out arm,
+and is the final experiment; after it is preserved and scored, experimentation
+stops.
+
+## Start here
+
+| File | Purpose |
+| --- | --- |
+| [README.md](README.md) | 5-minute overview |
+| [RESULTS.md](RESULTS.md) | Results and product implications |
+| [docs/methodology.md](docs/methodology.md) | Concise experimental design and architecture |
+| [docs/evidence-index.md](docs/evidence-index.md) | Reproducibility and audit trail |
+
+## Why this repository has more machinery than the benchmark requires
+
+Hidden evaluation data required strict separation between generation and
+scoring. Repeated agent runs required immutable provenance so failures and
+retries could not silently change the evidence. The extra custody,
+experiment-control, and audit code exists to make the result defensible and
+reproducible, not because the conceptual benchmark is complicated. The core
+flow is question → four conditions → sealed result → failure mechanism → E02 →
+product implications.
+
+<details>
+<summary><strong>Research infrastructure and detailed reproduction commands</strong></summary>
+
+The sections below support audit and reproduction. They are not required reading
+for the product result.
 
 ## Experimental design
 
@@ -305,3 +335,5 @@ The human-readable trajectory lives in
 [`docs/research-log.md`](docs/research-log.md), while
 [`docs/failure-taxonomy.md`](docs/failure-taxonomy.md) tracks the evolving
 mechanism counts and top remaining failures at each checkpoint.
+
+</details>

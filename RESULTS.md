@@ -1,4 +1,4 @@
-# Does an Enforced Semantic Layer Improve Analytical Question Answering?
+# Omni on LiveSQLBench Large-v1: Accuracy, Reliability, and Product Findings
 
 ## Results report
 
@@ -22,19 +22,39 @@
 
 ## Executive summary
 
-This study asks whether an analytical agent becomes more accurate when business
-knowledge is represented and enforced through Omni's semantic layer instead of
-being left to direct SQL generation. It starts from 332 analytical tasks in
-LiveSQLBench Large-v1: 231 development questions and an original sealed split of
-101 questions. The executed held-out comparison uses the matched 89-question
-subset described below. The development partition is further divided into 154
-development questions and 77 metered validation questions. The protocol
-permits supervised reuse. The frozen mechanical candidate received no
-question-level supervision and consumed no metered checkpoint. E02 remains a
-pre-specified dev-A mechanism contrast, but the scoring-order deviation means it
-cannot become a held-out optimized arm. Four baseline systems
-separate access to raw schema, business knowledge, structured semantic
-knowledge, and governed execution.
+This study evaluates Omni on LiveSQLBench Large-v1 and separates three questions:
+whether business knowledge helps an analytical agent, what is lost when that
+knowledge becomes an executable semantic model, and what Omni's governed runtime
+actually does with that model. The benchmark contributes 332 eligible analytical
+tasks: 231 development questions and an original sealed split of 101 questions.
+The development partition is further divided into 154 development questions and
+77 metered validation questions. The protocol permits supervised reuse. The
+frozen mechanical candidate received no question-level supervision and consumed
+no metered checkpoint. E02 is the final experiment: a pre-specified dev-A
+mechanism contrast that cannot become a held-out optimized arm after the
+scoring-order deviation. Four baseline systems separate access to raw schema,
+business knowledge, structured semantic knowledge, and governed execution.
+
+**Headline held-out result, on the pre-outcome matched frame.** Official mean
+accuracy was 10.1% for C1, 22.1% for C2, 8.6% for C3, and 8.6% for C4; corrected
+sensitivity was 10.1%, 19.5%, 8.6%, and 9.7%. This comparison covers 89 of the
+original 101 held-out questions, on the 16 databases with verified C4
+deployments. The frame was narrowed before any sealed generation, label release,
+or outcome access because the official loader left required tables unavailable
+in the other two databases. All four conditions and all three repetitions use
+the same 89 questions; the result estimates performance on those 16 deployable
+databases, not the full 18-database benchmark.
+
+The product interpretation is not that business semantics failed to matter. On
+this benchmark, C2 shows that searchable business knowledge mattered: it improved
+the direct comparator by 12.0 percentage points under the official scorer. The
+loss occurred in translation and execution. Only 17.7% of the 1,090 public HKB
+definitions compiled into executable objects, while 46.9% were deferred across
+an unresolved grain. The deployed C4 model consequently declared no joins or
+measures, and Omni's production agent fell back to agent-written SQL through the
+rewrite path. The product opportunity is to preserve useful business semantics
+as executable grain, relationship, and aggregation contracts, then make the
+governed runtime use them.
 
 The sealed comparison and development evidence support seven findings:
 

@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-30T17:32:09-04:00 (America/New_York). Reconciliation
+Last reconciled: 2026-08-30T18:26:24-04:00 (America/New_York). Reconciliation
 happens at material evidence gates only, not on a daily cadence.
 
 ## Current position
@@ -20,17 +20,12 @@ C1 (-1.5 and -0.4 points, with intervals spanning zero).
 
 Optimization/tuning remains an MVP experiment, but its claim is narrower now.
 The sealed baseline was scored before E02 dev-A execution completed. E02 was
-selected and preregistered before those results. A later public-validator-only
-compiler correction generalized publication of absent relationship endpoints;
-it used no held-out outcome. Deployment v7 verifies all 16 targets with exact
-readback and zero validation issues. The fixed 136-attempt E02 dev-A mechanism
-contrast is now live under one claimed identity and a one-worker continuation.
-It crossed all preflights and preserved 17 immutable attempts before a pre-job
-rate-limit interruption; the continuation reuses that identity and does not
-rerun completed attempts. The sealed aggregates may not drive an intervention
-edit, dev-B checkpoint, promotion decision, or optimized held-out arm. The
-project can demonstrate a disciplined optimization attempt, but cannot claim
-held-out improvement from it.
+selected and preregistered before those results, and its unchanged dev-A
+mechanism contrast is now the sole live evaluation action under one claimed
+identity. Its terminal outcome is not yet available. The sealed aggregates may
+not drive an intervention edit, dev-B checkpoint, promotion decision, or
+optimized held-out arm. The project can demonstrate a disciplined optimization
+attempt, but cannot claim held-out improvement from it.
 
 Live-action authorization remains tiered by contamination risk
 (`omni-benchmark-xeg`). Public semantic deployment and validation passes are
@@ -67,7 +62,7 @@ limitation, not as system or gold failures.
 | Train-only gold release | Complete | Exactly 154 dev-A records were released through custody; the complete source was removed from the host transfer area. Test gold and dev-B outcomes remain unavailable to development. |
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
-| Minimal dev-A experiment set | **E02 fixed dev-A execution live** | Aggregate-only development analysis selected the preregistered relationship/grain intervention. Public-only corrections through `2dc10d3` use no held-out outcome; deployment v7 verifies and exactly reads back all 16 targets with zero issues. A one-worker continuation is completing the same immutable 136-attempt identity after a pre-job rate-limit interruption; 17 completed attempts were reconciled rather than rerun. |
+| Minimal dev-A experiment set | **E02 fixed dev-A contrast live** | Aggregate-only development analysis selected the preregistered relationship/grain intervention before sealed results were visible. Its sole immutable dev-A identity is running unchanged; terminal freeze, dual scoring, and the mechanism decision remain pending. |
 | Untuned candidate and baseline Freeze B | **Complete** | Baseline system `8b0c739…`, direct-child control `94cc0d9…`, Freeze-B SHA-256 `e1c9f196…ae4730`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
 | Untuned sealed C1-C4 evaluation | **Complete and scored** | V1-v5 remain immutable and excluded. V6 has 1,068 attempts and 12 authenticated cohorts. Split-provenance scoring v10 completed once. Official aggregate `79bcfca3…8faff`; sensitivity `88dd6a71…b7eb26`; correctness-free receipt `534e28b9…b258f7`; aggregate report `884b660f…3a464`. No individual score artifact was opened. |
 | Optimized candidate and held-out arm | **Held-out arm cancelled by scoring order; dev-A contrast remains** | Run only the fixed pre-specified E02 mechanism on dev-A. Do not use sealed aggregates for intervention edits, checkpoints, promotion, or a new held-out arm. |
@@ -79,8 +74,8 @@ limitation, not as system or gold failures.
 - The frozen direct-SQL and governed C4 development results are real and can be
   discussed with their stated scopes and exclusions.
 - The public HKB/compiler analysis and failure-mechanism evidence are real.
-- The E01 no-op finding and the v7-deployed, exact-readback E02 candidate are
-  real; the E02 dev-A outcome is not yet terminal.
+- The E01 no-op finding and E02's completed public deployment prerequisite are
+  real; the E02 dev-A outcome remains live and is not yet terminal.
 - The sealed C1-C4 comparison is a real held-out outcome under both frozen
   scorers. Its aggregate-only report is shareable with the stated 89-question,
   16-database scope.
@@ -110,30 +105,31 @@ callback, lease, or protected-data action is needed.
 
 ### Agent-owned work now
 
-- Monitor the sole bounded E02 dev-A continuation under
-  `omni-benchmark-ei0.11.4`; do not launch a competing identity. When terminal,
-  freeze and score the fixed 136-answerable dev-A comparison with both frozen
-  scorers. Do not edit or promote it from sealed results.
-- Treat `omni-benchmark-vbt` as a P0 no-prune prerequisite. Preserve and verify
-  the terminal E02 root in the main workspace before any associated execution
-  worktree cleanup; the C4 and sealed copies are already verified.
-- Finish the concise results/product report and verify its artifact lineage.
-- Commit and publish reviewed work through `main` only. Worktree cleanup under
-  `omni-benchmark-9v3` is not on the MVP critical path.
+- Monitor the sole E02 identity to terminal; do not launch a competing identity
+  or change the candidate from sealed results.
+- Preserve its terminal raw evidence in the main workspace and independently
+  verify it under P0 `omni-benchmark-vbt` before any execution-worktree cleanup.
+- Freeze the terminal E02 output, score it once with both frozen scorers, and
+  record the preregistered mechanism decision.
+- Close the one remaining human custody confirmation while retaining the
+  private 89-record projection used by the completed sealed scorer.
+- Finalize the results packet, make the reviewed submission commit, and create
+  the submission tag.
 
-### Later exact gates
+### Hard stop after E02
 
-No additional sealed or dev-B action is planned. The agent may execute the exact
-pre-result E02 dev-A action under standing authorization when its deployment gate
-passes.
+After E02 is preserved, scored, and recorded, the evaluation stops. No further
+experiment, intervention edit, dev-B checkpoint, canary, probe, rerun, or
+held-out arm may be launched. Remaining work is limited to custody closeout,
+artifact verification, report correction without new empirical claims, and the
+final submission commit and tag.
 
 ### Non-critical-path or deferred work
 
 LODO, extensive template audits, optimizer-framework work, publication-grade
-statistical extras, comparator polish, and protocol-paper expansion stay
-deferred unless they directly block the MVP. The cybermarket append-only direct
-baseline recovery is useful denominator repair and should be completed when its
-isolated direct lane is safe, but it does not replace the C4 critical path.
+statistical extras, comparator polish, protocol-paper expansion, and the
+cybermarket append-only recovery remain documented but out of scope. They do
+not authorize another experiment before or after submission.
 
 ## Definition of MVP complete
 
@@ -152,6 +148,8 @@ The MVP is complete only when all of the following are true:
    preserved and independently verified in stable main-workspace locations.
 6. The full-source cleanup is confirmed and the concise report receives its
    final submission-ready edit.
+7. The reviewed submission commit and tag exist, and no experiment lane remains
+   authorized or running.
 
 ## Sources of truth
 

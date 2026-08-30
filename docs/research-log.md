@@ -11725,3 +11725,49 @@ refusal and dollar cost remain explicitly unavailable. README, the product
 findings, failure taxonomy, query-path disclosure, MVP status, human queue, and
 stable evidence index are current. E02's terminal outcome block and final
 packet freeze remain pending the sole live continuation.
+
+## 2026-08-30 — D-191: Reduce the reviewer surface and stop experiments after E02
+
+### Observation and hypothesis
+
+External review identified four avoidable credibility costs in the otherwise
+complete sealed result: the report title implied semantic-layer enforcement that
+the executed C4 path did not achieve; the 89-of-101 matched frame and strongest
+product interpretation were too far from the headline; the README exposed the
+research operating system before the research answer; and the repository had no
+externally visible CI contract. The same review recommended preserving and
+scoring the already-running preregistered E02 contrast, then stopping rather than
+adding more experimental machinery.
+
+The hypothesis is that neutral framing, a five-minute reviewer path, one minimal
+read-only CI job, and an explicit hard stop after E02 improve inspectability and
+confidence without changing any experimental surface or empirical claim.
+
+### Intervention and current result
+
+`RESULTS.md` now frames the work as an evaluation of Omni on LiveSQLBench and
+places both the pre-outcome 89-question narrowing and the product mechanism next
+to the headline. `README.md` gives a question-to-reproduction path and labels the
+remaining apparatus as research infrastructure. `docs/mvp-status.md` makes E02
+the final experiment and limits all subsequent work to preservation, frozen
+scoring, custody closeout, report correction, and a submission commit and tag.
+
+A second presentation pass turns the README's first screen into four direct
+answers—test, result, mechanism, and E02—followed by a four-link reviewer path.
+The longer setup and custody instructions remain intact but visually collapsed
+as supporting research infrastructure. `docs/methodology.md` now opens with one
+concise conceptual design and architecture diagram, points to
+`sealed_evaluation.py` as the implementation entry point, and visually demotes
+the retained full preregistered detail. The flat source package is deliberately
+not reorganized after results.
+
+A failure-first workflow test established that CI was absent. The GitHub Actions
+job has read-only repository permission, immutable action pins, locked
+dependencies, branch coverage, Ruff checks, no secrets, and no live benchmark
+command. A portability audit found that mocked transport tests depended on this
+host's private Claude executable path; they now use a test-created executable
+while a separate metadata assertion retains the production pin. The focused
+suite passed 81 tests, and the full tracked suite passed 2,045 tests with three
+expected skips and 83.24% combined branch coverage. The external CI signal is
+pending the scoped push. The sole E02 identity continues unchanged, and no
+additional experiment is authorized or planned.

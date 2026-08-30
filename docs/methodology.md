@@ -1,12 +1,82 @@
-# Methodology and preregistered analysis plan
+# Methodology
 
-Status: pre-gold, protocol version 2 (Freeze A frozen by this commit).
+This is the concise reviewer-facing design. The frozen
+[evaluation protocol](../EVALUATION_PROTOCOL.md), machine-readable
+`config/preregistration.json`, and documented protocol deviations remain the
+authoritative audit record.
 
-This document operationalizes [the custody protocol](../EVALUATION_PROTOCOL.md)
-and the machine-readable preregistration in `config/preregistration.json`. If a
-later narrative conflicts with either frozen artifact, the earlier committed
-protocol and configuration govern. Deviations must be timestamped and explained;
-they may not be silently edited into the original plan.
+## Evaluation architecture
+
+```mermaid
+flowchart LR
+    Q[LiveSQLBench questions] --> C1[C1: raw schema<br/>direct SQL]
+    Q --> C2[C2: raw schema + searchable HKB<br/>direct SQL]
+    Q --> C3[C3: searchable Omni model<br/>direct SQL]
+    Q --> C4[C4: deployed Omni model<br/>governed runtime]
+    C1 --> G[Frozen generation artifacts]
+    C2 --> G
+    C3 --> G
+    C4 --> G
+    G --> S[Sealed execution scoring<br/>official + sensitivity]
+    S --> A[Identity-free aggregates]
+    A --> R[Result + mechanism analysis]
+    D[dev-A only] --> E[E02: FK-backed relationships]
+    E --> F[Freeze and score once<br/>no held-out promotion]
+```
+
+The conceptual flow is deliberately small. Public information constructs four
+runtime conditions; generation is frozen before correctness is opened; a sealed
+boundary executes both frozen scorers; only aggregates enter the report. The
+implementation entry point for the final custody and scoring boundary is
+[`src/omni_benchmark/sealed_evaluation.py`](../src/omni_benchmark/sealed_evaluation.py).
+
+## Population and conditions
+
+LiveSQLBench Large-v1 provides 480 tasks across 18 databases. The evaluation
+retains all 332 analytical `Query` tasks and excludes 148 `Management` tasks. A
+deterministic database-stratified split assigns 231 questions to development and
+101 to sealed test; development is split into 154 adaptive dev-A and 77 metered
+dev-B questions.
+
+| Condition | Information and runtime path |
+| --- | --- |
+| C1 | Public schema; direct SQL |
+| C2 | Public schema plus searchable raw HKB; direct SQL |
+| C3 | Public schema plus searchable exported Omni model; direct SQL |
+| C4 | Deployed Omni model; production-governed runtime, which used agent-authored SQL through the rewrite path in this evaluation |
+
+Before any sealed generation or correctness access, the reporting frame narrowed
+from 101 to 89 questions on the 16 databases with complete, verified C4
+deployments. Two databases were excluded because the official loader did not
+materialize required tables. Every condition and all three repetitions use the
+same matched 89-question frame.
+
+## Scoring and interpretation
+
+Each condition receives three independent, interleaved attempts per held-out
+question. There is no majority vote. The official-compatible Soft EX scorer is
+reported beside a preregistered corrected sensitivity scorer; neither was chosen
+after seeing outcomes. Correctness remains separate from generation artifacts,
+and the report receives only identity-free aggregates.
+
+C2−C1 measures the value associated with searchable business knowledge. C3−C2
+measures the effect of restructuring that knowledge for optional retrieval.
+C4 is a production-system comparison, not a clean semantic-compilation ablation:
+the observed path resolved model field references but authored raw SQL and did
+not compose joins or measures from the semantic model.
+
+E02 is one pre-specified dev-A mechanism contrast. It adds only general,
+foreign-key-backed relationships, freezes the exact candidate and outputs, and
+scores them once under both dev-A scorers. Because sealed aggregates became
+visible before E02 completed, E02 cannot support a held-out improvement claim or
+trigger another experiment.
+
+<details>
+<summary><strong>Full preregistered methodology and custody detail</strong></summary>
+
+The material below is retained as supporting research infrastructure. Where it
+describes plans later changed by a recorded deviation, the protocol-difference
+ledger and final results report govern the executed design.
 
 ## Research questions and experimental hierarchy
 
@@ -585,3 +655,5 @@ that violates the custody contract.
   invalidate correctness comparisons.
 - Manual interpretive mappings and benchmark-specific exceptions weaken claims
   of automatic semantic-model scalability and must be counted.
+
+</details>
