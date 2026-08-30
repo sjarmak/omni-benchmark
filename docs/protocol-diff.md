@@ -178,3 +178,34 @@ final candidate.
 
 **Consequence for description.** The executed system receives no question-level
 supervision. It must not be described as tuned, adapted, or dev-A-supervised.
+
+## Post-Freeze-A deviation, 2026-08-29: matched 89-question sealed frame
+
+**What changed.** Before any sealed generation, test-label release, or test
+outcome access, the executed sealed population was reduced from the committed
+101-question/18-database split to the 89 questions assigned to the 16 databases
+with verified governed C4 deployments. All four conditions and all three
+repetitions use the same membership, producing 1,068 scheduled outputs.
+
+**Why.** The pinned official LiveSQLBench loader omits every physical table used
+by the mechanical semantic bundles for `mental_healths_large` and
+`organ_transplant_large`. The 12 sealed questions assigned to those databases
+therefore have no honest non-empty C4 deployment under the frozen compiler.
+Restoring omitted tables would break official-loader comparability; deploying
+empty models or counting the coordinates as system failures would misstate the
+evaluated system. Waiting for a new compiler mechanism would put the MVP back on
+an open-ended product path after the final candidate was selected.
+
+**Decision and timing.** Stephanie selected option A in
+`omni-benchmark-ei0.9.1.1` before Freeze B and before any sealed outcome existed.
+The choice used only public split membership by database and public loader and
+deployment evidence. It did not use question content, gold SQL, hidden
+annotations, correctness, or dev-B information.
+
+**Consequence for interpretation.** The primary and rung comparisons remain
+paired because membership is identical across C1-C4. The estimand is narrower:
+performance on the 16 officially loadable databases represented in the matched
+frame, not all 18 databases in Large-v1. The report must disclose the 12
+exclusions and may not classify them as model failures, gold failures, or
+condition-specific missingness. The scorers, repetitions, retry policy, final
+candidate, custody boundary, and endpoint definitions are unchanged.

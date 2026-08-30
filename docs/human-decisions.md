@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T21:38:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-29T21:44:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -35,7 +35,8 @@ The corrected C4 control-plane frame is complete and fully tested: all 154
 dev-A identities remain scheduled, exactly 136 answerable identities execute,
 and the 18 fixed exclusions remain explicit. The public deployment prerequisite
 is also complete: v13 validates all 16 answerable databases in one exact
-evidence set. No further human action is waiting.
+evidence set. The sealed frame decision below is now complete; no action receipt
+or credential operation is waiting.
 
 The agent-autonomous v12 polar verification is complete and needs no response
 from you. It returned zero validation issues and exact readback for all 20
@@ -62,32 +63,26 @@ and score-receipt SHA-256 is
 No command, credential, callback, profile action, or additional run
 authorization is needed from you.
 
-## Response needed — sealed frame for two loader-blocked databases
+## Decision completed — matched 89-question sealed frame
 
-Freeze-B preflight found a substantive protocol issue, tracked by
-`omni-benchmark-ei0.9.1.1`. The sealed split has 101 questions across all 18
-databases. Twelve are assigned to `mental_healths_large` or
-`organ_transplant_large`. The official loader omits every physical table used by
-the mechanical semantic bundles for those databases, so the frozen compiler has
-no honest non-empty C4 model to deploy. The 18-question dev-A exclusion is
-explicitly development-only and cannot silently change the sealed population.
+Stephanie responded **A** to `omni-benchmark-ei0.9.1.1` on 2026-08-29. Before
+any sealed generation, label release, or outcome access, the executed sealed
+frame is amended to the 89 questions assigned to the 16 databases with verified
+C4 deployments. The 12 questions assigned to `mental_healths_large` or
+`organ_transplant_large` are excluded from every condition and repetition
+because the pinned official loader omits every physical table needed by their
+mechanical semantic bundles.
 
-Reply in chat with one letter; do not run a command or handle any protected
-file:
+The final schedule therefore contains 89 questions × four conditions × three
+repetitions = 1,068 coordinates. C1-C4 use identical membership, preserving the
+paired comparison. The report will state the post-Freeze-A protocol deviation,
+the two excluded databases, and the narrower estimand. It will not describe the
+12 questions as model failures, gold failures, or condition-specific missing
+data. No sealed correctness or protected label was accessed to make this choice.
 
-- **A — matched 89-question sealed frame (recommended for the MVP).** Before any
-  sealed outcome exists, exclude the 12 questions assigned to the two public
-  loader-blocked databases from every condition. Run C1-C4 and all three
-  repetitions on the same 89 questions. This preserves the paired comparison
-  and reports a clear post-Freeze-A protocol deviation and scope limitation.
-- **B — retain all 101 questions.** Do not record Freeze B or run sealed
-  evaluation until a general, non-empty model mechanism and two verified C4
-  deployments exist. This preserves the original estimand but puts the MVP back
-  into compiler/deployment work after the final candidate was selected.
-
-Option C—run C1-C3 on 101 and C4 on 89—is rejected because it destroys the
-paired primary comparison. After A, the only remaining human-controlled input
-will be a safe, non-secret schedule-seed identifier supplied in chat.
+The only remaining human-controlled input is a safe, non-secret schedule-seed
+identifier. No command, credential, callback, profile, lease, protected file, or
+additional A/B authorization is needed.
 
 ### Historical execution record
 

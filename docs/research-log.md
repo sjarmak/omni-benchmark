@@ -10448,6 +10448,17 @@ If not, stop at the human-controlled protocol surface rather than freezing an
 impossible run, restoring benchmark-omitted tables, fabricating an empty model,
 or inspecting sealed question content or outcomes.
 
+### Result
+
+Every selected mechanical view for the two databases depends on a physical
+table omitted by the pinned official loader, so no honest non-empty baseline
+deployment exists under the frozen compiler. Before any sealed generation,
+label release, or outcome access, Stephanie selected option A in
+`omni-benchmark-ei0.9.1.1`: execute all four conditions and three repetitions on
+the matched 89-question subset from the 16 databases with verified deployments.
+The 12 exclusions are a public-loader scope deviation, not model or gold
+failures. No protected field or per-question outcome informed the decision.
+
 ## 2026-08-30 — D-158: Align the governed development result to the direct frame
 
 ### Observation and hypothesis
@@ -10474,3 +10485,26 @@ difference is -4/122, or -3.3 percentage points. This confirms that C4's low
 development accuracy is not caused by its broader scoreable denominator. It
 remains exploratory development evidence and does not authorize tuning or a
 question-level rerun.
+
+## 2026-08-30 — D-159: Derive sealed completeness from the frozen frame
+
+### Observation and hypothesis
+
+The open pre-outcome frame decision may retain 101 sealed questions or use a
+matched 89-question subset. The sealed custody stack currently repeats literal
+101-question and 1,212-coordinate checks even though Freeze B already records
+the question count and every downstream artifact binds the exact schedule.
+Changing literals after the frame decision would create a broad, rushed patch;
+pretending excluded questions failed would corrupt the estimand.
+
+Generalize provider-inert completeness checks to derive cohort and total counts
+from the exact frozen schedule and Freeze-B manifest, while retaining 101 and
+1,212 as the byte-compatible defaults. First add failure-first tests for a
+non-default internally consistent frame and inconsistent count bindings. This
+plumbing must not choose A or B, alter split membership, weaken exact membership
+or hash checks, fabricate generation records, access protected data, or contact
+a provider.
+
+Option A was then selected before implementation. The target exercised frame is
+therefore 89 questions and 1,068 coordinates, but the mechanism remains general
+and the existing 101-question default must continue to validate unchanged.
