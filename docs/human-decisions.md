@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T07:34:24-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-30T08:01:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -139,6 +139,32 @@ generations staged before the failure propagated, zero cohorts finalized, and
 no dispatcher remains. The context already carries both identities; the general
 C2 aggregate-manifest correction passes 203 frozen-boundary tests. No response
 is waiting from the operator.
+
+Successor system `717d853887ade1de7acc337d1c2eae95e5b24472`, direct-child
+control `89a987dcfb1314f0d68a1df102333e39130325e8`, and Freeze-B SHA-256
+`e8c299a27983356c6b3ed9fda547c7bbc23f67fc481168d3129298876a490d8b`
+freeze that general correction. Decision `omni-benchmark-ei0.10.7`
+authenticated the exact `sealed-final-v3` receipt, SHA-256
+`f9c2588691a750e36e9c4c7c1d3a8a4898d32e3136ccde4874279c8ff526daa9`.
+The complete dry preflight passed with 1,068 pending and zero reconciled. The
+receipt was consumed exactly once. The dispatcher stopped after 32 immutable
+attempts and zero cohorts on the frozen `response_contract_error`
+infrastructure class; no dispatcher remains. Shape-only diagnosis opened no
+question, response value, SQL, row, label, or correctness. A fresh exact
+same-identity continuation receipt will reconcile those 32 attempts and admit
+only the missing coordinates under standing authorization. Decision
+`omni-benchmark-ei0.10.8` authenticated that continuation receipt, SHA-256
+`698daa1c45ab16854bef2fb7b7534197f25735c077f679fb66e710ed3a886892`;
+the dry preflight proved exactly 32 reconciled and 1,036 pending, and the
+receipt was consumed exactly once. The sole continuation is running as session
+`6760`; it preserved 16 additional attempts, then stopped on a different
+completed-job capture-contract outcome. V3 is immutable with 48 attempts, zero
+cohorts, two consumed receipts, and no dispatcher. Existing dev-A recovery
+semantics classify a completed job with no parseable query as an evaluated-
+system contract failure, so the sealed adapter now carries that same general
+rule instead of regenerating it. The correction passes 302 boundary tests and
+is being frozen under a fresh full run identity. No response or operator action
+is waiting.
 
 ### Historical execution record
 

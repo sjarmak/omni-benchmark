@@ -73,6 +73,7 @@ class OmniProbeResult:
     job_id: str | None
     terminal_state: str
     failure_class: str | None
+    job_result_observed: bool
     trace: StoredArtifact
     response_shape: StoredArtifact
     result_artifact: StoredArtifact | None
@@ -153,6 +154,7 @@ class OmniJobCapture:
         self._database_queries_observable = False
         self._job_telemetry = _JobTelemetry()
         self._parsed_query: ParsedOmniQuery | None = None
+        self._job_result_observed = False
         self._used = False
 
     def probe(self, question: str) -> OmniProbeResult:
@@ -209,6 +211,7 @@ class OmniJobCapture:
         response = self._observe_mapping(
             "omni_job_result", lambda: self._client.job_result(job_id)
         )
+        self._job_result_observed = True
         self._record_job_telemetry(_job_telemetry(response))
         parsed_query = parse_omni_job_result(response)
         self._parsed_query = parsed_query
@@ -258,6 +261,7 @@ class OmniJobCapture:
             job_id=outcome.job_id,
             terminal_state=outcome.terminal_state,
             failure_class=outcome.failure_class,
+            job_result_observed=self._job_result_observed,
             trace=trace,
             response_shape=response_shape,
             result_artifact=outcome.result_artifact,

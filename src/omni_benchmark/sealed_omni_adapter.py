@@ -124,9 +124,13 @@ class SealedOmniConditionAdapter:
             "run_id": value.cohort_id,
         }
         if record.get("failure_origin") == "benchmark_infrastructure":
-            raise SealedOmniAdapterError(
-                "sealed Omni benchmark infrastructure failure remains unstaged"
-            )
+            if _completed_unparseable_job(probe):
+                record["failure_origin"] = "evaluated_system"
+                record["harness_failure"] = None
+            else:
+                raise SealedOmniAdapterError(
+                    "sealed Omni benchmark infrastructure failure remains unstaged"
+                )
         return SealedAdapterResult(generation_record=record)
 
     def _new_capture_store(self, prepared: SealedPreparedAttempt) -> ArtifactStore:
@@ -167,3 +171,14 @@ def _capture_root(value: Path) -> Path:
     ):
         raise SealedOmniAdapterError("sealed Omni capture root is invalid")
     return root
+
+
+def _completed_unparseable_job(probe: OmniProbeResult) -> bool:
+    return (
+        probe.job_id is not None
+        and probe.terminal_state == "CONTRACT_ERROR"
+        and probe.failure_class == "response_contract_error"
+        and probe.job_result_observed
+        and probe.generated_query is None
+        and probe.result_artifact is None
+    )

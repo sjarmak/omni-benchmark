@@ -35,7 +35,10 @@ def _prepared(condition: str = "C4"):  # type: ignore[no-untyped-def]
 
 
 def _probe(
-    store: ArtifactStore, *, failure_class: str | None = None
+    store: ArtifactStore,
+    *,
+    failure_class: str | None = None,
+    job_result_observed: bool | None = None,
 ) -> OmniProbeResult:
     trace = store.write_jsonl(
         Path("attempt.trace.jsonl"),
@@ -81,8 +84,19 @@ def _probe(
     )
     return OmniProbeResult(
         job_id="synthetic-job",
-        terminal_state="COMPLETE" if failure_class is None else "ERROR",
+        terminal_state=(
+            "COMPLETE"
+            if failure_class is None
+            else "CONTRACT_ERROR"
+            if failure_class == "response_contract_error"
+            else "ERROR"
+        ),
         failure_class=failure_class,
+        job_result_observed=(
+            failure_class is None
+            if job_result_observed is None
+            else job_result_observed
+        ),
         trace=trace,
         response_shape=shape,
         result_artifact=result,
@@ -183,6 +197,48 @@ def test_c4_adapter_leaves_infrastructure_failure_unstaged(tmp_path: Path) -> No
         adapter.execute(prepared)
 
     assert not list((workspace / "runs/sealed-final-v1").rglob("attempt.json"))
+
+
+def test_c4_adapter_preserves_completed_job_without_parseable_query(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    _, freeze, prepared = _prepared()
+    adapter = _adapter(
+        workspace,
+        freeze,
+        lambda _prepared, store: _probe(
+            store,
+            failure_class="response_contract_error",
+            job_result_observed=True,
+        ),
+    )
+
+    result = adapter.execute(prepared)
+    record = dict(result.generation_record)
+
+    assert record["generation_outcome"] == "errored"
+    assert record["failure_origin"] == "evaluated_system"
+    assert record["harness_failure"] is None
+    assert record["terminal_failure_class"] == "response_contract_error"
+    assert record.get("generated_query") is None
+
+
+def test_c4_adapter_keeps_pre_result_contract_error_unstaged(tmp_path: Path) -> None:
+    workspace = _workspace(tmp_path)
+    _, freeze, prepared = _prepared()
+    adapter = _adapter(
+        workspace,
+        freeze,
+        lambda _prepared, store: _probe(
+            store,
+            failure_class="response_contract_error",
+            job_result_observed=False,
+        ),
+    )
+
+    with pytest.raises(SealedOmniAdapterError, match="infrastructure"):
+        adapter.execute(prepared)
 
 
 def test_c4_adapter_rejects_wrong_condition_before_capture(tmp_path: Path) -> None:

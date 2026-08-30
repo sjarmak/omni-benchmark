@@ -10729,3 +10729,59 @@ consumed receipt. No failing worker reached model execution, no correctness or
 protected field was read, and no credential or lease content was inspected. A
 new final system identity must exclude v2 and run the full fixed schedule under
 a fresh exact receipt.
+
+## 2026-08-30 — D-167: Preserve and reconcile a sealed C4 capture-contract stop
+
+### Observation and hypothesis
+
+The exact `sealed-final-v3` dispatcher staged 32 immutable attempts, then
+stopped with zero finalized cohorts when one C4 capture returned the frozen
+`response_contract_error` class. Shape-only trace inspection showed successful
+job submission, polling to `COMPLETE`, result retrieval, and then the capture
+contract failure. No question, response value, generated SQL, result row,
+annotation, label, or correctness was opened.
+
+The frozen harness classifies this error as benchmark infrastructure and leaves
+the attempt unstaged. Therefore the registered correction-forward path is a
+fresh exact receipt for the same system, control, run ID, and output root. Its
+preflight must reconcile the 32 immutable envelopes and admit only the missing
+coordinates. Do not restart completed attempts or change the frozen system.
+
+### Result
+
+V3 is preserved with 32 staged attempts, zero cohorts, one consumed receipt,
+and no active dispatcher. A same-identity continuation is being prepared under
+standing authorization. The immutable repository, not answer inspection,
+determines the pending set.
+
+## 2026-08-30 — D-168: Carry completed-job contract semantics into sealed C4
+
+### Observation and hypothesis
+
+A same-identity v3 continuation reconciled the first 32 attempts, preserved 16
+more, and stopped on a different C4 `response_contract_error`. Repeated fresh
+receipts would regenerate completed provider jobs and still stop the whole
+dispatcher. Existing result-only C4 recovery already defines the relevant
+general rule: when Omni completed result retrieval but produced no parseable
+query, the outcome is an evaluated-system contract failure, not retryable model
+generation.
+
+Carry an internal `job_result_observed` bit from `OmniJobCapture` into
+`OmniProbeResult`. In the sealed adapter, preserve only the exact conjunction of
+an observed job result, `CONTRACT_ERROR`, `response_contract_error`, no generated
+query, and no result artifact as an evaluated-system failure. Keep pre-result
+contract errors, transport failures, and response errors with a generated query
+unstaged for infrastructure recovery. This is the existing dev-A adjudication
+rule applied consistently, not a question-specific or score-dependent change.
+
+### Result
+
+Failure-first tests distinguish completed/no-query jobs from true
+infrastructure failures. The completed/no-query record retains
+`response_contract_error`, has `failure_origin=evaluated_system`, and contains
+no answer or generated query. Every other infrastructure path still raises
+before staging. The focused adapter/capture gate passes 24 tests; the full
+sealed, capture, and C4-recovery boundary gate passes 302 tests in 313.27
+seconds. Ruff and format checks pass. V3 remains immutable with 48 staged
+attempts, zero cohorts, two consumed receipts, and no dispatcher; it is excluded
+from the successor full run.
