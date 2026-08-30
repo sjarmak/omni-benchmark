@@ -9,8 +9,10 @@
 > dev-B checkpoint will be consumed, and the frozen mechanical baseline is the
 > final candidate. The C4 development baseline is complete and scored; final
 > Freeze B and the sealed test are pending.
-> Every **Pending** entry below carries no numeric value. The 101
-> held-out questions and their labels remain sealed. All 154 dev-A questions
+> Every **Pending** entry below carries no numeric value. The original 101
+> held-out questions and their labels remain sealed. Before any sealed outcome
+> existed, the final evaluation frame was narrowed to the matched 89 questions
+> on the 16 databases with verified C4 deployments. All 154 dev-A questions
 > remain scheduled; 18 fixed benchmark-invalid questions are preregistered as
 > unscorable, leaving 136 answerable questions for C4 evaluation. All 16
 > answerable database bundles have one current immutable validation and
@@ -22,13 +24,15 @@
 
 This study asks whether an analytical agent becomes more accurate when business
 knowledge is represented and enforced through Omni's semantic layer instead of
-being left to direct SQL generation. We evaluate 332 analytical tasks from
-LiveSQLBench Large-v1: 231 development questions and 101 sealed questions. The
-development partition is further divided into 154 development questions and 77
-metered validation questions. The protocol permitted supervised reuse, but the
-executed final candidate receives no question-level supervision and consumes no
-metered checkpoint. Four systems separate access to raw schema, business
-knowledge, structured semantic knowledge, and governed execution.
+being left to direct SQL generation. It starts from 332 analytical tasks in
+LiveSQLBench Large-v1: 231 development questions and an original sealed split of
+101 questions. The executed held-out comparison uses the matched 89-question
+subset described below. The development partition is further divided into 154
+development questions and 77 metered validation questions. The protocol
+permitted supervised reuse, but the executed final candidate receives no
+question-level supervision and consumes no metered checkpoint. Four systems
+separate access to raw schema, business knowledge, structured semantic
+knowledge, and governed execution.
 
 The primary sealed results remain pending. Development evidence now supports
 five findings:
@@ -107,11 +111,9 @@ sealed final evaluation. Every database appears in both partitions.
 The 231 development questions are split into dev-A (154) and dev-B (77). The
 protocol permits repeated use of dev-A and metered dev-B checkpoints. For the
 executed study, no supervised intervention is promoted and dev-B remains
-unconsumed by decision. The final 101-question set is inaccessible to
-development.
-All four frozen conditions will
-produce three independent, interleaved attempts per sealed question before any
-test output is scored.
+unconsumed by decision. The held-out set is inaccessible to development. All
+four frozen conditions will produce three independent, interleaved attempts for
+each of the 89 selected questions before any test output is scored.
 
 The official Large-v1 Linux loader skips 34 declared tables in
 `mental_healths_large` and 37 in `organ_transplant_large` because their archive
@@ -135,11 +137,19 @@ and will be reported as scope limitations. Their records stay outside the wrong
 answer and missing-row categories.
 
 C4 development generation is budgeted and scheduled separately from this
-direct arm. It must schedule all 154 dev-A questions across all 18 databases;
+direct arm. It schedules all 154 dev-A questions across all 18 databases;
 reporting requires complete coverage of the fixed 136 answerable questions.
-Condition comparisons use only matched question/database coverage. This leaves
-the preregistered sealed-test population unchanged and prohibits
-result-dependent C4 sampling.
+Condition comparisons use only matched question/database coverage.
+
+The same loader defect prevents an honest mechanical C4 deployment for the two
+affected databases in the sealed arm. Before Freeze B, sealed generation, or
+label release, the final frame was amended to the 89 held-out questions on the
+16 databases with verified C4 deployments. All four conditions and all three
+repetitions use that exact membership, for 1,068 scheduled attempts. The 12
+excluded questions are a public-loader scope deviation, not system failures or
+missing outcomes. This narrows the held-out estimand from all 18 benchmark
+databases to the 16 deployable databases without using question content,
+labels, or correctness.
 
 The complete preregistration, custody rules, scorer definitions, and condition
 disclosure are in [EVALUATION_PROTOCOL.md](EVALUATION_PROTOCOL.md),
@@ -373,7 +383,7 @@ Dev-B remains unconsumed.
 ## 6. Held-out results
 
 All entries in this section remain pending until the final C1−C4 configurations
-are frozen, all 1,212 sealed generations have completed, and the sealed scorer
+are frozen, all 1,068 sealed generations have completed, and the sealed scorer
 releases permitted aggregate results.
 
 ### Primary endpoints
@@ -388,10 +398,13 @@ releases permitted aggregate results.
 
 | Condition | Mean accuracy | Wrong rate | Content-refusal rate | Insufficient-context rate | Error rate | Pass³ | Correctness flips |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| C1 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
-| C2 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
-| C3 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
-| C4 | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** | **Pending** |
+| C1 | **Pending** | **Pending** | Unavailable | Unavailable | **Pending** | **Pending** | **Pending** |
+| C2 | **Pending** | **Pending** | Unavailable | Unavailable | **Pending** | **Pending** | **Pending** |
+| C3 | **Pending** | **Pending** | Unavailable | Unavailable | **Pending** | **Pending** | **Pending** |
+| C4 | **Pending** | **Pending** | Unavailable | Unavailable | **Pending** | **Pending** | **Pending** |
+
+The frozen generation contract does not distinguish content refusal from
+insufficient context, so those two rates are unavailable rather than pending.
 
 ### Exploratory contrasts
 
@@ -453,6 +466,11 @@ comparative result.
   not system failures. The evaluation schedules and reports them but excludes
   them from the fixed 136-question C4 promotion denominator. Loading the omitted
   archive files would break comparability with the official environment.
+- The executed held-out frame contains 89 of the original 101 sealed questions.
+  It excludes the 12 questions on the same two loader-blocked databases before
+  any sealed generation or outcome access. The held-out result therefore
+  estimates performance on the 16 deployable databases, not all 18 benchmark
+  databases.
 - The public direct baseline excludes archeology and cybermarket and therefore
   estimates C1−C3 behavior on 16 databases, not the full 18-database population.
   Any comparison to a broader C4 arm must use matched coverage or disclose the

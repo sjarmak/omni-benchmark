@@ -10526,3 +10526,28 @@ excluded identities only as aggregate public database counts. The focused
 provider-inert suite passed 250 tests with 80.00% branch coverage; Ruff, format,
 and diff checks passed. No provider, protected label, sealed outcome, credential,
 OAuth profile, or lease was accessed.
+
+## 2026-08-30 — D-160: Keep the primary report aligned with the sealed frame
+
+### Observation and hypothesis
+
+After the matched-frame decision and plumbing landed, `RESULTS.md` still
+described an unchanged 101-question sealed population and 1,212 pending
+generations. Leaving those statements in the primary deliverable would make the
+reported design contradict the committed protocol deviation before the sealed
+run began.
+
+Update only the report's design, pending-result, and limitation language to the
+approved 89-question / 1,068-coordinate frame. Preserve the original
+101-question split as provenance, state the narrower 16-database estimand, and
+leave every held-out numeric result pending. Also mark the two refusal subtypes
+as unavailable because the frozen generation contract cannot distinguish them.
+
+### Result
+
+The primary report now distinguishes the original 101-question split from the
+executed matched 89-question frame, records the 12 public-loader exclusions as a
+pre-outcome scope deviation, and uses 1,068 as the pending generation count. No
+held-out value was added or inferred. The edit preserves the existing report
+structure and direct wording; its headings, opening status, held-out table,
+limitations, and closing reproducibility section were manually reread.

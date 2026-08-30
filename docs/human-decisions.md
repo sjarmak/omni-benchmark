@@ -396,7 +396,12 @@ inspect question-level gold or infer the missing 14 outcomes. No action is
 requested from you now; its exact custody command will be added here before it
 is executed.
 
-### No response required tonight — sealed scoring is Freeze-B-bound
+### Historical implementation record — superseded sealed frame
+
+The literal 101-question / 1,212-attempt counts below describe the original
+offline tooling milestones. The approved matched frame now derives those counts
+from Freeze B and uses 89 questions / 1,068 attempts. The current response
+request is the schedule seed at the top of this page.
 
 The offline final-evaluation gate is complete on local branch
 `codex/sealed-readiness`. Commit
@@ -467,11 +472,9 @@ expected skips and 84.43% branch coverage.
 No hidden data, live service, credentials, approval receipt, actual schedule
 seed, final manifest, or test generation was accessed.
 
-This does **not** create the actual Freeze B. After C4, the E02 experiment, and
-final-candidate selection, a later exact human package must supply or approve
-the schedule seed and actual final hashes before any sealed generation. Nothing
-is needed from you for that tonight. The only current response request remains
-the C4 v5 authorization above when you are awake and available.
+This historical work did **not** create the actual Freeze B. C4 and final-
+candidate selection are now complete, E02 was cut, and the only current response
+request is the schedule seed at the top of this page.
 
 ### Standing local MVP authority — recorded 2026-08-29
 
