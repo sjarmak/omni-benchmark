@@ -172,6 +172,8 @@ def _argv(tmp_path: Path, *, execute: bool = False) -> list[str]:
         "data/final-schedule.jsonl",
         "--public-manifest",
         "data/manifests/eligible_questions.jsonl",
+        "--test-ids",
+        "data/manifests/sealed_mvp_ids.txt",
         "--policy",
         "config/sealed-dispatch-v1.json",
         "--receipt",
@@ -184,6 +186,43 @@ def _argv(tmp_path: Path, *, execute: bool = False) -> list[str]:
     if execute:
         values.append("--execute-sealed-generation")
     return values
+
+
+def test_cli_requires_and_forwards_the_selected_test_id_manifest(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    plan, freeze = _plan()
+    policy = SealedDispatchPolicy.from_dict(POLICY_VALUE)
+    selected: list[Path] = []
+    monkeypatch.setattr(
+        cli_module,
+        "load_freeze_b_control",
+        lambda *a, **k: SimpleNamespace(manifest=freeze),
+    )
+
+    def load_plan(*args, **kwargs):  # type: ignore[no-untyped-def]
+        selected.append(kwargs["test_ids_path"])
+        return plan
+
+    monkeypatch.setattr(cli_module, "load_sealed_execution_plan", load_plan)
+    monkeypatch.setattr(cli_module, "load_sealed_public_questions", lambda *a, **k: {})
+    monkeypatch.setattr(
+        cli_module, "load_sealed_dispatch_policy", lambda *a, **k: policy
+    )
+    monkeypatch.setattr(
+        cli_module,
+        "preflight_sealed_dispatch",
+        lambda **kwargs: _FakePreflight(),
+    )
+
+    assert cli_module.dispatch_main(_argv(tmp_path)) == 0
+    assert selected == [Path("data/manifests/sealed_mvp_ids.txt")]
+
+    missing = _argv(tmp_path)
+    index = missing.index("--test-ids")
+    del missing[index : index + 2]
+    with pytest.raises(SystemExit):
+        cli_module.dispatch_main(missing)
 
 
 def test_cli_defaults_to_dry_preflight_without_constructing_adapters(

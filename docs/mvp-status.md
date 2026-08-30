@@ -5,13 +5,14 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-29T22:34:27-04:00 (America/New_York).
+Last reconciled: 2026-08-30T07:13:59-04:00 (America/New_York).
 
 ## Current position
 
-The decisive governed dev-A comparison has now run. We have frozen development
-evidence for direct C1-C3 and for governed C4. We do **not** yet have the formal
-Freeze B record or sealed C1-C4 results.
+The decisive governed dev-A comparison has run and the final mechanical
+candidate is now formally frozen. We have frozen development evidence for
+direct C1-C3 and governed C4, plus a validated 89-question / 1,068-coordinate
+Freeze B. We do **not** yet have sealed C1-C4 results.
 
 The optimization phase is cut (`omni-benchmark-ivg`, Stephanie 2026-08-29). No
 dev-A-supervised intervention is promoted and no dev-B checkpoint is consumed;
@@ -53,8 +54,8 @@ limitation, not as system or gold failures.
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
 | Minimal dev-A experiment set | **Cut from the MVP** | E01 audited as already present in the baseline, inconclusive. E02 compiled, hash-bound, never evaluated. Both are reported as-is with artifacts intact; neither enters the final system. Deviation recorded in `docs/protocol-diff.md`. |
-| Final candidate and Freeze B | Seed recorded; schedule/Freeze B in progress | The candidate is fixed, the reproducible matched 89-question manifest is committed, all exact-count custody gates pass, and the approved seed is `omni-livesqlbench-large-v1-sealed-mvp-v1`. Generate and commit the schedule and Freeze-B control. |
-| Sealed C1-C4 evaluation | Tooling verified for the selected frame; not run | The complete 89-question/1,068-coordinate synthetic path passes through 12 cohorts, private-release membership, both scorers, and identity-free publication. The next result-producing gate is Freeze B. |
+| Final candidate and Freeze B | **Complete** | System `d8d1a93…`, direct-child control `079e4ce…`, Freeze-B SHA-256 `902fb1be…51a80`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
+| Sealed C1-C4 evaluation | Exact provider-inert plan passes; not run | Plan SHA-256 `af9674b9…1a884`; four runtime conditions and all 16 C4 deployment targets exact-match Freeze B. The next result-producing gate is the standing-authorized sealed generation run. |
 | Results/product report | Draft only | `RESULTS.md` already contains the design, direct baseline, failure analysis, and product findings. Replace every pending governed/sealed result after the immutable aggregates exist, then finish the concise submission-ready report. |
 
 ## What is already usable
@@ -80,14 +81,17 @@ the held-out comparison.
 
 ### Waiting on the operator now
 
-No operator response is waiting. The approved non-secret schedule seed is
-recorded. No command, credential, callback, token, profile, lease, protected
-file, or additional action authorization is needed.
+Nothing. The lease rebuild completed just after the 07:00 credential refresh on
+2026-08-30. No callback, protected file, or additional action authorization is
+needed; the one-hour exact receipt has not been created or consumed.
 
 ### Agent-owned work now
 
-- Record Freeze B for the already-determined mechanical baseline and run sealed
-  C1-C4 evaluation and dual scoring through custody.
+- Materialize the exact standing-authorized sealed-action receipt, run sealed
+  C1-C4 generation, and complete dual scoring through custody.
+- First record a successor Freeze B containing the general selected-ID CLI fix
+  found by exact pre-consumption planning; its 130-test frozen-boundary suite
+  passes and no receipt or provider contact occurred.
 - Finish the aligned development comparison table and concise results/product
   report from immutable aggregates.
 - Commit and publish reviewed work through `main` only. Worktree cleanup under

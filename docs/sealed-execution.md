@@ -441,6 +441,7 @@ uv run python sealed_tools/dispatch_sealed_generation.py \
   --freeze-b experiments/freeze-b.json \
   --schedule data/final-schedule.jsonl \
   --public-manifest data/manifests/eligible_questions.jsonl \
+  --test-ids data/manifests/sealed_mvp_ids.txt \
   --policy config/sealed-dispatch-v1.json \
   --receipt "/path/to/private/sealed-approval.json" \
   --output-root runs/sealed-final-v1 \

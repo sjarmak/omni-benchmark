@@ -39,6 +39,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--freeze-b", type=Path, required=True)
     parser.add_argument("--schedule", type=Path, required=True)
     parser.add_argument("--public-manifest", type=Path, required=True)
+    parser.add_argument("--test-ids", type=Path, required=True)
     parser.add_argument("--policy", type=Path, required=True)
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
@@ -73,6 +74,7 @@ def dispatch_main(
         freeze_b_path=arguments.freeze_b,
         schedule_path=arguments.schedule,
         public_manifest_path=arguments.public_manifest,
+        test_ids_path=arguments.test_ids,
     )
     questions = load_sealed_public_questions(
         arguments.workspace,

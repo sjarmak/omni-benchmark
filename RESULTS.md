@@ -7,8 +7,8 @@
 > relationship artifact is locally authenticated but was neither deployed nor
 > evaluated. The optimization phase is closed: no intervention was promoted, no
 > dev-B checkpoint will be consumed, and the frozen mechanical baseline is the
-> final candidate. The C4 development baseline is complete and scored; final
-> Freeze B and the sealed test are pending.
+> final candidate. The C4 development baseline is complete and scored. Freeze B
+> is recorded and validated; the sealed run and its custody scoring are pending.
 > Every **Pending** entry below carries no numeric value. The original 101
 > held-out questions and their labels remain sealed. Before any sealed outcome
 > existed, the final evaluation frame was narrowed to the matched 89 questions
@@ -72,7 +72,7 @@ five findings:
    already-generated semantic query; question-level model reasoning was never
    rerun.
 
-The remaining evaluation tests whether the frozen mechanical semantic layer
+The sealed evaluation will test whether the frozen mechanical semantic layer
 improves governed execution on the held-out comparison.
 
 ## 1. Research question
@@ -382,9 +382,9 @@ Dev-B remains unconsumed.
 
 ## 6. Held-out results
 
-All entries in this section remain pending until the final C1−C4 configurations
-are frozen, all 1,068 sealed generations have completed, and the sealed scorer
-releases permitted aggregate results.
+All entries in this section remain pending until all 1,068 sealed generations
+have completed and the sealed scorer releases permitted aggregate results. The
+final C1−C4 configurations are already frozen.
 
 ### Primary endpoints
 
@@ -500,6 +500,10 @@ telemetry contracts, experiment history, and two frozen scorers. Private gold
 and hidden annotations remain outside the repository. See
 [README.md](README.md) for reproduction commands and
 [manuscript/main.pdf](manuscript/main.pdf) for the supporting protocol paper.
+The final system is frozen at commit
+`d8d1a9335fe2107157f8ef0814f99e80ffd7ef1e`; its direct-child control commit is
+`079e4ce8399b3c29545c60753e5e2da6e68ca582`, and the Freeze-B manifest SHA-256
+is `902fb1be70fd20fb193a8f302b25d5c68a7d6a37b78db6124d84868b92151a80`.
 The C1 sensitivity subset, allocation diagnostics, preserved-artifact hashes,
 and notional cost/time projection are committed separately from its future raw
 run artifacts; OAuth dollars remain telemetry rather than a run-selection

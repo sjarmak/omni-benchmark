@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-29T22:34:27-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-30T07:13:59-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -88,10 +88,23 @@ human-controlled, non-secret seed is exactly
 ordering of the already-selected 89 public identities and does not change
 membership, conditions, repetitions, models, scoring, or custody.
 
-No response is waiting now. Agents may generate and commit the schedule and
-Freeze B under standing authorization. You do not need to run a command, handle
-a credential, provide a callback, select a profile, manage a lease, transfer a
-protected file, or grant another action authorization.
+No response is waiting now. The schedule and Freeze B are complete: system
+commit `d8d1a9335fe2107157f8ef0814f99e80ffd7ef1e`, direct-child control commit
+`079e4ce8399b3c29545c60753e5e2da6e68ca582`, and Freeze-B SHA-256
+`902fb1be70fd20fb193a8f302b25d5c68a7d6a37b78db6124d84868b92151a80`.
+The provider-inert 1,068-attempt plan and exact 16-target C4 deployment gate
+validate. No callback, protected-file transfer, or further authorization is
+needed. The external PostgreSQL environment metadata and all 16 scheduled file
+identities are present, the private runtime parent is ready, and the recorded
+non-secret Omni profile/origin are sufficient; no credential value was opened.
+The operator completed the lease rebuild just after the 07:00 credential
+refresh on 2026-08-30. No further credential, callback, protected-file, or
+authorization action is waiting. Exact pre-consumption planning then found an
+agent-owned matched-frame bug: the production dispatch CLI defaulted to the
+original 101-ID manifest instead of accepting the frozen 89-ID manifest. No
+receipt was created or consumed and no provider was contacted. The general CLI
+fix passes its focused frozen-boundary regression suite; recording and
+validating a successor Freeze B is now agent-owned.
 
 ### Historical execution record
 

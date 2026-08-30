@@ -10568,6 +10568,26 @@ inert planning must reproduce every schedule byte and bind the complete runtime,
 deployment, model, budget, database-snapshot, and scorer inputs before any
 sealed generation or label release.
 
+### Result
+
+The canonical schedule contains 1,068 coordinates over 89 questions, four
+conditions, and three repetitions. Its file SHA-256 is
+`97bf076437811bb54cda4ae923d69d751cd2dab6c3601cd1436d2a0f065332a1`
+and its registered attempt-order SHA-256 is
+`056a6c226ac3f7ea38750b26c89ba2e2eeb8aa9724438bedf93895150af87dec`.
+
+System commit `d8d1a9335fe2107157f8ef0814f99e80ffd7ef1e` freezes 108 files,
+including the exact runtime-source closure, dispatch policy, database snapshot,
+condition inputs, C3 bundle-set attestation, and all 16 verified C4 deployment
+records. Direct child `079e4ce8399b3c29545c60753e5e2da6e68ca582`
+adds only the canonical Freeze-B manifest, whose SHA-256 is
+`902fb1be70fd20fb193a8f302b25d5c68a7d6a37b78db6124d84868b92151a80`.
+The Git-object control validator, schedule reproduction, 12-cohort plan, four
+runtime-condition reload, and exact 16-target C4 deployment gate all pass. The
+provider-inert plan SHA-256 is
+`af9674b99bfc18ba39eef054bdb1dc0e2e0ee0cef8372e52f67040db45d1a884`.
+No provider contact or protected-data access occurred.
+
 ## 2026-08-30 — D-162: Bind multi-database C3 to one frozen semantic-model set
 
 ### Observation and hypothesis
@@ -10595,3 +10615,49 @@ mutation fails before model construction. The focused regression gate passed
 217 tests; affected-module branch coverage is 84.32%, with Ruff and formatting
 checks clean. No benchmark question, outcome, provider, credential, or protected
 field was accessed.
+
+## 2026-08-30 — D-163: Keep the result report synchronized with Freeze B
+
+### Observation and hypothesis
+
+Freeze B is complete, validated, and pushed, but the opening status in
+`RESULTS.md` still said it was pending. That contradiction could make readers
+mistake a completed reproducibility gate for unfinished apparatus.
+
+Update only the current-status, held-out prerequisite, and reproducibility
+language. Preserve every held-out result as pending and add the exact system,
+control, and Freeze-B identities already recorded in D-161.
+
+### Result
+
+The report now states that Freeze B is complete and that sealed generation and
+custody scoring remain. Its held-out section names only the remaining 1,068-run
+and custody-release gates, and its reproducibility section records the exact
+system commit, direct-child control commit, and Freeze-B SHA-256. No held-out
+result, protected field, provider state, or credential was accessed or inferred.
+
+## 2026-08-30 — D-164: Bind production dispatch to the selected sealed ID manifest
+
+### Observation and hypothesis
+
+After the operator rebuilt fresh Claude leases, exact pre-consumption planning
+failed before receipt creation. Freeze B correctly records the matched-frame
+`sealed_mvp_ids.txt`, but the production dispatch CLI exposed no selected-ID
+argument and therefore called the planner with the original `test_ids.txt`
+default. The explicit 89-ID planner path passed with the frozen plan SHA-256,
+confirming a command-boundary omission rather than a schedule defect.
+
+Require one explicit selected-ID path at the production dispatch boundary and
+forward it to the existing exact planner. The frozen-file digest check must
+remain authoritative, so an omitted, legacy, or substituted manifest fails
+before approval validation or provider construction.
+
+### Result
+
+The CLI now requires `--test-ids` and forwards it to the plan loader. A
+failure-first regression reproduced the missing option, then proved the exact
+selected path is forwarded and omission is rejected. The focused CLI gate
+passes six tests; the broader dispatch, plan, production-factory, runtime-input,
+and Freeze-B boundary suite passes 130 tests in 102.78 seconds. Ruff and format
+checks pass. No receipt, consumption marker, output root, provider request,
+credential content, protected field, or sealed outcome was created or accessed.
