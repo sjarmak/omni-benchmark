@@ -6,10 +6,64 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T12:36:00-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-30T15:02:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
+
+## LIVE GATE — human must release the 89 sealed labels
+
+This is the one action currently waiting on Stephanie. Sealed generation is
+complete, and the exact no-gold preflight now authenticates all 1,068 attempts
+and 12 cohorts without opening correctness. The active scoring control is
+system `0a5aee423b4a0d5bb396b3d9764f8e9e24f31254`, control
+`fe4660df8dacdca07da310ddfda4158b82895ba9`, Freeze B v10 SHA-256
+`ff10083bf70d82bd483d12e98751d9bf7f5d4236c42fac3ba921405d87953a05`.
+The sole clean control worktree is
+`/tmp/omni-benchmark-sealed-v10-preflight`; do not change its HEAD.
+
+The agent must not open or run the release against the complete attachment.
+Stephanie should do the following in the Linux terminal on `ds-5090`:
+
+1. Create a human-owned transfer directory outside every project worktree:
+
+   ```bash
+   OMNI_GOLD_TRANSFER_DIR=$(mktemp -d /var/tmp/omni-sealed-gold-human.XXXXXXXX); chmod 700 "$OMNI_GOLD_TRANSFER_DIR"; printf 'Put the full gold JSONL in: %s\n' "$OMNI_GOLD_TRANSFER_DIR"
+   ```
+
+2. From the Mac, drag or transfer the untouched full gold JSONL into the exact
+   directory printed above. Do not put it anywhere under
+   `/home/ds/projects/omni-benchmark` or `/tmp/omni-benchmark-*`.
+
+3. Back in the Linux terminal, set the source path by typing the actual filename
+   after the prompt. This command does not print the file:
+
+   ```bash
+   read -r -p 'Full path to transferred gold JSONL: ' OMNI_GOLD_SOURCE
+   ```
+
+4. Run this one-line release command exactly from any directory:
+
+   ```bash
+   cd /tmp/omni-benchmark-sealed-v10-preflight && uv run python sealed_tools/release_sealed_test.py --workspace /tmp/omni-benchmark-sealed-v10-preflight --source "$OMNI_GOLD_SOURCE" --destination data/private/test/labels.jsonl --expected-source-sha256 be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1 --control-commit fe4660df8dacdca07da310ddfda4158b82895ba9 --system-commit 0a5aee423b4a0d5bb396b3d9764f8e9e24f31254 --freeze-b experiments/freeze-b-v10.json --schedule data/final-schedule.jsonl --public-manifest data/manifests/eligible_questions.jsonl --test-ids data/manifests/sealed_mvp_ids.txt --release-sealed-test
+   ```
+
+5. Immediately record the status, then remove only the transferred full source
+   file if and only if the release succeeded:
+
+   ```bash
+   release_status=$?; printf 'release exit status: %s\n' "$release_status"; if [ "$release_status" -eq 0 ]; then unlink -- "$OMNI_GOLD_SOURCE"; rmdir -- "$OMNI_GOLD_TRANSFER_DIR"; fi
+   ```
+
+Share only the command's one-line JSON report and `release exit status`; do not
+paste the attachment or any released record. Success should report 89 released
+records, 391 ignored records, source SHA-256
+`be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1`,
+and exit status 0. Leave
+`/tmp/omni-benchmark-sealed-v10-preflight/data/private/test/labels.jsonl` in
+place: it is the private custody input for the already-authorized scoring step.
+After that report arrives, agents can run exact scoring and render aggregate-only
+results without another ceremonial authorization.
 
 ## Standing policy change — 2026-08-29
 
