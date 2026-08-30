@@ -20,10 +20,7 @@ from .dev_a_baseline_scoring_cli import (
     _required_dsn,
 )
 from .direct_question_loader import DirectQuestionLoadError, _committed, _public_records
-from .freeze_b_control import (
-    load_archived_freeze_b_control,
-    load_freeze_b_control,
-)
+from .freeze_b_control import load_freeze_b_control
 from .postgres_isolation import PsycopgTemplateIsolationProvider
 from .sealed_evaluation import (
     SealedEvaluationError,
@@ -32,6 +29,7 @@ from .sealed_evaluation import (
     publish_sealed_evaluation,
     score_sealed_evaluation,
 )
+from .sealed_generation_control import load_archived_freeze_b_control
 from .sealed_execution_plan import (
     load_sealed_execution_plan,
     load_sealed_public_questions,

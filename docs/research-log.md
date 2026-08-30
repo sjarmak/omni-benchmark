@@ -11497,3 +11497,33 @@ Ruff lint and formatting checks are clean. **Decision: KEEP pending the exact
 1,068-attempt no-gold preflight after the successor Freeze B is recorded.** No
 generation artifact content, question content, private label, or correctness
 value was opened.
+
+## 2026-08-30 — D-186: Reject Freeze B v9 and keep generation-control loading out of the frozen control core
+
+### Observation and hypothesis
+
+Freeze B v9 was recorded over D-185's first implementation and validated as a
+well-formed direct-child control commit, but the required v8-to-v9 comparison
+found one changed frozen digest: `src/omni_benchmark/freeze_b_control.py`. The
+archived generation loader had been added to that module. Even though the new
+function is data-only, accepting v9 would violate the precommitted requirement
+that every generation execution input remain byte-identical.
+
+Preserve v9 as rejected evidence and correct forward. Move the archived
+data-only loader to a scoring-boundary module that is bound by the exact clean
+system commit but is not one of the 108 generation inputs. Restore
+`freeze_b_control.py` byte-for-byte, retain all commit/blob/canonical-manifest
+checks in the archived loader, and require the successor freeze to match v8 on
+all 108 frozen digests plus schedule and condition metadata.
+
+### Result
+
+V9 is preserved at control commit
+`2bf23809e4fd6ecd64874c3fe9a4de7bf0454ca8` and remains rejected. The archived
+loader now lives in `sealed_generation_control.py`; the original frozen control
+module is restored byte-for-byte to SHA-256
+`cdc65ebe76cfbf6342f594f54ec696a84ef8bd0532fc08835e59b79d525c0fed`, exactly
+matching v8. The 33 affected control, command-boundary, and sealed-evaluation
+tests pass with Ruff clean. **Decision: KEEP the relocation; v10 must still pass
+the full normalized-manifest comparison before any no-gold preflight.** V9 was
+not used for artifact loading, label release, scoring, or any provider action.

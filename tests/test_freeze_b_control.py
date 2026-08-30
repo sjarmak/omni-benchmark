@@ -12,10 +12,10 @@ from omni_benchmark.freeze_b import FreezeBManifest, schedule_sha256
 from omni_benchmark.freeze_b_control import (
     FreezeBControlError,
     control_main,
-    load_archived_freeze_b_control,
     load_freeze_b_control,
 )
 from omni_benchmark.scoring import scorer_metadata
+from omni_benchmark.sealed_generation_control import load_archived_freeze_b_control
 
 
 SHA_A = "a" * 64
