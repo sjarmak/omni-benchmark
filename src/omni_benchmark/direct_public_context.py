@@ -48,7 +48,8 @@ _INSTRUCTIONS_PATH = Path("config/instructions/direct-sql-v1.json")
 _PROMPT_PATH = Path("config/prompts/direct-sql-v1.txt")
 _SCHEMA_MANIFEST = Path("semantic_models/public_schema_ir/manifest.json")
 _HKB_MANIFEST = Path("semantic_models/public_ir/manifest.json")
-_SEMANTIC_MANIFEST = Path("semantic_models/public_bundle/manifest.json")
+_LEGACY_SEMANTIC_MANIFEST = Path("semantic_models/public_bundle/manifest.json")
+_SEMANTIC_SET_MANIFEST = Path("semantic_models/public_baseline/manifest.json")
 _PUBLIC_BASELINE_ROOT = Path("semantic_models/public_baseline")
 _LEGACY_CANARY_DATABASE = "archeology_scan_large"
 _SHA256 = re.compile(r"[0-9a-f]{64}")
@@ -97,6 +98,7 @@ class _ConditionReferences:
     hkb_input: _CommittedInput | None = None
     hkb_bytes: bytes | None = None
     semantic_manifest: _CommittedInput | None = None
+    semantic_model_set: _CommittedInput | None = None
     semantic_bytes: bytes | None = None
 
 
@@ -124,6 +126,7 @@ def load_direct_public_tools(
         references.hkb_manifest,
         references.hkb_input,
         references.semantic_manifest,
+        references.semantic_model_set,
         base.environment,
     )
     return _public_tools(base, references, identity)
@@ -195,17 +198,24 @@ def _load_condition_references(
             hkb_bytes=canonical(hkb_records),
         )
     if base.condition == "C3":
+        semantic_model_set = _load_committed(
+            workspace, commit, _SEMANTIC_SET_MANIFEST, base.policy
+        )
         semantic_manifest = _load_committed(
             workspace,
             commit,
             _semantic_manifest_path(base.database),
             base.policy,
         )
+        _require_attested_semantic_manifest(
+            semantic_model_set, base.database, semantic_manifest
+        )
         semantic_items = _semantic_items(
             workspace, commit, base.database, semantic_manifest, base.policy
         )
         return _ConditionReferences(
             semantic_manifest=semantic_manifest,
+            semantic_model_set=semantic_model_set,
             semantic_bytes=canonical(semantic_items),
         )
     return _ConditionReferences()
@@ -219,8 +229,52 @@ def _schema_manifest_path(database: str) -> Path:
 
 def _semantic_manifest_path(database: str) -> Path:
     if database == _LEGACY_CANARY_DATABASE:
-        return _SEMANTIC_MANIFEST
+        return _LEGACY_SEMANTIC_MANIFEST
     return _PUBLIC_BASELINE_ROOT / database / "bundle/manifest.json"
+
+
+def _require_attested_semantic_manifest(
+    semantic_model_set: _CommittedInput,
+    database: str,
+    semantic_manifest: _CommittedInput,
+) -> None:
+    value = _json_object(semantic_model_set.content, "semantic model set")
+    if (
+        set(value) != {"databases", "kind", "schema_version"}
+        or value.get("kind") != "public-omni-semantic-bundle-set"
+        or value.get("schema_version") != 1
+        or not isinstance(value.get("databases"), list)
+    ):
+        raise DirectPublicContextError("semantic model set is invalid")
+    records: dict[str, Mapping[str, Any]] = {}
+    ordered_names: list[str] = []
+    for item in value["databases"]:
+        if not isinstance(item, Mapping) or set(item) != {
+            "database",
+            "manifest_path",
+            "manifest_sha256",
+        }:
+            raise DirectPublicContextError("semantic model set is invalid")
+        name = _database(item.get("database"))
+        if name in records:
+            raise DirectPublicContextError("semantic model set is invalid")
+        expected_path = _semantic_manifest_path(name).as_posix()
+        digest = item.get("manifest_sha256")
+        if (
+            item.get("manifest_path") != expected_path
+            or not isinstance(digest, str)
+            or _SHA256.fullmatch(digest) is None
+        ):
+            raise DirectPublicContextError("semantic model set is invalid")
+        records[name] = item
+        ordered_names.append(name)
+    if ordered_names != sorted(ordered_names):
+        raise DirectPublicContextError("semantic model set is invalid")
+    record = records.get(database)
+    if record is None or record["manifest_sha256"] != semantic_manifest.sha256:
+        raise DirectPublicContextError(
+            "database semantic manifest is not attested by the semantic model set"
+        )
 
 
 def _public_tools(
@@ -611,6 +665,7 @@ def _identity(
     hkb_manifest: _CommittedInput | None,
     hkb: _CommittedInput | None,
     semantic_manifest: _CommittedInput | None,
+    semantic_model_set: _CommittedInput | None,
     environment: Mapping[str, str],
 ) -> DirectContextIdentity:
     components = {
@@ -624,6 +679,8 @@ def _identity(
         components.update({"hkb": hkb.sha256, "hkb_manifest": hkb_manifest.sha256})
     if semantic_manifest is not None:
         components["semantic_manifest"] = semantic_manifest.sha256
+    if semantic_model_set is not None:
+        components["semantic_model_set"] = semantic_model_set.sha256
     return DirectContextIdentity.from_components(
         condition=condition,
         selected_database=selected_database,
@@ -651,7 +708,7 @@ def _validate_condition_spec(content: bytes, condition: DirectPublicCondition) -
         "semantic_enforcement": "none",
         "semantic_model_access": "searchable" if condition == "C3" else "none",
         "semantic_model_manifest": (
-            _SEMANTIC_MANIFEST.as_posix() if condition == "C3" else None
+            _SEMANTIC_SET_MANIFEST.as_posix() if condition == "C3" else None
         ),
     }
     if value != expected:

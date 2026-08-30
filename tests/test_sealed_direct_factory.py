@@ -41,7 +41,7 @@ def _runtime_inputs() -> SealedRuntimeInputs:
         semantic = {
             "C1": None,
             "C2": Path("semantic_models/public_ir/manifest.json"),
-            "C3": Path("semantic_models/public_bundle/manifest.json"),
+            "C3": Path("semantic_models/public_baseline/manifest.json"),
             "C4": Path("semantic_models/public_bundle/manifest.json"),
         }[name]
         conditions.append(

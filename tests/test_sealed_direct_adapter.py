@@ -72,7 +72,7 @@ def _identities(prepared):  # type: ignore[no-untyped-def]
     if prepared.condition == "C2":
         components["hkb"] = prepared.condition_binding.semantic_model_sha256
     if prepared.condition == "C3":
-        components["semantic_manifest"] = (
+        components["semantic_model_set"] = (
             prepared.condition_binding.semantic_model_sha256
         )
     context = DirectContextIdentity.from_components(

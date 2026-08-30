@@ -642,7 +642,7 @@ def _require_freeze_b_identity(
     condition: FreezeBCondition, binding: SealedDirectRuntimeBinding
 ) -> None:
     components = dict(binding.context.component_sha256)
-    semantic_component = {"C1": None, "C2": "hkb", "C3": "semantic_manifest"}[
+    semantic_component = {"C1": None, "C2": "hkb", "C3": "semantic_model_set"}[
         binding.condition
     ]
     semantic_sha = (

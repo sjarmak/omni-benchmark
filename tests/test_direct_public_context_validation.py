@@ -13,6 +13,7 @@ from tests.test_direct_public_context import (
     _fixture_repo,
     _git,
     _sha256,
+    _write_semantic_set_manifest,
     _write_json,
     _write_jsonl,
 )
@@ -77,6 +78,7 @@ def test_semantic_bundle_rejects_a_manifest_non_model_file(
     manifest = json.loads(manifest_path.read_text())
     manifest["files"][0]["file"] = "mapping-ledger.json"
     _write_json(manifest_path, manifest)
+    _write_semantic_set_manifest(workspace)
     _git(workspace, "add", ".")
     _git(workspace, "commit", "-qm", "invalid semantic bundle file")
 

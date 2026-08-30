@@ -1,0 +1,96 @@
+{
+  "databases": [
+    {
+      "database": "archeology_scan_large",
+      "manifest_path": "semantic_models/public_bundle/manifest.json",
+      "manifest_sha256": "3b9dd696305d01f3df7afa058be0e56b39936b1f2a4f42cdc848e154fd0979f3"
+    },
+    {
+      "database": "cross_border_large",
+      "manifest_path": "semantic_models/public_baseline/cross_border_large/bundle/manifest.json",
+      "manifest_sha256": "b70a58e9fb61296a59e55b137e681e5384e013c71df24183c050b4892d7288da"
+    },
+    {
+      "database": "cybermarket_pattern_large",
+      "manifest_path": "semantic_models/public_baseline/cybermarket_pattern_large/bundle/manifest.json",
+      "manifest_sha256": "d1040eacb36daa68c241ffccf593d1896518a7235bd45aa5686b13c83b129d0b"
+    },
+    {
+      "database": "disaster_relief_large",
+      "manifest_path": "semantic_models/public_baseline/disaster_relief_large/bundle/manifest.json",
+      "manifest_sha256": "e7fce235566ac07882e8d9c9694013f8203d770b1792c2182ed7e3a0cf946795"
+    },
+    {
+      "database": "exchange_traded_funds_large",
+      "manifest_path": "semantic_models/public_baseline/exchange_traded_funds_large/bundle/manifest.json",
+      "manifest_sha256": "9ef3d78fe72066affa62a22e2894486c4289c4aa81f661ae9bb5f0c5a0a27b3b"
+    },
+    {
+      "database": "fake_account_large",
+      "manifest_path": "semantic_models/public_baseline/fake_account_large/bundle/manifest.json",
+      "manifest_sha256": "526ffd934bf3aab12da1869a88401f6a069950afbb3282bb474abaff1c038199"
+    },
+    {
+      "database": "labor_certification_applications_large",
+      "manifest_path": "semantic_models/public_baseline/labor_certification_applications_large/bundle/manifest.json",
+      "manifest_sha256": "043b9eca8b4b064d9de1fa0cfc35a42b0972f618b084be0266d641839d248f06"
+    },
+    {
+      "database": "mental_healths_large",
+      "manifest_path": "semantic_models/public_baseline/mental_healths_large/bundle/manifest.json",
+      "manifest_sha256": "c3fd2a5038e21aa25326647c7dacafc4005b094252208a097acb30cc3b2a9920"
+    },
+    {
+      "database": "museum_artifact_large",
+      "manifest_path": "semantic_models/public_baseline/museum_artifact_large/bundle/manifest.json",
+      "manifest_sha256": "618e9ff65c8bb5d1330ade3cb6f3624ff6b1f0b0241f8000be3c79eb0ce1c9a1"
+    },
+    {
+      "database": "organ_transplant_large",
+      "manifest_path": "semantic_models/public_baseline/organ_transplant_large/bundle/manifest.json",
+      "manifest_sha256": "385b6c57127f7dd45092e5b1116e4c6df656f406caa356753616233eeb3c9f43"
+    },
+    {
+      "database": "planets_data_large",
+      "manifest_path": "semantic_models/public_baseline/planets_data_large/bundle/manifest.json",
+      "manifest_sha256": "96aedd454cd1bb9f955fb91729d35321cebc604a800cf2cb88837c3ce939a385"
+    },
+    {
+      "database": "polar_equipment_large",
+      "manifest_path": "semantic_models/public_baseline/polar_equipment_large/bundle/manifest.json",
+      "manifest_sha256": "2fb74bcd4c98559c96a4181d04e85472b3aca42d98c92392333407272be8df7d"
+    },
+    {
+      "database": "residential_data_large",
+      "manifest_path": "semantic_models/public_baseline/residential_data_large/bundle/manifest.json",
+      "manifest_sha256": "fff842eae73eb8f944d9136a4d6c0ef28017a355994dac194f988ddd509753fa"
+    },
+    {
+      "database": "reverse_logistics_large",
+      "manifest_path": "semantic_models/public_baseline/reverse_logistics_large/bundle/manifest.json",
+      "manifest_sha256": "9b6eda5577d96a2e753930333c13e5528d9acba57d789daf068abaddc438bf3a"
+    },
+    {
+      "database": "robot_fault_prediction_large",
+      "manifest_path": "semantic_models/public_baseline/robot_fault_prediction_large/bundle/manifest.json",
+      "manifest_sha256": "2914040239320014e3b65bcebf7019f3b760f249e37888dd4eba6036744c9bad"
+    },
+    {
+      "database": "solar_panel_large",
+      "manifest_path": "semantic_models/public_baseline/solar_panel_large/bundle/manifest.json",
+      "manifest_sha256": "e61f2e9507fc137bf6981b02be21c65999d3ecb6af1b8e33df84ab01ad5776ad"
+    },
+    {
+      "database": "sports_events_large",
+      "manifest_path": "semantic_models/public_baseline/sports_events_large/bundle/manifest.json",
+      "manifest_sha256": "8e06efc08dc07c63a5360a46ff774b26438228b61cebccde3ef8c39c7ae695fd"
+    },
+    {
+      "database": "virtual_idol_large",
+      "manifest_path": "semantic_models/public_baseline/virtual_idol_large/bundle/manifest.json",
+      "manifest_sha256": "5bbe01735b76fd912ea9e17f9f54248338c8f22a2fa50d50001f0368113eac0b"
+    }
+  ],
+  "kind": "public-omni-semantic-bundle-set",
+  "schema_version": 1
+}

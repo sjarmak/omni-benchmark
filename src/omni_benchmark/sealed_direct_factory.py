@@ -51,7 +51,7 @@ _RUNTIME_PATH = Path("config/conditions/direct-runtime-v1.json")
 _SEMANTIC_PATHS = {
     "C1": None,
     "C2": Path("semantic_models/public_ir/manifest.json"),
-    "C3": Path("semantic_models/public_bundle/manifest.json"),
+    "C3": Path("semantic_models/public_baseline/manifest.json"),
 }
 _PG_FIELDS = frozenset(
     {"PGHOST", "PGDATABASE", "PGUSER", "PGPASSWORD", "PGPORT", "PGSSLMODE"}

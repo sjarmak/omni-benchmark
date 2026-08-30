@@ -85,7 +85,7 @@ def _mutate_captured_record(
 def _condition(condition: str) -> dict[str, object]:
     hkb = "semantic_models/public_ir/manifest.json" if condition == "C2" else None
     bundle = (
-        "semantic_models/public_bundle/manifest.json" if condition == "C3" else None
+        "semantic_models/public_baseline/manifest.json" if condition == "C3" else None
     )
     knowledge = {
         "C1": "public_schema",
@@ -106,6 +106,32 @@ def _condition(condition: str) -> dict[str, object]:
         "semantic_model_access": "searchable" if condition == "C3" else "none",
         "semantic_model_manifest": bundle,
     }
+
+
+def _write_semantic_set_manifest(workspace: Path) -> bytes:
+    manifest_paths = [workspace / "semantic_models/public_bundle/manifest.json"]
+    manifest_paths.extend(
+        sorted(workspace.glob("semantic_models/public_baseline/*/bundle/manifest.json"))
+    )
+    records = []
+    for path in manifest_paths:
+        content = path.read_bytes()
+        database = json.loads(content)["database"]
+        records.append(
+            {
+                "database": database,
+                "manifest_path": path.relative_to(workspace).as_posix(),
+                "manifest_sha256": _sha256(content),
+            }
+        )
+    return _write_json(
+        workspace / "semantic_models/public_baseline/manifest.json",
+        {
+            "databases": sorted(records, key=lambda item: item["database"]),
+            "kind": "public-omni-semantic-bundle-set",
+            "schema_version": 1,
+        },
+    )
 
 
 def _fixture_repo(tmp_path: Path, *, secret: str | None = None) -> tuple[Path, str]:
@@ -401,6 +427,7 @@ def _fixture_repo(tmp_path: Path, *, secret: str | None = None) -> tuple[Path, s
     prompt = workspace / "config/prompts/direct-sql-v1.txt"
     prompt.parent.mkdir(parents=True, exist_ok=True)
     prompt.write_text("{question}\n", encoding="utf-8")
+    _write_semantic_set_manifest(workspace)
 
     _git(workspace, "init", "-q")
     _git(workspace, "config", "user.name", "Public Fixture")
@@ -458,6 +485,7 @@ def _add_database_public_context(workspace: Path, database: str) -> str:
     legacy_bundle_manifest["database"] = database
     legacy_bundle_manifest["files"] = bundle_files
     _write_json(bundle_root / "manifest.json", legacy_bundle_manifest)
+    _write_semantic_set_manifest(workspace)
 
     _git(workspace, "add", ".")
     _git(workspace, "commit", "-qm", f"add public context for {database}")
@@ -485,6 +513,7 @@ def test_condition_scoped_tools_preserve_exact_information_isolation(
     assert components["schema"]
     assert ("hkb" in components) is has_hkb
     assert ("semantic_manifest" in components) is has_semantic
+    assert ("semantic_model_set" in components) is has_semantic
     assert len(tools.identity.context_sha256) == 64
     assert tools.render_question("Public question") == "Public question"
 
@@ -511,6 +540,45 @@ def test_non_canary_context_uses_database_specific_public_baseline_manifests(
             "cross_border_large_public__scan.premium_scan_quality"
             in semantic.semantic_objects
         )
+
+
+def test_c3_uses_one_attested_bundle_set_identity_across_databases(
+    tmp_path: Path,
+) -> None:
+    workspace, _ = _fixture_repo(tmp_path)
+    commit = _add_database_public_context(workspace, "cross_border_large")
+
+    canary = load_direct_public_tools(workspace, commit, "archeology_scan_large", "C3")
+    second = load_direct_public_tools(workspace, commit, "cross_border_large", "C3")
+    canary_components = dict(canary.identity.component_sha256)
+    second_components = dict(second.identity.component_sha256)
+
+    assert (
+        canary_components["semantic_model_set"]
+        == second_components["semantic_model_set"]
+    )
+    assert (
+        canary_components["semantic_manifest"] != second_components["semantic_manifest"]
+    )
+
+
+def test_c3_rejects_database_manifest_not_attested_by_bundle_set(
+    tmp_path: Path,
+) -> None:
+    workspace, _ = _fixture_repo(tmp_path)
+    _add_database_public_context(workspace, "cross_border_large")
+    manifest = workspace / (
+        "semantic_models/public_baseline/cross_border_large/bundle/manifest.json"
+    )
+    value = json.loads(manifest.read_text(encoding="utf-8"))
+    value["validation"]["public_inputs_only"] = False
+    _write_json(manifest, value)
+    _git(workspace, "add", ".")
+    _git(workspace, "commit", "-qm", "mutate bundle after aggregate attestation")
+    changed_commit = _git(workspace, "rev-parse", "HEAD")
+
+    with pytest.raises(DirectPublicContextError, match="attested"):
+        load_direct_public_tools(workspace, changed_commit, "cross_border_large", "C3")
 
 
 def test_schema_search_is_selective_deterministic_compact_and_bounded(

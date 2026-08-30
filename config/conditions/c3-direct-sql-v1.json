@@ -10,5 +10,5 @@
   "schema_manifest": "semantic_models/public_schema_ir/manifest.json",
   "semantic_enforcement": "none",
   "semantic_model_access": "searchable",
-  "semantic_model_manifest": "semantic_models/public_bundle/manifest.json"
+  "semantic_model_manifest": "semantic_models/public_baseline/manifest.json"
 }

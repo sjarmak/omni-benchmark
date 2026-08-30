@@ -10567,3 +10567,31 @@ the approved seed, then record Freeze B only from exact Git objects. Provider-
 inert planning must reproduce every schedule byte and bind the complete runtime,
 deployment, model, budget, database-snapshot, and scorer inputs before any
 sealed generation or label release.
+
+## 2026-08-30 — D-162: Bind multi-database C3 to one frozen semantic-model set
+
+### Observation and hypothesis
+
+Freeze-B preflight exposed a general identity mismatch before any provider or
+sealed action: C3 records one semantic-model digest, while the runtime loads a
+different per-database bundle manifest. A single-database canary can satisfy
+that contract, but a multi-database sealed run cannot.
+
+Add one canonical public aggregate manifest that attests the path and digest of
+every per-database C3 bundle manifest. The runtime should validate the selected
+database manifest against that aggregate, retain the per-database digest in its
+context identity, and compare Freeze B to the shared aggregate digest. This
+keeps retrieval database-specific while making the frozen C3 identity exact and
+general; any missing, duplicate, stale, or substituted manifest must fail before
+model execution.
+
+### Result
+
+The public aggregate now attests all 18 database bundle manifests while each C3
+attempt still loads and searches only its selected database bundle. The sealed
+identity check binds the shared aggregate digest and retains the selected
+manifest digest as a separate context component. A post-attestation manifest
+mutation fails before model construction. The focused regression gate passed
+217 tests; affected-module branch coverage is 84.32%, with Ruff and formatting
+checks clean. No benchmark question, outcome, provider, credential, or protected
+field was accessed.

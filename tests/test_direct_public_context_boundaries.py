@@ -54,6 +54,7 @@ from tests.test_direct_public_context import (
                 "schema",
                 "schema_manifest",
                 "semantic_manifest",
+                "semantic_model_set",
             },
         ),
     ],
