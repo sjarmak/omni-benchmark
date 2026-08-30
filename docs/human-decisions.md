@@ -32,15 +32,23 @@ Stephanie should do the following in the Linux terminal on `ds-5090`:
    ```
 
 2. From the Mac, drag or transfer the untouched full gold JSONL into the exact
-   directory printed above. Do not put it anywhere under
-   `/home/ds/projects/omni-benchmark` or `/tmp/omni-benchmark-*`.
+   directory printed above, and name the uploaded file **exactly**
+   `source.jsonl`. The resulting Linux path must therefore be the printed
+   temporary directory followed by `/source.jsonl`. Do not put it anywhere
+   under `/home/ds/projects/omni-benchmark` or `/tmp/omni-benchmark-*`.
 
-3. Back in the Linux terminal, set the source path by typing the actual filename
-   after the prompt. This command does not print the file:
+3. Back in the **same Linux terminal from step 1**, set the complete source path
+   automatically and verify the expected file hash. Do not run these commands
+   on the Mac. They print only the path and `OK`, never file contents:
 
    ```bash
-   read -r -p 'Full path to transferred gold JSONL: ' OMNI_GOLD_SOURCE
+   OMNI_GOLD_SOURCE="$OMNI_GOLD_TRANSFER_DIR/source.jsonl"; printf 'Gold source path: %s\n' "$OMNI_GOLD_SOURCE"
+   printf '%s  %s\n' be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1 "$OMNI_GOLD_SOURCE" | sha256sum -c -
    ```
+
+   In other words, yes: `OMNI_GOLD_SOURCE` is the full temporary Linux path plus
+   the filename. If the hash check does not print `OK`, stop and do not run the
+   release.
 
 4. Run this one-line release command exactly from any directory:
 
@@ -48,11 +56,18 @@ Stephanie should do the following in the Linux terminal on `ds-5090`:
    cd /tmp/omni-benchmark-sealed-v10-preflight && uv run python sealed_tools/release_sealed_test.py --workspace /tmp/omni-benchmark-sealed-v10-preflight --source "$OMNI_GOLD_SOURCE" --destination data/private/test/labels.jsonl --expected-source-sha256 be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1 --control-commit fe4660df8dacdca07da310ddfda4158b82895ba9 --system-commit 0a5aee423b4a0d5bb396b3d9764f8e9e24f31254 --freeze-b experiments/freeze-b-v10.json --schedule data/final-schedule.jsonl --public-manifest data/manifests/eligible_questions.jsonl --test-ids data/manifests/sealed_mvp_ids.txt --release-sealed-test
    ```
 
-5. Immediately record the status, then remove only the transferred full source
-   file if and only if the release succeeded:
+5. Immediately after step 4, in that same terminal, record the release status:
 
    ```bash
-   release_status=$?; printf 'release exit status: %s\n' "$release_status"; if [ "$release_status" -eq 0 ]; then unlink -- "$OMNI_GOLD_SOURCE"; rmdir -- "$OMNI_GOLD_TRANSFER_DIR"; fi
+   release_status=$?; printf 'release exit status: %s\n' "$release_status"
+   ```
+
+6. If and only if that prints `release exit status: 0`, remove the transferred
+   full source and its now-empty temporary directory. This does **not** remove
+   the 89-record custody projection needed for scoring:
+
+   ```bash
+   if [ "$release_status" -eq 0 ]; then unlink -- "$OMNI_GOLD_SOURCE"; rmdir -- "$OMNI_GOLD_TRANSFER_DIR"; fi
    ```
 
 Share only the command's one-line JSON report and `release exit status`; do not
