@@ -10426,3 +10426,24 @@ frozen input specification, followed by a direct child adding only the canonical
 Freeze-B manifest. Use the human-controlled seed surface exactly once and expose
 only hashes and counts. Then validate and plan all 1,212 sealed attempts without
 provider contact or protected-data access before any production dispatch.
+
+## 2026-08-30 — D-157: Close the sealed C4 deployment-coverage gap before Freeze B
+
+### Observation and hypothesis
+
+Freeze-B preparation exposed a mismatch hidden by the development-only frame.
+The sealed schedule contains all 101 committed test identities under every
+condition and the production C4 factory requires an exact deployment target for
+every scheduled database. Every database occurs in the sealed split. The
+current v13 C4 evidence covers only the 16 dev-A-answerable databases;
+`mental_healths_large` and `organ_transplant_large` have explicit public-loader
+blockers and no verified deployment target. The 18-question exclusion manifest
+is scoped to C4 promotion and dev-A reporting, so it cannot silently change the
+sealed 101-question estimand.
+
+Before Freeze B, use only public official-loader inventory and committed
+semantic artifacts to determine whether a general non-empty mechanical model
+can be compiled, deployed, validated, and read back for each blocked database.
+If not, stop at the human-controlled protocol surface rather than freezing an
+impossible run, restoring benchmark-omitted tables, fabricating an empty model,
+or inspecting sealed question content or outcomes.

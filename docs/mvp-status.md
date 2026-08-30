@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-29T21:30:00-04:00 (America/New_York).
+Last reconciled: 2026-08-29T21:38:00-04:00 (America/New_York).
 
 ## Current position
 
@@ -34,8 +34,12 @@ explicit system failures. No question-level model reasoning was rerun.
 V6 and v7 remain immutable pre-provider diagnostics with no evaluated answers.
 Recovery v1-v4 remain immutable incomplete diagnostics and are excluded because
 they have no recovery manifest. V8 plus recovery v5 is the sole scored C4
-development result. The immediate critical path is now Freeze B, sealed C1-C4
-execution through custody, dual scoring, and the concise report.
+development result. Freeze-B preparation exposed one remaining coverage
+prerequisite: the sealed schedule contains all 18 databases, while the verified
+v13 C4 deployment set contains only the 16 dev-A-answerable databases. The
+dev-A exclusion cannot be reused as a sealed-test exclusion. Human decision
+`omni-benchmark-ei0.9.1.1` now selects either a matched 89-question sealed MVP or
+retention of the all-101 frame with additional compiler/deployment work.
 
 ## Milestone map
 
@@ -47,7 +51,7 @@ execution through custody, dual scoring, and the concise report.
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
 | Minimal dev-A experiment set | **Cut from the MVP** | E01 audited as already present in the baseline, inconclusive. E02 compiled, hash-bound, never evaluated. Both are reported as-is with artifacts intact; neither enters the final system. Deviation recorded in `docs/protocol-diff.md`. |
-| Final candidate and Freeze B | Next | With the optimization phase cut, the final candidate is the frozen mechanical baseline. Record its exact freeze/control commit and bind the sealed schedule seed before any sealed execution. |
+| Final candidate and Freeze B | Waiting on sealed-frame decision | The candidate is fixed. Choose matched 89-question execution across the 16 verified databases, or retain all 101 and wait for two new non-empty C4 deployments. Then bind the human-controlled schedule seed and record the freeze/control commits. |
 | Sealed C1-C4 evaluation | Tooling ready; not run | The 12-cohort generation, immutable manifests, dual scoring, and aggregate handoff are implemented and tested. They cannot run until Freeze B and the sealed custody gates are satisfied. |
 | Results/product report | Draft only | `RESULTS.md` already contains the design, direct baseline, failure analysis, and product findings. Replace every pending governed/sealed result after the immutable aggregates exist, then finish the concise submission-ready report. |
 
@@ -71,17 +75,18 @@ report table rather than comparing mismatched denominators.
 
 ### Waiting on the operator now
 
-No further action authorization is needed. Stephanie granted standing
-authorization for all remaining MVP actions, and exact receipts are now only a
-machine-enforced lineage mechanism. Freeze B does require one substantive
-human-controlled experimental input: a safe, non-secret schedule-seed identifier
-supplied in chat. No command, credential, callback, token, profile, lease, or
-protected file is needed from the operator.
+No further action authorization is needed. One substantive human-controlled
+frame choice is open as `omni-benchmark-ei0.9.1.1`: reply **A** for the matched
+89-question/16-database sealed MVP, or **B** to retain all 101 and resume
+compiler/deployment work. After A, one safe, non-secret schedule-seed identifier
+will be needed. No command, credential, callback, token, profile, lease, or
+protected file is needed.
 
 ### Agent-owned work now
 
-- Record Freeze B for the already-determined mechanical baseline, then run the
-  sealed C1-C4 evaluation and dual scoring through custody.
+- After the human frame decision, record Freeze B for the already-determined
+  mechanical baseline, then run the sealed C1-C4 evaluation and dual scoring
+  through custody.
 - Finish the aligned development comparison table and concise results/product
   report from immutable aggregates.
 - Commit and publish reviewed work through `main` only. Worktree cleanup under
