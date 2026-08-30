@@ -746,11 +746,13 @@ def compile_e02_relationship_bundle(
     )
     views = _validated_views(spec)
     schema_index = _index(schema_records, "stable_id", "schema record")
-    bindings = _column_bindings_by_table(schema_records, frozenset(views))
+    column_bindings = _column_bindings_by_table(schema_records, frozenset(views))
+    published_identity_fields = _published_identity_fields(baseline.manifest)
     plan = plan_relationship_contracts(schema_records)
     emitted: list[dict[str, Any]] = []
     contracts: list[dict[str, Any]] = []
     outgoing: dict[str, set[str]] = {}
+    relationship_endpoints: dict[str, set[str]] = {}
     seen_pairs: set[tuple[str, str]] = set()
 
     for contract in plan["relationships"]:
@@ -767,13 +769,15 @@ def compile_e02_relationship_bundle(
             contract["source_column_stable_ids"],
             source_table,
             schema_index,
-            bindings,
+            column_bindings,
+            published_identity_fields,
         )
         target_fields = _relationship_fields(
             contract["target_column_stable_ids"],
             target_table,
             schema_index,
-            bindings,
+            column_bindings,
+            published_identity_fields,
         )
         if source_fields is None or target_fields is None:
             continue
@@ -806,9 +810,22 @@ def compile_e02_relationship_bundle(
             }
         )
         outgoing.setdefault(source_table, set()).add(target_view)
+        relationship_endpoints.setdefault(source_table, set()).update(
+            contract["source_column_stable_ids"]
+        )
+        relationship_endpoints.setdefault(target_table, set()).update(
+            contract["target_column_stable_ids"]
+        )
         seen_pairs.add(pair)
 
     files = dict(baseline.files)
+    added_bindings = _materialize_relationship_endpoint_aliases(
+        files,
+        views,
+        schema_index,
+        published_identity_fields,
+        relationship_endpoints,
+    )
     for table_id, targets in sorted(outgoing.items()):
         topic_file = _text(views[table_id].get("topic_file_name"), "topic file_name")
         topic = yaml.safe_load(files[topic_file])
@@ -826,6 +843,10 @@ def compile_e02_relationship_bundle(
     )
 
     manifest = dict(baseline.manifest)
+    manifest["direct_physical_bindings"] = sorted(
+        [*baseline.manifest["direct_physical_bindings"], *added_bindings],
+        key=lambda item: (item["file"], item["field_name"]),
+    )
     manifest["files"] = _file_manifest(files)
     manifest["relationship_contracts"] = contracts
     manifest["validation"] = {
@@ -840,7 +861,8 @@ def _relationship_fields(
     stable_ids: Sequence[str],
     table_id: str,
     schema_index: Mapping[str, Mapping[str, Any]],
-    bindings: Mapping[str, Mapping[str, tuple[str, ...]]],
+    column_bindings: Mapping[str, Mapping[str, tuple[str, ...]]],
+    published_identity_fields: Mapping[str, str],
 ) -> list[str] | None:
     fields: list[str] = []
     for stable_id in stable_ids:
@@ -851,12 +873,71 @@ def _relationship_fields(
             raise SemanticBundleError(
                 f"relationship column {stable_id} is outside its table"
             )
-        identifier = _mapping(column.get("identifier"), "column identifier")
-        field = _omni_name(identifier.get("name"), "relationship field")
-        if bindings.get(table_id, {}).get(field) != (stable_id,):
-            return None
+        field = published_identity_fields.get(stable_id)
+        if field is None:
+            identifier = _mapping(column.get("identifier"), "column identifier")
+            field = _omni_name(identifier.get("name"), "relationship field")
+            if column_bindings.get(table_id, {}).get(field) != (stable_id,):
+                return None
         fields.append(field)
     return fields
+
+
+def _published_identity_fields(manifest: Mapping[str, Any]) -> dict[str, str]:
+    fields: dict[str, str] = {}
+    for raw in _items(
+        manifest.get("direct_physical_bindings"), "direct physical bindings"
+    ):
+        binding = _mapping(raw, "direct physical binding")
+        stable_id = _text(binding.get("source_stable_id"), "source stable_id")
+        field_name = _safe_name(binding.get("field_name"), "published field name")
+        if stable_id in fields:
+            raise SemanticBundleError(
+                f"duplicate published identity binding for {stable_id}"
+            )
+        fields[stable_id] = field_name
+    return fields
+
+
+def _materialize_relationship_endpoint_aliases(
+    files: dict[str, str],
+    views: Mapping[str, Mapping[str, Any]],
+    schema_index: Mapping[str, Mapping[str, Any]],
+    published_identity_fields: Mapping[str, str],
+    relationship_endpoints: Mapping[str, set[str]],
+) -> list[dict[str, str]]:
+    bindings: list[dict[str, str]] = []
+    for table_id, stable_ids in sorted(relationship_endpoints.items()):
+        view_file = _text(views[table_id].get("file_name"), "view file_name")
+        document = yaml.safe_load(files[view_file])
+        if not isinstance(document, dict) or not isinstance(
+            document.get("dimensions"), dict
+        ):
+            raise SemanticBundleError("compiled view must declare dimensions")
+        dimensions = document["dimensions"]
+        for stable_id in sorted(stable_ids):
+            if stable_id in published_identity_fields:
+                continue
+            column = schema_index[stable_id]
+            raw_name, field_name = _source_column_name(column, schema_index)
+            if raw_name.lower() == field_name:
+                continue
+            if field_name in dimensions:
+                raise SemanticBundleError(
+                    f"relationship endpoint alias {field_name} collides in {table_id}"
+                )
+            sql = _source_column_sql(column, schema_index)
+            dimensions[field_name] = _physical_dimension({}, column, (), sql)
+            bindings.append(
+                {
+                    "field_name": field_name,
+                    "file": view_file,
+                    "source_stable_id": stable_id,
+                    "sql": sql,
+                }
+            )
+        files[view_file] = _yaml(document)
+    return bindings
 
 
 def _validated_bundle_inputs(

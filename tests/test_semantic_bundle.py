@@ -278,6 +278,22 @@ def _e02_inputs():
             },
         ]
     )
+    spec["physical_fields"].extend(
+        [
+            {
+                "name": "id",
+                "schema_stable_id": "db:column:pointcloud:id",
+            },
+            {
+                "name": "site_id",
+                "schema_stable_id": "db:column:pointcloud:site_id",
+            },
+            {
+                "name": "id",
+                "schema_stable_id": "db:column:sites:id",
+            },
+        ]
+    )
     for record in schema:
         if record.get("record_kind") == "column":
             record.setdefault("nullable", False)
@@ -319,6 +335,90 @@ def test_e02_compiler_emits_only_directional_public_relationships() -> None:
             "target_table_stable_id": "db:table:sites",
         }
     ]
+
+
+def test_e02_relationships_reference_published_semantic_field_aliases() -> None:
+    spec, schema = _e02_inputs()
+    fields = {field["schema_stable_id"]: field for field in spec["physical_fields"]}
+    fields["db:column:pointcloud:site_id"]["name"] = "site_reference"
+    fields["db:column:sites:id"]["name"] = "site_identifier"
+
+    candidate = compile_e02_relationship_bundle(
+        spec, _hkb_records(), schema, _mapping_records()
+    )
+
+    assert yaml.safe_load(candidate.files["relationships"])[0]["on_sql"] == (
+        "${db_public__pointcloud.site_reference} = ${db_public__sites.site_identifier}"
+    )
+
+
+def test_e02_materializes_unpublished_camel_case_relationship_endpoint() -> None:
+    spec, schema = _e02_inputs()
+    spec["physical_fields"] = [
+        field
+        for field in spec["physical_fields"]
+        if field["schema_stable_id"] != "db:column:pointcloud:site_id"
+    ]
+    source = next(
+        record
+        for record in schema
+        if record["stable_id"] == "db:column:pointcloud:site_id"
+    )
+    source["identifier"] = {"name": "siteReference", "quoted": True}
+
+    candidate = compile_e02_relationship_bundle(
+        spec, _hkb_records(), schema, _mapping_records()
+    )
+
+    assert yaml.safe_load(candidate.files["relationships"])[0]["on_sql"] == (
+        "${db_public__pointcloud.site_reference} = ${db_public__sites.id}"
+    )
+    source_view = yaml.safe_load(candidate.files["db.public__pointcloud.view"])
+    assert source_view["dimensions"]["site_reference"] == {
+        "description": "Referenced site identifier.",
+        "sql": '"siteReference"',
+    }
+    assert {
+        "field_name": "site_reference",
+        "file": "db.public__pointcloud.view",
+        "source_stable_id": "db:column:pointcloud:site_id",
+        "sql": '"siteReference"',
+    } in candidate.manifest["direct_physical_bindings"]
+
+
+def test_e02_omits_relationship_with_ambiguous_normalized_endpoint() -> None:
+    spec, schema = _e02_inputs()
+    spec["physical_fields"] = [
+        field
+        for field in spec["physical_fields"]
+        if field["schema_stable_id"] != "db:column:pointcloud:site_id"
+    ]
+    source = next(
+        record
+        for record in schema
+        if record["stable_id"] == "db:column:pointcloud:site_id"
+    )
+    source["identifier"] = {"name": "siteReference", "quoted": True}
+    schema.append(
+        {
+            "database": "db",
+            "description": "Conflicting normalized identifier.",
+            "identifier": {"name": "site_reference"},
+            "nullable": True,
+            "record_kind": "column",
+            "schema_version": 1,
+            "stable_id": "db:column:pointcloud:site_reference",
+            "table_stable_id": "db:table:pointcloud",
+        }
+    )
+
+    candidate = compile_e02_relationship_bundle(
+        spec, _hkb_records(), schema, _mapping_records()
+    )
+
+    assert yaml.safe_load(candidate.files["relationships"]) == []
+    source_topic = yaml.safe_load(candidate.files["pointcloud_semantics.topic"])
+    assert source_topic["joins"] == {}
 
 
 def test_compile_bundle_emits_executable_field_context_topic_and_provenance() -> None:
