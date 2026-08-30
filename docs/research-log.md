@@ -11455,3 +11455,45 @@ the implementation remains uncommitted for the next session.
 **Decision: KEEP pending live verification.** Commit the general fix, then run
 one fresh, paced 16-target E02 deployment and require zero validation issues plus
 exact readback before any evaluated dev-A attempt.
+
+## 2026-08-30 — D-185: Separate generation provenance from scoring control
+
+### Observation and hypothesis
+
+The complete `sealed-final-v6` cohort tree is authentically bound to Freeze B
+v7, while the corrected scorer must run at a later clean control commit. A
+single `freeze_b` argument currently serves both purposes, so rebinding the
+scorer necessarily makes the immutable generation manifests appear invalid.
+The 89-question frame also remains inaccessible to the scoring and release CLIs
+without a private driver because neither command exposes the selected-ID path.
+
+Preserve both controls instead of weakening either. The current Freeze B must
+continue to bind the exact clean scorer checkout. A separately authenticated
+archived generation control must bind cohort manifests and generation records
+to the system that produced them. The two manifests must be identical on every
+execution input; only `system_commit`, `recorded_at`, and the scorer
+`source_commit` pointer may differ. Published score provenance must carry both
+freeze hashes. Both command boundaries must require the explicit frozen
+`--test-ids` path. Failure-first tests will cover the valid split binding,
+execution-input divergence, archived-control authentication after HEAD moves,
+and selected-ID forwarding before implementation begins.
+
+### Result
+
+Implemented with separate current and archived control loaders. The current
+plan remains authenticated against the clean scoring control; artifact loading
+then reconstructs the generation plan from the authenticated archived commit
+and refuses any manifest pair that differs outside `system_commit`,
+`recorded_at`, or the scorer `source_commit`. Score artifacts, aggregates, and
+the final receipt use schema version 2 and bind both freeze hashes. The scoring
+and release CLIs now require and forward `--test-ids`.
+
+Failure-first and focused regression coverage passes 190 frozen-boundary tests
+spanning Freeze B control, plan construction, generation staging, cohort
+finalization, sealed loading/scoring, both command boundaries, aggregate
+validation, and report rendering. The tracked repository gate passes 2,023
+tests with three expected live-environment skips and 83.24% branch coverage;
+Ruff lint and formatting checks are clean. **Decision: KEEP pending the exact
+1,068-attempt no-gold preflight after the successor Freeze B is recorded.** No
+generation artifact content, question content, private label, or correctness
+value was opened.

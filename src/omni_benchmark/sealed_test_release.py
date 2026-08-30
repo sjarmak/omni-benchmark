@@ -34,6 +34,7 @@ def release_sealed_test_records(
     freeze_b_path: Path,
     schedule_path: Path,
     public_manifest_path: Path,
+    test_ids_path: Path,
 ) -> ReleaseReport:
     """Project test membership only after authenticating the Freeze-B control."""
     root = Path(workspace).resolve(strict=True)
@@ -50,6 +51,7 @@ def release_sealed_test_records(
             freeze_b_path=freeze_b_path,
             schedule_path=schedule_path,
             public_manifest_path=public_manifest_path,
+            test_ids_path=test_ids_path,
         )
         control = load_freeze_b_control(
             root,
@@ -112,6 +114,7 @@ def sealed_test_release_main(argv: Sequence[str] | None = None) -> int:
         freeze_b_path=arguments.freeze_b,
         schedule_path=arguments.schedule,
         public_manifest_path=arguments.public_manifest,
+        test_ids_path=arguments.test_ids,
     )
     print(json.dumps(report.as_dict(), separators=(",", ":"), sort_keys=True))
     return 0
@@ -128,5 +131,6 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--freeze-b", type=Path, required=True)
     parser.add_argument("--schedule", type=Path, required=True)
     parser.add_argument("--public-manifest", type=Path, required=True)
+    parser.add_argument("--test-ids", type=Path, required=True)
     parser.add_argument("--release-sealed-test", action="store_true")
     return parser

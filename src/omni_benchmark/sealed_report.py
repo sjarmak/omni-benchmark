@@ -18,10 +18,11 @@ from .scoring import OFFICIAL_SOFT_EX_VERSION, SENSITIVITY_SCORER_VERSION
 
 CONDITIONS = ("C1", "C2", "C3", "C4")
 CONTRASTS = ("C2-C1", "C3-C2", "C4-C1", "C4-C3")
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 MAX_AGGREGATE_BYTES = 2 * 1024 * 1024
 _ENVELOPE_KEYS = {
     "freeze_b_sha256",
+    "generation_freeze_b_sha256",
     "kind",
     "plan_sha256",
     "release_sha256",
@@ -115,6 +116,7 @@ def render_sealed_report(
     )
     for key in (
         "freeze_b_sha256",
+        "generation_freeze_b_sha256",
         "plan_sha256",
         "release_sha256",
         "test_ids_sha256",
@@ -325,6 +327,7 @@ def _validate_aggregate(
         raise SealedReportError("sealed aggregate kind is invalid")
     for key in (
         "freeze_b_sha256",
+        "generation_freeze_b_sha256",
         "plan_sha256",
         "release_sha256",
         "test_ids_sha256",

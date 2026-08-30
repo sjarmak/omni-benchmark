@@ -118,11 +118,12 @@ def _aggregate(identity: str, question_count: int = 101) -> dict[str, object]:
     }
     return {
         "freeze_b_sha256": "a" * 64,
+        "generation_freeze_b_sha256": "e" * 64,
         "kind": "sealed-aggregate-result",
         "plan_sha256": "b" * 64,
         "release_sha256": "c" * 64,
         "report": report,
-        "schema_version": 1,
+        "schema_version": 2,
         "score_artifact_sha256s": [f"{index:064x}" for index in range(12)],
         "test_ids_sha256": "d" * 64,
     }
@@ -166,7 +167,7 @@ def test_render_sealed_report_accepts_matched_89_question_frame() -> None:
 @pytest.mark.parametrize(
     ("mutation", "match"),
     (
-        (lambda value: value.__setitem__("schema_version", 2), "schema"),
+        (lambda value: value.__setitem__("schema_version", 1), "schema"),
         (lambda value: value.pop("plan_sha256"), "envelope schema"),
         (lambda value: value.__setitem__("kind", "other"), "kind"),
         (
@@ -187,6 +188,10 @@ def test_render_sealed_report_accepts_matched_89_question_frame() -> None:
         ),
         (
             lambda value: value.__setitem__("release_sha256", "e" * 64),
+            "custody bindings",
+        ),
+        (
+            lambda value: value.__setitem__("generation_freeze_b_sha256", "f" * 64),
             "custody bindings",
         ),
         (

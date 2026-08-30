@@ -20,7 +20,10 @@ from .dev_a_baseline_scoring_cli import (
     _required_dsn,
 )
 from .direct_question_loader import DirectQuestionLoadError, _committed, _public_records
-from .freeze_b_control import load_freeze_b_control
+from .freeze_b_control import (
+    load_archived_freeze_b_control,
+    load_freeze_b_control,
+)
 from .postgres_isolation import PsycopgTemplateIsolationProvider
 from .sealed_evaluation import (
     SealedEvaluationError,
@@ -63,12 +66,19 @@ def sealed_evaluation_main(
         freeze_b_path=arguments.freeze_b,
         schedule_path=arguments.schedule,
         public_manifest_path=arguments.public_manifest,
+        test_ids_path=arguments.test_ids,
     )
     control = load_freeze_b_control(
         workspace,
         control_commit=arguments.control_commit,
         system_commit=arguments.system_commit,
         manifest_path=arguments.freeze_b,
+    )
+    generation_control = load_archived_freeze_b_control(
+        workspace,
+        control_commit=arguments.generation_control_commit,
+        system_commit=arguments.generation_system_commit,
+        manifest_path=arguments.generation_freeze_b,
     )
     questions = load_sealed_public_questions(
         workspace,
@@ -81,6 +91,7 @@ def sealed_evaluation_main(
         output_root=arguments.cohort_root,
         plan=plan,
         freeze_b=control.manifest,
+        generation_control=generation_control,
         questions=questions,
     )
     if not arguments.execute_sealed_scoring:
@@ -90,6 +101,7 @@ def sealed_evaluation_main(
                     "attempt_count": len(batch.attempts),
                     "cohort_count": len(batch.cohorts),
                     "freeze_b_sha256": batch.freeze_b_sha256,
+                    "generation_freeze_b_sha256": batch.generation_freeze_b_sha256,
                     "plan_sha256": batch.plan_sha256,
                     "schedule_sha256": batch.schedule_sha256,
                     "status": "validated_not_scored",
@@ -203,8 +215,12 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--control-commit", required=True)
     parser.add_argument("--system-commit", required=True)
     parser.add_argument("--freeze-b", type=Path, required=True)
+    parser.add_argument("--generation-control-commit", required=True)
+    parser.add_argument("--generation-system-commit", required=True)
+    parser.add_argument("--generation-freeze-b", type=Path, required=True)
     parser.add_argument("--schedule", type=Path, required=True)
     parser.add_argument("--public-manifest", type=Path, required=True)
+    parser.add_argument("--test-ids", type=Path, required=True)
     parser.add_argument("--cohort-root", type=Path, required=True)
     parser.add_argument("--release", type=Path)
     parser.add_argument("--expected-release-sha256")

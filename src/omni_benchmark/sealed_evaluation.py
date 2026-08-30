@@ -9,7 +9,7 @@ import os
 import secrets
 import stat
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any
 
@@ -35,6 +35,7 @@ from .freeze_b import (
     FreezeBManifest,
     SealedRunManifest,
 )
+from .freeze_b_control import FreezeBControl
 from .sealed_execution_plan import SealedExecutionPlan
 from .sealed_generation_staging import (
     SealedGenerationStagingError,
@@ -110,6 +111,7 @@ class SealedOutputBatch:
     """All no-gold inputs proven complete before private custody is opened."""
 
     freeze_b_sha256: str
+    generation_freeze_b_sha256: str
     plan_sha256: str
     schedule_sha256: str
     test_ids_sha256: str
@@ -130,6 +132,7 @@ class SealedEvaluationPlan:
     """Exact frozen attempts with sealed labels attached inside custody."""
 
     freeze_b_sha256: str
+    generation_freeze_b_sha256: str
     plan_sha256: str
     release_sha256: str
     test_ids_sha256: str
@@ -151,6 +154,7 @@ def load_sealed_output_batch(
     output_root: Path,
     plan: SealedExecutionPlan,
     freeze_b: FreezeBManifest,
+    generation_control: FreezeBControl | None = None,
     questions: Mapping[str, str],
 ) -> SealedOutputBatch:
     """Authenticate all twelve cohorts without opening any private label source."""
@@ -160,16 +164,40 @@ def load_sealed_output_batch(
         validated_freeze = _validated_freeze(freeze_b)
     except SealedGenerationStagingError as error:
         raise SealedEvaluationError("sealed plan or Freeze B is invalid") from error
-    if (
-        validated_plan.freeze_b_sha256 != validated_freeze.sha256()
-        or validated_plan.system_commit != validated_freeze.system_commit
-        or validated_plan.schedule_sha256 != validated_freeze.schedule_sha256
-        or validated_plan.question_count != validated_freeze.question_count
-        or validated_plan.expected_test_outputs
-        != validated_freeze.expected_test_outputs
-    ):
+    if not _plan_matches_freeze(validated_plan, validated_freeze):
         raise SealedEvaluationError("sealed plan does not match Freeze B")
-    question_map = _questions(questions, validated_plan)
+    generation_plan = validated_plan
+    generation_freeze = validated_freeze
+    if generation_control is not None:
+        if type(generation_control) is not FreezeBControl:
+            raise SealedEvaluationError("sealed generation control is invalid")
+        try:
+            generation_freeze = _validated_freeze(generation_control.manifest)
+        except SealedGenerationStagingError as error:
+            raise SealedEvaluationError(
+                "sealed generation control is invalid"
+            ) from error
+        if (
+            generation_control.system_commit != generation_freeze.system_commit
+            or generation_control.freeze_b_sha256 != generation_freeze.sha256()
+        ):
+            raise SealedEvaluationError("sealed generation control is invalid")
+        _require_execution_compatible_freezes(generation_freeze, validated_freeze)
+        generation_plan = replace(
+            validated_plan,
+            control_commit=generation_control.control_commit,
+            system_commit=generation_control.system_commit,
+            freeze_b_sha256=generation_control.freeze_b_sha256,
+        )
+        try:
+            generation_plan = _validated_plan(generation_plan)
+        except SealedGenerationStagingError as error:
+            raise SealedEvaluationError("sealed generation plan is invalid") from error
+        if not _plan_matches_freeze(generation_plan, generation_freeze):
+            raise SealedEvaluationError(
+                "sealed generation plan does not match Freeze B"
+            )
+    question_map = _questions(questions, generation_plan)
     selected_root = _output_root(root, output_root)
     cohorts: list[SealedValidatedCohort] = []
     attempts_by_id: dict[str, SealedFrozenAttempt] = {}
@@ -178,8 +206,8 @@ def load_sealed_output_batch(
             cohort, attempts = _load_cohort(
                 root,
                 selected_root,
-                validated_plan,
-                validated_freeze,
+                generation_plan,
+                generation_freeze,
                 question_map,
                 condition,
                 repetition,
@@ -191,7 +219,7 @@ def load_sealed_output_batch(
                         "sealed cohorts contain a duplicate attempt"
                     )
                 attempts_by_id[attempt.attempt_id] = attempt
-    expected_ids = tuple(item.attempt_id for item in validated_plan.attempts)
+    expected_ids = tuple(item.attempt_id for item in generation_plan.attempts)
     if (
         set(attempts_by_id) != set(expected_ids)
         or len(attempts_by_id) != validated_plan.expected_test_outputs
@@ -199,9 +227,10 @@ def load_sealed_output_batch(
         raise SealedEvaluationError("sealed cohort attempt set is incomplete")
     return SealedOutputBatch(
         freeze_b_sha256=validated_freeze.sha256(),
-        plan_sha256=validated_plan.sha256,
-        schedule_sha256=validated_plan.schedule_sha256,
-        test_ids_sha256=validated_plan.test_ids_sha256,
+        generation_freeze_b_sha256=generation_freeze.sha256(),
+        plan_sha256=generation_plan.sha256,
+        schedule_sha256=generation_plan.schedule_sha256,
+        test_ids_sha256=generation_plan.test_ids_sha256,
         cohorts=tuple(cohorts),
         attempts=tuple(attempts_by_id[attempt_id] for attempt_id in expected_ids),
     )
@@ -252,6 +281,7 @@ def prepare_sealed_evaluation_plan(
         raise SealedEvaluationError("sealed scoring input is invalid") from error
     return SealedEvaluationPlan(
         freeze_b_sha256=validated_batch.freeze_b_sha256,
+        generation_freeze_b_sha256=validated_batch.generation_freeze_b_sha256,
         plan_sha256=validated_batch.plan_sha256,
         release_sha256=release_digest,
         test_ids_sha256=validated_batch.test_ids_sha256,
@@ -359,11 +389,12 @@ def publish_sealed_evaluation(
                 Path(mode.value) / "aggregate.json",
                 {
                     "freeze_b_sha256": plan.freeze_b_sha256,
+                    "generation_freeze_b_sha256": plan.generation_freeze_b_sha256,
                     "kind": "sealed-aggregate-result",
                     "plan_sha256": plan.plan_sha256,
                     "release_sha256": plan.release_sha256,
                     "report": reports[mode],
-                    "schema_version": 1,
+                    "schema_version": 2,
                     "score_artifact_sha256s": [
                         item["sha256"] for item in score_artifacts[mode]
                     ],
@@ -385,11 +416,12 @@ def publish_sealed_evaluation(
                 "attempt_count": plan.expected_test_outputs,
                 "cohort_count": 12,
                 "freeze_b_sha256": plan.freeze_b_sha256,
+                "generation_freeze_b_sha256": plan.generation_freeze_b_sha256,
                 "kind": "sealed-evaluation-receipt",
                 "plan_sha256": plan.plan_sha256,
                 "question_count": plan.question_count,
                 "release_sha256": plan.release_sha256,
-                "schema_version": 1,
+                "schema_version": 2,
                 "score_artifacts": {
                     mode.value: score_artifacts[mode]
                     for mode in (ScoringMode.OFFICIAL, ScoringMode.SENSITIVITY)
@@ -496,6 +528,7 @@ def _score_payload(
     return {
         "attempts": attempts,
         "freeze_b_sha256": plan.freeze_b_sha256,
+        "generation_freeze_b_sha256": plan.generation_freeze_b_sha256,
         "generation": {
             "sha256": cohort.generation.sha256,
             "run_manifest_sha256": cohort.run_manifest.sha256(),
@@ -503,7 +536,7 @@ def _score_payload(
         "kind": "sealed-score-artifact",
         "plan_sha256": plan.plan_sha256,
         "release_sha256": plan.release_sha256,
-        "schema_version": 1,
+        "schema_version": 2,
         "scorer": {
             "identity": mode.value,
             "version": _scorer_version(mode),
@@ -597,12 +630,40 @@ def _validated_batch(value: object) -> SealedOutputBatch:
         raise SealedEvaluationError("complete sealed output preflight is required")
     for digest in (
         value.freeze_b_sha256,
+        value.generation_freeze_b_sha256,
         value.plan_sha256,
         value.schedule_sha256,
         value.test_ids_sha256,
     ):
         _digest(digest, "sealed preflight SHA-256")
     return value
+
+
+def _plan_matches_freeze(plan: SealedExecutionPlan, freeze_b: FreezeBManifest) -> bool:
+    return (
+        plan.freeze_b_sha256 == freeze_b.sha256()
+        and plan.system_commit == freeze_b.system_commit
+        and plan.schedule_sha256 == freeze_b.schedule_sha256
+        and plan.question_count == freeze_b.question_count
+        and plan.expected_test_outputs == freeze_b.expected_test_outputs
+    )
+
+
+def _require_execution_compatible_freezes(
+    generation: FreezeBManifest, control: FreezeBManifest
+) -> None:
+    generation_value = generation.as_dict()
+    control_value = control.as_dict()
+    for value in (generation_value, control_value):
+        value.pop("system_commit")
+        value.pop("recorded_at")
+        scorer = dict(value["scorer"])
+        scorer.pop("source_commit")
+        value["scorer"] = scorer
+    if generation_value != control_value:
+        raise SealedEvaluationError(
+            "generation and control Freeze B execution inputs differ"
+        )
 
 
 def _validated_public_records(

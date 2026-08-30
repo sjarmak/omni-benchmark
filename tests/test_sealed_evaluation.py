@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -24,6 +25,7 @@ from omni_benchmark.sealed_generation_staging import (
     SealedGenerationStagingError,
     prepare_sealed_attempt,
 )
+from omni_benchmark.freeze_b_control import FreezeBControl
 from omni_benchmark.sealed_scoring import FailureClass
 from tests.execution_fixtures import SyntheticIsolationProvider
 from tests.test_sealed_cohort_finalization import CLI, SOFTWARE, _questions
@@ -249,6 +251,83 @@ def test_load_exact_twelve_cohorts_before_private_custody(tmp_path: Path) -> Non
         for attempt in batch.attempts
         if attempt.condition == "C4"
     }
+
+
+def _control_for_generation(plan, freeze) -> FreezeBControl:  # type: ignore[no-untyped-def]
+    return FreezeBControl(
+        manifest=freeze,
+        manifest_path="experiments/freeze-b-generation.json",
+        control_commit=plan.control_commit,
+        system_commit=plan.system_commit,
+        freeze_b_sha256=freeze.sha256(),
+        frozen_file_count=len(freeze.frozen_files),
+    )
+
+
+def test_load_uses_generation_freeze_for_artifacts_and_current_freeze_for_control(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    generation_plan, generation_freeze, questions = _complete_batch(workspace, 1)
+    current_system = "c" * 40
+    current_freeze = replace(
+        generation_freeze,
+        system_commit=current_system,
+        recorded_at="2026-08-30T18:30:00Z",
+        scorer_source_commit=current_system,
+    )
+    current_plan = replace(
+        generation_plan,
+        control_commit="d" * 40,
+        system_commit=current_system,
+        freeze_b_sha256=current_freeze.sha256(),
+    )
+
+    batch = load_sealed_output_batch(
+        workspace,
+        output_root=Path("runs/sealed-cohorts"),
+        plan=current_plan,
+        freeze_b=current_freeze,
+        generation_control=_control_for_generation(generation_plan, generation_freeze),
+        questions=questions,
+    )
+
+    assert batch.freeze_b_sha256 == current_freeze.sha256()
+    assert batch.generation_freeze_b_sha256 == generation_freeze.sha256()
+    assert batch.plan_sha256 == generation_plan.sha256
+
+
+def test_load_rejects_generation_and_control_freezes_with_execution_drift(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    generation_plan, generation_freeze, questions = _complete_batch(workspace, 1)
+    current_system = "c" * 40
+    current_freeze = replace(
+        generation_freeze,
+        system_commit=current_system,
+        recorded_at="2026-08-30T18:30:00Z",
+        scorer_source_commit=current_system,
+        schedule_seed="changed-after-generation",
+    )
+    current_plan = replace(
+        generation_plan,
+        control_commit="d" * 40,
+        system_commit=current_system,
+        freeze_b_sha256=current_freeze.sha256(),
+    )
+
+    with pytest.raises(SealedEvaluationError, match="execution inputs"):
+        load_sealed_output_batch(
+            workspace,
+            output_root=Path("runs/sealed-cohorts"),
+            plan=current_plan,
+            freeze_b=current_freeze,
+            generation_control=_control_for_generation(
+                generation_plan, generation_freeze
+            ),
+            questions=questions,
+        )
 
 
 def test_partial_or_changed_cohort_fails_closed(tmp_path: Path) -> None:

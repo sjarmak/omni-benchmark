@@ -12,6 +12,7 @@ from omni_benchmark.freeze_b import FreezeBManifest, schedule_sha256
 from omni_benchmark.freeze_b_control import (
     FreezeBControlError,
     control_main,
+    load_archived_freeze_b_control,
     load_freeze_b_control,
 )
 from omni_benchmark.scoring import scorer_metadata
@@ -155,6 +156,27 @@ def test_control_loads_exact_direct_child_despite_dirty_substitution(
     assert result.system_commit == system_commit
     assert result.freeze_b_sha256 == manifest.sha256()
     assert result.frozen_file_count == 1
+
+
+def test_archived_control_loads_after_head_moves_without_rebinding_commit(
+    tmp_path: Path,
+) -> None:
+    repo, system_commit, freeze_a_commit = _system_repository(tmp_path)
+    control_commit, manifest = _add_control_commit(repo, system_commit, freeze_a_commit)
+    (repo / "later.txt").write_text("later\n", encoding="utf-8")
+    _git(repo, "add", "later.txt")
+    _git(repo, "commit", "-qm", "later scorer system")
+
+    result = load_archived_freeze_b_control(
+        repo,
+        control_commit=control_commit,
+        system_commit=system_commit,
+        manifest_path=Path("experiments/freeze-b.json"),
+    )
+
+    assert result.manifest == manifest
+    assert result.control_commit == control_commit
+    assert result.system_commit == system_commit
 
 
 def test_control_rejects_abbreviated_stale_or_wrong_system_commit(

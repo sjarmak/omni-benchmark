@@ -67,6 +67,7 @@ def test_release_projects_only_frozen_test_membership_and_normalizes_shape(
         freeze_b_path=Path("experiments/freeze-b.json"),
         schedule_path=Path("data/final-schedule.jsonl"),
         public_manifest_path=Path("data/manifests/eligible_questions.jsonl"),
+        test_ids_path=Path("data/manifests/sealed_mvp_ids.txt"),
     )
 
     assert report.released_count == 101
@@ -103,6 +104,7 @@ def test_source_hash_mismatch_publishes_nothing(
             freeze_b_path=Path("experiments/freeze-b.json"),
             schedule_path=Path("data/final-schedule.jsonl"),
             public_manifest_path=Path("data/manifests/eligible_questions.jsonl"),
+            test_ids_path=Path("data/manifests/sealed_mvp_ids.txt"),
         )
     assert not (workspace / "data/private/test/labels.jsonl").exists()
 
@@ -132,7 +134,51 @@ def test_release_accepts_the_frozen_89_question_frame(
         freeze_b_path=Path("experiments/freeze-b.json"),
         schedule_path=Path("data/final-schedule.jsonl"),
         public_manifest_path=Path("data/manifests/eligible_questions.jsonl"),
+        test_ids_path=Path("data/manifests/sealed_mvp_ids.txt"),
     )
 
     assert report.released_count == 89
     assert report.ignored_count == 1
+
+
+def test_release_cli_requires_and_forwards_selected_test_ids(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace = _workspace(tmp_path)
+    monkeypatch.setattr(
+        release_module, "_require_exact_control_checkout", lambda *args: None
+    )
+    calls = {}
+
+    def release_records(*args, **kwargs):  # type: ignore[no-untyped-def]
+        calls.update(kwargs)
+        return SimpleNamespace(as_dict=lambda: {"status": "released"})
+
+    monkeypatch.setattr(release_module, "release_sealed_test_records", release_records)
+
+    status = release_module.sealed_test_release_main(
+        [
+            "--workspace",
+            str(workspace),
+            "--source",
+            str(tmp_path / "outside-private.jsonl"),
+            "--expected-source-sha256",
+            "a" * 64,
+            "--control-commit",
+            "f" * 40,
+            "--system-commit",
+            "e" * 40,
+            "--freeze-b",
+            "experiments/freeze-b.json",
+            "--schedule",
+            "data/final-schedule.jsonl",
+            "--public-manifest",
+            "data/manifests/eligible_questions.jsonl",
+            "--test-ids",
+            "data/manifests/sealed_mvp_ids.txt",
+            "--release-sealed-test",
+        ]
+    )
+
+    assert status == 0
+    assert calls["test_ids_path"] == Path("data/manifests/sealed_mvp_ids.txt")
