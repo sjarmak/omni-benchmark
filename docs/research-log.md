@@ -11777,3 +11777,64 @@ explicit contract change. The audited 30-minute bound is the only follow-up;
 test selection, permissions, dependencies, and commands remain unchanged. The
 sole E02 identity continues unchanged, and no additional experiment is
 authorized or planned.
+
+## 2026-08-30 — D-192: E02 generation terminates and raw evidence is preserved
+
+### Observation
+
+The sole same-identity E02 continuation exited cleanly after reconciling the 17
+records preserved before the rate-limit interruption and generating the
+remaining 119 attempts with one worker. The final fixed schedule contains 136
+answerable dev-A attempts across 16 databases, plus the preregistered 18
+unscorable questions outside execution. The terminal runner reported 117
+answered attempts and 19 evaluated-system errors: five
+`adapter_transport_error` and 14 `unsupported_semantic_result_type`. There were
+zero pending attempts and no operational or budget stop.
+
+### Preservation result and next gate
+
+Before freeze or any worktree cleanup, the complete terminal raw root was copied
+without overwrite from the execution worktree to the ignored main-workspace
+destination `experiments/autoresearch/raw/e02-dev-a-v6`. Independently generated
+source and destination manifests match exactly: 665 files, 5,586,131 bytes, and
+content-manifest SHA-256
+`d665578c4b1c3c4f93b726d961dcd65ea0d09e0c6d13743d9492acc854abc33a`.
+The file mode/size/path manifest is
+`29949e72dd7431fc68dbfb9ce0805adb0d3d4ce1b512561a592a78cd4b99d787`;
+the directory-mode manifest is
+`3d5392055be2b8b59a2108904f0636c497b128b638cebbb32edf4330a70d5fa4`.
+The stored mode-0600 manifest verifies in place. Freeze the exact terminal
+identity next, then score it once under both frozen dev-A scorers before opening
+or interpreting any per-question correctness.
+
+## 2026-08-30 — D-193: Freeze E02 and stop cleanly at the scorer-environment boundary
+
+### Hypothesis and procedure
+
+The terminal E02 generation should reproduce the preregistered 154-question
+schedule, retain the fixed 18 unscorable questions, and bind exactly the 136
+executed attempts before any correctness becomes available. The existing
+dev-A custody scorer should then be reusable without changing the candidate,
+schedule, scorer, or released train-only gold projection.
+
+The freeze command ran in the generation worktree against source commit
+`2dc10d36836ccf2b19fcb364247aa22476aa8cf4`, with the expected schedule,
+execution-plan, and deployment hashes. Its output was copied byte-identically
+to the tracked main-workspace state path. The scorer was invoked once from the
+main workspace with that exact selection, release, and gold-conformance binding.
+
+### Result and decision
+
+The freeze succeeded with 665 artifacts, 136 attempts across 16 databases, 154
+scheduled questions, and 18 fixed unscorable questions. Its selection and file
+SHA-256 are both
+`7f1730667fe7cbb79fddc125f66d922cd01774ffb5b8b2e86528096ae5c86948`.
+
+The scorer stopped before plan construction, database access, scoring, or
+artifact publication because the Codex process does not inherit the two
+operator-owned PostgreSQL scorer DSNs. The intended output root remains absent.
+This is a clean environment handoff, not an evaluated attempt and not authority
+to regenerate E02. Keep the frozen selection, run the exact offline scorer once
+from the established operator environment, and then record the prespecified
+`KEEP`, `REVERT`, or `INCONCLUSIVE` mechanism decision. No further experiment
+or held-out arm is permitted.

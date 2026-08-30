@@ -11,13 +11,60 @@ authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T17:36:22-04:00 (America/New_York). The sealed scorer
+Last updated: 2026-08-30T19:06:23-04:00 (America/New_York). The sealed scorer
 opened the human-produced 89-record test projection only inside the custody
 workflow. Benchmark agents have read only its identity-free aggregates; no
 agent opened the complete gold package, dev-B annotations, test annotations,
 or a per-question sealed correctness artifact.
 
-## LIVE GATE — confirm full-source cleanup only
+## LIVE GATE 1 — run the already-frozen E02 offline scorer
+
+E02 generation and preservation are complete. The sole run exited cleanly with
+136 of 136 dev-A attempts, and its exact selection is frozen at SHA-256
+`7f1730667fe7cbb79fddc125f66d922cd01774ffb5b8b2e86528096ae5c86948`.
+The agent attempted the one offline scoring pass, but it stopped before reading
+or scoring any attempt because the Codex process does not inherit the two
+operator-owned PostgreSQL scorer DSNs. The output root remains absent. This is
+an environment handoff, not a request for new authorization or another model
+run.
+
+In the same Linux terminal/environment used for the earlier dev-A or sealed
+scoring, run the block below. Do not paste either DSN or its value here. The
+first check prints only `scorer environment ready` or
+`scorer environment missing`.
+
+```bash
+cd /home/ds/projects/omni-benchmark
+
+if [[ -n ${OMNI_BENCHMARK_SCORER_ADMIN_DSN:-} && -n ${OMNI_BENCHMARK_SCORER_EXECUTION_DSN:-} ]]; then
+  printf 'scorer environment ready\n'
+else
+  printf 'scorer environment missing\n'
+  return 1 2>/dev/null || exit 1
+fi
+
+uv run python scripts/score_dev_a_baseline.py \
+  --workspace /home/ds/projects/omni-benchmark \
+  --artifact-workspace /tmp/omni-benchmark-e02-dev-a-v6 \
+  --freeze-a-commit 7d39ee107338da1ce10e2553a4290e64bfc2f892 \
+  --selection experiments/autoresearch/state/e02-dev-a-v6-freeze.json \
+  --expected-selection-sha256 7f1730667fe7cbb79fddc125f66d922cd01774ffb5b8b2e86528096ae5c86948 \
+  --expected-release-sha256 34794127f6f34f5214eedf652b86d870fb2c4e8f67d364bbd8d333897acf2c3d \
+  --gold-conformance-receipt experiments/autoresearch/state/dev-a-gold-conformance-v1.json \
+  --expected-gold-conformance-sha256 d9387e4b64c8d5160648b149374c0b9f9365438e350399d788cfd3db3d0fc6e5 \
+  --output-root experiments/autoresearch/raw/e02-dev-a-v6-dev-a-scores-v1
+
+score_status=$?
+printf 'E02 score exit status: %s\n' "$score_status"
+```
+
+If the environment check says `missing`, stop there and tell the agent only
+that it is missing; do not paste or reconstruct credentials in chat. If scoring
+succeeds, share the scorer's final one-line JSON receipt and
+`E02 score exit status: 0`. This command uses only the released train/dev-A gold
+and does not access dev-B or sealed test correctness.
+
+## LIVE GATE 2 — confirm full-source cleanup
 
 The human release and sealed scoring are complete. The release reported 89
 released, 391 ignored, source SHA-256

@@ -6,10 +6,12 @@
 > scored on the matched 89-question held-out frame under both frozen scorers.
 > Only identity-free aggregates have left custody; no per-question correctness,
 > SQL, row, or test annotation was opened. E01 is an audited baseline no-op, and
-> E02 remains the pre-specified dev-A mechanism contrast selected before sealed
-> scoring. Because sealed aggregates became visible before E02 completed, it
-> cannot now be promoted into a held-out optimized arm; no intervention edit or
-> dev-B checkpoint may use these results. Before any sealed outcome existed, the
+> E02 is the pre-specified dev-A mechanism contrast selected before sealed
+> scoring. Its sole 136-attempt generation completed and is frozen; offline
+> scoring remains pending. Because sealed aggregates became visible before E02
+> completed, it cannot now be promoted into a held-out optimized arm; no
+> intervention edit or dev-B checkpoint may use these results. Before any sealed
+> outcome existed, the
 > original 101-question frame was narrowed to the matched 89 questions
 > on the 16 databases with verified C4 deployments. The fixed E02 dev-A
 > schedule still lists all 154 questions; 18 benchmark-invalid questions are
@@ -30,9 +32,10 @@ tasks: 231 development questions and an original sealed split of 101 questions.
 The development partition is further divided into 154 development questions and
 77 metered validation questions. The protocol permits supervised reuse. The
 frozen mechanical candidate received no question-level supervision and consumed
-no metered checkpoint. E02 is the final experiment: a pre-specified dev-A
-mechanism contrast that cannot become a held-out optimized arm after the
-scoring-order deviation. Four baseline systems separate access to raw schema,
+no metered checkpoint. E02 is the final experiment: a completed, frozen
+pre-specified dev-A generation whose offline score remains pending and that
+cannot become a held-out optimized arm after the scoring-order deviation. Four
+baseline systems separate access to raw schema,
 business knowledge, structured semantic knowledge, and governed execution.
 
 **Headline held-out result, on the pre-outcome matched frame.** Official mean
@@ -437,7 +440,7 @@ Their reusable changes and promotion rules are recorded in
 | Experiment | Evidence completed | Decision | Remaining gate |
 | --- | --- | --- | --- |
 | E01: same-grain dependencies | The frozen baseline already has 48 dependency-bearing elements, 70 executable dependency edges, and depth three | Inconclusive; already baseline | No further E01 contrast |
-| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes; deployment v5 verified all 16 targets with exact readback | Pre-specified dev-A mechanism contrast; no held-out promotion permitted after sealed scoring | Run its fixed eligible dev-A evaluation unchanged |
+| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes; deployment v7 verified all 16 targets with exact readback; its fixed dev-A generation completed 136/136 attempts and is frozen | Score pending; pre-specified dev-A mechanism contrast with no held-out promotion permitted after sealed scoring | Run the one offline dual-scorer pass and record KEEP, REVERT, or INCONCLUSIVE |
 | E03: bounded descriptions | Prespecified only | Not run | Out of MVP scope after the scoring-order deviation |
 | E04: broad HKB context | Prespecified negative control only | Not run | Out of MVP scope after the scoring-order deviation |
 
@@ -462,7 +465,7 @@ models. The C4 plan binds that exact 16-deployment evidence set and retains all
 
 The corrected E02 artifact has candidate-set SHA-256
 `12c4e1a8cab38f0f47e14b5c553c87c800ca07f27bae568171f1d7caaf7589a7`.
-Public deployment v5 verified and exactly read back all 16 selected targets with
+Public deployment v7 verified and exactly read back all 16 selected targets with
 zero validation issues. The post-score correction only generalized endpoint
 publication for public-schema relationships and did not use held-out outcomes;
 it is not a promoted candidate. Its historical artifacts remain immutable.
@@ -583,9 +586,10 @@ is converted into the bounded structured model, and C4 does not recover it.
 The untuned arm was scored before E02 dev-A execution completed, contrary to the
 ordering in the later lean optimization extension. E02 had already been
 selected and preregistered as a relationship-path mechanism contrast, and its
-general compiler change predates these results. It may still be executed on
-dev-A, but the sealed aggregates may not drive a new intervention edit, dev-B
-checkpoint, promotion decision, or optimized held-out arm. A correction required
+general compiler change predates these results. Its fixed dev-A generation is
+complete and frozen, but its offline correctness score is not yet available.
+The sealed aggregates may not drive a new intervention edit, dev-B checkpoint,
+promotion decision, or optimized held-out arm. A correction required
 by public validator evidence subsequently generalized publication of
 already-normalized relationship endpoints; it used no outcome evidence and
 changed no experiment choice. The MVP therefore reports a valid frozen C1−C4
@@ -680,10 +684,11 @@ evidence is in [`docs/failure-taxonomy.md`](docs/failure-taxonomy.md), the
 - Execution equivalence remains the benchmark authority. AI Hub diagnostics and
   judge outcomes can explain behavior but do not replace result-set scoring.
 - E02 passed public deployment validation and exact readback on all 16 selected
-  targets and was selected as the first bounded dev-A candidate, but it has not
-  yet been evaluated. Its declared FK-backed relationships are the ingredient whose
-  absence forced the governed rewrite path, which makes it a direct test of that
-  mechanism; it is not yet evidence that the mechanism moves, and its topics
+  targets, completed its sole 136-attempt dev-A generation, and froze the exact
+  output, but offline correctness scoring is still pending. Its declared
+  FK-backed relationships are the ingredient whose absence forced the governed
+  rewrite path, which makes it a direct test of that mechanism; it is not yet
+  evidence that the mechanism improves correctness, and its topics
   declare no measures, so aggregation may still be rewritten rather than
   compiled. The mechanical baseline received no question-level supervision.
   Because held-out aggregates are now visible, E02 may only run unchanged on

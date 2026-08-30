@@ -22,8 +22,8 @@ semantic query composition.
 **What did I do next?** E02 adds only defensible foreign-key-backed relationships
 and tests on dev-A whether that missing mechanism changes behavior. It was fixed
 before sealed outcomes were visible, cannot become an optimized held-out arm,
-and is the final experiment; after it is preserved and scored, experimentation
-stops.
+and is the final experiment. Its sole generation is complete, preserved, and
+frozen; after the one offline score and decision, experimentation stops.
 
 ## Start here
 
