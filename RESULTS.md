@@ -2,19 +2,15 @@
 
 ## Results report
 
-> **Status — 2026-08-30:** The immutable C1-C3 public baseline has been scored on
-> its exact dev-A intersection. E01 is an audited baseline no-op, and the E02
-> relationship artifact is locally authenticated but was neither deployed nor
-> evaluated. The frozen mechanical system is the untuned baseline. A bounded
-> dev-A optimization phase is now part of the MVP; no intervention has yet been
-> promoted and no dev-B checkpoint has yet been consumed. The C4 development
-> baseline is complete and scored. Its Freeze B is recorded and validated; the
-> untuned sealed generation is structurally complete, its correctness remains
-> unavailable, and one
-> optimized candidate will be frozen and evaluated before custody scoring.
-> Every **Pending** entry below carries no numeric value. The original 101
-> held-out questions and their labels remain sealed. Before any sealed outcome
-> existed, the final evaluation frame was narrowed to the matched 89 questions
+> **Status — 2026-08-30:** The immutable C1-C4 untuned baseline is complete and
+> scored on the matched 89-question held-out frame under both frozen scorers.
+> Only identity-free aggregates have left custody; no per-question correctness,
+> SQL, row, or test annotation was opened. E01 is an audited baseline no-op, and
+> E02 remains the pre-specified dev-A mechanism contrast selected before sealed
+> scoring. Because sealed aggregates became visible before E02 completed, it
+> cannot now be promoted into a held-out optimized arm; no intervention edit or
+> dev-B checkpoint may use these results. Before any sealed outcome existed, the
+> original 101-question frame was narrowed to the matched 89 questions
 > on the 16 databases with verified C4 deployments. All 154 dev-A questions
 > remain scheduled; 18 fixed benchmark-invalid questions are preregistered as
 > unscorable, leaving 136 answerable questions for C4 evaluation. All 16
@@ -32,15 +28,14 @@ LiveSQLBench Large-v1: 231 development questions and an original sealed split of
 101 questions. The executed held-out comparison uses the matched 89-question
 subset described below. The development partition is further divided into 154
 development questions and 77 metered validation questions. The protocol
-permits supervised reuse. The frozen mechanical candidate receives no
-question-level supervision and consumes no metered checkpoint; a separately
-identified optimized candidate will adapt on dev-A only before held-out
-correctness is released. Four baseline systems
+permits supervised reuse. The frozen mechanical candidate received no
+question-level supervision and consumed no metered checkpoint. E02 remains a
+pre-specified dev-A mechanism contrast, but the scoring-order deviation means it
+cannot become a held-out optimized arm. Four baseline systems
 separate access to raw schema, business knowledge, structured semantic
 knowledge, and governed execution.
 
-The primary sealed results remain pending. Development evidence now supports
-six findings:
+The sealed comparison and development evidence support seven findings:
 
 1. Grain and relationship contracts were the main recorded obstacle to
    converting business knowledge into executable semantic objects. Across all
@@ -54,8 +49,7 @@ six findings:
    development baseline. Official accuracy on 122 scoreable dev-A questions was
    7.4% for C1, 23.8% for C2, and 13.1% for C3. The sensitivity scorer preserved
    that ordering. Governed C4 separately scored 9/136 (6.6%), with 34 explicit
-   refused/system-error outcomes. These are exploratory development results;
-   the sealed comparison has not run.
+   refused/system-error outcomes. These are exploratory development results.
 
 3. Wrong answers dominate the direct baseline. Across the three conditions, 245
    of 366 scoreable attempts were wrong, 67 refused or errored, and 54 were
@@ -90,8 +84,14 @@ six findings:
    attempts. It did not compose the query. The study can no longer claim that
    C4 minus C3 isolates semantic-layer query composition.
 
-The sealed evaluation will test whether the frozen mechanical semantic layer
-improves governed execution on the held-out comparison.
+7. The held-out comparison confirms the value of searchable raw business
+   knowledge but not the governed mechanical system. Official mean accuracy is
+   10.1% for C1, 22.1% for C2, 8.6% for C3, and 8.6% for C4; corrected
+   sensitivity gives 10.1%, 19.5%, 8.6%, and 9.7%. C2−C1 is +12.0 percentage
+   points (95% interval 5.6 to 18.7) under the official scorer and +9.4 points
+   (3.4 to 15.7) under sensitivity. C4−C1 is -1.5 points (-7.1 to 4.1) and
+   -0.4 points (-6.4 to 5.6), respectively. Thus the positive result is
+   access to searchable HKB context; C4 does not improve on direct-only C1.
 
 ## 1. Research question
 
@@ -145,11 +145,11 @@ sealed final evaluation. Every database appears in both partitions.
 
 The 231 development questions are split into dev-A (154) and dev-B (77). The
 protocol permits repeated use of dev-A and metered dev-B checkpoints. No
-supervised intervention has yet been promoted and dev-B remains unconsumed. The
-held-out set is inaccessible to development. All four frozen baseline
-conditions produce three independent, interleaved attempts for each of the 89
-selected questions. One frozen optimized C4 arm will then be generated on the
-same membership before any test correctness is released.
+supervised intervention was promoted into the sealed system and dev-B remains
+unconsumed. All four frozen baseline conditions produced three independent,
+interleaved attempts for each of the 89 selected questions before any sealed
+correctness was released. The later scoring-order deviation leaves E02 as a
+pre-specified dev-A mechanism contrast only; there is no optimized held-out arm.
 
 The official Large-v1 Linux loader skips 34 declared tables in
 `mental_healths_large` and 37 in `organ_transplant_large` because their archive
@@ -411,7 +411,7 @@ Their reusable changes and promotion rules are recorded in
 | Experiment | Evidence completed | Decision | Remaining gate |
 | --- | --- | --- | --- |
 | E01: same-grain dependencies | The frozen baseline already has 48 dependency-bearing elements, 70 executable dependency edges, and depth three | Inconclusive; already baseline | No further E01 contrast |
-| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes | Selected as the first bounded candidate; promotion undecided | Deploy and run the full eligible dev-A evaluation after the untuned sealed dispatcher exits |
+| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes | Pre-specified dev-A mechanism contrast; no held-out promotion permitted after sealed scoring | Verify the pre-result candidate and run its fixed eligible dev-A evaluation unchanged |
 | E03: bounded descriptions | Prespecified only | Not run | Candidate mechanism for the lean loop |
 | E04: broad HKB context | Prespecified negative control only | Not run | Optional negative control; run only if it directly informs promotion |
 
@@ -434,8 +434,8 @@ fixed official-loader blockers remain explicit rather than fabricated as empty
 models. The C4 plan binds that exact 16-deployment evidence set and retains all
 154 scheduled identities, of which 136 are executable.
 
-The separate offline E02 artifact has candidate-set SHA-256
-`db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`.
+The corrected offline E02 artifact has candidate-set SHA-256
+`831f4521778ef33470b92e4943ab7f683bc6641e7feb81e769129c6ebe524829`.
 It publishes and authenticates locally, but it is not yet a promoted candidate.
 Its historical artifacts remain immutable.
 The public C4 baseline evaluates the frozen mechanical baseline. Its immutable
@@ -450,44 +450,69 @@ Dev-B remains unconsumed.
 
 ## 6. Held-out results
 
-All entries in this section remain pending until the separately frozen optimized
-C4 arm has completed. The 1,068 untuned sealed generations are structurally
-complete, but their attempt content and correctness remain unopened. Custody
-will release only the permitted aggregate results after both arms exist. The
-untuned C1−C4 configurations are already frozen; the optimized candidate is
-not.
+The frozen untuned comparison covers 89 held-out questions and 1,068 scheduled
+attempts: four conditions, three repetitions, identical membership. The scorer
+published both preregistered policies in one atomic run. This section uses only
+the identity-free aggregates; no question identity, SQL, row, annotation, or
+per-question correctness left custody.
 
 ### Primary endpoints
 
-| Endpoint | Estimate | 95% interval |
-| --- | ---: | ---: |
-| C4 mean one-shot execution accuracy | **Pending** | **Pending** |
-| C4 repetition-one execution accuracy | **Pending** | **Pending** |
-| C4−C1 paired accuracy difference | **Pending** | **Pending** |
+| Scorer | Endpoint | Estimate | 95% interval |
+| --- | --- | ---: | ---: |
+| Official-compatible Soft EX | C4 mean one-shot execution accuracy | 8.6% | 3.7%–14.6% |
+| Official-compatible Soft EX | C4 repetition-one execution accuracy | 7.9% | 3.4%–13.5% |
+| Official-compatible Soft EX | C4−C1 paired accuracy difference | -1.5% | -7.1%–4.1% |
+| Corrected multiset sensitivity | C4 mean one-shot execution accuracy | 9.7% | 4.5%–15.7% |
+| Corrected multiset sensitivity | C4 repetition-one execution accuracy | 9.0% | 3.4%–15.7% |
+| Corrected multiset sensitivity | C4−C1 paired accuracy difference | -0.4% | -6.4%–5.6% |
 
 ### Four-condition matrix
 
-| Condition | Mean accuracy | Wrong rate | Content-refusal rate | Insufficient-context rate | Error rate | Pass³ | Correctness flips |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| C1 | **Pending** | **Pending** | Unavailable | Unavailable | **Pending** | **Pending** | **Pending** |
-| C2 | **Pending** | **Pending** | Unavailable | Unavailable | **Pending** | **Pending** | **Pending** |
-| C3 | **Pending** | **Pending** | Unavailable | Unavailable | **Pending** | **Pending** | **Pending** |
-| C4 | **Pending** | **Pending** | Unavailable | Unavailable | **Pending** | **Pending** | **Pending** |
+| Scorer | Condition | Mean accuracy | Wrong rate | Refused/error | Error rate | Pass³ | Correctness flips |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Official-compatible Soft EX | C1 | 10.1% | 56.2% | 33.7% | 18.7% | 6.7% | 6 |
+| Official-compatible Soft EX | C2 | 22.1% | 50.6% | 27.3% | 19.9% | 15.7% | 12 |
+| Official-compatible Soft EX | C3 | 8.6% | 53.2% | 38.2% | 16.1% | 4.5% | 6 |
+| Official-compatible Soft EX | C4 | 8.6% | 77.2% | 14.2% | 14.2% | 6.7% | 4 |
+| Corrected multiset sensitivity | C1 | 10.1% | 56.9% | 33.0% | 18.7% | 6.7% | 6 |
+| Corrected multiset sensitivity | C2 | 19.5% | 54.7% | 25.8% | 19.9% | 14.6% | 10 |
+| Corrected multiset sensitivity | C3 | 8.6% | 54.7% | 36.7% | 16.1% | 4.5% | 6 |
+| Corrected multiset sensitivity | C4 | 9.7% | 76.0% | 14.2% | 14.2% | 7.9% | 4 |
 
 The frozen generation contract does not distinguish content refusal from
-insufficient context, so those two rates are unavailable rather than pending.
+insufficient context, so those two rates are unavailable rather than inferred.
 
 ### Exploratory contrasts
 
-| Contrast | Paired difference | Interpretation |
-| --- | ---: | --- |
-| C2−C1 | **Pending** | Association with adding searchable business knowledge |
-| C3−C2 | **Pending** | Association with structured semantic representation |
-| C4−C3 | **Pending** | Governed-system contrast between two agent-authored SQL conditions; not a compiled-versus-direct contrast, and causal scope also depends on achieved model parity |
+| Scorer | Contrast | Difference | 95% interval | Gains | Losses |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Official-compatible Soft EX | C2−C1 | 12.0% | 5.6%–18.7% | 37 | 5 |
+| Official-compatible Soft EX | C3−C2 | -13.5% | -20.6%–-7.1% | 4 | 40 |
+| Official-compatible Soft EX | C4−C1 | -1.5% | -7.1%–4.1% | 10 | 14 |
+| Official-compatible Soft EX | C4−C3 | 0.0% | -4.9%–4.9% | 10 | 10 |
+| Corrected multiset sensitivity | C2−C1 | 9.4% | 3.4%–15.7% | 30 | 5 |
+| Corrected multiset sensitivity | C3−C2 | -10.9% | -17.6%–-4.9% | 4 | 33 |
+| Corrected multiset sensitivity | C4−C1 | -0.4% | -6.4%–5.6% | 13 | 14 |
+| Corrected multiset sensitivity | C4−C3 | 1.1% | -4.1%–6.7% | 13 | 10 |
 
-Both the official-compatible Soft EX score and the preregistered corrected
-multiset sensitivity score will be reported. Neither scorer will be selected or
-changed in response to the held-out result.
+Intervals are deterministic 95% held-out-item-clustered percentile bootstrap
+intervals with 10,000 replicates. Both frozen scorers are reported without
+post-result selection. The strongest held-out contrast is C2−C1: searchable HKB
+context improves the direct comparator. C3 loses that advantage after the HKB
+is converted into the bounded structured model, and C4 does not recover it.
+
+### Optimization-scope limitation
+
+The untuned arm was scored before E02 dev-A execution completed, contrary to the
+ordering in the later lean optimization extension. E02 had already been
+selected and preregistered as a relationship-path mechanism contrast, and its
+general compiler change predates these results. It may still be executed on
+dev-A unchanged, but the sealed aggregates may not drive a new edit, dev-B
+checkpoint, promotion decision, or optimized held-out arm. The MVP therefore
+reports a valid frozen C1−C4 held-out comparison and a separate pre-specified
+dev-A optimization experiment; it does not claim held-out improvement from
+tuning.
 
 ## 7. Product recommendations
 
@@ -571,16 +596,18 @@ comparative result.
 - Execution equivalence remains the benchmark authority. AI Hub diagnostics and
   judge outcomes can explain behavior but do not replace result-set scoring.
 - E02 passed deterministic local publication checks and was selected as the
-  first bounded dev-A candidate, but it has not yet been promoted, deployed, or
-  evaluated. Its declared FK-backed relationships are the ingredient whose
+  first bounded dev-A candidate, but its corrected pre-result candidate has not
+  yet been evaluated. Its declared FK-backed relationships are the ingredient whose
   absence forced the governed rewrite path, which makes it a direct test of that
   mechanism; it is not yet evidence that the mechanism moves, and its topics
   declare no measures, so aggregation may still be rewritten rather than
-  compiled. The mechanical baseline receives no question-level supervision;
-  any optimized successor will be labeled separately and trained only on
-  dev-A. Dev-B remains unconsumed at this status point.
-- Held-out accuracy, reliability, and confirmatory condition conclusions are
-  pending. No placeholder in this report should be interpreted as a result.
+  compiled. The mechanical baseline received no question-level supervision.
+  Because held-out aggregates are now visible, E02 may only run unchanged on
+  dev-A and cannot be promoted into a sealed successor. Dev-B remains
+  unconsumed.
+- The scoring-order deviation prevents a held-out claim about optimization. It
+  does not alter the frozen untuned comparison because every generation was
+  complete before release and both scorers were published together.
 
 ## 9. Reproducibility
 
@@ -594,7 +621,14 @@ The untuned baseline system is frozen at successor commit
 `8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d`; its direct-child control commit is
 `94cc0d9483c944d7dc13ed651c8fc2ef077f33ab`, and the Freeze-B manifest SHA-256
 is `e1c9f1967422822c848c18a17ba759d4e4fbc7f21aa0fe3ae1045b9236ae4730`.
-The optimized candidate and its distinct freeze identity remain pending.
+Scoring used correction-forward system
+`0a5aee423b4a0d5bb396b3d9764f8e9e24f31254`, control
+`fe4660df8dacdca07da310ddfda4158b82895ba9`, and Freeze-B v10 SHA-256
+`ff10083bf70d82bd483d12e98751d9bf7f5d4236c42fac3ba921405d87953a05`
+while preserving the generation binding above. The correctness-free scoring
+receipt SHA-256 is
+`534e28b954d4d13dfdd9100fc6a184fba3eb3720d8cd7cf7d43c92713cb258f7`.
+No optimized held-out candidate is constructed after the sealed result.
 The C1 sensitivity subset, allocation diagnostics, preserved-artifact hashes,
 and notional cost/time projection are committed separately from its future raw
 run artifacts; OAuth dollars remain telemetry rather than a run-selection

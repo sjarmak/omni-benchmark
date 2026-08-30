@@ -312,3 +312,28 @@ types on compiled semantic fields, is recorded INCONCLUSIVE under its own
 preregistered precondition. That precondition required at least 16 of the 31
 class-A failures to select a compiled derived field; the measured ceiling is 6,
 and 24 of 31 select no compiled bundle field of any kind.
+
+## Post-Freeze-B deviation, 2026-08-30: score the untuned arm before completing E02
+
+**What changed.** The untuned `sealed-final-v6` arm was scored after its complete
+generation tree and the v10 split-provenance scoring control passed, but before
+the E02 dev-A execution and optimized held-out arm described by the lean
+optimization extension were complete. This reverses that extension's intended
+ordering. It does not change the sealed population, generations, scorers,
+endpoints, or any recorded answer.
+
+**Consequence.** Aggregate held-out C1–C4 outcomes are now visible and cannot be
+treated as development input. The project will not construct or select a new
+optimized held-out candidate. E02 was selected and preregistered as a mechanism
+contrast in D-180, and its general compiler change was committed before sealed
+scoring. Only that pre-result candidate may be run on dev-A under its existing
+identity. No implementation change, dev-B checkpoint, or promotion decision may
+use the sealed aggregates. E02 is therefore reported as a pre-specified dev-A
+contrast, not as evidence that a tuned candidate improves held-out accuracy.
+
+**Why the primary result remains valid.** All 1,068 untuned generations were
+immutable before release, both frozen scorers were published together, and no
+wrong outcome was rerun. The sequencing deviation limits the optimization claim;
+it does not bias the already-generated C1–C4 comparison. The report must state
+this limitation directly rather than implying that the MVP completed the
+original optimized-arm design.

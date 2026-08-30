@@ -11527,3 +11527,58 @@ matching v8. The 33 affected control, command-boundary, and sealed-evaluation
 tests pass with Ruff clean. **Decision: KEEP the relocation; v10 must still pass
 the full normalized-manifest comparison before any no-gold preflight.** V9 was
 not used for artifact loading, label release, scoring, or any provider action.
+
+## 2026-08-30 — D-187: Publish the untuned sealed comparison and freeze the remaining E02 contrast against outcome-driven changes
+
+### Observation and hypothesis
+
+The correction-forward v10 scoring control authenticates the complete
+`sealed-final-v6` generation tree without rebinding it: generation remains
+bound to system/control/Freeze-B v7, while scoring remains bound to the exact
+clean v10 system/control/Freeze-B checkout. If the human-custodied 89-record
+projection has the expected release hash and the local PostgreSQL 18.6 roles
+pass the restricted clone probe, one complete scorer invocation should publish
+both frozen aggregate reports atomically without exposing question identities,
+SQL, rows, or per-question correctness.
+
+### Result
+
+The human release reported 89 released, 391 ignored, source SHA-256
+`be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1`,
+projection SHA-256
+`da114627ec9ae5ba51a1219594cb7498c64f67b98d708c183849320ca163fca8`,
+and exit status 0. A public-only disposable-clone probe then confirmed server
+version 18.6, the restricted execution role, transaction read-only mode, and
+cleanup. The single sealed scorer invocation completed all 1,068 attempts and
+atomically published receipt SHA-256
+`534e28b954d4d13dfdd9100fc6a184fba3eb3720d8cd7cf7d43c92713cb258f7`,
+official aggregate SHA-256
+`79bcfca3abeb8340e09cc7580d940cfcc2b90d2c8b588283e5c352437278faff`,
+and sensitivity aggregate SHA-256
+`88dd6a7106c57b53b6f14a40a100a2cc10f1c794d575bff2361c75f026b7eb26`.
+The aggregate-only renderer produced report SHA-256
+`884b660fd63416abe38598bfb88a7759c2a74009facc936c1a1671163ed3a464`.
+
+Official-compatible mean execution accuracy is 10.1% for C1, 22.1% for C2,
+8.6% for C3, and 8.6% for C4. The corrected multiset sensitivity estimates are
+10.1%, 19.5%, 8.6%, and 9.7%, respectively. C2 minus C1 is +12.0 percentage
+points (95% held-out-item-clustered interval 5.6 to 18.7) under the official
+scorer and +9.4 points (3.4 to 15.7) under sensitivity. C4 minus C1 is -1.5
+points (-7.1 to 4.1) official and -0.4 points (-6.4 to 5.6) sensitivity.
+
+**Decision: KEEP and report both scorers.** The positive held-out result is the
+C2 HKB-context contrast; the governed C4 system does not improve on direct-only
+C1. No attempt is rerun and no scorer is selected after seeing the result.
+
+This scoring order is a deviation from D-182 and the post-Freeze-B optimization
+extension, which had placed E02 execution before sealed correctness release.
+E02 itself was selected and preregistered in D-180, and its general endpoint
+alias implementation was committed before this score existed. To prevent the
+now-visible sealed aggregates from becoming an optimization signal, the
+remaining E02 work is mechanically restricted to that pre-result candidate and
+its already-claimed dev-A execution identity. No new intervention, candidate
+edit, dev-B checkpoint, or held-out E02 arm may be chosen from these outcomes.
+E02 is reported as a pre-specified dev-A mechanism contrast, not as a sealed
+optimized-candidate comparison. The full-source cleanup confirmation remains a
+custody closeout item; the private projection and all per-question score files
+remain unopened by benchmark agents.

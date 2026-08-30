@@ -5,28 +5,32 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-30T12:36:00-04:00 (America/New_York). Reconciliation happens at material evidence gates only, not on a daily cadence.
+Last reconciled: 2026-08-30T15:28:12-04:00 (America/New_York). Reconciliation
+happens at material evidence gates only, not on a daily cadence.
 
 ## Current position
 
-The decisive governed dev-A baseline comparison has run and the mechanical
-candidate is formally frozen as the **untuned baseline**. We have frozen
-development evidence for direct C1-C3 and governed C4, plus a validated
-89-question / 1,068-coordinate baseline Freeze B. The untuned held-out arm has
-now completed generation, but its correctness remains sealed. We do **not** yet
-have released sealed C1-C4 results or a frozen optimized Omni candidate.
+The frozen **untuned baseline** has now completed the full matched held-out
+comparison: 89 questions, four conditions, three repetitions, 1,068 immutable
+attempts, and both frozen scorers. Only identity-free aggregates were opened.
+Official mean accuracy is C1 10.1%, C2 22.1%, C3 8.6%, and C4 8.6%; corrected
+sensitivity is 10.1%, 19.5%, 8.6%, and 9.7%. C2−C1 is the positive result
+(+12.0 percentage points official; +9.4 sensitivity). C4 does not improve on
+C1 (-1.5 and -0.4 points, with intervals spanning zero).
 
-Stephanie confirmed on 2026-08-30 that optimization/tuning is part of the MVP.
-The 2026-08-29 cut remains in the historical record, but is superseded before
-sealed correctness release. `omni-benchmark-ei0.11` owns the lean successor:
-dev-A-only adaptation, at most sparse aggregate dev-B checkpoints, one optimized
-candidate freeze, and one held-out optimized C4 arm. The active sealed run is
-still the untuned baseline and cannot inform that work. Live-action
-authorization is now tiered by contamination risk (`omni-benchmark-xeg`):
-public semantic deployment and validation passes are agent-autonomous and
-retryable under a new run ID. Standing human authorization now lets agents
-materialize exact action receipts for evaluated, sealed, dev-B, protected-data,
-and shared-model actions without another prompt; every binding remains exact.
+Optimization/tuning remains an MVP experiment, but its claim is narrower now.
+The sealed baseline was scored before E02 dev-A execution completed. E02 was
+selected and preregistered before those results, and its general compiler fix
+was committed before scoring, so it may run unchanged as a dev-A mechanism
+contrast. The sealed aggregates may not drive an edit, dev-B checkpoint,
+promotion decision, or optimized held-out arm. The project can demonstrate a
+disciplined optimization attempt, but cannot claim held-out improvement from it.
+
+Live-action authorization remains tiered by contamination risk
+(`omni-benchmark-xeg`). Public semantic deployment and validation passes are
+agent-autonomous and retryable under a new run ID. Standing human authorization
+covers exact remaining MVP actions without another prompt; custody,
+append-only evidence, and no-retry rules remain exact.
 
 The C4 control plane completed all 136 answerable attempts across 16 databases
 while retaining the 18 fixed scorer-conformance exclusions. The immutable v8
@@ -57,11 +61,11 @@ limitation, not as system or gold failures.
 | Train-only gold release | Complete | Exactly 154 dev-A records were released through custody; the complete source was removed from the host transfer area. Test gold and dev-B outcomes remain unavailable to development. |
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
-| Minimal dev-A experiment set | **E02 deployment 15/16; general polar fix prepared** | Aggregate-only failure analysis selected the preregistered relationship/grain intervention. Immutable deployment v2 exposed request-pressure failures; paced v3 exact-read back 15 targets and isolated ten broken camel/mixed-case relationship endpoint references on polar. A general stable-ID-driven alias fix is locally tested but not yet committed or redeployed. KEEP still requires all 16 deployments and the full 136-answerable dev-A comparison. |
+| Minimal dev-A experiment set | **E02 pre-result candidate fixed; dev-A execution remains** | Aggregate-only development analysis selected the preregistered relationship/grain intervention. Immutable deployment v2 exposed request pressure; paced v3 exact-read back 15 targets and isolated polar endpoint aliases. The general stable-ID fix is committed and tested. Run only that candidate unchanged, first through exact deployment/readback and then the 136-answerable dev-A contrast. |
 | Untuned candidate and baseline Freeze B | **Complete** | Baseline system `8b0c739…`, direct-child control `94cc0d9…`, Freeze-B SHA-256 `e1c9f196…ae4730`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
-| Untuned sealed C1-C4 evaluation | **Generation complete; correctness sealed** | V1-v5 remain immutable and excluded. V6 terminated with exactly 1,068 attempt envelopes, 12 generation manifests, and 12 run manifests; its dispatcher is absent. Receipt `e0a6ba14…f5c97a` was consumed once. No attempt content or correctness was opened, and the arm remains correctness-blind during optimization. |
-| Optimized candidate and held-out arm | **Planned** | Adapt on dev-A only; optionally consume sparse aggregate dev-B checkpoints; freeze one candidate; generate one additional optimized C4 arm on the same preselected 89-question frame before any sealed correctness release. |
-| Results/product report | Draft only | `RESULTS.md` already contains the design, direct baseline, failure analysis, and product findings. Replace every pending governed/sealed result after the immutable aggregates exist, then finish the concise submission-ready report. |
+| Untuned sealed C1-C4 evaluation | **Complete and scored** | V1-v5 remain immutable and excluded. V6 has 1,068 attempts and 12 authenticated cohorts. Split-provenance scoring v10 completed once. Official aggregate `79bcfca3…8faff`; sensitivity `88dd6a71…b7eb26`; correctness-free receipt `534e28b9…b258f7`; aggregate report `884b660f…3a464`. No individual score artifact was opened. |
+| Optimized candidate and held-out arm | **Held-out arm cancelled by scoring order; dev-A contrast remains** | Run only the preregistered pre-result E02 candidate on dev-A unchanged. Do not use sealed aggregates for edits, checkpoints, promotion, or a new held-out arm. |
+| Results/product report | **Held-out numbers integrated; final edit remains** | `RESULTS.md` now contains both frozen scorer matrices, paired contrasts, failure analysis, product findings, and the optimization-scope limitation. Finish the concise submission-ready edit and artifact-lineage check. |
 
 ## What is already usable
 
@@ -69,8 +73,9 @@ limitation, not as system or gold failures.
   discussed with their stated scopes and exclusions.
 - The public HKB/compiler analysis and failure-mechanism evidence are real.
 - The E01 no-op finding and the offline E02 candidate construction are real.
-- The sealed dispatcher, scorer, and report handoff are tested infrastructure,
-  not benchmark outcomes.
+- The sealed C1-C4 comparison is a real held-out outcome under both frozen
+  scorers. Its aggregate-only report is shareable with the stated 89-question,
+  16-database scope.
 
 The clearest current interpretation is: searchable raw business knowledge (C2)
 was strongest in the frozen direct baseline, while governed C4 produced 9
@@ -79,44 +84,34 @@ contract failures. On the exact 122-question intersection shared by all four
 conditions, C4 is 5/122 (4.1%), compared with C1 at 9/122 (7.4%), C2 at 29/122
 (23.8%), and C3 at 16/122 (13.1%). The paired descriptive C4-C1 difference is
 -3.3 percentage points. This alignment confirms the low C4 result is not a
-denominator artifact; it remains exploratory development evidence rather than
-the held-out comparison.
+denominator artifact. The held-out comparison now strengthens the same product
+story: C2 is best, while C4 does not improve on C1.
 
 ## Blocking and waiting
 
 ### Waiting on the operator now
 
-Nothing. The lease rebuild completed just after the 07:00 credential refresh on
-2026-08-30. The first sealed-final-v1 dispatch stopped on a general missing-CA
-infrastructure bug after one generation staged and before any cohort finalized.
-V2 then stopped on a general C2 aggregate-versus-selected HKB identity mismatch
-before model execution, after three generations staged and before any cohort
-finalized. The correction is frozen. Exact `sealed-final-v3` preflight passed
-and its receipt was consumed once. The dispatcher then preserved 32 attempts
-before a frozen capture-contract infrastructure stop; no dispatcher remains.
-The same-identity continuation dry preflight reconciled exactly 32 and admitted
-1,036; its receipt was consumed once and it preserved 16 more attempts before a
-different completed-job contract stop. No dispatcher remains. The general
-completed/no-query consistency fix is agent-owned and tested; no callback,
-protected file, or additional authorization is needed.
+One custody closeout only: confirm that the transferred full `source.jsonl` and
+its temporary `/var/tmp/omni-sealed-gold-human.*` directory were removed. Reply
+with only `remote cleanup status: file=0 directory=0`. Do not remove the private
+89-record projection used by the completed scorer. No new run authorization,
+credential, callback, lease, or protected-data action is needed.
 
 ### Agent-owned work now
 
 - Execute the bounded dev-A optimization loop under `omni-benchmark-ei0.11`,
-  beginning with the E02 relationship candidate. Commit the general relationship
-  endpoint-alias fix, redeploy all 16 schedule-selected public models under a
-  fresh exact run identity, run the 136-attempt dev-A comparison, freeze one
-  optimized candidate, and generate its held-out C4 arm while all sealed
-  correctness remains unavailable.
-- Finish the aligned development comparison table and concise results/product
-  report from immutable aggregates.
+  using only the pre-result E02 relationship candidate. Verify all 16 public
+  deployments/readbacks under a fresh run identity, then run the fixed
+  136-answerable dev-A comparison. Do not edit or promote it from sealed results.
+- Finish the concise results/product report and verify its artifact lineage.
 - Commit and publish reviewed work through `main` only. Worktree cleanup under
   `omni-benchmark-9v3` is not on the MVP critical path.
 
 ### Later exact gates
 
-The agent may materialize exact optimization, checkpoint, freeze, and sealed-
-action receipts under standing authorization when their bound inputs exist.
+No additional sealed or dev-B action is planned. The agent may execute the exact
+pre-result E02 dev-A action under standing authorization when its deployment gate
+passes.
 
 ### Non-critical-path or deferred work
 
@@ -132,16 +127,15 @@ The MVP is complete only when all of the following are true:
 
 1. The public C4 baseline is validated, immutably captured, frozen, and scored
    under the 154-scheduled/136-answerable frame.
-2. A bounded dev-A optimization loop produces immutable KEEP/REVERT/
-   INCONCLUSIVE evidence and freezes one optimized candidate; any dev-B use is
-   aggregate-only and sparse.
-3. The untuned and optimized candidates are frozen before their respective
-   sealed execution, and no sealed correctness is released between them.
-4. The twelve untuned C1-C4 cohorts and the optimized C4 arm finish; the two
-   frozen scorers produce identity-safe aggregates through custody.
-5. `RESULTS.md` reports the actual untuned, optimized, and sealed comparisons, product
-   findings, limitations, and exact artifact lineage with no pending numeric
-   placeholders.
+2. The bounded pre-result E02 dev-A contrast produces immutable KEEP/REVERT/
+   INCONCLUSIVE mechanism evidence without using held-out outcomes or dev-B.
+3. The twelve untuned C1-C4 cohorts and both frozen scorers produce
+   identity-safe aggregates through custody.
+4. `RESULTS.md` reports the actual development and sealed comparisons, product
+   findings, the optimization-order limitation, and exact artifact lineage with
+   no pending numeric placeholders.
+5. The full-source cleanup is confirmed and the concise report receives its
+   final submission-ready edit.
 
 ## Sources of truth
 
@@ -152,6 +146,8 @@ The MVP is complete only when all of the following are true:
 - [../RESULTS.md](../RESULTS.md) — results-first report draft.
 - `.dashboard/index.html` — local visual snapshot; ignored and regenerated at
   major gates.
+- [handoff-2026-08-30-sealed-scoring.md](handoff-2026-08-30-sealed-scoring.md) —
+  historical resume document for the now-resolved sealed-scoring blocker.
 
 This file must never contain private gold, per-question dev-B outcomes, hidden
 test annotations, sealed correctness, credentials, or credential locations.

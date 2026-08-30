@@ -6,79 +6,38 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T15:02:00-04:00 (America/New_York). Benchmark agents have
-authorized access only to the extracted 154-record dev-A release. No agent has
-accessed the complete gold package, dev-B annotations, test annotations, or
-sealed-test results.
+Last updated: 2026-08-30T15:28:12-04:00 (America/New_York). The sealed scorer
+opened the human-produced 89-record test projection only inside the custody
+workflow. Benchmark agents have read only its identity-free aggregates; no
+agent opened the complete gold package, dev-B annotations, test annotations,
+or a per-question sealed correctness artifact.
 
-## LIVE GATE — human must release the 89 sealed labels
+## LIVE GATE — confirm full-source cleanup only
 
-This is the one action currently waiting on Stephanie. Sealed generation is
-complete, and the exact no-gold preflight now authenticates all 1,068 attempts
-and 12 cohorts without opening correctness. The active scoring control is
-system `0a5aee423b4a0d5bb396b3d9764f8e9e24f31254`, control
-`fe4660df8dacdca07da310ddfda4158b82895ba9`, Freeze B v10 SHA-256
-`ff10083bf70d82bd483d12e98751d9bf7f5d4236c42fac3ba921405d87953a05`.
-The sole clean control worktree is
-`/tmp/omni-benchmark-sealed-v10-preflight`; do not change its HEAD.
-
-The agent must not open or run the release against the complete attachment.
-Stephanie should do the following in the Linux terminal on `ds-5090`:
-
-1. Create a human-owned transfer directory outside every project worktree:
-
-   ```bash
-   OMNI_GOLD_TRANSFER_DIR=$(mktemp -d /var/tmp/omni-sealed-gold-human.XXXXXXXX); chmod 700 "$OMNI_GOLD_TRANSFER_DIR"; printf 'Put the full gold JSONL in: %s\n' "$OMNI_GOLD_TRANSFER_DIR"
-   ```
-
-2. From the Mac, drag or transfer the untouched full gold JSONL into the exact
-   directory printed above, and name the uploaded file **exactly**
-   `source.jsonl`. The resulting Linux path must therefore be the printed
-   temporary directory followed by `/source.jsonl`. Do not put it anywhere
-   under `/home/ds/projects/omni-benchmark` or `/tmp/omni-benchmark-*`.
-
-3. Back in the **same Linux terminal from step 1**, set the complete source path
-   automatically and verify the expected file hash. Do not run these commands
-   on the Mac. They print only the path and `OK`, never file contents:
-
-   ```bash
-   OMNI_GOLD_SOURCE="$OMNI_GOLD_TRANSFER_DIR/source.jsonl"; printf 'Gold source path: %s\n' "$OMNI_GOLD_SOURCE"
-   printf '%s  %s\n' be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1 "$OMNI_GOLD_SOURCE" | sha256sum -c -
-   ```
-
-   In other words, yes: `OMNI_GOLD_SOURCE` is the full temporary Linux path plus
-   the filename. If the hash check does not print `OK`, stop and do not run the
-   release.
-
-4. Run this one-line release command exactly from any directory:
-
-   ```bash
-   cd /tmp/omni-benchmark-sealed-v10-preflight && uv run python sealed_tools/release_sealed_test.py --workspace /tmp/omni-benchmark-sealed-v10-preflight --source "$OMNI_GOLD_SOURCE" --destination data/private/test/labels.jsonl --expected-source-sha256 be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1 --control-commit fe4660df8dacdca07da310ddfda4158b82895ba9 --system-commit 0a5aee423b4a0d5bb396b3d9764f8e9e24f31254 --freeze-b experiments/freeze-b-v10.json --schedule data/final-schedule.jsonl --public-manifest data/manifests/eligible_questions.jsonl --test-ids data/manifests/sealed_mvp_ids.txt --release-sealed-test
-   ```
-
-5. Immediately after step 4, in that same terminal, record the release status:
-
-   ```bash
-   release_status=$?; printf 'release exit status: %s\n' "$release_status"
-   ```
-
-6. If and only if that prints `release exit status: 0`, remove the transferred
-   full source and its now-empty temporary directory. This does **not** remove
-   the 89-record custody projection needed for scoring:
-
-   ```bash
-   if [ "$release_status" -eq 0 ]; then unlink -- "$OMNI_GOLD_SOURCE"; rmdir -- "$OMNI_GOLD_TRANSFER_DIR"; fi
-   ```
-
-Share only the command's one-line JSON report and `release exit status`; do not
-paste the attachment or any released record. Success should report 89 released
-records, 391 ignored records, source SHA-256
+The human release and sealed scoring are complete. The release reported 89
+released, 391 ignored, source SHA-256
 `be6433ea0687c37e2b6a901acbe000667d073da8dec2f08e79686995d2f8d5b1`,
-and exit status 0. Leave
-`/tmp/omni-benchmark-sealed-v10-preflight/data/private/test/labels.jsonl` in
-place: it is the private custody input for the already-authorized scoring step.
-After that report arrives, agents can run exact scoring and render aggregate-only
-results without another ceremonial authorization.
+projection SHA-256
+`da114627ec9ae5ba51a1219594cb7498c64f67b98d708c183849320ca163fca8`,
+and exit status 0. Both frozen scorers then completed all 1,068 attempts and
+published aggregate-only results. Nothing needs to be rerun.
+
+The sole remaining human action is to confirm that the transferred full
+`source.jsonl` and its temporary `/var/tmp/omni-sealed-gold-human.*` directory
+were removed. In the same Linux terminal where the release ran, execute this
+only if cleanup was not already done:
+
+```bash
+unlink -- "$OMNI_GOLD_SOURCE"; file_cleanup_status=$?
+rmdir -- "$OMNI_GOLD_TRANSFER_DIR"; directory_cleanup_status=$?
+printf 'remote cleanup status: file=%s directory=%s\n' "$file_cleanup_status" "$directory_cleanup_status"
+unset OMNI_GOLD_SOURCE OMNI_GOLD_TRANSFER_DIR
+```
+
+Reply with only `remote cleanup status: file=0 directory=0`. Do **not** remove
+`/tmp/omni-benchmark-sealed-v10-preflight/data/private/test/labels.jsonl`; that
+is the private 89-record custody projection and remains part of the immutable
+scoring evidence. Do not paste the source path or any file contents.
 
 ## Standing policy change — 2026-08-29
 
@@ -1183,22 +1142,14 @@ remain outside agent scope.
 
 ## No action requested yet
 
-- Production sealed score custody is now prepared offline on clean branch
-  `codex/sealed-scoring-production` at commit `7342476`. It validates all twelve
-  cohorts before opening any private release, extracts exactly the 101 frozen
-  test records only after Freeze B, applies the already approved
-  coverage-limited dual-scorer rule, and emits identity-free aggregate reports.
-  It must be integrated into the final system commit before Freeze B. **Do not
-  transfer the gold attachment, release test labels, run either new explicit
-  execution flag, or read aggregate sealed results yet.** Exact values and
-  commands will be filled in only after C4, final-candidate freeze, and the later
-  sealed authorization. One reporting limitation is now explicit: the frozen
-  generation record does not retain the direct agent's content-refusal versus
-  insufficient-context subtype, so those two held-out cells will be reported as
-  unavailable rather than guessed; the combined refusal/error rate and raw
-  terminal classes remain available. No response is requested now.
-- No dev-B checkpoint or sealed-test custody action is requested yet. Their
-  private records remain guardian-only until their later protocol gates.
+- Production sealed score custody completed on the matched 89-question frame.
+  Both frozen scorers and the identity-free report are published under the
+  hashes recorded in D-187. Do not rerun scoring or open the private
+  per-question/per-cohort artifacts. The content-refusal versus
+  insufficient-context subtypes remain unavailable by the frozen generation
+  contract and are not inferred after the fact.
+- No dev-B checkpoint is requested. Dev-B private records remain guardian-only,
+  and the now-visible sealed aggregates may not be used to request one.
 - Do not change Neon grants or database contents. All 18 public mirrors already
   passed exact scorer parity and read-only-role verification.
 - The resumed long-running goal changes orchestration state only; it does not
