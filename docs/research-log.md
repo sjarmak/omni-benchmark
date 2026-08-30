@@ -10696,3 +10696,36 @@ finalized, and no dispatcher remains. No generation was rerun, no correctness
 or protected field was read, and no credential or lease content was inspected.
 A continuation must record a successor Freeze B, reconcile the one staged
 envelope, and use a fresh exact receipt for the remaining attempts.
+
+## 2026-08-30 — D-166: Bind C2 to its aggregate HKB manifest
+
+### Observation and hypothesis
+
+The fixed-system v2 dispatch passed PostgreSQL privilege attestation, confirming
+D-165, then stopped before model execution because the constructed C2 runtime
+did not match Freeze B. Public identity inspection isolated the mismatch:
+Freeze B records the aggregate `semantic_models/public_ir/manifest.json`
+digest, while the adapter compared it to the selected database's HKB payload
+digest. `DirectContextIdentity` already retains both as `hkb_manifest` and
+`hkb`; the sealed check selected the wrong component. This is the C2 analogue
+of the aggregate-versus-selected C3 correction in D-162.
+
+Compare C2 Freeze B only to `hkb_manifest`. Keep the selected `hkb` digest in
+the runtime context identity so per-database payload substitution still fails
+its own exact binding. Do not change retrieval, HKB content, prompt, model,
+budget, database, or any database-specific rule.
+
+### Result
+
+A failure-first test now gives C2 distinct selected-payload and aggregate-
+manifest digests; the old mapping fails and the corrected mapping passes. C1
+continues to require no semantic digest, and C3 continues to bind its aggregate
+semantic-model set. The focused adapter/public-context gate passes 33 tests;
+the broader dispatch, planner, production, direct, PostgreSQL, and Freeze-B
+boundary suite passes 203 tests in 107.79 seconds. Ruff and format checks pass.
+
+V2 is immutable with three staged generations, zero finalized cohorts, and one
+consumed receipt. No failing worker reached model execution, no correctness or
+protected field was read, and no credential or lease content was inspected. A
+new final system identity must exclude v2 and run the full fixed schedule under
+a fresh exact receipt.

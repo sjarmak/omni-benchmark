@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T07:23:43-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-30T07:34:24-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -120,8 +120,25 @@ the sealed private-environment loader omitted the fixed system CA that the
 already-proven direct loader adds. Concurrency allowed one unrelated generation
 to stage before the failure propagated; it remains immutable, and zero cohorts
 finalized. The general CA fix passes 170 frozen-boundary tests. No dispatcher is
-running and no response is waiting from the operator; only a fresh exact
-continuation receipt may resume the remaining 1,067 attempts.
+running and no response is waiting from the operator. The old run cannot resume
+under a changed system identity, so its partial evidence remains excluded.
+
+Successor system `d104fe46faab3f2f0b9863048c7e319d7f20d5cf`, control
+`6353f0b48c6c90477eafd0987bd5f67fbd864bd6`, and Freeze-B SHA-256
+`08d741ec4fba303ccc9ee2f2d08d598cef0159d45d582f70259469c4000b5e36`
+freeze the general CA fix. Because that system identity differs from v1, final
+generation uses correction-forward run `sealed-final-v2`; v1 stays immutable
+and is excluded from scoring. Decision `omni-benchmark-ei0.10.5` authenticated
+receipt SHA-256
+`4dd4aa7ed34c66afc504536eb09670c70ea898e69e1f34b3e722231a89d458d4`.
+Its complete dry preflight passed with 1,068 pending and zero reconciled. The
+receipt was consumed exactly once. V2 passed PostgreSQL attestation, then
+stopped before model execution because C2 compared Freeze B's aggregate HKB
+manifest digest to a selected database HKB payload digest. Three unrelated
+generations staged before the failure propagated, zero cohorts finalized, and
+no dispatcher remains. The context already carries both identities; the general
+C2 aggregate-manifest correction passes 203 frozen-boundary tests. No response
+is waiting from the operator.
 
 ### Historical execution record
 

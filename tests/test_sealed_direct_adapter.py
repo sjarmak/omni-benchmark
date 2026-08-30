@@ -70,7 +70,8 @@ def _identities(prepared):  # type: ignore[no-untyped-def]
         "schema": SHA_F,
     }
     if prepared.condition == "C2":
-        components["hkb"] = prepared.condition_binding.semantic_model_sha256
+        components["hkb"] = SHA_E
+        components["hkb_manifest"] = prepared.condition_binding.semantic_model_sha256
     if prepared.condition == "C3":
         components["semantic_model_set"] = (
             prepared.condition_binding.semantic_model_sha256
