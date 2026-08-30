@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-30T08:21:11-04:00 (America/New_York).
+Last reconciled: 2026-08-30T08:32:38-04:00 (America/New_York).
 
 ## Current position
 
@@ -54,8 +54,8 @@ limitation, not as system or gold failures.
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
 | Minimal dev-A experiment set | **Cut from the MVP** | E01 audited as already present in the baseline, inconclusive. E02 compiled, hash-bound, never evaluated. Both are reported as-is with artifacts intact; neither enters the final system. Deviation recorded in `docs/protocol-diff.md`. |
-| Final candidate and Freeze B | **Complete** | Final successor system `d18ce32…`, direct-child control `2bc9dc1…`, Freeze-B SHA-256 `581a8c10…9d57c2`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
-| Sealed C1-C4 evaluation | Successor freeze preparation | V1-v3 remain excluded. V4 proved the completed/no-query fix, then preserved 51 attempts before an unsupported planner-type stop. The same existing dev-A semantics now preserve that product outcome as an evaluated-system failure; 303 boundary tests pass. |
+| Final candidate and Freeze B | **Complete** | Final successor system `34b7812…`, direct-child control `0254338…`, Freeze-B SHA-256 `29cc21fc…3fc1e8`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
+| Sealed C1-C4 evaluation | Successor freeze preparation | V1-v4 remain excluded. V5 preserved four attempts before a preview-versus-typed-row contract stop. The general fallback reuses the already-returned plan and JSON rows with no question, model, or query rerun; 367 boundary tests pass. |
 | Results/product report | Draft only | `RESULTS.md` already contains the design, direct baseline, failure analysis, and product findings. Replace every pending governed/sealed result after the immutable aggregates exist, then finish the concise submission-ready report. |
 
 ## What is already usable
@@ -97,7 +97,7 @@ protected file, or additional authorization is needed.
 
 ### Agent-owned work now
 
-- Freeze the unsupported-type consistency correction and launch one fresh full
+- Freeze the already-returned typed-row fallback and launch one fresh full
   successor run before dual scoring through custody.
 - Finish the aligned development comparison table and concise results/product
   report from immutable aggregates.

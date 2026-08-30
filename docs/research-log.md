@@ -10812,3 +10812,31 @@ The focused capture/adapter/recovery gate passes 36 tests; the full sealed,
 capture, and C4-recovery boundary gate passes 303 tests in 234.25 seconds.
 Ruff and format checks pass. V4 remains immutable and excluded with 51 staged
 attempts, zero cohorts, one consumed receipt, and no dispatcher.
+
+## 2026-08-30 — D-170: Bind already-returned JSON rows after preview mismatch
+
+### Observation and hypothesis
+
+V5 stopped after four staged attempts when one C4 job completed, produced a
+governed query, planned it, and successfully returned JSON rows, but the strict
+capture binder rejected the typed rows against the AI Hub preview contract.
+This is the same mechanism family as the 11 result-only dev-A recoveries. The
+capture already held the generated semantic query, exact plan, and returned
+rows, so neither question resubmission nor semantic-query replay was necessary.
+
+On strict preview binding failure, apply the existing replay-result builder to
+the rows already returned by that same `run_query_json` call. It derives columns
+from the governed query and actual JSON payload while retaining authoritative
+planner types. It must not make another provider call. Forbidden fields,
+unsupported types, malformed rows, and transport failures continue to fail
+closed.
+
+### Result
+
+The failure-first preview-count mismatch test failed before the fallback and
+now produces a complete typed-decimal result. It proves exactly one plan call
+and one JSON execution. The focused capture/result/recovery/adapter gate passes
+100 tests; the full sealed, capture, result-adapter, and C4-recovery boundary
+gate passes 367 tests in 279.85 seconds. Ruff and format checks pass. V5 remains
+immutable and excluded with four staged attempts, zero cohorts, one consumed
+receipt, and no dispatcher.

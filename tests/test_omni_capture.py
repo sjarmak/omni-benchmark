@@ -420,11 +420,23 @@ def test_capture_typed_query_transport_failure_finalizes_errored_attempt(
     assert sum(event["database_query_delta"] for event in trace) == 1
 
 
-def test_capture_preserves_known_query_counts_when_typed_binding_fails(
+def test_capture_reuses_returned_typed_rows_when_preview_count_differs(
     tmp_path: Path,
 ) -> None:
     client = FakeOmniClient([{"state": "COMPLETE"}])
-    client.run_query_json = lambda _: [{"answer": 42}, {"answer": 43}]  # type: ignore[method-assign]
+    calls: list[str] = []
+    original_plan = client.plan_query
+
+    def plan(query):  # type: ignore[no-untyped-def]
+        calls.append("plan")
+        return original_plan(query)
+
+    def run(_query):  # type: ignore[no-untyped-def]
+        calls.append("run")
+        return [{"answer": 42}, {"answer": 43}]
+
+    client.plan_query = plan  # type: ignore[method-assign]
+    client.run_query_json = run  # type: ignore[method-assign]
     capture = OmniJobCapture(
         client,
         _store(tmp_path),
@@ -435,16 +447,27 @@ def test_capture_preserves_known_query_counts_when_typed_binding_fails(
 
     result = capture.probe("Public benchmark question")
 
-    assert result.terminal_state == "CONTRACT_ERROR"
+    assert result.terminal_state == "COMPLETE"
+    assert result.failure_class is None
+    assert result.result_artifact is not None
+    assert json.loads(result.result_artifact.path.read_text()) == {
+        "columns": ["answer"],
+        "rows": [
+            [{"type": "decimal", "value": "42"}],
+            [{"type": "decimal", "value": "43"}],
+        ],
+        "schema_version": 1,
+        "truncated": False,
+    }
     assert result.database_query_count == 1
+    assert calls == ["plan", "run"]
     trace = [json.loads(line) for line in result.trace.path.read_text().splitlines()]
-    assert [event["database_query_delta"] for event in trace] == [
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
+    assert [event["event_type"] for event in trace] == [
+        "omni_job_submit",
+        "omni_job_status",
+        "omni_job_result",
+        "omni_query_plan",
+        "omni_query_run_json",
     ]
 
 

@@ -20,6 +20,7 @@ from .omni_result_adapter import (
     ParsedOmniQuery,
     ParsedOmniResult,
     bind_typed_query_result,
+    build_replayed_result_artifact,
     parse_omni_job_result,
     reject_forbidden_keys,
 )
@@ -226,7 +227,16 @@ class OmniJobCapture:
             lambda: self._client.run_query_json(parsed_query.semantic_query),
             database_query_delta=0,
         )
-        parsed_result = bind_typed_query_result(parsed_query, typed_rows, plan)
+        try:
+            parsed_result = bind_typed_query_result(parsed_query, typed_rows, plan)
+        except OmniResultContractError:
+            recovered = build_replayed_result_artifact(
+                parsed_query.semantic_query,
+                typed_rows,
+                plan,
+            )
+            result_artifact = self._store.write_json("answer.result.json", recovered)
+            return _CaptureOutcome(job_id, "COMPLETE", None, None, result_artifact)
         result_artifact = self._store.write_json(
             "answer.result.json", parsed_result.as_result_artifact()
         )

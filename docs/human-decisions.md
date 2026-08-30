@@ -4,7 +4,7 @@ This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T08:21:11-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-30T08:32:38-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -178,8 +178,22 @@ stopped on `unsupported_semantic_result_type`; no dispatcher remains. Existing
 dev-A recovery semantics already classify this governed `UNKNOWN` planner-type
 outcome as an evaluated-system failure rather than retryable infrastructure.
 The sealed adapter now carries that same general rule; 303 boundary tests pass
-and a fresh successor freeze is being prepared. No response or operator action
-is waiting.
+and it is frozen at successor system
+`34b78127e63e9293defbf179feb98b50baca4742`, direct-child control
+`0254338d068bd47bd1dfa545c84ab8a3d57e0ed0`, and Freeze-B SHA-256
+`29cc21fcbeea62d0d35c0199c95b559addacd4f1b4700cc197c4f703cd3fc1e8`.
+The fresh provider-inert `sealed-final-v5` plan validates. No response or
+operator action is waiting. Decision `omni-benchmark-ei0.10.12` authenticated
+its exact receipt, SHA-256
+`2798718a0ea8dc7f7dfbe27c899ab54b3366ae943a072a80883505fa5c98aab6`;
+the complete dry preflight passed with 1,068 pending and zero reconciled, and it
+was consumed exactly once. The sole `sealed-final-v5` dispatcher is running as
+session `26430`. It stopped after four immutable attempts and zero cohorts when
+Omni returned a governed query, plan, and JSON rows whose shape differed from
+the AI Hub preview contract; no dispatcher remains. The existing result-only
+recovery binder now applies directly to those already-returned rows with exactly
+one plan and one query call. The 367-test boundary gate passes and a fresh
+successor freeze is being prepared. No response or operator action is waiting.
 
 ### Historical execution record
 
