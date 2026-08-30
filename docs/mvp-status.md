@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-29T21:38:00-04:00 (America/New_York).
+Last reconciled: 2026-08-29T21:41:00-04:00 (America/New_York).
 
 ## Current position
 
@@ -67,9 +67,12 @@ retention of the all-101 frame with additional compiler/deployment work.
 The clearest current interpretation is: searchable raw business knowledge (C2)
 was strongest in the frozen direct baseline, while governed C4 produced 9
 correct answers among 136 scoreable attempts and exposed 34 semantic-layer
-contract failures. C1-C3 percentages currently use a 122-question scoreable
-intersection, so a headline C4-versus-C1-C3 delta should wait for the aligned
-report table rather than comparing mismatched denominators.
+contract failures. On the exact 122-question intersection shared by all four
+conditions, C4 is 5/122 (4.1%), compared with C1 at 9/122 (7.4%), C2 at 29/122
+(23.8%), and C3 at 16/122 (13.1%). The paired descriptive C4-C1 difference is
+-3.3 percentage points. This alignment confirms the low C4 result is not a
+denominator artifact; it remains exploratory development evidence rather than
+the held-out comparison.
 
 ## Blocking and waiting
 

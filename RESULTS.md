@@ -301,10 +301,18 @@ direct arm's 140-question represented frame. Under the official scorer, 136
 questions were scoreable: 9 correct, 93 wrong, and 34 refused or
 system-error, for 9/136 (6.6%) accuracy. The sensitivity scorer retained 135
 scoreable questions and the same 9 correct and 93 wrong outcomes, for 9/135
-(6.7%); 33 were refused or system-error. These development contrasts are
-exploratory. Because the direct percentages above use a 122-question
-intersection, the report does not treat their unaligned difference from C4 as
-a paired effect.
+(6.7%); 33 were refused or system-error.
+
+An aggregate-only alignment to the 122 questions scoreable in all four
+conditions gives C4 5 correct, 83 wrong, and 34 refused or system-error, or
+5/122 (4.1%). On that same frame, C1 is 9/122 (7.4%), C2 is 29/122 (23.8%),
+and C3 is 16/122 (13.1%). The paired C1/C4 table contains 3 questions correct
+in both, 2 correct only in C4, 6 correct only in C1, and 111 correct in neither,
+for a descriptive C4-C1 difference of -3.3 percentage points. These are
+exploratory development contrasts, not held-out estimates, but they establish
+that C4's low result is not an artifact of its broader scoreable denominator.
+No question identity, SQL, row value, annotation, or per-question label left
+custody during this alignment.
 
 The failure diagnostic then examined SQL structure without exposing question
 identities, SQL text, result values, or hidden annotations. All 299 correct-or-

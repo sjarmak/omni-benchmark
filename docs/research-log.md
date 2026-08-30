@@ -10447,3 +10447,30 @@ can be compiled, deployed, validated, and read back for each blocked database.
 If not, stop at the human-controlled protocol surface rather than freezing an
 impossible run, restoring benchmark-omitted tables, fabricating an empty model,
 or inspecting sealed question content or outcomes.
+
+## 2026-08-30 — D-158: Align the governed development result to the direct frame
+
+### Observation and hypothesis
+
+The full governed C4 result is 9/136, while the frozen direct C1-C3 report uses
+the 122 questions that are scoreable in every direct condition. Comparing those
+raw percentages could mistake a denominator difference for a system effect.
+
+Compute one aggregate-only intersection from the immutable official score
+artifacts. Require each included question to have a scored C1, C2, C3, and C4
+record; emit only condition totals and the C1/C4 paired correctness table. Do
+not expose question identities, SQL, rows, annotations, or per-question labels.
+
+### Result
+
+The matched intersection contains 122 questions. C1 has 9 correct, 80 wrong,
+and 33 refused/error; C2 has 29, 91, and 2; C3 has 16, 74, and 32; C4 has 5,
+83, and 34. C4 accuracy is therefore 5/122 (4.1%) on the aligned frame, versus
+7.4% for C1, 23.8% for C2, and 13.1% for C3.
+
+The paired C1/C4 table has 3 questions correct in both, 2 correct only in C4,
+6 correct only in C1, and 111 correct in neither. The descriptive paired
+difference is -4/122, or -3.3 percentage points. This confirms that C4's low
+development accuracy is not caused by its broader scoreable denominator. It
+remains exploratory development evidence and does not authorize tuning or a
+question-level rerun.
