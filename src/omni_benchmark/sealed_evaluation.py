@@ -57,6 +57,20 @@ from .sealed_scoring import (
 GENERATION_FILENAME = "generation.jsonl"
 RUN_MANIFEST_FILENAME = "run.json"
 
+# Evaluated-system C4 terminal classes the frozen generation contract can
+# emit for a non-answer. `unsupported_semantic_result_type` and
+# `response_contract_error` are recovery-eligible Omni result failures
+# already recognized as evaluated-system outcomes by
+# `c4_result_recovery.py` lines 34-35; `omni_job_terminal_failure` is the
+# generic evaluated-system job failure.
+C4_EVALUATED_SYSTEM_FAILURE_CLASSES = frozenset(
+    {
+        "omni_job_terminal_failure",
+        "unsupported_semantic_result_type",
+        "response_contract_error",
+    }
+)
+
 
 class SealedEvaluationError(RuntimeError):
     """Sanitized failure at the final sealed evaluator boundary."""
@@ -795,7 +809,7 @@ def _generation_attempt(
         elif (
             outcome != "errored"
             or record.get("failure_origin") != "evaluated_system"
-            or terminal != "omni_job_terminal_failure"
+            or terminal not in C4_EVALUATED_SYSTEM_FAILURE_CLASSES
         ):
             raise SealedEvaluationError("sealed C4 terminal outcome is invalid")
         else:

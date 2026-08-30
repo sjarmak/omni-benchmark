@@ -11,6 +11,7 @@ import pytest
 
 from omni_benchmark.sealed_cohort_finalization import finalize_sealed_cohort
 from omni_benchmark.sealed_evaluation import (
+    C4_EVALUATED_SYSTEM_FAILURE_CLASSES,
     SealedEvaluationError,
     _rename_noreplace,
     load_sealed_output_batch,
@@ -20,8 +21,10 @@ from omni_benchmark.sealed_evaluation import (
 )
 from omni_benchmark.sealed_generation_staging import (
     SealedAttemptRepository,
+    SealedGenerationStagingError,
     prepare_sealed_attempt,
 )
+from omni_benchmark.sealed_scoring import FailureClass
 from tests.execution_fixtures import SyntheticIsolationProvider
 from tests.test_sealed_cohort_finalization import CLI, SOFTWARE, _questions
 from tests.test_sealed_generation_staging import _plan, _record, _workspace
@@ -81,6 +84,148 @@ def _complete_batch(workspace: Path, question_count: int = 101):  # type: ignore
                 finished_at="2026-08-29T07:00:01Z",
             )
     return plan, freeze, questions
+
+
+def _complete_batch_with_c4_override(
+    workspace: Path,
+    c4_overrides: dict[str, object],
+    *,
+    question_count: int = 1,
+):  # type: ignore[no-untyped-def]
+    """Like `_complete_batch`, but the C4 record takes arbitrary overrides.
+
+    Kept at `question_count=1` (12 total attempts, 3 of them C4) so each
+    terminal-class case stays cheap.
+    """
+    plan, freeze = _plan(question_count)
+    questions = _questions(question_count)
+    repository = SealedAttemptRepository(workspace, Path("runs/sealed-attempts"))
+    for planned in plan.attempts:
+        prepared = prepare_sealed_attempt(
+            plan=plan,
+            freeze_b=freeze,
+            attempt_id=planned.attempt_id,
+            question=questions[planned.instance_id],
+        )
+        record = _record(prepared, output=f"SELECT '{planned.instance_id}'")
+        if planned.condition == "C4":
+            record.update(c4_overrides)
+        repository.stage(prepared, record)
+    for condition in ("C1", "C2", "C3", "C4"):
+        for repetition in (1, 2, 3):
+            finalize_sealed_cohort(
+                workspace=workspace,
+                output_root=Path("runs/sealed-cohorts"),
+                plan=plan,
+                freeze_b=freeze,
+                attempt_repository=repository,
+                condition=condition,
+                repetition=repetition,
+                questions=questions,
+                software_versions=SOFTWARE,
+                cli_versions=CLI,
+                started_at="2026-08-29T07:00:00Z",
+                finished_at="2026-08-29T07:00:01Z",
+            )
+    return plan, freeze, questions
+
+
+_C4_ERRORED_EVALUATED_SYSTEM: dict[str, object] = {
+    "failure_origin": "evaluated_system",
+    "generated_query": None,
+    "generation_outcome": "errored",
+}
+
+
+@pytest.mark.parametrize("terminal_class", sorted(C4_EVALUATED_SYSTEM_FAILURE_CLASSES))
+def test_c4_evaluated_system_terminal_classes_load_as_non_answers(
+    tmp_path: Path, terminal_class: str
+) -> None:
+    workspace = _workspace(tmp_path)
+    plan, freeze, questions = _complete_batch_with_c4_override(
+        workspace,
+        {**_C4_ERRORED_EVALUATED_SYSTEM, "terminal_failure_class": terminal_class},
+    )
+
+    batch = load_sealed_output_batch(
+        workspace,
+        output_root=Path("runs/sealed-cohorts"),
+        plan=plan,
+        freeze_b=freeze,
+        questions=questions,
+    )
+
+    c4_attempts = [attempt for attempt in batch.attempts if attempt.condition == "C4"]
+    assert c4_attempts
+    assert all(
+        attempt.terminal_failure_class == terminal_class for attempt in c4_attempts
+    )
+    assert all(
+        attempt.no_answer_failure is FailureClass.CANDIDATE_EXECUTION_ERROR
+        for attempt in c4_attempts
+    )
+    assert all(attempt.candidate_rows is None for attempt in c4_attempts)
+
+
+def test_c4_unknown_terminal_class_is_rejected(tmp_path: Path) -> None:
+    workspace = _workspace(tmp_path)
+    plan, freeze, questions = _complete_batch_with_c4_override(
+        workspace,
+        {
+            **_C4_ERRORED_EVALUATED_SYSTEM,
+            "terminal_failure_class": "unrecognized_terminal_class",
+        },
+    )
+
+    with pytest.raises(SealedEvaluationError, match="terminal outcome is invalid"):
+        load_sealed_output_batch(
+            workspace,
+            output_root=Path("runs/sealed-cohorts"),
+            plan=plan,
+            freeze_b=freeze,
+            questions=questions,
+        )
+
+
+def test_c4_non_errored_outcome_is_still_rejected(tmp_path: Path) -> None:
+    workspace = _workspace(tmp_path)
+    plan, freeze, questions = _complete_batch_with_c4_override(
+        workspace,
+        {
+            "failure_origin": "evaluated_system",
+            "generated_query": None,
+            "generation_outcome": "refused",
+            "terminal_failure_class": "omni_job_terminal_failure",
+        },
+    )
+
+    with pytest.raises(SealedEvaluationError, match="terminal outcome is invalid"):
+        load_sealed_output_batch(
+            workspace,
+            output_root=Path("runs/sealed-cohorts"),
+            plan=plan,
+            freeze_b=freeze,
+            questions=questions,
+        )
+
+
+def test_c4_wrong_failure_origin_is_still_rejected(tmp_path: Path) -> None:
+    workspace = _workspace(tmp_path)
+
+    # The shared generation-record validator (`_validated_generation_record`)
+    # only lets "evaluated_system" survive for an errored outcome, so a wrong
+    # failure_origin is caught during staging -- upstream of the C4-specific
+    # class check. Either layer raising proves the pipeline still fails
+    # closed end to end.
+    with pytest.raises((SealedGenerationStagingError, SealedEvaluationError)):
+        _complete_batch_with_c4_override(
+            workspace,
+            {
+                **_C4_ERRORED_EVALUATED_SYSTEM,
+                "failure_origin": "benchmark_infrastructure",
+                "terminal_failure_class": "omni_job_terminal_failure",
+            },
+        )
 
 
 def test_load_exact_twelve_cohorts_before_private_custody(tmp_path: Path) -> None:
