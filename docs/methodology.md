@@ -60,13 +60,25 @@ its enforcement:
 | C1 Raw SQL | Public schema | Raw schema | None |
 | C2 HKB-reference SQL | Public schema and HKB | Searchable raw HKB | Optional |
 | C3 Omni-model SQL | Public schema and HKB | Searchable exported Omni semantic model | Optional |
-| C4 Governed Omni | Public schema and HKB | Omni semantic model | Production harness enforces semantic compilation/validation |
+| C4 Governed Omni | Public schema and HKB | Omni semantic model | Production harness governs the accessible surface and resolves model field references; measured on the development baseline it performs no query compilation |
+
+The C4 enforcement cell previously read "production harness enforces semantic
+compilation/validation". That is falsified by measurement. All 135 governed
+semantic queries in the frozen development baseline carry `rewriteSql: true`
+with agent-authored SQL, and none declares a join path. The deployed topics emit
+`"joins": {}` and publish no measures, so the model declares no join path and no
+aggregate for a planner to compile. What the production harness enforces is the
+accessible surface and the resolution of `${view.field}` references against the
+deployed model, not query composition. Measurement and disclosure language:
+[`c4-query-path-disclosure.md`](c4-query-path-disclosure.md).
 
 C2 and C3 receive reasonable programmatic discovery/search; neither is made to
 ingest an approximately 84K-token context blob in one prompt. Match exogenous
 resources while preserving architectural differences. The design is motivated
 by Omni's claim that optional semantic definitions differ from enforced semantic
-compilation, but this experiment will test rather than assume that claim. See
+compilation, but this experiment will test rather than assume that claim. The
+executed baseline tests it and finds that the governed condition did not exercise
+semantic compilation at all. See
 [Omni's published benchmark](https://omni.co/blog/benchmarking-omnis-agentic-analytics-harness).
 
 ## Population and deterministic split
@@ -329,11 +341,17 @@ searchable discovery; C3 receives the exported Omni model through an equivalent
 search interface. Neither receives hidden knowledge IDs.
 
 C4 remains the actual production-default Omni system, including its production
-semantic compilation and validation behavior. Production fidelity takes
+query-rewrite and validation behavior. Production fidelity takes
 precedence over forcing model parity. Omni currently documents AWS Bedrock as
 its default managed provider and a three-tier model system, with some model
 selection not directly configurable under Bedrock; see the official
 [model-provider documentation](https://docs.omni.co/ai/settings/model-providers).
+
+The measured query path narrows the contrast further, independently of model
+parity. Both arms have an agent authoring SQL, so C4-C3 does not separate a
+compiled-query condition from a direct-SQL one. It separates two agent-authored
+SQL conditions differing in agent, SQL dialect, accessible surface, and execution
+contract.
 
 Before test results exist, classify C4-C3 as one of:
 

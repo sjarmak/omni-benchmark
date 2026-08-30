@@ -209,7 +209,7 @@ and evaluated in the same sealed event.
 | C1 Raw SQL | Public schema | Raw schema | None |
 | C2 HKB-reference SQL | Public schema and HKB | Searchable raw HKB | Optional |
 | C3 Omni-model SQL | Public schema and HKB | Searchable exported Omni semantic model | Optional |
-| C4 Governed Omni | Public schema and HKB | Omni semantic model | Enforced production harness |
+| C4 Governed Omni | Public schema and HKB | Omni semantic model | Enforced production harness (governs surface and field resolution; see `docs/c4-query-path-disclosure.md` for the measured query path) |
 
 C2 and C3 receive reasonable, comparable programmatic search access. Neither is
 required to ingest a complete large export in one prompt. C1-C3 use one pinned
@@ -226,6 +226,14 @@ conservative:
   remaining system differences;
 - without model parity, C4-C3 is only a production-system comparison and must not
   be called the causal effect of enforcement.
+
+Measured on the frozen development baseline, C4's governed queries were composed
+as SQL by the production agent through the product's rewrite path over a model
+declaring no joins and no measures. C4-C3 therefore does not separate a compiled
+query path from a direct-SQL one, and model parity does not restore that
+separation. It separates two agent-authored SQL conditions differing in agent,
+SQL dialect, accessible surface, and execution contract. See
+`docs/c4-query-path-disclosure.md`.
 
 C2-C1 and C3-C2 remain the controlled direct-agent contrasts. C2 is a
 substantive condition, not merely a bridge: business semantics supplied as

@@ -1,10 +1,12 @@
 # Human decision queue
 
+Sections marked [FROZEN 2026-08-30] are a closed historical record of past decisions and work, no longer reconciled or rewritten; only the live-gates section at the top and "No action requested yet" remains maintained. For the live operator queue, run `bd human list`.
+
 This page is the concise operator view of work waiting on human authority.
 Beads is the durable source of truth; this checked-in page explains the request
 and its consequence in plain language. Run `bd human list` for the live queue.
 
-Last updated: 2026-08-30T08:32:38-04:00 (America/New_York). Benchmark agents have
+Last updated: 2026-08-30T12:36:00-04:00 (America/New_York). Benchmark agents have
 authorized access only to the extracted 154-record dev-A release. No agent has
 accessed the complete gold package, dev-B annotations, test annotations, or
 sealed-test results.
@@ -27,9 +29,29 @@ whether an action touches a provider (`omni-benchmark-xeg`).
   remain unchanged. Credentials, OAuth profiles, and leases remain
   operator-owned.
 
-The optimization phase is also cut (`omni-benchmark-ivg`). E02 deployment
-authority is no longer on the path and will not be requested. The deviation is
-recorded in [protocol-diff.md](protocol-diff.md).
+The 2026-08-29 decision to cut optimization (`omni-benchmark-ivg`) remains an
+important historical decision, but it is superseded for MVP scope by the
+2026-08-30 decision below. No new ceremonial authorization is required.
+
+## [FROZEN 2026-08-30] Decision completed — optimization remains part of the MVP
+
+Stephanie confirmed on 2026-08-30 that the MVP must show whether disciplined
+optimization/tuning can improve Omni. The already-frozen mechanical system and
+the active `sealed-final-v6` run remain the **untuned baseline**; they must not be
+relabeled as tuned or altered in place.
+
+The lean successor track is `omni-benchmark-ei0.11`: adapt only on the 154
+dev-A questions, optionally use dev-B through sparse signed aggregate
+checkpoints, freeze one optimized candidate, and generate its held-out outputs
+before any sealed correctness is released. The 89-question sealed membership,
+frozen scorers, custody boundary, and no-retry rule do not change. Test outcomes
+may not inform optimization, and no question- or database-specific rule may be
+promoted. This is a results-producing MVP step, not authority for an
+optimizer-framework project or repeated test-set hillclimbing.
+
+Nothing is waiting on the human for this decision. The existing standing MVP
+authorization covers its exact action receipts; credentials, OAuth profiles,
+and leases remain operator-owned.
 
 The corrected C4 control-plane frame is complete and fully tested: all 154
 dev-A identities remain scheduled, exactly 136 answerable identities execute,
@@ -38,13 +60,28 @@ is also complete: v13 validates all 16 answerable databases in one exact
 evidence set. The sealed frame decision below is now complete; no action receipt
 or credential operation is waiting.
 
+The untuned `sealed-final-v6` generation is now structurally complete: its
+dispatcher exited after exactly 1,068 immutable attempt envelopes and emitted
+all 12 generation and 12 run manifests. Agents checked only identities and
+counts; no attempt content or correctness was opened. The arm remains sealed
+until the optimized candidate has been frozen and generated. No response or
+operator action is waiting.
+
+E02 public deployment also needs no operator action. Immutable v2 ended at four
+exact-readback successes and 12 product-API failures before validation. A paced
+correction-forward v3 then verified 15 of 16 targets and isolated ten public
+broken-reference validator issues on polar. A general stable-ID-driven endpoint
+alias correction is locally tested and remains uncommitted for the next work
+session. No credential, OAuth, lease, protected-data, or evaluated-answer action
+is waiting.
+
 The agent-autonomous v12 polar verification is complete and needs no response
 from you. It returned zero validation issues and exact readback for all 20
 public extension files. The general fix authenticates all three returned view
 identity values before projecting them away; every other semantic difference
 remains exact. That prerequisite evidence remains unchanged.
 
-## No action needed — C4 v8 completed, frozen, and scored
+## [FROZEN 2026-08-30] No action needed — C4 v8 completed, frozen, and scored
 
 The sole C4 v8 dispatcher completed all 136 executable dev-A attempts and no
 dispatcher remains. The frozen frame is 154 scheduled / 136 scoreable / 18
@@ -63,7 +100,7 @@ and score-receipt SHA-256 is
 No command, credential, callback, profile action, or additional run
 authorization is needed from you.
 
-## Decision completed — matched 89-question sealed frame
+## [FROZEN 2026-08-30] Decision completed — matched 89-question sealed frame
 
 Stephanie responded **A** to `omni-benchmark-ei0.9.1.1` on 2026-08-29. Before
 any sealed generation, label release, or outcome access, the executed sealed
@@ -80,7 +117,7 @@ the two excluded databases, and the narrower estimand. It will not describe the
 12 questions as model failures, gold failures, or condition-specific missing
 data. No sealed correctness or protected label was accessed to make this choice.
 
-## Decision completed — sealed schedule seed
+## [FROZEN 2026-08-30] Decision completed — sealed schedule seed
 
 Stephanie responded **A** to `omni-benchmark-ei0.9.1.3` on 2026-08-29. The
 human-controlled, non-secret seed is exactly
@@ -193,7 +230,19 @@ Omni returned a governed query, plan, and JSON rows whose shape differed from
 the AI Hub preview contract; no dispatcher remains. The existing result-only
 recovery binder now applies directly to those already-returned rows with exactly
 one plan and one query call. The 367-test boundary gate passes and a fresh
-successor freeze is being prepared. No response or operator action is waiting.
+successor is frozen at system `8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d`,
+direct-child control `94cc0d9483c944d7dc13ed651c8fc2ef077f33ab`, and
+Freeze-B SHA-256
+`e1c9f1967422822c848c18a17ba759d4e4fbc7f21aa0fe3ae1045b9236ae4730`.
+The provider-inert `sealed-final-v6` plan validates. No response or operator
+action is waiting. Decision `omni-benchmark-ei0.10.14` authenticated its exact
+receipt, SHA-256
+`e0a6ba14145d6fc0dbe61e4b364c951f9b618b466009b2b9935de284f2f5c97a`;
+the complete dry preflight passed with 1,068 pending and zero reconciled, and it
+was consumed exactly once. The sole `sealed-final-v6` dispatcher subsequently
+exited after producing all 1,068 attempt envelopes and 12 cohort packages. Do
+not launch another dispatcher or reuse its consumed receipt. Correctness remains
+sealed while E02 runs.
 
 ### Historical execution record
 
@@ -237,7 +286,7 @@ Standing authorization lets the agent materialize later exact scoring, Freeze
 B, and sealed-action receipts without another prompt, but it does not broaden
 their bindings or relax custody.
 
-## Most recent authorized action completed
+## [FROZEN 2026-08-30] Most recent authorized action completed
 
 ### Exact 16-answerable v9 validation pass — `omni-benchmark-dih.17.12`
 
@@ -278,7 +327,7 @@ deployment outside the exact 16-database set. That one-pass restriction is now
 superseded by the Tier 1 policy above: a successor public-only validation pass
 uses a new run ID and needs no human decision.
 
-## Previous authorized action completed
+## [FROZEN 2026-08-30] Previous authorized action completed
 
 ### Exact seven-bundle v8 validation pass — `omni-benchmark-dih.17.11`
 
@@ -303,7 +352,7 @@ scoring/correctness, protected labels, credentials/OAuth/leases, shared/main
 models, or further live diagnostics. Any subsequent product contact requires a
 new exact request.
 
-## Decision completed — schedule 154, score 136 answerable dev-A questions
+## [FROZEN 2026-08-30] Decision completed — schedule 154, score 136 answerable dev-A questions
 
 Your response **A** to `omni-benchmark-1u8` is recorded. All 154 dev-A
 questions remain scheduled across all 18 databases; the exact 18 questions
@@ -316,7 +365,7 @@ report draft. It does not authorize C4, database mutation, reruns, credentials,
 OAuth/leases, dev-B, test release, sealed generation, or sealed scoring. The
 refuted 71-table recovery remains prohibited.
 
-## Decision completed — retain all 154 dev-A questions
+## [FROZEN 2026-08-30] Decision completed — retain all 154 dev-A questions
 
 Your response **B** to `omni-benchmark-wk0` is recorded and the decision bead is
 closed. The preregistered promotion frame remains all 154 dev-A questions. The
@@ -340,9 +389,9 @@ you yet.
 Do not use any older v5 helper, receipt, launch command, or post-run command
 shown in the historical record below.
 
-## Historical record — superseded by decision B
+## [FROZEN 2026-08-30] Historical record — superseded by decision B
 
-### Coverage choice (completed) — `omni-benchmark-wk0`
+### [FROZEN 2026-08-30] Coverage choice (completed) — `omni-benchmark-wk0`
 
 Do **not** run the v5 authorization helper yet. No receipt or command is needed
 for this decision. Reply with `A` or `B` in this chat:
@@ -367,7 +416,7 @@ is blocked until you decide. The count uses only committed public split
 membership and public database fields; no gold, hidden annotations, dev-B, or
 test outcomes were read.
 
-### Obsolete — exact public C4 baseline v5 dispatch — `omni-benchmark-aez.7.1`
+### [FROZEN 2026-08-30] Obsolete — exact public C4 baseline v5 dispatch — `omni-benchmark-aez.7.1`
 
 Do not run the previously recorded v5 helper. Decision B permanently makes this
 ten-target package insufficient for the retained promotion frame. Authorizing
@@ -390,7 +439,7 @@ that checks the required Omni environment before any future approval is
 consumed. The full gate passes 1,454 tests with five expected skips and 84.34%
 branch coverage. No OAuth validation, refresh, or credential mutation occurred.
 
-### Historical v5 post-run plan — do not run
+### [FROZEN 2026-08-30] Historical v5 post-run plan — do not run
 
 The following command documented the superseded v5 plan and must not be run. It
 is retained only as historical provenance:
@@ -415,7 +464,7 @@ copied. The scorer validates every C4 candidate before acquiring a database,
 then reports both frozen scorers over the exact 85-question C4/dev-A
 intersection. No further human response is needed for this post-run handoff.
 
-### No response required — one clean final MVP lineage is ready
+### [FROZEN 2026-08-30] No response required — one clean final MVP lineage is ready
 
 Clean local branch `codex/mvp-sealed-integrated` now ends at commit
 `cbc69ecced83f6c15abf384c9ce94b01d5f8e27f`. It contains the current report,
@@ -430,11 +479,12 @@ with SHA-256
 `04c75eb40c6a8bbb59af07358733b59a10d9b28787443d622fae5f31887bd725`;
 it was not regenerated.
 
-This consolidation is offline readiness only. It does not authorize v5, E02,
-Freeze B, sealed generation, test release, or scoring. No human action is
-currently requested.
+This consolidation was offline readiness only and did not authorize v5, E02,
+Freeze B, sealed generation, test release, or scoring at that time. The current
+standing policy at the top of this page supersedes that historical authorization
+scope. No human action is currently requested.
 
-### No response required — E01 was already in the frozen baseline
+### [FROZEN 2026-08-30] No response required — E01 was already in the frozen baseline
 
 The public-only audit under `omni-benchmark-ei0.4.3` found that E01's exact
 same-grain dependency-composition mechanism predates the intervention plan and
@@ -443,10 +493,10 @@ exactly across 18 databases; the baseline has 48 dependency-bearing compiled
 elements and 70 executable same-grain dependency edges. E01 is therefore
 recorded as `INCONCLUSIVE — ALREADY BASELINE`, not rerun or redefined. This is
 an experiment-integrity issue, not a new human blocker. The later optimization
-cut means work does not proceed to E02. No protected data or live system was
-accessed.
+cut temporarily stopped work before E02; the restored `omni-benchmark-ei0.11`
+track supersedes that stop. No protected data or live system was accessed.
 
-### Superseded record — E02 was locally deployment-ready
+### [FROZEN 2026-08-30] Superseded record — E02 was locally deployment-ready
 
 The bounded E02 candidate is frozen in local commits `185dd25`, `fcb9715`, and
 `f87eae4`. It derives only public PK/unique-backed many-to-one relationships,
@@ -459,9 +509,11 @@ candidate-set SHA-256 is
 
 No Omni request, credential action, deployment, or evaluation run occurred.
 The previously planned deployment and full-dev-A experiment were cut by
-`omni-benchmark-ivg`; there is no E02 action or authorization to perform.
+`omni-benchmark-ivg`. That statement is historical; the restored optimization
+track at the top of this page may now select E02 or another general mechanism
+without another human authorization.
 
-### Superseded record — the full E02 execution path was prepared offline
+### [FROZEN 2026-08-30] Superseded record — the full E02 execution path was prepared offline
 
 Clean local branch `codex/e02-run-readiness` now contains the exact no-launch
 E02 handoff. Commits `e206f3aee57514e805d8978453bd1e18bec32269` and
@@ -478,9 +530,10 @@ The full repository gate passes 1,775 tests with five expected skips and 84.14%
 branch coverage. No provider, credential, receipt, gold record, protected
 label, or live artifact was accessed.
 
-Do not authorize or run E02. The optimization phase is closed, so the prepared
-path remains historical offline evidence and no authorization package will be
-requested.
+**Superseded 2026-08-30:** the instruction not to run E02 applied while the
+optimization phase was cut. `omni-benchmark-ei0.11` may evaluate E02 if it is
+selected by the lean dev-A plan. The old offline artifacts remain immutable and
+do not themselves count as an evaluated candidate.
 
 One later custody action is recorded rather than guessed: the prior 122 official
 / 121 sensitivity scoreable denominators describe the 140-question represented
@@ -495,7 +548,7 @@ inspect question-level gold or infer the missing 14 outcomes. No action is
 requested from you now; its exact custody command will be added here before it
 is executed.
 
-### Historical implementation record — superseded sealed frame
+### [FROZEN 2026-08-30] Historical implementation record — superseded sealed frame
 
 The literal 101-question / 1,212-attempt counts below describe the original
 offline tooling milestones. The approved matched frame now derives those counts
@@ -571,11 +624,12 @@ expected skips and 84.43% branch coverage.
 No hidden data, live service, credentials, approval receipt, actual schedule
 seed, final manifest, or test generation was accessed.
 
-This historical work did **not** create the actual Freeze B. C4 and final-
-candidate selection are now complete, E02 was cut, and the only current response
-request is the schedule seed at the top of this page.
+This historical work did **not** create the actual Freeze B. C4 baseline and the
+untuned candidate selection are now complete. E02 was cut at that point, then
+restored as the first bounded dev-A experiment under `omni-benchmark-ei0.11`.
+There is no current human response request.
 
-### Standing local MVP authority — recorded 2026-08-29
+### [FROZEN 2026-08-30] Historical local MVP authority — superseded by the standing policy above
 
 The human authorized agents to proceed autonomously with routine, scoped local
 implementation decisions and relevant local commits when they advance the
@@ -583,11 +637,12 @@ submission-ready MVP. Agents should prefer making progress, keep Beads and the
 research log contemporaneous, and place genuine issues or required decisions
 on this page instead of stopping on incidental process questions.
 
-This standing authority does **not** relax the benchmark's custody or
-human-controlled surfaces. It does not authorize a push; credential or lease
-work; access to dev-B/test/protected labels or sealed correctness; changes to
-splits, custody, scoring, endpoints, or protocol; receipt reuse; or a production
-C4/sealed dispatch. Those actions retain their existing exact fresh-human gates.
+At the time, this authority did **not** relax custody or human-controlled
+surfaces and did not authorize a push, credential or lease work, protected-data
+access, protocol changes, receipt reuse, or production C4/sealed dispatch. It is
+kept here as history. The current policy at the top of this page now grants
+standing MVP action authority with exact single-use receipts, while credentials,
+OAuth profiles, leases, custody, and no-retry constraints remain unchanged.
 
 No response is required for legacy authorization bead `omni-benchmark-1yu`.
 The exact C4 and sealed production paths now enforce current one-time human
@@ -597,7 +652,7 @@ enforcement, so they remain prohibited and the broader bead stays open. That
 deferred comparator hardening does not weaken or block the exact C4 v5 and
 sealed gates used by the MVP.
 
-### Exact public C4 baseline v3 dispatch — `omni-benchmark-ei0.4.2.3`
+### [FROZEN 2026-08-30] Exact public C4 baseline v3 dispatch — `omni-benchmark-ei0.4.2.3`
 
 The human created the exact canonical receipt, SHA-256
 `6f139bea9803a20d337bdb1ba1ee1325236c4b3953d181d75d5ed63b48136416`.
@@ -632,9 +687,9 @@ under `omni-benchmark-aez.6`. Scoped local implementation commits are covered
 by the standing MVP authority above, but no replacement authority or v4 run is
 currently authorized.
 
-## Completed v2 quarantine decision
+## [FROZEN 2026-08-30] Completed v2 quarantine decision
 
-### Scoped local quarantine commit and v3 package — `omni-benchmark-aez.4.1`
+### [FROZEN 2026-08-30] Scoped local quarantine commit and v3 package — `omni-benchmark-aez.4.1`
 
 The human selected **A**. Local commit
 `f1efd00ae49824b6eb13e6655157f83a022004f3` contains only the v2 quarantine
@@ -644,17 +699,17 @@ suite passes 1,439 tests with five skips and 84.33% branch coverage; Ruff,
 formatting, and diff checks pass. Nothing was pushed, and no Omni request,
 credential validation, receipt consumption, or C4 dispatch occurred.
 
-## Completed human-owned profile recovery
+## [FROZEN 2026-08-30] Completed human-owned profile recovery
 
-### Canonical Omni login — `omni-benchmark-ei0.4.2.2`
+### [FROZEN 2026-08-30] Canonical Omni login — `omni-benchmark-ei0.4.2.2`
 
 The human completed the canonical interactive login for the existing
 `benchmark-infra` profile and reported success. No agent validation request was
 made. This repairs the profile only; it did not authorize v2 reuse or v3.
 
-## Completed C4 authorization and failed infrastructure start
+## [FROZEN 2026-08-30] Completed C4 authorization and failed infrastructure start
 
-### Exact public C4 baseline v2 dispatch — `omni-benchmark-ei0.4.2.1`
+### [FROZEN 2026-08-30] Exact public C4 baseline v2 dispatch — `omni-benchmark-ei0.4.2.1`
 
 The human created and authenticated the exact receipt with SHA-256
 `d9869dfc57a4c8fc1ef536644228fd6f858b841d18af5ccd3262bfbdd42e0ed2`.
@@ -674,9 +729,9 @@ closed immediately. There are zero generation artifacts, zero correctness
 results, and no active process. The receipt is spent and the v2 output root is
 append-only diagnostic evidence; neither may be reused or overwritten.
 
-## Completed repository-control decision
+## [FROZEN 2026-08-30] Completed repository-control decision
 
-### Local C4-prerequisite commits and clean integration — `omni-benchmark-ei0.4.1`
+### [FROZEN 2026-08-30] Local C4-prerequisite commits and clean integration — `omni-benchmark-ei0.4.1`
 
 At 2026-08-28T22:59-04:00 the human selected **A**: authorize exactly two
 scoped local commits and a fresh clean integration worktree, with no push and no
@@ -715,9 +770,9 @@ no C4, Omni, credential, lease, gold, dev-B, or test-label action occurred. C4
 remains stopped and quarantined. The completed decision is not production-run
 authority; a separate fresh human authorization is still mandatory.
 
-## Completed scoring decision
+## [FROZEN 2026-08-30] Completed scoring decision
 
-### Finite-Decimal contract repair — `omni-benchmark-ei0.3.2`
+### [FROZEN 2026-08-30] Finite-Decimal contract repair — `omni-benchmark-ei0.3.2`
 
 At 2026-08-28T22:24-04:00 the human selected **A**: authorize a general
 operand-sized local decimal context for finite values as conformance to the
@@ -735,7 +790,7 @@ inspected. Full gates subsequently passed, and the single authorized restart
 completed with exact 122 official / 121 sensitivity question coverage and
 published only the permitted immutable aggregate/score artifacts.
 
-### Coverage-limited treatment of unscorable gold — `omni-benchmark-ei0.3.1`
+### [FROZEN 2026-08-30] Coverage-limited treatment of unscorable gold — `omni-benchmark-ei0.3.1`
 
 At 2026-08-28T21:59-04:00 the human selected **A**, with this binding response:
 
@@ -787,9 +842,9 @@ to development. This decision authorizes dev-A scoring and subsequent
 MVP-focused experiments; it does not authorize dev-B access, sealed evaluation,
 or any C4 production run.
 
-## Completed custody action
+## [FROZEN 2026-08-30] Completed custody action
 
-### Train-only dev-A release — `omni-benchmark-ei0.1`
+### [FROZEN 2026-08-30] Train-only dev-A release — `omni-benchmark-ei0.1`
 
 The public-only direct baseline prerequisite is complete. It is frozen at
 630/630 trials, and its mode-0600 selection manifest has SHA-256
@@ -813,7 +868,7 @@ regular mode-0600 file, 154 lines, the reported output hash, and exact committed
 dev-A membership. **Do not rerun the release command.** The remaining text in
 this section is the historical operator procedure used for the completed action.
 
-#### What file to use
+#### [FROZEN 2026-08-30] What file to use
 
 Use the private JSONL attachment from the LiveSQLBench gold email. This is the
 full private source package supplied separately from the repository. It is not
@@ -826,7 +881,7 @@ not inspect or publish hidden fields from the other 326 records. Its terminal
 output contains only counts and hashes; controlled failures print one sanitized
 line without a traceback, path, or hidden value.
 
-#### What “pause agents” means
+#### [FROZEN 2026-08-30] What “pause agents” means
 
 “Pause” means that no Codex, Claude, or other agent is executing commands on the
 Linux benchmark host while the full private file is temporarily present there.
@@ -839,7 +894,7 @@ This Codex workspace cannot read your MacBook filesystem. A gold file that
 remains only on the MacBook is outside this workspace. If a separate local agent
 on the MacBook has filesystem access, stop that agent too.
 
-#### Before transfer or release
+#### [FROZEN 2026-08-30] Before transfer or release
 
 1. Let all current agent commands finish, then pause or stop every agent session
    that can access this host. Do not perform the release while an agent turn or
@@ -851,7 +906,7 @@ on the MacBook has filesystem access, stop that agent too.
 3. Do not tell an agent the attachment's filename or path. The command below
    reads the path privately so the literal path is not stored in shell history.
 
-#### If the file is on a MacBook and the repository is on the Linux host
+#### [FROZEN 2026-08-30] If the file is on a MacBook and the repository is on the Linux host
 
 Keep the MacBook copy as the human-custodied source. After all agents on the
 Linux host are paused, open a normal Terminal on the MacBook and run the
@@ -931,7 +986,7 @@ If the existing Mac-to-host transfer command is unsuitable because the normal
 
 Continue only if `source present status: 0` appears.
 
-#### Exact release command
+#### [FROZEN 2026-08-30] Exact release command
 
 Use a separate human-controlled terminal. The command itself must be run from
 the project directory; only the private source file stays outside the project.
@@ -960,7 +1015,7 @@ If the command fails or reports any other count or source hash, stop. Do not
 retry or inspect/edit the source. Report only the nonzero status and sanitized
 error that contains no private filename, path, or content.
 
-#### After the release attempt
+#### [FROZEN 2026-08-30] After the release attempt
 
 1. Whether the release succeeded or failed, remove only the temporary remote
    source before resuming any agent. If the Mac transfer steps above were used,
@@ -1000,7 +1055,7 @@ remain outside agent scope.
   14:25 EDT. Server-side `whoami` succeeds, and the five-way C4 capture canary
   was relaunched. No gold or hidden-label access was involved.
 
-## Recently completed
+## [FROZEN 2026-08-30] Recently completed
 
 - The immutable Claude comparator lease handoff completed on 2026-08-28. Three
   private lease directories passed nine sequential invocations without byte

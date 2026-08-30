@@ -2,13 +2,16 @@
 
 ## Results report
 
-> **Status — 2026-08-29:** The immutable C1-C3 public baseline has been scored on
+> **Status — 2026-08-30:** The immutable C1-C3 public baseline has been scored on
 > its exact dev-A intersection. E01 is an audited baseline no-op, and the E02
 > relationship artifact is locally authenticated but was neither deployed nor
-> evaluated. The optimization phase is closed: no intervention was promoted, no
-> dev-B checkpoint will be consumed, and the frozen mechanical baseline is the
-> final candidate. The C4 development baseline is complete and scored. Freeze B
-> is recorded and validated; the sealed run and its custody scoring are pending.
+> evaluated. The frozen mechanical system is the untuned baseline. A bounded
+> dev-A optimization phase is now part of the MVP; no intervention has yet been
+> promoted and no dev-B checkpoint has yet been consumed. The C4 development
+> baseline is complete and scored. Its Freeze B is recorded and validated; the
+> untuned sealed generation is structurally complete, its correctness remains
+> unavailable, and one
+> optimized candidate will be frozen and evaluated before custody scoring.
 > Every **Pending** entry below carries no numeric value. The original 101
 > held-out questions and their labels remain sealed. Before any sealed outcome
 > existed, the final evaluation frame was narrowed to the matched 89 questions
@@ -29,13 +32,15 @@ LiveSQLBench Large-v1: 231 development questions and an original sealed split of
 101 questions. The executed held-out comparison uses the matched 89-question
 subset described below. The development partition is further divided into 154
 development questions and 77 metered validation questions. The protocol
-permitted supervised reuse, but the executed final candidate receives no
-question-level supervision and consumes no metered checkpoint. Four systems
+permits supervised reuse. The frozen mechanical candidate receives no
+question-level supervision and consumes no metered checkpoint; a separately
+identified optimized candidate will adapt on dev-A only before held-out
+correctness is released. Four baseline systems
 separate access to raw schema, business knowledge, structured semantic
 knowledge, and governed execution.
 
 The primary sealed results remain pending. Development evidence now supports
-five findings:
+six findings:
 
 1. Grain and relationship contracts were the main recorded obstacle to
    converting business knowledge into executable semantic objects. Across all
@@ -57,7 +62,9 @@ five findings:
    correct. Wrong SQL used more relations on average in every condition, while
    30 of 31 window-query attempts and 25 of 28 distinct-query attempts were
    wrong. Join or aggregate presence alone did not separate correct from wrong
-   answers.
+   answers. Governed C4 showed the same directional relationship: parseable
+   correct queries averaged 1.67 relations, compared with 2.62 for wrong answers
+   and 2.88 for system-error outcomes. This is descriptive rather than causal.
 
 4. Bounded schema retrieval made the direct comparator runnable and established
    a hard payload limit. The schema tool now returns at most four tables and 64
@@ -71,6 +78,17 @@ five findings:
    additional capture gaps were recoverable by replaying only an
    already-generated semantic query; question-level model reasoning was never
    rerun.
+
+6. The governed condition did not compile queries from the semantic model. Omni's
+   production agent took the product's raw-SQL rewrite path on every attempt:
+   all 135 governed semantic queries carry `rewriteSql: true` with agent-authored
+   SQL, and none declares a join path. The harness cannot select that path, and
+   for cross-table questions no other path existed, because the conservative
+   compiler deferred 46.9% of definitions as cross-grain and the deployed topics
+   therefore publish empty joins and no measures. The semantic layer still did
+   work as a field vocabulary that Omni resolved at rewrite time, on 109 of 135
+   attempts. It did not compose the query. The study can no longer claim that
+   C4 minus C3 isolates semantic-layer query composition.
 
 The sealed evaluation will test whether the frozen mechanical semantic layer
 improves governed execution on the held-out comparison.
@@ -91,14 +109,31 @@ difference:
 | C1 | Public schema | Direct SQL |
 | C2 | Public schema and searchable HKB | Direct SQL |
 | C3 | Public schema and searchable Omni model | Direct SQL |
-| C4 | Omni semantic model | Production-governed Omni |
+| C4 | Omni semantic model | Omni agent emits SQL through the product's rewrite path over model-resolved field references |
+
+**What "production-governed Omni" turned out to mean.** C4 was preregistered as
+the governed condition against three direct-SQL comparators. Measured on the
+frozen development baseline, the governed path is also an agent authoring SQL.
+All 135 semantic queries set `rewriteSql: true` with hand-authored SQL, and none
+declares a join path; the deployed model publishes no joins and no measures, so
+no compiled cross-table or aggregate path existed to take. The choice of path was
+Omni's own: the harness posts only a model identifier, the bare question, and a
+branch identifier, and exposes no mode flag. The semantic layer still does work,
+as a field vocabulary Omni resolves at rewrite time, including HKB-backed derived
+definitions on 39 of 135 attempts. It does not compose the query. Full
+measurement is in [`docs/c4-query-path-disclosure.md`](docs/c4-query-path-disclosure.md).
 
 C2−C1 tests the value associated with making business knowledge available.
 C3−C2 tests the value associated with structuring that knowledge. C4−C3 is a
 system-level, scaffold-conditional comparison unless model and runtime parity
 can genuinely isolate enforcement. The direct conditions use one pinned Claude
 OAuth scaffold, while C4 preserves Omni's production-managed workflow and may
-use a composite model system.
+use a composite model system. Read C4−C3 with the measured query path in view:
+it compares two agent-authored SQL conditions that differ in agent, SQL dialect,
+accessible surface, and execution contract. It does not compare a compiled-query
+condition against a direct-SQL one, and it does not separate join or aggregation
+semantics, because in neither arm does a semantic layer resolve a join path or
+compile a measure.
 
 ## 2. Experimental design
 
@@ -109,11 +144,12 @@ database and `high_level`, assigned 231 questions to development and 101 to the
 sealed final evaluation. Every database appears in both partitions.
 
 The 231 development questions are split into dev-A (154) and dev-B (77). The
-protocol permits repeated use of dev-A and metered dev-B checkpoints. For the
-executed study, no supervised intervention is promoted and dev-B remains
-unconsumed by decision. The held-out set is inaccessible to development. All
-four frozen conditions will produce three independent, interleaved attempts for
-each of the 89 selected questions before any test output is scored.
+protocol permits repeated use of dev-A and metered dev-B checkpoints. No
+supervised intervention has yet been promoted and dev-B remains unconsumed. The
+held-out set is inaccessible to development. All four frozen baseline
+conditions produce three independent, interleaved attempts for each of the 89
+selected questions. One frozen optimized C4 arm will then be generated on the
+same membership before any test correctness is released.
 
 The official Large-v1 Linux loader skips 34 declared tables in
 `mental_healths_large` and 37 in `organ_transplant_large` because their archive
@@ -333,15 +369,39 @@ presence alone had similar wrong rates to their absence. This supports
 relationship, grain, and dependency handling as the next mechanism family;
 causality and question-specific fixes remain unresolved.
 
+C4's structural figures are computed from the semantic query's `userEditedSQL`
+because `generated_sql` is `null` for every C4 attempt. That SQL is
+agent-authored in Omni's dialect, so these figures describe agent-written queries
+in both C4 and C1-C3 rather than a compiled path against authored ones. The
+relation count also includes CTE references, aliased self-joins, and subquery
+sources, which makes multi-relation prevalence an upper bound on genuine
+cross-table access.
+
+The same identity-free analysis covered all 136 governed C4 outcomes. All 9
+correct queries parsed, as did 92 of 93 wrong answers and 32 of 34 explicit
+system errors. Correct queries averaged 1.67 relations, versus 2.62 for wrong
+answers and 2.88 for errors. Multi-relation queries appeared in 2/9 correct,
+50/92 wrong, and 20/32 error cases; joins appeared in 2/9, 41/92, and 18/32.
+These associations do not establish that relationships caused the failures.
+
+The query-path measurement changes the standing of the intervention they
+selected. E02 declares FK-backed relationships, which is the ingredient whose
+absence left the rewrite path as the only route to cross-table access. E02 is
+therefore a direct test of that mechanism rather than a candidate chosen from a
+structural correlation. Whether it is sufficient to move governed queries off the
+rewrite path is still being measured: its topics declare no measures, so the
+agent may continue to rewrite in order to aggregate.
+
 Later trace diagnosis uses the earliest supported failure point in a fixed
 mechanism ladder: required knowledge absent, dependency graph wrong, retrieval
 miss, interpretation error, compilation failure, validation or adapter
 alteration, then residual model reasoning. This order prevents a retrieval or
 compilation defect from being counted as a reasoning failure. The structural
-analysis above does not assign ladder categories; aggregate prevalence remains
-pending until the permitted diagnostic process supplies enough evidence.
+analysis above does not assign ladder categories and cannot distinguish which
+stage caused any particular wrong answer.
 
-Four intervention families were fixed before the optimization phase was cut:
+Four intervention families were fixed before the optimization phase was first cut
+and later restored to the MVP before sealed correctness release:
 same-grain
 dependency composition (E01), FK-backed grain relationships (E02), bounded
 semantic descriptions (E03), and a broad HKB-context negative control (E04).
@@ -351,9 +411,17 @@ Their reusable changes and promotion rules are recorded in
 | Experiment | Evidence completed | Decision | Remaining gate |
 | --- | --- | --- | --- |
 | E01: same-grain dependencies | The frozen baseline already has 48 dependency-bearing elements, 70 executable dependency edges, and depth three | Inconclusive; already baseline | No further E01 contrast |
-| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes | Preserve as offline evidence; not promoted | None; deployment and evaluation were cut |
-| E03: bounded descriptions | Prespecified only | Not run | None; optimization phase closed |
-| E04: broad HKB context | Prespecified negative control only | Not run | None; optimization phase closed |
+| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes | Selected as the first bounded candidate; promotion undecided | Deploy and run the full eligible dev-A evaluation after the untuned sealed dispatcher exits |
+| E03: bounded descriptions | Prespecified only | Not run | Candidate mechanism for the lean loop |
+| E04: broad HKB context | Prespecified negative control only | Not run | Optional negative control; run only if it directly informs promotion |
+
+A fifth family, E05, was registered later against the 31 `UNKNOWN`-type contract
+failures: declare explicit output types on compiled semantic fields. Its
+preregistered precondition required at least 16 of those 31 attempts to select a
+compiled derived field. Measured offline on the immutable generation records, the
+ceiling is 6 of 31, and 24 of 31 select no compiled bundle field of any kind, so
+no declaration on a compiled field can reach them. E05 is recorded INCONCLUSIVE
+by its own stopping rule and consumed no live attempt.
 
 The deployment sequence preserved each failed pass rather than retrying it away.
 Earlier records exposed sports identity errors, scientific-literal compilation
@@ -368,8 +436,8 @@ models. The C4 plan binds that exact 16-deployment evidence set and retains all
 
 The separate offline E02 artifact has candidate-set SHA-256
 `db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`.
-It publishes and authenticates locally, but it is not the final candidate and
-will not be deployed or evaluated. Its historical artifacts remain immutable.
+It publishes and authenticates locally, but it is not yet a promoted candidate.
+Its historical artifacts remain immutable.
 The public C4 baseline evaluates the frozen mechanical baseline. Its immutable
 selection SHA-256 is
 `256145c13cfae7142d92f108b4ee9dd93e658a44cafb683e5aec90170b8315cc`.
@@ -382,9 +450,12 @@ Dev-B remains unconsumed.
 
 ## 6. Held-out results
 
-All entries in this section remain pending until all 1,068 sealed generations
-have completed and the sealed scorer releases permitted aggregate results. The
-final C1−C4 configurations are already frozen.
+All entries in this section remain pending until the separately frozen optimized
+C4 arm has completed. The 1,068 untuned sealed generations are structurally
+complete, but their attempt content and correctness remain unopened. Custody
+will release only the permitted aggregate results after both arms exist. The
+untuned C1−C4 configurations are already frozen; the optimized candidate is
+not.
 
 ### Primary endpoints
 
@@ -412,7 +483,7 @@ insufficient context, so those two rates are unavailable rather than pending.
 | --- | ---: | --- |
 | C2−C1 | **Pending** | Association with adding searchable business knowledge |
 | C3−C2 | **Pending** | Association with structured semantic representation |
-| C4−C3 | **Pending** | Governed-system contrast; causal scope depends on achieved model parity |
+| C4−C3 | **Pending** | Governed-system contrast between two agent-authored SQL conditions; not a compiled-versus-direct contrast, and causal scope also depends on achieved model parity |
 
 Both the official-compatible Soft EX score and the preregistered corrected
 multiset sensitivity score will be reported. Neither scorer will be selected or
@@ -445,7 +516,10 @@ The development evidence supports five immediate recommendations:
    execution should expose a stable representation for unknown, Boolean,
    temporal, and null values. An unsupported planner type should be a visible
    product outcome, not an adapter exception that obscures whether the governed
-   query itself succeeded.
+   query itself succeeded. The contract that needs writing down is the one over
+   rewritten SQL: when the agent authors the query, neither side currently
+   specifies what the planner guarantees about the type of an output column the
+   semantic model never declared.
 
 The direct and C4 development baselines associate these mechanisms with
 failures. The held-out evaluation will determine the frozen system's final
@@ -480,15 +554,31 @@ comparative result.
 - C4 is a composite production system. Unless its underlying model and resource
   settings can be matched exactly, C4−C3 is a system-level comparison rather
   than an isolated estimate of semantic enforcement.
+- The governed condition did not exercise semantic query composition, so this
+  study does not isolate it. Every governed query took Omni's raw-SQL rewrite
+  path, and the deployed model declared no join path and no measure for a planner
+  to compile. C4−C3 differs on the agent, on field resolution at rewrite time, on
+  the accessible surface, and on the execution contract, and not on who composes
+  the query or on join and aggregation semantics. This limitation is independent
+  of the model-parity limitation above and is not removed by achieving parity.
+- C4's structural aggregates are computed from the SQL text carried on each
+  governed semantic query, because `generated_sql` is `null` for all 136
+  attempts. They describe agent-written queries in every condition and support no
+  claim about how the governed path composed its queries.
 - C4 development accuracy is 9/136 on its full answerable frame, while the
   direct C1-C3 percentages use a 122-question intersection. Their raw difference
   is not a matched or paired development contrast.
 - Execution equivalence remains the benchmark authority. AI Hub diagnostics and
   judge outcomes can explain behavior but do not replace result-set scoring.
-- E02 passed deterministic local publication checks only and is retained as
-  offline evidence. It was not promoted, deployed, or evaluated; the executed
-  final candidate receives no question-level supervision, and dev-B is
-  intentionally unconsumed.
+- E02 passed deterministic local publication checks and was selected as the
+  first bounded dev-A candidate, but it has not yet been promoted, deployed, or
+  evaluated. Its declared FK-backed relationships are the ingredient whose
+  absence forced the governed rewrite path, which makes it a direct test of that
+  mechanism; it is not yet evidence that the mechanism moves, and its topics
+  declare no measures, so aggregation may still be rewritten rather than
+  compiled. The mechanical baseline receives no question-level supervision;
+  any optimized successor will be labeled separately and trained only on
+  dev-A. Dev-B remains unconsumed at this status point.
 - Held-out accuracy, reliability, and confirmatory condition conclusions are
   pending. No placeholder in this report should be interpreted as a result.
 
@@ -500,10 +590,11 @@ telemetry contracts, experiment history, and two frozen scorers. Private gold
 and hidden annotations remain outside the repository. See
 [README.md](README.md) for reproduction commands and
 [manuscript/main.pdf](manuscript/main.pdf) for the supporting protocol paper.
-The final system is frozen at successor commit
-`c8a784f8cd4a03e8ccc22b1ea007a2cf3e56a631`; its direct-child control commit is
-`e094c7c7c5a481106046f6c30e2eb77a14502eea`, and the Freeze-B manifest SHA-256
-is `7fd65b9a619d07fdf76e6f04cf608f8be09b7a9a8af9b71d9757aa1106c699d5`.
+The untuned baseline system is frozen at successor commit
+`8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d`; its direct-child control commit is
+`94cc0d9483c944d7dc13ed651c8fc2ef077f33ab`, and the Freeze-B manifest SHA-256
+is `e1c9f1967422822c848c18a17ba759d4e4fbc7f21aa0fe3ae1045b9236ae4730`.
+The optimized candidate and its distinct freeze identity remain pending.
 The C1 sensitivity subset, allocation diagnostics, preserved-artifact hashes,
 and notional cost/time projection are committed separately from its future raw
 run artifacts; OAuth dollars remain telemetry rather than a run-selection

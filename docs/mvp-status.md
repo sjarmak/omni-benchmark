@@ -5,19 +5,23 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-30T08:32:38-04:00 (America/New_York).
+Last reconciled: 2026-08-30T12:36:00-04:00 (America/New_York). Reconciliation happens at material evidence gates only, not on a daily cadence.
 
 ## Current position
 
-The decisive governed dev-A comparison has run and the final mechanical
-candidate is now formally frozen. We have frozen development evidence for
-direct C1-C3 and governed C4, plus a validated 89-question / 1,068-coordinate
-Freeze B. We do **not** yet have sealed C1-C4 results.
+The decisive governed dev-A baseline comparison has run and the mechanical
+candidate is formally frozen as the **untuned baseline**. We have frozen
+development evidence for direct C1-C3 and governed C4, plus a validated
+89-question / 1,068-coordinate baseline Freeze B. The untuned held-out arm has
+now completed generation, but its correctness remains sealed. We do **not** yet
+have released sealed C1-C4 results or a frozen optimized Omni candidate.
 
-The optimization phase is cut (`omni-benchmark-ivg`, Stephanie 2026-08-29). No
-dev-A-supervised intervention is promoted and no dev-B checkpoint is consumed;
-the final candidate is the frozen mechanical baseline. The deviation and its
-reasoning are recorded in [protocol-diff.md](protocol-diff.md). Live-action
+Stephanie confirmed on 2026-08-30 that optimization/tuning is part of the MVP.
+The 2026-08-29 cut remains in the historical record, but is superseded before
+sealed correctness release. `omni-benchmark-ei0.11` owns the lean successor:
+dev-A-only adaptation, at most sparse aggregate dev-B checkpoints, one optimized
+candidate freeze, and one held-out optimized C4 arm. The active sealed run is
+still the untuned baseline and cannot inform that work. Live-action
 authorization is now tiered by contamination risk (`omni-benchmark-xeg`):
 public semantic deployment and validation passes are agent-autonomous and
 retryable under a new run ID. Standing human authorization now lets agents
@@ -53,9 +57,10 @@ limitation, not as system or gold failures.
 | Train-only gold release | Complete | Exactly 154 dev-A records were released through custody; the complete source was removed from the host transfer area. Test gold and dev-B outcomes remain unavailable to development. |
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
-| Minimal dev-A experiment set | **Cut from the MVP** | E01 audited as already present in the baseline, inconclusive. E02 compiled, hash-bound, never evaluated. Both are reported as-is with artifacts intact; neither enters the final system. Deviation recorded in `docs/protocol-diff.md`. |
-| Final candidate and Freeze B | **Complete** | Final successor system `34b7812…`, direct-child control `0254338…`, Freeze-B SHA-256 `29cc21fc…3fc1e8`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
-| Sealed C1-C4 evaluation | Successor freeze preparation | V1-v4 remain excluded. V5 preserved four attempts before a preview-versus-typed-row contract stop. The general fallback reuses the already-returned plan and JSON rows with no question, model, or query rerun; 367 boundary tests pass. |
+| Minimal dev-A experiment set | **E02 deployment 15/16; general polar fix prepared** | Aggregate-only failure analysis selected the preregistered relationship/grain intervention. Immutable deployment v2 exposed request-pressure failures; paced v3 exact-read back 15 targets and isolated ten broken camel/mixed-case relationship endpoint references on polar. A general stable-ID-driven alias fix is locally tested but not yet committed or redeployed. KEEP still requires all 16 deployments and the full 136-answerable dev-A comparison. |
+| Untuned candidate and baseline Freeze B | **Complete** | Baseline system `8b0c739…`, direct-child control `94cc0d9…`, Freeze-B SHA-256 `e1c9f196…ae4730`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
+| Untuned sealed C1-C4 evaluation | **Generation complete; correctness sealed** | V1-v5 remain immutable and excluded. V6 terminated with exactly 1,068 attempt envelopes, 12 generation manifests, and 12 run manifests; its dispatcher is absent. Receipt `e0a6ba14…f5c97a` was consumed once. No attempt content or correctness was opened, and the arm remains correctness-blind during optimization. |
+| Optimized candidate and held-out arm | **Planned** | Adapt on dev-A only; optionally consume sparse aggregate dev-B checkpoints; freeze one candidate; generate one additional optimized C4 arm on the same preselected 89-question frame before any sealed correctness release. |
 | Results/product report | Draft only | `RESULTS.md` already contains the design, direct baseline, failure analysis, and product findings. Replace every pending governed/sealed result after the immutable aggregates exist, then finish the concise submission-ready report. |
 
 ## What is already usable
@@ -97,8 +102,12 @@ protected file, or additional authorization is needed.
 
 ### Agent-owned work now
 
-- Freeze the already-returned typed-row fallback and launch one fresh full
-  successor run before dual scoring through custody.
+- Execute the bounded dev-A optimization loop under `omni-benchmark-ei0.11`,
+  beginning with the E02 relationship candidate. Commit the general relationship
+  endpoint-alias fix, redeploy all 16 schedule-selected public models under a
+  fresh exact run identity, run the 136-attempt dev-A comparison, freeze one
+  optimized candidate, and generate its held-out C4 arm while all sealed
+  correctness remains unavailable.
 - Finish the aligned development comparison table and concise results/product
   report from immutable aggregates.
 - Commit and publish reviewed work through `main` only. Worktree cleanup under
@@ -106,9 +115,8 @@ protected file, or additional authorization is needed.
 
 ### Later exact gates
 
-The agent may materialize the exact Freeze-B and sealed-action receipts under
-standing authorization when their bound inputs exist. E02 deployment authority
-is no longer on the path.
+The agent may materialize exact optimization, checkpoint, freeze, and sealed-
+action receipts under standing authorization when their bound inputs exist.
 
 ### Non-critical-path or deferred work
 
@@ -124,12 +132,14 @@ The MVP is complete only when all of the following are true:
 
 1. The public C4 baseline is validated, immutably captured, frozen, and scored
    under the 154-scheduled/136-answerable frame.
-2. The E01 audit and the unevaluated E02 candidate are reported as-is, with the
-   cut optimization phase and its reasoning recorded in `docs/protocol-diff.md`.
-3. The final candidate and Freeze B are recorded before sealed execution.
-4. All twelve sealed C1-C4 cohorts finish and the two frozen scorers produce
-   identity-safe aggregates through custody.
-5. `RESULTS.md` reports the actual governed and sealed comparisons, product
+2. A bounded dev-A optimization loop produces immutable KEEP/REVERT/
+   INCONCLUSIVE evidence and freezes one optimized candidate; any dev-B use is
+   aggregate-only and sparse.
+3. The untuned and optimized candidates are frozen before their respective
+   sealed execution, and no sealed correctness is released between them.
+4. The twelve untuned C1-C4 cohorts and the optimized C4 arm finish; the two
+   frozen scorers produce identity-safe aggregates through custody.
+5. `RESULTS.md` reports the actual untuned, optimized, and sealed comparisons, product
    findings, limitations, and exact artifact lineage with no pending numeric
    placeholders.
 

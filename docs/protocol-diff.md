@@ -179,6 +179,32 @@ final candidate.
 **Consequence for description.** The executed system receives no question-level
 supervision. It must not be described as tuned, adapted, or dev-A-supervised.
 
+## Post-Freeze-B deviation, 2026-08-30: restore a lean optimization demonstration
+
+**What changed.** Stephanie clarified before any sealed correctness release that
+the MVP must demonstrate whether optimization/tuning can improve Omni. The
+2026-08-29 cut remains the historical explanation for why the mechanical
+baseline was frozen and launched first, but it no longer defines the complete
+MVP. That system is retained as an explicitly untuned baseline. A bounded
+successor track adapts only on dev-A, may use only sparse aggregate dev-B
+checkpoints, freezes one optimized candidate, and adds one optimized C4 held-out
+arm on the already-selected matched frame.
+
+**Contamination control.** `sealed-final-v6` generation may finish, but neither
+its attempt contents nor any sealed correctness may enter development. The
+optimized candidate must be frozen and its held-out outputs generated before
+custody releases either arm's correctness. The sealed IDs, scorers, endpoints,
+and no-retry policy remain fixed. No test outcome, dev-B per-question outcome,
+question-specific rule, or database-name rule may drive a change.
+
+**Interpretation.** The original C1-C4 run estimates the performance of the
+untuned mechanical system. The added arm estimates the performance of one
+explicitly dev-A-optimized Omni candidate under the same held-out membership.
+This is a transparent post-Freeze-B protocol extension, not a replacement of
+the baseline and not iterative hillclimbing on the test set. The report must
+separate the preregistered baseline comparison from the later optimization
+demonstration and disclose their different freeze times.
+
 ## Post-Freeze-A deviation, 2026-08-29: matched 89-question sealed frame
 
 **What changed.** Before any sealed generation, test-label release, or test
@@ -209,3 +235,80 @@ frame, not all 18 databases in Large-v1. The report must disclose the 12
 exclusions and may not classify them as model failures, gold failures, or
 condition-specific missingness. The scorers, repetitions, retry policy, final
 candidate, custody boundary, and endpoint definitions are unchanged.
+
+## Post-Freeze-B deviation, 2026-08-30: C4 did not exercise semantic query compilation
+
+**What changed.** Nothing in the executed system, the scorers, the split, the
+custody boundary, or any recorded number. What changed is the description of what
+the governed condition measures. The protocol's frozen-conditions table gives C4
+the enforcement value "Enforced production harness", and `docs/methodology.md`
+and `docs/harness-disclosure.md` carried the stronger reading that the production
+harness enforces semantic compilation and that C4's queries are compiled through
+Omni from declared model structure. Measurement on the frozen development
+baseline falsifies that reading.
+
+**What was measured.** All 135 governed semantic queries carry `rewriteSql:
+true` and `aiGenerated: true` with hand-authored SQL in `userEditedSQL`, and
+`join_via_map` is empty on all 135. No governed query declares a join path. The
+executed structural aggregates come from that SQL, because `generated_sql` is
+`null` on all 136 attempts by design. Method, evidence boundary, and per-class
+counts are in `docs/c4-mechanism-measurements.md` §2 and
+`docs/c4-query-path-disclosure.md`.
+
+**Who chose the path, and whether an alternative existed.** Omni's production
+agent chose it, on every attempt. The harness cannot select, request, or suppress
+it: the submitted job body is exactly `modelId`, `progressWebhookEnabled`,
+`prompt`, and `branchId`; the prompt is the bare `{question}`; and `rewriteSql`,
+`userEditedSQL`, `join_via_map`, and `aiGenerated` appear nowhere under `src/`.
+The conservative HKB compilation deferred 511 of 1,090 definitions (46.9%) as
+cross-grain, so the deployed topics emit `"joins": {}` and publish no measures.
+For the 62 of 133 parseable attempts spanning two or more distinct non-CTE
+sources, rewrite was the only path the deployed model left open. This is a
+rational agent response to the model it was given, not a scaffold defect and not
+a rerun-eligible failure.
+
+**Consequence for interpretation.** C4 minus C3 no longer differs on who composes
+the query, nor on join and aggregation semantics: both arms are an agent
+authoring SQL, and in neither arm does a semantic layer resolve a join path or
+compile a measure. The study cannot claim it isolated semantic-layer query
+composition. C4 minus C3 still differs on the agent, on field resolution at
+rewrite time, on the execution contract, and on the accessible surface. The
+semantic layer's measured contribution is a resolved field vocabulary: 109 of 135
+attempts reference at least one compiled dimension and 39 reference at least one
+HKB-backed derived dimension, while 0 attempts select exclusively compiled fields
+and 97 select none. That input/output asymmetry left the planner typing output
+columns of SQL it did not compose, which is the shape of the 31 `UNKNOWN`-type
+terminal failures.
+
+**Binding on the sealed arm.** The sealed C4 arm is hash-bound to the same
+condition, prompt, instruction, and model-deployment artifacts
+(`sealed_omni_factory.py:33-35`,
+`config/sealed-omni-semantic-model-set-v1.json`), so it is expected to show the
+same path. That is a prediction from committed configuration. No sealed record
+has been read and none may be read before the arm completes.
+
+**Disposition.** Disclose and reinterpret. Every published number stands; the
+frame around the C4 query path is corrected in `RESULTS.md`,
+`docs/harness-disclosure.md`, `docs/methodology.md`, and `docs/report-draft-v2.md`.
+`EVALUATION_PROTOCOL.md` is a human-controlled frozen surface, so its C4
+enforcement cell was not edited by an agent; the proposed amendment text was
+put to the custodian in `docs/protocol-amendment-proposal-query-path.md`.
+**Stephanie accepted that proposal on 2026-08-30, and both changes were applied
+to `EVALUATION_PROTOCOL.md` verbatim**: the frozen-conditions cell at line 212
+now qualifies enforcement and points at the measurement, and an addition after
+the C4-C3 interpretation bullets records that the two arms do not differ on who
+composes the query. Both original bullets survive unchanged. The protocol
+carries no Freeze-B hash binding and is not a sealed runtime source, so the
+amendment does not disturb the live sealed arm. Recorded as D-181.
+
+**Effect on the named optimization contrast.** E02 declares FK-backed
+relationships, which is the ingredient whose absence left rewrite as the only
+cross-table path. E02 therefore becomes a direct test of this mechanism rather
+than a correlational guess selected from relation counts. Whether E02 as built is
+sufficient to move governed queries off the rewrite path is a separate open
+measurement: its topics still declare no measures, so the agent may continue to
+rewrite in order to aggregate. E05, which proposed declaring explicit output
+types on compiled semantic fields, is recorded INCONCLUSIVE under its own
+preregistered precondition. That precondition required at least 16 of the 31
+class-A failures to select a compiled derived field; the measured ceiling is 6,
+and 24 of 31 select no compiled bundle field of any kind.

@@ -32,7 +32,16 @@ The final evaluation freezes four conditions:
 | C1 | Raw schema | Direct SQL |
 | C2 | Searchable raw HKB | Direct SQL, optional reference |
 | C3 | Searchable exported Omni model | Direct SQL, optional reference |
-| C4 | Omni semantic model | Production-governed Omni |
+| C4 | Omni semantic model | Production-governed Omni, agent-authored SQL in practice |
+
+On the development baseline, C4 did not exercise semantic query compilation.
+Omni's agent authored SQL and submitted it through the product's rewrite path on
+every attempt, because our conservative compilation left the deployed topics
+with no declared joins and no measures, so no non-rewrite path existed for
+cross-table access. The semantic model was used as a vocabulary rather than a
+compiler. C4-C3 therefore separates two conditions that both author SQL. See
+[docs/harness-disclosure.md](docs/harness-disclosure.md) and
+[docs/c4-query-path-disclosure.md](docs/c4-query-path-disclosure.md).
 
 C4 mean one-shot accuracy and the C4-C1 paired difference are the two primary
 perspectives. All four conditions run three times on the held-out set, but there

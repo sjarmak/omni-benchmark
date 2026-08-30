@@ -25,6 +25,12 @@ main's D-140 decision, the branch-lane identifiers were remapped as follows:
 All other identifiers retain their lane number. References in this repository
 use these canonical identifiers.
 
+### Entry format convention (adopted 2026-08-30)
+
+**Omni-behavior findings, experiment outcomes, and design decisions** use the full observation/hypothesis/decision/result structure documented in the entries below.
+
+**Infrastructure, custody, and receipt-recovery entries** are capped at roughly five lines: date, D-number, one-line mechanism description, one-line resolution, and artifact hash pointer. These serve as navigable index entries to ledger records and custody receipts, not decision narratives. Illustrative shape (fictitious D-number): "2026-08-30 — D-9XX: Staging path resolution failed on a renamed manifest directory. Corrected the resolver and re-ran the staging pass under a new run ID. Receipt hash recorded in the run manifest."
+
 ## 2026-08-27 — D-001: Use the downloaded Large-v1 rows as the population authority
 
 ### Observation
@@ -10840,3 +10846,612 @@ and one JSON execution. The focused capture/result/recovery/adapter gate passes
 gate passes 367 tests in 279.85 seconds. Ruff and format checks pass. V5 remains
 immutable and excluded with four staged attempts, zero cohorts, one consumed
 receipt, and no dispatcher.
+
+## 2026-08-30 — D-171: Retain optimization as a separate MVP demonstration
+
+### Observation and hypothesis
+
+The frozen mechanical C4 baseline scored 9/136 on dev-A and the active sealed
+run evaluates that untuned system. The prior schedule-driven decision cut all
+supervised optimization, which would leave the MVP unable to support its product
+claim that the system can be improved through disciplined tuning. Stephanie
+clarified before any sealed correctness release that optimization is part of the
+MVP.
+
+Preserve the active run as the untuned baseline and restore the smallest
+defensible optimization loop: adapt only on dev-A, evaluate general mechanisms
+on the full eligible dev-A frame before KEEP, use dev-B only through sparse
+aggregate checkpoints if it changes candidate selection, freeze one optimized
+candidate, and generate one optimized C4 held-out arm before either arm's sealed
+correctness is released. Do not inspect test attempts, tune on test outcomes, or
+build an optimizer framework.
+
+### Decision
+
+`omni-benchmark-ei0.11` owns the restored P0 track. The earlier cut remains in
+the ledger as the reason the mechanical baseline was frozen first; it is not
+silently rewritten. The experiment should target reusable failure mechanisms,
+hold the evaluation frame and scorers fixed, preserve every candidate decision,
+and stop after one frozen optimized candidate. No test, dev-B per-question,
+credential, OAuth, or lease data was accessed to make this decision.
+
+## 2026-08-30 — D-172: Select relationships as the first dev-A intervention
+
+### Pre-analysis hypothesis
+
+The direct baseline showed that wrong SQL used more relations than correct SQL,
+but C4 could differ because it generates governed semantic queries. Before
+selecting an intervention, extend the existing aggregate-only SQL-shape analyzer
+to the frozen C4 dev-A score and its hash-bound generation records. Parse only
+the semantic query's `userEditedSQL`, normalize Omni field references for AST
+analysis, and emit no identity, question, SQL, result value, gold, hidden
+annotation, dev-B, or test content.
+
+If correct C4 answers remain structurally simpler while wrong/error outcomes are
+more multi-relation, select the already-preregistered E02 conservative
+relationship candidate. Otherwise do not infer a causal mechanism from the
+direct-condition result.
+
+### Result and next experiment
+
+The analyzer covers all 136 scoreable C4 attempts and reproduces the prior
+direct-condition output byte-for-byte. Its deterministic C4 aggregate output
+SHA-256 is
+`6e80abb576c3409c9ba2315268a260fe7691b386745bacaac37fe11abd55d583`.
+All 9 correct attempts parse, as do 92/93 wrong answers and 32/34 explicit
+errors. Correct attempts average 1.667 relations; wrong answers average 2.620
+and errors 2.875. Multi-relation queries occur in 2/9 correct, 50/92 wrong, and
+20/32 error attempts. Joins occur in 2/9, 41/92, and 18/32 respectively.
+
+These are descriptive associations, not causal proof, and aggregation or join
+presence alone does not cleanly separate correct from wrong. They nevertheless
+confirm that the relationship/grain surface is prevalent, plausibly fixable,
+general, and already represented by one bounded candidate. Select E02 as the
+first experiment under `omni-benchmark-ei0.11`; require the full eligible dev-A
+comparison before KEEP. Six focused behavior tests pass and Ruff/format checks
+are clean. A file-targeted coverage command reported 63.2% because most of the
+pre-existing direct analyzer's CLI/error branches remain outside this focused
+test, so the repository-wide coverage gate remains required before commit.
+
+## 2026-08-30 — D-173: Move E02's deployment gate to the current dev-A frame
+
+### Observation and hypothesis
+
+E02's committed generation schedule, freezer, and scorer already use the
+current 154-scheduled/136-answerable dev-A frame. Its earlier deployment helper
+still validates only the superseded 129-attempt/10-database public C4 freeze.
+The actual immutable v8 baseline freeze contains 136 entries, 154 scheduled
+attempts, 18 fixed unscorable attempts, 16 executable databases, and 18
+scheduled databases. Therefore the existing E02 candidate cannot pass dry
+preparation against the baseline it is meant to improve.
+
+Replace only that stale shape check with the exact current frame, retaining the
+mode-0600 ownership, no-follow, size, digest, duplicate-key, kind, and schema
+checks. Accept any terminal answered/error/refusal composition that sums to the
+136 immutable entries; do not bind E02 to favorable baseline outcomes. The E02
+relationships, schedule membership, scorers, active sealed run, and provider
+configuration remain unchanged.
+
+### Result
+
+Failure-first tests proved that the old validator rejected the real v8 freeze
+and accepted the obsolete 129/10 shape. It now requires 136 immutable entries,
+154 scheduled attempts, 18 fixed unscorable attempts, 16 executable databases,
+18 scheduled databases, and nonnegative answered/error/refusal counts summing
+to 136. Every private-file and digest guard remains unchanged.
+
+Exact provider-inert preparation against the real v8 source commit and freeze
+now succeeds. It reproduces 18 public candidate bundles, 272 files, and 91
+relationships; schedules 136 executable C4 attempts from the 154-question
+frame; and binds candidate SHA-256
+`db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`,
+baseline selection SHA-256
+`256145c13cfae7142d92f108b4ee9dd93e658a44cafb683e5aec90170b8315cc`,
+schedule SHA-256
+`54f8df6774636fb16c4901f051993fc319b62d2bfbb11f9b442021a009aed94e`,
+and dry execution-plan SHA-256
+`4323794eacc09e20603d4fd6eb0510c594fe0e57838204aaf59ee4813921a1b2`.
+The earlier documented `c08ee8c…` candidate belongs to an older source commit;
+the exact v8 tree reproducibly yields `db811d6…`. Fifty-one focused E02, C4
+schedule, freeze, and scoring tests pass; Ruff, format, and diff checks are
+clean. No provider, credential, lease, test, dev-B, or sealed correctness
+boundary was crossed.
+
+## 2026-08-30 — D-174: Deploy E02 only on the answerable dev-A frame
+
+### Observation and hypothesis
+
+The E02 compiler correctly authenticates a complete 18-database public
+candidate, while the fixed current dev-A frame schedules 154 identities and
+executes 136 on 16 databases. The deployment helper currently forwards all 18
+candidate plans to Omni even though the generation gate later requires only the
+16 schedule-selected targets. Deploying the two fixed scorer-conformance
+exclusions would repeat the official-loader failure and add no scoreable
+question.
+
+Derive the deployment set only from the committed answerable schedule, without
+naming a database in code. Preserve the complete candidate-set hash as input
+provenance, compute a second canonical hash for the 16 selected deployment
+plans, bind the approval to that selected hash, and pass only the selected
+mapping to the live deployment runner. The 18 fixed unscorable identities stay
+in the scheduled denominator and score artifact; only impossible provider work
+is excluded.
+
+### Result
+
+Failure-first tests showed that live bundle loading included the two unscheduled
+candidate databases and that the dry plan exposed only the 18-database candidate
+count. Preparation now derives the deployment database tuple from the committed
+answerable schedule, verifies that the authenticated candidate covers it, and
+hashes only those selected plan identities into a separate deployment set. The
+approval binding uses that selected hash; the live loader can return only the
+same immutable mapping.
+
+Exact dry preparation now distinguishes the 18-database/272-file candidate from
+the 16-database/244-file deployment set. Candidate SHA-256 remains
+`db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`;
+selected deployment-set SHA-256 is
+`4e0f33f06f15cf68d5adabb9c9cc8e1d3124ed0dd1e5609344c3debaa268f0a4`;
+the schedule remains 136 executable attempts from 154 scheduled; and the dry
+execution-plan SHA-256 is
+`086fd9e452db94c49b596b36d5aaa6056bd3a4364acbb4f10f670cf08e53555e`.
+Ten focused tests and the 51-test E02/C4 schedule/freeze/scoring gate pass;
+Ruff, format, and diff checks are clean. No database name entered a rule and no
+provider, credential, lease, test, dev-B, or sealed correctness boundary was
+crossed.
+
+## 2026-08-30 — D-175: Accept the E02 gate with unrelated lease-lane failures disclosed
+
+### Observation and hypothesis
+
+The selected E02 change affects the aggregate dev-A analyzer, the current-frame
+freeze validator, and the schedule-derived deployment selection. The repository
+also contains an unrelated, untracked lease-preflight lane whose tests expect
+integration that is not present in the frozen tracked baseline CLI. A full gate
+must distinguish failures in that private working lane from failures caused by
+E02; neither silently absorb those files nor call the entire dirty worktree
+green.
+
+Run the full branch-coverage suite without modifying or excluding the unrelated
+files. Accept E02 for a scoped commit only if all tracked benchmark tests pass,
+coverage remains above the repository threshold, and every failure is confined
+to the separately owned untracked lease-preflight files.
+
+### Result
+
+The full suite completed with 2,022 passing tests, 3 expected skips, 6 failures,
+and 83.30% branch coverage. All six failures are confined to the untracked
+`tests/test_claude_lease_preflight.py`: it expects two lease helpers absent from
+the tracked baseline CLI and a 900-second default where the tracked default is
+1,800 seconds. The tracked E02, C4 schedule, freeze, scorer, custody, and new
+aggregate-analyzer tests all pass. Therefore the E02 implementation is accepted
+for a scoped commit after the active exact-HEAD sealed dispatcher exits, while
+the unrelated lease lane remains preserved and explicitly outside that commit.
+The repository-wide dirty worktree is not represented as fully green.
+
+## 2026-08-30 — D-176: Reconcile the results narrative before held-out scoring
+
+### Observation and hypothesis
+
+The results-first report already contains the frozen development aggregates,
+but its diagnostic narrative still says governed structural prevalence is
+pending and describes E02 as merely optional. D-172 has since produced a
+hash-bound, identity-free C4 structural aggregate and selected E02 as the first
+bounded candidate. Leaving the earlier wording would make the report lag the
+experiment ledger even though no held-out result is involved.
+
+Update only claims supported by released dev-A aggregates: add the C4 relation
+and join counts, state their descriptive rather than causal scope, mark E02 as
+selected but not promoted, and distinguish the frozen untuned baseline from the
+still-pending optimized candidate. Keep every held-out estimate explicitly
+pending and do not inspect sealed content or correctness.
+
+### Result
+
+`RESULTS.md` now carries the aggregate C4 structural evidence and the exact E02
+status, removes the stale claim that governed prevalence is unavailable, and
+requires both the untuned generation and optimized C4 arm before custody
+releases held-out aggregates. The reproducibility section labels
+`8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d` as the untuned baseline rather than
+the final optimized system. No held-out value, test identity, SQL, row,
+annotation, credential, or lease information was accessed.
+
+## 2026-08-30 — D-177: Measure the governed failure mechanism and correct the published class split
+
+### Observation and hypothesis
+
+D-155 and D-169 record the 34 terminal governed-C4 failures as 32 `UNKNOWN`
+planner result types, one completed job with no parseable query, and one
+persistent plan rejection. That split was derived from summaries rather than
+counted against the manifest. The E05 intervention spec also carries a
+preregistered precondition that was never run: at least 16 of the class-A
+failures must select a compiled derived field, or E05 is recorded
+`INCONCLUSIVE` without consuming a live attempt. Both are cheap to settle
+offline against the immutable v8 generation records, and the E02 versus E05
+ordering depends on the answer.
+
+### Result
+
+Counted directly against the frozen recovery manifest at its pinned digest
+`5d6ff474f30d3de6d703ad5c6c59373fe8093515eabb83473bdb352c4f30fd9f`. The
+terminal total of 34 is unchanged, but the split is **31** `omni_unknown_result_type`,
+**2** `omni_query_plan_rejected`, and **1** `omni_completed_job_contract_invalid`.
+The 32/1/1 split recorded in D-155 and D-169 is superseded. Thirty of the 31
+class-A records parse, as do both class-C records. Separately, 135 of 136
+attempts carry a `userEditedSQL` value (9/9 correct, 93/93 wrong, 33/34 error)
+and 133 of those parse; earlier statements that "133 carried `userEditedSQL`"
+conflated presence with parseability.
+
+The E05 precondition **fails**. The 31 class-A attempts select 130 field
+references: 8 compiled derived (6.2%), 15 compiled physical (11.5%), 53
+query-local CTE or alias names the attempt's own SQL defines (40.8%), 23 schema
+columns the bundle does not declare, 20 unmatched names, 8 Omni count built-ins,
+and 3 unpublished view references. Six of 31 attempts contain any derived field,
+none select one exclusively, and derived plus physical together reach only 7 of
+31 against a threshold of 16. No artifact records which field carried the
+`UNKNOWN`, so the true value lies in [0, 6]. E05 is recorded `INCONCLUSIVE` by
+its own rule, with no live attempt consumed.
+
+The relation-count statistic is confounded and its published form is an upper
+bound. `relation_count` counts CTE references, aliased self-joins, and subquery
+sources. Excluding CTEs and self-joins, the means become 1.333 correct, 1.826
+wrong, and 2.000 error, against the published 1.667, 2.620, and 2.875;
+multi-relation counts become 2/9, 41/92, and 19/32 against 2/9, 50/92, and
+20/32. The correct-to-wrong gap falls 48.3% and correct-to-error 44.8%.
+Direction and ordering are unchanged. Join-presence figures survive intact: 39
+of 41 wrong-answer joins span two or more non-CTE sources and all 18 error joins
+do. CTE use is itself outcome-correlated (2/9, 40/92, 16/32).
+
+The published columns reproduce `RESULTS.md` section 5 exactly under the
+original definition, which confirms the analyzer reads the same records.
+Aggregate output SHA-256
+`56df0ab4d82e9d45ba3ef6296a473d9d6733b925835ec071ae6cd98f26d9053f`. Artifacts:
+[`c4-mechanism-measurements.md`](c4-mechanism-measurements.md),
+`experiments/analysis/c4_mechanism_measurements.py`, and
+`tests/test_c4_mechanism_measurements.py`. `docs/failure-taxonomy.md` was
+corrected for both the class count and the confounder. No question identity,
+SQL text, row value, annotation, or label left custody.
+
+## 2026-08-30 — D-178: Establish that the governed arm executed agent-authored SQL through Omni's rewrite path
+
+### Observation and hypothesis
+
+D-177 found that 53 of 130 class-A field references name CTEs or aliases the
+attempt's own SQL defines, which a model-compiled query cannot produce. D-172
+assumed the governed path composed queries from the semantic model. If instead
+the queries were authored by the agent and pushed through a rewrite path, then
+C4 does not measure what the protocol claims it measures, and the type-gap
+mechanism is not the operative one. The condition and deployment configuration
+are committed, so this is answerable without touching the live sealed run.
+
+### Result
+
+All 135 semantic queries carrying `userEditedSQL` also carry `rewriteSql: true`
+with hand-authored SQL. **Zero** declare a join path in `join_via_map`. Sixty-two
+of the 133 parseable queries reference two or more distinct non-CTE sources with
+`join_via_map` empty, and 17 carry a `table` value naming a CTE their own SQL
+defines. The planner was not resolving undeclared cross-table access; the agent
+was authoring SQL.
+
+Omni's agent chose that path, not the harness. `rewriteSql`, `userEditedSQL`,
+`join_via_map`, and `aiGenerated` appear nowhere under `src/`. `submit_job`
+(`omni_cli.py:193-208`) posts exactly `modelId`, `progressWebhookEnabled: false`,
+`prompt`, and `branchId`; the C4 prompt is the bare question; managed
+instructions are `not_exposed_by_omni`. No mode flag exists. A non-rewrite path
+was also unavailable for cross-table access: our conservative HKB compilation
+deferred 46.9% of definitions as cross-grain, so deployed topics emit
+`"joins": {}` with `joins_generated: False` and no measures
+(`semantic_bundle.py:630-645`). For the 62 multi-relation attempts, rewriting
+was the only option. This is therefore not a scaffold defect, and steering the
+agent by prompt would be a prohibited benchmark-specific intervention.
+
+The model was used as a vocabulary rather than a compiler. Input side: 1,310
+`${...}` tokens, with 109 of 135 attempts (80.7%) referencing a compiled
+dimension and 39 (28.9%) referencing an HKB-backed derived one. Output side: of
+518 selected field references only 75 are compiled, no attempt selects
+exclusively compiled fields, and 97 select none. Heavy use going in and almost
+none coming out is the signature of raw-SQL rewrite, and it explains why the
+planner held output columns it could not type.
+
+This overturns the premise of D-172. Several claims are falsified:
+`docs/methodology.md:63` ("enforces semantic compilation"),
+`docs/harness-disclosure.md:32`, `EVALUATION_PROTOCOL.md:212`, and the
+"Production-governed Omni" query-path row repeated across four documents. The
+C4 minus C3 contrast is hedged in nine places, always on model parity and never
+on the query path. From committed configuration the sealed arm is predicted to
+behave identically: `sealed_omni_factory.py:33-35` pins the same condition,
+prompt, and instruction paths, and `freeze-b-input.json` and
+`sealed-omni-semantic-model-set-v1.json` bind deployment
+`public-baseline-v13-20260829` with matching per-database hashes. That is a
+prediction from configuration, not a measurement.
+
+Stephanie decided on 2026-08-30 to disclose and reinterpret rather than treat
+this as a defect to repair silently, and to run E02 as the named contrast. E02
+declares FK-backed relationships, which is the missing ingredient that forced
+the rewrite path, so it becomes a direct test of this mechanism rather than a
+correlational one. Whether it is sufficient is open, because the topics also
+declare no measures and the agent may still rewrite in order to aggregate. The
+accepted cost is that the study can no longer claim it isolated semantic-layer
+query composition. A separate defect was recorded: `omni_attempt.py:171`
+hard-codes `generated_sql: null` while the executed SQL sits in
+`generated_query.userEditedSQL`, so an auditor inspecting the obvious field
+finds it empty. Artifact:
+[`c4-query-path-disclosure.md`](c4-query-path-disclosure.md). No question
+identity, SQL text, row value, annotation, or label left custody.
+
+## 2026-08-30 — D-179: Implement E05 typed semantic fields and record it INCONCLUSIVE
+
+### Observation and hypothesis
+
+No field of any kind in any compiled bundle declares an output type, while the
+compiler already computes a boolean, categorical, or numeric representation
+class in the same loop that emits the field document. The E05 hypothesis is that
+declaring the type the compiler already holds would let the planner type its
+result columns. The implementation was built before D-177 returned its
+precondition measurement, so the two ran in parallel and the outcome is recorded
+against the measurement.
+
+### Result
+
+Implemented on branch `feat/e05-typed-fields`, commit `2a53c73`, in the isolated
+worktree `/tmp/omni-benchmark-e05`; not pushed. Main worktree HEAD stayed at
+`94cc0d9483c944d7dc13ed651c8fc2ef077f33ab` throughout, as the live sealed
+dispatcher requires. New module `semantic_field_types.py` supplies
+`derived_field_type()` and `physical_field_type()` over a total, fail-closed
+mapping: boolean to `boolean`, categorical to `string`, numeric to `number`, and
+anything else raises `SemanticFieldTypeError`. Physical identity bindings take
+their type from the public `declared_type_sql`. Structured leaves are typed from
+the SQL the compiler emitted, `number` where it wrapped a numeric cast and
+`string` otherwise, because the extraction returns text whatever the leaf
+description claims. Authored physical expressions and undetermined public types
+stay undeclared rather than guessed, preserving D-132's rejection of value-based
+inference. No database name, question, or label appears in any rule.
+
+The change is additive. `compile_e05_typed_field_bundle()` is a new entry point
+and `compile_semantic_bundle` is byte-identical, confirmed by
+`test_semantic_fanout_committed_artifacts.py` passing unchanged, so the frozen
+C4 baseline artifacts the sealed dispatcher depends on are untouched. This
+follows the `compile_e02_relationship_bundle` precedent. Tests were written
+first and confirmed RED before GREEN: 137 pass across
+`tests/test_semantic_field_types.py` and `tests/test_semantic_bundle.py`, the
+full suite is 2,036 passed and 5 skipped at 83.33% branch coverage against the
+80% gate, `semantic_field_types.py` is at 100% statement and branch coverage,
+and ruff check and format are clean. Compiling the 17 committed public-baseline
+databases declares a type on 556 of 565 compiled dimensions, including all 179
+derived ones (61 boolean, 109 number, 9 string) and 377 of 386 physical. The 9
+remaining are 7 PostgreSQL `USER-DEFINED` enum columns and 2 authored
+expressions over `INT` columns, both left alone rather than widened by guess.
+
+**Decision: INCONCLUSIVE, per the intervention's own preregistered rule.** D-177
+measured the precondition at no more than 6 of 31 against a threshold of 16.
+Only 23 of the 130 class-A field references are compiled fields at all, so
+typing compiled fields cannot reach the 53 query-local CTE or alias names or the
+23 undeclared schema columns that dominate the class. D-178 then established
+that the operative mechanism is the rewrite path rather than the type gap. E05
+is not recommended as the first optimization candidate. The branch is parked at
+no carrying cost and remains available if a later contrast makes declared types
+load-bearing. Two assumptions stay unverified and must be settled before any
+deployment: the field-parameter spelling for a declared output type is not fixed
+by any committed sample or schema, and identity physical fields now carry a type
+that Omni may normalize on readback the way it already strips `sql` from direct
+bindings, which would need a matching restore rule. The exact-readback pass
+would surface both loudly rather than silently. No evaluated answer, question
+identity, or label was involved.
+
+## 2026-08-30 — D-180: Preregister E02 as a query-path mechanism contrast, not an accuracy play
+
+### Observation and hypothesis
+
+D-178 established that the governed arm executed agent-authored SQL through
+Omni's rewrite path because the deployed topics declared no join paths.
+Stephanie directed that E02 run as the named contrast. Before it runs, its
+expected effect must be fixed in writing, because E02's accuracy ceiling is low
+by construction and a disappointing accuracy number must not be reinterpreted
+after the fact as either success or failure.
+
+E02 does declare real join paths, verified in code rather than assumed.
+`compile_e02_relationship_bundle` (`semantic_bundle.py:811-836`) replaces the
+baseline `"joins": {}` with a populated map, sets
+`validation.joins_generated` to `True`, rewrites the ai_context away from
+"intentionally models no cross-table joins", and writes a top-level
+`relationships` file. Both surfaces reach the product: `_deployment_file`
+(`omni_semantic_deployment.py:287-305`) recognizes and validates the
+relationships document and assigns it a remote path, and topics deploy by name
+with the joins map intact under exact readback. Candidate set SHA-256
+`db811d6ec553d3b82e42ba3bbd9bafe7ca528a695836a33d6f1aff0b60c5b074`.
+
+Coverage on the 16 deployed databases: 85 of 91 relationship contracts, 14 of
+16 databases, 61 of 114 topics, and **0 of 114 measures**. The public foreign-key
+funnel is 1,228 declared, 1,049 passing E02's conservative contract, and 91
+reaching a bundle, because both endpoints must be published views and both
+columns must be published as one-to-one bound dimensions. `semantic_elements`
+is byte-identical to baseline on all 18 databases, so only the relationship half
+of the spec changes anything.
+
+### Result
+
+Preregistered before execution. **The primary readout is the query path, not
+accuracy.** The per-attempt capture already records `rewriteSql`,
+`join_via_map`, and `join_paths_from_topic_name`, so the run answers the one
+question no offline analysis can settle: does Omni's agent compose through the
+model when a declared join exists, or does it rewrite regardless. Accuracy is
+the secondary readout.
+
+The accuracy expectation is fixed low, in advance. Of the 62 multi-relation
+attempts in the frozen baseline (2 correct, 41 wrong, 19 error, reproduced
+exactly), only 16 have every source view covered by a single topic's one-hop
+join set; 18 are modeled but multi-hop, 7 are modeled with no declared link,
+and 21 reference at least one source that is not a published view. Those 16
+split 1 correct, 12 wrong, and 3 error, and include 3 of the 31 class-A
+failures. Because no measures are declared anywhere, 11 of those 16 still
+require an undeclared aggregate, leaving 5 of 62 fully composable from declared
+structure. **At most 15 non-correct attempts could plausibly convert, and 1
+already-correct attempt carries regression risk.** E02 is therefore necessary
+and not sufficient by construction. The KEEP/REVERT gate is not relaxed to
+protect this result, and a null accuracy effect with a moved query path counts
+as an informative outcome rather than a failed intervention.
+
+Counter-evidence worth recording: PF-004 documents Omni natively inferring
+many-to-one joins onto a topic whose `fields` list named only its base view, so
+E02's emitted shape is the product's own default shape rather than a novel one.
+That raises the prior that the path can move.
+
+The conditional next step is fixed now to prevent post-hoc selection. If the
+query path moves, declared measures become the next intervention. If it does
+not move, measures are not built, and the slot goes to E03 (bounded semantic
+descriptions), which pays off through the rewrite path the agent demonstrably
+uses. Nested-join E02 covering the 18 multi-hop cases ranks below both.
+Published-view widening is rejected: it is the largest single gap at 21 of 62
+but changes too much of the evaluated surface with no conservative public
+contract behind it. E05 is excluded, already INCONCLUSIVE under D-177 and
+D-179, though the `generated_sql: null` reporting defect it exposed is worth
+fixing in the optimized arm at no slot cost. Assessment artifact:
+[`e02-join-path-assessment.md`](e02-join-path-assessment.md). Execution remains
+gated behind sealed generation and custody scoring, because deploying E02
+requires a commit and both sealed finish-line gates require HEAD to stay at
+`94cc0d9483c944d7dc13ed651c8fc2ef077f33ab`. No evaluated answer, question
+identity, or label was involved.
+
+## 2026-08-30 — D-181: Amend the frozen protocol's C4 enforcement claim after custodian acceptance
+
+### Observation and hypothesis
+
+D-178 falsified `EVALUATION_PROTOCOL.md:212`, which describes C4's enforcement
+as "Enforced production harness", and left standing the interpretation bullets
+at lines 225-228 asserting that model parity is what separates C4-C3 from an
+architectural contrast. The protocol is a human-controlled surface, so agents
+proposed rather than edited: the exact current text, the exact replacements, the
+argument for amending, the counter-argument, a middle option, and a rejection
+path were written to
+[`protocol-amendment-proposal-query-path.md`](protocol-amendment-proposal-query-path.md).
+Leaving a falsified claim in the preregistration would mean the document an
+external reader reaches first is the one document still asserting something the
+measurement disproved.
+
+### Result
+
+Stephanie accepted the proposal on 2026-08-30 and both changes were applied
+verbatim. The frozen-conditions cell at line 212 now reads "Enforced production
+harness (governs surface and field resolution; see
+`docs/c4-query-path-disclosure.md` for the measured query path)"; the knowledge
+and representation cells are unchanged and remain accurate. After the C4-C3
+interpretation bullets, an addition records that C4's governed queries were
+composed as SQL by the production agent through the product's rewrite path over
+a model declaring no joins and no measures, that C4-C3 therefore does not
+separate a compiled query path from a direct-SQL one, that model parity does not
+restore that separation, and that the contrast separates two agent-authored SQL
+conditions differing in agent, SQL dialect, accessible surface, and execution
+contract. **Both original bullets survive verbatim.** The diff is 9 insertions
+and 1 deletion, the single deletion being the replaced table row.
+
+Safety was established before the edit rather than assumed. `EVALUATION_PROTOCOL.md`
+carries no Freeze-B hash binding: none of the 108 frozen files in
+`experiments/freeze-b-v7.json` is a markdown document, and the protocol does not
+appear in `SEALED_RUNTIME_SOURCE_PATHS`. The amendment therefore cannot disturb
+the live sealed arm, whose gates bind HEAD and the frozen source set rather than
+documentation. HEAD remained at
+`94cc0d9483c944d7dc13ed651c8fc2ef077f33ab` throughout.
+
+The amendment adds and qualifies rather than rewrites, so the preregistration's
+operative content is untouched: no split membership, custody rule, scorer
+definition, endpoint, condition, or estimand changed. `docs/protocol-diff.md`
+records the acceptance against its existing deviation entry, and the proposal
+file is retained as the decision record rather than deleted. No evaluated
+answer, question identity, or label was involved.
+
+## 2026-08-30 — D-182: Freeze the untuned sealed arm structurally before optimization
+
+### Observation and hypothesis
+
+The untuned sealed arm is complete only if its sole dispatcher exits after all
+1,068 preregistered coordinates have immutable attempt envelopes and all 12
+condition-by-repetition cohorts have terminal generation and run manifests.
+That completion gate can be verified from process identity, file names, and
+counts without reading attempt content or releasing correctness, preserving an
+uncontaminated dev-A optimization phase.
+
+### Result
+
+The `sealed-final-v6` dispatcher exited. At exact control commit
+`94cc0d9483c944d7dc13ed651c8fc2ef077f33ab`, its append-only tree contains
+1,068 `attempt.json` envelopes, 1,068 attempt traces, 12 `generation.jsonl`
+manifests, and 12 `run.json` manifests. The single-use receipt has one consumed
+marker. The check inspected only identities and counts; it did not open an
+attempt, generation payload, answer, label, or correctness artifact.
+
+**Decision: KEEP.** V6 is the immutable untuned held-out arm. Release the
+exact-HEAD gate, commit the already-authenticated E02 implementation, and run
+the bounded dev-A contrast. Do not score or inspect V6 until the optimized
+candidate is frozen and its held-out arm has completed generation.
+
+## 2026-08-30 — D-183: Pace the E02 deployment recovery as infrastructure
+
+### Observation and hypothesis
+
+The first E02 deployment pass, `e02-dev-a-deployment-v2`, authenticated the
+exact 16-target candidate and preserved a terminal record for every target, but
+only four reached exact readback. All 12 failures were at the product API
+boundary: eight stopped before a branch existed, one after branch creation, and
+three after only two or three uploads. No validator issue was reached. The pass
+used four workers with a zero-second global request interval, whereas the
+successful public-baseline deployment used a 1.25-second global interval. This
+shape is consistent with request-pressure infrastructure rather than a semantic
+compiler rejection.
+
+### Planned contrast
+
+Preserve v2 unchanged. Under Tier 1 correction-forward policy, use fresh run
+`e02-dev-a-deployment-v3` and output root
+`experiments/deployments/e02-dev-a-v3`, with one worker and a 1.25-second global
+request interval. Reuse the same isolated E02 model and branch identities so
+already-exact branches short-circuit through validation and readback, while
+partial branches receive the same authenticated files. The candidate set and
+selected deployment-set hashes do not change. If v3 reaches validator or
+readback failures, retain them as product evidence and diagnose the general
+mechanism; do not add database-specific rules.
+
+### Result
+
+The pacing hypothesis was supported. V3 returned 15 exact-readback successes
+and one validation failure with zero record-write failures. The 11 targets that
+had not completed in v2 all advanced through product construction; ten verified
+exactly. Polar alone reached validation and returned ten `broken_reference`
+issues. The immutable v2 and v3 trees are retained. No benchmark question,
+answer, annotation, label, or correctness was accessed.
+
+**Decision: KEEP the paced correction as infrastructure evidence.** The one
+remaining failure is a compiler mechanism and is handled separately below.
+
+## 2026-08-30 — D-184: Materialize normalized relationship endpoint aliases
+
+### Observation and hypothesis
+
+Polar's ten validator failures all referenced public foreign-key endpoints whose
+physical identifiers are camel or mixed case. The E02 compiler derived the
+normalized relationship field name from public schema metadata but did not
+materialize that name as an explicit identity dimension when the endpoint was
+not already among the baseline's selected physical fields. The validator thus
+received relationship SQL referencing a field the extension had never declared.
+The same compiler already has a general, tested rule for explicit physical
+aliases, so relationship endpoints should use the published alias when one
+exists and otherwise materialize the normalized identity only when normalization
+changes the raw lowercased name.
+
+### Intervention and result
+
+Tests were written first and failed on both legitimate semantic aliases and an
+unpublished camel-case endpoint. The implementation now resolves endpoints by
+stable schema ID, reuses an existing direct physical binding when present, and
+adds a deterministic identity dimension plus readback binding for a missing
+camel/mixed-case endpoint. It rejects collisions and contains no database name,
+question, label, or per-target rule. The E02 inventory remains 18 candidate
+databases, 272 files, and 91 relationships; candidate-set SHA-256 becomes
+`831f4521778ef33470b92e4943ab7f683bc6641e7feb81e769129c6ebe524829`.
+Focused compiler, deployment, and committed-candidate validation is 158 passing
+with Ruff clean. At the operator-requested pause, the broader gate had reached
+1,623 passing and three expected skips with no failure before it was stopped;
+the implementation remains uncommitted for the next session.
+
+**Decision: KEEP pending live verification.** Commit the general fix, then run
+one fresh, paced 16-target E02 deployment and require zero validation issues plus
+exact readback before any evaluated dev-A attempt.
