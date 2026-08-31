@@ -8,6 +8,12 @@ This paper now reports the executed four-condition held-out result. It was the
 protocol half of the study until 2026-08-31; the reorganization around the
 findings is described below.
 
+The committed `main.pdf` was built on 2026-08-31 before the C5 section was
+filled in, so it is behind `sections/c5.tex` and the four sections that
+cross-reference it. No LaTeX toolchain is installed in this workspace and no
+workflow builds the paper, so the rebuild is a manual step tracked by bead
+`omni-benchmark-cze`. The source tree, not the PDF, is what gets uploaded.
+
 ## Where this sits in the deliverable set
 
 1. **This paper.** The full record: design, custody, development trajectory, the
