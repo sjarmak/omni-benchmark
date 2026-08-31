@@ -1404,3 +1404,82 @@ def test_compile_bundle_rejects_compile_target_without_view() -> None:
         SemanticBundleError, match="compile mapping target.*has no view"
     ):
         compile_semantic_bundle(_spec(), _hkb_records(), _schema_records(), mappings)
+
+
+def test_field_kinds_sidecar_records_the_classification_the_compiler_made() -> None:
+    bundle = compile_semantic_bundle(
+        _spec(), _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    assert bundle.field_kinds == {
+        "db:table:pointcloud": {
+            "cloud_metrics": "unknown",
+            "resolution_index": "numeric",
+            "scan_resolution_mm": "numeric",
+        }
+    }
+
+
+def test_field_kinds_sidecar_separates_text_sources_from_categorical_derivations() -> (
+    None
+):
+    spec = copy.deepcopy(_spec())
+    schema = copy.deepcopy(_schema_records())
+    schema.append(
+        {
+            "database": "db",
+            "declared_type_sql": "TEXT",
+            "description": "TEXT. Processing state.",
+            "identifier": {"name": "state"},
+            "record_kind": "column",
+            "stable_id": "db:column:pointcloud:state",
+            "table_stable_id": "db:table:pointcloud",
+        }
+    )
+    spec["physical_fields"].append(
+        {"name": "state", "schema_stable_id": "db:column:pointcloud:state"}
+    )
+    spec["derived_fields"][0]["sql"] = "UPPER(${state})"
+    mappings = copy.deepcopy(_mapping_records())
+    mappings[0]["representation"] = "categorical_derived_dimension"
+
+    bundle = compile_semantic_bundle(spec, _hkb_records(), schema, mappings)
+
+    assert bundle.field_kinds["db:table:pointcloud"] == {
+        "cloud_metrics": "unknown",
+        "resolution_index": "text",
+        "scan_resolution_mm": "numeric",
+        "state": "text",
+    }
+
+
+def test_field_kinds_sidecar_stays_out_of_every_published_byte() -> None:
+    bundle = compile_semantic_bundle(
+        _spec(), _hkb_records(), _schema_records(), _mapping_records()
+    )
+
+    assert "field_kinds" not in bundle.manifest
+    assert set(bundle.manifest) == {
+        "database",
+        "direct_physical_bindings",
+        "files",
+        "kind",
+        "representability",
+        "schema_version",
+        "semantic_elements",
+        "validation",
+    }
+    assert bundle.manifest["schema_version"] == 1
+    assert all("field_kinds" not in content for content in bundle.files.values())
+
+
+def test_e02_candidate_carries_the_baseline_field_kinds_unchanged() -> None:
+    spec, schema = _e02_inputs()
+
+    baseline = compile_semantic_bundle(spec, _hkb_records(), schema, _mapping_records())
+    candidate = compile_e02_relationship_bundle(
+        spec, _hkb_records(), schema, _mapping_records()
+    )
+
+    assert candidate.field_kinds == baseline.field_kinds
+    assert "field_kinds" not in candidate.manifest

@@ -35,6 +35,10 @@ class SemanticBundle:
 
     files: dict[str, str]
     manifest: dict[str, Any]
+    # Sidecar attribution record, table stable id to field name to value kind.
+    # Deliberately outside files and manifest: those bytes are deployed and
+    # custody-verified evidence for completed runs and must not move.
+    field_kinds: dict[str, dict[str, str]]
 
 
 _NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
@@ -859,7 +863,11 @@ def compile_e02_relationship_bundle(
         "joins_generated": bool(emitted),
         "relationship_contracts_public_only": True,
     }
-    return SemanticBundle(files=files, manifest=manifest)
+    # Endpoint aliases reuse a source column name the baseline already
+    # classified, so the baseline map stays exact for this candidate.
+    return SemanticBundle(
+        files=files, manifest=manifest, field_kinds=baseline.field_kinds
+    )
 
 
 def _relationship_fields(
@@ -1006,11 +1014,12 @@ def _build_bundle(
     files: dict[str, str] = {}
     elements: list[dict[str, Any]] = []
     direct_physical_bindings: list[dict[str, str]] = []
+    field_kinds: dict[str, dict[str, str]] = {}
     for table_id, view in views.items():
         table = schema_index.get(table_id)
         if table is None or table.get("record_kind") != "table":
             raise SemanticBundleError(f"view table {table_id} is missing")
-        dimensions, names = _table_dimensions(
+        dimensions, names, kinds = _table_dimensions(
             table_id,
             hkb_index,
             schema_index,
@@ -1023,6 +1032,7 @@ def _build_bundle(
             ordered_ids,
             elements,
         )
+        field_kinds[table_id] = kinds
         view_file = _text(view.get("file_name"), "view file_name")
         topic_file = _text(view.get("topic_file_name"), "topic file_name")
         files[view_file] = _yaml(_view_document(view, table, dimensions, spec))
@@ -1042,6 +1052,7 @@ def _build_bundle(
             direct_physical_bindings,
             _source_name_collisions(column_bindings),
         ),
+        field_kinds=field_kinds,
     )
 
 
@@ -1121,7 +1132,7 @@ def _table_dimensions(
     base_fields: Mapping[str, tuple[str, ...]],
     ordered_ids: Sequence[str],
     elements: list[dict[str, Any]],
-) -> tuple[dict[str, Any], list[str]]:
+) -> tuple[dict[str, Any], list[str], dict[str, str]]:
     dimensions: dict[str, Any] = {}
     allowed = {name for name, stable_ids in base_fields.items() if len(stable_ids) == 1}
     field_kinds = {
@@ -1230,4 +1241,4 @@ def _table_dimensions(
         }.get(str(mapping.get("representation")), "unknown")
         allowed.add(name)
         elements.append(_semantic_element(mapping, hkb_id, name, "derived_dimension"))
-    return dimensions, list(dimensions)
+    return dimensions, list(dimensions), field_kinds

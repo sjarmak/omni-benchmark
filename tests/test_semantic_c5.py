@@ -640,6 +640,19 @@ def test_c5_injects_unrepresentable_quoted_column() -> None:
     } in bundle.manifest["direct_physical_bindings"]
 
 
+def test_c5_field_kinds_classify_the_injected_unrepresentable_column() -> None:
+    """A dimension the spec cannot name is still classified, not silently absent."""
+    bundle = _compile()
+
+    measurements = yaml.safe_load(bundle.files["db.public__measurements.view"])
+    assert set(bundle.field_kinds["db:table:measurements"]).issuperset(
+        measurements["dimensions"]
+    )
+    # The fixture column declares no type, so the compiler cannot classify it.
+    assert bundle.field_kinds["db:table:measurements"]["flux_w_m"] == "unknown"
+    assert "field_kinds" not in bundle.manifest
+
+
 def test_c5_refuses_an_unattested_physical_column_binding(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -650,9 +663,9 @@ def test_c5_refuses_an_unattested_physical_column_binding(
 
     def unattested(
         files: dict[str, str], views: object, schema_index: object, injections: object
-    ) -> list[dict[str, str]]:
-        original(files, views, schema_index, injections)
-        return []
+    ) -> tuple[list[dict[str, str]], list[tuple[str, str, str]]]:
+        _bindings, kinds = original(files, views, schema_index, injections)
+        return [], kinds
 
     monkeypatch.setattr(semantic_c5, "_inject_unrepresentable_fields", unattested)
 

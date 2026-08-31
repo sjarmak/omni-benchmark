@@ -63,6 +63,37 @@ def test_committed_public_bundle_regenerates_byte_for_byte() -> None:
         assert (BUNDLE_ROOT / name).read_bytes() == expected
 
 
+def test_no_committed_bundle_manifest_carries_the_field_kinds_sidecar() -> None:
+    """The compiler's field-kind map must stay out of the deployed bytes.
+
+    Every one of these manifests was deployed and verified by exact readback for
+    a completed measurement, and the deploy path pins ``schema_version`` 1. The
+    classification is published as a separate artifact for exactly this reason,
+    so this asserts the key never arrived here by a later convenience.
+    """
+
+    manifests = [BUNDLE_ROOT / "manifest.json"] + sorted(
+        (ROOT / "semantic_models/public_baseline").glob("*/bundle/manifest.json")
+    )
+    assert len(manifests) == 18
+
+    for path in manifests:
+        manifest = json.loads(path.read_bytes())
+        assert set(manifest) == {
+            "database",
+            "direct_physical_bindings",
+            "files",
+            "kind",
+            "representability",
+            "schema_version",
+            "semantic_elements",
+            "source",
+            "validation",
+        }
+        assert manifest["schema_version"] == 1
+        assert "field_kinds" not in path.read_text(encoding="utf-8")
+
+
 def test_committed_public_bundle_is_public_only_and_no_join() -> None:
     manifest = json.loads((BUNDLE_ROOT / "manifest.json").read_bytes())
 

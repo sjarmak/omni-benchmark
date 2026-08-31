@@ -12659,3 +12659,125 @@ attribution signal has to arrive as a sidecar artifact instead, produced by
 recompiling the committed specs. Threading a return value with no consumer would
 be placeholder code, so nothing was landed; the constraint is recorded on the
 bead so the next author does not rediscover it by breaking a deployed manifest.
+
+## 2026-08-31 — D-209: The compiler's field classification becomes evidence without touching a deployed byte
+
+### Observation and hypothesis
+
+D-208 recorded why `field_kinds` could not simply be added to the bundle
+manifest: those bytes are committed under `semantic_models/`, were deployed, and
+were verified by exact readback during the sealed run. The classification itself
+is worth having. `semantic_bundle._table_dimensions` decides, per field, whether
+a value is numeric, text, numeric_text, other, or unknown; that decision drives
+`coerce_numeric_references` and therefore what the model can compute over. No
+analysis could ask what kinds of fields C3 and C4 had available, because the map
+never left local state.
+
+The hypothesis was that the signal is fully recoverable from committed public
+inputs, so it needs no new run and no change to any published artifact:
+recompiling the committed specs reproduces the same classification
+deterministically.
+
+### Result
+
+`SemanticBundle` now carries `field_kinds` as a third field, keyed table stable
+id to field name to kind, deliberately outside `files` and `manifest`.
+`semantic_bundle_publication._build_bundle_artifacts` reads only those two, so
+no deployed or published byte moves and `schema_version` stays 1. The two
+derived compilers stay exact rather than approximate: E02 passes the baseline
+map through, because its endpoint aliases reuse a source column name the
+baseline already classified, while C5 classifies the columns
+`_inject_unrepresentable_fields` synthesizes, which have no baseline entry.
+
+`experiments/analysis/semantic_field_kinds.py` recompiles all 18 committed spec
+sets and writes `semantic-field-kinds-v1.json`. Across 127 views the compiler
+publishes 599 dimensions: 317 numeric, 126 text, 97 other, 59 numeric_text. A
+further 1,186 source columns are classified but never exposed as dimensions;
+they exist only as coercion inputs. The artifact separates those two populations
+per view, because "the model can reference this field" and "the compiler knows
+this column's type" are different claims and only the first bounds what a
+condition could answer.
+
+`unclassified_dimension_field_count` is zero. That number is the one to watch:
+`_table_dimensions` excludes a source name bound to more than one column, so an
+ambiguous name is absent from the map rather than misclassified. Zero means no
+published dimension currently falls in that gap, and the artifact reports the
+count so a future one is visible instead of silent.
+
+Two tests carry the custody claim rather than prose. `test_semantic_field_kinds`
+hashes the whole `semantic_models/` tree before and after a run and asserts it is
+unchanged, and asserts the committed artifact is byte-identical to a fresh run.
+`test_semantic_bundle_committed_artifacts` asserts all 18 committed bundle
+manifests keep their exact key set and `schema_version` 1, so the sidecar cannot
+arrive there later by convenience.
+
+## 2026-08-31 — D-210: Governed cost becomes measurable by bracketing a cumulative counter
+
+### Observation and hypothesis
+
+Every governed attempt in the sealed C1-C4 run recorded `cost_usd: null`. That is
+not an oversight in the harness: the pinned Omni job contract exposes no cost
+field, verified again today against the live CLI, so `omni_attempt` hardcoded
+`cost_source: "unavailable"` with the reason
+`omni_job_api_does_not_expose_cost`.
+
+Spend is readable through a different endpoint. `omni ai credit-usage-users-read`
+returns one cumulative credit total per membership id for the current billing
+period, and one credit is one dollar. The hypothesis: a per-attempt cost can be
+recovered as the difference between a read taken before the job is submitted and
+one taken after it terminates, and the difference is only trustworthy if the
+conditions that would corrupt it are enforced rather than assumed.
+
+### What the conditions are, and why each is code
+
+Three things can make a delta wrong, and each of them fails silently if left to
+operator discipline.
+
+The account demonstrably carries non-benchmark AI traffic, so any concurrent
+spend on the identity lands in the same counter. `capture_with_cost` takes a
+non-blocking exclusive `flock` on the membership id and refuses to launch without
+it. A second harness attempt on that identity now fails outright rather than
+producing two deltas that each silently include the other's spend. The cost of
+this is real and stated rather than hidden: a bracketed arm has to be scheduled
+serially, and `baseline_batch_live.py` can schedule C4 concurrently today.
+
+The counter resets at the UTC month boundary, so a bracket that spans it would
+compute a negative delta. Both reads carry the period bounds they were taken
+under, and a mismatch records `credit_usage_period_rollover` instead of a number.
+A backwards move inside one period records `credit_usage_nonmonotonic`.
+
+A failed post-read had to be separable from the pre-existing silence, or the
+analysis could not tell "the API has no cost" from "the measurement broke". It
+records `credit_usage_read_failed`. A failed pre-read refuses the launch, before
+any spend, so no attempt is ever consumed for a bracket that could not have been
+measured.
+
+### Result
+
+`omni_credit_cost.py` carries the mechanism; the three C4 capture sites
+(`omni_probe_cli`, `baseline_attempt_adapter`, `sealed_omni_factory`) pass their
+capture through it as a callable rather than opening a context manager the caller
+could mis-order. Cost rides on `OmniProbeResult` as an observation, next to tokens
+and latency, not on `C4AttemptSpec`, which is pre-attempt configuration.
+
+The `cost_source` vocabulary in `autoresearch_capture_policy` gains exactly one
+value, `credit_usage_delta`, and only for cost: `token_source` keeps its original
+three, so a token count cannot claim to be a credit measurement. The widening
+never narrows, so every frozen record stays valid, and a regression test pins the
+unbracketed path to the record shape shipped today.
+
+Bracketing is opt-in through `OMNI_COST_BRACKET_LEASE_DIR`. Unconfigured, the
+attempt record is unchanged field for field.
+
+### Deliberately not done
+
+C1-C4 cost is not backfilled. The counter is cumulative and those attempts are
+past, so no read taken now recovers their individual cost, and the rerun policy
+forbids re-running a trial to collect it. Their cost column stays unavailable and
+the mechanism's limits are disclosed instead.
+
+Two limits are disclosed rather than closed. The lease binds harness processes
+only, so a browser session spending on the same identity inside a bracket is
+undetectable and would inflate the delta. And the endpoint reports whole-account
+credits, so the delta measures what the account spent during the attempt rather
+than a figure the provider attributes to that attempt.

@@ -34,6 +34,7 @@ from .semantic_bundle import (
     compile_semantic_bundle,
     reject_protected_fields,
 )
+from .semantic_numeric import physical_value_kind
 from .semantic_relationships import plan_relationship_contracts
 
 SOFT_AI_CONTEXT_CHARS = 150_000
@@ -76,7 +77,7 @@ def compile_c5_tuned_bundle(
     views = _validated_views(widened_spec)
     schema_index = _index(schema_records, "stable_id", "schema record")
     hkb_index = _index(hkb_records, "stable_id", "HKB record")
-    injected_bindings = _inject_unrepresentable_fields(
+    injected_bindings, injected_kinds = _inject_unrepresentable_fields(
         files, views, schema_index, injections
     )
     emitted, contracts, skipped_joins, adjacency = _c5_relationships(
@@ -121,7 +122,10 @@ def compile_c5_tuned_bundle(
         "joins_generated": bool(emitted),
         "relationship_contracts_public_only": True,
     }
-    return SemanticBundle(files=files, manifest=manifest)
+    field_kinds = {table: dict(kinds) for table, kinds in base.field_kinds.items()}
+    for table_id, kinds in injected_kinds.items():
+        field_kinds.setdefault(table_id, {}).update(kinds)
+    return SemanticBundle(files=files, manifest=manifest, field_kinds=field_kinds)
 
 
 def _synthesized_field_name(raw: str) -> str | None:
@@ -429,9 +433,10 @@ def _inject_unrepresentable_fields(
     views: Mapping[str, Mapping[str, Any]],
     schema_index: Mapping[str, Mapping[str, Any]],
     injections: Sequence[Mapping[str, str]],
-) -> list[dict[str, str]]:
+) -> tuple[list[dict[str, str]], dict[str, dict[str, str]]]:
     """Add the dimensions the spec cannot name, and attest their column identity."""
     bindings: list[dict[str, str]] = []
+    kinds: dict[str, dict[str, str]] = {}
     for entry in injections:
         view = views[entry["table_stable_id"]]
         view_file = _text(view.get("file_name"), "view file_name")
@@ -467,8 +472,16 @@ def _inject_unrepresentable_fields(
             ),
             "sql": sql,
         }
+        # The injected field has no baseline classification: its name is
+        # synthesized here, so nothing upstream has seen it.
+        kinds.setdefault(entry["table_stable_id"], {})[entry["field_name"]] = (
+            physical_value_kind(record, sql)
+        )
         files[view_file] = _yaml(document)
-    return sorted(bindings, key=lambda item: (item["file"], item["field_name"]))
+    return (
+        sorted(bindings, key=lambda item: (item["file"], item["field_name"])),
+        kinds,
+    )
 
 
 def _c5_relationships(
