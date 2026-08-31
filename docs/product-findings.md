@@ -28,9 +28,9 @@ not an incident-severity classification.
 
 | Priority | Product surface | Current evidence | Product action | Detailed record |
 | --- | --- | --- | --- | --- |
-| Now | Rewritten-SQL output contract | 31 of 34 governed development non-answer outcomes shared an `UNKNOWN` selected-field type. Attribution remains unresolved at the interface between the authored model and the planner; the product also mixed selected output fields with dependency metadata. | Define a total typed result contract for rewritten SQL, separate selected and dependency fields, and surface unresolved output types during validation. | [PF-006](#pf-006-unformatted-json-results-still-stringify-numeric-measures), [PF-014](#pf-014-query-plan-summaries-conflate-output-and-dependency-field-metadata) |
+| Now | Rewritten-SQL output contract | 31 of 34 governed baseline non-answers shared an `UNKNOWN` selected-field type. E02 then preserved 14 generated semantic queries that could not be captured because of unsupported result types. Attribution remains unresolved at the interface between the authored model and the planner. | Define a total typed result contract for rewritten SQL, separate selected and dependency fields, and surface unresolved output types during validation. | [PF-006](#pf-006-unformatted-json-results-still-stringify-numeric-measures), [PF-014](#pf-014-query-plan-summaries-conflate-output-and-dependency-field-metadata) |
 | Now | Complete machine-readable results | Truncation and presentation-control records caused all five strict concurrency-canary captures to fail before narrow adapter corrections; incomplete previews must not be accepted as analytical results. | Return complete results or a stable paginated/content-addressed handle, and keep preview metadata outside data rows. | [PF-010](#pf-010-truncated-governed-results-are-observable-but-not-execution-scorable), [PF-013](#pf-013-governed-job-previews-mix-data-rows-with-presentation-control-records) |
-| Next | Grain and relationship authoring | Across all 18 public HKBs, 511 of 1,090 definitions were deferred because they crossed an unresolved grain. The frozen governed model declared no joins or measures. | Make grain, identity, cardinality, relationship, and aggregation contracts explicit; provide a predeployment coverage report with accepted and deferred reasons. | [PF-004](#pf-004-topic-readback-adds-joins-unless-no-join-intent-is-explicit), [PF-009](#pf-009-missing-grain-contracts-dominate-public-only-hkb-translation) |
+| Next | Grain and relationship authoring | Across all 18 public HKBs, 511 of 1,090 definitions were deferred because they crossed an unresolved grain. E02 added 91 conservative relationships; on its 117 captured answers, official accuracy was 11/117 versus matched C4 at 9/117, but 19 unresolved captures make the experiment INCONCLUSIVE. | Make grain, identity, cardinality, relationship, and aggregation contracts explicit; provide a predeployment coverage report with accepted and deferred reasons. Re-evaluate relationships only after the result contract is reliable. | [PF-004](#pf-004-topic-readback-adds-joins-unless-no-join-intent-is-explicit), [PF-009](#pf-009-missing-grain-contracts-dominate-public-only-hkb-translation) |
 | Next | Deployment identity and diagnostics | A selected-database mismatch affected all 17 non-canary connections and became actionable only after external diagnosis; model publishing also exposed logical/physical identity and canonical-readback gaps. | Validate database access at save time, return structured refresh failures, and expose stable logical and physical model identities with a canonical export contract. | [PF-001](#pf-001-schema-refresh-failures-lack-actionable-diagnostics-in-the-cliapi), [PF-002](#pf-002-model-upload-can-silently-create-a-near-duplicate-schema-view), [PF-011](#pf-011-physical-table-identity-and-semantic-extension-identity-diverge), [PF-012](#pf-012-model-readback-canonicalizes-redundant-physical-column-sql) |
 | Next | Run provenance and outcome telemetry | Completed AI jobs expose useful provider token buckets, timings, tool/query activity, and phase events. Raw AI jobs do not expose dollar cost, an immutable model revision, or a structured refusal reason. | Echo immutable model/branch revision, retries and validation attempts; expose raw-job cost when available; add a typed refusal outcome. | [PF-007](#pf-007-ai-hub-exposes-rich-run-telemetry-but-not-an-immutable-branch-revision), [PF-008](#pf-008-governed-ai-jobs-do-not-expose-a-structured-refusal-outcome) |
 
@@ -877,6 +877,31 @@ execution mechanics rather than accuracy.
 - **Experiment / commit provenance:** This is a scale-out update to PF-007 from
   the completed immutable baseline contract; correctness remains in separate
   score artifacts.
+
+## PF-014 update: E02 scale-out exposed result typing as an evaluation bottleneck
+
+- **Observation time:** 2026-08-30, after the frozen E02 generation terminated.
+- **Observed behavior:** Of 136 answerable E02 attempts, 117 produced captured
+  answers, 14 retained generated semantic queries but ended at
+  `unsupported_semantic_result_type`, and five transport failures retained no
+  query. No model answer was rerun.
+- **Systematic evidence / frequency:** The unsupported-type contract accounts
+  for 14/19 E02 capture losses; transport accounts for 5/19. On the matched
+  captured subset, official E02 accuracy is 11/117 versus 9/117 for frozen C4.
+  The 19 unresolved outcomes keep the preregistered experiment INCONCLUSIVE.
+- **Why it matters to customers:** A semantic improvement cannot be evaluated or
+  consumed reliably when valid-looking governed queries lack a total executable
+  result schema. Reliability of the output contract is upstream of trustworthy
+  iteration on model quality.
+- **Proposed product change:** Make every selected output field's executable
+  type authoritative and stable across planning and result delivery; reject or
+  explain unresolved types during model validation, before a user spends an AI
+  run.
+- **Benchmark treatment:** Preserve the formal INCONCLUSIVE decision. Use the
+  117-answer comparison only as directional product evidence and report the
+  contract and transport strata separately.
+- **Experiment / commit provenance:** D-196; aggregate artifact
+  `experiments/analysis/e02-partial-diagnostic-v1.json`.
 
 ## Entry template
 

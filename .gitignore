@@ -75,3 +75,6 @@ runs/
 experiments/runs/
 experiments/autoresearch/raw/
 experiments/autoresearch/guardian_receipts/
+
+# Consumed approval records are local run-control evidence, not publishable data.
+experiments/approvals/

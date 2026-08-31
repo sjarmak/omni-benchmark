@@ -29,11 +29,12 @@ revise the development mechanism ranking or localize per-question causes.
    preregistered general relationship surface; later diagnosis must use dev-A
    only and preserve this mechanism ladder.
 
-The highest-information next experiment is E02's conservative PK/unique-backed
-many-to-one relationship candidate. It changes one general mechanism, covers 91
-relationships across 67 source topics, and has an exact full-dev-A comparison
-path. A KEEP still requires the complete eligible dev-A frame and regression
-accounting; these aggregates do not establish causality by themselves.
+The highest-information relationship experiment, E02, is now terminal. It
+changed one general mechanism across 91 relationships and 67 source topics. On
+117 captured answers it moved official accuracy from matched C4's 9/117 to
+11/117, but 14 result-contract failures and five no-query transport failures
+prevented the exact full-dev-A comparison. The fixed decision is INCONCLUSIVE;
+the directional subset does not establish causality or support promotion.
 
 Every checkpoint also preserves the terminal failure vector. A move from
 `wrong_answer` to `refused_or_error` is recorded separately from an accuracy
@@ -80,7 +81,7 @@ aggregate classifications and non-private references, never hidden content.
 | HKB dependency | Nodes exist but prerequisite edges, recursion, grain, or composition are wrong | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Dependency compiler | None | Not measured under the permitted evidence boundary | Hierarchical metric composition |
 | Retrieval/discoverability | Correct modeled object is not surfaced/selected | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Topic/context/retrieval behavior | None | Not measured under the permitted evidence boundary | Agent discoverability and debugging |
 | Retrieved but misinterpreted | Correct object is selected but agent uses it incorrectly | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Model reasoning or description ambiguity | None | Not measured under the permitted evidence boundary | Description quality / reasoning support |
-| Relationship/join | Wrong or missing join path, cardinality, or entity relationship | Join present in 41/92 parseable wrong and 18/32 parseable error attempts, versus 2/9 correct; descriptive, non-exclusive | Identity-free aggregate only | 16-database eligible frame | Model relationship representation/planning | E02 selected next | Observed hypothesis | Relationship authoring and guardrails |
+| Relationship/join | Wrong or missing join path, cardinality, or entity relationship | Join present in 41/92 parseable wrong and 18/32 parseable error attempts, versus 2/9 correct; E02's captured subset moved +1.7 points official but remained INCONCLUSIVE | Identity-free aggregate only | 16-database eligible frame | Model relationship representation/planning | E02 terminal | Directional, unresolved | Relationship authoring and guardrails |
 | Metric/aggregation/grain | Wrong measure, aggregation, grouping, or grain | Aggregate present in 58/92 parseable wrong and 22/32 parseable error attempts, versus 5/9 correct; descriptive, non-exclusive | Identity-free aggregate only | 16-database eligible frame | Measure translation or reasoning | None | Observed hypothesis | Metric semantics and compiler checks |
 | Time semantics | Wrong period, boundary, timezone, or comparison window | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Temporal modeling/planning | None | Not measured under the permitted evidence boundary | First-class time semantics |
 | Filter/value/alias | Wrong business filter, value interpretation, synonym, or alias | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | HKB translation/retrieval/model reasoning | None | Not measured under the permitted evidence boundary | Search and semantic authoring ergonomics |
@@ -174,7 +175,8 @@ content, all logged 2026-08-28 onward):
   resolved by reducing dispatch concurrency (D-152).
 
 **Experiments linked to each category.** Relationship/join and
-metric/aggregation: E02 selected as the first bounded candidate, not yet run.
+metric/aggregation: E02 completed one immutable run and is INCONCLUSIVE because
+19 infrastructure capture losses prevent the fixed full-frame comparison.
 Validation/retry: D-155 recovery plus D-168-D-170 classification/fallback
 (measured baseline). HKB absent/mistransformed, HKB dependency,
 retrieval/discoverability, retrieved-but-misinterpreted, time semantics,
@@ -189,8 +191,8 @@ contract).
 
 **Highest-information next experiment.** Unchanged from the baseline analysis:
 E02's conservative PK/unique-backed many-to-one relationship candidate (91
-relationships, 16 databases, 67 source topics), run on the full eligible dev-A
-frame with regression accounting before promotion.
+relationships, 16 databases, 67 source topics) was run once and is terminal;
+its incomplete full-frame capture prevents promotion.
 
 ## 2026-08-30 checkpoint — sealed C1--C4 comparison
 
@@ -230,8 +232,28 @@ The sealed aggregate supports reliability and condition-level interpretation,
 not per-question mechanism attribution. It cannot determine which individual
 wrong answers arose from absent knowledge, retrieval, interpretation,
 compilation, or reasoning. E02 remains the one preregistered dev-A mechanism
-contrast; append its terminal failure vector and query-path delta here only
-after its unchanged run is frozen and scored.
+contrast. Its terminal failure vector and captured-answer diagnostic follow;
+they do not change the sealed result or support held-out optimization.
+
+## 2026-08-30 checkpoint — E02 captured-answer diagnostic
+
+The immutable E02 generation froze 117 answers and 19 infrastructure capture
+failures. An offline no-rerun diagnostic applied both frozen scorers to the
+captured answers and compared frozen C4 on exactly the same coordinates.
+
+| Scorer | E02 captured | Matched C4 | Difference | Full-frame logical bounds |
+| --- | ---: | ---: | ---: | ---: |
+| Official Soft EX | 11/117 (9.4%) | 9/117 (7.7%) | +1.7 points | 11/136–30/136 (8.1%–22.1%) |
+| Sensitivity | 10/116 (8.6%) | 9/116 (7.8%) | +0.9 points | 10/135–29/135 (7.4%–21.5%) |
+
+Official transitions contain four gains to correct and two regressions from
+correct. The unresolved stratum is 14 saved queries with unsupported result
+types plus five transport failures with no saved query. Treating the 14 contract
+failures as failures and only the five transport losses as potentially correct
+gives an official upper bound of 16/136 (11.8%). This localizes the dominant E02
+evaluation bottleneck to result capture, but does not establish that
+relationships improve accuracy. E02 remains INCONCLUSIVE and no further model
+attempt is permitted for the MVP.
 
 Stable artifact locations and preservation hashes are indexed in
 [`evidence-index.md`](evidence-index.md).

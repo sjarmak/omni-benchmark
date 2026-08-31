@@ -5,7 +5,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-30T19:08:00-04:00 (America/New_York). Reconciliation
+Last reconciled: 2026-08-30T21:14:51-04:00 (America/New_York). Reconciliation
 happens at material evidence gates only, not on a daily cadence.
 
 ## Current position
@@ -23,12 +23,18 @@ The sealed baseline was scored before E02 dev-A execution completed. E02 was
 selected and preregistered before those results. Its unchanged dev-A mechanism
 contrast has now completed all 136 executable attempts and is frozen at
 selection SHA-256 `7f173066…c86948`; 117 attempts answered and 19 ended in
-evaluated-system errors. Offline dual scoring is pending only because the Codex
-process does not inherit the existing operator-owned PostgreSQL scorer
-environment. The sealed aggregates may not drive an intervention edit, dev-B
+capture infrastructure errors. Five transport failures captured no semantic
+query and cannot be recovered without another model attempt. The preregistered
+complete-136 rule therefore makes E02 INCONCLUSIVE; no complete promotion score
+was published, and
+it cannot be promoted. The sealed aggregates may not drive an intervention edit, dev-B
 checkpoint, promotion decision, or optimized held-out arm. The project can
 demonstrate a disciplined optimization attempt, but cannot claim held-out
-improvement from it.
+improvement from it. A separate no-rerun diagnostic has now scored the 117
+captured answers: official E02 is 11/117 versus matched C4 at 9/117 (+1.7
+points), and sensitivity is 10/116 versus 9/116 (+0.9 points). Nineteen outcomes
+remain unresolved, so this directional result does not change the formal
+decision.
 
 Live-action authorization remains tiered by contamination risk
 (`omni-benchmark-xeg`). Public semantic deployment and validation passes are
@@ -61,14 +67,14 @@ limitation, not as system or gold failures.
 | Stage | State | Evidence or remaining exit condition |
 | --- | --- | --- |
 | Evaluation design, public manifests, splits, and Freeze A | Complete | 332 eligible questions; 154 dev-A, 77 dev-B, and 101 sealed test identities; custody boundaries and two scorers are frozen. |
-| Public C1-C3 direct baseline | Complete for the frozen baseline | Immutable generation and dev-A scoring exist. Official accuracy on the 122 scoreable-question intersection is C1 7.4%, C2 23.8%, C3 13.1%. The append-only nine-question cybermarket recovery, `omni-benchmark-dih.5.4.2.4.4.2.2.6`, is still outstanding and must not rewrite the frozen artifacts. |
+| Public C1-C3 direct baseline | Complete for the frozen baseline | Immutable generation and dev-A scoring exist. Official accuracy on the 122 scoreable-question intersection is C1 7.4%, C2 23.8%, C3 13.1%. The optional nine-question cybermarket denominator repair was cancelled unrun at the stop-after-E02 gate; the original exclusion and frozen artifacts remain unchanged. |
 | Train-only gold release | Complete | Exactly 154 dev-A records were released through custody; the complete source was removed from the host transfer area. Test gold and dev-B outcomes remain unavailable to development. |
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
-| Minimal dev-A experiment set | **E02 generation complete and frozen; scoring environment handoff pending** | Aggregate-only development analysis selected the preregistered relationship/grain intervention before sealed results were visible. Its sole immutable identity completed 136/136 attempts and froze at selection `7f173066…c86948`. Run the exact offline dual-scorer command from the established operator scorer environment, then record the mechanism decision. |
+| Minimal dev-A experiment set | **Complete; E02 INCONCLUSIVE** | Aggregate-only development analysis selected the preregistered relationship/grain intervention before sealed results were visible. Its sole immutable identity froze at selection `7f173066…c86948`. The no-rerun captured subset is 11/117 E02 versus 9/117 matched C4 under the official scorer, but 14 result-contract failures and five no-query transport failures leave the required 136-question promotion estimate incomplete. |
 | Untuned candidate and baseline Freeze B | **Complete** | Baseline system `8b0c739…`, direct-child control `94cc0d9…`, Freeze-B SHA-256 `e1c9f196…ae4730`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
 | Untuned sealed C1-C4 evaluation | **Complete and scored** | V1-v5 remain immutable and excluded. V6 has 1,068 attempts and 12 authenticated cohorts. Split-provenance scoring v10 completed once. Official aggregate `79bcfca3…8faff`; sensitivity `88dd6a71…b7eb26`; correctness-free receipt `534e28b9…b258f7`; aggregate report `884b660f…3a464`. No individual score artifact was opened. |
-| Optimized candidate and held-out arm | **Held-out arm cancelled by scoring order; dev-A contrast remains** | Run only the fixed pre-specified E02 mechanism on dev-A. Do not use sealed aggregates for intervention edits, checkpoints, promotion, or a new held-out arm. |
+| Optimized candidate and held-out arm | **Cancelled; no promoted candidate** | E02 is INCONCLUSIVE on dev-A and cannot be promoted. Do not use sealed aggregates for intervention edits, checkpoints, promotion, or a new held-out arm. |
 | Evidence preservation | **Complete** | Under closed P0 `omni-benchmark-vbt`, the public C4 baseline, sealed-final-v6, and terminal E02 roots have exact, independently verified main-workspace copies. E02 preservation covers 665 files / 5,586,131 bytes with manifest SHA-256 `d665578c…bc33a`. See the [evidence index](evidence-index.md). |
 | Results/product report | **Held-out numbers integrated; final edit remains** | `RESULTS.md` now contains both frozen scorer matrices, paired contrasts, failure analysis, product findings, and the optimization-scope limitation. Finish the concise submission-ready edit and artifact-lineage check. |
 
@@ -78,8 +84,9 @@ limitation, not as system or gold failures.
   discussed with their stated scopes and exclusions.
 - The public HKB/compiler analysis and failure-mechanism evidence are real.
 - The E01 no-op finding and E02's completed, preserved, frozen dev-A generation
-  are real; E02 correctness and the KEEP/REVERT/INCONCLUSIVE decision remain
-  unavailable until the one offline dual-scorer pass completes.
+  are real. E02 is INCONCLUSIVE because five infrastructure failures prevent
+  the preregistered complete-136 comparison. Its 117-answer matched diagnostic
+  is usable as explicitly non-promotional product evidence.
 - The sealed C1-C4 comparison is a real held-out outcome under both frozen
   scorers. Its aggregate-only report is shareable with the stated 89-question,
   16-database scope.
@@ -101,12 +108,9 @@ C4 does not improve on C1.
 
 ### Waiting on the operator now
 
-Two narrow operator actions are now listed in `docs/human-decisions.md`:
+One narrow operator action is now listed in `docs/human-decisions.md`:
 
-1. Run the already-frozen E02 offline scorer from the previously established
-   PostgreSQL scorer environment. Do not paste either DSN; return only the
-   final JSON receipt and exit status.
-2. Confirm that the transferred full source and its temporary external transfer
+1. Confirm that the transferred full source and its temporary external transfer
    directory were removed. Reply only with
    `remote cleanup status: file=0 directory=0`; retain the private 89-record
    projection.
@@ -116,9 +120,6 @@ transfer is needed.
 
 ### Agent-owned work now
 
-- After the operator-run offline scorer returns, authenticate its immutable
-  receipt and aggregate outputs, compare E02 with the frozen v8 baseline, and
-  record the preregistered mechanism decision.
 - Close the one remaining human custody confirmation while retaining the
   private 89-record projection used by the completed sealed scorer.
 - Finalize the results packet, make the reviewed submission commit, and create
@@ -126,7 +127,7 @@ transfer is needed.
 
 ### Hard stop after E02
 
-After E02 is preserved, scored, and recorded, the evaluation stops. No further
+E02 is preserved and recorded as INCONCLUSIVE, so the evaluation stops. No further
 experiment, intervention edit, dev-B checkpoint, canary, probe, rerun, or
 held-out arm may be launched. Remaining work is limited to custody closeout,
 artifact verification, report correction without new empirical claims, and the
@@ -136,8 +137,9 @@ final submission commit and tag.
 
 LODO, extensive template audits, optimizer-framework work, publication-grade
 statistical extras, comparator polish, protocol-paper expansion, and the
-cybermarket append-only recovery remain documented but out of scope. They do
-not authorize another experiment before or after submission.
+cybermarket append-only recovery remain documented but were explicitly closed
+or cancelled outside the MVP. They do not authorize another experiment before
+or after submission.
 
 ## Definition of MVP complete
 

@@ -23,7 +23,11 @@ semantic query composition.
 and tests on dev-A whether that missing mechanism changes behavior. It was fixed
 before sealed outcomes were visible, cannot become an optimized held-out arm,
 and is the final experiment. Its sole generation is complete, preserved, and
-frozen; after the one offline score and decision, experimentation stops.
+frozen, but five genuine transport failures left the preregistered 136-question
+evaluation incomplete. E02 is therefore INCONCLUSIVE and experimentation stops.
+An explicitly non-promotional diagnostic scores the 117 captured answers only:
+official accuracy moved from 9/117 for matched C4 to 11/117 for E02 (+1.7
+points), while 19 outcomes remain unresolved.
 
 ## Start here
 

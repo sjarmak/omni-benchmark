@@ -11838,3 +11838,123 @@ to regenerate E02. Keep the frozen selection, run the exact offline scorer once
 from the established operator environment, and then record the prespecified
 `KEEP`, `REVERT`, or `INCONCLUSIVE` mechanism decision. No further experiment
 or held-out arm is permitted.
+
+## 2026-08-30 — D-194: Separate publishable freeze state from local approval records
+
+### Hypothesis
+
+The final repository should retain the small, SQL-free manifests that prove
+what was frozen and scored, while keeping one-time approval consumption records
+with local run-control evidence. Treating both categories identically either
+breaks reproducibility or violates the repository rule against committing run
+artifacts.
+
+### Audit and decision
+
+The direct-baseline freeze, C4 v8 freeze, and dev-A gold-conformance receipt
+contain only public attempt identities, hashes, scorer identities, and aggregate
+counts. A recursive protected-key scan is clean. Their SHA-256 values are
+`04c75eb40c6a8bbb59af07358733b59a10d9b28787443d622fae5f31887bd725`,
+`256145c13cfae7142d92f108b4ee9dd93e658a44cafb683e5aec90170b8315cc`,
+and `d9387e4b64c8d5160648b149374c0b9f9365438e350399d788cfd3db3d0fc6e5`.
+Track these immutable state artifacts beside the already-tracked E02 freeze.
+
+The consumed C4 approval receipt is instead a one-time run-control artifact.
+Keep approval records local and append-only, and ignore
+`experiments/approvals/` so they cannot be staged accidentally. No receipt is
+deleted or rewritten, no custody or authorization semantics change, and no
+private gold, SQL, result, correctness, credential, OAuth, or lease content is
+opened or committed.
+
+## 2026-08-30 — D-195: Recover E02 capture failures before offline scoring
+
+### Hypothesis and failed score preflight
+
+The frozen E02 selection should be scoreable with the existing dev-A custody
+path once the local PostgreSQL 18 scorer environment is reconstructed. The
+operator did not create or retain separate scorer credentials: the existing
+`omni-benchmark-pg18-canary` container uses local host authentication, with
+`root` as clone administrator and `omni_benchmark_reader` as the forced
+read-only execution role. A passwordless, localhost-only preflight observed
+server version `180006` and read-only execution before any score publication.
+
+The first score invocation then stopped with no output root because the frozen
+selection contains 19 records whose `failure_origin` is
+`benchmark_infrastructure`: five `adapter_transport_error` and fourteen
+`unsupported_semantic_result_type`. This corrects D-192's description of those
+records as evaluated-system errors. The scorer properly refuses to convert an
+infrastructure classification into a candidate error merely because it is
+terminal.
+
+### Decision
+
+Do not broaden the scorer's accepted terminal classes and do not regenerate an
+answer. Use the existing hash-bound C4 result-recovery mechanism, which
+explicitly supports `e02-dev-a-c4-freeze`, against the exact frozen selection
+and exact v7 deployment. It may replay only each already-generated semantic
+query and must preserve either a recovered result or an explicit product
+contract disposition in a new append-only recovery manifest. Bind that
+manifest into the one offline score. This is correction of demonstrated
+capture infrastructure inside the terminal E02 experiment, not a new model
+run, candidate edit, or additional experiment.
+
+### Recovery result and terminal decision
+
+The exact recovery invocation created no artifact before stopping: five
+`adapter_transport_error` records contain no generated semantic query, and the
+recovery boundary correctly refuses to invent or regenerate one. The attempted
+recovery root contains zero files and no manifest. The fourteen
+`unsupported_semantic_result_type` records remain potentially query-replayable,
+but a partial overlay cannot satisfy the fixed denominator while the five
+transport failures remain unresolved.
+
+The preregistered full-dev-A rule is explicit: promotion requires complete
+evaluation on all 136 answerable questions, and any other coverage failure is
+INCONCLUSIVE. Record E02 as INCONCLUSIVE, publish no correctness estimate, and
+stop. Do not rerun the model, weaken the scorer, exclude the five failures
+post-hoc, or launch another intervention. The optimization attempt remains
+useful product evidence about capture reliability and about the difficulty of
+evaluating a governed path, but it does not establish an accuracy change.
+
+## 2026-08-30 — D-196: Quantify E02 without regenerating missing answers
+
+### Hypothesis
+
+The 117 authenticated E02 answers can support a clearly labeled diagnostic
+comparison without wasting a model rerun or weakening the preregistered rule.
+Score only those captured answers with both unchanged frozen scorers, compare
+the identical question subset against frozen C4, and report bounds that leave
+the 19 infrastructure losses unresolved. Keep the formal E02 decision
+`INCONCLUSIVE`; the diagnostic is product evidence, not a promotion score.
+
+### Result and decision
+
+The deterministic projection selected the 117 captured answers from selection
+`7f173066…c86948` without changing a generation artifact. Its private selection
+SHA-256 is `daa52096…8d6030`. The existing local PostgreSQL 18 scorer then ran
+both unchanged frozen scoring modes with no provider or model call. The raw
+score artifacts remain ignored and private; the committed aggregate-only report
+is `experiments/analysis/e02-partial-diagnostic-v1.json` (file SHA-256
+`11aef446…2fcdc`).
+
+On the exact captured subset, official E02 accuracy is 11/117 (9.4%) versus
+9/117 (7.7%) for frozen C4, a +1.7-point paired difference. Sensitivity is
+10/116 (8.6%) versus 9/116 (7.8%), +0.9 points. Official transitions contain
+four gains to correct and two regressions from correct; sensitivity contains
+three gains and two regressions. This is directional but small.
+
+Missingness is not hidden. Fourteen saved semantic queries ended at the
+unsupported-result contract and five transport failures saved no query. On the
+frozen C4 baseline those 19 coordinates were 11 refused/system-error and eight
+wrong, with no correct outcomes. The official full-136 bounds are 8.1% if every
+missing E02 outcome is wrong and 22.1% if every missing outcome is correct; a
+narrower transport-only upper bound that treats all 14 contract failures as
+failures is 11.8%. Sensitivity bounds are 7.4% to 21.5%, with an 11.1%
+transport-only upper bound.
+
+Retain the formal `INCONCLUSIVE` decision. The diagnostic does not satisfy the
+pre-specified complete-136 promotion gate, and the six official correctness
+transitions do not establish a reliable mechanism improvement. It does show
+that the relationship intervention merits future study and that result-type
+capture plus transport reliability are product/evaluation bottlenecks. Do not
+rerun E02 or start another intervention for this MVP.

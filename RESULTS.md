@@ -7,8 +7,12 @@
 > Only identity-free aggregates have left custody; no per-question correctness,
 > SQL, row, or test annotation was opened. E01 is an audited baseline no-op, and
 > E02 is the pre-specified dev-A mechanism contrast selected before sealed
-> scoring. Its sole 136-attempt generation completed and is frozen; offline
-> scoring remains pending. Because sealed aggregates became visible before E02
+> scoring. Its sole 136-attempt generation completed and is frozen, but five
+> genuine transport failures captured no semantic query and prevented the
+> preregistered complete-136 score. E02 is INCONCLUSIVE. A no-rerun diagnostic
+> on the 117 captured answers found 11 official E02 successes versus 9 for C4
+> on the identical subset (+1.7 points); it is not a promotion estimate because
+> 19 outcomes remain unresolved. Because sealed aggregates became visible before E02
 > completed, it cannot now be promoted into a held-out optimized arm; no
 > intervention edit or dev-B checkpoint may use these results. Before any sealed
 > outcome existed, the
@@ -33,7 +37,7 @@ The development partition is further divided into 154 development questions and
 77 metered validation questions. The protocol permits supervised reuse. The
 frozen mechanical candidate received no question-level supervision and consumed
 no metered checkpoint. E02 is the final experiment: a completed, frozen
-pre-specified dev-A generation whose offline score remains pending and that
+pre-specified dev-A generation whose fixed coverage gate resolved INCONCLUSIVE and that
 cannot become a held-out optimized arm after the scoring-order deviation. Four
 baseline systems separate access to raw schema,
 business knowledge, structured semantic knowledge, and governed execution.
@@ -440,9 +444,25 @@ Their reusable changes and promotion rules are recorded in
 | Experiment | Evidence completed | Decision | Remaining gate |
 | --- | --- | --- | --- |
 | E01: same-grain dependencies | The frozen baseline already has 48 dependency-bearing elements, 70 executable dependency edges, and depth three | Inconclusive; already baseline | No further E01 contrast |
-| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes; deployment v7 verified all 16 targets with exact readback; its fixed dev-A generation completed 136/136 attempts and is frozen | Score pending; pre-specified dev-A mechanism contrast with no held-out promotion permitted after sealed scoring | Run the one offline dual-scorer pass and record KEEP, REVERT, or INCONCLUSIVE |
+| E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes; deployment v7 verified all 16 targets with exact readback; its fixed dev-A generation froze 117 answers and 19 capture-infrastructure failures | INCONCLUSIVE: five genuine transport failures contain no semantic query to replay, so the preregistered complete-136 score cannot be produced without a new model attempt | Stop; no promotion, rerun, or further experiment |
 | E03: bounded descriptions | Prespecified only | Not run | Out of MVP scope after the scoring-order deviation |
 | E04: broad HKB context | Prespecified negative control only | Not run | Out of MVP scope after the scoring-order deviation |
+
+The no-rerun E02 diagnostic preserves that formal decision while extracting the
+usable evidence. Both frozen scorers were applied offline to the 117 captured
+answers; no model answer was regenerated. Official E02 accuracy was 11/117
+(9.4%) versus 9/117 (7.7%) for frozen C4 on those same coordinates, a +1.7-point
+paired difference. Sensitivity was 10/116 (8.6%) versus 9/116 (7.8%), +0.9
+points. Official transitions were four gains to correct and two regressions
+from correct. The missing 19 coordinates comprise 14 saved queries rejected by
+the result-type capture contract and five transport failures with no saved
+query. Full-frame official bounds are 11/136 (8.1%) if all missing outcomes are
+wrong and 30/136 (22.1%) if all are correct; treating the 14 contract failures
+as failures and only the five transport losses as unresolved gives an upper
+bound of 16/136 (11.8%). These wide, mechanism-dependent bounds and the small
+number of correctness transitions support further study, not a claim that E02
+improved accuracy. The aggregate artifact is
+[`e02-partial-diagnostic-v1.json`](experiments/analysis/e02-partial-diagnostic-v1.json).
 
 A fifth family, E05, was registered later against the 31 `UNKNOWN`-type contract
 failures: declare explicit output types on compiled semantic fields. Its
@@ -587,7 +607,11 @@ The untuned arm was scored before E02 dev-A execution completed, contrary to the
 ordering in the later lean optimization extension. E02 had already been
 selected and preregistered as a relationship-path mechanism contrast, and its
 general compiler change predates these results. Its fixed dev-A generation is
-complete and frozen, but its offline correctness score is not yet available.
+complete and frozen. Fourteen unsupported-result captures retained a semantic
+query, but five genuine transport failures did not; the hash-bound recovery
+path therefore could not produce a complete 136-question score. The fixed
+coverage rule resolves E02 as INCONCLUSIVE, and no correctness estimate is
+claimed.
 The sealed aggregates may not drive a new intervention edit, dev-B checkpoint,
 promotion decision, or optimized held-out arm. A correction required
 by public validator evidence subsequently generalized publication of
@@ -685,15 +709,16 @@ evidence is in [`docs/failure-taxonomy.md`](docs/failure-taxonomy.md), the
   judge outcomes can explain behavior but do not replace result-set scoring.
 - E02 passed public deployment validation and exact readback on all 16 selected
   targets, completed its sole 136-attempt dev-A generation, and froze the exact
-  output, but offline correctness scoring is still pending. Its declared
+  output. Five genuine transport failures captured no semantic query, so the
+  preregistered complete-136 scoring gate cannot be met without another model
+  attempt and E02 is INCONCLUSIVE. Its declared
   FK-backed relationships are the ingredient whose absence forced the governed
   rewrite path, which makes it a direct test of that mechanism; it is not yet
   evidence that the mechanism improves correctness, and its topics
   declare no measures, so aggregation may still be rewritten rather than
   compiled. The mechanical baseline received no question-level supervision.
-  Because held-out aggregates are now visible, E02 may only run unchanged on
-  dev-A and cannot be promoted into a sealed successor. Dev-B remains
-  unconsumed.
+  Because held-out aggregates are now visible, E02 cannot be rerun or promoted
+  into a sealed successor. Dev-B remains unconsumed.
 - The scoring-order deviation prevents a held-out claim about optimization. It
   does not alter the frozen untuned comparison because every generation was
   complete before release and both scorers were published together.
