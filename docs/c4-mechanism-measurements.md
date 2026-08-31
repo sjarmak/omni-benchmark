@@ -312,10 +312,12 @@ argument still holds under the corrected numbers, with a smaller gap.
    count built-in, and references to unpublished views. What the planner failed
    to type is predominantly the output of agent-authored SQL.
 
-3. **All governed C4 queries used the raw-SQL rewrite path.** 135 of 135
-   semantic queries set `rewriteSql: true` with hand-authored SQL; 0 declare a
-   join path. Multi-relation access is written by the agent, not resolved by the
-   planner.
+3. **All governed C4 development queries used the raw-SQL rewrite path.** 135 of
+   135 semantic queries set `rewriteSql: true` with hand-authored SQL; 0 declare
+   a join path. Multi-relation access is written by the agent, not resolved by
+   the planner. The sealed arm was later measured the same way and matches at 261
+   of 261 parseable across three repetitions; across all six governed arms the
+   figure is 661 of 661.
 
 4. **The relation-count separation is real and about half the published size.**
    Corrected means are 1.333 correct, 1.826 wrong, 2.000 error. Ordering

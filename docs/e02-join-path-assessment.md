@@ -4,6 +4,21 @@ Status: assessment. Companion to `docs/c4-query-path-disclosure.md` and
 `docs/c4-mechanism-measurements.md`. It changes no protocol surface, no scorer,
 and no frozen artifact, and it deploys nothing.
 
+> **Superseded, 2026-08-31. This is a pre-run planning document and E02 has since
+> run.** Read its forward-looking language as a record of what was decided in
+> advance, not as open questions. What happened: E02's dev-A generation completed
+> at 136 frozen attempts and is formally INCONCLUSIVE under the complete-136
+> rule, with 117 answered, 14 unsupported-result-type captures, and 5 transport
+> failures. Its captured subset moved +1.7 points official (11/117 against a
+> matched C4 9/117) and +0.9 sensitivity. The central question this document
+> poses, whether a declared join changes the path Omni's agent takes, was
+> answered decisively in the negative, and C5 rather than E02 answered it. 134 of
+> 134 parseable C5 attempts stayed on the rewrite path after a view was published
+> for every table and a join for every qualifying foreign key. One arithmetic error
+> below is left in place and corrected here: the text says "if the rewrite rate
+> stays at 135 of 135", which is the dev-A C4 baseline denominator, not E02's.
+> E02's own figure is 131 of 131 parseable.
+
 Evidence boundary: the committed E02 compiler and deployment code at HEAD
 `94cc0d9`, the committed public bundle specs, HKB IR, schema IR, and mapping IR,
 the immutable v8 generation records, the frozen official score envelope, and the

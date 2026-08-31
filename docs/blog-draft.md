@@ -15,16 +15,20 @@ lot, worth 12 percentage points of accuracy. Compiling those same definitions
 into a governed semantic model and routing queries through the product gave back
 the entire gain, and cost about four times as many tokens to do it.
 
-The run records also show why, and the why matters more than the score. The
-governed system never used the semantic layer to build a query. It wrote its own
-SQL every single time, because the model we deployed did not contain enough
-structure for it to do anything else.
+The run records show something the score cannot. The governed system never used
+the semantic layer to build a query. We inspected 661 governed queries across six
+separate deployments, and every one carried a hand-written SQL rewrite while none
+declared a join through the model.
 
-Which means the interesting experiment is the one we are running now rather than
-the one we finished. C5 deploys the same public knowledge the way the product's
-documentation says to deploy it, with joins and full context, and asks whether
-the governed rung recovers the accuracy. That arm is in deployment as we write
-this, and the last section of this post is where its numbers will go.
+Our first explanation was that the model we deployed did not contain enough
+structure for it to do anything else. So we built one that did. C5 deploys the
+same public knowledge the way the product's documentation says to deploy it, with
+a view for every table and a join for every qualifying foreign key, roughly six
+times the model. Accuracy went up. The rewrite rate stayed at 100%.
+
+So the fallback is not a coverage problem, or at least not only one. Whether the
+agent has a compiled path available and whether it takes that path are two
+different things, and this post ends on the second.
 
 ## Why this is hard to measure
 
@@ -269,12 +273,12 @@ Three claims we will not make:
 - The frame covers 89 of 101 held-out questions on 16 of 18 databases, so it is
   not a full-benchmark number.
 
-## What we are running now: C5
+## The arm that tests our own explanation: C5
 
-The study leaves one question open by construction. We measured a governed
-deployment whose model had almost no structure in it, so we cannot tell whether
-the governed rung fails as a design or failed here as a deployment. C5 is the arm
-that separates those.
+The four-condition study leaves one question open by construction. We measured a
+governed deployment whose model had almost no structure in it, so on that
+evidence alone we could not tell whether the governed rung fails as a design or
+failed here as a deployment. C5 is the arm that separates those, and we ran it.
 
 C5 is built by a second compiler from the same public inputs, deployed the way
 Omni's own documentation prescribes rather than the way a refuse-to-guess
@@ -305,8 +309,9 @@ condition can be scored on identical questions.
 
 ### Getting it deployed has been its own finding
 
-Four passes so far, all preserved rather than tidied away, because each failure
-is a property of writing a semantic model to this product.
+Eight passes, all preserved rather than tidied away, because each failure is a
+property of writing a semantic model to this product. The first four are where
+the product findings came from.
 
 The first pass failed on 21 views whose CamelCase table names the product renames
 on creation. The second reached 8 of 16 databases and then the process that owned
@@ -356,8 +361,11 @@ We said a null result would not let us choose between the two readings. We
 didn't have to choose: the query-path data decided it. C5's accuracy gain is
 real and it is not composition. The semantic model made the agent's hand-written
 SQL better by being better context, which is worth something and is not the
-product premise. Roughly 45% of the C4-to-C2 gap closed. The rest is still
-sitting behind a compilation pipeline that captured 193 of 1,090 definitions.
+product premise. About a third of the C4-to-C2 gap closed: 8 of the 24 correct
+answers separating them under the official scorer, 6 of 22 under the sensitivity
+scorer. Two-thirds of it survives a model built to the product's own documented
+shape, so compilation coverage does not explain the remainder either, even though
+the pipeline captured only 193 of 1,090 definitions.
 
 Phase two is the experiment that separates the last question: add measures,
 resolve grain, and check whether a declared join path ever appears. If the

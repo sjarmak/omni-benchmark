@@ -1,8 +1,13 @@
 # Harness and scaffold disclosure
 
-Status: frozen for Freeze A. No scaled baseline has been launched and no private
-label has been accessed. Unknown values below are blockers for the condition-specific
-telemetry smoke test, not values to infer or fill retrospectively.
+Status: frozen for Freeze A. The sentences below are the state as recorded at
+freeze time, including "no scaled baseline has been launched and no private label
+has been accessed" and the treatment of unknown values as blockers for the
+condition-specific telemetry smoke test rather than values to infer or fill
+retrospectively. Scaled generation has since run to completion. Statements
+falsified by later measurement are marked in place and answered in the addenda at
+the end of this document; the frozen text itself is not rewritten. No private
+label has been accessed at any point.
 
 Freeze A remains the historical protocol state recorded at commit
 `7d39ee107338da1ce10e2553a4290e64bfc2f892` (metadata record commit
@@ -21,7 +26,7 @@ implementations actually isolate governed enforcement with model parity.
 | Property | C1 raw-schema SQL | C2 HKB-reference SQL | C3 Omni-model-reference SQL | C4 governed Omni |
 | --- | --- | --- | --- | --- |
 | Intended role | Competent direct-SQL baseline | Direct SQL with searchable business knowledge | Direct SQL with searchable structured semantic model | Production-default governed product |
-| Provider/model/version | Claude Code adapter 2.1.250 through `anthropic_claude_code_oauth`, requesting `claude-opus-5`; realized model telemetry is recorded per attempt | Same as C1 | Same as C1 | Managed production selection; two public C4 probes reported Bedrock `claude-opus-5`, but stage/model stability across scaled runs remains unproven |
+| Provider/model/version | Claude Code adapter 2.1.250 through `anthropic_claude_code_oauth`, requesting `claude-opus-5`; all 267 sealed attempts realized that one identity | Same as C1 | Same as C1 | Managed production selection. Across the 267 sealed attempts, 264 realized Bedrock `claude-opus-5`, one a `claude-opus-5`/`claude-sonnet-5` composite, and two `managed-unobservable`. No arm reports a model version, so weight-level parity between runs is unverifiable (PF-015) |
 | System instructions | Operative provider system prompt is code-bound; committed `direct-sql-v1.json` is non-operative policy metadata | Same operative provider prompt and condition-specific tool schema | Same operative provider prompt and condition-specific tool schema | Production agent instructions; export only if observable and permitted |
 | Available tools | Schema discovery, database query/execute, bounded error recovery | C1 plus database-level HKB search/get | C1 plus exported semantic-model search/get | Production Omni agent tools and governed query workflow |
 | Knowledge at runtime | Public schema/column metadata | Public schema plus database-level HKB; no hidden knowledge IDs | Public schema plus Omni model derived from public schema/HKB; no hidden knowledge IDs | Same public knowledge encoded in the governed model; no hidden knowledge IDs |
@@ -32,7 +37,7 @@ implementations actually isolate governed enforcement with model parity.
 | Compiler/query path | Agent emits SQL | Agent emits SQL | Agent emits SQL | Omni's production agent emits SQL through the product's raw-SQL rewrite path. All 135 development-baseline semantic queries carry `rewriteSql: true` with agent-authored SQL in `userEditedSQL`; none declares a join path. The SQL is written in Omni's `${view.field}` reference syntax over compiled views and resolved by Omni against the deployed model. `generated_sql` is recorded as `null` by design; the executed SQL is the semantic query's `userEditedSQL` |
 | Validation | Database execution/error handling only | Same | Same | Production validation behavior included |
 | Token/time ceilings | Claude Code 2.1.250 exposes no supported input/output-token ceiling; each turn is limited to 120 seconds, USD 1 provider cost, and 12 total turns | Same | Same | Production defaults where immutable; disclose any mismatch |
-| Current implementation state | Public context, pinned provider, attested PostgreSQL, bounded retrieval, capture, publisher, committed database bindings, and executable driver pass synthetic/adversarial tests and an exact-commit authenticated smoke | Same, including live searchable public HKB and dependency-closure provenance | Same, including live searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the exact-commit capture rerun preserved full telemetry on its deliberately unscoreable truncated result; scorer-type parity remains pending |
+| Current implementation state | Public context, pinned provider, attested PostgreSQL, bounded retrieval, capture, publisher, committed database bindings, and executable driver pass synthetic/adversarial tests and an exact-commit authenticated smoke | Same, including live searchable public HKB and dependency-closure provenance | Same, including live searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the exact-commit capture rerun preserved full telemetry on its deliberately unscoreable truncated result; scorer-type parity remains pending (superseded 2026-08-31, see [Addendum: result-type parity is closed](#addendum-2026-08-31-result-type-parity-is-closed)) |
 
 Exact prompts, tool manifests, model identifiers, configuration hashes, retry
 ceilings, and version fingerprints are Freeze B artifacts. C1-C3 must be made
@@ -210,11 +215,22 @@ classifying prose heuristically.
 
 Complete token reports contain non-null input/output/total counts that reconcile.
 Attempt latency must match its start/end timestamps. Refused or errored attempts
-identify the evaluated-system origin and a terminal failure class. Complete,
-untruncated `trace-event-v2` traces reconcile token, tool-call, database-query,
-retry, and validation totals to the attempt envelope; truncated traces carry an
-explicit degraded reason. A count remains null if the provider does not expose
-enough event data to reconcile it.
+carry a `failure_origin` and a terminal failure class. The origin is assigned by
+rule, not determined from evidence: `_failure_ownership` in `omni_attempt.py`
+labels `omni_job_terminal_failure` as `evaluated_system` and every other class as
+`benchmark_infrastructure`. That rule is deliberately conservative, since it
+never credits the evaluated system with a failure it might not own, but it means
+the field records a policy rather than a diagnosis. Sealed C4 `failure_origin`
+values are therefore `benchmark_infrastructure` for 36 of the 38 non-answers and
+`evaluated_system` for the remaining 2. Anything finer, in particular whether an
+`unsupported_semantic_result_type` reflects our closed type set or the governed
+system's contract, has to be argued from the class and not read off this field.
+See the bounded reanalysis in RESULTS.md §6, which computes every result under
+both readings rather than resolving the question here. Complete, untruncated
+`trace-event-v2` traces reconcile token, tool-call, database-query, retry, and
+validation totals to the attempt envelope; truncated traces carry an explicit
+degraded reason. A count remains null if the provider does not expose enough
+event data to reconcile it.
 
 The C1-C3 capture core owns tool dispatch rather than trusting provider-reported
 tool totals. Each capture writes an immutable receipt binding the attempt ID,
@@ -273,8 +289,19 @@ integrity checks, not as the scoring value: CSV would erase number, boolean, and
 null types. The adapter reruns the selected semantic query through Omni's query
 endpoint with raw JSON results, formatting disabled, cache disabled, and the same
 semantic-model branch, then preserves those JSON values without coercion in the
-hash-bound result sidecar. It records unrecognized completed responses as
-`response_contract_error` and never guesses SQL from prose.
+hash-bound result sidecar. It never guesses SQL from prose.
+
+`response_contract_error` is broader than "unrecognized completed response". In
+`omni_capture.py` it is the terminal class for any `OmniCaptureError` or
+`OmniResultContractError` raised while capturing a job, and it is also the class
+recorded when a provider response is rejected outright and replaced by a
+`forbidden-provider-response` digest. So it covers a malformed or unexpected
+result envelope, a capture-time failure to observe the job at all, and a response
+refused on content grounds before it was read. All three end the attempt with no
+answer and are recovery-eligible, but they are different events, and the class
+alone does not say which one occurred. The four sealed C4 attempts carrying this
+class have not been separated further, because doing so means reading per-attempt
+capture material.
 
 Raw JSON preserves JSON primitive distinctions in the envelope, but the first
 live semantic canary showed that it does not necessarily preserve semantic field
@@ -284,7 +311,9 @@ strings. The adapter does not heuristically coerce strings. Before scaled
 execution, scorer parity must prove consistent predicted/gold normalization or
 the capture path must adopt a result transport with authoritative field-type
 metadata. This is now an observed scale blocker, not only a theoretical
-limitation.
+limitation. (Superseded 2026-08-31: the capture path adopted the second option.
+See [Addendum: result-type parity is
+closed](#addendum-2026-08-31-result-type-parity-is-closed).)
 
 The API exposes query actions clearly enough to count governed database queries.
 The additional raw-JSON semantic-query replay is evaluator-side result transport:
@@ -360,7 +389,9 @@ The validated smoke bundle binds generation hashes
 `f1c8ab9c97d5a15df5030ebc0661803aa274fe7123bca0bd8995b8af43bcc46c`,
 and `86814a6b5264cacc49d0ade910416b6521e4ab26f561819bfaa3701346914494`
 for C1-C4 respectively. Scorer/result-type parity remains a separate execution
-gate; capture no longer blocks scaled public-only generation.
+gate; capture no longer blocks scaled public-only generation. (Superseded
+2026-08-31: that gate is closed. See [Addendum: result-type parity is
+closed](#addendum-2026-08-31-result-type-parity-is-closed).)
 
 ## AI Hub diagnostic boundary
 
@@ -391,3 +422,50 @@ population. C4 admits at most five concurrent database-condition blocks.
 Wall-clock stopping is applied only at block boundaries: already-started
 database/C4 blocks finish, while unstarted blocks remain resumable. Managed C4
 dollar cost is recorded when observable but does not select or truncate the arm.
+
+## Addendum 2026-08-31: result-type parity is closed
+
+This addendum is prospective. The Freeze A text above is left as recorded, and
+three of its statements are marked in place as superseded by this section: the
+C4 "Current implementation state" cell, the "observed scale blocker" paragraph in
+the reference-implementation audit, and the "separate execution gate" sentence in
+the capture verification gate. No measured value, scorer version, artifact hash,
+or protocol surface changes here; only the description of a gate that has since
+closed.
+
+**What closed it.** The typed result path landed on 2026-08-29 and takes Omni's
+plan-only response as the sole type authority. `_planned_data_types`
+(`src/omni_benchmark/omni_result_adapter.py`) requires a `PLANNED` status, empty
+`missing_fields` and `invalid_calculations`, and exact ordered agreement between
+the model job's fields and the semantic query's fields. `_typed_cell` converts
+strictly by declared `data_type` and never infers a type from how a string looks,
+which is what the live canary had shown to be unsafe: a count measure came back
+as a JSON string while its grouping field stayed boolean. Typed cells persist in
+the hash-bound sidecar and decode through `decode_result_artifact_rows` into
+Python values that reach the same frozen normalizers as the Psycopg-typed gold
+rows. Parity is therefore structural rather than asserted; the capture path
+adopted a transport with authoritative field-type metadata, which is the second
+of the two options the superseded paragraph named.
+
+**Evidence it holds end to end.** C4 dev-A scoring completed over 154 scheduled
+questions: 136 scoreable, 18 fixed unscorable, 9 correct, 93 wrong, 34 refused or
+system error. The official artifact is SHA-256
+`57d45346de0a98384207d350f163dfcf812e677cf3719b4a3008b5e0f3f222d8`; the
+sensitivity artifact is
+`af333cc78bde8827dfd5f6b092b5c319492ba7554c9c18ed40710ca26d6d4251`, reporting 9
+correct, 93 wrong, and 33 refused or system error over 135 scoreable attempts.
+
+**Unknown planner types fail closed, and that is a policy with a measured cost.**
+`SUPPORTED_OMNI_RESULT_TYPES` is a closed set of seven: `BOOLEAN`, `DATE`,
+`JSON`, `NUMBER`, `STRING`, `TIMESTAMP`, `YESNO`. Any other declared type raises
+`OmniUnsupportedResultTypeError` and the attempt becomes an evaluated-system
+failure rather than being coerced. On dev-A this is not free. Append-only
+recovery v5 (manifest SHA-256
+`5d6ff474f30d3de6d703ad5c6c59373fe8093515eabb83473bdb352c4f30fd9f`) replayed the
+45 capture failures without regenerating any answer: 11 yielded typed results and
+34 remained terminal. Of those 34, aggregate-only classification attributes 31 to
+an unknown planner result type, 1 to a completed job with no parseable query, and
+2 to a persistent plan rejection. Thirty-two of the 34 still carry parseable
+governed SQL, so generation succeeded and the result contract failed downstream.
+This depresses C4 accuracy by construction and is disclosed as a deliberate
+fail-closed choice, not as an open gate.

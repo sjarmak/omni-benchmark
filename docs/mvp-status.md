@@ -145,10 +145,10 @@ E02 is preserved and recorded as INCONCLUSIVE. The stop rule stated after it
 (D-191) was superseded on 2026-08-30 by operator directive D-197, which
 authorized exactly one further development condition, C5, and nothing else. No
 intervention edit, dev-B checkpoint, rerun, or held-out arm may be launched, and
-C5 itself cannot be promoted into a sealed successor. Remaining work is C5's
-single generation and scoring, custody closeout, artifact verification, report
-correction without new empirical claims, and the final submission commit and
-tag.
+C5 itself cannot be promoted into a sealed successor. C5's single generation and
+scoring have since completed. Remaining work is custody closeout, artifact
+verification, report correction without new empirical claims, and the final
+submission commit and tag.
 
 ### Non-critical-path or deferred work
 

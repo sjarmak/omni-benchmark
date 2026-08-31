@@ -6,11 +6,31 @@ scoring, and report rendering. Read this before touching `runs/sealed-final-v6`
 again. V1 through v5 all died between generation and a scored result; this
 document exists so v6 (or its successor) does not repeat the same five bugs.
 
-Reference commit for everything below: control commit
-`94cc0d9483c944d7dc13ed651c8fc2ef077f33ab`, system commit
-`8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d`, Freeze B
-`experiments/freeze-b-v7.json`. 89 questions x 4 conditions x 3 repetitions =
-1068 scheduled attempts, 12 cohorts.
+**Status: sealed-final-v6 finished on 2026-08-30 and was scored once.** This
+document is kept as the operator reference for a successor run, not as a live
+procedure. Two things changed after it was written, and both are reflected in the
+commands below.
+
+First, the freeze split. Sections 1 through 6 were written when a single Freeze B
+value served both the generation-artifact check and the control check. Commits
+`dd07c5b` and `0a5aee4` separated them, so scoring now binds two freezes: the
+**generation** freeze `experiments/freeze-b-v7.json` and the **scoring** freeze
+`experiments/freeze-b-v10.json`. The full series is in
+[`freeze-b-lineage.md`](freeze-b-lineage.md).
+
+Second, `--test-ids`. Release and scoring both defaulted to the original
+101-question `data/manifests/test_ids.txt`, which Freeze B never froze. Both now
+take `--test-ids` explicitly and it must be `sealed_mvp_ids.txt`.
+
+Reference bindings:
+
+| Role | Control commit | System commit | Freeze B |
+| --- | --- | --- | --- |
+| Generation (steps A, and the `--generation-*` half of C) | `94cc0d9483c944d7dc13ed651c8fc2ef077f33ab` | `8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d` | `experiments/freeze-b-v7.json` |
+| Release and scoring control (steps B and C) | `fe4660df8dacdca07da310ddfda4158b82895ba9` | `0a5aee423b4a0d5bb396b3d9764f8e9e24f31254` | `experiments/freeze-b-v10.json` |
+
+89 questions x 4 conditions x 3 repetitions = 1068 scheduled attempts, 12
+cohorts.
 
 ## 1. What actually happens after the last attempt
 
@@ -72,13 +92,18 @@ uv run python sealed_tools/release_sealed_test.py \
   --source <external private gold JSONL, outside the workspace> \
   --destination data/private/test/labels.jsonl \
   --expected-source-sha256 <sha256 of that external source file> \
-  --control-commit 94cc0d9483c944d7dc13ed651c8fc2ef077f33ab \
-  --system-commit 8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d \
-  --freeze-b experiments/freeze-b-v7.json \
+  --control-commit fe4660df8dacdca07da310ddfda4158b82895ba9 \
+  --system-commit 0a5aee423b4a0d5bb396b3d9764f8e9e24f31254 \
+  --freeze-b experiments/freeze-b-v10.json \
   --schedule data/final-schedule.jsonl \
   --public-manifest data/manifests/eligible_questions.jsonl \
+  --test-ids data/manifests/sealed_mvp_ids.txt \
   --release-sealed-test
 ```
+
+`--test-ids` is required and must name the 89-question sealed frame. Omitting it
+used to fall back to the 101-question `data/manifests/test_ids.txt`, which is not
+the frame Freeze B froze.
 
 Without `--release-sealed-test` it refuses to run. Verifies the plan matches
 Freeze B, derives the exact 89 test instance IDs from the plan (not from any
@@ -93,13 +118,23 @@ rejected before any file is touched.
 ```
 uv run python sealed_tools/score_sealed_evaluation.py \
   --workspace /home/ds/projects/omni-benchmark \
-  --control-commit 94cc0d9483c944d7dc13ed651c8fc2ef077f33ab \
-  --system-commit 8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d \
-  --freeze-b experiments/freeze-b-v7.json \
+  --control-commit fe4660df8dacdca07da310ddfda4158b82895ba9 \
+  --system-commit 0a5aee423b4a0d5bb396b3d9764f8e9e24f31254 \
+  --freeze-b experiments/freeze-b-v10.json \
+  --generation-control-commit 94cc0d9483c944d7dc13ed651c8fc2ef077f33ab \
+  --generation-system-commit 8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d \
+  --generation-freeze-b experiments/freeze-b-v7.json \
   --schedule data/final-schedule.jsonl \
   --public-manifest data/manifests/eligible_questions.jsonl \
+  --test-ids data/manifests/sealed_mvp_ids.txt \
   --cohort-root runs/sealed-final-v6/cohorts
 ```
+
+The three `--generation-*` arguments check the cohort artifacts against the
+freeze they were produced under; the plain `--control-commit`,
+`--system-commit`, and `--freeze-b` bind the system doing the scoring. They point
+at different freezes on purpose, and passing one freeze for both is the defect
+that stalled scoring on 2026-08-30.
 
 No `--execute-sealed-scoring` means this only authenticates all twelve
 cohorts against the plan and Freeze B and prints
@@ -112,11 +147,15 @@ Then, to actually score:
 ```
 uv run python sealed_tools/score_sealed_evaluation.py \
   --workspace /home/ds/projects/omni-benchmark \
-  --control-commit 94cc0d9483c944d7dc13ed651c8fc2ef077f33ab \
-  --system-commit 8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d \
-  --freeze-b experiments/freeze-b-v7.json \
+  --control-commit fe4660df8dacdca07da310ddfda4158b82895ba9 \
+  --system-commit 0a5aee423b4a0d5bb396b3d9764f8e9e24f31254 \
+  --freeze-b experiments/freeze-b-v10.json \
+  --generation-control-commit 94cc0d9483c944d7dc13ed651c8fc2ef077f33ab \
+  --generation-system-commit 8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d \
+  --generation-freeze-b experiments/freeze-b-v7.json \
   --schedule data/final-schedule.jsonl \
   --public-manifest data/manifests/eligible_questions.jsonl \
+  --test-ids data/manifests/sealed_mvp_ids.txt \
   --cohort-root runs/sealed-final-v6/cohorts \
   --release data/private/test/labels.jsonl \
   --expected-release-sha256 <sha256 printed by step B's "output_sha256"> \
@@ -174,39 +213,33 @@ transitively, from:
   `_require_exact_control_checkout` call at `sealed_test_release.py:104`
   (clean tree required).
 
-So: **plan loading and dispatch/continuation need HEAD to equal `94cc0d9...`
-and nothing else** — a dirty tracked tree does not block them.
-**Test-label release and scoring need HEAD equal to `94cc0d9...` AND a fully
-clean tracked tree.** `sealed_report.py` has no HEAD dependency at all; it is
-the only finish-line step safe to run after HEAD moves.
+So: **plan loading and dispatch/continuation need HEAD to equal the generation
+control commit and nothing else** — a dirty tracked tree does not block them.
+**Test-label release and scoring need HEAD to equal the scoring control commit
+AND a fully clean tracked tree.** `sealed_report.py` has no HEAD dependency at
+all; it is the only finish-line step safe to run after HEAD moves.
 
-**Right now**: HEAD is `94cc0d9...` (confirmed), but `git status --porcelain
---untracked-files=no` is **not** empty — `.beads/issues.jsonl`, `RESULTS.md`,
-`docs/failure-taxonomy.md`, `docs/human-decisions.md`,
-`docs/livesqlbench-upstream-loader-report-draft.md`, `docs/mvp-status.md`,
-`docs/protocol-diff.md`, `docs/research-log.md`,
-`experiments/analysis/wrong_answer_structure.py`,
-`src/omni_benchmark/e02_experiment_cli.py`, `tests/test_e02_experiment_cli.py`,
-and `tests/test_wrong_answer_structure.py` are all modified and tracked. This
-means **step B and step C will fail their preflight today**, even though
-generation/continuation would not be blocked by it. The untracked new files
-(`experiments/approvals/`, `experiments/autoresearch/`,
-`src/omni_benchmark/claude_lease_preflight.py`, etc.) do not count against the
-check (`--untracked-files=no`), only tracked modifications do.
+That constraint is what shaped the v8-to-v10 sequence, and the resolution is the
+part worth carrying to a successor run. Generation finished bound to v7 at
+control `94cc0d9`. Scoring then needed a fix to `sealed_evaluation.py`, which
+moves HEAD, which breaks the HEAD-equals-control check. The trap is that the
+obvious workarounds both fail: committing the fix moves HEAD away from the
+generation control commit, and not committing it leaves the tree dirty, so
+release and scoring refuse to run either way.
 
-**Do not fix this by committing to main.** Committing any of those tracked
-changes moves HEAD away from `94cc0d9...` and breaks every one of the four
-steps above, including the ones currently unblocked. The only way to reach a
-clean tree without moving HEAD is `git stash` the tracked changes immediately
-before step B/C and restore the stash immediately after, or run steps B/C from
-a separate worktree/clone checked out exactly at `94cc0d9...` with nothing
-else changed.
+What actually worked was to stop treating one freeze as two things. Record a new
+Freeze B over the corrected scoring system (v8, then v10 after v9 was rejected),
+bind the cohort artifacts to the generation freeze and the running system to the
+scoring freeze, and pass both. The `--generation-*` arguments exist for exactly
+this. Run release and scoring from a clean worktree checked out at the scoring
+control commit; the v10 preflight used `/tmp/omni-benchmark-sealed-v10-preflight`.
 
-**It becomes safe to commit to main only after step C has published its
-`receipt.json`** (both aggregates immutable, hash-verified, on disk). Before
-that, any commit blocks or corrupts the remaining finish-line steps. After
-that, generation/continuation is moot (already done) and only report
-rendering (HEAD-independent) remains, so HEAD can move freely.
+Two rules survive from the original version of this section. Do not stash and
+restore around a live scoring step, because a stash is not a record and nothing
+in the receipt would show it happened. Do not commit unrelated working-tree
+changes to reach a clean tree; move the scoring system forward deliberately and
+record a freeze over it, so the commit that cleans the tree is the same commit
+the freeze names.
 
 ## 4. Continuation procedure, if the live run stops again
 
@@ -324,14 +357,17 @@ class after job completion (v3/v4/v5-shape) in C4.
 
 ## 6. Pre-flight checklist before touching anything
 
-- [ ] `git -C /home/ds/projects/omni-benchmark rev-parse HEAD` equals
-      `94cc0d9483c944d7dc13ed651c8fc2ef077f33ab`. If not, stop — every
-      finish-line step will refuse.
-- [ ] For dispatch/continuation only: no other check needed beyond HEAD.
-- [ ] For test-release or scoring: `git -C /home/ds/projects/omni-benchmark
-      status --porcelain --untracked-files=no` is empty. If it is not
-      (it currently is not), `git stash` the tracked changes first and
-      restore them after — never commit to clear this, it moves HEAD.
+- [ ] For dispatch or continuation: `git -C /home/ds/projects/omni-benchmark
+      rev-parse HEAD` equals the **generation** control commit
+      (`94cc0d9483c944d7dc13ed651c8fc2ef077f33ab` for v6). A dirty tracked tree
+      does not block these steps; nothing else is checked beyond HEAD.
+- [ ] For test-release or scoring: HEAD equals the **scoring** control commit
+      (`fe4660df8dacdca07da310ddfda4158b82895ba9` for v6) and `git status
+      --porcelain --untracked-files=no` is empty. Get there with a dedicated
+      worktree checked out at that commit, the way the v10 preflight used
+      `/tmp/omni-benchmark-sealed-v10-preflight`. Do not stash around a live
+      scoring step: a stash leaves no record, so nothing in the receipt would
+      show the tree was altered to pass.
 - [ ] `ls runs/sealed-final-v6/cohorts` — if all twelve `c<N>-r<N>` directories
       exist, generation and finalization are already done; skip straight to
       step 2's Step B/C.

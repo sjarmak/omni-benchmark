@@ -113,16 +113,26 @@ before acquiring any database:
 - C1 has no semantic-model content hash, while C3 and C4 require one;
 - twelve test-only run manifests cover C1-C4 and repetitions 1-3, and each
   matches the frozen system, schedule, configuration, and semantic-model hash;
-- the committed schedule has exactly 1,212 unique attempt IDs and matches its
-  Freeze B digest;
-- the frozen generation has exactly that attempt set, with 101 records bound to
+- the committed schedule has exactly `Q x 4 x 3` unique attempt IDs and matches
+  its Freeze B digest;
+- the frozen generation has exactly that attempt set, with `Q` records bound to
   each run manifest and matching generation, run-manifest, and record hashes;
 - the sealed gold records have exactly that attempt set.
+
+`Q` is the number of question IDs in the released manifest, not a constant.
+`_validate_plan` derives every count from it: `expected_outputs` and the
+per-cohort size are both computed from the list `--test-ids` names
+(`sealed_execution_plan.py:425-446`). At the full 101-question test set that is
+1,212 attempts in twelve cohorts of 101; the executed MVP passed
+`data/manifests/sealed_mvp_ids.txt`, so `Q = 89` and the frame is 1,068 attempts
+in twelve cohorts of 89. Every command below must pass `--test-ids` explicitly.
+The default is the 101-question `data/manifests/test_ids.txt`, and Freeze B
+never froze that file.
 
 Provenance failures occur before the gold collection is read. Only after all
 bindings pass does the evaluator validate the gold records and score attempts,
 in committed schedule order, under both policies. This is the mechanical
-boundary behind “generate all 1,212 outputs before scoring any.” The production
+boundary behind “generate every output before scoring any.” The production
 evaluator writes one immutable score artifact per policy and cohort, preserving
 generation-file and per-record hash bindings. An infrastructure failure blocks
 score-artifact materialization until the preregistered rerun procedure resolves
@@ -138,17 +148,29 @@ counts and hashes:
 ```bash
 uv run python sealed_tools/score_sealed_evaluation.py \
   --workspace "$PWD" \
-  --control-commit "<full-F-commit>" \
-  --system-commit "<full-S-commit>" \
-  --freeze-b experiments/freeze-b.json \
+  --control-commit "<full-scoring-F-commit>" \
+  --system-commit "<full-scoring-S-commit>" \
+  --freeze-b "<scoring-freeze-b>" \
+  --generation-control-commit "<full-generation-F-commit>" \
+  --generation-system-commit "<full-generation-S-commit>" \
+  --generation-freeze-b "<generation-freeze-b>" \
   --schedule data/final-schedule.jsonl \
   --public-manifest data/manifests/eligible_questions.jsonl \
+  --test-ids data/manifests/sealed_mvp_ids.txt \
   --cohort-root runs/sealed-final
 ```
 
-After all 1,212 generations are frozen and a separate human custody action is
+Scoring binds two freezes, not one. The `--generation-*` triple names the freeze
+the cohorts were produced under; the unprefixed triple names the freeze the
+running scorer belongs to. They are the same values only when the scoring system
+never moved after generation. Separating them is what lets a scoring-side fix
+land without invalidating cohorts that are already on disk; the v6 run needed
+exactly that, and the sequence is in
+[`sealed-finish-runbook.md`](sealed-finish-runbook.md).
+
+After every generation is frozen and a separate human custody action is
 authorized, the custodian transfers the complete private attachment to an
-external path and projects only the 101 committed test records. The source stays
+external path and projects only the released test records. The source stays
 outside the repository; the canonical release is ignored and mode 0600. The
 command refuses overwrite, a changed source hash, any Freeze-B/control mismatch,
 or any destination other than `data/private/test/labels.jsonl`:
@@ -321,8 +343,13 @@ uv run python sealed_tools/plan_sealed_generation.py \
   --system-commit "<full-S-commit>" \
   --freeze-b experiments/freeze-b.json \
   --schedule data/final-schedule.jsonl \
-  --public-manifest data/manifests/eligible_questions.jsonl
+  --public-manifest data/manifests/eligible_questions.jsonl \
+  --test-ids data/manifests/sealed_mvp_ids.txt
 ```
+
+`--test-ids` is the one argument here that defaults rather than failing closed,
+and its default is the 101-question set. Pass it explicitly or the plan silently
+describes a different frame from the one dispatch and scoring will use.
 
 The planner reads only Git objects: Freeze B from `F`, then the registered
 schedule, committed test identities, and public eligible-question manifest from
@@ -334,8 +361,8 @@ before the planner interprets their identity, database, or question fields.
 The in-memory plan contains only attempt and cohort identities, condition,
 repetition, database, and a SHA-256 of the public question. Its CLI prints only
 hashes and aggregate counts—never the seed, question text, or test identities.
-It requires all 1,212 unique coordinates and the twelve 101-attempt condition ×
-repetition cohorts, and binds its own loaded source to `S`. This command neither
+It requires all `Q x 4 x 3` unique coordinates and twelve condition ×
+repetition cohorts of `Q` each, and binds its own loaded source to `S`. This command neither
 authorizes nor performs held-out generation; dispatch remains a separately
 authorized post-Freeze-B operation.
 
@@ -368,12 +395,12 @@ dispatch, contact a provider, emit a run manifest, score, or read gold.
 
 `omni_benchmark.sealed_cohort_finalization` turns staged attempts into the exact
 twelve generation/run pairs expected by the sealed batch gate. For one condition
-and repetition, it selects the 101 plan rows in committed schedule order,
+and repetition, it selects that condition's `Q` plan rows in committed schedule order,
 re-prepares each row from the exact public question, and reconciles its private
 attempt envelope. Any missing, conflicting, cross-plan, or invalid attempt blocks
 the whole cohort.
 
-The finalizer concatenates the 101 canonical generation records in schedule
+The finalizer concatenates those `Q` canonical generation records in schedule
 order, derives the generation SHA-256, derives the cohort start/finish bounds
 from those records, and constructs `SealedRunManifest` exclusively from the
 matching Freeze-B condition plus explicit software/CLI versions. It writes
@@ -384,14 +411,14 @@ both files are byte-identical to the recomputed outputs.
 
 Finalization is offline and per-cohort. It neither decides whether an attempt may
 run nor accesses gold or correctness. Scoring remains blocked until all twelve
-cohorts exist and the separate batch gate validates all 1,212 records.
+cohorts exist and the separate batch gate validates every record.
 
 ### Production authorization
 
 Sealed generation has a receipt type separate from the public C4 baseline gate.
 The canonical, mode-0600 receipt binds exactly one decision response to the
 frozen system/control commits, Freeze-B/plan/schedule hashes, all four
-conditions, 1,212 attempts, output root, runtime-source-set hash, complete
+conditions, the full attempt count, output root, runtime-source-set hash, complete
 concurrency/wall/cost policy hash, and explicit cost ceiling. Its validity window
 is at most one hour.
 
@@ -419,8 +446,8 @@ Each adapter must expose the complete matching `FreezeBCondition` identity befor
 any attempt is called. A bounded worker pool enforces at most one in-flight
 attempt per database and stops admitting work at the approved wall deadline.
 Completed evaluated-system outcomes are staged atomically; infrastructure
-exceptions are not staged and a resume requires a fresh receipt. Once all 1,212
-attempts reconcile, the dispatcher emits the twelve condition × repetition
+exceptions are not staged and a resume requires a fresh receipt. Once every
+planned attempt reconciles, the dispatcher emits the twelve condition × repetition
 cohorts through the offline finalizer. No correctness or score enters this API.
 
 The dispatch policy includes maximum concurrency, maximum wall seconds, an exact

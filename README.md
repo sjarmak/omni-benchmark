@@ -8,10 +8,11 @@
 > since run on development data to test the *interpretation* of the C4 result:
 > rebuilding the same product to its own documented shape doubles governed
 > accuracy, 13.2% against 6.6% on the identical frame, and every query still took
-> the raw-SQL rewrite path. C5 cannot change the held-out accuracy figures and
-> makes no held-out claim. It was registered after the sealed aggregates were
-> opened, which is exactly why it is confined to development data. See [what is
-> still open](#what-is-still-open).
+> the raw-SQL rewrite path. C5 is a single-repetition development arm reported
+> without an interval; it cannot change the held-out accuracy figures and makes
+> no held-out claim. It was registered after the sealed aggregates were opened,
+> which is exactly why it is confined to development data. See [what is still
+> open](#what-is-still-open).
 
 ## The question
 
@@ -69,7 +70,12 @@ both author SQL. This is disclosed rather than repaired, in
 
 ## What I hill climbed on, and what it taught me
 
-All optimization ran on `dev-A`. The full trajectory, including the experiments
+All optimization ran on `dev-A`, and none of it reached the sealed system. The
+four sealed conditions are the untuned baseline: the supervised development phase
+was cut before it ran, so C1 through C4 received no question-level supervision and
+must not be described as tuned, adapted, or dev-A-supervised. The hill climbing
+below produced the separately reported development arms, E02 and C5, which are
+dev-A only. The full trajectory, including the experiments
 that produced nothing, is [`docs/experiment-trajectory.md`](docs/experiment-trajectory.md);
 the contemporaneous ledger of about 200 decisions is
 [`docs/research-log.md`](docs/research-log.md). The condensed version:
@@ -79,11 +85,11 @@ the contemporaneous ledger of about 200 decisions is
 | The public HKB compiles into an executable semantic model | 193 of 1,090 definitions compiled (17.7%); 511 (46.9%) deferred across an unresolved grain | Ship the conservative compiler, carry the rest as searchable context |
 | Unbounded schema retrieval makes the direct comparator unfair and unrunnable | A 51-table single response became a 4-table, 64 KiB bound | Freeze the bound as a disclosed scaffold |
 | Business knowledge helps a direct-SQL agent | dev-A: C1 7.4%, C2 23.8%, C3 13.1% | Carry all three into the sealed run untuned |
-| C4 minus C3 isolates semantic query composition | **Refuted.** 135/135 governed queries took the rewrite path; zero declared join paths | Amend the claim, disclose it, do not touch the data |
+| C4 minus C3 isolates semantic query composition | **Refuted.** All 135 parseable dev-A governed queries took the rewrite path; zero declared join paths | Amend the claim, disclose it, do not touch the data |
 | E01: same-grain dependency composition is missing | Already in the baseline: 70 executable dependency edges, depth 3 | Audited no-op, contrast cancelled |
 | E02: FK-backed relationships restore a composed join path | 91 relationships deployed; generation froze 117 answers and 19 capture failures | **INCONCLUSIVE** on the preregistered complete-136 rule; no promotion, no rerun |
 | E05: typed output fields fix the 31 `UNKNOWN`-type contract failures | Preregistered precondition needed 16 of 31; the ceiling is 6 of 31 | **INCONCLUSIVE** by its own stopping rule, zero live attempts spent |
-| C5: docs-idiomatic deployment carries C2's knowledge value into the governed path | dev-A: C5 13.2% against frozen C4 6.6% on 136 identical attempts, at 32% fewer median tokens; 134/134 queries still on the rewrite path | **Partly supported.** Roughly 45% of the C4-to-C2 gap closes, entirely through context rather than composition |
+| C5: docs-idiomatic deployment carries C2's knowledge value into the governed path | dev-A: C5 13.2% against frozen C4 6.6% on 136 identical attempts, at 32% fewer median tokens; 134/134 queries still on the rewrite path | **Partly supported.** About a third of the C4-to-C2 gap closes on the matched frame (33% official, 27% sensitivity), entirely through context rather than composition |
 
 Two of those are worth reading as research judgment rather than as results. The
 refutation in row four is this study's own central design assumption falling to
@@ -175,14 +181,18 @@ and then routed around what it did capture.
 
 C4 was also the most expensive condition: 3.9 times C1's median tokens, 1.5
 times its latency, 2.3 times its tool calls, with no accuracy gain. It did have
-the highest completion rate (85.8% answered against C1's 67.0%), and its
-failures were concentrated in a different place: 34 of 136 dev-A attempts never
-reached a scoreable answer at all, failing at validation or the result contract
-rather than returning a wrong number.
+the highest completion rate on the sealed frame, 229 of 267 attempts answered
+(85.8%) against C1's 179 (67.0%), and its failures were concentrated in a
+different place: 38 sealed attempts never reached a scoreable answer at all,
+failing at validation or the result contract rather than returning a wrong
+number. The development baseline is where those failures were classified, and
+there the count is 34 of 136 after recovery.
 
 ## Why the result came out this way
 
-Each link in this chain is measured, not inferred:
+Every step below is measured. The one causal link this chain originally asserted,
+between a thin model and the runtime's behavior, was tested afterward and did not
+hold, which is why it now appears as step 5 rather than as a connective.
 
 1. **The knowledge is real and it helps.** C2 beats C1 by 12 points using
    nothing but searchable HKB prose.
@@ -190,20 +200,26 @@ Each link in this chain is measured, not inferred:
    became executable objects. 511 (46.9%) were deferred because they crossed a
    grain the source never states. The recorded blockers are unknown cardinality,
    unspecified aggregation, and missing cross-grain identity.
-3. **So the deployed model was thin.** The C4 topics declared no joins and no
-   measures, because the compiler refuses to guess a grain contract.
-4. **So the governed runtime had nothing to compose with.** Every one of 135
-   governed queries took the rewrite path, with the agent authoring SQL and Omni
-   resolving field names inside it.
-5. **So C4 was never the intervention we designed.** It is a measurement of
-   Omni-as-vocabulary on a sparse model, not of Omni-as-compiler.
+3. **The deployed model was therefore thin.** The C4 topics declared no joins and
+   no measures, because the compiler refuses to guess a grain contract.
+4. **The governed runtime never composed.** All 135 parseable development
+   queries took the rewrite path, and 261 of 261 on the sealed frame, with the
+   agent authoring SQL and Omni resolving field names inside it.
+5. **Thinness is not what caused that.** C5 published a view for every table and
+   a join for every qualifying foreign key, widening the model roughly sixfold,
+   and the rewrite rate stayed at 100%. Steps 3 and 4 are both true and are not
+   cause and effect. Why the planner always selects rewrite is unresolved.
+6. **So C4 was never the intervention we designed.** It is a measurement of
+   Omni-as-vocabulary, not of Omni-as-compiler.
 
-The finding is that this benchmark's knowledge bases do not carry the contracts
-a semantic layer needs, and the pipeline that turns prose knowledge into
-governed semantics is where the value was lost. C5 answered the follow-on
-question on development data: a knowledge-complete deployment recovers about
-45% of the gap between C4 and C2, and it does so without composing a single
-query. The remaining gap is the compilation pipeline, not the knowledge.
+This benchmark's knowledge bases do not carry the grain contracts a semantic
+layer needs, and a fifth of the available semantics survived compilation. C5
+then answered the follow-on question on development data: a knowledge-complete
+deployment recovers about a third of the gap between C4 and C2 (33% under the
+official scorer, 27% under the sensitivity scorer), and it does so without
+composing a single query. Two-thirds of the gap survives a model built to Omni's
+own documented shape, so compilation coverage is not a sufficient explanation
+for it either.
 
 ## Product implications
 
@@ -247,8 +263,10 @@ argues for, in order of how much evidence sits behind them. The longer form is
   conservative cardinality rule, and the complete HKB ported into `ai_context` at
   field, topic, and model level. It asked how much of C2's knowledge value
   governed Omni delivers when the semantic model actually carries that knowledge.
-  Answer on dev-A: about 45% of the C4-to-C2 gap, and none of it through
-  composition, because all 134 parseable C5 queries still took the rewrite path.
+  Answer on dev-A: about a third of the C4-to-C2 gap on the matched frame, 33%
+  under the official scorer and 27% under the sensitivity scorer, and none of it
+  through composition, because all 134 parseable C5 queries still took the
+  rewrite path.
   What remains open is whether measures and resolved grain, the phase-2 changes
   C5 deliberately excluded, would produce a composed query at all. Design:
   [`docs/c5-tuned-governed-condition.md`](docs/c5-tuned-governed-condition.md).
@@ -277,7 +295,7 @@ because it silently confounds three independent properties:
    became governed, executable structure? Here: 17.7%.
 2. **Whether the runtime exercised the model.** Did the governed path compose the
    query, or did the agent write SQL and use the model as a dictionary? Here:
-   the latter, on 135 of 135 attempts.
+   the latter, on 661 of 661 parseable attempts across six governed arms.
 3. **End-to-end answer correctness.** The number everyone quotes.
 
 A system can fail on any one of those while looking fine on the others, and a
@@ -321,6 +339,7 @@ this particular benchmark:
 | [docs/product-findings.md](docs/product-findings.md) | Product and harness feedback in detail |
 | [docs/evidence-index.md](docs/evidence-index.md) | Reproducibility and audit trail |
 | [EVALUATION_PROTOCOL.md](EVALUATION_PROTOCOL.md) | The preregistration, custody rules, and freeze plan |
+| [docs/protocol-amendment-dev-tier-draft.md](docs/protocol-amendment-dev-tier-draft.md) | Proposed development custody tier, awaiting human approval, not in force |
 | [architecture/](architecture/README.md) | Interactive architecture model (LikeC4) |
 
 ## Why this repository has more machinery than the benchmark requires

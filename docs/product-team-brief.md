@@ -7,26 +7,33 @@ per-finding evidence is in
 
 ## Bottom line
 
-Business knowledge is worth a lot to an analytical agent, and our deployed
-semantic model did not deliver it.
+Business knowledge is worth a lot to an analytical agent, and the governed path
+never consulted it.
 
 Giving an agent a search tool over the benchmark's business definitions raised
 accuracy from 10.1% to 22.1%. Compiling those same definitions into an Omni
 semantic model and asking the governed product the same questions gave 8.6%, at
 3.9 times the token cost. The gap is not subtle.
 
-We checked the governed condition's own query objects and found that all 135 captured queries carried
-`rewriteSql: true` with hand-written SQL, and that none of them declared a join
-path. The product's agent never composed a query through the semantic layer, because
-our compiler had deferred so much of the knowledge base that the model we
-deployed published no joins and no measures. For any question needing two tables
-or a sum, raw SQL was the only path left.
+We checked the governed condition's own query objects. Across six governed arms,
+661 of 661 parseable queries carried `rewriteSql: true` with hand-written SQL,
+and not one declared a join through the semantic model: 261 of 261 on the sealed
+frame, 135 of 135 on the development baseline. The product's agent never composed
+a query through the semantic layer in any arm we measured.
 
-That makes this a finding about the authoring and import path more than about the
-planner. Below is what a model author cannot currently do, in the order we would
-fix it. A second arm, C5, is in deployment now and tests the same product with a
-model that carries the joins and the knowledge; its results section at the end of
-this brief is empty on purpose, and marks where those numbers will land.
+Our first read of that was a story about coverage: the compiler had deferred much
+of the knowledge base, so the deployed model published no joins and no measures,
+so raw SQL was the only path left. The C5 arm tested that story and it did not
+hold. C5 published a view for every table and a join for every qualifying foreign
+key, widening the model roughly sixfold, and the rewrite rate stayed at 100%.
+Path availability and path selection are separate problems, and only the first
+one is explained by the compiler. Why the planner always selects rewrite is
+unresolved.
+
+Both problems are worth fixing. Below is what a model author cannot currently do,
+in the order we would fix it; the compilation losses are real and independently
+costly even though they are not the reason for the fallback. The C5 results are
+in [What C5 found](#what-c5-found) at the end of this brief.
 
 ## What we ran, in one paragraph
 
@@ -59,9 +66,10 @@ tokens against 145.8k.
 
 **3. The two systems fail differently, and the difference is a product
 property.** The governed condition refuses or errors on 14.2% of scoreable
-attempts against 33.7% and 38.2% for the direct baselines, so it answers far more
-often. It is also wrong more often when it does answer: 77.2% of its attempts are
-incorrect against 56.2% for the raw-schema baseline. A system that declines is
+attempts against 33.7% for C1, 27.3% for C2, and 38.2% for C3, so it answers far
+more often than any direct baseline. It is also wrong more often when it does
+answer: 77.2% of its attempts are incorrect against 56.2% for the raw-schema
+baseline and 50.6% for the strongest direct arm. A system that declines is
 inconvenient. A system that returns a plausible wrong number with no marker on it
 is worse than inconvenient, and at equal accuracy these are not the same product.
 
@@ -185,7 +193,9 @@ branch back showed 58 of 118 documents differing, every view and no topic, with
 the views carrying schema-generated content instead of ours. Uploading a second
 time did not fix it. Two passes hit the same failure on the same database, so
 this is deterministic, not a race. From an author's side it looks like a
-successful publish that silently is not what they wrote.
+successful publish that silently is not what they wrote. Both are recorded in the
+research log under D-199 and the entry following it, with the captured issue list
+in `experiments/diagnostics/c5-validation-v1/`.
 
 **What to change.** Validate database access at save time, return a structured
 refresh failure that names the mismatch, and expose stable logical and physical
@@ -199,10 +209,13 @@ produced it, what it cost, or why it declined.
 **Evidence.** Completed AI jobs already expose useful provider token buckets,
 timings, tool and query activity, and phase events, which is why three of our
 four conditions have full telemetry. Raw AI jobs expose no dollar cost, no
-immutable model revision, and no structured refusal reason. Cost coverage in our
-run is 267 of 267 attempts for the direct conditions and 0 of 267 for the
-governed one, which is why the governed refusal rate is reported as unavailable
-rather than estimated.
+immutable model revision, and no structured refusal reason. Two separate gaps
+follow. Cost coverage in our run is 267 of 267 attempts for the direct conditions
+and 0 of 267 for the governed one, so no governed dollar figure appears anywhere
+in this evaluation. And because a decline arrives as one undifferentiated
+terminal state, we can report that the governed condition ended 14.2% of scoreable
+attempts without an answer but cannot say how many of those were refusals rather
+than infrastructure failures.
 
 **What to change.** Echo the immutable model and branch revision on every job,
 along with retries and validation attempts. Expose raw-job cost where the
@@ -302,7 +315,10 @@ C4's 9 of 136 (6.6%). On the 122-question intersection:
 | C5 docs-idiomatic governed | 13 / 122 (10.7%) | 12 / 121 (9.9%) |
 
 C5 is the first governed condition to clear the raw-schema floor; C4 sat below
-it. About 45% of the distance from C4 to C2 closes. It is also cheaper: median
+it. About a third of the distance from C4 to C2 closes on the 122-question
+intersection: 8 of the 24 correct answers separating them under the official
+scorer, which is 33%, and 6 of 22 under the sensitivity scorer, which is 27%. It
+is also cheaper: median
 total tokens fall from 583,188 to 396,884, median tool calls from 7 to 3, median
 database queries from 2 to 1, and median latency from 50.6 to 32.5 seconds. A
 governed deployment built to your own documentation is both more accurate and

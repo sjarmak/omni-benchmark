@@ -28,8 +28,8 @@ not an incident-severity classification.
 
 | Priority | Product surface | Current evidence | Product action | Detailed record |
 | --- | --- | --- | --- | --- |
-| Now | Governed composition is bypassed silently | Every parseable governed attempt in the study answered by rewriting raw SQL rather than composing through the semantic model: 135/135 sealed C4, 135/136 dev-A C4, 131/131 E02, 134/134 C5. `join_via_map` never appears. Widening the semantic model roughly sixfold in C5 did not change the rate. Nothing in the job record or AI Hub says composition was bypassed. | Return a declared composition mode (`composed`, `rewritten`, `mixed`) on every governed job, surface it in the run view, and let an administrator require composed mode and fail with a typed reason instead of silently rewriting. | [PF-016](#pf-016-governed-queries-silently-fall-back-to-raw-sql-with-no-signal-that-composition-was-bypassed) |
-| Now | Rewritten-SQL output contract | 31 of 34 governed baseline non-answers shared an `UNKNOWN` selected-field type. E02 then preserved 14 generated semantic queries that could not be captured because of unsupported result types. Attribution remains unresolved at the interface between the authored model and the planner. | Define a total typed result contract for rewritten SQL, separate selected and dependency fields, and surface unresolved output types during validation. | [PF-006](#pf-006-unformatted-json-results-still-stringify-numeric-measures), [PF-014](#pf-014-query-plan-summaries-conflate-output-and-dependency-field-metadata) |
+| Now | Governed composition is bypassed silently | Every parseable governed attempt in the study answered by rewriting raw SQL rather than composing through the semantic model: 661 of 661 across six arms, of which 261 are sealed C4 (88, 87, and 86 across three repetitions), 135 dev-A C4, 131 E02, and 134 C5; 14 of the 675 attempts produced no semantic query to inspect. `join_via_map` never appears. Widening the semantic model roughly sixfold in C5 did not change the rate. Nothing in the job record or AI Hub says composition was bypassed. | Return a declared composition mode (`composed`, `rewritten`, `mixed`) on every governed job, surface it in the run view, and let an administrator require composed mode and fail with a typed reason instead of silently rewriting. | [PF-016](#pf-016-governed-queries-silently-fall-back-to-raw-sql-with-no-signal-that-composition-was-bypassed) |
+| Now | Rewritten-SQL output contract | 31 of 34 governed baseline non-answers shared an `UNKNOWN` selected-field type. E02 then preserved 14 generated semantic queries that could not be captured because of unsupported result types. Attribution is bounded, not open: at most 6 of the 31 could come from a missing declaration on a compiled derived dimension, and 24 select no compiled field of any kind. Those 24 remain unresolved at the interface between the authored model and the planner. | Define a total typed result contract for rewritten SQL, separate selected and dependency fields, and surface unresolved output types during validation. | [PF-006](#pf-006-unformatted-json-results-still-stringify-numeric-measures), [PF-014](#pf-014-query-plan-summaries-conflate-output-and-dependency-field-metadata) |
 | Now | Complete machine-readable results | Truncation and presentation-control records caused all five strict concurrency-canary captures to fail before narrow adapter corrections; incomplete previews must not be accepted as analytical results. | Return complete results or a stable paginated/content-addressed handle, and keep preview metadata outside data rows. | [PF-010](#pf-010-truncated-governed-results-are-observable-but-not-execution-scorable), [PF-013](#pf-013-governed-job-previews-mix-data-rows-with-presentation-control-records) |
 | Next | Grain and relationship authoring | Across all 18 public HKBs, 511 of 1,090 definitions were deferred because they crossed an unresolved grain. E02 added 91 conservative relationships; on its 117 captured answers, official accuracy was 11/117 versus matched C4 at 9/117, but 19 unresolved captures make the experiment INCONCLUSIVE. | Make grain, identity, cardinality, relationship, and aggregation contracts explicit; provide a predeployment coverage report with accepted and deferred reasons. Re-evaluate relationships only after the result contract is reliable. | [PF-004](#pf-004-topic-readback-adds-joins-unless-no-join-intent-is-explicit), [PF-009](#pf-009-missing-grain-contracts-dominate-public-only-hkb-translation) |
 | Next | Deployment identity and diagnostics | A selected-database mismatch affected all 17 non-canary connections and became actionable only after external diagnosis; model publishing also exposed logical/physical identity and canonical-readback gaps. | Validate database access at save time, return structured refresh failures, and expose stable logical and physical model identities with a canonical export contract. | [PF-001](#pf-001-schema-refresh-failures-lack-actionable-diagnostics-in-the-cliapi), [PF-002](#pf-002-model-upload-can-silently-create-a-near-duplicate-schema-view), [PF-011](#pf-011-physical-table-identity-and-semantic-extension-identity-diverge), [PF-012](#pf-012-model-readback-canonicalizes-redundant-physical-column-sql) |
@@ -928,21 +928,30 @@ execution mechanics rather than accuracy.
   declared field rather than something a caller must infer from the shape of the
   token buckets.
 - **Benchmark treatment:** Report the identity mix alongside token distributions
-  in the aggregate telemetry artifact rather than assuming one model. The
-  aggregate-only summarizer emits an attempt count per model identity.
+  rather than assuming one model. Both summarizers now do this. The dev-A
+  summarizer emits an attempt count per model identity (`_models` in
+  `dev_a_telemetry_summary.py`), and the sealed summarizer emits
+  `model_identities` per condition, so the 264/1/2 split above is reproducible
+  from a committed aggregate instead of a manual read of the frozen cohorts. The
+  sealed counts also establish the contrast: C1, C2, and C3 each resolve all 267
+  attempts to one identity, so the instability is specific to the governed path.
 - **Experiment / commit provenance:** `experiments/analysis/dev_a_telemetry_summary.py`
-  and its tests; counts read from the frozen `sealed-final-v6` cohorts and the
-  frozen `public-c4-baseline-v8` dev-A run.
+  and `experiments/analysis/sealed_telemetry_summary.py` with their tests;
+  sealed counts published in `sealed-telemetry-summary-v2.json` (file SHA-256
+  `d87e6cd3d05b9eea7c372eca51804a890d4e62925c3cd3f205a90a4fcb7e5a90`), dev-A
+  counts from the frozen `public-c4-baseline-v8` run.
 
 ## PF-016: Governed queries silently fall back to raw SQL with no signal that composition was bypassed
 
 - **Observed behavior:** Every governed AI job in this evaluation answered by
   emitting rewritten raw SQL rather than by composing against the deployed
-  semantic model. Across four independent governed runs the rate is total: 135
-  of 135 sealed C4 attempts, 135 of 136 dev-A C4 attempts (the remaining attempt
-  produced no parseable semantic query), 131 of 131 E02 attempts, and 134 of 134
-  C5 attempts carry `rewriteSql: true`. The field `join_via_map` appears zero
-  times in any arm. No attempt in any run declared a join path through the model.
+  semantic model. Across six governed arms the rate is total: 261 of 261
+  parseable sealed C4 attempts (88, 87, and 86 across the three repetitions), 135
+  of 135 parseable dev-A C4 attempts, 131 of 131 E02 attempts, and 134 of 134 C5
+  attempts carry `rewriteSql: true`. That is 661 of 661 parseable attempts; the
+  other 14 of 675 attempts produced no semantic query to inspect. The field
+  `join_via_map` appears zero times in any arm. No attempt in any run declared a
+  join path through the model.
 - **Minimal non-private reproduction:** Deploy any public semantic bundle under
   `semantic_models/`, ask a governed AI job a question requiring two related
   tables, and read the returned semantic query. `rewriteSql` is true and
@@ -967,7 +976,7 @@ execution mechanics rather than accuracy.
   a governed connection can join on the wrong key or aggregate at the wrong grain
   while the customer reads the result as model-governed output.
 - **Systematic evidence / frequency:** 100% of parseable governed attempts across
-  four runs spanning two semantic-model generations, 16 databases, and both a
+  six arms spanning two semantic-model generations, 16 databases, and both a
   sparse compiled model (C4, 6 to 11 views per database) and a docs-idiomatic one
   (C5, 47 to 63 views per database with the full FK join graph and the complete
   HKB ported into `ai_context`). Widening the model did not move the rate.
@@ -1004,7 +1013,8 @@ execution mechanics rather than accuracy.
   as evidence that governed composition improved.
 - **Experiment / commit provenance:** D-192 and
   [`docs/c4-query-path-disclosure.md`](c4-query-path-disclosure.md) for the
-  sealed 135/135; [`docs/e02-join-path-assessment.md`](e02-join-path-assessment.md)
+  sealed 261 of 261 parseable;
+  [`docs/e02-join-path-assessment.md`](e02-join-path-assessment.md)
   for E02; run `c5-dev-a-v4` (system commit `487c4dc4`, selection
   `b2d96e0d5b1892905615f5c91009dd72b67dfe883dad5f73b1a22d6ed389c8ef`) for C5.
 - **Visible in AI Hub?:** The job completes normally. No AI Hub surface

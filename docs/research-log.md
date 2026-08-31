@@ -12432,3 +12432,230 @@ two hypotheses: add measures and resolve grain, then check whether
 present, the fallback is unconditional and the finding hardens further. If it
 drops, the 46.9% grain-deferral rate is the binding constraint and the
 compilation pipeline is the place to invest.
+
+## 2026-08-31 — D-206: The C5 gap closure is 33% official and 27% sensitivity
+
+### What was wrong
+
+The D-205 interpretation above states that "C5 recovers roughly 45% of the
+distance from C4 to C2", and that figure propagated into `RESULTS.md`,
+`README.md`, `docs/product-team-brief.md`, and `docs/blog-draft.md`. It is wrong.
+The earlier entry is left as written; this entry supersedes it.
+
+### The correct figure
+
+Recomputed from the committed matched-frame artifact
+`experiments/analysis/c5-matched-122-comparison-v1.json`, which is unchanged and
+was the source all along:
+
+- Official Soft EX, 122 scoreable: C2 29, C4 5, C5 13. Closure is
+  (13 − 5) / (29 − 5) = 8/24 = **33.3%**.
+- Corrected multiset sensitivity, 121 scoreable: C2 28, C4 6, C5 12. Closure is
+  (12 − 6) / (28 − 6) = 6/22 = **27.3%**.
+
+No measurement changed. The artifact, both frozen scorers, and the matched frame
+are the same; only the arithmetic reported over them was wrong. The published
+figure now cites both scorers rather than a single rounded number, since the two
+differ by six points of closure and choosing one after the fact is exactly the
+post-hoc scorer selection the protocol forbids.
+
+### A second correction in the same pass
+
+The same audit found the governed rewrite claim mislabeled by frame. Several
+public documents attached the development baseline's "135 of 135" to the sealed
+arm. The sealed figure is 261 of 261 parseable across three repetitions (88, 87,
+86), and the all-arms figure is 661 of 661 across six arms with 14 of 675
+attempts producing no query. The underlying tally artifact
+`experiments/analysis/governed-query-path-tally-v1.json` was correct; the prose
+reading it was not.
+
+### What this does not change
+
+The mechanism finding is untouched and is if anything stated more strongly now:
+zero composed queries in any arm, `join_via_map` empty everywhere, and the
+rewrite rate pinned at 100% even after C5 published a full join graph. The
+interpretation in D-205 that the C5 gain is context rather than composition still
+holds. What changes is the size of the gain and the frame labels on the counts.
+
+### Retraction of an audit finding
+
+The same audit pass reported that `docs/evidence-index.md` cites preservation
+manifests that do not exist. That finding is withdrawn. All three manifests exist
+and all three `sha256sum --check` commands pass: public-c4-baseline-v8 at 638
+files, e02-dev-a-v6 at 665, sealed-final-v6 at 4,833. The original check used a
+depth-limited `find` that could not reach the dot-directories holding them. What
+remains true and stays open is narrower: no committed script generates these
+manifests, so the recipe is undocumented even though the artifacts verify.
+
+That last piece is now closed. The recipe is a single pipeline,
+`LC_ALL=C find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum`, run
+from inside the preserved root, and it reproduces the sealed-final-v6 and
+public-c4-baseline-v8 manifests byte-for-byte. The e02-dev-a-v6 manifest is the
+same content in the same order with the `./` prefix stripped. All three pass
+`sha256sum --check` either way. Documented in `docs/evidence-index.md` rather
+than scripted, and the e02 prefix difference is left alone rather than
+normalized, since rewriting a preservation manifest for cosmetics changes custody
+evidence and buys nothing.
+
+## 2026-08-31 — D-207: The freeze series audits clean, and two preregistration claims need restating
+
+### Observation and hypothesis
+
+The round-2 audit asked whether an outside reader could verify the sealed frame
+without trusting our prose. Three claims were load-bearing and none had a
+committed artifact behind it: that the ten Freeze B records form a clean series,
+that the published headline numbers follow from per-question outcomes, and that
+the budget-clustering test was registered before its confirmatory sample was
+observed. The hypothesis was that all three would survive checking, and that the
+value of checking is the disclosure of where each one is weaker than its wording.
+
+### Result: the freeze series
+
+`docs/freeze-b-lineage.md` records all ten with digests, system commits, and the
+frozen-input diff each introduced. v7, v8, and v10 are byte-identical across all
+108 frozen inputs, differing only in `system_commit`, `recorded_at`, and the
+scorer source pointer, so generation and scoring ran under the same frozen
+system. v9 is the only record that altered a frozen digest and is the one that
+was rejected, per D-186.
+
+The audit also found something the freeze wording had obscured.
+`sealed_evaluation.py`, `sealed_evaluation_cli.py`, and `sealed_results.py` are
+not among the 108 frozen inputs; 68 of the 108 are `src/` modules and those three
+are not. The scoring side is bound by `system_commit` plus the HEAD-equals-control
+and clean-tree checks in `_require_exact_control_checkout`. That is a real
+binding, but it is commit identity rather than a per-file digest, and a reader
+looking for the scorers in `frozen_files` will not find them. Stated, not fixed:
+changing the frozen set now would break the correspondence with the executed run.
+
+### Result: per-question outcomes
+
+`experiments/analysis/sealed-correctness-matrix-v1.json` publishes the 89 x 4 x 3
+frame under both scorers with the database cluster label and terminal failure
+class per cell, indexed positionally in committed schedule order. Every published
+per-arm number recomputes from it. `sealed-bounded-reanalysis-v1.json` then
+recomputes the frame under two failure-ownership assignments and adds the minimum
+detectable effect and clustered intervals.
+
+The reanalysis exposed a correction to our own attribution. `model_budget_error`
+is not a provider limit; it is the harness's own `--max-budget-usd 1.0` per-turn
+cap in `config/conditions/direct-runtime-v1.json`, so under the primary
+assignment it is apparatus rather than evidence about the scaffold. It accounts
+for 33 attempts in C1, 31 in C2, 22 in C3, and none in C4. Adding the genuinely
+provider-side `model_rate_limit_error`, resource limits of either kind are 46 of
+C1's 88 non-answers, 46 of C2's 69, 38 of C3's 98, and 0 of C4's 38. The direct
+arms carry a resource penalty the governed arm does not, and roughly two thirds
+of it is our own cap.
+
+### Result: the budget-clustering registration
+
+The claim in `budget_clustering_test.py` is that it was registered 2026-08-28
+22:00Z, before the holdout was observed. The file did not enter git until
+`2ac48d0` on 2026-08-30. What the git record does establish: the file's SHA-256
+is `dac0aa86154453e02f6b528566ae0d010aaf18c1ac103e71d47cdfbd3e966994` today, and
+that same digest was committed in D-067's text in `68add787` on 2026-08-29
+20:25Z. So the registered bytes are provably the committed bytes, and the digest
+was in git a day before the script was.
+
+What it does not establish is the registration time. D-067 and the run were both
+dated 2026-08-28, so the earliest independent timestamp postdates the result.
+**The pre-observation registration is log-attested, not git-attested**, and
+should be described that way wherever it is cited. The test did not confirm, so
+nothing published rests on it; the point is the standard, not this result. The
+successor practice is to commit the registration file before the sample it
+governs, which costs nothing and converts the attestation into evidence.
+
+The file itself is deliberately not edited. Its docstring is inside the hashed
+bytes, so correcting the wording there would break the one correspondence that
+makes the registration checkable at all.
+
+### Deliberately not fixed
+
+`_exact_binomial_two_sided` returns 0.0 for a negative input rather than raising.
+The zero-discordant guard checks `gains + losses == 0`, so a negative count falls
+past it into an empty summation and yields a maximally significant p-value. It is
+unreachable from every current caller, and it is frozen analysis code under Freeze
+A/B custody with published results behind it, so patching it now would break the
+correspondence between the published aggregates and the frozen scorer source.
+Filed as `omni-benchmark-606` for the next analysis unfreeze, not patched.
+
+## 2026-08-31 — D-208: Two reproducibility landmines in runtime source, and why the SQLSTATE fix is a series change
+
+Continuing the `omni-benchmark-gve` audit into apparatus (Phase C). Hypothesis:
+the barriers to rerunning this benchmark on another machine, or extending its
+telemetry, are concrete and small enough to name exactly. Both turned out to be
+single constants, and the third item on the list turned out to be larger than its
+bead claimed.
+
+### The Claude binary path was pinned to one person's home directory
+
+`claude_direct_transport.PINNED_CLAUDE_BINARY` was
+`Path("/home/ds/.local/share/claude/versions/2.1.250")`, used in two places: the
+resource pin that opens the binary, and the `ClaudeTurnProvenance.binary_path`
+recorded on every direct-arm turn. A fresh operator on any other machine cannot
+start C1, C2, or C3 at all, and no committed template said so.
+
+The path was never the integrity control. `pin_claude_resources` hashes whatever
+it opens and refuses anything that does not match
+`PINNED_CLAUDE_BINARY_SHA256`. So the fix costs nothing in rigor: a new
+`claude_binary_path()` reads `OMNI_BENCHMARK_CLAUDE_BINARY`, requires it to be
+absolute, and falls back to the reviewed location when unset. The digest pin is
+untouched, and provenance now records the path actually used rather than a path
+asserted at authoring time. On this machine the resolved value and every recorded
+byte are identical to before. `.env.example` documents the variable, and
+`tests/conftest.py` deletes it for the suite so an operator's shell cannot steer
+a test run.
+
+### The trace schema version had three copies and no link between them
+
+`autoresearch_artifacts._validate_trace_record` compares a run record's
+`trace_schema_version` against the `TRACE_SCHEMA_VERSION` constant. Both writers,
+`omni_attempt._trace_fields` and `direct_sql_attempt._trace_fields`, spelled the
+literal `"trace-event-v2"` out for themselves, and neither module imported the
+constant. `direct_trace_validation` put a fourth copy in an error message.
+
+Bumping the constant would therefore have left both writers emitting the old
+string, and every run would have failed validating its own artifact at write
+time. Both writers now import the constant, the error message interpolates it,
+and `tests/test_trace_schema_version_binding.py` fails if any module under
+`src/omni_benchmark` spells a version out for itself. The same file asserts the
+current value is `trace-event-v2` as a deliberate tripwire, because under the
+pin-per-series rule a bump is a new series, not an edit.
+
+### The SQLSTATE bead's premise was wrong about cost
+
+`omni-benchmark-bfb` proposed retaining SQLSTATE and `statement_index` on the
+trace event and the capture receipt, calling it "purely additive telemetry". The
+semantics are additive. The cost is not, because there is no additive field
+anywhere on that path:
+
+- `direct_trace_validation._validate_trace_event` rejects any event where
+  `set(event) != TRACE_EVENT_FIELDS`.
+- `direct_capture_receipt.validate_capture_receipt_payload` rejects any receipt
+  where `set(value) != _FIELDS`, pinned at `schema_version == 4`, with the
+  capture summary exact-set validated against `_SUMMARY_FIELDS`.
+- `autoresearch_artifacts._validate_trace_record` rejects a record whose
+  `trace_schema_version` is not the constant.
+
+Retaining SQLSTATE means `trace-event-v2` to `v3`, receipt 4 to 5, and a
+`_SUMMARY_FIELDS` addition, together. Under the drift rule proposed in
+`docs/protocol-amendment-dev-tier-draft.md` that is a new series with a bridge
+round, not a fix landed against the frozen sealed-final-v6 series whose preserved
+artifacts are `trace-event-v2` and receipt 4.
+
+There is a second constraint the bead did not name. `DirectExecution.payload` is
+the tool payload the model sees. SQLSTATE must not be carried there or the fix
+changes the evaluated system's inputs; it needs a telemetry-only channel. The
+bead now records both constraints, and the version-literal consolidation above
+reduces the v3 bump to a one-line edit plus the tripwire.
+
+### Deliberately not done
+
+`field_kinds` is computed in `semantic_bundle._table_dimensions`, used for
+numeric coercion, and discarded. Emitting it looks free until you notice
+`_bundle_manifest` output is committed under `semantic_models/`, was deployed,
+and was readback-verified during the sealed run. Adding a manifest key changes
+those bytes, which is custody evidence for a completed measurement. The
+attribution signal has to arrive as a sidecar artifact instead, produced by
+recompiling the committed specs. Threading a return value with no consumer would
+be placeholder code, so nothing was landed; the constraint is recorded on the
+bead so the next author does not rediscover it by breaking a deployed manifest.

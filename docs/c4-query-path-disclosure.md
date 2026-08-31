@@ -20,6 +20,10 @@ current published state.
 The untuned sealed comparison subsequently completed and was scored. This memo
 did not inspect sealed per-attempt query content, so Section 3 proves
 configuration and code-path binding rather than a measured sealed rewrite rate.
+An aggregate query-shape tally run on 2026-08-31 supplied the measurement that
+Section 3 could only infer; the superseding note is at the end of that section.
+Every bare "135" in this document is the frozen development baseline, never the
+sealed frame.
 The only remaining intervention is the already selected, fixed E02 relationship
 contrast on dev-A. Because sealed aggregates became visible before that contrast
 completed, no optimized held-out arm may be constructed or promoted from it.
@@ -250,6 +254,15 @@ model deployment, and absence of declared joins and measures; nothing in the
 configuration pushes it toward a compiled path. Completion and aggregate scoring
 do not turn that expectation into a per-attempt measurement. This memo did not
 inspect the sealed semantic-query objects.
+
+> **Superseded 2026-08-31.** The expectation was subsequently measured rather
+> than inferred. An aggregate query-shape tally over the sealed arm reports 261
+> of 261 parseable governed queries on the rewrite path with zero composed, split
+> 88, 87, and 86 across the three repetitions; 6 of the 267 attempts produced no
+> query to inspect. The realized rate is not merely close to the development
+> baseline, it is identical at 100%. The tally emits per-arm counts from public
+> query-shape flags only and exposes no SQL text, identifier, or correctness
+> field. Artifact: `experiments/analysis/governed-query-path-tally-v1.json`.
 
 ---
 
@@ -595,14 +608,25 @@ or sealed arm, which keep `null` as recorded.
 
 ## 8. What this does not decide
 
-Whether Omni's agent uses a declared join path when one exists. The pre-E02
-artifacts analyzed here do not decide it; the fixed E02 dev-A contrast is the
-registered test.
+Two items in this list were open when the memo was written and have since been
+decided by measurement. Both are struck rather than deleted, so the reasoning
+that treated them as open stays legible.
 
-Whether the sealed arm's realized rewrite rate matches the development baseline
+~~Whether Omni's agent uses a declared join path when one exists. The pre-E02
+artifacts analyzed here do not decide it; the fixed E02 dev-A contrast is the
+registered test.~~ **Decided 2026-08-31, in the negative.** C5 published a view
+for every table and a join for every qualifying foreign key, widening the model
+roughly sixfold, and 134 of 134 parseable C5 attempts still carried `rewriteSql`
+with agent-authored SQL. Zero declared a join. Availability of the path is not
+what determines selection of the path; why the planner always selects rewrite
+remains unresolved.
+
+~~Whether the sealed arm's realized rewrite rate matches the development baseline
 exactly. The configuration binding makes the same behavior highly likely, but
 aggregate completion and scoring do not answer it, and this memo did not inspect
-sealed per-attempt query content.
+sealed per-attempt query content.~~ **Decided 2026-08-31: it matches.** 261 of
+261 parseable sealed queries on the rewrite path, zero composed. See the
+supersession note in §3.
 
 Whether the `sorts`, `filters`, and `calculations` values on the semantic queries
 are compilation inputs or echoes of a parse. Unmeasurable from the artifacts

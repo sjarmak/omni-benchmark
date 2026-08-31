@@ -353,3 +353,41 @@ already-preregistered E02 mechanism evaluable. It does not authorize a new
 intervention, result-driven candidate selection, dev-B use, or a held-out
 optimized arm. The sealed aggregates were not an input, and the immutable v4
 failure remains part of the evidence.
+
+## Post-Freeze-B deviation, 2026-08-31: result-type parity is closed and stated as a policy
+
+**What the frozen text said.** Three statements in `docs/harness-disclosure.md`
+described scorer/result-type parity as an open blocker: the C4 "Current
+implementation state" cell ("scorer-type parity remains pending"), the
+reference-implementation audit ("this is now an observed scale blocker, not only
+a theoretical limitation"), and the capture verification gate ("scorer/result-type
+parity remains a separate execution gate"). Its status line also still read that
+no scaled baseline had been launched.
+
+**What changed.** The typed result path landed on 2026-08-29 and closed the gate
+by adopting a transport with authoritative field-type metadata, which is one of
+the two remedies the frozen paragraph itself named. Omni's plan-only response is
+the sole type authority; no type is inferred from string appearance. Parity with
+the Psycopg-typed gold rows is structural, since both reach the same frozen
+normalizers. Scaled generation subsequently ran to completion.
+
+**Why this is a description correction, not a protocol change.** No measured
+value, scorer version, artifact hash, or protocol surface is altered. Freeze A
+history is not rewritten: the three statements are marked in place as superseded
+and answered in a dated addendum at the end of the disclosure, the same treatment
+given to the 2026-08-30 governed query-path correction.
+
+**A disclosed cost, stated as policy.** `SUPPORTED_OMNI_RESULT_TYPES` is a closed
+set of seven, and an unrecognized declared type fails closed as an
+evaluated-system failure rather than being coerced. Of the 45 dev-A capture
+failures, append-only recovery v5 recovered 11 as typed results and left 34
+terminal; 31 of those 34 are attributed to an unknown planner result type. That
+depresses C4 accuracy by construction, so it belongs in the disclosure as a
+stated policy with its measured cost rather than as a pending gate.
+
+**Scope note on the earlier query-path record.** The 2026-08-30 deviation above
+reports 135 of 135 on the frozen development baseline, which remains correct in
+its own frame. The measurement has since been extended to six governed arms:
+661 of 661 parseable queries on the raw-SQL rewrite path with zero composed, of
+which 261 are sealed C4 across three repetitions. See
+`experiments/analysis/governed-query-path-tally-v1.json`.

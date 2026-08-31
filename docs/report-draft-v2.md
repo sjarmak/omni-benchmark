@@ -7,6 +7,17 @@
 > plan. It must not be used as a result or submission artifact. The sole current
 > primary report is [`RESULTS.md`](../RESULTS.md); unique mechanism prose is
 > retained here only as drafting history.
+>
+> **Further superseded, 2026-08-31, on one substantive point.** This draft
+> predates the C5 arm and nowhere mentions it. It explains the raw-SQL rewrite
+> fallback by saying the conservative compiler deferred so much that no composed
+> path existed for cross-table access. C5 tested that explanation and it does not
+> hold. C5 published a view for every table and a join for every qualifying
+> foreign key, and the rewrite rate stayed at 100% (134 of 134 parseable
+> attempts). Wherever this draft says an absent join path *left* the agent with
+> no choice, read it as describing what the model could express, not as the cause
+> of what the agent selected. The two are separate, and only the first is
+> explained by compilation coverage.
 
 Draft v2, 2026-08-30. At the time of drafting, held-out numbers had not been
 released; every unavailable value below was a typed slot, not an estimate. See
@@ -252,9 +263,9 @@ at an ambient correct rate of 8.8%, a figure that is identical under both frozen
 scorers. If all 34 converted and scored at that ambient rate, C4 would be 8.8% on
 136 and 5.7% on 122, closing 1.6 of the 19.7 points separating C4 from C2. The
 ambient rate is more likely an upper bound than a central estimate for that
-subset: error queries averaged 2.875 relations against 2.620 for wrong answers
-and 1.667 for correct ones, and if relation count tracks difficulty the converted
-attempts would score below ambient rather than at it.
+subset: counting distinct base relations, error queries averaged 2.000 against
+1.826 for wrong answers and 1.333 for correct ones, and if relation count tracks
+difficulty the converted attempts would score below ambient rather than at it.
 
 The measurement cost is larger than the accuracy cost. Every modeling
 intervention on this frame is evaluated on 102 informative attempts instead of
@@ -369,11 +380,14 @@ presence and aggregate presence, taken alone, had wrong rates similar to their
 absence. The signal is narrower than "joins are hard": it tracks how many
 relations a single query has to reconcile at once.
 
-The governed condition reproduced the direction on its own frame. Correct C4
-queries averaged 1.667 relations; wrong answers averaged 2.620 and errors 2.875.
-Multi-relation queries appeared in 2 of 9 correct, 50 of 92 parseable wrong, and
-20 of 32 parseable error attempts. Joins appeared in 2 of 9, 41 of 92, and 18 of
-32.
+The governed condition reproduced the direction on its own frame. Counting
+distinct base relations, correct C4 queries averaged 1.333; wrong answers
+averaged 1.826 and errors 2.000. Multi-relation queries appeared in 2 of 9
+correct, 41 of 92 parseable wrong, and 19 of 32 parseable error attempts. Joins
+appeared in 2 of 9, 41 of 92, and 18 of 32. A looser count admitting CTE
+references, aliased self-joins, and subquery sources gives means of 1.667, 2.620,
+and 2.875 with multi-relation counts of 2 of 9, 50 of 92, and 20 of 32; it is an
+upper bound on the separation, not a second estimate of it.
 
 Three qualifications constrain what those governed numbers mean, and they are
 load-bearing. C4 records store no separately compiled SQL, so the aggregates are
@@ -385,7 +399,8 @@ sources, which makes multi-relation prevalence an upper bound on genuine
 cross-table access rather than a measurement of it.
 
 That third point has a consequence worth stating plainly, and the check that
-resolves it has now been run. All 135 governed semantic queries carry
+resolves it has now been run. All 135 governed semantic queries in the frozen
+development baseline carry
 `rewriteSql: true` with agent-authored SQL, none declares a join path, and
 `join_via_map` is empty on every one of them. The governed path is an agent
 writing SQL with the semantic model available as a resolved field vocabulary,

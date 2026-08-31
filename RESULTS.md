@@ -118,20 +118,34 @@ The sealed comparison and development evidence support seven findings:
 5. The governed path exposed a distinct evaluated-system reliability surface.
    Thirty-four of 136 scoreable C4 attempts failed to reach a scoreable answer
    at the validation or result-contract stage rather than ending in a result
-   mismatch. Causal ownership remains unresolved between the authored model,
-   agent behavior, and Omni's planning/result contract. Eleven
+   mismatch: 31 on an unknown selected-field type, 2 on a persistent plan
+   rejection, and 1 on a completed job carrying no parseable query. Causal
+   ownership is partly bounded rather than wholly unresolved. A missing type
+   declaration on our compiled model can account for at most 6 of the 31, and
+   that ceiling is generous: it counts an attempt whenever a single compiled
+   derived dimension appears anywhere in its selected set, and none selects them
+   exclusively, so the true value lies in [0, 6]. Widening from derived to any
+   compiled field at all reaches only 7 of 31. The remaining 24 select only
+   query-local aliases, undeclared schema columns, invented names, and Omni's
+   count built-in, which no compile-time declaration can type. What is genuinely
+   unresolved is the interface between the authored model and Omni's planning and
+   result contract for those 24. Eleven
    additional capture gaps were recoverable by replaying only an
    already-generated semantic query; question-level model reasoning was never
    rerun.
 
 6. The governed condition did not compile queries from the semantic model. Omni's
-   production agent took the product's raw-SQL rewrite path on every attempt:
-   all 135 governed semantic queries carry `rewriteSql: true` with agent-authored
-   SQL, and none declares a join path. The harness cannot select that path, and
-   for cross-table questions no other path existed, because the conservative
-   compiler deferred 46.9% of definitions as cross-grain and the deployed topics
-   therefore publish empty joins and no measures. The semantic layer still did
-   work as a field vocabulary that Omni resolved at rewrite time, on 109 of 135
+   production agent took the product's raw-SQL rewrite path on every attempt that
+   produced an inspectable query: 661 of 661 parseable governed queries across six
+   arms carry `rewriteSql: true` with agent-authored SQL, and none declares a join
+   path. On the development baseline that is 135 of 135; on the sealed frame it is
+   261 of 261. The harness cannot select that path. The deployed C4 topics did
+   publish empty joins and no measures, because the conservative compiler deferred
+   46.9% of definitions as cross-grain, so for cross-table questions no composed
+   path was available to take. Availability is not what drove the selection,
+   however: C5 later published a join for every qualifying foreign key and the
+   rewrite rate stayed at 100%. The semantic layer still did work as a field
+   vocabulary that Omni resolved at rewrite time, on 109 of the 135 development
    attempts. It did not compose the query. The study can no longer claim that
    C4 minus C3 isolates semantic-layer query composition.
 
@@ -592,10 +606,13 @@ On the identical 136-attempt governed frame, C5 doubles C4:
 | C4, frozen governed baseline | 9 / 136 (6.6%) | 9 / 135 (6.7%) |
 | C5, docs-idiomatic governed | 18 / 136 (13.2%) | 16 / 135 (11.9%) |
 
-Terminal generation failures fell from 34 to 26. All 26 were classified
-`evaluated_system_failure` by the hash-pinned recovery pass, which retrieved
-zero recoverable sidecars, so every one of them counts against C5 as a candidate
-execution error rather than being set aside as infrastructure.
+Terminal generation failures fell from 34 to 26. Both figures are post-recovery
+and therefore comparable: C4's 34 is what remained after append-only recovery v5
+replayed its 45 capture failures and converted 11 into typed results, and C5's 26
+is what remained after the same hash-pinned recovery pass, which retrieved zero
+recoverable sidecars. All 26 were classified `evaluated_system_failure`, so every
+one counts against C5 as a candidate execution error rather than being set aside
+as infrastructure.
 
 The five conditions have never shared a question set: the direct arms were
 frozen over 18 databases and the governed arms over the 16 with verified
@@ -623,7 +640,9 @@ C4 scored under C1; C5 scores over it. That is the first governed condition in
 this evaluation to clear the floor.
 
 It does not close the gap. C2 remains at 23.8% on the same questions, and C5
-recovers roughly 45% of the distance from C4 to C2. The knowledge that helps a
+recovers about a third of the distance from C4 to C2: 8 of the 24 correct
+answers that separate them under the official scorer, which is 33%, and 6 of 22
+under the sensitivity scorer, which is 27%. The knowledge that helps a
 model most on this benchmark is still worth more when handed to it directly than
 when compiled into a semantic model and reached through the governed path.
 
@@ -635,8 +654,8 @@ task easier rather than one that spent more effort on it.
 
 The mechanism readout constrains the interpretation. Of C5's 134 attempts that
 produced a parseable semantic query, all 134 used `rewriteSql`, and `join_via_map`
-appears zero times. The same holds for C4 (135 of 135) and for E02's captured
-subset (131 of 131). Across six governed arms, including all three sealed C4
+appears zero times. The same holds for the dev-A C4 baseline (135 of 135) and
+for E02's captured subset (131 of 131). Across six governed arms, including all three sealed C4
 repetitions, the count is 661 of 661 parseable attempts on the rewrite path and
 zero composed, tallied by
 [`experiments/analysis/governed_query_path_tally.py`](experiments/analysis/governed_query_path_tally.py)
@@ -660,10 +679,13 @@ published both preregistered policies in one atomic run. This section uses only
 the identity-free aggregates; no question identity, SQL, row, annotation, or
 per-question correctness left custody.
 
-**† C4 is not a valid measure of governed semantic composition.** All 135 of 135
-sealed C4 queries took Omni's raw-SQL rewrite path and none declared a join
-through the semantic model, so every C4 row below measures an agent writing SQL
-by hand with the semantic model as context, at governed-path latency and cost.
+**† C4 is not a valid measure of governed semantic composition.** Every sealed C4
+attempt that produced an inspectable semantic query took Omni's raw-SQL rewrite
+path, and none declared a join through the semantic model: 261 of 261 parseable
+queries, 88 of 89 in repetition one, 87 in repetition two, and 86 in repetition
+three, with the remaining 6 of 267 attempts producing no query to inspect. Every
+C4 row below therefore measures an agent writing SQL by hand with the semantic
+model as context, at governed-path latency and cost.
 See [`docs/c4-query-path-disclosure.md`](docs/c4-query-path-disclosure.md) and
 [PF-016](docs/product-findings.md#pf-016-governed-queries-silently-fall-back-to-raw-sql-with-no-signal-that-composition-was-bypassed).
 
@@ -736,17 +758,29 @@ uses the 36 of 38 errors with token telemetry. Model version, retry count, and
 validation-attempt count are unavailable for all 267 C4 attempts. Model
 identity is mostly but not entirely stable: 264 of the 267 sealed C4 attempts
 resolve to `claude-opus-5` on `bedrock`, one to a `claude-opus-5` plus
-`claude-sonnet-5` composite, and two to `managed-unobservable`. That mix is
-too small to move the accuracy result, and it is recorded because attributing
-any governed-versus-direct difference to model capability assumes a fixed
-model the governed path does not guarantee (PF-015). The product
+`claude-sonnet-5` composite, and two to `managed-unobservable`. All 267
+attempts in each of C1, C2, and C3 resolve to a single identity, so the mix is
+a governed-path property rather than something the harness does to every arm.
+That mix is too small to move the accuracy result, and it is recorded because
+attributing any governed-versus-direct difference to model capability assumes a
+fixed model the governed path does not guarantee (PF-015). The product
 opportunity is therefore not only reducing failures, but detecting terminal
 contract and unsupported-result failures earlier in an already costly execution
 path.
+
+Model parity between the arms is claimed only at the level of the requested
+model name. The direct arms reach `claude-opus-5` through the Claude Code
+adapter on an OAuth provider surface; C4 reaches it through Omni's managed
+selection on Bedrock. Neither path reports a model version, so two runs cannot
+be shown to have used the same weights, and the `C4-C3` contrast stays
+scaffold-conditional rather than a model-controlled comparison.
+
 The deterministic aggregate is
-[`experiments/analysis/sealed-telemetry-summary-v1.json`](experiments/analysis/sealed-telemetry-summary-v1.json),
+[`experiments/analysis/sealed-telemetry-summary-v2.json`](experiments/analysis/sealed-telemetry-summary-v2.json),
 with file SHA-256
-`7a614d6c861d4d2a982501ea8c89b2817820d965671caf800cc155759be481a8`.
+`d87e6cd3d05b9eea7c372eca51804a890d4e62925c3cd3f205a90a4fcb7e5a90`. It
+publishes the identity counts above per condition; v1 is the same summary
+without the model-identity whitelist and is retained as the prior record.
 
 ### Exploratory contrasts
 
@@ -766,6 +800,209 @@ intervals with 10,000 replicates. Both frozen scorers are reported without
 post-result selection. The strongest held-out contrast is C2−C1: searchable HKB
 context improves the direct comparator. C3 loses that advantage after the HKB
 is converted into the bounded structured model, and C4 does not recover it.
+
+### Preregistered significance tests
+
+The preregistered inference is the exact two-sided binomial McNemar test on
+repetition one only, where the 89 questions are independent. It is reported as a
+sensitivity check on the interval estimates above, not as a second headline.
+Naïve McNemar must not be applied to the 267 correlated attempts. C4−C1 is the
+primary contrast and is reported unadjusted; Holm correction at familywise alpha
+0.05 covers the three-rung exploratory family {C2−C1, C3−C2, C4−C3}.
+
+| Scorer | Contrast | Gains | Losses | Exact two-sided p | Holm-adjusted p |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Official-compatible Soft EX | C4−C1 † (primary, unadjusted) | 3 | 6 | 0.508 | — |
+| Official-compatible Soft EX | C2−C1 | 11 | 1 | 0.0063 | 0.0127 |
+| Official-compatible Soft EX | C3−C2 | 0 | 14 | 0.00012 | 0.00037 |
+| Official-compatible Soft EX | C4−C3 | 3 | 2 | 1.000 | 1.000 |
+| Corrected multiset sensitivity | C4−C1 (primary, unadjusted) | 4 | 6 | 0.754 | — |
+| Corrected multiset sensitivity | C2−C1 | 8 | 1 | 0.0391 | 0.0781 |
+| Corrected multiset sensitivity | C3−C2 | 0 | 11 | 0.00098 | 0.0029 |
+| Corrected multiset sensitivity | C4−C3 | 4 | 2 | 0.688 | 0.688 |
+
+Gains and losses here are discordant pairs on the 89 repetition-one questions, so
+they are smaller than the three-repetition counts in the interval table above and
+are not comparable to them.
+
+Two conclusions survive Holm correction under both scorers, and they point in
+opposite directions: adding searchable business knowledge to the direct
+comparator helps, and converting that knowledge into the bounded structured model
+loses the gain. C3−C2 is the sharpest result in the study, with zero discordant
+gains against 14 losses under the official scorer. The C2−C1 gain clears the
+threshold under the official scorer and does not under the sensitivity scorer
+(Holm-adjusted 0.078), which is a real disagreement between the two frozen
+scorers and is reported as such rather than resolved after the fact. Neither
+governed contrast, C4−C1 or C4−C3, is distinguishable from no difference under
+either scorer; with 5 to 10 discordant pairs these tests have very little power,
+so this is an absence of evidence and not evidence of equivalence.
+
+### What this frame could and could not have detected
+
+The exact McNemar test conditions on the discordant pairs, so its power is set by
+how many there are and not by the 89 questions. Below six discordant pairs the
+test has no rejection region at all: no split of five can reach p ≤ 0.05, because
+the most extreme possible outcome gives 2 × (1/32) = 0.0625. A contrast at five
+pairs is not underpowered, it is unfalsifiable, and the official C4−C3 contrast
+is exactly that case.
+
+| Scorer | Contrast | Discordant pairs | Smallest detectable favor rate at 80% power |
+| --- | --- | ---: | ---: |
+| Official-compatible Soft EX | C2−C1 | 12 | 0.870 |
+| Official-compatible Soft EX | C3−C2 | 14 | 0.889 |
+| Official-compatible Soft EX | C4−C1 † | 9 | 0.908 |
+| Official-compatible Soft EX | C4−C3 | 5 | no rejection region exists |
+| Corrected multiset sensitivity | C2−C1 | 9 | 0.908 |
+| Corrected multiset sensitivity | C3−C2 | 11 | 0.925 |
+| Corrected multiset sensitivity | C4−C1 | 10 | 0.917 |
+| Corrected multiset sensitivity | C4−C3 | 6 | 0.964 |
+
+The favor rate is the probability that a discordant pair falls to the better arm.
+A rate of 0.870 means the test had an 80% chance of detecting an effect only if
+roughly seven of every eight questions where the two arms disagreed went the same
+way. Effects smaller than that were invisible to this frame. The rate does not
+fall monotonically as pairs are added, because the rejection region is discrete:
+at 12 pairs the test rejects on 2 or fewer out of 12, and at 14 pairs still on 2
+or fewer out of 14, which is a stricter requirement.
+
+The practical consequence is that the two null governed contrasts carry almost no
+information. Reading C4−C1 or C4−C3 as evidence that the conditions perform
+alike is not supported. A frame that could resolve a five-point difference in the
+governed arm needs either many more questions or far fewer infrastructure
+failures eating the answered denominator.
+
+### Infrastructure-bounded reanalysis
+
+Every attempt that never produced an answer is scored as not correct. That is the
+right default for a benchmark, but it mixes three different things: the system
+answered and got it wrong, our harness got in the way, or the model provider did.
+The counts are large enough to matter, so this section bounds how much of the
+result they could explain. It is a post-hoc reanalysis of the frozen artifacts,
+reported beside the preregistered numbers and never in place of them.
+
+Terminal failure classes across the 1,068 sealed attempts:
+
+| Terminal class | C1 | C2 | C3 | C4 | Reading |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `none` (answered) | 179 | 198 | 169 | 229 | scored normally |
+| `model_budget_error` | 33 | 31 | 22 | 0 | our own per-turn spend cap |
+| `no_answer_insufficient_context` | 38 | 16 | 55 | 0 | the system's own result |
+| `model_rate_limit_error` | 13 | 15 | 16 | 0 | provider throttling |
+| `database_statement_error` | 4 | 3 | 2 | 0 | the system's own result |
+| `unsupported_semantic_result_type` | 0 | 0 | 0 | 32 | closed result-type set in our adapter |
+| `response_contract_error` | 0 | 0 | 0 | 4 | contract mismatch at the boundary |
+| `omni_job_terminal_failure` | 0 | 0 | 0 | 2 | the governed system's own failure |
+| `model_identity_mismatch` | 0 | 2 | 1 | 0 | provider served a different model |
+| `sql_not_admitted` | 0 | 1 | 1 | 0 | our admission check rejected the SQL |
+| `turn_limit_exhausted` | 0 | 1 | 1 | 0 | the system's own result |
+
+`model_budget_error` is the harness's `--max-budget-usd 1.0` per-turn cap, not a
+provider limit, so it counts as apparatus. Two classes are genuinely arguable:
+`unsupported_semantic_result_type` fires on a closed seven-member set in our
+result adapter, but a governed system that returns a type the adapter never
+supported is also revealing something about its contract. Rather than pick, every
+bound below is computed under both readings. The primary reading treats the
+closed type set and the SQL admission check as apparatus; the alternate treats
+them as the system's own result. `omni_job_terminal_failure` and
+`no_answer_insufficient_context` are the system's own result under both.
+
+Three imputation rules, applied only to attempts the reading assigns to apparatus
+or provider. Failures that belong to the system stay counted as wrong under every
+rule, because they are results about the system.
+
+- **As scored** is the frozen result: every non-answer is wrong.
+- **Neutral** credits each reassignable attempt at that arm's accuracy among its
+  answered attempts, which is what you would expect had it run.
+- **Charitable** credits every reassignable attempt as correct. It is a ceiling,
+  not a plausible value.
+
+| Scorer | Condition | Answered | Reassignable (primary) | As scored | Neutral | Charitable |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Official-compatible Soft EX | C1 | 179 | 46 | 10.1% | 12.7% | 27.3% |
+| Official-compatible Soft EX | C2 | 198 | 49 | 22.1% | 27.6% | 40.4% |
+| Official-compatible Soft EX | C3 | 169 | 40 | 8.6% | 10.6% | 23.6% |
+| Official-compatible Soft EX | C4 | 229 | 32 | 8.6% | 9.8% | 20.6% |
+| Corrected multiset sensitivity | C1 | 179 | 46 | 10.1% | 12.7% | 27.3% |
+| Corrected multiset sensitivity | C2 | 198 | 49 | 19.5% | 24.3% | 37.8% |
+| Corrected multiset sensitivity | C3 | 169 | 40 | 8.6% | 10.7% | 23.6% |
+| Corrected multiset sensitivity | C4 | 229 | 32 | 9.7% | 11.1% | 21.7% |
+
+The contrasts are what the reanalysis was built to settle, and they hold:
+
+| Contrast | Official as scored | Official neutral | Official charitable | Sensitivity as scored | Sensitivity neutral | Sensitivity charitable |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| C2−C1 | 12.0% | 14.9% | 13.1% | 9.4% | 11.6% | 10.5% |
+| C3−C2 | -13.5% | -16.9% | -16.9% | -10.9% | -13.6% | -14.2% |
+| C4−C1 † | -1.5% | -2.9% | -6.7% | -0.4% | -1.6% | -5.6% |
+| C4−C3 | 0.0% | -0.8% | -3.0% | 1.1% | 0.4% | -1.9% |
+
+Three conclusions follow, and all four combinations of rule and reading were
+checked before stating them.
+
+**The governed null is robust and the frozen numbers are conservative in C4's
+favor.** C4−C1 is negative under every rule, every reading, and both scorers, and
+crediting infrastructure failures moves C4 further behind rather than ahead. C4
+had the highest answered rate of any condition, 229 of 267, so it has the least
+to gain from imputation. Its as-scored result is not an artifact of infrastructure
+loss.
+
+**C2−C1 survives on the point estimate but not on Holm significance under the
+charitable rule**, where its adjusted p rises to 0.083 under the official scorer
+and 0.287 under the sensitivity scorer. The direction never reverses. Read it as
+a real but not comfortably resolved gain.
+
+**C3−C2 survives every rule and both scorers**, with Holm-adjusted p of 0.0026
+and 0.0216 under the charitable rule. It remains the sharpest finding in the
+study: converting searchable business knowledge into the bounded structured model
+loses the gain that knowledge provided.
+
+The clustering assumption was also checked. The preregistered interval clusters on
+questions, but the 89 questions sit on only 16 databases, and questions sharing a
+database share a schema, a loader, and a failure surface. Resampling databases
+instead of questions gives:
+
+| Scorer | Condition | Question-clustered | Database-clustered |
+| --- | --- | ---: | ---: |
+| Official-compatible Soft EX | C1 | 10.1% [4.9%, 16.1%] | 10.1% [3.0%, 18.5%] |
+| Official-compatible Soft EX | C2 | 22.1% [14.6%, 30.0%] | 22.1% [14.8%, 29.5%] |
+| Official-compatible Soft EX | C3 | 8.6% [3.8%, 14.2%] | 8.6% [2.2%, 16.3%] |
+| Official-compatible Soft EX | C4 | 8.6% [3.8%, 14.6%] | 8.6% [3.8%, 13.9%] |
+| Corrected multiset sensitivity | C1 | 10.1% [4.9%, 16.1%] | 10.1% [3.0%, 18.5%] |
+| Corrected multiset sensitivity | C2 | 19.5% [12.4%, 27.3%] | 19.5% [12.2%, 26.7%] |
+| Corrected multiset sensitivity | C3 | 8.6% [3.8%, 14.2%] | 8.6% [2.2%, 16.3%] |
+| Corrected multiset sensitivity | C4 | 9.7% [4.5%, 15.7%] | 9.7% [4.9%, 14.9%] |
+
+Switching cluster level does not simply widen the intervals. C1 and C3 widen,
+which is what 16 clusters instead of 89 would predict. C2 and C4 narrow slightly.
+Both arms hold their accuracy fairly evenly across databases, so grouping their
+questions by database removes more within-cluster variation than it loses in
+cluster count. Either way no conclusion changes sign or significance, and the
+preregistered question-clustered interval stands. The database-clustered column
+is a post-hoc robustness probe; 16 clusters is few enough that it should not
+replace the preregistered one.
+
+The question-clustered column is recomputed from the committed matrix rather than
+copied. It reproduces the frozen aggregate's published C4 interval of 8.6%
+[3.75%, 14.61%] exactly, which is what licenses reading the other rows, since the
+frozen aggregate publishes this interval only for the C4 primary endpoints.
+
+The reanalysis is deterministic and reproduces from committed artifacts:
+
+```bash
+uv run python experiments/analysis/sealed_bounded_reanalysis.py \
+  --matrix experiments/analysis/sealed-correctness-matrix-v1.json \
+  --output experiments/analysis/sealed-bounded-reanalysis-v1.json
+```
+
+It reads
+[`sealed-correctness-matrix-v1.json`](experiments/analysis/sealed-correctness-matrix-v1.json)
+(SHA-256 `cc173544c8ea041d1945ea8a5c27fac06bc5c11061e9afb7efaa8278a658c269`),
+the identity-free 89 × 4 × 3 outcome matrix, and writes
+[`sealed-bounded-reanalysis-v1.json`](experiments/analysis/sealed-bounded-reanalysis-v1.json)
+(SHA-256 `def321a2f46f7f43b356a2cd24edfc4fe3835fff90aad496ed9d09d5cb6e4d5c`). The
+matrix carries no question text, no SQL, no gold, and no identifier; it commits
+the per-question outcomes so an outside reader can recompute every headline
+number in this section without the sealed run tree.
 
 ### Optimization-scope limitation
 
@@ -839,7 +1076,8 @@ own, because it silently confounds three properties that move independently:
    governed, executable structure. Measured here: 17.7% of 1,090 definitions.
 2. **Whether the runtime exercised that model.** Whether the governed path
    composed the query or the agent authored SQL and used the model as a
-   dictionary. Measured here: the latter, on 135 of 135 attempts.
+   dictionary. Measured here: the latter, on 661 of 661 parseable attempts
+   across six governed arms.
 3. **End-to-end answer correctness.** The number that gets quoted.
 
 A system can fail on any one of these while looking healthy on the others, and

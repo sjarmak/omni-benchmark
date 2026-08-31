@@ -12,16 +12,25 @@ revise the development mechanism ranking or localize per-question causes.
 ## Current top three observed risk mechanisms
 
 1. **Relationship, aggregation, and grain composition.** Public-only fan-out
-   deferred 491/1,036 definitions cross-grain. In the C4 baseline, parseable
-   wrong answers average 2.620 relations and parseable errors 2.875, versus
-   1.667 for correct answers. Multi-relation queries occur in 50/92 parseable
-   wrong answers and 20/32 parseable errors, versus 2/9 correct answers.
+   deferred 491/1,036 definitions cross-grain. In the C4 baseline, counting
+   distinct base relations and excluding CTE references and aliased self-joins,
+   parseable wrong answers average 1.826 relations and parseable errors 2.000,
+   versus 1.333 for correct answers; multi-relation queries occur in 41/92
+   parseable wrong answers and 19/32 parseable errors, versus 2/9 correct
+   answers. A looser count that admits CTE references, aliased self-joins, and
+   subquery sources roughly doubles the separation (2.620 and 2.875 versus
+   1.667, with 50/92 and 20/32 multi-relation) and is the upper bound rather
+   than the estimate. Direction and ordering are the same under both counts.
 2. **Semantic result-contract reliability.** Thirty-four attempts are explicit
    evaluated-system failures. Thirty-two still contain parseable governed SQL;
    most failed because the governed result exposed an unsupported/unknown type,
    not because no query was generated. These are evaluated-system outcomes, not
-   benchmark infrastructure to retry away. Causal ownership remains unresolved
-   across the authored semantic model and Omni's planning/result contract.
+   benchmark infrastructure to retry away. Causal ownership is bounded rather
+   than open: a missing type declaration on our compiled model can reach at most
+   6 of the 31 unknown-type failures, and 24 of the 31 select no compiled field
+   of any kind, so they lie outside anything a compile-time declaration could fix.
+   Ownership of those 24 remains unresolved between the authored model and Omni's
+   planning/result contract.
 3. **Representation, discoverability, and reasoning remain conflated within 93
    wrong answers.** Aggregate query shape alone cannot tell whether knowledge
    was absent, inaccessible, misinterpreted, or correctly available but reasoned
@@ -88,7 +97,7 @@ aggregate classifications and non-private references, never hidden content.
 | Semantic compilation | Intended semantic query is correct but compiled SQL is wrong/unsupported | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Omni compiler | None | Not measured under the permitted evidence boundary | Compiler correctness/coverage |
 | Validation/retry | A generated query or result fails to reach a scoreable answer at the validation or result-contract stage | 34/136 evaluated-system failures; 32 retain parseable governed SQL | Identity-free aggregate only | 16-database eligible frame | Authored-model and Omni result-contract ownership unresolved | D-155 recovery; D-168–D-170 classification/fallback | Measured baseline | Validation observability and recovery |
 | Direct reasoning | Required representation and tools are correct/available but reasoning fails | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Model planning/reasoning | None | Not measured under the permitted evidence boundary | Agent workflow/model routing |
-| Refusal/error | System returns no usable answer after its allowed retry policy | Sealed scorer disposition: C1 90/267, C2 73/267, C3 102/267, C4 38/267 | Identity-free aggregate only | Matched 16-database sealed frame | Mixed model, context, contract, and infrastructure mechanisms; aggregate custody cannot localize them | D-051 diagnostic plus sealed aggregate | Measured aggregate prevalence | Reliability, refusal observability, and safe-failure reporting |
+| Refusal/error | System returns no usable answer after its allowed retry policy | Sealed scorer disposition: C1 90/267, C2 73/267, C3 102/267, C4 38/267. Resource limits, meaning our own per-turn spend cap plus provider throttling, account for 46/88 C1, 46/69 C2, 38/98 C3, and 0/38 C4 non-answers | Identity-free aggregate only | Matched 16-database sealed frame | Mixed model, context, contract, and infrastructure mechanisms; the resource-limit share is apparatus and provider rather than the evaluated system | D-051 diagnostic plus sealed aggregate and the bounded reanalysis | Measured aggregate prevalence and bounded reassignment | Reliability, refusal observability, and safe-failure reporting |
 | Scorer/data ambiguity | System result may be reasonable but benchmark comparison or question is anomalous | Not measured | Aggregate evidence cannot localize individual failures | 16-database eligible frame | Benchmark/evaluator | None | Not measured under the permitted evidence boundary | Evaluation limitation, not presumed product defect |
 
 ## Checkpoint update template
@@ -127,17 +136,18 @@ exceeded the fixed normalization limit).
 | Wrong, parseable SQL | 92 | 93 wrong (1 did not parse) |
 | Refused/system-error | 34 | 136 scoreable; 32 retain parseable governed SQL |
 | Relationship/join present | 2 correct, 41 wrong, 18 error | 9 / 92 / 32 parseable |
-| Multi-relation queries | 2 correct, 50 wrong, 20 error | 9 / 92 / 32 parseable; mean relations 1.667 / 2.620 / 2.875 |
+| Multi-relation queries (base relations) | 2 correct, 41 wrong, 19 error | 9 / 92 / 32 parseable; mean relations 1.333 / 1.826 / 2.000 |
+| Multi-relation queries (upper bound, incl. CTEs and self-joins) | 2 correct, 50 wrong, 20 error | 9 / 92 / 32 parseable; mean relations 1.667 / 2.620 / 2.875 |
 
 **Top three remaining mechanisms:**
 
 1. Relationship, aggregation, and grain composition — wrong and error answers
-   carry more relations than correct ones (mean 2.620 and 2.875 vs 1.667), and
-   50/92 wrong and 20/32 error attempts are multi-relation versus 2/9 correct.
-   Those figures count CTE references, aliased self-joins, and subquery sources,
-   so they are an upper bound. Excluding CTEs and self-joins, the means become
-   1.826 and 2.000 vs 1.333 and multi-relation counts become 41/92 and 19/32;
-   direction and ordering hold, magnitude roughly halves. Join-presence figures
+   carry more relations than correct ones. Excluding CTE references and aliased
+   self-joins, the means are 1.826 and 2.000 versus 1.333, and 41/92 wrong and
+   19/32 error attempts are multi-relation versus 2/9 correct. A looser count
+   admitting CTEs, self-joins, and subquery sources gives 2.620 and 2.875 versus
+   1.667 with 50/92 and 20/32 multi-relation; that is an upper bound, and
+   direction and ordering hold under both. Join-presence figures
    are unaffected. Evidence: RESULTS.md §5 structural diagnostic, recomputed in
    [c4-mechanism-measurements.md](c4-mechanism-measurements.md); PF-009
    (491/1,036 public HKB definitions deferred cross-grain).
@@ -228,6 +238,19 @@ one turn-limit outcome; C3 records 55 insufficient-context, 22 model-budget, 16
 rate-limit, two database, one identity, one SQL, and one turn-limit outcome.
 These are terminal dispositions, not per-question causal findings.
 
+Two of those classes do not belong to the evaluated system at all.
+`model_budget_error` is the harness's own `--max-budget-usd 1.0` per-turn cap,
+set in `config/conditions/direct-runtime-v1.json` and passed to the direct CLI;
+it fires when our spend limit is reached, not when a provider limit is. It is
+apparatus. `model_rate_limit_error` is provider throttling. Together they account
+for 46 of C1's 88 non-answers, 46 of C2's 69, 38 of C3's 98, and none of C4's 38.
+So more than half of C1's non-answers and two thirds of C2's are attributable to
+the measurement setup or the provider rather than to the condition under test.
+The direct conditions absorb this cost and the governed condition does not, which
+means the raw refusal comparison between them is not measuring the same thing on
+both sides. RESULTS.md §6 bounds how much this could move each contrast; the
+short answer is that it moves C4 further behind, never ahead.
+
 The sealed aggregate supports reliability and condition-level interpretation,
 not per-question mechanism attribution. It cannot determine which individual
 wrong answers arose from absent knowledge, retrieval, interpretation,
@@ -254,6 +277,58 @@ gives an official upper bound of 16/136 (11.8%). This localizes the dominant E02
 evaluation bottleneck to result capture, but does not establish that
 relationships improve accuracy. E02 remains INCONCLUSIVE and no further model
 attempt is permitted for the MVP.
+
+### Reconciling E02's failure classes with C4's
+
+The two arms are reported in different vocabularies at different stages, and the
+counts do not line up the way an adjacent reading suggests. This section states
+the correspondence so a reader does not compare across stages by accident.
+
+C4 has two taxonomies, not one. At capture time it recorded 45 failures over 136
+attempts: 34 unsupported semantic result types, 10 response-contract failures,
+and 1 adapter transport failure. Append-only recovery v5 then replayed those and
+converted 11 into typed results, leaving 34 terminal, relabeled by
+recovery-time reason as 31 `omni_unknown_result_type`, 2 `omni_query_plan_rejected`,
+and 1 `omni_completed_job_contract_invalid`. The widely cited "34 of 136" is the
+post-recovery figure.
+
+E02 has one taxonomy, and it is the capture-time one: a closed preregistered pair
+of `unsupported_semantic_result_type` (14) and `adapter_transport_error` (5), 19
+in all over the same 136-attempt frame.
+
+Three consequences follow.
+
+**The correct alignment is 45 against 19, both at capture time.** Comparing C4's
+34 against E02's 19 crosses a recovery boundary. E02's post-recovery count does
+not exist: its recovery invocation aborted before writing any artifact, because
+the first transport record it reached carried no generated semantic query and the
+recovery boundary refuses to invent one. The 14 replayable records were never
+replayed. Logically the E02 terminal count lies somewhere in [5, 19], but nothing
+measures it, and C4's own 34-of-45 conversion rate cannot be used to estimate it
+because the per-attempt mapping from capture label to final class is not
+derivable from the published aggregates.
+
+**`unsupported_semantic_result_type` and `omni_unknown_result_type` are not the
+same label.** They share a code path: both originate in the closed
+seven-member `SUPPORTED_OMNI_RESULT_TYPES` check, and E02 runs as a C4-condition
+run with a different bundle. But the capture label fires on any type outside the
+seven and does not record which one was seen, while `omni_unknown_result_type` is
+the strictly narrower literal test for `UNKNOWN`, evaluated against a *fresh
+replay plan* rather than the original attempt. The C4 class is a recovery-time
+property; the E02 class is a capture-time one.
+
+**`adapter_transport_error` is a distinct fourth thing, present in both arms.**
+It is a provider failure before any response, so no query is saved. It is not
+C4's "completed job with no parseable query" class, which arises from a
+response-contract source, and it is not the plan-rejection class, which can only
+be assigned during a replay E02 never reached. C4 recorded 1 at capture time;
+E02 recorded 5.
+
+One further vocabulary caution: the sealed C4 arm's 38 non-answers are reported
+elsewhere in this document as 32 unsupported semantic result types, 4
+response-contract errors, and 2 terminal job failures. Those are capture-time
+labels, not the A/B/C recovery classes, and the sealed arm has no recovery pass
+of its own.
 
 Stable artifact locations and preservation hashes are indexed in
 [`evidence-index.md`](evidence-index.md).

@@ -46,6 +46,13 @@ cross-grain, so the deployed topics emit `"joins": {}` and publish no measures. 
 query compiled from the declared model can neither traverse a join path nor
 compile an aggregate from a declared measure.
 
+> **Note added 2026-08-31.** That paragraph states what the deployed model could
+> express, and it remains accurate. It should not be read as the reason the agent
+> chose rewrite. The C5 arm published a view for every table and a join for every
+> qualifying foreign key, and 134 of 134 parseable attempts still took the
+> rewrite path. Path availability and path selection are separate, and the
+> amendment below depends only on the first.
+
 The consequence for the protocol is that C4's enforcement value describes the
 accessible surface and field-reference resolution, not query composition.
 
