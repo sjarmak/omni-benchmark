@@ -23,12 +23,19 @@
 \hypersetup{
   pdftitle={Does an Enforced Semantic Layer Improve Analytical Question Answering?},
   pdfauthor={Stephanie Jarmak},
-  pdfsubject={Preregistered evaluation protocol for semantic-layer text-to-SQL systems}
+  pdfsubject={Preregistered four-condition evaluation of a semantic layer on LiveSQLBench Large-v1}
 }
 
 % Long content hashes and commit identifiers must be allowed to break across
 % lines without a hyphen, which would corrupt the value being quoted.
 \newcommand{\hash}[1]{\texttt{\seqsplit{#1}}}
+
+% A registered measurement whose value does not exist yet. Every occurrence marks
+% a cell a later report fills; none may be read as a null or a zero.
+\newcommand{\pending}{\textsc{[pending]}}
+\newenvironment{placeholder}%
+  {\begin{shaded}\noindent\textbf{Placeholder.}\space\itshape}%
+  {\end{shaded}}
 
 \setlength{\emergencystretch}{6em}
 \setlength{\parindent}{1.25em}
@@ -49,7 +56,7 @@
 \newenvironment{record}{\begin{shaded}\vspace{-2pt}}{\vspace{-2pt}\end{shaded}}
 
 \title{Does an Enforced Semantic Layer Improve Analytical Question
-Answering? A Preregistered Four-Condition Protocol on LiveSQLBench Large-v1}
+Answering? A Preregistered Four-Condition Evaluation on LiveSQLBench Large-v1}
 
 \author{Stephanie Jarmak}
 
@@ -71,13 +78,15 @@ Answering? A Preregistered Four-Condition Protocol on LiveSQLBench Large-v1}
 \input{sections/design}
 \input{sections/conditions}
 \input{sections/scoring}
-\input{sections/development}
 \input{sections/analysis}
+\input{sections/development}
+\input{sections/results}
+\input{sections/c5}
+\input{sections/product}
 \input{sections/threats}
 \input{sections/status}
 
-\section*{Data and materials availability}
-\addcontentsline{toc}{section}{Data and materials availability}
+\section{Data and materials availability}
 \input{materials}
 
 \input{references}

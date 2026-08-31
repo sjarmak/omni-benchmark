@@ -32,22 +32,26 @@ future change in the public data becomes explicit rather than silently changing
 scoring.
 
 Pure result comparison and SQL execution and rewrite behavior are versioned
-separately and must pass public conformance fixtures before Freeze B. The current
-implementation stops at pure rewriting and comparison; the sealed evaluator still
-requires an integration layer that executes rewritten candidate and gold SQL
-against the same isolated PostgreSQL state for the official score and unchanged
-authored SQL against equivalent state for the sensitivity score, applies the
-public preprocessing and cleanup lifecycle, preserves multi-statement ordering
-with stable driver types, enforces the preregistered timeout and retry rules,
+separately and passed public conformance fixtures before Freeze B. The sealed
+evaluator's integration layer executes rewritten candidate and gold SQL against
+the same isolated PostgreSQL state for the official score and unchanged authored
+SQL against equivalent state for the sensitivity score, applies the public
+preprocessing and cleanup lifecycle, preserves multi-statement ordering with
+stable driver types, enforces the preregistered timeout and retry rules,
 distinguishes candidate-system failures from benchmark-infrastructure failures,
 records the three-state attempt outcome separately from result equality, and
-keeps hidden test SQL and rows inside the sealed boundary. A synthetic test suite
-alone does not establish database-execution equivalence.
+keeps hidden test SQL and rows inside the sealed boundary. Both policies were
+published for all four conditions in one atomic scoring run, and neither was
+selected after results were seen; Section~\ref{sec:results} reports both
+throughout. Where the two disagree the disagreement is small and never reverses
+a rung ordering: the largest gap on the held-out frame is 2.6 points, on C2.
 
 \paragraph{Post-hoc analyses.}
 After final scoring, a sealed audit normalizes development and test gold SQL into
 structural templates, reports overlap prevalence, and, if sample size permits,
-reports test accuracy on non-overlapping templates. Suspicious or
+reports test accuracy on non-overlapping templates. That audit and the
+adjudication path below remain specified and unexecuted; both sit behind the
+sealed-label custody release, which is a human-controlled action. Suspicious or
 condition-discordant items may enter a preregistered post-freeze gold-quality
 adjudication with condition identity blinded where practical. Neither audit can
 change the split, the primary result, or the development system, the original

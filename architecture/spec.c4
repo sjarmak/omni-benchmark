@@ -1,0 +1,72 @@
+// Element kinds, tags, and colors for the `omni-benchmark` architecture model.
+//
+// Tags encode EVIDENCE STATE rather than delivery state, because this is an
+// evaluation repo: what matters to a reviewer is whether a box can still move
+// without invalidating a result.
+//   #built    — implemented and exercised; free to change
+//   #frozen   — preregistered / hash-pinned; changing it is a protocol deviation
+//   #evolving — active work, contract still moving (C5)
+//   #dormant  — ran to completion but produced no usable claim (E02)
+//   #human    — human-controlled gate; agents may propose, never decide
+//   #custody  — sits on the hidden-data boundary; a leak here voids the result
+
+specification {
+
+  element actor {
+    style {
+      shape person
+      color secondary
+    }
+  }
+
+  element externalSystem {
+    style {
+      shape rectangle
+      color slate
+    }
+  }
+
+  element system
+
+  element container {
+    style {
+      shape rectangle
+    }
+  }
+
+  element component
+
+  element datastore {
+    style {
+      shape cylinder
+    }
+  }
+
+  // Deployment model — where each piece runs during an evaluation.
+  deploymentNode host {
+    style {
+      shape rectangle
+      color slate
+    }
+  }
+  deploymentNode proc
+
+  tag built {
+    color #16a34a
+  }
+  tag frozen {
+    color #2563eb
+  }
+  tag evolving {
+    color #d97706
+  }
+  tag dormant {
+    color #64748b
+  }
+  tag human {
+    color #a855f7
+  }
+  tag custody {
+    color #dc2626
+  }
+}

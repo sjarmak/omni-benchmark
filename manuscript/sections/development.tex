@@ -1,97 +1,255 @@
-\section{Supervised development under an append-only control plane}
+\section{Public-only construction and the development record}
 \label{sec:development}
 
-This section records the preregistered development capability. The executed
-study does not promote a supervised intervention: the mechanical baseline is the
-final candidate, no question-level supervision enters that candidate, and no
-\texttt{dev-B} checkpoint is consumed.
+The final candidate is the frozen mechanical baseline. It received no
+question-level supervision, and the metered \texttt{dev-B} partition was never
+consumed. This section reports how that candidate was built from public inputs
+only, what the development partition showed about it, and what the append-only
+control plane recorded about the interventions that were proposed against it.
+
+\subsection{What the public knowledge base could be compiled into}
+
+Before any hidden development label was released, public schema, public column
+meanings, and the public HKB were transformed deterministically into semantic
+artifacts. Every knowledge node received exactly one disposition:
+\texttt{compile}, a defensible same-table, same-grain scalar definition;
+\texttt{context\_only}, useful semantic text with one exact field target but no
+safe executable object; \texttt{defer\_cross\_grain}, a definition requiring
+unresolved identity, relationship, cardinality, aggregation, temporal, or
+ordering semantics; or \texttt{unsupported}, missing, ambiguous, or currently
+non-representable inputs. Guessing a join or an aggregation would have raised
+apparent model coverage while destroying the governance claim the benchmark is
+meant to test, so the rule is deliberately conservative.
+
+\begin{table}[htbp]
+\centering
+\caption{HKB translation coverage across all 18 databases.}
+\label{tab:hkb}
+\begin{tabular}{lrr}
+\toprule
+Disposition & Definitions & Share \\
+\midrule
+Compiled & 193 & 17.7\% \\
+Context only & 193 & 17.7\% \\
+Deferred cross-grain & 511 & 46.9\% \\
+Unsupported & 193 & 17.7\% \\
+\midrule
+Total & 1,090 & 100.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:hkb} is the single most consequential measurement in the study,
+because it determines what the governed condition could possibly have done. Fewer
+than one definition in five became an executable object, and almost half were
+deferred for crossing a grain the public inputs never resolve. Within the
+17-database fan-out beyond the canary, the three most frequent recorded loss
+codes were \texttt{cardinality\_unknown} (398), \texttt{aggregation\_unspecified}
+(314), and \texttt{cross\_grain\_no\_identity} (308). Domains built from
+row-local physical or sensor definitions, such as planets and solar panels,
+compiled comparatively well; residential and reverse-logistics models retained
+useful context but compiled no HKB definition safely under the same rules.
+
+This measures transformation coverage and not question correctness. A deferred
+definition may never be needed for any benchmark question, and a compiled
+definition may still be retrieved or interpreted wrongly. What it does establish
+is that the deployed model published no join path and no measure, which is the
+precondition for the query-path finding in Section~\ref{sec:conditions}.
+
+\subsection{Bounding the direct comparator}
+
+The first end-to-end vertical slice ran one public development question before
+anything scaled. The first C1 attempt passed the public-question,
+database-parity, read-only, model-identity, and first-turn gates, and then its
+opening schema inspection returned all 51 tables of the database and the next
+model turn exceeded its budget before producing any SQL. Whole-database
+inspection was replaced with deterministic query-directed search over the same
+committed public schema: the model must supply a non-empty query, and the tool
+returns at most four matching tables inside a 64 KiB payload. C1 through C3 share
+that retrieval contract.
+
+\begin{table}[htbp]
+\centering
+\caption{One question, three integration attempts. Each row is a single attempt
+on one database, not a population estimate.}
+\label{tab:slice}
+\begin{tabular}{lrrrr}
+\toprule
+Stage & Terminal state & Tokens & Cost & Latency \\
+\midrule
+Whole-schema C1 & Budget error & 173,365 & \$1.74 & 26.0 s \\
+First bounded diagnostic & Public-ID validation error & 1,585 & \$0.02 & 3.0 s \\
+Reviewed bounded C1 canary & Answered & 33,445 & \$0.21 & 40.9 s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The intermediate failure in Table~\ref{tab:slice} is preserved on purpose. The
+first bounded attempt still returned no answer, because a generic secret
+heuristic rejected canonical public foreign-key identifiers; a typed, fail-closed
+validation rule fixed that boundary while keeping the credential checks. Keeping
+the failed row prevents the whole change from being attributed to retrieval
+alone. The four-match window itself remains unvalidated as a choice: a later
+attempt on a different archeology question reached five four-table searches, cost
+\$7.49, and ended in a model budget error, and reducing the window to two tables
+cut that attempt to four searches and \$4.32 but still returned no answer. The
+cheaper failure was no evidence for the smaller window, so the change was
+reverted, and a 20-question sensitivity arm over the match cap was frozen and
+then deferred before execution.
+
+The product lesson generalizes past this comparator. Tool payload bounds are part
+of agent quality: a semantically valid tool call can make a system unusable by
+consuming the remaining inference budget, and a safety filter that treats every
+identifier as untrusted free text can reject legitimate public metadata.
+
+\subsection{The development baseline}
+
+The 630-attempt direct baseline was frozen by content hash before the train-only
+gold release. Its exact development intersection contains 420 attempts over 140
+of the 154 development questions; 14 questions have no baseline output and were
+left missing rather than backfilled. Gold conformance left 122 questions per
+condition scoreable under the official scorer, and 121 under the sensitivity
+scorer, which retained one fewer result that exceeded its fixed normalization
+limit.
+
+\begin{table}[htbp]
+\centering
+\caption{Direct-SQL development baseline, exploratory. Percentages are over each
+condition's scoreable denominator.}
+\label{tab:devbaseline}
+\begin{tabular}{lrrrrr}
+\toprule
+Condition & Correct & Wrong & Refused/error & Official & Sensitivity \\
+\midrule
+C1 raw schema & 9 & 80 & 33 & 7.4\% & 7.4\% \\
+C2 searchable raw HKB & 29 & 91 & 2 & 23.8\% & 23.1\% \\
+C3 searchable exported model & 16 & 74 & 32 & 13.1\% & 11.6\% \\
+\midrule
+All direct conditions & 54 & 245 & 67 & 14.8\% & 14.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two things in Table~\ref{tab:devbaseline} survived into the held-out result. The
+ordering did: searchable raw business knowledge produced the strongest direct
+baseline, and converting it into the bounded structured model gave back more than
+half of that gain. And wrong answers dominated: 245 of 366 scoreable attempts
+returned a wrong result rather than declining to answer. C2 also had the highest
+capture-level completion rate on the 16-database frame at 97.9\%, against 75.9\%
+for C1 and 74.8\% for C3, but 91 of its 122 scoreable attempts were wrong, so
+completion cannot stand in for correctness.
+
+The governed arm was budgeted and scheduled separately, over the full fixed
+development schedule rather than the direct arm's represented frame. Of its 154
+scheduled questions, 136 were answerable and all 136 executed: 9 correct, 93
+wrong, and 34 refused or ended in a system-contract error, for 9/136 (6.6\%)
+official accuracy; the sensitivity scorer retained 135 scoreable questions with
+the same 9 correct and 93 wrong, for 9/135 (6.7\%). An aggregate-only alignment
+to the 122 questions scoreable in all four conditions gives the governed arm 5
+correct, 83 wrong, and 34 refused or system-error, or 5/122 (4.1\%), against
+7.4\%, 23.8\%, and 13.1\% for C1 through C3 on that same frame. The paired
+C1/C4 table on those 122 questions holds 3 correct in both, 2 correct only in C4,
+6 correct only in C1, and 111 correct in neither. The governed arm's low result
+is therefore not an artifact of its wider denominator. No question identity, SQL,
+row value, annotation, or per-question label left custody during that alignment.
+
+A structural diagnostic over the SQL text, carrying no question identity, no SQL
+body, no result value, and no hidden annotation, found that wrong answers used
+more relations on average in every direct condition: 3.16 against 2.00 in C1,
+3.28 against 2.48 in C2, and 3.04 against 1.81 in C3. Thirty of 31 window-query
+attempts and 25 of 28 \texttt{DISTINCT}-query attempts were wrong, while the mere
+presence of a join or an aggregate separated correct from wrong hardly at all.
+The governed arm ran in the same direction: parseable correct queries averaged
+1.67 relations against 2.62 for wrong answers and 2.88 for system errors. These
+are associations. They point at relationship, grain, and dependency handling as
+the next mechanism family to test, and they establish nothing causal.
+
+\subsection{The control plane, and what it recorded}
 
 Optimization on the development partition is the part of an evaluation most
-likely to leak, to overfit, or to be narrated favorably afterward. This protocol
-constrains it with a machine-checkable control plane whose records are
-append-only, so failed experiments remain in the record.
+likely to leak, to overfit, or to be narrated favorably afterward, so it was
+constrained by a control plane whose records are append-only and whose failed
+experiments therefore remain in the record. Routine optimization received a
+derived public view containing only the 154 development identifiers and never a
+checkpoint or held-out outcome. Generation artifacts may carry generated SQL or a
+governed query, latency, token and cost observations, non-secret tool failures,
+and the semantic-object identifiers the system used; they may not carry gold SQL,
+test cases, hidden \texttt{external\_knowledge} identifiers, expected results, or
+scores, and the validator rejects protected keys recursively, so nesting a hidden
+field does not bypass the boundary. Correctness arrives only in a separate
+immutable score artifact whose path and expected digest are mandatory for every
+scored decision, and the control plane stores component hashes plus a combined
+candidate hash so a guardian receipt cannot be rebound to a different generation
+or score artifact. Each iteration appends a proposal \emph{before} the system
+changes, stating the affected failure class, the mechanism, the predicted
+direction, the regression risk, the surface, and why the intervention is
+reusable; it then appends exactly one of \texttt{KEEP}, \texttt{REVERT},
+\texttt{INCONCLUSIVE}, \texttt{INVESTIGATE}, or \texttt{ARCHIVE}. Every kept
+intervention declares its scope, question-specific changes are prohibited
+outright, and benchmark-specific candidates may be archived as evidence but never
+promoted into the final system. The objective is ordered rather than scalar, so
+an accuracy increase alone cannot authorize acceptance.
 
-\paragraph{Boundaries.}
-Routine optimization receives a derived public view containing only the 154
-\texttt{dev-A} identifiers, and never a \texttt{dev-B} or held-out outcome.
-Ordinary proposal and evaluation commands cannot accept \texttt{dev-B}
-identifiers or per-question outcomes at all. Training generation artifacts may
-contain generated SQL or a governed query, latency, token and cost observations,
-non-secret tool failures, and the semantic-object identifiers the system used.
-They may not contain gold SQL, test cases, hidden \texttt{external\_knowledge}
-identifiers, expected results, or scores; the validator rejects protected keys
-recursively, so nesting a hidden field does not bypass the boundary. Correctness
-arrives only in the separate immutable score artifact, whose path and expected
-digest are mandatory for every scored decision, and the control plane stores
-component hashes plus a combined candidate hash so that a guardian receipt cannot
-be rebound to a different generation or score artifact. Offline diagnostic
-tooling may read the train-only release under the custody contract and turn
-privileged annotations into aggregate conclusions such as
-\texttt{knowledge\_present\_but\_inaccessible}; it may not copy hidden identifiers
-or content into runtime requests or ordinary artifacts.
+Four intervention families were preregistered against the mechanism ladder:
+same-grain dependency composition (E01), FK-backed grain relationships (E02),
+bounded semantic descriptions (E03), and a broad HKB-context negative control
+(E04). A fifth, E05, was registered later against the governed arm's
+\texttt{UNKNOWN}-type result-contract failures. None was promoted.
 
-\paragraph{Cycle.}
-Each iteration is a state transition, not an unstructured session. Observe the
-current complete \texttt{dev-A} run, traces, regression suite, and failure
-taxonomy. Propose: append an experiment proposal \emph{before} changing the
-system, stating the affected failure class, the mechanism, the predicted
-direction, regression risk, subsystem, parent state, and why the intervention is
-reusable. Modify one mechanism with the smallest patch that tests the hypothesis.
-Evaluate locally on the proposal's prespecified slice, declared before results
-and never chosen from favorable outcomes. Evaluate globally: a candidate can be
-accepted only after an exact 154-question run plus regression evidence, compared
-by question-level transitions rather than aggregate accuracy alone. Decide by
-appending exactly one of \texttt{KEEP}, \texttt{REVERT}, \texttt{INCONCLUSIVE},
-\texttt{INVESTIGATE}, or \texttt{ARCHIVE}, with fixed and regressed questions,
-accuracy, cost, latency, failure-class, complexity, and production-relevance
-evidence. Then checkpoint or continue.
+E01 resolved inconclusive on inspection: the frozen baseline already carried 48
+dependency-bearing elements, 70 executable dependency edges, and depth three, so
+there was no contrast left to run.
 
-The objective is ordered rather than scalar: execution accuracy, reusable
-generality, low regression rate, reasonable latency and cost, low complexity, and
-production relevance. It is deliberately not collapsed into a weighted reward,
-and an accuracy increase alone cannot authorize acceptance.
+E02 is the substantive one. It declares FK-backed relationships, which is exactly
+the ingredient whose absence left the rewrite path as the only route to
+cross-table access, so it is a direct test of the mechanism rather than a
+candidate picked from a structural correlation. Of 1,228 public foreign keys,
+1,049 pass the conservative cardinality contract, and the bounded artifact emits
+91 relationships across 16 databases and 67 source topics with zero
+metric-disposition changes. Its deployment verified all 16 targets with exact
+readback, and its single 136-attempt development generation completed and was
+frozen. It then failed its own coverage gate: 19 of the 136 attempts captured no
+scoreable outcome. Fourteen were saved semantic queries rejected by the
+result-type capture contract, and five were genuine transport failures that
+retained no semantic query at all, so the preregistered complete-136 score could
+not be produced without a new model attempt, which the no-rerun rule forbids.
+E02 is recorded INCONCLUSIVE.
 
-\paragraph{Surfaces and search.}
-If used, the optimization surface would be the whole relevant system: HKB transformation, semantic
-model and descriptions, retrieval, instructions, planning, compilation,
-validation and retry, and harness code. Every proposal declares one surface.
-\emph{Textual} surfaces (prompts, instructions, object descriptions, aliases,
-textual HKB representations) use multi-candidate, trace-guided search on a
-prespecified slice, retaining strong alternatives. \emph{Structural} surfaces
-(dependency resolution, model generation, relationship inference, retrieval
-algorithms, planning, compilation, validation, fallback) use a mechanism-level
-hypothesis, the smallest change, targeted tests, and a full regression
-evaluation. \emph{Human-controlled} surfaces (protocol, membership, custody,
-endpoints, scorer choice, supervision legitimacy) cannot be changed by an agent
-and cannot be changed on the basis of an observed score at all.
+Because the answer to a stopped experiment is not a rerun, a no-rerun diagnostic
+was applied offline to the 117 captured answers under both frozen scorers, with
+no model answer regenerated. Official accuracy on that subset was 11/117 (9.4\%)
+for E02 against 9/117 (7.7\%) for the frozen governed baseline on the identical
+coordinates, a paired difference of $+1.7$ points, with four transitions to
+correct and two regressions from correct; sensitivity gave 10/116 (8.6\%) against
+9/116 (7.8\%), or $+0.9$ points. The full-frame official bounds run from 11/136
+(8.1\%) if every missing outcome is wrong to 30/136 (22.1\%) if every one is
+correct, and treating the 14 contract failures as failures and only the five
+transport losses as unresolved still leaves an upper bound of 16/136 (11.8\%).
+Bounds that wide, over that few transitions, support further study and not a
+claim that E02 improved accuracy.
 
-\paragraph{Lineage and promotion.}
-Experiments may descend from any preserved candidate, not only the current
-accuracy leader, so lineage forms an auditable branch graph. A small
-non-dominated set is maintained across execution accuracy, wrong-answer rate,
-refusal and error rate, regressions, cost, latency, stability, model complexity,
-special-case count, and generality; equal-accuracy candidates may both survive
-when one is safer or cheaper. Every kept intervention declares scope as
-\texttt{cross\_database\_general}, \texttt{database\_family}, or
-\texttt{database\_specific\_legitimate}. Question-specific changes are
-prohibited, and benchmark-specific candidates may be archived as exploratory
-evidence but are never promoted into the final system.
+E05 was stopped by its own precondition before it consumed a live attempt. It
+proposed declaring explicit output types on compiled semantic fields to address
+the 31 \texttt{UNKNOWN}-type contract failures, and required at least 16 of those
+31 attempts to have selected a compiled derived field. Measured offline on the
+immutable generation records, the ceiling is 6 of 31, and 24 of the 31 select no
+compiled bundle field of any kind, so no declaration on a compiled field could
+reach them. E03 and E04 were never run and fell out of scope.
 
-\paragraph{Anti-reward-hacking.}
-The control plane rejects committed benchmark instance identifiers appearing in
-an intervention description or patch. Deterministic guards cannot prove the
-absence of subtler memorization, so code review remains responsible for
-near-verbatim question matching, answer templates, hidden-annotation-driven
-retrieval, and database rules whose only rationale is a single benchmark item.
-Training-derived example queries are a named experimental family whose proposals
-record generation method, provenance, reusable pattern, and count; they contain
-no identifiers or verbatim question-to-gold pairs, and material use requires a
-with-and-without ablation before freeze.
+\subsection{One deviation, stated in full}
 
-\paragraph{Stopping.}
-After four consecutive non-accepted experiments the loop must explicitly review
-whether continued work is justified; this is a review trigger, not an automatic
-termination. Stopping requires an immutable reason record, after which the
-control plane rejects proposals, decisions, regression additions, and
-checkpoints. Selecting a final candidate triggers Freeze B. Test results never
-reopen the loop.
+The untuned held-out arm was scored before E02's development execution finished,
+which reverses the ordering that the later lean optimization extension specified.
+E02 had already been selected and preregistered as a relationship-path contrast,
+and its general compiler change predates the held-out results, so the frozen
+untuned comparison is unaffected: every held-out generation completed before
+scoring, and both scorers were published in one atomic run. The cost falls
+entirely on optimization. Because held-out aggregates are now visible, they may
+not drive a new intervention edit, a checkpoint consumption, a promotion
+decision, or an optimized held-out arm, and E02 cannot be rerun or promoted into
+a sealed successor. The study therefore reports a valid frozen four-condition
+held-out comparison and a separate pre-specified development mechanism
+experiment. It makes no claim of held-out improvement from tuning. One later
+correction generalized the publication of already-normalized relationship
+endpoints in response to public validator evidence; it used no held-out outcome
+and changed no experimental choice.

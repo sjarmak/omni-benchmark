@@ -1,0 +1,183 @@
+\section{Registered successor condition C5, and its pending readout}
+\label{sec:c5}
+
+Section~\ref{sec:results} reports a governed condition that never composed a
+query through the semantic layer, and Section~\ref{sec:development} explains why:
+a compiler that declined to guess published a model with no joins and no
+measures, so no compiled path existed for the planner to take. That leaves the
+motivating question open rather than answered. C5 is the registered condition
+that closes it. It was registered on 2026-08-30, after the held-out aggregates
+were opened; its design provenance is the mechanism measurements and the
+product's public documentation, not any held-out outcome. That ordering is why it
+is confined to the development partition and can never become a held-out
+candidate. It reports no number in this paper. The placeholders below mark exactly where its numbers will
+go, so that a later report fills them rather than restating the design.
+
+\subsection{What C5 changes}
+C4 measured the product under a deployment shape its documentation never
+recommends. C5 measures it under the shape the documentation prescribes, built by
+a separate compiler entry point from the same public schema, public column
+meanings, and public HKB, and nothing else. Six changes define the condition:
+
+\begin{itemize}
+\item A view for every public table, 47 to 63 per database, against the
+      mechanical baseline's 6 to 11, with a physical dimension for every column
+      carrying its public column meaning as description.
+\item A join for every foreign-key contract that passes the same conservative
+      cardinality rule the relationship experiment used, 1,049 of 1,228 public
+      foreign keys. The endpoint filters that bounded that experiment relax on
+      their own, because both endpoints are now published.
+\item The complete HKB carried into \texttt{ai\_context} rather than pruned: one
+      exact field target becomes field-level context, a table-scoped or
+      cross-table definition becomes topic-level context with its dependency
+      chain inlined prerequisite-first, and database-global knowledge becomes
+      model-level context. Formulas are carried verbatim. The compiler enforces
+      the product's documented budget, warning at 150{,}000 characters of model
+      context per database and failing above 175{,}000.
+\item Field metadata only through channels the deployment API's exact-readback
+      contract confirms, which excludes \texttt{synonyms} and
+      \texttt{sample\_values}.
+\item Generic query-pattern guidance at model level, describing the structurally
+      fragile shapes from the failure taxonomy once each, instantiated from
+      schema structure alone and from no question content.
+\item No measures. Measures with grain resolution are registered as a second
+      phase and built only if the first phase warrants the spend.
+\end{itemize}
+
+Everything that defends the number is unchanged: public-only content provenance,
+both frozen scorers reported without post-result selection, one generation,
+append-only records, isolated \texttt{livesqlbench-*} branches, per-attempt exact
+readback of every deployed document including the model-level context, and the
+rule that a wrong answer is never a reason to rerun.
+
+\subsection{Prespecified comparisons}
+Table~\ref{tab:c5plan} fixes what C5 will be compared against, and on which
+questions, before any C5 outcome exists. The matched development frame is
+constructed from public inputs alone, by narrowing each frozen selection to the
+intersection of the governed execution frame and the direct-baseline freeze, so
+that one scorer run per selection produces C1 through C5 aggregates over
+identical questions. That intersection is 122 questions across 14 databases; the
+matched governed baseline over it holds 122 attempts, 77 answered and 45 errored,
+against 154 scheduled attempts over 18 databases.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Prespecified C5 comparisons. No result exists for any row at the time of
+writing.}
+\label{tab:c5plan}
+\begin{tabular}{p{3.2cm}p{2.6cm}p{5.1cm}p{1.6cm}}
+\toprule
+Comparison & Frame & Question it answers & Result \\
+\midrule
+C5 against C2 & Matched 122 questions, 14 databases & How much of the $+12.0$-point knowledge benefit a governed deployment delivers when the model carries the same knowledge & \pending \\
+C5 against frozen C4 & 136 answerable development questions & Effect of the documentation-idiomatic deployment over the mechanical baseline & \pending \\
+C5 against E02 & 117 captured questions & Incremental effect beyond declared relationships alone & \pending \\
+C5 query paths & All captured C5 queries & Whether declared joins move governed queries off the product's rewrite path & \pending \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Deployment state at the time of writing}
+The arm is in deployment and has not yet generated. Its failures are preserved
+with the same discipline as the rest of this record, because each one is a
+property of writing a semantic model to this product rather than an incident to
+be tidied away.
+
+The first pass failed on 21 views whose CamelCase table names the product renames
+on creation. The second reached 8 of 16 databases before the process that owned
+it exited, leaving a half-deployed arm; the fix ties the remote identity to the
+deployment run's revision, so a retry can never land on a populated branch, and
+long jobs now run detached. The third verified 15 of 16 databases with zero
+validation issues and exact readback, and failed on
+\texttt{planets\_data\_large} at the readback stage after 7 observations. A
+read-only comparison of that branch against the committed bundle showed 58 of its
+118 documents differing, every view and no topic, carrying the product's own
+schema-generated view content rather than ours: the product regenerated the view
+layer from the physical schema after the upload landed, on the database with the
+largest view surface in the set. The fix uploads a second time when a branch does
+not converge and fails only if the reuploaded branch still differs. The fourth
+pass carried that fix and reproduced the same single-database readback failure,
+which makes the behavior deterministic rather than a timing race. A fifth pass is running as this paper is written.
+
+None of these fixes contains a database name, a question, or a label, and none
+can mask a real mismatch, because a branch that still differs after the second
+upload fails exactly as before.
+
+\subsection{Where the C5 result will go}
+Tables~\ref{tab:c5accuracy} and~\ref{tab:c5mechanism} are the destinations. The
+accuracy table is empty in every cell, including the comparator rows, because the
+matched-frame scorer run has not been executed for any condition; running it for
+C5 alone would not produce a comparison. The mechanism table carries the frozen
+governed baseline's measured values beside empty C5 cells, because those are the
+numbers C5 is built to move.
+
+\begin{table}[htbp]
+\centering
+\caption{Mean one-shot execution accuracy on the matched 122-question development
+frame, both frozen scorers, to be filled by the C5 scorer run.}
+\label{tab:c5accuracy}
+\begin{tabular}{lrr}
+\toprule
+Condition & Official-compatible Soft EX & Corrected multiset \\
+\midrule
+C1 raw schema, direct SQL & \pending & \pending \\
+C2 searchable raw HKB & \pending & \pending \\
+C3 searchable exported model & \pending & \pending \\
+C4 mechanical governed baseline & \pending & \pending \\
+C5 documentation-idiomatic governed & \pending & \pending \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Query-path mechanism readout. The C4 column is measured over the 135
+captured governed development queries; the C5 column is to be filled from the
+same analyzers over C5's captured queries.}
+\label{tab:c5mechanism}
+\begin{tabular}{p{7.2cm}rr}
+\toprule
+Measurement & Frozen C4 & C5 \\
+\midrule
+Queries carrying \texttt{rewriteSql: true} & 135 of 135 & \pending \\
+Queries declaring a join path & 0 of 135 & \pending \\
+Attempts referencing at least one compiled dimension & 109 of 135 & \pending \\
+Attempts expanding an HKB-backed derived definition & 39 of 135 & \pending \\
+Attempts selecting no compiled model field & 97 of 135 & \pending \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{placeholder}
+C5 findings. One paragraph stating the accuracy outcome on the matched frame
+under both scorers, the paired contrast against C2 with its clustered bootstrap
+interval, and the direction and size of the change against frozen C4, written
+after the scorer run and before any interpretation.
+\end{placeholder}
+
+\begin{placeholder}
+C5 mechanism reading. One paragraph stating whether declared joins moved governed
+queries off the rewrite path, what share of C5 queries the semantic layer
+composed, and whether any residual rewrite is explained by the absence of
+measures in this phase.
+\end{placeholder}
+
+\begin{placeholder}
+C5 interpretation. One paragraph relating the outcome to the three statements in
+Section~\ref{sec:results}, and, if the mechanism moved, restating which of them
+the C5 evidence narrows or widens. If the arm fails to deploy or to generate, the
+disposition and its stopping rule go here instead of a result.
+\end{placeholder}
+
+\subsection{What C5 will not establish}
+Four limits are fixed in advance. C5 is a development-partition condition, and
+the held-out frame is closed, so no held-out claim will be made for it whatever it
+shows. It postdates visible held-out aggregates, which is why it may not be
+promoted into a held-out candidate. It runs a single generation, so a small
+difference against a comparator will not be separable from repetition noise the
+way the three-repetition held-out arm allows. And phase 1 publishes no measures,
+so a null result would not distinguish declared joins failing to help from a
+model still missing the aggregation contracts that
+Section~\ref{sec:product} identifies as the deeper gap.

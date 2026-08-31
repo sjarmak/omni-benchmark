@@ -1,34 +1,59 @@
-\section{Threats to validity and preregistered limitations}
+\section{Threats to validity and limitations}
 \label{sec:threats}
 
-These are stated before any result exists, so that none of them can be introduced
-later as an explanation for an inconvenient outcome.
+Every item in this section except the last three was written down before any
+result existed, which is why none of them can be introduced now as an explanation
+for an inconvenient outcome. The last three are deviations the executed study
+incurred, and they are stated at the same level of detail as the preregistered
+ones.
 
 \begin{itemize}[leftmargin=1.2em]
   \item \textbf{Scope.} Because all 18 databases appear in both partitions, the
   headline estimates unseen-question performance inside a modeled database, not
   cold-start performance on an unmodeled one.
-  \item \textbf{Supervision.} The final system uses training failures and
-  training gold offline. It is supervised on 231 questions and is not zero-shot.
+  \item \textbf{Supervision.} The protocol permitted offline use of training
+  failures and training gold. The executed final candidate used neither, and the
+  metered partition was never consumed, so the reported system is the frozen
+  mechanical baseline rather than a tuned one.
   \item \textbf{Contamination.} The benchmark is public. The maintainers' design
   claim cannot rule out post-release model exposure, and this project cannot
   inspect training provenance. Paired within-question contrasts are less
-  vulnerable than absolute levels.
-  \item \textbf{Power.} 101 held-out questions give roughly one percentage point
-  of resolution per question, with useful descriptive power but limited power for
-  small paired differences and for per-database or rare-condition cells.
+  vulnerable than absolute levels, which is one reason the C2 minus C1 result
+  carries more weight here than any single accuracy figure.
+  \item \textbf{Power.} 89 held-out questions give roughly one percentage point
+  of resolution per question. The knowledge contrast is large enough to clear
+  that, at $+12.0$ points with a 5.6-point lower bound. The governed contrasts
+  are not: C4 minus C1 at $-1.5$ points has an interval of $-7.1$ to 4.1, so this
+  study cannot distinguish a small governed loss from a small governed gain.
   \item \textbf{Metric.} Soft EX deliberately equates some semantically different
   SQL and rejects some extensionally equal results. Accuracy is accuracy under a
-  pinned scorer, not proof of semantic equivalence, which is why a second
-  comparator is reported.
-  \item \textbf{Model parity.} When C4's underlying models cannot be matched,
-  C4 minus C3 is confounded and remains a system-level comparison rather than a
-  causal estimate of enforcement.
+  pinned scorer, not proof of semantic equivalence, which is why the second
+  comparator is reported alongside it everywhere.
+  \item \textbf{Model parity.} The governed condition's underlying models could
+  not be matched or observed, so C4 minus C3 is a system-level comparison and not
+  a causal estimate of enforcement.
+  \item \textbf{Query path.} This limitation is separate from model parity and is
+  not removed by achieving it. The governed condition never exercised semantic
+  query composition: every governed query took the product's raw-SQL rewrite
+  path, and the deployed model declared no join path and no measure for a planner
+  to compile. C4 minus C3 therefore differs on the agent, on field resolution at
+  rewrite time, on the accessible surface, and on the execution contract, and not
+  on who composes the query.
+  \item \textbf{Governed structural aggregates.} Because \texttt{generated\_sql}
+  is null on every governed attempt, the governed arm's relation and join counts
+  are computed from the SQL text carried on each semantic query. They describe
+  agent-written queries in all four conditions and support no claim about
+  compiled query structure.
   \item \textbf{Harness.} Published controlled studies place the scaffold effect
   anywhere from 0 to 28 percentage points~\cite{arxiv-2607-22585,arxiv-2606-08529},
   so all condition results are conditional on the disclosed harnesses, and effects
   may appear in error type, cost, retries, or reliability rather than in aggregate
-  accuracy.
+  accuracy. The reliability and workload differences in
+  Section~\ref{sec:results} are an instance of exactly that.
+  \item \textbf{Comparator scaffold choice.} The four-table schema window is a
+  comparator design decision supported by one question's evidence. The 20-question
+  sensitivity arm that would test it was frozen and then deferred before
+  execution.
   \item \textbf{Stochasticity.} Three repetitions characterize some instability
   but do not fully identify provider or temporal variance.
   \item \textbf{Environment parity.} Any mismatch between the database the
@@ -36,7 +61,7 @@ later as an explanation for an inconvenient outcome.
   or false failures, which is why fingerprint and canary parity checks precede
   every run.
   \item \textbf{Version drift.} The product, the model providers, and the
-  evolving benchmark can all change during a 1,212-trial evaluation. Pinned
+  evolving benchmark can all change during an evaluation of this size. Pinned
   artifacts, timestamps, deterministic interleaving, and the sealed
   generate-then-score boundary mitigate this without eliminating it.
   \item \textbf{Scalability of the modeling claim.} Manual interpretive mappings
@@ -44,5 +69,26 @@ later as an explanation for an inconvenient outcome.
   construction is automatic, and are counted, not described qualitatively.
   \item \textbf{Composite systems.} A production system that routes across
   multiple opaque model tiers and includes a validation stage cannot be reduced to
-  one model label, and will not be reported as though it could.
+  one model label, and is not reported as though it could.
+  \item \textbf{Executed frame (deviation).} The held-out frame covers 89 of the
+  original 101 sealed questions on 16 of the 18 databases. The 12 excluded
+  questions sit on the two databases the official Linux loader cannot populate,
+  and the exclusion was made before any sealed generation, label release, or
+  outcome access, using only loader behavior. It narrows the estimand; it does
+  not create missing outcomes. The same defect makes 18 development questions
+  unscorable in the official environment. Loading the omitted archive files would
+  restore those questions at the cost of comparability with the official
+  environment, which is why it was not done.
+  \item \textbf{Development-baseline scope (deviation).} The direct-SQL
+  development baseline excludes two further databases and therefore describes
+  those conditions on 16 databases. Any comparison against a wider governed frame
+  must use matched coverage or disclose the mismatch; the alignment in
+  Section~\ref{sec:development} does the former.
+  \item \textbf{Scoring order (deviation).} The untuned held-out arm was scored
+  before the E02 development experiment finished, reversing the intended order.
+  The frozen untuned comparison is unaffected, because every held-out generation
+  completed before scoring and both scorers were published together. The
+  consequence is that no held-out claim about optimization can be made at all:
+  E02 resolves inconclusive under its own coverage rule, and the visible held-out
+  aggregates may not drive any further intervention, checkpoint, or promotion.
 \end{itemize}

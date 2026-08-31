@@ -36,6 +36,16 @@ points), and sensitivity is 10/116 versus 9/116 (+0.9 points). Nineteen outcomes
 remain unresolved, so this directional result does not change the formal
 decision.
 
+A later mechanism analysis, C5, is now in progress on dev-A. It deploys Omni the
+way its documentation prescribes (all-tables view surface, full FK join graph,
+complete public HKB ported to `ai_context`) to test whether C4's result reflects
+the governed path or the sparse model that could be compiled for it. C5 was
+registered on 2026-08-30 under D-197, after the sealed aggregates were visible,
+so it is development-only by construction: it cannot alter the frozen held-out
+numbers, cannot be promoted into a sealed successor, and reports both frozen
+scorers on a single generation that is never rerun for a wrong answer. Design:
+[`c5-tuned-governed-condition.md`](c5-tuned-governed-condition.md).
+
 Live-action authorization remains tiered by contamination risk
 (`omni-benchmark-xeg`). Public semantic deployment and validation passes are
 agent-autonomous and retryable under a new run ID. Standing human authorization
@@ -125,13 +135,16 @@ transfer is needed.
 - Finalize the results packet, make the reviewed submission commit, and create
   the submission tag.
 
-### Hard stop after E02
+### Stop rule after E02, and the one authorized exception
 
-E02 is preserved and recorded as INCONCLUSIVE, so the evaluation stops. No further
-experiment, intervention edit, dev-B checkpoint, canary, probe, rerun, or
-held-out arm may be launched. Remaining work is limited to custody closeout,
-artifact verification, report correction without new empirical claims, and the
-final submission commit and tag.
+E02 is preserved and recorded as INCONCLUSIVE. The stop rule stated after it
+(D-191) was superseded on 2026-08-30 by operator directive D-197, which
+authorized exactly one further development condition, C5, and nothing else. No
+intervention edit, dev-B checkpoint, rerun, or held-out arm may be launched, and
+C5 itself cannot be promoted into a sealed successor. Remaining work is C5's
+single generation and scoring, custody closeout, artifact verification, report
+correction without new empirical claims, and the final submission commit and
+tag.
 
 ### Non-critical-path or deferred work
 
@@ -148,7 +161,9 @@ The MVP is complete only when all of the following are true:
 1. The public C4 baseline is validated, immutably captured, frozen, and scored
    under the 154-scheduled/136-answerable frame.
 2. The bounded pre-result E02 dev-A contrast produces immutable KEEP/REVERT/
-   INCONCLUSIVE mechanism evidence without using held-out outcomes or dev-B.
+   INCONCLUSIVE mechanism evidence without using held-out outcomes or dev-B, and
+   the authorized C5 mechanism analysis produces its immutable dev-A evidence
+   under both frozen scorers.
 3. The twelve untuned C1-C4 cohorts and both frozen scorers produce
    identity-safe aggregates through custody.
 4. `RESULTS.md` reports the actual development and sealed comparisons, product

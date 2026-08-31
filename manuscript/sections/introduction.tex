@@ -19,7 +19,7 @@ or must compile its intent through the governed layer and pass its validation.
 The three carry very different costs, so a comparison that moves all three at
 once cannot attribute the difference to any of them.
 
-This paper preregisters an experiment that holds them apart. We evaluate the Omni
+This paper reports an experiment that holds them apart. We evaluate the Omni
 semantic layer on LiveSQLBench Large-v1, a BIRD-family text-to-SQL benchmark
 whose 18 PostgreSQL databases ship the material a semantic layer is supposed to
 encode: a hierarchical knowledge base (HKB) of 1,090 business definitions
@@ -33,39 +33,75 @@ event. C1 gives a competent agent the raw schema and lets it write SQL. C2 adds
 programmatic search over the raw HKB, changing access alone. C3 replaces the raw
 HKB with a searchable export of the compiled semantic model, changing
 representation while the agent still writes its own SQL. C4 is the
-production-governed system, where semantic compilation and validation are
-enforced. The primary product endpoint is C4 mean one-shot execution accuracy
-across three independent repetitions of the 101 sealed questions; the primary
-comparative endpoint is the paired C4 minus C1 difference on the same trials.
-Rung-to-rung contrasts are prespecified but exploratory, and we state in advance
-which can carry a causal reading.
+production-governed system. The primary product endpoint is C4 mean one-shot
+execution accuracy across three independent repetitions of the held-out
+questions; the primary comparative endpoint is the paired C4 minus C1 difference
+on the same trials.
 
+\paragraph{What we found.}
+The rung that carries knowledge is the rung that moves. On 89 held-out questions
+across 16 databases, three repetitions per condition and 1,068 generations
+completed before anything was scored, official-compatible mean accuracy was
+10.1\% for C1, 22.1\% for C2, 8.6\% for C3, and 8.6\% for C4. C2 minus C1 is
+$+12.0$ percentage points with a 95\% interval of 5.6 to 18.7. C4 minus C1 is
+$-1.5$ points with an interval of $-7.1$ to 4.1, and C4 spent 3.9 times C1's
+median tokens to get there. The corrected sensitivity scorer preserves every one
+of those orderings. Making business definitions searchable helped a great deal;
+compiling them into this deployed model, and then routing queries through the
+governed product, did not recover that help.
+
+\paragraph{Why the governed rung did not carry it.}
+Two measurements, both taken on public inputs, explain the shape of the result
+without excusing it. First, the conservative public-only compiler could turn
+only 193 of the 1,090 HKB definitions (17.7\%) into executable objects; 511
+(46.9\%) were deferred because they crossed a grain the public inputs never
+resolve. The deployed model therefore published no join paths and no measures.
+Second, and consequently, Omni's production agent took the product's raw-SQL
+rewrite path on every governed development attempt: all 135 semantic queries
+carry \texttt{rewriteSql: true} with agent-authored SQL and none declares a join
+path. The semantic layer still did work, as a field vocabulary the product
+resolved at rewrite time on 109 of those 135 attempts, but it did not compose the
+query. The consequence for the study is stated plainly rather than buried in a
+limitation: C4 minus C3 compares two agent-authored SQL conditions that differ in
+agent, dialect, accessible surface, and execution contract. It does not isolate
+enforcement, and no parity fix would make it isolate enforcement, because in
+neither arm did a semantic layer resolve a join or compile a measure.
+
+\paragraph{Commitments that constrain the result.}
 Several commitments exist because of failure modes documented in the evaluation
-literature rather than anything specific to this product. All 1,212 generations
-complete before any output is scored, so no held-out outcome can reach a prompt,
-a retrieval configuration, or a retry policy. The development partition is split
-again into a development partition that the protocol permits reusing and a
-metered partition available at most ten times behind a signing boundary. The
-executed final candidate uses neither question-level supervision nor a metered
-checkpoint. Two scorers are
-frozen before any gold is released, one reproducing the official evaluator's
-known lossy behavior and one repairing it, with neither selectable after results
-are seen. Every attempt carries a telemetry envelope in which an unobserved token
-count is null with a named reason, never zero. Every condition's harness is
-disclosed, because controlled studies place the scaffold's effect on agent
-accuracy anywhere from negligible to decisive.
+literature rather than anything specific to this product, and each one is
+checkable against a preserved artifact. All 1,068 generations completed before
+any output was scored, so no held-out outcome could reach a prompt, a retrieval
+configuration, or a retry policy. The development partition was split again into
+a partition the protocol permits reusing and a metered partition available at
+most ten times behind a signing boundary; the executed final candidate used
+neither question-level supervision nor a metered checkpoint, and the metered
+partition remains unconsumed. Two scorers were frozen before any gold was
+released, one reproducing the official evaluator's known lossy behavior and one
+repairing it, and both are reported without post-result selection. Every attempt
+carries a telemetry envelope in which an unobserved token count is null with a
+named reason, never zero. Every condition's harness is disclosed, because
+controlled studies place the scaffold's effect on agent accuracy anywhere from
+negligible to decisive. The record also carries its own deviations: the held-out
+frame lost 12 of the original 101 questions to a public-loader defect, one
+preregistered optimization experiment was scored out of the intended order and
+resolves as inconclusive, and both are reported in Section~\ref{sec:development}
+and Section~\ref{sec:threats} rather than described after the fact.
 
-The paper reports no accuracy, and that is the current state of the work: the
-split and protocol are frozen, custody tooling and both scorers are implemented,
-and the capture verification gate that must precede any scaled run has not been
-passed. Publishing the design before the numbers exist is the point. The
-contributions are a public-artifact reconnaissance of LiveSQLBench Large-v1
-including its knowledge-graph structure and the exact behavior of its pinned
-evaluator; a four-condition ablation separating access, representation, and
-enforcement, with an explicit account of which contrasts survive the absence of
-model parity; a custody and freeze protocol under which supervised development on
-231 questions cannot contaminate 101 sealed ones; a machine-checkable development
+\paragraph{Contributions.}
+A public-artifact reconnaissance of LiveSQLBench Large-v1 including its
+knowledge-graph structure and the exact behavior of its pinned evaluator; a
+four-condition ablation separating access, representation, and enforcement, with
+an executed result and an explicit account of which contrasts survive the
+measured query path; a custody and freeze protocol under which supervised
+development on 231 questions could not contaminate the sealed questions, with the
+freeze commits and artifact digests published; a machine-checkable development
 control plane in which hypotheses precede changes and rejected experiments cannot
-be rewritten out of the record; and a telemetry contract that keeps correctness
-out of the immutable generation record and missing measurements distinguishable
-from measured zeros.
+be rewritten out of the record; a telemetry contract that keeps correctness out
+of the immutable generation record and missing measurements distinguishable from
+measured zeros; a set of product findings, grounded in the same artifacts,
+about what an import path must represent before a governed runtime can compile
+anything; and a registered successor condition, C5, that deploys the same public
+knowledge the way the product's documentation prescribes, with its comparisons,
+its stopping rules, and the destination of its still-unproduced numbers fixed in
+advance in Section~\ref{sec:c5}.

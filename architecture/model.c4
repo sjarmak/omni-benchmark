@@ -1,0 +1,429 @@
+// `omni-benchmark` — does a semantic layer make an analytical agent more accurate?
+//
+// The conceptual experiment is small: one public question set, five runtime
+// conditions, one sealed scoring boundary. Everything else in this model exists
+// because the benchmark ships hidden gold answers, so generation and scoring
+// must be provably separated, and because agent runs are repeated, so provenance
+// must be immutable enough that a retry cannot quietly rewrite the evidence.
+//
+// Read it as four movements:
+//   1. PREPARATION  public data in, deterministic split out, databases restored
+//   2. COMPILATION  public HKB + schema -> an Omni semantic model, deployed
+//   3. GENERATION   five conditions answer questions; artifacts freeze
+//   4. CUSTODY      a sealed boundary scores them and emits only aggregates
+//
+// Elements link to their source so any box is one click from the code. Tags
+// encode evidence state (see spec.c4) so what is frozen renders distinctly from
+// what may still move.
+
+model {
+
+  researcher = actor 'Researcher / agent' {
+    description 'Stephanie or a Claude Code agent building conditions, running attempts, and writing the ledger'
+  }
+
+  guardian = actor 'Custody guardian' {
+    #human
+    description 'Human-only role: holds the dev-B key, authorizes evaluated actions, releases sealed labels. Agents propose; this actor decides'
+  }
+
+  reviewer = actor 'Reviewer / auditor' {
+    description 'Reads identity-free aggregates and reproduces the manifest, split, and scorers from committed inputs'
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // External systems — the four things the benchmark does not own.
+  // ─────────────────────────────────────────────────────────────────────────
+
+  livesqlbench = externalSystem 'LiveSQLBench Large-v1' {
+    #frozen
+    description 'Pinned public release a418e108 — 480 tasks over 18 databases, plus public dumps and the upstream evaluator. Hidden gold ships alongside; the 101 test labels are never read'
+    link ../docs/benchmark-notes.md 'benchmark-notes.md'
+  }
+
+  claudeApi = externalSystem 'Claude Code (pinned binary)' {
+    #frozen
+    description 'The agent under test in C1-C3, driven headless as a subprocess. Version 2.1.250 pinned by SHA-256; a version change is a protocol deviation'
+    link ../src/omni_benchmark/claude_process_runtime.py 'claude_process_runtime.py'
+  }
+
+  omni = externalSystem 'Omni' {
+    description 'The system under evaluation. Hosts the deployed semantic model on isolated livesqlbench-* branches and runs the production agent that answers C4/C5 questions'
+    link ../docs/c4-query-path-disclosure.md 'c4-query-path-disclosure.md'
+  }
+
+  postgres = externalSystem 'PostgreSQL' {
+    description '18 restored LiveSQLBench databases. The shared execution substrate: both the agents under test and the scorer run their SQL here'
+    link ../docs/database-setup.md 'database-setup.md'
+  }
+
+  github = externalSystem 'GitHub' {
+    description 'sjarmak/omni-benchmark — the provenance root. The control plane verifies config and manifests with git show against the recorded Freeze A commit, not against the working tree'
+
+    repo = datastore 'main branch' {
+      #frozen
+      description 'Committed public artifacts, Freeze A/B records, and the append-only research ledger'
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // The benchmark system.
+  // ─────────────────────────────────────────────────────────────────────────
+
+  benchmark = system 'omni-benchmark' {
+    description 'Evaluation harness: five frozen conditions over 332 public Query tasks, scored behind a sealed custody boundary by two frozen scorers'
+    link ../README.md 'README'
+    link ../EVALUATION_PROTOCOL.md 'EVALUATION_PROTOCOL.md — preregistration'
+    link ../docs/methodology.md 'methodology.md'
+    link ../CLAUDE.md 'CLAUDE.md — boundaries & gotchas'
+
+    // ── 1. Preparation: public data in, deterministic partitions out ───────
+    prep = container 'Preparation' {
+      #frozen
+      description 'Turns the pinned public release into committed, byte-reproducible manifests. Hand-editing an output is a defect; the fix is to correct the input and regenerate'
+      technology 'Python / SHA-256'
+      link ../scripts/prepare_benchmark.py 'scripts/prepare_benchmark.py'
+
+      eligibility = component 'Eligibility manifest' {
+        #frozen
+        description 'Keeps the 332 Query tasks, drops the 148 Management tasks. Manifest hash ed8a7b3f… is the anchor every later artifact is checked against'
+        link ../scripts/prepare_benchmark.py 'prepare_benchmark.py'
+      }
+      splitter = component 'Deterministic split' {
+        #frozen
+        description '231 development / 101 sealed test, then 154 dev-A / 77 dev-B. Database-stratified Hamilton allocation ordered by SHA-256 of a committed seed — membership never moves on outcomes'
+        link ../src/omni_benchmark/split.py 'split.py'
+        link ../scripts/make_dev_split.py 'make_dev_split.py'
+      }
+      schemaIr = component 'Public schema IR' {
+        #built
+        description 'Row-free DDL projection of each database. Row-free by construction, so schema context can never smuggle data values into a prompt'
+        link ../src/omni_benchmark/schema_ir.py 'schema_ir.py'
+      }
+      hkbIr = component 'Public HKB IR' {
+        #built
+        description '1,090 business-knowledge definitions with their dependency graph and provenance preserved. This is the knowledge whose value C2-C5 measure'
+        link ../src/omni_benchmark/hkb_ir.py 'hkb_ir.py'
+      }
+      dbInfra = component 'Database infrastructure' {
+        #built
+        description 'Restores the public dumps and hands each attempt a disposable template clone, so no attempt can observe another attempt writes'
+        link ../src/omni_benchmark/postgres_isolation.py 'postgres_isolation.py'
+        link ../scripts/database_infrastructure.py 'database_infrastructure.py'
+      }
+    }
+
+    // ── 2. Compilation: public knowledge -> a deployed semantic model ──────
+    compiler = container 'Semantic compiler' {
+      #built
+      description 'Compiles public HKB + schema into Omni model files and deploys them. The measured bottleneck of the whole result: only 17.7% of definitions compiled, 46.9% deferred for missing grain contracts'
+      technology 'Python / sqlglot / YAML'
+      link ../docs/hkb-semantic-baseline.md 'hkb-semantic-baseline.md'
+
+      mapping = component 'Mapping decisions' {
+        #built
+        description 'Decides per definition whether it can become an executable object, and records why when it cannot. The deferral reasons are the finding, not a byproduct'
+        link ../src/omni_benchmark/semantic_mapping.py 'semantic_mapping.py'
+      }
+      bundle = component 'Bundle compiler (baseline)' {
+        #frozen
+        description 'Emits the deployed Omni files. Conservative by design, which is exactly why the baseline model declared no joins and no measures'
+        link ../src/omni_benchmark/semantic_bundle.py 'semantic_bundle.py'
+      }
+      relationships = component 'FK relationships (E02)' {
+        #dormant
+        description 'Adds only foreign-key-backed join paths — the one mechanism the baseline was missing. Ran once on dev-A; five transport failures left it short of the preregistered 136 and it is formally inconclusive'
+        link ../src/omni_benchmark/semantic_relationships.py 'semantic_relationships.py'
+        link ../docs/e02-join-path-assessment.md 'e02-join-path-assessment.md'
+      }
+      c5compiler = component 'Docs-idiomatic compiler (C5)' {
+        #evolving
+        description 'Deploys Omni the way its own documentation prescribes: a view per table, full join graphs, real measures. Tests whether the C4 result measured the product or our conservative compilation of it'
+        link ../src/omni_benchmark/semantic_c5.py 'semantic_c5.py'
+        link ../docs/c5-tuned-governed-condition.md 'c5-tuned-governed-condition.md'
+      }
+      deployer = component 'Deploy + exact readback' {
+        #built
+        description 'Uploads to an isolated livesqlbench-* branch, then reads the model back and compares byte-for-byte. What Omni actually stores, not what we sent, is what the condition is defined as'
+        link ../src/omni_benchmark/omni_semantic_deployment.py 'omni_semantic_deployment.py'
+      }
+    }
+
+    // ── 3. The conditions themselves ───────────────────────────────────────
+    conditions = container 'Frozen conditions' {
+      description 'The ablation. Each condition is a committed JSON spec plus a pinned prompt; the runtime may not add a capability the spec does not name'
+      link ../config/conditions 'config/conditions/'
+      link ../docs/harness-disclosure.md 'harness-disclosure.md'
+
+      c1 = component 'C1 — raw schema' {
+        #frozen
+        description 'Direct SQL over public schema only. The floor. Sealed official accuracy 10.1%'
+        link ../config/conditions/c1-direct-sql-v1.json 'c1-direct-sql-v1.json'
+      }
+      c2 = component 'C2 — searchable HKB' {
+        #frozen
+        description 'Direct SQL plus bounded search over the raw business knowledge. Sealed official accuracy 22.1% — the only arm that beat the floor, and the headline result'
+        link ../config/conditions/c2-direct-sql-v1.json 'c2-direct-sql-v1.json'
+      }
+      c3 = component 'C3 — searchable Omni model' {
+        #frozen
+        description 'The same knowledge restructured as an exported semantic model, still queried by direct SQL. Sealed official accuracy 8.6% — restructuring cost what the raw form provided'
+        link ../config/conditions/c3-direct-sql-v1.json 'c3-direct-sql-v1.json'
+      }
+      c4 = component 'C4 — governed Omni' {
+        #frozen
+        description 'Omni production runtime over the deployed model. Sealed official accuracy 8.6%. Measured, not assumed: all 135 governed queries set rewriteSql with agent-authored SQL, so no compilation path was exercised'
+        link ../config/conditions/c4-production-v1.json 'c4-production-v1.json'
+        link ../docs/c4-query-path-disclosure.md 'c4-query-path-disclosure.md'
+      }
+      c5 = component 'C5 — tuned governed Omni' {
+        #evolving
+        description 'Governed Omni deployed idiomatically, on dev-A only. Asks whether the C4 number was a property of the product or of how we modeled it. No held-out claim is available to it'
+        link ../docs/c5-tuned-governed-condition.md 'c5-tuned-governed-condition.md'
+      }
+    }
+
+    // ── 4. Generation runtime: how an attempt actually happens ─────────────
+    runtime = container 'Generation runtime' {
+      #built
+      description 'Executes one attempt and captures it. Fail-closed everywhere: an attempt that cannot be captured faithfully is a failure, never a silently degraded success'
+      technology 'Python / subprocess / psycopg'
+      link ../src/omni_benchmark/baseline_batch.py 'baseline_batch.py'
+
+      directTransport = component 'Direct agent transport' {
+        #built
+        description 'Drives the pinned Claude binary headless and parses its event stream into typed turns, usage, and terminal telemetry. The C1-C3 agent boundary'
+        link ../src/omni_benchmark/claude_direct_transport.py 'claude_direct_transport.py'
+      }
+      publicTools = component 'Public reference tools' {
+        #frozen
+        description 'The only context surface C1-C3 get: hash-bound retrieval over committed public references. C2 and C3 differ solely in what is indexed, never in retrieval quality'
+        link ../src/omni_benchmark/direct_public_context.py 'direct_public_context.py'
+        link ../src/omni_benchmark/direct_public_search.py 'direct_public_search.py'
+      }
+      sqlAdmission = component 'SQL admission + execution' {
+        #frozen
+        description 'Fail-closed read-only Query admission, shared verbatim by generation and scoring so both sides execute under identical rules'
+        link ../src/omni_benchmark/sql_admission.py 'sql_admission.py'
+        link ../src/omni_benchmark/postgres_execution.py 'postgres_execution.py'
+      }
+      omniClient = component 'Omni client' {
+        #built
+        description 'Invokes Omni without shell expansion or tokens on the command line. Credentials stay in the process environment and are never written to an artifact'
+        link ../src/omni_benchmark/omni_cli.py 'omni_cli.py'
+      }
+      omniProbe = component 'Governed job capture' {
+        #built
+        description 'Submits a question, polls to a terminal state, and captures the result with its query trace. The trace is what proved C4 never compiled a join'
+        link ../src/omni_benchmark/omni_capture.py 'omni_capture.py'
+      }
+      batch = component 'Batch orchestrator' {
+        #built
+        description 'Resumable, budget-bounded scheduling across conditions and repetitions. Resumption is by exclusive run ID, so an interrupted sweep cannot double-count an attempt'
+        link ../src/omni_benchmark/baseline_batch.py 'baseline_batch.py'
+      }
+    }
+
+    // ── 5. Custody: the reason this repo is bigger than the experiment ─────
+    custody = container 'Custody & provenance' {
+      #custody
+      description 'Makes the evidence tamper-evident. Artifacts are append-only and mode-0600 via O_EXCL: a botched record is fixed forward with a new record, never by deleting the file and retrying'
+      technology 'Python / O_EXCL / SHA-256'
+      link ../docs/evidence-index.md 'evidence-index.md'
+
+      protectedFields = component 'Protected-field guard' {
+        #custody
+        description 'Recursively rejects sol_sql, gold_sql, test_cases, external_knowledge, and their kin at any nesting depth. Recursive because the leak that matters is the one nested three levels down in a trace'
+        link ../src/omni_benchmark/protected_fields.py 'protected_fields.py'
+        link ../src/omni_benchmark/content_policy.py 'content_policy.py'
+      }
+      artifactStore = component 'Artifact store' {
+        #custody
+        description 'Exclusive-create 0600 writes under ignored 0700 roots. Refusing to overwrite is the feature: it makes a rewritten result impossible rather than merely discouraged'
+        link ../src/omni_benchmark/artifact_store.py 'artifact_store.py'
+      }
+      runManifest = component 'Run manifest' {
+        #built
+        description 'Binds each attempt to its exact code commit, condition spec, model identity, and inputs, so a result can always be traced to the system that produced it'
+        link ../src/omni_benchmark/run_manifest.py 'run_manifest.py'
+      }
+      quarantine = component 'Run quarantine' {
+        #built
+        description 'Fail-closed registry of runs excluded from scoring, with the reason recorded. Exclusions are declared before scoring, never discovered after seeing the number'
+        link ../src/omni_benchmark/run_quarantine.py 'run_quarantine.py'
+      }
+      labelRelease = component 'dev-A label release' {
+        #custody
+        description 'Releases private dev-A labels for offline diagnosis while dev-B and the 101 held-out labels stay closed. dev-A may shape how the system is built; it may never become runtime input'
+        link ../src/omni_benchmark/custody.py 'custody.py'
+      }
+      freeze = component 'Freeze A / Freeze B' {
+        #frozen
+        description 'Freeze A pins the system; Freeze B pins the sealed run schedule and interleaving before any held-out question is asked. Both are verified from git, not from the working tree'
+        link ../src/omni_benchmark/freeze_b.py 'freeze_b.py'
+      }
+    }
+
+    // ── 6. Control plane: what an agent is allowed to change, and when ─────
+    control = container 'Autoresearch control plane' {
+      #built
+      description 'Train-only optimization loop. Its job is to stop an agent from optimizing against anything it should not see, and to make every intervention answerable afterward'
+      technology 'Python / append-only JSON'
+      link ../docs/autoresearch.md 'autoresearch.md'
+
+      config = component 'Config verification' {
+        #frozen
+        description 'Verifies config and manifests against the recorded Freeze A commit with git show. An uncommitted edit fails closed — the working tree is never the authority'
+        link ../src/omni_benchmark/autoresearch_config.py 'autoresearch_config.py'
+      }
+      ledger = component 'Experiment ledger' {
+        #built
+        description 'Append-only proposals, decisions, and regression cases. Every intervention states its hypothesis and generality class before it runs, including the ones that failed'
+        link ../src/omni_benchmark/autoresearch_ledger.py 'autoresearch_ledger.py'
+        link ../docs/research-log.md 'docs/research-log.md'
+      }
+      guardianReceipts = component 'dev-B guardian receipts' {
+        #custody
+        description 'Metered checkpoints against the held-back 77: hard maximum 10, signed receipts, no hash replay, each consumption committed before the next is permitted'
+        link ../src/omni_benchmark/autoresearch_guardian.py 'autoresearch_guardian.py'
+      }
+      runValidation = component 'Run validation' {
+        #built
+        description 'Admits a generation run only if its outputs, provenance, and telemetry are internally consistent, so a malformed run cannot enter the evidence at all'
+        link ../src/omni_benchmark/autoresearch_runs.py 'autoresearch_runs.py'
+      }
+    }
+
+    // ── 7. Sealed evaluation: the one-way boundary ─────────────────────────
+    sealed = container 'Sealed evaluation' {
+      #custody
+      description 'The one-way boundary. Generation artifacts and correctness never meet in the same artifact; only identity-free aggregates come out'
+      technology 'Python'
+      link ../src/omni_benchmark/sealed_evaluation.py 'sealed_evaluation.py'
+      link ../docs/sealed-execution.md 'sealed-execution.md'
+
+      dispatch = component 'Receipt-gated dispatch' {
+        #custody
+        description 'Orchestrates sealed generation and deliberately cannot score. Held-out attempts are single-use: a trial is never rerun because its answer was wrong'
+        link ../src/omni_benchmark/sealed_dispatch.py 'sealed_dispatch.py'
+      }
+      scorers = component 'Two frozen scorers' {
+        #frozen
+        description 'Official Soft EX pinned to upstream e15cd221, reproducing its lossy behavior on purpose, beside a preregistered corrected multiset scorer. Both always reported — choosing after seeing results is the failure this prevents'
+        link ../src/omni_benchmark/scoring.py 'scoring.py'
+        link ../docs/scoring.md 'docs/scoring.md'
+      }
+      sealedScoring = component 'Sealed scoring lifecycle' {
+        #custody
+        description 'Joins frozen answers to gold execution inside the boundary: re-executes both, compares, and emits a label without ever handing gold back to generation'
+        link ../src/omni_benchmark/sealed_scoring.py 'sealed_scoring.py'
+      }
+      scoreLabels = component 'Immutable score labels' {
+        #custody
+        description 'Correctness lives in its own immutable artifact, cryptographically bound to the generation it scored. Separation is structural, not a naming convention'
+        link ../src/omni_benchmark/score_artifacts.py 'score_artifacts.py'
+      }
+      report = component 'Identity-free aggregates' {
+        #built
+        description 'The only thing that crosses back out: per-condition counts and contrasts with every question identity stripped'
+        link ../src/omni_benchmark/sealed_report.py 'sealed_report.py'
+        link ../RESULTS.md 'RESULTS.md'
+      }
+    }
+
+    // ── Datastores ─────────────────────────────────────────────────────────
+    manifests = datastore 'Public manifests' {
+      #frozen
+      description 'data/manifests/ — eligible questions, split IDs, and metadata. Committed, hash-anchored, and regenerable byte-for-byte from the pinned seeds'
+      link ../data/manifests 'data/manifests/'
+    }
+
+    semanticModels = datastore 'Semantic model artifacts' {
+      #built
+      description 'semantic_models/ — public HKB IR, schema IR, mapping decisions, and compiled bundles. Every file is derived from public inputs only'
+      link ../semantic_models 'semantic_models/'
+    }
+
+    privateLabels = datastore 'Private labels' {
+      #custody
+      description 'data/private/ — dev-A labels released for offline diagnosis. Gitignored, guardian-controlled, and never reachable from a runtime prompt'
+    }
+
+    runStore = datastore 'Run artifacts' {
+      #custody
+      description 'runs/ and experiments/runs/ — per-attempt traces and result sidecars. Ignored, 0700, append-only'
+    }
+
+    ledgerStore = datastore 'Experiment ledger' {
+      #built
+      description 'experiments/ — freeze records, deployment evidence, checkpoint consumption markers, and the analysis frames behind every published number'
+      link ../experiments/README.md 'experiments/README.md'
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Relationships.
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // Preparation
+  benchmark.prep -> livesqlbench 'pinned release a418e108 + public dumps'
+  benchmark.prep -> benchmark.manifests 'byte-reproducible manifests + split IDs'
+  benchmark.prep -> benchmark.semanticModels 'schema IR + HKB IR'
+  benchmark.prep.dbInfra -> postgres 'restore 18 databases; clone per attempt'
+
+  // Compilation
+  benchmark.compiler -> benchmark.semanticModels 'read IR, write mapping + bundle'
+  benchmark.compiler.deployer -> omni 'upload to livesqlbench-* branch, read back exactly'
+  benchmark.compiler -> benchmark.ledgerStore 'deployment evidence + deferral counts'
+
+  // The pipeline spine: prepare -> compile -> define conditions -> generate -> seal
+  benchmark.prep -> benchmark.compiler 'public schema IR + HKB IR'
+  benchmark.prep -> benchmark.conditions 'question set + partition membership'
+  benchmark.compiler -> benchmark.conditions 'the deployed model IS the C3/C4/C5 condition'
+  benchmark.conditions -> benchmark.runtime 'committed spec + pinned prompt'
+  benchmark.custody -> benchmark.sealed 'frozen generation artifacts, by content hash'
+
+  // The ladder itself: each rung adds exactly one thing to the one below it.
+  benchmark.conditions.c1 -> benchmark.conditions.c2 'add the business knowledge'
+  benchmark.conditions.c2 -> benchmark.conditions.c3 'restructure it as a semantic model'
+  benchmark.conditions.c3 -> benchmark.conditions.c4 'enforce it through the governed runtime'
+  benchmark.conditions.c4 -> benchmark.conditions.c5 'model it the way the docs prescribe'
+
+  benchmark.semanticModels -> benchmark.conditions.c3 'exported model as searchable text'
+  benchmark.compiler.bundle -> benchmark.conditions.c4 'deployed baseline model'
+  benchmark.compiler.c5compiler -> benchmark.conditions.c5 'tuned model'
+
+  // Generation
+  benchmark.runtime.directTransport -> claudeApi 'headless subprocess, JSON event stream'
+  benchmark.runtime.publicTools -> benchmark.manifests 'hash-bound public references'
+  benchmark.runtime.sqlAdmission -> postgres 'read-only Query execution'
+  benchmark.runtime.omniClient -> omni 'submit governed job'
+  benchmark.runtime.omniProbe -> omni 'poll to terminal state, capture result + trace'
+  benchmark.runtime -> benchmark.custody 'attempts, telemetry, provenance'
+
+  // Custody
+  benchmark.custody -> benchmark.runStore 'exclusive 0600 writes'
+  benchmark.custody.labelRelease -> benchmark.privateLabels 'release dev-A labels only'
+  benchmark.custody.freeze -> github.repo 'verify against recorded Freeze A commit'
+
+  // Control plane
+  researcher -> benchmark.control 'propose intervention with hypothesis + generality class'
+  benchmark.control -> benchmark.custody 'validate run before it becomes evidence'
+  benchmark.control -> benchmark.ledgerStore 'append proposal, decision, regression case'
+  benchmark.control.guardianReceipts -> guardian 'metered dev-B checkpoint (max 10)'
+  benchmark.control.config -> github.repo 'git show config + manifests'
+
+  // Sealed boundary
+  guardian -> benchmark.sealed 'exact single-use action receipt'
+  benchmark.sealed.dispatch -> benchmark.runtime 'sealed generation, scoring withheld'
+  benchmark.sealed.sealedScoring -> postgres 'execute frozen answer and gold, compare'
+  benchmark.sealed.sealedScoring -> benchmark.sealed.scorers 'official Soft EX + sensitivity'
+  benchmark.sealed.sealedScoring -> benchmark.sealed.scoreLabels 'immutable label bound to generation'
+  benchmark.sealed.report -> reviewer 'identity-free aggregates only'
+
+  // People
+  researcher -> benchmark.compiler 'build conditions from public inputs'
+  researcher -> benchmark.runtime 'run dev-A sweeps'
+  reviewer -> benchmark.manifests 'reproduce manifest, split, and scorers'
+  reviewer -> github.repo 'audit the commit trail'
+}

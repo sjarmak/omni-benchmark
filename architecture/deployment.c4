@@ -1,0 +1,97 @@
+// Deployment model — where each piece runs during an evaluation, and which
+// boundaries are trust boundaries.
+//
+// The interesting property is that nothing here is a service. An evaluation is a
+// local Python process driving two external agent runtimes and one local
+// database, writing to append-only local artifacts. The trust boundaries that
+// matter are not network edges: they are the custody boundary between generation
+// and scoring, and the human boundary at the guardian.
+
+deployment {
+
+  workstation = host 'Evaluation workstation' {
+    description 'Where an evaluation actually runs. Credentials live in an untracked .env; OAuth profiles are leased, never repaired mid-run'
+
+    harness = proc 'Harness process' {
+      description 'uv-run Python: prepares manifests, compiles bundles, orchestrates attempts'
+      instanceOf benchmark.prep
+      instanceOf benchmark.compiler
+      instanceOf benchmark.runtime
+      instanceOf benchmark.control
+    }
+
+    agentProc = proc 'Claude Code subprocess' {
+      description 'The C1-C3 agent under test: pinned binary 2.1.250, verified by SHA-256, driven headless with a restricted tool surface'
+      instanceOf benchmark.runtime.directTransport
+    }
+
+    sealedProc = proc 'Sealed scoring process' {
+      description 'Runs only against a single-use guardian receipt. Reads frozen generation artifacts and gold; writes labels to a separate immutable artifact'
+      instanceOf benchmark.sealed
+    }
+
+    localStore = proc 'Local artifact roots' {
+      description 'runs/, experiments/runs/ — mode-0700 directories of exclusive-create 0600 artifacts, gitignored'
+      instanceOf benchmark.runStore
+      instanceOf benchmark.privateLabels
+    }
+  }
+
+  dbHost = host 'PostgreSQL host' {
+    description 'The 18 restored LiveSQLBench databases. Shared substrate: the agents under test and the scorer execute against the same data under the same read-only admission'
+    instanceOf postgres
+  }
+
+  omniCloud = host 'Omni (hosted)' {
+    description 'Semantic model on isolated livesqlbench-* branches plus the production agent. Never a shared or main model — branch isolation is what keeps a deployment from touching anyone else work'
+    instanceOf omni
+  }
+
+  anthropic = host 'Anthropic API' {
+    description 'Backs the pinned Claude Code binary. Model identity is pinned per run and recorded in the run manifest'
+    instanceOf claudeApi
+  }
+
+  githubHost = host 'GitHub' {
+    description 'Provenance root and the only place a freeze is authoritative. Publishing is gated on per-action authorization; force-push and history rewrite are prohibited'
+    instanceOf github
+
+    pagesProc = proc 'Actions: LikeC4 → Pages' {
+      description 'likec4-pages.yml exports the figures and interactive explorer for this model'
+    }
+  }
+
+  guardianDesk = host 'Guardian (human)' {
+    description 'Holds the dev-B private key and issues exact, single-use action receipts. Deliberately not automatable'
+    instanceOf guardian
+  }
+
+  upstream = host 'LiveSQLBench upstream' {
+    description 'HuggingFace dataset at the pinned revision plus the public database dumps. Fetched once and hash-verified'
+    instanceOf livesqlbench
+  }
+
+  // What crosses which boundary.
+  harness -> upstream 'fetch pinned release, verify SHA-256'
+  harness -> dbHost 'restore dumps; clone a template per attempt'
+  harness -> agentProc 'spawn headless, restricted tool surface'
+  agentProc -> anthropic 'model inference'
+  agentProc -> dbHost 'read-only Query SQL'
+  harness -> omniCloud 'deploy model branch; submit governed jobs'
+  omniCloud -> dbHost 'the governed runtime executes its own SQL'
+  harness -> localStore 'exclusive 0600 attempt artifacts'
+  harness -> githubHost 'commit manifests, freezes, ledger'
+  guardianDesk -> sealedProc 'single-use action receipt'
+  sealedProc -> localStore 'read frozen generations; write labels apart'
+  sealedProc -> dbHost 'execute answer and gold, compare'
+  sealedProc -> githubHost 'commit identity-free aggregates'
+}
+
+views {
+
+  deployment view deployment {
+    title 'Deployment — where each piece runs'
+    description 'Nothing here is a service. The boundaries that matter are the custody boundary between the harness and sealed scoring, and the human boundary at the guardian.'
+    include *
+  }
+}

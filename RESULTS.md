@@ -2,7 +2,19 @@
 
 ## Results report
 
-> **Status — 2026-08-30:** The immutable C1-C4 untuned baseline is complete and
+> **Status, 2026-08-31.** The primary C1-C4 held-out evaluation is complete and
+> frozen; its numbers are final and nothing in progress can change them. A
+> mechanism analysis, C5, is running on development data to test the
+> interpretation of the observed C4 behavior. It does not alter, rerun, or
+> reopen the sealed evaluation and makes no held-out claim, but it may refine
+> the product-level explanation of the result. C5 was registered after the
+> sealed aggregates became visible, which is recorded in D-197 and is exactly
+> why it is confined to dev-A. Design:
+> [`docs/c5-tuned-governed-condition.md`](docs/c5-tuned-governed-condition.md).
+> Trajectory across all experiments:
+> [`docs/experiment-trajectory.md`](docs/experiment-trajectory.md).
+>
+> The immutable C1-C4 untuned baseline is complete and
 > scored on the matched 89-question held-out frame under both frozen scorers.
 > Only identity-free aggregates have left custody; no per-question correctness,
 > SQL, row, or test annotation was opened. E01 is an audited baseline no-op, and
@@ -36,9 +48,11 @@ tasks: 231 development questions and an original sealed split of 101 questions.
 The development partition is further divided into 154 development questions and
 77 metered validation questions. The protocol permits supervised reuse. The
 frozen mechanical candidate received no question-level supervision and consumed
-no metered checkpoint. E02 is the final experiment: a completed, frozen
+no metered checkpoint. E02 is a completed, frozen
 pre-specified dev-A generation whose fixed coverage gate resolved INCONCLUSIVE and that
-cannot become a held-out optimized arm after the scoring-order deviation. Four
+cannot become a held-out optimized arm after the scoring-order deviation. C5, a
+later dev-A mechanism analysis registered after the sealed aggregates were
+opened, is in progress and likewise cannot produce a held-out claim. Four
 baseline systems separate access to raw schema,
 business knowledge, structured semantic knowledge, and governed execution.
 
@@ -354,6 +368,10 @@ than treating all identifiers as untrusted free text. The relevant commits are
 
 ## 5. Baseline and development trajectory
 
+The condensed research path, including the experiments that returned nothing, is
+[`docs/experiment-trajectory.md`](docs/experiment-trajectory.md); the
+contemporaneous ledger is [`docs/research-log.md`](docs/research-log.md).
+
 The 630-attempt C1-C3 baseline was frozen by content hash before the train-only
 release. Its exact dev-A intersection contains 420 attempts over 140 of the 154
 dev-A questions. Fourteen questions have no baseline output and were left
@@ -447,6 +465,8 @@ Their reusable changes and promotion rules are recorded in
 | E02: FK-backed relationships | 1,049 public FKs pass the conservative contract; the bounded artifact emits 91 relationships across 16 databases and 67 source topics, with zero metric-disposition changes; deployment v7 verified all 16 targets with exact readback; its fixed dev-A generation froze 117 answers and 19 capture-infrastructure failures | INCONCLUSIVE: five genuine transport failures contain no semantic query to replay, so the preregistered complete-136 score cannot be produced without a new model attempt | Stop; no promotion, rerun, or further experiment |
 | E03: bounded descriptions | Prespecified only | Not run | Out of MVP scope after the scoring-order deviation |
 | E04: broad HKB context | Prespecified negative control only | Not run | Out of MVP scope after the scoring-order deviation |
+| E05: typed output fields | Registered against the 31 `UNKNOWN`-type contract failures; the preregistered precondition needed 16 of 31 attempts to select a compiled semantic field, and the measured ceiling is 6 of 31 | INCONCLUSIVE by its own stopping rule | Closed; consumed no live attempt |
+| C5: docs-idiomatic tuned governed Omni | Registered 2026-08-30 under D-197, after sealed aggregates were visible. Widened view surface, full FK join graph, complete HKB port to `ai_context`. Public inputs only | In progress on dev-A | Development-only mechanism analysis; no held-out claim is available to it |
 
 The no-rerun E02 diagnostic preserves that formal decision while extracting the
 usable evidence. Both frozen scorers were applied offline to the 117 captured
@@ -498,6 +518,37 @@ An append-only recovery manifest accounts for all 45 original capture failures:
 The official aggregate receipt SHA-256 is
 `0296753e8fcbf826a99ed2f86088ecdfb61981db8dea47d93e7871cef2690a78`.
 Dev-B remains unconsumed.
+
+### C5: the mechanism analysis now in progress
+
+The query-path measurement leaves one question the frozen evidence cannot
+answer. C4's low result is consistent with two very different explanations: the
+governed path does not help on this benchmark, or the governed path was never
+exercised because the model we could compile was too thin to compose against.
+Those imply opposite product conclusions.
+
+C5 separates them. It deploys Omni the way its own documentation prescribes,
+from public inputs only: a view for every public table (47 to 63 per database
+rather than the baseline's 6 to 11), a join for every foreign key that passes
+the same conservative cardinality rule, and the complete public HKB ported into
+`ai_context` at field, topic, and model level, with dependency chains inlined
+prerequisite-first. Phase 1 declares no measures; a measures phase is registered
+but unbuilt. The headline contrast is C5 against C2 on their question
+intersection, which asks how much of C2's demonstrated knowledge value governed
+Omni delivers when the semantic model actually carries that knowledge.
+
+Three things constrain what C5 can claim. It was registered on 2026-08-30 under
+D-197, after the sealed aggregates were visible, so it is a dev-A condition and
+no held-out claim is available to it; this is recorded rather than concealed,
+and it is the reason C5 is confined to development data. Its design provenance
+is the mechanism measurements above plus Omni's public documentation, not any
+per-question outcome, and no question content, gold, or hidden annotation enters
+any C5 artifact. It reports both frozen scorers, without selection, on a single
+generation that is never rerun for a wrong answer.
+
+Status at the time of writing: the deployment is verified and the single
+136-attempt dev-A generation has not yet completed. Design and implementation
+map: [`docs/c5-tuned-governed-condition.md`](docs/c5-tuned-governed-condition.md).
 
 ## 6. Held-out results
 
@@ -662,7 +713,52 @@ evidence is in [`docs/failure-taxonomy.md`](docs/failure-taxonomy.md), the
 [`C4 query-path disclosure`](docs/c4-query-path-disclosure.md), and the
 [`E02 join-path assessment`](docs/e02-join-path-assessment.md).
 
-## 8. Limitations
+## 8. What this suggests for an ongoing evaluation program
+
+The most consequential conclusion of this study is not the score. It is that
+**"agent accuracy with a semantic layer" is not measurable as a single number.**
+C4 scored 8.6%, and that figure turned out to be nearly uninformative on its
+own, because it silently confounds three properties that move independently:
+
+1. **Semantic-model quality.** How much available business knowledge became
+   governed, executable structure. Measured here: 17.7% of 1,090 definitions.
+2. **Whether the runtime exercised that model.** Whether the governed path
+   composed the query or the agent authored SQL and used the model as a
+   dictionary. Measured here: the latter, on 135 of 135 attempts.
+3. **End-to-end answer correctness.** The number that gets quoted.
+
+A system can fail on any one of these while looking healthy on the others, and
+one accuracy figure cannot say which. Every substantive finding in this report
+came from separating them, using offline forensics on raw job records rather
+than any product surface. Six durable consequences follow, none of which depends
+on this particular benchmark:
+
+- **A benchmark portfolio rather than a benchmark.** SQL accuracy is one axis.
+  Semantic-model construction quality, governed-query behavior, robustness under
+  schema and knowledge drift, and customer-representative workloads are separate
+  axes that will not move together.
+- **Failure attribution as infrastructure.** Modeling, retrieval, planning,
+  semantic compilation, rewrite, transport, execution, and scorer failures should
+  be distinguishable from telemetry by construction. Here they were not: 34 of
+  136 C4 attempts failed before producing a scoreable answer, and ownership among
+  the authored model, agent planning, and the result contract is still
+  unresolved.
+- **Continuous product evaluation.** Regression suites bound separately to the
+  semantic layer, the agent, and the harness, so a change in one is not read as a
+  change in another.
+- **Semantic-model diagnostics as a product surface.** Grain, cardinality,
+  aggregation, identity, and relationship coverage should be measurable
+  properties a model author sees before deploying, not quantities a researcher
+  reconstructs afterward.
+- **A closed loop.** Evaluation finding, product hypothesis, targeted experiment,
+  shipped change, regression measurement. E02 and C5 are the first two turns of
+  that loop, executed by hand.
+- **An explicit rule for the boundary.** When is retrievable business knowledge
+  sufficient, and when must knowledge become executable governance? C2 against
+  C3 is direct evidence that the answer is not always governance, and the product
+  has no way to express the distinction today.
+
+## 9. Limitations
 
 - D-043 measures transformation coverage, not question correctness. A deferred
   definition may never be needed, and a compiled definition may still be
@@ -722,8 +818,13 @@ evidence is in [`docs/failure-taxonomy.md`](docs/failure-taxonomy.md), the
 - The scoring-order deviation prevents a held-out claim about optimization. It
   does not alter the frozen untuned comparison because every generation was
   complete before release and both scorers were published together.
+- C5 is a development-only mechanism analysis registered after the sealed
+  aggregates were visible. It cannot alter the frozen held-out numbers, cannot
+  be promoted into a sealed successor, and its dev-A contrasts are exploratory.
+  A favorable C5 result would refine the explanation of C4's behavior; it would
+  not establish held-out improvement from the governed path.
 
-## 9. Reproducibility
+## 10. Reproducibility
 
 The repository preserves the public manifest and deterministic split, public
 HKB/schema inputs and hashes, transformation artifacts, condition disclosure,

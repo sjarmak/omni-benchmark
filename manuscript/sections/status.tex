@@ -1,61 +1,54 @@
-\section{Supporting protocol status before the baseline}
+\section{Standing of the record, and what is still open}
 \label{sec:status}
 
-This manuscript is the supporting protocol record; the results report will be
-the primary research artifact once scored runs exist. The design above is
-frozen, but the experiment has not been run. Stating the exact boundary matters,
-because a protocol paper that blurs it invites its own hypotheses to be read as
-findings.
+\paragraph{What is closed.}
+The four-condition held-out comparison is complete and terminal. All 1,068
+generations executed under Freeze B, both frozen scorers ran in one atomic pass,
+and the aggregates in Section~\ref{sec:results} are the result. Nothing in this
+study may reopen them: the no-rerun rule forbids regenerating a trial because its
+answer was wrong, the metered checkpoint partition is unconsumed and stays that
+way, and the visible held-out aggregates may not drive a further intervention or
+a promotion. The development record is likewise closed, with E01, E02, and E05
+resolved inconclusive by their own stopping rules and E03 and E04 never run.
 
-Implemented and committed: the reproducible preparation of the eligible manifest
-from the pinned public release; both deterministic splits with byte-identical
-regeneration tests; the custody release tool and its verification against the
-externally recorded pre-gold commit; both scorers as pure comparators with
-synthetic conformance tests; the append-only ledger, experiment lifecycle,
-checkpoint metering, and receipt verification of the development control plane;
-the generation and score artifact schemas with recursive rejection of protected
-fields; and a credential-safe contract probe for the production system that
-verifies configuration and manifests against the recorded commit before
-authenticating, forwards only minimal authentication environment, projects
-responses into type and shape metadata, hashes response bodies, and writes only
-private artifacts under ignored roots. The sealed PostgreSQL execution layer is
-implemented and conformance-tested. All 18 public database mirrors have passed
-schema and content parity plus read-only-role verification. C1 through C3 now
-have committed condition configurations and a traceable direct-SQL runtime.
+\paragraph{What is still under human control.}
+Per-question held-out labels remain in custody. Only identity-free aggregates
+have been released, which is what allows this paper to report accuracy without
+reporting which questions were answered. The prespecified post-hoc analyses that
+need those labels, the gold-SQL template-overlap audit and the blinded
+gold-quality adjudication, therefore remain specified and unexecuted, behind a
+human-controlled release. Their absence is a gap in the analysis, not an ambiguity
+in the result: neither could change the primary endpoints, both were declared as
+separate sensitivity analyses, and the original official score stands regardless.
 
-One public-only governed-product canary has also run on an isolated model branch.
-Its semantic bundle passed product validation and exact semantic readback; one
-read-only governed query and one unscored AI Hub diagnostic completed. This was
-an integration check, not a benchmark question or correctness judgment.
+\paragraph{What the failure taxonomy now contains.}
+The protocol version of this paper listed three failure hypotheses and marked
+every taxonomy cell unmeasured. Two of the three are now measured, and both were
+partly right for the wrong reason. HKB dependency composition was predicted to
+lose meaning during transformation; what the record shows is a compiler that
+declined to represent 46.9\% of definitions rather than one that represented them
+badly, and the loss codes name grain, cardinality, and aggregation as the missing
+contracts. Semantic discoverability was predicted to hide correct definitions
+from the retrieval surface; what the record shows is that the product did reach
+compiled dimensions, on 109 of 135 governed development attempts, and then wrote
+its own SQL around them. The third hypothesis, compilation and validation
+fidelity, is untested in the sense it was posed, because no semantic compilation
+occurred on any governed attempt.
 
-Not done: no sealed generation exists, no output has been scored, and no accuracy
-of any kind has been computed for any condition. The capture verification gate of
-Section~\ref{sec:conditions} has not been passed. C1 through C3 still lack the
-executable driver needed for a live attempt, and no condition has yet emitted the
-complete scaled-baseline envelope. The public-only semantic bundle covers one of
-18 databases and only the mechanically supported portion of that database's HKB.
-The guardian public-key hash is pinned in configuration while the private key
-remains outside the development workspace. Exact final model identifiers, retry
-and time ceilings, version fingerprints, immutable C3/C4 model identity, and the
-C4 result-set adaptation path remain pre-baseline or Freeze B work.
+\paragraph{What is running.}
+One successor condition is in deployment and reports nothing in this paper.
+Section~\ref{sec:c5} defines C5 in full: a governed condition built the way the
+product's own documentation prescribes, from the same public inputs under the same
+custody rules, confined to the development partition. Its comparisons, its frames,
+its stopping rules, and the empty tables its numbers will fill are fixed there in
+advance. Four deployment passes are preserved with their failures, the most recent
+verifying 15 of 16 databases and failing exact readback on the one whose view
+layer the product regenerates after upload; a fifth is running as this paper is
+written.
 
-The failure taxonomy currently contains risk hypotheses, not observations. The
-three we consider most likely, stated here so they can be scored against what is
-eventually measured, are HKB dependency composition (a mechanical compiler may
-represent nodes while losing dependency meaning, grain, or composition), semantic
-discoverability (a definition may be correct in the model yet absent from the
-retrieval surface the agent uses, producing an apparent reasoning failure that is
-really context selection), and compilation and validation fidelity (correct
-semantic intent may be altered during compilation or rejected by validation and
-retry behavior). Every taxonomy cell is currently marked unmeasured, and the
-highest-information next experiment is the public-only mechanical baseline with
-trace capture sufficient to classify each knowledge-linked development failure on
-the mechanism ladder of Section~\ref{sec:analysis}.
-
-A results paper will follow the sealed event. It will report the public-only
-mechanical baseline, the preserved offline intervention evidence and the decision
-to promote no supervised change, the deferred leave-one-database-out study,
-the frozen held-out primary result and condition matrix, and the reliability,
-failure, cost, latency, and product analyses, each derivable from preserved
-machine-readable artifacts. Whatever it reports, the design it reports against is
-the one in this paper.
+The reason to register it in this record rather than to leave it for a later one
+is that it addresses a limitation this study cannot repair. The held-out frame is
+closed, C5 postdates visible held-out aggregates, and no held-out claim will be
+made for it. What it can settle is whether the governed rung fails as a design or
+failed here as a deployment, which is the question Section~\ref{sec:results}
+leaves open and the one a reader of this paper is most likely to ask next.

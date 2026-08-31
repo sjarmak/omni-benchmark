@@ -1,0 +1,226 @@
+// Views over the omni-benchmark model.
+//
+// Two lenses run through all of these. Structure views answer "what is here and
+// what talks to what". Walkthrough (dynamic) views answer "what actually happens
+// to one question", which is the part a reviewer needs in order to believe the
+// custody claims.
+//
+// Frozen elements render blue, custody elements red, active work amber, and the
+// dormant E02 arm dimmed, so "what may still move" reads at a glance.
+
+views {
+
+  // Landscape — the benchmark in context of the four systems it does not own.
+  view index {
+    title 'omni-benchmark — system landscape'
+    description 'The evaluation harness between the pinned public benchmark, the two agent runtimes under comparison, and the shared PostgreSQL substrate that both the agents and the scorer execute against.'
+    include *
+
+    style element.tag == #frozen {
+      color blue
+    }
+    style element.tag == #custody {
+      color red
+    }
+    style element.tag == #evolving {
+      color amber
+    }
+    style element.tag == #human {
+      color indigo
+    }
+  }
+
+  // The system decomposed into its seven containers.
+  view benchmarkSystem of benchmark {
+    title 'omni-benchmark — containers (prepare → compile → generate → seal)'
+    description 'Public data enters at the top and only identity-free aggregates leave at the bottom. Custody (red) is not a stage in that pipeline; it wraps it, which is why it touches every other container. People and the git provenance root are omitted here — see the custody lens and the deployment view.'
+    include *
+    exclude researcher, reviewer, guardian, github, livesqlbench, claudeApi, omni, postgres
+
+    autoLayout LeftRight
+
+    style element.tag == #frozen {
+      color blue
+    }
+    style element.tag == #custody {
+      color red
+    }
+    style element.tag == #evolving {
+      color amber
+    }
+    style element.tag == #dormant {
+      color muted
+      border dashed
+    }
+  }
+
+  // ── The experiment itself ─────────────────────────────────────────────────
+
+  view conditionLadder of benchmark.conditions {
+    title 'The condition ladder — C1 → C5'
+    description 'The ablation, with sealed results attached. Each rung adds one thing: knowledge (C2), a semantic representation of it (C3), enforcement of that representation (C4), and idiomatic modeling of it (C5). Only C2 beat the raw-schema floor.'
+    include *
+
+    style element.tag == #evolving {
+      color amber
+    }
+  }
+
+  // ── Per-container structure views ────────────────────────────────────────
+
+  view prepContainer of benchmark.prep {
+    title 'Preparation — pinned release to reproducible partitions'
+    description 'Every output here regenerates byte-for-byte from a committed seed. Tests assert that, so the split cannot drift after results exist.'
+    include *
+  }
+
+  view compilerContainer of benchmark.compiler {
+    title 'Semantic compiler — public HKB to a deployed Omni model'
+    description 'The measured bottleneck: 17.7% of 1,090 HKB definitions compiled into executable objects and 46.9% deferred for missing grain contracts, which is why the deployed baseline declared no joins and no measures.'
+    include *
+
+    style element.tag == #evolving {
+      color amber
+    }
+    style element.tag == #dormant {
+      color muted
+      border dashed
+    }
+  }
+
+  view runtimeContainer of benchmark.runtime {
+    title 'Generation runtime — how one attempt happens'
+    description 'Two agent paths, one shared execution substrate. C1-C3 go through the pinned Claude binary; C4/C5 go through Omni. Both land their SQL in the same PostgreSQL under the same fail-closed admission rules.'
+    include *
+  }
+
+  view custodyContainer of benchmark.custody {
+    title 'Custody & provenance — making the evidence tamper-evident'
+    description 'Exclusive-create 0600 artifacts, recursive protected-field rejection, and freeze records verified from git. A botched record is fixed forward with a new record, never by deleting the file.'
+    include *
+  }
+
+  view controlContainer of benchmark.control {
+    title 'Autoresearch control plane — what may be optimized against'
+    description 'dev-A is the adaptive surface; dev-B is metered to ten signed checkpoints; the held-out 101 are untouchable. Config is verified against the recorded Freeze A commit, so an uncommitted edit fails closed.'
+    include *
+  }
+
+  view sealedContainer of benchmark.sealed {
+    title 'Sealed evaluation — the one-way boundary'
+    description 'Dispatch can generate but structurally cannot score. Scoring produces an immutable label bound to the generation it scored. Only aggregates cross back out.'
+    include *
+  }
+
+  // ───────────────────────────────────────────────────────────────────────
+  // Walkthrough flows — the narrative spine of a review.
+  // ───────────────────────────────────────────────────────────────────────
+
+  // Flow 1 — how the question set is fixed before anything is measured.
+  dynamic view splitFlow {
+    title 'Walkthrough — pinned release to frozen partitions'
+    description 'The split is decided by a committed seed before any condition exists, and its outputs are hash-anchored. That ordering is what lets a later result be attributed to the system rather than to a convenient choice of questions.'
+
+    benchmark.prep -> livesqlbench 'fetch pinned revision a418e108'
+    benchmark.prep.eligibility -> benchmark.manifests 'keep 332 Query, drop 148 Management'
+    benchmark.prep.splitter -> benchmark.manifests '231 dev / 101 sealed, then 154 dev-A / 77 dev-B'
+    benchmark.manifests -> github.repo 'commit manifests + hashes'
+    benchmark.custody.freeze -> github.repo 'record Freeze A commit'
+    benchmark.control.config -> github.repo 'verify every later run against that commit'
+  }
+
+  // Flow 2 — one direct-SQL attempt (C1-C3).
+  dynamic view directFlow {
+    title 'Walkthrough — a direct-SQL attempt (C1–C3)'
+    description 'The condition spec fixes what the agent can see. C2 and C3 differ only in what the retrieval tool indexes, so the contrast measures the knowledge, not a better search implementation.'
+
+    benchmark.conditions.c2 -> benchmark.runtime.batch 'committed spec + pinned prompt'
+    benchmark.runtime.batch -> benchmark.runtime.directTransport 'one attempt, budget-bounded'
+    benchmark.runtime.directTransport -> claudeApi 'headless subprocess'
+    claudeApi -> benchmark.runtime.publicTools 'search public references'
+    claudeApi -> benchmark.runtime.sqlAdmission 'submit read-only SQL'
+    benchmark.runtime.sqlAdmission -> postgres 'execute on a disposable clone'
+    benchmark.runtime.directTransport -> benchmark.custody.protectedFields 'reject forbidden fields recursively'
+    benchmark.custody.artifactStore -> benchmark.runStore 'exclusive 0600 write'
+  }
+
+  // Flow 3 — one governed attempt (C4/C5), and the trace that reinterpreted C4.
+  dynamic view governedFlow {
+    title 'Walkthrough — a governed Omni attempt (C4/C5)'
+    description 'The capture step is what made the headline C4 finding legible: the query trace showed all 135 governed queries setting rewriteSql with agent-authored SQL and declaring no join path, so the governed arm never exercised semantic compilation.'
+
+    benchmark.compiler.bundle -> benchmark.compiler.deployer 'compiled model files'
+    benchmark.compiler.deployer -> omni 'upload to isolated livesqlbench-* branch'
+    omni -> benchmark.compiler.deployer 'exact readback, compared byte-for-byte'
+    benchmark.runtime.omniClient -> omni 'submit question as a governed job'
+    omni -> postgres 'execute the query it authored'
+    benchmark.runtime.omniProbe -> omni 'poll to terminal state; capture result + trace'
+    benchmark.runtime.omniProbe -> benchmark.custody.artifactStore 'store trace and result sidecar'
+  }
+
+  // Flow 4 — the sealed boundary, end to end.
+  dynamic view sealedFlow {
+    title 'Walkthrough — sealed generation, scoring, and what crosses back'
+    description 'The load-bearing sequence. Generation freezes before correctness is opened; scoring happens inside the boundary against a single-use receipt; only identity-free aggregates leave. A trial is never rerun because its answer was wrong.'
+
+    guardian -> benchmark.sealed.dispatch 'exact single-use action receipt'
+    benchmark.sealed.dispatch -> benchmark.runtime 'generate held-out answers, scoring withheld'
+    benchmark.runtime -> benchmark.custody.artifactStore 'freeze generation artifacts by content hash'
+    benchmark.sealed.sealedScoring -> benchmark.custody.artifactStore 'load the frozen batch'
+    benchmark.sealed.sealedScoring -> postgres 're-execute answer and gold'
+    benchmark.sealed.sealedScoring -> benchmark.sealed.scorers 'official Soft EX + corrected sensitivity'
+    benchmark.sealed.scorers -> benchmark.sealed.scoreLabels 'immutable label, bound to generation, stored apart'
+    benchmark.sealed.scoreLabels -> benchmark.sealed.report 'aggregate, strip identities'
+    benchmark.sealed.report -> reviewer 'per-condition counts and contrasts'
+  }
+
+  // Lens — everything that touches hidden data.
+  view custodyLens {
+    title 'Custody lens — what touches hidden data'
+    description 'The contamination surface, with everything else dimmed. If a result is ever challenged, these are the boxes the challenge is about.'
+    include
+      benchmark,
+      benchmark.custody,
+      benchmark.control,
+      benchmark.sealed,
+      benchmark.privateLabels,
+      benchmark.runStore,
+      guardian,
+      livesqlbench
+
+    style * {
+      opacity 25%
+    }
+    style element.tag == #custody {
+      opacity 100%
+      color red
+    }
+    style element.tag == #human {
+      opacity 100%
+      color indigo
+    }
+  }
+
+  // Lens — what is still moving.
+  view openWork {
+    title 'What is still moving'
+    description 'The sealed C1-C4 result is closed. C5 (amber) is the only active condition; E02 (dashed) completed but is formally inconclusive and cannot be reopened.'
+    include
+      benchmark,
+      benchmark.compiler,
+      benchmark.conditions
+
+    style * {
+      opacity 30%
+    }
+    style element.tag == #evolving {
+      opacity 100%
+      color amber
+    }
+    style element.tag == #dormant {
+      opacity 100%
+      color muted
+      border dashed
+    }
+  }
+}

@@ -8,7 +8,9 @@ each changes.
 
 \begin{table}[htbp]
 \centering
-\caption{The four frozen conditions.}
+\caption{The four frozen conditions as specified. The enforcement column states
+the design intent; what the governed condition did at run time is measured later
+in this section.}
 \label{tab:conditions}
 \begin{tabular}{p{2.3cm}p{3.1cm}p{3.6cm}p{3.6cm}}
 \toprule
@@ -32,13 +34,13 @@ material part of the total C4 minus C1 gap, and evidence about semantic context
 informs C2 minus C1 only.
 
 C4 uses the production-default configuration, because production fidelity
-outranks forcing model parity for the primary product endpoint. If the exact C4
-models can be observed and invoked independently, C1 through C3 match them.
-Otherwise, provider, observable model tiers and identifiers, reasoning settings,
-and retries are recorded and the interpretation is conservative: with model
-parity, C4 minus C3 is an approximate architectural contrast subject to remaining
-system differences; without it, C4 minus C3 is a production-system comparison and
-must not be called the causal effect of enforcement. All conditions receive real
+outranks forcing model parity for the primary product endpoint. The exact C4
+models could not be observed and invoked independently: model version, retry
+count, and validation-attempt count are unavailable for every held-out C4
+attempt. Provider, observable identifiers, and settings are recorded where the
+product exposes them, and the interpretation is therefore the conservative one
+stated in advance. C4 minus C3 is a production-system comparison and is not the
+causal effect of enforcement. All conditions receive real
 development rather than leaving C1 through C3 as straw comparators; per condition
 we record prompt revisions, training evaluations, major interventions,
 approximate effort, and the actor or automation that performed the work. Exact
@@ -86,9 +88,43 @@ per-stage model and usage, raw capture preserves them.
 
 \paragraph{Capture verification gate.}
 Before any 231-question baseline or expensive experiment, each implemented
-condition must produce one public unscored smoke attempt whose envelope
+condition had to produce one public unscored smoke attempt whose envelope
 validates, whose trace hashes and redaction verify (or whose unexposed fields
 carry an explicit degraded reason), whose system database-query counts exclude
 scorer and gold execution, and whose evaluated-system retries are distinguishable
-from benchmark-infrastructure reruns. Coverage is recorded per field and
-condition. This gate has not been passed (Section~\ref{sec:status}).
+from benchmark-infrastructure reruns. Coverage was recorded per field and
+condition. The gate passed for all four conditions, and the field-level coverage
+it recorded is what makes the unavailability statements in
+Section~\ref{sec:results} auditable rather than rhetorical: latency coverage is
+complete in every condition, token, tool-call, and database-query coverage is
+267 of 267 attempts for C1 through C3 and 265 of 267 for C4, and
+provider-reported dollar cost is 267 of 267 for C1 through C3 and 0 of 267 for
+C4.
+
+\paragraph{What the governed condition turned out to be.}
+C4 was preregistered as the condition in which the production harness enforces
+semantic compilation and validation. Measured on the frozen development
+baseline, it is also an agent authoring SQL. All 135 captured governed semantic
+queries carry \texttt{rewriteSql: true} and \texttt{aiGenerated: true} with
+hand-authored SQL in \texttt{userEditedSQL}; \texttt{generated\_sql} is null on
+every attempt; zero queries declare a join path; and \texttt{join\_via\_map} is
+empty throughout. The choice of path was the product's own. The harness posts
+only a model identifier, the bare question, and a branch identifier, and exposes
+no mode flag; a repository-wide search establishes that no harness code ever
+writes \texttt{rewriteSql}.
+
+The reason the path existed is in the deployed model rather than in the agent.
+Because the conservative public-only compiler deferred 46.9\% of HKB definitions
+across an unresolved grain (Section~\ref{sec:development}), the deployed topics
+publish no joins and no measures, so for any cross-table or aggregate question no
+compiled path was available to take. The semantic layer still did work as a field
+vocabulary that the product resolved at rewrite time: 109 of 135 attempts
+reference at least one compiled dimension, and 39 expand an HKB-backed derived
+definition into the executed query. It did not compose the query. Two
+consequences follow and are carried through the rest of the paper. C4 minus C3
+does not isolate semantic-layer query composition, and no achievable model parity
+would make it do so, because neither arm resolves a join or compiles a measure.
+And C4's structural aggregates are computed from \texttt{userEditedSQL}, so they
+describe agent-written queries in all four conditions. The full measurement,
+including every prior claim it retracts, is in the query-path disclosure listed
+in Section~\ref{sec:materials}.

@@ -1,0 +1,80 @@
+\section{What a semantic layer has to represent before it can help}
+\label{sec:product}
+
+The negative governed result is more useful as a specification than as a verdict.
+Each item below names a capability whose absence is visible in the preserved
+artifacts, and each is a general property of importing business knowledge into a
+governed model rather than an observation about one benchmark.
+
+\paragraph{Grain, identity, cardinality, and aggregation need to be first-class,
+and their absence needs to be visible before deployment.}
+Table~\ref{tab:hkb} is the evidence. A conservative compiler that refuses to
+guess turned 17.7\% of definitions into executable objects and deferred 46.9\% of
+them across an unresolved grain, and the three most common recorded reasons were
+unknown cardinality, unspecified aggregation, and missing cross-grain identity.
+Those are the four contracts an import path currently has no way to express. The
+practical consequence is that a model author cannot tell, before deploying,
+whether the model carries enough structure to govern anything. A dry run that
+reports which definitions compiled, which were kept as context, which were
+deferred, and why, converts a silent coverage problem into a decision. Without
+it, the choice is between silently guessed semantics and a large volume of prose
+whose discoverability by the agent is unknown.
+
+\paragraph{Relationship coverage is the same problem one level up.}
+The public schemas of these 16 databases contain 1,049 foreign keys that pass a
+conservative cardinality contract, and the bounded modeled candidate could expose
+91 relationships. A model author needs to see that gap, with accepted, deferred,
+and unreachable relationships enumerated, before deciding whether the model has
+enough structure for a governed query path to exist at all. In this study the gap
+was not visible until the query-path measurement showed that no governed query
+had ever declared a join.
+
+\paragraph{Retrieval payloads belong in the agent contract.}
+The first direct-SQL attempt in this study returned all 51 tables of a database
+and then exhausted its budget before writing a line of SQL
+(Table~\ref{tab:slice}). A semantically valid tool call ended the run. Schema and
+semantic search should be query-directed, bounded, and observable, with per-call
+context volume in telemetry; and typed public provenance identifiers should exist
+so that a safety filter does not reject canonical foreign-key values as
+suspected secrets, which is the second failure the same slice exposed.
+
+\paragraph{Not answering has several causes, and the product currently reports
+one.}
+A content refusal, an explicit statement that the available schema is
+insufficient, an exhausted model budget, and an infrastructure failure imply four
+different product actions. The governed condition reports them as one terminal
+state, which is why its refusal rate is unavailable in Table~\ref{tab:efficiency}
+rather than estimated. Governed jobs should expose a typed refusal outcome, and
+both the product and comparator telemetry should retain the raw state even when a
+report also groups them into broader reliability categories.
+
+\paragraph{The result contract over rewritten SQL is the one nobody wrote down.}
+Thirty-one of the 34 governed non-answers in the development baseline shared an
+\texttt{UNKNOWN} selected-field type, and the relationship experiment then
+preserved 14 generated semantic queries that could not be captured because their
+result types were unsupported. That is not a scoring inconvenience; it is a gap
+in the interface. When the agent authors the query, neither side currently
+specifies what the planner guarantees about the type of an output column that the
+semantic model never declared. Production planning and execution need a stable,
+total representation for unknown, boolean, temporal, and null values, and an
+unsupported planner type should surface as a visible product outcome rather than
+an adapter exception that obscures whether the governed query itself succeeded.
+The same argument covers truncation: a preview is not an analytical result, and
+presentation-control records do not belong in data rows.
+
+\paragraph{Ordering.}
+These are not independent. Result typing comes first, because until an unsupported
+output type stops silently consuming a governed attempt, no downstream experiment
+can be scored cleanly, as E02's 14 uncaptured queries demonstrate. Grain and
+relationship authoring comes next, because it is what would give a planner
+something to compile. Retrieval bounds, refusal typing, and deployment
+diagnostics are independent of both and cheaper than either.
+
+The registered C5 condition tests the second of these directly. It publishes the
+joins and the full knowledge context that the mechanical baseline lacked, so its
+query-path readout in Table~\ref{tab:c5mechanism} measures whether relationship
+coverage alone is enough to move a governed agent off the rewrite path, or whether
+the grain and aggregation contracts have to arrive with it. Its deployment
+history already exercises two of the cheaper items: the readback divergence in
+Section~\ref{sec:c5} is the canonical-export gap, and the branch that had to be
+uploaded twice is the deployment-identity gap.

@@ -1,3 +1,4 @@
+\label{sec:materials}
 The public dataset is LiveSQLBench Large-v1 at revision
 \hash{a418e108d5cbb4cf9b783a928eff5e924ad2460d}
 (\url{https://huggingface.co/datasets/birdsql/livesqlbench-large-v1}), and the
@@ -25,8 +26,34 @@ recursively at any nesting depth, and raw traces and generated SQL are confined
 to ignored run roots. Aggregate results, hashes, counts, and permitted summaries
 are the only correctness-adjacent material that appears in committed artifacts.
 
+The executed result adds four classes of artifact, all identity-free. The
+generation and score records for every attempt are hash-bound to each other and
+to the Freeze-B manifest, with the commits and digests given in
+Section~\ref{sec:design}. The deterministic telemetry aggregate behind
+Table~\ref{tab:efficiency} hashes to
+\hash{7a614d6c861d4d2a982501ea8c89b2817820d965671caf800cc155759be481a8}, and the
+official aggregate receipt to
+\hash{0296753e8fcbf826a99ed2f86088ecdfb61981db8dea47d93e7871cef2690a78}. The
+frozen governed baseline's immutable selection hashes to
+\hash{256145c13cfae7142d92f108b4ee9dd93e658a44cafb683e5aec90170b8315cc}, and an
+append-only recovery manifest accounting for all 45 original capture failures, 11
+result-only replays and 34 explicit evaluated-system failures, hashes to
+\hash{5d6ff474f30d3de6d703ad5c6c59373fe8093515eabb83473bdb352c4f30fd9f}. The E02
+candidate set hashes to
+\hash{12c4e1a8cab38f0f47e14b5c553c87c800ca07f27bae568171f1d7caaf7589a7}, and its
+no-rerun diagnostic is published as a separate aggregate artifact. The
+repository's evidence index maps each claim in this paper to the artifact that
+carries it.
+
+The primary results report, the product-findings ledger, the failure taxonomy,
+the governed query-path disclosure, and the contemporaneous research log all live
+in the same public repository as this source. The query-path disclosure is the
+one to read alongside Section~\ref{sec:conditions}: it lists every earlier
+statement in the project that the measurement retracted, including the condition
+table that described the governed arm as enforcing semantic compilation.
+
 The comparison that motivated this ablation is the published benchmark of Omni's
 agentic analytics harness
 (\url{https://omni.co/blog/benchmarking-omnis-agentic-analytics-harness}). This
-study is designed to test that claim under a design that separates knowledge
-access, representation, and enforcement, not to reproduce it.
+study tested that claim under a design that separates knowledge access,
+representation, and enforcement. It did not attempt to reproduce it.

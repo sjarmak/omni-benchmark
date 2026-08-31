@@ -78,3 +78,7 @@ experiments/autoresearch/guardian_receipts/
 
 # Consumed approval records are local run-control evidence, not publishable data.
 experiments/approvals/
+
+# LikeC4 figures are regenerated from architecture/*.c4 by the Pages workflow.
+architecture/exports/
+node_modules/

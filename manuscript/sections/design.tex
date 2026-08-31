@@ -14,13 +14,15 @@ once and users then ask an open-ended stream of new questions. It is explicitly
 not cold-start performance on an unmodeled database.
 
 A secondary leave-one-database-out study, confined to the development partition,
-estimates whether general HKB-to-semantic-layer transformation rules transfer to
-a domain whose questions were excluded from rule development. Each fold develops
-rules from 17 databases, applies them to the held-out database's public schema,
-column meanings, and HKB without question-driven evidence from that database, and
-scores that database's development questions, rotating across all 18. We report
-pooled question accuracy and the macro-average across databases, with each fold's
-question count and modeling effort. If a held-out database receives manual
+was specified to estimate whether general HKB-to-semantic-layer transformation
+rules transfer to a domain whose questions were excluded from rule development.
+It was deferred before execution and is not reported here; the specification is
+retained because it fixes the design of any later portability claim. Each fold
+would develop rules from 17 databases, apply them to the held-out database's
+public schema, column meanings, and HKB without question-driven evidence from
+that database, and score that database's development questions, rotating across
+all 18, reporting pooled question accuracy and the macro-average across
+databases with each fold's question count and modeling effort. If a held-out database receives manual
 modeling, the result is transformation portability, not zero-shot database
 generalization. This is a development-set study, not a second test set.
 
@@ -53,6 +55,35 @@ appear in both partitions, regeneration from the pinned seeds and source hash is
 byte-identical, and no protected field has entered a committed artifact.
 Manifests are regenerated, never hand-edited. Membership never changes in
 response to any observed outcome.
+
+\paragraph{The executed held-out frame.}
+The official Large-v1 Linux loader does not populate two databases. It skips 34
+declared tables in \texttt{mental\_healths\_large} and 37 in
+\texttt{organ\_transplant\_large}, because the capitalization of those archive
+filenames differs from the names the loader requests, so the benchmark's own
+reference SQL cannot execute there. Twelve of the 101 sealed questions belong to
+those two databases. Before any sealed generation, any label release, and any
+outcome access, the held-out frame was amended to the 89 questions on the 16
+databases with verified governed deployments, and all four conditions and all
+three repetitions used that identical membership, for 1,068 scheduled attempts.
+The amendment used no question content, no gold, no annotation, and no
+correctness; it used only which databases the public loader can populate. It
+narrows the held-out estimand from all 18 benchmark databases to those 16
+deployable databases, which is a scope limitation rather than a set of missing
+outcomes, and it is reported as such in Section~\ref{sec:threats}. The same
+loader defect removes 18 of the 154 development questions from official
+scoreability; the development schedule still lists all 154 and reports those 18
+as scorer-conformance exclusions, leaving 136 answerable development questions
+for the governed arm.
+
+Two further database exclusions apply only to the public direct-SQL development
+baseline and not to the held-out frame. \texttt{archeology\_scan\_large}
+repeatedly failed to return a usable direct answer across distinct retrieval
+settings, and \texttt{cybermarket\_pattern\_large} was excluded after its first
+immutable launch failed read-only privilege attestation, even though the external
+credential was later repaired. Both were fixed in a committed exclusion artifact
+before the affected generations, and their records stay outside the wrong-answer
+and missing-row categories.
 
 \paragraph{Information tiers.}
 Table~\ref{tab:tiers} states what may be used where. The governing rule is that
@@ -137,6 +168,20 @@ test generation: it commits and hashes the semantic models and transformation
 code, all four harness configurations and prompts, retrieval configuration and
 allowed tools, model and provider information and budgets, retry and
 failure-classification policy, database snapshot identifiers, the trial schedule,
-and the evaluator version. All 1,212 generations then complete, and only then are
-they scored. No held-out result may feed a model, harness, prompt, retrieval, or
-retry change.
+and the evaluator version. All 1,068 scheduled generations then complete, and
+only then are they scored. No held-out result may feed a model, harness, prompt,
+retrieval, or retry change.
+
+Both freezes executed. The untuned system that produced the held-out generations
+is frozen at successor commit
+\hash{8b0c7393d564d9ecc2c2f84ba7446d610c1a0a6d} with direct-child control commit
+\hash{94cc0d9483c944d7dc13ed651c8fc2ef077f33ab} and Freeze-B manifest SHA-256
+\hash{e1c9f1967422822c848c18a17ba759d4e4fbc7f21aa0fe3ae1045b9236ae4730}. Scoring
+ran from correction-forward system
+\hash{0a5aee423b4a0d5bb396b3d9764f8e9e24f31254} against control
+\hash{fe4660df8dacdca07da310ddfda4158b82895ba9} under Freeze-B v10 SHA-256
+\hash{ff10083bf70d82bd483d12e98751d9bf7f5d4236c42fac3ba921405d87953a05},
+preserving the generation binding above. The correctness-free scoring receipt
+hashes to
+\hash{534e28b954d4d13dfdd9100fc6a184fba3eb3720d8cd7cf7d43c92713cb258f7}. No
+optimized held-out candidate was constructed after the sealed result.

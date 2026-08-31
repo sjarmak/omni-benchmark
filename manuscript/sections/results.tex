@@ -1,0 +1,198 @@
+\section{Held-out results}
+\label{sec:results}
+
+The frozen comparison covers 89 held-out questions and 1,068 scheduled attempts:
+four conditions, three repetitions, identical membership. Every generation
+completed before any output was scored, and the scorer published both
+preregistered policies in one atomic run. Everything below is derived from
+identity-free aggregates. No question identity, SQL text, result row, hidden
+annotation, or per-question correctness left custody to produce it.
+
+\subsection{Primary endpoints}
+
+\begin{table}[htbp]
+\centering
+\caption{Preregistered primary endpoints under both frozen scorers.}
+\label{tab:primary}
+\begin{tabular}{llrr}
+\toprule
+Scorer & Endpoint & Estimate & 95\% interval \\
+\midrule
+Official Soft EX & C4 mean one-shot accuracy & 8.6\% & 3.7--14.6\% \\
+Official Soft EX & C4 repetition-one accuracy & 7.9\% & 3.4--13.5\% \\
+Official Soft EX & C4 minus C1, paired & $-1.5$\% & $-7.1$--4.1\% \\
+Corrected multiset & C4 mean one-shot accuracy & 9.7\% & 4.5--15.7\% \\
+Corrected multiset & C4 repetition-one accuracy & 9.0\% & 3.4--15.7\% \\
+Corrected multiset & C4 minus C1, paired & $-0.4$\% & $-6.4$--5.6\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The production-governed system answered roughly one held-out question in twelve,
+and its paired difference against a competent agent writing SQL against the raw
+schema is negative under the official scorer and negative under the corrected
+one, with intervals that comfortably include zero in both directions. The primary
+comparative endpoint gives no evidence that the governed path outperformed the
+direct baseline on these questions, and the interval is wide enough that it also
+gives no evidence of a large loss.
+
+\subsection{The four-condition matrix}
+
+\begin{table}[htbp]
+\centering
+\caption{All four conditions under both scorers. Refused/error is the scorer's
+third outcome over the 267 scoreable attempts per condition. Error rate is
+narrower: the share of all 267 scheduled generations whose raw terminal outcome
+was \texttt{errored}. Pass$^3$ is the share of the 89 questions correct in all
+three repetitions, and flips counts questions correct in only one or two. These
+columns measure different properties and do not sum.}
+\label{tab:matrix}
+\begin{tabular}{llrrrrrr}
+\toprule
+Scorer & Cond. & Accuracy & Wrong & Ref./err. & Error rate & Pass$^3$ & Flips \\
+\midrule
+Official Soft EX & C1 & 10.1\% & 56.2\% & 33.7\% & 18.7\% & 6.7\% & 6 \\
+Official Soft EX & C2 & 22.1\% & 50.6\% & 27.3\% & 19.9\% & 15.7\% & 12 \\
+Official Soft EX & C3 & 8.6\% & 53.2\% & 38.2\% & 16.1\% & 4.5\% & 6 \\
+Official Soft EX & C4 & 8.6\% & 77.2\% & 14.2\% & 14.2\% & 6.7\% & 4 \\
+\midrule
+Corrected multiset & C1 & 10.1\% & 56.9\% & 33.0\% & 18.7\% & 6.7\% & 6 \\
+Corrected multiset & C2 & 19.5\% & 54.7\% & 25.8\% & 19.9\% & 14.6\% & 10 \\
+Corrected multiset & C3 & 8.6\% & 54.7\% & 36.7\% & 16.1\% & 4.5\% & 6 \\
+Corrected multiset & C4 & 9.7\% & 76.0\% & 14.2\% & 14.2\% & 7.9\% & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:matrix} carries a reliability result that the accuracy column
+alone would hide. The governed condition is the most likely of the four to return
+something rather than decline: it refused or errored on 14.2\% of scoreable
+attempts against 33.7\% for C1 and 38.2\% for C3. It converted almost all of that
+willingness into wrong answers, at a 77.2\% wrong rate against 56.2\% for C1. For
+an analyst, a system that answers more often and is wrong more often is a
+different product risk from one that declines more often, and the two are not
+interchangeable at equal accuracy. The frozen generation contract does not
+distinguish a content refusal from a statement that the available schema was
+insufficient, so those two rates are reported as unavailable rather than
+inferred.
+
+\subsection{Exploratory contrasts}
+
+\begin{table}[htbp]
+\centering
+\caption{Prespecified exploratory rung-to-rung contrasts. Intervals are
+deterministic 95\% held-out-item-clustered percentile bootstrap intervals with
+10,000 replicates. Gains and losses count questions whose paired outcome changed
+in each direction.}
+\label{tab:contrasts}
+\begin{tabular}{llrrrr}
+\toprule
+Scorer & Contrast & Difference & 95\% interval & Gains & Losses \\
+\midrule
+Official Soft EX & C2 minus C1 & 12.0\% & 5.6--18.7\% & 37 & 5 \\
+Official Soft EX & C3 minus C2 & $-13.5$\% & $-20.6$--$-7.1$\% & 4 & 40 \\
+Official Soft EX & C4 minus C1 & $-1.5$\% & $-7.1$--4.1\% & 10 & 14 \\
+Official Soft EX & C4 minus C3 & 0.0\% & $-4.9$--4.9\% & 10 & 10 \\
+\midrule
+Corrected multiset & C2 minus C1 & 9.4\% & 3.4--15.7\% & 30 & 5 \\
+Corrected multiset & C3 minus C2 & $-10.9$\% & $-17.6$--$-4.9$\% & 4 & 33 \\
+Corrected multiset & C4 minus C1 & $-0.4$\% & $-6.4$--5.6\% & 13 & 14 \\
+Corrected multiset & C4 minus C3 & 1.1\% & $-4.1$--6.7\% & 13 & 10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Read as a ladder, Table~\ref{tab:contrasts} says one clear thing and one careful
+thing.
+
+The clear thing is that access to business knowledge is what moved the result.
+Giving the same agent, the same harness, and the same retrieval budget a
+searchable copy of the raw knowledge base is worth $+12.0$ points under the
+official scorer and $+9.4$ under the corrected one, on 37 questions gained
+against 5 lost. That contrast is the one rung where model, scaffold, dialect, and
+execution contract are all held fixed, so it carries the most weight of any
+comparison in the study.
+
+The careful thing is that the two rungs after it did not keep the gain. C3 minus
+C2 is $-13.5$ points, on 4 questions gained against 40 lost: converting the same
+knowledge into the bounded structured model and exposing it through the same
+search interface lost most of what the prose had provided. C4 minus C3 is
+indistinguishable from zero. Neither of those is a verdict on semantic layers in
+general, because both depend on how much of this knowledge base the compiler
+could represent, and Table~\ref{tab:hkb} shows that it could represent 17.7\% of
+it. The honest statement of the negative result is narrow and worth stating
+precisely: a conservatively compiled semantic model, built from these public
+inputs and deployed without joins or measures, did not reproduce the benefit that
+the same knowledge gave as searchable prose.
+
+\subsection{Efficiency and operational reliability}
+
+The same 1,068 immutable attempts preserve provider-reported token usage where
+available, end-to-end latency, tool activity, and terminal state. These are
+workload measurements of four complete systems, not estimates of the semantic
+layer's isolated cost. Dollar cost is available for the direct provider surface
+and unavailable for the governed product's raw job endpoint. Unavailable does not
+mean zero, and it is recorded as null with a declared reason.
+
+\begin{table}[htbp]
+\centering
+\caption{Workload and terminal-state measurements over 267 attempts per
+condition. Latency and token columns give the median with the Tukey interquartile
+range.}
+\label{tab:efficiency}
+\begin{tabular}{lrrrrrr}
+\toprule
+Cond. & Answered & Latency, s & Tokens & Tools & Cost/attempt & Total \\
+\midrule
+C1 & 67.0\% & 33.4 (19.6--48.5) & 147.6k (63.9--288.2k) & 3 & \$1.43 & \$381.28 \\
+C2 & 74.2\% & 44.0 (27.6--60.4) & 256.8k (137.8--371.2k) & 4 & \$1.90 & \$506.66 \\
+C3 & 63.3\% & 39.2 (23.5--68.6) & 195.3k (89.1--429.4k) & 3 & \$1.84 & \$491.70 \\
+C4 & 85.8\% & 51.1 (39.8--91.6) & 580.8k (410.1--1029.3k) & 7 & n/a & n/a \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The governed condition spent 3.9 times C1's median tokens, 1.5 times its median
+latency, and 2.3 times its median tool calls, and did not convert any of it into
+accuracy. Almost all of the difference is input volume: median input and output
+tokens were 145.8k and 2.0k for C1 against 580.0k and 3.0k for C4. Because
+scaffold, agent, and execution path all differ between those two arms, the
+overhead cannot be attributed to semantic enforcement, but the workload
+difference itself is a measured product fact.
+
+Failures cost more than answers in every condition. Median observed total tokens
+for answered against errored attempts were 134k versus 335k in C1, 249k versus
+367k in C2, 195k versus 403k in C3, and 574k versus 815k in C4, whose error-token
+median uses the 36 of 38 errors that carried token telemetry. Governed error
+latency was 87.5 seconds against 50.5 seconds for answered attempts. The product
+opportunity there is not only fewer failures but earlier ones: a terminal
+contract failure or an unsupported result type discovered at the end of an
+expensive execution path is the worst place to discover it. Model version, retry
+count, and validation-attempt count are unavailable for all 267 governed
+attempts.
+
+\subsection{What this result licenses}
+
+Three statements are supported. Searchable business knowledge improved an
+analytical agent's accuracy on these questions by a margin that survives both
+scorers and both directions of the bootstrap interval. The governed
+semantic-layer product, deployed from these public inputs, did not improve on the
+raw-schema baseline and cost substantially more per attempt. And the governed
+path failed differently rather than less: it declined far less often and was
+wrong far more often.
+
+Three statements are not supported, and the study should not be cited for them.
+This is not a measurement of semantic-layer query composition, because no
+governed query was composed by the semantic layer (Section~\ref{sec:conditions}).
+It is not a general verdict on Omni, because the deployed model was built by a
+conservative public-only compiler that published no joins and no measures, and a
+model authored the way the product's documentation prescribes is a different
+system. And it is not a full-benchmark result, because the executed frame covers
+89 of the original 101 held-out questions on 16 of the 18 databases.
+
+The second of those unsupported statements is the one a registered successor
+condition is built to address. Section~\ref{sec:c5} defines C5, a governed
+condition deployed the way the product's documentation prescribes rather than the
+way a conservative compiler produces, fixes its comparisons in advance, and
+carries the empty tables its result will fill. It is a development-partition
+condition and reports nothing here.

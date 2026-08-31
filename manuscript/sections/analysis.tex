@@ -3,7 +3,7 @@
 
 \paragraph{Primary endpoints.}
 The product-performance endpoint is C4 mean one-shot execution accuracy across
-three sealed repetitions, estimated from 303 question-repetition attempts with
+three sealed repetitions, estimated from 267 question-repetition attempts with
 question-clustered uncertainty. C4 repetition-one accuracy is reported separately
 as the intuitive single-invocation view. There is no majority vote, best-of-three,
 or selective-retry score. The comparative endpoint is the paired C4 minus C1
@@ -17,13 +17,14 @@ mechanistic evidence, reported with effect sizes, transition counts, and
 uncertainty. Modest rung differences will not be promoted on significance. Where
 C3 and C4 lack model or system parity, C4 minus C3 is explicitly system-level.
 Repetition-one McNemar analyses may appear as sensitivity checks; naive McNemar
-will not be applied to 303 correlated observations. With 101 questions, small
-paired deltas will be imprecise, and effect sizes and failure transitions take
-precedence over p-values.
+is not applied to 267 correlated observations. With 89 questions, small paired
+deltas are imprecise, and effect sizes and failure transitions take precedence
+over p-values. Section~\ref{sec:results} reports every contrast in this
+paragraph, under both scorers, without post-result selection between them.
 
 \paragraph{Repetitions and reliability.}
 Each condition runs three independent repetitions on every test question, for
-1,212 frozen outputs generated before any scoring. Trial order is a committed
+1,068 frozen outputs generated before any scoring. Trial order is a committed
 deterministic block-interleaved permutation over question, condition, and
 repetition, with repetitions of one question separated, and each trial records
 timestamps and observable model identifiers. The reliability analysis reports
