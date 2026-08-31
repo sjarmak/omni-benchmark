@@ -903,6 +903,36 @@ execution mechanics rather than accuracy.
 - **Experiment / commit provenance:** D-196; aggregate artifact
   `experiments/analysis/e02-partial-diagnostic-v1.json`.
 
+## PF-015: The governed runtime does not always report one stable model identity
+
+- **Observation time:** 2026-08-31, from the immutable sealed and dev-A C4
+  records, while auditing what token telemetry the job endpoint returns.
+- **Observed behavior:** `metrics.tokenBuckets` reports usage per model, and the
+  harness resolves a model name and provider from it. Most attempts resolve to a
+  single model, but a minority do not. Of the 267 sealed C4 attempts, 264
+  resolved to `claude-opus-5` on `bedrock`, one to the composite identity
+  `composite:claude-opus-5+claude-sonnet-5`, and two to `managed-unobservable`.
+  Of the 136 dev-A C4 attempts, 130 resolved to `claude-opus-5` and six to the
+  composite identity. Model *version* is null in every case.
+- **Systematic evidence / frequency:** 3/267 sealed and 6/136 dev-A attempts did
+  not run on the single declared model. The rate is low and does not move the
+  accuracy result, which is reported over all attempts regardless of identity.
+- **Why it matters to customers:** Anyone attributing a governed-versus-direct
+  accuracy difference to model capability is assuming a fixed model. A small
+  share of governed runs silently used a composite of two models, and a smaller
+  share reported no usable identity at all. Without a version, a customer also
+  cannot tell whether two runs a month apart used the same weights.
+- **Proposed product change:** Return an explicit, immutable model identity and
+  version per job, and make a composite or managed-unobservable identity a
+  declared field rather than something a caller must infer from the shape of the
+  token buckets.
+- **Benchmark treatment:** Report the identity mix alongside token distributions
+  in the aggregate telemetry artifact rather than assuming one model. The
+  aggregate-only summarizer emits an attempt count per model identity.
+- **Experiment / commit provenance:** `experiments/analysis/dev_a_telemetry_summary.py`
+  and its tests; counts read from the frozen `sealed-final-v6` cohorts and the
+  frozen `public-c4-baseline-v8` dev-A run.
+
 ## Entry template
 
 ### PF-XXX: Short finding title

@@ -14,29 +14,29 @@
 > Trajectory across all experiments:
 > [`docs/experiment-trajectory.md`](docs/experiment-trajectory.md).
 >
-> The immutable C1-C4 untuned baseline is complete and
-> scored on the matched 89-question held-out frame under both frozen scorers.
-> Only identity-free aggregates have left custody; no per-question correctness,
-> SQL, row, or test annotation was opened. E01 is an audited baseline no-op, and
-> E02 is the pre-specified dev-A mechanism contrast selected before sealed
-> scoring. Its sole 136-attempt generation completed and is frozen, but five
-> genuine transport failures captured no semantic query and prevented the
-> preregistered complete-136 score. E02 is INCONCLUSIVE. A no-rerun diagnostic
-> on the 117 captured answers found 11 official E02 successes versus 9 for C4
-> on the identical subset (+1.7 points); it is not a promotion estimate because
-> 19 outcomes remain unresolved. Because sealed aggregates became visible before E02
-> completed, it cannot now be promoted into a held-out optimized arm; no
-> intervention edit or dev-B checkpoint may use these results. Before any sealed
-> outcome existed, the
-> original 101-question frame was narrowed to the matched 89 questions
-> on the 16 databases with verified C4 deployments. The fixed E02 dev-A
-> schedule still lists all 154 questions; 18 benchmark-invalid questions are
-> preregistered as
-> unscorable, leaving 136 answerable questions for C4 evaluation. All 16
-> answerable baseline and E02 database bundles have current immutable
-> validation and exact-readback evidence sets. C4 completed all 136 executable
-> attempts: 9 were correct, 93 wrong, and 34 refused or ended in a
-> system-contract error under the official scorer.
+> The C1-C4 baseline was scored on the matched 89-question held-out frame under
+> both frozen scorers. Only identity-free aggregates left custody. E01 is an
+> audited baseline no-op; E02 is INCONCLUSIVE because five transport failures
+> captured no semantic query; E05 is INCONCLUSIVE by its own stopping rule and
+> consumed no live attempt. Section 5 carries those results, section 6 the
+> held-out numbers, section 9 the limitations.
+
+## Contents
+
+The executive summary and section 6 carry the result. Sections 1-5 carry the
+design and the development trajectory; sections 7-8 carry the product reading;
+sections 9-10 carry the limits and the reproduction path.
+
+1. [Research question](#1-research-question)
+2. [Experimental design](#2-experimental-design)
+3. [Public-only baseline construction](#3-public-only-baseline-construction)
+4. [First end-to-end vertical slice](#4-first-end-to-end-vertical-slice)
+5. [Baseline and development trajectory](#5-baseline-and-development-trajectory)
+6. [Held-out results](#6-held-out-results)
+7. [Product recommendations](#7-product-recommendations)
+8. [What this suggests for an ongoing evaluation program](#8-what-this-suggests-for-an-ongoing-evaluation-program)
+9. [Limitations](#9-limitations)
+10. [Reproducibility](#10-reproducibility)
 
 ## Executive summary
 
@@ -44,17 +44,11 @@ This study evaluates Omni on LiveSQLBench Large-v1 and separates three questions
 whether business knowledge helps an analytical agent, what is lost when that
 knowledge becomes an executable semantic model, and what Omni's governed runtime
 actually does with that model. The benchmark contributes 332 eligible analytical
-tasks: 231 development questions and an original sealed split of 101 questions.
-The development partition is further divided into 154 development questions and
-77 metered validation questions. The protocol permits supervised reuse. The
-frozen mechanical candidate received no question-level supervision and consumed
-no metered checkpoint. E02 is a completed, frozen
-pre-specified dev-A generation whose fixed coverage gate resolved INCONCLUSIVE and that
-cannot become a held-out optimized arm after the scoring-order deviation. C5, a
-later dev-A mechanism analysis registered after the sealed aggregates were
-opened, is in progress and likewise cannot produce a held-out claim. Four
-baseline systems separate access to raw schema,
-business knowledge, structured semantic knowledge, and governed execution.
+tasks: 231 development questions, split into 154 dev-A and 77 metered dev-B, and
+an original sealed split of 101. The frozen candidate received no question-level
+supervision and consumed no metered checkpoint. Four conditions separate access
+to raw schema, business knowledge, structured semantic knowledge, and governed
+execution.
 
 **Headline held-out result, on the pre-outcome matched frame.** Official mean
 accuracy was 10.1% for C1, 22.1% for C2, 8.6% for C3, and 8.6% for C4; corrected
@@ -420,6 +414,9 @@ presence alone had similar wrong rates to their absence. This supports
 relationship, grain, and dependency handling as the next mechanism family;
 causality and question-specific fixes remain unresolved.
 
+<details>
+<summary>How the structural figures were computed, and what they overcount</summary>
+
 C4's structural figures are computed from the semantic query's `userEditedSQL`
 because `generated_sql` is `null` for every C4 attempt. That SQL is
 agent-authored in Omni's dialect, so these figures describe agent-written queries
@@ -427,6 +424,8 @@ in both C4 and C1-C3 rather than a compiled path against authored ones. The
 relation count also includes CTE references, aliased self-joins, and subquery
 sources, which makes multi-relation prevalence an upper bound on genuine
 cross-table access.
+
+</details>
 
 The same identity-free analysis covered all 136 governed C4 outcomes. All 9
 correct queries parsed, as did 92 of 93 wrong answers and 32 of 34 explicit
@@ -492,6 +491,9 @@ ceiling is 6 of 31, and 24 of 31 select no compiled bundle field of any kind, so
 no declaration on a compiled field can reach them. E05 is recorded INCONCLUSIVE
 by its own stopping rule and consumed no live attempt.
 
+<details>
+<summary>Deployment sequence and artifact hashes</summary>
+
 The deployment sequence preserved each failed pass rather than retrying it away.
 Earlier records exposed sports identity errors, scientific-literal compilation
 failures in planets, and exact-readback identity differences in polar. General
@@ -518,6 +520,8 @@ An append-only recovery manifest accounts for all 45 original capture failures:
 The official aggregate receipt SHA-256 is
 `0296753e8fcbf826a99ed2f86088ecdfb61981db8dea47d93e7871cef2690a78`.
 Dev-B remains unconsumed.
+
+</details>
 
 ### C5: the mechanism analysis now in progress
 
@@ -624,7 +628,13 @@ answered versus errored attempts were 134k versus 335k in C1, 249k versus 367k
 in C2, 195k versus 403k in C3, and 574k versus 815k in C4. C4 error latency was
 87.5 seconds versus 50.5 seconds for answered attempts; its error-token median
 uses the 36 of 38 errors with token telemetry. Model version, retry count, and
-validation-attempt count are unavailable for all 267 C4 attempts. The product
+validation-attempt count are unavailable for all 267 C4 attempts. Model
+identity is mostly but not entirely stable: 264 of the 267 sealed C4 attempts
+resolve to `claude-opus-5` on `bedrock`, one to a `claude-opus-5` plus
+`claude-sonnet-5` composite, and two to `managed-unobservable`. That mix is
+too small to move the accuracy result, and it is recorded because attributing
+any governed-versus-direct difference to model capability assumes a fixed
+model the governed path does not guarantee (PF-015). The product
 opportunity is therefore not only reducing failures, but detecting terminal
 contract and unsupported-result failures earlier in an already costly execution
 path.

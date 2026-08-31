@@ -31,6 +31,27 @@ use these canonical identifiers.
 
 **Infrastructure, custody, and receipt-recovery entries** are capped at roughly five lines: date, D-number, one-line mechanism description, one-line resolution, and artifact hash pointer. These serve as navigable index entries to ledger records and custody receipts, not decision narratives. Illustrative shape (fictitious D-number): "2026-08-30 — D-9XX: Staging path resolution failed on a renamed manifest directory. Corrected the resolver and re-ran the staging pass under a new run ID. Receipt hash recorded in the run manifest."
 
+### How to read this log
+
+The log is append-only and contemporaneous, so it is ordered by when a belief was
+held, not by whether it survived. An entry read alone can therefore state a
+position that a later entry overturned. Nothing is edited or removed to hide
+that; the index below is the map.
+
+For the curated path through the work rather than the raw sequence, read
+[`experiment-trajectory.md`](experiment-trajectory.md).
+
+### Decisions later superseded
+
+| Superseded | Superseded by | What changed |
+| --- | --- | --- |
+| D-003 | D-019 | Local release narrowed from all 231 development records to dev-A only, keeping dev-B labels behind the guardian |
+| D-155, D-169 | D-177 | The published 32/1/1 governed failure-class split was wrong; the corrected measurement puts 30 of 31 in a different class |
+| The 129-attempt, 10-database public C4 freeze | D-173 | E02's deployment gate moved to the current 154-scheduled, 136-answerable, 16-database dev-A frame |
+| `docs/report-draft-v2.md` slot structure | D-190 | Submission packet consolidated around measured results instead of pre-allocated slots |
+| D-191, D-196 stop rule | D-197 | The stop-after-E02 rule was lifted for exactly one further development condition, C5 |
+| D-201 diagnosis | D-202 | The planets deployment failure was an unattested column binding, not the cause first recorded |
+
 ## 2026-08-27 — D-001: Use the downloaded Large-v1 rows as the population authority
 
 ### Observation
@@ -12242,3 +12263,56 @@ does, and verifies the readback: it runs in seconds with no network and covers
 every database. Diagnosis now reads a branch before redeploying it, probes a
 single database under a throwaway revision at or above `v900`, and keeps the
 evidence sequence for complete passes only.
+
+## 2026-08-31 — D-203: The C5 generation launch failed twice before any model call, for two unrelated reasons
+
+### Observation
+
+The first launch of the single authorized C5 dev-A generation produced a
+zero-byte log, no process, and no output root, while exiting 0. The launcher
+invoked `python -m omni_benchmark.baseline_batch_cli`. That module has no
+`if __name__ == "__main__"` block, so the interpreter imported it and exited
+cleanly without parsing an argument or running a preflight. The committed entry
+point is `scripts/baseline_batch.py`. No receipt was consumed and no attempt was
+dispatched.
+
+The second launch, through the correct entry point, reached the executor and
+failed on its first three attempts with
+`OmniProbePreflightError: system commit does not match workspace HEAD`. The
+receipt was bound to system commit `3a7e52b`, but HEAD had since moved to
+`f997019` through the repository-legibility and deployment-evidence commits.
+`verify_system_commit` binds every attempt to workspace HEAD, so no attempt could
+start. Three failure records were written under
+`experiments/autoresearch/raw/c5-dev-a-v1`; all three are `child_exit` preflight
+failures with an empty stdout hash. The exact-bound receipt was consumed by that
+launch and cannot be replayed.
+
+### Interpretation
+
+Both are launch-infrastructure failures outside the evaluated system, in the
+sense the rerun policy requires: neither produced a model call, a semantic
+query, or an answer of any kind, so no trial was rerun because its answer was
+wrong. The second failure is the more informative one. `--system-commit` is not
+a label; three separate gates read it. `verify_system_commit` requires it to
+equal workspace HEAD, `verify_deployment_gate` requires the deployment claim's
+`source_commit` to equal it, and the receipt binds it. A generation is therefore
+only launchable from a HEAD that already contains its deployment evidence, and
+HEAD must not move for the duration of the run.
+
+### Decision
+
+Redeploy the identical committed C5 candidate at HEAD `f997019` as
+`c5-dev-a-deployment-v7`, which is Tier 1 public-only work permitted to retry
+under a new run ID, then run the generation as `c5-dev-a-v2` against that
+commit. The failed `c5-dev-a-v1` records are preserved rather than deleted. The
+v6 deployment evidence stays committed as the immutable record of the pass it
+was. Documentation edits continue in the working tree during the run, and are
+committed only after the generation terminates, because a commit mid-run would
+fail every remaining attempt.
+
+### Product
+
+The failure mode is worth naming for the harness: a Python module invoked with
+`-m` and no `__main__` guard exits 0 and silently does nothing. A launcher that
+gates an expensive single-use approval should assert that its child emitted a
+recognizable preflight line before it reports success.
