@@ -1,0 +1,78 @@
+name: Pages (README site + LikeC4 explorer)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # A model that points at code which no longer exists is worse than no
+      # model, so this fails the publish rather than shipping a stale diagram.
+      - name: Check model source links resolve
+        run: node architecture/check-links.mjs
+
+      # Root of the site stays the README, which is the project's front page.
+      # This is the same build GitHub ran implicitly before the source was
+      # switched to Actions, so the rendered result should not move.
+      - name: Build README site
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: .
+          destination: ./_site
+
+      - name: Export figures
+        uses: likec4/actions@v1
+        with:
+          export: png
+          path: architecture
+          output: _site/figures
+
+      # The explorer lives beside the README site rather than replacing it, so
+      # a 9288px-wide diagram has somewhere to be read at full size with pan
+      # and zoom instead of being squeezed into a 1012px column.
+      - name: Build interactive explorer
+        uses: likec4/actions@v1
+        with:
+          action: build
+          path: architecture
+          output: _site/explore
+          base: /omni-benchmark/explore/
+          use-hash-history: 'true'
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

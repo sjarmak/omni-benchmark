@@ -288,24 +288,28 @@ Public data enters on the left; only identity-free aggregates leave on the
 right. Custody is not a stage in that pipeline, which is why it touches every
 other container.
 
-![omni-benchmark containers](architecture/figures/benchmarkSystem.jpg)
+[![omni-benchmark containers](architecture/figures/benchmarkSystem.jpg)](architecture/figures/benchmarkSystem.jpg)
 
 The ablation itself. Each rung adds exactly one thing to the one below it, and
 only C2 beat the raw-schema floor on the sealed frame. C5 is a development
 condition and is not part of the frozen comparison.
 
-![The condition ladder, C1 to C5](architecture/figures/conditionLadder.jpg)
+[![The condition ladder, C1 to C5](architecture/figures/conditionLadder.jpg)](architecture/figures/conditionLadder.jpg)
 
 The custody claim, as a sequence. Generation freezes before correctness is
 opened; scoring happens inside the boundary against a single-use receipt; a
 trial is never rerun because its answer was wrong.
 
-![Sealed generation, scoring, and what crosses back](architecture/figures/sealedFlow.jpg)
+[![Sealed generation, scoring, and what crosses back](architecture/figures/sealedFlow.jpg)](architecture/figures/sealedFlow.jpg)
 
-The model is architecture-as-code under [`architecture/`](architecture/README.md)
-— sixteen views including per-container detail, four numbered walkthroughs, and
-a deployment map. Every element links to its source. Explore it interactively
-with `npx likec4 start architecture`.
+These figures are wide. Click any of them to open it at full resolution, or
+open the **[interactive explorer](https://sjarmak.github.io/omni-benchmark/explore/)**,
+which pans, zooms, and lets you walk from a container into its internals.
+
+The model is architecture-as-code under [`architecture/`](architecture/README.md):
+sixteen views including per-container detail, four numbered walkthroughs, and a
+deployment map. Every element links to its source. To run the explorer locally,
+use `npx likec4 start architecture`.
 
 <details>
 <summary><strong>Research infrastructure and detailed reproduction commands</strong></summary>
