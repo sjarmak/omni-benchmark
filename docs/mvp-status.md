@@ -36,14 +36,18 @@ points), and sensitivity is 10/116 versus 9/116 (+0.9 points). Nineteen outcomes
 remain unresolved, so this directional result does not change the formal
 decision.
 
-A later mechanism analysis, C5, is now in progress on dev-A. It deploys Omni the
+A later mechanism analysis, C5, has since completed on dev-A. It deploys Omni the
 way its documentation prescribes (all-tables view surface, full FK join graph,
 complete public HKB ported to `ai_context`) to test whether C4's result reflects
-the governed path or the sparse model that could be compiled for it. C5 was
-registered on 2026-08-30 under D-197, after the sealed aggregates were visible,
-so it is development-only by construction: it cannot alter the frozen held-out
-numbers, cannot be promoted into a sealed successor, and reports both frozen
-scorers on a single generation that is never rerun for a wrong answer. Design:
+the governed path or the sparse model that could be compiled for it. It reflects
+the sparse model: on the identical 136-attempt frame C5 scores 18/136 (13.2%)
+against C4's 9/136 (6.6%), at roughly two-thirds the median token cost, while all
+134 of its parseable queries still took the raw-SQL rewrite path and none
+declared a join. C5 was registered on 2026-08-30 under D-197, after the sealed
+aggregates were visible, so it is development-only by construction: it cannot
+alter the frozen held-out numbers, cannot be promoted into a sealed successor,
+and reports both frozen scorers on a single generation that was never rerun for a
+wrong answer. Design:
 [`c5-tuned-governed-condition.md`](c5-tuned-governed-condition.md).
 
 Live-action authorization remains tiered by contamination risk

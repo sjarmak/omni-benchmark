@@ -170,7 +170,7 @@ def _restrict_governed(
 
 
 def _write_exclusive(path: Path, content: bytes) -> None:
-    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(descriptor, "wb") as handle:
         handle.write(content)
 
@@ -241,9 +241,26 @@ def _condition_rates(receipt: Mapping[str, Any], scorer: str) -> dict[str, Any]:
     return result
 
 
+def _labelled_receipt(value: str) -> tuple[str | None, Path]:
+    """Parse ``--receipt PATH`` or ``--receipt ARM=PATH``.
+
+    C5 executes under the C4 condition scaffold, so two governed receipts carry
+    the same condition key and would collide on merge. An explicit arm label
+    renames the single condition a receipt reports.
+    """
+
+    label, separator, path = value.partition("=")
+    if not separator:
+        return None, Path(value)
+    if not label.strip() or not path.strip():
+        raise argparse.ArgumentTypeError("arm label and receipt path are required")
+    return label, Path(path)
+
+
 def _report(arguments: argparse.Namespace) -> int:
     workspace = arguments.workspace.resolve(strict=True)
-    receipts = [_read_json(workspace / path) for path in arguments.receipt]
+    labels = [label for label, _ in arguments.receipt]
+    receipts = [_read_json(workspace / path) for _, path in arguments.receipt]
     release = {receipt.get("release_sha256") for receipt in receipts}
     if len(release) != 1:
         raise MatchedFrameError("receipts do not share one gold release")
@@ -255,11 +272,15 @@ def _report(arguments: argparse.Namespace) -> int:
     }
     for scorer in SCORERS:
         merged: dict[str, Any] = {}
-        for receipt in receipts:
-            for condition, rates in _condition_rates(receipt, scorer).items():
-                if condition in merged:
-                    raise MatchedFrameError(f"{condition} appears in two receipts")
-                merged[condition] = rates
+        for label, receipt in zip(labels, receipts):
+            rates_by_condition = _condition_rates(receipt, scorer)
+            if label is not None and len(rates_by_condition) != 1:
+                raise MatchedFrameError("an arm label needs a single-condition receipt")
+            for condition, rates in rates_by_condition.items():
+                arm = label if label is not None else condition
+                if arm in merged:
+                    raise MatchedFrameError(f"{arm} appears in two receipts")
+                merged[arm] = rates
         comparison[scorer] = merged
     content = canonical_bytes(comparison)
     if arguments.destination is not None:
@@ -284,7 +305,9 @@ def main(argv: list[str] | None = None) -> int:
 
     report = subparsers.add_parser("report")
     report.add_argument("--workspace", type=Path, required=True)
-    report.add_argument("--receipt", type=Path, action="append", required=True)
+    report.add_argument(
+        "--receipt", type=_labelled_receipt, action="append", required=True
+    )
     report.add_argument("--kind", default="c5-matched-dev-a-comparison")
     report.add_argument("--destination", type=Path)
     report.set_defaults(handler=_report)

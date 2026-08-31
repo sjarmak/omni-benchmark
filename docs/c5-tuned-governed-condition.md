@@ -125,3 +125,38 @@ sprawl. This document plus research-log entries is the paper trail.
 Both gates were granted by Stephanie on 2026-08-30 with the instruction to run
 the chain end to end autonomously. The no-rerun rule, append-only records, and
 the closed sealed frame are unaffected by that approval.
+
+## Outcome
+
+Deployment `c5-dev-a-deployment-v8` verified all 16 target databases with exact
+readback. Run `c5-dev-a-v4` completed 136 of 136 attempts on 2026-08-31, bound to
+system commit `487c4dc4866622315d10066a3cc6552f9655435d`, with 110 answered and
+26 errored and no record-write failures. All 26 non-answered attempts went
+through the exact-readback recovery path and all 26 classified as
+`evaluated_system_failure`, so none was set aside.
+
+Both frozen scorers ran. On the identical 136-attempt frame C5 scores 18/136
+(13.2%) official and 16/135 (11.9%) sensitivity, against the frozen C4
+baseline's 9/136 (6.6%) and 9/135 (6.7%). On the 122-question five-condition
+intersection C5 reaches 13/122 (10.7%) against C4's 5/122 (4.1%) and C2's 29/122
+(23.8%). C5 is the first governed condition to clear the raw-schema floor C1.
+Median total tokens fell from 583,188 to 396,884, tool calls from 7 to 3,
+database queries from 2 to 1, and latency from 50,557 ms to 32,492 ms.
+
+The mechanism did not move: 134 of 134 parseable C5 queries carry `rewriteSql`
+and none declares a join through the semantic model, matching every other
+governed arm measured (661 of 661 across six arms). Publishing every table and
+the full FK join graph produced no composed query, so the accuracy gain came
+from the model serving as context rather than as a compiler.
+
+Artifacts: freeze
+[`../experiments/autoresearch/state/c5-dev-a-v4-freeze.json`](../experiments/autoresearch/state/c5-dev-a-v4-freeze.json),
+accuracy
+[`../experiments/analysis/c5-matched-122-comparison-v1.json`](../experiments/analysis/c5-matched-122-comparison-v1.json),
+telemetry
+[`../experiments/analysis/c5-telemetry-comparison-v1.json`](../experiments/analysis/c5-telemetry-comparison-v1.json),
+query paths
+[`../experiments/analysis/governed-query-path-tally-v1.json`](../experiments/analysis/governed-query-path-tally-v1.json).
+Decisions D-202 through D-205 in [`research-log.md`](research-log.md); product
+consequence in [PF-016](product-findings.md). Phase 2 is proposed under bead
+`omni-benchmark-w5x` and needs its own authorization.

@@ -3,11 +3,11 @@
 ## Results report
 
 > **Status, 2026-08-31.** The primary C1-C4 held-out evaluation is complete and
-> frozen; its numbers are final and nothing in progress can change them. A
-> mechanism analysis, C5, is running on development data to test the
-> interpretation of the observed C4 behavior. It does not alter, rerun, or
-> reopen the sealed evaluation and makes no held-out claim, but it may refine
-> the product-level explanation of the result. C5 was registered after the
+> frozen; its numbers are final and nothing since has changed them. A mechanism
+> analysis, C5, has since run on development data to test the interpretation of
+> the observed C4 behavior. It does not alter, rerun, or reopen the sealed
+> evaluation and makes no held-out claim; it refines the product-level
+> explanation of the result. C5 was registered after the
 > sealed aggregates became visible, which is recorded in D-197 and is exactly
 > why it is confined to dev-A. Design:
 > [`docs/c5-tuned-governed-condition.md`](docs/c5-tuned-governed-condition.md).
@@ -55,8 +55,19 @@ accuracy was 10.1% for C1, 22.1% for C2, 8.6% for C3, and 8.6% for C4; corrected
 sensitivity was 10.1%, 19.5%, 8.6%, and 9.7%. This comparison covers 89 of the
 original 101 held-out questions, on the 16 databases with verified C4
 deployments. The frame was narrowed before any sealed generation, label release,
-or outcome access because the official loader left required tables unavailable
-in the other two databases. All four conditions and all three repetitions use
+or outcome access because the pinned official loader left required tables
+unavailable in the other two databases: it builds each dump path as
+`<declared table>.sql` and matches filenames exactly, so where the declared
+table names are mixed or upper case and the archive files are lowercase it
+skips them silently. That is 34 of 55 tables in `mental_healths_large` and 37 of
+57 in `organ_transplant_large`. Gold SQL for those databases then references
+tables that never loaded, both frozen scorers record `gold_statement_error`, and
+all 18 of their dev-A questions are unscorable under either scorer. The defect
+is upstream, not ours; the same bug was fixed twice in the Base loader. Filed
+2026-08-29 as
+[bird-bench/livesqlbench#10](https://github.com/bird-bench/livesqlbench/issues/10),
+with the full audit in
+[`docs/livesqlbench-upstream-loader-report-draft.md`](docs/livesqlbench-upstream-loader-report-draft.md). All four conditions and all three repetitions use
 the same 89 questions; the result estimates performance on those 16 deployable
 databases, not the full 18-database benchmark.
 
@@ -274,6 +285,23 @@ databases. Combining those records with the 54-node canary gives the complete
 | Unsupported | 193 | 17.7% |
 | **Total** | **1,090** | **100.0%** |
 
+**What the 17.7% is a property of.** It is a joint property of the knowledge
+base and the compilation rule, and it is not a claim that 82.3% of business
+knowledge is uncompilable in principle. The compiler used here refuses to emit
+any object whose grain, entity identity, cardinality, or aggregation the source
+does not state. The public HKB states those contracts for 193 definitions. For
+the rest it describes the business meaning without the structural facts an
+executable object needs, which is why the leading loss codes are
+`cardinality_unknown`, `aggregation_unspecified`, and `cross_grain_no_identity`
+rather than anything about vocabulary. A more permissive compiler would emit
+more objects by inferring the missing joins and aggregations, and those
+inferences are exactly what a semantic layer exists to prevent an author from
+making silently. A human modeler with domain access could supply the missing
+contracts and raise the number; nothing in this study measures how far. So
+17.7% should be read as the share of definitions whose contracts are explicit
+enough to compile without guessing, under a documented no-guess rule, not as a
+ceiling on the knowledge base.
+
 Within the 17-database fan-out, the three most frequent loss codes were
 `cardinality_unknown` (398), `aggregation_unspecified` (314), and
 `cross_grain_no_identity` (308). Domains
@@ -465,7 +493,7 @@ Their reusable changes and promotion rules are recorded in
 | E03: bounded descriptions | Prespecified only | Not run | Out of MVP scope after the scoring-order deviation |
 | E04: broad HKB context | Prespecified negative control only | Not run | Out of MVP scope after the scoring-order deviation |
 | E05: typed output fields | Registered against the 31 `UNKNOWN`-type contract failures; the preregistered precondition needed 16 of 31 attempts to select a compiled semantic field, and the measured ceiling is 6 of 31 | INCONCLUSIVE by its own stopping rule | Closed; consumed no live attempt |
-| C5: docs-idiomatic tuned governed Omni | Registered 2026-08-30 under D-197, after sealed aggregates were visible. Widened view surface, full FK join graph, complete HKB port to `ai_context`. Public inputs only | In progress on dev-A | Development-only mechanism analysis; no held-out claim is available to it |
+| C5: docs-idiomatic tuned governed Omni | Registered 2026-08-30 under D-197, after sealed aggregates were visible. Widened view surface, full FK join graph, complete HKB port to `ai_context`. Public inputs only | Complete on dev-A: 18/136 (13.2%) against frozen C4's 9/136 (6.6%) on the identical frame, at 32% fewer median tokens, with 134/134 parseable queries still on the rewrite path | Development-only mechanism analysis; no held-out claim is available to it. Supports PF-016 and narrows the C4 interpretation |
 
 The no-rerun E02 diagnostic preserves that formal decision while extracting the
 usable evidence. Both frozen scorers were applied offline to the 117 captured
@@ -523,7 +551,7 @@ Dev-B remains unconsumed.
 
 </details>
 
-### C5: the mechanism analysis now in progress
+### C5: the mechanism analysis
 
 The query-path measurement leaves one question the frozen evidence cannot
 answer. C4's low result is consistent with two very different explanations: the
@@ -536,8 +564,8 @@ from public inputs only: a view for every public table (47 to 63 per database
 rather than the baseline's 6 to 11), a join for every foreign key that passes
 the same conservative cardinality rule, and the complete public HKB ported into
 `ai_context` at field, topic, and model level, with dependency chains inlined
-prerequisite-first. Phase 1 declares no measures; a measures phase is registered
-but unbuilt. The headline contrast is C5 against C2 on their question
+prerequisite-first. Phase 1 declares no measures; a measures phase is proposed
+under bead `omni-benchmark-w5x` and needs its own authorization. The headline contrast is C5 against C2 on their question
 intersection, which asks how much of C2's demonstrated knowledge value governed
 Omni delivers when the semantic model actually carries that knowledge.
 
@@ -550,9 +578,79 @@ per-question outcome, and no question content, gold, or hidden annotation enters
 any C5 artifact. It reports both frozen scorers, without selection, on a single
 generation that is never rerun for a wrong answer.
 
-Status at the time of writing: the deployment is verified and the single
-136-attempt dev-A generation has not yet completed. Design and implementation
-map: [`docs/c5-tuned-governed-condition.md`](docs/c5-tuned-governed-condition.md).
+#### What C5 measured
+
+The single 136-attempt dev-A generation completed on 2026-08-31 under run
+`c5-dev-a-v4`, bound to system commit `487c4dc4` and deployment
+`c5-dev-a-deployment-v8` (16 of 16 databases verified). Both frozen scorers ran
+on it, and both are reported.
+
+On the identical 136-attempt governed frame, C5 doubles C4:
+
+| Arm | Official Soft EX | Sensitivity |
+| --- | --- | --- |
+| C4, frozen governed baseline | 9 / 136 (6.6%) | 9 / 135 (6.7%) |
+| C5, docs-idiomatic governed | 18 / 136 (13.2%) | 16 / 135 (11.9%) |
+
+Terminal generation failures fell from 34 to 26. All 26 were classified
+`evaluated_system_failure` by the hash-pinned recovery pass, which retrieved
+zero recoverable sidecars, so every one of them counts against C5 as a candidate
+execution error rather than being set aside as infrastructure.
+
+The five conditions have never shared a question set: the direct arms were
+frozen over 18 databases and the governed arms over the 16 with verified
+deployments, and the direct freeze is itself missing 14 dev-A questions. On the
+122-question intersection where all five can be compared directly:
+
+| Condition | Official Soft EX | Sensitivity |
+| --- | --- | --- |
+| C1, raw schema, direct | 9 / 122 (7.4%) | 9 / 121 (7.4%) |
+| C2, schema plus knowledge, direct | 29 / 122 (23.8%) | 28 / 121 (23.1%) |
+| C3, schema plus retrieval, direct | 16 / 122 (13.1%) | 14 / 121 (11.6%) |
+| C4, governed, sparse compiled model | 5 / 122 (4.1%) | 6 / 121 (5.0%) |
+| C5, governed, docs-idiomatic | 13 / 122 (10.7%) | 12 / 121 (9.9%) |
+
+Aggregate artifact:
+[`experiments/analysis/c5-matched-122-comparison-v1.json`](experiments/analysis/c5-matched-122-comparison-v1.json).
+
+#### Reading the result
+
+C5 answers the question it was registered to answer. C4's low result was not a
+property of the governed path as such. Deploying the same product the way its
+documentation prescribes moves the governed arm from 4.1% to 10.7% on the
+matched frame, a 2.6x change, and from below the raw-schema floor to above it.
+C4 scored under C1; C5 scores over it. That is the first governed condition in
+this evaluation to clear the floor.
+
+It does not close the gap. C2 remains at 23.8% on the same questions, and C5
+recovers roughly 45% of the distance from C4 to C2. The knowledge that helps a
+model most on this benchmark is still worth more when handed to it directly than
+when compiled into a semantic model and reached through the governed path.
+
+C5 is also cheaper. Across the 136 matched attempts, median total tokens fell
+from 583,188 to 396,884, median tool calls from 7 to 3, median database queries
+from 2 to 1, and median latency from 50.6s to 32.5s. Accuracy and cost moved in
+the same favorable direction, which is the signature of a model that made the
+task easier rather than one that spent more effort on it.
+
+The mechanism readout constrains the interpretation. Of C5's 134 attempts that
+produced a parseable semantic query, all 134 used `rewriteSql`, and `join_via_map`
+appears zero times. The same holds for C4 (135 of 135) and for E02's captured
+subset (131 of 131). Across six governed arms, including all three sealed C4
+repetitions, the count is 661 of 661 parseable attempts on the rewrite path and
+zero composed, tallied by
+[`experiments/analysis/governed_query_path_tally.py`](experiments/analysis/governed_query_path_tally.py)
+into
+[`governed-query-path-tally-v1.json`](experiments/analysis/governed-query-path-tally-v1.json).
+The model always escapes to rewriting raw SQL and never composes through the
+semantic join map.
+So C5's gain did not come from the model using the semantic layer's join
+facilities. It came from the widened view surface and the ported knowledge
+making the SQL it writes anyway land on the right columns more often. The
+semantic layer is functioning here as context, not as a query compiler.
+
+Design and implementation map:
+[`docs/c5-tuned-governed-condition.md`](docs/c5-tuned-governed-condition.md).
 
 ## 6. Held-out results
 
@@ -562,16 +660,23 @@ published both preregistered policies in one atomic run. This section uses only
 the identity-free aggregates; no question identity, SQL, row, annotation, or
 per-question correctness left custody.
 
+**† C4 is not a valid measure of governed semantic composition.** All 135 of 135
+sealed C4 queries took Omni's raw-SQL rewrite path and none declared a join
+through the semantic model, so every C4 row below measures an agent writing SQL
+by hand with the semantic model as context, at governed-path latency and cost.
+See [`docs/c4-query-path-disclosure.md`](docs/c4-query-path-disclosure.md) and
+[PF-016](docs/product-findings.md#pf-016-governed-queries-silently-fall-back-to-raw-sql-with-no-signal-that-composition-was-bypassed).
+
 ### Primary endpoints
 
 | Scorer | Endpoint | Estimate | 95% interval |
 | --- | --- | ---: | ---: |
-| Official-compatible Soft EX | C4 mean one-shot execution accuracy | 8.6% | 3.7%–14.6% |
-| Official-compatible Soft EX | C4 repetition-one execution accuracy | 7.9% | 3.4%–13.5% |
-| Official-compatible Soft EX | C4−C1 paired accuracy difference | -1.5% | -7.1%–4.1% |
-| Corrected multiset sensitivity | C4 mean one-shot execution accuracy | 9.7% | 4.5%–15.7% |
-| Corrected multiset sensitivity | C4 repetition-one execution accuracy | 9.0% | 3.4%–15.7% |
-| Corrected multiset sensitivity | C4−C1 paired accuracy difference | -0.4% | -6.4%–5.6% |
+| Official-compatible Soft EX | C4 mean one-shot execution accuracy † | 8.6% | 3.7%–14.6% |
+| Official-compatible Soft EX | C4 repetition-one execution accuracy † | 7.9% | 3.4%–13.5% |
+| Official-compatible Soft EX | C4−C1 paired accuracy difference † | -1.5% | -7.1%–4.1% |
+| Corrected multiset sensitivity | C4 mean one-shot execution accuracy † | 9.7% | 4.5%–15.7% |
+| Corrected multiset sensitivity | C4 repetition-one execution accuracy † | 9.0% | 3.4%–15.7% |
+| Corrected multiset sensitivity | C4−C1 paired accuracy difference † | -0.4% | -6.4%–5.6% |
 
 ### Four-condition matrix
 
@@ -580,11 +685,11 @@ per-question correctness left custody.
 | Official-compatible Soft EX | C1 | 10.1% | 56.2% | 33.7% | 18.7% | 6.7% | 6 |
 | Official-compatible Soft EX | C2 | 22.1% | 50.6% | 27.3% | 19.9% | 15.7% | 12 |
 | Official-compatible Soft EX | C3 | 8.6% | 53.2% | 38.2% | 16.1% | 4.5% | 6 |
-| Official-compatible Soft EX | C4 | 8.6% | 77.2% | 14.2% | 14.2% | 6.7% | 4 |
+| Official-compatible Soft EX | C4 † | 8.6% | 77.2% | 14.2% | 14.2% | 6.7% | 4 |
 | Corrected multiset sensitivity | C1 | 10.1% | 56.9% | 33.0% | 18.7% | 6.7% | 6 |
 | Corrected multiset sensitivity | C2 | 19.5% | 54.7% | 25.8% | 19.9% | 14.6% | 10 |
 | Corrected multiset sensitivity | C3 | 8.6% | 54.7% | 36.7% | 16.1% | 4.5% | 6 |
-| Corrected multiset sensitivity | C4 | 9.7% | 76.0% | 14.2% | 14.2% | 7.9% | 4 |
+| Corrected multiset sensitivity | C4 † | 9.7% | 76.0% | 14.2% | 14.2% | 7.9% | 4 |
 
 `Refused/error` is the scorer's third outcome among the 267 scoreable attempts
 per condition; it complements correct and wrong. `Error rate` is narrower: the
@@ -649,7 +754,7 @@ with file SHA-256
 | --- | --- | ---: | ---: | ---: | ---: |
 | Official-compatible Soft EX | C2−C1 | 12.0% | 5.6%–18.7% | 37 | 5 |
 | Official-compatible Soft EX | C3−C2 | -13.5% | -20.6%–-7.1% | 4 | 40 |
-| Official-compatible Soft EX | C4−C1 | -1.5% | -7.1%–4.1% | 10 | 14 |
+| Official-compatible Soft EX | C4−C1 † | -1.5% | -7.1%–4.1% | 10 | 14 |
 | Official-compatible Soft EX | C4−C3 | 0.0% | -4.9%–4.9% | 10 | 10 |
 | Corrected multiset sensitivity | C2−C1 | 9.4% | 3.4%–15.7% | 30 | 5 |
 | Corrected multiset sensitivity | C3−C2 | -10.9% | -17.6%–-4.9% | 4 | 33 |

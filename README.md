@@ -4,12 +4,14 @@
 
 > **Status.** The primary C1-C4 held-out evaluation is complete and frozen: 89
 > questions, four conditions, three repetitions, 1,068 immutable attempts, both
-> preregistered scorers. Those numbers are final. A mechanism analysis, C5, is
-> running now on development data to test the *interpretation* of the C4 result.
-> C5 cannot change the held-out accuracy figures and makes no held-out claim; it
-> can refine the product-level explanation of why C4 behaved as it did. It was
-> registered after the sealed aggregates were opened, which is exactly why it is
-> confined to development data. See [what is still open](#what-is-still-open).
+> preregistered scorers. Those numbers are final. A mechanism analysis, C5, has
+> since run on development data to test the *interpretation* of the C4 result:
+> rebuilding the same product to its own documented shape doubles governed
+> accuracy, 13.2% against 6.6% on the identical frame, and every query still took
+> the raw-SQL rewrite path. C5 cannot change the held-out accuracy figures and
+> makes no held-out claim. It was registered after the sealed aggregates were
+> opened, which is exactly why it is confined to development data. See [what is
+> still open](#what-is-still-open).
 
 ## The question
 
@@ -52,7 +54,7 @@ Each rung adds exactly one ingredient to the rung below it.
 | **C2** | Raw schema + searchable business knowledge (HKB), direct SQL | Does the business knowledge itself help, in its native prose form? |
 | **C3** | Compiled/exported semantic-model knowledge, direct SQL | Does that knowledge survive being turned into a structured model, when the agent still writes the SQL? |
 | **C4** | The deployed Omni semantic model, answered through Omni's production agent | The product premise: governed semantic execution versus writing SQL yourself |
-| **C5** | Omni deployed the way its documentation prescribes: every table published, full FK join graph, complete knowledge port into `ai_context` | *In progress, development data only.* Was C4's result a property of the semantic layer, or of the sparse model we were able to compile? |
+| **C5** | Omni deployed the way its documentation prescribes: every table published, full FK join graph, complete knowledge port into `ai_context` | *Development data only, not scored on the sealed split.* Was C4's result a property of the semantic layer, or of the sparse model we were able to compile? It was the sparse model: C5 doubles C4 on the identical frame, 13.2% against 6.6%, and every C5 query still took the rewrite path. |
 
 **Where the design failed to isolate what it intended.** C4 was supposed to
 separate semantic query composition from agent-written SQL. It did not. All 135
@@ -81,7 +83,7 @@ the contemporaneous ledger of about 200 decisions is
 | E01: same-grain dependency composition is missing | Already in the baseline: 70 executable dependency edges, depth 3 | Audited no-op, contrast cancelled |
 | E02: FK-backed relationships restore a composed join path | 91 relationships deployed; generation froze 117 answers and 19 capture failures | **INCONCLUSIVE** on the preregistered complete-136 rule; no promotion, no rerun |
 | E05: typed output fields fix the 31 `UNKNOWN`-type contract failures | Preregistered precondition needed 16 of 31; the ceiling is 6 of 31 | **INCONCLUSIVE** by its own stopping rule, zero live attempts spent |
-| C5: docs-idiomatic deployment carries C2's knowledge value into the governed path | In progress | Pending |
+| C5: docs-idiomatic deployment carries C2's knowledge value into the governed path | dev-A: C5 13.2% against frozen C4 6.6% on 136 identical attempts, at 32% fewer median tokens; 134/134 queries still on the rewrite path | **Partly supported.** Roughly 45% of the C4-to-C2 gap closes, entirely through context rather than composition |
 
 Two of those are worth reading as research judgment rather than as results. The
 refutation in row four is this study's own central design assumption falling to
@@ -95,36 +97,81 @@ cost nothing and would otherwise have been an attractive intervention to run.
 Matched frame: 89 questions, 16 databases, 3 repetitions, 1,068 attempts. Both
 frozen scorers, published together.
 
+**Why 16 databases and not 18.** The pinned LiveSQLBench loader builds each dump
+path as `<declared table>.sql` and matches filenames exactly. In two databases
+the declared table names are mixed or upper case while the archive files are
+lowercase, so the loader silently skips 34 of 55 tables in
+`mental_healths_large` and 37 of 57 in `organ_transplant_large`. Gold SQL for
+those databases then references tables that were never created, so both frozen
+scorers fail on the gold statement itself and every one of their questions is
+unscorable for any system. We cut them before generating a single sealed answer,
+not after seeing results. The same bug was fixed twice in the Base loader; we
+filed it against Large-v1 on 2026-08-29 as
+[bird-bench/livesqlbench#10](https://github.com/bird-bench/livesqlbench/issues/10)
+([full audit](docs/livesqlbench-upstream-loader-report-draft.md)).
+
 | Condition | Official Soft EX | Corrected sensitivity |
 | --- | ---: | ---: |
 | C1: raw schema | 10.1% | 10.1% |
 | **C2: raw schema + searchable HKB** | **22.1%** | **19.5%** |
 | C3: exported semantic model | 8.6% | 8.6% |
-| C4: governed Omni | 8.6% | 9.7% |
+| C4: governed Omni | 8.6% † | 9.7% † |
 
 | Contrast | Official | 95% interval | Sensitivity | 95% interval |
 | --- | ---: | ---: | ---: | ---: |
 | C2 − C1 | **+12.0 pts** | 5.6 to 18.7 | **+9.4 pts** | 3.4 to 15.7 |
 | C3 − C2 | −13.5 pts | −20.6 to −7.1 | −10.9 pts | −17.6 to −4.9 |
-| C4 − C1 | −1.5 pts | −7.1 to 4.1 | −0.4 pts | −6.4 to 5.6 |
-| C4 − C3 | 0.0 pts | −4.9 to 4.9 | +1.1 pts | −4.1 to 6.7 |
+| C4 − C1 † | −1.5 pts | −7.1 to 4.1 | −0.4 pts | −6.4 to 5.6 |
+| C4 − C3 † | 0.0 pts | −4.9 to 4.9 | +1.1 pts | −4.1 to 6.7 |
 
-What that table says:
+**† C4 is not a valid measure of governed semantic composition.** Every sealed
+C4 query took Omni's raw-SQL rewrite path and none declared a join through the
+semantic model. C4's 8.6% measures an agent writing SQL by hand with the
+semantic model present as context, at governed-path latency and cost. Read the
+C4 rows as a measurement of that system, not of semantic composition. Audit the
+counts yourself in
+[`governed-query-path-tally-v1.json`](experiments/analysis/governed-query-path-tally-v1.json);
+narrative detail in [`docs/c4-query-path-disclosure.md`](docs/c4-query-path-disclosure.md);
+product consequence in [PF-016](docs/product-findings.md#pf-016-governed-queries-silently-fall-back-to-raw-sql-with-no-signal-that-composition-was-bypassed).
 
-- **C2 over C1 is the strongest positive result in the study.** Searchable
-  business knowledge, in its raw prose form, is worth about 12 points to a
-  direct-SQL agent, and the interval excludes zero under both scorers.
-- **C4 does not outperform C1.** The governed condition is 1.5 points below the
-  raw-schema floor under the official scorer, with an interval spanning zero.
-  There is no held-out evidence here that the governed path helped.
-- **C3 gives back most of C2's advantage.** The loss happens when the prose
-  knowledge is converted into the bounded structured model, before Omni's
-  runtime is involved at all.
-- **C3 and C4 do not represent the semantic-layer mechanism as cleanly as
-  intended**, for the reason given in the condition ladder above. They are
-  honest measurements of the systems that were actually built and deployed;
-  they are not a clean test of semantic composition, and this study cannot
-  supply one.
+What that table says, mechanism first:
+
+- **193 of 1,090 public knowledge definitions compiled, 17.7%.** 511 of them,
+  46.9%, were deferred because they crossed a grain the knowledge base never
+  states. The executable model was built from a fifth of the available business
+  semantics. This number is a joint property of the knowledge base and a
+  compiler that refuses to guess: it emits no object whose grain, identity,
+  cardinality, or aggregation the source fails to state, so the leading losses
+  are `cardinality_unknown`, `aggregation_unspecified`, and
+  `cross_grain_no_identity`, not missing vocabulary. A permissive compiler would
+  emit more by inferring joins and aggregations, which is the thing a semantic
+  layer exists to stop. A human modeler with domain access could raise it;
+  nothing here measures how far.
+- **Zero governed queries composed through the semantic model.** Across six
+  governed arms, 661 of 661 parseable attempts took the raw-SQL rewrite path and
+  `join_via_map` was never used once. That covers all three sealed C4
+  repetitions, the dev-A C4 baseline, E02, and C5 after the model was widened
+  roughly sixfold. Per-arm counts, regenerable from public run metadata:
+  [`experiments/analysis/governed-query-path-tally-v1.json`](experiments/analysis/governed-query-path-tally-v1.json)
+  via [`governed_query_path_tally.py`](experiments/analysis/governed_query_path_tally.py).
+- **Widening the model sixfold moved accuracy and did not move the fallback.**
+  C5 published a view for every table and a join for every qualifying foreign
+  key. Governed accuracy doubled on the identical development frame, 13.2%
+  against 6.6%, at roughly two-thirds the median token cost. The rewrite rate
+  stayed at 100%. Model sparsity was not what kept the governed path from
+  composing, and better context is worth real accuracy on its own.
+- **C2 over C1 is the strongest result in the study, and it is a result about
+  business semantics.** Searchable business knowledge, in raw prose form, is
+  worth about 12 points to a direct-SQL agent, interval 5.6 to 18.7, excluding
+  zero under both scorers. That is the measured size of the prize.
+- **Almost none of those 12 points survive the trip into an executable model.**
+  C3 gives back 13.5 points, and the loss happens during compilation, before
+  Omni's runtime is involved at all.
+
+Put together, the chain is compilation coverage and a silent runtime fallback,
+not a verdict on the semantic-layer thesis. The 12 points are real and they are
+sitting on the other side of a pipeline that captured a fifth of the semantics
+and then routed around what it did capture.
 
 C4 was also the most expensive condition: 3.9 times C1's median tokens, 1.5
 times its latency, 2.3 times its tool calls, with no accuracy gain. It did have
@@ -151,11 +198,12 @@ Each link in this chain is measured, not inferred:
 5. **So C4 was never the intervention we designed.** It is a measurement of
    Omni-as-vocabulary on a sparse model, not of Omni-as-compiler.
 
-The honest form of the finding is that this benchmark's knowledge bases do not
-carry the contracts a semantic layer needs, and the pipeline that turns prose
-knowledge into governed semantics is where the value was lost. Whether a
-knowledge-complete deployment recovers it is the open question, which is what
-C5 tests.
+The finding is that this benchmark's knowledge bases do not carry the contracts
+a semantic layer needs, and the pipeline that turns prose knowledge into
+governed semantics is where the value was lost. C5 answered the follow-on
+question on development data: a knowledge-complete deployment recovers about
+45% of the gap between C4 and C2, and it does so without composing a single
+query. The remaining gap is the compilation pipeline, not the knowledge.
 
 ## Product implications
 
@@ -193,13 +241,16 @@ argues for, in order of how much evidence sits behind them. The longer form is
 
 ## What is still open
 
-- **C5 is running.** It deploys Omni the way the documentation prescribes: a view
-  for every public table (47 to 63 per database rather than 6 to 11), a join for
-  every FK that passes the conservative cardinality rule, and the complete HKB
-  ported into `ai_context` at field, topic, and model level. It answers one
-  question: **how much of C2's demonstrated knowledge value does governed Omni
-  deliver when the semantic model actually carries that knowledge?** It runs on
-  `dev-A` only, reports both frozen scorers, and makes no held-out claim. Design:
+- **C5 answered half of its question and sharpened the other half.** It deploys
+  Omni the way the documentation prescribes: a view for every public table (47 to
+  63 per database rather than 6 to 11), a join for every FK that passes the
+  conservative cardinality rule, and the complete HKB ported into `ai_context` at
+  field, topic, and model level. It asked how much of C2's knowledge value
+  governed Omni delivers when the semantic model actually carries that knowledge.
+  Answer on dev-A: about 45% of the C4-to-C2 gap, and none of it through
+  composition, because all 134 parseable C5 queries still took the rewrite path.
+  What remains open is whether measures and resolved grain, the phase-2 changes
+  C5 deliberately excluded, would produce a composed query at all. Design:
   [`docs/c5-tuned-governed-condition.md`](docs/c5-tuned-governed-condition.md).
 - **C5 was registered after the sealed aggregates were visible**, which is
   recorded rather than concealed and is precisely why it cannot become a held-out

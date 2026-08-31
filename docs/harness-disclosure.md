@@ -102,6 +102,33 @@ consequences for interpretation are in
 [`c4-query-path-disclosure.md`](c4-query-path-disclosure.md) and
 [`c4-mechanism-measurements.md`](c4-mechanism-measurements.md).
 
+### C5 removes the "no compiled path existed" explanation (addendum, 2026-08-31)
+
+The paragraph above says rewrite was the only path the deployed model left open
+for cross-table access, because every C4 topic carried `"joins": {}`. C5 removes
+that explanation. It runs under the same C4 condition scaffold, the same prompt,
+and the same four-key job body, but deploys a view for every public table and a
+join for every foreign key that passes the conservative cardinality contract, so
+a compiled cross-table path existed on most topics.
+
+The rewrite rate did not move. All 134 parseable C5 attempts carry `rewriteSql`,
+none declares a join through the model, and `join_via_map` is empty on all 134.
+Counted across six governed arms (three sealed C4 repetitions, dev-A C4, E02, and
+C5), the total is 661 of 661 parseable attempts on the rewrite path and zero
+composed:
+[`../experiments/analysis/governed-query-path-tally-v1.json`](../experiments/analysis/governed-query-path-tally-v1.json),
+regenerable from
+[`../experiments/analysis/governed_query_path_tally.py`](../experiments/analysis/governed_query_path_tally.py).
+
+So the narrow reading, that the product compiles when the model supports it, no
+longer fits the join case. What remains open is the measure case: C5 phase 1
+publishes no measures, so an aggregate question still has no compiled
+expression. Separating that from an unconditional rewrite is the phase-2
+question tracked in bead `omni-benchmark-w5x` and recorded as
+[PF-016](product-findings.md). C5's accuracy rose while the path stayed fixed,
+which is the evidence that the semantic model contributed vocabulary and context
+rather than composition.
+
 For C1-C3, `config/instructions/direct-sql-v1.json` is validated and hash-bound
 as fixed policy metadata, but its `adapter_instruction` text is not sent to the
 model. The operative instructions are the provider adapter's code-bound system

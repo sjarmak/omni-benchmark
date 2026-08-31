@@ -320,39 +320,49 @@ had regenerated the view layer from the physical schema after our upload landed.
 
 We changed the deployment to upload a second time when a branch does not
 converge. The fourth pass carried that fix and hit the same failure on the same
-database, so this is deterministic rather than a timing race. A fifth pass is
-running.
+database, so this is deterministic rather than a timing race. It took eight
+passes in total. The final one verified all 16 databases with exact readback,
+and the two launch failures that followed it turned out to be the harness
+rejecting its own stale Python bytecode rather than anything about Omni.
 
-### Where the results go
+### What C5 showed
 
-The numbers below do not exist yet. They will be produced by one development
-generation and one scorer run, under both frozen scorers, and they will land
-here.
+One generation, 136 attempts, all terminal, scored under both frozen scorers.
 
-> **[Placeholder: C5 accuracy.]** Mean one-shot execution accuracy for C1 through
-> C5 on the matched 122-question frame under both scorers, plus the paired C5
-> against C2 contrast with its clustered bootstrap interval, and the change
-> against the frozen C4 baseline on the 136-question development frame.
+On the identical 136-attempt frame, C5 scores 18 of 136 (13.2%) against the
+frozen C4 baseline's 9 of 136 (6.6%); the sensitivity scorer gives 16 of 135
+against 9 of 135. On the 122-question intersection where all five conditions
+have a scoreable answer:
 
-> **[Placeholder: C5 mechanism.]** What share of C5's captured queries carried
-> `rewriteSql: true`, how many declared a join path, and how many the semantic
-> layer composed. The frozen baseline's values are 135 of 135 rewritten, 0 of 135
-> with a declared join, 109 of 135 referencing a compiled dimension, and 39 of 135
-> expanding an HKB-backed derived definition. These are the numbers C5 exists to
-> move.
+| Condition | Official | Sensitivity |
+| --- | --- | --- |
+| C1 raw schema | 9 / 122 (7.4%) | 9 / 121 (7.4%) |
+| C2 raw HKB | 29 / 122 (23.8%) | 28 / 121 (23.1%) |
+| C3 exported model | 16 / 122 (13.1%) | 14 / 121 (11.6%) |
+| C4 mechanical governed | 5 / 122 (4.1%) | 6 / 121 (5.0%) |
+| C5 docs-idiomatic governed | 13 / 122 (10.7%) | 12 / 121 (9.9%) |
 
-> **[Placeholder: what it means.]** Whether declared joins are enough on their
-> own, or whether the grain and aggregation contracts have to arrive with them,
-> and which of this study's conclusions the C5 evidence narrows.
+C5 is the first governed condition to clear the raw-schema floor. C4 was below
+it. C5 is also cheaper than C4 on every axis we measure: median total tokens
+fall from 583,188 to 396,884, median tool calls from 7 to 3, median database
+queries from 2 to 1, and median latency from 50.6 to 32.5 seconds.
 
-Two outcomes are already worth naming, because we will report either one. If C5
-recovers a large part of the 12-point knowledge benefit, the governed rung works
-and this study measured an under-built model. If C5 keeps writing raw SQL with a
-full join graph published, then joins are not the binding constraint and the
-missing aggregation contracts are, which is a much more specific thing to fix.
-A null result would not separate those two on its own, because this phase
-publishes no measures, and we will say so rather than picking the reading we
-prefer.
+The mechanism did not move at all. Across six governed arms, including this one,
+661 of 661 parseable attempts carried `rewriteSql` and not one declared a join
+through the semantic model. The C5 arm is 134 of 134. Publishing every table and
+the full foreign-key join graph did not produce a single composed query.
+
+We said a null result would not let us choose between the two readings. We
+didn't have to choose: the query-path data decided it. C5's accuracy gain is
+real and it is not composition. The semantic model made the agent's hand-written
+SQL better by being better context, which is worth something and is not the
+product premise. Roughly 45% of the C4-to-C2 gap closed. The rest is still
+sitting behind a compilation pipeline that captured 193 of 1,090 definitions.
+
+Phase two is the experiment that separates the last question: add measures,
+resolve grain, and check whether a declared join path ever appears. If the
+rewrite rate stays at 100% with measures published, the fallback is
+unconditional.
 
 Everything above is reproducible from the repository. The manifests, the split
 seeds, both scorers, the experiment ledger, the contemporaneous research log

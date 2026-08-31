@@ -1,4 +1,4 @@
-\section{Registered successor condition C5, and its pending readout}
+\section{Registered successor condition C5}
 \label{sec:c5}
 
 Section~\ref{sec:results} reports a governed condition that never composed a
@@ -10,8 +10,7 @@ that closes it. It was registered on 2026-08-30, after the held-out aggregates
 were opened; its design provenance is the mechanism measurements and the
 product's public documentation, not any held-out outcome. That ordering is why it
 is confined to the development partition and can never become a held-out
-candidate. It reports no number in this paper. The placeholders below mark exactly where its numbers will
-go, so that a later report fills them rather than restating the design.
+candidate. Its development-partition readout is reported below.
 
 \subsection{What C5 changes}
 C4 measured the product under a deployment shape its documentation never
@@ -63,23 +62,22 @@ against 154 scheduled attempts over 18 databases.
 \begin{table}[htbp]
 \centering
 \small
-\caption{Prespecified C5 comparisons. No result exists for any row at the time of
-writing.}
+\caption{Prespecified C5 comparisons and their outcomes.}
 \label{tab:c5plan}
 \begin{tabular}{p{3.2cm}p{2.6cm}p{5.1cm}p{1.6cm}}
 \toprule
 Comparison & Frame & Question it answers & Result \\
 \midrule
-C5 against C2 & Matched 122 questions, 14 databases & How much of the $+12.0$-point knowledge benefit a governed deployment delivers when the model carries the same knowledge & \pending \\
-C5 against frozen C4 & 136 answerable development questions & Effect of the documentation-idiomatic deployment over the mechanical baseline & \pending \\
-C5 against E02 & 117 captured questions & Incremental effect beyond declared relationships alone & \pending \\
-C5 query paths & All captured C5 queries & Whether declared joins move governed queries off the product's rewrite path & \pending \\
+C5 against C2 & Matched 122 questions, 14 databases & How much of the $+12.0$-point knowledge benefit a governed deployment delivers when the model carries the same knowledge & $-13.1$ pts \\
+C5 against frozen C4 & 136 answerable development questions & Effect of the documentation-idiomatic deployment over the mechanical baseline & $+6.6$ pts \\
+C5 against E02 & 117 captured questions & Incremental effect beyond declared relationships alone & Not scored \\
+C5 query paths & All captured C5 queries & Whether declared joins move governed queries off the product's rewrite path & No change \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Deployment state at the time of writing}
-The arm is in deployment and has not yet generated. Its failures are preserved
+\subsection{Deployment}
+The arm required eight deployment passes. Its failures are preserved
 with the same discipline as the rest of this record, because each one is a
 property of writing a semantic model to this product rather than an incident to
 be tidied away.
@@ -98,34 +96,39 @@ layer from the physical schema after the upload landed, on the database with the
 largest view surface in the set. The fix uploads a second time when a branch does
 not converge and fails only if the reuploaded branch still differs. The fourth
 pass carried that fix and reproduced the same single-database readback failure,
-which makes the behavior deterministic rather than a timing race. A fifth pass is running as this paper is written.
+which makes the behavior deterministic rather than a timing race. The eighth
+pass verified all 16 target databases with zero validation issues and exact
+readback, and that deployment is the one the generation ran against.
 
 None of these fixes contains a database name, a question, or a label, and none
 can mask a real mismatch, because a branch that still differs after the second
 upload fails exactly as before.
 
-\subsection{Where the C5 result will go}
-Tables~\ref{tab:c5accuracy} and~\ref{tab:c5mechanism} are the destinations. The
-accuracy table is empty in every cell, including the comparator rows, because the
-matched-frame scorer run has not been executed for any condition; running it for
-C5 alone would not produce a comparison. The mechanism table carries the frozen
-governed baseline's measured values beside empty C5 cells, because those are the
-numbers C5 is built to move.
+\subsection{The C5 result}
+The single authorized generation, run \texttt{c5-dev-a-v4}, completed all 136
+attempts with no record-write failures: 110 answered and 26 errored. All 26
+non-answered attempts carry \texttt{benchmark\_infrastructure} origin and were
+put through the exact-readback recovery path; all 26 classified as evaluated-system
+failures and none was recovered, so each counts against C5.
+Tables~\ref{tab:c5accuracy} and~\ref{tab:c5mechanism} report the accuracy and
+query-path outcomes.
 
 \begin{table}[htbp]
 \centering
 \caption{Mean one-shot execution accuracy on the matched 122-question development
-frame, both frozen scorers, to be filled by the C5 scorer run.}
+frame, both frozen scorers. The sensitivity column is scored over 121 questions,
+one fewer than the official column, because the corrected scorer excludes one
+additional question as non-conforming.}
 \label{tab:c5accuracy}
 \begin{tabular}{lrr}
 \toprule
 Condition & Official-compatible Soft EX & Corrected multiset \\
 \midrule
-C1 raw schema, direct SQL & \pending & \pending \\
-C2 searchable raw HKB & \pending & \pending \\
-C3 searchable exported model & \pending & \pending \\
-C4 mechanical governed baseline & \pending & \pending \\
-C5 documentation-idiomatic governed & \pending & \pending \\
+C1 raw schema, direct SQL & 9 / 122 (7.4\%) & 9 / 121 (7.4\%) \\
+C2 searchable raw HKB & 29 / 122 (23.8\%) & 28 / 121 (23.1\%) \\
+C3 searchable exported model & 16 / 122 (13.1\%) & 14 / 121 (11.6\%) \\
+C4 mechanical governed baseline & 5 / 122 (4.1\%) & 6 / 121 (5.0\%) \\
+C5 documentation-idiomatic governed & 13 / 122 (10.7\%) & 12 / 121 (9.9\%) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -134,15 +137,17 @@ C5 documentation-idiomatic governed & \pending & \pending \\
 \centering
 \small
 \caption{Query-path mechanism readout. The C4 column is measured over the 135
-captured governed development queries; the C5 column is to be filled from the
-same analyzers over C5's captured queries.}
+captured governed development queries. The first two C5 rows are measured over
+the 134 parseable captured C5 queries by the query-path tally; the remaining
+three rows require the compiled-bundle analyzer, which is pinned to the frozen
+C4 score and recovery roots and has not been generalized to C5.}
 \label{tab:c5mechanism}
 \begin{tabular}{p{7.2cm}rr}
 \toprule
 Measurement & Frozen C4 & C5 \\
 \midrule
-Queries carrying \texttt{rewriteSql: true} & 135 of 135 & \pending \\
-Queries declaring a join path & 0 of 135 & \pending \\
+Queries carrying \texttt{rewriteSql: true} & 135 of 135 & 134 of 134 \\
+Queries declaring a join path & 0 of 135 & 0 of 134 \\
 Attempts referencing at least one compiled dimension & 109 of 135 & \pending \\
 Attempts expanding an HKB-backed derived definition & 39 of 135 & \pending \\
 Attempts selecting no compiled model field & 97 of 135 & \pending \\
@@ -150,26 +155,41 @@ Attempts selecting no compiled model field & 97 of 135 & \pending \\
 \end{tabular}
 \end{table}
 
-\begin{placeholder}
-C5 findings. One paragraph stating the accuracy outcome on the matched frame
-under both scorers, the paired contrast against C2 with its clustered bootstrap
-interval, and the direction and size of the change against frozen C4, written
-after the scorer run and before any interpretation.
-\end{placeholder}
+\paragraph{Findings.}
+On the identical 136-attempt governed frame, C5 scores 18 of 136 (13.2\%) under
+the official-compatible scorer against the frozen C4 baseline's 9 of 136
+(6.6\%), and 16 of 135 (11.9\%) against 9 of 135 (6.7\%) under the corrected
+scorer. On the matched 122-question frame, C5 reaches 10.7\% against C4's 4.1\%
+and C2's 23.8\%, closing roughly 45\% of the distance between the mechanical
+governed baseline and the direct agent carrying the same knowledge as prose. C5
+is the first governed condition in this study to exceed the raw-schema floor C1;
+the mechanical baseline C4 fell below it. The gain also comes at lower cost:
+across the 136 matched attempts, median total tokens fall from 583{,}188 to
+396{,}884, median tool calls from 7 to 3, median database queries from 2 to 1,
+and median latency from 50{,}557\,ms to 32{,}492\,ms.
 
-\begin{placeholder}
-C5 mechanism reading. One paragraph stating whether declared joins moved governed
-queries off the rewrite path, what share of C5 queries the semantic layer
-composed, and whether any residual rewrite is explained by the absence of
-measures in this phase.
-\end{placeholder}
+\paragraph{Mechanism.}
+Declared joins did not move governed queries off the rewrite path. All 134
+parseable captured C5 queries carry \texttt{rewriteSql} with agent-authored SQL,
+and none declares a join through the semantic model, despite a published view
+for every table and a join for every qualifying foreign key. The same analyzer
+applied to six governed arms, three sealed C4 repetitions, the C4 and E02
+development arms, and C5, finds 661 of 661 parseable attempts on the rewrite
+path and zero composed. The residual rewrite is therefore not explained by the
+absence of measures in this phase: no query attempted a compiled path at all,
+so no query was blocked by a missing measure.
 
-\begin{placeholder}
-C5 interpretation. One paragraph relating the outcome to the three statements in
-Section~\ref{sec:results}, and, if the mechanism moved, restating which of them
-the C5 evidence narrows or widens. If the arm fails to deploy or to generate, the
-disposition and its stopping rule go here instead of a result.
-\end{placeholder}
+\paragraph{Interpretation.}
+The C5 evidence narrows the first of the three statements in
+Section~\ref{sec:results} and leaves the other two standing. C4's governed
+result was a property of the sparse compiled model, not of the semantic layer
+as such: rebuilding the same product to its own documented shape doubles
+accuracy on the identical frame. But the gain arrives entirely through the
+model acting as context for hand-authored SQL, because composition never
+occurred, so the study still contains no measurement of governed semantic
+composition at any deployment density. The knowledge-to-semantics compilation
+loss, 193 of 1{,}090 definitions with 46.9\% deferred on unresolved grain,
+remains the binding constraint on the remaining gap to C2.
 
 \subsection{What C5 will not establish}
 Four limits are fixed in advance. C5 is a development-partition condition, and

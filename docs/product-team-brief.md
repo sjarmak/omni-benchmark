@@ -272,7 +272,7 @@ two we had.
   matched governed baseline, and 19 unresolved captures leave the full-frame
   number anywhere between 8.1% and 22.1%.
 
-## What is running now: the C5 arm
+## What C5 found
 
 C5 is a governed condition built the way Omni's documentation prescribes rather
 than the way our conservative compiler produced: a view for every table instead
@@ -283,33 +283,55 @@ measures in this phase, because measures need grain resolution and that is a
 second phase. Same public inputs, same custody rules, same two scorers,
 development partition only.
 
-It runs on a matched frame of 122 questions across 14 databases, built so that
-C1 through C5 can be scored on identical questions. Four deployment passes are
-preserved, the most recent verifying 15 of 16 databases; a fifth is running.
+It ran on a matched frame of 122 questions across 14 databases, built so that C1
+through C5 are scored on identical questions, plus the full 136-attempt frame
+against the frozen C4 baseline. Eight deployment passes are preserved; the last
+verified all 16 databases with exact readback.
 
-### What C5 will tell you, and where it will go
+### Does the governed rung recover the knowledge benefit?
 
-These numbers do not exist yet. One development generation and one scorer run
-produce them, and they land in the blocks below.
+Partly. On the identical 136-attempt frame, C5 scores 18 of 136 (13.2%) against
+C4's 9 of 136 (6.6%). On the 122-question intersection:
 
-> **[Placeholder: does the governed rung recover the knowledge benefit?]**
-> Accuracy for C1 through C5 on the matched 122-question frame under both frozen
-> scorers, and the paired C5 against C2 contrast with its interval. C2 is the
-> direct agent with the same knowledge as searchable prose, and it beat the raw
-> baseline by 12.0 points. This is the value-of-Omni number.
+| Condition | Official | Sensitivity |
+| --- | --- | --- |
+| C1 raw schema | 9 / 122 (7.4%) | 9 / 121 (7.4%) |
+| C2 raw HKB, direct SQL | 29 / 122 (23.8%) | 28 / 121 (23.1%) |
+| C3 exported model, direct SQL | 16 / 122 (13.1%) | 14 / 121 (11.6%) |
+| C4 mechanical governed | 5 / 122 (4.1%) | 6 / 121 (5.0%) |
+| C5 docs-idiomatic governed | 13 / 122 (10.7%) | 12 / 121 (9.9%) |
 
-> **[Placeholder: do declared joins change the query path?]** The share of C5's
-> captured queries carrying `rewriteSql: true`, the share declaring a join path,
-> and the share the semantic layer composed. The frozen baseline is 135 of 135
-> rewritten with 0 declared joins, so any movement here is the mechanism result
-> this study could not produce.
+C5 is the first governed condition to clear the raw-schema floor; C4 sat below
+it. About 45% of the distance from C4 to C2 closes. It is also cheaper: median
+total tokens fall from 583,188 to 396,884, median tool calls from 7 to 3, median
+database queries from 2 to 1, and median latency from 50.6 to 32.5 seconds. A
+governed deployment built to your own documentation is both more accurate and
+less expensive than the sparse one, by a wide margin.
 
-> **[Placeholder: what to build next.]** Which items in the list above the C5
-> evidence promotes or demotes, and whether phase 2 measures are worth the spend.
+### Do declared joins change the query path?
 
-Both directions are informative for the roadmap. If C5 recovers a large share of
-the knowledge benefit, the governed path works and the gap this study found is in
-the import and authoring surface, which is items 1 and 3. If C5 keeps rewriting
-SQL with a full join graph published, relationship coverage is not the binding
-constraint and the aggregation contracts are, which moves phase 2 measures up and
-makes the coverage report more urgent rather than less.
+They did not change it on a single query.
+
+C5 published a view for every table and a join for every qualifying foreign key,
+and 134 of 134 parseable C5 attempts still carried `rewriteSql` with
+agent-authored SQL. Zero declared a join through the semantic model. Across all
+six governed arms we have measured, including three sealed C4 repetitions and
+E02, the count is 661 of 661 on the rewrite path and zero composed. The audit
+artifact is `experiments/analysis/governed-query-path-tally-v1.json`, regenerable
+from `governed_query_path_tally.py`.
+
+That result is the reason PF-016 exists and sits at the top of the ledger. The
+accuracy gain is real and it came from the semantic model serving as better
+context for hand-written SQL, not from composition. A customer in the same
+position sees the same thing we saw: better answers, governed branding, and no
+signal anywhere that the semantic layer was bypassed on every single query.
+
+### What to build next
+
+Relationship coverage is not the binding constraint, which the full join graph
+settles. That moves phase 2 measures up: publish measures, resolve grain, and
+check whether a declared join path ever appears. If the rewrite rate stays at
+100% with measures present, the fallback is unconditional and item 2 (make
+composition observable and enforceable) becomes the highest-value fix in the
+list. If it drops, the 46.9% grain-deferral rate is the constraint and items 1
+and 3 carry the weight.

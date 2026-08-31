@@ -33,14 +33,16 @@ section was replaced rather than left in front of the results, and the
 control-plane machinery was compressed to what a reader needs in order to trust
 the result.
 
-Section 10 is the C5 arm. It carries the condition definition, the prespecified
-comparison table, the preserved deployment history, and three empty result
-destinations: `tab:c5accuracy`, `tab:c5mechanism`, and three `placeholder`
-blocks for findings, mechanism reading, and interpretation. Every unfilled cell
-uses the `\pending` macro defined in `main.tex`, so a later report can find them
-with a single grep. Do not submit with the placeholders removed and no result in
-their place; either the numbers land there or the section stays as a registered
-design.
+Section 10 is the C5 arm, and it now reports a result. The condition definition,
+the prespecified comparison table, and the preserved deployment history are
+followed by `tab:c5accuracy` (five conditions on the matched 122-question frame
+under both frozen scorers) and `tab:c5mechanism` (query-path readout), plus
+findings, mechanism, and interpretation paragraphs. Three cells still carry the
+`\pending` macro: the compiled-dimension, derived-definition, and no-compiled-
+field rows of `tab:c5mechanism`, because the analyzer that produces them
+(`experiments/analysis/c4_mechanism_measurements.py`) is pinned to the frozen C4
+score and recovery roots and has not been generalized to C5. The table caption
+says so. `grep -rn 'pending' sections/` finds them.
 
 ## Paste-ready metadata
 
@@ -113,9 +115,8 @@ design.
 - Confirm every number in the paper matches `RESULTS.md`.
 - Confirm no per-question correctness, question identity, gold SQL, hidden
   annotation, or credential appears in the source archive.
-- Confirm the C5 arm is still described as in progress with no result claimed.
-  If it has generated and been scored, fill Tables 11 and 12 and the three
-  placeholder blocks in Section 10, and update Section 13's "What is running"
-  paragraph to match. `grep -rn 'pending\|placeholder' sections/` finds every
-  destination.
+- Confirm the C5 arm's numbers match `RESULTS.md` and that the three remaining
+  `\pending` cells in `tab:c5mechanism` are still explained by the caption. If
+  the compiled-bundle analyzer has since been generalized to C5, fill them.
+  `grep -rn 'pending\|placeholder' sections/` finds every destination.
 - Report-number, journal-ref, and DOI fields stay empty until a venue exists.

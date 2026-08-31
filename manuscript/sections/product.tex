@@ -70,11 +70,14 @@ relationship authoring comes next, because it is what would give a planner
 something to compile. Retrieval bounds, refusal typing, and deployment
 diagnostics are independent of both and cheaper than either.
 
-The registered C5 condition tests the second of these directly. It publishes the
-joins and the full knowledge context that the mechanical baseline lacked, so its
-query-path readout in Table~\ref{tab:c5mechanism} measures whether relationship
-coverage alone is enough to move a governed agent off the rewrite path, or whether
-the grain and aggregation contracts have to arrive with it. Its deployment
+The registered C5 condition tested the second of these directly. It published the
+joins and the full knowledge context that the mechanical baseline lacked, and the
+query-path readout in Table~\ref{tab:c5mechanism} settles the question:
+relationship coverage alone does not move a governed agent off the rewrite path,
+because not one of the 134 parseable C5 queries left it. Accuracy nevertheless
+doubled, so the full knowledge context is doing real work as context rather than
+as compiled semantics, and the grain and aggregation contracts remain the
+untested half. Its deployment
 history already exercises two of the cheaper items: the readback divergence in
 Section~\ref{sec:c5} is the canonical-export gap, and the branch that had to be
 uploaded twice is the deployment-identity gap.

@@ -28,6 +28,7 @@ not an incident-severity classification.
 
 | Priority | Product surface | Current evidence | Product action | Detailed record |
 | --- | --- | --- | --- | --- |
+| Now | Governed composition is bypassed silently | Every parseable governed attempt in the study answered by rewriting raw SQL rather than composing through the semantic model: 135/135 sealed C4, 135/136 dev-A C4, 131/131 E02, 134/134 C5. `join_via_map` never appears. Widening the semantic model roughly sixfold in C5 did not change the rate. Nothing in the job record or AI Hub says composition was bypassed. | Return a declared composition mode (`composed`, `rewritten`, `mixed`) on every governed job, surface it in the run view, and let an administrator require composed mode and fail with a typed reason instead of silently rewriting. | [PF-016](#pf-016-governed-queries-silently-fall-back-to-raw-sql-with-no-signal-that-composition-was-bypassed) |
 | Now | Rewritten-SQL output contract | 31 of 34 governed baseline non-answers shared an `UNKNOWN` selected-field type. E02 then preserved 14 generated semantic queries that could not be captured because of unsupported result types. Attribution remains unresolved at the interface between the authored model and the planner. | Define a total typed result contract for rewritten SQL, separate selected and dependency fields, and surface unresolved output types during validation. | [PF-006](#pf-006-unformatted-json-results-still-stringify-numeric-measures), [PF-014](#pf-014-query-plan-summaries-conflate-output-and-dependency-field-metadata) |
 | Now | Complete machine-readable results | Truncation and presentation-control records caused all five strict concurrency-canary captures to fail before narrow adapter corrections; incomplete previews must not be accepted as analytical results. | Return complete results or a stable paginated/content-addressed handle, and keep preview metadata outside data rows. | [PF-010](#pf-010-truncated-governed-results-are-observable-but-not-execution-scorable), [PF-013](#pf-013-governed-job-previews-mix-data-rows-with-presentation-control-records) |
 | Next | Grain and relationship authoring | Across all 18 public HKBs, 511 of 1,090 definitions were deferred because they crossed an unresolved grain. E02 added 91 conservative relationships; on its 117 captured answers, official accuracy was 11/117 versus matched C4 at 9/117, but 19 unresolved captures make the experiment INCONCLUSIVE. | Make grain, identity, cardinality, relationship, and aggregation contracts explicit; provide a predeployment coverage report with accepted and deferred reasons. Re-evaluate relationships only after the result contract is reliable. | [PF-004](#pf-004-topic-readback-adds-joins-unless-no-join-intent-is-explicit), [PF-009](#pf-009-missing-grain-contracts-dominate-public-only-hkb-translation) |
@@ -932,6 +933,90 @@ execution mechanics rather than accuracy.
 - **Experiment / commit provenance:** `experiments/analysis/dev_a_telemetry_summary.py`
   and its tests; counts read from the frozen `sealed-final-v6` cohorts and the
   frozen `public-c4-baseline-v8` dev-A run.
+
+## PF-016: Governed queries silently fall back to raw SQL with no signal that composition was bypassed
+
+- **Observed behavior:** Every governed AI job in this evaluation answered by
+  emitting rewritten raw SQL rather than by composing against the deployed
+  semantic model. Across four independent governed runs the rate is total: 135
+  of 135 sealed C4 attempts, 135 of 136 dev-A C4 attempts (the remaining attempt
+  produced no parseable semantic query), 131 of 131 E02 attempts, and 134 of 134
+  C5 attempts carry `rewriteSql: true`. The field `join_via_map` appears zero
+  times in any arm. No attempt in any run declared a join path through the model.
+- **Minimal non-private reproduction:** Deploy any public semantic bundle under
+  `semantic_models/`, ask a governed AI job a question requiring two related
+  tables, and read the returned semantic query. `rewriteSql` is true and
+  `userEditedSQL` carries the full statement; nothing in the job record, the run
+  telemetry, or the AI Hub view states that the semantic layer was not used to
+  compose the answer.
+- **Expected behavior:** A governed query either composes through the semantic
+  model, or reports that it did not. A caller who chose a governed path for
+  governance reasons can tell which happened.
+- **Actual behavior:** The fallback is silent and total. The job succeeds, the
+  result is returned, and the only way to discover that composition was bypassed
+  is to parse the semantic query for `rewriteSql` and notice that
+  `userEditedSQL` holds hand-authored SQL.
+- **Why it matters to customers:** This is the finding in this ledger with the
+  largest gap between what a customer believes they bought and what they get. A
+  team adopts the governed path so that joins, grain, and aggregation are
+  controlled by a reviewed model. If every query silently rewrites to raw SQL,
+  those controls are not applied to a single query, and no surfaced signal says
+  so. Access control still holds; semantic governance does not. The failure is
+  invisible in exactly the situation it was bought to prevent, and it is
+  correctness-relevant rather than cosmetic: an agent writing SQL by hand against
+  a governed connection can join on the wrong key or aggregate at the wrong grain
+  while the customer reads the result as model-governed output.
+- **Systematic evidence / frequency:** 100% of parseable governed attempts across
+  four runs spanning two semantic-model generations, 16 databases, and both a
+  sparse compiled model (C4, 6 to 11 views per database) and a docs-idiomatic one
+  (C5, 47 to 63 views per database with the full FK join graph and the complete
+  HKB ported into `ai_context`). Widening the model did not move the rate.
+- **Benchmark impact:** This invalidates C4's accuracy as a measure of governed
+  composition. C4's held-out 8.6% is a measurement of an agent writing SQL by
+  hand with the semantic model present as context, at governed-path latency and
+  cost; it is not a measurement of the semantic layer composing queries. Every
+  governed number in this study carries the same caveat, C5 included.
+- **Severity:** Highest in this ledger. The other findings are diagnostics,
+  telemetry, and type-contract gaps. This one means a customer can believe they
+  have governance and not have it.
+- **Proposed product change:** Return a declared composition mode on every
+  governed job (`composed`, `rewritten`, or `mixed`) as a first-class field
+  rather than something a caller infers from `rewriteSql`. Surface it in the AI
+  Hub run view. Let an administrator require composed mode for a connection and
+  fail, with a typed reason, rather than silently rewriting.
+- **Audit trail:** The per-arm counts are in
+  [`../experiments/analysis/governed-query-path-tally-v1.json`](../experiments/analysis/governed-query-path-tally-v1.json),
+  regenerable from
+  [`../experiments/analysis/governed_query_path_tally.py`](../experiments/analysis/governed_query_path_tally.py),
+  which classifies every governed attempt by the shape of its emitted semantic
+  query and emits counts only. Over all six governed arms, including the three
+  sealed C4 repetitions, it reports 661 of 661 parseable attempts on the rewrite
+  path and zero composed.
+- **Was the change tested?:** No. C5 tested whether a richer semantic model would
+  change the behavior on its own; it did not.
+- **Measured effect:** C5's docs-idiomatic deployment roughly doubled governed
+  accuracy on matched frames (18/136 versus C4's 9/136 official; 13/122 versus
+  5/122 on the five-condition intersection) while the rewrite rate stayed at
+  100%. Median tokens fell from 583,188 to 396,884 and median tool calls from 7
+  to 3. The accuracy gain therefore came from the model acting as better context
+  for hand-authored SQL, not from composition. That separation is only visible
+  because the rewrite path was measured; without it the same numbers would read
+  as evidence that governed composition improved.
+- **Experiment / commit provenance:** D-192 and
+  [`docs/c4-query-path-disclosure.md`](c4-query-path-disclosure.md) for the
+  sealed 135/135; [`docs/e02-join-path-assessment.md`](e02-join-path-assessment.md)
+  for E02; run `c5-dev-a-v4` (system commit `487c4dc4`, selection
+  `b2d96e0d5b1892905615f5c91009dd72b67dfe883dad5f73b1a22d6ed389c8ef`) for C5.
+- **Visible in AI Hub?:** The job completes normally. No AI Hub surface
+  distinguishes a composed answer from a rewritten one.
+- **AI Hub exposes relevant context/behavior?:** Only indirectly, through the
+  `rewriteSql` flag and `userEditedSQL` body on the returned semantic query.
+- **Fixable through current AI Hub/modeling workflow?:** No. Neither model
+  authoring nor prompt changes suppressed the fallback; C5 widened the model by
+  roughly six times and the rate did not move.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** All governed conditions in this study.
+- **Evaluator agreement/disagreement:** Not applicable.
 
 ## Entry template
 
