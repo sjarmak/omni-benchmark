@@ -16,12 +16,7 @@ concurrency:
 jobs:
   quality:
     runs-on: ubuntu-24.04
-    # Setup is 7 seconds; the test step is the whole budget. Run 33420484237
-    # was killed at the previous 30-minute cap having reached 76% of the suite,
-    # which puts the full step near 40 minutes on a 4-vCPU runner. 60 leaves
-    # real headroom and still kills a hang. See omni-benchmark-cd2 for making
-    # the suite faster rather than raising this again.
-    timeout-minutes: 60
+    timeout-minutes: 30
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -44,8 +39,14 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked --dev
 
+      # Setup is 7 seconds, so the test step is the whole budget. Seven synthetic
+      # custody tests (1068- and 1212-attempt frames) are 72% of the suite's
+      # runtime under coverage, and serially they put this step near 40 minutes
+      # on a runner. -n 4 matches the 4 vCPUs GitHub gives a public repository,
+      # so the workers fill the cores without oversubscribing them; measured
+      # locally at 2.4x (1900s -> 778s with coverage on).
       - name: Run tests with branch coverage
-        run: uv run --frozen pytest --cov=omni_benchmark --cov-branch
+        run: uv run --frozen pytest -n 4 --cov=omni_benchmark --cov-branch
 
       - name: Run Ruff
         run: uv run --frozen ruff check .

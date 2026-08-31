@@ -28,7 +28,7 @@ def test_quality_workflow_enforces_the_local_contract_without_live_access() -> N
     assert commands == [
         "uv python install 3.11",
         "uv sync --locked --dev",
-        "uv run --frozen pytest --cov=omni_benchmark --cov-branch",
+        "uv run --frozen pytest -n 4 --cov=omni_benchmark --cov-branch",
         "uv run --frozen ruff check .",
         "uv run --frozen ruff format --check .",
     ]
