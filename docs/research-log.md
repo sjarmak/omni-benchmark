@@ -12153,3 +12153,41 @@ evidence of what the stopped run had verified.
 
 Operational note for the rest of this arm: long live jobs now run detached
 (`setsid nohup`) so a session-process exit cannot kill them again.
+
+## 2026-08-31 — D-201: Omni regenerated one database's views after we wrote them
+
+### What happened
+
+The full sixteen-database C5 deployment (`c5-dev-a-deployment-v3`) verified
+fifteen databases with zero validation issues and exact readback. It failed on
+`planets_data_large` at the readback stage: "readback did not converge after 7
+observations". Validation had returned zero issues and all 118 documents had
+uploaded.
+
+### Diagnosis
+
+A read-only readback of that branch, compared against the committed bundle,
+showed 58 of 118 documents differing: every view, and no topic. The remote
+views carried no `table_name`, `schema`, or `catalog`, and their dimensions
+were keyed by raw physical column names rather than the compiled dimension
+names with `sql` bindings. That is Omni's own schema-generated view content,
+not ours. The product regenerated the view layer from the physical schema after
+our upload landed, and this database has the largest view surface in the set,
+which is consistent with a slower schema pass overtaking the write.
+
+### Fix
+
+The observation loop only ever waited: once the product had replaced our
+documents, no later observation could converge, so the retry budget was spent
+re-reading a branch that would never change. Deployment now runs a second
+upload pass when the branch does not converge, and fails only if the reuploaded
+branch still differs. Test:
+`test_unconverged_branch_is_uploaded_again_before_it_fails`. The v3 records stay
+committed as evidence; the arm redeploys under a new run ID.
+
+### Generality
+
+The change is a property of writing to this product, applied to every database:
+no database name, question, or label appears in it. It cannot mask a real
+mismatch, because a branch that still differs after the second pass fails
+exactly as before.
