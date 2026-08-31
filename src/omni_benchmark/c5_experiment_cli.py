@@ -35,6 +35,7 @@ from .omni_semantic_deploy_cli import (
 from .omni_semantic_deployment import semantic_deployment_sha256
 
 _IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}")
+_RUN_REVISION = re.compile(r"-(v[0-9]+)\Z")
 _DEPLOYMENT_ROOT = Path("experiments/deployments")
 
 
@@ -163,6 +164,7 @@ def c5_experiment_main(
         output_root=arguments.output_root,
     )
     destination = workspace / plan.output_root
+    revision = _deployment_revision(plan.run_id)
     if destination.exists() or destination.is_symlink():
         raise C5ExperimentError("C5 deployment output root must be absent")
     if not arguments.execute_live_deployment:
@@ -196,7 +198,9 @@ def c5_experiment_main(
                 },
                 {},
             ),
-            identity_factory=_c5_deployment_identity,
+            identity_factory=lambda database: _c5_deployment_identity(
+                database, revision
+            ),
         )
     except OmniDeploymentCliError as error:
         raise C5ExperimentError(str(error)) from error
@@ -226,9 +230,17 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _c5_deployment_identity(database: str) -> tuple[str, str]:
+def _deployment_revision(run_id: str) -> str:
+    """A retry deploys under a new run ID, so the remote identity moves with it."""
+    match = _RUN_REVISION.search(_identifier(run_id, "run ID"))
+    if match is None:
+        raise C5ExperimentError("C5 run ID must end in a -v<number> revision")
+    return match.group(1)
+
+
+def _c5_deployment_identity(database: str, revision: str) -> tuple[str, str]:
     selected = _identifier(database, "database")
-    identity = f"livesqlbench-{selected}-c5-tuned-v2"
+    identity = f"livesqlbench-{selected}-c5-tuned-{revision}"
     return identity, identity
 
 

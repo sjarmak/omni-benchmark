@@ -15,6 +15,7 @@ from omni_benchmark.baseline_batch import (
 from omni_benchmark.c5_experiment_cli import (
     C5ExperimentError,
     _c5_deployment_identity,
+    _deployment_revision,
     c5_experiment_main,
 )
 
@@ -39,7 +40,7 @@ def _arguments() -> list[str]:
         "--system-commit",
         _head(),
         "--run-id",
-        "c5-dev-a-deployment-fixture",
+        "c5-dev-a-deployment-fixture-v0",
         "--output-root",
         "experiments/deployments/c5-dev-a-fixture",
     ]
@@ -64,11 +65,23 @@ def test_dry_c5_plan_is_exact_public_and_provider_inert(
 
 
 def test_c5_uses_condition_specific_remote_identity() -> None:
-    model, branch = _c5_deployment_identity("sample_large")
+    model, branch = _c5_deployment_identity("sample_large", "v2")
 
     assert model == "livesqlbench-sample_large-c5-tuned-v2"
     assert branch == model
     assert "public-baseline" not in model
+
+
+def test_c5_remote_identity_moves_with_the_deployment_run_revision() -> None:
+    """A retry runs under a new run ID, so it must never reuse a live branch."""
+    assert _deployment_revision("c5-dev-a-deployment-v2") == "v2"
+    assert _deployment_revision("c5-dev-a-deployment-v13") == "v13"
+    assert _c5_deployment_identity("sample_large", "v3") != _c5_deployment_identity(
+        "sample_large", "v2"
+    )
+
+    with pytest.raises(C5ExperimentError, match="revision"):
+        _deployment_revision("c5-dev-a-deployment")
 
 
 def test_live_c5_deployment_carries_only_the_scheduled_committed_plans() -> None:
@@ -77,7 +90,7 @@ def test_live_c5_deployment_carries_only_the_scheduled_committed_plans() -> None
     def deploy(argv: list[str], **kwargs: object) -> int:
         plans, diagnostics = kwargs["bundle_loader"](ROOT, _head())
         full = load_committed_baseline_schedule(
-            ROOT, _head(), run_id="c5-dev-a-deployment-fixture"
+            ROOT, _head(), run_id="c5-dev-a-deployment-fixture-v0"
         )
         schedule = c4_dev_a_experiment_schedule(ROOT, _head(), full)
         assert set(plans) == {attempt.database for attempt in schedule.attempts}
@@ -94,8 +107,8 @@ def test_live_c5_deployment_carries_only_the_scheduled_committed_plans() -> None
     assert result == 0
     assert "--execute-live-deployment" in observed["argv"]
     assert observed["identity"] == (
-        "livesqlbench-sample_large-c5-tuned-v2",
-        "livesqlbench-sample_large-c5-tuned-v2",
+        "livesqlbench-sample_large-c5-tuned-v0",
+        "livesqlbench-sample_large-c5-tuned-v0",
     )
 
 
