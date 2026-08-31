@@ -16,7 +16,12 @@ concurrency:
 jobs:
   quality:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    # Setup is 7 seconds; the test step is the whole budget. Run 33420484237
+    # was killed at the previous 30-minute cap having reached 76% of the suite,
+    # which puts the full step near 40 minutes on a 4-vCPU runner. 60 leaves
+    # real headroom and still kills a hang. See omni-benchmark-cd2 for making
+    # the suite faster rather than raising this again.
+    timeout-minutes: 60
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
