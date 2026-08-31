@@ -12118,3 +12118,38 @@ database name, question, or label anywhere in the change. It makes the
 compiler's collision check stricter, not weaker: two tables that differ only in
 case now collide and are skipped as `output_name_collision` rather than
 producing one view Omni cannot resolve.
+
+## 2026-08-31 — D-200: A killed process left a half-deployed C5 arm; the retry moved the branch name
+
+### What happened
+
+The C5 v2 deployment reached eight of sixteen databases, all `verified` with
+zero validation issues and `readback_verified: true`, and then stopped: the
+Claude Code process that owned it exited and took the background job with it.
+No record is wrong; the set is simply incomplete, and
+`verify_deployment_gate` needs a verified record for every scheduled database
+under one deployment root and run ID before generation may start.
+
+### Why it could not be resumed in place
+
+Two constraints meet here. `c5_experiment_main` refuses to run when its output
+root already exists, so the same root cannot be extended, and Tier 1 permits a
+retry only under a new run ID. But the remote identity was the constant
+`livesqlbench-<database>-c5-tuned-v2`, so a retry would have uploaded a second
+copy of every document onto the eight branches the stopped run had already
+populated. Exact readback compares the deployed document set against the
+committed bundle; duplicated documents would fail it.
+
+### Fix
+
+The identity now carries the run ID's trailing `-v<number>` revision
+(`_deployment_revision`), so a new run ID is a new model and branch by
+construction and a retry can never land on a populated branch. A run ID without
+a revision is refused rather than silently sharing an identity. Test:
+`test_c5_remote_identity_moves_with_the_deployment_run_revision`. The full
+sixteen-database set redeploys as `c5-dev-a-deployment-v3` onto
+`livesqlbench-<database>-c5-tuned-v3`; the eight v2 records stay committed as
+evidence of what the stopped run had verified.
+
+Operational note for the rest of this arm: long live jobs now run detached
+(`setsid nohup`) so a session-process exit cannot kill them again.
