@@ -43,6 +43,7 @@ MODEL_FILE_NAME = "model"
 _IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 _CAMEL_BOUNDARY = re.compile(r"(?<=[a-z0-9])(?=[A-Z])")
 _NON_IDENTIFIER_RUN = re.compile(r"[^a-z0-9]+")
+_QUOTED_COLUMN = re.compile(r'"[^"]+"')
 _PORTED_DISPOSITIONS = frozenset({"defer_cross_grain", "unsupported"})
 _MODEL_GUIDANCE = (
     "Prefer the declared semantic model when answering questions: pick the "
@@ -75,7 +76,9 @@ def compile_c5_tuned_bundle(
     views = _validated_views(widened_spec)
     schema_index = _index(schema_records, "stable_id", "schema record")
     hkb_index = _index(hkb_records, "stable_id", "HKB record")
-    _inject_unrepresentable_fields(files, views, schema_index, injections)
+    injected_bindings = _inject_unrepresentable_fields(
+        files, views, schema_index, injections
+    )
     emitted, contracts, skipped_joins, adjacency = _c5_relationships(
         schema_records, views, schema_index, base.manifest
     )
@@ -95,6 +98,11 @@ def compile_c5_tuned_bundle(
             f"{HARD_AI_CONTEXT_CHARS} hard budget"
         )
     manifest = dict(base.manifest)
+    manifest["direct_physical_bindings"] = sorted(
+        [*base.manifest["direct_physical_bindings"], *injected_bindings],
+        key=lambda item: (item["file"], item["field_name"]),
+    )
+    _require_attested_physical_dimensions(files, manifest["direct_physical_bindings"])
     manifest["files"] = _file_manifest(files)
     manifest["relationship_contracts"] = contracts
     manifest["c5"] = {
@@ -375,6 +383,27 @@ def _widened_c5_spec(
     return widened, report, injections
 
 
+def _require_attested_physical_dimensions(
+    files: Mapping[str, str], bindings: Sequence[Mapping[str, str]]
+) -> None:
+    """Fail before upload on a bare column reference Omni would strip unrestored."""
+    attested = {(item["file"], item["field_name"]) for item in bindings}
+    for view_file, content in sorted(files.items()):
+        if not view_file.endswith(".view"):
+            continue
+        document = yaml.safe_load(content)
+        dimensions = _mapping(document, "compiled view").get("dimensions")
+        for field_name, field in _mapping(dimensions, "view dimensions").items():
+            sql = _mapping(field, "view dimension").get("sql")
+            if not isinstance(sql, str) or not _QUOTED_COLUMN.fullmatch(sql):
+                continue
+            if (view_file, field_name) not in attested:
+                raise SemanticBundleError(
+                    f"dimension {field_name} in {view_file} binds a physical "
+                    "column without an attested direct binding"
+                )
+
+
 def _quoted_identifier(column: Mapping[str, Any]) -> str:
     name = _text(
         _mapping(column.get("identifier"), "column identifier").get("name"),
@@ -400,7 +429,9 @@ def _inject_unrepresentable_fields(
     views: Mapping[str, Mapping[str, Any]],
     schema_index: Mapping[str, Mapping[str, Any]],
     injections: Sequence[Mapping[str, str]],
-) -> None:
+) -> list[dict[str, str]]:
+    """Add the dimensions the spec cannot name, and attest their column identity."""
+    bindings: list[dict[str, str]] = []
     for entry in injections:
         view = views[entry["table_stable_id"]]
         view_file = _text(view.get("file_name"), "view file_name")
@@ -417,6 +448,17 @@ def _inject_unrepresentable_fields(
         record = schema_index[entry["stable_id"]]
         if entry["kind"] == "column":
             sql = _quoted_identifier(record)
+            # Omni strips the SQL of a dimension that is a bare column reference
+            # and resolves it through its own generated binding, so an injected
+            # column has to be attested or its document can never read back.
+            bindings.append(
+                {
+                    "field_name": entry["field_name"],
+                    "file": view_file,
+                    "source_stable_id": entry["stable_id"],
+                    "sql": sql,
+                }
+            )
         else:
             sql = _quoted_leaf_sql(record, schema_index)
         dimensions[entry["field_name"]] = {
@@ -426,6 +468,7 @@ def _inject_unrepresentable_fields(
             "sql": sql,
         }
         files[view_file] = _yaml(document)
+    return sorted(bindings, key=lambda item: (item["file"], item["field_name"]))
 
 
 def _c5_relationships(

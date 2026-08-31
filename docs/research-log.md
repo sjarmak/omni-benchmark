@@ -12191,3 +12191,54 @@ The change is a property of writing to this product, applied to every database:
 no database name, question, or label appears in it. It cannot mask a real
 mismatch, because a branch that still differs after the second pass fails
 exactly as before.
+
+## D-202: the planets deployment failure was an unattested column binding
+
+Date: 2026-08-31. Supersedes the diagnosis in D-201.
+
+### Correction
+
+D-201 concluded that Omni had regenerated `planets_data_large`'s view layer
+after our upload. That was wrong, and the tool that produced it was wrong: the
+comparison read raw remote YAML, while the deployment verifier compares only
+after `_project_attested_view_identity` and `_restore_stripped_direct_physical_sql`.
+Running the same naive comparison against a database that had verified cleanly
+reported 51 of 51 documents "differing", which falsified the tool rather than
+the product. Comparing through the verifier's own projection instead showed 12
+differing views in one database, all inside `dimensions`, three fields each.
+
+### Diagnosis
+
+Omni strips the `sql` of a dimension that is a bare column reference and
+resolves the field through its own generated binding. The deployment already
+knows this: the compiler attests each such field in
+`manifest.direct_physical_bindings`, and the verifier restores the stripped
+value before comparing. C5 widening injects dimensions for columns the spec
+cannot name, including columns whose names hold characters no identifier may
+carry (`ESCAPE_VELOCITY_km/s`, `total_escape_rate_kg/s`,
+`PROPER_MOTION_DEC_mas/year`). Those injected dimensions carried a quoted
+identity binding but were never attested, so there was nothing to restore from
+and the readback could never converge. Sixteen databases, one affected: the
+only one holding slash-bearing column names.
+
+### Fix
+
+`_inject_unrepresentable_fields` now returns the direct physical bindings it
+creates, and `compile_c5_tuned_bundle` merges them into the manifest. The
+deployment's identity pattern accepts a quoted name that is not a plain
+identifier, since quoted it is still a bare column reference. A compile-time
+lint, `_require_attested_physical_dimensions`, fails the bundle if any view
+dimension binds a quoted physical column without an attested binding, so the
+next unrepresentable-name class is caught before an upload rather than after
+one. Tests: `test_c5_injected_column_reads_back_when_omni_strips_its_sql`,
+`test_c5_refuses_an_unattested_physical_column_binding`.
+
+### Process
+
+The v3, v4, and v5 passes each redeployed 16 databases to learn about one, and
+v4 was a blind retry on unchanged code. The offline check that replaces them
+compiles all 16 bundles, strips every bare-column binding the way the product
+does, and verifies the readback: it runs in seconds with no network and covers
+every database. Diagnosis now reads a branch before redeploying it, probes a
+single database under a throwaway revision at or above `v900`, and keeps the
+evidence sequence for complete passes only.

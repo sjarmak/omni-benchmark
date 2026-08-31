@@ -31,7 +31,10 @@ _TOPIC_NAME = re.compile(rf"{_IDENTIFIER}\.topic")
 _VIEW_IDENTITY_KEYS = frozenset({"catalog", "schema", "table_name"})
 _FILE_FIELDS = frozenset({"file", "sha256", "size_bytes"})
 _DIRECT_BINDING_FIELDS = frozenset({"field_name", "file", "source_stable_id", "sql"})
-_DIRECT_IDENTIFIER_SQL = re.compile(rf'(?:{_IDENTIFIER}|"{_IDENTIFIER}")')
+# A physical column name can hold characters no bare identifier may carry, such
+# as the slash in "total_escape_rate_kg/s"; quoted, it is still a bare reference.
+_QUOTED_COLUMN_SQL = r'"[^"\x00-\x1f]+"'
+_DIRECT_IDENTIFIER_SQL = re.compile(rf"(?:{_IDENTIFIER}|{_QUOTED_COLUMN_SQL})")
 _RELATIONSHIP_FIELDS = frozenset(
     {
         "join_from_view",

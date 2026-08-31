@@ -632,6 +632,55 @@ def test_c5_injects_unrepresentable_quoted_column() -> None:
         "sql": '"flux_w/m²"',
     }
     assert bundle.manifest["c5"]["widening"]["unrepresentable_fields_injected"] == 1
+    assert {
+        "field_name": "flux_w_m",
+        "file": "db.public__measurements.view",
+        "source_stable_id": "db:column:measurements:flux",
+        "sql": '"flux_w/m\u00b2"',
+    } in bundle.manifest["direct_physical_bindings"]
+
+
+def test_c5_refuses_an_unattested_physical_column_binding(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The lint runs at compile time so no unrestorable document is ever uploaded."""
+    from omni_benchmark import semantic_c5
+
+    original = semantic_c5._inject_unrepresentable_fields
+
+    def unattested(
+        files: dict[str, str], views: object, schema_index: object, injections: object
+    ) -> list[dict[str, str]]:
+        original(files, views, schema_index, injections)
+        return []
+
+    monkeypatch.setattr(semantic_c5, "_inject_unrepresentable_fields", unattested)
+
+    with pytest.raises(SemanticBundleError, match="attested direct binding"):
+        _compile()
+
+
+def test_c5_injected_column_reads_back_when_omni_strips_its_sql(
+    tmp_path: Path,
+) -> None:
+    """Omni resolves a bare column reference itself and drops the binding."""
+    bundle = _compile()
+    root = tmp_path / "bundle"
+    root.mkdir()
+    for name, content in bundle.files.items():
+        (root / name).write_text(content)
+    (root / "manifest.json").write_text(json.dumps(bundle.manifest))
+    plan = build_semantic_deployment_plan(root)
+    view = next(
+        item for item in plan.files if item.local_name == "db.public__measurements.view"
+    )
+
+    stripped = yaml.safe_load(view.content)
+    del stripped["dimensions"]["flux_w_m"]["sql"]
+    readback = {item.remote_path: item.content for item in plan.files}
+    readback[view.remote_path] = yaml.safe_dump(stripped, allow_unicode=True)
+
+    verify_semantic_deployment_readback(plan, readback)
 
 
 def test_c5_keeps_baseline_topic_guidance_for_modeled_fields() -> None:

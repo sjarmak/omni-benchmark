@@ -88,6 +88,7 @@ and `e02`, so every existing custody rule applies unchanged.
 | Exact-Git candidate | `load_committed_c5_candidate` / `load_committed_c5_plan` in `e02_candidate.py` |
 | Deployment | `scripts/prepare_c5_experiment.py` (dry by default), remote identity `livesqlbench-<database>-c5-tuned-<run revision>`, taken from the deployment run ID so a retry never lands on a populated branch |
 | Generation | `--dry-run-c5-dev-a-experiment` / `--execute-live-c5-dev-a-experiment` in `baseline_batch_cli.py` |
+| Unrepresentable columns | Widening injects a dimension for a column no identifier can name (`ESCAPE_VELOCITY_km/s`) and attests its direct physical binding, since Omni strips a bare column reference and resolves it itself; `_require_attested_physical_dimensions` fails such a bundle at compile time rather than at upload |
 | Per-attempt readback | `_committed_semantic_plan(..., "c5")`, which verifies every deployed document including the model-level `ai_context` |
 
 Two deliberate differences from the E02 arm. Readback for C5 excludes nothing:
