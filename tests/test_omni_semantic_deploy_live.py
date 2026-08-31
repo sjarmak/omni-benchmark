@@ -241,6 +241,33 @@ def test_persistent_readback_mismatch_fails_after_bounded_observation(
         "readback did not converge after 7 observations: "
         f"readback semantic content differs for {VIEW_PATH}"
     )
+    assert delays == [1.0, 2.0, 4.0, 8.0, 15.0, 30.0] * 2
+    assert len(client.uploads) == 4
+
+
+def test_unconverged_branch_is_uploaded_again_before_it_fails(tmp_path: Path) -> None:
+    """The product can regenerate a document from the schema after our write."""
+    regenerated = _readback()
+    regenerated[VIEW_PATH] = "label: Events\ndimensions: {}\n"
+    client = FakeDeploymentClient(
+        existing=False, readbacks=[*([regenerated] * 7), _readback()]
+    )
+    delays: list[float] = []
+
+    record = deploy_public_bundle(
+        bundle_root=_bundle(tmp_path),
+        connection_id="connection-id",
+        client=client,
+        run_id="deployment-1",
+        source_commit="b" * 40,
+        observed_at="2026-08-28T12:00:00-04:00",
+        readback_sleep=delays.append,
+    )
+
+    assert record.status == "verified"
+    assert record.readback_verified is True
+    assert record.uploaded_file_count == 4
+    assert len(client.uploads) == 4
     assert delays == [1.0, 2.0, 4.0, 8.0, 15.0, 30.0]
 
 

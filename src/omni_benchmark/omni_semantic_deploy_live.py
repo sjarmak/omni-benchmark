@@ -23,6 +23,7 @@ _SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,119}")
 _AUTO_EXTENSION_FILES = frozenset({"model", "relationships"})
 _ARCHAEOLOGY_DATABASE = "archeology_scan_large"
 _READBACK_RETRY_DELAYS_SECONDS = (1.0, 2.0, 4.0, 8.0, 15.0, 30.0)
+_UPLOAD_PASSES = 2
 
 
 class SemanticDeploymentClient(Protocol):
@@ -190,25 +191,29 @@ def deploy_public_plan(
                     )
                 except (OmniSemanticDeploymentError, _StageFailure):
                     pass
-        for item in plan.files:
-            try:
-                content = item.content.decode("utf-8")
-            except UnicodeError as error:
-                raise _StageFailure("upload", "bundle file is not UTF-8") from error
-            client.upload_yaml(model_id, branch_id, item.remote_path, content)
-            uploaded += 1
-        validation_count = _validation_issue_count(client.validate(model_id, branch_id))
-        if validation_count:
-            raise _StageFailure(
-                "validation", f"validator returned {validation_count} issue(s)"
+        for remaining_passes in range(_UPLOAD_PASSES, 0, -1):
+            uploaded += _upload_plan_files(client, model_id, branch_id, plan)
+            validation_count = _validation_issue_count(
+                client.validate(model_id, branch_id)
             )
-        readback_count, semantic_model_sha256 = _observe_exact_readback(
-            plan=plan,
-            client=client,
-            model_id=model_id,
-            branch_id=branch_id,
-            sleep=readback_sleep,
-        )
+            if validation_count:
+                raise _StageFailure(
+                    "validation", f"validator returned {validation_count} issue(s)"
+                )
+            try:
+                readback_count, semantic_model_sha256 = _observe_exact_readback(
+                    plan=plan,
+                    client=client,
+                    model_id=model_id,
+                    branch_id=branch_id,
+                    sleep=readback_sleep,
+                )
+                break
+            except OmniSemanticDeploymentError:
+                # The product can regenerate a document from the physical schema
+                # after our write, so an unconverged branch gets one more upload.
+                if remaining_passes == 1:
+                    raise
         return _record(
             plan=plan,
             connection_id=connection_id,
@@ -302,6 +307,24 @@ def deployment_record_path(root: Path, run_id: str, database: str) -> Path:
     _require_safe_id(run_id, "run_id")
     _require_safe_id(database, "database")
     return root / f"{run_id}.{database}.json"
+
+
+def _upload_plan_files(
+    client: SemanticDeploymentClient,
+    model_id: str,
+    branch_id: str,
+    plan: OmniSemanticDeploymentPlan,
+) -> int:
+    """Write every planned document and count what this pass uploaded."""
+    uploaded = 0
+    for item in plan.files:
+        try:
+            content = item.content.decode("utf-8")
+        except UnicodeError as error:
+            raise _StageFailure("upload", "bundle file is not UTF-8") from error
+        client.upload_yaml(model_id, branch_id, item.remote_path, content)
+        uploaded += 1
+    return uploaded
 
 
 def _verify_readback(
