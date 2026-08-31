@@ -143,7 +143,7 @@ def _validate_trace_event(
         set(event) != TRACE_EVENT_FIELDS
         or event["schema_version"] != TRACE_SCHEMA_VERSION
     ):
-        raise ValueError("trace event does not use trace-event-v2")
+        raise ValueError(f"trace event does not use {TRACE_SCHEMA_VERSION}")
     if event["seq"] != seq or type(event["seq"]) is not int:
         raise ValueError("trace event sequence is invalid")
     if (event["provider"], event["model"]) != (probe.provider, probe.model):

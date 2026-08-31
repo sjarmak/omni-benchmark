@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import math
+import os
 import re
 import subprocess
 from collections.abc import Mapping, Sequence
@@ -54,6 +55,7 @@ from .claude_process_runtime import (
 from .direct_runtime_binding import DirectBudgetIdentity, DirectModelIdentity
 from .omni_result_adapter import reject_forbidden_keys
 
+CLAUDE_BINARY_PATH_ENV = "OMNI_BENCHMARK_CLAUDE_BINARY"
 PINNED_CLAUDE_BINARY = Path("/home/ds/.local/share/claude/versions/2.1.250")
 PINNED_CLAUDE_BINARY_SHA256 = (
     "2be252a00ac56e704d7fbf7e5e9ef1243584093334a861945238a0c27e84bdac"
@@ -408,10 +410,29 @@ def _positive_finite(value: Any, label: str) -> None:
         )
 
 
+def claude_binary_path() -> Path:
+    """Resolve where the pinned Claude CLI lives on this host.
+
+    The digest, not the path, is the identity control: whatever path is used has
+    to hash to PINNED_CLAUDE_BINARY_SHA256 or pin_claude_resources refuses to
+    run. Keeping the location itself hardcoded only made the direct arms
+    unrunnable anywhere but the machine the constant was written on.
+    """
+    override = os.environ.get(CLAUDE_BINARY_PATH_ENV)
+    if override is None:
+        return PINNED_CLAUDE_BINARY
+    candidate = Path(override)
+    if not override or not candidate.is_absolute():
+        raise ClaudeDirectTransportError(
+            "setup", f"{CLAUDE_BINARY_PATH_ENV} must be an absolute path"
+        )
+    return candidate
+
+
 def _pin_resources(config: ClaudeDirectConfig) -> PinnedClaudeResources:
     try:
         return pin_claude_resources(
-            binary_path=PINNED_CLAUDE_BINARY,
+            binary_path=claude_binary_path(),
             expected_binary_sha256=PINNED_CLAUDE_BINARY_SHA256,
             config_directory=config.claude_config_dir,
             runtime_home=config.runtime_home,
@@ -672,7 +693,7 @@ def _model_turn(
         raise ClaudeDirectTransportError("protocol", "terminal telemetry is missing")
     stream_sha256 = hashlib.sha256(process.stdout.encode()).hexdigest()
     provenance = ClaudeTurnProvenance(
-        binary_path=str(PINNED_CLAUDE_BINARY),
+        binary_path=str(claude_binary_path()),
         binary_sha256=binary_sha256,
         cli_version=PINNED_CLAUDE_VERSION,
         cost_source="claude_result_total_cost_usd",

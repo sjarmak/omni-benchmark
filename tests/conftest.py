@@ -18,6 +18,8 @@ def _use_synthetic_claude_binary_for_mocked_transports(
     binary.chmod(0o700)
 
     patch = pytest.MonkeyPatch()
+    # An operator who set the override in their shell must not steer the suite.
+    patch.delenv(claude_transport.CLAUDE_BINARY_PATH_ENV, raising=False)
     patch.setattr(claude_transport, "PINNED_CLAUDE_BINARY", binary)
     patch.setattr(
         claude_transport,

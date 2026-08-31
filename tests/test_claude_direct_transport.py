@@ -8,6 +8,7 @@ from typing import Any
 
 import pytest
 
+import omni_benchmark.claude_direct_transport as claude_transport
 from omni_benchmark.claude_direct_transport import (
     PINNED_CLAUDE_BINARY,
     PINNED_CLAUDE_BINARY_SHA256,
@@ -274,6 +275,38 @@ def test_pinned_binary_matches_reviewed_claude_code_release() -> None:
         PINNED_CLAUDE_BINARY_SHA256
         == "2be252a00ac56e704d7fbf7e5e9ef1243584093334a861945238a0c27e84bdac"
     )
+
+
+def test_binary_path_falls_back_to_the_reviewed_location(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv(claude_transport.CLAUDE_BINARY_PATH_ENV, raising=False)
+    monkeypatch.setattr(
+        claude_transport, "PINNED_CLAUDE_BINARY", Path("/opt/reviewed/claude")
+    )
+    assert claude_transport.claude_binary_path() == Path("/opt/reviewed/claude")
+
+
+def test_binary_path_override_relocates_the_cli_without_relaxing_the_digest(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A fresh host puts the CLI elsewhere; the SHA-256 pin still decides."""
+
+    expected_digest = claude_transport.PINNED_CLAUDE_BINARY_SHA256
+    monkeypatch.setenv(
+        claude_transport.CLAUDE_BINARY_PATH_ENV, "/opt/claude/versions/2.1.250"
+    )
+    assert claude_transport.claude_binary_path() == Path("/opt/claude/versions/2.1.250")
+    assert claude_transport.PINNED_CLAUDE_BINARY_SHA256 == expected_digest
+
+
+@pytest.mark.parametrize("override", ["", "relative/claude", "~/claude", "."])
+def test_binary_path_override_must_be_absolute(
+    monkeypatch: pytest.MonkeyPatch, override: str
+) -> None:
+    monkeypatch.setenv(claude_transport.CLAUDE_BINARY_PATH_ENV, override)
+    with pytest.raises(ClaudeDirectTransportError, match="absolute path"):
+        claude_transport.claude_binary_path()
 
 
 def test_execution_authority_changes_with_config_or_runner_state(

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .artifact_store import ArtifactStore, StoredArtifact
+from .autoresearch_artifacts import TRACE_SCHEMA_VERSION
 from .omni_capture import OmniProbeResult
 from .omni_result_adapter import reject_forbidden_keys
 from .run_manifest import RunManifest
@@ -157,7 +158,7 @@ def _trace_fields(workspace: Path, probe: OmniProbeResult) -> dict[str, object]:
         "trace_captured": True,
         "trace_degraded_reason": None,
         "trace_path": probe.trace.path.relative_to(workspace).as_posix(),
-        "trace_schema_version": "trace-event-v2",
+        "trace_schema_version": TRACE_SCHEMA_VERSION,
         "trace_sha256": probe.trace.sha256,
         "trace_truncated": False,
     }
