@@ -11958,3 +11958,108 @@ transitions do not establish a reliable mechanism improvement. It does show
 that the relationship intervention merits future study and that result-type
 capture plus transport reliability are product/evaluation bottlenecks. Do not
 rerun E02 or start another intervention for this MVP.
+
+## 2026-08-30 — D-197: Operator pivot to a docs-idiomatic tuned governed condition (C5)
+
+### Observation
+
+Two measurements closed the MVP's mechanism story. First, an offline tally of
+the frozen E02 generation answered the preregistered path question: all 131
+captured E02 semantic queries carry `rewriteSql: true` and zero declare a
+`join_via_map`, with declared joins live on 61 of 114 deployed topics. Omni's
+agent rewrites regardless of declared joins, so the compiled-path hypothesis is
+dead for this deployment shape. Second, a review of Omni's product
+documentation established that the evaluated C4 deployment inverted the
+documented operating model: the docs prescribe topics rich in joins and
+measures, the full knowledge corpus attached as never-pruned `ai_context`,
+`sample_queries` as few-shot structure, and iterative eval-gated tuning. The
+mechanical baseline deployed join-free, measure-free topics with boilerplate
+`ai_context` and no tuning loop, and the C3−C2 contrast (−13.5 points) shows
+the translation itself destroyed the knowledge value that C2 proved is worth
++12 points.
+
+### Operator decision
+
+Stephanie, 2026-08-30: the frozen C4 measured a deployment shape the product
+documentation never recommends; the highest priority is now a successor
+governed condition built the way Omni is intended to be used, and the
+comparison data for it. Ceremonial process that does not defend the number is
+to be dropped; the purpose is to measure the value Omni can deliver when
+deployed as documented. This supersedes the D-191/D-196 stop rule as an
+explicit operator instruction. The frozen C1−C4 and E02 artifacts remain
+immutable published evidence and are not rescored or reinterpreted.
+
+### Hypothesis
+
+A governed condition carrying the same public knowledge C2 had, inside the
+semantic model as `ai_context`, with full FK-backed join declarations and a
+widened view surface, recovers most of the C2−C4 gap on the matched dev-A
+frame. The mechanism readout is the rewrite rate and accuracy jointly: if
+accuracy approaches C2 while queries remain rewrites, the semantic layer's
+measured value is governed context delivery; any drop in the 131/131 rewrite
+rate is separate evidence for the composition path.
+
+### Plan
+
+C5, phase 1, thin loop: (1) compiler extension publishing all public tables as
+views, joins for every FK contract passing the existing conservative
+cardinality rule, the complete HKB corpus as `ai_context` placed at field,
+topic, or model level, mechanically derived synonyms and sample values, and
+generic pattern `sample_queries`; no measures. (2) Tier 1 deployment with the
+single built-in validation and readback pass. (3) One 136-attempt dev-A
+generation under operator lease approval. (4) Both frozen scorers, matched
+dev-A comparison against C1−C4 and the E02 captured subset, aggregate-only
+artifact. Phase 2 (measures with grain resolution) is registered but built
+only if the phase 1 readout warrants it. Kept invariants: public-only content
+provenance (no questions, gold, or hidden annotations in any model artifact),
+both frozen scorers reported, single generation with no wrong-answer reruns,
+append-only records, isolated branches, sealed frame closed. Dropped:
+freeze-manifest ceremony beyond a commit pin, receipt machinery for dev-A
+generation beyond one operator approval, extra readback evidence passes,
+per-decision document sprawl. Epic omni-benchmark-7tq; design in
+docs/c5-tuned-governed-condition.md.
+
+## 2026-08-30 — D-198: The C5 arm is built; three deviations from the D-197 plan
+
+### What was built
+
+The compiler (`src/omni_benchmark/semantic_c5.py`) publishes a view for every
+public table, a join for every FK contract that passes the existing
+conservative cardinality rule, and the complete public HKB corpus as
+`ai_context` placed at field, topic, or model level by the scope of each
+record. It is published through `publish_c5_bundle_artifacts`, loaded from git
+by `load_committed_c5_candidate` / `load_committed_c5_plan`, deployed by
+`scripts/prepare_c5_experiment.py` to `livesqlbench-<database>-c5-tuned-v1`,
+and generated through `--dry-run-c5-dev-a-experiment` /
+`--execute-live-c5-dev-a-experiment`. The freeze and scoring paths accept the
+new selection kind `c5-dev-a-c4-freeze`, so the frozen scorers reach C5
+unchanged.
+
+### Deviations from the D-197 plan, and why
+
+1. **No `synonyms`, `sample_values`, or `sample_queries` keys.** Those keys are
+   not confirmed against the deployment API's exact-readback contract, and an
+   unverified key risks failing deployment rather than improving it. The same
+   content still reaches the model through verified channels: HKB names that
+   reference a field lead that field's `ai_context`, public value illustrations
+   already arrive inside the column description, and the generic query-pattern
+   guidance is prose in model-level `ai_context`.
+2. **C5 readback excludes nothing.** The baseline arm excludes the model and
+   relationship documents from per-attempt readback and E02 excludes the model,
+   because those were Omni-side artifacts. For C5 the model file carries
+   deployed `ai_context`, so it is part of the attested plan and is verified on
+   every attempt.
+3. **A C5 attempt compiles only its own database.** The full eighteen-database
+   compile takes about 56 seconds, which would be paid by each of 136 attempt
+   children; the single-database compile takes about 5 seconds and is proven
+   byte-identical (`semantic_deployment_sha256` and `manifest_sha256`) to the
+   plan the full compile produces.
+
+### One correctness fix travelling with the arm
+
+The live deployed-semantics path now validates the child Omni environment for
+any derived-deployment *or* telemetry-only-C4 arm before the one-time approval
+receipt is consumed. Previously only the C4 derived path validated, so an E02
+or C5 launch with a missing `OMNI_BASE_URL` could spend the receipt before a
+single evaluated answer was produced. Test:
+`test_live_c5_rejects_missing_omni_environment_before_approval_consumption`.

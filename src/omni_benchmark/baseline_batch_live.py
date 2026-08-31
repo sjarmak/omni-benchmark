@@ -330,7 +330,7 @@ class LiveBaselineDispatcher:
         c4_budget: BatchBudget | None = None,
         semantic_candidate_kind: str = "baseline",
     ) -> None:
-        if semantic_candidate_kind not in {"baseline", "e02"}:
+        if semantic_candidate_kind not in {"baseline", "e02", "c5"}:
             raise BaselineBatchError("semantic candidate kind is invalid")
         self._planned = {attempt.attempt_id: attempt for attempt in plan.attempts}
         self._database_environments = database_environments

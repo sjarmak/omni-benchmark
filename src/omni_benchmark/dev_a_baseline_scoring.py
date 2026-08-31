@@ -670,6 +670,7 @@ def _selection(
     if isinstance(value, Mapping) and value.get("kind") in {
         "public-c4-baseline-freeze",
         "e02-dev-a-c4-freeze",
+        "c5-dev-a-c4-freeze",
     }:
         return _c4_selection(value, policy)
     if not isinstance(value, Mapping) or set(value) != SELECTION_FIELDS:

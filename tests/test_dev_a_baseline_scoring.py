@@ -653,6 +653,26 @@ def test_prepare_accepts_exact_e02_dev_a_c4_freeze(tmp_path: Path) -> None:
     assert {attempt.condition for attempt in plan.attempts} == {"C4"}
 
 
+def test_prepare_accepts_exact_c5_dev_a_c4_freeze(tmp_path: Path) -> None:
+    workspace, commit, _, release_sha256 = _initialize_workspace(tmp_path)
+    selection_path, _ = _install_c4_selection(workspace, commit)
+    selection = json.loads((workspace / selection_path).read_text())
+    selection["kind"] = "c5-dev-a-c4-freeze"
+    content = _canonical(selection)
+    _write(workspace / selection_path, content)
+
+    plan = prepare_dev_a_baseline_plan(
+        workspace,
+        freeze_a_commit=commit,
+        selection_path=selection_path,
+        expected_selection_sha256=hashlib.sha256(content).hexdigest(),
+        expected_release_sha256=release_sha256,
+    )
+
+    assert len(plan.attempts) == 2
+    assert {attempt.condition for attempt in plan.attempts} == {"C4"}
+
+
 def test_c4_receipt_reports_fixed_scheduled_unscorable_without_candidate(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

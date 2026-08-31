@@ -326,7 +326,12 @@ def _column_bindings_by_table(
         if table_id not in modeled_table_ids:
             continue
         identifier = _mapping(record.get("identifier"), "column identifier")
-        name = _omni_name(identifier.get("name"), "column name")
+        raw_name = identifier.get("name")
+        if not isinstance(raw_name, str) or not _NAME.fullmatch(raw_name):
+            # Quoted physical identifiers (slashes, unicode, leading digits)
+            # cannot become bare Omni field names; they are not bindable here.
+            continue
+        name = _omni_name(raw_name, "column name")
         stable_id = _text(record.get("stable_id"), "column stable_id")
         table_bindings = collected.setdefault(table_id, {})
         table_bindings.setdefault(name, []).append(stable_id)

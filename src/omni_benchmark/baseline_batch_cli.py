@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 from collections.abc import Mapping, Sequence
+from datetime import datetime
 from pathlib import Path
 
 from .baseline_batch import (
@@ -37,6 +38,10 @@ from .c4_production_approval import (
     C4ProductionApprovalError,
     consume_c4_production_approval,
     validate_c4_production_approval,
+)
+from .claude_lease_preflight import (
+    ClaudeLeasePreflightError,
+    verify_lease_window,
 )
 from .c1_retrieval_sensitivity import (
     load_committed_c1_retrieval_sensitivity_schedule,
@@ -81,12 +86,14 @@ def _parser() -> argparse.ArgumentParser:
     mode.add_argument("--dry-run-execution-plan", action="store_true")
     mode.add_argument("--dry-run-c4-baseline", action="store_true")
     mode.add_argument("--dry-run-e02-dev-a-experiment", action="store_true")
+    mode.add_argument("--dry-run-c5-dev-a-experiment", action="store_true")
     mode.add_argument("--execute-live-baseline", action="store_true")
     mode.add_argument("--execute-live-direct-baseline", action="store_true")
     mode.add_argument("--execute-live-direct-concurrency-canary", action="store_true")
     mode.add_argument("--execute-live-c4-baseline", action="store_true")
     mode.add_argument("--execute-live-c4-concurrency-canary", action="store_true")
     mode.add_argument("--execute-live-e02-dev-a-experiment", action="store_true")
+    mode.add_argument("--execute-live-c5-dev-a-experiment", action="store_true")
     parser.add_argument("--freeze-a-commit")
     parser.add_argument("--output-root", type=Path)
     parser.add_argument("--claude-config-dir", type=Path, action="append")
@@ -96,7 +103,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--database-environment-dir", type=Path)
     parser.add_argument("--attempt-cost-ceiling-usd", type=float)
     parser.add_argument("--maximum-concurrency", type=int, default=4)
-    parser.add_argument("--subprocess-timeout-seconds", type=float, default=1800.0)
+    parser.add_argument("--subprocess-timeout-seconds", type=float, default=900.0)
+    parser.add_argument("--identity-stable-until")
     parser.add_argument("--maximum-wall-clock-seconds", type=float)
     parser.add_argument("--remaining-wall-clock-seconds", type=float)
     parser.add_argument("--human-approval-receipt", type=Path)
@@ -132,17 +140,18 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
         arguments.dry_run_e02_dev_a_experiment
         or arguments.execute_live_e02_dev_a_experiment
     )
+    c5_mode = (
+        arguments.dry_run_c5_dev_a_experiment
+        or arguments.execute_live_c5_dev_a_experiment
+    )
+    experiment_mode = e02_mode or c5_mode
     c4_mode = (
         arguments.dry_run_c4_baseline
         or arguments.execute_live_c4_baseline
         or arguments.execute_live_c4_concurrency_canary
-        or e02_mode
+        or experiment_mode
     )
-    if e02_mode:
-        schedule = c4_dev_a_experiment_schedule(
-            arguments.workspace, arguments.system_commit, schedule
-        )
-    elif c4_mode:
+    if c4_mode:
         schedule = c4_dev_a_experiment_schedule(
             arguments.workspace, arguments.system_commit, schedule
         )
@@ -178,7 +187,7 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
         or arguments.execute_live_direct_concurrency_canary
         or arguments.execute_live_c4_baseline
         or arguments.execute_live_c4_concurrency_canary
-        or e02_mode
+        or experiment_mode
     ):
         required = {
             "freeze A commit": arguments.freeze_a_commit,
@@ -195,7 +204,7 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 raise BaselineBatchError(
                     "C4 concurrency cannot exceed Omni's limit of 5"
                 )
-        if e02_mode:
+        if experiment_mode:
             required["deployment root"] = arguments.deployment_root
             required["deployment run ID"] = arguments.deployment_run_id
         missing = [name for name, value in required.items() if value is None]
@@ -227,7 +236,10 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 telemetry_only_c4=False,
                 expected_deployment_source_commit=None,
             )
-        if arguments.execute_live_e02_dev_a_experiment:
+        if (
+            arguments.execute_live_e02_dev_a_experiment
+            or arguments.execute_live_c5_dev_a_experiment
+        ):
             return _execute_live(
                 arguments,
                 schedule,
@@ -277,7 +289,9 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
                 _C4_ARM_SPEC_PATH,
                 {attempt.database for attempt in schedule.attempts},
             )
-        elif arguments.dry_run_e02_dev_a_experiment:
+        elif arguments.dry_run_e02_dev_a_experiment or (
+            arguments.dry_run_c5_dev_a_experiment
+        ):
             deployment_targets = verify_deployment_gate(
                 arguments.deployment_root,
                 arguments.deployment_run_id,
@@ -330,6 +344,63 @@ def baseline_batch_main(argv: Sequence[str] | None = None) -> int:
     }
     print(json.dumps(output, allow_nan=False, sort_keys=True))
     return 0
+
+
+_LIVE_MODE_FLAGS = (
+    "execute_live_baseline",
+    "execute_live_direct_baseline",
+    "execute_live_direct_concurrency_canary",
+    "execute_live_c4_baseline",
+    "execute_live_c4_concurrency_canary",
+    "execute_live_e02_dev_a_experiment",
+    "execute_live_c5_dev_a_experiment",
+)
+
+
+def _semantic_candidate_kind(arguments) -> str:
+    """Name the committed semantic candidate this live arm must read back."""
+    if getattr(arguments, "execute_live_e02_dev_a_experiment", False):
+        return "e02"
+    if getattr(arguments, "execute_live_c5_dev_a_experiment", False):
+        return "c5"
+    return "baseline"
+
+
+def _identity_stable_until(value: str | None) -> float | None:
+    """Read the operator's rotation boundary as epoch seconds."""
+    if value is None:
+        return None
+    try:
+        moment = datetime.fromisoformat(value)
+    except ValueError as error:
+        raise BaselineBatchError(
+            "identity stable-until must be an ISO 8601 timestamp"
+        ) from error
+    if moment.tzinfo is None:
+        raise BaselineBatchError(
+            "identity stable-until must carry a UTC offset; a naive timestamp "
+            "silently means a different instant on a differently configured host"
+        )
+    return moment.timestamp()
+
+
+def _verify_lease_window(arguments, plan) -> None:
+    """Refuse a live launch whose leased identities can change mid-attempt."""
+    if not any(getattr(arguments, flag, False) for flag in _LIVE_MODE_FLAGS):
+        return
+    directories = tuple(plan.claude_config_directories)
+    if not directories:
+        return
+    try:
+        verify_lease_window(
+            directories,
+            attempt_seconds=arguments.subprocess_timeout_seconds,
+            identity_stable_until=_identity_stable_until(
+                arguments.identity_stable_until
+            ),
+        )
+    except ClaudeLeasePreflightError as error:
+        raise BaselineBatchError(f"lease preflight failed: {error}") from error
 
 
 def _condition_costs(values: Sequence[str]) -> dict[str, str]:
@@ -415,7 +486,10 @@ def _execute_live(
         targets = None
     workspace = arguments.workspace.resolve(strict=True)
     common_environment = _child_environment(os.environ)
-    if derived_deployment:
+    if derived_deployment or telemetry_only_c4:
+        # Every deployed-semantics arm reaches Omni through the child process, so a
+        # missing provider setting has to fail here rather than after a one-time
+        # approval receipt is already spent.
         common_environment = _validated_c4_child_environment(common_environment)
     budget = BatchBudget(
         cost_ceiling_usd=float(arguments.cost_ceiling_usd),
@@ -453,22 +527,20 @@ def _execute_live(
             )
         except C4ProductionApprovalError as error:
             raise BaselineBatchError(str(error)) from error
+    database_environments = (
+        None
+        if arguments.database_environment_dir is None
+        else DatabaseEnvironmentDirectory(workspace, arguments.database_environment_dir)
+    )
+    _verify_lease_window(arguments, plan)
     dispatcher = LiveBaselineDispatcher(
         plan,
-        database_environments=(
-            None
-            if arguments.database_environment_dir is None
-            else DatabaseEnvironmentDirectory(
-                workspace, arguments.database_environment_dir
-            )
-        ),
+        database_environments=database_environments,
         common_environment=common_environment,
         timeout_seconds=arguments.subprocess_timeout_seconds,
         deployment_targets=targets,
         c4_budget=budget if targets is not None else None,
-        semantic_candidate_kind=(
-            "e02" if arguments.execute_live_e02_dev_a_experiment else "baseline"
-        ),
+        semantic_candidate_kind=_semantic_candidate_kind(arguments),
     )
     report = run_baseline_batch(
         schedule,

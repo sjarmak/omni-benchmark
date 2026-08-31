@@ -267,7 +267,7 @@ def _require_local_name(value: object) -> str:
         raise OmniSemanticDeploymentError("local file name is invalid")
     if "/" in value or "\\" in value or ".." in value or Path(value).name != value:
         raise OmniSemanticDeploymentError("local file path is not confined")
-    if value != "relationships" and (
+    if value not in {"relationships", "model"} and (
         _VIEW_NAME.fullmatch(value) is None
         and _FLAT_VIEW_NAME.fullmatch(value) is None
         and _TOPIC_NAME.fullmatch(value) is None
@@ -299,6 +299,8 @@ def _deployment_file(
     )
     if name == "relationships":
         _validate_relationship_document(document)
+    if name == "model":
+        _validate_model_document(document)
     remote_path = _remote_path(name, database, document)
     deployment_file = OmniSemanticDeploymentFile(name, remote_path, content, digest)
     _expected_remote_document(deployment_file)
@@ -545,6 +547,16 @@ def _validate_relationship_document(value: object) -> None:
             or _RELATIONSHIP_ON_SQL.fullmatch(on_sql) is None
         ):
             raise OmniSemanticDeploymentError("relationship on_sql is invalid")
+
+
+def _validate_model_document(value: object) -> None:
+    if not isinstance(value, Mapping) or set(value) != {"ai_context"}:
+        raise OmniSemanticDeploymentError(
+            "model document must declare exactly ai_context"
+        )
+    context = value.get("ai_context")
+    if not isinstance(context, str) or not context.strip():
+        raise OmniSemanticDeploymentError("model ai_context must be non-empty text")
 
 
 def _semantic_documents_equal(left: object, right: object) -> bool:

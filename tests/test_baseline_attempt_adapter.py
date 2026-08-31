@@ -36,6 +36,49 @@ def test_e02_semantic_readback_uses_the_committed_e02_plan(monkeypatch) -> None:
     assert observed == {"workspace": Path("/workspace"), "commit": "a" * 40}
 
 
+def test_c5_semantic_readback_compiles_only_this_attempts_database(
+    monkeypatch,
+) -> None:
+    observed: dict[str, object] = {}
+    c5_plan = object()
+
+    monkeypatch.setattr(
+        adapter,
+        "load_committed_c5_plan",
+        lambda workspace, commit, database: (
+            observed.update(workspace=workspace, commit=commit, database=database)
+            or c5_plan
+        ),
+        raising=False,
+    )
+    monkeypatch.setattr(
+        adapter,
+        "committed_bundle_plan",
+        lambda *_: pytest.fail("C5 must not rebuild the baseline bundle"),
+    )
+
+    result = adapter._committed_semantic_plan(
+        Path("/workspace"), "a" * 40, "sample_large", "c5"
+    )
+
+    assert result is c5_plan
+    assert observed == {
+        "workspace": Path("/workspace"),
+        "commit": "a" * 40,
+        "database": "sample_large",
+    }
+
+
+def test_c5_semantic_readback_retains_the_model_level_context() -> None:
+    readback = {
+        "model": "ai_context: how to query this model",
+        "relationships": "- join: one",
+        "sample.view": "label: Sample",
+    }
+
+    assert adapter._semantic_readback_documents(readback, "c5") == readback
+
+
 def test_semantic_readback_rejects_an_unknown_candidate_kind() -> None:
     with pytest.raises(ValueError, match="candidate kind"):
         adapter._committed_semantic_plan(

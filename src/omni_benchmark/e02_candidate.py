@@ -10,7 +10,7 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
-from typing import Mapping
+from typing import Callable, Mapping, Sequence
 
 from .omni_semantic_deployment import (
     OmniSemanticDeploymentPlan,
@@ -18,8 +18,11 @@ from .omni_semantic_deployment import (
 )
 from .semantic_bundle_publication import (
     SemanticBundlePublicationError,
+    publish_c5_bundle_artifacts,
     publish_e02_bundle_artifacts,
 )
+
+BundlePublisher = Callable[[Path, Path, Path, Path, Path, Path], Mapping[str, object]]
 
 _COMMIT_LENGTH = 40
 _MAX_ARCHIVE_BYTES = 128 * 1024 * 1024
@@ -47,10 +50,46 @@ class E02CommittedCandidate:
     source_commit: str
 
 
-def load_committed_e02_candidate(
+def load_committed_c5_candidate(
     workspace: Path, source_commit: str
 ) -> E02CommittedCandidate:
-    """Compile and authenticate all E02 bundles from an exact committed tree."""
+    """Compile and authenticate all C5 tuned bundles from an exact committed tree."""
+    return load_committed_e02_candidate(
+        workspace, source_commit, publisher=publish_c5_bundle_artifacts
+    )
+
+
+def load_committed_c5_plan(
+    workspace: Path, source_commit: str, database: str
+) -> OmniSemanticDeploymentPlan:
+    """Compile one C5 bundle from the committed tree that carries all eighteen.
+
+    One attempt only ever verifies its own database, and compiling the other
+    seventeen tuned bundles costs about a minute of every attempt's wall clock.
+    """
+    candidate = load_committed_e02_candidate(
+        workspace,
+        source_commit,
+        publisher=publish_c5_bundle_artifacts,
+        databases=(database,),
+    )
+    return candidate.plans[database]
+
+
+def load_committed_e02_candidate(
+    workspace: Path,
+    source_commit: str,
+    *,
+    publisher: BundlePublisher = publish_e02_bundle_artifacts,
+    databases: Sequence[str] | None = None,
+) -> E02CommittedCandidate:
+    """Compile and authenticate committed bundles from an exact committed tree.
+
+    The committed tree must always carry the full eighteen-database candidate.
+    ``databases`` narrows only what is compiled, so the returned candidate set
+    digest then covers that subset rather than the whole candidate.
+    """
+    selected = None if databases is None else frozenset(databases)
     root = _git_root(workspace)
     commit = _canonical_commit(root, source_commit)
     archive = _git_archive(root, commit)
@@ -61,7 +100,9 @@ def load_committed_e02_candidate(
             snapshot.mkdir(mode=0o700)
             output.mkdir(mode=0o700)
             _extract_archive(archive, snapshot)
-            plans, manifest_hashes, relationship_count = _compile(snapshot, output)
+            plans, manifest_hashes, relationship_count = _compile(
+                snapshot, output, publisher, selected
+            )
     except (OSError, tarfile.TarError, SemanticBundlePublicationError) as error:
         raise E02CandidateError("committed E02 candidate is invalid") from error
     candidate_bytes = ("\n".join(sorted(manifest_hashes)) + "\n").encode()
@@ -204,18 +245,23 @@ def _artifact_sets(
 
 
 def _compile(
-    workspace: Path, output_root: Path
+    workspace: Path,
+    output_root: Path,
+    publisher: BundlePublisher,
+    selected: frozenset[str] | None,
 ) -> tuple[dict[str, OmniSemanticDeploymentPlan], list[str], int]:
+    artifact_sets = _artifact_sets(workspace)
+    if selected is not None:
+        unknown = sorted(selected - {item[0] for item in artifact_sets})
+        if unknown:
+            raise E02CandidateError("selected database is not in the candidate")
+        artifact_sets = tuple(item for item in artifact_sets if item[0] in selected)
     plans: dict[str, OmniSemanticDeploymentPlan] = {}
     manifest_hashes: list[str] = []
     relationship_count = 0
-    for database, spec, hkb, schema, mapping, mapping_manifest in _artifact_sets(
-        workspace
-    ):
+    for database, spec, hkb, schema, mapping, mapping_manifest in artifact_sets:
         output = output_root / database
-        manifest = publish_e02_bundle_artifacts(
-            spec, hkb, schema, mapping, mapping_manifest, output
-        )
+        manifest = publisher(spec, hkb, schema, mapping, mapping_manifest, output)
         plan = build_semantic_deployment_plan(output)
         if plan.database != database:
             raise E02CandidateError("E02 plan database does not match its input")

@@ -33,6 +33,11 @@ _SHA256 = re.compile(r"[0-9a-f]{64}")
 _FAILED_DIRECTORY = re.compile(
     r"\.failed-(?P<instance>[A-Za-z0-9][A-Za-z0-9._-]{0,119})-r1-[0-9a-f]{16}"
 )
+_SELECTION_KINDS = {
+    "public-c4-baseline": "public-c4-baseline-freeze",
+    "e02-dev-a": "e02-dev-a-c4-freeze",
+    "c5-dev-a": "c5-dev-a-c4-freeze",
+}
 _C4_ARTIFACT_NAMES = frozenset(
     {
         "answer.result.json",
@@ -87,11 +92,7 @@ def c4_baseline_freeze_main(argv: Sequence[str] | None = None) -> int:
         destination=arguments.destination,
         expected_execution_plan_sha256=arguments.expected_execution_plan_sha256,
         expected_deployment_sha256=arguments.expected_deployment_sha256,
-        selection_kind=(
-            "e02-dev-a-c4-freeze"
-            if arguments.schedule_kind == "e02-dev-a"
-            else "public-c4-baseline-freeze"
-        ),
+        selection_kind=_SELECTION_KINDS[arguments.schedule_kind],
     )
     print(json.dumps(receipt, allow_nan=False, separators=(",", ":"), sort_keys=True))
     return 0
@@ -104,7 +105,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--run-id", required=True)
     parser.add_argument(
         "--schedule-kind",
-        choices=("public-c4-baseline", "e02-dev-a"),
+        choices=tuple(_SELECTION_KINDS),
         default="public-c4-baseline",
     )
     parser.add_argument("--output-root", type=Path, required=True)
@@ -136,10 +137,7 @@ def freeze_c4_baseline_selection(
         expected_execution_plan_sha256, "execution-plan SHA-256"
     )
     deployment_sha256 = _digest(expected_deployment_sha256, "deployment SHA-256")
-    if selection_kind not in {
-        "public-c4-baseline-freeze",
-        "e02-dev-a-c4-freeze",
-    }:
+    if selection_kind not in set(_SELECTION_KINDS.values()):
         raise C4BaselineFreezeError("C4 selection kind is invalid")
     repository = ImmutableAttemptRepository(root, Path(output_root))
     observations = []

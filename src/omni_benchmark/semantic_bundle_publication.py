@@ -21,6 +21,7 @@ from .semantic_bundle import (
     compile_semantic_bundle,
     reject_protected_fields,
 )
+from .semantic_c5 import compile_c5_tuned_bundle
 
 
 class SemanticBundlePublicationError(ValueError):
@@ -205,6 +206,24 @@ def build_e02_bundle_artifacts(
     )
 
 
+def build_c5_bundle_artifacts(
+    spec_bytes: bytes,
+    hkb_bytes: bytes,
+    schema_bytes: bytes,
+    mapping_bytes: bytes,
+    mapping_manifest_bytes: bytes,
+) -> tuple[dict[str, bytes], dict[str, Any]]:
+    """Authenticate public inputs and compile the C5 tuned governed bundle."""
+    return _build_bundle_artifacts(
+        spec_bytes,
+        hkb_bytes,
+        schema_bytes,
+        mapping_bytes,
+        mapping_manifest_bytes,
+        compile_c5_tuned_bundle,
+    )
+
+
 def _build_bundle_artifacts(
     spec_bytes: bytes,
     hkb_bytes: bytes,
@@ -313,6 +332,26 @@ def publish_e02_bundle_artifacts(
         mapping_manifest_path,
         output_root,
         build_e02_bundle_artifacts,
+    )
+
+
+def publish_c5_bundle_artifacts(
+    spec_path: Path,
+    hkb_path: Path,
+    schema_path: Path,
+    mapping_path: Path,
+    mapping_manifest_path: Path,
+    output_root: Path,
+) -> dict[str, Any]:
+    """Publish one flat, hash-bound C5 tuned governed bundle."""
+    return _publish_bundle_artifacts(
+        spec_path,
+        hkb_path,
+        schema_path,
+        mapping_path,
+        mapping_manifest_path,
+        output_root,
+        build_c5_bundle_artifacts,
     )
 
 

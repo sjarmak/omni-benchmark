@@ -19,6 +19,7 @@ from omni_benchmark.baseline_batch_live import (
 )
 from omni_benchmark.baseline_batch_cli import (
     _deployment_targets_sha256,
+    _semantic_candidate_kind,
     baseline_batch_main,
 )
 from omni_benchmark.c4_baseline_arm import render_c4_baseline_arm
@@ -472,6 +473,130 @@ def test_live_e02_generation_requires_a_separate_fresh_human_receipt(
                 "7",
             ]
         )
+
+
+def test_c5_dry_run_projects_the_same_full_dev_a_c4_frame(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    workspace, commit = _fixture_repo(tmp_path)
+    deployment_root = _private_e02_deployment_gate(workspace, commit)
+    monkeypatch.setattr(
+        "omni_benchmark.baseline_batch_cli.verify_deployment_gate",
+        lambda _root, _run_id, databases, **kwargs: {
+            database: DeploymentTarget(
+                branch_id=f"branch-{index}",
+                model_id=f"model-{index}",
+                semantic_model_sha256=hashlib.sha256(database.encode()).hexdigest(),
+            )
+            for index, database in enumerate(sorted(databases))
+        },
+    )
+
+    result = baseline_batch_main(
+        [
+            "--workspace",
+            str(workspace),
+            "--system-commit",
+            commit,
+            "--run-id",
+            "c5-dev-a-v1",
+            "--observed-attempt-cost-usd",
+            "0.7275655",
+            "--cost-ceiling-usd",
+            "700",
+            "--dry-run-c5-dev-a-experiment",
+            "--freeze-a-commit",
+            "7d39ee107338da1ce10e2553a4290e64bfc2f892",
+            "--output-root",
+            "experiments/autoresearch/raw/c5-dev-a-v1",
+            "--deployment-root",
+            str(deployment_root),
+            "--deployment-run-id",
+            "public-baseline-v13-20260829",
+            "--observed-condition-cost",
+            "C4=0.7275655",
+            "--maximum-wall-clock-seconds",
+            "21600",
+        ]
+    )
+
+    assert result == 0
+    output = json.loads(capsys.readouterr().out)
+    assert output["execution_plan"]["attempt_count"] == 136
+    assert output["deployment_target_count"] == 16
+    assert output["schedule_identity"]["scheduled_attempt_count"] == 154
+    assert output["cost_role"] == "telemetry_only_not_an_operational_stop"
+
+
+def test_live_c5_rejects_missing_omni_environment_before_approval_consumption(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace, commit = _fixture_repo(tmp_path)
+    deployment_root = _private_e02_deployment_gate(workspace, commit)
+    receipt = tmp_path / "unused-c5-approval.json"
+    for name in ("OMNI_API_TOKEN", "OMNI_BASE_URL", "OMNI_PROFILE"):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setattr(
+        "omni_benchmark.baseline_batch_cli.verify_deployment_gate",
+        lambda _root, _run_id, databases, **kwargs: {
+            database: DeploymentTarget(
+                branch_id=f"branch-{index}",
+                model_id=f"model-{index}",
+                semantic_model_sha256=hashlib.sha256(database.encode()).hexdigest(),
+            )
+            for index, database in enumerate(sorted(databases))
+        },
+    )
+
+    with pytest.raises(BaselineBatchError, match="OMNI_BASE_URL must be set"):
+        baseline_batch_main(
+            [
+                "--workspace",
+                str(workspace),
+                "--system-commit",
+                commit,
+                "--run-id",
+                "c5-dev-a-environment-preflight-test",
+                "--observed-attempt-cost-usd",
+                "0.7275655",
+                "--cost-ceiling-usd",
+                "700",
+                "--execute-live-c5-dev-a-experiment",
+                "--freeze-a-commit",
+                "7d39ee107338da1ce10e2553a4290e64bfc2f892",
+                "--output-root",
+                "experiments/autoresearch/raw/c5-dev-a-environment-preflight-test",
+                "--deployment-root",
+                str(deployment_root),
+                "--deployment-run-id",
+                "public-baseline-v13-20260829",
+                "--observed-condition-cost",
+                "C4=0.7275655",
+                "--maximum-wall-clock-seconds",
+                "21600",
+                "--attempt-cost-ceiling-usd",
+                "7",
+                "--human-approval-receipt",
+                str(receipt),
+            ]
+        )
+
+
+def test_each_live_arm_reads_back_its_own_committed_candidate() -> None:
+    def arguments(**flags: bool) -> object:
+        return type("Arguments", (), flags)()
+
+    assert _semantic_candidate_kind(arguments()) == "baseline"
+    assert (
+        _semantic_candidate_kind(arguments(execute_live_e02_dev_a_experiment=True))
+        == "e02"
+    )
+    assert (
+        _semantic_candidate_kind(arguments(execute_live_c5_dev_a_experiment=True))
+        == "c5"
+    )
 
 
 def test_live_c4_production_requires_fresh_human_approval_before_dispatch(

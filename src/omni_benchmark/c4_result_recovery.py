@@ -371,7 +371,11 @@ def recover_c4_selection(
     if (
         not isinstance(selection, dict)
         or selection.get("kind")
-        not in {"public-c4-baseline-freeze", "e02-dev-a-c4-freeze"}
+        not in {
+            "public-c4-baseline-freeze",
+            "e02-dev-a-c4-freeze",
+            "c5-dev-a-c4-freeze",
+        }
         or not isinstance(selection.get("entries"), list)
         or re.fullmatch(r"[0-9a-f]{40}", str(selection.get("source_commit"))) is None
         or not isinstance(selection.get("run_id"), str)

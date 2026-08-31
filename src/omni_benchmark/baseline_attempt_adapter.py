@@ -29,7 +29,11 @@ from .direct_probe_cli import (
 )
 from .direct_sql_attempt import write_direct_attempt
 from .direct_sql_capture import DirectCaptureError, DirectSqlCapture
-from .e02_candidate import E02CandidateError, load_committed_e02_candidate
+from .e02_candidate import (
+    E02CandidateError,
+    load_committed_c5_plan,
+    load_committed_e02_candidate,
+)
 from .omni_attempt import C4AttemptArtifacts, C4AttemptSpec
 from .omni_capture import OmniJobCapture, OmniJobClient, OmniProbeResult
 from .omni_cli import OmniCliClient
@@ -335,15 +339,19 @@ def _committed_semantic_plan(
         return committed_bundle_plan(workspace, system_commit, database)
     if candidate_kind == "e02":
         return load_committed_e02_candidate(workspace, system_commit).plans[database]
+    if candidate_kind == "c5":
+        return load_committed_c5_plan(workspace, system_commit, database)
     raise ValueError("semantic candidate kind is invalid")
 
 
 def _semantic_readback_documents(
     readback: Mapping[str, str | bytes], candidate_kind: object
 ) -> dict[str, str | bytes]:
-    if candidate_kind not in {"baseline", "e02"}:
+    if candidate_kind not in {"baseline", "e02", "c5"}:
         raise ValueError("semantic candidate kind is invalid")
-    excluded = {"model"}
+    # C5 deploys its own model-level ai_context, so that document is part of the
+    # attested plan rather than an artifact Omni added on its own.
+    excluded = set() if candidate_kind == "c5" else {"model"}
     if candidate_kind == "baseline":
         excluded.add("relationships")
     return {path: content for path, content in readback.items() if path not in excluded}

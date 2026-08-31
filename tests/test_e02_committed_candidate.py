@@ -9,8 +9,11 @@ import pytest
 
 from omni_benchmark.e02_candidate import (
     E02CandidateError,
+    load_committed_c5_candidate,
+    load_committed_c5_plan,
     load_committed_e02_candidate,
 )
+from omni_benchmark.omni_semantic_deployment import semantic_deployment_sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,6 +40,22 @@ def test_exact_committed_e02_candidate_reproduces_all_deployment_plans() -> None
     assert sum(len(plan.files) for plan in candidate.plans.values()) == 272
     assert candidate.relationship_count == 91
     assert all(plan.database == database for database, plan in candidate.plans.items())
+
+
+def test_c5_single_database_load_reproduces_the_full_candidates_plan() -> None:
+    commit = _head()
+    database = "planets_data_large"
+
+    targeted = load_committed_c5_plan(ROOT, commit, database)
+    full = load_committed_c5_candidate(ROOT, commit).plans[database]
+
+    assert semantic_deployment_sha256(targeted) == semantic_deployment_sha256(full)
+    assert targeted.manifest_sha256 == full.manifest_sha256
+
+
+def test_c5_single_database_load_rejects_a_database_outside_the_candidate() -> None:
+    with pytest.raises(E02CandidateError, match="not in the candidate"):
+        load_committed_c5_plan(ROOT, _head(), "absent_large")
 
 
 def test_e02_candidate_rejects_a_noncanonical_commit() -> None:
