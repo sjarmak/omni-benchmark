@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -74,3 +75,26 @@ def test_runtime_paths_match_the_preflight_contract() -> None:
     from omni_benchmark.omni_probe_preflight import RUNTIME_PATHS
 
     assert guard.RUNTIME_PATHS == RUNTIME_PATHS
+
+
+def test_stale_ignored_bytecode_fails(repository: Path) -> None:
+    """The half the guard used to miss: git reports clean, preflight does not.
+
+    Bytecode under ``src`` is gitignored, so a status-only guard sees a clean
+    tree while every attempt fails its own preflight on the same workspace.
+    """
+    (repository / ".gitignore").write_text("__pycache__/\n")
+    _git(repository, "add", ".gitignore")
+    _git(repository, "commit", "--quiet", "-m", "ignore bytecode")
+    subprocess.run(
+        (sys.executable, "-m", "compileall", "-q", str(repository / "src")),
+        check=True,
+        capture_output=True,
+    )
+    (repository / "src" / "module.py").write_text("value = 2\n")
+    _git(repository, "commit", "--quiet", "-a", "-m", "change the source")
+    pinned = guard.head_commit(repository)
+
+    assert not guard.dirty_runtime_paths(repository)
+    with pytest.raises(guard.GuardError, match="ignored bytecode"):
+        guard.assert_pinned(repository, pinned)

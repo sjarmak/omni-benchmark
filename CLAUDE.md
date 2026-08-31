@@ -103,6 +103,18 @@ These cost time if you discover them by hitting them.
   only under approved publish beads `omni-benchmark-dih.15` / `.16` and current
   per-action user authorization. Force-pushes, history rewrites, and every other
   remote are prohibited.
+- **Never run `compileall` in this workspace, and write no bytecode at all
+  during a live run.** `verify_system_commit` has two halves: a git-status check
+  over `RUNTIME_PATHS`, and `_verify_ignored_runtime_files`, which recompiles
+  every gitignored `.pyc` under `src` and `scripts` that carries the running
+  interpreter's cache tag and demands a byte-identical match. Import-generated
+  bytecode reproduces; `compileall` bytecode does not, so "pre-warming" the tree
+  turns a six-file fault into a whole-tree one. `PYTHONDONTWRITEBYTECODE` is in
+  `_CHILD_ENVIRONMENT_KEYS`, so exporting it in the launcher stops every attempt
+  child from writing any. Do not run a bare `python3 -c` with `sys.path` pointed
+  at `src` either: the system interpreter's foreign cache tag is invisible to
+  the check but still litters the runtime tree.
+
 - Shell aliases may force `-i` on `cp`/`mv`/`rm` and hang the session. Use
   `cp -f`, `mv -f`, `rm -f`, `rm -rf`, and expand destructive paths literally.
 - **OAuth profiles are leased, never repaired by benchmark agents.** Never
