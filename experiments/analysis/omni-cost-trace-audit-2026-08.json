@@ -1,0 +1,108 @@
+{
+  "arms": {
+    "C4 dev-A": {
+      "attempts": 136,
+      "database_queries_per_attempt": 2.71,
+      "input_output_ratio_median": 226,
+      "input_tokens_max": 2624413,
+      "input_tokens_mean": 700221,
+      "input_tokens_median": 580552.5,
+      "input_tokens_total": 95230121,
+      "latency_seconds_median": 50.6,
+      "output_tokens_median": 2564.5,
+      "tool_calls_per_attempt": {
+        "FetchFieldValues": 0.01,
+        "GenerateSemanticQuery": 0.34,
+        "SummarizeFullResults": 0.01,
+        "fetch_field_values": 0.43,
+        "generate_query": 2.71,
+        "load_model_schema": 0.02,
+        "read_model_file": 0.35,
+        "search_information_schema": 2.22,
+        "search_model": 2.06,
+        "search_model_files": 0.45,
+        "summarize_full_result": 0.04,
+        "unknown": 0.01,
+        "write_model_file": 0.01
+      }
+    },
+    "C4 sealed": {
+      "attempts": 265,
+      "database_queries_per_attempt": 2.94,
+      "input_output_ratio_median": 196,
+      "input_tokens_max": 3946369,
+      "input_tokens_mean": 790458,
+      "input_tokens_median": 580012,
+      "input_tokens_total": 209471294,
+      "latency_seconds_median": 50.7,
+      "output_tokens_median": 2952,
+      "tool_calls_per_attempt": {
+        "GenerateSemanticQuery": 0.53,
+        "WriteView": 0.0,
+        "fetch_field_values": 0.48,
+        "generate_query": 2.94,
+        "load_model_schema": 0.01,
+        "read_model_file": 0.43,
+        "search_information_schema": 2.78,
+        "search_model": 2.22,
+        "search_model_files": 0.54,
+        "short_api_summary": 0.01,
+        "summarize_full_result": 0.0
+      }
+    },
+    "C5 dev-A": {
+      "attempts": 136,
+      "database_queries_per_attempt": 1.65,
+      "input_output_ratio_median": 243,
+      "input_tokens_max": 1982606,
+      "input_tokens_mean": 480756,
+      "input_tokens_median": 395240.0,
+      "input_tokens_total": 65382791,
+      "latency_seconds_median": 32.5,
+      "output_tokens_median": 1627.5,
+      "tool_calls_per_attempt": {
+        "GenerateSemanticQuery": 0.23,
+        "fetch_field_values": 0.22,
+        "generate_query": 1.65,
+        "read_model_file": 0.04,
+        "search_information_schema": 0.02,
+        "search_model": 1.85,
+        "search_model_files": 0.1,
+        "short_api_summary": 0.01,
+        "summarize_full_result": 0.01
+      }
+    },
+    "E02 dev-A": {
+      "attempts": 131,
+      "database_queries_per_attempt": 2.44,
+      "input_output_ratio_median": 205,
+      "input_tokens_max": 2387145,
+      "input_tokens_mean": 659309,
+      "input_tokens_median": 504576,
+      "input_tokens_total": 86369478,
+      "latency_seconds_median": 50.2,
+      "output_tokens_median": 2467,
+      "tool_calls_per_attempt": {
+        "GenerateSemanticQuery": 0.45,
+        "fetch_field_values": 0.37,
+        "generate_query": 2.44,
+        "read_model_file": 0.42,
+        "search_information_schema": 1.63,
+        "search_model": 1.99,
+        "search_model_files": 0.44,
+        "summarize_full_result": 0.05
+      }
+    }
+  },
+  "captured_at_utc": "2026-08-31T21:25:58Z",
+  "caveats": [
+    "Credits carry no per-job attribution, so the per-arm dollar split is inferred from token share, not measured.",
+    "C4 sealed and the dev-A arms run on different question sets; the C4-to-C5 comparison uses the matched dev-A frame.",
+    "Prompt caching means input tokens are not billed at a single rate, so the effective rate is a blended average."
+  ],
+  "effective_usd_per_million_input_tokens": 1.392,
+  "finding": "Cost is input context, not generation. Median output is under 3k tokens while median input is hundreds of thousands, a ratio near 200:1, so credits track input almost exactly. The driver is the agent falling back to raw schema scans when the deployed model does not contain what the question needs: search_information_schema runs 2.78 times per C4 attempt and 0.02 times per C5 attempt. C5 publishes every table with the full join graph and the complete knowledge port, so the fallback nearly disappears, and with it 32% of input tokens, 36% of latency, 57% of tool calls, and 44% of executed database queries, while accuracy doubles on the identical frame. The richer model is both more accurate and cheaper per question.",
+  "input_tokens_all_arms": 456453684,
+  "period_credits_usd": 635.297481375,
+  "source": "provider-reported token_usage on attempt records held locally; no API calls"
+}

@@ -782,6 +782,84 @@ with file SHA-256
 publishes the identity counts above per condition; v1 is the same summary
 without the model-identity whitelist and is retained as the prior record.
 
+### What the governed path costs
+
+Omni bills AI work in credits, one credit to the dollar, and exposes them at
+`POST /api/v1/ai/credit-usage/users`. That endpoint reports one cumulative
+number per user per billing period. It carries no per-job attribution, which is
+why every C4 attempt records `cost_usd` as unavailable rather than a figure.
+
+The benchmark identity used 635.30 credits in August 2026, the period covering
+every governed run reported here. Attempt records account for 703 Omni-routed
+attempts; the account shows 929 AI conversations in the same period, so 226
+belong to deployment validation, probes, dry runs, and traffic unrelated to the
+benchmark. Charging the whole period to the recorded attempts gives an upper
+bound of $0.90 per governed attempt. Scaling by conversation share gives $0.68.
+Both are derived from a counter with no per-job resolution, so they bound the
+figure rather than measure it. The reading is preserved before the period
+rollover in
+[`experiments/analysis/omni-credit-usage-2026-08.json`](experiments/analysis/omni-credit-usage-2026-08.json),
+with the attribution in
+[`experiments/analysis/omni-credit-spend-breakdown-2026-08.json`](experiments/analysis/omni-credit-spend-breakdown-2026-08.json).
+
+That bound inverts the efficiency table's reading. C4 used 3.9 times C1's
+median tokens and cost roughly half as much per attempt, because the arms bill
+on different surfaces: Omni reaches `claude-opus-5` through Bedrock with prompt
+caching, at a blended $1.39 per million input tokens across 456.5M input tokens,
+while the direct arms bill through the Claude Code OAuth surface. Token volume
+and dollar cost are not interchangeable across these conditions.
+
+| Condition | Official Soft EX | Cost per attempt | Cost per correct answer |
+| --- | ---: | ---: | ---: |
+| C1: raw schema | 10.1% | $1.43 measured | $14.16 |
+| **C2: raw schema + searchable HKB** | **22.1%** | **$1.90 measured** | **$8.60** |
+| C3: exported semantic model | 8.6% | $1.84 measured | $21.40 |
+| C4: governed Omni | 8.6% | $0.68-$0.90 derived | $7.95-$10.51 |
+
+Accuracy alone ranks C4 last with C3. Cost per correct answer does not: the
+governed path lands with C2 and ahead of both direct-SQL arms that carry a
+semantic model. That is a weaker claim than it looks, because the C4 dollar
+figure is a bound rather than a measurement and the pricing surfaces differ, but
+it is the direction the evidence points, and an accuracy-only reading misses it.
+
+#### Why the governed path is expensive in tokens
+
+Median output is under 3,000 tokens against median input of 580,000, a ratio
+near 200 to 1. Credits track input almost exactly. That input is not the
+question. It is the agent re-reading context across tool calls, and which tool
+it reaches for is the whole story.
+
+| Tool calls per attempt | C4 | C5 |
+| --- | ---: | ---: |
+| `search_information_schema` | 2.78 | 0.02 |
+| `generate_query` | 2.94 | 1.65 |
+| `search_model` | 2.22 | 1.85 |
+| Database queries executed | 2.94 | 1.65 |
+
+C4's compiled model was too thin to answer from, so the agent fell back to
+scanning the raw information schema nearly three times per question and
+regenerated its query nearly three times. C5 publishes every table, every
+foreign key that passes the cardinality rule, and the complete knowledge port
+into `ai_context`. The fallback drops by two orders of magnitude, and with it
+32% of input tokens, 36% of latency, 57% of tool calls, and 44% of executed
+database queries, while accuracy doubles on the identical frame.
+
+| Matched dev-A frame | C4 | C5 |
+| --- | ---: | ---: |
+| Official Soft EX | 6.6% | 13.2% |
+| Median input tokens | 580,012 | 395,240 |
+| Median latency, s | 50.7 | 32.5 |
+| Cost per correct answer | $10.36-$13.69 | $3.52-$4.66 |
+
+A complete semantic model is not only more accurate here. It is cheaper per
+question and cheaper again per correct answer, because it stops the agent
+falling back to the raw schema. The sparse model paid twice, once in tokens
+spent rediscovering structure the model should have carried, and once in the
+answers it still got wrong. Per-attempt cost stays derived rather than measured
+until the credit-delta instrumentation in `omni-benchmark-tx0` lands. The full
+audit is
+[`experiments/analysis/omni-cost-trace-audit-2026-08.json`](experiments/analysis/omni-cost-trace-audit-2026-08.json).
+
 ### Exploratory contrasts
 
 | Scorer | Contrast | Difference | 95% interval | Gains | Losses |
