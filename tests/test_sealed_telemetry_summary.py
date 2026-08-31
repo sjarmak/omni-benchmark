@@ -10,7 +10,9 @@ import pytest
 
 ROOT = Path(__file__).parents[1]
 ANALYZER_PATH = ROOT / "experiments/analysis/sealed_telemetry_summary.py"
-COMMITTED_SUMMARY = ROOT / "experiments/analysis/sealed-telemetry-summary-v1.json"
+COMMITTED_SUMMARY = ROOT / "experiments/analysis/sealed-telemetry-summary-v2.json"
+#: v1 predates the model-identity whitelist and is kept as the prior record.
+SUPERSEDED_SUMMARY = ROOT / "experiments/analysis/sealed-telemetry-summary-v1.json"
 REAL_RUN_ROOT = ROOT / "runs/preserved/sealed-final-v6"
 
 FORBIDDEN_OUTPUT_KEYS = {
@@ -61,6 +63,11 @@ def _record(condition: str, repetition: int, outcome: str) -> dict[str, object]:
         "tool_call_count": 3 if errored else 1,
         "database_query_count": 0 if errored else 1,
         "telemetry_unavailable": [],
+        "model": {
+            "name": "synthetic-model",
+            "provider": "synthetic-provider",
+            "version": "2026.1",
+        },
         # These sentinels prove that non-whitelisted content never reaches output.
         "question": "SHOULD_NOT_LEAK",
         "instance_id": "SHOULD_NOT_LEAK",
@@ -76,6 +83,13 @@ def _record(condition: str, repetition: int, outcome: str) -> dict[str, object]:
         record["cost_source"] = "unavailable"
         record["cost_usd"] = None
         record["telemetry_unavailable"] = ["cost_usd", "model_version"]
+        # The governed arm reports no version, which is what makes an identity
+        # breakdown worth publishing rather than assuming one model everywhere.
+        record["model"] = {
+            "name": "synthetic-model",
+            "provider": "synthetic-governed",
+            "version": None,
+        }
     return record
 
 
@@ -245,7 +259,15 @@ def test_exact_cohort_shape_is_required(tmp_path: Path, failure: str) -> None:
 
 
 @pytest.mark.parametrize(
-    "failure", ["condition", "repetition", "token_reconciliation", "failure_label"]
+    "failure",
+    [
+        "condition",
+        "repetition",
+        "token_reconciliation",
+        "failure_label",
+        "model_shape",
+        "model_field_type",
+    ],
 )
 def test_invalid_whitelisted_telemetry_fails_closed(
     tmp_path: Path, failure: str
@@ -263,6 +285,10 @@ def test_invalid_whitelisted_telemetry_fails_closed(
         records[0]["repetition"] = 2
     elif failure == "token_reconciliation":
         records[0]["token_usage"]["total_tokens"] = 999
+    elif failure == "model_shape":
+        records[0]["model"] = "claude-opus-5"
+    elif failure == "model_field_type":
+        records[0]["model"]["provider"] = 7
     else:
         records[1]["terminal_failure_class"] = None
     target.write_text(
@@ -354,3 +380,101 @@ def test_real_sealed_artifact_reproduces_committed_summary() -> None:
     generated = module.summarize_run(REAL_RUN_ROOT)
 
     assert generated == json.loads(COMMITTED_SUMMARY.read_bytes())
+
+
+def test_model_identity_counts_group_and_sort(tmp_path: Path) -> None:
+    """Identities are counted per arm, so a mixed arm cannot look like one model."""
+
+    module = _analysis_module()
+    run_root = tmp_path / "run"
+    _write_run(run_root, attempts_per_cohort=2)
+
+    summary = module.summarize_run(run_root, expected_per_cohort=2)
+
+    assert summary["conditions"]["C1"]["model_identities"] == [
+        {
+            "name": "synthetic-model",
+            "provider": "synthetic-provider",
+            "version": "2026.1",
+            "attempt_count": 6,
+        }
+    ]
+    # C4's null version is preserved as "unreported" rather than folded into the
+    # direct arms' identity, which is the distinction PF-015 turns on.
+    assert summary["conditions"]["C4"]["model_identities"] == [
+        {
+            "name": "synthetic-model",
+            "provider": "synthetic-governed",
+            "version": "unreported",
+            "attempt_count": 6,
+        }
+    ]
+
+
+def test_absent_model_is_reported_not_dropped(tmp_path: Path) -> None:
+    """An attempt whose token buckets named no model is an observation, not a gap."""
+
+    module = _analysis_module()
+    run_root = tmp_path / "run"
+    _write_run(run_root, attempts_per_cohort=2)
+    target = run_root / "cohorts/c1-r1/generation.jsonl"
+    records = [
+        json.loads(line) for line in target.read_text(encoding="utf-8").splitlines()
+    ]
+    records[0]["model"] = None
+    target.write_text(
+        "".join(json.dumps(record, sort_keys=True) + "\n" for record in records),
+        encoding="utf-8",
+    )
+
+    identities = module.summarize_run(run_root, expected_per_cohort=2)["conditions"][
+        "C1"
+    ]["model_identities"]
+
+    assert {entry["name"]: entry["attempt_count"] for entry in identities} == {
+        "synthetic-model": 5,
+        "unreported": 1,
+    }
+
+
+def test_committed_summary_publishes_the_pf015_identity_split() -> None:
+    """The 264/1/2 sealed C4 split now comes from the artifact, not a manual read."""
+
+    summary = json.loads(COMMITTED_SUMMARY.read_bytes())
+
+    assert summary["conditions"]["C4"]["model_identities"] == [
+        {
+            "name": "claude-opus-5",
+            "provider": "bedrock",
+            "version": "unreported",
+            "attempt_count": 264,
+        },
+        {
+            "name": "composite:claude-opus-5+claude-sonnet-5",
+            "provider": "bedrock",
+            "version": "unreported",
+            "attempt_count": 1,
+        },
+        {
+            "name": "managed-unobservable",
+            "provider": "omni-production",
+            "version": "unreported",
+            "attempt_count": 2,
+        },
+    ]
+    # Every direct attempt ran on one identity, so the mix is a governed-path
+    # property rather than something the harness does to all four arms.
+    for condition in ("C1", "C2", "C3"):
+        identities = summary["conditions"][condition]["model_identities"]
+        assert len(identities) == 1
+        assert identities[0]["attempt_count"] == 267
+        assert identities[0]["provider"] == "anthropic_claude_code_oauth"
+
+
+def test_superseded_summary_is_retained_without_identity_counts() -> None:
+    """v1 stays on disk as the prior record and is not silently upgraded."""
+
+    superseded = json.loads(SUPERSEDED_SUMMARY.read_bytes())
+
+    assert "model" not in superseded["provenance"]["whitelisted_fields"]
+    assert "model_identities" not in superseded["conditions"]["C4"]

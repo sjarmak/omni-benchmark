@@ -21,6 +21,7 @@ WHITELISTED_FIELDS = (
     "condition",
     "repetition",
     "generation_outcome",
+    "model",
     "failure_origin",
     "terminal_failure_class",
     "latency_ms",
@@ -152,10 +153,55 @@ def _nonempty_string(value: object, label: str) -> str:
     return value
 
 
+def _model_identity(value: object, location: str) -> dict[str, str | None]:
+    """Project the three model-identity fields, refusing any other shape.
+
+    A null identity is a real observation for an attempt whose token buckets
+    named no model, so it is preserved rather than dropped. Version is null on
+    every sealed attempt; keeping it distinguishes "no version reported" from
+    "no identity reported" in the published counts.
+    """
+
+    if value is None:
+        return {"name": None, "provider": None, "version": None}
+    if not isinstance(value, dict):
+        raise SummaryError(f"{location}.model must be an object or null")
+    identity: dict[str, str | None] = {}
+    for key in ("name", "provider", "version"):
+        field = value.get(key)
+        if field is not None and (not isinstance(field, str) or not field):
+            raise SummaryError(f"{location}.model.{key} must be a string or null")
+        identity[key] = field
+    return identity
+
+
+def _identity_counts(records: Sequence[dict[str, Any]]) -> list[dict[str, object]]:
+    """Count attempts per distinct model identity, in a stable sorted order."""
+
+    counts: Counter[tuple[str, str, str]] = Counter(
+        (
+            record["model"]["name"] or "unreported",
+            record["model"]["provider"] or "unreported",
+            record["model"]["version"] or "unreported",
+        )
+        for record in records
+    )
+    return [
+        {
+            "name": name,
+            "provider": provider,
+            "version": version,
+            "attempt_count": count,
+        }
+        for (name, provider, version), count in sorted(counts.items())
+    ]
+
+
 def _validate_record(
     record: dict[str, Any], *, condition: str, repetition: int, location: str
 ) -> dict[str, Any]:
     projected = {field: record.get(field) for field in WHITELISTED_FIELDS}
+    projected["model"] = _model_identity(projected["model"], location)
     if projected["condition"] != condition:
         raise SummaryError(f"{location}: condition does not match cohort")
     if projected["repetition"] != repetition:
@@ -363,6 +409,7 @@ def _condition_summary(
             "status": "unavailable" if condition == "C4" else "observed",
             "count": None if condition == "C4" else outcome_counts["refused"],
         },
+        "model_identities": _identity_counts(records),
         "failure_origins": _counter(records, "failure_origin"),
         "failure_classes": _counter(records, "terminal_failure_class"),
         "sources": {
