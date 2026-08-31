@@ -1,0 +1,45 @@
+{
+  "account_ai_conversations_in_period": 929,
+  "arms": [
+    {
+      "arm": "sealed C4, scored (runs/sealed-final-v6)",
+      "note": "3 reps x 89 sealed questions; the reported C4 result",
+      "omni_attempts": 267
+    },
+    {
+      "arm": "C4 public baseline (public-c4-baseline-v8)",
+      "note": "dev-A governed baseline",
+      "omni_attempts": 136
+    },
+    {
+      "arm": "C5 dev-A (c5-dev-a-v4)",
+      "note": "the docs-idiomatic condition",
+      "omni_attempts": 136
+    },
+    {
+      "arm": "E02 dev-A (e02-dev-a-v6)",
+      "note": "saved-query intervention arm",
+      "omni_attempts": 136
+    },
+    {
+      "arm": "sealed pilots v1-v5, aborted/partial",
+      "note": "1+1+11+14+1 across five aborted sealed attempts",
+      "omni_attempts": 28
+    }
+  ],
+  "captured_at_utc": "2026-08-31T20:10:23Z",
+  "caveats": [
+    "The credit counter is per user and cumulative; it carries no per-job attribution, so every figure here is derived, not measured.",
+    "The account has non-benchmark AI traffic in the same period, so the upper bound overstates benchmark cost.",
+    "One conversation is not guaranteed to equal one AI job, so the proportional estimate rests on that assumption.",
+    "Deployment validation, probes, and dry runs consumed credits without writing attempt records; they sit in the unattributed remainder.",
+    "runs/preserved mirrors runs/sealed-final-v6 and is excluded to avoid double counting its 267 attempts."
+  ],
+  "credits_used_usd": 635.297481375,
+  "method": "Omni-routed attempts identified on disk by the marker cost_unavailable_reason=omni_job_api_does_not_expose_cost, which only governed (Omni AI job) attempts carry. C1/C2/C3 write SQL directly and consume no Omni AI credits.",
+  "omni_routed_attempts_recorded": 703,
+  "period": "2026-08-01T00:00:00Z / 2026-09-01T00:00:00Z",
+  "proportional_estimate_usd_per_omni_attempt": 0.6839,
+  "unattributed_conversations": 226,
+  "upper_bound_usd_per_omni_attempt": 0.9037
+}

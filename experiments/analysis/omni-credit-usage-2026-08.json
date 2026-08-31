@@ -1,0 +1,21 @@
+{
+  "api_endpoint": "https://sjarmak.omniapp.co",
+  "captured_at_utc": "2026-08-31T19:00:27Z",
+  "cli_command": "omni ai credit-usage-users-read",
+  "credit_unit_usd": 1.0,
+  "endpoint": "POST /api/v1/ai/credit-usage/users",
+  "granularity": "per user, cumulative over the billing period; the API exposes no per-job or per-query cost",
+  "note": "Captured before the 2026-09-01T00:00:00Z period rollover resets the counter. Covers every AI job the benchmark identity submitted in August 2026, benchmark and non-benchmark alike; it is an upper bound on benchmark spend, not an attribution.",
+  "period_end_utc": "2026-09-01T00:00:00+00:00",
+  "period_start_utc": "2026-08-01T00:00:00+00:00",
+  "raw_response": {
+    "periodEnd": 1788220800000,
+    "periodStart": 1785542400000,
+    "users": [
+      {
+        "creditsUsed": 635.297481375,
+        "userId": "595a871e-e5a9-46b7-a208-f8920da67263"
+      }
+    ]
+  }
+}
