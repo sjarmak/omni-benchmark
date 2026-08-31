@@ -304,8 +304,8 @@ product could not infer one. Is that a harness defect or a product defect?
 
 ### 6.3 The reading this analysis actually endorses
 
-Both readings are correct about different objects, and the honest position is
-that the interface between them is under-specified.
+Both readings are correct about different objects. The interface between them
+is under-specified, which is why they can both hold.
 
 The type contract between a programmatic model author and a semantic layer is
 not written down anywhere either side can point to. Our compiler declared no

@@ -8,11 +8,13 @@ This paper now reports the executed four-condition held-out result. It was the
 protocol half of the study until 2026-08-31; the reorganization around the
 findings is described below.
 
-The committed `main.pdf` was built on 2026-08-31 before the C5 section was
-filled in, so it is behind `sections/c5.tex` and the four sections that
-cross-reference it. No LaTeX toolchain is installed in this workspace and no
-workflow builds the paper, so the rebuild is a manual step tracked by bead
-`omni-benchmark-cze`. The source tree, not the PDF, is what gets uploaded.
+The committed `main.pdf` is built by [`build.sh`](build.sh) inside a TeX Live
+container pinned by image digest, with no network and a fixed
+`SOURCE_DATE_EPOCH`, so an unchanged source tree produces byte-identical output.
+The current PDF is 34 pages, built from the C5 sources at
+`325a6534075b06b8ab96152352d6225f9ca698259107f5edf515fd0b8069c771`, with no
+undefined reference and no LaTeX warning. Rebuild it whenever a `.tex` file
+changes; the source tree, not the PDF, is what gets uploaded to arXiv.
 
 ## Where this sits in the deliverable set
 

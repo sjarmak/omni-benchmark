@@ -70,14 +70,14 @@ Each database ships a \texttt{*\_kb.jsonl} whose records carry an integer
 \texttt{description}, a \texttt{definition} giving the rule or formula in natural
 language, a \texttt{type}, and \texttt{children\_knowledge}. Despite the name,
 \texttt{children\_knowledge} lists the identifiers the entry \emph{depends on},
-with $-1$ documented as no dependency. Table~\ref{tab:hkb} gives the observed
+with $-1$ documented as no dependency. Table~\ref{tab:hkbgraph} gives the observed
 graph statistics; both $-1$ and the undocumented empty list are normalized to
 zero outgoing edges.
 
 \begin{table}[htbp]
 \centering
 \caption{Observed hierarchical knowledge base structure across all 18 databases.}
-\label{tab:hkb}
+\label{tab:hkbgraph}
 \begin{tabular}{lr}
 \toprule
 Property & Count \\

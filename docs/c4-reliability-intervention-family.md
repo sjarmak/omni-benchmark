@@ -199,7 +199,7 @@ points.
 | The full class-A mechanism converts at the ambient rate | 31 | 2.74 | 8.63% |
 | All 34 convert at the ambient rate | 34 | 3.00 | 8.82% |
 
-Read the table honestly. Half-conversion at the ambient rate yields about 1.5
+Read the table carefully. Half-conversion at the ambient rate yields about 1.5
 expected answers, which is under the two-answer gate. The claim that reliability
 work beats a typical modeling delta holds at full conversion of class A, not at
 half. Full conversion of class A is a 2.01-point gain and a 30% relative
