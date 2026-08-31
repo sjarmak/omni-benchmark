@@ -86,7 +86,7 @@ and `e02`, so every existing custody rule applies unchanged.
 | --- | --- |
 | Compiler | `src/omni_benchmark/semantic_c5.py`, published through `publish_c5_bundle_artifacts` |
 | Exact-Git candidate | `load_committed_c5_candidate` / `load_committed_c5_plan` in `e02_candidate.py` |
-| Deployment | `scripts/prepare_c5_experiment.py` (dry by default), remote identity `livesqlbench-<database>-c5-tuned-v1` |
+| Deployment | `scripts/prepare_c5_experiment.py` (dry by default), remote identity `livesqlbench-<database>-c5-tuned-v2` |
 | Generation | `--dry-run-c5-dev-a-experiment` / `--execute-live-c5-dev-a-experiment` in `baseline_batch_cli.py` |
 | Per-attempt readback | `_committed_semantic_plan(..., "c5")`, which verifies every deployed document including the model-level `ai_context` |
 

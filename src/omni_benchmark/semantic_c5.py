@@ -204,9 +204,12 @@ def _widened_c5_spec(
                 {"reason": "table_name_unrepresentable", "stable_id": table_id}
             )
             continue
-        view_name = f"{database}_{schema_name}__{raw_name}"
-        file_name = f"{database}.{schema_name}__{raw_name}.view"
-        topic_file = f"{raw_name}_semantics.topic"
+        # Omni snake-cases a view's name, so a CamelCase table joined or referenced
+        # under its physical name resolves to a view the product never created.
+        omni_name = _omni_name(raw_name, "table name")
+        view_name = f"{database}_{schema_name}__{omni_name}"
+        file_name = f"{database}.{schema_name}__{omni_name}.view"
+        topic_file = f"{omni_name}_semantics.topic"
         if view_name in view_names or {file_name, topic_file} & output_names:
             skipped.append({"reason": "output_name_collision", "stable_id": table_id})
             continue

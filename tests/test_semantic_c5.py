@@ -269,6 +269,52 @@ def _schema_records() -> list[dict[str, object]]:
     return records
 
 
+def _camel_case_schema_records() -> list[dict[str, object]]:
+    """Add a table whose physical name is CamelCase, as several databases have."""
+    records = _schema_records()
+    added: list[dict[str, object]] = [
+        {
+            "database": "db",
+            "identifier": {"name": "FieldNotes"},
+            "primary_key_column_stable_ids": ["db:column:FieldNotes:id"],
+            "record_kind": "table",
+            "stable_id": "db:table:FieldNotes",
+            "unique_keys": [],
+        },
+        {
+            "database": "db",
+            "description": "Field note identifier.",
+            "identifier": {"name": "id"},
+            "nullable": False,
+            "record_kind": "column",
+            "stable_id": "db:column:FieldNotes:id",
+            "table_stable_id": "db:table:FieldNotes",
+        },
+        {
+            "database": "db",
+            "description": "Referenced site identifier.",
+            "identifier": {"name": "site_id"},
+            "nullable": True,
+            "record_kind": "column",
+            "stable_id": "db:column:FieldNotes:site_id",
+            "table_stable_id": "db:table:FieldNotes",
+        },
+        {
+            "database": "db",
+            "provenance": {"content": ["public_schema"]},
+            "record_kind": "foreign_key",
+            "source_column_stable_ids": ["db:column:FieldNotes:site_id"],
+            "source_table_stable_id": "db:table:FieldNotes",
+            "stable_id": "db:foreign-key:e-field-notes-site",
+            "target_column_stable_ids": ["db:column:sites:id"],
+            "target_table_stable_id": "db:table:sites",
+        },
+    ]
+    for record in added:
+        record["schema_version"] = 1
+    return records + added
+
+
 def _base_mapping(hkb_id: int) -> dict[str, object]:
     return {
         "database": "db",
@@ -469,6 +515,26 @@ def test_c5_widens_views_to_every_public_table() -> None:
     assert set(sites["dimensions"]) == {"id", "name", "region_id", "parent_site_id"}
     assert sites["dimensions"]["name"]["description"] == "Registered site name."
     assert bundle.manifest["c5"]["widening"]["views_added"] == 3
+
+
+def test_c5_names_camel_case_tables_the_way_omni_names_them() -> None:
+    """Omni derives a view's name by snake-casing it, so the bundle must too."""
+    bundle = compile_c5_tuned_bundle(
+        _spec(), _hkb_records(), _camel_case_schema_records(), _mapping_records()
+    )
+
+    assert "db.public__field_notes.view" in bundle.files
+    assert "field_notes_semantics.topic" in bundle.files
+    assert "db.public__FieldNotes.view" not in bundle.files
+    view = yaml.safe_load(bundle.files["db.public__field_notes.view"])
+    assert view["table_name"] == "FieldNotes"
+    assert view["label"] == "FieldNotes"
+    relationships = yaml.safe_load(bundle.files["relationships"])
+    assert ("db_public__field_notes", "db_public__sites") in [
+        (item["join_from_view"], item["join_to_view"]) for item in relationships
+    ]
+    topic = yaml.safe_load(bundle.files["field_notes_semantics.topic"])
+    assert topic["base_view"] == "db_public__field_notes"
 
 
 def test_c5_auto_publishes_undeclared_columns_and_leaves_on_declared_views() -> None:

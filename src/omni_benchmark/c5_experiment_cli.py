@@ -228,7 +228,7 @@ def _parser() -> argparse.ArgumentParser:
 
 def _c5_deployment_identity(database: str) -> tuple[str, str]:
     selected = _identifier(database, "database")
-    identity = f"livesqlbench-{selected}-c5-tuned-v1"
+    identity = f"livesqlbench-{selected}-c5-tuned-v2"
     return identity, identity
 
 

@@ -39,9 +39,9 @@ def _arguments() -> list[str]:
         "--system-commit",
         _head(),
         "--run-id",
-        "c5-dev-a-deployment-v1",
+        "c5-dev-a-deployment-fixture",
         "--output-root",
-        "experiments/deployments/c5-dev-a-v1",
+        "experiments/deployments/c5-dev-a-fixture",
     ]
 
 
@@ -66,7 +66,7 @@ def test_dry_c5_plan_is_exact_public_and_provider_inert(
 def test_c5_uses_condition_specific_remote_identity() -> None:
     model, branch = _c5_deployment_identity("sample_large")
 
-    assert model == "livesqlbench-sample_large-c5-tuned-v1"
+    assert model == "livesqlbench-sample_large-c5-tuned-v2"
     assert branch == model
     assert "public-baseline" not in model
 
@@ -77,7 +77,7 @@ def test_live_c5_deployment_carries_only_the_scheduled_committed_plans() -> None
     def deploy(argv: list[str], **kwargs: object) -> int:
         plans, diagnostics = kwargs["bundle_loader"](ROOT, _head())
         full = load_committed_baseline_schedule(
-            ROOT, _head(), run_id="c5-dev-a-deployment-v1"
+            ROOT, _head(), run_id="c5-dev-a-deployment-fixture"
         )
         schedule = c4_dev_a_experiment_schedule(ROOT, _head(), full)
         assert set(plans) == {attempt.database for attempt in schedule.attempts}
@@ -94,8 +94,8 @@ def test_live_c5_deployment_carries_only_the_scheduled_committed_plans() -> None
     assert result == 0
     assert "--execute-live-deployment" in observed["argv"]
     assert observed["identity"] == (
-        "livesqlbench-sample_large-c5-tuned-v1",
-        "livesqlbench-sample_large-c5-tuned-v1",
+        "livesqlbench-sample_large-c5-tuned-v2",
+        "livesqlbench-sample_large-c5-tuned-v2",
     )
 
 
@@ -112,7 +112,7 @@ def test_live_c5_deployment_requires_a_profile_before_product_access() -> None:
 
 def test_c5_output_root_stays_inside_the_deployment_tree() -> None:
     arguments = _arguments()
-    arguments[-1] = "experiments/runs/c5-dev-a-v1"
+    arguments[-1] = "experiments/runs/c5-dev-a-fixture"
 
     with pytest.raises(C5ExperimentError, match="not confined"):
         c5_experiment_main(arguments)

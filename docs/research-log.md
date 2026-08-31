@@ -12063,3 +12063,58 @@ receipt is consumed. Previously only the C4 derived path validated, so an E02
 or C5 launch with a missing `OMNI_BASE_URL` could spend the receipt before a
 single evaluated answer was produced. Test:
 `test_live_c5_rejects_missing_omni_environment_before_approval_consumption`.
+
+## 2026-08-31 — D-199: The first C5 deployment failed validation; Omni renames CamelCase views
+
+### What happened
+
+The first Tier 1 C5 deployment (`c5-dev-a-deployment-v1`, source commit
+`2ac48d0`) failed on its first database. `archeology_scan_large` uploaded all
+104 files and then returned 31 validator issues, every one of them
+`no_such_view_in_relationship`, naming 21 distinct views such as
+`archeology_scan_large_public__ExcavationSessions`. The run was stopped after
+that first record rather than spending forty minutes reproducing the same
+failure fifteen more times. The failed record stays in
+`experiments/deployments/c5-dev-a-v1/` as append-only evidence; it is not
+retried in place.
+
+### Diagnosis
+
+The read-only diagnostics path (`omni_semantic_diagnostics.diagnostic_main`
+with `plan_loader=load_committed_c5_plan`) captured the exact issue list to
+`experiments/diagnostics/c5-validation-v1/`. All 21 missing views correspond to
+tables whose physical names are CamelCase. Reading the deployed branch back
+with `omni models get-views` settled it: Omni had created every view, but under
+a snake-cased name. `ExcavationSessions` became
+`archeology_scan_large_public__excavation_sessions`, so the relationships and
+topics the compiler emitted pointed at names the product never creates. The C4
+baseline never hit this because its declared views cover only lower-case
+tables; C5's widening is what first published a CamelCase table.
+
+The `_omni_name` helper the compiler already applies to column names reproduces
+Omni's rule exactly: it predicted all 51 live view names, CamelCase ones
+included.
+
+### Fix
+
+`_widened_c5_spec` now derives the view name, view file name, and topic file
+name from `_omni_name(raw_name)` instead of the raw table name; the view
+document still binds `table_name` to the exact physical identifier, so the SQL
+is unchanged. Recompiling `archeology_scan_large` from the fixed tree gives 51
+view identities and 50 relationship endpoints, every one of which matches a
+view the live branch actually holds. Test:
+`test_c5_names_camel_case_tables_the_way_omni_names_them`.
+
+The remote identity moves to `livesqlbench-<database>-c5-tuned-v2`. The v1
+branch already carries the CamelCase-named files, and uploading the corrected
+names beside them would leave two files per view and break exact readback, so
+the corrected arm deploys to a fresh model and branch rather than mutating the
+failed one.
+
+### Generality
+
+The fix is a naming rule of the target product applied to every table, with no
+database name, question, or label anywhere in the change. It makes the
+compiler's collision check stricter, not weaker: two tables that differ only in
+case now collide and are skipped as `output_name_collision` rather than
+producing one view Omni cannot resolve.
