@@ -34,6 +34,7 @@ from .baseline_continuation import (
     write_baseline_freeze_manifest,
     write_continuation_manifest,
 )
+from .claude_lease_preflight import ClaudeLeasePreflightError, verify_lease_window
 from .omni_probe_preflight import OmniProbePreflightError, verify_system_commit
 
 AUTHORIZED_SYSTEM_COMMIT = "5be315e44bea7ee1a39500380dcbc4c05976dd3e"
@@ -100,7 +101,7 @@ def _execution_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--cost-ceiling-usd", type=float, required=True)
     parser.add_argument("--attempt-cost-ceiling-usd", type=float, required=True)
     parser.add_argument("--maximum-concurrency", type=int, default=3)
-    parser.add_argument("--subprocess-timeout-seconds", type=float, default=1800.0)
+    parser.add_argument("--subprocess-timeout-seconds", type=float, default=900.0)
 
 
 def baseline_continuation_main(argv: Sequence[str] | None = None) -> int:
@@ -281,6 +282,13 @@ def _execute(
     scenario: Mapping[str, object],
 ) -> int:
     execution_workspace = arguments.execution_workspace.resolve(strict=True)
+    try:
+        verify_lease_window(
+            tuple(plan.claude_config_directories),
+            attempt_seconds=arguments.subprocess_timeout_seconds,
+        )
+    except ClaudeLeasePreflightError as error:
+        raise BaselineBatchError(f"lease preflight failed: {error}") from error
     dispatcher = LiveBaselineDispatcher(
         plan,
         database_environments=DatabaseEnvironmentDirectory(

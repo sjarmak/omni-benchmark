@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import subprocess
+import time
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -137,16 +138,35 @@ def _execution_arguments(
     ]
 
 
+def _leased_profile(tmp_path: Path, name: str) -> str:
+    """Materialize a slot whose token outlives any attempt bound in these tests."""
+    directory = tmp_path / name
+    directory.mkdir(mode=0o700, exist_ok=True)
+    credential = directory / ".credentials.json"
+    credential.write_text(
+        json.dumps(
+            {
+                "claudeAiOauth": {
+                    "accessToken": "a",
+                    "expiresAt": int((time.time() + 8 * 3600) * 1000),
+                }
+            }
+        )
+    )
+    credential.chmod(0o600)
+    return str(directory)
+
+
 def _planning_arguments(tmp_path: Path) -> list[str]:
     return [
         "--freeze-a-commit",
         "d" * 40,
         "--claude-config-dir",
-        str(tmp_path / "profile-1"),
+        _leased_profile(tmp_path, "profile-1"),
         "--claude-config-dir",
-        str(tmp_path / "profile-2"),
+        _leased_profile(tmp_path, "profile-2"),
         "--claude-config-dir",
-        str(tmp_path / "profile-3"),
+        _leased_profile(tmp_path, "profile-3"),
         "--database-environment-dir",
         str(tmp_path / "database-envs"),
         "--observed-condition-cost",
