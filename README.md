@@ -189,19 +189,12 @@ What that table says, mechanism first:
   from 69.6% to 98.5%, and the hand-written-aggregate rate did not fall. View
   sparsity was not what kept the governed path from composing metrics; the
   absent measures were, and better context is worth real accuracy on its own.
-- **Cost and time favor the governed path on its own surface, and the dollar
-  figures do not cross arms.** On the matched 122-question development frame, C5
-  answered 13 to C4's 5 while spending 29% less wall time (1.42 h against 2.01 h;
-  median 31.9s against 50.6s) on 32% fewer median input tokens. Dollar cost is
-  measured per attempt only for C1-C3, which bill through the Claude Code OAuth
-  surface at $161.85, $181.99, and $195.07 over the frame. Omni's job endpoint
-  exposes no price field and the credit-bracketing pass postdates every run here,
-  so C4 and C5 carry an arm-level estimate from the billing-period credit total,
-  $0.684 per attempt with a $0.904 upper bound, identical on every governed row.
-  Per-arm sums, medians, and quartiles:
-  [`experiments/analysis/matched-122-cost-time-rollup-v1.json`](experiments/analysis/matched-122-cost-time-rollup-v1.json)
-  via [`matched_122_cost_time_rollup.py`](experiments/analysis/matched_122_cost_time_rollup.py);
-  RESULTS.md section 5 states how each column was measured.
+- **Better context bought accuracy and time at once.** On the matched
+  development frame C5 answered 13 to C4's 5 while spending 29% less wall time on
+  32% fewer median input tokens. Accuracy and resource use moved in the same
+  favorable direction, which is the signature of a model that made the task
+  easier rather than one that spent more effort on it. See
+  [what it cost and how long it took](#what-it-cost-and-how-long-it-took).
 - **C2 over C1 is the strongest result in the study, and it is a result about
   business semantics.** Searchable business knowledge, in raw prose form, is
   worth about 12 points to a direct-SQL agent, interval 5.6 to 18.7, excluding
@@ -223,6 +216,68 @@ different place: 38 sealed attempts never reached a scoreable answer at all,
 failing at validation or the result contract rather than returning a wrong
 number. The development baseline is where those failures were classified, and
 there the count is 34 of 136 after recovery.
+
+## What it cost and how long it took
+
+All five arms on the matched 122-question development frame, the only frame every
+condition was scored on.
+
+| Arm | Total USD | Median USD/attempt | Total wall time | Median latency | Median in/out tokens | Correct | USD per correct answer |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| C1 direct, raw schema | $161.85 | $0.979 | 1.50 h | 35.7 s | 124,723 / 2,313 | 9 | $17.98 |
+| C2 direct, searchable HKB | $181.99 | $1.191 | 1.69 h | 47.0 s | 155,056 / 3,143 | 29 | $6.28 |
+| C3 direct, structured model | $195.07 | $1.012 | 1.89 h | 44.6 s | 143,867 / 3,067 | 16 | $12.19 |
+| C4 governed, mechanical | $83.44 &dagger; | $0.684 &dagger; | 2.01 h | 50.6 s | 580,587 / 2,509 | 5 | $16.69 &dagger; |
+| C5 governed, docs-idiomatic | $83.44 &dagger; | $0.684 &dagger; | 1.42 h | 31.9 s | 395,010 / 1,599 | 13 | $6.42 &dagger; |
+
+&dagger; estimated, not measured.
+
+**Wall time** is end-to-end per-attempt latency, complete in all five arms. A
+total is the sum over the frame and describes work done, not elapsed clock:
+attempts ran concurrently. C5 is the fastest arm in the study on both axes, and
+C4 the slowest, on the identical questions and the identical governed surface.
+
+**Dollar cost** is measured per attempt only for C1-C3, which bill through the
+Claude Code OAuth surface. Omni's job endpoint exposes no price field, and the
+harness pass that brackets Omni's AI credit counter around each attempt landed
+after every run in this frame, so all 244 governed attempts record
+`cost_source: unavailable`. The governed figures are instead the billing-period
+credit total divided across the Omni-routed attempts on disk: $0.684 per attempt,
+$0.904 as an upper bound. That is an arm-level estimate with no per-job
+attribution, identical on every governed row, and it cannot separate a cheap
+attempt from an expensive one. **Cost is not comparable between the direct and
+governed arms**, and token volume is not a proxy for it: C4 used 3.9 times C1's
+median tokens for roughly half the dollars, because the two arms bill through
+different surfaces.
+
+Per-arm sums, medians, and Tukey quartiles are generated, not hand-tallied, into
+[`matched-122-cost-time-rollup-v1.json`](experiments/analysis/matched-122-cost-time-rollup-v1.json)
+by
+[`matched_122_cost_time_rollup.py`](experiments/analysis/matched_122_cost_time_rollup.py).
+[RESULTS.md section 5](RESULTS.md#cost-and-wall-time-across-all-five-arms) states
+how each column was measured.
+
+### Browsing it per question
+
+[`experiments/trace_viewer/`](experiments/trace_viewer/) builds a self-contained
+condition explorer over the same frame: one row per question, five outcome cells,
+and the arm rollup above the table recomputing under whatever filter is active.
+Expanding a row gives, per arm, the submitted query, the returned rows, the step
+trajectory with per-step tokens and timing, the retrieval and exploratory SQL the
+attempt issued, and its cost, tokens, and wall time.
+
+```bash
+uv run python experiments/trace_viewer/build.py
+```
+
+That writes `experiments/trace_viewer/index.html`, which needs no server and no
+network. It is gitignored: it is a 4MB build product that inlines the frame, and
+it is regenerated from committed artifacts in a second.
+
+Contrast chips pick out the comparisons worth reading. `only_C2` is the eight
+questions only searchable prose solved; `C5_recovers_C4` is the seven the widened
+model rescued; `all_wrong_with_errors` is the 46 no arm reached a scoreable
+answer on.
 
 ## Why the result came out this way
 
@@ -697,14 +752,16 @@ uv run python scripts/autoresearch.py \
 ## Repository map
 
 ```text
-config/                 preregistration and optimization policy
-data/manifests/         committed public manifest and split
-docs/                   reconnaissance, methodology, findings, workflow
-experiments/            append-only experiment metadata and checkpoints
-scripts/                public preparation, split, and development tooling
-sealed_tools/           human-custody boundary tools
-src/omni_benchmark/     validated library implementation
-tests/                  unit, integration, and workflow tests
+config/                  preregistration and optimization policy
+data/manifests/          committed public manifest and split
+docs/                    reconnaissance, methodology, findings, workflow
+experiments/             append-only experiment metadata and checkpoints
+experiments/analysis/    generated aggregate artifacts and their generators
+experiments/trace_viewer/ per-question condition explorer, built locally
+scripts/                 public preparation, split, and development tooling
+sealed_tools/            human-custody boundary tools
+src/omni_benchmark/      validated library implementation
+tests/                   unit, integration, and workflow tests
 ```
 
 Raw public downloads, private labels, secrets, and secret-bearing run artifacts
