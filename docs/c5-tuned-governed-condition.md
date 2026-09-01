@@ -159,6 +159,15 @@ intersection C5 reaches 13/122 (10.7%) against C4's 5/122 (4.1%) and C2's 29/122
 Median total tokens fell from 583,188 to 396,884, tool calls from 7 to 3,
 database queries from 2 to 1, and latency from 50,557 ms to 32,492 ms.
 
+On the five-condition 122-question frame the same direction holds in aggregate:
+C5 spent 1.42 hours of total attempt wall time against C4's 2.01 hours, median
+31.9s against 50.6s, on median input tokens of 395,010 against 580,587. Dollar
+cost cannot separate the two governed arms. Neither run has a measured
+per-attempt figure, so both carry the same arm-level credit estimate of $0.684
+per attempt; the comparison that survives is time and tokens. Per-arm sums,
+medians, and quartiles for all five conditions:
+[`../experiments/analysis/matched-122-cost-time-rollup-v1.json`](../experiments/analysis/matched-122-cost-time-rollup-v1.json).
+
 The mechanism did not move: 134 of 134 parseable C5 queries carry `rewriteSql`
 and none declares a join through the semantic model, matching every other
 governed arm measured (661 of 661 across six arms). Publishing every table and

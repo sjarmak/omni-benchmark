@@ -13113,3 +13113,564 @@ cited in `README.md`, ahead of the condition table, and in the
 `EVALUATION_PROTOCOL.md` provenance section alongside the dataset, the official
 harness, and the Omni comparison post. This is a provenance citation only: no
 research question, condition, estimand, split, scorer, or result changed.
+
+## 2026-09-01 — D-217: Adopt the observed ChatGPT packet adjudication as a separate, non-operative review path
+
+### Hypothesis and scope correction
+
+The supplied 812-row workbook cannot support the approved protocol's claim of
+sole-human review or its active-human-time estimand. Treating blank timing as
+zero would turn unavailable evidence into a false measurement. The defensible
+alternative is to preserve the existing trace as an observational,
+question-blind agent adjudication with operator adoption, while leaving the
+original human-review validator unchanged and requiring a new exact protocol
+approval before any decision can materialize.
+
+The proposed Omni YAML remains authored by the deterministic public-evidence
+generator. ChatGPT, identified in the shared record as product `ChatGPT`, model
+`GPT-5.6 sol`, reasoning effort `High`, adjudicated only the workbook's embedded
+public evidence and candidate/binding metadata. It did not download or parse
+the public benchmark JSONL, inspect `query` or `normal_query`, iterate benchmark
+questions, or use protected/gold information, hidden annotations, dev-B, or
+sealed-test data. It opened the public Hugging Face landing page for context and
+did not independently load the underlying schema, column-meaning, or HKB files.
+This is packet-level adjudication, not independent source revalidation and not
+an Omni Modeling Agent authoring evaluation.
+
+### Adopted evidence and offline validation
+
+The blank input workbook remains SHA-256
+`0e756de6661060b1ebf14abb271be86f7121e4a28b9097d97d76cdf96522955e`.
+The user-supplied output was retained byte-identically and permission-hardened
+to mode `0600`: SHA-256
+`94cabfcbcc997c99a6ef72f82b2781260203da965f73498c7133f8da8968ed9f`.
+It contains all 812 candidates exactly once, changes no immutable cell, records
+812 `accept` decisions with reason
+`public_identity_and_binding_confirmed`, and leaves timing and correction blank.
+
+The recovered rule requires an `entity_count`, embedded `primary_key` identity,
+a proposed field reference in the workbook view, and equality between the
+normalized reference field and the suffix of the embedded identity stable ID.
+The first observed output used a reason outside the frozen enum; one correction
+round replaced it with the valid accepted reason above. The normalized bounded
+transcript extract has SHA-256
+`09a10ff233e294e79fb867e20f64a17befdac10c2d0d69baf4f81a34033f85aa`.
+The byte-reproducible canonical provenance has SHA-256
+`c6e82efc4cb1f069cd5a257de4f7d1cc68e20cc8ee507e14c9c2a92e8bb7b1b0`.
+It reports only a 617.642452-second wall-clock envelope, two substantive user
+instruction messages, seven assistant text messages, 42 tool-call messages,
+and one correction round. Human active time, tokens, and cost are null, not
+zero; no manual-labor or efficiency comparison is permitted.
+
+A separate validator now reproduces the rule and exact membership, rejects
+immutable-cell or timing changes, authenticates the original approval, and
+requires a new amendment approval to bind both the exact proposal and the exact
+provenance SHA. It rejects changed provenance boundaries, summaries,
+limitations, shapes, or approval bindings. The original human-review validator
+still requires finite row-level active seconds. Thirty-eight focused tests pass,
+including the real 812-row chain and byte-identical provenance regeneration;
+focused Ruff and format checks pass. A broader regression run completed with
+2,331 passing tests, three expected environment-gated skips, and 83.11% branch
+coverage before the final representation-only change that copies the validated
+rule, adjudicator, and information boundary into the decision artifact. The
+fresh post-change focused gate passes all 38 adjudication/review tests at 82%
+combined branch coverage; all-repository Ruff and format checks over 365 files
+and `git diff --check` pass.
+
+### Approval gate and consequence
+
+The exact non-operative amendment proposal is
+`docs/protocol-amendment-agent-adjudication-proposal.md`, SHA-256
+`ab16ffda169406b174e496a47bd8143ebcb7814cd4bb3d9b36d56d4df0ba6795`,
+Git blob `0c8b04144155d8846d17d12bff903b73119f7661`. Operator adoption authorizes
+preparing and validating this proposal, not silently changing the already
+approved protocol. A second explicit approval of this exact version is required
+before its text is inserted or an append-only decision artifact is created.
+
+No decision artifact or accepted-catalog freeze exists. Question coverage was
+not inspected, and no deployment, evaluated attempt, dev-B access, or sealed
+access occurred. D-196 and every existing live prerequisite remain in force.
+
+## 2026-09-01 — D-218: Approve the agent-adjudication amendment and materialize its exact decisions
+
+### Approval and protocol insertion
+
+The repository operator explicitly approved
+`docs/protocol-amendment-agent-adjudication-proposal.md` by its exact SHA-256
+`ab16ffda169406b174e496a47bd8143ebcb7814cd4bb3d9b36d56d4df0ba6795`.
+The Git blob is `0c8b04144155d8846d17d12bff903b73119f7661`. The append-only,
+mode-`0600` approval record is
+`experiments/r2-public-evidence-measures/agent-adjudication-amendment-approval-v1.json`,
+SHA-256
+`d0fce269a68b0dcda9d70493e1ac3fd2e99334d0f94be0407d139885f99c645c`.
+It binds the approved proposal and the canonical provenance SHA-256
+`c6e82efc4cb1f069cd5a257de4f7d1cc68e20cc8ee507e14c9c2a92e8bb7b1b0`.
+
+The marked amendment was inserted byte-for-byte into the working-tree
+`EVALUATION_PROTOCOL.md`. Independent extraction gives block SHA-256
+`f3cc3ee5b55a9e4db08694ae7d43d25c33fe72bbe7e9d55b4eab2df41e572807`
+for both proposal and protocol. The resulting protocol-file SHA-256 is
+`53a5e5e64bdddb4540edb9781143f2c7371eef062fa386891d592005536be2eb`.
+The approved proposal itself was not edited.
+
+### Materialized decision result
+
+The separate agent-adjudication validator authenticated both approval chains,
+the catalog, blank workbook, adopted workbook, normalized transcript, and
+canonical provenance, then reproduced the recovered packet rule for every row.
+The append-only mode-`0600` result is
+`experiments/r2-public-evidence-measures/measure-agent-adjudication-decisions-v1.json`,
+361,391 bytes, SHA-256
+`332d29892ac362985478a674027cf4aa5a760825c4d9ea253a021b5f869ff5a2`.
+It contains 812 `agent_adjudicated` accepts, zero rejects, zero defers, zero
+binding corrections, and `active_review_seconds: null` at row and summary
+levels. It preserves the ChatGPT / GPT-5.6 sol / High identity, recovered rule,
+question/gold information boundary, exact source hashes, and both approvals.
+
+The final focused catalog/review/adjudication gate passes 54 tests at 81.52%
+combined branch coverage, including byte-identical regeneration of the real
+provenance and decision artifacts. All-repository Ruff and format checks over
+365 files and `git diff --check` pass.
+
+### Consequence
+
+This closes the amended adjudication decision gate only. The accepted-catalog
+freeze and separate opportunity map do not yet exist, and no dev-A question or
+question-coverage statistic was inspected. The protocol and implementation
+remain uncommitted under the conservative profile, so the Git-reading control
+plane still cannot use them. D-196, full-source cleanup, credentials, receipts,
+budget preflights, deployment readback, no-rerun policy, and every live-action
+boundary remain in force. No deployment, evaluated attempt, dev-B access, or
+sealed access occurred.
+
+## 2026-09-01 — D-219: Freeze the 812-measure accepted catalog before question mapping
+
+### Hypothesis and freeze contract
+
+The adopted decisions are not yet a usable experimental intervention until the
+accepted subset is separated from the pending-review representation and bound
+to the complete approved evidence chain. That freeze must happen before any
+dev-A question is inspected so question coverage cannot influence catalog
+membership or definitions.
+
+The deterministic freeze authenticates the v2 candidate catalog, regenerates
+the agent-adjudication decision artifact from the blank and adjudicated
+workbooks, transcript extract, provenance, both exact protocol proposals, and
+both approval records, and requires exact decision-artifact bytes. It then
+copies only accepted candidates, removes the now-inapplicable blank `review`
+record, and binds ordered candidate and measure IDs, the 16-database inventory,
+and the deduplicated public generator-input inventory. Changed definitions,
+membership, decisions, provenance, approval bindings, database summaries,
+input hashes, or input paths fail closed.
+
+### Offline result and verification
+
+The append-only, mode-`0600` artifact is
+`experiments/r2-public-evidence-measures/public-evidence-measure-catalog-v1.json`:
+1,640,988 bytes, SHA-256
+`2d2f9c15bc5f5271db924fa4377b41c26a0e61bcec221ed31d10b3365358039a`.
+Its internal pre-hash manifest digest is
+`76f3415f6daf8874c9794d060a3a896a19daca66c799f14e04ab7f5408da9e16`.
+It contains exactly 812 unique accepted candidates and 812 unique measure IDs,
+all `entity_count`, across all 16 eligible databases. The generator record
+binds 81 deduplicated public input files and version
+`r2-public-evidence-measure-candidates-v1`. The source record binds the exact
+candidate catalog, decision artifact, workbooks, transcript, provenance, both
+proposals, and both approvals, including decision-artifact SHA-256
+`332d29892ac362985478a674027cf4aa5a760825c4d9ea253a021b5f869ff5a2`.
+
+The real artifact regenerates byte-identically from that chain. It contains no
+`review` records and no recursively forbidden protected-field keys. Thirty-one
+focused tests pass; freeze-module branch coverage is 89.74%, above the
+repository's 80% threshold. Tests cover exact real-chain regeneration,
+append-only mode-`0600` publication and overwrite refusal, changed frozen
+content, changed authoritative inputs, and malformed generator inventories.
+Focused Ruff and format checks pass, and `git diff --check` passes.
+The exact current worktree also passes the full repository gate: 2,347 tests
+pass, three environment-gated tests skip as expected, and branch coverage is
+83.52%. All-repository Ruff checks and formatting checks over 366 files pass.
+
+### Consequence
+
+The accepted catalog is frozen before opportunity analysis. Its 812/812
+acceptance rate is evidence about this deterministic primary-key candidate
+family under packet-level agent adjudication; it is not independent source
+revalidation, domain authority, human review burden, or evidence of broad Omni
+product value. No dev-A question, question coverage, hidden annotation, dev-B,
+sealed-test field, or gold value was inspected in this freeze. No deployment or
+evaluated attempt occurred. The protocol and implementation remain uncommitted,
+and D-196 plus every live-action prerequisite remain in force. The next permitted
+slice is the separately frozen, analysis-only dev-A question-to-measure
+opportunity map; it cannot change this catalog or runtime definitions.
+
+## 2026-09-01 — D-220: Prepare the separate 136-row opportunity-map review packet
+
+### Hypothesis and contract
+
+The primary replacement denominator cannot be selected after seeing either arm.
+After D-219 froze catalog membership, the next defensible step is therefore a
+separate reviewer packet that binds every eligible public dev-A question to only
+the already accepted measures for its database. The apparatus must preserve the
+approved human mapping pass: the agent may prepare and validate it but may not
+infer or fill decisions or active review time.
+
+The deterministic CSV exposes the benchmark `query` text, never
+`normal_query`, and a compact JSON inventory for each database containing
+measure ID, label, description, view, and public identity field. Its only
+writable cells are `decision`, `measure_ids_json`, and
+`active_review_seconds`. Decisions are `mapped`, `none`, or `ambiguous`.
+`mapped` requires one or more unique sorted accepted measure IDs from the same
+database; `none` requires an empty list; `ambiguous` may preserve zero or more
+same-database candidate IDs without entering the opportunity denominator. Every
+row requires finite nonnegative human active seconds.
+
+The validator regenerates the blank packet from the accepted-catalog bytes,
+public manifest, and committed dev-A IDs; rejects catalog drift, changed
+questions or hashes, missing or duplicate IDs, unknown or cross-database
+measures, incomplete decisions, invalid timing, extra columns, and protected
+fields; and emits a canonical final map containing IDs, decisions, timing, and
+hashes but no copied question text. The map remains analysis-only and is
+prohibited from model files, prompts, retrieval, job bodies, and every other
+runtime surface.
+
+### Offline result
+
+The append-only blank packet is
+`experiments/r2-public-evidence-measures/measure-opportunity-review-workbook-v1.csv`:
+2,909,530 bytes, mode `0600`, SHA-256
+`5412b1b815df9cf0ca00b4fc673df2c8ca71ff1559cbb05bed0d4b6fa240d6ec`.
+It binds accepted-catalog SHA-256
+`2d2f9c15bc5f5271db924fa4377b41c26a0e61bcec221ed31d10b3365358039a`,
+public-manifest SHA-256
+`ed8a7b3f55e893e05a9e602b34b39509ca29a30798afd63fd9a521f5ffbc7d0e`,
+and dev-A-ID SHA-256
+`acfafec356386612f77a2eef9f37fc5459dd8e23cace6f7b652a505dadfd81a6`.
+It regenerates byte-identically and contains exactly the 136 dev-A IDs on the 16
+eligible databases. Its IDs are a subset of the 154 committed dev-A IDs and are
+disjoint from all 77 dev-B and 101 sealed IDs. All 136 decision and timing cells
+are blank and every measure-selection cell is the empty JSON array. No real
+question text was printed to stdout or the research log.
+
+Twenty-two focused tests pass at 82.34% combined branch coverage for the map and
+CLI, with the core module above 80%. They cover the real packet, deterministic
+scope, mapped/none/ambiguous semantics, omission and duplication, immutable
+bindings, invalid timing, protected fields, final question-text exclusion,
+byte-identical final regeneration, mode-`0600` publication, and overwrite
+refusal. All-repository Ruff and format checks over 369 files and
+`git diff --check` pass.
+
+### Consequence and human gate
+
+The opportunity-map apparatus is ready, but the opportunity map itself is not
+frozen: the designated human reviewer must still complete all 136 decisions and
+record active review seconds. This is distinct from the agent-adjudicated
+measure-catalog amendment, which explicitly changed no other part of the
+series. An agent-filled map would require a new exact protocol amendment and
+approval; it must not be substituted silently. No hidden annotation, gold,
+dev-B question, sealed question, deployment, or evaluated attempt was accessed.
+D-196 and every live-action prerequisite remain in force.
+
+## 2026-09-01 — D-221: Freeze the paired offline R2 semantic bundles
+
+### Hypothesis and pair contract
+
+The accepted catalog cannot support a causal measures contrast until it is
+compiled into a pair whose common model surface is authenticated and whose only
+treatment-semantic difference is the frozen measures. The offline compiler
+therefore starts from the exact public C5 sources for each of the 16 eligible
+databases, authenticates every C5 file through its generated manifest, and
+materializes the protocol's complete current Balanced `ai_settings` block in
+both arms. It then appends each accepted definition only to its bound R2-M1 view
+while leaving R2-C5B measure-free.
+
+The compiler fails closed on catalog or C5 hash drift, malformed or duplicate
+JSON/YAML keys, missing views, changed view or field bindings, pre-existing
+measure collisions, duplicate measure names or IDs, proposed-YAML drift,
+protected fields, incomplete injection, non-measure semantic differences, and
+noncanonical output manifests. It consumes no opportunity map or benchmark
+question surface. The deployment-plan validator was generalized narrowly to
+accept either the historical `ai_context`-only model document or
+`ai_context` plus the exact frozen Balanced block; partial, changed, or extra
+settings remain invalid.
+
+### Offline result and exact readback
+
+The append-only output root is
+`experiments/r2-public-evidence-measures/offline-semantic-bundles-v1`. Its root
+manifest is SHA-256
+`bbea478ed6947387607cfcdf043fee2cb1845122c9eabcb4e1487d573901a1a2`,
+with internal content-bound artifact digest
+`13475da89c59d7267cb2ece4859c95d89c4671d3953846f64b2bbd45f9b5ec86`.
+The tree contains 3,533 files and 18,431,315 bytes: 16 R2-C5B bundles with zero
+measures and 16 R2-M1 bundles with exactly 812 unique accepted measures. It
+binds accepted-catalog SHA-256
+`2d2f9c15bc5f5271db924fa4377b41c26a0e61bcec221ed31d10b3365358039a`
+and each database's exact generated C5 source manifest. Every changed treatment
+view preserves the complete control bytes as a prefix and adds only the
+canonical top-level `measures` block; every other semantic file is byte-equal
+between arms. Both model files carry byte-equal explicit Balanced settings.
+
+An independent disk readback rehashed every root file record and passed all 32
+existing semantic deployment-plan validators. All 3,533 files are mode `0600`
+and all 35 directories are mode `0700`. The first mode audit caught the two
+automatically created arm directories at `0775`; the publisher now creates each
+level explicitly at `0700`, and those two metadata modes were tightened without
+changing any file byte or digest.
+
+Thirty-nine focused compiler and CLI tests pass at 83.71% combined branch
+coverage, with the core compiler at 83%. They include byte-identical real-chain
+regeneration pinned to both manifest digests, one-to-one 812-measure injection,
+catalog/C5/binding/collision failures, exact settings, private append-only
+publication, overwrite refusal, and disk tamper detection. The deployment
+validator's 43 focused tests also pass, including exact Balanced acceptance and
+partial or changed settings rejection. Focused Ruff and format gates pass.
+
+### Consequence
+
+The offline intervention is now frozen and deployable in form, but it is not
+deployed. The separately human-reviewed opportunity map remains incomplete and
+the protocol/implementation remain uncommitted under the conservative profile.
+D-196, source cleanup, credential ownership, action-specific receipts, budget
+preflight, exact live deployment readback, append-only evaluated attempts, and
+the no-wrong-answer-rerun rule all remain in force. No question, opportunity
+decision, hidden annotation, correctness, dev-B, sealed-test field, live Omni
+endpoint, or evaluated attempt was accessed by this slice.
+
+## 2026-09-01 — D-222: Register the exact public-only paired R2 schedule algorithm
+
+### Hypothesis and decision relevance
+
+The R2 arms are contemporaneous only if database and arm order cannot be chosen
+after outcomes or drift differently by condition. The schedule is therefore an
+evaluation intervention, not incidental orchestration. Its nuisance variables
+are database-local temporal order and which arm runs first within a pair; the
+engineering decision is whether any observed replacement or cost difference can
+be attributed to measures rather than systematic order.
+
+### Frozen algorithm before materialization
+
+Bead `omni-benchmark-w5x.13` freezes
+`r2_database_round_robin_paired_v1` before schedule bytes are generated. It uses
+only the public manifest identity/database projection, committed dev-A IDs,
+development-split metadata, the 16-database target configuration, and approved
+seed `omni-livesqlbench-large-v1-r2-measures-schedule-v1`. Question text is not a
+scheduling signal, and no opportunity decision or outcome is an input.
+
+For each database, question IDs are ordered by a domain-separated SHA-256 key.
+Databases receive a separately keyed order, and one adjacent two-arm question
+pair is emitted per nonempty database per round. First-arm orientation is
+balanced within every database: even-sized strata split exactly; odd-sized
+strata differ by one, with their extra orientations assigned by another
+domain-separated database rank so the complete 136-pair frame is exactly 68
+R2-C5B-first and 68 R2-M1-first. Pair membership, orientation, and schedule
+position are assigned before any execution and never change with completion
+order.
+
+The canonical artifact must bind all source hashes, algorithm/version/seed,
+ordered pair and attempt identities, per-database counts and orientation
+balance, and its internal digest. Validation requires 136 unique pairs and 272
+unique attempts, each eligible ID once per arm, adjacent pair blocks, exact
+global balance, per-database imbalance at most one, deterministic round-robin
+interleaving, and no extra scope. Publication is append-only mode `0600`.
+
+This registration authorizes only offline identity scheduling. It does not
+complete the human opportunity map, land the working tree in Git, deploy either
+arm, or open an evaluated attempt. D-196 and every live prerequisite remain in
+force.
+
+## 2026-09-01 — D-223: Freeze the public-only paired R2 execution schedule
+
+### Offline result and exact readback
+
+The canonical append-only schedule is
+`experiments/r2-public-evidence-measures/r2-paired-execution-schedule-v1.json`.
+It is 119,411 bytes at mode `0600`, with external SHA-256
+`8498c35e062dd893d1f20eda503bb65c95603b94c5fdd5fa2a87a8c7ccc27bda`
+and internal content-bound digest
+`5a9c89eda927056183e3cd5645e61b0aeca3f9954c0ea6074d1dd4039efefbdd`.
+Independent regeneration from the exact public manifest, committed dev-A IDs,
+development-split metadata, target configuration, algorithm, and seed is
+byte-identical.
+
+The schedule contains 136 unique eligible dev-A question identities and 272
+unique attempts across 16 databases. Every identity has one adjacent R2-C5B /
+R2-M1 pair. First-arm order is exactly 68 R2-C5B and 68 R2-M1 globally; the
+maximum within-database imbalance is one. The artifact contains no `query`,
+`normal_query`, correctness, outcome, or protected-answer field. Question text,
+the opportunity map, hidden annotations, dev-B, sealed-test content, and
+outcomes are not scheduling inputs.
+
+Twenty focused schedule and CLI tests pass at 83.21% combined branch coverage.
+The 124-test cross-module regression over the schedule, opportunity-map,
+treatment-bundle, and semantic-deployment surfaces passes. All-repository Ruff
+and format checks over 375 files and `git diff --check` pass.
+
+### Consequence
+
+The offline paired order is frozen, but no attempt is executable yet. The human
+opportunity map remains incomplete, the working tree remains uncommitted, and
+D-196 plus the exact live prerequisites still hold. This slice did not deploy a
+semantic model, contact Omni, consume a receipt, inspect correctness, or open a
+dev-A, dev-B, or sealed evaluated attempt.
+
+## 2026-09-01 — D-224: Freeze the R2 semantic-replacement classifier
+
+### Hypothesis and classification contract
+
+The causal R2 result is not defensible if semantic reuse is interpreted after
+the treatment output is visible. The preregistered classifier and its fixtures
+therefore freeze before any R2 attempt. The primary denominator remains every
+human-mapped scheduled opportunity pair, including refusals, errors, and
+unparseable queries. A parseable-pair rate is a labeled sensitivity only.
+
+The classifier uses deterministic exact structure and lexical matching, never
+an LLM adjudicator. It recognizes an accepted measure only through an exact
+execution-bearing structured-query reference or exact semantic token. It
+recognizes an inline equivalent only when the frozen aggregate type is applied
+to the exact frozen source reference in authored SQL or the structured
+calculation AST. SQL comments, quoted strings, dollar-quoted strings, malformed
+structures, unsupported formulas, and unclosed lexical regions cannot create a
+positive match; unresolved evidence remains a primary non-replacement and is
+counted separately. `rewriteSql` and `join_via_map` are not inputs.
+
+### Offline freeze and verification
+
+The implementation is `src/omni_benchmark/r2_semantic_reuse.py`, with bounded
+append-only CLI `src/omni_benchmark/r2_semantic_reuse_cli.py` and synthetic
+fixtures in `tests/test_r2_semantic_reuse.py`. The canonical mode-`0600` freeze
+manifest is
+`experiments/r2-public-evidence-measures/r2-semantic-reuse-classifier-freeze-v1.json`.
+It is 1,190 bytes, external SHA-256
+`465dcb0f69efab75146e8cd180a68ea85da3ad8472ce05fe8bf36a8109d345c1`,
+and has internal digest
+`b96fc524c07ed924dcd8ade478a67fc3afcdc46122a70d8b9976d0e2f7061a78`.
+It binds the exact source, CLI, fixtures, classifier policy, accepted-catalog
+SHA-256 `2d2f9c15…039a`, and paired-schedule SHA-256 `8498c35e…27bda`.
+
+An exact-readback compatibility check validates all 812 accepted real catalog
+measures against the classifier contract. All 812 are `count_distinct`, and all
+812 measure references and source references are unique. The exact 136-pair,
+272-attempt schedule also validates. The classifier emits only aggregate counts,
+Wilson intervals, source hashes, policy, and a digest of the regenerable
+pair-level classifications; it emits no question identity, measure identity,
+authored SQL, question text, correctness, or result value.
+
+Fifty-two focused classifier and CLI tests pass at 86.69% combined branch
+coverage. The 176-test R2, opportunity-map, bundle, and deployment regression
+set passes. The complete repository gate passes with 2,483 tests, three expected
+integration skips, and 83.59% branch coverage.
+
+### Consequence
+
+The primary mechanism rule can no longer be chosen after seeing R2 output, but
+no mechanism estimate exists yet. The human opportunity workbook remains absent,
+the R2 working tree remains uncommitted, and D-196 plus all exact live
+prerequisites remain in force. This slice used synthetic query fixtures and the
+public accepted catalog and schedule only. It made no Omni call, deployment,
+evaluated attempt, correctness read, result-value read, dev-B access, or sealed
+access.
+
+## 2026-09-01 — D-225: Freeze the R2 paired secondary-outcome analysis
+
+### Hypothesis and analysis contract
+
+Accuracy, reliability, and cost contrasts are vulnerable to the same post-result
+choice as the primary mechanism classifier. The complete secondary analysis is
+therefore frozen before either R2 arm exists. It consumes the exact paired
+schedule, one complete canonical generation artifact per arm, and one exact
+generation-bound `score-artifact-v1` per arm from each of the two frozen scorers.
+Every generation-file and generation-record hash must match, both scorer
+identities and versions are exact, and incomplete or unscoreable score evidence
+blocks publication.
+
+Accuracy uses all 136 scheduled pairs. Treatment-minus-control accuracy and
+cost use 10,000 question-level paired-bootstrap replicates under sampler
+`sha256_modulo_question_count_v1`, seed
+`omni-livesqlbench-large-v1-r2-measures-analysis-v1`, and the nearest-rank 95%
+interval. Cost totals, cost per scheduled, answered, and correct attempt, and the
+paired cost interval are unavailable if any scheduled attempt lacks cost; the
+analyzer does not silently switch to a complete-case arm total. Efficiency
+interpretation still requires comparable output coverage. Generation outcomes,
+terminal failure classes, result-contract failures, tokens, latency, tool calls,
+database queries, and validation attempts are aggregate-only.
+
+### Offline freeze and verification
+
+The implementation is `src/omni_benchmark/r2_paired_outcomes.py`, with bounded
+append-only CLI `src/omni_benchmark/r2_paired_outcomes_cli.py` and synthetic
+fixtures in `tests/test_r2_paired_outcomes.py`. The canonical mode-`0600` freeze
+manifest is
+`experiments/r2-public-evidence-measures/r2-paired-outcome-analysis-freeze-v1.json`.
+It is 1,527 bytes, external SHA-256
+`a640fd53e68935fb520f2c1dfb5d3cb99b02edbfce7ff8f70dd21df5bc4c6b1c`,
+and has internal digest
+`1588b6ee7fbd34cb41bfa163633011d3d54a2a54b2dc05852bf3a04f44b76aab`.
+It binds the exact source, CLI, fixtures, schedule SHA-256
+`8498c35e…27bda`, both frozen scorer versions, full-scheduled denominator,
+bootstrap, cost-completeness rule, aggregate-only output, and the fixed
+result-contract classes.
+
+Sixteen focused tests pass. The code-and-CLI branch-coverage gate is 80.69%.
+Exact identity-only readback validates the real schedule at 136 pairs and 272
+attempts without opening question text. The report contains hashes and aggregate
+counts, rates, intervals, failure frequencies, and telemetry only; it contains no
+question or attempt identity, SQL, result value, or question-level correctness.
+The 261-test cross-R2 regression over adjudication, catalog, opportunity-map,
+bundle, schedule, classifier, outcome analysis, and deployment surfaces passes.
+All-repository Ruff, focused format, and `git diff --check` pass.
+
+### Consequence
+
+Neither the primary mechanism definition nor the secondary accuracy, reliability,
+and cost analysis can now be selected after outcomes are visible. No R2 outcome
+has been observed. The separate human opportunity map remains incomplete, the
+R2 working tree remains uncommitted, and D-196 plus all exact live prerequisites
+remain in force. This slice used synthetic generations and scores plus the public
+identity-only schedule. It made no Omni call, deployment, evaluated attempt,
+correctness read, result-value read, dev-B access, or sealed access.
+
+## 2026-09-01 — D-226: Report cost and wall time across all five arms on one frame
+
+### Hypothesis
+
+The repository already carried the resource evidence a report needs, but not in a
+form anyone could read across conditions. `sealed-telemetry-summary-v2.json`
+covers the sealed C1-C4 cohorts, `c5-telemetry-comparison-v1.json` covers C4
+against C5 on dev-A with no cost axis, and the August credit artifacts describe
+governed spend only at the account level. No artifact put all five arms on one
+frame with both cost and time, so the two axes were being reported piecemeal and
+the governed arms' unmeasured cost was disclosed in prose rather than in data.
+
+### What was done
+
+`experiments/analysis/matched_122_cost_time_rollup.py` reads the same three
+committed score artifacts the condition explorer reads, joins them to their
+generation records by `generation_sha256`, and aggregates the resource fields the
+generation records already carry. Correctness is read, never recomputed, and the
+per-arm official counts reproduce `c5-matched-122-comparison-v1.json`. Output is
+`experiments/analysis/matched-122-cost-time-rollup-v1.json`, 6,129 bytes, file
+SHA-256 `3c29d831104ee90bdf75800849a697c515410027cbfb00c6abdb6c8ed52310fd`,
+payload SHA-256 `9450a66ac4dd9049cbfc9d21a952e84a4555d99b0a37de5ce780d9574ce07ead`,
+generator SHA-256
+`21f900de13798b2d6979b0c6380412ad58d05def3cc43fccd60242cc9a29d015`.
+
+Measured totals over the 122-question frame: C1 $161.85 / 1.50 h, C2 $181.99 / 1.69 h, C3 $195.07 / 1.89 h, with 122/122 cost and latency
+coverage. C4 and C5 have 0/122 measured cost and carry the arm-level credit
+estimate of $0.6839 per attempt, $0.9037 upper bound, so their $83.44 totals are
+labelled `cost_measured: false` in the artifact itself. Wall time and tokens are
+measured in all five arms: C4 2.01 h at 50.6s median against C5 1.42 h at 31.9s,
+on median input tokens 580,587 against 395,010.
+
+### Consequence
+
+The cost-and-time reading is now stated once, generated rather than hand-tallied,
+and repeated in the places a reader arrives from: `RESULTS.md` section 5 gains a
+five-arm table with a per-column measurement note, `README.md` gains a summary
+bullet and a pointer to the condition explorer, `docs/methodology.md` states how
+cost and wall time are measured and when a figure is an estimate rather than a
+measurement, `docs/c5-tuned-governed-condition.md` records the frame-level
+comparison, and `docs/evidence-index.md` carries the artifact with its digests
+and custody posture. The governed dollar figures remain estimates and remain
+non-comparable with the direct arms; that limit is now carried by the data, not
+only by the prose around it. No Omni call, deployment, evaluated attempt, dev-B
+access, or sealed access was made.

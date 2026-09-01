@@ -189,6 +189,19 @@ What that table says, mechanism first:
   from 69.6% to 98.5%, and the hand-written-aggregate rate did not fall. View
   sparsity was not what kept the governed path from composing metrics; the
   absent measures were, and better context is worth real accuracy on its own.
+- **Cost and time favor the governed path on its own surface, and the dollar
+  figures do not cross arms.** On the matched 122-question development frame, C5
+  answered 13 to C4's 5 while spending 29% less wall time (1.42 h against 2.01 h;
+  median 31.9s against 50.6s) on 32% fewer median input tokens. Dollar cost is
+  measured per attempt only for C1-C3, which bill through the Claude Code OAuth
+  surface at $161.85, $181.99, and $195.07 over the frame. Omni's job endpoint
+  exposes no price field and the credit-bracketing pass postdates every run here,
+  so C4 and C5 carry an arm-level estimate from the billing-period credit total,
+  $0.684 per attempt with a $0.904 upper bound, identical on every governed row.
+  Per-arm sums, medians, and quartiles:
+  [`experiments/analysis/matched-122-cost-time-rollup-v1.json`](experiments/analysis/matched-122-cost-time-rollup-v1.json)
+  via [`matched_122_cost_time_rollup.py`](experiments/analysis/matched_122_cost_time_rollup.py);
+  RESULTS.md section 5 states how each column was measured.
 - **C2 over C1 is the strongest result in the study, and it is a result about
   business semantics.** Searchable business knowledge, in raw prose form, is
   worth about 12 points to a direct-SQL agent, interval 5.6 to 18.7, excluding
@@ -364,6 +377,7 @@ this particular benchmark:
 | [docs/experiment-trajectory.md](docs/experiment-trajectory.md) | What I tried and what it changed, including the failures |
 | [docs/research-log.md](docs/research-log.md) | The contemporaneous ledger, about 200 dated decisions |
 | [docs/c5-tuned-governed-condition.md](docs/c5-tuned-governed-condition.md) | The in-progress C5 design |
+| [experiments/trace_viewer/](experiments/trace_viewer/) | Per-question condition explorer: all five arms on the matched 122-question frame, with the submitted query, returned rows, trajectory, cost, tokens, and wall time |
 | [docs/methodology.md](docs/methodology.md) | Concise experimental design and architecture |
 | [docs/product-findings.md](docs/product-findings.md) | Product and harness feedback in detail |
 | [docs/evidence-index.md](docs/evidence-index.md) | Reproducibility and audit trail |

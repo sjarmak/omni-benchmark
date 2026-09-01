@@ -1,0 +1,498 @@
+<title>Matched dev-A condition explorer</title>
+<style>
+:root{
+  --bg:#FBFBFC; --panel:#FFFFFF; --line:#DFE3E8; --line-2:#EDF0F3;
+  --ink:#14181D; --ink-2:#5A646F; --ink-3:#8A939E;
+  --accent:#1E6091; --good:#1F6F43; --bad:#9B2C2C; --warn:#8A5A12;
+  --good-bg:#E4F2EA; --bad-bg:#F7E9E9; --warn-bg:#F7EFDF;
+  --chip:#F1F4F7; --hover:#F6F8FA;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1114; --panel:#161A1F; --line:#2A3038; --line-2:#20252B;
+    --ink:#E8ECF1; --ink-2:#A2ACB8; --ink-3:#6E7885;
+    --accent:#4192DB; --good:#4FA97A; --bad:#D45B5B; --warn:#C79A45;
+    --good-bg:#16281F; --bad-bg:#2B1A1A; --warn-bg:#2A2312;
+    --chip:#1D232A; --hover:#1B2027;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1114; --panel:#161A1F; --line:#2A3038; --line-2:#20252B;
+  --ink:#E8ECF1; --ink-2:#A2ACB8; --ink-3:#6E7885;
+  --accent:#4192DB; --good:#4FA97A; --bad:#D45B5B; --warn:#C79A45;
+  --good-bg:#16281F; --bad-bg:#2B1A1A; --warn-bg:#2A2312;
+  --chip:#1D232A; --hover:#1B2027;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;margin:0}
+.wrap{max-width:1500px;margin:0 auto;padding:26px 22px 90px}
+header{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:18px}
+h1{font-size:1.5rem;font-weight:650;letter-spacing:-.015em;margin:0 0 6px}
+.sub{color:var(--ink-2);font-size:.88rem;margin:0;max-width:82ch}
+.sub+.sub{margin-top:8px}
+code{font-family:var(--mono);font-size:.85em;background:var(--chip);padding:1px 5px;border-radius:4px}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+input[type=search],select{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);
+  border-radius:7px;padding:7px 10px}
+input[type=search]{min-width:min(320px,100%);flex:1 1 260px}
+input[type=search]:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;align-items:center}
+.chips .lab{color:var(--ink-3);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
+.chip{font:inherit;font-size:.8rem;background:var(--chip);color:var(--ink-2);border:1px solid transparent;
+  border-radius:999px;padding:4px 11px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip .k{font-family:var(--mono);opacity:.75;margin-left:5px}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.rollup{font-size:.78rem}
+.rollup td,.rollup th{padding:5px 10px;white-space:nowrap}
+.rollup td.num,.rollup th.num{text-align:right;font-family:var(--mono)}
+.rollup td.est{color:var(--ink-3);font-style:italic}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:16px}
+.tile{background:var(--panel);padding:11px 13px}
+.tile .n{font-family:var(--mono);font-size:1.16rem;font-weight:600;letter-spacing:-.02em;display:block}
+.tile .l{color:var(--ink-3);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--line-2);white-space:nowrap;vertical-align:top}
+thead th{position:sticky;top:0;background:var(--panel);border-bottom:1px solid var(--line);z-index:1;
+  font-weight:600;color:var(--ink-2);cursor:pointer;user-select:none;font-size:.76rem;
+  text-transform:uppercase;letter-spacing:.05em}
+thead th:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+thead th[data-dir]::after{content:" \25B2";color:var(--accent)}
+thead th[data-dir="desc"]::after{content:" \25BC"}
+tbody tr[data-key]{cursor:pointer}
+tbody tr[data-key]:hover{background:var(--hover)}
+tbody tr:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.q{max-width:52ch;white-space:normal;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+tr.open .q{-webkit-line-clamp:unset}
+.id{font-family:var(--mono);font-size:.8rem}
+.db{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);max-width:20ch;overflow:hidden;text-overflow:ellipsis}
+.o{font-family:var(--mono);text-align:center;font-weight:600;width:58px;line-height:1.25}
+.o .c{display:block;font-weight:400;font-size:.66rem;color:var(--ink-3)}
+.o .c.est{opacity:.7;font-style:italic}
+.o.correct{background:var(--good-bg);color:var(--good)}
+.o.wrong{color:var(--ink-3)}
+.o.err{background:var(--bad-bg);color:var(--bad)}
+.pat{font-family:var(--mono);font-size:.74rem;background:var(--chip);color:var(--ink-2);padding:2px 7px;border-radius:4px}
+.pat.hot{background:var(--accent);color:#fff}
+tr.det td{background:var(--hover);white-space:normal;padding:16px}
+.armgrid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(300px,1fr);gap:14px;overflow-x:auto;padding-bottom:6px}
+@media (max-width:900px){.armgrid{grid-auto-flow:row;grid-auto-columns:auto}}
+.arm{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0}
+.arm.correct{border-color:var(--good)}
+.arm.err{border-color:var(--bad)}
+.arm h3{margin:0 0 8px;font-size:.9rem;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.arm h3 .st{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
+.arm h3 .st.correct{color:var(--good)} .arm h3 .st.err{color:var(--bad)} .arm h3 .st.wrong{color:var(--ink-3)}
+.facts{list-style:none;margin:0 0 10px;padding:0;font-family:var(--mono);font-size:.76rem}
+.facts li{display:flex;justify-content:space-between;gap:12px;padding:2px 0;border-bottom:1px solid var(--line-2)}
+.facts li span:first-child{color:var(--ink-3)}
+pre{font-family:var(--mono);font-size:.74rem;background:var(--chip);border-radius:6px;padding:9px;margin:0 0 10px;
+  max-height:300px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+.mini{font-size:.72rem;width:100%;border-collapse:collapse}
+.mini th,.mini td{padding:1px 5px;font-family:var(--mono);border-bottom:1px solid var(--line-2);white-space:nowrap}
+.mini th{color:var(--ink-3);font-weight:600;text-transform:none;letter-spacing:0;position:static}
+.steps{list-style:none;margin:0 0 10px;padding:0;font-family:var(--mono);font-size:.72rem}
+.steps li{display:grid;grid-template-columns:1.6em 1fr auto;gap:8px;padding:3px 0;border-bottom:1px solid var(--line-2);align-items:baseline}
+.steps .s{color:var(--ink-3)}
+.steps .t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.steps .t b{font-weight:600}
+.steps .d{color:var(--ink-3);white-space:nowrap}
+.steps li.failed .t{color:var(--bad)}
+.act{font-family:var(--mono);font-size:.72rem;margin:0 0 8px;padding:6px 8px;background:var(--chip);border-radius:5px}
+.act .rq{color:var(--ink)}
+.act .meta{color:var(--ink-3);word-break:break-all}
+.act .rq{word-break:break-word}
+.act{word-break:break-word}
+.act pre{margin:5px 0 0;padding:6px;font-size:.7rem;max-height:150px}
+.h4{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin:0 0 5px;font-weight:600}
+.qbox{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:14px}
+.qbox p{margin:0 0 8px}
+.qbox p:last-child{margin:0}
+.dim{color:var(--ink-3)}
+.empty{padding:34px;text-align:center;color:var(--ink-3)}
+footer{margin-top:26px;color:var(--ink-3);font-size:.8rem;max-width:82ch}
+@media (max-width:640px){.wrap{padding:18px 12px 60px}h1{font-size:1.28rem}}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Matched dev-A condition explorer</h1>
+  <p class="sub">All five conditions on the same @@N@@ dev-A questions. C1&ndash;C3 are the direct-SQL arms, C4 the mechanical governed baseline, C5 the docs-idiomatic governed deployment. Each row is one question; the five cells are its outcome under the official frozen scorer. Click a row for the submitted query, the returned rows, and the cost, tokens, and wall time each arm spent getting there.</p>
+  <p class="sub">Correctness is read from the committed score artifacts, never recomputed here: <code>public-direct-baseline-dev-a-scores-v1</code> for C1&ndash;C3, <code>c4-matched-122-scores-v1</code>, and <code>c5-matched-122-scores-v1</code>. The per-condition totals this page shows reproduce <code>c5-matched-122-comparison-v1.json</code> exactly. Nothing on this page reads gold SQL, the sealed test partition, or any hidden annotation. <b>Cost is not comparable across the direct and governed arms.</b> C1&ndash;C3 report a provider-billed figure per attempt. Omni's job API exposes none, and the harness pass that brackets Omni's AI credit counter around each attempt postdates every run in this frame, so C4 and C5 carry no measured cost. What covers them is the account credit total for the billing period divided across the Omni-routed attempts on disk: <b>@@CREDIT_PER@@ per governed attempt</b>, @@CREDIT_MAX@@ as an upper bound. That is an arm-level estimate from a counter with no per-job attribution, so it is the same figure on every governed row and cannot separate a cheap attempt from an expensive one.</p>
+</header>
+
+<div class="controls">
+  <input type="search" id="q" placeholder="Filter by question text, instance id, or database" aria-label="Filter questions">
+  <select id="db" aria-label="Database"></select>
+  <select id="won" aria-label="Correct under"><option value="">Correct under any / none</option></select>
+  <select id="lost" aria-label="Not correct under"><option value="">Not correct under&hellip;</option></select>
+</div>
+<div class="chips" id="pats" role="group" aria-label="Comparison pattern"><span class="lab">Contrast</span></div>
+
+<div class="tiles" id="tiles"></div>
+
+<div class="scroll"><table class="rollup" id="rollup"></table></div>
+
+<div class="scroll">
+  <table>
+    <thead><tr>
+      <th data-k="instance_id">Question</th>
+      <th data-k="database">Database</th>
+      <th data-k="C1" class="o">C1</th>
+      <th data-k="C2" class="o">C2</th>
+      <th data-k="C3" class="o">C3</th>
+      <th data-k="C4" class="o">C4</th>
+      <th data-k="C5" class="o">C5</th>
+      <th data-k="spend" class="num">USD</th>
+      <th data-k="pattern">Contrast</th>
+      <th data-k="question">Asked</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div class="empty" id="empty" hidden>No question matches this filter.</div>
+</div>
+
+<footer>Built by <code>python3 experiments/trace_viewer/build.py</code> from the frozen generation records and score artifacts in this repository. The data is inlined at build time, so the page opens from disk with no server and no network access; rebuild it after any new scorer run. <code>&#9679;</code> is correct, <code>&#183;</code> a wrong answer, <code>&#10005;</code> a refusal or execution error. A blank query cell means the arm produced no query, which is itself the failure and is named in its <code>terminal_failure_class</code>.</footer>
+</div>
+
+<script>
+var ROWS = @@DATA@@;
+var CONDS = ['C1','C2','C3','C4','C5'];
+var PATTERNS = @@PATTERNS@@;
+var CREDIT = @@CREDIT@@;
+var HOT = {only_C2:1, only_C5:1, C5_recovers_C4:1, C5_loses_C4:1, only_C1:1, only_C3:1, only_C4:1};
+
+var q = document.getElementById('q'), dbSel = document.getElementById('db'),
+    wonSel = document.getElementById('won'), lostSel = document.getElementById('lost');
+var sort = {k:'pattern', dir:'asc'}, openKey = null, activePat = {};
+
+function uniq(fn){
+  var s = {};
+  ROWS.forEach(function(r){ var v = fn(r); if (v) s[v] = 1; });
+  return Object.keys(s).sort();
+}
+dbSel.innerHTML = '<option value="">All databases</option>';
+uniq(function(r){ return r.database; }).forEach(function(v){
+  var o = document.createElement('option'); o.value = v; o.textContent = v; dbSel.appendChild(o);
+});
+CONDS.forEach(function(c){
+  var a = document.createElement('option'); a.value = c; a.textContent = 'Correct under ' + c; wonSel.appendChild(a);
+  var b = document.createElement('option'); b.value = c; b.textContent = 'Not correct under ' + c; lostSel.appendChild(b);
+});
+var none = document.createElement('option'); none.value = '__none';
+none.textContent = 'Correct under nothing'; wonSel.appendChild(none);
+
+var patBox = document.getElementById('pats');
+PATTERNS.forEach(function(p){
+  var b = document.createElement('button');
+  b.className = 'chip'; b.type = 'button';
+  b.innerHTML = p.name + '<span class="k">' + p.count + '</span>';
+  b.setAttribute('aria-pressed', 'false');
+  b.onclick = function(){
+    activePat[p.name] = !activePat[p.name];
+    b.setAttribute('aria-pressed', activePat[p.name] ? 'true' : 'false');
+    openKey = null; render();
+  };
+  patBox.appendChild(b);
+});
+
+function outcome(r, c){ return r.arms[c].outcome; }
+function cls(o){ return o === 'correct' ? 'correct' : (o === 'refused_or_error' ? 'err' : 'wrong'); }
+function glyph(o){ return o === 'correct' ? '●' : (o === 'refused_or_error' ? '✕' : '·'); }
+
+function matches(r){
+  if (dbSel.value && r.database !== dbSel.value) return false;
+  if (wonSel.value === '__none') {
+    if (CONDS.some(function(c){ return outcome(r, c) === 'correct'; })) return false;
+  } else if (wonSel.value && outcome(r, wonSel.value) !== 'correct') return false;
+  if (lostSel.value && outcome(r, lostSel.value) === 'correct') return false;
+  var picked = Object.keys(activePat).filter(function(p){ return activePat[p]; });
+  if (picked.length && picked.indexOf(r.pattern) < 0) return false;
+  var t = q.value.trim().toLowerCase();
+  if (!t) return true;
+  return (r.instance_id + ' ' + r.database + ' ' + r.question + ' ' + r.normal_query)
+         .toLowerCase().indexOf(t) >= 0;
+}
+
+function fmt(v, d){
+  if (v === null || v === undefined || !isFinite(v)) return '<span class="dim">&mdash;</span>';
+  return Number(v).toFixed(d);
+}
+function thousands(v){
+  if (v === null || v === undefined || !isFinite(v)) return '<span class="dim">&mdash;</span>';
+  return Math.round(v).toLocaleString('en-US');
+}
+function esc(s){
+  return String(s === null || s === undefined ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function tiles(rows){
+  var data = [[rows.length, 'questions']];
+  CONDS.forEach(function(c){
+    var n = rows.filter(function(r){ return outcome(r, c) === 'correct'; }).length;
+    var e = rows.filter(function(r){ return outcome(r, c) === 'refused_or_error'; }).length;
+    data.push([n + ' <span class="dim" style="font-size:.72em">/' + e + ' err</span>', c + ' correct']);
+  });
+  var total = rows.reduce(function(a, r){ return a + spend(r); }, 0);
+  data.push(['$' + Math.round(total).toLocaleString('en-US'), 'total spend']);
+  var solved = rows.filter(function(r){
+    return CONDS.some(function(c){ return outcome(r, c) === 'correct'; });
+  }).length;
+  data.push([solved, 'solved by some arm']);
+  document.getElementById('tiles').innerHTML = data.map(function(d){
+    return '<div class="tile"><span class="n">' + d[0] + '</span><span class="l">' + d[1] + '</span></div>';
+  }).join('');
+}
+
+function median(v){
+  if (!v.length) return null;
+  var a = v.slice().sort(function(x,y){ return x-y; });
+  var m = a.length >> 1;
+  return a.length % 2 ? a[m] : (a[m-1]+a[m])/2;
+}
+function pick(rows, c, k){
+  var out = [];
+  rows.forEach(function(r){
+    var v = r.arms[c][k];
+    if (v !== null && v !== undefined) out.push(v);
+  });
+  return out;
+}
+function rollup(rows){
+  var head = '<thead><tr><th>Arm</th><th class="num">Total USD</th><th class="num">Median USD</th>'
+    + '<th class="num">Total wall time</th><th class="num">Median latency</th>'
+    + '<th class="num">Median in / out tokens</th><th class="num">Correct</th></tr></thead>';
+  var body = CONDS.map(function(c){
+    var cost = pick(rows, c, 'cost_usd');
+    var lat = pick(rows, c, 'latency_ms');
+    var est = !cost.length && CREDIT;
+    var totC = est ? CREDIT.per_attempt_usd * rows.length : cost.reduce(function(a,b){ return a+b; }, 0);
+    var medC = est ? CREDIT.per_attempt_usd : median(cost);
+    var totL = lat.reduce(function(a,b){ return a+b; }, 0);
+    var n = rows.filter(function(r){ return outcome(r, c) === 'correct'; }).length;
+    return '<tr><td>' + c + '</td>'
+      + '<td class="num' + (est ? ' est' : '') + '">$' + totC.toFixed(2) + (est ? '\u2020' : '') + '</td>'
+      + '<td class="num' + (est ? ' est' : '') + '">$' + (medC === null ? '\u2014' : medC.toFixed(4)) + '</td>'
+      + '<td class="num">' + (totL/3.6e6).toFixed(2) + ' h</td>'
+      + '<td class="num">' + (median(lat) === null ? '\u2014' : (median(lat)/1000).toFixed(1) + ' s') + '</td>'
+      + '<td class="num">' + Math.round(median(pick(rows,c,'input_tokens'))||0).toLocaleString('en-US') + ' / '
+      + Math.round(median(pick(rows,c,'output_tokens'))||0).toLocaleString('en-US') + '</td>'
+      + '<td class="num">' + n + '</td></tr>';
+  }).join('');
+  var foot = '<tr><td colspan="7" class="dim" style="white-space:normal;font-family:inherit">'
+    + '\u2020 no measured cost: the governed arms carry the arm-level credit estimate, identical on every row. '
+    + 'Wall time and tokens are measured for all five arms. Totals follow the current filter.</td></tr>';
+  document.getElementById('rollup').innerHTML = head + '<tbody>' + body + foot + '</tbody>';
+}
+
+function toolList(arm){
+  if (!arm.tool_calls.length) return '';
+  return arm.tool_calls.map(function(t){ return t.name + '×' + t.count; }).join(', ');
+}
+
+function resultTable(res){
+  if (!res) return '<p class="dim" style="font-size:.76rem;margin:0">No result rows were returned.</p>';
+  if (!res.rows.length) return '<p class="dim" style="font-size:.76rem;margin:0">Query returned zero rows.</p>';
+  var head = '<tr>' + res.columns.map(function(c){ return '<th>' + esc(c) + '</th>'; }).join('') + '</tr>';
+  var body = res.rows.map(function(row){
+    return '<tr>' + row.map(function(v){ return '<td>' + esc(v) + '</td>'; }).join('') + '</tr>';
+  }).join('');
+  var note = res.truncated
+    ? '<p class="dim" style="font-size:.7rem;margin:4px 0 0">showing ' + res.rows.length + ' of ' + res.row_count + ' rows</p>'
+    : '';
+  return '<div style="overflow-x:auto"><table class="mini"><thead>' + head + '</thead><tbody>' + body + '</tbody></table></div>' + note;
+}
+
+function costCell(arm){
+  if (arm.cost_usd !== null && arm.cost_usd !== undefined) return fmt(arm.cost_usd, 4);
+  // A governed attempt has no measured cost. The credit estimate is arm-level,
+  // so it is shown as an approximation and never as this attempt's spend.
+  if (CREDIT && arm.cost_unavailable_reason === 'omni_job_api_does_not_expose_cost') {
+    return '~' + CREDIT.per_attempt_usd.toFixed(4) + ' (arm estimate)';
+  }
+  return arm.cost_unavailable_reason || 'not reported';
+}
+
+function stepList(arm){
+  if (!arm.steps.length) return '<p class="h4">Trajectory</p><p class="dim" style="font-size:.76rem;margin:0 0 10px">No trace was captured for this attempt.</p>';
+  var items = arm.steps.map(function(s){
+    var label = s.tool_name
+      ? s.event_type + ' <b>' + esc(s.tool_name) + '</b>'
+      : s.event_type;
+    if (s.failure_class) label += ' <b>' + esc(s.failure_class) + '</b>';
+    else if (s.status && s.status !== 'SUCCESS' && s.status !== 'ok') label += ' ' + esc(s.status);
+    var tok = s.input_tokens ? ' · ' + thousands(s.input_tokens) + ' in' : '';
+    var dur = isFinite(s.duration_ms) ? (s.duration_ms / 1000).toFixed(1) + 's' : '';
+    return '<li class="' + (s.failure_class ? 'failed' : '') + '">'
+      + '<span class="s">' + s.seq + '</span>'
+      + '<span class="t">' + label + '</span>'
+      + '<span class="d">' + dur + tok + '</span></li>';
+  }).join('');
+  return '<p class="h4">Trajectory · ' + arm.steps.length + ' steps</p><ul class="steps">' + items + '</ul>';
+}
+
+function actionList(arm){
+  if (!arm.actions.length) return '';
+  var items = arm.actions.map(function(a){
+    var head = '<span class="meta">#' + a.trace_seq + ' ' + esc(a.tool_name) + '</span> '
+      + (a.retrieval_query ? '<span class="rq">' + esc(a.retrieval_query) + '</span>' : '');
+    var got = a.retrieved_count
+      ? '<div class="meta">returned ' + a.retrieved_count + ': ' + esc(a.retrieved.join(', '))
+        + (a.retrieved_count > a.retrieved.length ? ', …' : '') + '</div>'
+      : '';
+    var sql = a.exploratory_sql ? '<pre>' + esc(a.exploratory_sql) + '</pre>' : '';
+    return '<div class="act">' + head + got + sql + '</div>';
+  }).join('');
+  return '<p class="h4">What it asked for</p>' + items;
+}
+
+function armCard(c, arm){
+  var k = cls(arm.outcome);
+  var facts = [
+    ['outcome', arm.outcome + (arm.sensitivity_outcome && arm.sensitivity_outcome !== arm.outcome
+        ? ' (sensitivity: ' + arm.sensitivity_outcome + ')' : '')],
+    ['failure', arm.terminal_failure_class || arm.failure_category || '—'],
+    ['cost USD', costCell(arm)],
+    ['input tok', thousands(arm.input_tokens)],
+    ['output tok', thousands(arm.output_tokens)],
+    ['wall s', fmt(arm.latency_ms / 1000, 1)],
+    ['db queries', arm.database_query_count === null ? '—' : arm.database_query_count],
+    ['tool calls', toolList(arm) || '—'],
+    ['model', arm.model || '—']
+  ].map(function(f){
+    return '<li><span>' + f[0] + '</span><span>' + esc(f[1]) + '</span></li>';
+  }).join('');
+  var query = arm.query
+    ? '<p class="h4">' + (arm.query_kind === 'sql' ? 'Submitted SQL' : 'Omni query') + '</p><pre>' + esc(arm.query) + '</pre>'
+    : '<p class="h4">Query</p><p class="dim" style="font-size:.76rem;margin:0 0 10px">'
+      + esc(arm.query_unavailable_reason || 'The arm produced no query.') + '</p>';
+  return '<div class="arm ' + k + '">'
+    + '<h3>' + c + '<span class="st ' + k + '">' + glyph(arm.outcome) + ' ' + arm.outcome.replace(/_/g,' ') + '</span></h3>'
+    + '<ul class="facts">' + facts + '</ul>'
+    + query
+    + stepList(arm)
+    + actionList(arm)
+    + '<p class="h4">Returned</p>' + resultTable(arm.result)
+    + '<p class="dim" style="font-size:.68rem;margin:8px 0 0;word-break:break-all">' + esc(arm.artifact_dir) + '</p>'
+    + '</div>';
+}
+
+function detail(r){
+  var cards = CONDS.map(function(c){ return armCard(c, r.arms[c]); }).join('');
+  return '<tr class="det"><td colspan="10">'
+    + '<div class="qbox">'
+    + '<p><b>' + esc(r.instance_id) + '</b> <span class="dim">' + esc(r.database) + '</span></p>'
+    + '<p>' + esc(r.question) + '</p>'
+    + (r.normal_query && r.normal_query !== r.question
+        ? '<p class="dim"><b>Literal form:</b> ' + esc(r.normal_query) + '</p>' : '')
+    + '<p class="dim" style="font-size:.78rem">Answer conditions: <code>' + esc(r.conditions_spec) + '</code></p>'
+    + '</div>'
+    + '<div class="armgrid">' + cards + '</div></td></tr>';
+}
+
+// PATTERNS arrives most-interesting-first, so ranking by its index is what
+// puts the questions that carry an argument at the top of the default view.
+var PAT_RANK = {};
+PATTERNS.forEach(function(p, i){ PAT_RANK[p.name] = i; });
+
+function spend(r){
+  var total = 0;
+  CONDS.forEach(function(c){
+    var arm = r.arms[c];
+    if (arm.cost_usd !== null && arm.cost_usd !== undefined) total += arm.cost_usd;
+    else if (CREDIT && arm.cost_unavailable_reason === 'omni_job_api_does_not_expose_cost') {
+      total += CREDIT.per_attempt_usd;
+    }
+  });
+  return total;
+}
+
+function sortValue(r, k){
+  if (CONDS.indexOf(k) >= 0) {
+    var o = outcome(r, k);
+    return o === 'correct' ? 0 : (o === 'wrong_answer' ? 1 : 2);
+  }
+  if (k === 'pattern') return PAT_RANK[r.pattern];
+  if (k === 'spend') return spend(r);
+  return r[k];
+}
+
+function render(){
+  var rows = ROWS.filter(matches);
+  var dir = sort.dir === 'asc' ? 1 : -1;
+  rows.sort(function(a, b){
+    var x = sortValue(a, sort.k), y = sortValue(b, sort.k);
+    if (typeof x === 'number' && typeof y === 'number') {
+      if (x !== y) return (x - y) * dir;
+      return a.instance_id.localeCompare(b.instance_id);
+    }
+    var cmp = String(x).localeCompare(String(y)) * dir;
+    return cmp || a.instance_id.localeCompare(b.instance_id);
+  });
+  tiles(rows);
+  rollup(rows);
+  document.getElementById('empty').hidden = rows.length > 0;
+  document.getElementById('rows').innerHTML = rows.map(function(r){
+    var cells = CONDS.map(function(c){
+      var o = outcome(r, c), arm = r.arms[c];
+      var money = arm.cost_usd !== null && arm.cost_usd !== undefined
+        ? '<span class="c">' + arm.cost_usd.toFixed(2) + '</span>'
+        : (CREDIT && arm.cost_unavailable_reason === 'omni_job_api_does_not_expose_cost'
+            ? '<span class="c est">~' + CREDIT.per_attempt_usd.toFixed(2) + '</span>'
+            : '<span class="c">&mdash;</span>');
+      return '<td class="o ' + cls(o) + '" title="' + c + ': ' + o + ' \u00b7 ' + costCell(arm) + '">'
+        + glyph(o) + money + '</td>';
+    }).join('');
+    var row = '<tr tabindex="0" class="' + (r.instance_id === openKey ? 'open' : '')
+      + '" data-key="' + r.instance_id + '">'
+      + '<td class="id">' + esc(r.instance_id) + '</td>'
+      + '<td class="db" title="' + esc(r.database) + '">' + esc(r.database) + '</td>'
+      + cells
+      + '<td class="num">' + fmt(spend(r), 2) + '</td>'
+      + '<td><span class="pat' + (HOT[r.pattern] ? ' hot' : '') + '">' + r.pattern + '</span></td>'
+      + '<td class="q">' + esc(r.question) + '</td>'
+      + '</tr>';
+    return r.instance_id === openKey ? row + detail(r) : row;
+  }).join('');
+}
+
+function toggle(e){
+  var tr = e.target.closest('tr[data-key]');
+  if (!tr) return;
+  if (e.type === 'keydown') {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+  }
+  openKey = (openKey === tr.dataset.key) ? null : tr.dataset.key;
+  render();
+  var re = document.querySelector('tr[data-key="' + openKey + '"]');
+  if (re) re.focus();
+}
+document.getElementById('rows').addEventListener('click', toggle);
+document.getElementById('rows').addEventListener('keydown', toggle);
+
+Array.prototype.forEach.call(document.querySelectorAll('thead th'), function(th){
+  th.tabIndex = 0;
+  function go(){
+    var k = th.dataset.k;
+    sort = {k: k, dir: (sort.k === k && sort.dir === 'asc') ? 'desc' : 'asc'};
+    Array.prototype.forEach.call(document.querySelectorAll('thead th'), function(o){
+      o.removeAttribute('data-dir');
+    });
+    th.setAttribute('data-dir', sort.dir);
+    render();
+  }
+  th.onclick = go;
+  th.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } };
+});
+
+[q, dbSel, wonSel, lostSel].forEach(function(el){
+  el.addEventListener('input', function(){ openKey = null; render(); });
+});
+render();
+</script>

@@ -578,6 +578,27 @@ Report median and interquartile range for latency/cost alongside totals and cost
 per correct answer. Cost comparisons require equivalent output accounting; a
 cheaper condition that fails to answer is not automatically more efficient.
 
+Cost and wall time are recorded per attempt in the generation record, never
+reconstructed afterward. Wall time is end-to-end per-attempt latency and is
+complete in every arm; a reported total is the sum over a frame and describes
+work done, not elapsed clock, because attempts ran concurrently. Dollar cost is
+measured only where the provider bills per attempt. The direct arms C1-C3 carry a
+provider-reported `cost_usd`; Omni's job endpoint exposes no price field, so a
+governed attempt records `cost_usd: null` with `cost_source` naming why, and the
+harness pass that brackets Omni's AI credit counter around each attempt applies
+only to runs made after it landed. Where no measurement exists, the governed arms
+are reported as an arm-level estimate derived from the billing-period credit
+total divided across the Omni-routed attempts on disk, carried in the artifact as
+`cost_measured: false`, and never presented as a per-attempt measurement: it is
+identical on every governed row and cannot separate a cheap attempt from an
+expensive one. Dollar cost is not comparable between the direct and governed
+arms, which bill through different surfaces, and token volume is not a proxy for
+it. Cross-arm rollups are generated, not hand-assembled:
+[`matched_122_cost_time_rollup.py`](../experiments/analysis/matched_122_cost_time_rollup.py)
+for the five-arm development frame,
+[`sealed_telemetry_summary.py`](../experiments/analysis/sealed_telemetry_summary.py)
+for the sealed cohorts.
+
 ## Failure taxonomy and ownership
 
 Build the taxonomy from train evidence rather than forcing every failure into a
