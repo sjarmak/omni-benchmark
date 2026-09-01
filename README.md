@@ -21,6 +21,20 @@ semantic model instead of writing SQL against a raw schema. This repository
 tests that premise on a third-party benchmark, LiveSQLBench Large-v1, whose
 databases each ship a knowledge base of interdependent business definitions.
 
+The condition ladder comes out of [Where business meaning
+lives](https://www.sjarmak.ai/library/explorers/where-business-meaning-lives), a
+thematic explorer over 75 papers that separates what the literature treats as
+one variable into three: the *knowledge* a schema leaves out, the
+*representation* the model targets instead of SQL, and the *enforcement* that
+makes a class of wrong answer unproducible. Its reading of the field is that
+those three are argued from different papers, over different schemas, models,
+and question sets, and then compared as though they were commensurable. Its
+first open problem is the experiment that would fix that: four conditions over
+one sealed question set, each adding a single ingredient. C1-C4 below are that
+ablation. The explorer also supplies two of this repository's design
+commitments, the metered holdout against adaptive-analysis drift and the two
+frozen scorers that test whether evaluator normalization is doing the measuring.
+
 **Business knowledge helped a great deal, and almost all of that value was lost
 on the way into the executable semantic model.** The reasons are specific, and I
 think they are actionable.

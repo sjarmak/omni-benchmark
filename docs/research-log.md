@@ -12900,3 +12900,216 @@ anything, since that field is not set by this pathway. It is now a direct test o
 a measured mechanism: the inline-aggregate-over-reference rate is 34.1% on dev-A
 C4 and Omni's documentation predicts it drops when measures exist. That rate,
 not `join_via_map`, is the phase-2 outcome variable.
+
+## 2026-08-31 — D-212: Preregister a public-evidence measures series before authoring the catalog
+
+### Hypothesis
+
+C5 made the public model broad, relationship-complete, and knowledge-complete,
+and raised topic scoping from 69.6% to 98.5%, but it deliberately emitted no
+measures. Its 38.1% inline-aggregate-over-reference rate therefore cannot answer
+whether Omni will reuse a governed metric when one is available. The narrow
+hypothesis for the next series is that accepted model measures replace at least
+some equivalent inline aggregates on questions for which those measures were
+available before execution.
+
+This is not a proposal to turn public benchmark prose into asserted domain
+truth. LiveSQLBench does not provide authoritative grain contracts for most HKB
+definitions. The only eligible candidates are distinct entity counts backed by
+a public single-column primary or unique key, and formulas whose aggregation,
+dependencies, grain, and relationships are all explicit in public evidence.
+Ambiguous semantics are deferred rather than completed by the reviewer.
+
+### Decision before implementation
+
+The operator locked a dev-A-only paired design under `omni-benchmark-w5x`:
+
+- a new 136-attempt C5 bridge and a measure treatment, each run once on the same
+  16-database frame;
+- the complete strict candidate catalog reviewed before any question coverage is
+  inspected, followed by a separately frozen question-to-measure opportunity map;
+- the operator as the sole reviewer, with decision reasons, mechanical
+  corrections, and active review time recorded;
+- verified semantic replacement on the preregistered opportunity set as the
+  primary endpoint, with both frozen scorers, reliability, cost, and authoring
+  burden secondary;
+- no dev-B, sealed test, type-declaration probe, generic driver refactor,
+  domain-authority claim, or broad product-value claim.
+
+Historical C5 cannot be the control because its model inherited instance
+defaults. Omni's current Balanced documentation says older instances default
+`query_all_views_and_fields` to disabled and `build_configuration.model` to
+standard, while the current profile uses enabled and smartest. Both new arms
+therefore materialize the complete current Balanced block so the measures delta
+is not confounded with a settings delta.
+
+The exact proposed protocol text is
+`docs/protocol-amendment-public-evidence-measures-proposal.md`. It is explicitly
+not in force. The proposal retains D-196, existing action receipts, cleanup and
+credential gates, append-only evidence, and the no-rerun rule until the operator
+approves the final hashed diff. No deployment or evaluated attempt was made under
+this decision.
+
+### First offline candidate-generation result
+
+The public-only generator then authenticated and compiled the C5 source inputs
+for all 16 target databases without reading a question, correctness value, run
+artifact, hidden annotation, dev-B record, or sealed-test record. It found 812
+strict candidates, all distinct entity counts backed by one declared
+single-column primary or unique key. Forty-six tables had no single eligible
+identity, one additional identity did not resolve to a published C5 field, and
+939 HKB records did not match the frozen machine-explicit single-aggregate
+grammar. Numeric field type produced no candidate. The zero HKB-aggregate count
+is a result of the preregistered authority boundary, not evidence that Omni
+cannot model richer measures.
+
+The append-only review packet is
+`experiments/r2-public-evidence-measures/measure-review-catalog-v2.json`:
+1,936,228 bytes, mode `0600`, file SHA-256
+`3b371d3caec578ffdf6309866ae00f77177bf4484fec0b8a292634b337764c65`,
+and internal catalog SHA-256
+`dfb3117516da6a66674a542029d9a8ad74ab5a984a9d1793ff974b48e0877c50`.
+Independent in-memory regeneration was byte-identical. The earlier append-only
+v1 packet, file SHA-256
+`98bdc27a94cdcdeeaa996ff24be2b8ffe20b45e57dea8d4cb48db31da1b61d9f`,
+is superseded rather than overwritten: it had the same 812 candidates and
+aggregate counts but omitted the source-ID inventory for the 986 screened
+records. V2 adds that audit trail; neither packet contains a review decision or
+question coverage.
+
+Fifteen focused tests cover both candidate classes, the rejection boundaries,
+recursive forbidden-field checks, stable IDs and bytes, exclusive mode-0600
+publication, all 16 databases, and a digest proving the semantic-model input
+tree remains unchanged. They pass with 81% branch coverage on the generator;
+focused Ruff checks pass. The complete repository gate also passes: 2,293 tests,
+three expected environment-gated skips, and 83.51% branch coverage; all-repo
+Ruff and format checks pass. Human review has not started, and the catalog is
+not frozen or approved.
+
+The operator also proposed Omni's Modeling Agent as an authoring approach. It is
+tracked separately under `omni-benchmark-w5x.3`: after this deterministic
+catalog freezes, a separately approved Sandbox-only comparator may receive the
+same public model inputs and be scored for catalog recall, proposal precision,
+valid YAML, corrections, and review time. Query-history analysis is prohibited,
+and the comparator cannot alter `R2-M1` or contribute evidence to its causal
+mechanism estimate.
+
+## 2026-08-31 — D-213: Bind the blinded human review to the candidate catalog before collecting a decision
+
+### Hypothesis
+
+The 812-candidate count makes an informal document review a material validity
+risk. Rows can be skipped, duplicated, reordered with stale evidence, or edited
+alongside the decision cells; timing and reasons can be incomplete; and a
+mechanical correction can silently become a semantic intervention. A review is
+defensible only if those failure modes are rejected before an accepted catalog
+can be materialized.
+
+### Decision and offline result
+
+`omni-benchmark-w5x.5` adds a deterministic CSV workbook whose immutable columns
+bind the candidate packet's file and internal hashes, each candidate payload,
+measure and view identity, public evidence, proposed YAML, and inline-equivalent
+signature. The only writable columns are decision, standardized reason, active
+review seconds, and an optional binding correction. The validator requires all
+candidate IDs exactly once, verifies every immutable cell, enforces
+decision-compatible reasons and finite nonnegative time, and rejects extra
+columns. A correction must retain the same source stable ID and target view and
+remains quarantined as requiring benchmark-agent validation against public C5
+evidence; it is never silently applied.
+
+Completed decisions also require an append-only approval record whose SHA-256
+and Git blob match the exact operator-approved protocol proposal. The current
+proposal has not been approved, so no such record exists and the validator has
+not been run on a real decision set.
+
+The blank packet is
+`experiments/r2-public-evidence-measures/measure-review-workbook-v1.csv`:
+1,368,634 bytes, mode `0600`, SHA-256
+`0e756de6661060b1ebf14abb271be86f7121e4a28b9097d97d76cdf96522955e`.
+It regenerates byte-identically, contains 812 unique candidate rows, and all 812
+decision, reason, timing, and correction cells are blank. Its exact header has
+no benchmark question, correctness, outcome, or instance column. Public schema
+values can legitimately contain words such as `visa_extension_outcome` or
+`flag_instance_id`; these are hash-bound public field names, not evaluation
+metadata, and substring filters must not misclassify them.
+
+Tests were written before the module and first failed on the missing import.
+Twenty-three focused tests now pass at 82.20% combined branch coverage for the
+workbook and CLI, including exact approval binding, missing/duplicate/edited
+rows, incompatible decisions, time overflow, forbidden extra columns,
+correction-semantic guards, append-only mode-0600 writes, actual 812-row
+integration, and CLI round trips. Focused Ruff and format checks pass. No
+question coverage was inspected and no live Omni action occurred.
+
+The combined catalog-and-review regression gate passes 38 tests at 81.45%
+branch coverage; all-repository Ruff and format checks cover 364 files and pass.
+
+The exact proposal now includes this review contract and standardized reason
+policy. Its current SHA-256 is
+`8495d6fb57c1e4060e34b97bd8ef9da79fd7fb78c268009aee8e5b1c072539c6`
+and Git blob is `b0e53b50645c4863b469ec98452318fa52f38d13`; every earlier
+proposal digest was superseded before approval.
+
+## 2026-09-01 — D-214: Approve and land the exact public-evidence measures protocol
+
+### Decision
+
+The repository operator explicitly approved
+`docs/protocol-amendment-public-evidence-measures-proposal.md` by its exact
+SHA-256
+`8495d6fb57c1e4060e34b97bd8ef9da79fd7fb78c268009aee8e5b1c072539c6`.
+The verified Git blob remains
+`b0e53b50645c4863b469ec98452318fa52f38d13`. The approval was recorded at
+`2026-09-01T11:30:31Z` in the append-only, mode-`0600` artifact
+`experiments/r2-public-evidence-measures/protocol-approval-v1.json`, whose
+SHA-256 is
+`3cbd7f3483bb9ff248b3c6f3aea6b140c64c91b4c72b18236a1ecf6a91af6b73`.
+
+The marked protocol block was inserted byte-for-byte into
+`EVALUATION_PROTOCOL.md`; an independent comparison gives the same block
+SHA-256,
+`e2a8165b9f743601f027f9ef32096763e83faf0bd99f7565e3f85fd5d63a361d`,
+on both the proposal and the landed protocol. The resulting protocol file has
+SHA-256
+`c511fc92f6647acd5b97cadef467078c2496d2638520027d91c5f3065fd6975c`.
+The approved proposal itself was not edited after approval.
+
+### Consequence
+
+This decision opens blinded catalog review only. The reviewer may now fill the
+four review columns in the complete 812-row workbook without seeing dev-A
+questions or outcomes. It does not authorize question-to-measure mapping,
+deployment, or an evaluated attempt before their subsequent gates. D-196, the
+full-source cleanup confirmation, action-specific receipts, credential
+ownership, budget preflights, append-only evidence, and the no-rerun rule remain
+in force. No live Omni action occurred under this decision.
+
+## 2026-09-01 — D-215: Distinguish exact protocol insertion from control-plane landing
+
+D-214's heading uses “land” for the byte-identical insertion into the working
+copy of `EVALUATION_PROTOCOL.md`. That wording is too broad for this repository:
+the control plane reads committed Git objects, not the working tree. The exact
+approved block is inserted and verified, but neither it nor the R2 implementation
+has been committed or pushed because the active conservative profile grants no
+such authority. Therefore the protocol's “approved text has landed” live-action
+precondition is not yet satisfied. Blinded human review remains permitted by the
+separate exact approval record; D-196 continues to prohibit deployment and
+evaluated attempts. This is a terminology correction only; no artifact hash,
+approval, review input, or protocol text changed.
+
+## 2026-09-01 — D-216: Cite the essay that originated the condition ladder
+
+The design's conceptual origin was undocumented in the repository. "Where
+business meaning lives"
+(<https://www.sjarmak.ai/library/explorers/where-business-meaning-lives>) is a
+thematic explorer over 75 papers that separates knowledge, representation, and
+enforcement, argues the literature conflates them across incommensurable
+studies, and states the four-condition single-sealed-set ablation as its first
+open problem. C1-C4 are that ablation. The explorer also motivates the metered
+dev-B holdout (its adaptive-data-analysis theme) and the two frozen scorers (its
+open problem on whether evaluator normalization changes rankings). It is now
+cited in `README.md`, ahead of the condition table, and in the
+`EVALUATION_PROTOCOL.md` provenance section alongside the dataset, the official
+harness, and the Omni comparison post. This is a provenance citation only: no
+research question, condition, estimand, split, scorer, or result changed.
