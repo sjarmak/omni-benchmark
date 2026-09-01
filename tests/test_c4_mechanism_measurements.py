@@ -105,3 +105,39 @@ def test_relation_features_drop_cte_and_alias_duplicates() -> None:
     assert features["cte_count"] == 1
     assert "rollup" in features["local_names"]
     assert features["distinct_source_views"] == 1
+
+
+def test_query_flags_separate_topic_join_path_from_join_via_map() -> None:
+    """``join_via_map`` is empty on every submitted query, so it cannot gate a count.
+
+    Omni populates ``join_via_map`` on topic readback, not on query submission,
+    and sets ``rewriteSql`` by default on any query carrying authored SQL. The
+    field that records whether a query took the model's join scope is
+    ``join_paths_from_topic_name``. See D-211.
+    """
+    module = _analysis_module()
+
+    scoped = module._query_flags(
+        {
+            "rewriteSql": True,
+            "join_via_map": {},
+            "join_paths_from_topic_name": "orders",
+            "aiGenerated": True,
+        },
+        frozenset(),
+    )
+    unscoped = module._query_flags(
+        {
+            "rewriteSql": True,
+            "join_via_map": {},
+            "join_paths_from_topic_name": "",
+            "aiGenerated": True,
+        },
+        frozenset(),
+    )
+
+    assert scoped["declares_topic_join_path"] is True
+    assert unscoped["declares_topic_join_path"] is False
+    # The two fields that cannot discriminate: identical across both queries.
+    assert scoped["declares_join_via_map"] == unscoped["declares_join_via_map"] is False
+    assert scoped["rewrite_sql"] == unscoped["rewrite_sql"] is True

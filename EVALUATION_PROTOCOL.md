@@ -227,13 +227,23 @@ conservative:
 - without model parity, C4-C3 is only a production-system comparison and must not
   be called the causal effect of enforcement.
 
-Measured on the frozen development baseline, C4's governed queries were composed
-as SQL by the production agent through the product's rewrite path over a model
-declaring no joins and no measures. C4-C3 therefore does not separate a compiled
+Measured on the frozen development baseline, C4's governed queries were authored
+as SQL by the production agent over model-resolved `${view.field}` references,
+against a model declaring no joins and no measures. The model supplied field
+resolution on every attempt and join scope on 94 of 135; it supplied no metric,
+because it declares no measures. C4-C3 therefore does not separate a compiled
 query path from a direct-SQL one, and model parity does not restore that
 separation. It separates two agent-authored SQL conditions differing in agent,
 SQL dialect, accessible surface, and execution contract. See
-`docs/c4-query-path-disclosure.md`.
+`docs/c4-query-path-disclosure.md` and the D-211 correction.
+
+> **Corrected 2026-08-31 (D-211).** This paragraph previously read that the
+> queries were "composed as SQL by the production agent through the product's
+> rewrite path". That phrasing reads as a bypass of the semantic model and is not
+> supported: it rested on `rewriteSql`, which Omni sets by default on any query
+> carrying `userEditedSQL` and which is therefore true on all 661 parseable
+> governed attempts. The conclusion this paragraph draws, that C4-C3 does not
+> isolate composition, is unaffected and stands.
 
 C2-C1 and C3-C2 remain the controlled direct-agent contrasts. C2 is a
 substantive condition, not merely a bridge: business semantics supplied as

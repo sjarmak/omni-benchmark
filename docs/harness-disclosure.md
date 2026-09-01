@@ -34,7 +34,7 @@ implementations actually isolate governed enforcement with model parity.
 | Database access | Direct read-only benchmark database | Same | Same | Through Omni connection/governed query path |
 | Planning/orchestration | Direct agent, frozen after train-only tuning | Same base harness | Same base harness | Production composite workflow; stages disclosed when observable |
 | Retry behavior | Harness retry ceiling 0; provider-internal retry events are observed in the trace when exposed | Same | Same | Production-default retries; observed rather than artificially matched after treatment |
-| Compiler/query path | Agent emits SQL | Agent emits SQL | Agent emits SQL | Omni's production agent emits SQL through the product's raw-SQL rewrite path. All 135 development-baseline semantic queries carry `rewriteSql: true` with agent-authored SQL in `userEditedSQL`; none declares a join path. The SQL is written in Omni's `${view.field}` reference syntax over compiled views and resolved by Omni against the deployed model. `generated_sql` is recorded as `null` by design; the executed SQL is the semantic query's `userEditedSQL` |
+| Compiler/query path | Agent emits SQL | Agent emits SQL | Agent emits SQL | Omni's production agent authors the SQL. All 135 development-baseline semantic queries carry agent-authored SQL in `userEditedSQL`, written in Omni's `${view.field}` reference syntax over compiled views and resolved by Omni against the deployed model; 94 of the 135 also take the model's join scope through `join_paths_from_topic_name`. None composes a metric from a declared measure, because the compiled topics declare none. `generated_sql` is recorded as `null` by design; the executed SQL is the semantic query's `userEditedSQL` |
 | Validation | Database execution/error handling only | Same | Same | Production validation behavior included |
 | Token/time ceilings | Claude Code 2.1.250 exposes no supported input/output-token ceiling; each turn is limited to 120 seconds, USD 1 provider cost, and 12 total turns | Same | Same | Production defaults where immutable; disclose any mismatch |
 | Current implementation state | Public context, pinned provider, attested PostgreSQL, bounded retrieval, capture, publisher, committed database bindings, and executable driver pass synthetic/adversarial tests and an exact-commit authenticated smoke | Same, including live searchable public HKB and dependency-closure provenance | Same, including live searchable exported-model objects | Isolated public archeology model validation, 14/14 semantic readback, governed query execution, and AI Hub diagnostic inspection pass; the exact-commit capture rerun preserved full telemetry on its deliberately unscoreable truncated result; scorer-type parity remains pending (superseded 2026-08-31, see [Addendum: result-type parity is closed](#addendum-2026-08-31-result-type-parity-is-closed)) |
@@ -55,12 +55,19 @@ record is in [`protocol-diff.md`](protocol-diff.md).
 
 The C4 condition is labeled `"semantic_enforcement": "governed"`. That label
 describes name resolution and the accessible surface, not query compilation.
-Every governed query in the frozen development baseline was composed as SQL by
-Omni's own agent and rewritten by the product: all 135 semantic queries carry
-`rewriteSql: true` and `aiGenerated: true`, and `join_via_map` is empty on all
-135.
+Every governed query in the frozen development baseline was authored as SQL by
+Omni's own agent: all 135 semantic queries carry `aiGenerated: true` and a
+non-empty `userEditedSQL`, whose field references resolve against the deployed
+model. 94 of the 135 also carry a non-empty `join_paths_from_topic_name`, so the
+model supplied the join scope on those.
 
-**The rewrite path is Omni's choice, not a harness setting.** The benchmark
+> **Corrected 2026-08-31 (D-211).** This section previously cited `rewriteSql:
+> true` and an empty `join_via_map` as evidence that no query composed. Neither
+> field can carry that: `rewriteSql` is Omni's default for any query with
+> authored SQL and is true on all 661 parseable governed attempts, and
+> `join_via_map` is populated on topic readback rather than query submission.
+
+**The pathway is Omni's choice, not a harness setting.** The benchmark
 cannot select it, request it, or suppress it. `OmniCliClient.submit_job`
 (`src/omni_benchmark/omni_cli.py:193-208`) posts a body of exactly four keys:
 `modelId`, `progressWebhookEnabled: false`, `prompt`, and `branchId`. The prompt
@@ -76,7 +83,7 @@ Omni's returned query object back verbatim: `parse_omni_job_result`
 the job's `generate_query` action and `omni_capture.py:221-229` replays that same
 object, with the only mutation being the `modelId` set by `_query_with_model`.
 
-**No non-rewrite path was available for cross-table access.**
+**No fully composed path was available for cross-table access or aggregation.**
 `_topic_document` (`src/omni_benchmark/semantic_bundle.py:630-645`) emits
 `"joins": {}` on every deployed topic, the deployed baseline carries
 `joins_generated: False`, and the bundles publish dimensions with no measures. A
@@ -116,23 +123,25 @@ and the same four-key job body, but deploys a view for every public table and a
 join for every foreign key that passes the conservative cardinality contract, so
 a compiled cross-table path existed on most topics.
 
-The rewrite rate did not move. All 134 parseable C5 attempts carry `rewriteSql`,
-none declares a join through the model, and `join_via_map` is empty on all 134.
-Counted across six governed arms (three sealed C4 repetitions, dev-A C4, E02, and
-C5), the total is 661 of 661 parseable attempts on the rewrite path and zero
-composed:
-[`../experiments/analysis/governed-query-path-tally-v1.json`](../experiments/analysis/governed-query-path-tally-v1.json),
+The join case moved and the measure case did not. Topic scoping rose from 94 of
+135 dev-A C4 attempts to 132 of 134 C5 attempts, so publishing the join graph did
+put the agent on the model's joins. All 134 parseable C5 attempts still return
+agent-authored SQL, and 38.1% of them wrap an aggregate around a `${view.field}`
+reference rather than naming a measure, against 34.1% on dev-A C4. Counted across
+six governed arms (three sealed C4 repetitions, dev-A C4, E02, and C5), 661 of
+661 parseable attempts return agent-authored SQL:
+[`../experiments/analysis/governed-query-path-tally-v2.json`](../experiments/analysis/governed-query-path-tally-v2.json),
 regenerable from
 [`../experiments/analysis/governed_query_path_tally.py`](../experiments/analysis/governed_query_path_tally.py).
 
-So the narrow reading, that the product compiles when the model supports it, no
-longer fits the join case. What remains open is the measure case: C5 phase 1
-publishes no measures, so an aggregate question still has no compiled
-expression. Separating that from an unconditional rewrite is the phase-2
-question tracked in bead `omni-benchmark-w5x` and recorded as
-[PF-016](product-findings.md). C5's accuracy rose while the path stayed fixed,
-which is the evidence that the semantic model contributed vocabulary and context
-rather than composition.
+So the narrow reading, that the product composes when the model supports it, now
+fits the join case. What remains open is the measure case: C5 phase 1 publishes
+no measures, so an aggregate question still has no compiled expression, and the
+hand-written aggregate rate is the phase-2 outcome variable tracked in bead
+`omni-benchmark-w5x` and recorded as [PF-016](product-findings.md). C5's accuracy
+rose alongside the jump in topic scoping and with no change in metric authoring,
+which is the evidence that the semantic model contributed vocabulary, context,
+and join scope rather than composed metrics.
 
 For C1-C3, `config/instructions/direct-sql-v1.json` is validated and hash-bound
 as fixed policy metadata, but its `adapter_instruction` text is not sent to the

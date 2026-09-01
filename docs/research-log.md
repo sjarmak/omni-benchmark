@@ -12799,3 +12799,104 @@ only, so a browser session spending on the same identity inside a bracket is
 undetectable and would inflate the delta. And the endpoint reports whole-account
 credits, so the delta measures what the account spent during the attempt rather
 than a figure the provider attributes to that attempt.
+
+## 2026-08-31 — D-211: The governed query-path mechanism was measured with three fields that cannot carry it
+
+### Observation
+
+Reading Omni's published agent skills against our own analyzer showed that the
+mechanism claim in D-205 rests on misreads of the semantic query object. The
+analyzer, `experiments/analysis/governed_query_path_tally.py` at schema 1,
+classified an attempt as `rewrite` when it carried `rewriteSql` and as `composed`
+only when it carried `join_via_map`. Both fields were remeasured across all six
+governed arms, alongside the fields the classifier never looked at. Counts only;
+no SQL text was emitted.
+
+`rewriteSql` is true on 661 of 661 parseable attempts and false on zero. It is
+Omni's documented default handling for any query carrying `userEditedSQL`, not a
+signal that composition was bypassed. A field with no variance cannot
+discriminate a path.
+
+`join_via_map` is present as a key on every record and non-empty on zero. It is
+populated when a topic definition is read back, not when a query is submitted.
+The published line "`join_via_map` is zero in all six" measured the absence of a
+field this pathway never sets. It is vacuous, not evidence.
+
+`join_paths_from_topic_name`, which the classifier never read, is non-empty on
+94/135 dev-A C4, 96/131 E02, 132/134 dev-A C5, and 48/88, 53/87, 48/86 on sealed
+C4 r1/r2/r3. The attempts were naming a topic and taking the model's join scope.
+C5 raised topic scoping from 69.6% to 98.5%, a real C5 effect the analyzer was
+structurally unable to see.
+
+The substantive correction is in the SQL itself. `userEditedSQL` is non-empty on
+661 of 661, so the finding that the agent authored SQL holds. But that SQL is not
+raw table SQL: `${...}` references appear on 134/135 dev-A C4 and on every
+parseable attempt in the other five arms, and they are qualified `${view.field}`
+references on all of them. Bare-token-only queries number zero. The 1,310 tokens
+counted over dev-A C4 in D-178 are these references, recorded then and not
+recognized. Qualified references resolve through the deployed model, so
+field-level definitions apply to them.
+
+Two shapes do survive as real. An aggregate wrapping a field reference rather
+than a model measure appears on 34.1% of dev-A C4, 38.1% of C5, 41.2% of E02,
+and 28.7%–32.6% of the sealed arms; Omni documents this as the signal that a
+topic lacked the measure a metric needed, and our compiler emits no measures. A
+`FROM` naming a table rather than a model reference appears on 26.0%–33.0%
+across arms, and that shape does leave the model.
+
+### Interpretation
+
+"661 of 661 on the raw-SQL rewrite path, zero composed" is withdrawn. The
+governed attempts were topic-scoped, model-referencing SQL: composition was
+partial, not absent. The correct description is that the agent used the model for
+join scope and field resolution and wrote the metric logic itself, which is the
+behavior Omni's documentation predicts when the topic has no measures.
+
+D-205's interpretation survives in its weaker form and its stronger form does
+not. What changed between C4 and C5 remains what the model could see, and the
+cost drop still reads as less exploration. But "no composition occurred" was
+wrong, and the claim that a customer "receives no signal that the semantic model
+was bypassed" overstates both the bypass and the silence: the `${}` templating is
+in the record, it is simply not surfaced as a typed field on the job record or in
+AI Hub, so detecting the pathway requires parsing the SQL.
+
+This does not move any score. The matched-frame numbers in
+`c5-matched-122-comparison-v1.json` are unaffected, and the C5-over-C4 gain and
+its 33%/27% closure from D-206 stand. What changes is the mechanism attributed to
+them, and the severity of PF-016.
+
+### Decision
+
+Schema 2 of the analyzer counts the shapes that vary, independently rather than
+as one winner-take-all bucket, and ships with tests that fail on a constant
+field deciding a classification. `governed-query-path-tally-v1.json` stays in the
+tree as the superseded record; `governed-query-path-tally-v2.json` is written
+beside it and names what it supersedes. PF-016 is rewritten to the narrow claim
+and downgraded. Every public document carrying the "zero composed" framing is
+corrected under `omni-benchmark-sfy`.
+
+### Two further corrections applied under this entry
+
+`EVALUATION_PROTOCOL.md` carried the same "through the product's rewrite path"
+phrasing. The protocol is a human-controlled surface; Stephanie directed the
+correction be included, and it was applied with a D-211 note. The conclusion that
+paragraph draws, that C4-C3 does not isolate composition, is unaffected.
+
+`experiments/analysis/c4_mechanism_measurements.py` carried the same defect in a
+second place. Its `cross_source_without_declared_join` count was gated on `not
+declares_join_via_map`, a term that is true on every record, so the count silently
+equaled `corrected_multi_relation` and the qualifier in its name measured nothing.
+It is now gated on `declares_topic_join_path`, which is the field that varies. The
+metric is neither published nor asserted anywhere, so no figure changes; the fix
+prevents a future reader from trusting the name. A test now pins that
+`join_via_map` and `rewriteSql` are identical across a topic-scoped and an
+unscoped query, which is why neither can gate a classification.
+
+### Product
+
+`omni-benchmark-w5x` (phase 2, add measures) changes character. D-205 framed it
+as a test of whether `join_via_map` becomes non-zero, which was never a test of
+anything, since that field is not set by this pathway. It is now a direct test of
+a measured mechanism: the inline-aggregate-over-reference rate is 34.1% on dev-A
+C4 and Omni's documentation predicts it drops when measures exist. That rate,
+not `join_via_map`, is the phase-2 outcome variable.

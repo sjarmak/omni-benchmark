@@ -16,19 +16,29 @@ semantic model and asking the governed product the same questions gave 8.6%, at
 3.9 times the token cost. The gap is not subtle.
 
 We checked the governed condition's own query objects. Across six governed arms,
-661 of 661 parseable queries carried `rewriteSql: true` with hand-written SQL,
-and not one declared a join through the semantic model: 261 of 261 on the sealed
-frame, 135 of 135 on the development baseline. The product's agent never composed
-a query through the semantic layer in any arm we measured.
+661 of 661 parseable queries returned agent-authored SQL in `userEditedSQL`: 261
+of 261 on the sealed frame, 135 of 135 on the development baseline. That SQL is
+not raw table SQL. It references the deployed model through `${view.field}`
+templating on 660 of the 661, so the model resolves the fields, and most attempts
+also take the model's join scope: 94 of 135 on the development baseline, 132 of
+134 on C5. What the model never supplied is the metric. On 34.1% of development
+baseline attempts and 38.1% of C5 attempts the agent wraps an aggregate around a
+field reference rather than naming a measure, which is the shape Omni's own
+documentation describes for a topic that lacks the measure a metric needs. Our
+compiled topics define no measures.
 
-Our first read of that was a story about coverage: the compiler had deferred much
-of the knowledge base, so the deployed model published no joins and no measures,
-so raw SQL was the only path left. The C5 arm tested that story and it did not
-hold. C5 published a view for every table and a join for every qualifying foreign
-key, widening the model roughly sixfold, and the rewrite rate stayed at 100%.
-Path availability and path selection are separate problems, and only the first
-one is explained by the compiler. Why the planner always selects rewrite is
-unresolved.
+C5 separates the two constraints. Publishing a view for every table and a join
+for every qualifying foreign key raised topic scoping from 69.6% to 98.5%, so
+relationship coverage does move the agent onto the model's joins. It left the
+hand-written aggregate rate flat. Joins were a real constraint and are now
+addressed; measures are the one that remains, and no arm here has tested them.
+
+> **Corrected 2026-08-31 (D-211).** An earlier version of this brief said the
+> agent "never composed a query through the semantic layer in any arm" and that
+> "the rewrite rate stayed at 100%" through C5. Both came from reading
+> `rewriteSql`, which Omni sets by default on any query carrying authored SQL and
+> which is therefore constant, and `join_via_map`, which a submitted query never
+> populates. The description above is the remeasurement.
 
 Both problems are worth fixing. Below is what a model author cannot currently do,
 in the order we would fix it; the compilation losses are real and independently
@@ -171,8 +181,9 @@ own, and the result-capture gap is what made it unscoreable.
 The C5 arm described below is the direct test of this item. It publishes 1,049
 foreign keys as joins and the complete knowledge base as context, so its
 query-path readout will show whether relationship coverage alone moves a governed
-agent off the rewrite path, or whether the grain and aggregation contracts have
-to arrive with it.
+agent onto the model's joins, or whether the grain and aggregation contracts have
+to arrive with it. It showed the former: topic scoping rose to 98.5% and the
+hand-written aggregate rate did not move.
 
 ### 4. Deployment identity and diagnostics
 
@@ -296,6 +307,17 @@ measures in this phase, because measures need grain resolution and that is a
 second phase. Same public inputs, same custody rules, same two scorers,
 development partition only.
 
+**What "docs-idiomatic" does and does not cover.** C5 implements the structural
+half of Omni's documented AI guidance: full view coverage, the FK join graph, and
+`ai_context` at field, topic, and model level. It omits the rest of the documented
+AI-optimization surface, and the omissions are not incidental. It publishes no
+measures, which is the single key Omni's documentation ties most directly to the
+behavior C5 was built to test, and it sets none of `ai_fields`, `synonyms`,
+`sample_values`, `all_values`, `sample_queries`, or `ai_chat_topics`. C5 is
+therefore a lower bound on what Omni's documented workflow reaches, not a ceiling,
+and no result here should be read as the best the product can do when modeled
+fully.
+
 It ran on a matched frame of 122 questions across 14 databases, built so that C1
 through C5 are scored on identical questions, plus the full 136-attempt frame
 against the frozen C4 baseline. Eight deployment passes are preserved; the last
@@ -326,28 +348,32 @@ less expensive than the sparse one, by a wide margin.
 
 ### Do declared joins change the query path?
 
-They did not change it on a single query.
+They changed how the model was used, and not what the agent had to write itself.
 
-C5 published a view for every table and a join for every qualifying foreign key,
-and 134 of 134 parseable C5 attempts still carried `rewriteSql` with
-agent-authored SQL. Zero declared a join through the semantic model. Across all
-six governed arms we have measured, including three sealed C4 repetitions and
-E02, the count is 661 of 661 on the rewrite path and zero composed. The audit
-artifact is `experiments/analysis/governed-query-path-tally-v1.json`, regenerable
-from `governed_query_path_tally.py`.
+C5 published a view for every table and a join for every qualifying foreign key.
+Topic scoping rose from 94 of 135 attempts to 132 of 134, so the agent took the
+model's join scope on nearly every query. All 134 parseable C5 attempts still
+returned agent-authored SQL, and 38.1% of them wrapped an aggregate around a
+field reference rather than naming a measure, against 34.1% before. Across all
+six governed arms, including three sealed C4 repetitions and E02, the count is
+661 of 661 attempts returning agent-authored SQL. The audit artifact is
+`experiments/analysis/governed-query-path-tally-v2.json`, regenerable from
+`governed_query_path_tally.py`.
 
-That result is the reason PF-016 exists and sits at the top of the ledger. The
-accuracy gain is real and it came from the semantic model serving as better
-context for hand-written SQL, not from composition. A customer in the same
-position sees the same thing we saw: better answers, governed branding, and no
-signal anywhere that the semantic layer was bypassed on every single query.
+That result is why PF-016 exists, in its corrected form. The accuracy gain is
+real and it came from the model serving as better context and better join scope,
+not from composed metrics. What a customer in the same position cannot see is
+which of those happened: no typed field and no AI Hub surface reports the
+pathway, and the field that looks like it would, `rewriteSql`, is constant.
 
 ### What to build next
 
-Relationship coverage is not the binding constraint, which the full join graph
-settles. That moves phase 2 measures up: publish measures, resolve grain, and
-check whether a declared join path ever appears. If the rewrite rate stays at
-100% with measures present, the fallback is unconditional and item 2 (make
-composition observable and enforceable) becomes the highest-value fix in the
-list. If it drops, the 46.9% grain-deferral rate is the constraint and items 1
+Relationship coverage was a constraint and the full join graph addressed it:
+topic scoping went to 98.5%. The remaining constraint is measures. That moves
+phase 2 up, with a sharper outcome variable than the one first proposed: publish
+measures, resolve grain, and check whether the hand-written aggregate rate falls
+from its current 34% to 38%. If it holds with measures present, composition is
+not reachable through modeling and item 2 (make composition observable and
+enforceable) becomes the highest-value fix in the list. If it drops, the 46.9%
+grain-deferral rate is the constraint and items 1
 and 3 carry the weight.

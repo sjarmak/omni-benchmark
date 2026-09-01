@@ -1,5 +1,21 @@
 # C4 mechanism measurements: E05 precondition and SQL path shape
 
+> **Corrected 2026-08-31 (D-211).** This document describes the governed query
+> path as a "raw-SQL rewrite path" taken on every attempt, with `join_via_map`
+> empty as evidence that no query composed. That reading does not survive
+> remeasurement. `rewriteSql` is Omni's documented default for any query carrying
+> `userEditedSQL`, so it is true on all 661 parseable governed attempts and
+> discriminates nothing; `join_via_map` is populated on topic readback, not on
+> query submission, so its count of zero measured a field this pathway never
+> sets. The authored SQL references the deployed model through `${view.field}`
+> templating on 660 of 661 attempts, and most attempts also take the model's join
+> scope through `join_paths_from_topic_name` (69.6% dev-A C4, 98.5% C5). What the
+> model never supplied is the metric: an aggregate hand-written over a field
+> reference appears on 34.1% of dev-A C4 and 38.1% of C5, which is Omni's
+> documented signal for a topic with no measure. Corrected counts:
+> [`governed-query-path-tally-v2.json`](../experiments/analysis/governed-query-path-tally-v2.json).
+> The text below is left as the record of what was measured and published.
+
 Status: measurement. Bead `omni-benchmark-ei0.11.6`. This document runs the two
 offline checks that `docs/c4-failure-attribution.md` §6.4 names as prerequisites
 before any mechanism claim about the 34 governed-C4 terminal failures reaches

@@ -43,7 +43,7 @@ dev-B questions.
 | C1 | Public schema; direct SQL |
 | C2 | Public schema plus searchable raw HKB; direct SQL |
 | C3 | Public schema plus searchable exported Omni model; direct SQL |
-| C4 | Deployed Omni model; production-governed runtime, which used agent-authored SQL through the rewrite path in this evaluation |
+| C4 | Deployed Omni model; production-governed runtime, which used agent-authored SQL over model-resolved field references in this evaluation |
 
 Before any sealed generation or correctness access, the reporting frame narrowed
 from 101 to 89 questions on the 16 databases with complete, verified C4
@@ -134,8 +134,9 @@ its enforcement:
 
 The C4 enforcement cell previously read "production harness enforces semantic
 compilation/validation". That is falsified by measurement. All 135 governed
-semantic queries in the frozen development baseline carry `rewriteSql: true`
-with agent-authored SQL, and none declares a join path. The deployed topics emit
+semantic queries in the frozen development baseline carry agent-authored SQL in
+`userEditedSQL`, and none composes a metric from a declared measure; 94 of the
+135 do take the model's join scope through `join_paths_from_topic_name`. The deployed topics emit
 `"joins": {}` and publish no measures, so the model declares no join path and no
 aggregate for a planner to compile. What the production harness enforces is the
 accessible surface and the resolution of `${view.field}` references against the

@@ -7,8 +7,8 @@
 > preregistered scorers. Those numbers are final. A mechanism analysis, C5, has
 > since run on development data to test the *interpretation* of the C4 result:
 > rebuilding the same product to its own documented shape doubles governed
-> accuracy, 13.2% against 6.6% on the identical frame, and every query still took
-> the raw-SQL rewrite path. C5 is a single-repetition development arm reported
+> accuracy, 13.2% against 6.6% on the identical frame, while the agent kept
+> writing the metric logic in SQL itself. C5 is a single-repetition development arm reported
 > without an interval; it cannot change the held-out accuracy figures and makes
 > no held-out claim. It was registered after the sealed aggregates were opened,
 > which is exactly why it is confined to development data. See [what is still
@@ -55,13 +55,14 @@ Each rung adds exactly one ingredient to the rung below it.
 | **C2** | Raw schema + searchable business knowledge (HKB), direct SQL | Does the business knowledge itself help, in its native prose form? |
 | **C3** | Compiled/exported semantic-model knowledge, direct SQL | Does that knowledge survive being turned into a structured model, when the agent still writes the SQL? |
 | **C4** | The deployed Omni semantic model, answered through Omni's production agent | The product premise: governed semantic execution versus writing SQL yourself |
-| **C5** | Omni deployed the way its documentation prescribes: every table published, full FK join graph, complete knowledge port into `ai_context` | *Development data only, not scored on the sealed split.* Was C4's result a property of the semantic layer, or of the sparse model we were able to compile? It was the sparse model: C5 doubles C4 on the identical frame, 13.2% against 6.6%, and every C5 query still took the rewrite path. |
+| **C5** | Omni deployed toward its documentation: every table published, full FK join graph, complete knowledge port into `ai_context`. No measures, `ai_fields`, `synonyms`, `sample_values`, or `sample_queries`, so it is a lower bound on the documented workflow, not a ceiling | *Development data only, not scored on the sealed split.* Was C4's result a property of the semantic layer, or of the sparse model we were able to compile? It was the sparse model: C5 doubles C4 on the identical frame, 13.2% against 6.6%. C5 also raised topic scoping from 69.6% to 98.5%, while the agent still hand-wrote aggregates on 38.1% of attempts because the compiled topics define no measures. |
 
 **Where the design failed to isolate what it intended.** C4 was supposed to
 separate semantic query composition from agent-written SQL. It did not. All 135
-governed semantic queries carry `rewriteSql: true` with agent-authored SQL, and
-not one declares a join path. Because the conservative compiler left the
-deployed topics with no joins and no measures, no composed path existed for
+governed semantic queries return agent-authored SQL in `userEditedSQL`, and
+while that SQL references the deployed model through `${view.field}` templating,
+the agent writes the metric logic itself. Because the conservative compiler left
+the deployed topics with no joins and no measures, no fully composed path existed for
 cross-table access, and Omni's agent resolved model fields at rewrite time on
 109 of 135 attempts. C4 measured Omni as a governed vocabulary, not as a query
 compiler. C4 minus C3 is a system-level contrast between two conditions that
@@ -85,11 +86,11 @@ the contemporaneous ledger of about 200 decisions is
 | The public HKB compiles into an executable semantic model | 193 of 1,090 definitions compiled (17.7%); 511 (46.9%) deferred across an unresolved grain | Ship the conservative compiler, carry the rest as searchable context |
 | Unbounded schema retrieval makes the direct comparator unfair and unrunnable | A 51-table single response became a 4-table, 64 KiB bound | Freeze the bound as a disclosed scaffold |
 | Business knowledge helps a direct-SQL agent | dev-A: C1 7.4%, C2 23.8%, C3 13.1% | Carry all three into the sealed run untuned |
-| C4 minus C3 isolates semantic query composition | **Refuted.** All 135 parseable dev-A governed queries took the rewrite path; zero declared join paths | Amend the claim, disclose it, do not touch the data |
+| C4 minus C3 isolates semantic query composition | **Refuted.** All 135 parseable dev-A governed queries returned agent-authored SQL; the model supplied field resolution and, on 94 of 135, join scope, but never the metric | Amend the claim, disclose it, do not touch the data |
 | E01: same-grain dependency composition is missing | Already in the baseline: 70 executable dependency edges, depth 3 | Audited no-op, contrast cancelled |
 | E02: FK-backed relationships restore a composed join path | 91 relationships deployed; generation froze 117 answers and 19 capture failures | **INCONCLUSIVE** on the preregistered complete-136 rule; no promotion, no rerun |
 | E05: typed output fields fix the 31 `UNKNOWN`-type contract failures | Preregistered precondition needed 16 of 31; the ceiling is 6 of 31 | **INCONCLUSIVE** by its own stopping rule, zero live attempts spent |
-| C5: docs-idiomatic deployment carries C2's knowledge value into the governed path | dev-A: C5 13.2% against frozen C4 6.6% on 136 identical attempts, at 32% fewer median tokens; 134/134 queries still on the rewrite path | **Partly supported.** About a third of the C4-to-C2 gap closes on the matched frame (33% official, 27% sensitivity), entirely through context rather than composition |
+| C5: docs-idiomatic deployment carries C2's knowledge value into the governed path | dev-A: C5 13.2% against frozen C4 6.6% on 136 identical attempts, at 32% fewer median tokens; topic scoping rose to 132/134 and hand-written aggregates held at 38.1% | **Partly supported.** About a third of the C4-to-C2 gap closes on the matched frame (33% official, 27% sensitivity), entirely through context rather than composition |
 
 Two of those are worth reading as research judgment rather than as results. The
 refutation in row four is this study's own central design assumption falling to
@@ -131,14 +132,16 @@ filed it against Large-v1 on 2026-08-29 as
 | C4 − C3 † | 0.0 pts | −4.9 to 4.9 | +1.1 pts | −4.1 to 6.7 |
 
 **† C4 is not a valid measure of governed semantic composition.** Every sealed
-C4 query took Omni's raw-SQL rewrite path and none declared a join through the
-semantic model. C4's 8.6% measures an agent writing SQL by hand with the
-semantic model present as context, at governed-path latency and cost. Read the
+C4 query returned agent-authored SQL, and the compiled topics defined no
+measures, so the metric logic was always written by the agent rather than
+composed from the model. C4's 8.6% measures an agent writing SQL against a model
+that supplied field references and, on roughly half of attempts, join scope, at
+governed-path latency and cost. Read the
 C4 rows as a measurement of that system, not of semantic composition. Audit the
 counts yourself in
 [`governed-query-path-tally-v1.json`](experiments/analysis/governed-query-path-tally-v1.json);
 narrative detail in [`docs/c4-query-path-disclosure.md`](docs/c4-query-path-disclosure.md);
-product consequence in [PF-016](docs/product-findings.md#pf-016-governed-queries-silently-fall-back-to-raw-sql-with-no-signal-that-composition-was-bypassed).
+product consequence in [PF-016](docs/product-findings.md#pf-016-the-sql-authoring-pathway-is-not-surfaced-and-it-is-the-most-permissive-route).
 
 What that table says, mechanism first:
 
@@ -153,19 +156,25 @@ What that table says, mechanism first:
   emit more by inferring joins and aggregations, which is the thing a semantic
   layer exists to stop. A human modeler with domain access could raise it;
   nothing here measures how far.
-- **Zero governed queries composed through the semantic model.** Across six
-  governed arms, 661 of 661 parseable attempts took the raw-SQL rewrite path and
-  `join_via_map` was never used once. That covers all three sealed C4
-  repetitions, the dev-A C4 baseline, E02, and C5 after the model was widened
-  roughly sixfold. Per-arm counts, regenerable from public run metadata:
-  [`experiments/analysis/governed-query-path-tally-v1.json`](experiments/analysis/governed-query-path-tally-v1.json)
+- **No governed query composed a metric through the semantic model.** Across six
+  governed arms, 661 of 661 parseable attempts returned agent-authored SQL. That
+  SQL is not raw table SQL: it references the model through `${view.field}`
+  templating on 660 of 661, and most attempts also take the model's join scope
+  (69.6% of dev-A C4, 98.5% of C5). What the model never supplied is the metric.
+  An aggregate hand-written over a field reference, which is Omni's documented
+  signal that a topic lacks the measure a metric needs, appears on 34.1% of dev-A
+  C4 and 38.1% of C5; a `FROM` naming a physical table appears on 26.0% to 33.0%.
+  Per-arm counts, regenerable from public run metadata:
+  [`experiments/analysis/governed-query-path-tally-v2.json`](experiments/analysis/governed-query-path-tally-v2.json)
   via [`governed_query_path_tally.py`](experiments/analysis/governed_query_path_tally.py).
+  The superseded schema-1 artifact and the correction are recorded in D-211.
 - **Widening the model sixfold moved accuracy and did not move the fallback.**
   C5 published a view for every table and a join for every qualifying foreign
   key. Governed accuracy doubled on the identical development frame, 13.2%
-  against 6.6%, at roughly two-thirds the median token cost. The rewrite rate
-  stayed at 100%. Model sparsity was not what kept the governed path from
-  composing, and better context is worth real accuracy on its own.
+  against 6.6%, at roughly two-thirds the median token cost. Topic scoping rose
+  from 69.6% to 98.5%, and the hand-written-aggregate rate did not fall. View
+  sparsity was not what kept the governed path from composing metrics; the
+  absent measures were, and better context is worth real accuracy on its own.
 - **C2 over C1 is the strongest result in the study, and it is a result about
   business semantics.** Searchable business knowledge, in raw prose form, is
   worth about 12 points to a direct-SQL agent, interval 5.6 to 18.7, excluding
@@ -202,13 +211,15 @@ hold, which is why it now appears as step 5 rather than as a connective.
    unspecified aggregation, and missing cross-grain identity.
 3. **The deployed model was therefore thin.** The C4 topics declared no joins and
    no measures, because the compiler refuses to guess a grain contract.
-4. **The governed runtime never composed.** All 135 parseable development
-   queries took the rewrite path, and 261 of 261 on the sealed frame, with the
-   agent authoring SQL and Omni resolving field names inside it.
-5. **Thinness is not what caused that.** C5 published a view for every table and
-   a join for every qualifying foreign key, widening the model roughly sixfold,
-   and the rewrite rate stayed at 100%. Steps 3 and 4 are both true and are not
-   cause and effect. Why the planner always selects rewrite is unresolved.
+4. **The governed runtime never composed a metric.** All 135 parseable
+   development queries returned agent-authored SQL, and 261 of 261 on the sealed
+   frame. Omni resolved the field references inside that SQL and supplied the
+   join scope on most attempts; what it never supplied was the aggregation.
+5. **View sparsity is not what caused that.** C5 published a view for every table
+   and a join for every qualifying foreign key, widening the model roughly
+   sixfold. Topic scoping rose from 69.6% to 98.5% and the hand-written-aggregate
+   rate held at 38.1%. The binding constraint is the missing measures from step
+   3, which C5 did not add; whether adding them moves the rate is untested.
 6. **So C4 was never the intervention we designed.** It is a measurement of
    Omni-as-vocabulary, not of Omni-as-compiler.
 
@@ -234,9 +245,11 @@ argues for, in order of how much evidence sits behind them. The longer form is
    relationship cardinality, and aggregation semantics directly, and a dry run
    should show which definitions cannot be governed and why, before deployment.
 2. **Make semantic query composition observable.** Nothing in the product
-   surfaced that every governed query was taking the rewrite path. We found it by
-   reading raw job telemetry. A customer cannot tell whether governance is being
-   exercised or bypassed, and neither could we, which is a measurement problem
+   surfaced which pathway a governed query took. We found it by reading raw job
+   telemetry, and our first reading of that telemetry was wrong, because the
+   field that looks like it answers the question (`rewriteSql`) is constant. A
+   customer cannot tell how much of an answer the model determined, and neither
+   could we, which is a measurement problem
    before it is a quality problem.
 3. **Telemetry should distinguish the failure stages.** Semantic compilation,
    field resolution, SQL rewrite, refusal, transport failure, and execution
@@ -265,8 +278,8 @@ argues for, in order of how much evidence sits behind them. The longer form is
   governed Omni delivers when the semantic model actually carries that knowledge.
   Answer on dev-A: about a third of the C4-to-C2 gap on the matched frame, 33%
   under the official scorer and 27% under the sensitivity scorer, and none of it
-  through composition, because all 134 parseable C5 queries still took the
-  rewrite path.
+  through metric composition, because all 134 parseable C5 queries still had the
+  agent write the aggregation in SQL.
   What remains open is whether measures and resolved grain, the phase-2 changes
   C5 deliberately excluded, would produce a composed query at all. Design:
   [`docs/c5-tuned-governed-condition.md`](docs/c5-tuned-governed-condition.md).
@@ -294,8 +307,10 @@ because it silently confounds three independent properties:
 1. **Semantic-model quality.** How much of the available business knowledge
    became governed, executable structure? Here: 17.7%.
 2. **Whether the runtime exercised the model.** Did the governed path compose the
-   query, or did the agent write SQL and use the model as a dictionary? Here:
-   the latter, on 661 of 661 parseable attempts across six governed arms.
+   query, or did the agent write SQL over model-resolved references? Here: the
+   latter for metric logic, on 661 of 661 parseable attempts across six governed
+   arms, with the model still supplying field resolution throughout and join
+   scope on most attempts.
 3. **End-to-end answer correctness.** The number everyone quotes.
 
 A system can fail on any one of those while looking fine on the others, and a
@@ -403,13 +418,13 @@ The final evaluation freezes four conditions:
 | C1 | Raw schema | Direct SQL |
 | C2 | Searchable raw HKB | Direct SQL, optional reference |
 | C3 | Searchable exported Omni model | Direct SQL, optional reference |
-| C4 | Omni semantic model | Production-governed Omni, agent-authored SQL in practice |
+| C4 | Omni semantic model | Production-governed Omni; in practice agent-authored SQL over model-resolved field references |
 
 On the development baseline, C4 did not exercise semantic query compilation.
-Omni's agent authored SQL and submitted it through the product's rewrite path on
+Omni's agent authored SQL over model-resolved field references on
 every attempt, because our conservative compilation left the deployed topics
-with no declared joins and no measures, so no non-rewrite path existed for
-cross-table access. The semantic model was used as a vocabulary rather than a
+with no declared joins and no measures, so no fully composed path existed for
+cross-table access or for any metric. The semantic model was used as a vocabulary rather than a
 compiler. C4-C3 therefore separates two conditions that both author SQL. See
 [docs/harness-disclosure.md](docs/harness-disclosure.md) and
 [docs/c4-query-path-disclosure.md](docs/c4-query-path-disclosure.md).

@@ -452,9 +452,13 @@ def _group_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "with_cte": sum(bool(row["relations"]["cte_count"]) for row in parsed),
             "with_join": sum(row["relations"]["join"] for row in parsed),
             "with_nested": sum(row["relations"]["nested"] for row in parsed),
+            # Gated on the topic join path, not on ``join_via_map``: the latter is
+            # populated on topic readback rather than query submission, so it is
+            # empty on every submitted query and would make this count equal to
+            # ``corrected_multi_relation`` outright. See D-211.
             "cross_source_without_declared_join": sum(
                 row["relations"]["corrected_multi_relation"]
-                and not row["flags"]["declares_join_via_map"]
+                and not row["flags"]["declares_topic_join_path"]
                 for row in parsed
             ),
         }

@@ -97,9 +97,10 @@ says so. `grep -rn 'pending' sections/` finds them.
     17.7% of the 1,090 public definitions compiled into executable objects
     and 46.9% were deferred across an unresolved grain, so the deployed
     model published no joins and no measures; every governed development
-    query then took the product's raw-SQL rewrite path, which means the
-    executed comparison contrasts two agent-authored SQL conditions and does
-    not isolate semantic query composition. We report both frozen scorers
+    query was then authored as SQL by the product's agent over
+    model-resolved field references, which means the executed comparison
+    contrasts two agent-authored SQL conditions and does not isolate
+    semantic query composition. We report both frozen scorers
     without post-result selection, an append-only development record in
     which one preregistered relationship-path experiment resolved
     inconclusive under its own coverage rule, a per-attempt telemetry
