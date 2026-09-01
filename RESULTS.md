@@ -36,7 +36,7 @@ sections 9-10 carry the limits and the reproduction path.
 7. [Product recommendations](#7-product-recommendations)
 8. [What this suggests for an ongoing evaluation program](#8-what-this-suggests-for-an-ongoing-evaluation-program)
 9. [Limitations](#9-limitations)
-10. [Reproducibility](#10-reproducibility)
+10. [Reproducibility](#10-reproducibility), including the [condition explorer](#browsing-the-development-frame)
 
 ## Executive summary
 
@@ -1384,3 +1384,31 @@ The deferred D-054 comparator sensitivity subset, allocation diagnostics,
 preserved-artifact hashes, and notional cost/time projection remain supporting
 artifacts; observed provider dollars remain telemetry rather than a
 run-selection rule.
+
+### Browsing the development frame
+
+The numbers in section 5 are also readable one question at a time.
+`experiments/trace_viewer/build.py` renders a self-contained condition explorer
+over the matched dev-A 122 frame: one row per question, five outcome cells under
+the official frozen scorer, and the per-arm cost, wall-time, and token rollup
+recomputing under whatever filter is active.
+
+```bash
+uv run python experiments/trace_viewer/build.py   # writes experiments/trace_viewer/index.html
+```
+
+Expanding a row gives, per arm, the submitted artifact (SQL for C1-C3, the Omni
+query object for C4 and C5), the returned rows, the step trajectory with per-step
+tokens and timing, the retrieval and exploratory SQL the attempt issued, and its
+cost, tokens, and latency. Contrast chips select the comparisons this report
+argues from: `only_C2` is the eight questions searchable prose alone solved,
+`C5_recovers_C4` the seven the widened model rescued, `all_wrong_with_errors` the
+46 no arm reached a scoreable answer on.
+
+It is a reading tool over committed artifacts, not a source of evidence.
+Correctness is read from the three score artifacts and never recomputed; the
+per-condition totals it displays reproduce `c5-matched-122-comparison-v1.json`,
+and `tests/test_trace_viewer.py` asserts that. It reads no gold SQL, no sealed
+partition, and no hidden annotation. The generated `index.html` is gitignored: it
+is a build product that inlines the frame, regenerated from committed artifacts
+on demand rather than published.
