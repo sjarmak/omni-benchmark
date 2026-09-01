@@ -1,0 +1,11 @@
+base_view: planets_data_large_public__gravitational_microlensing_events
+label: gravitational_microlensing_events
+description: All columns of the public table gravitational_microlensing_events.
+fields:
+- planets_data_large_public__gravitational_microlensing_events.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__planets: {}
+  planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

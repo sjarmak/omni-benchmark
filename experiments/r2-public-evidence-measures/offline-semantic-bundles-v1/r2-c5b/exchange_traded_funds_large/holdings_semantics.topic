@@ -1,0 +1,9 @@
+base_view: exchange_traded_funds_large_public__holdings
+label: holdings
+description: All columns of the public table holdings.
+fields:
+- exchange_traded_funds_large_public__holdings.*
+- exchange_traded_funds_large_public__securities.*
+joins:
+  exchange_traded_funds_large_public__securities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

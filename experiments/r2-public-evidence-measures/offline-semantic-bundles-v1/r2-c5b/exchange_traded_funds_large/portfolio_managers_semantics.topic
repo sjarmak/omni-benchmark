@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__portfolio_managers
+label: portfolio_managers
+description: All columns of the public table portfolio_managers.
+fields:
+- exchange_traded_funds_large_public__portfolio_managers.*
+joins: {}
+ai_context: This topic models no cross-table joins.

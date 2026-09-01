@@ -1,0 +1,11 @@
+base_view: robot_fault_prediction_large_public__liability_claim_assessments
+label: liability_claim_assessments
+description: All columns of the public table liability_claim_assessments.
+fields:
+- robot_fault_prediction_large_public__liability_claim_assessments.*
+- robot_fault_prediction_large_public__incident_reports.*
+- robot_fault_prediction_large_public__technicians.*
+joins:
+  robot_fault_prediction_large_public__incident_reports:
+    robot_fault_prediction_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,54 @@
+label: spare_parts
+description: All columns of the public table spare_parts.
+catalog: solar_panel_large
+schema: public
+table_name: spare_parts
+dimensions:
+  description:
+    description: 'TEXT. A detailed description of the spare part and its specifications. Example: Entry-level certification for solar PV installers..'
+    sql: '"DESCRIPTION"'
+  lead_time_days:
+    description: 'BIGINT. The typical number of days it takes to receive the part after ordering. Example: 14.'
+    sql: '"LEAD_TIME_DAYS"'
+  manufacturer_code:
+    description: 'TEXT. FK -> asset_manufacturers.MfrCode. The code of the part''s manufacturer. Example: MFR-01.'
+    sql: '"Manufacturer_Code"'
+  part_sku:
+    description: 'TEXT. Unique Stock Keeping Unit (SKU) for a spare part. Example: SP-DI-001.'
+    sql: '"PartSKU"'
+  unit_cost:
+    description: 'REAL. The cost of a single unit of the spare part. Example: $15.50.'
+    sql: '"UNIT_COST"'
+  category:
+    description: 'TEXT. The category the spare part belongs to. Possible values: Manufacturer Specific, Safety, Technical.'
+    sql: category
+  created_ts:
+    description: 'TIMESTAMP. Timestamp when the spare part record was created. Example: 2019-01-15 09:00:00.'
+    sql: created_ts
+  is_hazardous:
+    description: 'BOOLEAN. A flag indicating if the part is considered a hazardous material. Possible values: False, True.'
+    sql: is_hazardous
+  last_modified_ts:
+    description: 'TIMESTAMP. Timestamp of the last modification to the spare part record. Example: 2023-10-10 10:00:00.'
+    sql: last_modified_ts
+  min_order_qty:
+    description: 'BIGINT. The minimum quantity required when ordering this part. Example: 50.'
+    sql: min_order_qty
+  part_name:
+    description: 'TEXT. The common name of the spare part. Example: Bypass Diode S3.'
+    sql: part_name
+  physical_properties:
+    description: JSONB column. Describes the physical characteristics of a spare part, such as its weight and dimensions.
+    sql: physical_properties
+  shelf_life_months:
+    description: 'BIGINT. The recommended shelf life of the part in months. NULL if indefinite. Possible values: 120.0, 24.0, 36.0, 48.0, 6.0, 60.0.'
+    sql: shelf_life_months
+  storage_bin:
+    description: 'TEXT. The physical location (bin number) where the part is stored in the warehouse. Example: A12-3.'
+    sql: storage_bin
+  physical_properties_dimensions_cm:
+    description: 'TEXT. The physical dimensions of the part in centimeters (LxWxH). Example: 5x1x1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(physical_properties, 'DIMENSIONS_CM')
+  physical_properties_weight_kg:
+    description: 'REAL. The weight of a single unit of the part in kilograms. Example: 78.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(physical_properties, 'weight_kg')

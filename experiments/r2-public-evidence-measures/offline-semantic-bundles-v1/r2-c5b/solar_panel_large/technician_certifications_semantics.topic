@@ -1,0 +1,11 @@
+base_view: solar_panel_large_public__technician_certifications
+label: technician_certifications
+description: All columns of the public table technician_certifications.
+fields:
+- solar_panel_large_public__technician_certifications.*
+- solar_panel_large_public__certifications.*
+- solar_panel_large_public__technicians.*
+joins:
+  solar_panel_large_public__certifications: {}
+  solar_panel_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

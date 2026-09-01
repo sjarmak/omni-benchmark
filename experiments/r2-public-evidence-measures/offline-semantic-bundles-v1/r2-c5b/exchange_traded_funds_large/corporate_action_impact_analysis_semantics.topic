@@ -1,0 +1,11 @@
+base_view: exchange_traded_funds_large_public__corporate_action_impact_analysis
+label: CorporateActionImpactAnalysis
+description: All columns of the public table CorporateActionImpactAnalysis.
+fields:
+- exchange_traded_funds_large_public__corporate_action_impact_analysis.*
+- exchange_traded_funds_large_public__corporate_action_events.*
+- exchange_traded_funds_large_public__securities.*
+joins:
+  exchange_traded_funds_large_public__corporate_action_events:
+    exchange_traded_funds_large_public__securities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

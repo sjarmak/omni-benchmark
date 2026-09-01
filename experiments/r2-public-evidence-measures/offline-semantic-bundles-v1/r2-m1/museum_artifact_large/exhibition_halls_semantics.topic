@@ -1,0 +1,9 @@
+base_view: museum_artifact_large_public__exhibition_halls
+label: Exhibition Halls
+description: Exhibition-hall rows with visitor-impact semantics and CCTV coverage context.
+fields:
+- museum_artifact_large_public__exhibition_halls.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Use the modeled business fields visitor_impact_risk rather than reconstructing their formulas.'

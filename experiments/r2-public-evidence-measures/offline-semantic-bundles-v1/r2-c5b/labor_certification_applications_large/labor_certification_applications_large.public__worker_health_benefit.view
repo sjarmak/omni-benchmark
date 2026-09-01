@@ -1,0 +1,66 @@
+label: WorkerHealthBenefit
+description: All columns of the public table WorkerHealthBenefit.
+catalog: labor_certification_applications_large
+schema: public
+table_name: WorkerHealthBenefit
+dimensions:
+  whb_code:
+    description: 'TEXT. Unique identifier for worker health benefit enrollment record. Example: WHB-1A2B3C.'
+    sql: '"WHB_code"'
+  annual_deductible_usd:
+    description: 'REAL. Annual deductible amount in USD. Example: 2000.'
+    sql: '"annualDeductible_USD"'
+  claims_ytd_usd:
+    description: 'REAL. Total claims amount year-to-date in USD. Example: 4500.'
+    sql: '"claimsYTD_USD"'
+  claims_ytd_ct:
+    description: 'INTEGER. Number of claims filed year-to-date. Example: 8.'
+    sql: '"claimsYTD_ct"'
+  cobra_eligible_flag:
+    description: 'BOOLEAN. Indicates if worker is eligible for COBRA continuation. Possible values: True, False.'
+    sql: '"cobraEligible_flag"'
+  coverage_level:
+    description: 'TEXT. Level of coverage selected by worker. Unique values: Employee Only, Employee + Spouse, Employee + Children, Family.'
+    sql: '"coverageLevel"'
+  dental_included_flag:
+    description: 'BOOLEAN. Indicates if dental coverage is included. Possible values: True, False.'
+    sql: '"dentalIncluded_flag"'
+  effective_end_date:
+    description: 'TIMESTAMP. Date when coverage ends or is scheduled to end. **NULL means Coverage currently active with no scheduled end.** Example: 2024-01-01 12:00:00.'
+    sql: '"effectiveEndDate"'
+  employer_contribution_usd:
+    description: 'REAL. Monthly employer contribution toward premium in USD. Example: 650.'
+    sql: '"employerContribution_USD"'
+  enrollment_date:
+    description: 'TIMESTAMP. Date when worker enrolled in health benefits. Example: 2024-01-01 12:00:00.'
+    sql: '"enrollmentDate"'
+  hsa_balance_usd:
+    description: 'REAL. Current HSA account balance in USD. **NULL means Not enrolled in HSA-eligible plan.** Example: 3500.'
+    sql: '"hsaBalance_USD"'
+  hsa_eligible_flag:
+    description: 'BOOLEAN. Indicates if plan is HSA eligible. Possible values: True, False.'
+    sql: '"hsaEligible_flag"'
+  monthly_premium_usd:
+    description: 'REAL. Monthly premium amount paid by worker in USD. Example: 450.'
+    sql: '"monthlyPremium_USD"'
+  network_tier:
+    description: 'TEXT. Provider network tier of selected plan. Unique values: Bronze, Silver, Gold, Platinum.'
+    sql: '"networkTier"'
+  out_of_pocket_max_usd:
+    description: 'REAL. Annual out-of-pocket maximum in USD. Example: 6500.'
+    sql: '"outOfPocketMax_USD"'
+  plan_type:
+    description: 'TEXT. Type of health insurance plan selected. Unique values: HMO, PPO, EPO, POS, HDHP, Catastrophic.'
+    sql: '"planType"'
+  pre_existing_condition_flag:
+    description: 'BOOLEAN. Indicates if worker disclosed pre-existing conditions. Possible values: True, False.'
+    sql: '"preExistingCondition_flag"'
+  vision_included_flag:
+    description: 'BOOLEAN. Indicates if vision coverage is included. Possible values: True, False.'
+    sql: '"visionIncluded_flag"'
+  wellness_program_enrolled_flag:
+    description: 'BOOLEAN. Indicates if worker is enrolled in wellness program. Possible values: True, False.'
+    sql: '"wellnessProgramEnrolled_flag"'
+  worker_ref:
+    description: TEXT. Foreign key reference to worker_profile table.
+    sql: worker_ref

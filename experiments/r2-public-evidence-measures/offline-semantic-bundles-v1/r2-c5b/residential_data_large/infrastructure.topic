@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__infrastructure
+label: Infrastructure
+description: Public household infrastructure records with water, road, and parking context.
+fields:
+- residential_data_large_public__infrastructure.*
+joins: {}
+ai_context: This topic models no cross-table joins.

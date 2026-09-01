@@ -1,0 +1,60 @@
+label: DroneInspectionFindings
+description: All columns of the public table DroneInspectionFindings.
+catalog: solar_panel_large
+schema: public
+table_name: DroneInspectionFindings
+dimensions:
+  confidence_score_pct:
+    description: 'REAL. AI confidence in the diagnosis (0-100). Example: 92.'
+    sql: confidence_score_pct
+  defect_type:
+    description: 'TEXT. Classification of the visual/thermal defect. Unique values: Hotspot, Diode Failure, Glass Crack, Soiling, Shadowing.'
+    sql: defect_type
+  estimated_power_loss_watts:
+    description: 'REAL. Calculated power loss due to this defect. Example: 150.'
+    sql: estimated_power_loss_watts
+  finding_id:
+    description: TEXT. Unique identifier for a defect found by drone.
+    sql: finding_id
+  flight_log_ref:
+    description: TEXT. FK to DroneFlightLogs. The flight that captured this.
+    sql: flight_log_ref
+  human_verified:
+    description: 'BOOLEAN. True if a human analyst confirmed the AI finding. Possible values: True, False.'
+    sql: human_verified
+  image_timestamp:
+    description: 'TIMESTAMP. Exact time the image was taken. Example: 2024-01-01 12:00:00.'
+    sql: image_timestamp
+  image_url_rgb:
+    description: TEXT. Link to the high-res visual image.
+    sql: image_url_rgb
+  image_url_thermal:
+    description: TEXT. Link to the thermal radiometric image.
+    sql: image_url_thermal
+  location_gps_lat:
+    description: 'REAL. Latitude of the defect. Example: 34.0.'
+    sql: location_gps_lat
+  location_gps_lon:
+    description: 'REAL. Longitude of the defect. Example: -118.0.'
+    sql: location_gps_lon
+  module_manufacturer:
+    description: 'TEXT. Brand of the defective panel. Unique values: Longi, Jinko, Trina.'
+    sql: module_manufacturer
+  panel_string_id:
+    description: TEXT. Identifier of the specific panel string/row.
+    sql: panel_string_id
+  rejection_reason:
+    description: 'TEXT. Why a human rejected the finding (if applicable). **NULL means Accepted as valid.** Unique values: False Positive, Glare/Reflection, Bird Dropping.'
+    sql: rejection_reason
+  row_number:
+    description: 'INTEGER. Physical row number in the block. Example: 50.'
+    sql: row_number
+  severity_score:
+    description: 'INTEGER. AI-calculated severity (1-10). Example: 50.'
+    sql: severity_score
+  temperature_delta_c:
+    description: 'REAL. Temp difference compared to neighboring panels. **NULL means Visual defect only (no thermal).** Example: 15.'
+    sql: temperature_delta_c
+  work_order_generated:
+    description: 'BOOLEAN. True if this finding triggered an automatic work order. Possible values: True, False.'
+    sql: work_order_generated

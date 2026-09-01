@@ -1,0 +1,18 @@
+label: platforms
+description: All columns of the public table platforms.
+catalog: fake_account_large
+schema: public
+table_name: platforms
+dimensions:
+  plt_code:
+    description: 'TEXT. Unique platform code. PK. Example: PL331.'
+    sql: '"PLT_CODE"'
+  plt_kind:
+    description: 'TEXT. Type of the platform. Not NULL. Possible values: Forum, Microblog, Social Network, Video Platform.'
+    sql: '"PLT_KIND"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct platforms public identity values.
+    label: platforms Count
+    sql: ${fake_account_large_public__platforms.plt_code}

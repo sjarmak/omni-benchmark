@@ -1,0 +1,102 @@
+label: software_licenses
+description: All columns of the public table software_licenses.
+catalog: archeology_scan_large
+schema: public
+table_name: software_licenses
+dimensions:
+  assigned_project_code:
+    description: 'TEXT. Foreign key for the project the license is assigned to. FK. **NULL means the license is not assigned to a specific project.**。 Example: PR2309.'
+    sql: '"AssignedProjectCode"'
+  assigned_user_tag:
+    description: 'TEXT. Foreign key for the user the license is assigned to. FK. **NULL means the license is a floating or network license.**。 Example: OP3541.'
+    sql: '"AssignedUserTag"'
+  auto_renew:
+    description: 'BOOLEAN. A flag indicating if the license is set to auto-renew. **NULL means it is unknown.**。 Possible values: False, True.'
+    sql: '"AutoRenew"'
+  compliance_status:
+    description: 'TEXT. The result of the last compliance check。 Possible values: Compliant, Expired, Out of Compliance.'
+    sql: '"COMPLIANCE_STATUS"'
+  currency_code:
+    description: 'TEXT. The currency of the purchase cost. **NULL means the cost is not recorded.**。 Possible values: CAD, CHF, CNY, EUR, GBP, PEN, USD.'
+    sql: '"CurrencyCode"'
+  department_owner:
+    description: 'TEXT. The department that owns this license。 Possible values: Analysis Dept., Documentation Dept., IT Dept., Management, Processing Dept., Survey Dept..'
+    sql: '"DEPARTMENT_OWNER"'
+  expiry_date:
+    description: 'DATE. The date the license expires. **NULL means the license is perpetual and does not expire.**。 Example: 14-Jan-25.'
+    sql: '"EXPIRY_DATE"'
+  eula_link:
+    description: TEXT. A URL to the End-User License Agreement. **NULL means no link is available.**
+    sql: '"EulaLink"'
+  is_active:
+    description: 'BOOLEAN. A flag indicating if the license is currently active。 Possible values: False, True.'
+    sql: '"IS_ACTIVE"'
+  invoice_number:
+    description: 'TEXT. The invoice number for the purchase. **NULL means it is unknown.**。 Example: INV-LC-2023-01.'
+    sql: '"InvoiceNumber"'
+  is_node_locked:
+    description: 'BOOLEAN. A flag indicating if the license is locked to a specific machine。 Possible values: False, True.'
+    sql: '"IsNodeLocked"'
+  license_key:
+    description: 'TEXT. The license key or serial number. UNIQUE。 Example: LC-XYZ-12345-ABCDE.'
+    sql: '"LICENSE_KEY"'
+  last_compliance_check:
+    description: 'DATE. The date a compliance check was last performed. **NULL means no check has been performed.**。 Example: 15-Jan-24.'
+    sql: '"LastComplianceCheck"'
+  license_code:
+    description: 'BIGINT. Unique identifier for a software license. PK。 Example: 5001.'
+    sql: '"LicenseCode"'
+  purchase_date:
+    description: 'DATE. The date the license was purchased。 Example: 15-Jan-23.'
+    sql: '"PurchaseDate"'
+  server_hostname:
+    description: 'TEXT. The hostname of the license server for network licenses. **NULL means it is not a network license.**。 Example: PROC-STATION-01.'
+    sql: '"SERVER_HOSTNAME"'
+  support_level:
+    description: 'TEXT. The level of support included with the license. **NULL means no support is included.**。 Possible values: All Apps, Basic, Enterprise, Gold, Premium, Professional, Standard.'
+    sql: '"SUPPORT_LEVEL"'
+  software_version:
+    description: 'TEXT. The version of the software。 Example: 2-Jan-23.'
+    sql: '"SoftwareVersion"'
+  upgrade_protection_included:
+    description: 'BOOLEAN. A flag indicating if upgrade protection is included。 Possible values: False, True.'
+    sql: '"UpgradeProtectionIncluded"'
+  vendor_name:
+    description: 'TEXT. The name of the vendor from whom the license was purchased。 Example: Leica Geosystems.'
+    sql: '"VENDOR_NAME"'
+  asset_tag:
+    description: 'TEXT. The internal asset tag for this license。 Example: SW-001.'
+    sql: asset_tag
+  audit_notes:
+    description: 'TEXT. Notes from the compliance audit. **NULL means no audit has been performed.**。 Possible values: Needs upgrade., Project completed..'
+    sql: audit_notes
+  cost:
+    description: 'REAL. The purchase cost of the license。 Example: 12500.'
+    sql: cost
+  license_type:
+    description: 'TEXT. The type of license。 Possible values: Open Source, Perpetual, Subscription.'
+    sql: license_type
+  mac_address_locked:
+    description: 'TEXT. The MAC address the license is locked to. **NULL means it is not MAC-address-locked.**。 Possible values: 00:1A:C2:7B:3D:4F, 00:1A:C2:8B:4D:5F, 00:1A:C2:8B:4D:6A, 00:1B:44:11:3A:B7, 00:1B:44:11:3A:B8, 00:1B:63:84:45:E6, 00:1B:63:84:45:E7, 00:1B:63:84:45:E8, 00:1C:B3:09:85:1F, 00:1C:B3:1A:96:2C.'
+    sql: mac_address_locked
+  number_of_seats:
+    description: 'BIGINT. The number of users or installations permitted by the license。 Possible values: 1, 10, 2, 3, 5, 8, 80.'
+    sql: number_of_seats
+  purchase_order_number:
+    description: 'TEXT. The purchase order number used for the acquisition. **NULL means it is unknown.**。 Example: PO-2023-001.'
+    sql: purchase_order_number
+  renewal_cost:
+    description: 'REAL. The cost to renew the license. **NULL means it is not a renewable license.**。 Example: 12500.0.'
+    sql: renewal_cost
+  software_name:
+    description: 'TEXT. The name of the software。 Example: Leica Cyclone.'
+    sql: software_name
+  support_contact:
+    description: 'TEXT. Contact information for technical support. **NULL means it is not recorded.**。 Example: support@leica-geo.com.'
+    sql: support_contact
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct software_licenses public identity values.
+    label: software_licenses Count
+    sql: ${archeology_scan_large_public__software_licenses.license_code}

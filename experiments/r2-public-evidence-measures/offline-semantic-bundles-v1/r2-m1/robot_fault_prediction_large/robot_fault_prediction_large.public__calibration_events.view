@@ -1,0 +1,63 @@
+label: calibration_events
+description: All columns of the public table calibration_events.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: calibration_events
+dimensions:
+  ambient_temp_c:
+    description: 'REAL. Room temp affecting expansion. Example: 22.'
+    sql: ambient_temp_c
+  calibration_duration_min:
+    description: 'INTEGER. Time taken to complete. Example: 15.'
+    sql: calibration_duration_min
+  calibration_id:
+    description: TEXT. Unique key for the calibration session.
+    sql: calibration_id
+  calibration_method:
+    description: 'TEXT. Technique used (Laser, Touch_Probe). Unique values: Laser_Tracker, Touch_Probe, Vision_Grid.'
+    sql: calibration_method
+  calibration_success_flag:
+    description: 'BOOLEAN. Did it pass tolerances?. Possible values: True, False.'
+    sql: calibration_success_flag
+  end_effector_ref:
+    description: TEXT. Tool being calibrated.
+    sql: end_effector_ref
+  offset_x_mm:
+    description: 'REAL. Positional correction X. Example: 0.'
+    sql: offset_x_mm
+  offset_y_mm:
+    description: 'REAL. Positional correction Y. Example: 0.'
+    sql: offset_y_mm
+  offset_z_mm:
+    description: 'REAL. Positional correction Z. Example: 0.2.'
+    sql: offset_z_mm
+  payload_configured_kg:
+    description: 'REAL. Mass setting during cal. Example: 5.'
+    sql: payload_configured_kg
+  pre_cal_error_margin_mm:
+    description: 'REAL. Error measured before fixing. Example: 1.0.'
+    sql: pre_cal_error_margin_mm
+  reference_frame_id:
+    description: 'TEXT. Coordinate system used. Unique values: World, Base, Tool.'
+    sql: reference_frame_id
+  rotational_error_deg:
+    description: 'REAL. Angular deviation corrected. Example: 0.'
+    sql: rotational_error_deg
+  stiffness_coefficient_nm:
+    description: 'REAL. Measured rigidity of the tool. Example: 5000.'
+    sql: stiffness_coefficient_nm
+  tcp_accuracy_score:
+    description: 'REAL. Tool Center Point precision (0-1). Example: 50.0.'
+    sql: tcp_accuracy_score
+  technician_id_ref:
+    description: TEXT. Tech performing the cal.
+    sql: technician_id_ref
+  tool_wear_index:
+    description: 'REAL. Calculated wear level (0=New, 100=Fail). Example: 50.0.'
+    sql: tool_wear_index
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct calibration_events public identity values.
+    label: calibration_events Count
+    sql: ${robot_fault_prediction_large_public__calibration_events.calibration_id}

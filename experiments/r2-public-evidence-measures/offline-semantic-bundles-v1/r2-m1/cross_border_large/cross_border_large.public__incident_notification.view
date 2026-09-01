@@ -1,0 +1,72 @@
+label: IncidentNotification
+description: All columns of the public table IncidentNotification.
+catalog: cross_border_large
+schema: public
+table_name: IncidentNotification
+dimensions:
+  channel:
+    description: 'TEXT. Communication channel used Possible values: Email, Portal, Letter, Phone, API, In-Person.'
+    sql: '"CHANNEL"'
+  deadline_hours:
+    description: BIGINT. Notification deadline in hours from detection
+    sql: '"DEADLINE_HOURS"'
+  evidence_url:
+    description: TEXT. URL to notification evidence/proof
+    sql: '"EVIDENCE_URL"'
+  jurisdiction_ref:
+    description: BIGINT. Foreign key referencing Geo_Jurisdiction(JURISDICTION_CODE). Jurisdiction notified
+    sql: '"JURISDICTION_REF"'
+  notification_id:
+    description: BIGINT. Primary key. Unique notification record identifier
+    sql: '"NOTIFICATION_ID"'
+  notification_type:
+    description: 'TEXT. Type of notification Possible values: Regulatory, Data Subject, Law Enforcement, Insurance, Business Partner, Media, Internal.'
+    sql: '"NotificationType"'
+  records_disclosed:
+    description: BIGINT. Number of records disclosed in notification
+    sql: '"RECORDS_DISCLOSED"'
+  sender_role:
+    description: 'TEXT. Role of person sending notification Possible values: DPO, CISO, Legal Counsel, Privacy Officer.'
+    sql: '"SENDER_ROLE"'
+  sent_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When notification was sent
+    sql: '"SENT_AT"'
+  status:
+    description: 'TEXT. Notification status Possible values: Drafted, Sent, Acknowledged, Response Received, Overdue.'
+    sql: '"Status"'
+  acknowledged_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When recipient acknowledged **NULL means Not yet acknowledged.**
+    sql: acknowledged_at
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  followup_required:
+    description: BOOLEAN. Whether follow-up communication is needed Boolean flag (true/false).
+    sql: '"followup_Required"'
+  incident_id_ref:
+    description: BIGINT. Foreign key referencing IncidentRegister(INCIDENT_ID). Related incident
+    sql: incident_id_ref
+  legal_basis_cited:
+    description: 'TEXT. Legal basis cited in notification Possible values: GDPR Art 33, GDPR Art 34, CCPA 1798.82, PIPL Art 57, LGPD Art 48.'
+    sql: legal_basis_cited
+  notification_code:
+    description: TEXT. Notification reference number
+    sql: notification_code
+  recipient_authority:
+    description: 'TEXT. Name of receiving authority/entity Possible values: ICO, CNIL, BfDI, AEPD, Garante, DPA Ireland, EDPB, FTC.'
+    sql: recipient_authority
+  recipient_email:
+    description: TEXT. Recipient email address
+    sql: recipient_email
+  response_summary:
+    description: TEXT. Summary of authority response **NULL means No response received yet.**
+    sql: response_summary
+  within_sla:
+    description: BOOLEAN. Whether notification was sent within SLA Boolean flag (true/false).
+    sql: within_sla
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct IncidentNotification public identity values.
+    label: IncidentNotification Count
+    sql: ${cross_border_large_public__incident_notification.notification_id}

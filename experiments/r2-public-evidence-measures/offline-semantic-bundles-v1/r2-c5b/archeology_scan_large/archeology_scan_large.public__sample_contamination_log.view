@@ -1,0 +1,66 @@
+label: SampleContaminationLog
+description: All columns of the public table SampleContaminationLog.
+catalog: archeology_scan_large
+schema: public
+table_name: SampleContaminationLog
+dimensions:
+  sample_contamination_log_id:
+    description: TEXT. Unique identifier for each contamination log entry.
+    sql: '"SampleContaminationLog_id"'
+  acceptable_threshold_ppm:
+    description: 'REAL. Maximum acceptable contamination level in parts per million. Example: 50.0.'
+    sql: acceptable_threshold_ppm
+  affected_sample_mass_grams:
+    description: 'REAL. Mass of sample material affected by contamination. Example: 8.0.'
+    sql: affected_sample_mass_grams
+  ambient_humidity_percent:
+    description: 'REAL. Lab humidity percentage at time of detection. Example: 45.0.'
+    sql: ambient_humidity_percent
+  ambient_temperature_celsius:
+    description: 'REAL. Lab temperature at time of contamination detection. Example: 22.0.'
+    sql: ambient_temperature_celsius
+  contamination_level_ppm:
+    description: 'REAL. Measured contamination concentration in parts per million. Example: 50.0.'
+    sql: contamination_level_ppm
+  contamination_type:
+    description: 'TEXT. Classification of the contamination source type. Unique values: Biological, Chemical, Particulate, Cross-Sample, Environmental, Equipment.'
+    sql: contamination_type
+  corrective_action_taken:
+    description: 'BOOLEAN. Whether corrective measures were implemented. Possible values: True, False.'
+    sql: corrective_action_taken
+  cost_impact_usd:
+    description: 'REAL. Estimated cost impact of the contamination in US dollars. **NULL means Cost assessment not completed.** Example: 350.0.'
+    sql: cost_impact_usd
+  detection_method:
+    description: 'TEXT. Method used to detect the contamination. Unique values: Visual, Spectroscopy, Mass Spectrometry, Chromatography, Microscopy, Automated Sensor.'
+    sql: detection_method
+  detection_timestamp:
+    description: 'TIMESTAMP. Date and time when contamination was detected. Example: 2024-01-01 12:00:00.'
+    sql: detection_timestamp
+  investigation_hours:
+    description: 'REAL. Hours spent investigating the contamination incident. **NULL means Investigation ongoing.** Example: 4.0.'
+    sql: investigation_hours
+  processing_ref:
+    description: TEXT. Reference to the lab sample processing record.
+    sql: processing_ref
+  protocol_breach:
+    description: 'BOOLEAN. Whether contamination resulted from protocol violation. Possible values: True, False.'
+    sql: protocol_breach
+  quarantine_initiated:
+    description: 'BOOLEAN. Whether the sample was placed in quarantine. Possible values: True, False.'
+    sql: quarantine_initiated
+  report_filed:
+    description: 'BOOLEAN. Whether formal contamination report was submitted. Possible values: True, False.'
+    sql: report_filed
+  reprocessing_required:
+    description: 'BOOLEAN. Whether the sample needs to be reprocessed. Possible values: True, False.'
+    sql: reprocessing_required
+  root_cause_identified:
+    description: 'BOOLEAN. Whether the root cause of contamination was determined. Possible values: True, False.'
+    sql: root_cause_identified
+  sample_salvageable:
+    description: 'BOOLEAN. Whether the sample can still be used for analysis. Possible values: True, False.'
+    sql: sample_salvageable
+  severity_rating:
+    description: 'TEXT. Severity assessment of the contamination incident. Unique values: Low, Medium, High, Critical.'
+    sql: severity_rating

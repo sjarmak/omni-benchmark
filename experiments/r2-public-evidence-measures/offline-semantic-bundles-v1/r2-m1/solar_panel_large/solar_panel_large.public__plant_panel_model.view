@@ -1,0 +1,12 @@
+label: plant_panel_model
+description: All columns of the public table plant_panel_model.
+catalog: solar_panel_large
+schema: public
+table_name: plant_panel_model
+dimensions:
+  modlink:
+    description: TEXT. FK → panel_models.ModKey. Reference to panel model used.
+    sql: modlink
+  sitelink:
+    description: TEXT. FK → plants.SiteKey. Reference to associated solar plant.
+    sql: sitelink

@@ -1,0 +1,13 @@
+base_view: planets_data_large_public__planet_system_membership
+label: planet_system_membership
+description: All columns of the public table planet_system_membership.
+fields:
+- planets_data_large_public__planet_system_membership.*
+- planets_data_large_public__multi_planet_system_dynamics.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__multi_planet_system_dynamics:
+    planets_data_large_public__stars: {}
+  planets_data_large_public__planets: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

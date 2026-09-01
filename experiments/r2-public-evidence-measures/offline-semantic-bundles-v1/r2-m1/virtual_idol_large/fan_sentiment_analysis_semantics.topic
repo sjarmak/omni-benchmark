@@ -1,0 +1,13 @@
+base_view: virtual_idol_large_public__fan_sentiment_analysis
+label: fan_sentiment_analysis
+description: All columns of the public table fan_sentiment_analysis.
+fields:
+- virtual_idol_large_public__fan_sentiment_analysis.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__interactions.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__fans: {}
+  virtual_idol_large_public__interactions:
+    virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

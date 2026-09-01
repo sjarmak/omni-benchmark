@@ -1,0 +1,15 @@
+base_view: sports_events_large_public__lap_times
+label: Lap Times
+description: Lap-time records with millisecond measurements.
+fields:
+- sports_events_large_public__lap_times.*
+- sports_events_large_public__circuits.*
+- sports_events_large_public__drivers.*
+- sports_events_large_public__races.*
+joins:
+  sports_events_large_public__drivers: {}
+  sports_events_large_public__races:
+    sports_events_large_public__circuits: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields lap_time_seconds rather than reconstructing their formulas.'

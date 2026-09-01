@@ -1,0 +1,21 @@
+label: plant_record
+description: All columns of the public table plant_record.
+catalog: solar_panel_large
+schema: public
+table_name: plant_record
+dimensions:
+  sitetie:
+    description: TEXT. FK → plants.SiteKey. Links to parent solar plant.
+    sql: sitetie
+  snapkey:
+    description: 'TEXT. Snapshot identifier. Unique ID for performance snapshot. Example: PV937101.'
+    sql: snapkey
+  snapts:
+    description: 'TIMESTAMP. Timestamp when snapshot was taken. Example: 43315.51482.'
+    sql: snapts
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct plant_record public identity values.
+    label: plant_record Count
+    sql: ${solar_panel_large_public__plant_record.snapkey}

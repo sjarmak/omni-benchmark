@@ -1,0 +1,24 @@
+label: product_materials
+description: All columns of the public table product_materials.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: product_materials
+dimensions:
+  material_code_assoc:
+    description: 'TEXT. The code of the associated material. FK. Example: MAT-STL-1018.'
+    sql: '"Material_Code_Assoc"'
+  product_sku_assoc:
+    description: 'TEXT. The SKU of the associated product. FK. Example: PROD-ASM-001.'
+    sql: '"Product_SKU_Assoc"'
+  prod_mat_link:
+    description: 'BIGINT. Unique identifier for the product-material link record. PK. Example: 1.'
+    sql: prod_mat_link
+  quantity_per_product:
+    description: 'REAL. The quantity of the material required to produce one unit of the product. Example: 15.2.'
+    sql: quantity_per_product
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct product_materials public identity values.
+    label: product_materials Count
+    sql: ${robot_fault_prediction_large_public__product_materials.prod_mat_link}

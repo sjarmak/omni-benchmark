@@ -1,0 +1,11 @@
+base_view: solar_panel_large_public__ticket_resolution_steps
+label: TicketResolutionSteps
+description: All columns of the public table TicketResolutionSteps.
+fields:
+- solar_panel_large_public__ticket_resolution_steps.*
+- solar_panel_large_public__client_support_tickets.*
+- solar_panel_large_public__clients.*
+joins:
+  solar_panel_large_public__client_support_tickets:
+    solar_panel_large_public__clients: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

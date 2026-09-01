@@ -1,0 +1,11 @@
+base_view: virtual_idol_large_public__fan_content_submission_details
+label: fan_content_submission_details
+description: All columns of the public table fan_content_submission_details.
+fields:
+- virtual_idol_large_public__fan_content_submission_details.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__fans: {}
+  virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

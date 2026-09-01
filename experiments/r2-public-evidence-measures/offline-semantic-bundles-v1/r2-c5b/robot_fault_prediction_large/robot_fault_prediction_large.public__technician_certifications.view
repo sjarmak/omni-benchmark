@@ -1,0 +1,33 @@
+label: technician_certifications
+description: All columns of the public table technician_certifications.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: technician_certifications
+dimensions:
+  certificate_url:
+    description: 'TEXT. A URL to the digital certificate. **NULL indicates no URL is available.**. Example: http://certs.robotcorp.com/1.pdf.'
+    sql: '"CERTIFICATE_URL"'
+  certification_index:
+    description: 'TEXT. The index of the certification achieved. FK. Example: CERT_FAN_01.'
+    sql: '"Certification_Index"'
+  certified_technician_tag:
+    description: 'TEXT. The tech_code of the certified technician. FK. Example: TCH_1001.'
+    sql: '"Certified_Technician_Tag"'
+  expiry_date:
+    description: 'TEXT. The date the certification expires, formatted as YYYY/MM/DD. **NULL indicates the certification is lifelong.**. Example: 2022/06/20.'
+    sql: '"EXPIRY_DATE"'
+  verification_ts:
+    description: 'TEXT. The timestamp of when the certification was verified, formatted as YYYY/MM/DD HH:MI:SS.FF3. **NULL indicates the certification has not yet been verified.**. Example: 2020/06/25 10:00:00.123.'
+    sql: '"VERIFICATION_TS"'
+  certification_score:
+    description: 'REAL. The score the technician achieved on the certification exam. Example: 95.5.'
+    sql: '"certificationScore"'
+  date_achieved:
+    description: 'TEXT. The date the technician achieved the certification, formatted as YYYY/MM/DD. Example: 2020/06/20.'
+    sql: date_achieved
+  tech_cert_record:
+    description: 'BIGINT. Unique identifier for the record of a technician achieving a certification. PK. Example: 1.'
+    sql: tech_cert_record
+  verified_by:
+    description: 'TEXT. The entity or person who verified the certification. **NULL indicates the certification has not yet been verified.**. Example: FANUC America.'
+    sql: verified_by

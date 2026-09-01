@@ -1,0 +1,72 @@
+label: Public_Safety_Patrol_Logs
+description: All columns of the public table Public_Safety_Patrol_Logs.
+catalog: residential_data_large
+schema: public
+table_name: Public_Safety_Patrol_Logs
+dimensions:
+  patrol_log_pk:
+    description: 'TEXT. Unique record for law enforcement patrol activities. Example: PSL-1A2B3C.'
+    sql: '"Patrol_Log_PK"'
+  active_duty_officer_count:
+    description: 'INTEGER. Number of personnel deployed during the peak shift. Example: 12.'
+    sql: active_duty_officer_count
+  average_response_time_seconds:
+    description: 'INTEGER. Mean time from dispatch to on-scene arrival. Example: 360.'
+    sql: average_response_time_seconds
+  average_shift_fatigue_index:
+    description: 'REAL. Self-reported or biometric workload stress score (1-10). Example: 6.2.'
+    sql: average_shift_fatigue_index
+  body_cam_data_stored_tb:
+    description: 'REAL. Volume of encrypted video evidence generated. **NULL means Storage failure or no cameras used.** Example: 50.0.'
+    sql: body_cam_data_stored_tb
+  civilian_complaint_ratio:
+    description: 'REAL. Complaints received per 1,000 interactions. Example: 0.05.'
+    sql: civilian_complaint_ratio
+  community_policing_hours:
+    description: 'REAL. Hours spent on non-emergency public engagement. Example: 50.0.'
+    sql: community_policing_hours
+  crime_stat_link:
+    description: TEXT. Reference to the associated crime reporting period.
+    sql: crime_stat_link
+  de_escalation_training_ratio:
+    description: 'REAL. Percentage of active staff with advanced crisis training. Example: 50.0.'
+    sql: de_escalation_training_ratio
+  dispatch_call_volume:
+    description: 'INTEGER. Total number of 911 or emergency calls handled. Example: 450.'
+    sql: dispatch_call_volume
+  drone_surveillance_flight_hours:
+    description: 'REAL. Total time of aerial monitoring via UAVs. **NULL means No UAV program in this district.** Example: 50.0.'
+    sql: drone_surveillance_flight_hours
+  equipment_malfunction_reports:
+    description: 'INTEGER. Count of reported failures in vehicles or electronics. Example: 50.'
+    sql: equipment_malfunction_reports
+  fuel_consumption_liters:
+    description: 'REAL. Total fuel used by the sector fleet. Example: 3000.'
+    sql: fuel_consumption_liters
+  inter_agency_collaboration_events:
+    description: 'INTEGER. Joint operations with state or federal task forces. Example: 50.'
+    sql: inter_agency_collaboration_events
+  k9_unit_deployment_frequency:
+    description: 'INTEGER. Number of times canine units were requested. Unique values: 0, 1, 2, 5.'
+    sql: k9_unit_deployment_frequency
+  lethal_force_incidents_count:
+    description: 'INTEGER. Total number of incidents involving weapon discharge. Unique values: 0, 1.'
+    sql: lethal_force_incidents_count
+  non_emergency_assistance_count:
+    description: 'INTEGER. Count of welfare checks or motorist assistance acts. Example: 50.'
+    sql: non_emergency_assistance_count
+  patrol_sector_coverage_percent:
+    description: 'REAL. Percentage of total road network traversed during month. Example: 0.85.'
+    sql: patrol_sector_coverage_percent
+  patrol_vehicle_mileage_km:
+    description: 'REAL. Total distance covered by patrol units in the sector. Example: 50.0.'
+    sql: patrol_vehicle_mileage_km
+  radio_dead_zone_count:
+    description: 'INTEGER. Identified areas with poor communication signal. Example: 50.'
+    sql: radio_dead_zone_count
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Public_Safety_Patrol_Logs public identity values.
+    label: Public_Safety_Patrol_Logs Count
+    sql: ${residential_data_large_public__public_safety_patrol_logs.patrol_log_pk}

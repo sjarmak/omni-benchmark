@@ -1,0 +1,57 @@
+label: PipelineQualityMetric
+description: All columns of the public table PipelineQualityMetric.
+catalog: planets_data_large
+schema: public
+table_name: PipelineQualityMetric
+dimensions:
+  detailed_statistics:
+    description: JSONB. Detailed statistical breakdown
+    sql: '"DETAILED_STATISTICS"'
+  measurement_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Date of measurement
+    sql: '"MEASUREMENT_DATE"'
+  metric_value:
+    description: 'REAL. Measured metric value Typical range: 0 to 200.'
+    sql: '"METRIC_VALUE"'
+  observations_assessed:
+    description: BIGINT. Number of observations in assessment
+    sql: '"OBSERVATIONS_ASSESSED"'
+  pipeline_ref:
+    description: BIGINT. Foreign key referencing DataReductionPipeline(PIPELINE_ID). Related pipeline
+    sql: '"PIPELINE_REF"'
+  qm_id:
+    description: BIGINT. Primary key. Unique quality metric identifier
+    sql: '"QM_ID"'
+  threshold_min:
+    description: 'REAL. Minimum acceptable threshold Typical range: 0 to 100.'
+    sql: '"THRESHOLD_MIN"'
+  within_spec:
+    description: BOOLEAN. Whether metric is within specification Boolean flag (true/false).
+    sql: '"WITHIN_SPEC"'
+  assessment:
+    description: 'TEXT. Quality assessment Possible values: Pass, Warning, Fail.'
+    sql: assessment
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  dataset_identifier:
+    description: TEXT. Dataset being assessed
+    sql: dataset_identifier
+  measured_by:
+    description: 'TEXT. Person or system that measured Possible values: QC Pipeline, Night Astronomer, Data Scientist, Automated.'
+    sql: measured_by
+  metric_error:
+    description: 'REAL. Measurement uncertainty Typical range: 0.01 to 20.'
+    sql: metric_error
+  metric_name:
+    description: 'TEXT. Name of quality metric Possible values: SNR, Wavelength Accuracy, Flux Consistency, PSF Quality, Astrometric Residual, Photometric Residual, Cross-correlation Quality, Background Level.'
+    sql: metric_name
+  threshold_max:
+    description: 'REAL. Maximum acceptable threshold Typical range: 50 to 500. **NULL means No upper threshold defined.**'
+    sql: threshold_max
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct PipelineQualityMetric public identity values.
+    label: PipelineQualityMetric Count
+    sql: ${planets_data_large_public__pipeline_quality_metric.qm_id}

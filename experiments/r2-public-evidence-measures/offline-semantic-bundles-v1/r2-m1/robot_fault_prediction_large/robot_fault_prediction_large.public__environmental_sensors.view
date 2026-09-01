@@ -1,0 +1,78 @@
+label: environmental_sensors
+description: All columns of the public table environmental_sensors.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: environmental_sensors
+dimensions:
+  accuracy:
+    description: 'REAL. The accuracy of the sensor''s measurements. Possible values: 0.1, 0.2, 0.5, 1.0, 1.5, 10.0, 100.0, 2.0, 3.0, 5.0.'
+    sql: '"ACCURACY"'
+  asset_tag:
+    description: 'TEXT. The asset tag for the sensor. Example: SNSR-001.'
+    sql: '"ASSET_TAG"'
+  calibration_due_date:
+    description: 'TEXT. The date the next calibration is due, formatted as MM-DD-YY. Example: 03-15-26.'
+    sql: '"CALIBRATION_DUE_DATE"'
+  firmware_version:
+    description: 'TEXT. The firmware version of the sensor. **NULL indicates the firmware version is unknown or not applicable.**. Example: 2.1.1.'
+    sql: '"FIRMWARE_VERSION"'
+  installed_in_workcell:
+    description: 'TEXT. The workcell_code where the sensor is installed. FK. Example: WC-101.'
+    sql: '"Installed_In_Workcell"'
+  last_calibration_date:
+    description: 'TEXT. The date the sensor was last calibrated, formatted as MM-DD-YY. Example: 03-15-25.'
+    sql: '"LastCalibrationDate"'
+  manufacturer:
+    description: 'TEXT. The manufacturer of the sensor. Possible values: EnviroMon, FlowMetrix, PressureFab, Sensorex, SoundSafe, SpectraLog, VibraSense, WirelessSensors.'
+    sql: '"MANUFACTURER"'
+  measurement_unit:
+    description: 'TEXT. The unit of measurement for the sensor''s readings. Possible values: %RH, Celsius, Pa, dBA, lux, m/s, mm/s, ppm, ug/m3.'
+    sql: '"MEASUREMENT_UNIT"'
+  model_number:
+    description: 'TEXT. The manufacturer''s model number for the sensor. **NULL indicates a custom or unknown model.**. Example: THP-100.'
+    sql: '"ModelNumber"'
+  power_source:
+    description: 'TEXT. The power source for the sensor. Possible values: 24VDC, 24VDC PoE, Battery.'
+    sql: '"PowerSource"'
+  sensor_tag:
+    description: 'TEXT. Unique identifier for the sensor. PK. Example: TEMP-WC101-01.'
+    sql: '"SENSOR_TAG"'
+  install_date:
+    description: 'TEXT. The date the sensor was installed, formatted as MM-DD-YY. Example: 03-15-22.'
+    sql: install_date
+  installation_coordinates:
+    description: JSONB column. Stores the precise X, Y, Z spatial coordinates of the sensor within the workcell.
+    sql: installation_coordinates
+  ip_address:
+    description: 'TEXT. The IP address of the sensor, if network-connected. **NULL indicates the sensor is not on the IP network.**. Example: 192.168.10.20.'
+    sql: ip_address
+  max_range:
+    description: 'REAL. The maximum value of the sensor''s measurement range. Example: 100.0.'
+    sql: max_range
+  min_range:
+    description: 'REAL. The minimum value of the sensor''s measurement range. Possible values: -20.0, 0.0, 10.0, 15.0, 18.0, 20.0, 30.0, 40.0, 600.0.'
+    sql: min_range
+  sampling_frequency_hz:
+    description: 'REAL. The frequency at which the sensor takes readings, in Hertz. Possible values: 0.01, 0.02, 0.05, 0.1, 0.2, 1.0, 10.0, 20.0.'
+    sql: sampling_frequency_hz
+  sensor_type:
+    description: 'TEXT. The type of measurement the sensor takes. Possible values: Air Flow, Air Pressure, Air Quality (VOC), Ambient Light, Humidity, Noise, Particulate Matter, Temperature, Vibration.'
+    sql: sensor_type
+  status:
+    description: 'TEXT. The current status of the sensor. Possible values: Active, Inactive, Maintenance. Possible values: Active, Inactive, Maintenance.'
+    sql: status
+  installation_coordinates_x_axis_m:
+    description: 'REAL. The X-coordinate of the sensor''s location in meters, relative to the workcell origin. Example: 1.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(installation_coordinates, 'x_axis_m')
+  installation_coordinates_y_axis_m:
+    description: 'REAL. The Y-coordinate of the sensor''s location in meters. Example: 5.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(installation_coordinates, 'y_axis_m')
+  installation_coordinates_z_axis_m:
+    description: 'REAL. The Z-coordinate of the sensor''s location in meters. Example: 4.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(installation_coordinates, 'z_axis_m')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct environmental_sensors public identity values.
+    label: environmental_sensors Count
+    sql: ${robot_fault_prediction_large_public__environmental_sensors.sensor_tag}

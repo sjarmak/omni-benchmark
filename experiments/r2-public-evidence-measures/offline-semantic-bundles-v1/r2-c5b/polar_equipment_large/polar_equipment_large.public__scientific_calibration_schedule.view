@@ -1,0 +1,105 @@
+label: ScientificCalibrationSchedule
+description: All columns of the public table ScientificCalibrationSchedule.
+catalog: polar_equipment_large
+schema: public
+table_name: ScientificCalibrationSchedule
+dimensions:
+  cal_gas_ppm:
+    description: 'REAL. Concentration of calibration gas (ppm). **NULL means not applicable (non-gas methods: Gravimetric, Volumetric, Spectrophotometric).** Example: 245.0.'
+    sql: '"calGas_ppm"'
+  calibration_note:
+    description: BIGSERIAL. Surrogate primary key for the calibration record. PK.
+    sql: '"calibrationNote"'
+  calibration_context:
+    description: JSONB column. Groups calibration methodology, environmental compensation, results, and administrative metadata for a scientific calibration schedule.
+    sql: calibration_context
+  equip_ref_for_cal:
+    description: 'TEXT. Foreign key reference to Equipment(EQUIP_CODE). Example: PE593707.'
+    sql: equip_ref_for_cal
+  for_science_row:
+    description: 'BIGINT. Foreign key reference to Scientific(SCI_ID). Example: 125.'
+    sql: for_science_row
+  recorded_at:
+    description: 'TIMESTAMP. Timestamp when calibration record was logged. Example: 2025-09-04 12:45:33.'
+    sql: '"recordedAt"'
+  repeat_count:
+    description: 'BIGINT. Number of repeated calibration attempts. Example: 2.'
+    sql: '"repeatCount"'
+  sample_rate_hz:
+    description: 'REAL. Sampling frequency in Hz used during calibration. **NULL means not applicable for offline/bench methods (e.g., Gravimetric, Volumetric).** Example: 1.25.'
+    sql: '"sampleRate_hz"'
+  stimulus_units:
+    description: 'TEXT. Units of applied calibration stimulus. Possible values (from file): ppm, mg/m3, ppb, vol%. Example: ppm.'
+    sql: '"stimulusUnits"'
+  calibration_context_admin_approver:
+    description: 'TEXT. QA manager or scientist approving the calibration. Possible values (from file): QA Manager A, QA Manager B, Lead Scientist C. Example: QA Manager B.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'admin', 'approver')
+  calibration_context_admin_doc_ref:
+    description: 'TEXT. Reference document or calibration certificate ID. Example: CALDOC-4532.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'admin', 'docRef')
+  calibration_context_admin_fail_code:
+    description: 'TEXT. Failure code if calibration failed. **NULL means calibration passed or no issues recorded (e.g., Completed with small drift).** Possible values (from file): DRIFT_HIGH, OFFSET_FAIL, SPAN_FAIL, TEMP_DRIFT, NA. Example: DRIFT_HIGH.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'admin', 'failCode')
+  calibration_context_admin_notes:
+    description: 'TEXT. Calibration notes or remarks. **NULL means no note recorded yet (e.g., status = ''Scheduled'' and dueDate in the future).** Example: Calibration performed successfully with minor drift adjustment.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'admin', 'notes')
+  calibration_context_admin_status:
+    description: 'TEXT. Current status of calibration. Possible values (from file): Scheduled, Completed, Overdue, In Progress. Example: Completed.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'admin', 'status')
+  calibration_context_admin_tech:
+    description: 'TEXT. Technician/engineer performing calibration. Possible values (from file): Dr. Smith, Engineer Chen, Tech Singh, Dr. Müller, Eng. Johnson. Example: Tech Singh.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'admin', 'tech')
+  calibration_context_admin_tech_cert:
+    description: 'TEXT. Certification ID of technician. **NULL means certificate not recorded or not required (e.g., status = ''In Progress'' or non-certified technician role).** Possible values (from file): Cert-ISO-2020, Cert-NIST-2019, Cert-ASTM-2021. Example: Cert-NIST-2019.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'admin', 'techCert')
+  calibration_context_drift_and_adj_drift_ppm:
+    description: 'REAL. Observed calibration drift in parts per million (ppm). Example: -0.532.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'drift_and_adj', 'drift_ppm')
+  calibration_context_drift_and_adj_drift_ppm_per_day:
+    description: 'REAL. Observed drift rate per day in ppm/day. Example: 0.0123.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'drift_and_adj', 'drift_ppm_per_day')
+  calibration_context_drift_and_adj_offset_units:
+    description: 'REAL. Calibration offset in device units. Example: -0.043.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'drift_and_adj', 'offset_units')
+  calibration_context_drift_and_adj_span_units:
+    description: 'REAL. Calibration span multiplier (gain adjustment). Example: 1.012.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'drift_and_adj', 'span_units')
+  calibration_context_drift_and_adj_uncertainty_units:
+    description: 'REAL. Expanded calibration uncertainty in measurement units. Example: 0.034.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'drift_and_adj', 'uncertainty_units')
+  calibration_context_env_comp_humidity_comp_pct:
+    description: 'REAL. Humidity compensation factor in percent. Example: 56.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'env_comp', 'humidityComp_pct')
+  calibration_context_env_comp_pressure_comp_k_pa:
+    description: 'REAL. Pressure compensation factor in kilopascals. Example: 101.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'env_comp', 'pressureComp_kPa')
+  calibration_context_env_comp_temp_comp_c:
+    description: 'REAL. Temperature compensation factor in °C. Example: 23.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'env_comp', 'tempComp_C')
+  calibration_context_methodology_lab_name:
+    description: 'TEXT. Calibration laboratory performing the work. Possible values (from file): CalibTech Labs - Germany, Metrology Intl - USA, Precision Standards - Japan, National Test House - India, EnviroCheck - UK, QualiMet - France, CertiLab - Canada, LabBrasil. Example: Metrology Intl - USA.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'methodology', 'labName')
+  calibration_context_methodology_method:
+    description: 'TEXT. Calibration methodology applied. Possible values (from file): Gravimetric, Volumetric, Spectrophotometric, Electrochemical. Example: Gravimetric.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'methodology', 'method')
+  calibration_context_methodology_standard_ref:
+    description: 'TEXT. Applicable calibration standard or reference material. Possible values (from file): ISO 17025, NIST SRM 1648a, IEC 17020, ASTM D445. Example: ISO 17025.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'methodology', 'standardRef')
+  calibration_context_methodology_traceability:
+    description: 'TEXT. Traceability chain for calibration. Possible values (from file): NIST, ISO/IEC, ASTM, Internal QA. Example: NIST.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'methodology', 'traceability')
+  calibration_context_schedule_due_date:
+    description: 'DATE. Scheduled calibration due date. Example: 2024-12-15.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'schedule', 'dueDate')
+  calibration_context_schedule_interval_days:
+    description: 'BIGINT. Planned calibration interval in days. Possible values (from file): 90, 180, 365. Example: 180.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'schedule', 'interval_days')
+  calibration_context_schedule_last_cal_date:
+    description: 'DATE. Date of last calibration performed. Example: 2023-09-22.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'schedule', 'lastCalDate')
+  calibration_context_schedule_next_window_end:
+    description: 'DATE. Latest acceptable date for next calibration window. Example: 2025-01-15.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'schedule', 'nextWindowEnd')
+  calibration_context_schedule_next_window_start:
+    description: 'DATE. Earliest acceptable date for next calibration window. Example: 2024-12-01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calibration_context, 'schedule', 'nextWindowStart')

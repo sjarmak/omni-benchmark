@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__staff
+label: Staff
+description: All columns of the public table Staff.
+fields:
+- museum_artifact_large_public__staff.*
+joins: {}
+ai_context: This topic models no cross-table joins.

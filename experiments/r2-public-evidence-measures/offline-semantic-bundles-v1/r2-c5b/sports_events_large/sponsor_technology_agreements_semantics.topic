@@ -1,0 +1,11 @@
+base_view: sports_events_large_public__sponsor_technology_agreements
+label: sponsor_technology_agreements
+description: All columns of the public table sponsor_technology_agreements.
+fields:
+- sports_events_large_public__sponsor_technology_agreements.*
+- sports_events_large_public__innovation_technologies.*
+- sports_events_large_public__sponsor_entities.*
+joins:
+  sports_events_large_public__innovation_technologies: {}
+  sports_events_large_public__sponsor_entities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,66 @@
+label: DisputeArbitrationDetails
+description: All columns of the public table DisputeArbitrationDetails.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: DisputeArbitrationDetails
+dimensions:
+  dad_id:
+    description: 'TEXT. Unique identifier for the dispute arbitration record. Example: DAD-1A2B3C.'
+    sql: '"DAD_id"'
+  appeal_filed:
+    description: 'BOOLEAN. Indicates if an appeal was filed against the decision. Possible values: True, False.'
+    sql: appeal_filed
+  arbitration_completed_timestamp:
+    description: 'TIMESTAMP. Timestamp when arbitration decision was finalized. **NULL means Arbitration still in progress.** Example: 2024-01-01 12:00:00.'
+    sql: arbitration_completed_timestamp
+  arbitration_initiated_timestamp:
+    description: 'TIMESTAMP. Timestamp when arbitration process was initiated. Example: 2024-01-01 12:00:00.'
+    sql: arbitration_initiated_timestamp
+  arbitration_status:
+    description: 'TEXT. Current status of the arbitration process. Unique values: Pending Review, Evidence Collection, Under Arbitration, Decided, Appealed, Closed.'
+    sql: arbitration_status
+  arbitrator_type:
+    description: 'TEXT. Type of arbitrator handling the dispute. Unique values: Internal Staff, Third Party, Automated System, External Panel.'
+    sql: arbitrator_type
+  awarded_amount_usd:
+    description: 'REAL. Amount awarded to winning party in USD. **NULL means Decision not yet rendered.** Example: 180.0.'
+    sql: awarded_amount_usd
+  buyer_evidence_count:
+    description: 'INTEGER. Number of evidence items submitted by buyer. Example: 3.'
+    sql: buyer_evidence_count
+  buyer_satisfaction_rating:
+    description: 'INTEGER. Buyer rating of arbitration process (1-5). **NULL means Buyer did not provide feedback.** Example: 3.'
+    sql: buyer_satisfaction_rating
+  communication_exchanges:
+    description: 'INTEGER. Number of message exchanges during arbitration. Example: 8.'
+    sql: communication_exchanges
+  decision_favor:
+    description: 'TEXT. Party in whose favor the arbitration was decided. **NULL means Decision not yet rendered.** Unique values: Buyer, Vendor, Split, Dismissed.'
+    sql: decision_favor
+  decision_rationale_category:
+    description: 'TEXT. Category of reasoning for arbitration decision. **NULL means Decision not yet rendered.** Unique values: Product Not As Described, Non-Delivery, Quality Issues, Return Policy, Buyer Remorse, Fraud Detected, Insufficient Evidence.'
+    sql: decision_rationale_category
+  dispute_ref:
+    description: TEXT. Reference to the transaction dispute details record.
+    sql: dispute_ref
+  disputed_amount_usd:
+    description: 'REAL. Total amount in dispute in USD. Example: 250.0.'
+    sql: disputed_amount_usd
+  escalation_required:
+    description: 'BOOLEAN. Indicates if case required escalation to senior arbitrator. Possible values: True, False.'
+    sql: escalation_required
+  policy_violation_identified:
+    description: 'BOOLEAN. Indicates if a platform policy violation was identified. Possible values: True, False.'
+    sql: policy_violation_identified
+  processing_time_days:
+    description: 'INTEGER. Total days from initiation to final decision. **NULL means Arbitration still in progress.** Example: 12.'
+    sql: processing_time_days
+  refund_processed:
+    description: 'BOOLEAN. Indicates if a refund was processed as part of resolution. Possible values: True, False.'
+    sql: refund_processed
+  vendor_evidence_count:
+    description: 'INTEGER. Number of evidence items submitted by vendor. Example: 4.'
+    sql: vendor_evidence_count
+  vendor_satisfaction_rating:
+    description: 'INTEGER. Vendor rating of arbitration process (1-5). **NULL means Vendor did not provide feedback.** Example: 3.'
+    sql: vendor_satisfaction_rating

@@ -1,0 +1,93 @@
+label: DataAnalyticsReports
+description: All columns of the public table DataAnalyticsReports.
+catalog: disaster_relief_large
+schema: public
+table_name: DataAnalyticsReports
+dimensions:
+  approval_date:
+    description: DATE. Date of approval sign-off. **Nullable** until approved.
+    sql: '"ApprovalDate"'
+  approved_by:
+    description: TEXT. Approver’s role or name (e.g., Ops Director). **Nullable** until approved.
+    sql: '"Approved_By"'
+  confidential:
+    description: BOOLEAN. TRUE if access is restricted beyond standard distribution.
+    sql: '"CONFIDENTIAL"'
+  compute_time_human_min:
+    description: REAL. Total compute time for one run in **minutes** (e.g., 53.0).
+    sql: '"ComputeTimeHuman_min"'
+  created_by:
+    description: TEXT. Name of the analyst who authored the report.
+    sql: '"CreatedBy"'
+  created_at:
+    description: TIMESTAMP (yyyy/mm/dd HH:MM:SS). Record-creation time.
+    sql: '"Created_At"'
+  data_source:
+    description: TEXT. Primary data origin (FieldSensors, FinancialSystem, CrowdSurvey, SatelliteImagery, ReliefDB, GovernmentStats).
+    sql: '"DATA_SOURCE"'
+  data_quality_rating:
+    description: REAL. Overall data-quality score (0 – 1). **Nullable** if not yet assessed.
+    sql: '"DataQualityRating"'
+  dataset_size_human_gb:
+    description: REAL. Size of the underlying dataset in **gigabytes** (e.g., 56.0).
+    sql: '"DatasetSizeHuman_GB"'
+  file_hash:
+    description: TEXT. SHA-256 or similar checksum for file-integrity verification. **Nullable** for unpublished drafts.
+    sql: '"FILE_HASH"'
+  key_findings:
+    description: TEXT. Summary of headline insights and anomalies. **Nullable** for drafts awaiting analysis.
+    sql: '"Key_Findings"'
+  next_refresh_date:
+    description: DATE. Next scheduled refresh date. **Nullable** when no schedule exists.
+    sql: '"NEXT_REFRESH_DATE"'
+  notes:
+    description: TEXT. Free-form remarks such as data gaps or follow-up needs. **Nullable** when blank.
+    sql: '"Notes"'
+  report_id:
+    description: VARCHAR(20). Unique analytics-report identifier. Primary Key.
+    sql: '"REPORT_ID"'
+  report_status:
+    description: 'TEXT. Workflow state: Draft, In Review, Approved, Published, Archived.'
+    sql: '"REPORT_STATUS"'
+  report_url:
+    description: TEXT. Link to the published PDF or dashboard. **Nullable** if not yet uploaded.
+    sql: '"REPORT_URL"'
+  refresh_cost_human_k_usd_per_run:
+    description: REAL. Estimated compute + storage cost per refresh in **thousands of USD** (e.g., 2.4).
+    sql: '"RefreshCostHuman_kUSD_perRun"'
+  refresh_interval_days:
+    description: INT. Planned refresh cadence in **days** (e.g., 30). **Nullable** when scheduledRefresh is FALSE.
+    sql: '"RefreshIntervalDays"'
+  report_title:
+    description: 'TEXT. Descriptive title (e.g., “Monthly Logistics Report #990”).'
+    sql: '"ReportTitle"'
+  review_date:
+    description: DATE. Date of formal review. **Nullable** when review pending.
+    sql: '"Review_Date"'
+  version_int:
+    description: INT. Document-version counter (1 = first draft).
+    sql: '"VersionInt"'
+  analysis_methodology:
+    description: TEXT. Main analytic technique used (e.g., Regression Analysis, Spatial Clustering).
+    sql: '"analysisMethodology"'
+  last_refresh_date:
+    description: DATE. Most recent automatic refresh date. **Nullable** if never refreshed.
+    sql: '"lastRefreshDate"'
+  ops_ref:
+    description: VARCHAR(20). References Operations(OpsRegistry); ties the report to the operation it analyses.
+    sql: '"opsRef"'
+  recommendation_summary:
+    description: TEXT. High-level operational recommendations. **Nullable** until added.
+    sql: '"recommendationSummary"'
+  report_date:
+    description: DATE (yyyy/mm/dd). Calendar day the report content was finalised.
+    sql: report_date
+  reviewed_by:
+    description: TEXT. Name of the reviewer who completed the quality check. **Nullable** when not yet reviewed.
+    sql: '"reviewedBy"'
+  scheduled_refresh:
+    description: BOOLEAN. TRUE if the report is set for recurrent data refresh.
+    sql: '"scheduledRefresh"'
+  updated_at:
+    description: TIMESTAMP. Latest edit time stamp.
+    sql: updated_at

@@ -1,0 +1,13 @@
+base_view: museum_artifact_large_public__air_quality_readings
+label: Air Quality Readings
+description: Air-quality reading rows with PM2.5 conservation context.
+fields:
+- museum_artifact_large_public__air_quality_readings.*
+- museum_artifact_large_public__environmental_readings_core.*
+- museum_artifact_large_public__exhibition_halls.*
+- museum_artifact_large_public__showcases.*
+joins:
+  museum_artifact_large_public__environmental_readings_core:
+    museum_artifact_large_public__showcases:
+      museum_artifact_large_public__exhibition_halls: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

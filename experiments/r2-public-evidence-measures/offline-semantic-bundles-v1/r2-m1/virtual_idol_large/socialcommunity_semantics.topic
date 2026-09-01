@@ -1,0 +1,27 @@
+base_view: virtual_idol_large_public__socialcommunity
+label: Social Community
+description: Social community records with row-level network and content-creation semantics.
+fields:
+- virtual_idol_large_public__socialcommunity.*
+- virtual_idol_large_public__commerceandcollection.*
+- virtual_idol_large_public__engagement.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__interactions.*
+- virtual_idol_large_public__membershipandspending.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__commerceandcollection:
+    virtual_idol_large_public__membershipandspending:
+      virtual_idol_large_public__fans: {}
+  virtual_idol_large_public__engagement:
+    virtual_idol_large_public__interactions:
+      virtual_idol_large_public__virtualidols: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields content_creator_score, follower_to_following_ratio, social_capital_score rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Community Influence Index (CII): CII = \sqrt{\text{Follower Count} \times \text{Content Reach}}
+
+  - Social Butterfly: A fan is a Social Butterfly if their Social Capital Score (SCS) is greater than 1000 and they are a member of more than 5 community groups.'

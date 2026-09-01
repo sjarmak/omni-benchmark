@@ -1,0 +1,123 @@
+label: bond_rating_market_data
+description: All columns of the public table bond_rating_market_data.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: bond_rating_market_data
+dimensions:
+  average_convexity:
+    description: 'TEXT (unit-annotated). Convexity measure, dimensionless “units”. Example: 2.613 units.'
+    sql: average_convexity
+  average_duration:
+    description: 'TEXT (unit-annotated). Macaulay duration in years. Example: 9.19 yr.'
+    sql: average_duration
+  average_maturity:
+    description: 'TEXT (unit-annotated). Weighted-average final maturity in years. Example: 6.33 yr.'
+    sql: average_maturity
+  average_modified_duration:
+    description: 'TEXT (unit-annotated). Modified duration. Example: 8.98 yr.'
+    sql: average_modified_duration
+  average_recovery_rate:
+    description: 'TEXT (unit-annotated). Post-default recovery, percent of par. Example: 66.45 %.'
+    sql: average_recovery_rate
+  average_trading_volume_usd_day:
+    description: 'bigint (unit-annotated). Typical daily value traded, suffixed “ USD/day”. Example: 1,753,352,366 USD/day.'
+    sql: average_trading_volume_usd_day
+  bid_ask_spread:
+    description: 'TEXT (unit-annotated). Quoted spread as % of price. Example: 0.824 %.'
+    sql: bid_ask_spread
+  bond_market_id:
+    description: 'BIGSERIAL. Surrogate identifier for each rating-level market snapshot. PK. Auto-increments from 1. Example: 1.'
+    sql: bond_market_id
+  callable_percent:
+    description: 'TEXT (unit-annotated). Share of callable bonds. Example: 23.46 %.'
+    sql: callable_percent
+  credit_scoring_migration_prob_avg_year:
+    description: 'real (unit-annotated). One-year probability of migrating to another rating, suffixed “ %/year”. Example: 27.55 %/year.'
+    sql: credit_scoring_migration_prob_avg_year
+  default_rate_volatility:
+    description: 'TEXT (unit-annotated). Std-dev of annual default rates. Example: 3.36 %.'
+    sql: default_rate_volatility
+  equity_correlation:
+    description: 'TEXT (unit-annotated). Correlation with equity-index returns, suffixed “ ρ”. Example: -0.13 ρ.'
+    sql: equity_correlation
+  flow_trends:
+    description: 'TEXT. Recent fund-flow direction (Strong Inflows / Weak Outflows / Stable). Example: Weak Outflows.'
+    sql: flow_trends
+  gdp_sensitivity:
+    description: 'TEXT (unit-annotated). Correlation with GDP growth, suffixed “ ρ”. Example: -0.01 ρ.'
+    sql: gdp_sensitivity
+  geographic_distribution:
+    description: 'TEXT. Regional mix expressed in percentages. Example: 60% Europe, 25% US, 15% EM.'
+    sql: geographic_distribution
+  historical_default_rate:
+    description: 'TEXT (unit-annotated). Long-run annual default frequency. Example: 0.93 %.'
+    sql: historical_default_rate
+  inflation_correlation:
+    description: 'TEXT (unit-annotated). Correlation with inflation surprises, suffixed “ ρ”. Example: -0.97 ρ.'
+    sql: inflation_correlation
+  interest_rate_risk:
+    description: 'TEXT. Qualitative label for rate sensitivity (Low / Medium / High). Example: High.'
+    sql: interest_rate_risk
+  last_updated:
+    description: 'TIMESTAMP. System time when the record was last written; defaults to CURRENT_TIMESTAMP. Example: 2025-07-06.'
+    sql: last_updated
+  liquidity_rating:
+    description: 'TEXT. Internal A–D liquidity score. Example: B.'
+    sql: liquidity_rating
+  market_value:
+    description: 'TEXT (unit-annotated). Mark-to-market value of the same bonds. Example: 2,094,434,646,583 USD.'
+    sql: market_value
+  maturity_distribution:
+    description: 'TEXT. Shape descriptor (e.g., Barbell, Laddered). Example: Barbell.'
+    sql: maturity_distribution
+  net_issuance:
+    description: 'TEXT (unit-annotated). New minus redeemed par, suffixed “ USD/year”. Example: 244,441,890,594 USD/year.'
+    sql: net_issuance
+  new_issuance_volume:
+    description: 'TEXT (unit-annotated). New deals priced over the past year, suffixed “ USD/year”. Example: 642,275,672,813 USD/year.'
+    sql: new_issuance_volume
+  number_of_issuers:
+    description: 'TEXT (unit-annotated). Count of distinct obligors, suffixed “ issuers”. Example: 667 issuers.'
+    sql: number_of_issuers
+  number_of_issues:
+    description: 'TEXT (unit-annotated). Count of distinct bond issues, suffixed “ issues”. Example: 828 issues.'
+    sql: number_of_issues
+  outstanding_amount:
+    description: 'TEXT (unit-annotated). Par amount outstanding for all bonds in the rating bucket. Example: 1,439,689,161,266 USD.'
+    sql: outstanding_amount
+  rating_id:
+    description: 'text. Foreign-key to bond_ratings(ratekey). Example: 1 (AAA).'
+    sql: rating_id
+  sector_distribution:
+    description: 'TEXT. Sector mix expressed in percentages. Example: 50% Financials, 25% Utilities, 25% Telecom.'
+    sql: sector_distribution
+  technical_indicators:
+    description: 'TEXT. Aggregate technical stance (Overbought / Oversold / Neutral). Example: Oversold.'
+    sql: technical_indicators
+  top_issuers:
+    description: 'TEXT. Comma-separated list of three largest issuers by par value. Example: Toyota, SoftBank, Sony.'
+    sql: top_issuers
+  turnover_ratio_avg_year:
+    description: 'real (unit-annotated). Annualised turnover of outstanding amount, suffixed “ %/year”. Example: 192.70 %/year.'
+    sql: turnover_ratio_avg_year
+  yield_profile_blob:
+    description: JSONB column. Every yield-related number for a rating bucket, shoved into one JSONB field (names left messy).
+    sql: yield_profile_blob
+  yield_profile_blob_average_current_yield:
+    description: 'TEXT (unit-annotated). Average coupon ÷ price. Example: 7.65 %.'
+    sql: JSONB_EXTRACT_PATH_TEXT(yield_profile_blob, 'average_current_yield')
+  yield_profile_blob_average_yield_to_call:
+    description: 'TEXT (unit-annotated). Weighted-average yield to first call date. Example: 8.67 %.'
+    sql: JSONB_EXTRACT_PATH_TEXT(yield_profile_blob, 'average_yield_to_call')
+  yield_profile_blob_average_yield_to_maturity:
+    description: 'TEXT (unit-annotated). Weighted-average YTM, percent per annum. Example: 9.13 %.'
+    sql: JSONB_EXTRACT_PATH_TEXT(yield_profile_blob, 'average_yield_to_maturity')
+  yield_profile_blob_yield_spread_to_benchmark:
+    description: 'TEXT (unit-annotated). Option-adjusted spread vs. Treasuries, quoted in %. Example: 4.70 %.'
+    sql: JSONB_EXTRACT_PATH_TEXT(yield_profile_blob, 'yield_spread_to_benchmark')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct bond_rating_market_data public identity values.
+    label: bond_rating_market_data Count
+    sql: ${exchange_traded_funds_large_public__bond_rating_market_data.bond_market_id}

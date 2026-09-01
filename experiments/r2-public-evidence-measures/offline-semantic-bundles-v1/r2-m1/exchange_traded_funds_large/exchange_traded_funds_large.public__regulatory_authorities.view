@@ -1,0 +1,105 @@
+label: regulatory_authorities
+description: All columns of the public table regulatory_authorities.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: regulatory_authorities
+dimensions:
+  annual_examinations:
+    description: 'BIGINT. Count of routine examinations the authority conducts per year. Example: 350.'
+    sql: '"AnnualExaminations"'
+  authority_acronym:
+    description: 'TEXT. Commonly used acronym for the authority. **NULL means an acronym is not in common use or has not been recorded.**. Example: SEC.'
+    sql: '"AuthorityAcronym"'
+  authority_code:
+    description: 'TEXT. Internal short code uniquely identifying the authority. Example: ASIC.'
+    sql: '"AuthorityCode"'
+  authority_id:
+    description: 'BIGSERIAL. Surrogate primary-key assigned in loading order. Example: 17.'
+    sql: '"AuthorityID"'
+  authority_name:
+    description: 'TEXT. Full legal name of the regulatory authority. Example: Australian Securities & Investments Commission.'
+    sql: '"AuthorityName"'
+  contact_email:
+    description: 'TEXT. General enquiries email. **NULL means no email contact has been provided.**. Example: info@sec.gov.'
+    sql: '"ContactEmail"'
+  contact_phone:
+    description: 'TEXT. Main telephone number. Example: +1-202-551-6000.'
+    sql: '"ContactPhone"'
+  cooperation_agreements:
+    description: 'TEXT. Bilateral or multilateral cooperation arrangements. **NULL means no cooperation agreement has been recorded.**. Example: MoU with other regulators.'
+    sql: '"CooperationAgreements"'
+  country:
+    description: 'TEXT. Country in which the authority principally operates. Possible values: Japan, Australia, Singapore, Canada, Germany, Brazil, France, United States, United Kingdom.'
+    sql: '"Country"'
+  enforcement_actions_annual:
+    description: 'BIGINT. Total enforcement actions concluded in the most recent year. Example: 42.'
+    sql: '"EnforcementActionsAnnual"'
+  enforcement_authority:
+    description: 'BOOLEAN. Indicates whether the body can take enforcement actions. Possible values: true, false.'
+    sql: '"EnforcementAuthority"'
+  enforcement_powers:
+    description: 'TEXT. Types of sanctions the authority can impose. Possible values: Fines, sanctions, license revocation.'
+    sql: '"EnforcementPowers"'
+  entities_under_supervision:
+    description: 'BIGINT. Number of entities (firms, funds, exchanges) currently supervised. Example: 11 542.'
+    sql: '"EntitiesUnderSupervision"'
+  examination_authority:
+    description: 'BOOLEAN. Indicates whether the body performs routine examinations. Possible values: true, false.'
+    sql: '"ExaminationAuthority"'
+  funding_source:
+    description: 'TEXT. Primary funding mechanism. Possible values: Government Budget, Industry Fees, Mixed.'
+    sql: '"FundingSource"'
+  headquarters_address:
+    description: 'TEXT. Full address of the main office. Example: 100 F Street NE, Washington DC 20549, USA.'
+    sql: '"HeadquartersAddress"'
+  independence_level:
+    description: 'TEXT. Degree of operational independence. Possible values: High, Medium, Low.'
+    sql: '"IndependenceLevel"'
+  international_memberships:
+    description: 'TEXT. International forums or organisations in which the authority participates. Example: IOSCO.'
+    sql: '"InternationalMemberships"'
+  is_active:
+    description: 'BOOLEAN. Indicates if the authority is currently active. Possible values: true, false.'
+    sql: '"IsActive"'
+  jurisdiction_type:
+    description: 'TEXT. Level at which the authority exercises power. Possible values: Federal, State, Regional, International.'
+    sql: '"JurisdictionType"'
+  key_regulations:
+    description: 'TEXT. Flagship laws, rules or regulations administered. Example: Markets in Financial Instruments Directive (MiFID II).'
+    sql: '"KeyRegulations"'
+  last_updated:
+    description: 'TIMESTAMP. Date-time when the record was last refreshed. Example: 2025-07-06T14:27:01Z.'
+    sql: '"LastUpdated"'
+  legal_basis:
+    description: 'TEXT. Key statute, act or charter establishing the authority. Example: Securities and Exchange Act 1934.'
+    sql: '"LegalBasis"'
+  licensing_authority:
+    description: 'BOOLEAN. Indicates whether the body issues licences to market participants. Possible values: true, false.'
+    sql: '"LicensingAuthority"'
+  mutual_recognition_arrangements:
+    description: 'TEXT. Whether the authority recognises foreign regimes. Possible values: Yes, No.'
+    sql: '"MutualRecognitionArrangements"'
+  organizational_type:
+    description: 'TEXT. Governance form of the body. Possible values: Government Agency, Self-Regulatory, International.'
+    sql: '"OrganizationalType"'
+  primary_mandate:
+    description: 'TEXT. Core mission statement of the authority. Example: Protect investors and maintain fair markets.'
+    sql: '"PrimaryMandate"'
+  region:
+    description: 'TEXT. Broad geographical region of jurisdiction. **NULL means the region has not been designated.**. Possible values: North America, Middle East, South America, Europe, Africa, Asia-Pacific.'
+    sql: '"Region"'
+  regulatory_scope:
+    description: 'TEXT. Summary of sectors or markets the authority oversees. Example: Derivatives, Insurance, Banking, Securities, Pensions, Commodities'
+    sql: '"RegulatoryScope"'
+  reporting_structure:
+    description: 'TEXT. To whom the authority reports. Possible values: Independent Board, Ministerial, Parliamentary, Executive.'
+    sql: '"ReportingStructure"'
+  website:
+    description: 'TEXT. Official web site URL. Example: https://www.sec.gov.'
+    sql: '"Website"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct regulatory_authorities public identity values.
+    label: regulatory_authorities Count
+    sql: ${exchange_traded_funds_large_public__regulatory_authorities.authority_id}

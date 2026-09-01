@@ -1,0 +1,66 @@
+label: BeneficiaryAssistanceRecord
+description: All columns of the public table BeneficiaryAssistanceRecord.
+catalog: disaster_relief_large
+schema: public
+table_name: BeneficiaryAssistanceRecord
+dimensions:
+  assistance_date:
+    description: 'VARCHAR(100). Date assistance was distributed to beneficiary. Example: "2019-02-15".'
+    sql: '"assistanceDate"'
+  assistance_type:
+    description: 'VARCHAR(100). Category of aid provided (Food|Water|Shelter|Medical|Cash|Clothing|Hygiene|Education|Livelihood|Psychosocial). Possible values: "Cash", "Clothing", "Education", "Food", "Hygiene", "Livelihood", "Medical", "Psychosocial", "Shelter", "Water".'
+    sql: '"assistanceType"'
+  beneficiary_feedback:
+    description: 'VARCHAR(100). Qualitative feedback provided by beneficiary during distribution. Example: "7EOCYa1bAZ".'
+    sql: '"beneficiaryFeedback"'
+  beneficiary_id:
+    description: 'BIGINT. Foreign key reference to beneficiary household (BeneficiaryCore.id). Example: 1489.'
+    sql: '"beneficiaryId"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 6114.'
+    sql: '"disasterEventId"'
+  distribution_method:
+    description: 'VARCHAR(100). Method of aid delivery (Direct|Voucher|CashTransfer|CommunityBased|MobileUnit|FixedSite). Possible values: "CashTransfer", "CommunityBased", "Direct", "FixedSite", "MobileUnit", "Voucher".'
+    sql: '"distributionMethod"'
+  distribution_point:
+    description: 'VARCHAR(100). Physical location where assistance was distributed. Example: "8GRFaNTsQS".'
+    sql: '"distributionPoint"'
+  follow_up_date:
+    description: 'VARCHAR(100). Scheduled date for follow-up contact. Example: "2006-08-29".'
+    sql: '"followUpDate"'
+  follow_up_required:
+    description: 'VARCHAR(100). Need for post-distribution follow-up (Yes|No|Pending). Possible values: "No", "Pending", "Yes".'
+    sql: '"followUpRequired"'
+  household_id_ref:
+    description: 'VARCHAR(100). Original household registry identifier for audit trail. Example: "fNuLQoU76w".'
+    sql: '"householdIdRef"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for assistance distribution records. Example: 1.'
+    sql: id
+  notes:
+    description: 'VARCHAR(100). Distribution supervisor observations or issues. Example: "7VGFFdp1R1".'
+    sql: notes
+  priority_level:
+    description: 'VARCHAR(100). Distribution priority assignment (Critical|High|Medium|Low|Standard). Possible values: "Critical", "High", "Low", "Medium", "Standard".'
+    sql: '"priorityLevel"'
+  quantity_distributed:
+    description: 'VARCHAR(100). Amount of assistance provided in standard units. Example: "ZtzZOiechw".'
+    sql: '"quantityDistributed"'
+  satisfaction_score:
+    description: 'VARCHAR(100). Beneficiary satisfaction rating (1-10 scale). Example: "JJs8YQNO1L".'
+    sql: '"satisfactionScore"'
+  special_needs:
+    description: 'VARCHAR(100). Accommodations required for distribution (e.g., wheelchair access, interpreter). Example: "BV6xNUwSu5".'
+    sql: '"specialNeeds"'
+  staff_distributing:
+    description: 'VARCHAR(100). Name of staff member overseeing distribution. Example: "zmEGEJu6vK".'
+    sql: '"staffDistributing"'
+  unit_type:
+    description: 'VARCHAR(100). Unit of measure for distributed items (Kg|Liter|Unit|Set|Package|Meal|Day|Week|Month). Possible values: "Day", "Kg", "Liter", "Meal", "Month", "Package", "Set", "Unit", "Week".'
+    sql: '"unitType"'
+  version:
+    description: 'VARCHAR(100). Record version number for audit purposes. Example: "X0mAPPNavA".'
+    sql: version
+  vulnerability_category:
+    description: 'VARCHAR(100). Specific vulnerability classification (Child|Elderly|Disabled|Pregnant|SingleParent|Minority|Refugee|None). Possible values: "Child", "Disabled", "Elderly", "Minority", "None", "Pregnant", "Refugee", "SingleParent".'
+    sql: '"vulnerabilityCategory"'

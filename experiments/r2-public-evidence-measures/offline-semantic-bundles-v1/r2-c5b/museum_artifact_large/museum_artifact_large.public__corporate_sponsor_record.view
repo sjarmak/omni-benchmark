@@ -1,0 +1,66 @@
+label: CorporateSponsorRecord
+description: All columns of the public table CorporateSponsorRecord.
+catalog: museum_artifact_large
+schema: public
+table_name: CorporateSponsorRecord
+dimensions:
+  benefits_delivered:
+    description: VARCHAR(100). Specific benefits provided to sponsor organization.
+    sql: '"benefitsDelivered"'
+  company_name:
+    description: VARCHAR(100). Legal name of sponsoring corporation.
+    sql: '"companyName"'
+  contract_signed_date:
+    description: VARCHAR(100). Date when sponsorship agreement was executed.
+    sql: '"contractSignedDate"'
+  currency:
+    description: VARCHAR(100). Currency denomination of contribution (USD, CNY, EUR, GBP, JPY, HKD, CHF, CAD, AUD, SGD).
+    sql: currency
+  end_date:
+    description: VARCHAR(100). Termination date of sponsorship agreement.
+    sql: '"endDate"'
+  event_naming_rights:
+    description: VARCHAR(100). Level of naming rights granted (Exclusive, Shared, None, TitleSponsor, PresentingSponsor).
+    sql: '"eventNamingRights"'
+  id:
+    description: BIGSERIAL. Auto-increment primary key for corporate sponsorship records.
+    sql: id
+  logo_placement:
+    description: VARCHAR(100). Approved locations for sponsor logo display (Entrance, Catalog, Website, MediaKit, AllChannels).
+    sql: '"logoPlacement"'
+  media_mentions:
+    description: VARCHAR(100). Count of earned media mentions featuring sponsor.
+    sql: '"mediaMentions"'
+  next_engagement_date:
+    description: VARCHAR(100). Scheduled date for next sponsor engagement activity.
+    sql: '"nextEngagementDate"'
+  payment_schedule:
+    description: VARCHAR(100). Timing of financial payments (Upfront, Quarterly, Annually, MilestoneBased, Installments).
+    sql: '"paymentSchedule"'
+  public_acknowledgment:
+    description: VARCHAR(100). Method of public recognition (PressRelease, AnnualReport, DonorWall, SocialMedia, None).
+    sql: '"publicAcknowledgment"'
+  relationship_manager:
+    description: VARCHAR(100). Name of staff member managing sponsor relationship.
+    sql: '"relationshipManager"'
+  renewal_likelihood:
+    description: VARCHAR(100). Probability of agreement renewal (VeryLikely, Likely, Neutral, Unlikely, VeryUnlikely).
+    sql: '"renewalLikelihood"'
+  satisfaction_score:
+    description: VARCHAR(100). Sponsor satisfaction rating on 1-10 scale.
+    sql: '"satisfactionScore"'
+  sponsor_id:
+    description: VARCHAR(100). Unique identifier for corporate sponsor entity.
+    sql: '"sponsorId"'
+  sponsorship_amount:
+    description: VARCHAR(100). Total financial contribution amount in USD.
+    sql: '"sponsorshipAmount"'
+  sponsorship_type:
+    description: VARCHAR(100). Nature of sponsorship arrangement (ExhibitionTitle, GalleryNaming, ProgramSupport, ArtifactAcquisition, ResearchFunding).
+    sql: '"sponsorshipType"'
+  start_date:
+    description: VARCHAR(100). Effective date of sponsorship agreement.
+    sql: '"startDate"'
+  tax_deduction_status:
+    description: VARCHAR(100). Tax deductibility classification (Qualified, Pending, NotApplicable, Denied, Partial).
+    sql: '"taxDeductionStatus"'

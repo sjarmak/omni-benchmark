@@ -1,0 +1,81 @@
+label: sponsor_technology_agreements
+description: All columns of the public table sponsor_technology_agreements.
+catalog: sports_events_large
+schema: public
+table_name: sponsor_technology_agreements
+dimensions:
+  agreement_code:
+    description: 'TEXT. Unique agreement code. Example: STA-2025-01.'
+    sql: '"AgreementCode"'
+  audit_rights:
+    description: 'TEXT. Audit rights granted in the agreement. Example: Yes.'
+    sql: '"Audit_Rights"'
+  data_sharing_scope:
+    description: 'TEXT. Scope of data sharing under the agreement. Example: Telemetry summary.'
+    sql: '"DataSharingScope"'
+  end_date:
+    description: 'DATE. End date of the agreement. Example: 2027-01-31.'
+    sql: '"END_DATE"'
+  exclusivity_scope:
+    description: 'TEXT. Scope of the exclusivity. Example: chassis-only.'
+    sql: '"EXCLUSIVITY_SCOPE"'
+  equity_warrant_pct:
+    description: 'REAL. Percentage of equity warrant offered in the agreement. **NULL means no equity warrant offered.** Example: 0.5.'
+    sql: '"EquityWarrantPct"'
+  funding_musd:
+    description: 'REAL. Amount of funding in millions of USD. Example: 3.5.'
+    sql: '"Funding_MUSD"'
+  joint_ip_flag:
+    description: 'BOOLEAN. Whether joint intellectual property rights are included. Example: true.'
+    sql: '"JointIP_Flag"'
+  kpi_lap_time_sec:
+    description: 'REAL. KPI for lap time improvement in seconds. **NULL means no lap time KPI specified.** Example: -0.10.'
+    sql: '"KPI_LapTime_sec"'
+  kpi_reliability_pct:
+    description: 'REAL. KPI for reliability improvement as a percentage. **NULL means no reliability KPI specified.** Example: 0.98.'
+    sql: '"KPI_Reliability_pct"'
+  milestone_json:
+    description: 'JSONB. JSON object for milestones in the agreement. Example: {M1:wind tunnel}.'
+    sql: '"Milestone_JSON"'
+  nda_required:
+    description: 'BOOLEAN. Whether an NDA is required. Example: true.'
+    sql: '"NDA_Required"'
+  notes:
+    description: 'TEXT. Additional notes for the agreement. **NULL means no notes provided.** Example: Align with Q3 dev.'
+    sql: '"Notes"'
+  penalties_json:
+    description: 'JSONB. JSON object outlining penalties. Example: {delay:-10%}.'
+    sql: '"Penalties_Json"'
+  publicity_rights:
+    description: 'TEXT. Publicity rights granted by the sponsor. **NULL means no publicity rights granted.** Example: co-branding.'
+    sql: '"PublicityRights"'
+  renewal_option:
+    description: 'TEXT. Renewal option for the agreement. Example: 1+1 years.'
+    sql: '"RenewalOption"'
+  reporting_freq_months:
+    description: 'BIGINT. Frequency of reporting in months. Example: 3.'
+    sql: '"ReportingFreq_Months"'
+  sta_tag:
+    description: BIGSERIAL. Surrogate primary key for sponsor_technology_agreements rows. PK.
+    sql: '"STA_tag"'
+  sponsor_ref:
+    description: 'BIGINT. Foreign key referencing sponsor_entities(Sponsor_ID). FK → sponsor_entities(Sponsor_ID). Example: 1.'
+    sql: '"Sponsor_Ref"'
+  start_date:
+    description: 'DATE. Start date of the agreement. Example: 2025-02-01.'
+    sql: '"Start_Date"'
+  territory:
+    description: 'TEXT. Territory for the agreement. Example: global.'
+    sql: '"TERRITORY"'
+  technology_ref:
+    description: 'BIGINT. Foreign key referencing innovation_technologies(TECHNOLOGY_ID). FK → innovation_technologies(TECHNOLOGY_ID). Example: 3.'
+    sql: '"Technology_Ref"'
+  termination_clause:
+    description: 'TEXT. Termination clause for the agreement. Example: 30-day notice.'
+    sql: '"TerminationClause"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct sponsor_technology_agreements public identity values.
+    label: sponsor_technology_agreements Count
+    sql: ${sports_events_large_public__sponsor_technology_agreements.sta_tag}

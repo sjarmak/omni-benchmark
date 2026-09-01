@@ -1,0 +1,102 @@
+label: innovation_technologies
+description: All columns of the public table innovation_technologies.
+catalog: sports_events_large
+schema: public
+table_name: innovation_technologies
+dimensions:
+  category:
+    description: 'TEXT. Category of the technology. Possible values: aero, engine, suspension. Example: aero.'
+    sql: '"CATEGORY"'
+  deployment_status:
+    description: 'TEXT. Current status of technology deployment. Example: FP2-only.'
+    sql: '"DeploymentStatus"'
+  maturity_level:
+    description: 'TEXT. Maturity level of the technology. Possible values: prototype, tested, production. **NULL means the maturity level has not been defined.** Example: prototype.'
+    sql: '"MaturityLevel"'
+  name:
+    description: 'TEXT. Name of the technology or system. Example: Dual DRS.'
+    sql: '"NAME"'
+  on_car_positions:
+    description: 'TEXT. Car positions where the technology is deployed. Example: rear wing.'
+    sql: '"OnCarPositions"'
+  technology_index:
+    description: BIGSERIAL. Surrogate primary key for innovation_technologies rows. PK.
+    sql: '"TECHNOLOGY_Index"'
+  telemetry_tags:
+    description: 'TEXT. Telemetry tags associated with the technology. Example: AERO_PRES.'
+    sql: '"TELEMETRY_TAGS"'
+  trl_score:
+    description: 'REAL. Technology readiness level score (1.0–9.0). Example: 7.5.'
+    sql: '"TRL_SCORE"'
+  tech_code:
+    description: 'TEXT. Unique identifier for the technology. Example: AERO-DDRS.'
+    sql: '"TechCode"'
+  tech_lifecycle_dossier:
+    description: JSONB column. Captures performance deltas, materials/suppliers, testing usage, costs, homologation/regulatory, approvals, documentation, ownership signals, timing, and risk notes across a technology’s lifecycle.
+    sql: tech_lifecycle_dossier
+  tech_lifecycle_dossier_compliance_approvals_approvals_json:
+    description: 'JSONB. Approval statuses for the technology. Example: {FIA:pending}.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Compliance_Approvals', 'ApprovalsJson')
+  tech_lifecycle_dossier_compliance_approvals_doc_link:
+    description: 'TEXT. URL linking to official documentation for the technology. Example: http://... .'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Compliance_Approvals', 'DOC_LINK')
+  tech_lifecycle_dossier_homologation_reg_failure_mode_json:
+    description: 'JSONB. JSON object outlining potential failure modes of the technology. Example: {flutter:high}.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Homologation_Reg', 'FailureMode_JSON')
+  tech_lifecycle_dossier_homologation_reg_homologation_needed:
+    description: 'BOOLEAN. Whether homologation (official approval) is required for the technology. Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Homologation_Reg', 'HomologationNeeded')
+  tech_lifecycle_dossier_homologation_reg_homologation_window:
+    description: 'TEXT. Window during which homologation is expected to occur. Example: pre-season.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Homologation_Reg', 'HomologationWindow')
+  tech_lifecycle_dossier_homologation_reg_regulatory_risk_score:
+    description: 'REAL. Risk score for regulatory approval (0.0–1.0). Example: 0.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Homologation_Reg', 'RegulatoryRiskScore')
+  tech_lifecycle_dossier_homologation_reg_risk_notes:
+    description: 'TEXT. Notes on any risk factors for the technology. Example: vibration near T8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Homologation_Reg', 'RiskNotes')
+  tech_lifecycle_dossier_materials_suppliers_material_spec:
+    description: 'TEXT. Material specification used for the technology. Example: CF prepreg T800.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Materials_Suppliers', 'MaterialSpec')
+  tech_lifecycle_dossier_materials_suppliers_patent_ref:
+    description: 'TEXT. Reference number for any patent related to the technology. Example: US-123456.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Materials_Suppliers', 'PatentRef')
+  tech_lifecycle_dossier_materials_suppliers_supplier:
+    description: 'TEXT. Supplier of materials or services for the technology. **NULL means no supplier has been assigned or disclosed.** Example: Hexcel.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Materials_Suppliers', 'SUPPLIER')
+  tech_lifecycle_dossier_performance_block_cost_cap_impact_musd:
+    description: 'REAL. Impact of the technology on the cost cap in millions of USD. **NULL means the impact is not yet defined.** Example: 0.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'PerformanceBlock', 'CostCapImpact_MUSD')
+  tech_lifecycle_dossier_performance_block_expected_gain_sec:
+    description: 'REAL. Expected performance gain in seconds. **NULL means no expected gain has been calculated.** Example: 0.150.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'PerformanceBlock', 'ExpectedGain_sec')
+  tech_lifecycle_dossier_performance_block_performance_json:
+    description: 'JSONB. Performance data or expected improvements for the technology. Example: {delta:-0.18}.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'PerformanceBlock', 'Performance_JSON')
+  tech_lifecycle_dossier_performance_block_weight_delta_kg:
+    description: 'REAL. Weight change associated with the technology, in kilograms. Example: -1.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'PerformanceBlock', 'WeightDeltaKG')
+  tech_lifecycle_dossier_testing_usage_cfd_core_hours:
+    description: 'REAL. Number of computational fluid dynamics (CFD) hours for the technology. Example: 50000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Testing_Usage', 'CFD_Core_Hours')
+  tech_lifecycle_dossier_testing_usage_tests_planned:
+    description: 'BIGINT. Number of tests planned for the technology. Example: 12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Testing_Usage', 'TESTS_PLANNED')
+  tech_lifecycle_dossier_testing_usage_tests_completed:
+    description: 'BIGINT. Number of tests completed for the technology. **NULL means no tests have been completed yet.** Example: 35.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Testing_Usage', 'TestsCompleted')
+  tech_lifecycle_dossier_testing_usage_wind_tunnel_hours:
+    description: 'REAL. Number of wind tunnel hours dedicated to the technology. Example: 12.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Testing_Usage', 'WindTunnelHours')
+  tech_lifecycle_dossier_timing_admin_lead_engineer:
+    description: 'TEXT. Name of the lead engineer overseeing the technology. Example: E. Smith.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Timing_Admin', 'LeadEngineer')
+  tech_lifecycle_dossier_timing_admin_retire_date:
+    description: 'DATE. Date when the technology is expected to be retired. Example: 2025-07-01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(tech_lifecycle_dossier, 'Timing_Admin', 'RETIRE_DATE')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct innovation_technologies public identity values.
+    label: innovation_technologies Count
+    sql: ${sports_events_large_public__innovation_technologies.technology_index}

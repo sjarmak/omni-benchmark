@@ -1,0 +1,72 @@
+label: VegetationManagementLogs
+description: All columns of the public table VegetationManagementLogs.
+catalog: solar_panel_large
+schema: public
+table_name: VegetationManagementLogs
+dimensions:
+  avg_height_after_cm:
+    description: 'REAL. Average vegetation height after treatment. **NULL means Not measured.** Example: 10.'
+    sql: avg_height_after_cm
+  avg_height_before_cm:
+    description: 'REAL. Average vegetation height before treatment. **NULL means Not measured.** Example: 60.'
+    sql: avg_height_before_cm
+  compliance_photo_url:
+    description: TEXT. Proof of completion photo.
+    sql: compliance_photo_url
+  contractor_name:
+    description: 'TEXT. Name of the external vendor performing work. Unique values: GreenScapes, SolarMow Inc, Internal Team.'
+    sql: contractor_name
+  cost_usd:
+    description: 'REAL. Total cost of the service. Example: 1200.'
+    sql: cost_usd
+  debris_disposal_method:
+    description: 'TEXT. How cuttings were handled. Unique values: Mulched in place, Hauled away, Composted on-site.'
+    sql: debris_disposal_method
+  equipment_used:
+    description: 'TEXT. Machinery utilized. Unique values: Tractor Mower, String Trimmer, Backpack Sprayer, Robotic Mower.'
+    sql: equipment_used
+  herbicide_used_name:
+    description: 'TEXT. Brand or chemical name of herbicide used. **NULL means No herbicide used.** Unique values: Roundup, Organic Citronella, None.'
+    sql: herbicide_used_name
+  herbicide_volume_liters:
+    description: 'REAL. Volume of herbicide applied. **NULL means No herbicide used.** Example: 10.'
+    sql: herbicide_volume_liters
+  hours_spent:
+    description: 'REAL. Labor hours consumed. Example: 8.'
+    sql: hours_spent
+  management_method:
+    description: 'TEXT. Method used for control. Unique values: Mechanical Mowing, Manual Trimming, Herbicide Spraying, Sheep Grazing.'
+    sql: management_method
+  next_scheduled_date:
+    description: TIMESTAMP. Recommended date for follow-up.
+    sql: next_scheduled_date
+  service_date:
+    description: TIMESTAMP. Date vegetation work was performed.
+    sql: service_date
+  site_ref:
+    description: TEXT. Reference to the plant.
+    sql: site_ref
+  soil_condition_notes:
+    description: TEXT. Observations of soil erosion or wetness. **NULL means No issues noted.**
+    sql: soil_condition_notes
+  target_vegetation_type:
+    description: 'TEXT. Primary type of plant life being managed. Unique values: Grass, Invasive Weeds, Shrubs, Tree Overhang.'
+    sql: target_vegetation_type
+  treated_area_sq_m:
+    description: 'REAL. Total area covered in square meters. Example: 5000.'
+    sql: treated_area_sq_m
+  veg_log_id:
+    description: TEXT. Unique identifier for the vegetation task.
+    sql: veg_log_id
+  weather_conditions:
+    description: 'TEXT. Weather during operation. Unique values: Sunny, Overcast, Light Rain, Windy.'
+    sql: weather_conditions
+  zone_id:
+    description: 'TEXT. Specific zone within the plant (e.g., Perimeter, Array Block B). Example: ZN-1A2B3C.'
+    sql: zone_id
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct VegetationManagementLogs public identity values.
+    label: VegetationManagementLogs Count
+    sql: ${solar_panel_large_public__vegetation_management_logs.veg_log_id}

@@ -1,0 +1,105 @@
+label: personnel_certifications
+description: All columns of the public table personnel_certifications.
+catalog: archeology_scan_large
+schema: public
+table_name: personnel_certifications
+dimensions:
+  accreditation_body:
+    description: 'TEXT. The body that accredits the issuing organization. **NULL means not applicable.**。 Example: Geospatial Certification Authority.'
+    sql: '"ACCREDITATION_BODY"'
+  auto_reminder_enabled:
+    description: 'BOOLEAN. A flag indicating if auto-reminders for expiry are enabled。 Possible values: False, True.'
+    sql: '"AUTO_REMINDER_ENABLED"'
+  credential_url:
+    description: 'TEXT. A URL to verify the credential online. **NULL means no verification URL is available.**。 Example: https://certs.leica.com/9981.'
+    sql: '"CREDENTIAL_URL"'
+  certificate_pdf_url:
+    description: 'TEXT. A URL to a PDF copy of the certificate。 Example: https://digisite.org/certs/op001-lg.pdf.'
+    sql: '"CertificatePdfUrl"'
+  certification_code:
+    description: 'BIGINT. Unique identifier for a certification record. PK。 Example: 4001.'
+    sql: '"CertificationCode"'
+  ceus_completed:
+    description: 'BIGINT. The number of CEUs completed for the current cycle。 Example: 12.'
+    sql: '"CeusCompleted"'
+  country_of_issue:
+    description: 'TEXT. The country where the certification was issued. **NULL means it is not specified.**。 Possible values: CH, CY, DE, GB, IT, JP, LU, SE, SK, US.'
+    sql: '"CountryOfIssue"'
+  credential_tag:
+    description: 'TEXT. The unique ID or number of the credential。 Example: CERT-LG-9981.'
+    sql: '"CredentialTag"'
+  exam_score:
+    description: 'REAL. The score achieved on the certification exam。 Example: 98.5.'
+    sql: '"EXAM_SCORE"'
+  hours_of_training:
+    description: 'BIGINT. The hours of training required for the certification。 Example: 40.'
+    sql: '"HOURS_OF_TRAINING"'
+  issue_date:
+    description: 'DATE. The date the certification was issued。 Example: 2019.01.15.'
+    sql: '"ISSUE_DATE"'
+  is_active:
+    description: 'BOOLEAN. A flag indicating if the certification is currently active and valid。 Possible values: False, True.'
+    sql: '"IsActive"'
+  issuing_organization:
+    description: 'TEXT. The organization that issued the certification。 Example: Leica Geosystems.'
+    sql: '"IssuingOrganization"'
+  last_status_check_ts:
+    description: 'TIMESTAMPTZ. The timestamp of the last automated status check。 Example: 01/01/2024 10:00.'
+    sql: '"LastStatusCheckTs"'
+  renewal_fee:
+    description: 'REAL. The fee required to renew the certification。 Example: 150.'
+    sql: '"RENEWAL_FEE"'
+  related_skill_code:
+    description: 'BIGINT. Foreign key for the primary skill related to this certification. FK。 Example: 301.'
+    sql: '"RelatedSkillCode"'
+  verified_by:
+    description: 'TEXT. The name or ID of the person who verified the certificate. **NULL means it has not been verified.**。 Example: OP5885.'
+    sql: '"VERIFIED_BY"'
+  verification_status:
+    description: 'TEXT. The status of the verification of this certificate。 Possible values: Expired, Expires Soon, Superseded, Verified.'
+    sql: '"VerificationStatus"'
+  waiver_on_file:
+    description: 'BOOLEAN. A flag indicating if a waiver for this certification is on file。 Possible values: False, True.'
+    sql: '"WAIVER_ON_FILE"'
+  certification_name:
+    description: 'TEXT. The name of the certification。 Example: Leica Certified TLS Operator.'
+    sql: certification_name
+  ceus_required_for_renewal:
+    description: 'BIGINT. Continuing education units required for renewal。 Example: 10.'
+    sql: ceus_required_for_renewal
+  comments:
+    description: 'TEXT. Comments related to the certification record. **NULL means no comments have been added.**。 Possible values: Annual renewal fee paid..'
+    sql: comments
+  digital_badge_url:
+    description: 'TEXT. A URL to a digital badge for the certification. **NULL means no badge was issued.**。 Possible values: https://badges.credly.com/op002-cr, https://badges.credly.com/op010-pmp, https://badges.credly.com/op019-artec, https://badges.credly.com/op025-esri, https://badges.credly.com/op032-oracle, https://badges.credly.com/op052-esri, https://badges.credly.com/op052-ibm, https://badges.credly.com/op078-esri.'
+    sql: digital_badge_url
+  expiry_date:
+    description: 'DATE. The date the certification expires. **NULL means the certification does not expire.**。 Example: 2022.01.14.'
+    sql: expiry_date
+  is_mandatory:
+    description: 'BOOLEAN. A flag indicating if this certification is mandatory for the person''s role。 Possible values: False, True.'
+    sql: is_mandatory
+  notes:
+    description: 'TEXT. General notes about the certification. **NULL means no notes were added.**。 Example: Expired, needs renewal..'
+    sql: notes
+  personnel_ref:
+    description: 'TEXT. Foreign key linking to the personnel member who holds the certification. FK。 Example: OP6953.'
+    sql: personnel_ref
+  study_materials_link:
+    description: TEXT. A URL to study materials for the certification. **NULL means no link is provided.**
+    sql: study_materials_link
+  training_provider:
+    description: 'TEXT. The provider of the required training。 Example: Vendor Training.'
+    sql: training_provider
+  verification_date:
+    description: 'DATE. The date the certificate was verified。 Example: 2019.02.01.'
+    sql: verification_date
+  waiver_reason:
+    description: 'TEXT. The reason for the certification waiver. **NULL means no waiver is on file.**。 Possible values: Waiver due to PMP certification., Waiver for external travel restrictions..'
+    sql: waiver_reason
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct personnel_certifications public identity values.
+    label: personnel_certifications Count
+    sql: ${archeology_scan_large_public__personnel_certifications.certification_code}

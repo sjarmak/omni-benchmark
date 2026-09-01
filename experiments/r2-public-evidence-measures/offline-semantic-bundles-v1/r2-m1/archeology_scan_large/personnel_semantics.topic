@@ -1,0 +1,7 @@
+base_view: archeology_scan_large_public__personnel
+label: personnel
+description: All columns of the public table personnel.
+fields:
+- archeology_scan_large_public__personnel.*
+joins: {}
+ai_context: This topic models no cross-table joins.

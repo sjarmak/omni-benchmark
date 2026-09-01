@@ -1,0 +1,72 @@
+label: SupplyChainShipments
+description: All columns of the public table SupplyChainShipments.
+catalog: solar_panel_large
+schema: public
+table_name: SupplyChainShipments
+dimensions:
+  actual_arrival_date:
+    description: TIMESTAMP. Actual delivery date. **NULL means In transit.**
+    sql: actual_arrival_date
+  cargo_type:
+    description: 'TEXT. Type of goods being shipped. Unique values: PV Modules, Inverters, Racking System, Transformers, Spare Parts.'
+    sql: cargo_type
+  carrier_name:
+    description: 'TEXT. Logistics company handling transport. Unique values: DHL, Maersk, FedEx Freight, CH Robinson.'
+    sql: carrier_name
+  container_number:
+    description: TEXT. ISO Container ID if sea freight. **NULL means Air/Road freight.**
+    sql: container_number
+  customs_clearance_status:
+    description: 'TEXT. State of import procedures. Unique values: Cleared, Pending, Inspection Required, N/A Domestic.'
+    sql: customs_clearance_status
+  damaged_on_arrival:
+    description: 'BOOLEAN. True if goods arrived with visible damage. **NULL means Not yet arrived.** Possible values: True, False.'
+    sql: damaged_on_arrival
+  declared_value_usd:
+    description: 'REAL. Value of goods for insurance/customs. Example: 75000.'
+    sql: declared_value_usd
+  destination_plant_ref:
+    description: 'TEXT. FK to plants.sitekey, destination of goods. Unique values: SP9227, SP6740, SP7738.'
+    sql: destination_plant_ref
+  expected_arrival_date:
+    description: TIMESTAMP. Planned delivery date.
+    sql: expected_arrival_date
+  incoterms:
+    description: 'TEXT. International Commercial Terms code. Unique values: DDP, FOB, EXW, CIF.'
+    sql: incoterms
+  insurance_policy_id:
+    description: TEXT. Cargo insurance policy reference.
+    sql: insurance_policy_id
+  manufacturer_ref:
+    description: TEXT. Sender/Manufacturer of the goods.
+    sql: manufacturer_ref
+  pallet_count:
+    description: 'INTEGER. Number of pallets/crates. Example: 10.'
+    sql: pallet_count
+  receiving_clerk_signature:
+    description: TEXT. Name of person who signed for delivery. **NULL means Not yet delivered.**
+    sql: receiving_clerk_signature
+  shipment_create_date:
+    description: TIMESTAMP. Date shipment was booked.
+    sql: shipment_create_date
+  shipment_id:
+    description: TEXT. Unique tracking ID for the shipment.
+    sql: shipment_id
+  shipment_status:
+    description: 'TEXT. Current status of the cargo. Unique values: Manifested, In Transit, Customs Hold, Delivered.'
+    sql: shipment_status
+  shipping_cost_usd:
+    description: 'REAL. Cost of transport. Example: 3500.'
+    sql: shipping_cost_usd
+  total_weight_kg:
+    description: 'REAL. Gross weight of the shipment. Example: 5000.'
+    sql: total_weight_kg
+  tracking_number:
+    description: TEXT. Carrier tracking code.
+    sql: tracking_number
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct SupplyChainShipments public identity values.
+    label: SupplyChainShipments Count
+    sql: ${solar_panel_large_public__supply_chain_shipments.shipment_id}

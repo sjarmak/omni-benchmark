@@ -1,0 +1,15 @@
+base_view: fake_account_large_public__stream_buffer_events
+label: stream_buffer_events
+description: All columns of the public table stream_buffer_events.
+fields:
+- fake_account_large_public__stream_buffer_events.*
+- fake_account_large_public__accounts.*
+- fake_account_large_public__media_asset_details.*
+- fake_account_large_public__platforms.*
+- fake_account_large_public__stream_quality_logs.*
+joins:
+  fake_account_large_public__stream_quality_logs:
+    fake_account_large_public__media_asset_details:
+      fake_account_large_public__accounts:
+        fake_account_large_public__platforms: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

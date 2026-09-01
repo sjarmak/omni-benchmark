@@ -1,0 +1,9 @@
+base_view: museum_artifact_large_public__insurance_policy_detail
+label: InsurancePolicyDetail
+description: All columns of the public table InsurancePolicyDetail.
+fields:
+- museum_artifact_large_public__insurance_policy_detail.*
+- museum_artifact_large_public__staff.*
+joins:
+  museum_artifact_large_public__staff: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

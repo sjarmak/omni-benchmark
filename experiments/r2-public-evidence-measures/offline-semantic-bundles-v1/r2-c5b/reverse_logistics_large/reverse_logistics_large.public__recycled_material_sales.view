@@ -1,0 +1,60 @@
+label: recycled_material_sales
+description: All columns of the public table recycled_material_sales.
+catalog: reverse_logistics_large
+schema: public
+table_name: recycled_material_sales
+dimensions:
+  basel_convention_compliant:
+    description: BOOLEAN. Compliant with Basel Convention for waste export.
+    sql: basel_convention_compliant
+  buyer_company_name:
+    description: 'TEXT. Company buying the recycled material. Unique values: EcoPlast Inc, Global Metals, GreenFiber.'
+    sql: buyer_company_name
+  carbon_credit_transfer_flag:
+    description: BOOLEAN. Did carbon credits transfer to the buyer?.
+    sql: carbon_credit_transfer_flag
+  destination_country:
+    description: 'TEXT. Country where material is going. Unique values: US, CN, VN, IN.'
+    sql: destination_country
+  impurities_percentage:
+    description: 'REAL. Measured percentage of impurities. Example: 50.0.'
+    sql: impurities_percentage
+  market_index_ref:
+    description: TEXT. Reference to market index price at time of sale. **NULL means Spot price.**
+    sql: market_index_ref
+  material_commodity_type:
+    description: 'TEXT. Type of commodity (e.g., HDPE, Copper). Unique values: Copper Granules, HDPE Pellets, Shredded PCB, Aluminum Ingots.'
+    sql: material_commodity_type
+  payment_terms_code:
+    description: 'TEXT. Payment terms (e.g., Net30). Unique values: Net30, Net60, Prepaid.'
+    sql: payment_terms_code
+  price_per_kg:
+    description: 'REAL. Unit price obtained. Example: 2.5.'
+    sql: price_per_kg
+  profit_margin_pct:
+    description: 'REAL. Profit margin on this batch after processing costs. Example: 15.'
+    sql: profit_margin_pct
+  quality_grade_cert:
+    description: 'TEXT. Certified quality grade of the recyclate. Unique values: Grade A, Grade B, Mixed.'
+    sql: quality_grade_cert
+  sale_contract_id:
+    description: TEXT. Contract governing the sale.
+    sql: sale_contract_id
+  sales_batch_id:
+    description: TEXT. Unique identifier for the recycled material sale.
+    sql: sales_batch_id
+  shipping_manifest_id:
+    description: TEXT. Logistics manifest for the outbound shipment.
+    sql: shipping_manifest_id
+  sold_weight_kg:
+    description: 'REAL. Weight of material sold. Example: 500.'
+    sql: sold_weight_kg
+  source_impact_report:
+    description: TEXT. Reference to the impact report (provenance).
+    sql: source_impact_report
+  total_revenue_generated:
+    description: 'REAL. Total revenue from the sale. Example: 1250.'
+    sql: total_revenue_generated
+  transaction_date:
+    description: TIMESTAMP. Date of the sale.
+    sql: transaction_date

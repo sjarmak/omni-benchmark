@@ -1,0 +1,9 @@
+base_view: polar_equipment_large_public__sensor_model_measurement_profile
+label: SensorModelMeasurementProfile
+description: All columns of the public table SensorModelMeasurementProfile.
+fields:
+- polar_equipment_large_public__sensor_model_measurement_profile.*
+- polar_equipment_large_public__sensor_model.*
+joins:
+  polar_equipment_large_public__sensor_model: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

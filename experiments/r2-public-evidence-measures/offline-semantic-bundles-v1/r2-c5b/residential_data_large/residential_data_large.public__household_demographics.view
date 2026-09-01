@@ -1,0 +1,90 @@
+label: household_demographics
+description: All columns of the public table household_demographics.
+catalog: residential_data_large
+schema: public
+table_name: household_demographics
+dimensions:
+  average_age_years:
+    description: 'REAL. Average age of household members in years. **NULL means age data not collected or calculated.**. Possible values: 29.3, 38.5, 45.2, 52.8.'
+    sql: '"Average_Age_Years"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"Created_At"'
+  debt_to_income_ratio:
+    description: 'REAL. Ratio of total debt to household income. **NULL means debt information not available.**. Possible values: 0.15, 0.18, 0.25, 0.28, 0.32, 0.35, 0.45, 0.55.'
+    sql: '"DEBT_to_income_ratio"'
+  demo_id:
+    description: 'BIGSERIAL. Primary key identifier for demographic record. PK. Possible values: 1, 2, 3, 4, 5, 6.'
+    sql: '"DEMO_ID"'
+  disability_count:
+    description: 'BIGINT. Number of household members with disabilities. **NULL means disability status not assessed.**. Possible values: 0.0, 1.0.'
+    sql: '"DISABILITY_count"'
+  demographics_household_reference:
+    description: 'BIGINT. Reference to household for demographic data. FK to households(housenum). Possible values: 4734, 4735, 4736, 4750, 4752, 4754.'
+    sql: '"Demographics_Household_Reference"'
+  education_level_score:
+    description: 'REAL. Average education level score on 0-10 scale. **NULL means education data not collected.**. Possible values: 6.5, 6.8, 7.2, 7.8, 8.9.'
+    sql: '"EDUCATION_level_score"'
+  elderly_count:
+    description: 'BIGINT. Number of household members aged 65 and over. **NULL means elderly count not surveyed.**. Possible values: 0.0, 1.0, 2.0.'
+    sql: '"ELDERLY_count"'
+  household_head_gender:
+    description: 'TEXT. Gender identification of household head. **NULL means gender information not provided.**. Possible values: F, M.'
+    sql: '"HOUSEHOLD_head_gender"'
+  household_head_age:
+    description: 'BIGINT. Age of household head in years. **NULL means household head age not recorded.**. Possible values: 35.0, 38.0, 42.0, 65.0.'
+    sql: '"Household_Head_Age"'
+  household_head_occupation:
+    description: 'TEXT. Primary occupation of household head. **NULL means occupation not recorded.**. Possible values: Business Owner, Mechanic, Nurse, Software Engineer, Teacher.'
+    sql: '"Household_Head_Occupation"'
+  insurance_coverage_percent:
+    description: 'REAL. Percentage of household members with health insurance. **NULL means insurance status not documented.**. Possible values: 78.9, 85.5, 88.7, 92.3.'
+    sql: '"Insurance_Coverage_Percent"'
+  language_spoken:
+    description: 'TEXT. Primary language spoken in household. **NULL means language preference not recorded.**. Possible values: Portuguese.'
+    sql: '"LANGUAGE_spoken"'
+  monthly_income_brl:
+    description: 'REAL. Total monthly household income in Brazilian Real. **NULL means income data not disclosed or collected.**. Possible values: 12750.4, 5800.2, 8500.75.'
+    sql: '"MONTHLY_income_brl"'
+  marital_status_distribution:
+    description: 'TEXT. Distribution of marital statuses within household. **NULL means marital status not surveyed.**. Possible values: Married: 2, Single: 0, Married: 2, Single: 1, Widowed: 1, Married: 0.'
+    sql: '"Marital_Status_Distribution"'
+  migration_origin:
+    description: 'TEXT. Previous location before current residence. **NULL means migration history not documented.**. Possible values: Bahia, Ceará, Minas Gerais, Rio de Janeiro, São Paulo.'
+    sql: '"Migration_Origin"'
+  social_mobility_index:
+    description: 'REAL. Index measuring social mobility potential. **NULL means social mobility not assessed.**. Possible values: 4.1, 5.9, 6.2, 7.8.'
+    sql: '"SOCIAL_mobility_index"'
+  savings_brl:
+    description: 'REAL. Household savings amount in Brazilian Real. **NULL means savings information not disclosed.**. Possible values: 12200.3, 15000.5, 28500.8, 8900.25.'
+    sql: '"Savings_BRL"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  working_adults_count:
+    description: 'BIGINT. Number of employed adult household members. **NULL means employment status not surveyed.**. Possible values: 1.0, 2.0.'
+    sql: '"Working_Adults_Count"'
+  children_count:
+    description: 'BIGINT. Number of household members under 18 years old. **NULL means children count not surveyed.**. Possible values: 1.0, 2.0, 3.0.'
+    sql: '"children_Count"'
+  chronic_illness_count:
+    description: 'BIGINT. Number of household members with chronic illnesses. **NULL means health status not surveyed.**. Possible values: 0.0, 1.0, 2.0.'
+    sql: '"chronic_illness_COUNT"'
+  community_involvement_score:
+    description: 'BIGINT. Score rating level of community participation. **NULL means community involvement not measured.**. Possible values: 67.0, 78.0, 82.0, 85.0.'
+    sql: '"community_involvement_SCORE"'
+  employment_rate_percent:
+    description: 'REAL. Percentage of adults in household who are employed. **NULL means employment rate not calculated.**. Possible values: 100.0, 50.0, 75.0.'
+    sql: '"employment_rate_PERCENT"'
+  household_head_education:
+    description: 'TEXT. Educational attainment level of household head. **NULL means education level not documented.**. Possible values: Elementary School, High School, Technical School, University Degree.'
+    sql: '"household_head_EDUCATION"'
+  monthly_expenses_brl:
+    description: 'REAL. Total monthly household expenses in Brazilian Real. **NULL means expense tracking not available.**. Possible values: 3200.6, 4500.75, 4800.9, 6200.3.'
+    sql: '"monthly_expenses_BRL"'
+  religion:
+    description: 'TEXT. Religious affiliation of household. **NULL means religious information not provided.**. Possible values: Catholic, Protestant, Spiritist.'
+    sql: religion
+  years_in_residence:
+    description: 'BIGINT. Number of years household has lived at current address. **NULL means residency duration not recorded.**. Possible values: 12.0, 15.0, 6.0, 8.0.'
+    sql: '"years_in_RESIDENCE"'

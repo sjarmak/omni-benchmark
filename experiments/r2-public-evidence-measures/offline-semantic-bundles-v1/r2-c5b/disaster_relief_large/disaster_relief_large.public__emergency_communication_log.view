@@ -1,0 +1,66 @@
+label: EmergencyCommunicationLog
+description: All columns of the public table EmergencyCommunicationLog.
+catalog: disaster_relief_large
+schema: public
+table_name: EmergencyCommunicationLog
+dimensions:
+  comm_channel:
+    description: 'VARCHAR(100). Communication medium used (SatellitePhone|Radio|SMS|Email|SocialMedia|Messenger|InPerson|Bulletin|PA System|Other). Possible values: "Bulletin", "Email", "InPerson", "Messenger", "Other", "PA System", "Radio", "SMS", "SatellitePhone", "SocialMedia".'
+    sql: '"commChannel"'
+  comm_log_id_ref:
+    description: 'VARCHAR(100). Logical reference to communication log identifier (CommunicationLogs.COMM_LOG_ID). Example: "J5kYCgUfJN".'
+    sql: '"commLogIdRef"'
+  delivery_status:
+    description: 'VARCHAR(100). Message delivery confirmation status (Delivered|Read|Failed|Pending|Queued|Expired). Possible values: "Delivered", "Expired", "Failed", "Pending", "Queued", "Read".'
+    sql: '"deliveryStatus"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 273.'
+    sql: '"disasterEventId"'
+  escalation_required:
+    description: 'VARCHAR(100). Need for management escalation (Yes|No|Pending|Completed). Possible values: "Completed", "No", "Pending", "Yes".'
+    sql: '"escalationRequired"'
+  follow_up_date:
+    description: 'VARCHAR(100). Deadline for required follow-up action. Example: "2006-08-29".'
+    sql: '"followUpDate"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for emergency communication records. Example: 1.'
+    sql: id
+  message_body:
+    description: 'VARCHAR(100). Full content of transmitted message. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"messageBody"'
+  notes:
+    description: 'VARCHAR(100). Communications officer observations or context. Example: "B9ojmX1DKP".'
+    sql: notes
+  priority_level:
+    description: 'VARCHAR(100). Message urgency classification (Routine|Elevated|Immediate|Flash|Emergency). Possible values: "Elevated", "Emergency", "Flash", "Immediate", "Routine".'
+    sql: '"priorityLevel"'
+  receiver_contact:
+    description: 'VARCHAR(100). Name of individual receiving message (Name format). Example: "Pang Ka Ling".'
+    sql: '"receiverContact"'
+  receiver_org:
+    description: 'VARCHAR(100). Organization receiving communication (Company Name format). Example: "qYNyMVgLGw".'
+    sql: '"receiverOrg"'
+  requires_follow_up:
+    description: 'VARCHAR(100). Need for response or action (Yes|No|Pending). Example: "bqVkSfP2zM".'
+    sql: '"requiresFollowUp"'
+  response_deadline:
+    description: 'VARCHAR(100). Time limit for required response. Example: "11:06:35".'
+    sql: '"responseDeadline"'
+  response_required:
+    description: 'VARCHAR(100). Expectation for recipient reply (Yes|No|Optional). Possible values: "No", "Optional", "Yes".'
+    sql: '"responseRequired"'
+  sender_contact:
+    description: 'VARCHAR(100). Name of individual sending message (Name format). Example: "Pang Ka Ling".'
+    sql: '"senderContact"'
+  sender_org:
+    description: 'VARCHAR(100). Organization initiating communication (Company Name format). Example: "lbI2cz6eue".'
+    sql: '"senderOrg"'
+  subject:
+    description: 'VARCHAR(100). Brief description of communication purpose. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: subject
+  time_received:
+    description: 'VARCHAR(100). Timestamp when message was received. Example: "11:38:09".'
+    sql: '"timeReceived"'
+  time_sent:
+    description: 'VARCHAR(100). Timestamp when message was transmitted. Example: "15:27:29".'
+    sql: '"timeSent"'

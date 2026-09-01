@@ -1,0 +1,69 @@
+label: BatteryThermalEvents
+description: All columns of the public table BatteryThermalEvents.
+catalog: solar_panel_large
+schema: public
+table_name: BatteryThermalEvents
+dimensions:
+  affected_module_count:
+    description: 'INTEGER. Number of battery modules involved. Example: 50.'
+    sql: affected_module_count
+  ambient_temp_c:
+    description: 'REAL. Outside air temperature at time of event. Example: 30.'
+    sql: ambient_temp_c
+  bms_error_code:
+    description: 'TEXT. Error code logged by Battery Management System. Unique values: ERR-TEMP-HI, ERR-VOLT-IMB, CRIT-THERMAL.'
+    sql: bms_error_code
+  containment_status:
+    description: 'TEXT. Did the event spread to neighboring units?. Unique values: Contained, Spread Locally, Runaway.'
+    sql: containment_status
+  cooling_pump_speed_rpm:
+    description: 'INTEGER. Speed of cooling pumps during event. **NULL means Passive cooling only.** Example: 3000.'
+    sql: cooling_pump_speed_rpm
+  detection_timestamp:
+    description: 'TIMESTAMP. Exact time the BMS triggered the thermal warning. Example: 2024-01-01 12:00:00.'
+    sql: detection_timestamp
+  estimated_degradation_pct:
+    description: 'REAL. Estimated loss of SOH due to this event. Example: 50.0.'
+    sql: estimated_degradation_pct
+  fire_suppression_activated:
+    description: 'BOOLEAN. True if Novec/Water suppression system fired. Possible values: True, False.'
+    sql: fire_suppression_activated
+  load_current_amps:
+    description: 'REAL. Current flow (charge/discharge) at moment of event. Example: 100.'
+    sql: load_current_amps
+  max_cell_temp_c:
+    description: 'REAL. Peak temperature recorded during the event. Example: 65.'
+    sql: max_cell_temp_c
+  off_gas_detected:
+    description: 'BOOLEAN. True if electrolyte venting/gas was detected. Possible values: True, False.'
+    sql: off_gas_detected
+  requires_module_replacement:
+    description: 'BOOLEAN. True if hardware replacement is needed. Possible values: True, False.'
+    sql: requires_module_replacement
+  sensor_id_trigger:
+    description: TEXT. ID of the specific sensor that tripped first.
+    sql: sensor_id_trigger
+  shutdown_duration_hours:
+    description: 'REAL. Time the unit was offline for safety checks. Example: 48.'
+    sql: shutdown_duration_hours
+  storage_unit_ref:
+    description: TEXT. FK to BatteryStorageUnits. The unit experiencing the event.
+    sql: storage_unit_ref
+  technician_notes:
+    description: TEXT. Observations from physical inspection. **NULL means Automated log only.**
+    sql: technician_notes
+  temp_rise_rate_c_min:
+    description: 'REAL. Rate of temperature increase (Celsius per minute). Example: 5.'
+    sql: temp_rise_rate_c_min
+  thermal_event_id:
+    description: TEXT. Unique identifier for a thermal anomaly event.
+    sql: thermal_event_id
+  voltage_deviation_mv:
+    description: 'REAL. Max voltage difference between cells. Example: 150.'
+    sql: voltage_deviation_mv
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct BatteryThermalEvents public identity values.
+    label: BatteryThermalEvents Count
+    sql: ${solar_panel_large_public__battery_thermal_events.thermal_event_id}

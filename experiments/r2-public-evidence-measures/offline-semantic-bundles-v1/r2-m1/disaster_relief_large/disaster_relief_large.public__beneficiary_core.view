@@ -1,0 +1,72 @@
+label: BeneficiaryCore
+description: All columns of the public table BeneficiaryCore.
+catalog: disaster_relief_large
+schema: public
+table_name: BeneficiaryCore
+dimensions:
+  access_to_power:
+    description: 'VARCHAR(100). Reliability of electrical power access (None|Limited|Adequate|Good|Excellent). Possible values: "Adequate", "Excellent", "Good", "Limited", "None".'
+    sql: '"accessToPower"'
+  access_to_sanitation:
+    description: 'VARCHAR(100). Availability of sanitation facilities (None|Limited|Adequate|Good|Excellent). Possible values: "Adequate", "Excellent", "Good", "Limited", "None".'
+    sql: '"accessToSanitation"'
+  access_to_water:
+    description: 'VARCHAR(100). Reliability of water source access (None|Limited|Adequate|Good|Excellent). Possible values: "Adequate", "Excellent", "Good", "Limited", "None".'
+    sql: '"accessToWater"'
+  assistance_details:
+    description: 'VARCHAR(100). Specific description of assistance provided to household. Example: "zoZc2xbIEL".'
+    sql: '"assistanceDetails"'
+  assistance_received:
+    description: 'VARCHAR(100). Types of aid received (None|Food|Shelter|Medical|Cash|Comprehensive). Possible values: "Cash", "Comprehensive", "Food", "Medical", "None", "Shelter".'
+    sql: '"assistanceReceived"'
+  children_under5:
+    description: 'VARCHAR(100). Count of household members under 5 years of age. Example: "5D63dDc5OR".'
+    sql: '"childrenUnder5"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 4790.'
+    sql: '"disasterEventId"'
+  family_size:
+    description: 'VARCHAR(100). Total number of individuals in household unit. Possible values: "L", "M", "S", "XL", "XS", "XXL".'
+    sql: '"familySize"'
+  feedback_score:
+    description: 'VARCHAR(100). Household satisfaction rating with assistance received (1-10 scale). Example: "NZyfC9Jj43".'
+    sql: '"feedbackScore"'
+  has_disabled_member:
+    description: 'VARCHAR(100). Presence of household members with disabilities (Yes|No|Unknown). Possible values: "No", "Unknown", "Yes".'
+    sql: '"hasDisabledMember"'
+  has_elderly_member:
+    description: 'VARCHAR(100). Presence of household members aged 65+ (Yes|No|Unknown). Possible values: "No", "Unknown", "Yes".'
+    sql: '"hasElderlyMember"'
+  has_pregnant_member:
+    description: 'VARCHAR(100). Presence of pregnant household members (Yes|No|Unknown). Possible values: "No", "Unknown", "Yes".'
+    sql: '"hasPregnantMember"'
+  head_of_household_name:
+    description: 'VARCHAR(100). Full name of primary household representative. Example: "Yuan Ziyi".'
+    sql: '"headOfHouseholdName"'
+  household_id_ref:
+    description: 'VARCHAR(100). Logical reference to household registry identifier (BeneficiaryHouseholds.HOUSEHOLD_ID). Example: "p6zX2Z45yC".'
+    sql: '"householdIdRef"'
+  housing_type:
+    description: 'VARCHAR(100). Pre-disaster dwelling classification (FormalPermanent|InformalSettlement|TemporaryShelter|Displaced|Homeless). Possible values: "Displaced", "FormalPermanent", "Homeless", "InformalSettlement", "TemporaryShelter".'
+    sql: '"housingType"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for beneficiary household records. Example: 1.'
+    sql: id
+  income_level:
+    description: 'VARCHAR(100). Economic status classification (ExtremePoverty|Poverty|LowerMiddle|UpperMiddle|Affluent). Possible values: "Affluent", "ExtremePoverty", "LowerMiddle", "Poverty", "UpperMiddle".'
+    sql: '"incomeLevel"'
+  livelihood_type:
+    description: 'VARCHAR(100). Primary income generation method (Agriculture|Fishing|Trade|Services|Manufacturing|Unemployed|Mixed). Possible values: "Agriculture", "Fishing", "Manufacturing", "Mixed", "Services", "Trade", "Unemployed".'
+    sql: '"livelihoodType"'
+  primary_language:
+    description: 'VARCHAR(100). Dominant language spoken within household. Example: "ryexRizKyH".'
+    sql: '"primaryLanguage"'
+  vulnerability_score:
+    description: 'VARCHAR(100). Composite vulnerability assessment score (1-100 scale). Example: "TnCp5uOMBP".'
+    sql: '"vulnerabilityScore"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct BeneficiaryCore public identity values.
+    label: BeneficiaryCore Count
+    sql: ${disaster_relief_large_public__beneficiary_core.id}

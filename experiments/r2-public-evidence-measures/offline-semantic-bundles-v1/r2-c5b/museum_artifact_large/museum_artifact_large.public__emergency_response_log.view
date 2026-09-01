@@ -1,0 +1,66 @@
+label: EmergencyResponseLog
+description: All columns of the public table EmergencyResponseLog.
+catalog: museum_artifact_large
+schema: public
+table_name: EmergencyResponseLog
+dimensions:
+  actions_taken:
+    description: VARCHAR(100). Specific actions performed during emergency response.
+    sql: '"actionsTaken"'
+  artifact_recovery:
+    description: VARCHAR(100). Status of artifact retrieval and stabilization efforts.
+    sql: '"artifactRecovery"'
+  communication_log:
+    description: VARCHAR(100). Record of emergency communications during incident.
+    sql: '"communicationLog"'
+  damage_control:
+    description: VARCHAR(100). Measures implemented to limit damage extent.
+    sql: '"damageControl"'
+  drill_frequency:
+    description: VARCHAR(100). Recommended frequency for emergency response drills (Monthly, Quarterly, Annually, Biennially, AdHoc).
+    sql: '"drillFrequency"'
+  evacuation_required:
+    description: VARCHAR(100). Evacuation status (None, Partial, Full, Delayed, Voluntary).
+    sql: '"evacuationRequired"'
+  evidence_preservation:
+    description: VARCHAR(100). Integrity of incident evidence chain (Complete, Partial, Compromised, Lost, NotApplicable).
+    sql: '"evidencePreservation"'
+  external_agencies:
+    description: VARCHAR(100). External emergency services involved in response.
+    sql: '"externalAgencies"'
+  id:
+    description: BIGSERIAL. Auto-increment primary key for emergency response records.
+    sql: id
+  incident_id:
+    description: BIGINT. Reference to triggering security incident (foreign key to SecurityIncident.id).
+    sql: '"incidentId"'
+  lead_staff_code:
+    description: BIGINT. Primary incident commander identifier (foreign key to Staff.Staff_Code).
+    sql: '"leadStaffCode"'
+  lessons_documented:
+    description: VARCHAR(100). Key insights captured for future emergency planning.
+    sql: '"lessonsDocumented"'
+  media_handling:
+    description: VARCHAR(100). Approach to media inquiries during incident (PressRelease, SpokespersonOnly, NoComment, Embargoed, Transparent).
+    sql: '"mediaHandling"'
+  personnel_involved:
+    description: VARCHAR(100). Total count of response personnel engaged.
+    sql: '"personnelInvolved"'
+  regulatory_notification:
+    description: VARCHAR(100). Status of mandatory regulatory notifications (Completed, Pending, NotRequired, Delayed, Confidential).
+    sql: '"regulatoryNotification"'
+  resources_deployed:
+    description: VARCHAR(100). Equipment and personnel resources utilized.
+    sql: '"resourcesDeployed"'
+  response_team:
+    description: VARCHAR(100). Type of response team deployed (Security, Conservation, Facilities, ExternalFireDept, Police).
+    sql: '"responseTeam"'
+  response_timestamp:
+    description: VARCHAR(100). Timestamp when emergency response was initiated.
+    sql: '"responseTimestamp"'
+  support_staff_code:
+    description: BIGINT. Secondary support commander identifier (foreign key to Staff.Staff_Code).
+    sql: '"supportStaffCode"'
+  timeline_accuracy:
+    description: VARCHAR(100). Reliability of incident timeline reconstruction (Exact, Approximate, Estimated, Unknown, Disputed).
+    sql: '"timelineAccuracy"'

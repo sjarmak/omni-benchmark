@@ -1,0 +1,66 @@
+label: VendorPerformanceMetrics
+description: All columns of the public table VendorPerformanceMetrics.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: VendorPerformanceMetrics
+dimensions:
+  vpm_id:
+    description: TEXT. Unique identifier for the vendor performance metrics record.
+    sql: '"VPM_id"'
+  account_health_score:
+    description: 'REAL. Overall account health score (0-100). Example: 82.'
+    sql: account_health_score
+  active_listings_count:
+    description: 'INTEGER. Number of active product listings. Example: 50.'
+    sql: active_listings_count
+  avg_shipping_days:
+    description: 'REAL. Average days from order to delivery. Example: 5.'
+    sql: avg_shipping_days
+  customer_rating_avg:
+    description: 'REAL. Average customer rating (1-5 scale). Example: 4.2.'
+    sql: customer_rating_avg
+  defect_rate_pct:
+    description: 'REAL. Percentage of products with defects. Example: 1.5.'
+    sql: defect_rate_pct
+  dispute_rate_pct:
+    description: 'REAL. Percentage of transactions resulting in disputes. Example: 1.2.'
+    sql: dispute_rate_pct
+  dispute_resolution_rate:
+    description: 'REAL. Percentage of disputes resolved in vendor favor. **NULL means No disputes in period.** Example: 65.'
+    sql: dispute_resolution_rate
+  metrics_period_start:
+    description: 'TIMESTAMP. Start of the performance measurement period. Example: 2024-01-01 12:00:00.'
+    sql: metrics_period_start
+  negative_feedback_rate:
+    description: 'REAL. Percentage of feedback that is negative. Example: 3.'
+    sql: negative_feedback_rate
+  on_time_delivery_rate:
+    description: 'REAL. Percentage of orders delivered on time. Example: 88.'
+    sql: on_time_delivery_rate
+  order_fulfillment_rate:
+    description: 'REAL. Percentage of orders successfully fulfilled. Example: 94.'
+    sql: order_fulfillment_rate
+  policy_violation_count:
+    description: 'INTEGER. Number of policy violations in period. Example: 0.'
+    sql: policy_violation_count
+  response_time_hours_avg:
+    description: 'REAL. Average response time to customer inquiries in hours. Example: 8.'
+    sql: response_time_hours_avg
+  return_rate_pct:
+    description: 'REAL. Percentage of orders returned. Example: 4.'
+    sql: return_rate_pct
+  revenue_growth_pct:
+    description: 'REAL. Revenue growth compared to previous period. **NULL means First period or no prior data.** Example: 5.'
+    sql: revenue_growth_pct
+  reviews_received_count:
+    description: 'INTEGER. Number of customer reviews received. Example: 150.'
+    sql: reviews_received_count
+  seller_ref:
+    description: TEXT. Reference to the vendor.
+    sql: seller_ref
+  tier_status:
+    description: 'TEXT. Current vendor tier status. Unique values: Bronze, Silver, Gold, Platinum, Diamond.'
+    sql: tier_status
+  total_revenue_period:
+    description: 'REAL. Total revenue generated in the period. Example: 50000.'
+    sql: total_revenue_period

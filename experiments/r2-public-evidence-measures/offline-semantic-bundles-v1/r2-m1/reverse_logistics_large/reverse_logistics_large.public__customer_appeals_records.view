@@ -1,0 +1,66 @@
+label: customer_appeals_records
+description: All columns of the public table customer_appeals_records.
+catalog: reverse_logistics_large
+schema: public
+table_name: customer_appeals_records
+dimensions:
+  appeal_reason_category:
+    description: 'TEXT. Primary reason for the appeal (e.g., Refund Amount). Unique values: Restocking Fee, Rejected Return, Condition Dispute, Slow Refund.'
+    sql: appeal_reason_category
+  appeal_record_ref:
+    description: TEXT. Unique identifier for the customer appeal.
+    sql: appeal_record_ref
+  appeal_submission_timestamp:
+    description: 'TIMESTAMP. When the appeal was submitted. Example: 2024-01-01 12:00:00.'
+    sql: appeal_submission_timestamp
+  appealing_customer_ref:
+    description: TEXT. Customer submitting the appeal.
+    sql: appealing_customer_ref
+  communication_channel_pref:
+    description: 'TEXT. Channel used for appeal correspondence. Unique values: Email, Portal, Phone.'
+    sql: communication_channel_pref
+  customer_sentiment_score:
+    description: 'REAL. Sentiment score of the appeal text (-1.0 to 1.0). Example: -0.4.'
+    sql: customer_sentiment_score
+  decision_deadline_date:
+    description: TIMESTAMP. Internal deadline to resolve the appeal.
+    sql: decision_deadline_date
+  disputed_return_ref:
+    description: TEXT. Return case being appealed.
+    sql: disputed_return_ref
+  evidence_provided_flag:
+    description: BOOLEAN. Indicates if customer provided photos/video.
+    sql: evidence_provided_flag
+  final_decision_outcome:
+    description: 'TEXT. Outcome of the appeal (e.g., Granted, Denied). Unique values: Granted, Denied, Partial.'
+    sql: final_decision_outcome
+  goodwill_credit_amount:
+    description: 'REAL. Amount credited for customer satisfaction. **NULL means No credit issued.** Example: 20.'
+    sql: goodwill_credit_amount
+  notification_sent_status:
+    description: 'TEXT. Status of the outcome notification email. Unique values: Sent, Failed, Pending.'
+    sql: notification_sent_status
+  original_decision_summary:
+    description: TEXT. Summary of the initial decision being contested.
+    sql: original_decision_summary
+  override_auth_code:
+    description: TEXT. Authorization code if policy was overridden. **NULL means No override.**
+    sql: override_auth_code
+  policy_reference_cited:
+    description: 'TEXT. Specific policy section cited in decision. Unique values: Sec 4.1, Sec 2.2, Warranty A, Goodwill.'
+    sql: policy_reference_cited
+  previous_appeal_count:
+    description: 'INTEGER. Number of prior appeals by this customer. Example: 50.'
+    sql: previous_appeal_count
+  processing_time_minutes:
+    description: 'INTEGER. Total time spent reviewing the appeal. Example: 30.'
+    sql: processing_time_minutes
+  reviewer_comments_log:
+    description: TEXT. Notes from the appeal reviewer.
+    sql: reviewer_comments_log
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct customer_appeals_records public identity values.
+    label: customer_appeals_records Count
+    sql: ${reverse_logistics_large_public__customer_appeals_records.appeal_record_ref}

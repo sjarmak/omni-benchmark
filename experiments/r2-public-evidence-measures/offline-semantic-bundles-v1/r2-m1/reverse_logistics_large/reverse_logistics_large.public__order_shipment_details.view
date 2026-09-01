@@ -1,0 +1,105 @@
+label: order_shipment_details
+description: All columns of the public table order_shipment_details.
+catalog: reverse_logistics_large
+schema: public
+table_name: order_shipment_details
+dimensions:
+  signature_required:
+    description: 'BOOLEAN. Indicates if a signature is required for delivery. Possible values: True, False.'
+    sql: '"SIGNATURE_REQUIRED"'
+  actual_delivery_date:
+    description: 'DATE. The actual date the shipment was delivered. **NULL means the package has not yet been delivered or was lost in transit.** Example: 2024-10-01.'
+    sql: actual_delivery_date
+  carbon_footprint_g_co2e:
+    description: 'REAL. The estimated carbon footprint of the shipment in grams of CO2 equivalent. Example: 9778.23.'
+    sql: '"carbon_footprint_gCO2e"'
+  carrier_name:
+    description: 'TEXT. The name of the shipping carrier. Example: Carrier-19 Logistics.'
+    sql: carrier_name
+  customs_declaration_id:
+    description: 'TEXT. The ID for the customs declaration. **NULL means the shipment is domestic and does not require a customs declaration.** Example: CD-PBs4HbZc.'
+    sql: customs_declaration_id
+  delivery_attempts:
+    description: 'BIGINT. The number of delivery attempts made. Example: 3.'
+    sql: delivery_attempts
+  delivery_confirmation_photo_url:
+    description: 'TEXT. A URL to a photo confirming delivery. **NULL means no photo was taken or provided.** Example: https://example.com/photos/ZaY9pMCrluE9.jpg.'
+    sql: delivery_confirmation_photo_url
+  delivery_driver_notes:
+    description: 'TEXT. Any notes left by the delivery driver. **NULL means no notes were provided.** Possible values: Left at front door., Handed to resident., Notice left..'
+    sql: delivery_driver_notes
+  delivery_status:
+    description: 'TEXT. The current status of the delivery. Possible values: Delivered, In Transit, Out for Delivery, Delayed.'
+    sql: delivery_status
+  destination_address:
+    description: 'TEXT. The full destination address for the shipment. Example: 2523 Maple St, Anytown, TX 63458.'
+    sql: destination_address
+  dispatch_timestamp:
+    description: 'TIMESTAMP. The exact date and time the package was dispatched from the warehouse. Example: 2024-09-26 02:19:36.'
+    sql: dispatch_timestamp
+  estimated_delivery_date:
+    description: 'DATE. The carrier''s estimated delivery date. Example: 2024-10-04.'
+    sql: estimated_delivery_date
+  freight_class:
+    description: 'TEXT. The freight classification for the shipment. Possible values: CLASS_100, CLASS_70, CLASS_150, CLASS_200.'
+    sql: freight_class
+  fuel_surcharge_amount:
+    description: 'REAL. The amount of the fuel surcharge applied to the shipment cost. Example: 9.46.'
+    sql: fuel_surcharge_amount
+  handling_instructions:
+    description: 'TEXT. Special handling instructions for the package. Possible values: Fragile, This side up, Keep dry, Heavy.'
+    sql: handling_instructions
+  insurance_value:
+    description: 'REAL. The insured value of the package contents. Example: 183.02.'
+    sql: insurance_value
+  is_international_shipment:
+    description: 'BOOLEAN. Indicates if the shipment is international. Possible values: True, False.'
+    sql: is_international_shipment
+  last_known_location:
+    description: 'TEXT. The last scanned location of the package. Example: Departed facility in Los Angeles.'
+    sql: last_known_location
+  linked_order_transaction:
+    description: 'TEXT. The transaction number of the original order this shipment corresponds to. FK to orders.txnnum. Example: ORD41936.'
+    sql: linked_order_transaction
+  out_for_delivery_timestamp:
+    description: 'TIMESTAMP. The exact date and time the package was marked ''out for delivery''. **NULL means the package has not yet reached the final delivery stage.** Example: 2024-09-29 19:21:46.'
+    sql: out_for_delivery_timestamp
+  package_characteristics:
+    description: JSONB column. Details the physical characteristics of the shipped package.
+    sql: package_characteristics
+  return_to_sender_flag:
+    description: 'BOOLEAN. Indicates if the package is being returned to the sender. Example: False.'
+    sql: return_to_sender_flag
+  shipment_priority_level:
+    description: 'BIGINT. A numerical priority level for the shipment. Example: 3.'
+    sql: shipment_priority_level
+  shipment_tracking_id:
+    description: 'TEXT. The unique tracking ID provided by the carrier. PK. Example: SB2PNOOAPGGT5G3.'
+    sql: shipment_tracking_id
+  shipping_cost:
+    description: 'REAL. The cost of the shipment. Example: 51.3.'
+    sql: shipping_cost
+  shipping_service_level:
+    description: 'TEXT. The service level for the shipment. Possible values: Standard, Express, Overnight.'
+    sql: shipping_service_level
+  tracking_history_json:
+    description: 'JSONB. A JSON object containing the detailed tracking history. Example: [{status: Dispatched, timestamp: 2024-09-26 02:19:36}, {status: In Transit, timestamp: 2024-09-27 02:19:36}].'
+    sql: tracking_history_json
+  warehouse_origin_code:
+    description: 'TEXT. The code of the warehouse where the shipment originated. FK to warehouses.warehouse_code. Example: WH-QHM-022.'
+    sql: warehouse_origin_code
+  weather_delay_advisory:
+    description: 'TEXT. Notes on any weather-related delays. **NULL means there were no weather-related delays.** Example: Possible delays due to storms in the area..'
+    sql: weather_delay_advisory
+  package_characteristics_dimensions_cm:
+    description: 'TEXT. The dimensions of the package in LxWxH format (centimeters). Example: 81x76x17.'
+    sql: JSONB_EXTRACT_PATH_TEXT(package_characteristics, 'dimensions_cm')
+  package_characteristics_weight_kg:
+    description: 'REAL. The weight of the package in kilograms (kg). Example: 44.54.'
+    sql: JSONB_EXTRACT_PATH_TEXT(package_characteristics, 'weight_kg')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct order_shipment_details public identity values.
+    label: order_shipment_details Count
+    sql: ${reverse_logistics_large_public__order_shipment_details.shipment_tracking_id}

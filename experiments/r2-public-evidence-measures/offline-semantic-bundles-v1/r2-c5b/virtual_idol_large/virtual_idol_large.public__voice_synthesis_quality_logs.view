@@ -1,0 +1,60 @@
+label: VoiceSynthesisQualityLogs
+description: All columns of the public table VoiceSynthesisQualityLogs.
+catalog: virtual_idol_large
+schema: public
+table_name: VoiceSynthesisQualityLogs
+dimensions:
+  audio_glitch_detected:
+    description: 'BOOLEAN. True if artifacts detected. Possible values: True, False.'
+    sql: audio_glitch_detected
+  background_noise_level_db:
+    description: 'REAL. Noise level if STS input. **NULL means Pure TTS.** Example: -60.'
+    sql: background_noise_level_db
+  emotion_tag:
+    description: 'TEXT. Target emotion (Happy, Sad, Angry). Unique values: Neutral, Joyful, Melancholy, Excited.'
+    sql: emotion_tag
+  generation_timestamp:
+    description: 'TIMESTAMP. Time of audio synthesis. Example: 2024-01-01 12:00:00.'
+    sql: generation_timestamp
+  gpu_inference_time_ms:
+    description: 'REAL. Time spent on GPU. Example: 80.'
+    sql: gpu_inference_time_ms
+  idol_entity_ref:
+    description: TEXT. The virtual idol speaking.
+    sql: idol_entity_ref
+  input_text_snippet:
+    description: TEXT. First few words of prompt.
+    sql: input_text_snippet
+  language_code:
+    description: 'TEXT. Language spoken. Unique values: en-US, ja-JP, zh-CN, ko-KR.'
+    sql: language_code
+  latency_ms:
+    description: 'INTEGER. Time from text input to audio output. Example: 150.'
+    sql: latency_ms
+  listener_mos_score:
+    description: 'REAL. Mean Opinion Score from users (1-5). **NULL means No feedback.** Example: 4.5.'
+    sql: listener_mos_score
+  model_checkpoint_id:
+    description: TEXT. Version of the voice model.
+    sql: model_checkpoint_id
+  phoneme_error_rate:
+    description: 'REAL. Estimated mispronunciation rate. Example: 0.02.'
+    sql: phoneme_error_rate
+  pitch_stability_score:
+    description: 'REAL. Smoothness of pitch contour. Example: 0.95.'
+    sql: pitch_stability_score
+  server_node_id:
+    description: TEXT. Inference server ID.
+    sql: server_node_id
+  session_log_ref:
+    description: TEXT. FK to streaming_session_logs.session_log_id. **NULL means data unavailable.**
+    sql: session_log_ref
+  text_prompt_length:
+    description: 'INTEGER. Character count of input text. Example: 50.'
+    sql: text_prompt_length
+  voice_conversion_mode:
+    description: 'BOOLEAN. True if SVC (Speech-to-Speech), False if TTS. Possible values: True, False.'
+    sql: voice_conversion_mode
+  voice_log_id:
+    description: TEXT. Unique ID for the TTS generation event.
+    sql: voice_log_id

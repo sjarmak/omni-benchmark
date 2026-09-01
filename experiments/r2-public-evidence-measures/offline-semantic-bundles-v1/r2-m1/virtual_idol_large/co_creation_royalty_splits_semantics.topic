@@ -1,0 +1,11 @@
+base_view: virtual_idol_large_public__co_creation_royalty_splits
+label: CoCreationRoyaltySplits
+description: All columns of the public table CoCreationRoyaltySplits.
+fields:
+- virtual_idol_large_public__co_creation_royalty_splits.*
+- virtual_idol_large_public__collaborative_song_writing_sessions.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__collaborative_song_writing_sessions:
+    virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

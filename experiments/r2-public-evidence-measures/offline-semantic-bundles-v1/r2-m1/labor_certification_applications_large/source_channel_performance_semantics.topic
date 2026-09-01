@@ -1,0 +1,11 @@
+base_view: labor_certification_applications_large_public__source_channel_performance
+label: SourceChannelPerformance
+description: All columns of the public table SourceChannelPerformance.
+fields:
+- labor_certification_applications_large_public__source_channel_performance.*
+- labor_certification_applications_large_public__recruitment_campaign.*
+- labor_certification_applications_large_public__recruitment_source_analytic.*
+joins:
+  labor_certification_applications_large_public__recruitment_source_analytic:
+    labor_certification_applications_large_public__recruitment_campaign: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

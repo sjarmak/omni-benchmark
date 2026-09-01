@@ -1,0 +1,72 @@
+label: stream_quality_logs
+description: All columns of the public table stream_quality_logs.
+catalog: fake_account_large
+schema: public
+table_name: stream_quality_logs
+dimensions:
+  stream_log_code:
+    description: TEXT. Unique identifier for the streaming session log.
+    sql: '"StreamLog_CODE"'
+  adaptive_quality_switch_count:
+    description: 'INTEGER. Number of times the player switched quality streams automatically. Example: 50.'
+    sql: adaptive_quality_switch_count
+  audio_codec_profile:
+    description: 'TEXT. The codec used for audio decoding. **NULL means Muted stream.** Unique values: AAC, OPUS, MP3.'
+    sql: audio_codec_profile
+  audio_sync_offset_ms:
+    description: 'INTEGER. Average desynchronization between audio and video tracks. **NULL means Audio track disabled or silent.** Example: 5.'
+    sql: audio_sync_offset_ms
+  avg_bitrate_kbps:
+    description: 'INTEGER. Average bitrate sustained during the session. Example: 4500.'
+    sql: avg_bitrate_kbps
+  battery_drain_rate_pct_per_hour:
+    description: 'REAL. Estimated battery consumption rate on mobile devices. **NULL means Desktop or plugged-in device.** Example: 12.5.'
+    sql: battery_drain_rate_pct_per_hour
+  buffer_event_count:
+    description: 'INTEGER. Number of times playback paused to buffer. Example: 50.'
+    sql: buffer_event_count
+  cdn_node_identifier:
+    description: TEXT. Identifier of the CDN edge node serving the content.
+    sql: cdn_node_identifier
+  client_player_version:
+    description: 'TEXT. Version string of the video player software. Unique values: v1.0, v1.1, v1.2, v2.0-beta.'
+    sql: client_player_version
+  connection_type:
+    description: 'TEXT. Network connection type (WiFi, 5G, LTE, Wired). Unique values: WiFi, Cellular, Ethernet.'
+    sql: connection_type
+  drm_enforcement_flag:
+    description: 'BOOLEAN. Indicates if Digital Rights Management was active. Possible values: True, False.'
+    sql: drm_enforcement_flag
+  frame_drop_rate_pct:
+    description: 'REAL. Percentage of frames dropped due to rendering lag. Example: 50.0.'
+    sql: frame_drop_rate_pct
+  media_ref_code:
+    description: TEXT. Reference to the specific media asset being streamed.
+    sql: media_ref_code
+  network_latency_ms:
+    description: 'INTEGER. Round trip time to the content server. Example: 40.'
+    sql: network_latency_ms
+  packet_loss_pct:
+    description: 'REAL. Percentage of network packets lost during transmission. Example: 50.0.'
+    sql: packet_loss_pct
+  peak_bitrate_kbps:
+    description: 'INTEGER. Maximum bitrate reached during the session. Example: 6000.'
+    sql: peak_bitrate_kbps
+  render_height_px:
+    description: 'INTEGER. Vertical resolution of the playback. Unique values: 480, 720, 1080, 1440.'
+    sql: render_height_px
+  render_width_px:
+    description: 'INTEGER. Horizontal resolution of the playback. Unique values: 720, 1080, 1440, 2160, 3840.'
+    sql: render_width_px
+  total_buffer_duration_ms:
+    description: 'INTEGER. Total time spent buffering in milliseconds. **NULL means No buffering occurred.** Example: 50.'
+    sql: total_buffer_duration_ms
+  video_codec_profile:
+    description: 'TEXT. The codec used for video decoding (e.g., H264, VP9). Unique values: H264, H265, VP9, AV1.'
+    sql: video_codec_profile
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct stream_quality_logs public identity values.
+    label: stream_quality_logs Count
+    sql: ${fake_account_large_public__stream_quality_logs.stream_log_code}

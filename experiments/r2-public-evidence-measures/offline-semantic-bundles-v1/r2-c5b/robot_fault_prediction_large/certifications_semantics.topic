@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__certifications
+label: certifications
+description: All columns of the public table certifications.
+fields:
+- robot_fault_prediction_large_public__certifications.*
+joins: {}
+ai_context: This topic models no cross-table joins.

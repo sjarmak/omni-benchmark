@@ -1,0 +1,11 @@
+base_view: labor_certification_applications_large_public__prevailing_wage
+label: Prevailing Wage Determinations
+description: Prevailing-wage records with public structured wage-unit context.
+fields:
+- labor_certification_applications_large_public__prevailing_wage.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Domain definitions for this topic:
+
+  - Alternative Prevailing Wage Sources: Acceptable sources for prevailing wage determinations include Occupational Employment Statistics (OES), Collective Bargaining Agreements (CBA), and independent published wage surveys that meet Department of Labor requirements. Source information is included in the wage determination data.'

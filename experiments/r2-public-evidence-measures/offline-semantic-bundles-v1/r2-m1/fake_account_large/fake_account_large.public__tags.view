@@ -1,0 +1,120 @@
+label: tags
+description: All columns of the public table tags.
+catalog: fake_account_large
+schema: public
+table_name: tags
+dimensions:
+  brand_assoc:
+    description: 'TEXT. Brand affiliation. **NULL when tag not brand-related.** Example: BrandX.'
+    sql: '"BRAND_ASSOC"'
+  category:
+    description: 'TEXT. Content category. Example: Tech.'
+    sql: '"CATEGORY"'
+  created_ts:
+    description: 'TIMESTAMPTZ. Record creation time. Example: 2024/10/03 12:07:11.'
+    sql: '"CREATED_TS"'
+  dem_top:
+    description: 'TEXT. Top demographic. Example: GenZ.'
+    sql: '"DemTop"'
+  lastseen:
+    description: 'DATE. Most recent observation. Example: 2025/01/07.'
+    sql: '"LASTSEEN"'
+  loc_top:
+    description: 'TEXT. Top country. Example: JP.'
+    sql: '"LOC_TOP"'
+  media_assoc:
+    description: TEXT. Predominant media type (Image/Video). **NULL for text-only tags.**
+    sql: '"MEDIA_ASSOC"'
+  peak_date:
+    description: 'DATE. Peak popularity date. Example: 2024/12/21.'
+    sql: '"PEAK_DATE"'
+  tag_score:
+    description: 'REAL. Overall tag quality/risk score (0–100). Example: 61.7.'
+    sql: '"TAG_SCORE"'
+  tag_type:
+    description: 'TEXT. Enumeration. Values: Hashtag, Keyword, TopicTag, BrandTag.'
+    sql: '"TAG_TYPE"'
+  tag_code:
+    description: 'TEXT. Unique tag/keyword ID. PK. Example: TAG6421758.'
+    sql: '"Tag_CODE"'
+  volatility:
+    description: 'REAL. Popularity volatility (0–1). Example: 0.62.'
+    sql: '"VOLATILITY"'
+  acct_cnt:
+    description: 'BIGINT. Number of distinct accounts using the tag. Example: 7 542.'
+    sql: '"acctCnt"'
+  entity_assoc:
+    description: 'TEXT. Named-entity association. **NULL when tag not tied to person/organisation.** Example: Celebrity.'
+    sql: '"entityAssoc"'
+  first_seen:
+    description: 'DATE. Tag first observed. Example: 2023/03/11.'
+    sql: first_seen
+  geo_spread:
+    description: 'REAL. Geographic dispersion (0–1). Example: 0.73.'
+    sql: '"geoSpread"'
+  interest_assoc:
+    description: 'TEXT. Linked interest cluster. Example: Tech.'
+    sql: '"interestAssoc"'
+  lang:
+    description: 'TEXT. Language ISO code. Example: en.'
+    sql: lang
+  legal_risk:
+    description: REAL. Legal-risk score (0–1). **NULL if no compliance assessment run.**
+    sql: '"legalRisk"'
+  notes:
+    description: TEXT. Analyst notes.
+    sql: notes
+  nsfw_flag:
+    description: TEXT. Yes/No NSFW flag. **NULL if tag never evaluated by NSFW classifier.**
+    sql: '"nsfwFlag"'
+  peak_score:
+    description: 'REAL. Popularity at peak (0–100). Example: 93.4.'
+    sql: '"peakScore"'
+  policy_risk:
+    description: 'REAL. Policy-risk score (0–1). Example: 0.14.'
+    sql: '"policyRISK"'
+  post_cnt:
+    description: 'BIGINT. Posts containing the tag. Example: 47 621.'
+    sql: post_cnt
+  sentiment_avg:
+    description: 'REAL. Mean sentiment (−1 to 1). Example: 0.42.'
+    sql: '"sentimentAvg"'
+  spam_flag:
+    description: 'TEXT. Yes/No spam flag. Example: No.'
+    sql: '"spamFLAG"'
+  sub_tag:
+    description: 'TEXT. Sub-tag label. Example: SubA.'
+    sql: sub_tag
+  super_tag:
+    description: 'TEXT. Higher-level grouping label. Example: META.'
+    sql: '"superTag"'
+  tag_rank:
+    description: 'REAL. Global rank (0–1000). Example: 274.'
+    sql: '"tagRank"'
+  tag_text:
+    description: 'TEXT. Surface text of the tag. Example: tag17.'
+    sql: '"tagText"'
+  topic_assoc:
+    description: 'TEXT. Topic association. Example: AI.'
+    sql: '"topicAssoc"'
+  tox_flag:
+    description: 'TEXT. Yes/No toxicity flag. Example: No.'
+    sql: '"toxFlag"'
+  trend_score:
+    description: 'REAL. Trend intensity (0–100). Example: 88.7.'
+    sql: '"trendScore"'
+  trend_window:
+    description: 'TEXT. Rolling window definition. Example: 7-day rolling.'
+    sql: trend_window
+  updated_ts:
+    description: 'TIMESTAMPTZ. Last update. Example: 2025/02/01 03:29:45.'
+    sql: '"updatedTs"'
+  usage_cnt:
+    description: 'BIGINT. Total tag occurrences. Example: 32 144.'
+    sql: '"usageCnt"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct tags public identity values.
+    label: tags Count
+    sql: ${fake_account_large_public__tags.tag_code}

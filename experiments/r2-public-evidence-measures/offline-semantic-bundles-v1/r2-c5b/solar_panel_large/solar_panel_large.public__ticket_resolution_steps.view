@@ -1,0 +1,60 @@
+label: TicketResolutionSteps
+description: All columns of the public table TicketResolutionSteps.
+catalog: solar_panel_large
+schema: public
+table_name: TicketResolutionSteps
+dimensions:
+  action_taken_by:
+    description: TEXT. Agent/Tech name.
+    sql: action_taken_by
+  action_timestamp:
+    description: 'TIMESTAMP. When the action occurred. Example: 2024-01-01 12:00:00.'
+    sql: action_timestamp
+  action_type:
+    description: 'TEXT. Category (Reply, Internal Note, Status Change). Unique values: Email Reply, Internal Note, Status Change, Phone Call.'
+    sql: action_type
+  attachment_url:
+    description: TEXT. Link to attached file. **NULL means No attachment.**
+    sql: attachment_url
+  client_read_receipt:
+    description: 'BOOLEAN. True if client opened the email. **NULL means Internal note.** Possible values: True, False.'
+    sql: client_read_receipt
+  escalation_flag:
+    description: 'BOOLEAN. True if this step was an escalation. Possible values: True, False.'
+    sql: escalation_flag
+  is_public:
+    description: 'BOOLEAN. True if visible to customer. Possible values: True, False.'
+    sql: is_public
+  message_content:
+    description: TEXT. Body of the message or note.
+    sql: message_content
+  new_status:
+    description: 'TEXT. Status after this step. **NULL means data unavailable.** Unique values: In Progress, Waiting, Resolved.'
+    sql: new_status
+  previous_status:
+    description: 'TEXT. Status before this step. **NULL means data unavailable.** Unique values: New, In Progress.'
+    sql: previous_status
+  response_channel:
+    description: 'TEXT. Channel used (Email, Portal). Unique values: Email, Portal, Phone.'
+    sql: response_channel
+  sentiment_score:
+    description: 'REAL. Sentiment of this specific message. Example: 0.1.'
+    sql: sentiment_score
+  step_id:
+    description: TEXT. Unique ID for the resolution step.
+    sql: step_id
+  step_sequence:
+    description: 'INTEGER. Order of the step (1, 2, 3...). Example: 50.'
+    sql: step_sequence
+  system_generated:
+    description: 'BOOLEAN. True if auto-response. Possible values: True, False.'
+    sql: system_generated
+  tags:
+    description: TEXT. JSON array of tags applied. **NULL means data unavailable.**
+    sql: tags
+  ticket_ref:
+    description: TEXT. FK to ClientSupportTickets.
+    sql: ticket_ref
+  time_spent_minutes:
+    description: 'INTEGER. Minutes logged for this step. Example: 15.'
+    sql: time_spent_minutes

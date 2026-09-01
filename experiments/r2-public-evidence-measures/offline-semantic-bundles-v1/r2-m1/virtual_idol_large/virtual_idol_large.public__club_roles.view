@@ -1,0 +1,21 @@
+label: club_roles
+description: All columns of the public table club_roles.
+catalog: virtual_idol_large
+schema: public
+table_name: club_roles
+dimensions:
+  role_description:
+    description: 'TEXT. A detailed description of the responsibilities and duties associated with the role. Example: Responsible for moderating community discussions and ensuring a positive environment.'
+    sql: '"ROLE_DESCRIPTION"'
+  role_id:
+    description: BIGINT. Unique identifier for the fan club role. PK.
+    sql: '"RoleID"'
+  role_name:
+    description: 'TEXT. The name of the role within the fan club. Example: Community Moderator.'
+    sql: role_name
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct club_roles public identity values.
+    label: club_roles Count
+    sql: ${virtual_idol_large_public__club_roles.role_id}

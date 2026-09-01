@@ -1,0 +1,21 @@
+base_view: cross_border_large_public__incident_response_plan
+label: IncidentResponsePlan
+description: All columns of the public table IncidentResponsePlan.
+fields:
+- cross_border_large_public__incident_response_plan.*
+- cross_border_large_public__compliance.*
+- cross_border_large_public__data_flow.*
+- cross_border_large_public__data_profile.*
+- cross_border_large_public__incident_register.*
+- cross_border_large_public__risk_management.*
+- cross_border_large_public__security_profile.*
+- cross_border_large_public__vendor_management.*
+joins:
+  cross_border_large_public__incident_register:
+    cross_border_large_public__compliance:
+      cross_border_large_public__vendor_management:
+        cross_border_large_public__security_profile:
+          cross_border_large_public__data_profile: {}
+    cross_border_large_public__risk_management:
+      cross_border_large_public__data_flow: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,45 @@
+label: ArtifactConservatorLink
+description: All columns of the public table ArtifactConservatorLink.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactConservatorLink
+dimensions:
+  hours_worked:
+    description: 'TEXT. No description provided. Example: 250.0.'
+    sql: '"HOURS_WORKED"'
+  treatment_end_date:
+    description: 'TEXT. No description provided. Example: 2022-04-15.'
+    sql: '"TREATMENT_END_DATE"'
+  treatment_report_ref:
+    description: 'TEXT. No description provided. Example: TRMT-2022-001.'
+    sql: '"TREATMENT_REPORT_REF"'
+  authorization_date:
+    description: 'TEXT. No description provided. Example: 2022-01-20.'
+    sql: authorization_date
+  authorized_by_staff_ref:
+    description: 'TEXT. No description provided. Possible values: 1, 2, 3, 6.'
+    sql: authorized_by_staff_ref
+  conservator_staff_ref:
+    description: 'TEXT. No description provided. Possible values: 13, 3, 33, 38, 54, 6, 67, 92.'
+    sql: conservator_staff_ref
+  conserved_artifact_ref:
+    description: 'TEXT. No description provided. Example: ART54254.'
+    sql: conserved_artifact_ref
+  is_lead_conservator:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: is_lead_conservator
+  materials_used_json:
+    description: 'TEXT. No description provided. Example: {consolidant: Junksa, support: Silk crepeline}.'
+    sql: materials_used_json
+  project_code:
+    description: 'TEXT. No description provided. Example: PROJ-TEXTILE-22.'
+    sql: project_code
+  treatment_start:
+    description: 'TEXT. No description provided. Example: 2022-02-01.'
+    sql: treatment_start
+  treatment_summary:
+    description: 'TEXT. No description provided. Example: Treated friable painted textile surface with Junksa consolidant. Applied a supportive silk crepeline backing..'
+    sql: treatment_summary
+  treatment_type:
+    description: 'TEXT. No description provided. Example: Consolidation.'
+    sql: treatment_type

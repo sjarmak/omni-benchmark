@@ -1,0 +1,99 @@
+label: BeneficiaryHouseholds
+description: All columns of the public table BeneficiaryHouseholds.
+catalog: disaster_relief_large
+schema: public
+table_name: BeneficiaryHouseholds
+dimensions:
+  access_to_water:
+    description: BOOLEAN. TRUE if the household has reliable access to safe water.
+    sql: '"ACCESS_TO_WATER"'
+  assistance_received:
+    description: BOOLEAN. TRUE if household has already received humanitarian assistance.
+    sql: '"ASSISTANCE_RECEIVED"'
+  address_txt:
+    description: TEXT. Residential address or descriptive location (hamlet, zone, etc.).
+    sql: '"Address_txt"'
+  assistance_details:
+    description: TEXT. Type of assistance provided (e.g., Cash Grant, Food Kit). **Nullable** if none or not specified.
+    sql: '"AssistanceDetails"'
+  contact_number:
+    description: TEXT. Primary phone number in international format. **Nullable** when no phone available.
+    sql: '"CONTACT_NUMBER"'
+  distance_to_water_m:
+    description: REAL. Straight-line distance to nearest water source in **metres** (e.g., 500.0).
+    sql: '"DistanceToWater_m"'
+  family_size:
+    description: INT. Total number of people living in the household.
+    sql: '"FAMILY_SIZE"'
+  has_pregnant_member:
+    description: BOOLEAN. TRUE if a pregnant member is present.
+    sql: '"HAS_PREGNANT_MEMBER"'
+  household_id:
+    description: VARCHAR(20). Unique household identifier. Primary Key.
+    sql: '"HOUSEHOLD_ID"'
+  housing_type:
+    description: TEXT. Current shelter type (Temporary Shelter, Rented House, Own House, Collective Center, Tent).
+    sql: '"HOUSING_TYPE"'
+  has_disabled_member:
+    description: BOOLEAN. TRUE if at least one household member has a disability.
+    sql: '"Has_Disabled_Member"'
+  has_elderly_member:
+    description: 'BOOLEAN. TRUE if at least one member is aged 60 +. '
+    sql: '"Has_ELDERLY_member"'
+  head_of_household_name:
+    description: TEXT. Full name of the household head (e.g., “Miguel Haddad”).
+    sql: '"HeadOfHouseholdName"'
+  income_level:
+    description: 'TEXT. Categorical income tier: Low, Lower-Middle, Middle, Upper-Middle, High.'
+    sql: '"INCOME_LEVEL"'
+  last_update:
+    description: text formatted like “mar.3rd 2024 14:25:00”. Most recent data refresh.
+    sql: '"LAST_UPDATE"'
+  livelihood_type:
+    description: TEXT. Primary source of livelihood (Agriculture, Fishing, Small Business, etc.).
+    sql: '"LivelihoodType"'
+  notes:
+    description: TEXT. Additional comments such as special needs or follow-up actions. **Nullable** when no notes recorded.
+    sql: '"Notes"'
+  primary_language:
+    description: TEXT. Main language spoken in the household.
+    sql: '"PRIMARY_LANGUAGE"'
+  updated_at:
+    description: text. Last modification time (may match LAST_UPDATE).
+    sql: '"Updated_at"'
+  version:
+    description: INT. Record-schema version for internal migrations.
+    sql: '"VERSION"'
+  vulnerability_score:
+    description: REAL. Composite vulnerability index from 0 (low) to 1 (high).
+    sql: '"VulnerabilityScore"'
+  access_to_power:
+    description: BOOLEAN. TRUE if household has access to electricity/lighting.
+    sql: access_to_power
+  access_to_sanitation:
+    description: BOOLEAN. TRUE if adequate sanitation facilities are available.
+    sql: access_to_sanitation
+  beneregistry_ref:
+    description: VARCHAR(20). References BeneficiariesAndAssessments(BeneRegistry); links the household to a beneficiary-assessment record.
+    sql: '"beneregistryRef"'
+  children_under5:
+    description: INT. Count of children younger than five years.
+    sql: '"childrenUnder5"'
+  created_at:
+    description: text (“mon.ddth YYYY HH:MM:SS”). Original record-creation time.
+    sql: '"created_AT"'
+  family_space_human_ft2_per_person:
+    description: REAL. Approximate living-space area per person in **square feet per person** (e.g., 120.0).
+    sql: '"familySpaceHuman_ft2_perPerson"'
+  feedback_score:
+    description: REAL. Household’s satisfaction rating with assistance (1.0 – 5.0).
+    sql: '"feedbackScore"'
+  monthly_income_human_usdper_month:
+    description: REAL. Reported household income in **U.S. dollars per month** (e.g., 250.0).
+    sql: '"monthlyIncomeHuman_USDperMonth"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct BeneficiaryHouseholds public identity values.
+    label: BeneficiaryHouseholds Count
+    sql: ${disaster_relief_large_public__beneficiary_households.household_id}

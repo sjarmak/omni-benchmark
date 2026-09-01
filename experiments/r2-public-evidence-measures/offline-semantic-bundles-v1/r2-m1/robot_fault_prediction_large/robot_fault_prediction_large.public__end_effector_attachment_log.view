@@ -1,0 +1,27 @@
+label: end_effector_attachment_log
+description: All columns of the public table end_effector_attachment_log.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: end_effector_attachment_log
+dimensions:
+  attached_to_robot:
+    description: 'TEXT. The registration code of the robot the tool was attached to. FK. Example: RB8530.'
+    sql: '"Attached_To_Robot"'
+  detachment_timestamp:
+    description: 'TEXT. Unix timestamp (seconds) when the end-effector was detached. **NULL indicates the tool is currently attached.**. Possible values: 1721481000.0, 1731246000.0, 1733059800.0, 1733844000.0, 1737363600.0, 1739115600.0, 1742131800.0, 1746415200.0, 1747305600.0, 1754168400.0.'
+    sql: '"DETACHMENT_TIMESTAMP"'
+  effector_tool_code:
+    description: 'TEXT. The tag of the end-effector that was attached. FK. Example: GRIP-SCHUNK-001.'
+    sql: '"Effector_Tool_Code"'
+  attachment_event_key:
+    description: 'BIGINT. Unique identifier for the attachment event. PK. Example: 1.'
+    sql: attachment_event_key
+  attachment_timestamp:
+    description: 'TEXT. Unix timestamp (seconds) when the end-effector was attached. Example: 1705296000.'
+    sql: attachment_timestamp
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct end_effector_attachment_log public identity values.
+    label: end_effector_attachment_log Count
+    sql: ${robot_fault_prediction_large_public__end_effector_attachment_log.attachment_event_key}

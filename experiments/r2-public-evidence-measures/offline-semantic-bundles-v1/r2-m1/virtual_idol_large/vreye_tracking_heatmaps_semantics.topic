@@ -1,0 +1,11 @@
+base_view: virtual_idol_large_public__vreye_tracking_heatmaps
+label: VREyeTrackingHeatmaps
+description: All columns of the public table VREyeTrackingHeatmaps.
+fields:
+- virtual_idol_large_public__vreye_tracking_heatmaps.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__virtual_reality_session_telemetry.*
+joins:
+  virtual_idol_large_public__virtual_reality_session_telemetry:
+    virtual_idol_large_public__fans: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

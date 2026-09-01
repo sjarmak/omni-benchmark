@@ -1,0 +1,93 @@
+label: skills_inventory
+description: All columns of the public table skills_inventory.
+catalog: residential_data_large
+schema: public
+table_name: skills_inventory
+dimensions:
+  average_salary_impact_percent:
+    description: 'REAL. Percentage impact on salary when possessing this skill. **NULL means salary impact not analyzed.**. Possible values: 25.5, 28.7, 35.2, 42.8.'
+    sql: '"Average_Salary_Impact_Percent"'
+  continuous_learning_required:
+    description: 'TEXT. Whether continuous learning is required for skill maintenance. **NULL means learning requirements not specified.**. Possible values: Yes.'
+    sql: '"CONTINUOUS_learning_required"'
+  career_growth_potential:
+    description: 'BIGINT. Career advancement potential rating. **NULL means career growth not assessed.**. Possible values: 6.0, 7.0, 8.0.'
+    sql: '"Career_Growth_Potential"'
+  certification_cost_brl:
+    description: 'REAL. Cost of skill certification in Brazilian Real. **NULL means certification costs not available.**. Possible values: 1200.0, 2500.0, 850.0.'
+    sql: '"Certification_Cost_BRL"'
+  communication_intensity_level:
+    description: 'BIGINT. Level of communication intensity required. **NULL means communication requirements not assessed.**. Possible values: 4.0, 7.0, 8.0, 9.0.'
+    sql: '"Communication_Intensity_Level"'
+  creativity_requirement_level:
+    description: 'BIGINT. Level of creativity required for skill application. Possible values: 3, 4, 6, 8, 9.'
+    sql: '"Creativity_Requirement_Level"'
+  industry_relevance:
+    description: 'TEXT. Industries where skill is most relevant. **NULL means industry application not specified.**. Possible values: Food Service, Healthcare, Heavy Industry, Software Development.'
+    sql: '"INDUSTRY_relevance"'
+  job_postings_monthly:
+    description: 'BIGINT. Number of monthly job postings requiring this skill. **NULL means job market data not tracked.**. Possible values: 125.0, 156.0, 89.0, 95.0.'
+    sql: '"JOB_postings_monthly"'
+  learning_time_hours:
+    description: 'BIGINT. Estimated hours required to learn skill. **NULL means learning time not estimated.**. Possible values: 120.0, 180.0, 240.0, 80.0.'
+    sql: '"Learning_Time_Hours"'
+  market_demand_score:
+    description: 'BIGINT. Market demand rating for skill. **NULL means market demand not assessed.**. Possible values: 7.0, 8.0, 9.0.'
+    sql: '"MARKET_demand_score"'
+  prerequisite_skills_count:
+    description: 'BIGINT. Number of prerequisite skills required. **NULL means prerequisites not identified.**. Possible values: 0.0, 1.0, 2.0, 3.0.'
+    sql: '"PREREQUISITE_skills_count"'
+  remote_work_compatibility_percent:
+    description: 'REAL. Percentage compatibility with remote work arrangements. **NULL means remote work compatibility not assessed.**. Possible values: 15.8, 25.6, 5.2, 85.5.'
+    sql: '"REMOTE_work_compatibility_percent"'
+  skill_name:
+    description: 'TEXT. Name of skill or competency. Possible values: Culinária Profissional, Enfermagem Hospitalar, Marketing Digital, Programação Python, Soldagem Industrial.'
+    sql: '"SKILL_name"'
+  salary_range_max_brl:
+    description: 'REAL. Maximum salary range for skill in Brazilian Real. **NULL means maximum salary not determined.**. Possible values: 12000.0, 7200.0, 8500.0, 9500.0.'
+    sql: '"Salary_Range_MAX_BRL"'
+  skill_id:
+    description: 'BIGSERIAL. Primary key identifier for skill record. PK. Possible values: 1, 2, 3, 4, 5.'
+    sql: '"Skill_ID"'
+  skill_level_description:
+    description: 'TEXT. Description of skill proficiency levels. **NULL means skill levels not defined.**. Possible values: Beginner to Intermediate, Intermediate to Advanced, Professional Level.'
+    sql: '"Skill_Level_Description"'
+  teamwork_requirement_level:
+    description: 'BIGINT. Level of teamwork required for skill application. Possible values: 6, 7, 8, 9.'
+    sql: '"TEAMWORK_requirement_level"'
+  technology_dependence_level:
+    description: 'BIGINT. Level of technology dependence for skill application. Possible values: 2, 3, 7, 8, 9.'
+    sql: '"TECHNOLOGY_dependence_level"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  automation_risk_score:
+    description: 'BIGINT. Risk of skill being automated rating. **NULL means automation risk not evaluated.**. Possible values: 1.0, 2.0, 3.0.'
+    sql: '"automation_risk_SCORE"'
+  certification_required:
+    description: 'TEXT. Whether certification is required for skill validation. **NULL means certification requirements not determined.**. Possible values: No, Yes.'
+    sql: '"certification_REQUIRED"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: created_at
+  freelance_opportunity_score:
+    description: 'BIGINT. Freelance opportunity potential rating. **NULL means freelance potential not evaluated.**. Possible values: 2.0, 3.0, 8.0, 9.0.'
+    sql: '"freelance_opportunity_SCORE"'
+  industry_stability_score:
+    description: 'BIGINT. Stability rating of industries using this skill. **NULL means industry stability not evaluated.**. Possible values: 6.0, 7.0, 8.0, 9.0.'
+    sql: '"industry_stability_SCORE"'
+  leadership_component:
+    description: 'TEXT. Leadership component presence in skill. **NULL means leadership aspects not defined.**. Possible values: Optional, Yes.'
+    sql: '"leadership_COMPONENT"'
+  online_courses_available:
+    description: 'BIGINT. Number of online courses available for skill. **NULL means course availability not surveyed.**. Possible values: 12.0, 15.0, 25.0, 45.0.'
+    sql: '"online_courses_AVAILABLE"'
+  physical_demand_level:
+    description: 'BIGINT. Physical demands required for skill performance. **NULL means physical requirements not assessed.**. Possible values: 1.0, 2.0, 8.0, 9.0.'
+    sql: '"physical_demand_LEVEL"'
+  salary_range_min_brl:
+    description: 'REAL. Minimum salary range for skill in Brazilian Real. **NULL means salary data not available.**. Possible values: 2800.0, 3200.0, 4500.0, 4800.0.'
+    sql: '"salary_range_MIN_brl"'
+  skill_category:
+    description: 'TEXT. Category classification of skill. Possible values: Business, Healthcare, Hospitality, Manufacturing, Technology.'
+    sql: '"skill_CATEGORY"'

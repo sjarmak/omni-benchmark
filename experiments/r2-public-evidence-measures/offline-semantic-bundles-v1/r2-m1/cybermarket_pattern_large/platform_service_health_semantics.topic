@@ -1,0 +1,11 @@
+base_view: cybermarket_pattern_large_public__platform_service_health
+label: PlatformServiceHealth
+description: All columns of the public table PlatformServiceHealth.
+fields:
+- cybermarket_pattern_large_public__platform_service_health.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__platform_incident_reports.*
+joins:
+  cybermarket_pattern_large_public__platform_incident_reports:
+    cybermarket_pattern_large_public__markets: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

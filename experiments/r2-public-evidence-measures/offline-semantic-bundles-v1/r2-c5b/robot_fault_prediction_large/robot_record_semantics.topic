@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__robot_record
+label: robot_record
+description: All columns of the public table robot_record.
+fields:
+- robot_fault_prediction_large_public__robot_record.*
+joins: {}
+ai_context: This topic models no cross-table joins.

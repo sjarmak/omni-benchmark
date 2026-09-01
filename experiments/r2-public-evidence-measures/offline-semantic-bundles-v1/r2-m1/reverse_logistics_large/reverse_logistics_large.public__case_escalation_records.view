@@ -1,0 +1,102 @@
+label: case_escalation_records
+description: All columns of the public table case_escalation_records.
+catalog: reverse_logistics_large
+schema: public
+table_name: case_escalation_records
+dimensions:
+  escalated_to_tier:
+    description: 'BIGINT. The support tier the case was escalated to. Possible values: 2, 3.'
+    sql: '"ESCALATED_TO_TIER"'
+  audit_log:
+    description: 'JSONB. A JSON object with an audit trail for the escalation. Example: [{user: system, action: escalate}].'
+    sql: audit_log
+  communication_channel:
+    description: 'TEXT. The communication channel used for the escalation. Example: Phone.'
+    sql: communication_channel
+  compensation_offered_value:
+    description: Monetary value of the compensation offered to resolve the escalation.
+    sql: compensation_offered_value
+  current_assigned_agent_id:
+    description: 'BIGINT. The ID of the agent currently assigned to the escalated case. FK to employees.EMPLOYEE_ID. Example: 1015.'
+    sql: current_assigned_agent_id
+  customer_mood_at_escalation:
+    description: 'TEXT. The customer''s perceived mood at the time of escalation. Possible values: Angry, Frustrated, Calm.'
+    sql: customer_mood_at_escalation
+  customer_recontact_preference:
+    description: 'TEXT. The customer''s preferred method for re-contact. Example: Email.'
+    sql: customer_recontact_preference
+  escalated_from_agent_id:
+    description: 'BIGINT. The ID of the agent who escalated the case. FK to employees.EMPLOYEE_ID. Example: 1049.'
+    sql: escalated_from_agent_id
+  escalation_id:
+    description: 'BIGINT. Unique identifier for the escalation record. PK. Example: 8000.'
+    sql: escalation_id
+  escalation_priority:
+    description: 'TEXT. The priority of the escalated case. Example: High.'
+    sql: escalation_priority
+  escalation_status:
+    description: 'TEXT. The current status of the escalation. Possible values: Resolved, Open, Pending Manager.'
+    sql: escalation_status
+  escalation_timestamp:
+    description: 'TIMESTAMP. The exact date and time the case was escalated. Example: 2025-07-14 22:18:28.'
+    sql: escalation_timestamp
+  executive_briefing_required:
+    description: 'BOOLEAN. Indicates if an executive briefing is required for this case. Example: False.'
+    sql: executive_briefing_required
+  final_closure_report_ref:
+    description: 'TEXT. A reference to the final closure report. Example: CLOSURE-RL130597.'
+    sql: final_closure_report_ref
+  financial_implication:
+    description: Categorical assessment of the financial impact (e.g., Significant, Minor).
+    sql: financial_implication
+  is_breaching_sla:
+    description: 'BOOLEAN. Indicates if the case is in breach of its Service Level Agreement. Possible values: True, False.'
+    sql: is_breaching_sla
+  legal_involvement_flag:
+    description: 'BOOLEAN. Indicates if the legal department is involved. Example: False.'
+    sql: legal_involvement_flag
+  manager_approval_id:
+    description: 'BIGINT. The ID of the manager who approved the resolution. **NULL means the resolution did not require manager approval.** Example: 1030.0.'
+    sql: manager_approval_id
+  originating_case_link:
+    description: 'TEXT. The case number that was escalated. FK to case_management.casetie. Example: RL130597.'
+    sql: originating_case_link
+  preventive_action_summary:
+    description: 'TEXT. A summary of actions taken to prevent similar escalations. Example: Additional agent training recommended..'
+    sql: preventive_action_summary
+  promised_follow_up_time:
+    description: 'TIMESTAMP. The date and time a follow-up was promised to the customer. Example: 2025-07-15 22:18:28.'
+    sql: promised_follow_up_time
+  re_escalation_count:
+    description: 'BIGINT. The number of times this case has been re-escalated. Example: 0.'
+    sql: re_escalation_count
+  reason_for_escalation:
+    description: 'TEXT. The reason why the case was escalated. Possible values: Customer requested manager, Policy exception needed, Agent unable to resolve.'
+    sql: reason_for_escalation
+  related_product_id:
+    description: 'TEXT. The ID of a product related to the case. Example: PRD00002.'
+    sql: related_product_id
+  resolution_notes:
+    description: Free text notes describing how the escalation was resolved.
+    sql: resolution_notes
+  resolution_satisfaction_score:
+    description: Score indicating satisfaction with the resolution (1-5 scale).
+    sql: resolution_satisfaction_score
+  resolution_timestamp:
+    description: Timestamp when the resolution was recorded.
+    sql: resolution_timestamp
+  root_cause_analysis_id:
+    description: 'TEXT. The ID of a related root cause analysis report. **NULL means a formal RCA was not conducted.** Example: RCA-Fypg0U.'
+    sql: root_cause_analysis_id
+  stakeholder_notification_list:
+    description: 'JSONB. A JSON array of email addresses for stakeholder notifications. Example: [ops_manager@example.com].'
+    sql: stakeholder_notification_list
+  time_in_previous_tier_hours:
+    description: 'REAL. The time in hours the case spent in the previous support tier. Example: 19.5.'
+    sql: time_in_previous_tier_hours
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct case_escalation_records public identity values.
+    label: case_escalation_records Count
+    sql: ${reverse_logistics_large_public__case_escalation_records.escalation_id}

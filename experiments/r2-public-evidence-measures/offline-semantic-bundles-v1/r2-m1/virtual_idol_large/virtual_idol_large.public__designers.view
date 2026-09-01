@@ -1,0 +1,24 @@
+label: designers
+description: All columns of the public table designers.
+catalog: virtual_idol_large
+schema: public
+table_name: designers
+dimensions:
+  designer_id:
+    description: 'BIGINT. Unique identifier for the designer. PK. Example: 1.'
+    sql: '"DESIGNER_ID"'
+  portfolio_url:
+    description: 'TEXT. The URL to the designer''s online portfolio. Example: http://portfolio.example.com/janesmith.'
+    sql: '"PortfolioUrl"'
+  specialization:
+    description: 'TEXT. The designer''s primary area of expertise. Example: Character Design.'
+    sql: '"SPECIALIZATION"'
+  designer_name:
+    description: 'TEXT. The name of the designer or artist. Example: Jane Smith.'
+    sql: designer_name
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct designers public identity values.
+    label: designers Count
+    sql: ${virtual_idol_large_public__designers.designer_id}

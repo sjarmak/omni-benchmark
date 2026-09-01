@@ -1,0 +1,13 @@
+base_view: planets_data_large_public__planet_instrument_observations
+label: planet_instrument_observations
+description: All columns of the public table planet_instrument_observations.
+fields:
+- planets_data_large_public__planet_instrument_observations.*
+- planets_data_large_public__instruments_surveys.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__instruments_surveys: {}
+  planets_data_large_public__planets:
+    planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

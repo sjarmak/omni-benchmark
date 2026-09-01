@@ -1,0 +1,72 @@
+label: ExecutionQualityMetrics
+description: All columns of the public table ExecutionQualityMetrics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: ExecutionQualityMetrics
+dimensions:
+  execution_quality_metrics_id:
+    description: TEXT. Unique identifier for execution quality record.
+    sql: '"ExecutionQualityMetrics_id"'
+  arrival_price_performance_bps:
+    description: 'REAL. Performance vs arrival price in basis points. **NULL means Arrival price not captured.** Example: -2.0.'
+    sql: arrival_price_performance_bps
+  average_execution_time_seconds:
+    description: 'REAL. Average time to execute in seconds. **NULL means Execution time not tracked.** Example: 50.0.'
+    sql: average_execution_time_seconds
+  best_execution_compliance:
+    description: 'TEXT. Best execution compliance status. Unique values: Compliant, Minor Deviation, Under Review, Non-Compliant.'
+    sql: best_execution_compliance
+  effective_spread_bps:
+    description: 'REAL. Effective spread paid in basis points. **NULL means Spread data unavailable.** Example: 50.0.'
+    sql: effective_spread_bps
+  execution_audit_ref:
+    description: TEXT. Reference to the trade execution audit.
+    sql: execution_audit_ref
+  execution_strategy_used:
+    description: 'TEXT. Execution algorithm or strategy employed. Unique values: VWAP, TWAP, Implementation Shortfall, Arrival Price, Dark Pool, POV, Market.'
+    sql: execution_strategy_used
+  fill_rate_pct:
+    description: 'REAL. Percentage of order quantity filled. Example: 50.0.'
+    sql: fill_rate_pct
+  implementation_shortfall_bps:
+    description: 'REAL. Implementation shortfall in basis points. **NULL means Shortfall calculation pending.** Example: 5.0.'
+    sql: implementation_shortfall_bps
+  is_benchmark_beat:
+    description: 'BOOLEAN. Whether execution beat primary benchmark. Possible values: True, False.'
+    sql: is_benchmark_beat
+  market_impact_bps:
+    description: 'REAL. Estimated market impact in basis points. **NULL means Impact model not applied.** Example: 50.0.'
+    sql: market_impact_bps
+  metrics_timestamp:
+    description: 'TIMESTAMP. Timestamp of quality metrics collection. Example: 2024-01-01 12:00:00.'
+    sql: metrics_timestamp
+  opportunity_cost_bps:
+    description: 'REAL. Opportunity cost in basis points. **NULL means Opportunity cost not modeled.** Example: 50.0.'
+    sql: opportunity_cost_bps
+  price_improvement_pct:
+    description: 'REAL. Percentage of orders with price improvement. **NULL means Price improvement tracking disabled.** Example: 50.0.'
+    sql: price_improvement_pct
+  realized_spread_bps:
+    description: 'REAL. Realized spread in basis points. **NULL means Realized spread not calculable.** Example: 50.0.'
+    sql: realized_spread_bps
+  requires_review:
+    description: 'BOOLEAN. Whether execution requires compliance review. Possible values: True, False.'
+    sql: requires_review
+  timing_cost_bps:
+    description: 'REAL. Timing cost in basis points. **NULL means Timing analysis not performed.** Example: 3.0.'
+    sql: timing_cost_bps
+  twap_performance_bps:
+    description: 'REAL. Performance vs TWAP in basis points. **NULL means TWAP benchmark not used.** Example: 1.0.'
+    sql: twap_performance_bps
+  venue_quality_score:
+    description: 'REAL. Quality score for execution venue. **NULL means Venue scoring not applied.** Example: 50.0.'
+    sql: venue_quality_score
+  vwap_performance_bps:
+    description: 'REAL. Performance vs VWAP in basis points. **NULL means VWAP data unavailable.** Example: 0.0.'
+    sql: vwap_performance_bps
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ExecutionQualityMetrics public identity values.
+    label: ExecutionQualityMetrics Count
+    sql: ${exchange_traded_funds_large_public__execution_quality_metrics.execution_quality_metrics_id}

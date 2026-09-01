@@ -1,0 +1,72 @@
+label: MaintenancePartConsumption
+description: All columns of the public table MaintenancePartConsumption.
+catalog: polar_equipment_large
+schema: public
+table_name: MaintenancePartConsumption
+dimensions:
+  consumption_notes:
+    description: TEXT. Additional notes about the part consumption. **NULL means No additional notes.**
+    sql: '"consumptionNotes"'
+  consumption_timestamp:
+    description: 'TIMESTAMP. Timestamp when parts were consumed/installed. Example: 2024-01-01 12:00:00.'
+    sql: '"consumptionTimestamp"'
+  criticality_level:
+    description: 'TEXT. Criticality level of the part for operations. Unique values: Critical, Essential, Standard, Optional.'
+    sql: '"criticalityLevel"'
+  expected_lifespan_hrs:
+    description: 'INTEGER. Expected operational lifespan of part in hours. **NULL means Lifespan data not provided.** Example: 50.'
+    sql: '"expectedLifespan_hrs"'
+  failure_rate_pct:
+    description: 'REAL. Historical failure rate of this part type as percentage. **NULL means Failure rate data unavailable.** Example: 50.0.'
+    sql: '"failureRate_pct"'
+  installation_time_min:
+    description: 'INTEGER. Time taken to install part in minutes. **NULL means Installation time not tracked.** Example: 45.'
+    sql: '"installationTime_min"'
+  lead_time_days:
+    description: 'INTEGER. Procurement lead time for replacement in days. **NULL means Lead time not tracked.** Example: 50.'
+    sql: '"leadTime_days"'
+  part_category:
+    description: 'TEXT. Category classification of the part. Unique values: Electrical, Mechanical, Hydraulic, Pneumatic, Consumable, Structural, Electronic.'
+    sql: '"partCategory"'
+  part_consumption_seq:
+    description: 'TEXT. Unique identifier for the maintenance part consumption record. Example: MPC-1A2B3C.'
+    sql: '"partConsumptionSeq"'
+  part_weight_kg:
+    description: 'REAL. Weight of individual part in kilograms. **NULL means Weight not specified.** Example: 50.0.'
+    sql: '"partWeight_kg"'
+  quality_inspection_passed:
+    description: 'BOOLEAN. Flag indicating if part passed quality inspection before installation. Possible values: True, False.'
+    sql: '"qualityInspectionPassed"'
+  quantity_used:
+    description: 'INTEGER. Quantity of the part consumed. Example: 50.'
+    sql: '"quantityUsed"'
+  reorder_point:
+    description: 'INTEGER. Stock level that triggers reorder. **NULL means Reorder point not set.** Example: 50.'
+    sql: '"reorderPoint"'
+  returnable_flag:
+    description: 'BOOLEAN. Flag indicating if unused parts can be returned. Possible values: True, False.'
+    sql: '"returnableFlag"'
+  source_type:
+    description: 'TEXT. Source of the part. Unique values: OEM, Aftermarket, Refurbished, 3D Printed, In-House.'
+    sql: '"sourceType"'
+  stock_level:
+    description: 'INTEGER. Remaining stock level after consumption. **NULL means Stock tracking disabled.** Example: 50.'
+    sql: '"stockLevel"'
+  total_cost:
+    description: 'REAL. Total cost for all units consumed. **NULL means Total cost not calculated.** Example: 50.0.'
+    sql: '"totalCost"'
+  unit_cost:
+    description: 'REAL. Cost per unit of the part in local currency. **NULL means Cost data unavailable.** Example: 50.0.'
+    sql: '"unitCost"'
+  warranty_remaining_days:
+    description: 'INTEGER. Remaining warranty period in days. **NULL means Warranty info not available.** Example: 50.'
+    sql: '"warrantyRemaining_days"'
+  work_order_ref:
+    description: TEXT. Reference to the maintenance work order.
+    sql: work_order_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct MaintenancePartConsumption public identity values.
+    label: MaintenancePartConsumption Count
+    sql: ${polar_equipment_large_public__maintenance_part_consumption.part_consumption_seq}

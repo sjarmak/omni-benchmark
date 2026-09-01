@@ -1,0 +1,66 @@
+label: CabinAirQualitySample
+description: All columns of the public table CabinAirQualitySample.
+catalog: polar_equipment_large
+schema: public
+table_name: CabinAirQualitySample
+dimensions:
+  air_pressure_h_pa:
+    description: 'REAL. Cabin air pressure in hectopascals. **NULL means Pressure sensor unavailable.** Example: 1010.'
+    sql: '"airPressure_hPa"'
+  air_quality_category:
+    description: 'TEXT. Air quality classification category. Unique values: Good, Moderate, Unhealthy for Sensitive, Unhealthy, Very Unhealthy, Hazardous.'
+    sql: '"airQualityCategory"'
+  air_quality_index:
+    description: 'INTEGER. Composite air quality index (0-500 scale). **NULL means AQI calculation failed.** Example: 50.'
+    sql: '"airQualityIndex"'
+  air_quality_sample_seq:
+    description: 'TEXT. Unique identifier for the cabin air quality sample record. Example: CAQ-1A2B3C.'
+    sql: '"airQualitySampleSeq"'
+  airflow_rate_cfm:
+    description: 'REAL. Air circulation flow rate in cubic feet per minute. **NULL means Flow sensor not equipped.** Example: 150.'
+    sql: '"airflowRate_cfm"'
+  co2_level_ppm:
+    description: 'REAL. Carbon dioxide concentration in parts per million. **NULL means CO2 sensor offline.** Example: 800.'
+    sql: '"co2Level_ppm"'
+  co_level_ppm:
+    description: 'REAL. Carbon monoxide concentration in parts per million. **NULL means CO detector malfunction.** Example: 2.'
+    sql: '"coLevel_ppm"'
+  filter_pressure_drop_pa:
+    description: 'REAL. Air filter pressure drop in Pascals indicating filter load. **NULL means Filter monitoring not available.** Example: 50.0.'
+    sql: '"filterPressureDrop_Pa"'
+  hepa_filter_active:
+    description: 'BOOLEAN. Flag indicating if HEPA filtration is active. Possible values: True, False.'
+    sql: '"hepaFilterActive"'
+  humidity_pct:
+    description: 'REAL. Relative humidity inside cabin as percentage. **NULL means Humidity sensor failure.** Example: 50.0.'
+    sql: humidity_pct
+  occupancy_event_ref:
+    description: TEXT. Reference to the cabin occupancy event during sampling.
+    sql: occupancy_event_ref
+  odor_detected:
+    description: 'BOOLEAN. Flag indicating if unusual odors were detected. Possible values: True, False.'
+    sql: '"odorDetected"'
+  oxygen_level_pct:
+    description: 'REAL. Oxygen concentration as percentage. **NULL means O2 sensor error.** Example: 20.8.'
+    sql: '"oxygenLevel_pct"'
+  pm10_ugm3:
+    description: 'REAL. PM10 particulate matter in micrograms per cubic meter. **NULL means PM sensor calibration needed.** Example: 25.'
+    sql: pm10_ugm3
+  pm25_ugm3:
+    description: 'REAL. PM2.5 particulate matter in micrograms per cubic meter. **NULL means PM sensor calibration needed.** Example: 15.'
+    sql: pm25_ugm3
+  sample_notes:
+    description: TEXT. Additional notes about the air quality sample. **NULL means No anomalies observed.**
+    sql: '"sampleNotes"'
+  sample_timestamp:
+    description: 'TIMESTAMP. Timestamp when the air quality sample was taken. Example: 2024-01-01 12:00:00.'
+    sql: '"sampleTimestamp"'
+  temperature_c:
+    description: 'REAL. Cabin air temperature in degrees Celsius. **NULL means Temperature sensor offline.** Example: 22.'
+    sql: '"temperature_C"'
+  tvoc_level_ppb:
+    description: 'REAL. Total volatile organic compounds in parts per billion. **NULL means TVOC sensor not installed.** Example: 200.'
+    sql: '"tvocLevel_ppb"'
+  ventilation_mode:
+    description: 'TEXT. Current ventilation system operating mode. Unique values: Recirculate, Fresh Air, Mixed, Auto, Off.'
+    sql: '"ventilationMode"'

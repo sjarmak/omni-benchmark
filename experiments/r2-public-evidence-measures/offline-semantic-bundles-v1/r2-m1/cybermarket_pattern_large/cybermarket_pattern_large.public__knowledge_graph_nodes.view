@@ -1,0 +1,102 @@
+label: knowledge_graph_nodes
+description: All columns of the public table knowledge_graph_nodes.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: knowledge_graph_nodes
+dimensions:
+  active:
+    description: 'BOOLEAN. Indicates if the node is active or not. Example: True.'
+    sql: '"ACTIVE"'
+  attr2:
+    description: 'TEXT. Attribute 2 associated with the node . Example: TypeX.'
+    sql: '"ATTR2"'
+  attr9:
+    description: 'TEXT. Attribute 9 associated with the node (e.g., Stage). Example: Stage1.'
+    sql: '"ATTR9"'
+  attrseven:
+    description: 'TEXT. Attribute 7 associated with the node (e.g., Key identifier). Example: Key1.'
+    sql: '"ATTRSEVEN"'
+  attr_4:
+    description: 'TEXT. Attribute 4 associated with the node (e.g., Region). Example: RegionA.'
+    sql: '"ATTR_4"'
+  category:
+    description: TEXT. Category to which the node belongs (e.g., High-Risk, Low-Risk).
+    sql: '"CATEGORY"'
+  description:
+    description: 'TEXT. Detailed description of the node. Example: A product node representing a specific item.'
+    sql: '"DESCRIPTION"'
+  lastseen:
+    description: 'TIMESTAMP. The last time the node was observed or updated. Example: 2025-07-16 12:00:00.'
+    sql: '"LASTSEEN"'
+  longitude:
+    description: REAL. Longitude of the node’s location.
+    sql: '"LONGITUDE"'
+  nodetype:
+    description: TEXT. Type of the node (e.g., Product, Service, Entity).
+    sql: '"NODEtype"'
+  region:
+    description: 'TEXT. Geographical region for the node. Example: North.'
+    sql: '"REGION"'
+  sourceref:
+    description: TEXT. Reference to the source system for the node data.
+    sql: '"SOURCEref"'
+  updatedat:
+    description: TIMESTAMP. Date and time when the node was last updated.
+    sql: '"UPDATEDat"'
+  active_window_in_quarters:
+    description: TEXT. The active time window for the node (e.g., 2024 Q1–2025 Q2).
+    sql: '"activeWindow_in_quarters"'
+  attr1:
+    description: TEXT. Attribute 1 associated with the node (e.g., ObjectE).
+    sql: attr1
+  attr3:
+    description: 'TEXT. Attribute 3 associated with the node . Example: Feature1.'
+    sql: attr3
+  attr_five:
+    description: TEXT. Attribute 5 associated with the node (e.g., Urgency3).
+    sql: '"attrFive"'
+  attr_6:
+    description: TEXT. Attribute 6 associated with the node (e.g., Pending, Active, Inactive).
+    sql: attr_6
+  attr_8:
+    description: 'TEXT. Attribute 8 associated with the node (e.g., Level). Example: Level1.'
+    sql: attr_8
+  confidence_score:
+    description: 'REAL. Confidence level in the node''s accuracy or validity. Example: 0.85.'
+    sql: confidence_score
+  country_code:
+    description: 'TEXT. Country code where the node is relevant. Example: US.'
+    sql: country_code
+  created_at:
+    description: 'TIMESTAMP. Date and time when the node was created in the system. Example: 2025-07-16 15:23:00.'
+    sql: '"createdAT"'
+  first_seen:
+    description: 'TIMESTAMP. The first time the node was observed or created in the system. Example: 2025-07-15 10:00:00.'
+    sql: first_seen
+  geo_span_in_km:
+    description: TEXT. The geographical span of the node (e.g., 45 km radius).
+    sql: '"geoSpan_in_km"'
+  latitude:
+    description: REAL. Latitude of the node’s location.
+    sql: latitude
+  node_key:
+    description: TEXT. Unique identifier for each node in the knowledge graph. PK.
+    sql: '"nodeKey"'
+  node_label:
+    description: 'TEXT. Human-readable label assigned to the node. Example: Label1.'
+    sql: node_label
+  risk_score:
+    description: 'REAL. Risk score associated with the node. Example: 3.2.'
+    sql: '"riskSCORE"'
+  source_system:
+    description: 'TEXT. The system from which the node data originated. Example: System1.'
+    sql: '"sourceSYSTEM"'
+  sub_category:
+    description: 'TEXT. Sub-category within the broader category. Example: Sub1.'
+    sql: '"subCategory"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct knowledge_graph_nodes public identity values.
+    label: knowledge_graph_nodes Count
+    sql: ${cybermarket_pattern_large_public__knowledge_graph_nodes.node_key}

@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__education_facilities
+label: education_facilities
+description: All columns of the public table education_facilities.
+fields:
+- residential_data_large_public__education_facilities.*
+joins: {}
+ai_context: This topic models no cross-table joins.

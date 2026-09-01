@@ -1,0 +1,60 @@
+label: ad_conversion_attribution
+description: All columns of the public table ad_conversion_attribution.
+catalog: fake_account_large
+schema: public
+table_name: ad_conversion_attribution
+dimensions:
+  conversion_code:
+    description: TEXT. Unique ID for the conversion event.
+    sql: '"Conversion_CODE"'
+  attributed_roas_multiplier:
+    description: 'REAL. Return On Ad Spend (Value / Bid Cost). Example: 4.0.'
+    sql: attributed_roas_multiplier
+  attribution_model_type:
+    description: 'TEXT. Model used (Last Click, Linear, Data-Driven). Unique values: LAST_CLICK, DATA_DRIVEN, LINEAR.'
+    sql: attribution_model_type
+  auction_ref:
+    description: TEXT. Reference to the ad impression winning bid.
+    sql: auction_ref
+  bounce_rate_flag:
+    description: 'BOOLEAN. True if user left immediately without action. Possible values: True, False.'
+    sql: bounce_rate_flag
+  browser_cookie_age_days:
+    description: 'INTEGER. Age of the tracking cookie. **NULL means No cookie / App ID.** Example: 50.'
+    sql: browser_cookie_age_days
+  click_fraud_prob:
+    description: 'REAL. Probability that the conversion is fraudulent. Example: 50.0.'
+    sql: click_fraud_prob
+  conversion_pixel_id:
+    description: TEXT. ID of the tracking pixel that fired.
+    sql: conversion_pixel_id
+  conversion_value_micros:
+    description: 'INTEGER. Monetary value of the conversion event. Example: 5000000.'
+    sql: conversion_value_micros
+  cross_device_flag:
+    description: 'BOOLEAN. True if conversion happened on different device. Possible values: True, False.'
+    sql: cross_device_flag
+  customer_status_type:
+    description: 'TEXT. New vs Returning customer. Unique values: NEW, RETURNING, REACTIVATED.'
+    sql: customer_status_type
+  incognito_mode_flag:
+    description: 'BOOLEAN. True if conversion happened in private browsing. Possible values: True, False.'
+    sql: incognito_mode_flag
+  landing_page_dwell_time_sec:
+    description: 'INTEGER. Time spent on the landing page. **NULL means App install (no landing page).** Example: 60.'
+    sql: landing_page_dwell_time_sec
+  referral_path_string:
+    description: TEXT. URL path or app deep link referrer.
+    sql: referral_path_string
+  scroll_depth_pct:
+    description: 'INTEGER. Percentage of landing page scrolled. **NULL means App install.** Example: 50.'
+    sql: scroll_depth_pct
+  sku_count_in_cart:
+    description: 'INTEGER. Number of items purchased. **NULL means Lead gen (no cart).** Example: 50.'
+    sql: sku_count_in_cart
+  time_to_convert_sec:
+    description: 'INTEGER. Seconds between impression and conversion. Example: 50.'
+    sql: time_to_convert_sec
+  view_through_flag:
+    description: 'BOOLEAN. True if user saw ad but didn''t click (View-through). Possible values: True, False.'
+    sql: view_through_flag

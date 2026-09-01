@@ -1,0 +1,9 @@
+base_view: labor_certification_applications_large_public__wage_history
+label: wage_history
+description: All columns of the public table wage_history.
+fields:
+- labor_certification_applications_large_public__wage_history.*
+- labor_certification_applications_large_public__prevailing_wage.*
+joins:
+  labor_certification_applications_large_public__prevailing_wage: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

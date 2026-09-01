@@ -1,0 +1,44 @@
+label: Products
+description: Product rows with public regulatory-compliance semantics.
+catalog: reverse_logistics_large
+schema: public
+table_name: products
+dimensions:
+  regulatory_compliance_status:
+    description: 'VARCHAR(50). Regulatory compliance status of the product. **NULL means no regulatory compliance status available.**. Possible values: Compliant, Non-compliant.'
+    label: Regulatory Compliance Status
+    sql: JSONB_EXTRACT_PATH_TEXT(product_traceability, 'compliance', 'regulatory_compliance')
+    ai_context: 'Regulatory Compliance Statuses: ''Compliant'' means meeting all relevant safety/environmental standards; ''Non-compliant'' means failing certification, recall notice, or missing documentation, triggering quarantine or disposal penalty.'
+  itemcategory:
+    description: VARCHAR(50). Category of the product (e.g., apparel, electronics, Home Goods, Accessories).
+    sql: itemcategory
+  itemcode:
+    description: VARCHAR(50). Unique identifier for the product. PK.
+    sql: itemcode
+  product_traceability:
+    description: JSONB column. Encapsulates product traceability and compliance metadata including batch, lot, and serial tracking.
+    sql: product_traceability
+  subcat:
+    description: 'VARCHAR(50). Subcategory of the product. Possible values: Laptops, Shirts, Shoes, Smartphones.'
+    sql: subcat
+  unit_value:
+    description: REAL. Unit value/price of the product.
+    sql: unit_value
+  product_traceability_compliance_hazardous_material:
+    description: VARCHAR(50). Hazardous material information for the product.
+    sql: JSONB_EXTRACT_PATH_TEXT(product_traceability, 'compliance', 'hazardous_material')
+  product_traceability_compliance_recall_flag:
+    description: 'YesNo_enum. Indicates if the product has been recalled. Possible values: No, Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(product_traceability, 'compliance', 'recall_flag')
+  product_traceability_trace_batch_reference:
+    description: 'TEXT. Batch reference for the product. example: BT1693, 6730'
+    sql: JSONB_EXTRACT_PATH_TEXT(product_traceability, 'trace', 'batch_reference')
+  product_traceability_trace_lot_reference:
+    description: 'VARCHAR(50). Lot reference for the product. Example: 4119LO.'
+    sql: JSONB_EXTRACT_PATH_TEXT(product_traceability, 'trace', 'lot_reference')
+  product_traceability_trace_manufacture_date:
+    description: TEXT. Manufacture date of the product.
+    sql: JSONB_EXTRACT_PATH_TEXT(product_traceability, 'trace', 'manufacture_date')
+  product_traceability_trace_serial_number:
+    description: 'TEXT. Serial number reference for the product. Example: SN258151.'
+    sql: JSONB_EXTRACT_PATH_TEXT(product_traceability, 'trace', 'serial_number')

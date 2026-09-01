@@ -1,0 +1,171 @@
+label: esg_integration_analytics
+description: All columns of the public table esg_integration_analytics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: esg_integration_analytics
+dimensions:
+  analysisdate:
+    description: 'DATE. Date of ESG integration analysis. Possible values: 2024-01-15.'
+    sql: analysisdate
+  anticorruptionscore_score_anti:
+    description: 'TEXT. Anti-corruption score with unit notation. Possible values: 7.8, 8.2, 8.9.'
+    sql: anticorruptionscore_score_anti
+  bestinclassselection:
+    description: 'BOOLEAN. Indicator of best-in-class selection approach. Possible values: False, True.'
+    sql: bestinclassselection
+  boarddiversityscore_score_div:
+    description: 'TEXT. Board diversity score with unit notation. Possible values: 6.5, 6.8, 7.8.'
+    sql: boarddiversityscore_score_div
+  boardindependenceratio_ratio_indep:
+    description: 'TEXT. Board independence ratio with unit notation. Possible values: 0.75, 0.78, 0.82.'
+    sql: boardindependenceratio_ratio_indep
+  carbonfootprint:
+    description: JSONB column. Combines carbon emissions data across all scopes and carbon intensity measurements
+    sql: carbonfootprint
+  categoryesgaverage:
+    description: 'TEXT. Category ESG average score with unit notation. Possible values: 6.8 score/average, 7.1 score/average, 7.8 score/average.'
+    sql: categoryesgaverage
+  ceopayratio:
+    description: 'TEXT. CEO pay ratio with unit notation. Possible values: 156 ratio/ceo, 178 ratio/ceo, 89 ratio/ceo.'
+    sql: ceopayratio
+  cleanenergyexposure:
+    description: 'TEXT. Clean energy exposure percentage with unit notation. Possible values: 15.2%/clean, 7.3%/clean, 8.7%/clean.'
+    sql: cleanenergyexposure
+  communityinvestmentscore_score_comm:
+    description: 'TEXT. Community investment score with unit notation. Possible values: 5.7, 5.9, 7.1.'
+    sql: communityinvestmentscore_score_comm
+  controversyscore_score_contr:
+    description: 'TEXT. ESG controversy score with unit notation. Possible values: 1.5, 2.1, 2.8.'
+    sql: controversyscore_score_contr
+  datasource:
+    description: 'TEXT. Source of the ESG analytics data. Possible values: Bloomberg ESG, MSCI ESG Research, Sustainalytics.'
+    sql: datasource
+  employeesatisfactionscore_score_sat:
+    description: 'TEXT. Employee satisfaction score with unit notation. Possible values: 6.8, 7.1, 8.2.'
+    sql: employeesatisfactionscore_score_sat
+  esgalpha:
+    description: 'TEXT. ESG alpha generation with unit notation. Possible values: 0.008%/alpha, 0.015%/alpha, 0.038%/alpha.'
+    sql: esgalpha
+  esganalyticsid:
+    description: 'BIGSERIAL. Primary key identifier for ESG integration analytics record. PK. Possible values: 1, 2, 3.'
+    sql: esganalyticsid
+  esgdialogueparticipation:
+    description: 'BIGINT. Number of ESG dialogue participations. Possible values: 132, 145, 203.'
+    sql: esgdialogueparticipation
+  esgimprovementtarget:
+    description: 'TEXT. ESG improvement target description. Possible values: 50% Green Revenue by 2025, Carbon Neutral by 2030, ESG Improvement Focus.'
+    sql: esgimprovementtarget
+  esgintegrationlevel:
+    description: 'TEXT. ESG integration level classification. Possible values: Advanced, Basic, Integrated.'
+    sql: esgintegrationlevel
+  esgleadershipstatus:
+    description: 'BOOLEAN. Indicator of ESG leadership status. Possible values: False, True.'
+    sql: esgleadershipstatus
+  esgpercentilerank:
+    description: 'BIGINT. ESG percentile ranking among peers. Possible values: 65, 72, 88.'
+    sql: esgpercentilerank
+  esgperformancecontribution_perf:
+    description: 'TEXT. ESG performance contribution with unit notation. Possible values: 0.018, 0.024, 0.045.'
+    sql: esgperformancecontribution_perf
+  esgriskadjustedreturn:
+    description: 'TEXT. ESG risk-adjusted return with unit notation. Possible values: 0.076%/return, 0.089%/return, 0.112%/return.'
+    sql: esgriskadjustedreturn
+  esgriskrating:
+    description: 'TEXT. ESG risk rating assessment. Possible values: High, Medium.'
+    sql: esgriskrating
+  esgscorecmps:
+    description: JSONB column. Groups all ESG scoring components including composite score and individual pillar scores
+    sql: esgscorecmps
+  esgscreeningmethod:
+    description: 'TEXT. ESG screening methodology applied. Possible values: ESG Integration, Negative Screening.'
+    sql: esgscreeningmethod
+  esgtrackingerror:
+    description: 'TEXT. ESG tracking error with unit notation. Possible values: 0.025%/tracking, 0.032%/tracking, 0.038%/tracking.'
+    sql: esgtrackingerror
+  esgtrenddirection:
+    description: 'TEXT. ESG trend direction assessment. Possible values: Improving, Stable.'
+    sql: esgtrenddirection
+  eutaxonomyalignment_tax:
+    description: 'TEXT. EU Taxonomy alignment percentage with unit notation. Possible values: 28.4, 35.2, 52.1.'
+    sql: eutaxonomyalignment_tax
+  exclusionaryscreening:
+    description: 'BOOLEAN. Indicator of exclusionary screening usage. Possible values: False, True.'
+    sql: exclusionaryscreening
+  fossilfuelexposure:
+    description: 'TEXT. Fossil fuel exposure percentage with unit notation. Possible values: 12.3%/fossil, 15.6%/fossil, 5.4%/fossil.'
+    sql: fossilfuelexposure
+  fundticker:
+    description: 'TEXT. Fund ticker symbol identifier. Possible values: DIVA, QQQ, SPY.'
+    sql: fundticker
+  genderdiversityratio:
+    description: 'TEXT. Gender diversity ratio with unit notation. Possible values: 0.29 ratio/gender, 0.32 ratio/gender, 0.41 ratio/gender.'
+    sql: genderdiversityratio
+  greenrevenuepercent:
+    description: 'TEXT. Green revenue percentage with unit notation. Possible values: 16.2%/green, 18.5%/green, 28.9%/green.'
+    sql: greenrevenuepercent
+  lastupdated:
+    description: 'TEXT. Timestamp of last data update. Possible values: 2024-01-15 09:30:00 AKST-9.'
+    sql: lastupdated
+  proxyvotingalignment:
+    description: 'TEXT. Proxy voting alignment percentage with unit notation. Possible values: 76.8%/voting, 81.5%/voting, 89.2%/voting.'
+    sql: proxyvotingalignment
+  regulatoryrisk:
+    description: 'TEXT. Regulatory risk assessment level. Possible values: Low Risk, Medium Risk, Very Low Risk.'
+    sql: regulatoryrisk
+  reputationalrisk:
+    description: 'TEXT. Reputational risk assessment level. Possible values: Low Risk, Medium Risk.'
+    sql: reputationalrisk
+  sdgalignment:
+    description: 'TEXT. UN Sustainable Development Goals alignment level. Possible values: High, Medium, Very High.'
+    sql: sdgalignment
+  sfdrclassification:
+    description: 'TEXT. SFDR (Sustainable Finance Disclosure Regulation) classification. Possible values: Article 6, Article 8, Article 9.'
+    sql: sfdrclassification
+  shareholderengagement_engage:
+    description: 'TEXT. Shareholder engagement percentage with unit notation. Possible values: 68.9, 73.2, 85.4.'
+    sql: shareholderengagement_engage
+  shareholderrightsscore:
+    description: 'TEXT. Shareholder rights score with unit notation. Possible values: 7.0 score/rights, 7.4 score/rights, 8.1 score/rights.'
+    sql: shareholderrightsscore
+  sustainabilitycommitments:
+    description: 'TEXT. Sustainability commitments description. Possible values: Climate Action 100+, Net Zero Portfolio, Responsible Investment.'
+    sql: sustainabilitycommitments
+  sustainableinvestmentpercent_sustain:
+    description: 'TEXT. Sustainable investment percentage with unit notation. Possible values: 19.8, 22.1, 31.7.'
+    sql: sustainableinvestmentpercent_sustain
+  carbonfootprint_carbon_intensity:
+    description: 'TEXT. Carbon intensity measurement with unit notation. Possible values: 142.5 USD/tCO2e, 156.3 USD/tCO2e, 98.7 USD/tCO2e.'
+    sql: JSONB_EXTRACT_PATH_TEXT(carbonfootprint, 'carbon_intensity')
+  carbonfootprint_scope1_emissions:
+    description: 'TEXT. Scope 1 carbon emissions with unit notation. Possible values: 1040000 USD, 650000 USD, 950000 USD.'
+    sql: JSONB_EXTRACT_PATH_TEXT(carbonfootprint, 'scope1_emissions')
+  carbonfootprint_scope2_emissions:
+    description: 'TEXT. Scope 2 carbon emissions with unit notation. Possible values: 1200000 tCO2e, 1250000 tCO2e, 825000 tCO2e.'
+    sql: JSONB_EXTRACT_PATH_TEXT(carbonfootprint, 'scope2_emissions')
+  carbonfootprint_scope3_emissions:
+    description: 'TEXT. Scope 3 carbon emissions with unit notation. Possible values: 500000 tCO2e, 700000 tCO2e, 835000 tCO2e.'
+    sql: JSONB_EXTRACT_PATH_TEXT(carbonfootprint, 'scope3_emissions')
+  carbonfootprint_total_emissions:
+    description: 'TEXT. Total carbon emissions with unit notation. Possible values: 1975000 tCO2e, 2850000 tCO2e, 3125000 tCO2e.'
+    sql: JSONB_EXTRACT_PATH_TEXT(carbonfootprint, 'total_emissions')
+  esgscorecmps_composite_score:
+    description: 'TEXT. Composite ESG score with unit notation. Possible values: 6.9 score/composite, 7.2 score/composite, 8.1 score/composite.'
+    sql: JSONB_EXTRACT_PATH_TEXT(esgscorecmps, 'composite_score')
+  esgscorecmps_environmental_score:
+    description: 'TEXT. Environmental pillar score with unit notation. Possible values: 7.1 score/environmental, 7.5 score/environmental, 8.4 score/environmental.'
+    sql: JSONB_EXTRACT_PATH_TEXT(esgscorecmps, 'environmental_score')
+  esgscorecmps_governance_score:
+    description: 'TEXT. Governance pillar score with unit notation. Possible values: 7.2 score/governance, 7.3 score/governance, 8.0 score/governance.'
+    sql: JSONB_EXTRACT_PATH_TEXT(esgscorecmps, 'governance_score')
+  esgscorecmps_momentum_score:
+    description: 'REAL. ESG momentum score indicating trend direction. Possible values: 6.8, 6.9, 8.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(esgscorecmps, 'momentum_score')
+  esgscorecmps_social_score:
+    description: 'TEXT. Social pillar score with unit notation. Possible values: 6.5 score/social, 6.8 score/social, 7.9 score/social.'
+    sql: JSONB_EXTRACT_PATH_TEXT(esgscorecmps, 'social_score')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct esg_integration_analytics public identity values.
+    label: esg_integration_analytics Count
+    sql: ${exchange_traded_funds_large_public__esg_integration_analytics.esganalyticsid}

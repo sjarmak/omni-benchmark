@@ -1,0 +1,11 @@
+base_view: robot_fault_prediction_large_public__operation
+label: operation
+description: Public semantic view for operation.
+fields:
+- robot_fault_prediction_large_public__operation.*
+- robot_fault_prediction_large_public__robot_record.*
+joins:
+  robot_fault_prediction_large_public__robot_record: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields hkb_12, hkb_63 rather than reconstructing their formulas.'

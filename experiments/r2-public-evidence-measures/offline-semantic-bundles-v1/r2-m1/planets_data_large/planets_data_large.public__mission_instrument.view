@@ -1,0 +1,72 @@
+label: MissionInstrument
+description: All columns of the public table MissionInstrument.
+catalog: planets_data_large
+schema: public
+table_name: MissionInstrument
+dimensions:
+  detector_pixels_y:
+    description: BIGINT. Detector y dimension in pixels
+    sql: '"DETECTOR_PIXELS_Y"'
+  first_light_date:
+    description: DATE. Date of first light observation
+    sql: '"FIRST_LIGHT_DATE"'
+  instrument_id:
+    description: BIGINT. Primary key. Unique mission instrument identifier
+    sql: '"INSTRUMENT_ID"'
+  instrument_name:
+    description: 'TEXT. Full instrument name Possible values: NIRSpec, MIRI, NIRCam, FGS, HARPS, ESPRESSO, CCD Array, Photometer.'
+    sql: '"INSTRUMENT_NAME"'
+  operating_temp_k:
+    description: 'REAL. Operating temperature in Kelvin Typical range: 6 to 300.'
+    sql: '"OPERATING_TEMP_K"'
+  pixel_scale_arcsec:
+    description: 'REAL. Pixel scale in arcsec/pixel Typical range: 0.01 to 2.'
+    sql: '"PIXEL_SCALE_arcsec"'
+  read_noise_electrons:
+    description: 'REAL. Detector read noise in electrons Typical range: 0.5 to 20.'
+    sql: '"READ_NOISE_electrons"'
+  spectral_resolution:
+    description: 'REAL. Spectral resolving power R Typical range: 10 to 100000. **NULL means Not a spectrograph.**'
+    sql: '"SPECTRAL_RESOLUTION"'
+  status:
+    description: 'TEXT. Current instrument status Possible values: Operational, Degraded, Failed, Standby, Decommissioned.'
+    sql: '"STATUS"'
+  wavelength_min_nm:
+    description: 'REAL. Minimum wavelength in nm Typical range: 10 to 2000.'
+    sql: '"WAVELENGTH_MIN_nm"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  data_rate_mbps:
+    description: 'REAL. Data rate in Mbps Typical range: 0.1 to 200.'
+    sql: '"data_rate_Mbps"'
+  detector_pixels_x:
+    description: BIGINT. Detector x dimension in pixels
+    sql: detector_pixels_x
+  instrument_code:
+    description: TEXT. Instrument designation
+    sql: instrument_code
+  instrument_type:
+    description: 'TEXT. Type of instrument Possible values: Photometer, Spectrograph, Imager, Coronagraph, Interferometer, Polarimeter.'
+    sql: instrument_type
+  mission_ref:
+    description: BIGINT. Foreign key referencing SpaceMission(mission_id). Parent mission
+    sql: mission_ref
+  photometric_precision_ppm:
+    description: 'REAL. Photometric precision in parts per million Typical range: 1 to 1000.'
+    sql: photometric_precision_ppm
+  quantum_efficiency_pct:
+    description: 'REAL. Detector quantum efficiency (%) Typical range: 30 to 99.'
+    sql: quantum_efficiency_pct
+  total_exposures:
+    description: BIGINT. Total number of exposures taken
+    sql: total_exposures
+  wavelength_max_nm:
+    description: 'REAL. Maximum wavelength in nm Typical range: 500 to 28000.'
+    sql: wavelength_max_nm
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct MissionInstrument public identity values.
+    label: MissionInstrument Count
+    sql: ${planets_data_large_public__mission_instrument.instrument_id}

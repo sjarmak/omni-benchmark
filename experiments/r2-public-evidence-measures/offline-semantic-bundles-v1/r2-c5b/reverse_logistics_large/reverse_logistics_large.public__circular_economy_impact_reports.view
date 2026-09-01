@@ -1,0 +1,63 @@
+label: circular_economy_impact_reports
+description: All columns of the public table circular_economy_impact_reports.
+catalog: reverse_logistics_large
+schema: public
+table_name: circular_economy_impact_reports
+dimensions:
+  certification_standard_ref:
+    description: 'TEXT. Sustainability standard applied (e.g., R2v3). Unique values: R2v3, e-Stewards, ISO 14001, Internal.'
+    sql: certification_standard_ref
+  circularity_index_score:
+    description: 'REAL. Calculated Circularity Index (0.0 - 1.0). Example: 0.6.'
+    sql: circularity_index_score
+  co2_emissions_saved_kg:
+    description: 'REAL. Estimated CO2e avoided by recycling/reuse. Example: 10.0.'
+    sql: co2_emissions_saved_kg
+  disposal_guideline_ref:
+    description: 'INTEGER. Disposal guideline followed. Example: 50.'
+    sql: disposal_guideline_ref
+  energy_saved_kwh:
+    description: 'REAL. Estimated energy savings. Example: 5.0.'
+    sql: energy_saved_kwh
+  hazardous_material_treated_kg:
+    description: 'REAL. Amount of hazardous material safely treated. **NULL means No hazardous material.** Example: 50.0.'
+    sql: hazardous_material_treated_kg
+  impact_monetization_value:
+    description: 'REAL. Estimated monetary value of the environmental impact. Example: 5.0.'
+    sql: impact_monetization_value
+  impact_report_ref:
+    description: TEXT. Unique identifier for the impact report.
+    sql: impact_report_ref
+  landfill_avoidance_rate_pct:
+    description: 'REAL. Percentage of the item not sent to landfill. Example: 90.0.'
+    sql: landfill_avoidance_rate_pct
+  material_diverted_kg:
+    description: 'REAL. Mass of material diverted from landfill. Example: 2.0.'
+    sql: material_diverted_kg
+  packaging_reused_count:
+    description: 'INTEGER. Number of times the packaging was reused. Example: 50.'
+    sql: packaging_reused_count
+  recycling_purity_percent:
+    description: 'REAL. Purity of the recovered material stream. Example: 95.0.'
+    sql: recycling_purity_percent
+  report_generation_date:
+    description: TIMESTAMP. Date the report was generated.
+    sql: report_generation_date
+  return_case_ref:
+    description: TEXT. Return case analyzed.
+    sql: return_case_ref
+  sdg_alignment_score:
+    description: 'INTEGER. Number of UN SDGs this action supports. Example: 50.'
+    sql: sdg_alignment_score
+  transport_emissions_kg:
+    description: 'REAL. CO2 emitted during transport to disposal facility. Example: 2.0.'
+    sql: transport_emissions_kg
+  upcycling_potential_score:
+    description: 'INTEGER. Score (1-10) indicating potential for high-value reuse. Example: 50.'
+    sql: upcycling_potential_score
+  verification_body_name:
+    description: 'TEXT. Name of the third-party verifier. **NULL means Self-reported.** Unique values: SGS, Bureau Veritas, Intertek, None.'
+    sql: verification_body_name
+  water_saved_liters:
+    description: 'REAL. Estimated water savings. Example: 50.0.'
+    sql: water_saved_liters

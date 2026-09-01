@@ -1,0 +1,13 @@
+base_view: polar_equipment_large_public__maintenance_work_order
+label: MaintenanceWorkOrder
+description: All columns of the public table MaintenanceWorkOrder.
+fields:
+- polar_equipment_large_public__maintenance_work_order.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__operationmaintenance.*
+joins:
+  polar_equipment_large_public__operationmaintenance:
+    polar_equipment_large_public__equipment:
+      polar_equipment_large_public__equipmenttype: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

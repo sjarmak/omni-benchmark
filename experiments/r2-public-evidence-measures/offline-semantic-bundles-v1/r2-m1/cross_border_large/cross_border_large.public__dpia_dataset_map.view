@@ -1,0 +1,57 @@
+label: DPIA_Dataset_Map
+description: All columns of the public table DPIA_Dataset_Map.
+catalog: cross_border_large
+schema: public
+table_name: DPIA_Dataset_Map
+dimensions:
+  assessed_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When this mapping was last assessed
+    sql: '"ASSESSED_AT"'
+  dataset_ref:
+    description: BIGINT. Foreign key referencing Dataset_Catalog(dataset_code). Related dataset
+    sql: '"DATASET_REF"'
+  data_category:
+    description: 'TEXT. Category of data in this dataset Possible values: Personal, Special Category, Financial, Health, Biometric, Behavioral, Location.'
+    sql: '"DATA_CATEGORY"'
+  data_minimization_score:
+    description: 'REAL. Data minimization compliance score Typical range: 0 to 100.'
+    sql: '"DATA_MINIMIZATION_SCORE"'
+  dpia_dataset_map_id:
+    description: BIGINT. Primary key. Unique mapping identifier
+    sql: '"DPIA_DATASET_MAP_ID"'
+  encryption_at_rest:
+    description: BOOLEAN. Whether data is encrypted at rest Boolean flag (true/false).
+    sql: '"ENCRYPTION_AT_REST"'
+  retention_policy:
+    description: 'TEXT. Data retention policy applied Possible values: 30 days, 90 days, 1 year, 3 years, 7 years, Indefinite.'
+    sql: '"RETENTION_POLICY"'
+  cross_border_transfer:
+    description: BOOLEAN. Whether dataset is transferred cross-border Boolean flag (true/false).
+    sql: cross_border_transfer
+  dpia_ref:
+    description: BIGINT. Foreign key referencing DPIARecord(DPIA_ID). Related DPIA
+    sql: dpia_ref
+  encryption_in_transit:
+    description: BOOLEAN. Whether data is encrypted in transit Boolean flag (true/false).
+    sql: encryption_in_transit
+  estimated_records:
+    description: BIGINT. Estimated number of records processed
+    sql: estimated_records
+  processing_role:
+    description: 'TEXT. Organization''s role in processing this dataset Possible values: Controller, Processor, Joint Controller.'
+    sql: processing_role
+  pseudonymization_applied:
+    description: 'TEXT. Level of pseudonymization applied Possible values: Full, Partial, None.'
+    sql: pseudonymization_applied
+  transfer_mechanism:
+    description: 'TEXT. Transfer mechanism used Possible values: SCCs, BCRs, Adequacy Decision, Consent, Derogation. **NULL means No cross-border transfer.**'
+    sql: transfer_mechanism
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: updated_at
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DPIA_Dataset_Map public identity values.
+    label: DPIA_Dataset_Map Count
+    sql: ${cross_border_large_public__dpia_dataset_map.dpia_dataset_map_id}

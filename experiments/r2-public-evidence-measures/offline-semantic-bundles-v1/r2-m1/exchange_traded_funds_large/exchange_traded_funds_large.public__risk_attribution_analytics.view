@@ -1,0 +1,186 @@
+label: risk_attribution_analytics
+description: All columns of the public table risk_attribution_analytics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: risk_attribution_analytics
+dimensions:
+  activerisk:
+    description: 'TEXT. Active risk relative to benchmark with unit notation. Possible values: 0.8%, 0.85%, 1.8%, 3.2%, 4.5%, 5.8%, 6.8%, 8.2%.'
+    sql: activerisk
+  analysisdate:
+    description: 'DATE. Date of risk attribution analysis. Possible values: 2024-03-15.'
+    sql: analysisdate
+  calmarratio:
+    description: 'REAL. Calmar ratio maximum drawdown risk-adjusted performance measure. Possible values: 1.15, 1.58, 1.68, 1.95, 2.15, 2.25, 2.85, 3.25.'
+    sql: calmarratio
+  categoryaveragerisk:
+    description: 'TEXT. Category average risk measure with unit notation. Possible values: 13.2%, 14.2%, 17.8%, 20.8%, 22.1%, 25.8%, 3.1%, 4.6%.'
+    sql: categoryaveragerisk
+  conditionalvar:
+    description: 'TEXT. Conditional Value at Risk measure with unit notation. Possible values: 1.15%, 1.85%, 12.85%, 5.45%, 5.85%, 8.45%, 8.85%, 9.25%.'
+    sql: conditionalvar
+  counterpartyrisk:
+    description: 'REAL. Counterparty risk exposure. Possible values: 0.05, 0.08, 0.12, 0.15, 0.18, 0.28, 1.85.'
+    sql: counterpartyrisk
+  credit_scoringriskscore_score_cred:
+    description: 'TEXT. Credit risk score with unit notation. **NULL means credit risk is not applicable for equity-focused funds.**. Possible values: 2.8, 4.2, 8.5.'
+    sql: credit_scoringriskscore_score_cred
+  credit_scoringspreadrisk:
+    description: 'TEXT. Credit spread risk measure with unit notation. **NULL means credit spread risk is not applicable for equity-focused funds.**. Possible values: 0.45%, 0.85%, 2.85%.'
+    sql: credit_scoringspreadrisk
+  currencyrisk:
+    description: 'REAL. Currency risk exposure. Possible values: 0.05, 0.08, 0.12, 0.15, 0.18, 0.25, 5.85.'
+    sql: currencyrisk
+  datasource:
+    description: 'TEXT. Source of the risk attribution data. Possible values: ALERIAN RISK ANALYTICS, ALPS RISK MANAGEMENT, INVESCO RISK ANALYTICS, ISHARES ESG RISK, ISHARES GREEN RISK, STATE STREET RISK, VANGUARD EM RISK, WISDOMTREE RISK.'
+    sql: datasource
+  defaultrisk:
+    description: 'TEXT. Default risk assessment with unit notation. **NULL means default risk is not applicable for equity-focused funds.**. Possible values: 0.08%, 0.15%, 1.25%.'
+    sql: defaultrisk
+  developedmarketsrisk:
+    description: 'TEXT. Developed markets risk exposure with unit notation. Possible values: 0.0%, 0.2%, 0.4%, 0.5%, 1.0%, 1.2%, 4.2%.'
+    sql: developedmarketsrisk
+  domesticrisk:
+    description: 'TEXT. Domestic market risk exposure with unit notation. Possible values: 15.2%, 18.1%, 2.8%, 2.9%, 20.5%, 24.3%, 26.8%, 4.1%.'
+    sql: domesticrisk
+  earlywarningsignals:
+    description: 'BIGINT. Number of early warning signals triggered. Possible values: 0, 1, 12, 18, 2, 4, 5, 8.'
+    sql: earlywarningsignals
+  emergingmarketsrisk:
+    description: 'TEXT. Emerging markets risk exposure with unit notation. Possible values: 0.0%, 0.1%, 0.2%, 0.5%, 0.6%, 7.8%.'
+    sql: emergingmarketsrisk
+  flowrisk:
+    description: 'REAL. Fund flow risk measure. Possible values: 0.08, 0.12, 0.18, 0.28, 0.45, 0.58, 0.85, 1.85.'
+    sql: flowrisk
+  fundticker:
+    description: 'TEXT. Fund ticker symbol identifier. Possible values: ACES, AGGP, DIVA, GRN, LD, QQQ, SPY, VWOB.'
+    sql: fundticker
+  geographicconcentration:
+    description: 'TEXT. Geographic concentration risk with unit notation. Possible values: 1.2%, 1.8%, 18.5%, 2.1%, 2.5%, 2.8%, 3.2%.'
+    sql: geographicconcentration
+  herfindahlindex:
+    description: 'REAL. Herfindahl concentration index. Possible values: 0.025, 0.045, 0.085, 0.125, 0.185, 0.285.'
+    sql: herfindahlindex
+  idiosyncraticrisk:
+    description: 'TEXT. Idiosyncratic risk component with unit notation. Possible values: 0.4%, 0.6%, 2.3%, 2.7%, 3.3%, 3.6%, 3.7%.'
+    sql: idiosyncraticrisk
+  lastupdated:
+    description: 'TEXT. Timestamp of last data update. Possible values: 2024-03-15 11:15:00 AKST-9.'
+    sql: lastupdated
+  liquidityriskscore_score_liq:
+    description: 'TEXT. Liquidity risk score with unit notation. Possible values: 2.1, 2.8, 3.8, 4.1, 4.2, 5.8, 6.8.'
+    sql: liquidityriskscore_score_liq
+  liquiditystressrisk:
+    description: 'TEXT. Liquidity stress risk assessment with unit notation. Possible values: 0.15%, 0.18%, 0.25%, 0.45%, 0.68%, 0.85%, 1.25%, 2.85%.'
+    sql: liquiditystressrisk
+  marketrisk:
+    description: 'REAL. Market factor risk exposure. Possible values: 0.45, 0.85, 11.8, 15.8, 18.5, 21.5, 22.5, 9.8.'
+    sql: marketrisk
+  momentumrisk:
+    description: 'REAL. Momentum factor risk exposure. Possible values: -0.15, -0.22, 0.05, 0.08, 0.12, 0.28, 0.35.'
+    sql: momentumrisk
+  operationalriskscore_score_ops:
+    description: 'TEXT. Operational risk score with unit notation. Possible values: 1.5, 1.8, 2.2, 2.5, 3.2, 3.8, 4.5, 5.8.'
+    sql: operationalriskscore_score_ops
+  qualityrisk:
+    description: 'REAL. Quality factor risk exposure. Possible values: -0.08, -0.15, 0.03, 0.18, 0.25, 0.35, 0.85.'
+    sql: qualityrisk
+  riskadjustedreturn:
+    description: 'TEXT. Risk-adjusted return measure with unit notation. Possible values: 1.25% stress/rates, 1.85% stress/rates, 2.15% stress/rates, 2.85% stress/rates, 3.85% stress/rates, 4.85% stress/rates, 8.85% stress/rates.'
+    sql: riskadjustedreturn
+  riskattributionid:
+    description: 'BIGSERIAL. Primary key identifier for risk attribution analytics record. PK. Possible values: 1, 2, 3, 4, 5, 6, 7, 8.'
+    sql: riskattributionid
+  riskbudgetutilization:
+    description: 'TEXT. Risk budget utilization percentage with unit notation. Possible values: 52.8%, 68.5%, 78.5%, 82.5%, 85.2%, 88.5%, 92.5%.'
+    sql: riskbudgetutilization
+  riskefficiency:
+    description: 'REAL. Risk efficiency assessment score. Possible values: 0.78, 0.88, 0.92, 0.95, 1.02, 1.05, 1.08, 1.25.'
+    sql: riskefficiency
+  risklimitbreaches:
+    description: 'BIGINT. Number of risk limit breaches during period. Possible values: 0, 1, 12, 2, 3, 5, 8.'
+    sql: risklimitbreaches
+  riskpercentilerank:
+    description: 'BIGINT. Risk percentile ranking among peers. Possible values: 15, 25, 45, 68, 72, 78, 85, 88.'
+    sql: riskpercentilerank
+  sectorconcentration:
+    description: 'TEXT. Sector concentration risk with unit notation. Possible values: 12.5%, 18.5%, 22.5%, 28.5%, 28.9%, 4.5%, 45.8%, 8.5%.'
+    sql: sectorconcentration
+  sectorriskexp:
+    description: JSONB column. Groups sector-specific risk exposures across all major market sectors
+    sql: sectorriskexp
+  sharperatio:
+    description: 'REAL. Sharpe ratio risk-adjusted performance measure. Possible values: 0.85, 0.95, 1.15, 1.25, 1.35, 1.42, 1.58, 1.85.'
+    sql: sharperatio
+  singlenameconcentration:
+    description: 'TEXT. Single name concentration risk with unit notation. Possible values: 0.8%, 1.2%, 12.5%, 2.8%, 4.5%, 6.8%, 8.5%.'
+    sql: singlenameconcentration
+  sizerisk:
+    description: 'REAL. Size factor risk exposure. Possible values: -0.02, -0.05, 0.08, 0.12, 0.15, 0.25, 0.45, 0.85.'
+    sql: sizerisk
+  sortinoratio:
+    description: 'REAL. Sortino ratio downside risk-adjusted performance measure. Possible values: 0.95, 1.12, 1.35, 1.45, 1.58, 1.68, 1.85, 2.15.'
+    sql: sortinoratio
+  stresstestres:
+    description: JSONB column. Combines results from various historical stress test scenarios including financial crises and market shocks
+    sql: stresstestres
+  systematicrisk:
+    description: 'TEXT. Systematic risk component with unit notation. Possible values: 11.2%, 12.5%, 16.2%, 19.8%, 2.8%, 22.1%, 24.8%, 4.2%.'
+    sql: systematicrisk
+  totalrisk:
+    description: 'TEXT. Total portfolio risk measure with unit notation. Possible values: 14.8%, 15.8%, 18.5%, 22.1%, 24.8%, 28.5%, 3.2%, 4.8%.'
+    sql: totalrisk
+  valuerisk:
+    description: 'REAL. Value factor risk exposure. Possible values: -0.08, 0.08, 0.12, 0.15, 0.18, 0.25, 0.45.'
+    sql: valuerisk
+  var1day95:
+    description: 'TEXT. One-day Value at Risk at 95% confidence with unit notation. Possible values: 0.02, 0.08, 0.12, 0.25, 0.35, 0.38, 0.45, 0.58.'
+    sql: var1day95
+  var1day99:
+    description: 'TEXT. One-day Value at Risk at 99% confidence with unit notation. Possible values: 0.22%, 0.35%, 1.15%, 1.25%, 1.45%, 1.85%, 2.85%.'
+    sql: var1day99
+  var1month95:
+    description: 'TEXT. One-month Value at Risk at 95% confidence with unit notation. Possible values: 0.55%, 0.85%, 2.85%, 4.25%, 4.85%, 6.85%.'
+    sql: var1month95
+  var1week95:
+    description: 'TEXT. One-week Value at Risk at 95% confidence with unit notation. Possible values: 0.38%, 0.58%, 1.85%, 2.05%, 2.85%, 3.15%, 3.25%, 4.85%.'
+    sql: var1week95
+  volatilityrisk:
+    description: 'REAL. Volatility factor risk exposure. Possible values: 0.02, 0.05, 0.18, 0.28, 0.45, 0.68, 0.85, 2.85.'
+    sql: volatilityrisk
+  sectorriskexp_consumer_risk:
+    description: 'REAL. Consumer sector risk exposure. Possible values: 0.04, 0.08, 0.18, 0.22, 0.28, 0.31, 0.45.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sectorriskexp, 'consumer_risk')
+  sectorriskexp_energy_risk:
+    description: 'REAL. Energy sector risk exposure. Possible values: 0.02, 0.05, 0.08, 0.12, 0.15, 0.85, 1.25, 8.25.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sectorriskexp, 'energy_risk')
+  sectorriskexp_financials_risk:
+    description: 'REAL. Financials sector risk exposure. Possible values: 0.05, 0.08, 0.12, 0.15, 0.18, 0.28, 0.32, 0.45.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sectorriskexp, 'financials_risk')
+  sectorriskexp_healthcare_risk:
+    description: 'REAL. Healthcare sector risk exposure. Possible values: 0.005, 0.01, 0.02, 0.08, 0.12, 0.15, 0.22.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sectorriskexp, 'healthcare_risk')
+  sectorriskexp_industrials_risk:
+    description: 'REAL. Industrials sector risk exposure. Possible values: 0.02, 0.05, 0.08, 0.12, 0.19, 0.22, 2.85, 5.85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sectorriskexp, 'industrials_risk')
+  sectorriskexp_technology_risk:
+    description: 'REAL. Technology sector risk exposure. Possible values: 0.01, 0.02, 0.08, 0.18, 0.45, 1.85, 2.85, 8.85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sectorriskexp, 'technology_risk')
+  stresstestres_stress_2008_crisis:
+    description: 'TEXT. Stress test result based on 2008 financial crisis with unit notation. Possible values: 0.48%, 0.78%, 2.45%, 3.15%, 4.25%, 4.85%, 5.25%, 7.25%.'
+    sql: JSONB_EXTRACT_PATH_TEXT(stresstestres, 'stress_2008_crisis')
+  stresstestres_stress_covid_pandemic:
+    description: 'TEXT. Stress test result based on COVID-19 pandemic with unit notation. Possible values: 1.85% stress/2008, 12.85% stress/2008, 18.85% stress/2008, 2.85% stress/2008, 5.85% stress/2008, 8.25% stress/2008.'
+    sql: JSONB_EXTRACT_PATH_TEXT(stresstestres, 'stress_covid_pandemic')
+  stresstestres_stress_flash_crash:
+    description: 'TEXT. Stress test result based on flash crash scenario with unit notation. Possible values: 1.25% stress/covid, 1.85% stress/covid, 12.85% stress/covid, 3.85% stress/covid, 4.85% stress/covid, 8.25% stress/covid, 8.45% stress/covid.'
+    sql: JSONB_EXTRACT_PATH_TEXT(stresstestres, 'stress_flash_crash')
+  stresstestres_stress_interest_rate_shock:
+    description: 'TEXT. Stress test result based on interest rate shock with unit notation. Possible values: 0.45% stress/flash, 0.85% stress/flash, 1.85% stress/flash, 2.45% stress/flash, 4.15% stress/flash, 4.25% stress/flash, 6.85% stress/flash, 8.85% stress/flash.'
+    sql: JSONB_EXTRACT_PATH_TEXT(stresstestres, 'stress_interest_rate_shock')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct risk_attribution_analytics public identity values.
+    label: risk_attribution_analytics Count
+    sql: ${exchange_traded_funds_large_public__risk_attribution_analytics.riskattributionid}

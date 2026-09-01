@@ -1,0 +1,71 @@
+label: Weather And Structure
+description: Weather and structure records with structural-safety semantics and field context.
+catalog: polar_equipment_large
+schema: public
+table_name: WeatherAndStructure
+dimensions:
+  external_temperature_c:
+    description: 'REAL. External temperature in Celsius. Example: -14.9.'
+    label: External Temperature (C)
+    sql: '"extTempC"'
+    ai_context: 'externaltemperaturec: External temperature in polar regions typically ranges from -70°C to 10°C. Temperatures below -40°C represent extreme cold requiring special equipment protection measures, -20°C to -40°C require standard cold weather protocols, while temperatures above -20°C are considered relatively mild for polar operations but still require normal cold weather precautions.'
+  wind_speed_mps:
+    description: 'REAL. Wind speed in meters per second. Example: 26.5.'
+    label: Wind Speed (m/s)
+    sql: '"windSpeed_ms"'
+    ai_context: 'windspeedms: Wind speeds in polar environments typically range from 0 to 60 m/s. Speeds below 5 m/s represent calm conditions, 5-15 m/s indicate moderate winds with minor operational impact, 15-25 m/s represent strong winds requiring additional safety measures, and speeds above 25 m/s indicate dangerous conditions that may require suspension of outdoor activities and securing of equipment.'
+  snow_load_kg_m2:
+    description: 'BIGINT. Snow load in kilograms per square meter. Example: 459.7.'
+    label: Snow Load (kg/m2)
+    sql: '"snowLoad_kgm2"'
+  structural_load_percent:
+    description: 'REAL. Structural load percentage. Example: 62.'
+    label: Structural Load Percent
+    sql: '"structLoadPct"'
+  weather_id:
+    description: BIGSERIAL. Unique identifier for the weather and structure record. PK.
+    sql: '"WEATHER_ID"'
+  baro_press_hpa:
+    description: 'REAL. Barometric pressure in hectopascals. Example: 975.3.'
+    sql: '"baroPress_hpa"'
+  ice_thick_cm:
+    description: 'REAL. Ice thickness in centimeters. Example: 254.4.'
+    sql: '"iceThick_cm"'
+  loc_link:
+    description: TEXT. Reference to the location. FK to Location.STATION_name.
+    sql: loc_link
+  noise_level_d_b:
+    description: 'REAL. Noise level in decibels. Example: 38.5.'
+    sql: '"noiseLevel_dB"'
+  opmaint_link:
+    description: BIGINT. Reference to the operation and maintenance record. FK to OperationMaintenance.OP_MAINT_ID.
+    sql: opmaint_link
+  precip_rate_mmh:
+    description: 'REAL. Precipitation rate in millimeters per hour. Example: 2.4.'
+    sql: '"precipRate_mmh"'
+  precip_type:
+    description: 'TEXT. Type of precipitation (e.g., rain, snow). **NULL means no precipitation type recorded.**. Possible values: Blowing Snow, Ice, Snow.'
+    sql: '"precipType"'
+  snow_depth_cm:
+    description: 'BIGINT. Snow depth in centimeters. Example: 143.6.'
+    sql: '"snowDepth_cm"'
+  solar_rad_wm2:
+    description: 'REAL. Solar radiation in watts per square meter. Example: 541.0.'
+    sql: '"solarRad_wm2"'
+  struct_integrity_stat:
+    description: 'TEXT. Structural integrity status. **NULL means no structural integrity status recorded.**. Possible values: Critical, Normal, Warning.'
+    sql: '"structIntegrityStat"'
+  vibr_level_mms2:
+    description: 'REAL. Vibration level in millimeters squared. Example: 8.61.'
+    sql: '"vibrLevel_mms2"'
+  visibility_km:
+    description: 'REAL. Visibility in kilometers. Example: 42.8.'
+    sql: visibility_km
+  wind_dir_deg:
+    description: 'REAL. Wind direction in degrees. **NULL means no wind direction data recorded.**. Example: 71.4.'
+    sql: '"windDir_deg"'
+  structural_safety_factor:
+    label: Structural Safety Factor (SSF)
+    description: Evaluates the safety margin of structures under extreme weather conditions.
+    sql: (100.0 - ${structural_load_percent}) / 100.0 * CASE WHEN ${snow_load_kg_m2} > 100.0 OR ${wind_speed_mps} > 20.0 THEN 0.5 WHEN ${snow_load_kg_m2} > 50.0 OR ${wind_speed_mps} > 10.0 THEN 0.8 ELSE 1.0 END
+    ai_context: Use this modeled field for Structural Safety Factor (SSF); do not reconstruct its formula.

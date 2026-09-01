@@ -1,0 +1,81 @@
+label: IncidentRegister
+description: All columns of the public table IncidentRegister.
+catalog: cross_border_large
+schema: public
+table_name: IncidentRegister
+dimensions:
+  cross_border_flag:
+    description: BOOLEAN. Whether incident involves cross-border data transfer Boolean flag (true/false).
+    sql: '"CROSS_BORDER_FLAG"'
+  data_categories_impacted:
+    description: 'TEXT. Types of data categories compromised Possible values: PII, Financial, Health, Biometric, Communications, Mixed.'
+    sql: '"DataCategories_Impacted"'
+  incident_id:
+    description: BIGINT. Primary key. Unique identifier for each data breach/security incident
+    sql: '"INCIDENT_ID"'
+  incident_type:
+    description: 'TEXT. Classification of the incident type Possible values: Data Breach, Unauthorized Access, Data Loss, Ransomware, Phishing, Insider Threat, System Compromise, DDoS.'
+    sql: '"INCIDENT_TYPE"'
+  investigator_email:
+    description: TEXT. Email of the lead investigator
+    sql: '"INVESTIGATOR_EMAIL"'
+  records_affected:
+    description: BIGINT. Number of data records affected **NULL means Impact assessment not yet complete.**
+    sql: '"RECORDS_AFFECTED"'
+  regulatory_report_required:
+    description: BOOLEAN. Whether regulatory notification is mandated Boolean flag (true/false).
+    sql: '"REGULATORY_REPORT_REQUIRED"'
+  report_time:
+    description: TIMESTAMP WITHOUT TIME ZONE. When the incident was formally reported **NULL means Not yet formally reported.**
+    sql: '"REPORT_TIME"'
+  response_plan_activated:
+    description: 'TEXT. Level of incident response plan activation Possible values: Full, Partial, Standby, None.'
+    sql: '"RESPONSE_PLAN_ACTIVATED"'
+  sla_notification_hours:
+    description: BIGINT. Required notification SLA in hours
+    sql: '"SLA_NOTIFICATION_HOURS"'
+  status:
+    description: 'TEXT. Current status of the incident Possible values: Open, Investigating, Contained, Remediated, Closed.'
+    sql: '"STATUS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  compliance_ref:
+    description: BIGINT. Foreign key referencing Compliance(complianceTrace). Related compliance record
+    sql: compliance_ref
+  containment_time:
+    description: TIMESTAMP WITHOUT TIME ZONE. When the incident was contained **NULL means Incident not yet contained.**
+    sql: '"containment_Time"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  detection_time:
+    description: TIMESTAMP WITHOUT TIME ZONE. When the incident was first detected
+    sql: detection_time
+  estimated_financial_impact:
+    description: 'REAL. Estimated total financial impact in USD Typical range: 0 to 10000000. **NULL means Financial impact not yet assessed.**'
+    sql: estimated_financial_impact
+  incident_code:
+    description: TEXT. Human-readable incident reference code
+    sql: incident_code
+  incident_timeline:
+    description: JSONB. Detailed timeline of incident events
+    sql: incident_timeline
+  law_enforcement_involved:
+    description: BOOLEAN. Whether law enforcement has been engaged Boolean flag (true/false).
+    sql: law_enforcement_involved
+  lead_investigator:
+    description: 'TEXT. Name of lead investigator Possible values: J. Smith, A. Johnson, M. Chen, K. Williams, S. Patel, R. Brown.'
+    sql: lead_investigator
+  risk_trace_ref:
+    description: BIGINT. Foreign key referencing RiskManagement(RISKTRACE). Associated risk assessment
+    sql: risk_trace_ref
+  root_cause_category:
+    description: 'TEXT. Root cause classification Possible values: Human Error, Malicious Attack, System Failure, Third Party, Process Gap, Unknown. **NULL means Root cause analysis pending.**'
+    sql: '"rootCauseCategory"'
+  severity_level:
+    description: 'TEXT. Severity classification Possible values: Critical, High, Medium, Low.'
+    sql: '"severity_Level"'
+  subjects_affected:
+    description: BIGINT. Number of data subjects impacted **NULL means Subject count not yet determined.**
+    sql: subjects_affected

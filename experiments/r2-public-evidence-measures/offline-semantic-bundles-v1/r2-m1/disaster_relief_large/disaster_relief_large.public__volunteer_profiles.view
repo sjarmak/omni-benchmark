@@ -1,0 +1,93 @@
+label: VolunteerProfiles
+description: All columns of the public table VolunteerProfiles.
+catalog: disaster_relief_large
+schema: public
+table_name: VolunteerProfiles
+dimensions:
+  exp_index_human_level:
+    description: INT. Simplified expertise index where 1 = novice and 5 = expert.
+    sql: '"EXP_index_HUMAN_level"'
+  gender:
+    description: TEXT. Self-identified gender (e.g., Female, Male, Non-binary).
+    sql: '"GENDER"'
+  hr_ref:
+    description: VARCHAR(20). References HumanResources(HRRegistry); links the profile to a master HR record.
+    sql: '"HR_ref"'
+  last_deployed:
+    description: DATE. Start date of the most recent deployment. **Nullable** if never deployed.
+    sql: '"LAST_DEPLOYED"'
+  last_name:
+    description: TEXT. Volunteer’s family name.
+    sql: '"LAST_name"'
+  nationality:
+    description: TEXT. Country of citizenship.
+    sql: '"NATIONALITY"'
+  skill_level:
+    description: 'TEXT. Self-assessed proficiency level. Possible values: Novice, Intermediate, Advanced, Expert.'
+    sql: '"SKILL_LEVEL"'
+  status:
+    description: 'TEXT. Current participation state. Possible values: Active, Inactive, Deployed.'
+    sql: '"STATUS"'
+  skill_primary:
+    description: TEXT. Main skill category (e.g., Medical, Logistics, Search & Rescue).
+    sql: '"SkillPrimary"'
+  updated_at:
+    description: TIMESTAMP. Most recent update time.
+    sql: '"Updated_At"'
+  volunteerid:
+    description: VARCHAR(20). Unique volunteer identifier. Primary Key.
+    sql: '"VOLUNTEERID"'
+  contact_and_availability:
+    description: JSONB column. Bundles contact channels and temporal / spatial availability details for each volunteer.
+    sql: contact_and_availability
+  created_at:
+    description: TIMESTAMP (yyyy-mm-dd HH:MM:SS). Record creation time.
+    sql: created_at
+  date_of_birth:
+    description: DATE (yyyy-mm-dd). Volunteer’s birth date.
+    sql: date_of_birth
+  emergency_contact_phone:
+    description: TEXT. Emergency contact phone number. **Nullable** if not supplied.
+    sql: '"emergencyContactPhone"'
+  emergency_contact_name:
+    description: TEXT. Name of the designated emergency contact.
+    sql: '"emergency_contact_NAME"'
+  first_name:
+    description: TEXT. Volunteer’s given name.
+    sql: '"first_Name"'
+  medical_conditions:
+    description: TEXT. Relevant medical conditions or allergies. **Nullable**; use “None” if explicitly declared none.
+    sql: '"medical_CONDITIONS"'
+  skill_secondary:
+    description: TEXT. Secondary skill category. **Nullable** if none declared.
+    sql: skill_secondary
+  years_experience:
+    description: 'REAL. Total years of relevant field experience. Units: **years**. **Nullable** when unknown.'
+    sql: '"yearsExperience"'
+  contact_and_availability_addr:
+    description: TEXT. Mailing or residential address. **Nullable** when not provided.
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_and_availability, 'addr')
+  contact_and_availability_avail_end:
+    description: DATE. Last day of the stated availability window.
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_and_availability, 'availEnd')
+  contact_and_availability_avail_start:
+    description: DATE (yyyy‑mm‑dd). First day the volunteer is available for deployment.
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_and_availability, 'availStart')
+  contact_and_availability_daily_window:
+    description: TEXT. Daily availability window in **HH:MM–HH:MM** 24‑hour format (e.g., “08:00–20:00”).
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_and_availability, 'dailyWindow')
+  contact_and_availability_distance_km:
+    description: REAL. Straight-line distance from volunteer’s address to the primary coordination hub in **kilometres** (e.g., 15.0).
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_and_availability, 'distanceKm')
+  contact_and_availability_email:
+    description: TEXT. Preferred email address. **Nullable** if the volunteer has none.
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_and_availability, 'email')
+  contact_and_availability_phone:
+    description: TEXT. Primary phone number in international format (e.g., “+81-555-1234”).
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_and_availability, 'phone')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct VolunteerProfiles public identity values.
+    label: VolunteerProfiles Count
+    sql: ${disaster_relief_large_public__volunteer_profiles.volunteerid}

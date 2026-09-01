@@ -1,0 +1,74 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Fan Financial Value (FFV): FFV = \frac{\text{Total Spending in USD}}{\text{Membership Duration in Days} / 30.44}
+
+  - Reputation Level: Represents a fan''s standing and trustworthiness in the community. Common levels are ''Respected'', ''Established'', and ''Elite''.
+
+  - Merchandise Affinity Score (MAS): MAS = \frac{\text{Total Merchandise Spend in USD}}{\text{Total Spending in USD}}
+
+  - Spending Frequency: Describes a fan''s purchasing behavior pattern. ''Weekly'' or ''Daily'' indicates consistent spending. ''Occasional'' indicates sporadic purchasing.
+
+  - Loyalty Reward Tiers: Represents the levels in the loyalty program, such as ''Bronze'', ''Silver'', ''Gold'', and ''Platinum'', each unlocking different rewards.
+
+  - Data Archival Process: A transactional process that first copies a specific subset of data (defined by age and user status) from a source table to an archive table, and then deletes that same subset of data from the source table.
+
+  - Composite Index: A database object created using CREATE INDEX on two or more columns of a table.
+
+  - Upsert Operation: An INSERT statement that includes an ON CONFLICT DO UPDATE clause to handle potential primary key violations by updating the existing record instead of failing.
+
+  - Data Integrity Constraint: A database rule, often implemented with a CHECK clause in a CREATE TABLE or ALTER TABLE statement, that validates data upon insertion or update.
+
+  - Monetary Domain: A custom data type created using CREATE DOMAIN that is based on a numeric type and includes a CHECK constraint to ensure the value is non-negative.
+
+  - Average Time to First Gift: For a given fan cohort, this is calculated by first finding the minimum time difference between the registration date and the date of any interaction with a gift value greater than zero for each fan, and then averaging these minimum time differences across the entire cohort.
+
+  - Achievement Density (AD): AD = \frac{\text{Total Achievements Unlocked}}{\text{Membership Duration in Days}}
+
+  - Whale Fan: A fan is classified as a Whale Fan if their Fan Monetization Index (FMI) is greater than 20.
+
+  - Engaged Lurker: A fan is an Engaged Lurker if their Content Consumption Index (CCI) is greater than 0.5 and their Chattiness Score (CS) is less than 0.5.
+
+  - High-Value Member: A fan is a High-Value Member if they are a Premium Member and their Fan Financial Value (FFV) is greater than $50 per month.
+
+  - Community Influencer: A fan is a Community Influencer if their Follower-to-Following Ratio (FFR) is greater than 2.0 and their Community Influence Index (CII) is greater than 10000.
+
+  - Super Creator: A fan is a Super Creator if their Content Creator Score (CCS) is greater than 200.
+
+  - Loyal Achiever: A fan is a Loyal Achiever if their Achievement Density (AD) is greater than 0.2 and their Loyalty Progression Rate (LPR) is greater than 500.
+
+  - High-Maintenance Fan: A fan is classified as High-Maintenance if their Support Load Score (SLS) is greater than 10.
+
+  - Platform Promoter: A fan is a Platform Promoter if they are classified in the ''Promoters'' category based on NPS Score Tiers.
+
+  - Event Enthusiast: A fan is an Event Enthusiast if their Event Participation Score (EPS) is greater than 25.
+
+  - Rising Star Influencer: A fan is a Rising Star Influencer if their Viral Potential Score (VPS) is greater than 50 and their Community Influence Index (CII) is between 1000 and 10000.
+
+  - Fan Segments: A classification of fans based on their rank for Fan Financial Value (FFV) and Support Load Score (SLS). Fans are split into top/bottom 50% for each metric to create four quadrants: ''Ideal Fans'', ''At-Risk VIPs'', ''Quiet Majority'', and ''Resource Drain''.
+
+  - Peak Monetization Index: The maximum value of the Fan Monetization Index (FMI) calculated across all of a fan''s interaction sessions.
+
+  - Conversion Funnel Analysis: This analysis requires calculating Time to Conversion and Interactions Before Conversion. As the subscription date is not explicitly stored, it must be estimated using the formula: (current date - membership duration in days).
+
+  - Lone Wolf: A fan is a ''Lone Wolf'' if their Achievement Density (AD) is greater than 0.5 AND their Social Capital Score (SCS) is less than 100.
+
+  - Spending Velocity Cohort Analysis: This analysis identifies a fan cohort, calculates each fan''s daily Cumulative Spending trajectory, and then computes the average of these daily cumulative totals for all days up to each milestone (e.g., 7, 30, and 90 days).
+
+  - Idol Superfan: A fan is an Idol Superfan if they are classified as both a Whale Fan and an Event Enthusiast.
+
+  - Ripple Effect Analysis: This analysis identifies all interactions involving the target user segment. For each such interaction, it defines a ''session'' based on a Session Time Window. It then aggregates the behaviors (e.g., chat sentiment) of all non-target users within that session to measure the influence.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

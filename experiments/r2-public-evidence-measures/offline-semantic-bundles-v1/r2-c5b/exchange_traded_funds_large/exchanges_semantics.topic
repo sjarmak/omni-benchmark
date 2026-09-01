@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__exchanges
+label: exchanges
+description: All columns of the public table exchanges.
+fields:
+- exchange_traded_funds_large_public__exchanges.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,11 @@
+base_view: planets_data_large_public__planetary_atmospheres
+label: planetary_atmospheres
+description: All columns of the public table planetary_atmospheres.
+fields:
+- planets_data_large_public__planetary_atmospheres.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__planets:
+    planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,11 @@
+base_view: sports_events_large_public__tvbroadcast
+label: TVBroadcast
+description: All columns of the public table TVBroadcast.
+fields:
+- sports_events_large_public__tvbroadcast.*
+- sports_events_large_public__circuits.*
+- sports_events_large_public__races.*
+joins:
+  sports_events_large_public__races:
+    sports_events_large_public__circuits: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,63 @@
+label: sprint_results
+description: All columns of the public table sprint_results.
+catalog: sports_events_large
+schema: public
+table_name: sprint_results
+dimensions:
+  makeref:
+    description: 'INTEGER. Foreign key to the constructors table (CSTR_Key). FK to constructors. Example: 9.'
+    sql: makeref
+  matchref:
+    description: 'INTEGER. Foreign key to the races table (RAK_ID). FK to races. Example: 1061.'
+    sql: matchref
+  rno:
+    description: 'INTEGER. Sprint result number. **NULL means no sprint result number available.**. Example: 33.'
+    sql: rno
+  sprint_performance:
+    description: JSONB column. Captures performance metrics in sprint races including lap data, timing, position, and score.
+    sql: sprint_performance
+  srescode:
+    description: 'INTEGER. Unique sprint result code. PK. Example: 1.'
+    sql: srescode
+  unitdrive:
+    description: 'INTEGER. Foreign key to the drivers table (DRV_MAIN). FK to drivers. Example: 830.'
+    sql: unitdrive
+  sprint_performance_fastest_lap_lap_number:
+    description: 'INTEGER. Fastest lap in the sprint. Example: 14.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'fastest_lap', 'lap_number')
+  sprint_performance_fastest_lap_lap_time:
+    description: 'TEXT. Fast lap time for the sprint. Example: 1:30.013.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'fastest_lap', 'lap_time')
+  sprint_performance_final_position:
+    description: 'INTEGER. Sprint-race finishing position. **NULL means the driver did not finish / classify.**. Example: 1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'final_position')
+  sprint_performance_grid:
+    description: 'INTEGER. Starting grid position. Example: 2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'grid')
+  sprint_performance_laps_completed:
+    description: 'INTEGER. Number of loops in the sprint. Example: 17.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'laps_completed')
+  sprint_performance_points:
+    description: 'REAL. Points scored in the sprint. **NULL means no points were awarded or result is pending.**. Possible values: 0, 1, 2, 3, 4, 5, 6, 7, 8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'points')
+  sprint_performance_position_label:
+    description: 'VARCHAR. Sprint position label. **NULL means label not provided.**. Example: 1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'position_label')
+  sprint_performance_ranking_order:
+    description: 'INTEGER. Order mark for the sprint result. Example: 1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'ranking_order')
+  sprint_performance_status_code:
+    description: 'INTEGER. Sprint code. Possible values: 1, 3, 10, 23, 31, 43, 76, 130.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'status_code')
+  sprint_performance_timing_duration_ms:
+    description: 'INTEGER. Milliseconds for the sprint. Example: 1538426.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'timing', 'duration_ms')
+  sprint_performance_timing_final_time:
+    description: 'VARCHAR. Final total time / status marker for the sprint race. **NULL means the finisher had no classified time or data are not available.**. Example: 25:38.426.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sprint_performance, 'timing', 'final_time')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct sprint_results public identity values.
+    label: sprint_results Count
+    sql: ${sports_events_large_public__sprint_results.srescode}

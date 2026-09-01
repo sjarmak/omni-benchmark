@@ -1,0 +1,21 @@
+label: preparer
+description: All columns of the public table preparer.
+catalog: labor_certification_applications_large
+schema: public
+table_name: preparer
+dimensions:
+  prepbiz:
+    description: 'TEXT. Business name of the preparer. **NULL means no business name provided.**. Example: Musillo Unkenholt, LLC..'
+    sql: prepbiz
+  prepfname:
+    description: 'TEXT. First name of the preparer. Example: Tyler.'
+    sql: prepfname
+  preplname:
+    description: 'TEXT. Last name of the preparer. Example: Peace.'
+    sql: preplname
+  prepmail:
+    description: TEXT. Preparer’s email address. PK.
+    sql: prepmail
+  prepmi:
+    description: 'TEXT. Middle initial of the preparer. Example: J.'
+    sql: prepmi

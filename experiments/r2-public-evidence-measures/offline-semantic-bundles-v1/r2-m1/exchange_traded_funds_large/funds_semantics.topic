@@ -1,0 +1,8 @@
+base_view: exchange_traded_funds_large_public__funds
+label: Exchange-Traded Funds
+description: Fund records with row-level cost, yield, allocation, momentum, valuation, and liquidity semantics.
+fields:
+- exchange_traded_funds_large_public__funds.*
+joins: {}
+ai_context: "This topic models no cross-table joins.\nUse the modeled business fields composite_valuation_score, growth_value_spectrum_score, has_golden_cross_signal, is_efficient_income_generator, is_low_turnover_strategy, is_total_return_fund, net_yield_advantage, portfolio_liquidity_pressure, relative_expense_ratio, short_term_momentum, valuation_data_availability, yield_to_expense_ratio rather than reconstructing their formulas.\nDomain definitions for this topic:\n- Average Daily Value Traded (3M): \text{ADVT}{3M} = \text{Average daily volume (3M)} \times \text{Average share price (e.g., 200-day MA)}\n- Momentum-Weighted Price Strength: \text{MWPS} = \text{Price Position} \times (1 + \frac{\text{Momentum}}{\text{200-Day Moving Average}})\n- Momentum-Adjusted Information Ratio: MAIR = \text{Information Ratio (Simplified)} \times (1 + \frac{\text{Short-Term Momentum Indicator}}{\text{200-Day Moving Average}})\n- Category Average Duration: \bar{D}c = \frac{\\sum \text{Fund Durations}}{\t\
+  ext{Total number of funds}} \text{ for a given category.}\n- Wasted Fee Amount: WFA = (\text{Net Expense Ratio} - \text{Benchmark Expense Ratio}) \times \text{Net Worth}"

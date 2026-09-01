@@ -1,0 +1,11 @@
+base_view: archeology_scan_large_public__expense_receipts
+label: ExpenseReceipts
+description: All columns of the public table ExpenseReceipts.
+fields:
+- archeology_scan_large_public__expense_receipts.*
+- archeology_scan_large_public__project_expenses.*
+- archeology_scan_large_public__projects.*
+joins:
+  archeology_scan_large_public__project_expenses:
+    archeology_scan_large_public__projects: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

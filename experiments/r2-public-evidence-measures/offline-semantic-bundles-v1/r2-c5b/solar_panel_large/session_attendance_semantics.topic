@@ -1,0 +1,13 @@
+base_view: solar_panel_large_public__session_attendance
+label: session_attendance
+description: All columns of the public table session_attendance.
+fields:
+- solar_panel_large_public__session_attendance.*
+- solar_panel_large_public__certifications.*
+- solar_panel_large_public__technicians.*
+- solar_panel_large_public__training_sessions.*
+joins:
+  solar_panel_large_public__technicians: {}
+  solar_panel_large_public__training_sessions:
+    solar_panel_large_public__certifications: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

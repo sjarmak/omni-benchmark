@@ -1,0 +1,9 @@
+base_view: archeology_scan_large_public__field_notes
+label: FieldNotes
+description: All columns of the public table FieldNotes.
+fields:
+- archeology_scan_large_public__field_notes.*
+- archeology_scan_large_public__personnel.*
+joins:
+  archeology_scan_large_public__personnel: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

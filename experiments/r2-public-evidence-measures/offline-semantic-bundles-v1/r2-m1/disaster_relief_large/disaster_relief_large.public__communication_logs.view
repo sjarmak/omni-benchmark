@@ -1,0 +1,99 @@
+label: CommunicationLogs
+description: All columns of the public table CommunicationLogs.
+catalog: disaster_relief_large
+schema: public
+table_name: CommunicationLogs
+dimensions:
+  attachment_url:
+    description: TEXT. URL to any file attached to the message. Empty string if none.
+    sql: '"AttachmentUrl"'
+  comm_log_id:
+    description: VARCHAR(20). Unique communication-log identifier. Primary Key.
+    sql: '"COMM_LOG_ID"'
+  created_at:
+    description: TIMESTAMP. Record insertion time.
+    sql: '"CREATED_AT"'
+  channel_cost_human_usd:
+    description: REAL. Cost incurred for sending via the chosen channel in **USD** (e.g., 0.05 for an SMS, 1.20 for satellite-phone minute).
+    sql: '"ChannelCostHuman_USD"'
+  comm_channel:
+    description: 'TEXT. Medium used. Possible values: Email, SMS, Radio, Satellite Phone, Messenger App.'
+    sql: '"CommChannel"'
+  dist_ref:
+    description: VARCHAR(20). References DisasterEvents(DistRegistry); links each message to the related disaster event.
+    sql: '"DIST_REF"'
+  delivery_status:
+    description: 'TEXT. Delivery outcome. Possible values: Delivered, Failed, Queued.'
+    sql: '"DeliveryStatus"'
+  escalation:
+    description: BOOLEAN. TRUE if the issue has been escalated to higher authority.
+    sql: '"Escalation"'
+  escalation_reason:
+    description: TEXT. Reason for escalation (e.g., “Missed deadline”). **Nullable** when Escalation is FALSE.
+    sql: '"EscalationReason"'
+  follow_up_date:
+    description: DATE (yyyy/mm/dd). Target date for follow-up actions. **Nullable** if no follow-up required.
+    sql: '"FOLLOW_UP_DATE"'
+  message_body:
+    description: TEXT. Full message content written in plain text.
+    sql: '"MessageBody"'
+  notes:
+    description: TEXT. Free-form remarks or contextual information (e.g., “Awaiting supplies”).
+    sql: '"NOTES"'
+  priority_level:
+    description: 'TEXT. Importance flag. Possible values: High, Medium, Low.'
+    sql: '"PRIORITY_Level"'
+  receiver_org:
+    description: TEXT. Recipient organisation (e.g., “Local Fire Dept”).
+    sql: '"RECEIVER_org"'
+  response_status:
+    description: 'TEXT. Current response state. Possible values: Responded, Pending, Overdue. **Nullable** if ResponseRequired is FALSE.'
+    sql: '"RESPONSE_STATUS"'
+  response_required:
+    description: BOOLEAN. TRUE if a substantive response is required.
+    sql: '"ResponseRequired"'
+  sender_contact:
+    description: TEXT. Sender’s phone or email in international format (e.g., “+44-384-3547” or “ops@ndma.gov”).
+    sql: '"SENDER_CONTACT"'
+  subject_txt:
+    description: TEXT. Short subject or topic line (e.g., “Resource Request”).
+    sql: '"SUBJECT_TXT"'
+  time_sent:
+    description: TIMESTAMP (yyyy/mm/dd HH:MM:SS). Time the message was transmitted.
+    sql: '"TIME_SENT"'
+  updated_at:
+    description: TIMESTAMP. Last modification time.
+    sql: '"Updated_At"'
+  ack_received:
+    description: BOOLEAN. TRUE if the recipient acknowledged receipt.
+    sql: '"ackReceived"'
+  ack_received_time:
+    description: TIMESTAMP. Time the acknowledgment was logged. **Nullable** when no ACK received.
+    sql: '"ackReceivedTime"'
+  msg_length_human_chars:
+    description: INT. Length of the MessageBody in **characters** (e.g., 1 566).
+    sql: '"msgLengthHuman_chars"'
+  receiver_contact:
+    description: TEXT. Recipient’s phone or email.
+    sql: '"receiverContact"'
+  requires_follow_up:
+    description: BOOLEAN. TRUE if a follow-up action is requested; otherwise FALSE.
+    sql: '"requiresFollowUp"'
+  response_deadline:
+    description: DATE. Deadline for the requested response. **Nullable** if ResponseRequired is FALSE.
+    sql: response_deadline
+  sender_org:
+    description: TEXT. Name of the sending organisation (e.g., “Red Cross”).
+    sql: '"senderORG"'
+  time_received:
+    description: TIMESTAMP. Time the message was received by the destination system. **Nullable** for undelivered or unconfirmed messages.
+    sql: '"timeReceived"'
+  timezone_diff_human_gmt:
+    description: INT. Sender/receiver time-zone offset from **GMT** in hours (e.g., +4, −5).
+    sql: '"timezoneDiffHuman_GMT"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CommunicationLogs public identity values.
+    label: CommunicationLogs Count
+    sql: ${disaster_relief_large_public__communication_logs.comm_log_id}

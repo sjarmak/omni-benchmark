@@ -1,0 +1,75 @@
+label: radial_velocity_measurements
+description: All columns of the public table radial_velocity_measurements.
+catalog: planets_data_large
+schema: public
+table_name: radial_velocity_measurements
+dimensions:
+  air_mass:
+    description: 'real. Atmospheric airmass during observation affecting extinction. Example: 1.05.'
+    sql: '"AirMass"'
+  atmospheric_pressure_mbar:
+    description: 'real. Atmospheric pressure during observation in millibars. Example: 1008.9.'
+    sql: '"AtmosphericPressure_mbar"'
+  cross_correlation_peak_height:
+    description: 'real. Height of cross-correlation peak indicating measurement quality. **NULL means cross-correlation analysis was not performed.**. Possible values: 0.65, 0.78, 0.87, 0.91, 0.94.'
+    sql: '"CrossCorrelationPeakHeight"'
+  notes:
+    description: 'text. Additional notes or comments about the radial velocity observation. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  observation_date:
+    description: 'timestamp. Precise timestamp of radial velocity observation including time. Example: 2023-03-15.'
+    sql: '"OBSERVATION_DATE"'
+  rv_ref:
+    description: 'bigint. Primary key identifier for radial velocity measurement records. PK. Example: 8001.'
+    sql: '"RV_REF"'
+  seeing_arcseconds:
+    description: 'real. Atmospheric seeing disk diameter in arcseconds. Example: 0.72.'
+    sql: '"SEEING_arcseconds"'
+  signal_to_noise_ratio:
+    description: 'real. Signal-to-noise ratio of the spectroscopic observation. Example: 102.'
+    sql: '"SIGNAL_TO_NOISE_RATIO"'
+  exposure_time_seconds:
+    description: 'real. Duration of spectroscopic exposure in seconds. Possible values: 1800, 2100, 2400, 3600, 4800.'
+    sql: exposure_time_seconds
+  julian_date_jd:
+    description: 'real. Julian Date of observation for astronomical time reference. Example: 2460051.438.'
+    sql: '"julian_date_JD"'
+  quality_flag:
+    description: 'text. Quality assessment flag for the radial velocity measurement. Possible values: A, B, C, D.'
+    sql: quality_flag
+  spectrograph_name:
+    description: 'text. Name or identifier of the spectrograph instrument used. Possible values: FEROS, HARPS, HIRES, SOPHIE, UVES.'
+    sql: spectrograph_name
+  stellar_link:
+    description: 'bigint. Foreign key reference to the host star record. FK to stars(STELLARREF). Example: 1.'
+    sql: '"stellarLink"'
+  temperature_celsius:
+    description: 'real. Ambient temperature during observation in degrees Celsius. Example: 11.9.'
+    sql: '"temperature_Celsius"'
+  full_width_half_maximum_m_s:
+    description: 'real. FWHM of cross-correlation function in meters per second. Example: 3850.'
+    sql: '"FullWidthHalfMaximum_m/s"'
+  instrumental_drift_correction_m_s:
+    description: 'real. Correction for instrumental systematic drift in meters per second. **NULL means instrumental drift correction was not applied or not available.**. Possible values: 0.08, 0.15, 0.18, 0.22, 0.35.'
+    sql: '"InstrumentalDriftCorrection_m/s"'
+  photon_noise_estimate_m_s:
+    description: 'real. Estimated photon noise contribution to velocity uncertainty in meters per second. Example: 0.68.'
+    sql: '"PHOTON_NOISE_ESTIMATE_m/s"'
+  rv_uncertainty_m_s:
+    description: 'real. Statistical uncertainty in radial velocity measurement in meters per second. Example: 0.78.'
+    sql: '"RV_UNCERTAINTY_m/s"'
+  radial_velocity_m_s:
+    description: 'real. Measured radial velocity of the star in meters per second. Example: -11.28.'
+    sql: '"RadialVelocity_m/s"'
+  stellar_activity_correction_m_s:
+    description: 'real. Correction for stellar activity-induced velocity variations in meters per second. **NULL means stellar activity correction was not applied.**. Possible values: -0.18, -0.85, -0.92, -1.08, -1.25, 0.25, 0.38, 0.42, 2.05, 2.18.'
+    sql: '"STELLAR_ACTIVITY_CORRECTION_m/s"'
+  wind_speed_m_s:
+    description: 'real. Wind speed during observation in meters per second. **NULL means wind speed measurements were not recorded.**. Possible values: 2.1, 2.8, 3.2, 3.8, 4.8, 5.5, 6.2, 7.2, 7.8.'
+    sql: '"WIND_SPEED_m/s"'
+  barycentric_correction_m_s:
+    description: 'real. Correction for Earth''s motion around solar system barycenter in meters per second. Example: -18489.5.'
+    sql: '"barycentric_correction_m/s"'
+  bisector_span_m_s:
+    description: 'real. Bisector span of spectral line indicating line asymmetry in meters per second. Example: 14.8.'
+    sql: '"bisector_span_m/s"'

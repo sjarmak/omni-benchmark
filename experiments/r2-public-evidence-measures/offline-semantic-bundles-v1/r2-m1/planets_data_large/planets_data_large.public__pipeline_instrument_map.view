@@ -1,0 +1,54 @@
+label: Pipeline_Instrument_Map
+description: All columns of the public table Pipeline_Instrument_Map.
+catalog: planets_data_large
+schema: public
+table_name: Pipeline_Instrument_Map
+dimensions:
+  avg_processing_time_min:
+    description: 'REAL. Average processing time in minutes Typical range: 0.1 to 120.'
+    sql: '"AVG_PROCESSING_TIME_MIN"'
+  observations_processed:
+    description: BIGINT. Number of observations processed
+    sql: '"OBSERVATIONS_PROCESSED"'
+  pim_id:
+    description: BIGINT. Primary key. Unique pipeline-instrument mapping identifier
+    sql: '"PIM_ID"'
+  pipeline_ref:
+    description: BIGINT. Foreign key referencing DataReductionPipeline(PIPELINE_ID). Related pipeline
+    sql: '"PIPELINE_REF"'
+  supported_since:
+    description: DATE. Date pipeline began supporting this instrument
+    sql: '"SUPPORTED_SINCE"'
+  support_level:
+    description: 'TEXT. Level of pipeline support for this instrument Possible values: Full, Partial, Experimental, Deprecated.'
+    sql: '"SUPPORT_LEVEL"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  validation_reference:
+    description: TEXT. Reference to validation report **NULL means Not yet validated.**
+    sql: '"VALIDATION_REFERENCE"'
+  config_version:
+    description: TEXT. Configuration version for this instrument
+    sql: config_version
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  deprecated_date:
+    description: DATE. Date support was deprecated **NULL means Still supported.**
+    sql: deprecated_date
+  instrument_ref:
+    description: BIGINT. Foreign key referencing instruments_surveys(instrumentref). Related instrument
+    sql: instrument_ref
+  success_rate_pct:
+    description: 'REAL. Processing success rate Typical range: 0 to 100.'
+    sql: success_rate_pct
+  validated:
+    description: BOOLEAN. Whether pipeline has been validated for this instrument Boolean flag (true/false).
+    sql: validated
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Pipeline_Instrument_Map public identity values.
+    label: Pipeline_Instrument_Map Count
+    sql: ${planets_data_large_public__pipeline_instrument_map.pim_id}

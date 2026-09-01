@@ -1,0 +1,13 @@
+base_view: virtual_idol_large_public__fans
+label: Fans
+description: Fan records with row-level loyalty semantics.
+fields:
+- virtual_idol_large_public__fans.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Use the modeled business fields loyalty_progression_rate rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Professional Fan: A fan is a Professional Fan if they are in the ''Adult'' or ''Senior'' Fan Age Category and their occupation path is ''Professional''.'

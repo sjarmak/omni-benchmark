@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__transportation_network
+label: transportation_network
+description: All columns of the public table transportation_network.
+fields:
+- residential_data_large_public__transportation_network.*
+joins: {}
+ai_context: This topic models no cross-table joins.

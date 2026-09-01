@@ -1,0 +1,69 @@
+label: CrewTrainingSession
+description: All columns of the public table CrewTrainingSession.
+catalog: polar_equipment_large
+schema: public
+table_name: CrewTrainingSession
+dimensions:
+  assessment_score:
+    description: 'REAL. Score achieved on post-training assessment (0-100). **NULL means Assessment not yet taken.** Example: 78.'
+    sql: '"assessmentScore"'
+  attention_score:
+    description: 'REAL. Attention and engagement score from learning platform (0-100). **NULL means Attention tracking not enabled.** Example: 72.'
+    sql: '"attentionScore"'
+  cert_record_ref:
+    description: TEXT. Reference to the certification record this training supports.
+    sql: cert_record_ref
+  certificate_issued:
+    description: 'BOOLEAN. Flag indicating if completion certificate was issued. Possible values: True, False.'
+    sql: '"certificateIssued"'
+  completion_status:
+    description: 'TEXT. Current completion status of the training session. Unique values: Completed, In Progress, Incomplete, Failed, Waived.'
+    sql: '"completionStatus"'
+  content_difficulty_rating:
+    description: 'REAL. Trainee rating of content difficulty (1-5). **NULL means Rating not submitted.** Example: 3.2.'
+    sql: '"contentDifficultyRating"'
+  feedback_sentiment_score:
+    description: 'REAL. Sentiment analysis score of trainee feedback (-1 to 1). **NULL means No feedback provided.** Example: 0.5.'
+    sql: '"feedbackSentimentScore"'
+  instructor_rating:
+    description: 'REAL. Rating given by instructor for trainee performance (1-5). **NULL means Self-paced training without instructor.** Example: 3.8.'
+    sql: '"instructorRating"'
+  knowledge_retention_pct:
+    description: 'REAL. Knowledge retention percentage from follow-up assessment. **NULL means Follow-up assessment pending.** Example: 70.'
+    sql: '"knowledgeRetentionPct"'
+  module_completion_pct:
+    description: 'REAL. Percentage of training module completed. **NULL means Progress tracking failed.** Example: 85.'
+    sql: '"moduleCompletionPct"'
+  practical_exercise_score:
+    description: 'REAL. Score on practical hands-on exercises (0-100). **NULL means No practical component in this module.** Example: 75.'
+    sql: '"practicalExerciseScore"'
+  retake_count:
+    description: 'INTEGER. Number of times assessment was retaken. Example: 50.'
+    sql: '"retakeCount"'
+  session_duration_min:
+    description: 'INTEGER. Duration of the training session in minutes. **NULL means Session duration not recorded.** Example: 120.'
+    sql: '"sessionDuration_min"'
+  session_notes:
+    description: TEXT. Additional notes about the training session. **NULL means No additional notes recorded.**
+    sql: '"sessionNotes"'
+  session_start_timestamp:
+    description: 'TIMESTAMP. Start timestamp of the training session. Example: 2024-01-01 12:00:00.'
+    sql: '"sessionStartTimestamp"'
+  simulator_time_min:
+    description: 'INTEGER. Time spent in simulator during session in minutes. **NULL means No simulator component.** Example: 50.'
+    sql: '"simulatorTime_min"'
+  training_category:
+    description: 'TEXT. Category of training content. Unique values: Safety, Technical, Operational, Compliance, Leadership, Equipment-Specific.'
+    sql: '"trainingCategory"'
+  training_format:
+    description: 'TEXT. Format of the training delivery. Unique values: In-Person, Virtual Live, Self-Paced Online, Blended, On-The-Job.'
+    sql: '"trainingFormat"'
+  training_session_seq:
+    description: 'TEXT. Unique identifier for the crew training session record. Example: CTS-1A2B3C.'
+    sql: '"trainingSessionSeq"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CrewTrainingSession public identity values.
+    label: CrewTrainingSession Count
+    sql: ${polar_equipment_large_public__crew_training_session.training_session_seq}

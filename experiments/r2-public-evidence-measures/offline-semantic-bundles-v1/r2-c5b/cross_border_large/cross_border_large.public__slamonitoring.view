@@ -1,0 +1,60 @@
+label: SLAMonitoring
+description: All columns of the public table SLAMonitoring.
+catalog: cross_border_large
+schema: public
+table_name: SLAMonitoring
+dimensions:
+  actual_value:
+    description: 'REAL. Actual measured value Typical range: 50 to 100.'
+    sql: '"ACTUAL_VALUE"'
+  corrective_action:
+    description: 'TEXT. Corrective action required Possible values: Root Cause Analysis, System Upgrade, Process Improvement, Staff Training, Capacity Increase. **NULL means No corrective action needed.**'
+    sql: '"CORRECTIVE_ACTION"'
+  deviation_pct:
+    description: 'REAL. Deviation from target (%) Typical range: -10 to 50.'
+    sql: '"DEVIATION_PCT"'
+  escalated_to:
+    description: 'TEXT. Person/role to whom breach was escalated Possible values: Vendor Manager, Legal, CISO, COO. **NULL means Not escalated.**'
+    sql: '"ESCALATED_TO"'
+  monitoring_period_start:
+    description: DATE. Start of monitoring period
+    sql: '"MONITORING_PERIOD_START"'
+  penalty_amount_usd:
+    description: 'REAL. Penalty amount for SLA breach Typical range: 0 to 50000. **NULL means No SLA breach.**'
+    sql: '"PENALTY_AMOUNT_USD"'
+  sla_metric:
+    description: 'TEXT. SLA metric being monitored Possible values: Uptime, Response Time, Resolution Time, Data Deletion, Breach Notification, Report Delivery, Backup Frequency.'
+    sql: '"SLA_METRIC"'
+  sla_mon_id:
+    description: BIGINT. Primary key. Unique SLA monitoring record identifier
+    sql: '"SLA_MON_ID"'
+  target_value:
+    description: 'REAL. Target SLA value Typical range: 80 to 100.'
+    sql: '"TARGET_VALUE"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  breach_severity:
+    description: 'TEXT. Severity of SLA breach if any Possible values: None, Minor, Major, Critical.'
+    sql: breach_severity
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  escalated:
+    description: BOOLEAN. Whether SLA breach was escalated Boolean flag (true/false).
+    sql: escalated
+  measurement_details:
+    description: JSONB. Detailed measurement data
+    sql: measurement_details
+  monitoring_period_end:
+    description: DATE. End of monitoring period
+    sql: monitoring_period_end
+  penalty_invoiced:
+    description: BOOLEAN. Whether penalty has been invoiced Boolean flag (true/false). **NULL means No penalty applicable.**
+    sql: penalty_invoiced
+  sla_met:
+    description: BOOLEAN. Whether SLA target was met Boolean flag (true/false).
+    sql: sla_met
+  subprocessor_ref:
+    description: BIGINT. Foreign key referencing SubprocessorRegistry(SUBPROCESSOR_ID). Related subprocessor
+    sql: subprocessor_ref

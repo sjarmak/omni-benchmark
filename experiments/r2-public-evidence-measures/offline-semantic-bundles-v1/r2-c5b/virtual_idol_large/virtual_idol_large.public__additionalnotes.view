@@ -1,0 +1,15 @@
+label: additionalnotes
+description: All columns of the public table additionalnotes.
+catalog: virtual_idol_large
+schema: public
+table_name: additionalnotes
+dimensions:
+  note_info:
+    description: TEXT. Free-form notes and additional information about the fan. **NULL means no additional notes recorded or information not available.**
+    sql: note_info
+  notes_reg:
+    description: BIGSERIAL. Auto-generated unique identifier for additional notes record. PK = AdditionalNotes(Notes_Reg).
+    sql: notes_reg
+  notes_retain_pivot:
+    description: BIGINT. Reference to retention record for contextual notes. FK to RetentionAndInfluence.
+    sql: notes_retain_pivot

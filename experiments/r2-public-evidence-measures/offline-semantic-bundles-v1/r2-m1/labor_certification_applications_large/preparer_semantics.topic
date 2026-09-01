@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__preparer
+label: preparer
+description: All columns of the public table preparer.
+fields:
+- labor_certification_applications_large_public__preparer.*
+joins: {}
+ai_context: This topic models no cross-table joins.

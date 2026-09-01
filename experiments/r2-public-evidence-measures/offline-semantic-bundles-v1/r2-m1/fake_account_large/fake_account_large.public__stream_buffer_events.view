@@ -1,0 +1,66 @@
+label: stream_buffer_events
+description: All columns of the public table stream_buffer_events.
+catalog: fake_account_large
+schema: public
+table_name: stream_buffer_events
+dimensions:
+  buffer_event_code:
+    description: TEXT. Unique ID for a specific stalling event.
+    sql: '"BufferEvent_CODE"'
+  active_background_processes:
+    description: 'INTEGER. Number of other apps running. Example: 50.'
+    sql: active_background_processes
+  ad_interruption_proximity_sec:
+    description: 'INTEGER. Time distance to nearest ad break. **NULL means No ads nearby.** Example: 50.'
+    sql: ad_interruption_proximity_sec
+  battery_level_pct:
+    description: 'INTEGER. Battery remaining percentage. **NULL means Plugged in.** Example: 50.'
+    sql: battery_level_pct
+  buffer_fill_level_start_pct:
+    description: 'REAL. Buffer fullness when stall began (should be near 0). Example: 50.0.'
+    sql: buffer_fill_level_start_pct
+  cdn_response_code:
+    description: 'INTEGER. HTTP status of the segment request causing stall. Unique values: 200, 404, 500, 504.'
+    sql: cdn_response_code
+  cpu_load_pct:
+    description: 'REAL. Device CPU usage at time of stall. Example: 65.'
+    sql: cpu_load_pct
+  device_orientation:
+    description: 'TEXT. Screen orientation (Portrait, Landscape). Unique values: PORTRAIT, LANDSCAPE.'
+    sql: device_orientation
+  estimated_bandwidth_mbps:
+    description: 'REAL. Player''s bandwidth estimate at time of stall. Example: 2.5.'
+    sql: estimated_bandwidth_mbps
+  memory_pressure_flag:
+    description: 'BOOLEAN. True if OS signaled low memory warning. Possible values: True, False.'
+    sql: memory_pressure_flag
+  radio_technology_type:
+    description: 'TEXT. Physical layer type (LTE, NR, 802.11ac). **NULL means Unknown/Wired.** Unique values: LTE, 5G, WIFI5, WIFI6.'
+    sql: radio_technology_type
+  recovery_bitrate_kbps:
+    description: 'INTEGER. Bitrate selected after recovery. Example: 2500.'
+    sql: recovery_bitrate_kbps
+  segment_sequence_id:
+    description: 'INTEGER. Sequence number of the video chunk. Example: 50.'
+    sql: segment_sequence_id
+  signal_strength_dbm:
+    description: 'INTEGER. Received signal strength indication. **NULL means Desktop device.** Example: -80.'
+    sql: signal_strength_dbm
+  stall_duration_ms:
+    description: 'INTEGER. Length of the interruption. Example: 2000.'
+    sql: stall_duration_ms
+  stream_log_ref:
+    description: TEXT. Reference to the parent streaming session.
+    sql: stream_log_ref
+  timestamp_offset_ms:
+    description: 'INTEGER. Time since stream start when buffer occurred. Example: 50.'
+    sql: timestamp_offset_ms
+  user_action_trigger:
+    description: 'TEXT. If user action caused buffer (e.g., SEEK). Unique values: SEEK, QUALITY_UP, NONE.'
+    sql: user_action_trigger
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct stream_buffer_events public identity values.
+    label: stream_buffer_events Count
+    sql: ${fake_account_large_public__stream_buffer_events.buffer_event_code}

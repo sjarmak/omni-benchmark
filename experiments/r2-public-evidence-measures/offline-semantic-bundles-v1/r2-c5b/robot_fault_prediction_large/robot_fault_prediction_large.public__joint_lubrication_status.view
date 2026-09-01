@@ -1,0 +1,63 @@
+label: joint_lubrication_status
+description: All columns of the public table joint_lubrication_status.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: joint_lubrication_status
+dimensions:
+  additive_depletion_percent:
+    description: 'REAL. Loss of anti-wear additives. Example: 50.0.'
+    sql: additive_depletion_percent
+  dielectric_constant:
+    description: 'REAL. Electrical insulating property of the oil. **NULL means Sensor drift.** Example: 2.2.'
+    sql: dielectric_constant
+  ferrous_wear_ppm:
+    description: 'INTEGER. Concentration of iron particles indicating gear wear. Example: 50.'
+    sql: ferrous_wear_ppm
+  fluid_temperature_c:
+    description: 'REAL. Temperature of fluid at time of sampling. Example: 50.'
+    sql: fluid_temperature_c
+  grease_consistency_nlgi:
+    description: 'INTEGER. Stiffness of grease (if applicable). **NULL means System uses oil, not grease.** Unique values: 0, 1, 2, 3.'
+    sql: grease_consistency_nlgi
+  kinematic_viscosity_cst:
+    description: 'REAL. Fluid resistance to flow at 40C. Example: 100.'
+    sql: kinematic_viscosity_cst
+  lube_sample_id:
+    description: TEXT. Unique identifier for the fluid analysis record.
+    sql: lube_sample_id
+  non_ferrous_wear_ppm:
+    description: 'INTEGER. Concentration of copper/brass from bushings. Example: 50.'
+    sql: non_ferrous_wear_ppm
+  particle_count_iso_14:
+    description: 'INTEGER. Count of particles > 14 microns (ISO 4406). Example: 50.'
+    sql: particle_count_iso_14
+  particle_count_iso_4:
+    description: 'INTEGER. Count of particles > 4 microns (ISO 4406). Example: 50.'
+    sql: particle_count_iso_4
+  particle_count_iso_6:
+    description: 'INTEGER. Count of particles > 6 microns (ISO 4406). Example: 50.'
+    sql: particle_count_iso_6
+  pressure_drop_filter_bar:
+    description: 'REAL. Pressure differential across the oil filter. Example: 0.5.'
+    sql: pressure_drop_filter_bar
+  remaining_useful_life_hours:
+    description: 'INTEGER. Estimated hours until oil change required. Example: 2000.'
+    sql: remaining_useful_life_hours
+  sampling_method:
+    description: 'TEXT. How the data was acquired (Inline Sensor, Lab). Unique values: Inline, Offline Lab.'
+    sql: sampling_method
+  silicon_contamination_ppm:
+    description: 'INTEGER. Indication of dirt/dust ingress. Example: 50.'
+    sql: silicon_contamination_ppm
+  total_acid_number_tan:
+    description: 'REAL. Acidity indicating oxidation level. Example: 0.5.'
+    sql: total_acid_number_tan
+  varnish_potential_rating:
+    description: 'INTEGER. Likelihood of sludge formation (MPC value). **NULL means Lab test pending.** Example: 50.'
+    sql: varnish_potential_rating
+  vibration_sample_ref:
+    description: TEXT. Reference to the vibration event that triggered/coincided with this sample.
+    sql: vibration_sample_ref
+  water_content_percent:
+    description: 'REAL. Percentage of moisture contamination. Example: 50.0.'
+    sql: water_content_percent

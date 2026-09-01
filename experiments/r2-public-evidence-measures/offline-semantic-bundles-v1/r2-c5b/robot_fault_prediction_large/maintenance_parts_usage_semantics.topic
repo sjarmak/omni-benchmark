@@ -1,0 +1,13 @@
+base_view: robot_fault_prediction_large_public__maintenance_parts_usage
+label: maintenance_parts_usage
+description: All columns of the public table maintenance_parts_usage.
+fields:
+- robot_fault_prediction_large_public__maintenance_parts_usage.*
+- robot_fault_prediction_large_public__maintenance_logs.*
+- robot_fault_prediction_large_public__spare_parts_inventory.*
+- robot_fault_prediction_large_public__technicians.*
+joins:
+  robot_fault_prediction_large_public__maintenance_logs: {}
+  robot_fault_prediction_large_public__spare_parts_inventory:
+    robot_fault_prediction_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

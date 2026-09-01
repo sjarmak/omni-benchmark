@@ -1,0 +1,15 @@
+base_view: robot_fault_prediction_large_public__maintenance_and_fault
+label: maintenance_and_fault
+description: Public semantic view for maintenance_and_fault.
+fields:
+- robot_fault_prediction_large_public__maintenance_and_fault.*
+- robot_fault_prediction_large_public__actuation_data.*
+- robot_fault_prediction_large_public__operation.*
+- robot_fault_prediction_large_public__robot_record.*
+joins:
+  robot_fault_prediction_large_public__actuation_data:
+    robot_fault_prediction_large_public__robot_record: {}
+  robot_fault_prediction_large_public__operation: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields hkb_10, hkb_17, hkb_48, hkb_53 rather than reconstructing their formulas.'

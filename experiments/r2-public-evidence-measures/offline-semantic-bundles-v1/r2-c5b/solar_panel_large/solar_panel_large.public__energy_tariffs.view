@@ -1,0 +1,27 @@
+label: energy_tariffs
+description: All columns of the public table energy_tariffs.
+catalog: solar_panel_large
+schema: public
+table_name: energy_tariffs
+dimensions:
+  for_contract_num:
+    description: 'TEXT. FK -> ppa_contracts.ContractNum. The contract this tariff applies to. Example: PPA-001.'
+    sql: '"For_Contract_Num"'
+  price_kwh:
+    description: 'REAL. The price per kilowatt-hour for this tariff. Example: $0.155.'
+    sql: '"PRICE_KWH"'
+  season:
+    description: 'TEXT. The season this rate applies to (e.g., Summer). Possible values: Summer, Winter.'
+    sql: '"SEASON"'
+  tariff_code:
+    description: 'TEXT. Unique identifier for a specific energy tariff. Example: T-PPA001-S-PK.'
+    sql: '"TariffCode"'
+  is_active:
+    description: 'BOOLEAN. A flag indicating if this tariff is currently active. Possible values: False, True.'
+    sql: is_active
+  rate_type:
+    description: 'TEXT. The type of rate structure. Possible values: Fixed, Time-of-Use.'
+    sql: '"rateType"'
+  time_period:
+    description: 'TEXT. A description of the time period this rate applies to (e.g., Peak hours). Possible values: Off-Peak (All other), Peak (1pm-6pm M-F), Peak (2pm-7pm M-F), Peak (2pm-8pm M-F), Peak (3pm-7pm M-F), Peak (3pm-8pm M-F), Peak (5pm-9pm M-F), Peak (6am-9am M-F), Super Peak (4pm-7pm M-F), Super Peak (5pm-8pm M-F).'
+    sql: time_period

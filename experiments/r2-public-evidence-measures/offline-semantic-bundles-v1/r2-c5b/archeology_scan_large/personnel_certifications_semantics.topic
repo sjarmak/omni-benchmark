@@ -1,0 +1,11 @@
+base_view: archeology_scan_large_public__personnel_certifications
+label: personnel_certifications
+description: All columns of the public table personnel_certifications.
+fields:
+- archeology_scan_large_public__personnel_certifications.*
+- archeology_scan_large_public__personnel.*
+- archeology_scan_large_public__skills.*
+joins:
+  archeology_scan_large_public__personnel: {}
+  archeology_scan_large_public__skills: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

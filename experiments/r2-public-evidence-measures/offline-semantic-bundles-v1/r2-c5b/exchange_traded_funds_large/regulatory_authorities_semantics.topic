@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__regulatory_authorities
+label: regulatory_authorities
+description: All columns of the public table regulatory_authorities.
+fields:
+- exchange_traded_funds_large_public__regulatory_authorities.*
+joins: {}
+ai_context: This topic models no cross-table joins.

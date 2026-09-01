@@ -1,0 +1,9 @@
+base_view: planets_data_large_public__stellar_evolution_phases
+label: stellar_evolution_phases
+description: All columns of the public table stellar_evolution_phases.
+fields:
+- planets_data_large_public__stellar_evolution_phases.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

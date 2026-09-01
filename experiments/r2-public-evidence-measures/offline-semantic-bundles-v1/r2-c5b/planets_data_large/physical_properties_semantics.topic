@@ -1,0 +1,17 @@
+base_view: planets_data_large_public__physical_properties
+label: Planet Physical Properties
+description: Planet physical-property records with public mass, radius, density, and derived same-row planet semantics.
+fields:
+- planets_data_large_public__physical_properties.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__planets:
+    planets_data_large_public__stars: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields gas_giant_planet, inflated_gas_giant, mass_radius_relationship, planet_escape_velocity, planet_mass_earth, planet_radius_earth, planet_surface_gravity, rocky_planet, super_earth rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Potentially Habitable Exoplanet: A planet that is classified as a Rocky Planet and is also a Planet in Habitable Zone.'

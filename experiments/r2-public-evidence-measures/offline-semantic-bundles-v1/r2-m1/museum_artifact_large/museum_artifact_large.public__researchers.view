@@ -1,0 +1,57 @@
+label: Researchers
+description: All columns of the public table Researchers.
+catalog: museum_artifact_large
+schema: public
+table_name: Researchers
+dimensions:
+  access_start:
+    description: 'TEXT. No description provided. Example: 2012.08.22.'
+    sql: '"ACCESS_START"'
+  biography:
+    description: 'TEXT. No description provided. Example: Specialist in Chinese ceramics with over 20 years of experience. Published author of ''The Dragon''s Clay''..'
+    sql: '"BIOGRAPHY"'
+  first_name:
+    description: 'TEXT. No description provided. Example: Benjamin.'
+    sql: '"FirstName"'
+  institution:
+    description: 'TEXT. No description provided. Example: Capital Museum.'
+    sql: '"INSTITUTION"'
+  last_name:
+    description: 'TEXT. No description provided. Example: CARTER.'
+    sql: '"LAST_NAME"'
+  orcid:
+    description: 'TEXT. No description provided. Example: 0000-0002-1825-0097.'
+    sql: '"ORCID"'
+  profile_created:
+    description: 'TEXT. No description provided. Example: 2012-08-22T09:00:00Z.'
+    sql: '"PROFILE_CREATED"'
+  position:
+    description: 'TEXT. No description provided. Example: Head Curator.'
+    sql: '"Position"'
+  researcher_index:
+    description: 'TEXT. No description provided. Example: 201.'
+    sql: '"Researcher_Index"'
+  access_end_date:
+    description: 'TEXT. No description provided. Example: 2025.05.31.'
+    sql: access_end_date
+  access_level:
+    description: 'TEXT. No description provided. Possible values: Consultant, Distinguished Scholar Access, Level 2, Level 3, Level 4, Library Access, Professional Exchange, Professional Services, Remote Access, Research Access.'
+    sql: access_level
+  email_addr:
+    description: 'TEXT. No description provided. Example: ben.carter@museuminternal.org.'
+    sql: email_addr
+  is_internal:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: is_internal
+  researcher_staff_profile:
+    description: 'TEXT. No description provided. Possible values: 16.0, 2.0, 38.0, 40.0, 42.0, 5.0, 7.0, 9.0.'
+    sql: researcher_staff_profile
+  specialty:
+    description: 'TEXT. No description provided. Example: Ming Dynasty Ceramics.'
+    sql: specialty
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Researchers public identity values.
+    label: Researchers Count
+    sql: ${museum_artifact_large_public__researchers.researcher_index}

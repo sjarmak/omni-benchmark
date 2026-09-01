@@ -1,0 +1,18 @@
+label: sectors
+description: All columns of the public table sectors.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: sectors
+dimensions:
+  industrytag:
+    description: Unique sector or industry name (e.g., 'Technology', 'Healthcare', 'Financial Services', 'Energy', 'Consumer Defensive'). Must be unique across all records.
+    sql: industrytag
+  secid:
+    description: A SERIAL primary key uniquely identifying each economic sector or industry classification in the database.
+    sql: secid
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct sectors public identity values.
+    label: sectors Count
+    sql: ${exchange_traded_funds_large_public__sectors.secid}

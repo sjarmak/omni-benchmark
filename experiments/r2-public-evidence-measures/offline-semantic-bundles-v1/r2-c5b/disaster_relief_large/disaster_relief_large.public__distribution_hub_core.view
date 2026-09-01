@@ -1,0 +1,66 @@
+label: DistributionHubCore
+description: All columns of the public table DistributionHubCore.
+catalog: disaster_relief_large
+schema: public
+table_name: DistributionHubCore
+dimensions:
+  cold_storage_capacity_m3:
+    description: 'VARCHAR(100). Temperature-controlled storage volume in cubic meters. Example: "537".'
+    sql: '"coldStorageCapacityM3"'
+  cold_storage_temp_c:
+    description: 'VARCHAR(100). Maintained temperature range for cold storage in Celsius. Example: "537".'
+    sql: '"coldStorageTempC"'
+  contact_person:
+    description: 'VARCHAR(100). Name of primary facility contact person. Example: "BZgabUeMAV".'
+    sql: '"contactPerson"'
+  contact_phone:
+    description: 'VARCHAR(100). Primary contact telephone number for hub operations. Example: "838-470-7057".'
+    sql: '"contactPhone"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 1489.'
+    sql: '"disasterEventId"'
+  hub_capacity_tons:
+    description: 'VARCHAR(100). Maximum throughput capacity in metric tons. Example: "877".'
+    sql: '"hubCapacityTons"'
+  hub_name:
+    description: 'VARCHAR(100). Official name or designation of distribution facility. Example: "You must be the change you wish to see in the world. If the plan doesn’t work,                    ".'
+    sql: '"hubName"'
+  hub_utilization_pct:
+    description: 'VARCHAR(100). Current capacity utilization percentage (0-100). Example: "537".'
+    sql: '"hubUtilizationPct"'
+  hubregistry_ref:
+    description: 'VARCHAR(100). Logical reference to hub registry identifier (distributionhubs.hubregistry). Example: "A comfort zone is a beautiful place, but nothing ever grows there. The On Startup                   ".'
+    sql: '"hubregistryRef"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for distribution hub records. Example: 1.'
+    sql: id
+  inventory_accuracy_pct:
+    description: 'VARCHAR(100). Physical inventory count accuracy percentage. Example: "AtdcIway48".'
+    sql: '"inventoryAccuracyPct"'
+  last_restock_date:
+    description: 'VARCHAR(100). Date of most recent inventory replenishment. Example: "2026-01-05".'
+    sql: '"lastRestockDate"'
+  location_address:
+    description: 'VARCHAR(100). Physical street address of distribution facility (Address format). Example: "279 New Street".'
+    sql: '"locationAddress"'
+  notes:
+    description: 'VARCHAR(100). Additional operational notes or logistics considerations. Example: "5wyeRL4US5".'
+    sql: notes
+  operating_hours:
+    description: 'VARCHAR(100). Daily operational schedule description. Example: "urYCHDueil".'
+    sql: '"operatingHours"'
+  security_level:
+    description: 'VARCHAR(100). Physical security classification (Low|Medium|High|Maximum|ArmedGuard). Possible values: "ArmedGuard", "High", "Low", "Maximum", "Medium".'
+    sql: '"securityLevel"'
+  stock_turn_rate:
+    description: 'VARCHAR(100). Inventory turnover frequency (units per time period). Example: "60j8I2eG6t".'
+    sql: '"stockTurnRate"'
+  storage_available_m3:
+    description: 'VARCHAR(100). Currently unoccupied storage volume in cubic meters. Example: "877".'
+    sql: '"storageAvailableM3"'
+  storage_capacity_m3:
+    description: 'VARCHAR(100). Total available storage volume in cubic meters. Example: "537".'
+    sql: '"storageCapacityM3"'
+  warehouse_status:
+    description: 'VARCHAR(100). Facility operational status (Operational|Full|Partial|Closed|Damaged|UnderRepair). Possible values: "Closed", "Damaged", "Full", "Operational", "Partial", "UnderRepair".'
+    sql: '"warehouseStatus"'

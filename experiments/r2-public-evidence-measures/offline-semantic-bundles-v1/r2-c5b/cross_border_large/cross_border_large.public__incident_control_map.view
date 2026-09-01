@@ -1,0 +1,51 @@
+label: Incident_Control_Map
+description: All columns of the public table Incident_Control_Map.
+catalog: cross_border_large
+schema: public
+table_name: Incident_Control_Map
+dimensions:
+  enhancement_cost_est:
+    description: 'REAL. Estimated cost to enhance control Typical range: 0 to 100000. **NULL means No enhancement needed or cost not estimated.**'
+    sql: '"ENHANCEMENT_COST_EST"'
+  gap_description:
+    description: TEXT. Description of the identified gap **NULL means No gap identified.**
+    sql: '"GAP_DESCRIPTION"'
+  gap_identified:
+    description: 'TEXT. Whether a control gap was identified Possible values: Yes, No, Partial.'
+    sql: '"Gap_Identified"'
+  icm_id:
+    description: BIGINT. Primary key. Unique identifier for incident-control mapping
+    sql: '"ICM_ID"'
+  incident_ref:
+    description: BIGINT. Foreign key referencing IncidentRegister(INCIDENT_ID). Related incident
+    sql: '"INCIDENT_REF"'
+  mapping_type:
+    description: 'TEXT. How the control performed during the incident Possible values: Failed, Bypassed, Effective, Partially Effective, Not Tested.'
+    sql: '"MAPPING_TYPE"'
+  review_date:
+    description: DATE. Date of control review post-incident
+    sql: '"REVIEW_DATE"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  control_effectiveness_pct:
+    description: 'REAL. Measured effectiveness of control Typical range: 0 to 100.'
+    sql: control_effectiveness_pct
+  control_ref:
+    description: BIGINT. Foreign key referencing Control_Library(control_code). Related security control
+    sql: control_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  enhancement_recommended:
+    description: BOOLEAN. Whether control enhancement is recommended Boolean flag (true/false).
+    sql: enhancement_recommended
+  remediation_priority:
+    description: 'TEXT. Priority for addressing the control gap Possible values: Immediate, Short-term, Medium-term, Long-term.'
+    sql: remediation_priority
+  reviewer:
+    description: 'TEXT. Person who reviewed the control Possible values: Internal Audit, External Audit, Security Team, Compliance.'
+    sql: reviewer
+  risk_reduction_score:
+    description: 'REAL. Expected risk reduction score (0-10) Typical range: 0 to 10.'
+    sql: risk_reduction_score

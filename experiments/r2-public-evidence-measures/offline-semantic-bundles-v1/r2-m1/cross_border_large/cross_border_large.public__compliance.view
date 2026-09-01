@@ -1,0 +1,65 @@
+label: Compliance
+description: Compliance rows with public context for GDPR compliance status.
+catalog: cross_border_large
+schema: public
+table_name: Compliance
+dimensions:
+  gdpr_comp:
+    description: 'TEXT. Compliance status with the General Data Protection Regulation (GDPR). Possible values: Compliant, Partial, Non-compliant.'
+    label: GDPR Compliance Status
+    sql: '"gdprComp"'
+    ai_context: 'GDPR Compliance Status: Values: compliant, non-compliant, or partial.'
+  ccpa_comp:
+    description: 'TEXT. Compliance status with the California Consumer Privacy Act (CCPA). Possible values: Partial, Compliant, Non-compliant.'
+    sql: '"CCPA_COMP"'
+  consent_coll:
+    description: DATE. Date of consent collection.
+    sql: '"ConsentColl"'
+  datasubjright:
+    description: 'TEXT. Status of support for data subject rights. Possible values: Partial, Limited, Fully Supported.'
+    sql: '"Datasubjright"'
+  legalbase:
+    description: 'TEXT. The legal basis for data processing. Possible values: Legitimate Interest, Legal Obligation, Consent, Contract.'
+    sql: '"LEGALBASE"'
+  piplcomp:
+    description: 'TEXT. Compliance status with China''s Personal Information Protection Law (PIPL). Possible values: Compliant, Partial, Non-compliant.'
+    sql: '"PIPLcomp"'
+  purp_desc:
+    description: 'TEXT. Description of the purpose for data processing. Possible values: Compliance, Research, Marketing, Business Operations.'
+    sql: '"PURP_DESC"'
+  reg_approvals:
+    description: 'TEXT. Status of regulatory approvals. Possible values: Obtained, Pending, Not Required.'
+    sql: '"RegApprovals"'
+  compliance_trace:
+    description: 'BIGINT. Unique identifier for the compliance trace. PK. Example: 75.'
+    sql: '"complianceTrace"'
+  consent_exp:
+    description: 'DATE. The expiration date of the user consent. Example: 2025-03-11.'
+    sql: consent_exp
+  consent_state:
+    description: 'TEXT. The current state of user consent. Possible values: Pending, Expired, Valid, Not Required.'
+    sql: consent_state
+  loc_law_comp:
+    description: 'TEXT. Compliance status with local laws. Possible values: Partial, Compliant, Non-compliant.'
+    sql: loc_law_comp
+  priv_imp_assess:
+    description: 'TEXT. Status of the privacy impact assessment. Possible values: Required, Completed, In Progress.'
+    sql: priv_imp_assess
+  purp_limit:
+    description: 'TEXT. The level of purpose limitation applied to data processing. Possible values: Specific, Multiple, General.'
+    sql: purp_limit
+  record_registry:
+    description: 'TEXT. Foreign key to the record registry. Example: CB735421.'
+    sql: '"recordRegistry"'
+  risk_tie:
+    description: 'BIGINT. Foreign key linking to RiskManagement(RISKTRACE). Example: 75.'
+    sql: risk_tie
+  vendor_tie:
+    description: 'BIGINT. Foreign key linking to VendorManagement(Vendor_Trace). Example: 75.'
+    sql: '"vendorTie"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Compliance public identity values.
+    label: Compliance Count
+    sql: ${cross_border_large_public__compliance.compliance_trace}

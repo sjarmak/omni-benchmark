@@ -1,0 +1,29 @@
+label: Customers
+description: Customer-profile rows with public return-history semantics.
+catalog: reverse_logistics_large
+schema: public
+table_name: customers
+dimensions:
+  total_returns:
+    description: 'BIGINT. Total number of returns made by the customer. example: 10'
+    label: Total Returns
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(return_behavior_profile, 'total_returns') AS DOUBLE PRECISION)
+    ai_context: 'Total Returns: Cumulative tally of processed return cases associated with a single customer account.'
+  geographyzone:
+    description: 'VARCHAR(100). Geographic location zone of the customer. example: Cambodia'
+    sql: geographyzone
+  profilenum:
+    description: VARCHAR(50). Unique identifier for the customer profile. PK.
+    sql: profilenum
+  return_behavior_profile:
+    description: JSONB column. Captures the customer's historical return behavior, including frequency and similarity of returns.
+    sql: return_behavior_profile
+  seg_category:
+    description: 'TEXT. Customer segment category. **NULL means the segment category is not assigned.**. Possible values: Wholesale,Retail,Individual'
+    sql: seg_category
+  return_behavior_profile_return_frequency_score:
+    description: BIGINT. Customer's frequency score based on return behavior.
+    sql: JSONB_EXTRACT_PATH_TEXT(return_behavior_profile, 'return_frequency_score')
+  return_behavior_profile_similar_previous_returns:
+    description: 'BIGINT. Simulated number of returns. **NULL means no previous simulated returns data.**. Possible values: 0.0, 1.0, 2.0, 3.0, 4.0, 5.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_behavior_profile, 'similar_previous_returns')

@@ -1,0 +1,60 @@
+label: SynthesizedVoiceFeedback
+description: All columns of the public table SynthesizedVoiceFeedback.
+catalog: virtual_idol_large
+schema: public
+table_name: SynthesizedVoiceFeedback
+dimensions:
+  admin_reviewed:
+    description: 'BOOLEAN. Staff checked this feedback. Possible values: True, False.'
+    sql: admin_reviewed
+  audio_device_type:
+    description: 'TEXT. Speaker, Headphones. Unique values: Headphones, Speaker, Phone.'
+    sql: audio_device_type
+  correction_suggested:
+    description: TEXT. User suggested pronunciation. **NULL means data unavailable.**
+    sql: correction_suggested
+  fan_user_ref:
+    description: TEXT. FK to fans.user_registry. **NULL means data unavailable.**
+    sql: fan_user_ref
+  feedback_id:
+    description: TEXT. Unique ID for user feedback on voice.
+    sql: feedback_id
+  feedback_timestamp:
+    description: 'TIMESTAMP. Time of report. Example: 2024-01-01 12:00:00.'
+    sql: feedback_timestamp
+  is_verified_purchase:
+    description: 'BOOLEAN. Did they pay for this TTS?. Possible values: True, False.'
+    sql: is_verified_purchase
+  issue_category:
+    description: 'TEXT. Robotic, Wrong Emotion, Noise. Unique values: Too Robotic, Wrong Pronunciation, Background Noise, None.'
+    sql: issue_category
+  model_fine_tuning_eligible:
+    description: 'BOOLEAN. Can this data be used to train?. Possible values: True, False.'
+    sql: model_fine_tuning_eligible
+  platform_interface:
+    description: 'TEXT. Web, Mobile App. Unique values: Mobile, Web, VR.'
+    sql: platform_interface
+  playback_volume_level:
+    description: 'INTEGER. Volume at time of listening (0-100). Example: 50.'
+    sql: playback_volume_level
+  report_reason_spam:
+    description: 'BOOLEAN. Flagged as spam. Possible values: True, False.'
+    sql: report_reason_spam
+  response_time_sec:
+    description: 'INTEGER. Time spent listening before rating. Example: 10.'
+    sql: response_time_sec
+  review_sentiment_score:
+    description: 'REAL. AI analysis of comment. Example: 0.5.'
+    sql: review_sentiment_score
+  ticket_ref_id:
+    description: TEXT. If escalated to support. **NULL means data unavailable.**
+    sql: ticket_ref_id
+  user_comment:
+    description: TEXT. Free text feedback. **NULL means data unavailable.**
+    sql: user_comment
+  user_rating_stars:
+    description: 'INTEGER. 1-5 star rating. Example: 50.'
+    sql: user_rating_stars
+  voice_log_ref:
+    description: TEXT. FK to VoiceSynthesisQualityLogs.
+    sql: voice_log_ref

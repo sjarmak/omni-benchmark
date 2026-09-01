@@ -1,0 +1,78 @@
+label: fund_manager_assignments
+description: All columns of the public table fund_manager_assignments.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: fund_manager_assignments
+dimensions:
+  active_share_during_tenure:
+    description: 'REAL. Degree to which the fund''s holdings differ from the benchmark. Example: 76.3.'
+    sql: '"ActiveShareDuringTenure"'
+  assignment_end_date:
+    description: 'DATE. Date when the manager’s fund assignment ended. **NULL means the assignment is ongoing or end date not recorded.** Example: 2024-05-15.'
+    sql: '"AssignmentEndDate"'
+  assignment_id:
+    description: 'BIGSERIAL. Unique identifier for each assignment record. Example: 101.'
+    sql: '"AssignmentID"'
+  assignment_start_date:
+    description: 'DATE. Date when the manager started managing the fund. Example: 2020-03-01.'
+    sql: '"AssignmentStartDate"'
+  decision_making_weight:
+    description: 'REAL. Approximate weight of decision-making power held by manager. Example: 45.0.'
+    sql: '"DecisionMakingWeight"'
+  equity_ownership:
+    description: 'REAL. Percent of fund ownership held by the manager. Example: 1.5.'
+    sql: '"EquityOwnership"'
+  expense_ratio_during_tenure:
+    description: 'REAL. Fund expense ratio during manager’s tenure. **NULL means the expense ratio data is unavailable for this period.** Example: 0.92.'
+    sql: '"ExpenseRatioDuringTenure"'
+  fund_ticker:
+    description: 'bigint. Ticker symbol identifying the fund being managed. Example: 1.'
+    sql: '"FundTicker"'
+  is_current_assignment:
+    description: 'BOOLEAN. Whether the assignment is active as of today. **NULL means assignment status is unknown.** Example: true.'
+    sql: '"IsCurrentAssignment"'
+  management_fee_share:
+    description: 'REAL. Portion of the management fee attributable to the manager. Example: 0.65.'
+    sql: '"ManagementFeeShare"'
+  manager_id:
+    description: 'BIGINT. Foreign key referencing the assigned manager. Example: 24.'
+    sql: '"ManagerID"'
+  number_of_co_managers:
+    description: 'BIGINT. Number of other managers jointly assigned to the fund. Example: 2.'
+    sql: '"NumberOfCoManagers"'
+  performance_fee_eligible:
+    description: 'BOOLEAN. Indicates if manager is eligible for performance-based fee. Example: false.'
+    sql: '"PerformanceFeeEligible"'
+  responsibility_percent:
+    description: 'REAL. Proportion of the fund management responsibility held by the manager. Example: 60.0.'
+    sql: '"ResponsibilityPercent"'
+  role_type:
+    description: 'TEXT. Role held by the manager during assignment. **NULL means the manager''s role has not been specified.** Example: Lead Manager,Assistant Manager,'
+    sql: '"RoleType"'
+  team_leadership_role:
+    description: 'BOOLEAN. Indicates if this manager led the team during assignment. Example: true.'
+    sql: '"TeamLeadershipRole"'
+  tenure_annualized_return:
+    description: 'REAL. Annualized return delivered by the manager during tenure. Example: 11.25.'
+    sql: '"TenureAnnualizedReturn"'
+  tenure_current_aum:
+    description: 'REAL. Most recent AUM while the manager was assigned. Example: 375000000.00.'
+    sql: '"TenureCurrentAUM"'
+  tenure_max_drawdown:
+    description: 'REAL. Worst peak-to-trough drop during the assignment. Example: -18.7.'
+    sql: '"TenureMaxDrawdown"'
+  tenure_sharpe_ratio:
+    description: 'REAL. Sharpe ratio calculated during the manager''s tenure. Example: 1.12.'
+    sql: '"TenureSharpeRatio"'
+  tenure_start_aum:
+    description: 'REAL. Assets under management at the start of the manager’s tenure. Example: 250000000.00.'
+    sql: '"TenureStartAUM"'
+  turnover_during_tenure:
+    description: 'REAL. Fund turnover percentage during the manager’s tenure. Example: 45.6.'
+    sql: '"TurnoverDuringTenure"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct fund_manager_assignments public identity values.
+    label: fund_manager_assignments Count
+    sql: ${exchange_traded_funds_large_public__fund_manager_assignments.assignment_id}

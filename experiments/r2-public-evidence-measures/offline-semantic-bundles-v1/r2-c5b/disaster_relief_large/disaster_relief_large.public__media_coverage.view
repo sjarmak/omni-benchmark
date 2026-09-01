@@ -1,0 +1,90 @@
+label: MediaCoverage
+description: All columns of the public table MediaCoverage.
+catalog: disaster_relief_large
+schema: public
+table_name: MediaCoverage
+dimensions:
+  accuracy_rating:
+    description: REAL. Manual or automated accuracy score (1‒5). May be NULL when not assessed.
+    sql: '"AccuracyRating"'
+  amplification_pct:
+    description: REAL. Percentage amplification on social platforms. May be NULL for outlets lacking data.
+    sql: '"AmplificationPct"'
+  bias_rating:
+    description: REAL. Perceived bias score (1‒5). May be NULL when not assessed.
+    sql: '"Bias_Rating"'
+  correction_date:
+    description: text. Publication date of the correction notice; blank when none.
+    sql: '"CORRECTION_DATE"'
+  dist_ref:
+    description: VARCHAR(20). FK → DisasterEvents.DistRegistry linking the story to a disaster event.
+    sql: '"Dist_ref"'
+  engagement_score:
+    description: REAL. Composite engagement metric (0‒100).
+    sql: '"EngagementScore"'
+  fact_checked:
+    description: BOOLEAN. TRUE if third-party fact-checking completed.
+    sql: '"FactChecked"'
+  language:
+    description: TEXT. ISO language code of the story (EN, ES, FR, AR, …).
+    sql: '"Language"'
+  media_type:
+    description: TEXT. Medium of the coverage (News, Social Media, TV, Radio, Blog, Podcast).
+    sql: '"MediaType"'
+  notes:
+    description: TEXT. Free-form analyst notes; may be NULL if not provided.
+    sql: '"Notes"'
+  outlet_name:
+    description: TEXT. Publishing outlet or channel (e.g., “GlobalNews”, “AidWatch”).
+    sql: '"OUTLET_NAME"'
+  publication_date:
+    description: DATE. When the story went live (yyyy-mm-dd).
+    sql: '"PUBLICATION_DATE"'
+  region:
+    description: TEXT. Geographic region focus (North, Central, etc.).
+    sql: '"REGION"'
+  reporter_name:
+    description: TEXT. Journalist or content creator name. May be NULL for anonymous/social posts.
+    sql: '"ReporterName"'
+  sentiment_score:
+    description: REAL. Computed sentiment score (−1.00 to 1.00).
+    sql: '"SentimentScore"'
+  social_shares:
+    description: BIGINT. Number of shares/retweets/etc.
+    sql: '"Social_Shares"'
+  trending:
+    description: BOOLEAN. TRUE if flagged as trending by the platform.
+    sql: '"TRENDING"'
+  title:
+    description: TEXT. Headline or post title.
+    sql: '"Title"'
+  updated_at:
+    description: TIMESTAMP. Last update time (UTC).
+    sql: '"UPDATED_AT"'
+  url:
+    description: TEXT. Canonical link to the online story. May be NULL if source is offline (e.g., radio).
+    sql: '"URL"'
+  coverage_id:
+    description: VARCHAR(20). Unique identifier for each media-coverage record. PK.
+    sql: '"coverageID"'
+  coverage_reach_scope:
+    description: TEXT. Scope label of the coverage (Local, Regional, Nationwide, International).
+    sql: '"coverageReach_scope"'
+  coverage_tone:
+    description: TEXT. Human-coded tone (Positive, Neutral, Negative).
+    sql: '"coverageTone"'
+  created_at:
+    description: TIMESTAMP. Record creation time (UTC).
+    sql: '"createdAt"'
+  info_corrected:
+    description: BOOLEAN. TRUE if the outlet published corrections.
+    sql: '"infoCorrected"'
+  reach_estimate:
+    description: BIGINT. Estimated potential audience reach (people).
+    sql: reach_estimate
+  sentiment_band_normalized:
+    description: REAL. Same sentiment as SentimentScore, but stored again for banding/reference (−1.00 to 1.00).
+    sql: '"sentimentBand_normalized"'
+  view_count_views:
+    description: BIGINT. Numeric view count for video/streaming content.
+    sql: '"viewCount_views"'

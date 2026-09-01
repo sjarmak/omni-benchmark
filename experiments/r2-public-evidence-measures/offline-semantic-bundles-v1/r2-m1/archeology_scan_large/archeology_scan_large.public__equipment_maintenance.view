@@ -1,0 +1,72 @@
+label: EquipmentMaintenance
+description: All columns of the public table EquipmentMaintenance.
+catalog: archeology_scan_large
+schema: public
+table_name: EquipmentMaintenance
+dimensions:
+  equipment_maintenance_id:
+    description: TEXT. Unique identifier for equipment maintenance record.
+    sql: '"EquipmentMaintenance_id"'
+  calibration_drift_percent:
+    description: 'REAL. Measured calibration drift as percentage from standard. **NULL means Not a calibration maintenance event.** Example: 2.5.'
+    sql: calibration_drift_percent
+  completion_status:
+    description: 'TEXT. Final status of maintenance work order. Unique values: Completed, Partial, Pending Parts, Requires Follow-up.'
+    sql: completion_status
+  downtime_hours:
+    description: 'REAL. Total equipment downtime due to maintenance in hours. Example: 6.'
+    sql: downtime_hours
+  equipment_ref:
+    description: TEXT. Reference to the equipment being maintained.
+    sql: equipment_ref
+  fault_code_count:
+    description: 'INTEGER. Number of fault codes cleared during maintenance. Example: 50.'
+    sql: fault_code_count
+  firmware_updated:
+    description: 'BOOLEAN. Indicates if firmware was updated during maintenance. Possible values: True, False.'
+    sql: firmware_updated
+  is_field_service:
+    description: 'BOOLEAN. Indicates if maintenance was performed in field vs workshop. Possible values: True, False.'
+    sql: is_field_service
+  labor_cost_usd:
+    description: 'REAL. Cost of labor in US dollars. Example: 175.'
+    sql: labor_cost_usd
+  labor_hours:
+    description: 'REAL. Total labor hours spent on maintenance. Example: 3.5.'
+    sql: labor_hours
+  maintenance_date:
+    description: 'TIMESTAMP. Date and time when maintenance was performed. Example: 2024-01-01 12:00:00.'
+    sql: maintenance_date
+  maintenance_type:
+    description: 'TEXT. Category of maintenance performed. Unique values: Preventive, Corrective, Calibration, Inspection, Emergency.'
+    sql: maintenance_type
+  next_maintenance_interval_days:
+    description: 'INTEGER. Recommended days until next scheduled maintenance. Unique values: 30, 90, 180, 365.'
+    sql: next_maintenance_interval_days
+  operating_hours_at_service:
+    description: 'REAL. Total equipment operating hours at time of service. **NULL means Hour meter not available.** Example: 50.0.'
+    sql: operating_hours_at_service
+  parts_cost_usd:
+    description: 'REAL. Cost of replacement parts in US dollars. **NULL means No parts replaced.** Example: 150.'
+    sql: parts_cost_usd
+  post_maintenance_condition:
+    description: 'TEXT. Equipment condition rating after maintenance. Unique values: Excellent, Good, Fair, Poor.'
+    sql: post_maintenance_condition
+  pre_maintenance_condition:
+    description: 'TEXT. Equipment condition rating before maintenance. Unique values: Excellent, Good, Fair, Poor, Critical.'
+    sql: pre_maintenance_condition
+  safety_inspection_passed:
+    description: 'BOOLEAN. Indicates if post-maintenance safety inspection passed. Possible values: True, False.'
+    sql: safety_inspection_passed
+  technician_count:
+    description: 'INTEGER. Number of technicians involved in maintenance. Example: 50.'
+    sql: technician_count
+  warranty_covered:
+    description: 'BOOLEAN. Indicates if maintenance was covered by warranty. Possible values: True, False.'
+    sql: warranty_covered
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EquipmentMaintenance public identity values.
+    label: EquipmentMaintenance Count
+    sql: ${archeology_scan_large_public__equipment_maintenance.equipment_maintenance_id}

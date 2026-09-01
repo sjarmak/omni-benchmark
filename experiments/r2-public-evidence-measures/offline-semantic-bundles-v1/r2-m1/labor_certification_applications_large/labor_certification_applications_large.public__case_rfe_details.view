@@ -1,0 +1,90 @@
+label: case_rfe_details
+description: All columns of the public table case_rfe_details.
+catalog: labor_certification_applications_large
+schema: public
+table_name: case_rfe_details
+dimensions:
+  rfe_code:
+    description: 'TEXT. Unique identifier for an RFE. PK. Example: RFE00001.'
+    sql: '"RFE_CODE"'
+  wagejustification:
+    description: 'TEXT. Wage justification status. Possible values: Provided, Not required, Pending. Example: Pending.'
+    sql: '"WAGEjustification"'
+  ack_stamp:
+    description: 'DATE. Date USCIS acknowledged receipt. Example: 2024-06-10.'
+    sql: '"ackSTAMP"'
+  buffer_window_d:
+    description: 'REAL. Days remaining to reply when analyst generated the record. Example: 30.'
+    sql: '"bufferWindow_d"'
+  clarif_question_ct:
+    description: 'BIGINT. Number of clarification questions. Example: 7.'
+    sql: '"clarifQuestion_ct"'
+  client_letter_flag:
+    description: 'TEXT. Client letter requested? Possible values: Yes, No. Example: Yes.'
+    sql: '"clientLetter_flag"'
+  compile_cost_usd:
+    description: 'REAL. Estimated out-of-pocket cost, USD. **NULL when cost not yet tallied.** Example: 3 041.'
+    sql: '"compileCost_USD"'
+  complexity_score:
+    description: 'REAL. Internal complexity rating (1–10). **NULL means score not yet set.** Example: 6.21.'
+    sql: '"complexityScore"'
+  decision_after_rfe:
+    description: 'TEXT. USCIS decision post-RFE. **NULL when decision still pending.** Possible values: Approved, Denied, Pending, Withdrawn. Example: Pending.'
+    sql: '"decisionAfterRFE"'
+  delivery_method:
+    description: 'TEXT. Courier or mailing service used. Possible values: FedEx, UPS, USPS, Courier. Example: USPS.'
+    sql: '"deliveryMETHOD"'
+  due_back_day:
+    description: 'DATE. RFE response deadline. Example: 2024-06-10.'
+    sql: '"dueBackDay"'
+  edu_eval_flag:
+    description: 'TEXT. Academic-credential evaluation requested? Possible values: Yes, No. Example: No.'
+    sql: '"eduEval_flag"'
+  evidence_requested:
+    description: 'TEXT. Short description of evidence type(s) requested. Example: Itinerary.'
+    sql: '"evidenceRequested"'
+  expert_opinion_flag:
+    description: 'TEXT. Expert opinion required? **NULL means not yet evaluated.** Possible values: Yes, No. Example: Yes.'
+    sql: '"expertOpinion_flag"'
+  file_ref:
+    description: 'TEXT. FK to cases.fileKey. Example: I-200-23355-584296.'
+    sql: file_ref
+  issue_day:
+    description: 'DATE. Date RFE was issued. Example: 2024-04-21.'
+    sql: '"issueDAY"'
+  itinerary_req_flag:
+    description: 'TEXT. Itinerary requested? Possible values: Yes, No. Example: No.'
+    sql: itinerary_req_flag
+  labor_condition_flag:
+    description: 'TEXT. New LCA or LCA clarification needed? **NULL when not yet assessed.** Possible values: Yes, No. Example: No.'
+    sql: '"laborCondition_flag"'
+  lawyer_hours_est:
+    description: 'REAL. Estimated attorney hours to compile response. Example: 37.4.'
+    sql: '"lawyerHours_est"'
+  maintenance_log_flag:
+    description: 'TEXT. Maintenance log requested? Possible values: Yes, No. Example: No.'
+    sql: '"maintenanceLog_flag"'
+  reasoning_summary:
+    description: 'TEXT. Analyst notes on RFE. Example: Synthetic demo data.'
+    sql: '"reasoningSUMMARY"'
+  received_stamp:
+    description: 'DATE. Date RFE packet was delivered to USCIS. Example: 2024-06-06.'
+    sql: '"receivedStamp"'
+  recruiter_docs_flag:
+    description: 'TEXT. Recruiter documentation requested? Possible values: Yes, No. Example: Yes.'
+    sql: '"recruiterDocs_flag"'
+  size_band:
+    description: 'TEXT. Size of RFE packet. Possible values: Small, Medium, Large. Example: Medium.'
+    sql: '"sizeBand"'
+  total_pages:
+    description: 'BIGINT. Pages in the RFE notice. Example: 199.'
+    sql: '"totalPages"'
+  work_offsite_flag:
+    description: 'TEXT. Work-offsite question raised? Possible values: Yes, No. Example: Yes.'
+    sql: '"workOffsite_flag"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct case_rfe_details public identity values.
+    label: case_rfe_details Count
+    sql: ${labor_certification_applications_large_public__case_rfe_details.rfe_code}

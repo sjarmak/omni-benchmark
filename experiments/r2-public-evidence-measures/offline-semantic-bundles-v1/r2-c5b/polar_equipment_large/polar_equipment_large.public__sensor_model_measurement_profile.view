@@ -1,0 +1,105 @@
+label: SensorModelMeasurementProfile
+description: All columns of the public table SensorModelMeasurementProfile.
+catalog: polar_equipment_large
+schema: public
+table_name: SensorModelMeasurementProfile
+dimensions:
+  bias_stability_units:
+    description: 'REAL. Bias stability (units) over time. **NULL means oversample=1 (no long-term averaging) and stability not specified.** Example: 0.00351.'
+    sql: '"biasStability_units"'
+  bias_units:
+    description: 'REAL. Static bias in measurement units. **NULL means drift is very low (< 1 ppm/day) so bias term is not modeled.** Example: 0.0123.'
+    sql: bias_units
+  cal_date:
+    description: 'DATE. Date the profile was calibrated/characterized. Example: 2025-03-12.'
+    sql: '"calDate"'
+  comment:
+    description: 'TEXT. Human-readable summary of the profile parameters and limits. **NULL means profile is nearly linear (nonlinearity_pct < 0.2%) and commentary was intentionally omitted.** Example: Profile ''default-1'': 512.3 Hz sample rate, IIR filtering @ 120.0 Hz cutoff. Gain 1.25 dB; drift 6.21 ppm/day. Bias 0.0123 (stability 0.00351); nonlinearity 0.46%. Qualified up to 72.4 mm/s² vibration. Calibrated on 2025-03-12 by Engineer C; EMC Class B.'
+    sql: comment
+  cross_axial_pct:
+    description: 'REAL. Cross-axis sensitivity (%). Example: 1.42.'
+    sql: '"crossAxial_pct"'
+  doc_ref:
+    description: 'TEXT. Reference document ID. Example: PROF-10023.'
+    sql: '"docRef"'
+  drift_ppm_day:
+    description: 'REAL. Drift per day (ppm/day). Example: 6.214.'
+    sql: drift_ppm_day
+  emc_class:
+    description: 'TEXT. EMC compliance class. Possible values (from file): Class A, Class B. Example: Class B.'
+    sql: '"emcClass"'
+  esd_k_v:
+    description: 'REAL. ESD robustness (kV). Example: 4.5.'
+    sql: '"esd_kV"'
+  filter_cutoff_hz:
+    description: 'REAL. Filter cutoff frequency in Hz if filterType ≠ ''None''. **NULL means no filter is applied.** Example: 120.0.'
+    sql: '"filterCutoff_hz"'
+  filter_type:
+    description: 'TEXT. Digital/analog filtering applied. Possible values (from file): FIR, IIR, Kalman, None. Example: IIR.'
+    sql: '"filterType"'
+  gain_d_b:
+    description: 'REAL. Front-end/firmware gain in dB. **NULL means gain is negligible (< 0.5 dB).** Example: 1.25.'
+    sql: '"gain_dB"'
+  hysteresis_pct:
+    description: 'REAL. Hysteresis in percent. Example: 0.27.'
+    sql: hysteresis_pct
+  latency_ms:
+    description: 'REAL. Data path latency (ms). Example: 3.27.'
+    sql: latency_ms
+  noise_u_vrthz:
+    description: 'REAL. Input-referred noise density (µV/√Hz). Example: 2.317.'
+    sql: '"noise_uVrthz"'
+  nonlinearity_pct:
+    description: 'REAL. Non-linearity in percent. Example: 0.46.'
+    sql: nonlinearity_pct
+  oversample:
+    description: 'BIGINT. Oversampling factor. Example: 8.'
+    sql: oversample
+  profile_stamp:
+    description: BIGSERIAL. Unique identifier for the measurement profile. PK.
+    sql: '"profileStamp"'
+  profile_for_model:
+    description: 'TEXT. References SensorModel(modelHandle). FK. Example: SM-LID-1000.'
+    sql: profile_for_model
+  sample_rate_hz:
+    description: 'REAL. Profile sampling rate in Hz. Example: 512.3.'
+    sql: '"sampleRate_hz"'
+  saturation_units:
+    description: 'REAL. Saturation level in measurement units. Example: 1.214.'
+    sql: saturation_units
+  scale_factor:
+    description: 'REAL. Multiplicative scale factor. Example: 1.00345.'
+    sql: '"scaleFactor"'
+  settle_ms:
+    description: 'REAL. Settling time (ms). Example: 12.6.'
+    sql: settle_ms
+  shock_g:
+    description: 'REAL. Maximum shock tolerance (g). Example: 985.5.'
+    sql: shock_g
+  tech:
+    description: 'TEXT. Technician/engineer who performed characterization. Example: Engineer C.'
+    sql: tech
+  temp_coeff_ppm_c:
+    description: 'REAL. Temperature coefficient (ppm/°C). Example: 125.33.'
+    sql: '"tempCoeff_ppmC"'
+  test_profile_name:
+    description: 'TEXT. Profile label/variant name. Example: default-1.'
+    sql: '"testProfileName"'
+  ttl_high_v:
+    description: 'REAL. Logic-high threshold (V). Example: 3.3.'
+    sql: '"ttlHigh_V"'
+  ttl_low_v:
+    description: 'REAL. Logic-low threshold (V). Example: 0.0.'
+    sql: '"ttlLow_V"'
+  valid_from:
+    description: 'TIMESTAMP. Timestamp when this profile becomes valid. Example: 2025-03-12 00:00:00.'
+    sql: '"validFrom"'
+  valid_to:
+    description: 'TIMESTAMP. Timestamp when this profile expires or is superseded. Example: 2026-09-12 00:00:00.'
+    sql: '"validTo"'
+  vibration_mms2:
+    description: 'REAL. Vibration tolerance (mm/s²). Example: 72.40.'
+    sql: vibration_mms2
+  zero_g_offset_mps2:
+    description: 'REAL. Zero-g offset for accelerometer profiles (m/s²). Example: -0.0042.'
+    sql: '"zeroG_offset_mps2"'

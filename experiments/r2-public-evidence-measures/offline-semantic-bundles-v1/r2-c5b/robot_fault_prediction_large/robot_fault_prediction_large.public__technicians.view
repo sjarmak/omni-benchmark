@@ -1,0 +1,102 @@
+label: technicians
+description: All columns of the public table technicians.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: technicians
+dimensions:
+  access_card_tag:
+    description: 'TEXT. The unique identifier for the technician''s access card. Example: AC_95001.'
+    sql: '"ACCESS_CARD_TAG"'
+  emergency_contact_name:
+    description: 'TEXT. The name of the technician''s emergency contact. Example: Sarah Johnson.'
+    sql: '"EMERGENCY_CONTACT_NAME"'
+  first_name:
+    description: 'TEXT. The first name of the technician. Example: Michael.'
+    sql: '"FirstName"'
+  hire_date:
+    description: 'TEXT. The date the technician was hired, formatted as MM/DD/YYYY. Example: 03/15/2020.'
+    sql: '"HIRE_DATE"'
+  hourly_rate_usd:
+    description: 'REAL. The technician''s hourly pay rate in USD. Example: 42.5.'
+    sql: '"HOURLY_RATE_USD"'
+  is_account_locked:
+    description: 'BOOLEAN. A flag indicating if the technician''s account is locked. Possible values: False, True.'
+    sql: '"IS_ACCOUNT_LOCKED"'
+  is_active:
+    description: 'BOOLEAN. A flag indicating if the technician''s account is active. Possible values: False, True.'
+    sql: '"IS_ACTIVE"'
+  last_name:
+    description: 'TEXT. The last name of the technician. Example: Johnson.'
+    sql: '"LAST_NAME"'
+  last_performance_review_date:
+    description: 'TEXT. The date of the technician''s last formal performance review, formatted as MM/DD/YYYY. Example: 11/10/2024.'
+    sql: '"LastPerformanceReviewDate"'
+  notes:
+    description: 'TEXT. Additional notes or comments about the technician. Example: Team lead for the FANUC line..'
+    sql: '"Notes"'
+  reports_to_tech_code:
+    description: 'TEXT. The tech_code of the technician''s direct manager. **NULL indicates the technician is a top-level manager.**. Possible values: TCH_1001, TCH_1002, TCH_1003, TCH_1007, TCH_1008, TCH_1009, TCH_1011, TCH_1012, TCH_1017.'
+    sql: '"Reports_To_Tech_Code"'
+  security_clearance:
+    description: 'TEXT. The security clearance level of the technician. Possible values: Level 1, Level 2, Level 3, Level 4.'
+    sql: '"Security_Clearance"'
+  shift_pattern:
+    description: 'TEXT. The shift pattern the technician works. Possible values: Admin, Day_Shift_A, Day_Shift_B, Night_Shift_A, Night_Shift_B, Weekend_Shift.'
+    sql: '"ShiftPattern"'
+  specialization:
+    description: 'TEXT. The technician''s area of expertise. Possible values: Electrical Systems, General Maintenance, Mechanical Systems, Operations Management, PLC Programming, Software Troubleshooting, Vision Systems.'
+    sql: '"Specialization"'
+  total_maintenance_hours:
+    description: 'TEXT. Total cumulative maintenance hours logged by the technician. Example: 8250.5 hours.'
+    sql: '"TOTAL_MAINTENANCE_HOURS"'
+  termination_date:
+    description: 'TEXT. The date the technician''s employment was terminated, formatted as MM/DD/YYYY. **NULL indicates the technician is currently an active employee.**. Possible values: 01/10/2025, 06/20/2024, 08/15/2024, 12/31/2024.'
+    sql: '"TerminationDate"'
+  address_details:
+    description: JSONB column. Encapsulates the technician's full residential address information.
+    sql: address_details
+  contact_phone:
+    description: 'TEXT. The technician''s contact phone number. Example: (555) 123-4567.'
+    sql: contact_phone
+  department:
+    description: 'TEXT. The department the technician belongs to. Possible values: Maintenance, Engineering. Possible values: Engineering, Maintenance.'
+    sql: department
+  email_address:
+    description: 'TEXT. The technician''s unique email address. Example: michael.johnson@robotcorp.com.'
+    sql: email_address
+  emergency_contact_phone:
+    description: 'TEXT. The phone number of the technician''s emergency contact. Example: (555) 123-4568.'
+    sql: emergency_contact_phone
+  job_title:
+    description: 'TEXT. The official job title of the technician. Example: Senior Robotics Technician.'
+    sql: '"jobTitle"'
+  last_login_ts:
+    description: 'TEXT. The timestamp of the technician''s last login, formatted as MM/DD/YYYY HH24:MI:SS. **NULL indicates the technician has never logged in.**. Example: 10/18/2025 08:30:15.'
+    sql: last_login_ts
+  login_attempts:
+    description: 'BIGINT. The number of failed login attempts since the last successful login. Possible values: 0, 1, 2, 3, 4.'
+    sql: login_attempts
+  performance_rating_5_scale:
+    description: 'REAL. The technician''s latest performance rating on a 5-point scale. Example: 4.8.'
+    sql: performance_rating_5_scale
+  preferred_language:
+    description: 'TEXT. The technician''s preferred language. Possible values: English, Korean, Spanish.'
+    sql: preferred_language
+  tech_code:
+    description: 'TEXT. Unique identifier code for the technician. PK. Example: TCH_1001.'
+    sql: tech_code
+  address_details_city:
+    description: 'TEXT. The city of the technician''s residence. Example: Detroit.'
+    sql: JSONB_EXTRACT_PATH_TEXT(address_details, 'city')
+  address_details_country:
+    description: 'TEXT. The country of the technician''s residence. Possible values: USA.'
+    sql: JSONB_EXTRACT_PATH_TEXT(address_details, 'country')
+  address_details_postal_code:
+    description: 'TEXT. The postal code of the technician''s residence. Example: 48201.'
+    sql: JSONB_EXTRACT_PATH_TEXT(address_details, 'postal_code')
+  address_details_state_province:
+    description: 'TEXT. The state or province of the technician''s residence. Example: MI.'
+    sql: JSONB_EXTRACT_PATH_TEXT(address_details, 'state_province')
+  address_details_street:
+    description: 'TEXT. The technician''s street address. Example: 123 Automation Lane.'
+    sql: JSONB_EXTRACT_PATH_TEXT(address_details, 'street')

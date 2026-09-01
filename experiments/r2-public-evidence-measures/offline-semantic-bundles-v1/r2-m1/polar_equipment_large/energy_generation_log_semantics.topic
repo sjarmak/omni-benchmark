@@ -1,0 +1,21 @@
+base_view: polar_equipment_large_public__energy_generation_log
+label: EnergyGenerationLog
+description: All columns of the public table EnergyGenerationLog.
+fields:
+- polar_equipment_large_public__energy_generation_log.*
+- polar_equipment_large_public__communication.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__location.*
+- polar_equipment_large_public__operationmaintenance.*
+- polar_equipment_large_public__powerbattery.*
+- polar_equipment_large_public__thermalsolarwindandgrid.*
+joins:
+  polar_equipment_large_public__thermalsolarwindandgrid:
+    polar_equipment_large_public__communication:
+      polar_equipment_large_public__equipment:
+        polar_equipment_large_public__equipmenttype: {}
+      polar_equipment_large_public__location: {}
+      polar_equipment_large_public__operationmaintenance: {}
+    polar_equipment_large_public__powerbattery: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

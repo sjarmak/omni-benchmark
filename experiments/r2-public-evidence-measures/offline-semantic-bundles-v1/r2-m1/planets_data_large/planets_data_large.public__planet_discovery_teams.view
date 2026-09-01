@@ -1,0 +1,78 @@
+label: planet_discovery_teams
+description: All columns of the public table planet_discovery_teams.
+catalog: planets_data_large
+schema: public
+table_name: planet_discovery_teams
+dimensions:
+  atmospheric_characterization_flag:
+    description: 'boolean. Flag indicating if team contributed to atmospheric analysis. **NULL means atmospheric characterization status was not recorded.**. Possible values: False, True.'
+    sql: '"ATMOSPHERIC_CHARACTERIZATION_FLAG"'
+  announcement_date:
+    description: 'date. Date when the discovery was publicly announced. **NULL means announcement date was not recorded.**. Possible values: 2013-05-02, 2017-02-22, 2018-09-14, 2019-04-22, 2019-04-25, 2020-08-03.'
+    sql: '"AnnouncementDate"'
+  contribution_percentage:
+    description: 'real. Percentage of contribution to the discovery effort (0.0 to 100.0). Possible values: 15, 45, 55, 65, 75, 85, 92.'
+    sql: '"CONTRIBUTION_PERCENTAGE"'
+  discovery_role:
+    description: 'text. Role of the team in the discovery process (lead, collaborator, follow-up, etc.). Possible values: Atmospheric Characterization, Follow-up Characterization, Mass Determination, Primary Discovery, Statistical Validation, Transit Detection.'
+    sql: '"DiscoveryRole"'
+  first_detection_flag:
+    description: 'boolean. Flag indicating if this team made the initial detection. Possible values: False, True.'
+    sql: '"FIRST_DETECTION_FLAG"'
+  follow_up_studies_enabled:
+    description: 'bigint. Number of follow-up studies enabled by this discovery. **NULL means follow-up studies were not tracked.**. Possible values: 12.0, 15.0, 18.0, 45.0, 8.0, 9.0.'
+    sql: '"FollowUpStudiesEnabled"'
+  lead_author_flag:
+    description: 'boolean. Flag indicating if this team provided the lead author for discovery publication. Possible values: False, True.'
+    sql: '"LeadAuthorFlag"'
+  mass_determination_flag:
+    description: 'boolean. Flag indicating if team contributed to planetary mass measurement. Possible values: False, True.'
+    sql: '"MassDeterminationFlag"'
+  notes:
+    description: 'text. Additional notes or comments about the team''s role in the discovery. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  planetlink:
+    description: 'bigint. Foreign key reference to the discovered planet. FK to planets(planetRef). Example: 1.'
+    sql: '"PLANETLINK"'
+  press_release_issued:
+    description: 'boolean. Flag indicating if a press release was issued for the discovery. Possible values: False, True.'
+    sql: '"PRESS_RELEASE_ISSUED"'
+  publication_date:
+    description: 'date. Date when the discovery was published in peer-reviewed literature. Example: 1983-01-01.'
+    sql: '"PUBLICATION_DATE"'
+  publication_doi:
+    description: 'text. Digital Object Identifier (DOI) of the discovery publication. **NULL means publication DOI was not available.**. Possible values: 10.1038/nature21360, 10.1051/0004-6361/201832957, 10.1051/0004-6361/201935849, 10.3847/1538-3881/abac0c.'
+    sql: '"PublicationDoi"'
+  scientific_impact_score:
+    description: 'real. Quantitative assessment of the discovery''s scientific impact. Possible values: 6.2, 6.8, 7.3, 7.5, 7.8, 8.1, 8.9, 9.2, 9.8.'
+    sql: '"SCIENTIFIC_IMPACT_SCORE"'
+  citation_count:
+    description: 'bigint. Number of citations received by the discovery publication. **NULL means citation count was not tracked.**. Possible values: 127.0, 234.0, 2847.0, 45.0, 76.0, 892.0.'
+    sql: citation_count
+  confirmation_date:
+    description: 'date. Date when the planet discovery was confirmed or validated. **NULL means confirmation is still pending.**. Possible values: 2014-02-10, 2017-05-12, 2019-01-22, 2019-08-15.'
+    sql: confirmation_date
+  discovery_ref:
+    description: 'bigint. Primary key identifier for planet discovery team association records. PK. Possible values: 14001, 14002, 14003, 14004, 14005, 14006, 14007.'
+    sql: '"discoveryRef"'
+  discovery_date:
+    description: 'date. Date when the planet was first detected by this team. **NULL means discovery date was not recorded.**. Possible values: 2013-04-18, 2017-02-23, 2019-03-15, 2020-07-15, 2021-11-08.'
+    sql: discovery_date
+  funding_attribution:
+    description: 'text. Attribution of funding sources that supported the discovery work. **NULL means funding attribution was not recorded.**. Possible values: European Research Council, NASA Kepler Mission, NASA TESS Mission, Swiss National Science Foundation, UK Science and Technology Facilities Council.'
+    sql: funding_attribution
+  observation_time_allocated_hours:
+    description: 'real. Total observational time allocated for this discovery in hours. Possible values: 156.8, 167.9, 203.4, 245.5, 432.1, 78.3, 89.2.'
+    sql: observation_time_allocated_hours
+  orbital_characterization_flag:
+    description: 'boolean. Flag indicating if team contributed to orbital parameter determination. Possible values: False, True.'
+    sql: orbital_characterization_flag
+  team_link:
+    description: 'bigint. Foreign key reference to the discovery team. FK to discovery_teams(TEAMREF). Possible values: 13001, 13002, 13003, 13004, 13005, 13006, 13007.'
+    sql: team_link
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct planet_discovery_teams public identity values.
+    label: planet_discovery_teams Count
+    sql: ${planets_data_large_public__planet_discovery_teams.discovery_ref}

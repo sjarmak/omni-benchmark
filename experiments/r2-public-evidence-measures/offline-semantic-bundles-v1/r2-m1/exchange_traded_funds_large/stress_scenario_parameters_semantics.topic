@@ -1,0 +1,11 @@
+base_view: exchange_traded_funds_large_public__stress_scenario_parameters
+label: StressScenarioParameters
+description: All columns of the public table StressScenarioParameters.
+fields:
+- exchange_traded_funds_large_public__stress_scenario_parameters.*
+- exchange_traded_funds_large_public__funds.*
+- exchange_traded_funds_large_public__portfolio_stress_test_results.*
+joins:
+  exchange_traded_funds_large_public__portfolio_stress_test_results:
+    exchange_traded_funds_large_public__funds: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

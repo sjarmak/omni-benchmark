@@ -1,0 +1,66 @@
+label: TrainingMaterial
+description: All columns of the public table TrainingMaterial.
+catalog: cross_border_large
+schema: public
+table_name: TrainingMaterial
+dimensions:
+  author:
+    description: 'TEXT. Content author Possible values: Privacy Team, Legal Dept, External Vendor, DPO Office.'
+    sql: '"AUTHOR"'
+  avg_quiz_score:
+    description: 'REAL. Average quiz/assessment score Typical range: 0 to 100.'
+    sql: '"AVG_QUIZ_SCORE"'
+  file_size_mb:
+    description: 'REAL. File size in megabytes Typical range: 0.1 to 500.'
+    sql: '"FILE_SIZE_MB"'
+  format:
+    description: 'TEXT. File format Possible values: PDF, MP4, SCORM, HTML, PPTX, DOCX.'
+    sql: '"FORMAT"'
+  language:
+    description: 'TEXT. Material language Possible values: English, German, French, Spanish, Mandarin.'
+    sql: '"LANGUAGE"'
+  material_id:
+    description: BIGINT. Primary key. Unique training material identifier
+    sql: '"MATERIAL_ID"'
+  module_order:
+    description: BIGINT. Order within the program
+    sql: '"MODULE_ORDER"'
+  published_date:
+    description: DATE. Publication date
+    sql: '"PUBLISHED_DATE"'
+  title:
+    description: 'TEXT. Material title Possible values: Introduction to GDPR, Data Mapping Exercise, Breach Simulation, Privacy Policy Template, DPIA Worksheet, Vendor Assessment Checklist.'
+    sql: '"TITLE"'
+  accessibility_level:
+    description: 'TEXT. WCAG accessibility compliance level Possible values: AA, AAA, A, None.'
+    sql: accessibility_level
+  content_url:
+    description: TEXT. URL to the material
+    sql: content_url
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  duration_minutes:
+    description: BIGINT. Duration for video/interactive content **NULL means Not applicable for static content.**
+    sql: duration_minutes
+  last_reviewed_date:
+    description: DATE. Last content review date
+    sql: last_reviewed_date
+  mandatory:
+    description: BOOLEAN. Whether this material is mandatory Boolean flag (true/false).
+    sql: mandatory
+  material_type:
+    description: 'TEXT. Type of training material Possible values: Slide Deck, Video, Quiz, Case Study, Template, Handbook, Interactive Module, Assessment.'
+    sql: material_type
+  program_ref:
+    description: BIGINT. Foreign key referencing PrivacyTrainingProgram(TRAINING_PROG_ID). Related training program
+    sql: program_ref
+  version:
+    description: TEXT. Material version
+    sql: version
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TrainingMaterial public identity values.
+    label: TrainingMaterial Count
+    sql: ${cross_border_large_public__training_material.material_id}

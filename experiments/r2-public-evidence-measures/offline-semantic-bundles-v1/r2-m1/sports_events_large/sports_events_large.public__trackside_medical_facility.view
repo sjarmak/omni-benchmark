@@ -1,0 +1,66 @@
+label: TracksideMedicalFacility
+description: All columns of the public table TracksideMedicalFacility.
+catalog: sports_events_large
+schema: public
+table_name: TracksideMedicalFacility
+dimensions:
+  capacity_patients:
+    description: BIGINT. Patient capacity
+    sql: '"CAPACITY_PATIENTS"'
+  ct_scanner:
+    description: BOOLEAN. Whether CT scanner is available Boolean flag (true/false).
+    sql: '"CT_SCANNER"'
+  facility_id:
+    description: BIGINT. Primary key. Unique medical facility identifier
+    sql: '"FACILITY_ID"'
+  facility_type:
+    description: 'TEXT. Type of medical facility Possible values: Medical Centre, Extraction Team Post, Hospital Link, Helicopter Pad, Ambulance Station.'
+    sql: '"FACILITY_TYPE"'
+  fia_grade:
+    description: 'TEXT. FIA medical facility grade Possible values: Grade 1, Grade 2, Grade 3.'
+    sql: '"FIA_GRADE"'
+  helicopter_extraction:
+    description: BOOLEAN. Whether helicopter extraction is available Boolean flag (true/false).
+    sql: '"HELICOPTER_EXTRACTION"'
+  hospital_transfer_min:
+    description: BIGINT. Transfer time to hospital in minutes
+    sql: '"HOSPITAL_TRANSFER_MIN"'
+  last_inspection_date:
+    description: DATE. Date of last FIA inspection
+    sql: '"LAST_INSPECTION_DATE"'
+  surgery_capable:
+    description: BOOLEAN. Whether facility can perform surgery Boolean flag (true/false).
+    sql: '"SURGERY_CAPABLE"'
+  ambulances_on_site:
+    description: BIGINT. Number of ambulances at this post
+    sql: ambulances_on_site
+  circuit_ref:
+    description: BIGINT. Foreign key referencing circuits(cctkey). Related circuit
+    sql: circuit_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  distance_to_hospital_km:
+    description: 'REAL. Distance to nearest hospital in km Typical range: 1 to 60.'
+    sql: distance_to_hospital_km
+  facility_name:
+    description: 'TEXT. Facility name Possible values: Main Medical Centre, Turn 1 Post, Pit Medical, Helipad Alpha.'
+    sql: facility_name
+  inspection_passed:
+    description: BOOLEAN. Whether last inspection was passed Boolean flag (true/false).
+    sql: inspection_passed
+  nearest_hospital:
+    description: TEXT. Nearest partner hospital name
+    sql: nearest_hospital
+  staff_count:
+    description: BIGINT. Medical staff count
+    sql: staff_count
+  xray_available:
+    description: BOOLEAN. Whether X-ray equipment is available Boolean flag (true/false).
+    sql: xray_available
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TracksideMedicalFacility public identity values.
+    label: TracksideMedicalFacility Count
+    sql: ${sports_events_large_public__trackside_medical_facility.facility_id}

@@ -1,0 +1,21 @@
+base_view: museum_artifact_large_public__risk_assessment_detail
+label: RiskAssessmentDetail
+description: All columns of the public table RiskAssessmentDetail.
+fields:
+- museum_artifact_large_public__risk_assessment_detail.*
+- museum_artifact_large_public__artifacts_core.*
+- museum_artifact_large_public__condition_assessments.*
+- museum_artifact_large_public__environmental_readings_core.*
+- museum_artifact_large_public__exhibition_halls.*
+- museum_artifact_large_public__light_and_radiation_readings.*
+- museum_artifact_large_public__showcases.*
+- museum_artifact_large_public__staff.*
+joins:
+  museum_artifact_large_public__condition_assessments:
+    museum_artifact_large_public__artifacts_core: {}
+    museum_artifact_large_public__light_and_radiation_readings:
+      museum_artifact_large_public__environmental_readings_core: {}
+    museum_artifact_large_public__showcases:
+      museum_artifact_large_public__exhibition_halls: {}
+  museum_artifact_large_public__staff: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

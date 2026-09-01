@@ -1,0 +1,11 @@
+base_view: polar_equipment_large_public__station_equipment_type
+label: StationEquipmentType
+description: All columns of the public table StationEquipmentType.
+fields:
+- polar_equipment_large_public__station_equipment_type.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__location.*
+joins:
+  polar_equipment_large_public__equipmenttype: {}
+  polar_equipment_large_public__location: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

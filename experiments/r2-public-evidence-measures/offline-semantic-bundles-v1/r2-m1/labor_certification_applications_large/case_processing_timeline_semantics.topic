@@ -1,0 +1,15 @@
+base_view: labor_certification_applications_large_public__case_processing_timeline
+label: case_processing_timeline
+description: All columns of the public table case_processing_timeline.
+fields:
+- labor_certification_applications_large_public__case_processing_timeline.*
+- labor_certification_applications_large_public__cases.*
+- labor_certification_applications_large_public__preparer.*
+joins:
+  labor_certification_applications_large_public__cases:
+    labor_certification_applications_large_public__preparer: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Premium Processing Rate (PPR): PPR = (Number of Premium Processing Applications / Total Number of Applications) × 100%. Premium processing status is tracked as part of the application data.'

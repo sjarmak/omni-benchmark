@@ -1,0 +1,17 @@
+base_view: residential_data_large_public__professional_certification_audit
+label: Professional_Certification_Audit
+description: All columns of the public table Professional_Certification_Audit.
+fields:
+- residential_data_large_public__professional_certification_audit.*
+- residential_data_large_public__household_member_skills.*
+- residential_data_large_public__household_skill_progression.*
+- residential_data_large_public__households.*
+- residential_data_large_public__service_types.*
+- residential_data_large_public__skills_inventory.*
+joins:
+  residential_data_large_public__household_skill_progression:
+    residential_data_large_public__household_member_skills:
+      residential_data_large_public__households:
+        residential_data_large_public__service_types: {}
+      residential_data_large_public__skills_inventory: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

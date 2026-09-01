@@ -1,0 +1,72 @@
+label: MaterialAnalysisLog
+description: All columns of the public table MaterialAnalysisLog.
+catalog: museum_artifact_large
+schema: public
+table_name: MaterialAnalysisLog
+dimensions:
+  aging_indicators:
+    description: VARCHAR(100). Evidence of material degradation over time (None, EarlyStage, Moderate, Advanced, Severe).
+    sql: '"agingIndicators"'
+  analysis_date:
+    description: VARCHAR(100). Date when material analysis was performed.
+    sql: '"analysisDate"'
+  analysis_method:
+    description: VARCHAR(100). Scientific technique employed (XRF, FTIR, Raman, SEM-EDS, GC-MS, HPLC, XRD, NMR, UV-Vis, Microscopy).
+    sql: '"analysisMethod"'
+  contamination_detected:
+    description: VARCHAR(100). Types of foreign substances identified (None, Dust, Mold, Salts, Oils, Pollutants, Mixed).
+    sql: '"contaminationDetected"'
+  data_retention_period:
+    description: VARCHAR(100). Required duration for raw data preservation (1Year, 5Years, 10Years, Permanent, UntilPublication).
+    sql: '"dataRetentionPeriod"'
+  degradation_products:
+    description: VARCHAR(100). Identified chemical byproducts of deterioration.
+    sql: '"degradationProducts"'
+  elemental_analysis:
+    description: VARCHAR(100). Quantitative elemental breakdown results.
+    sql: '"elementalAnalysis"'
+  equipment_calibration:
+    description: VARCHAR(100). Calibration status of analytical instruments (Certified, Recent, Outdated, Unknown, NotRequired).
+    sql: '"equipmentCalibration"'
+  id:
+    description: BIGSERIAL. Auto-increment primary key for material analysis records.
+    sql: id
+  lab_environment:
+    description: VARCHAR(100). Environmental conditions during analysis execution.
+    sql: '"labEnvironment"'
+  material_composition:
+    description: VARCHAR(100). Identified elemental or compound composition.
+    sql: '"materialComposition"'
+  molecular_structure:
+    description: VARCHAR(100). Determined molecular configuration details.
+    sql: '"molecularStructure"'
+  non_invasive_score:
+    description: VARCHAR(100). Degree of invasiveness on 0-100 scale (higher = less invasive).
+    sql: '"nonInvasiveScore"'
+  peer_review_status:
+    description: VARCHAR(100). Verification status by independent expert (Pending, Approved, RevisionsRequired, Rejected, Waived).
+    sql: '"peerReviewStatus"'
+  raw_data_reference:
+    description: VARCHAR(100). Location reference for unprocessed analytical data.
+    sql: '"rawDataReference"'
+  sample_location:
+    description: VARCHAR(100). Precise location on artifact where sample was taken.
+    sql: '"sampleLocation"'
+  sample_size_mg:
+    description: VARCHAR(100). Mass of sample material in milligrams.
+    sql: '"sampleSizeMg"'
+  staff_code:
+    description: BIGINT. Analyzing conservator identifier (foreign key to Staff.Staff_Code).
+    sql: '"staffCode"'
+  surface_reading_id:
+    description: BIGINT. Reference to surface condition baseline (foreign key to SurfaceAndPhysicalReadings.surf_id).
+    sql: '"surfaceReadingId"'
+  technician_notes:
+    description: VARCHAR(100). Observations and comments from laboratory technician.
+    sql: '"technicianNotes"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct MaterialAnalysisLog public identity values.
+    label: MaterialAnalysisLog Count
+    sql: ${museum_artifact_large_public__material_analysis_log.id}

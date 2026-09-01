@@ -1,0 +1,63 @@
+label: MissionTarget
+description: All columns of the public table MissionTarget.
+catalog: planets_data_large
+schema: public
+table_name: MissionTarget
+dimensions:
+  data_quality:
+    description: 'TEXT. Quality assessment of collected data Possible values: Excellent, Good, Fair, Poor, Pending.'
+    sql: '"DATA_QUALITY"'
+  dec_degrees:
+    description: 'REAL. Declination in degrees Typical range: -90 to 90.'
+    sql: '"DEC_DEGREES"'
+  exposure_time_requested_s:
+    description: 'REAL. Requested exposure time in seconds Typical range: 1 to 100000.'
+    sql: '"EXPOSURE_TIME_REQUESTED_s"'
+  last_observation_date:
+    description: DATE. Date of most recent observation
+    sql: '"LAST_OBSERVATION_DATE"'
+  mission_ref:
+    description: BIGINT. Foreign key referencing SpaceMission(mission_id). Related mission
+    sql: '"MISSION_REF"'
+  planet_detected:
+    description: BOOLEAN. Whether a planet was detected at this target Boolean flag (true/false). **NULL means Detection analysis pending.**
+    sql: '"PLANET_DETECTED"'
+  priority_rank:
+    description: BIGINT. Observation priority ranking
+    sql: '"PRIORITY_RANK"'
+  target_id:
+    description: BIGINT. Primary key. Unique mission target identifier
+    sql: '"TARGET_ID"'
+  target_type:
+    description: 'TEXT. Type of observation target Possible values: Exoplanet, Star, Binary System, Nebula, Galaxy, Calibration Target.'
+    sql: '"TARGET_TYPE"'
+  visits_completed:
+    description: BIGINT. Number of completed visits
+    sql: '"VISITS_COMPLETED"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  first_observation_date:
+    description: DATE. Date of first observation
+    sql: first_observation_date
+  magnitude_v:
+    description: 'REAL. V-band apparent magnitude Typical range: 0 to 25.'
+    sql: '"magnitude_V"'
+  observation_mode:
+    description: 'TEXT. Planned observation mode Possible values: Photometry, Spectroscopy, Imaging, Transit, Occultation, Direct Imaging.'
+    sql: observation_mode
+  planet_ref:
+    description: BIGINT. Foreign key referencing planets(planetref). Target planet if applicable
+    sql: planet_ref
+  ra_degrees:
+    description: 'REAL. Right ascension in degrees Typical range: 0 to 360.'
+    sql: ra_degrees
+  snr_achieved:
+    description: 'REAL. Achieved signal-to-noise ratio Typical range: 1 to 500. **NULL means Observation not yet completed.**'
+    sql: snr_achieved
+  target_designation:
+    description: TEXT. Target designation/catalog name
+    sql: target_designation
+  visits_planned:
+    description: BIGINT. Number of planned observation visits
+    sql: visits_planned

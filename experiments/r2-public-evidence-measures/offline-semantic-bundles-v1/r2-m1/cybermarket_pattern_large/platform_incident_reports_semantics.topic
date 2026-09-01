@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__platform_incident_reports
+label: PlatformIncidentReports
+description: All columns of the public table PlatformIncidentReports.
+fields:
+- cybermarket_pattern_large_public__platform_incident_reports.*
+- cybermarket_pattern_large_public__markets.*
+joins:
+  cybermarket_pattern_large_public__markets: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

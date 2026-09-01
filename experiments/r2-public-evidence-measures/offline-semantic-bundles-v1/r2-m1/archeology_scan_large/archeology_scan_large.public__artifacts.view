@@ -1,0 +1,102 @@
+label: artifacts
+description: All columns of the public table artifacts.
+catalog: archeology_scan_large
+schema: public
+table_name: artifacts
+dimensions:
+  artifact_tag:
+    description: 'BIGINT. Unique identifier for an artifact. PK。 Example: 8001.'
+    sql: '"ArtifactTag"'
+  artifact_type:
+    description: 'TEXT. The classification of the artifact。 Example: Pottery.'
+    sql: '"ArtifactType"'
+  condition_assessment:
+    description: 'TEXT. An assessment of the artifact''s physical condition。 Possible values: Damaged, Excellent, Fair, Fragmented, Good, Poor, Sampled.'
+    sql: '"CONDITION_ASSESSMENT"'
+  conservation_priority:
+    description: 'BIGINT. A numerical score indicating the urgency of conservation。 Possible values: 1, 2, 3, 4, 5.'
+    sql: '"CONSERVATION_PRIORITY"'
+  ct_scan_data_link:
+    description: 'TEXT. A URL to CT scan data of the artifact. **NULL means no CT scan has been performed.**。 Possible values: https://digisite.org/scans/art003.zip, https://digisite.org/scans/art014.zip, https://digisite.org/scans/art024.zip, https://digisite.org/scans/art034.zip.'
+    sql: '"CT_SCAN_DATA_LINK"'
+  catalogue_number:
+    description: 'TEXT. The unique number assigned in the official catalogue. UNIQUE。 Example: ART-001-BF.'
+    sql: '"CatalogueNumber"'
+  discovery_date:
+    description: 'DATE. The date the artifact was discovered。 Example: 20-May-22.'
+    sql: '"DISCOVERY_DATE"'
+  export_permit_required:
+    description: 'BOOLEAN. A flag indicating if an export permit is required for this artifact。 Possible values: False, True.'
+    sql: '"EXPORT_PERMIT_REQUIRED"'
+  estimated_age_years:
+    description: 'BIGINT. The estimated age of the artifact in years。 Example: 3500.'
+    sql: '"EstimatedAgeYears"'
+  excavation_coordinates:
+    description: 'JSONB. The precise coordinates of where the artifact was found。 Example: {|grid|: |NR-01-A5|, |depth_cm|: 45.5}.'
+    sql: '"ExcavationCoordinates"'
+  exhibit_code:
+    description: 'TEXT. The identifier for the exhibit where the artifact is displayed. **NULL means it is not on display.**。 Example: ROM-COIN-03.'
+    sql: '"ExhibitCode"'
+  height_cm:
+    description: 'REAL. The height of the artifact in centimeters. **NULL means it has not been measured.**。 Example: 0.8.'
+    sql: '"HEIGHT_CM"'
+  is_culturally_sensitive:
+    description: 'BOOLEAN. A flag indicating if the artifact has cultural sensitivities。 Possible values: False, True.'
+    sql: '"IsCulturallySensitive"'
+  material:
+    description: 'TEXT. The primary material the artifact is made of。 Example: Ceramic.'
+    sql: '"MATERIAL"'
+  provenance_details:
+    description: 'TEXT. Detailed history of the artifact''s origin and ownership。 Example: Found in association with hearth feature..'
+    sql: '"PROVENANCE_DETAILS"'
+  photographic_record_url:
+    description: 'TEXT. A URL to the photographic records of the artifact。 Example: https://digisite.org/photos/art001.jpg.'
+    sql: '"PhotographicRecordUrl"'
+  storage_location:
+    description: 'TEXT. The current physical storage location of the artifact。 Example: On-site Lab A.'
+    sql: '"STORAGE_LOCATION"'
+  width_cm:
+    description: 'REAL. The width of the artifact in centimeters. **NULL means it has not been measured.**。 Example: 8.2.'
+    sql: '"WidthCm"'
+  artifact_name:
+    description: 'TEXT. A common name or description for the artifact。 Example: Beaker Fragment.'
+    sql: artifact_name
+  discovered_by_personnel_fk:
+    description: 'TEXT. Foreign key linking to the personnel member who discovered the artifact. FK. **NULL means the discoverer is unknown.**。 Example: OP4641.'
+    sql: discovered_by_personnel_fk
+  has_residue_analysis:
+    description: 'BOOLEAN. A flag indicating if residue analysis has been performed。 Possible values: False, True.'
+    sql: has_residue_analysis
+  historical_period:
+    description: 'TEXT. The historical period the artifact is associated with。 Example: Bronze Age.'
+    sql: historical_period
+  inspector_personnel_ref:
+    description: 'TEXT. Foreign key for the person who last inspected the artifact. FK。 Example: OP1309.'
+    sql: inspector_personnel_ref
+  is_catalogued:
+    description: 'BOOLEAN. A flag indicating if the artifact has been formally catalogued。 Possible values: False, True.'
+    sql: is_catalogued
+  is_on_display:
+    description: 'BOOLEAN. A flag indicating if the artifact is currently on public display。 Possible values: False, True.'
+    sql: is_on_display
+  last_inspected_date:
+    description: 'DATE. The date the artifact was last inspected。 Example: 15-Jun-22.'
+    sql: last_inspected_date
+  length_cm:
+    description: 'REAL. The length of the artifact in centimeters. **NULL means it has not been measured.**。 Example: 12.5.'
+    sql: length_cm
+  notes:
+    description: 'TEXT. General notes about the artifact. **NULL means no notes have been added.**。 Possible values: Extremely fragile knotted cord record., Extremely fragile, requires immediate conservation., Imported from Gaul., Pollen analysis shows maize grinding., Possible ritual object., Requires export permit for analysis abroad., Residue analysis found maize pollen., Visible residues on inner surface..'
+    sql: notes
+  site_loc_ref:
+    description: 'TEXT. Foreign key linking to the site where the artifact was discovered. FK。 Example: SC1017.'
+    sql: site_loc_ref
+  weight_kg:
+    description: 'REAL. The weight of the artifact in kilograms。 Example: 0.25.'
+    sql: weight_kg
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct artifacts public identity values.
+    label: artifacts Count
+    sql: ${archeology_scan_large_public__artifacts.artifact_tag}

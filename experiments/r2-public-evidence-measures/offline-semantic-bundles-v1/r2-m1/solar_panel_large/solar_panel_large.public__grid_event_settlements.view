@@ -1,0 +1,66 @@
+label: GridEventSettlements
+description: All columns of the public table GridEventSettlements.
+catalog: solar_panel_large
+schema: public
+table_name: GridEventSettlements
+dimensions:
+  analyst_comments:
+    description: TEXT. Notes from financial analyst. **NULL means No comments.**
+    sql: analyst_comments
+  baseline_calculation_method:
+    description: 'TEXT. Method used to calculate what ''would have'' been generated. Unique values: Available Power, Forecast, Metered.'
+    sql: baseline_calculation_method
+  compensated_rate_usd_mwh:
+    description: 'REAL. Rate paid for deemed generation. **NULL means Non-compensable event.** Example: 35.'
+    sql: compensated_rate_usd_mwh
+  currency_code:
+    description: TEXT. Currency of settlement.
+    sql: currency_code
+  curtailment_volume_mwh:
+    description: 'REAL. Total energy curtailed (not generated). Example: 50.'
+    sql: curtailment_volume_mwh
+  dispute_status:
+    description: 'TEXT. Status of any dispute filed. Unique values: Accepted, Disputed, Resolved.'
+    sql: dispute_status
+  event_ref:
+    description: TEXT. FK to GridInterconnectionEvents.
+    sql: event_ref
+  invoice_reference:
+    description: TEXT. Link to the monthly ISO invoice.
+    sql: invoice_reference
+  is_final_settlement:
+    description: 'BOOLEAN. True if T+55 final statement, False if T+12 initial. Possible values: True, False.'
+    sql: is_final_settlement
+  iso_code:
+    description: 'TEXT. Grid operator code (e.g., CAISO, ERCOT). Unique values: CAISO, ERCOT, PJM.'
+    sql: iso_code
+  market_product_type:
+    description: 'TEXT. Market segment (Day-Ahead, Real-Time). Unique values: Real-Time Dispatch, Day-Ahead Market, Ancillary Services.'
+    sql: market_product_type
+  payment_due_date:
+    description: TIMESTAMP. When the funds settle.
+    sql: payment_due_date
+  penalty_amount_usd:
+    description: 'REAL. Fine for failing to respond/ramp accurately. **NULL means No penalty.** Example: 500.'
+    sql: penalty_amount_usd
+  performance_score:
+    description: 'REAL. Accuracy score of plant response (0.0-1.0). Example: 0.98.'
+    sql: performance_score
+  settlement_date:
+    description: TIMESTAMP. Date the settlement statement was issued.
+    sql: settlement_date
+  settlement_id:
+    description: TEXT. Unique ID for the financial settlement of a grid event.
+    sql: settlement_id
+  shadow_price_usd:
+    description: 'REAL. Locational Marginal Price (LMP) at node during event. Example: -10.'
+    sql: shadow_price_usd
+  total_settlement_usd:
+    description: 'REAL. Net amount paid/owed (+/-). Example: 1500.'
+    sql: total_settlement_usd
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct GridEventSettlements public identity values.
+    label: GridEventSettlements Count
+    sql: ${solar_panel_large_public__grid_event_settlements.settlement_id}

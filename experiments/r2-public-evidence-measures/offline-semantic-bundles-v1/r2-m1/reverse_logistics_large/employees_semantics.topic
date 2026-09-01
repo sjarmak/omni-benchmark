@@ -1,0 +1,7 @@
+base_view: reverse_logistics_large_public__employees
+label: employees
+description: All columns of the public table employees.
+fields:
+- reverse_logistics_large_public__employees.*
+joins: {}
+ai_context: This topic models no cross-table joins.

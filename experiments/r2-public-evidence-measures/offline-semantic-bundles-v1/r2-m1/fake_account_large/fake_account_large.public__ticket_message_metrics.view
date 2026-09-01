@@ -1,0 +1,66 @@
+label: ticket_message_metrics
+description: All columns of the public table ticket_message_metrics.
+catalog: fake_account_large
+schema: public
+table_name: ticket_message_metrics
+dimensions:
+  message_code:
+    description: TEXT. Unique ID for a specific message in a ticket.
+    sql: '"Message_CODE"'
+  agent_keystroke_count:
+    description: 'INTEGER. Number of keystrokes (to detect copy-paste). **NULL means User message / Bot.** Example: 160.'
+    sql: agent_keystroke_count
+  attachment_size_kb:
+    description: 'INTEGER. Size of attached screenshots/logs. **NULL means No attachment.** Example: 1024.'
+    sql: attachment_size_kb
+  canned_response_id:
+    description: TEXT. ID of the template used (if Agent/Bot). **NULL means Free text typed.**
+    sql: canned_response_id
+  character_count:
+    description: 'INTEGER. Length of the message text. Example: 150.'
+    sql: character_count
+  detected_language_code:
+    description: 'TEXT. ISO code of the language used. Unique values: en, es, fr, de.'
+    sql: detected_language_code
+  edit_distance_from_template:
+    description: 'INTEGER. How much the agent modified the template. **NULL means No template used.** Example: 50.'
+    sql: edit_distance_from_template
+  entity_recognition_count:
+    description: 'INTEGER. Number of named entities (Products, Dates) found. Example: 50.'
+    sql: entity_recognition_count
+  external_link_count:
+    description: 'INTEGER. Number of URLs in the message. Example: 50.'
+    sql: external_link_count
+  message_sequence_idx:
+    description: 'INTEGER. Order of the message in the conversation. Example: 50.'
+    sql: message_sequence_idx
+  read_receipt_latency_sec:
+    description: 'INTEGER. Time until recipient viewed the message. **NULL means Read receipt disabled.** Example: 50.'
+    sql: read_receipt_latency_sec
+  response_delay_sec:
+    description: 'INTEGER. Time since the previous message. Example: 50.'
+    sql: response_delay_sec
+  sender_role_type:
+    description: 'TEXT. Who sent the message (USER, AGENT, BOT). Unique values: USER, AGENT, BOT.'
+    sql: sender_role_type
+  sentiment_score:
+    description: 'REAL. NLP sentiment score (-1 to 1). Example: 0.1.'
+    sql: sentiment_score
+  spelling_error_count:
+    description: 'INTEGER. Number of detected typos. Example: 50.'
+    sql: spelling_error_count
+  ticket_ref:
+    description: TEXT. Reference to the support ticket.
+    sql: ticket_ref
+  translation_service_used:
+    description: 'BOOLEAN. True if auto-translation was applied. Possible values: True, False.'
+    sql: translation_service_used
+  urgent_keyword_flag:
+    description: 'BOOLEAN. True if words like ''urgent'', ''lawsuit'' found. Possible values: True, False.'
+    sql: urgent_keyword_flag
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ticket_message_metrics public identity values.
+    label: ticket_message_metrics Count
+    sql: ${fake_account_large_public__ticket_message_metrics.message_code}

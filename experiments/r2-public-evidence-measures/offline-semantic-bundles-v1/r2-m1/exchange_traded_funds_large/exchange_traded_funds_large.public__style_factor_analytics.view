@@ -1,0 +1,147 @@
+label: style_factor_analytics
+description: All columns of the public table style_factor_analytics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: style_factor_analytics
+dimensions:
+  activerisk:
+    description: 'TEXT. Active risk measurement relative to benchmark with unit notation. Represents the standard deviation of active returns. Examples: 1.95%, 3.85%, 3.15%.'
+    sql: activerisk
+  activeshare:
+    description: 'TEXT. Active share percentage with unit notation. Examples: 25.8%/active, 45.8%/active, 68.5%/active.'
+    sql: activeshare
+  analysisdate:
+    description: 'DATE. Date of style factor analysis. Possible values: 2024-12-01, 2024-12-02, 2024-12-03.'
+    sql: analysisdate
+  blendexposure:
+    description: 'TEXT. Blend style exposure with unit notation. Possible values: 18.5%/exposure, 22.8%/exposure, 25.5%/exposure, 28.5%/exposure, 28.8%/exposure, 35.5%/exposure, 38.5%/exposure, 42.5%/exposure.'
+    sql: blendexposure
+  capexposures:
+    description: JSONB column. Groups market capitalization exposures across large, mid, and small cap segments
+    sql: capexposures
+  consumerstylebias_bias_con:
+    description: 'TEXT. Style bias toward consumer sector with unit notation. Measures over/under-weighting relative to style-neutral position. Examples: 0.05, 0.18, 0.25.'
+    sql: consumerstylebias_bias_con
+  datasource:
+    description: 'TEXT. Source of the style factor analytics data. Possible values: Bloomberg Terminal, BLOOMBERG TERMINAL, Reuters Feed, REUTERS FEED, Morningstar Direct, FactSet Analytics.'
+    sql: datasource
+  factorloadings:
+    description: JSONB column. Consolidates factor loadings for major investment style factors including value, growth, size, momentum, and quality
+    sql: factorloadings
+  factortimingalpha:
+    description: 'TEXT. Alpha generated from factor timing decisions with unit notation. Performance contribution from tactical factor allocation changes. Examples: 0.08%/timing, 0.12%/timing, 0.25%/timing.'
+    sql: factortimingalpha
+  financialsstylebias_bias_fin:
+    description: 'TEXT. Style bias toward financials sector with unit notation. Measures over/under-weighting relative to style-neutral position. Examples: -0.08, 0.35, -0.05.'
+    sql: financialsstylebias_bias_fin
+  fundticker:
+    description: 'TEXT. Fund ticker symbol identifier. Examples: AVMU, QQD, FALN.'
+    sql: fundticker
+  growthcontribution_contrib:
+    description: 'TEXT. Performance contribution from growth factor exposure with unit notation. Shows how much growth factor contributed to total return. Examples: 0.05, -0.08, 0.18.'
+    sql: growthcontribution_contrib
+  growthexposure:
+    description: 'TEXT. Growth style exposure with unit notation. Examples: 21.7%/exposure, 8.7%/exposure, 28.7%/exposure.'
+    sql: growthexposure
+  healthcarestylebias_bias_hc:
+    description: 'TEXT. Style bias toward healthcare sector with unit notation. Measures over/under-weighting relative to style-neutral position. Examples: 0.12, -0.12, 0.02.'
+    sql: healthcarestylebias_bias_hc
+  informationratio:
+    description: 'TEXT. Information ratio measuring excess return per unit of tracking error with unit notation. Calculated as active return divided by tracking error. Examples: 0.32 ratio/excess, 0.18 ratio/excess, 0.49 ratio/excess.'
+    sql: informationratio
+  lastupdated:
+    description: 'TEXT. Timestamp of last data update. Format includes timezone information. Examples: 2024-12-01 18:00:00 AKST-9, 2024-12-02 18:00:00 AKST-9, 2024-12-03 18:00:00 AKST-9.'
+    sql: lastupdated
+  momentumcontribution_contrib:
+    description: 'TEXT. Performance contribution from momentum factor exposure with unit notation. Shows how much momentum factor contributed to total return. Examples: 0.02, -0.05, 0.15.'
+    sql: momentumcontribution_contrib
+  qualitycontribution_contrib:
+    description: 'TEXT. Performance contribution from quality factor exposure with unit notation. Shows how much quality factor contributed to total return. Examples: 0.04, 0.15, 0.08.'
+    sql: qualitycontribution_contrib
+  residualvolatility_res:
+    description: 'TEXT. Residual volatility after style factor adjustment with unit notation. Measures unexplained volatility after accounting for style factors. Examples: 1.25, 2.85, 2.95.'
+    sql: residualvolatility_res
+  sizecontribution_contrib:
+    description: 'TEXT. Performance contribution from size factor exposure with unit notation. Shows how much size factor contributed to total return. Examples: 0.03, 0.12, 0.25.'
+    sql: sizecontribution_contrib
+  styleadjustedalpha:
+    description: 'TEXT. Alpha generation after adjusting for style factors with unit notation. Measures excess return after accounting for style exposures. Examples: 0.15%/alpha, 0.35%/alpha, 0.58%/alpha.'
+    sql: styleadjustedalpha
+  styleadjustedbeta:
+    description: 'TEXT. Beta coefficient after adjusting for style factors with unit notation. Measures systematic risk after accounting for style exposures. Examples: 0.98 beta/style, 1.15 beta/style, 1.25 beta/style.'
+    sql: styleadjustedbeta
+  styleadjustedsharpe_sharpe_style:
+    description: 'TEXT. Sharpe ratio after adjusting for style factors with unit notation. Risk-adjusted return measure accounting for style exposures. Examples: 0.42, 0.28, 0.38.'
+    sql: styleadjustedsharpe_sharpe_style
+  styleanalyticsid:
+    description: 'BIGSERIAL. Primary key identifier for style factor analytics record. PK. Examples: 1, 2, 3.'
+    sql: styleanalyticsid
+  styleconcentration_conc_factor:
+    description: 'TEXT. Style concentration measure with unit notation. Examples: 0.65, 0.78, 0.58.'
+    sql: styleconcentration_conc_factor
+  styleconsistency_consist_style:
+    description: 'TEXT. Style consistency measure with unit notation. Examples: 0.85, 0.75, 0.68.'
+    sql: styleconsistency_consist_style
+  styledrift:
+    description: 'TEXT. Style drift measurement with unit notation. Examples: 0.12 drift/year, 0.18 drift/year, 0.25 drift/year.'
+    sql: styledrift
+  stylepurity:
+    description: 'TEXT. Style purity assessment with unit notation. Examples: 0.78 purity/style, 0.82 purity/style, 0.72 purity/style.'
+    sql: stylepurity
+  stylerotationbenefit_rotation:
+    description: 'TEXT. Benefit from style rotation strategies with unit notation. Performance gain from changing style exposures over time. Examples: 0.12, 0.08, 0.18.'
+    sql: stylerotationbenefit_rotation
+  styletimingskill:
+    description: 'TEXT. Skill in timing style factor exposures with unit notation. Measures ability to dynamically adjust style exposures for performance. Examples: 0.25 skill/timing, 0.15 skill/timing, 0.35 skill/timing.'
+    sql: styletimingskill
+  technologystylebias:
+    description: 'TEXT. Style bias toward technology sector with unit notation. Measures over/under-weighting relative to style-neutral position. Examples: 0.18 bias/tech, -0.25 bias/tech, 0.08 bias/tech.'
+    sql: technologystylebias
+  trackingerrorannualized:
+    description: 'TEXT. Annualized tracking error relative to benchmark with unit notation. Measures how much the fund''s returns deviate from benchmark returns on an annual basis. Examples: 1.25%/tracking, 2.15%/tracking, 3.45%/tracking.'
+    sql: trackingerrorannualized
+  valuecontribution_contrib:
+    description: 'TEXT. Performance contribution from value factor exposure with unit notation. Shows how much value factor contributed to total return. Examples: 0.08, 0.25, 0.12.'
+    sql: valuecontribution_contrib
+  valueexposure:
+    description: 'TEXT. Value style exposure with unit notation. Examples: 35.8%/exposure, 68.5%/exposure, 42.5%/exposure.'
+    sql: valueexposure
+  capexposures_large_cap_exposure:
+    description: 'TEXT. Large cap equity exposure with unit notation. Examples: 72.5%/exposure, 45.2%/exposure, 25.8%/exposure.'
+    sql: JSONB_EXTRACT_PATH_TEXT(capexposures, 'large_cap_exposure')
+  capexposures_mid_cap_exposure:
+    description: 'TEXT. Mid cap equity exposure with unit notation. Examples: 18.2%/exposure, 28.5%/exposure, 35.2%/exposure.'
+    sql: JSONB_EXTRACT_PATH_TEXT(capexposures, 'mid_cap_exposure')
+  capexposures_small_cap_exposure:
+    description: 'TEXT. Small cap equity exposure with unit notation. Examples: 9.3%/exposure, 26.3%/exposure, 39.0%/exposure.'
+    sql: JSONB_EXTRACT_PATH_TEXT(capexposures, 'small_cap_exposure')
+  factorloadings_growth_factor:
+    description: 'TEXT. Growth factor loading with unit notation. Examples: -0.15 loading/growth, -0.65 loading/growth, 0.12 loading/growth.'
+    sql: JSONB_EXTRACT_PATH_TEXT(factorloadings, 'growth_factor')
+  factorloadings_investment_factor:
+    description: 'TEXT. Investment factor loading with unit notation. Examples: 0.06 loading/invest, 0.18 loading/invest, 0.25 loading/invest.'
+    sql: JSONB_EXTRACT_PATH_TEXT(factorloadings, 'investment_factor')
+  factorloadings_low_volatility_factor:
+    description: 'TEXT. Low volatility factor loading with unit notation. Examples: -0.05 loading/lowvol, 0.25 loading/lowvol, -0.18 loading/lowvol.'
+    sql: JSONB_EXTRACT_PATH_TEXT(factorloadings, 'low_volatility_factor')
+  factorloadings_momentum_factor:
+    description: 'TEXT. Momentum factor loading with unit notation. Examples: 0.08 loading/momentum, -0.12 loading/momentum, 0.35 loading/momentum.'
+    sql: JSONB_EXTRACT_PATH_TEXT(factorloadings, 'momentum_factor')
+  factorloadings_profitability_factor:
+    description: 'TEXT. Profitability factor loading with unit notation. Examples: 0.22 loading/profit, 0.38 loading/profit, 0.32 loading/profit.'
+    sql: JSONB_EXTRACT_PATH_TEXT(factorloadings, 'profitability_factor')
+  factorloadings_quality_factor:
+    description: 'TEXT. Quality factor loading with unit notation. Examples: 0.18 loading/quality, 0.45 loading/quality, 0.28 loading/quality.'
+    sql: JSONB_EXTRACT_PATH_TEXT(factorloadings, 'quality_factor')
+  factorloadings_size_factor:
+    description: 'TEXT. Size factor loading with unit notation. Examples: 0.12 loading/size, 0.35 loading/size, 0.85 loading/size.'
+    sql: JSONB_EXTRACT_PATH_TEXT(factorloadings, 'size_factor')
+  factorloadings_value_factor:
+    description: 'TEXT. Value factor loading with unit notation. Examples: 0.25 loading/value, 0.85 loading/value, 0.15 loading/value.'
+    sql: JSONB_EXTRACT_PATH_TEXT(factorloadings, 'value_factor')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct style_factor_analytics public identity values.
+    label: style_factor_analytics Count
+    sql: ${exchange_traded_funds_large_public__style_factor_analytics.styleanalyticsid}

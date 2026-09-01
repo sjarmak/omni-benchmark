@@ -1,0 +1,60 @@
+label: ShareholderVotingOutcomes
+description: All columns of the public table ShareholderVotingOutcomes.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: ShareholderVotingOutcomes
+dimensions:
+  shareholder_voting_outcomes_id:
+    description: 'TEXT. Unique identifier for the vote outcome. Example: XX-1A2B3C.'
+    sql: '"ShareholderVotingOutcomes_id"'
+  broker_non_votes_pct:
+    description: 'REAL. Percentage of shares not voted by brokers. Example: 50.0.'
+    sql: broker_non_votes_pct
+  environmental_impact_flag:
+    description: 'BOOLEAN. Relates to environmental issues. Possible values: True, False.'
+    sql: environmental_impact_flag
+  governance_impact_flag:
+    description: 'BOOLEAN. Relates to governance issues. Possible values: True, False.'
+    sql: governance_impact_flag
+  is_contested_flag:
+    description: 'BOOLEAN. Was this proposal hotly contested?. Possible values: True, False.'
+    sql: is_contested_flag
+  management_recommendation:
+    description: 'TEXT. Board''s recommendation. Unique values: For, Against.'
+    sql: management_recommendation
+  meeting_date:
+    description: 'TIMESTAMP. Date of the shareholder meeting. Example: 2024-01-01 12:00:00.'
+    sql: meeting_date
+  meeting_quorum_reached:
+    description: 'BOOLEAN. Was quorum reached for the meeting?. Possible values: True, False.'
+    sql: meeting_quorum_reached
+  outcome_result:
+    description: 'TEXT. Did the proposal pass?. Unique values: Pass, Fail.'
+    sql: outcome_result
+  proposal_category:
+    description: 'TEXT. Type of proposal voted on. Unique values: Director Election, Executive Comp, Merger, ESG, Auditor Ratification.'
+    sql: proposal_category
+  proxy_advisor_iss_rec:
+    description: 'TEXT. ISS recommendation. Unique values: For, Against.'
+    sql: proxy_advisor_iss_rec
+  security_ref:
+    description: 'INTEGER. Reference to the security. Example: 50.'
+    sql: security_ref
+  social_impact_flag:
+    description: 'BOOLEAN. Relates to social issues. Possible values: True, False.'
+    sql: social_impact_flag
+  sponsor_name:
+    description: 'TEXT. Who proposed the item. Unique values: Management, Shareholder.'
+    sql: sponsor_name
+  votes_abstained_pct:
+    description: 'REAL. Percentage of abstentions. Example: 50.0.'
+    sql: votes_abstained_pct
+  votes_against_pct:
+    description: 'REAL. Percentage of votes cast ''Against''. Example: 50.0.'
+    sql: votes_against_pct
+  votes_for_pct:
+    description: 'REAL. Percentage of votes cast ''For''. Example: 50.0.'
+    sql: votes_for_pct
+  voting_standard_used:
+    description: 'TEXT. Majority or Plurality voting. Unique values: Majority, Plurality.'
+    sql: voting_standard_used

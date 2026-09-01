@@ -1,0 +1,111 @@
+label: partner_integrations
+description: All columns of the public table partner_integrations.
+catalog: fake_account_large
+schema: public
+table_name: partner_integrations
+dimensions:
+  client_id:
+    description: TEXT. Issued client-ID string.
+    sql: '"CLIENT_ID"'
+  compress_flag:
+    description: TEXT. Yes/No compression.
+    sql: '"COMPRESS_FLAG"'
+  err_rate:
+    description: 'REAL. Percentage error rate (0–1). Example: 0.0123.'
+    sql: '"ERR_RATE"'
+  partner_type:
+    description: 'TEXT. Integration type. Values: Social, Analytics, CRM, Payment, Storage.'
+    sql: '"PARTNER_TYPE"'
+  partner_name:
+    description: 'TEXT. Partner display name. Example: Partner_18.'
+    sql: '"PartnerName"'
+  partner_code:
+    description: 'TEXT. Unique partner ID. PK. Example: PRT6043991.'
+    sql: '"Partner_CODE"'
+  quota_day:
+    description: 'BIGINT. Daily hard quota. Example: 20 000.'
+    sql: '"QUOTA_DAY"'
+  sandbox_url:
+    description: TEXT. Sandbox base URL. **NULL when sandboxFlag is NULL/No.**
+    sql: '"SANDBOX_URL"'
+  scopes:
+    description: 'TEXT. Granted scopes. Example: read,write.'
+    sql: '"SCOPEs"'
+  test_status:
+    description: 'TEXT. Sandbox test status. Example: Pass.'
+    sql: '"TEST_STATUS"'
+  timeout_sec:
+    description: 'BIGINT. Timeout seconds. Example: 30.'
+    sql: '"TIMEOUT_SEC"'
+  api_endpoint:
+    description: TEXT. Base REST endpoint.
+    sql: '"apiEndpoint"'
+  auth_method:
+    description: 'TEXT. Auth scheme. Values: OAuth2, APIKey, JWT, BasicAuth.'
+    sql: '"authMethod"'
+  cert_hash:
+    description: TEXT. TLS cert hash. **NULL when cert not registered.**
+    sql: '"certHash"'
+  client_secret_hash:
+    description: TEXT. Hash of client secret.
+    sql: '"clientSecretHash"'
+  created_ts:
+    description: 'TIMESTAMPTZ. Record imported. Example: 2024/02/17 08:45:12.'
+    sql: '"createdTs"'
+  encrypt_flag:
+    description: TEXT. Yes/No payload encryption.
+    sql: '"encryptFlag"'
+  events_sub:
+    description: TEXT. Comma-separated subscribed events.
+    sql: '"eventsSub"'
+  fail_count:
+    description: 'BIGINT. Recent failure tally. Example: 7.'
+    sql: '"failCount"'
+  integration_score:
+    description: 'REAL. Health score (0–100). Example: 87.4.'
+    sql: '"integrationScore"'
+  last_fail_ts:
+    description: TIMESTAMPTZ. Most recent failure. **NULL if none recorded.**
+    sql: '"lastFailTs"'
+  last_success_ts:
+    description: TIMESTAMPTZ. Most recent successful call. **NULL if never succeeded.**
+    sql: '"lastSuccessTs"'
+  latency_avg:
+    description: 'REAL. Average latency (ms). Example: 142.7.'
+    sql: '"latencyAvg"'
+  log_level:
+    description: 'TEXT. Integration logging level. Example: INFO.'
+    sql: '"logLevel"'
+  notes:
+    description: TEXT. Technical notes.
+    sql: notes
+  oas_version:
+    description: 'TEXT. OpenAPI spec version. Example: 3.0.0.'
+    sql: '"oasVersion"'
+  partner_rank:
+    description: 'REAL. Rank (1–1000). Example: 222.'
+    sql: '"partnerRank"'
+  prod_status:
+    description: 'TEXT. Production status. Values: Live, Down, Degraded.'
+    sql: '"prodStatus"'
+  quota_month:
+    description: 'BIGINT. Monthly quota. Example: 600 000.'
+    sql: '"quotaMonth"'
+  rate_limit:
+    description: 'TEXT. Throttle rule string. Example: 360-req/min.'
+    sql: '"rateLimit"'
+  region:
+    description: 'TEXT. Region served. Example: APAC.'
+    sql: region
+  retry_policy:
+    description: 'TEXT. Retry configuration. Example: exponentialBackoff.'
+    sql: '"retryPolicy"'
+  sandbox_flag:
+    description: TEXT. Yes/No sandbox environment. **NULL when attribute not set.**
+    sql: '"sandboxFlag"'
+  sla_window:
+    description: 'TEXT. SLO string. Example: ≤ 150 ms p95.'
+    sql: sla_window
+  webhooks:
+    description: TEXT. Yes/No — webhook support.
+    sql: webhooks

@@ -1,0 +1,60 @@
+label: AlgorithmRecommendationFeeds
+description: All columns of the public table AlgorithmRecommendationFeeds.
+catalog: virtual_idol_large
+schema: public
+table_name: AlgorithmRecommendationFeeds
+dimensions:
+  ab_test_group:
+    description: 'TEXT. Experiment bucket (Control/Variant). Unique values: Control, Variant A, Variant B.'
+    sql: ab_test_group
+  algorithm_model_version:
+    description: TEXT. Version of the RecSys model.
+    sql: algorithm_model_version
+  click_through_flag:
+    description: 'BOOLEAN. True if fan clicked the card. Possible values: True, False.'
+    sql: click_through_flag
+  cold_start_flag:
+    description: 'BOOLEAN. True if user had no history. Possible values: True, False.'
+    sql: cold_start_flag
+  content_freshness_hours:
+    description: 'REAL. Age of the content shown. Example: 48.'
+    sql: content_freshness_hours
+  conversion_event_type:
+    description: 'TEXT. Action taken (Follow, Like, Share). Unique values: None, Like, Follow, Share.'
+    sql: conversion_event_type
+  device_screen_height_px:
+    description: 'INTEGER. Screen height context. Unique values: 1920, 2532, 2796.'
+    sql: device_screen_height_px
+  display_timestamp:
+    description: 'TIMESTAMP. When the item appeared on screen. Example: 2024-01-01 12:00:00.'
+    sql: display_timestamp
+  fan_user_ref:
+    description: TEXT. The fan receiving the recommendation.
+    sql: fan_user_ref
+  feed_event_id:
+    description: TEXT. Unique ID for the recommendation impression.
+    sql: feed_event_id
+  latency_inference_ms:
+    description: 'INTEGER. Time taken to generate reco. Example: 50.'
+    sql: latency_inference_ms
+  position_in_feed:
+    description: 'INTEGER. Rank index in the scroll list. Example: 50.'
+    sql: position_in_feed
+  prediction_score:
+    description: 'REAL. Raw logit/probability score from model. Example: 0.6.'
+    sql: prediction_score
+  recommendation_reason:
+    description: 'TEXT. Why this was shown (e.g. ''Because you watched X''). Unique values: Collaborative Filtering, Trending Now, Similar to History, Paid Promotion.'
+    sql: recommendation_reason
+  recommended_idol_ref:
+    description: TEXT. FK to virtualidols.entity_reg.
+    sql: recommended_idol_ref
+  session_context_tags:
+    description: 'TEXT. Context (Morning, Commute, WiFi). Unique values: Morning-WiFi, Night-Cellular, Commute.'
+    sql: session_context_tags
+  user_mood_tag:
+    description: 'TEXT. Inferred user mood. **NULL means Unknown.** Unique values: Bored, Excited, Relaxed.'
+    sql: user_mood_tag
+  watch_duration_seconds:
+    description: 'REAL. Time spent viewing if clicked. **NULL means Did not click.** Example: 60.'
+    sql: watch_duration_seconds

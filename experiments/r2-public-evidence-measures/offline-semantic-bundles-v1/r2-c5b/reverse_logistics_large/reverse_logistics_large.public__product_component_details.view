@@ -1,0 +1,96 @@
+label: product_component_details
+description: All columns of the public table product_component_details.
+catalog: reverse_logistics_large
+schema: public
+table_name: product_component_details
+dimensions:
+  component_id:
+    description: 'TEXT. Unique identifier for the product component. PK. Example: COMP-0001.'
+    sql: '"COMPONENT_ID"'
+  country_of_origin:
+    description: 'TEXT. The country where the component was manufactured. Possible values: China, USA, Germany, Japan.'
+    sql: '"COUNTRY_OF_ORIGIN"'
+  dimensions_mm:
+    description: 'Physical dimensions of the component in millimeters (format: LxWxH).'
+    sql: '"DIMENSIONS_MM"'
+  expiry_date:
+    description: 'TEXT. The expiration date of the component, if applicable, in YYYY/MM/DD format. **NULL means the component does not have an expiration date.** Example: 2029/12/30.'
+    sql: '"EXPIRY_DATE"'
+  last_inspection_date:
+    description: 'TEXT. The date the component was last inspected, in YYYY/MM/DD format. Example: 2025/07/08.'
+    sql: '"LAST_INSPECTION_DATE"'
+  manufacturer:
+    description: 'TEXT. The name of the component''s manufacturer. Example: Manufacturer 3.'
+    sql: '"MANUFACTURER"'
+  manufacture_date:
+    description: 'TEXT. The date the component was manufactured, in YYYY/MM/DD format. Example: 2024/12/31.'
+    sql: '"MANUFACTURE_DATE"'
+  supplier_id:
+    description: 'BIGINT. The ID of the supplier for this component. FK to suppliers.supplier_id. Example: 49.'
+    sql: '"SUPPLIER_ID"'
+  unit_cost_of_component:
+    description: 'REAL. The unit cost of the component. Example: 9.12.'
+    sql: '"UNIT_COST_OF_COMPONENT"'
+  associated_product_item:
+    description: 'TEXT. The item code of the product this component belongs to. FK to products.itemcode. Example: PRD00293.'
+    sql: associated_product_item
+  batch_number:
+    description: 'TEXT. The manufacturing batch number. Example: TWTE6RN0.'
+    sql: batch_number
+  component_lifecycle_status:
+    description: 'TEXT. The current status in the component''s lifecycle. Possible values: Active, End of Life, Phased Out.'
+    sql: component_lifecycle_status
+  component_name:
+    description: 'TEXT. The human-readable name of the component. Example: Connector Component 1.'
+    sql: component_name
+  component_weight_grams:
+    description: Weight of the component in grams.
+    sql: component_weight_grams
+  environmental_impact_score:
+    description: 'REAL. An internal score representing the component''s environmental impact. Example: 9.9.'
+    sql: environmental_impact_score
+  firmware_version:
+    description: 'TEXT. The firmware version of the component. **NULL means the component is not electronic and does not have firmware.** Example: v3.2.'
+    sql: firmware_version
+  hazardous_material_class:
+    description: 'TEXT. The hazardous material classification, if any. **NULL means the component is not classified as a hazardous material.** Example: None.'
+    sql: hazardous_material_class
+  inspection_result:
+    description: 'TEXT. The result of the last inspection. Possible values: Pass, Pass with Minor Deviations, Requires Rework.'
+    sql: inspection_result
+  is_critical_component:
+    description: 'BOOLEAN. Indicates if this is a critical component for the product''s function. Possible values: True, False.'
+    sql: is_critical_component
+  is_recyclable:
+    description: 'BOOLEAN. Indicates if the component is recyclable. Possible values: True, False.'
+    sql: is_recyclable
+  material_composition:
+    description: JSON string detailing the materials used in the component (e.g., metal, plastic).
+    sql: material_composition
+  performance_rating:
+    description: 'REAL. An internal or manufacturer-provided performance rating from 1-10. Example: 5.8.'
+    sql: performance_rating
+  quality_control_notes:
+    description: 'TEXT. Notes from the quality control inspection. Example: Standard checks passed.'
+    sql: quality_control_notes
+  replacement_part_code:
+    description: 'TEXT. The SKU or code for an equivalent replacement part. **NULL means there is no standard replacement part.** Example: REP-0001.'
+    sql: replacement_part_code
+  serial_number_pattern:
+    description: 'TEXT. The pattern for serial numbers on this component. Example: SN-XXXX-####.'
+    sql: serial_number_pattern
+  storage_humidity_pct:
+    description: 'REAL. The recommended storage humidity in percent. Example: 25.7.'
+    sql: storage_humidity_pct
+  technical_drawing_ref:
+    description: 'TEXT. A reference ID for the component''s technical drawing. Example: TD-ukWrUh.'
+    sql: technical_drawing_ref
+  thermal_tolerance_celsius:
+    description: 'BIGINT. The thermal tolerance in Celsius (°C). **NULL means the component is not electronic and has no specific thermal tolerance.** Example: 111.0.'
+    sql: thermal_tolerance_celsius
+  voltage_requirement_v:
+    description: 'REAL. The voltage requirement in Volts (V). **NULL means the component is not electronic and has no voltage requirement.** Example: 104.9.'
+    sql: '"voltage_requirement_V"'
+  warranty_period_months:
+    description: 'BIGINT. The length of the warranty in months. Example: 24.'
+    sql: warranty_period_months

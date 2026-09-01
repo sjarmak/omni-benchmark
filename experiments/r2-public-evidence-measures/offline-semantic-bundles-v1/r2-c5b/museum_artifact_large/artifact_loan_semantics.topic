@@ -1,0 +1,9 @@
+base_view: museum_artifact_large_public__artifact_loan
+label: ArtifactLoan
+description: All columns of the public table ArtifactLoan.
+fields:
+- museum_artifact_large_public__artifact_loan.*
+- museum_artifact_large_public__staff.*
+joins:
+  museum_artifact_large_public__staff: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

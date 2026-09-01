@@ -1,0 +1,19 @@
+base_view: disaster_relief_large_public__transportation
+label: Transportation
+description: Transportation records with row-level capacity, vehicle throughput, and last-mile status semantics.
+fields:
+- disaster_relief_large_public__transportation.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__distributionhubs.*
+- disaster_relief_large_public__supplies.*
+joins:
+  disaster_relief_large_public__disasterevents: {}
+  disaster_relief_large_public__distributionhubs: {}
+  disaster_relief_large_public__supplies: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields logistical_throughput_per_vehicle rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Average Vehicle Breakdown Rate: The mean rate at which transport vehicles become non-operational, calculated for a specific group of vehicles. The underlying ''break_rate'' data is stored as a percentage.'

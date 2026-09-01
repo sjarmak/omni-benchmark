@@ -1,0 +1,54 @@
+label: EmergencyPlans
+description: All columns of the public table EmergencyPlans.
+catalog: museum_artifact_large
+schema: public
+table_name: EmergencyPlans
+dimensions:
+  artifact_salvage_list:
+    description: 'TEXT. No description provided. Example: A-SL-H1-2024.'
+    sql: '"ARTIFACT_SALVAGE_LIST"'
+  emergency_type:
+    description: 'TEXT. No description provided. Possible values: Chemical Spill, Earthquake, Fire, Flood, Power Outage, Theft.'
+    sql: '"EMERGENCY_TYPE"'
+  evacuation_map:
+    description: 'TEXT. No description provided. Example: https://www.museum.org/plans/evac/hall-1.pdf.'
+    sql: '"EVACUATION_MAP"'
+  last_drill:
+    description: 'TEXT. No description provided. Possible values: 2023/08/22, 2023/09/15, 2023/11/10, 2023/12/05, 2024/02/05, 2024/04/20, 2024/07/15, 2024/10/15.'
+    sql: '"LAST_DRILL"'
+  plan_protocol_code:
+    description: 'TEXT. No description provided. Example: EP-H1-FIRE-v2.'
+    sql: '"Plan_Protocol_Code"'
+  activation_protocol:
+    description: 'TEXT. No description provided. Possible values: Automatic alarm or manual pull station activation. Security Chief to verify., Duress alarm, intrusion detection, or visual confirmation. Security Chief to activate., Loss of primary power for > 5 minutes. Facilities Manager to activate., Seismic activity detected or official warning issued. Director to activate., Visual confirmation of a spill or hazardous material alarm. Chief Conservator to activate., Water sensor activation or visual confirmation. Facilities Manager to verify..'
+    sql: activation_protocol
+  assembly_point:
+    description: 'TEXT. No description provided. Possible values: East Lawn, Exterior Service Corridor, Lobby, North Plaza, Secure Offices, South Entrance, Upper Floors, West Garden.'
+    sql: assembly_point
+  is_active:
+    description: 'TEXT. No description provided. Possible values: True.'
+    sql: is_active
+  plan_for_hall:
+    description: 'TEXT. No description provided. Example: Hall-1.'
+    sql: plan_for_hall
+  plan_name:
+    description: 'TEXT. No description provided. Example: Hall 1 Fire Response Plan.'
+    sql: plan_name
+  plan_versioning:
+    description: JSONB column. Tracks the metadata for an emergency plan, including its version, last update, the staff member who updated it, and the next scheduled review date.
+    sql: plan_versioning
+  primary_responder_staff:
+    description: 'TEXT. No description provided. Possible values: 1, 19, 3, 4.'
+    sql: primary_responder_staff
+  plan_versioning_last_updated:
+    description: 'TEXT. No description provided. Possible values: 2023/06/05, 2023/11/20, 2024/01/30, 2024/02/10, 2024/05/15, 2024/08/01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(plan_versioning, 'LAST_UPDATED')
+  plan_versioning_next_review:
+    description: 'TEXT. No description provided. Possible values: 2024/11/20, 2024/12/05, 2025/01/30, 2025/02/10, 2025/05/15, 2025/08/01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(plan_versioning, 'NEXT_REVIEW')
+  plan_versioning_plan_version:
+    description: 'TEXT. No description provided. Possible values: 1.0, 1.5, 2.1, 2.2, 3.0, 4.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(plan_versioning, 'plan_version')
+  plan_versioning_updated_by_staff_member:
+    description: 'TEXT. No description provided. Possible values: 1, 19, 3, 4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(plan_versioning, 'updated_by_staff_member')

@@ -1,0 +1,33 @@
+label: ConditionAssessments
+description: All columns of the public table ConditionAssessments.
+catalog: museum_artifact_large
+schema: public
+table_name: ConditionAssessments
+dimensions:
+  art_exam:
+    description: TEXT. Reference to the artifact being examined. FK to ArtifactsCore.ARTregID.
+    sql: art_exam
+  assess_date:
+    description: 'DATE. Date when the assessment was done. Example: Sep-15-2024.'
+    sql: assess_date
+  case_exam:
+    description: TEXT. Reference to the showcase being examined. FK to Showcases.caseID.
+    sql: case_exam
+  cond_id:
+    description: BIGSERIAL. Unique identifier for each condition assessment. PK.
+    sql: cond_id
+  light_link:
+    description: BIGINT. Reference to light and radiation readings. FK to LightAndRadiationReadings.rad_id.
+    sql: light_link
+  next_due:
+    description: 'DATE. Date when the next assessment is due. Example: 2025/4/17.'
+    sql: next_due
+  score:
+    description: 'BIGINT. Score for the condition assessment. Example: 93.'
+    sql: score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ConditionAssessments public identity values.
+    label: ConditionAssessments Count
+    sql: ${museum_artifact_large_public__condition_assessments.cond_id}

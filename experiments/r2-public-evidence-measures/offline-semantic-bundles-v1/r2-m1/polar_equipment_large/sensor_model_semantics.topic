@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__sensor_model
+label: SensorModel
+description: All columns of the public table SensorModel.
+fields:
+- polar_equipment_large_public__sensor_model.*
+joins: {}
+ai_context: This topic models no cross-table joins.

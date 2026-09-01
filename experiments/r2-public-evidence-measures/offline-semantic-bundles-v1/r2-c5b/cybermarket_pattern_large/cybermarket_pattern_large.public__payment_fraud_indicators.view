@@ -1,0 +1,66 @@
+label: PaymentFraudIndicators
+description: All columns of the public table PaymentFraudIndicators.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: PaymentFraudIndicators
+dimensions:
+  pfi_id:
+    description: 'TEXT. Unique identifier for the payment fraud indicator record. Example: PFI-1A2B3C.'
+    sql: '"PFI_id"'
+  analysis_timestamp:
+    description: 'TIMESTAMP. Timestamp when fraud analysis was performed. Example: 2024-01-01 12:00:00.'
+    sql: analysis_timestamp
+  avs_response_code:
+    description: 'TEXT. Address Verification System response code. Unique values: Y, A, Z, N, U, R, S, G.'
+    sql: avs_response_code
+  behavioral_anomaly_detected:
+    description: 'BOOLEAN. Indicates if behavioral patterns deviate from buyer norm. Possible values: True, False.'
+    sql: behavioral_anomaly_detected
+  bin_country_match:
+    description: 'BOOLEAN. Indicates if card BIN country matches billing country. Possible values: True, False.'
+    sql: bin_country_match
+  card_present:
+    description: 'BOOLEAN. Indicates if physical card was present during transaction. Possible values: True, False.'
+    sql: card_present
+  chargeback_probability:
+    description: 'REAL. Predicted probability of chargeback for this payment (0-1). Example: 50.0.'
+    sql: chargeback_probability
+  cvv_verification_result:
+    description: 'TEXT. Result of CVV verification check. Unique values: Match, No Match, Not Processed, Issuer Unable.'
+    sql: cvv_verification_result
+  device_fingerprint_match:
+    description: 'BOOLEAN. Indicates if device fingerprint matches known trusted device. Possible values: True, False.'
+    sql: device_fingerprint_match
+  email_domain_risk:
+    description: 'TEXT. Risk classification of email domain used. Unique values: Low, Medium, High, Disposable, Unknown.'
+    sql: email_domain_risk
+  fraud_decision:
+    description: 'TEXT. Final fraud screening decision for the payment. Unique values: Approve, Decline, Manual Review, Challenge.'
+    sql: fraud_decision
+  fraud_score:
+    description: 'REAL. Calculated fraud probability score (0-100). Example: 15.0.'
+    sql: fraud_score
+  geo_location_mismatch:
+    description: 'BOOLEAN. Indicates if payment location differs from billing address location. Possible values: True, False.'
+    sql: geo_location_mismatch
+  ip_risk_score:
+    description: 'REAL. Risk score associated with originating IP address (0-100). **NULL means IP address could not be resolved.** Example: 20.0.'
+    sql: ip_risk_score
+  payment_event_ref:
+    description: TEXT. Reference to the payment processing event being analyzed.
+    sql: payment_event_ref
+  review_completed:
+    description: 'BOOLEAN. Indicates if manual review has been completed when required. **NULL means Manual review was not required for this payment.** Possible values: True, False.'
+    sql: review_completed
+  three_ds_authenticated:
+    description: 'BOOLEAN. Indicates if 3D Secure authentication was completed. Possible values: True, False.'
+    sql: three_ds_authenticated
+  transactions_last_day:
+    description: 'INTEGER. Number of transactions from same source in last 24 hours. Example: 5.'
+    sql: transactions_last_day
+  transactions_last_hour:
+    description: 'INTEGER. Number of transactions from same source in last hour. Example: 2.'
+    sql: transactions_last_hour
+  velocity_check_result:
+    description: 'TEXT. Result of transaction velocity pattern analysis. Unique values: Pass, Warning, Fail, Review Required.'
+    sql: velocity_check_result

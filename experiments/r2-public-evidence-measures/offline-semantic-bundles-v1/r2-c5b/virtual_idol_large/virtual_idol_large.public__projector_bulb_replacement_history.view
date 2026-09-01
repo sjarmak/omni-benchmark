@@ -1,0 +1,60 @@
+label: ProjectorBulbReplacementHistory
+description: All columns of the public table ProjectorBulbReplacementHistory.
+catalog: virtual_idol_large
+schema: public
+table_name: ProjectorBulbReplacementHistory
+dimensions:
+  burn_in_hours:
+    description: 'REAL. Initial test run duration. Example: 2.0.'
+    sql: burn_in_hours
+  cost_per_unit_usd:
+    description: 'REAL. Price of the bulb. Example: 250.'
+    sql: cost_per_unit_usd
+  disposal_method:
+    description: 'TEXT. Recycled, Hazmat. Unique values: Recycled, Hazardous Waste.'
+    sql: disposal_method
+  expected_life_hours:
+    description: 'INTEGER. Rated lifespan. Example: 50.'
+    sql: expected_life_hours
+  installation_date:
+    description: TIMESTAMP. Date of swap.
+    sql: installation_date
+  invoice_ref:
+    description: TEXT. Purchase order ID.
+    sql: invoice_ref
+  is_generic_part:
+    description: 'BOOLEAN. True if 3rd party clone. Possible values: True, False.'
+    sql: is_generic_part
+  lumen_output_test:
+    description: 'INTEGER. Brightness test after install. Example: 5000.'
+    sql: lumen_output_test
+  maintenance_ref:
+    description: TEXT. FK to HologramProjectorMaintenance.
+    sql: maintenance_ref
+  new_bulb_serial:
+    description: TEXT. Serial of installed bulb.
+    sql: new_bulb_serial
+  old_bulb_hours_used:
+    description: 'INTEGER. Hours logged on old bulb. Example: 3000.'
+    sql: old_bulb_hours_used
+  old_bulb_serial:
+    description: TEXT. Serial of removed bulb.
+    sql: old_bulb_serial
+  premature_failure:
+    description: 'BOOLEAN. True if failed before rated life. Possible values: True, False.'
+    sql: premature_failure
+  replacement_id:
+    description: TEXT. Unique ID for bulb swap.
+    sql: replacement_id
+  stock_location_id:
+    description: TEXT. Warehouse bin.
+    sql: stock_location_id
+  supplier_vendor:
+    description: 'TEXT. Where bulb was bought. Unique values: TechSource, OEM Direct.'
+    sql: supplier_vendor
+  technician_signature:
+    description: TEXT. Sign-off.
+    sql: technician_signature
+  warranty_claim_filed:
+    description: 'BOOLEAN. True if replaced under warranty. Possible values: True, False.'
+    sql: warranty_claim_filed

@@ -1,0 +1,87 @@
+label: EarlyWarningSystems
+description: All columns of the public table EarlyWarningSystems.
+catalog: disaster_relief_large
+schema: public
+table_name: EarlyWarningSystems
+dimensions:
+  alert_reach_km:
+    description: REAL. Maximum range the alert can reach, in **kilometres** (e.g., 100.0).
+    sql: '"ALERT_REACH_km"'
+  battery_backup:
+    description: BOOLEAN. TRUE if the device has an onboard battery backup; otherwise FALSE.
+    sql: '"BATTERY_backup"'
+  calibration_date:
+    description: 'DATE. Last calibration date of the sensing equipment. Format: YYYY-MM-DD.'
+    sql: '"CALIBRATION_DATE"'
+  coverage_area:
+    description: TEXT. Human-readable description of the geographic coverage (e.g., "80 km radius", "City center").
+    sql: '"COVERAGE_area"'
+  created_at:
+    description: TIMESTAMP. Record creation timestamp (system insert time).
+    sql: '"CREATED_AT"'
+  earlywarnid:
+    description: VARCHAR(20). Unique early-warning system identifier. Primary Key.
+    sql: '"EARLYWARNID"'
+  last_tested:
+    description: 'TIMESTAMP. Date-time when the system was last function-tested. Format: YYYY-MM-DD HH:MM:SS. **Nullable** if the test has never been performed or logged.'
+    sql: '"LAST_TESTED"'
+  responsible_agency:
+    description: TEXT. Government or institutional body in charge of the system (e.g., "National Disaster Mgmt Authority").
+    sql: '"RESPONSIBLE_AGENCY"'
+  status:
+    description: 'TEXT. Current operational status. Possible values: Operational, Maintenance, Offline.'
+    sql: '"Status"'
+  system_type:
+    description: TEXT. Category of warning system (e.g., Seismic Sensor, Weather Radar, Flood Gauge, Tsunami Buoy, Volcano Camera).
+    sql: '"System_Type"'
+  alert_sent:
+    description: BOOLEAN. TRUE if an alert has already been issued for the linked disaster event; otherwise FALSE.
+    sql: '"alertSent"'
+  data_logging:
+    description: BOOLEAN. TRUE if raw sensor data is being logged locally or remotely.
+    sql: data_logging
+  dist_ref:
+    description: VARCHAR(20). References DisasterEvents(DistRegistry). Links each warning system to its disaster event.
+    sql: dist_ref
+  firmware_version:
+    description: TEXT. Installed firmware version string (e.g., "v3.2.7"). **Nullable** if unknown or not applicable.
+    sql: '"firmwareVersion"'
+  maintenance_cycle_days:
+    description: BIGINT. Recommended interval between preventative maintenance visits, in days (e.g., 90).
+    sql: '"maintenance_cycle_DAYS"'
+  network_connectivity:
+    description: TEXT. Primary communications link (e.g., 4G, Satellite, Ethernet, LoRaWAN).
+    sql: '"network_CONNECTIVITY"'
+  operational_metrics:
+    description: JSONB column. Aggregates headline performance & reliability figures for each early-warning unit.
+    sql: operational_metrics
+  parameter_threshold:
+    description: REAL. Threshold value that triggers an alert, expressed in the units of the triggerParameter. **Nullable** if the threshold has not been set.
+    sql: parameter_threshold
+  tech_vendor:
+    description: TEXT. Commercial vendor or manufacturer of the hardware/software (e.g., "SeismoTech").
+    sql: '"techVendor"'
+  trigger_parameter:
+    description: TEXT. Name of the parameter the system monitors (e.g., ground_accel, water_level_m). **Nullable** when the parameter is unknown or not yet configured.
+    sql: '"triggerParameter"'
+  updated_at:
+    description: TIMESTAMP. Timestamp of the most recent update to this record.
+    sql: updated_at
+  operational_metrics_avgdetects:
+    description: REAL. Average detection latency in seconds. **Nullable** when insufficient data exists to compute it.
+    sql: JSONB_EXTRACT_PATH_TEXT(operational_metrics, 'avgdetects')
+  operational_metrics_falsealarmfraction:
+    description: REAL. Fraction of detections that were false alarms (0 → no false alarms, 1 → all false). **Nullable** until enough events are recorded.
+    sql: JSONB_EXTRACT_PATH_TEXT(operational_metrics, 'falsealarmfraction')
+  operational_metrics_responselag_s:
+    description: REAL. Mean end-to-end response latency, in **seconds** (e.g., 120.0).
+    sql: JSONB_EXTRACT_PATH_TEXT(operational_metrics, 'responselag_s')
+  operational_metrics_uptimepct:
+    description: 'REAL. Percentage of time the system has been operational (e.g., 99.5). Units: **percent**.'
+    sql: JSONB_EXTRACT_PATH_TEXT(operational_metrics, 'uptimepct')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EarlyWarningSystems public identity values.
+    label: EarlyWarningSystems Count
+    sql: ${disaster_relief_large_public__early_warning_systems.earlywarnid}

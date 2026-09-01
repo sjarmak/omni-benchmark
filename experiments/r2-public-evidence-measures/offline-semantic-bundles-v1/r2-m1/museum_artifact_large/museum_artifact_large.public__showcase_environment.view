@@ -1,0 +1,72 @@
+label: ShowcaseEnvironment
+description: All columns of the public table ShowcaseEnvironment.
+catalog: museum_artifact_large
+schema: public
+table_name: ShowcaseEnvironment
+dimensions:
+  alarm_triggered:
+    description: 'VARCHAR(100). Type of environmental alarm triggered (None, Temperature, Humidity, Light, Motion, Tamper). Possible values: "Humidity", "Light", "Motion", "None", "Tamper", "Temperature".'
+    sql: '"alarmTriggered"'
+  calibration_due:
+    description: 'VARCHAR(100). Next scheduled calibration date for environmental sensors. Example: "10:08:45".'
+    sql: '"calibrationDue"'
+  co2_ppm:
+    description: 'VARCHAR(100). Carbon dioxide concentration in parts per million. Example: "49".'
+    sql: '"co2Ppm"'
+  data_quality_flag:
+    description: 'VARCHAR(100). Assessment of sensor data reliability (Excellent, Good, Fair, Poor, Invalid). Possible values: "Excellent", "Fair", "Good", "Invalid", "Poor".'
+    sql: '"dataQualityFlag"'
+  door_open_count:
+    description: 'VARCHAR(100). Count of showcase door openings during monitoring period. Example: "49".'
+    sql: '"doorOpenCount"'
+  emergency_contact:
+    description: 'VARCHAR(100). Contact information for environmental emergency response. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"emergencyContact"'
+  humidity_percent:
+    description: 'VARCHAR(100). Relative humidity percentage measurement. Example: "49".'
+    sql: '"humidityPercent"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for environmental monitoring records. Example: 1.'
+    sql: id
+  light_lux:
+    description: 'VARCHAR(100). Visible light intensity measurement in lux units. Example: "49".'
+    sql: '"lightLux"'
+  monitor_timestamp:
+    description: 'VARCHAR(100). Timestamp of environmental sensor reading capture. Example: "11:08:49".'
+    sql: '"monitorTimestamp"'
+  notes:
+    description: 'VARCHAR(100). Additional observations or contextual notes about environmental conditions. Example: "I destroy my enemies when I make them my friends. Navicat Monitor requires a repository             ".'
+    sql: notes
+  particulate_matter:
+    description: 'VARCHAR(100). Airborne particulate matter concentration measurement. Example: "49".'
+    sql: '"particulateMatter"'
+  response_time_min:
+    description: 'VARCHAR(100). Response time in minutes for environmental incidents. Example: "11:38:09".'
+    sql: '"responseTimeMin"'
+  sensor_battery:
+    description: 'VARCHAR(100). Remaining battery percentage of wireless sensors. Example: "KFm76EOA3j".'
+    sql: '"sensorBattery"'
+  showcase_id:
+    description: 'VARCHAR(100). Identifier of physical display case or showcase unit. Example: "hvHa9dLjOk".'
+    sql: '"showcaseId"'
+  staff_code:
+    description: 'BIGINT. Identifier of staff member responsible for environmental monitoring (foreign key to Staff.Staff_Code). Example: 55.'
+    sql: '"staffCode"'
+  temperature_celsius:
+    description: 'VARCHAR(100). Ambient temperature measurement in degrees Celsius. Example: "49".'
+    sql: '"temperatureCelsius"'
+  uv_index:
+    description: 'VARCHAR(100). Ultraviolet radiation index measurement. Example: "49".'
+    sql: '"uvIndex"'
+  vibration_level:
+    description: 'VARCHAR(100). Vibration intensity measurement in mm/s². Example: "49".'
+    sql: '"vibrationLevel"'
+  voc_level:
+    description: 'VARCHAR(100). Volatile organic compounds concentration level. Example: "49".'
+    sql: '"vocLevel"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ShowcaseEnvironment public identity values.
+    label: ShowcaseEnvironment Count
+    sql: ${museum_artifact_large_public__showcase_environment.id}

@@ -1,0 +1,81 @@
+label: virtual_idol_lore_and_storylines
+description: All columns of the public table virtual_idol_lore_and_storylines.
+catalog: virtual_idol_large
+schema: public
+table_name: virtual_idol_lore_and_storylines
+dimensions:
+  author_notes:
+    description: 'TEXT. Notes from the author about the lore. **NULL means there are no author notes.** Example: Hint at the mentor''s betrayal in the next chapter..'
+    sql: '"AUTHOR_NOTES"'
+  character_relationships:
+    description: 'JSONB. A JSON object describing character relationships. Example: {"rival": "Maria Chen", "mentor": "Ren Tanaka"}.'
+    sql: '"CHARACTER_RELATIONSHIPS"'
+  canonical_status:
+    description: 'TEXT. The canonical status of the story arc. Possible values: Canon, Semi-Canon, Non-Canon. Example: Canon.'
+    sql: '"CanonicalStatus"'
+  character_backstory:
+    description: 'TEXT. The backstory of the character relevant to this arc. Example: Orphaned at a young age, discovered their talent by singing to the stars..'
+    sql: '"CharacterBackstory"'
+  idol_registration_id:
+    description: 'TEXT. Foreign key referencing the virtual idol this lore pertains to. FK to virtualidols(entity_reg). Example: VI2016.'
+    sql: '"Idol_Registration_ID"'
+  language:
+    description: 'TEXT. The primary language of the lore. Example: Japanese.'
+    sql: '"LANGUAGE"'
+  last_updated:
+    description: 'TIMESTAMP. The timestamp of the last update to the lore entry. Example: 2025-08-29 09:21:34.'
+    sql: '"LastUpdated"'
+  narrative_tone:
+    description: 'TEXT. The narrative tone of the story arc. Example: Adventurous.'
+    sql: '"NARRATIVE_TONE"'
+  official_qa_link:
+    description: 'TEXT. A link to an official Q&A about this lore. **NULL means there is no official Q&A link.** Example: http://lore.qa/782.'
+    sql: '"OfficialQaLink"'
+  publication_date:
+    description: 'DATE. The date the story arc was published. Example: 2024/07/02.'
+    sql: '"PublicationDate"'
+  related_characters:
+    description: 'TEXT ARRAY. A list of characters related to this story arc. Example: [''Kenji Vector'', ''Ren Chen''].'
+    sql: '"RelatedCharacters"'
+  story_arc_description:
+    description: 'TEXT. A detailed description of the story arc. Example: A pivotal chapter in the idol''s journey, revealing secrets of their past and shaping their future..'
+    sql: '"STORY_ARC_DESCRIPTION"'
+  spoiler_warning:
+    description: 'BOOLEAN. A flag indicating if the lore entry contains spoilers. Example: false.'
+    sql: '"SpoilerWarning"'
+  story_arc_name:
+    description: 'TEXT. The name of the story arc. Example: The Hidden Abyss Arc.'
+    sql: '"StoryArcName"'
+  timeline_start_date:
+    description: 'DATE. The start date of the story arc in the timeline. Example: 2024/07/12.'
+    sql: '"TIMELINE_START_DATE"'
+  writer_name:
+    description: 'TEXT. The name of the writer for this story arc. Example: Mei Miller.'
+    sql: '"WRITER_NAME"'
+  artist_name:
+    description: 'TEXT. The name of the artist for this story arc. Example: Chloe Lane.'
+    sql: artist_name
+  community_theories:
+    description: 'TEXT. A summary of community theories about this lore. **NULL means no significant theories are recorded.** Example: Fans speculate a link to the ''Shattered Throne'' arc..'
+    sql: community_theories
+  key_events:
+    description: 'JSONB. A JSON object listing key events within the story arc. Example: [{"event": "The Awakening", "desc": "Discovers a hidden power during a pivotal performance."}].'
+    sql: key_events
+  lore_id:
+    description: 'BIGINT. Unique identifier for the lore entry. PK. Example: 1.'
+    sql: lore_id
+  timeline_end_date:
+    description: 'DATE. The end date of the story arc in the timeline. **NULL means the story arc is ongoing.** Example: 2025/06/06.'
+    sql: timeline_end_date
+  translator_name:
+    description: TEXT. The name of the person who translated the lore. **NULL means the lore is in its original language.**
+    sql: translator_name
+  world_setting:
+    description: 'TEXT. The world or setting in which the story arc takes place. Example: Aethelgard, Crystal Kingdom.'
+    sql: world_setting
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct virtual_idol_lore_and_storylines public identity values.
+    label: virtual_idol_lore_and_storylines Count
+    sql: ${virtual_idol_large_public__virtual_idol_lore_and_storylines.lore_id}

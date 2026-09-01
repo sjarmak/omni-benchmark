@@ -1,0 +1,69 @@
+label: vision_system_telemetry
+description: All columns of the public table vision_system_telemetry.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: vision_system_telemetry
+dimensions:
+  aperture_f_stop:
+    description: 'REAL. Lens diaphragm opening size. Unique values: 1.4, 2.8, 5.6.'
+    sql: aperture_f_stop
+  camera_device_serial:
+    description: TEXT. Hardware serial number of the vision sensor.
+    sql: camera_device_serial
+  color_temperature_k:
+    description: 'INTEGER. Measured white balance/color temp. Example: 5500.'
+    sql: color_temperature_k
+  compression_ratio:
+    description: 'REAL. Ratio of raw size to stored size. Example: 50.0.'
+    sql: compression_ratio
+  detected_object_count:
+    description: 'INTEGER. Number of distinct entities identified. Example: 50.'
+    sql: detected_object_count
+  exposure_time_ms:
+    description: 'REAL. Duration the shutter was open. Example: 15.'
+    sql: exposure_time_ms
+  focus_distance_mm:
+    description: 'REAL. Distance from lens to focal plane. Example: 50.0.'
+    sql: focus_distance_mm
+  gain_db:
+    description: 'REAL. Signal amplification level applied. Example: 50.0.'
+    sql: gain_db
+  image_contrast_score:
+    description: 'REAL. Computed contrast metric (0-1). Example: 50.0.'
+    sql: image_contrast_score
+  inference_confidence_score:
+    description: 'REAL. AI model certainty level (0.0-1.0). Example: 50.0.'
+    sql: inference_confidence_score
+  lens_surface_status:
+    description: 'TEXT. Condition of the lens glass. **NULL means Sensor diagnostic unavailable.** Unique values: Clean, Dusty, Smudged.'
+    sql: lens_surface_status
+  network_bandwidth_mbps:
+    description: 'REAL. Network usage during transmission. Example: 80.'
+    sql: network_bandwidth_mbps
+  processing_latency_ms:
+    description: 'REAL. Time taken to process the frame. Example: 45.'
+    sql: processing_latency_ms
+  resolution_height_px:
+    description: 'INTEGER. Vertical resolution of the capture. Unique values: 1080, 2160, 480.'
+    sql: resolution_height_px
+  resolution_width_px:
+    description: 'INTEGER. Horizontal resolution of the capture. Unique values: 1920, 3840, 640.'
+    sql: resolution_width_px
+  scene_illumination_lux:
+    description: 'REAL. Ambient light level at target. Example: 500.'
+    sql: scene_illumination_lux
+  storage_path_reference:
+    description: TEXT. URI to the stored image blob.
+    sql: storage_path_reference
+  vision_log_id:
+    description: TEXT. Unique identifier for the vision capture event.
+    sql: vision_log_id
+  workcell_ref:
+    description: TEXT. Reference to the workcell where the camera is mounted.
+    sql: workcell_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct vision_system_telemetry public identity values.
+    label: vision_system_telemetry Count
+    sql: ${robot_fault_prediction_large_public__vision_system_telemetry.vision_log_id}

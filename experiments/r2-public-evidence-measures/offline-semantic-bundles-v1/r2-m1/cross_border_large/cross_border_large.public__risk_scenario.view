@@ -1,0 +1,105 @@
+label: Risk_Scenario
+description: All columns of the public table Risk_Scenario.
+catalog: cross_border_large
+schema: public
+table_name: Risk_Scenario
+dimensions:
+  attack_vector:
+    description: 'TEXT. Attack method. Example: Phishing, Ransomware, API Abuse, SQL Injection, DDoS, Misconfiguration, Credential Stuffing. Example: Phishing.'
+    sql: '"Attack_Vector"'
+  blast_radius_pct:
+    description: 'REAL. Percentage of assets/users impacted if realized. Example: 40.37.'
+    sql: '"BLAST_RADIUS_PCT"'
+  breach_history_count:
+    description: 'BIGINT. Count of previous breaches. Example: 4.'
+    sql: '"BREACH_HISTORY_COUNT"'
+  category:
+    description: 'TEXT. Scenario category. Possible values: Cyber, Operational, Third-Party, Fraud, Privacy, Resilience. Example: Cyber.'
+    sql: '"CATEGORY"'
+  control_gaps:
+    description: 'TEXT. Known control gaps. Example: Patch cadence. **NULL means no gap documented.**'
+    sql: '"CONTROL_GAPS"'
+  description:
+    description: 'TEXT. Narrative description of the scenario. Example: Potential cyber risk affecting Backups via Phishing.'
+    sql: '"Description"'
+  kpi:
+    description: 'TEXT. Key Performance Indicator. Example: MTTR. **NULL means not set.**'
+    sql: '"KPI"'
+  likelihood_pct:
+    description: 'REAL. Likelihood of occurrence (%). Example: 7.62.'
+    sql: '"LIKELIHOOD_PCT"'
+  last_review_at:
+    description: 'DATE. Last review date. Example: 2025-07-04.'
+    sql: '"Last_Review_At"'
+  mttr_hours:
+    description: 'REAL. Mean Time To Repair (hours). Example: 37.88.'
+    sql: '"MTTR_HOURS"'
+  mitigation_summary:
+    description: 'TEXT. Summary of mitigation practices. Example: Apply WAF rules and monitoring.'
+    sql: '"Mitigation_Summary"'
+  notes:
+    description: 'TEXT. Additional notes. Example: Watchlist. **NULL means no notes provided.**'
+    sql: '"Notes"'
+  rto_hours:
+    description: 'REAL. Recovery Time Objective (hours). Example: 13.46.'
+    sql: '"RTO_HOURS"'
+  status:
+    description: 'TEXT. Current scenario status. Possible values: Open, In Review, Mitigated, Monitored. Example: In Review.'
+    sql: '"STATUS"'
+  stress_p95_loss_usd:
+    description: 'REAL. Stress-test 95th percentile loss (USD). Example: 20,430,734.27.'
+    sql: '"STRESS_P95_LOSS_USD"'
+  scenario_code:
+    description: 'BIGINT. Primary key for the risk scenario. Example: 1.'
+    sql: '"Scenario_Code"'
+  tags:
+    description: 'TEXT. Scenario tags (comma separated). Example: Infra,Medium,2025.'
+    sql: '"TAGS"'
+  watchlist:
+    description: 'TEXT. Whether the scenario is on watchlist. Possible values: Yes, No. Example: No.'
+    sql: '"Watchlist"'
+  assets_impacted:
+    description: 'TEXT. Asset(s) at risk. Example: Backups.'
+    sql: assets_impacted
+  detection_difficulty:
+    description: 'TEXT. Ease of detecting this threat. Possible values: Easy, Moderate, Hard. Example: Moderate.'
+    sql: detection_difficulty
+  impact_usd:
+    description: 'REAL. Estimated impact (USD). Example: 11,963,125.20.'
+    sql: impact_usd
+  introduced_at:
+    description: 'DATE. Date introduced. Example: 2024-05-05.'
+    sql: introduced_at
+  kri:
+    description: 'TEXT. Key Risk Indicator used. Example: Failed logins. **NULL means not defined.**'
+    sql: kri
+  mttd_hours:
+    description: 'REAL. Mean Time To Detect (hours). Example: 5.17.'
+    sql: mttd_hours
+  near_miss_count:
+    description: 'BIGINT. Number of near misses. Example: 10.'
+    sql: near_miss_count
+  next_review_date:
+    description: 'DATE. Next review date. Example: 2026-04-20.'
+    sql: next_review_date
+  rpo_hours:
+    description: 'REAL. Recovery Point Objective (hours). Example: 4.93.'
+    sql: rpo_hours
+  scenario_owner:
+    description: 'TEXT. Owner team. Possible values: GRC, SecurityOps, Platform, IT Operations, Data Privacy. Example: SecurityOps.'
+    sql: scenario_owner
+  stress_avg_loss_usd:
+    description: 'REAL. Stress-test average loss (USD). Example: 11,504,175.24.'
+    sql: stress_avg_loss_usd
+  threat_actor:
+    description: 'TEXT. Primary actor. Possible values: Insider, Cybercriminal, Nation-state, Script Kiddie, Supply Chain, Unknown. Example: Script Kiddie.'
+    sql: threat_actor
+  title:
+    description: 'TEXT. Human-readable title of the scenario. Example: Cyber Scenario 1.'
+    sql: title
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Risk_Scenario public identity values.
+    label: Risk_Scenario Count
+    sql: ${cross_border_large_public__risk_scenario.scenario_code}

@@ -1,0 +1,15 @@
+base_view: robot_fault_prediction_large_public__joint_condition
+label: joint_condition
+description: Public semantic view for joint_condition.
+fields:
+- robot_fault_prediction_large_public__joint_condition.*
+- robot_fault_prediction_large_public__operation.*
+- robot_fault_prediction_large_public__robot_details.*
+- robot_fault_prediction_large_public__robot_record.*
+joins:
+  robot_fault_prediction_large_public__operation:
+    robot_fault_prediction_large_public__robot_record: {}
+  robot_fault_prediction_large_public__robot_details: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields hkb_15, hkb_18, hkb_34, hkb_4, hkb_43, hkb_47, hkb_5, hkb_62, hkb_9 rather than reconstructing their formulas.'

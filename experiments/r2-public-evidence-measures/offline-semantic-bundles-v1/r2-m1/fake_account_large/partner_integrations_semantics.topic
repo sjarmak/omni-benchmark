@@ -1,0 +1,7 @@
+base_view: fake_account_large_public__partner_integrations
+label: partner_integrations
+description: All columns of the public table partner_integrations.
+fields:
+- fake_account_large_public__partner_integrations.*
+joins: {}
+ai_context: This topic models no cross-table joins.

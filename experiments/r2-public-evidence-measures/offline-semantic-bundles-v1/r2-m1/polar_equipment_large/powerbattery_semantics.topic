@@ -1,0 +1,13 @@
+base_view: polar_equipment_large_public__powerbattery
+label: Power Battery
+description: Battery telemetry records with energy-sustainability semantics and field context.
+fields:
+- polar_equipment_large_public__powerbattery.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+joins:
+  polar_equipment_large_public__equipment:
+    polar_equipment_large_public__equipmenttype: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields energy_sustainability_classification, energy_sustainability_index rather than reconstructing their formulas.'

@@ -1,0 +1,9 @@
+base_view: fake_account_large_public__accounts
+label: accounts
+description: All columns of the public table accounts.
+fields:
+- fake_account_large_public__accounts.*
+- fake_account_large_public__platforms.*
+joins:
+  fake_account_large_public__platforms: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

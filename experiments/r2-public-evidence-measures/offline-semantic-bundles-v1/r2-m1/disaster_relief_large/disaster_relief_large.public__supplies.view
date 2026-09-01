@@ -1,0 +1,45 @@
+label: supplies
+description: All columns of the public table supplies.
+catalog: disaster_relief_large
+schema: public
+table_name: supplies
+dimensions:
+  blanketunits:
+    description: 'BIGINT. Number of blankets. Example: 26671.0.'
+    sql: blanketunits
+  foodtons:
+    description: 'REAL. Amount of food supplies in tons. Example: 479.4.'
+    sql: foodtons
+  fuel_reserve_liters:
+    description: 'REAL. Amount of fuel reserves in liters. Example: 86011.'
+    sql: fuel_reserve_liters
+  hygiene_units:
+    description: 'BIGINT. Number of hygiene units. Example: 46981.'
+    sql: hygiene_units
+  medunits:
+    description: 'BIGINT. Number of medical units. Example: 15593.0.'
+    sql: medunits
+  powergenunits:
+    description: 'BIGINT. Number of power generators. Example: 568.'
+    sql: powergenunits
+  shelter_units:
+    description: 'BIGINT. Number of shelter units. Example: 7534.'
+    sql: shelter_units
+  supply_dist_ref:
+    description: VARCHAR(20). Disaster event reference. FK to DisasterEvents.
+    sql: supply_dist_ref
+  supplyhubref:
+    description: VARCHAR(20). Distribution hub reference. FK to DistributionHubs.
+    sql: supplyhubref
+  supplyregistry:
+    description: VARCHAR(20). Unique supply registry identifier. PK.
+    sql: supplyregistry
+  water_liters:
+    description: 'REAL. Amount of water supplies in liters. Example: 283596.'
+    sql: water_liters
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct supplies public identity values.
+    label: supplies Count
+    sql: ${disaster_relief_large_public__supplies.supplyregistry}

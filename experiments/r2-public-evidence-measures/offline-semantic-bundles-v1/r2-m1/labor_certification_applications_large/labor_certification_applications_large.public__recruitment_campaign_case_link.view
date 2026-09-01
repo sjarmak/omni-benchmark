@@ -1,0 +1,42 @@
+label: recruitment_campaign_case_link
+description: All columns of the public table recruitment_campaign_case_link.
+catalog: labor_certification_applications_large
+schema: public
+table_name: recruitment_campaign_case_link
+dimensions:
+  file_ref:
+    description: 'TEXT. FK to cases.fileKey. Example: I-200-23355-586572.'
+    sql: '"FILE_ref"'
+  camp_code_ref:
+    description: 'TEXT. FK to recruitment_campaign.CAMP_code. Example: CAMP00001.'
+    sql: camp_code_ref
+  interview_round_ct:
+    description: 'BIGINT. Interview rounds completed. Example: 2.'
+    sql: '"interviewRound_ct"'
+  offer_accept_flag:
+    description: 'TEXT. Offer accepted? **NULL while decision pending.** Values: Yes, No. Example: No.'
+    sql: '"offerAccept_flag"'
+  offer_ext_flag:
+    description: 'TEXT. Offer extended? **NULL when pipeline not at offer stage.** Values: Yes, No. Example: No.'
+    sql: '"offerExt_flag"'
+  pipeline_step:
+    description: 'TEXT. Current funnel step (x / 5). **NULL when candidate withdrew or record incomplete.** Example: 1 / 5.'
+    sql: '"pipelineStep"'
+  reasoning_x:
+    description: 'TEXT. Analyst note. Example: Linked via integration.'
+    sql: '"reasoningX"'
+  referral_source:
+    description: 'TEXT. Where candidate learned of role. Values: Direct, Referral, Agency, Internal. Example: Agency.'
+    sql: '"referralSource"'
+  salary_band_max_usd:
+    description: 'REAL. Upper bound of offered salary, USD. Example: 149 620.'
+    sql: '"salaryBand_max_USD"'
+  salary_band_min_usd:
+    description: 'REAL. Lower bound of offered salary, USD. **NULL when compensation not yet disclosed.** Example: 126 553.'
+    sql: '"salaryBand_min_USD"'
+  screening_score:
+    description: 'REAL. Initial screening or assessment score. **NULL when not scored.** Example: 16.1.'
+    sql: '"screeningScore"'
+  start_day:
+    description: 'DATE. Candidate start date (projected or actual). Example: 2020-06-25.'
+    sql: '"startDAY"'

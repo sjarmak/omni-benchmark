@@ -1,0 +1,66 @@
+label: OperationLogistics
+description: All columns of the public table OperationLogistics.
+catalog: disaster_relief_large
+schema: public
+table_name: OperationLogistics
+dimensions:
+  delivery_status:
+    description: 'VARCHAR(100). Fulfillment status (OnTime|Delayed|Partial|Failed|Cancelled|Completed). Possible values: "Cancelled", "Completed", "Delayed", "Failed", "OnTime", "Partial".'
+    sql: '"deliveryStatus"'
+  distance_km:
+    description: 'VARCHAR(100). Total route distance in kilometers. Example: "jxrT6ZsHc3".'
+    sql: '"distanceKm"'
+  distribution_hub_id:
+    description: 'BIGINT. Foreign key reference to distribution hub (DistributionHubCore.id). Example: 6114.'
+    sql: '"distributionHubId"'
+  fuel_consumed_liters:
+    description: 'VARCHAR(100). Total fuel consumption during movement in liters. Example: "vTCr5jGFTV".'
+    sql: '"fuelConsumedLiters"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for operation logistics records. Example: 1.'
+    sql: id
+  logistics_date:
+    description: 'VARCHAR(100). Date logistics movement was executed. Example: "2006-08-29".'
+    sql: '"logisticsDate"'
+  notes:
+    description: 'VARCHAR(100). Logistics coordinator observations or issues. Example: "VvfFcN5dSR".'
+    sql: notes
+  operation_id:
+    description: 'BIGINT. Foreign key reference to rescue operation (OperationCore.id). Example: 1489.'
+    sql: '"operationId"'
+  personnel_assigned:
+    description: 'VARCHAR(100). Count of logistics personnel supporting movement. Example: "877".'
+    sql: '"personnelAssigned"'
+  quantity_delivered:
+    description: 'VARCHAR(100). Actual amount of supplies delivered to operation. Example: "877".'
+    sql: '"quantityDelivered"'
+  quantity_requested:
+    description: 'VARCHAR(100). Amount of supplies originally requested. Example: "537".'
+    sql: '"quantityRequested"'
+  road_conditions:
+    description: 'VARCHAR(100). Route condition assessment (Excellent|Good|Fair|Poor|Impassable|Destroyed|Flooded|Blocked). Possible values: "Blocked", "Destroyed", "Excellent", "Fair", "Flooded", "Good", "Impassable", "Poor".'
+    sql: '"roadConditions"'
+  route_description:
+    description: 'VARCHAR(100). Detailed description of transport route taken. Example: "8NQ43UOl8g".'
+    sql: '"routeDescription"'
+  security_incidents:
+    description: 'VARCHAR(100). Security events during transit (None|Theft|Robbery|Attack|Checkpoint|Harassment|Other). Possible values: "Attack", "Checkpoint", "Harassment", "None", "Other", "Robbery", "Theft".'
+    sql: '"securityIncidents"'
+  supply_type:
+    description: 'VARCHAR(100). Category of supplies transported (Food|Water|Medical|Shelter|Fuel|Equipment|Personnel|Vehicles|Communications|Other). Possible values: "Communications", "Equipment", "Food", "Fuel", "Medical", "Other", "Personnel", "Shelter", "Vehicles", "Water".'
+    sql: '"supplyType"'
+  transport_mode:
+    description: 'VARCHAR(100). Primary transportation method (Road|Air|Sea|Rail|Foot|MultiModal|Drone|Helicopter|Boat|Other). Possible values: "Air", "Boat", "Drone", "Foot", "Helicopter", "MultiModal", "Other", "Rail", "Road", "Sea".'
+    sql: '"transportMode"'
+  travel_time_hours:
+    description: 'VARCHAR(100). Actual transit duration in hours. Example: "09:20:57".'
+    sql: '"travelTimeHours"'
+  vehicle_count:
+    description: 'VARCHAR(100). Number of vehicles used in transport convoy. Example: "877".'
+    sql: '"vehicleCount"'
+  version:
+    description: 'VARCHAR(100). Record version number for audit purposes. Example: "F5a5w6RQam".'
+    sql: version
+  weather_conditions:
+    description: 'VARCHAR(100). Meteorological conditions during movement. Example: "foJQzRIkgS".'
+    sql: '"weatherConditions"'

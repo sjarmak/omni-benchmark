@@ -1,0 +1,65 @@
+label: Security Sessions
+description: Account-level security-session telemetry with public IP-reputation context.
+catalog: fake_account_large
+schema: public
+table_name: security_sessions
+dimensions:
+  ip_reputation_score:
+    description: 'REAL. IP reputation score. Example: 0.729.'
+    label: IP Reputation Score
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'ip_reputation', 'ip_reputation_score') AS DOUBLE PRECISION)
+    ai_context: 'reputation scoring: Ranges from 0 to 1. Scores above 0.8 indicate trusted IPs, while scores below 0.3 suggest potentially malicious or compromised IPs.'
+  acct_gate:
+    description: TEXT. Account reference for session. PK. FK to accounts.
+    sql: acct_gate
+  session_telemetry:
+    description: JSONB column. Aggregates IP reputation, device-mix, VPN / proxy usage and log-in behaviour so threat-detection jobs can retrieve the full session context from one JSONB column.
+    sql: session_telemetry
+  session_telemetry_activity_pattern_activity_regularity:
+    description: 'REAL. Activity registration score. Example: 0.313.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'activity_pattern', 'activity_regularity')
+  session_telemetry_activity_pattern_activity_spread_code:
+    description: 'TEXT. Activity spread during the session. Example: {''Morning'': 0.08864600070960105, ''Afternoon'': 0.7421617693224358, ''Night'': 0.3718840943461962}.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'activity_pattern', 'activity_spread_code')
+  session_telemetry_device_profile_browser_diversity_idx:
+    description: 'REAL. Browser mix score. Example: 0.016.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'device_profile', 'browser_diversity_idx')
+  session_telemetry_device_profile_device_count:
+    description: 'BIGINT. Device number. Example: 20.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'device_profile', 'device_count')
+  session_telemetry_device_profile_device_mix_json:
+    description: 'JSONB. Device mix used in session. Example: {''Mobile'': 0.8966897433246256, ''Desktop'': 0.5115558690500416, ''Tablet'': 0.3299024746948329}.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'device_profile', 'device_mix_json')
+  session_telemetry_device_profile_ua_consistency:
+    description: 'REAL. User agent consistency score. Example: 0.639.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'device_profile', 'ua_consistency')
+  session_telemetry_ip_reputation_country_count:
+    description: 'BIGINT. Country of the IP address. Example: 14.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'ip_reputation', 'country_count')
+  session_telemetry_ip_reputation_proxy_hits:
+    description: 'BIGINT. Proxy hits during session. **NULL means proxy hits not recorded.**. Example: 98.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'ip_reputation', 'proxy_hits')
+  session_telemetry_ip_reputation_registration_ip:
+    description: 'INET. Registered IP address. **NULL means IP not recorded.**. Example: 186.221.8.216.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'ip_reputation', 'registration_ip')
+  session_telemetry_ip_reputation_tor_flag:
+    description: 'TEXT. Tor usage flag. Possible values: No, Suspected, Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'ip_reputation', 'tor_flag')
+  session_telemetry_login_behavior_location_variability:
+    description: 'REAL. Location variance during session. Example: 0.311.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'login_behavior', 'location_variability')
+  session_telemetry_login_behavior_login_chronology:
+    description: 'TEXT. Login chronology or history. **NULL means login chronology not available.**. Possible values: Bot-like, Burst, Random, Regular.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'login_behavior', 'login_chronology')
+  session_telemetry_login_behavior_login_freq_per_day:
+    description: 'TEXT. Login frequency descriptor. Possible values: High, Low, Medium, Suspicious.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'login_behavior', 'login_freq_per_day')
+  session_telemetry_session_stats_avg_session_duration_min:
+    description: 'REAL. Session duration. Example: 2766.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'session_stats', 'avg_session_duration_min')
+  session_telemetry_session_stats_session_count:
+    description: 'BIGINT. Number of sessions during the account lifecycle. Example: 419.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'session_stats', 'session_count')
+  session_telemetry_vpn_usage_pct:
+    description: 'TEXT. VPN usage percentage. Example: 0.00%.'
+    sql: JSONB_EXTRACT_PATH_TEXT(session_telemetry, 'vpn_usage_pct')

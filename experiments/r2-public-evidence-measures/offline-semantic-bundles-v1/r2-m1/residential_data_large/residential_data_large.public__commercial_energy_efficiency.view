@@ -1,0 +1,69 @@
+label: Commercial_Energy_Efficiency
+description: All columns of the public table Commercial_Energy_Efficiency.
+catalog: residential_data_large
+schema: public
+table_name: Commercial_Energy_Efficiency
+dimensions:
+  energy_audit_pk:
+    description: 'TEXT. Primary key for commercial energy audit performance data. Example: CEE-1A2B3C.'
+    sql: '"Energy_Audit_PK"'
+  annual_carbon_offset_kg:
+    description: 'REAL. Carbon emissions mitigated through green initiatives. Example: 1200.'
+    sql: annual_carbon_offset_kg
+  annual_kwh_consumption:
+    description: 'REAL. Total electricity consumed by the business over 12 months. Example: 45000.'
+    sql: annual_kwh_consumption
+  business_ref:
+    description: 'INTEGER. Link to commercial_establishments table. Example: 50.'
+    sql: business_ref
+  energy_manager_presence:
+    description: 'INTEGER. Binary flag for designated energy conservation officer (1=Yes, 0=No). Unique values: 1, 0.'
+    sql: energy_manager_presence
+  green_building_certification:
+    description: 'TEXT. Environmental standard certification level. Unique values: LEED Platinum, LEED Gold, BREEAM Excellent, None.'
+    sql: green_building_certification
+  hvac_system_age_years:
+    description: 'INTEGER. Age of the primary heating and cooling system. **NULL means Natural ventilation only.** Example: 50.'
+    sql: hvac_system_age_years
+  insulation_r_value:
+    description: 'REAL. Thermal resistance rating of the exterior walls. **NULL means Unknown wall composition.** Example: 13.5.'
+    sql: insulation_r_value
+  led_lighting_adoption_ratio:
+    description: 'REAL. Percentage of total fixtures converted to LED. Example: 50.0.'
+    sql: led_lighting_adoption_ratio
+  occupancy_sensor_coverage_percent:
+    description: 'REAL. Floor area monitored by motion sensors for lighting. Example: 50.0.'
+    sql: occupancy_sensor_coverage_percent
+  peak_load_reduction_rebate_brl:
+    description: 'REAL. Financial incentive received for off-peak usage. **NULL means No rebate applied for this period.** Example: 500.'
+    sql: peak_load_reduction_rebate_brl
+  power_factor_correction_score:
+    description: 'REAL. Ratio of real power to apparent power (0.0 - 1.0). Example: 0.95.'
+    sql: power_factor_correction_score
+  refrigeration_rack_efficiency_rating:
+    description: 'REAL. Efficiency coefficient for commercial grocery cooling. **NULL means Non-food retail or office space.** Example: 3.2.'
+    sql: refrigeration_rack_efficiency_rating
+  smart_thermostat_count:
+    description: 'INTEGER. Number of IoT enabled temperature controllers. Example: 50.'
+    sql: smart_thermostat_count
+  solar_panel_surface_area_m2:
+    description: 'REAL. Rooftop area covered by photovoltaic panels. **NULL means No solar infrastructure.** Example: 50.0.'
+    sql: solar_panel_surface_area_m2
+  standby_power_loss_watts:
+    description: 'REAL. Energy consumed when devices are in ''off'' mode. Example: 150.'
+    sql: standby_power_loss_watts
+  vfd_motor_count:
+    description: 'INTEGER. Count of Variable Frequency Drives used in industrial motors. Example: 50.'
+    sql: vfd_motor_count
+  water_heater_energy_source:
+    description: 'TEXT. Primary fuel for hot water systems. Unique values: Electric, Natural Gas, Solar Thermal.'
+    sql: water_heater_energy_source
+  window_glazing_layers:
+    description: 'INTEGER. Number of panes in the exterior window units. Unique values: 1, 2, 3.'
+    sql: window_glazing_layers
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Commercial_Energy_Efficiency public identity values.
+    label: Commercial_Energy_Efficiency Count
+    sql: ${residential_data_large_public__commercial_energy_efficiency.energy_audit_pk}

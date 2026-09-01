@@ -1,0 +1,18 @@
+label: personnel
+description: All columns of the public table personnel.
+catalog: archeology_scan_large
+schema: public
+table_name: personnel
+dimensions:
+  crewlabel:
+    description: 'TEXT. Name or designation of the operator personnel. Example: Joel Wallace.'
+    sql: crewlabel
+  crewregistry:
+    description: 'TEXT. Unique identifier for operator personnel registration. PK = Personnel(CrewRegistry). Example: OP4641.'
+    sql: crewregistry
+  leadlabel:
+    description: 'TEXT. Name or designation of the supervisor personnel. Example: Michael Kaiser.'
+    sql: leadlabel
+  leadregistry:
+    description: 'TEXT. Unique identifier for supervisor personnel registration. Example: SV7658.'
+    sql: leadregistry

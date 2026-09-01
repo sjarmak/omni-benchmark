@@ -1,0 +1,11 @@
+base_view: archeology_scan_large_public__data_access_logs
+label: data_access_logs
+description: All columns of the public table data_access_logs.
+fields:
+- archeology_scan_large_public__data_access_logs.*
+- archeology_scan_large_public__personnel.*
+- archeology_scan_large_public__projects.*
+joins:
+  archeology_scan_large_public__personnel: {}
+  archeology_scan_large_public__projects: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

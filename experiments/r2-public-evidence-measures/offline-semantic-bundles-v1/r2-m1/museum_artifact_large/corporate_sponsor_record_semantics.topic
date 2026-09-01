@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__corporate_sponsor_record
+label: CorporateSponsorRecord
+description: All columns of the public table CorporateSponsorRecord.
+fields:
+- museum_artifact_large_public__corporate_sponsor_record.*
+joins: {}
+ai_context: This topic models no cross-table joins.

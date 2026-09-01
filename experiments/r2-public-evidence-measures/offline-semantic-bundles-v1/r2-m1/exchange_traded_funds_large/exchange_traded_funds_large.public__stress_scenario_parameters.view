@@ -1,0 +1,72 @@
+label: StressScenarioParameters
+description: All columns of the public table StressScenarioParameters.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: StressScenarioParameters
+dimensions:
+  stress_scenario_parameters_id:
+    description: TEXT. Unique identifier for scenario parameters record.
+    sql: '"StressScenarioParameters_id"'
+  commodity_shock_pct:
+    description: 'REAL. Commodity price shock percentage. **NULL means Commodity shock not included.** Example: 50.0.'
+    sql: commodity_shock_pct
+  confidence_level_pct:
+    description: 'REAL. Confidence level for scenario probability. Example: 50.0.'
+    sql: confidence_level_pct
+  correlation_breakdown_factor:
+    description: 'REAL. Factor for correlation breakdown assumption. **NULL means Correlation unchanged in scenario.** Example: 50.0.'
+    sql: correlation_breakdown_factor
+  credit_spread_widening_bps:
+    description: 'REAL. Credit spread widening in basis points. **NULL means Credit shock not included.** Example: 50.0.'
+    sql: credit_spread_widening_bps
+  equity_shock_pct:
+    description: 'REAL. Equity market shock percentage applied. **NULL means Equity shock not included in scenario.** Example: 50.0.'
+    sql: equity_shock_pct
+  fx_shock_pct:
+    description: 'REAL. Foreign exchange shock percentage. **NULL means FX shock not included.** Example: 50.0.'
+    sql: fx_shock_pct
+  historical_precedent_year:
+    description: 'INTEGER. Year of historical event used as precedent. **NULL means Hypothetical scenario.** Example: 50.'
+    sql: historical_precedent_year
+  includes_contagion_effects:
+    description: 'BOOLEAN. Whether contagion effects are modeled. Possible values: True, False.'
+    sql: includes_contagion_effects
+  interest_rate_shock_bps:
+    description: 'REAL. Interest rate shock in basis points. **NULL means Rate shock not included.** Example: 50.0.'
+    sql: interest_rate_shock_bps
+  is_regulatory_required:
+    description: 'BOOLEAN. Whether scenario is regulatory mandated. Possible values: True, False.'
+    sql: is_regulatory_required
+  liquidity_haircut_pct:
+    description: 'REAL. Liquidity haircut percentage applied. **NULL means Liquidity stress not modeled.** Example: 50.0.'
+    sql: liquidity_haircut_pct
+  parameter_set_date:
+    description: 'TIMESTAMP. Date when parameters were defined. Example: 2024-01-01 12:00:00.'
+    sql: parameter_set_date
+  recovery_period_days:
+    description: 'INTEGER. Assumed recovery period in days. **NULL means Recovery not modeled.** Example: 50.'
+    sql: recovery_period_days
+  redemption_shock_pct:
+    description: 'REAL. Assumed redemption shock percentage. **NULL means Redemption shock not modeled.** Example: 50.0.'
+    sql: redemption_shock_pct
+  scenario_duration_days:
+    description: 'INTEGER. Duration of stress scenario in days. Example: 50.'
+    sql: scenario_duration_days
+  scenario_type:
+    description: 'TEXT. Type of stress scenario. Unique values: Historical, Hypothetical, Reverse, Regulatory, Custom.'
+    sql: scenario_type
+  severity_classification:
+    description: 'TEXT. Severity classification of scenario. Unique values: Mild, Moderate, Severe, Extreme.'
+    sql: severity_classification
+  stress_test_ref:
+    description: TEXT. Reference to the stress test result.
+    sql: stress_test_ref
+  volatility_spike_multiplier:
+    description: 'REAL. Volatility multiplier applied in scenario. **NULL means Volatility not modeled separately.** Example: 50.0.'
+    sql: volatility_spike_multiplier
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct StressScenarioParameters public identity values.
+    label: StressScenarioParameters Count
+    sql: ${exchange_traded_funds_large_public__stress_scenario_parameters.stress_scenario_parameters_id}

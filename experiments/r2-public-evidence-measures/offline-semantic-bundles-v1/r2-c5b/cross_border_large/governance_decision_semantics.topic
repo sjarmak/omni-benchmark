@@ -1,0 +1,11 @@
+base_view: cross_border_large_public__governance_decision
+label: GovernanceDecision
+description: All columns of the public table GovernanceDecision.
+fields:
+- cross_border_large_public__governance_decision.*
+- cross_border_large_public__policy_version.*
+- cross_border_large_public__risk_scenario.*
+joins:
+  cross_border_large_public__policy_version: {}
+  cross_border_large_public__risk_scenario: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

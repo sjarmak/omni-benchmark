@@ -1,0 +1,57 @@
+label: technicians
+description: All columns of the public table technicians.
+catalog: solar_panel_large
+schema: public
+table_name: technicians
+dimensions:
+  email:
+    description: 'TEXT. The technician''s company email address. Example: awilliams@solar.co.'
+    sql: '"EMAIL"'
+  full_name:
+    description: 'TEXT. The full name of the technician. Example: Alice Williams.'
+    sql: '"FullName"'
+  job_title:
+    description: 'TEXT. The official job title of the employee. Possible values: Junior Engineer, Senior Technician, Team Lead, Technician.'
+    sql: '"JOB_TITLE"'
+  reports_to_tech:
+    description: 'TEXT. FK -> technicians.TechNum. The identifier of the technician''s direct supervisor. Possible values: T-101, T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110.'
+    sql: '"Reports_To_Tech"'
+  specialty:
+    description: 'TEXT. The primary area of technical expertise for the technician. Possible values: Electrical, General, Inverter, Mechanical, Panel.'
+    sql: '"SPECIALTY"'
+  termination_date:
+    description: 'DATE. The date the technician''s employment was terminated. NULL if active. Possible values: 2021-12-01, 2022-02-28, 2022-05-20, 2023-01-31, 2023-10-15.'
+    sql: '"TERMINATION_DATE"'
+  tech_num:
+    description: 'TEXT. Unique identifier for a technician or employee. Example: T-101.'
+    sql: '"TechNum"'
+  contact_phone:
+    description: 'TEXT. The technician''s contact phone number. Example: (555) 111-2222.'
+    sql: contact_phone
+  created_ts:
+    description: 'TIMESTAMP. Timestamp when the technician record was created. Example: 2019-01-15 09:00:00.'
+    sql: created_ts
+  emergency_contact_info:
+    description: JSONB column. Contains the name and phone number of a technician's emergency contact.
+    sql: emergency_contact_info
+  employee_number:
+    description: 'TEXT. The official, unique employee number. Example: E10234.'
+    sql: employee_number
+  employment_status:
+    description: 'TEXT. The current employment status of the technician. Possible values: Active, On Leave, Terminated.'
+    sql: '"employmentStatus"'
+  hire_date:
+    description: 'DATE. The date the technician was hired. Example: 2019-03-15.'
+    sql: hire_date
+  last_modified_ts:
+    description: 'TIMESTAMP. Timestamp of the last modification to the technician record. Example: 2023-10-10 10:00:00.'
+    sql: last_modified_ts
+  team:
+    description: 'TEXT. The operational team the technician belongs to. Possible values: Alpha, Bravo, Charlie.'
+    sql: team
+  emergency_contact_info_emergency_phone:
+    description: 'TEXT. The phone number for the technician''s emergency contact. Example: (555) 111-3333.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emergency_contact_info, 'EMERGENCY_PHONE')
+  emergency_contact_info_emergency_contact:
+    description: 'TEXT. The name of the technician''s emergency contact. Example: John Williams.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emergency_contact_info, 'emergencyContact')

@@ -1,0 +1,13 @@
+base_view: robot_fault_prediction_large_public__grid_load_optimization
+label: grid_load_optimization
+description: All columns of the public table grid_load_optimization.
+fields:
+- robot_fault_prediction_large_public__grid_load_optimization.*
+- robot_fault_prediction_large_public__power_consumption_log.*
+- robot_fault_prediction_large_public__robot_details.*
+- robot_fault_prediction_large_public__robot_record.*
+joins:
+  robot_fault_prediction_large_public__power_consumption_log:
+    robot_fault_prediction_large_public__robot_details:
+      robot_fault_prediction_large_public__robot_record: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

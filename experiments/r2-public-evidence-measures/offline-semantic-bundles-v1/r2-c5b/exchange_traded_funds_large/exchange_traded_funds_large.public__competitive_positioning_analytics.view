@@ -1,0 +1,168 @@
+label: competitive_positioning_analytics
+description: All columns of the public table competitive_positioning_analytics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: competitive_positioning_analytics
+dimensions:
+  analysisdate:
+    description: 'DATE. Date of competitive positioning analysis. Possible values: 2024-02-15.'
+    sql: analysisdate
+  brandperception:
+    description: 'TEXT. Brand perception assessment. Possible values: Clean Energy Leader, Green Specialist, Income Specialist, Industry Standard, Innovation Leader.'
+    sql: brandperception
+  brandrecognitionscore:
+    description: 'REAL. Brand recognition assessment score. Possible values: 7.6, 8.4, 8.6, 9.1, 9.6.'
+    sql: brandrecognitionscore
+  competitiveid:
+    description: 'BIGSERIAL. Primary key identifier for competitive positioning analytics record. PK. Possible values: 1, 2, 3, 4, 5.'
+    sql: competitiveid
+  competitiveposition:
+    description: 'TEXT. Overall competitive position assessment. Possible values: ESG Specialist, MARKET LEADER, Specialty Player, Strong Challenger, Thematic Leader.'
+    sql: competitiveposition
+  competitivestrengths:
+    description: 'TEXT. Competitive strengths assessment. Possible values: Green investment expertise; Environmental screening; Climate positioning, Income generation; Volatility control; Dividend optimization, Low cost structure; Massive scale; Brand dominance, Strong performance track record; Tech brand recognition; Innovation positioning, Thematic leadership; Clean energy expertise; Innovation positioning.'
+    sql: competitivestrengths
+  competitivethreatlevel:
+    description: 'TEXT. Competitive threat level assessment. Possible values: High, Low, MODERATE, Moderate.'
+    sql: competitivethreatlevel
+  competitiveweaknesses:
+    description: 'TEXT. Competitive weaknesses assessment. Possible values: Complex strategy; Higher fees; Limited track record, ESG premium; Limited diversification; Methodology complexity, High concentration risk; Volatility; Limited diversification, Limited differentiation; Pricing pressure, Sector concentration; Volatility; Policy dependency.'
+    sql: competitiveweaknesses
+  competitorlaunches:
+    description: 'BIGINT. Number of competitor product launches during period. Possible values: 12, 15, 18, 8.'
+    sql: competitorlaunches
+  costadvantag_usd_adv:
+    description: 'TEXT. Cost advantage assessment with unit notation. Possible values: 0.62, 0.71, 0.72, 0.75, 0.85.'
+    sql: costadvantag_usd_adv
+  datasource:
+    description: 'TEXT. Source of the competitive analytics data. Possible values: ALERIAN RESEARCH, ALPS RESEARCH, INVESCO ANALYTICS, STATE STREET RESEARCH, iSHARES GREEN.'
+    sql: datasource
+  defensivestrategies:
+    description: 'TEXT. Defensive strategies description. Possible values: Defend income niche; Enhance volatility management; Distribution expansion, Defend tech leadership; Monitor concentration risk; Enhance analytics, Maintain green edge; Enhance climate focus; Environmental innovation, Maintain thematic edge; Monitor policy changes; Technology evolution, Protect market share; Strengthen advisor relationships; Innovation pipeline.'
+    sql: defensivestrategies
+  distributionchannels:
+    description: 'TEXT. Distribution channels description. Possible values: All major platforms; Direct institutional; Advisor networks, ESG platforms; Green-focused advisors; Climate channels, ESG platforms; Thematic advisors; Clean energy channels, Income platforms; Dividend-focused advisors; Conservative channels, Major platforms; Tech-focused advisors; Growth-oriented channels.'
+    sql: distributionchannels
+  distributioneffectiveness_eff_score:
+    description: 'TEXT. Distribution effectiveness assessment with unit notation. Possible values: 7.2, 8.1, 8.4, 8.6, 9.1.'
+    sql: distributioneffectiveness_eff_score
+  expansionopportunities:
+    description: 'TEXT. Expansion opportunities description. Possible values: Climate solutions; Nature-based investing; Green infrastructure, Global clean energy; Energy storage; Smart grid, Global tech expansion; Thematic variants; AI/ML integration, International dividend; Sector income; ESG dividend, International expansion; ESG variants; Direct indexing.'
+    sql: expansionopportunities
+  expensepercentile:
+    description: 'BIGINT. Expense ratio percentile ranking. Possible values: 62, 71, 72, 75, 85.'
+    sql: expensepercentile
+  fundticker:
+    description: 'TEXT. Fund ticker symbol identifier. Possible values: ACES, DIVA, GRN, QQQ, SPY.'
+    sql: fundticker
+  growthinitiatives:
+    description: 'TEXT. Growth initiatives description. Possible values: Climate strategy development; Nature investing; Green infrastructure, Diversify product suite; Digital marketing; Institutional outreach, Energy storage themes; Hydrogen development; Grid modernization, Launch AI/robotics themes; International tech exposure; Digital assets, Outcome-based development; Multi-asset income; Dividend innovation.'
+    sql: growthinitiatives
+  innovationopportunities:
+    description: 'TEXT. Innovation opportunities description. Possible values: Active ETF conversion; Factor integration; Crypto exposure, Carbon credit strategies; Biodiversity investing; Circular economy, Multi-asset income; Outcome strategies; Defined outcome ETFs, Next-gen energy; Battery technology; Hydrogen economy, Next-gen tech themes; Blockchain integration; Metaverse exposure.'
+    sql: innovationopportunities
+  innovationscore:
+    description: 'REAL. Innovation assessment score. Possible values: 6.8, 7.8, 8.2, 8.7, 8.9.'
+    sql: innovationscore
+  keydifferentiators:
+    description: 'TEXT. Key differentiating factors description. Possible values: Clean energy focus; Thematic purity; Innovation exposure, Dividend optimization; Income focus; Volatility management, Green investing; Environmental focus; Climate solutions, Tech concentration; Innovation exposure; Growth focus, Ultra-low fees; First-mover advantage; Brand recognition.'
+    sql: keydifferentiators
+  lastupdated:
+    description: 'TEXT. Timestamp of last data update. Possible values: 2024-02-15 10:30:00 AKST-9.'
+    sql: lastupdated
+  marketgrowthopportunity_grow_opp:
+    description: 'TEXT. Market growth opportunity assessment with unit notation. Possible values: 4.2%, 4.5%, 6.2%, 6.8%, 7.8%.'
+    sql: marketgrowthopportunity_grow_opp
+  marketshareaum:
+    description: 'TEXT. Market share based on assets under management with unit notation. Possible values: 1.2, 18.5, 2.9, 3.4, 8.7.'
+    sql: marketshareaum
+  marketsharechanges:
+    description: 'TEXT. Market share changes with unit notation. Possible values: 0.18%, 0.19%, 0.24%, 0.28%, 0.35%.'
+    sql: marketsharechanges
+  marketshareflows:
+    description: 'REAL. Market share based on fund flows. Possible values: 15.6, 2.8, 22.3, 5.1, 6.7.'
+    sql: marketshareflows
+  mediamentions:
+    description: 'BIGINT. Number of media mentions during analysis period. Possible values: 12345, 19876, 22134, 32156, 45678.'
+    sql: mediamentions
+  methodologyinnovation:
+    description: 'TEXT. Methodology innovation description. Possible values: Clean energy methodology with innovation bias, Enhanced dividend methodology with protective overlay, Green methodology with climate integration, Modified market cap with innovation weighting, Traditional market cap weighting.'
+    sql: methodologyinnovation
+  newentrantrisk:
+    description: 'TEXT. New entrant risk assessment. Possible values: High, Low, Moderate.'
+    sql: newentrantrisk
+  partnerrelationships:
+    description: 'TEXT. Partner relationships description. Possible values: Income advisor relationships; Conservative institutional access, Strong broker relationships; Institutional partnerships, Strong clean energy relationships; ESG institutional network, Strong green relationships; Environmental institutional network, Strong tech sector relationships; Growth advisor network.'
+    sql: partnerrelationships
+  peergroupmedianaum:
+    description: 'TEXT. Peer group median AUM with unit notation. Possible values: 1.1B USD/median, 1.2B USD/median, 2.8B USD/median, 450M USD/median, 680M USD/median.'
+    sql: peergroupmedianaum
+  peergroupmedianexpense:
+    description: 'TEXT. Peer group median expense ratio with unit notation. Possible values: 0.12% expense/median, 0.18% expense/median, 0.22% expense/median, 0.28% expense/median, 0.35% expense/median.'
+    sql: peergroupmedianexpense
+  peergroupmedianreturn:
+    description: 'TEXT. Peer group median return with unit notation. Possible values: 11.8% return/median, 12.4% return/median, 15.6% return/median, 8.9% return/median, 9.8% return/median.'
+    sql: peergroupmedianreturn
+  peergroupsize:
+    description: 'BIGINT. Number of funds in peer group. Possible values: 1247, 125, 342, 45, 89.'
+    sql: peergroupsize
+  peerranking:
+    description: JSONB column. Consolidates various performance and metric rankings relative to peer groups
+    sql: peerranking
+  pricingchanges:
+    description: 'BIGINT. Number of pricing changes during period. Possible values: 3, 4, 5, 8, 9.'
+    sql: pricingchanges
+  pricingpressure:
+    description: 'TEXT. Pricing pressure assessment. Possible values: High, Low, Moderate.'
+    sql: pricingpressure
+  productfeatures:
+    description: 'TEXT. Product features description. Possible values: Active portfolio monitoring; Quarterly rebalancing; Sector focus, Clean energy screening; Innovation focus; Technology weighting, Dividend capture; Options overlay; Volatility management, Green screening; Climate analysis; Environmental impact, Standard indexing; Tax efficiency; Options availability.'
+    sql: productfeatures
+  recommendedactions:
+    description: 'TEXT. Recommended strategic actions. Possible values: Maintain cost leadership; Enhance distribution; Launch ESG variants, Strengthen clean energy leadership; Expand energy themes; Innovation focus, Strengthen green positioning; Expand climate offerings; Nature solutions, Strengthen income positioning; Expand dividend offerings; Outcome strategies, Strengthen tech positioning; Expand thematic offerings; Innovation marketing.'
+    sql: recommendedactions
+  retailpenetration:
+    description: 'TEXT. Retail market penetration with unit notation. **NULL means retail penetration data is not available or not applicable.**. Possible values: 42.7%, 58.9%, 67.3%, 85.2%.'
+    sql: retailpenetration
+  riskmitigation:
+    description: 'TEXT. Risk mitigation strategies description. Possible values: Diversification monitoring; Concentration limits; Performance tracking, Green methodology monitoring; Climate tracking; Environmental competition, Monitor low-cost competitors; Track flow patterns; Regulatory compliance, Policy monitoring; Technology tracking; Thematic competition, Strategy complexity monitoring; Fee pressure tracking; Income competition.'
+    sql: riskmitigation
+  sharegainpotential_gain_pot:
+    description: 'TEXT. Market share gain potential with unit notation. Possible values: 2.8%, 3.2%, 4.1%, 5.2%.'
+    sql: sharegainpotential_gain_pot
+  socialmediasentiment:
+    description: 'REAL. Social media sentiment score. Possible values: 0.68, 0.76, 0.78, 0.79, 0.82.'
+    sql: socialmediasentiment
+  substitutionrisk:
+    description: 'TEXT. Product substitution risk assessment. Possible values: High, Moderate.'
+    sql: substitutionrisk
+  technologyadvantages:
+    description: 'TEXT. Technology advantages description. Possible values: Advanced analytics platform; Tech sector expertise, Clean energy analytics; Technology platform; Innovation tracking, ESG analytics; Climate modeling; Environmental tracking, Options technology; Risk management platform; Income optimization, Robust trading infrastructure; Real-time tracking.'
+    sql: technologyadvantages
+  uniquesellingproposition:
+    description: 'TEXT. Unique selling proposition description. Possible values: Comprehensive green investing with climate focus, Enhanced dividend strategy with downside protection, Largest S&P 500 ETF with unmatched liquidity, Premier tech ETF with concentrated exposure, Pure-play clean energy ETF with comprehensive coverage.'
+    sql: uniquesellingproposition
+  valueformoney:
+    description: 'REAL. Value for money assessment score. Possible values: 7.4, 8.0, 8.1, 8.8, 9.2.'
+    sql: valueformoney
+  peerranking_category_ranking:
+    description: 'BIGINT. Ranking position within fund category. Possible values: 1, 12, 2, 22, 8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(peerranking, 'category_ranking')
+  peerranking_expense_ratio_rank:
+    description: 'BIGINT. Expense ratio ranking among peers. Possible values: 12, 15, 18, 2, 9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(peerranking, 'expense_ratio_rank')
+  peerranking_return_1y_rank:
+    description: 'BIGINT. One-year return ranking. Possible values: 12, 18, 25, 35, 5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(peerranking, 'return_1y_rank')
+  peerranking_return_3y_rank:
+    description: 'BIGINT. Three-year return ranking. Possible values: 15, 18, 22, 28, 8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(peerranking, 'return_3y_rank')
+  peerranking_return_5y_rank:
+    description: 'BIGINT. Five-year return ranking. Possible values: 12, 15, 18, 22, 25.'
+    sql: JSONB_EXTRACT_PATH_TEXT(peerranking, 'return_5y_rank')
+  peerranking_sharpe_ratio_rank:
+    description: 'BIGINT. Sharpe ratio ranking among peers. Possible values: 12, 15, 28, 42, 8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(peerranking, 'sharpe_ratio_rank')
+  peerranking_volatility_rank:
+    description: 'BIGINT. Volatility ranking among peers. Possible values: 18, 25, 32, 35, 38.'
+    sql: JSONB_EXTRACT_PATH_TEXT(peerranking, 'volatility_rank')

@@ -1,0 +1,66 @@
+label: LabSampleProcessing
+description: All columns of the public table LabSampleProcessing.
+catalog: archeology_scan_large
+schema: public
+table_name: LabSampleProcessing
+dimensions:
+  lab_sample_processing_id:
+    description: TEXT. Unique identifier for lab sample processing record.
+    sql: '"LabSampleProcessing_id"'
+  analysis_ref:
+    description: TEXT. Reference to the parent sample analysis record.
+    sql: analysis_ref
+  batch_size:
+    description: 'INTEGER. Number of samples processed in same batch. Example: 50.'
+    sql: batch_size
+  centrifuge_rpm:
+    description: 'INTEGER. Centrifuge speed in revolutions per minute. **NULL means Centrifugation not performed.** Unique values: 3000, 5000, 8000, 12000, 15000.'
+    sql: centrifuge_rpm
+  contamination_detected:
+    description: 'BOOLEAN. Indicates if contamination was detected in sample. Possible values: True, False.'
+    sql: contamination_detected
+  ph_level:
+    description: 'REAL. pH level of sample or solution during processing. **NULL means pH measurement not applicable.** Example: 7.'
+    sql: ph_level
+  processed_weight_grams:
+    description: 'REAL. Weight of sample after processing in grams. **NULL means Processing incomplete.** Example: 45.'
+    sql: processed_weight_grams
+  processing_cost_usd:
+    description: 'REAL. Cost of processing this sample in US dollars. Example: 75.'
+    sql: processing_cost_usd
+  processing_end_time:
+    description: 'TIMESTAMP. Date and time when sample processing completed. **NULL means Processing still in progress.** Example: 2024-01-01 12:00:00.'
+    sql: processing_end_time
+  processing_method:
+    description: 'TEXT. Primary processing method applied to sample. Unique values: Acid Digestion, Flotation, Sieving, Centrifugation, Drying, Grinding.'
+    sql: processing_method
+  processing_notes_length:
+    description: 'INTEGER. Character count of processing notes entered. Example: 50.'
+    sql: processing_notes_length
+  processing_start_time:
+    description: 'TIMESTAMP. Date and time when sample processing began. Example: 2024-01-01 12:00:00.'
+    sql: processing_start_time
+  processing_temperature_celsius:
+    description: 'REAL. Temperature maintained during processing in Celsius. **NULL means Ambient temperature used.** Example: 25.'
+    sql: processing_temperature_celsius
+  quality_control_passed:
+    description: 'BOOLEAN. Indicates if sample passed quality control checks. Possible values: True, False.'
+    sql: quality_control_passed
+  reagent_volume_ml:
+    description: 'REAL. Volume of reagent used in milliliters. **NULL means No reagent used in this process.** Example: 100.'
+    sql: reagent_volume_ml
+  reprocessing_required:
+    description: 'BOOLEAN. Indicates if sample requires reprocessing. Possible values: True, False.'
+    sql: reprocessing_required
+  sample_integrity_score:
+    description: 'REAL. Integrity assessment score from 0 to 100. Example: 88.'
+    sql: sample_integrity_score
+  sample_weight_grams:
+    description: 'REAL. Initial sample weight in grams. Example: 50.'
+    sql: sample_weight_grams
+  storage_temperature_celsius:
+    description: 'REAL. Storage temperature for processed sample in Celsius. Unique values: -80.0, -20.0, 4.0, 22.0.'
+    sql: storage_temperature_celsius
+  technician_experience_years:
+    description: 'REAL. Years of experience of processing technician. Example: 50.0.'
+    sql: technician_experience_years

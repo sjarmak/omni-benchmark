@@ -1,0 +1,111 @@
+label: account_tags
+description: All columns of the public table account_tags.
+catalog: fake_account_large
+schema: public
+table_name: account_tags
+dimensions:
+  decay_rate:
+    description: 'REAL. Decay factor (0–1). Example: 0.41.'
+    sql: '"DECAY_RATE"'
+  eng_rate:
+    description: 'REAL. Engagement rate on tagged posts (0–1). Example: 0.18.'
+    sql: '"ENG_RATE"'
+  last_tag_ts:
+    description: 'TIMESTAMPTZ. Most recent use. Example: 2025/02/04 11:48:09.'
+    sql: '"LAST_TAG_TS"'
+  neg_sent_pct:
+    description: 'REAL. % negative-sentiment posts using tag. Example: 0.22.'
+    sql: '"NEG_SENT_PCT"'
+  notes:
+    description: TEXT. Analyst comments.
+    sql: '"NOTES"'
+  peak_ts:
+    description: 'TIMESTAMPTZ. Peak usage timestamp. Example: 2025/01/05 22:10:11.'
+    sql: '"PEAK_TS"'
+  risk_flag:
+    description: 'TEXT. Risk bucket. Values: Low, Medium, High.'
+    sql: '"RISK_FLAG"'
+  tagged_by_cnt:
+    description: 'BIGINT. Mentions by others. Example: 26.'
+    sql: '"TAGGED_BY_CNT"'
+  trend_slope:
+    description: 'REAL. Tag trend slope. Example: 1.24.'
+    sql: '"TREND_SLOPE"'
+  viability_score:
+    description: REAL. Score used in campaign planning (0–1). **NULL for purely organic tags.**
+    sql: '"ViabilityScore"'
+  acct_ref:
+    description: 'TEXT. FK → accounts.acct_ref. Part of PK. Example: ACC7210284.'
+    sql: acct_ref
+  attrib_score:
+    description: 'REAL. Attribution score (0–1). Example: 0.11.'
+    sql: '"attribScore"'
+  cross_border_tag_cnt:
+    description: 'BIGINT. Count of tags applied to the account that are identified as cross-border or international in nature. Example: 71.'
+    sql: '"cross_borderTagCnt"'
+  engagement_grade:
+    description: 'TEXT. Letter-grade engagement classification. Example: B-plus.'
+    sql: engagement_grade
+  first_tag_ts:
+    description: 'TIMESTAMPTZ. First observed use. Example: 2024/03/22 18:55:14.'
+    sql: '"firstTagTs"'
+  geo_diff:
+    description: 'REAL. Geographic divergence metric (0–1). Example: 0.28.'
+    sql: '"geoDiff"'
+  hist_var:
+    description: 'REAL. Historical variance (0–1). Example: 0.07.'
+    sql: '"histVar"'
+  impact_score:
+    description: 'REAL. Influence metric (0–100). Example: 74.6.'
+    sql: '"impactScore"'
+  lang_diff:
+    description: 'REAL. Language divergence metric (0–1). Example: 0.33.'
+    sql: '"langDiff"'
+  last_eng_ts:
+    description: 'TIMESTAMPTZ. Timestamp of last engagement. Example: 2025/01/30 09:05:53.'
+    sql: '"lastEngTs"'
+  nsfw_flag:
+    description: 'TEXT. Yes/No NSFW content flag. Example: No.'
+    sql: '"nsfwFlag"'
+  peak_score:
+    description: 'REAL. Usage at peak (0–100). Example: 84.5.'
+    sql: '"peakScore"'
+  pos_sent_pct:
+    description: 'REAL. % positive-sentiment posts using tag. Example: 0.48.'
+    sql: '"posSentPct"'
+  promoted_flag:
+    description: TEXT. Yes/No — this tag was used in paid promotion. **NULL when only organic usage.**
+    sql: '"promotedFlag"'
+  retention_days:
+    description: BIGINT. Days tag remained active. **NULL for new/low-volume tags.**
+    sql: '"retentionDays"'
+  seg_bucket:
+    description: 'TEXT. Experimental segmentation bucket. **NULL when account not in experiment.** Values (when present): A, B, C, D.'
+    sql: '"segBucket"'
+  self_used_cnt:
+    description: 'BIGINT. Times account itself used tag. Example: 101.'
+    sql: '"selfUsedCnt"'
+  spam_flag:
+    description: 'TEXT. Yes/No spam flag. Example: No.'
+    sql: '"spamFlag"'
+  tag_role:
+    description: 'TEXT. Role label. Possible values: Primary, Secondary, Tertiary.'
+    sql: '"tagRole"'
+  tag_weight:
+    description: 'REAL. Weight in account’s tag vector (0–1). Example: 0.27.'
+    sql: '"tagWeight"'
+  tag_code_ref:
+    description: 'TEXT. FK → tags.Tag_CODE. Part of PK. Example: TAG6421758.'
+    sql: tag_code_ref
+  topic_align:
+    description: 'REAL. Cosine similarity between tag and account topic vectors (0–1). Example: 0.63.'
+    sql: '"topicAlign"'
+  trend_dir:
+    description: 'TEXT. Direction of tag usage trend. **NULL when trend analysis not run (low volume).** Values: Up, Down, Flat.'
+    sql: '"trendDir"'
+  updated_ts:
+    description: 'TIMESTAMPTZ. Row last updated. Example: 2025/02/07 05:33:17.'
+    sql: '"updatedTs"'
+  usage_cnt:
+    description: 'BIGINT. Total times this account used/tagged with the tag. Example: 143.'
+    sql: '"usageCnt"'

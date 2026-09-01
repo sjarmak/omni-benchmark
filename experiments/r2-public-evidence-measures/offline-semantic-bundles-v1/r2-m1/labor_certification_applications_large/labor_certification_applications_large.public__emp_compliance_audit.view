@@ -1,0 +1,105 @@
+label: emp_compliance_audit
+description: All columns of the public table emp_compliance_audit.
+catalog: labor_certification_applications_large
+schema: public
+table_name: emp_compliance_audit
+dimensions:
+  auditorfirm:
+    description: 'TEXT. Auditing firm engaged. Possible values: PwC, EY, KPMG, Deloitte, BDO. Example: KPMG.'
+    sql: '"AUDITORfirm"'
+  audit_code:
+    description: 'TEXT. Unique identifier for an audit record. PK. Example: AUD00001.'
+    sql: '"AUDIT_code"'
+  interview_ct:
+    description: 'BIGINT. Number of employee interviews conducted. Example: 37.'
+    sql: '"Interview_CT"'
+  remotehours:
+    description: 'REAL. Auditor hours worked remotely. Example: 23.5.'
+    sql: '"REMOTEhours"'
+  audit_scope:
+    description: 'TEXT. Depth / scope of audit. Possible values: Full-scope, Limited, Follow-up. Example: Follow-up.'
+    sql: '"auditScope"'
+  audit_type:
+    description: 'TEXT. Category of audit performed. Possible values: Financial, Safety, Labor, Environmental. Example: Labor.'
+    sql: '"auditTYPE"'
+  audit_timeline:
+    description: JSONB column. Groups the principal schedule-related dates and windows of a compliance audit for quicker SLA tracking.
+    sql: audit_timeline
+  compliance_score:
+    description: 'REAL. Composite compliance score (0–100). Example: 87.2.'
+    sql: '"complianceScore"'
+  corp_ref:
+    description: 'TEXT. Employer handle (FK). Example: Avant Healthcare Professionals, LLC.'
+    sql: corp_ref
+  corrective_action_ct:
+    description: 'BIGINT. Number of corrective actions mandated. Example: 11.'
+    sql: '"correctiveAction_ct"'
+  data_sample_pct:
+    description: 'REAL. % of documents sampled during review. Example: 12.0.'
+    sql: '"dataSample_pct"'
+  doc_pages_scanned:
+    description: 'BIGINT. Total pages reviewed. **NULL means page count not captured.** Example: 856.'
+    sql: '"docPages_scanned"'
+  fine_range_usd:
+    description: 'REAL. Range of potential fines, USD. Example: 0–250000.'
+    sql: '"fineRange_USD"'
+  follow_up_needed:
+    description: 'TEXT. Indicates if follow-up audit is required. Possible values: Yes, No. **NULL means determination not recorded.** Example: Yes.'
+    sql: '"followUpNeeded"'
+  lead_auditor:
+    description: 'TEXT. Name of lead auditor. Example: Alice Smith.'
+    sql: '"leadAuditor"'
+  major_findings_ct:
+    description: 'BIGINT. Count of major non-conformities found. Example: 2.'
+    sql: '"majorFindings_ct"'
+  minor_findings_ct:
+    description: 'BIGINT. Count of minor non-conformities found. Example: 18.'
+    sql: '"minorFindings_ct"'
+  onsite_hours:
+    description: 'REAL. Auditor hours spent onsite. Example: 72.6.'
+    sql: '"onsiteHours"'
+  penalty_usd:
+    description: 'REAL. Monetary penalties assessed, USD. **NULL means no penalty levied or data unavailable.** Example: 1,187,000.'
+    sql: '"penalty_USD"'
+  public_report_link:
+    description: 'TEXT. URL to public audit report. Example: https://example.com/report/1.'
+    sql: '"publicReport_link"'
+  reasoning_summary:
+    description: 'TEXT. Audit-team narrative of key findings. Example: Synthetic demo data.'
+    sql: '"reasoningSummary"'
+  repeat_offender_ct:
+    description: 'BIGINT. Past audits with repeated major findings. Example: 1.'
+    sql: '"repeatOffender_ct"'
+  settlement_usd:
+    description: 'REAL. Settlement payments related to findings, USD. **NULL means no settlement or undisclosed.** Example: 2,450,000.'
+    sql: settlement_usd
+  status_flag:
+    description: 'TEXT. Current status of audit. Possible values: Open, Closed, In Progress, Filed, Pending, Completed. Example: Closed.'
+    sql: '"statusFLAG"'
+  whistleblower_flag:
+    description: 'TEXT. Indicates whether audit was triggered by whistleblower complaint. Possible values: Yes, No. **NULL means trigger source not disclosed.** Example: No.'
+    sql: whistleblower_flag
+  zip_ref:
+    description: 'TEXT. Employer ZIP (FK). Example: 32751.'
+    sql: '"zip_REF"'
+  audit_timeline_action_deadline:
+    description: 'DATE. Deadline by which all actions must be closed. Example: 2023-11-01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(audit_timeline, 'action_deadline')
+  audit_timeline_audit_window:
+    description: 'TEXT. Duration descriptor of onsite work. Example: 5 days onsite.'
+    sql: JSONB_EXTRACT_PATH_TEXT(audit_timeline, 'audit_window')
+  audit_timeline_close_day:
+    description: 'DATE. Audit completion date. Example: 2023-10-02.'
+    sql: JSONB_EXTRACT_PATH_TEXT(audit_timeline, 'close_day')
+  audit_timeline_follow_up_window:
+    description: 'TEXT. Timeframe within which follow-up must occur. Example: 60 d.'
+    sql: JSONB_EXTRACT_PATH_TEXT(audit_timeline, 'follow_up_window')
+  audit_timeline_open_day:
+    description: 'DATE. Audit start date. Example: 2023-09-06.'
+    sql: JSONB_EXTRACT_PATH_TEXT(audit_timeline, 'open_day')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct emp_compliance_audit public identity values.
+    label: emp_compliance_audit Count
+    sql: ${labor_certification_applications_large_public__emp_compliance_audit.audit_code}

@@ -1,0 +1,66 @@
+label: ArtifactConditionAssessments
+description: All columns of the public table ArtifactConditionAssessments.
+catalog: archeology_scan_large
+schema: public
+table_name: ArtifactConditionAssessments
+dimensions:
+  artifact_condition_assessments_id:
+    description: TEXT. Unique identifier for each artifact condition assessment.
+    sql: '"ArtifactConditionAssessments_id"'
+  artifact_ref:
+    description: 'INTEGER. Reference to the assessed artifact record. Example: 50.'
+    sql: artifact_ref
+  assessment_duration_minutes:
+    description: 'INTEGER. Time spent on assessment in minutes. Example: 50.'
+    sql: assessment_duration_minutes
+  assessment_timestamp:
+    description: 'TIMESTAMP. Date and time when condition assessment was performed. Example: 2024-01-01 12:00:00.'
+    sql: assessment_timestamp
+  biological_growth_present:
+    description: 'BOOLEAN. Whether biological growth is present. Possible values: True, False.'
+    sql: biological_growth_present
+  corrosion_coverage_percent:
+    description: 'REAL. Percentage of surface affected by corrosion. **NULL means No corrosion detected.** Example: 15.0.'
+    sql: corrosion_coverage_percent
+  corrosion_present:
+    description: 'BOOLEAN. Whether corrosion is present on artifact. Possible values: True, False.'
+    sql: corrosion_present
+  crack_count:
+    description: 'INTEGER. Number of visible cracks identified. Example: 50.'
+    sql: crack_count
+  deterioration_rate:
+    description: 'TEXT. Assessed rate of ongoing deterioration. Unique values: None, Slow, Moderate, Rapid, Critical.'
+    sql: deterioration_rate
+  display_suitability:
+    description: 'TEXT. Suitability for public display. Unique values: Suitable, Limited Duration, Not Suitable, Replica Recommended.'
+    sql: display_suitability
+  fragility_level:
+    description: 'TEXT. Handling fragility classification. Unique values: Robust, Moderate, Fragile, Extremely Fragile.'
+    sql: fragility_level
+  immediate_intervention_required:
+    description: 'BOOLEAN. Whether immediate conservation action is needed. Possible values: True, False.'
+    sql: immediate_intervention_required
+  largest_crack_length_mm:
+    description: 'REAL. Length of largest crack in millimeters. **NULL means No cracks present.** Example: 15.0.'
+    sql: largest_crack_length_mm
+  next_assessment_recommended_days:
+    description: 'INTEGER. Recommended days until next assessment. Example: 50.'
+    sql: next_assessment_recommended_days
+  overall_condition_score:
+    description: 'REAL. Overall condition rating from 1 poor to 10 excellent. Example: 6.5.'
+    sql: overall_condition_score
+  photo_documentation_count:
+    description: 'INTEGER. Number of photos taken during assessment. Example: 50.'
+    sql: photo_documentation_count
+  storage_recommendation:
+    description: 'TEXT. Recommended storage environment. Unique values: Standard, Climate Controlled, Inert Atmosphere, Submerged, Frozen.'
+    sql: storage_recommendation
+  structural_integrity_score:
+    description: 'REAL. Structural integrity rating from 1 to 10. Example: 7.0.'
+    sql: structural_integrity_score
+  surface_condition_score:
+    description: 'REAL. Surface preservation rating from 1 to 10. Example: 6.0.'
+    sql: surface_condition_score
+  weight_change_grams:
+    description: 'REAL. Weight change since last assessment in grams. **NULL means First assessment or previous weight unavailable.** Example: 0.0.'
+    sql: weight_change_grams

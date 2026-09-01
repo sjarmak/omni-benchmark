@@ -1,0 +1,99 @@
+label: workcells
+description: All columns of the public table workcells.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: workcells
+dimensions:
+  ambient_light_lux_avg:
+    description: 'TEXT. The average ambient light level in the workcell, in lux. Example: 550.0 lux.'
+    sql: '"AmbientLight_lux_avg"'
+  cad_drawing_url:
+    description: 'TEXT. A URL to the CAD drawing of the workcell. Example: http://cad.robotcorp.com/WC-101.dwg.'
+    sql: '"CAD_DRAWING_URL"'
+  current_personnel_count:
+    description: 'BIGINT. The current number of personnel inside the workcell. Possible values: 0, 1, 2, 3.'
+    sql: '"CURRENT_PERSONNEL_COUNT"'
+  cell_primary_robot_code:
+    description: 'TEXT. The registration code of the primary robot operating in this cell. FK. Example: RB8530.'
+    sql: '"Cell_Primary_Robot_Code"'
+  date_commissioned:
+    description: 'TEXT. The date the workcell was commissioned, formatted as YYYY-MM-DD. Example: 2022-03-15.'
+    sql: '"DATE_COMMISSIONED"'
+  emergency_stop_count:
+    description: 'BIGINT. The number of emergency stop buttons in the workcell. Possible values: 2, 3, 4, 5, 6, 7, 8.'
+    sql: '"EmergencyStopCount"'
+  fencing_type:
+    description: 'TEXT. The type of safety fencing used. Possible values: 10ft Steel Mesh, 4ft Steel Mesh, 6ft Steel Mesh, 8ft Steel Mesh, Laser-Safe Enclosure, No Fencing (Cobot), Plexiglass Walls, Plexiglass Walls with roof, Sealed Steel Walls, Solid Steel Walls.'
+    sql: '"FencingType"'
+  hvac_zone:
+    description: 'TEXT. The HVAC zone the workcell is located in. Example: Zone-A1.'
+    sql: '"HVAC_ZONE"'
+  height_m:
+    description: 'REAL. The height of the workcell in meters. Possible values: 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0.'
+    sql: '"Height_M"'
+  inspection_due_date:
+    description: 'TEXT. The date the next safety inspection is due, formatted as YYYY-MM-DD. Example: 2026-07-01.'
+    sql: '"INSPECTION_DUE_DATE"'
+  ip_camera_url:
+    description: 'TEXT. The URL for the IP camera monitoring the workcell. **NULL indicates no IP camera is installed.**. Example: rtsp://192.168.10.10/stream1.'
+    sql: '"IP_CAMERA_URL"'
+  inspector_name:
+    description: 'TEXT. The name of the person who performed the last inspection. **NULL indicates a new cell that has not been inspected yet.**. Possible values: James Smith.'
+    sql: '"InspectorName"'
+  network_subnet:
+    description: 'TEXT. The network subnet for the workcell. Example: 192.168.10.0/24.'
+    sql: '"NetworkSubnet"'
+  safety_scanner_model:
+    description: 'TEXT. The model of the safety scanner used. **NULL indicates no safety scanner is installed.**. Possible values: Integrated Robot Safety, Keyence SZ-V, Pilz PSENscan, SICK microScan3.'
+    sql: '"SAFETY_SCANNER_MODEL"'
+  utilization_percentage:
+    description: 'TEXT. The percentage of time the workcell is actively running production. Example: 85.2%.'
+    sql: '"UtilizationPercentage"'
+  width_m:
+    description: 'REAL. The width of the workcell in meters. Possible values: 10.0, 12.0, 15.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0.'
+    sql: '"WIDTH_M"'
+  workcell_name:
+    description: 'TEXT. Human-readable name of the workcell. Example: Assembly Cell 01.'
+    sql: '"WorkcellName"'
+  ambient_noise_db_avg:
+    description: 'TEXT. The average ambient noise level in the workcell, in decibels. Example: 72.5 dB.'
+    sql: ambient_noise_db_avg
+  asset_tag:
+    description: 'TEXT. The asset tag for the workcell. Example: WC-A-101.'
+    sql: asset_tag
+  date_decommissioned:
+    description: 'TEXT. The date the workcell was decommissioned, formatted as YYYY-MM-DD. **NULL indicates the workcell is currently operational.**. Possible values: 2024-06-30, 2025-01-15.'
+    sql: date_decommissioned
+  factory_floor_location:
+    description: 'TEXT. The physical location of the workcell on the factory floor. Example: Bay A, Zone 1.'
+    sql: factory_floor_location
+  floor_material:
+    description: 'TEXT. The material of the workcell floor. Possible values: Anti-Static Epoxy, Chemical Resistant Epoxy, Epoxy Coated Concrete, Oil-Resistant Epoxy, Polished Concrete, Reinforced Concrete, Standard Concrete.'
+    sql: floor_material
+  last_safety_inspection_date:
+    description: 'TEXT. The date of the last safety inspection, formatted as YYYY-MM-DD. Example: 2025-07-01.'
+    sql: last_safety_inspection_date
+  length_m:
+    description: 'REAL. The length of the workcell in meters. Possible values: 10.0, 12.0, 15.0, 20.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0.'
+    sql: length_m
+  max_personnel_capacity:
+    description: 'BIGINT. The maximum number of personnel allowed in the workcell during operation. Possible values: 0, 1, 2, 3, 4, 6.'
+    sql: max_personnel_capacity
+  notes:
+    description: 'TEXT. Additional notes about the workcell. Example: High-speed assembly of small components..'
+    sql: notes
+  power_circuit_ref:
+    description: 'TEXT. The reference code for the power circuit supplying the workcell. Example: C-A1-01.'
+    sql: power_circuit_ref
+  primary_application_type:
+    description: 'TEXT. The primary application performed in the workcell. Example: Assembly.'
+    sql: primary_application_type
+  risk_assessment_score:
+    description: 'REAL. The risk assessment score for the workcell. Example: 3.5.'
+    sql: risk_assessment_score
+  safety_light_curtain_model:
+    description: 'TEXT. The model of the safety light curtain used. **NULL indicates no light curtain is installed.**. Possible values: Banner SLC-1200, Banner SLC-2000, Integrated Robot Safety, Keyence GL-R, Omron F3SJ-A.'
+    sql: safety_light_curtain_model
+  workcell_code:
+    description: 'TEXT. Unique identifier for the workcell. PK. Example: WC-101.'
+    sql: workcell_code

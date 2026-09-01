@@ -1,0 +1,11 @@
+base_view: cybermarket_pattern_large_public__product_review_tag_map
+label: product_review_tag_map
+description: All columns of the public table product_review_tag_map.
+fields:
+- cybermarket_pattern_large_public__product_review_tag_map.*
+- cybermarket_pattern_large_public__product_review_feedback.*
+- cybermarket_pattern_large_public__tag_library.*
+joins:
+  cybermarket_pattern_large_public__product_review_feedback: {}
+  cybermarket_pattern_large_public__tag_library: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

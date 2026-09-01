@@ -1,0 +1,9 @@
+base_view: cross_border_large_public__retention_schedule
+label: RetentionSchedule
+description: All columns of the public table RetentionSchedule.
+fields:
+- cross_border_large_public__retention_schedule.*
+- cross_border_large_public__geo_jurisdiction.*
+joins:
+  cross_border_large_public__geo_jurisdiction: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

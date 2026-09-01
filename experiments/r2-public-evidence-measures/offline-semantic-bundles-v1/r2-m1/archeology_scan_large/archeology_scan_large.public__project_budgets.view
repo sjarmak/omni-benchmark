@@ -1,0 +1,108 @@
+label: project_budgets
+description: All columns of the public table project_budgets.
+catalog: archeology_scan_large
+schema: public
+table_name: project_budgets
+dimensions:
+  approval_date:
+    description: 'DATE. The date the budget was approved。 Example: 15-Feb-22.'
+    sql: '"APPROVAL_DATE"'
+  approver_crew_tag:
+    description: 'TEXT. Foreign key for the personnel member who approved the budget. FK。 Example: OP4641.'
+    sql: '"Approver_Crew_Tag"'
+  budget_category:
+    description: 'TEXT. The category of the budget item。 Example: Personnel.'
+    sql: '"BUDGET_CATEGORY"'
+  budget_code:
+    description: 'BIGINT. Unique identifier for a specific budget line item. PK。 Example: 1001.'
+    sql: '"BUDGET_CODE"'
+  expense_report_link:
+    description: TEXT. A URL linking to a detailed expense report. **NULL means no report is linked.**
+    sql: '"EXPENSE_REPORT_LINK"'
+  final_approved_amount:
+    description: 'REAL. The final approved allocation, which may differ from the request。 Example: 150000.0.'
+    sql: '"FINAL_APPROVED_AMOUNT"'
+  fiscal_year:
+    description: 'BIGINT. The fiscal year to which this budget item applies。 Possible values: 2016, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.'
+    sql: '"FiscalYear"'
+  funding_source_details:
+    description: 'TEXT. Detailed information about the source of funding。 Example: Federal Heritage Grant.'
+    sql: '"FundingSourceDetails"'
+  grant_tag:
+    description: 'TEXT. An identifier for a specific grant if applicable. **NULL means this budget is not from a specific grant.**。 Possible values: ARF-SR-2023, NEH-2023-12, NGS-Maritime-2020.'
+    sql: '"GRANT_TAG"'
+  is_overspent:
+    description: 'BOOLEAN. A flag indicating if the spent amount exceeds the allocated amount。 Possible values: False.'
+    sql: '"IS_OVERSPENT"'
+  initial_request_amount:
+    description: 'REAL. The amount initially requested for this budget item。 Example: 150000.0.'
+    sql: '"InitialRequestAmount"'
+  is_capital_expenditure:
+    description: 'BOOLEAN. Flag indicating if this is a capital expenditure。 Possible values: False, True.'
+    sql: '"IsCapitalExpenditure"'
+  pending_approval_amount:
+    description: 'REAL. The amount from submitted expenses that is awaiting approval。 Possible values: 0.'
+    sql: '"PendingApprovalAmount"'
+  project_ref:
+    description: 'TEXT. Foreign key linking to the associated project. FK。 Example: PR7509.'
+    sql: '"ProjectRef"'
+  quarterly_allocation_q3:
+    description: 'REAL. The amount allocated for the third quarter。 Example: 37500.'
+    sql: '"QUARTERLY_ALLOCATION_Q3"'
+  quarterly_spent_q3:
+    description: 'REAL. The amount spent in the third quarter。 Example: 36500.0.'
+    sql: '"QUARTERLY_SPENT_Q3"'
+  quarterly_allocation_q2:
+    description: 'REAL. The amount allocated for the second quarter。 Example: 37500.'
+    sql: '"QuarterlyAllocationQ2"'
+  quarterly_spent_q2:
+    description: 'REAL. The amount spent in the second quarter。 Example: 37500.'
+    sql: '"QuarterlySpentQ2"'
+  rejection_reason:
+    description: TEXT. The reason a budget request was rejected. **NULL means the budget was approved or is still pending.**
+    sql: '"REJECTION_REASON"'
+  remaining_amount:
+    description: 'REAL. The remaining amount in the allocation。 Example: 1500.0.'
+    sql: '"REMAINING_AMOUNT"'
+  spent_amount:
+    description: 'REAL. The amount of money spent from this allocation。 Example: 148500.0.'
+    sql: '"SpentAmount"'
+  allocated_amount:
+    description: 'REAL. The total amount allocated for this budget category。 Example: 150000.0.'
+    sql: allocated_amount
+  cost_center_code:
+    description: 'TEXT. The internal accounting code for this cost center。 Example: ARCH-22-P1.'
+    sql: cost_center_code
+  currency_code:
+    description: 'TEXT. The currency code for the budget amounts。 Example: USD.'
+    sql: currency_code
+  invoice_count:
+    description: 'BIGINT. The number of invoices associated with this budget item。 Example: 25.'
+    sql: invoice_count
+  last_updated_ts:
+    description: 'TIMESTAMPTZ. Timestamp of the last update to this budget record。 Example: 12/31/2022 15:00.'
+    sql: last_updated_ts
+  notes:
+    description: TEXT. General notes about the budget item. **NULL means no notes were added.**
+    sql: notes
+  quarterly_allocation_q1:
+    description: 'REAL. The amount allocated for the first quarter。 Example: 37500.'
+    sql: quarterly_allocation_q1
+  quarterly_allocation_q4:
+    description: 'REAL. The amount allocated for the fourth quarter。 Example: 37500.0.'
+    sql: quarterly_allocation_q4
+  quarterly_spent_q1:
+    description: 'REAL. The amount spent in the first quarter。 Example: 37000.'
+    sql: quarterly_spent_q1
+  quarterly_spent_q4:
+    description: 'REAL. The amount spent in the fourth quarter。 Example: 37500.'
+    sql: quarterly_spent_q4
+  variance_percentage:
+    description: 'REAL. The percentage difference between allocated and spent amounts。 Possible values: -9.09, 0.0.'
+    sql: variance_percentage
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct project_budgets public identity values.
+    label: project_budgets Count
+    sql: ${archeology_scan_large_public__project_budgets.budget_code}

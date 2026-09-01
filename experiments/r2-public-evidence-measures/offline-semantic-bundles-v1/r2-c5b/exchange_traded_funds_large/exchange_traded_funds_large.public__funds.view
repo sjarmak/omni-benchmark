@@ -1,0 +1,261 @@
+label: Exchange-Traded Funds
+description: Fund records with row-level cost, yield, allocation, momentum, valuation, and liquidity semantics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: funds
+dimensions:
+  net_expense_ratio:
+    description: 'DECIMAL. Net expense ratio representing the annual cost to investors after fee waivers and reimbursements, expressed as a decimal (e.g., 0.0132 = 1.32%). Example: 0.0132, 0.0101, 0.0014. Contains NULL when expense ratio data is not yet reported or fund is too new to have established fees.'
+    label: Net Expense Ratio
+    sql: expensenet
+    ai_context: 'Net Expense Ratio: The annual fee charged to investors as a percentage of assets. A value of 0.005 corresponds to a 0.5% annual fee. Lower is generally better, as costs directly reduce returns.'
+  benchmark_expense_ratio:
+    description: 'DECIMAL. Benchmark expense ratio representing the cost of tracking the fund''s benchmark index, expressed as a decimal (e.g., 0.0022 = 0.22%). Example: 0.0022, 0.0028, 0.0038. Contains NULL when benchmark expense data is not available or fund does not track a benchmark index.'
+    label: Benchmark Expense Ratio
+    sql: benchmarkexp
+  yield_rate:
+    description: 'DECIMAL. Distribution yield or dividend yield of the fund, expressed as a decimal (e.g., 0.0467 = 4.67%). Example: 0.3153, 0.0061, 0.0454. Contains NULL when the fund does not distribute dividends or yield data is not yet calculated.'
+    label: Yield Rate
+    sql: yieldrate
+    ai_context: 'Yield Rate: Represents the annual dividend per share as a percentage of the share''s price. A value of 0.02 signifies a 2% yield. This is a crucial metric for income-focused investors.'
+  moving_average_50_day:
+    description: 'DECIMAL. 50-day moving average price of the fund, used for medium-term trend analysis. Example: 38.636, 147.557, 25.59. Contains NULL when insufficient trading history exists to calculate 50-day average.'
+    label: 50-Day Moving Average
+    sql: ma50
+  moving_average_200_day:
+    description: 'DECIMAL. 200-day moving average price of the fund, used for long-term trend analysis. Example: 56.79, 78.798, 39.194. Contains NULL when insufficient trading history exists to calculate 200-day average.'
+    label: 200-Day Moving Average
+    sql: ma200
+  equity_weight:
+    description: 'DECIMAL. Proportion of fund assets allocated to equity/stock holdings, expressed as a decimal between 0 and 1 (e.g., 0.9937 = 99.37%). Example: 0.9937, 0.9977, 0.1244. Contains NULL when asset allocation data is not available or fund structure does not support weight breakdown.'
+    label: Equity Weight
+    sql: equityweight
+    ai_context: 'Equity Weight: The percentage of the fund''s assets invested in equities (stocks). A value of 0.9 indicates that 90% of the fund is invested in stocks, suggesting a growth-oriented strategy.'
+  turnover_ratio:
+    description: 'DECIMAL. Annual portfolio turnover ratio indicating how frequently the fund trades its holdings, expressed as a decimal (e.g., 1.6 = 160% turnover). Example: 1.6, 0.43, 0.1879. Contains NULL when turnover data is not yet available or fund has insufficient trading history.'
+    label: Turnover Ratio
+    sql: turnoverratio
+    ai_context: 'Turnover Ratio: Measures how frequently assets within a fund are bought and sold. A ratio of 1.0 (100%) means the fund replaces its entire portfolio once per year. A low value (<0.3) suggests a buy-and-hold strategy, while a high value (>1.0) indicates active trading.'
+  geographic_focus:
+    description: Geographic region or market focus of the fund (e.g., 'US', 'International', 'Emerging Markets', 'Global'). Contains  NULL when geographic focus is not specified or fund has global diversification without specific regional focus.
+    label: Geographic Focus
+    sql: JSONB_EXTRACT_PATH_TEXT(fundclass, 'GeoZone_Class')
+    ai_context: 'Geographic Focus: Funds are categorized by their geographic scope, such as ''UNITED_STATES'', ''International'', ''Global'', ''Pacific/Asia ex-Japan Stk'', and ''Emerging Markets''.'
+  duration:
+    description: 'DECIMAL. Modified duration of the fund''s bond portfolio, measuring sensitivity to interest rate changes in years. Higher values indicate greater interest rate risk. Example: 3.12, 2.73, 11.58. Contains NULL when the fund does not hold fixed-income securities or duration calculation is not applicable.'
+    label: Duration
+    sql: duration
+    ai_context: 'Duration: Measures how much a bond fund''s price is likely to change for every 1% change in interest rates. A duration of 7 years means the fund''s price will likely fall by about 7% if interest rates rise by 1%.'
+  net_worth:
+    description: 'BIGINT. Total net asset value (NAV) of the fund in base currency units, representing assets under management. Example: 26004670464, 145110080, 8899219. Contains NULL when NAV data is not yet reported or fund is in liquidation process.'
+    label: Net Worth
+    sql: networth
+  average_daily_volume_3m:
+    description: 'BIGINT. Average daily trading volume over the past 3 months, indicating liquidity and trading activity. Example: 43115, 499616, 705119.'
+    label: Average Daily Volume (3M)
+    sql: vol3m
+  price_to_earnings_ratio:
+    description: 'DECIMAL. Price-to-earnings ratio of the fund''s underlying equity holdings, indicating valuation relative to earnings. Example: 10.87, 24.59, 34.94. Contains NULL when the fund does not hold equities or P/E calculation is not applicable (e.g., bond funds, funds with negative earnings).'
+    label: Price-to-Earnings Ratio
+    sql: pe_ratio
+  price_to_sales_ratio:
+    description: 'DECIMAL. Price-to-sales ratio of the fund''s underlying equity holdings, measuring valuation relative to revenue. Example: 6.19, 0.64, 2.04. Contains NULL when the fund does not hold equities or P/S calculation is not applicable.'
+    label: Price-to-Sales Ratio
+    sql: ps_ratio
+  price_to_book_ratio:
+    description: 'DECIMAL. Price-to-book ratio of the fund''s underlying equity holdings, indicating valuation relative to book value. Example: 1.6, 2.35, 4.32. Contains NULL when the fund does not hold equities or P/B calculation is not applicable (e.g., bond funds).'
+    label: Price-to-Book Ratio
+    sql: pb_ratio
+  price_to_cash_flow_ratio:
+    description: 'DECIMAL. Price-to-cash-flow ratio of the fund''s underlying equity holdings, measuring valuation relative to operating cash flow. Example: 12.01, 16.22, 10.87. Contains NULL when the fund does not hold equities or P/CF calculation is not applicable.'
+    label: Price-to-Cash-Flow Ratio
+    sql: pcf_ratio
+  allocweights:
+    description: JSONB column. Contains asset allocation percentages and portfolio composition data including equity, bond weights and bond characteristics for portfolio analysis.
+    sql: allocweights
+  avgmaturity:
+    description: 'DECIMAL. Average maturity period of bonds held in the fund portfolio, measured in years. Relevant for fixed-income funds to assess interest rate sensitivity. Example: 2.22, 5.13, 10.27. Contains NULL when the fund does not hold fixed-income securities or maturity data is not applicable (e.g., pure equity funds).'
+    sql: avgmaturity
+  bondweight:
+    description: 'DECIMAL. Proportion of fund assets allocated to bond/fixed-income holdings, expressed as a decimal between 0 and 1 (e.g., 0.9977 = 99.77%). Example: 0.0697, 0.0934, 0.9977. Contains NULL when asset allocation data is not available or fund structure does not support weight breakdown.'
+    sql: bondweight
+  capsize:
+    description: 'TEXT. Market capitalization focus of the fund''s equity holdings, indicating the size category of companies the fund primarily invests in. Possible values: Small, Medium, Large. Contains NULL when the fund does not hold equities or cap size classification is not applicable (e.g., bond funds).'
+    sql: capsize
+  currencybase:
+    description: 'TEXT. Base currency in which the fund is denominated and NAV is calculated. All values represent US Dollar with varying formats. Possible values: USD, US Dollar, US_DOLLAR, Usd, Dollar, US$, DOLLAR, usd, AmericanDollar.'
+    sql: currencybase
+  fulldescription:
+    description: Complete official name and description of the fund including investment objective and strategy details. Contains  NULL when detailed description is not available or pending.
+    sql: fulldescription
+  fundclass:
+    description: JSONB column. Consolidates fund classification and strategy information including geographic focus, investment strategy, market cap focus, and basic fund characteristics.
+    sql: fundclass
+  fundmetrics:
+    description: JSONB column. Groups fundamental financial metrics and operational data including assets under management, yield rates, expense ratios, and turnover statistics.
+    sql: fundmetrics
+  geozone:
+    description: 'TEXT. Geographic region or country focus of the fund''s investments. All values represent United States with varying formats. Possible values: USA, US, United States, U.S., U.S.A., America, usa, us, UNITED_STATES.'
+    sql: geozone
+  launchdate:
+    description: Date when the fund was first established and began operations (YYYY-MM-DD). Contains  NULL when launch date is not available or fund is in pre-launch phase.
+    sql: launchdate
+  listingvenue:
+    description: Foreign key referencing exchanges.MarketCode, indicating the primary exchange where the fund is listed and traded.
+    sql: listingvenue
+  parentgroup:
+    description: Foreign key referencing families.GroupName, indicating which fund family or asset management company manages this fund.
+    sql: parentgroup
+  productclass:
+    description: Foreign key referencing categories.ClassType, indicating the fund's investment category classification.
+    sql: productclass
+  productnum:
+    description: A SERIAL primary key uniquely identifying each fund product in the database.
+    sql: productnum
+  quotemode:
+    description: 'TEXT. Type of security quotation or fund structure classification. All records are ETFs in this dataset. Possible values: ETF.'
+    sql: quotemode
+  shortlabel:
+    description: Abbreviated display name of the fund for user interfaces and brief references. Contains  NULL when short label is not available or fund uses only full description.
+    sql: shortlabel
+  strategynotes:
+    description: Detailed text description of the fund's investment strategy, objectives, and methodology. Contains  NULL when strategy notes are not available or not provided by fund management.
+    sql: strategynotes
+  strategytype:
+    description: 'TEXT. Investment style or strategy classification for equity funds, indicating the fund''s approach to stock selection. Possible values: Growth, Value, Blend. Contains NULL when the fund does not hold equities or strategy classification is not applicable (e.g., bond funds, sector funds).'
+    sql: strategytype
+  tickersym:
+    description: Unique ticker symbol for the fund as traded on exchanges (e.g., 'SPY', 'VTI', 'QQQ'). Must be unique across all records.
+    sql: tickersym
+  tradingdata:
+    description: JSONB column. Aggregates trading and market data including volume metrics and moving averages for technical analysis and liquidity assessment.
+    sql: tradingdata
+  valuationratios:
+    description: JSONB column. Consolidates fundamental valuation ratios for equity holdings including price-to-book, price-to-earnings, price-to-cash-flow, and price-to-sales ratios.
+    sql: valuationratios
+  volrecent:
+    description: 'DECIMAL. Most recent trading volume or current period volume figure. Example: 716570, 155510, 1961860. Contains NULL when recent volume data is not available or trading was halted.'
+    sql: volrecent
+  allocweights_asset_allocation_bond_weight:
+    description: Percentage (0-1) of the fund's assets allocated to fixed-income securities (bonds). Contains  NULL when bond allocation data is not available or fund does not invest in bonds.
+    sql: JSONB_EXTRACT_PATH_TEXT(allocweights, 'asset_allocation', 'Bond_Weight')
+  allocweights_asset_allocation_equity_weight:
+    description: Percentage (0-1) of the fund's assets allocated to equity securities (stocks). Contains  NULL when equity allocation data is not available or not applicable for fund type.
+    sql: JSONB_EXTRACT_PATH_TEXT(allocweights, 'asset_allocation', 'Equity_Weight')
+  allocweights_bond_characteristics_avg_maturity:
+    description: Average maturity in years of the fund's bond holdings, applicable for fixed-income funds. Contains  NULL when fund does not hold bonds or maturity data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(allocweights, 'bond_characteristics', 'Avg_Maturity')
+  allocweights_bond_characteristics_duration_yrs:
+    description: Average duration in years of the fund's bond holdings, measuring interest rate sensitivity. Contains  NULL when fund does not hold bonds or duration data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(allocweights, 'bond_characteristics', 'Duration_Yrs')
+  fundclass_cap_size:
+    description: Market capitalization focus (e.g., 'Large Cap', 'Mid Cap', 'Small Cap', 'Multi Cap') indicating the size of companies the fund invests in. Contains  NULL when fund does not focus on specific market cap sizes or invests in non-equity assets.
+    sql: JSONB_EXTRACT_PATH_TEXT(fundclass, 'Cap_Size')
+  fundclass_currency_base:
+    description: Base currency in which the fund is denominated and reports net asset value (e.g., 'USD', 'EUR', 'GBP'). Contains  NULL when currency information is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(fundclass, 'Currency_Base')
+  fundclass_quote_mode:
+    description: Trading quote type or mechanism (e.g., 'NAV', 'Market', 'Real-time') indicating how the fund is priced and quoted. Contains  NULL when quote mode is not specified or uses non-standard pricing mechanisms.
+    sql: JSONB_EXTRACT_PATH_TEXT(fundclass, 'Quote_Mode')
+  fundclass_strategy_type:
+    description: Investment strategy classification (e.g., 'Index', 'Active', 'Passive', 'Smart Beta') describing the fund's management approach. Contains  NULL when strategy type is not classified or is proprietary/unique.
+    sql: JSONB_EXTRACT_PATH_TEXT(fundclass, 'Strategy_Type')
+  fundmetrics_benchmark_exp:
+    description: Benchmark or category average expense ratio for comparison with similar funds in the same category. Contains  NULL when benchmark data is not available for comparison.
+    sql: JSONB_EXTRACT_PATH_TEXT(fundmetrics, 'Benchmark_Exp')
+  fundmetrics_expense_net:
+    description: Net expense ratio (0-1) representing the annual fee charged to investors as a percentage of assets under management. Contains  NULL when expense ratio is not yet determined or not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(fundmetrics, 'Expense_Net')
+  fundmetrics_net_worth:
+    description: Total net assets under management (AUM) for the fund in the base currency, representing the fund's total market value. Contains  NULL when AUM data is not available or not reported.
+    sql: JSONB_EXTRACT_PATH_TEXT(fundmetrics, 'Net_Worth')
+  fundmetrics_turnover_ratio:
+    description: Annual portfolio turnover ratio (0-1) indicating how frequently the fund's holdings are bought and sold within a year. Contains  NULL when turnover data is not available or not applicable (e.g., for newly launched funds).
+    sql: JSONB_EXTRACT_PATH_TEXT(fundmetrics, 'Turnover_Ratio')
+  fundmetrics_yield_rate:
+    description: Current dividend yield percentage (0-1) that the fund distributes to shareholders annually. Contains  NULL when fund does not pay dividends or yield data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(fundmetrics, 'Yield_Rate')
+  tradingdata_moving_averages_ma_200:
+    description: 200-day moving average price of the fund, used for long-term trend analysis. Contains  NULL when fund has less than 200 days of trading history.
+    sql: JSONB_EXTRACT_PATH_TEXT(tradingdata, 'moving_averages', 'MA_200')
+  tradingdata_moving_averages_ma_50:
+    description: 50-day moving average price of the fund, used for technical analysis and trend identification. Contains  NULL when insufficient price history exists for calculation.
+    sql: JSONB_EXTRACT_PATH_TEXT(tradingdata, 'moving_averages', 'MA_50')
+  tradingdata_volume_metrics_vol_3_m:
+    description: Average daily trading volume over the past 3 months, indicating liquidity and investor interest. Contains  NULL when volume data is not available or fund has insufficient trading history.
+    sql: JSONB_EXTRACT_PATH_TEXT(tradingdata, 'volume_metrics', 'Vol_3M')
+  tradingdata_volume_metrics_vol_recent:
+    description: Recent average daily trading volume over a shorter time period (typically 10 days). Contains  NULL when recent volume data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(tradingdata, 'volume_metrics', 'Vol_Recent')
+  valuationratios_valuation_metrics_pb_ratio:
+    description: Weighted average price-to-book ratio of the fund's equity holdings, indicating valuation characteristics. Contains  NULL when P/B ratio is not available or not applicable for fund's holdings.
+    sql: JSONB_EXTRACT_PATH_TEXT(valuationratios, 'valuation_metrics', 'PB_Ratio')
+  valuationratios_valuation_metrics_pcf_ratio:
+    description: Weighted average price-to-cash-flow ratio of the fund's equity holdings. Contains  NULL when P/CF ratio is not available or not applicable.
+    sql: JSONB_EXTRACT_PATH_TEXT(valuationratios, 'valuation_metrics', 'PCF_Ratio')
+  valuationratios_valuation_metrics_pe_ratio:
+    description: Weighted average price-to-earnings ratio of the fund's equity holdings. Contains  NULL when P/E ratio is not available or holdings have negative earnings.
+    sql: JSONB_EXTRACT_PATH_TEXT(valuationratios, 'valuation_metrics', 'PE_Ratio')
+  valuationratios_valuation_metrics_ps_ratio:
+    description: Weighted average price-to-sales ratio of the fund's equity holdings. Contains  NULL when P/S ratio is not available or not applicable.
+    sql: JSONB_EXTRACT_PATH_TEXT(valuationratios, 'valuation_metrics', 'PS_Ratio')
+  relative_expense_ratio:
+    label: Relative Expense Ratio
+    description: Measures the difference between a fund's net expense ratio and its benchmark's expense ratio.
+    sql: ${net_expense_ratio} - ${benchmark_expense_ratio}
+    ai_context: Use this modeled field for Relative Expense Ratio; do not reconstruct its formula.
+  is_low_turnover_strategy:
+    label: Low-Turnover Strategy
+    description: An investment strategy characterized by infrequent trading of portfolio holdings, often associated with long-term, passive, or buy-and-hold approaches.
+    sql: ${turnover_ratio} < 0.3
+    ai_context: Use this modeled field for Low-Turnover Strategy; do not reconstruct its formula.
+  yield_to_expense_ratio:
+    label: Yield-to-Expense Ratio (YTER)
+    description: Evaluates an income-generating fund's efficiency by comparing its dividend yield to its net expense ratio.
+    sql: CASE WHEN ${net_expense_ratio} <> 0 THEN ${yield_rate} / NULLIF(${net_expense_ratio}, 0) END
+    ai_context: Use this modeled field for Yield-to-Expense Ratio (YTER); do not reconstruct its formula.
+  is_efficient_income_generator:
+    label: Efficient Income Generator
+    description: A fund that provides a high dividend yield relative to its management cost.
+    sql: ${yield_to_expense_ratio} > 15.0
+    ai_context: Use this modeled field for Efficient Income Generator; do not reconstruct its formula.
+  short_term_momentum:
+    label: Short-Term Momentum Indicator
+    description: A technical indicator that signals short-term trend strength by comparing the 50-day and 200-day moving averages.
+    sql: ${moving_average_50_day} - ${moving_average_200_day}
+    ai_context: Use this modeled field for Short-Term Momentum Indicator; do not reconstruct its formula.
+  has_golden_cross_signal:
+    label: Golden Cross Signal
+    description: A bullish technical signal indicating potential for a major rally, based on moving average trends.
+    sql: ${short_term_momentum} > 0
+    ai_context: Use this modeled field for Golden Cross Signal; do not reconstruct its formula.
+  net_yield_advantage:
+    label: Net Yield Advantage
+    description: Calculates a fund's final yield advantage or disadvantage after accounting for its cost relative to peers.
+    sql: ${yield_rate} - ${relative_expense_ratio}
+    ai_context: Use this modeled field for Net Yield Advantage; do not reconstruct its formula.
+  composite_valuation_score:
+    label: Composite Valuation Score
+    description: Calculates a single score representing a fund's valuation attractiveness by averaging the inverted values of its key price-to-metric ratios.
+    sql: CASE WHEN ${price_to_earnings_ratio} <> 0 AND ${price_to_sales_ratio} <> 0 AND ${price_to_book_ratio} <> 0 AND ${price_to_cash_flow_ratio} <> 0 THEN 0.25 * (1.0 / ${price_to_earnings_ratio} + 1.0 / ${price_to_sales_ratio} + 1.0 / ${price_to_book_ratio} + 1.0 / ${price_to_cash_flow_ratio}) END
+    ai_context: Use this modeled field for Composite Valuation Score; do not reconstruct its formula.
+  portfolio_liquidity_pressure:
+    label: Portfolio Liquidity Pressure
+    description: Estimates the potential market impact of a fund's trading activity by comparing its annual turnover to its average daily trading volume.
+    sql: CASE WHEN ${average_daily_volume_3m} <> 0 THEN (${net_worth} * ${turnover_ratio}) / NULLIF(${average_daily_volume_3m} * 252.0, 0) END
+    ai_context: Use this modeled field for Portfolio Liquidity Pressure; do not reconstruct its formula.
+  growth_value_spectrum_score:
+    label: Growth-Value Spectrum Score
+    description: A quantitative factor score that places a fund on a spectrum from deep value to high growth based on the interplay of its Price-to-Earnings and Price-to-Book ratios.
+    sql: CASE WHEN ${price_to_earnings_ratio} > 0 AND ${price_to_book_ratio} > 0 THEN LN(${price_to_earnings_ratio} / ${price_to_book_ratio}) END
+    ai_context: Use this modeled field for Growth-Value Spectrum Score; do not reconstruct its formula.
+  valuation_data_availability:
+    label: Valuation Data Availability
+    description: A classification that categorizes funds based on whether they disclose key valuation metrics.
+    sql: CASE WHEN ${price_to_earnings_ratio} IS NOT NULL AND ${price_to_book_ratio} IS NOT NULL THEN 'Transparent' ELSE 'Opaque' END
+    ai_context: Use this modeled field for Valuation Data Availability; do not reconstruct its formula.
+  is_total_return_fund:
+    label: Total Return Fund
+    description: Defines a fund that aims to provide both capital appreciation and income through dividends.
+    sql: ${equity_weight} <> 0 AND ${yield_rate} <> 0
+    ai_context: Use this modeled field for Total Return Fund; do not reconstruct its formula.

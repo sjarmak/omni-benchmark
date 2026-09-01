@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__space_mission
+label: SpaceMission
+description: All columns of the public table SpaceMission.
+fields:
+- planets_data_large_public__space_mission.*
+joins: {}
+ai_context: This topic models no cross-table joins.

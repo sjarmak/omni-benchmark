@@ -1,0 +1,72 @@
+label: planet_system_membership
+description: All columns of the public table planet_system_membership.
+catalog: planets_data_large
+schema: public
+table_name: planet_system_membership
+dimensions:
+  benchmark_system_flag:
+    description: 'boolean. Flag indicating if system serves as a benchmark for comparative studies. Possible values: False, True.'
+    sql: '"BENCHMARK_SYSTEM_FLAG"'
+  discovery_order:
+    description: 'bigint. Order in which this planet was discovered within the system. Possible values: 1, 2, 3, 6.'
+    sql: '"DISCOVERY_ORDER"'
+  dynamical_importance_score:
+    description: 'real. Score indicating dynamical importance of planet in system evolution. Possible values: 0.25, 0.35, 0.68, 0.78, 0.85, 0.88, 0.95, 0.98.'
+    sql: '"DYNAMICAL_IMPORTANCE_SCORE"'
+  formation_constraints_provided:
+    description: 'text. Formation constraints provided by this planet''s properties. **NULL means no formation constraints were derived.**. Possible values: High eccentricity migration, Hot Jupiter migration, Innermost planet formation, Super-Earth formation mechanism, Wide orbit formation.'
+    sql: '"FORMATION_CONSTRAINTS_PROVIDED"'
+  habitability_assessment_priority:
+    description: 'real. Priority score for habitability assessment efforts. Possible values: 0.02, 0.05, 0.12, 0.15, 0.25, 0.42, 0.78, 0.85.'
+    sql: '"HABITABILITY_ASSESSMENT_PRIORITY"'
+  mass_rank:
+    description: 'bigint. Rank of planet by mass within the system (1 = most massive). Possible values: 1, 2, 3, 6.'
+    sql: '"MassRank"'
+  notes:
+    description: 'text. Additional notes or comments about planet''s role in the system. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  observational_completeness_factor:
+    description: 'real. Factor accounting for observational completeness bias. **NULL means completeness factor was not calculated.**. Possible values: 0.25, 0.65, 0.88, 0.92, 0.95.'
+    sql: '"ObservationalCompletenessFactor"'
+  planetlink:
+    description: 'bigint. Foreign key reference to the planet in the system. FK to planets(planetRef). Example: 1.'
+    sql: '"PLANETLINK"'
+  planet_designation_in_system:
+    description: 'text. Official designation of the planet within its host system (e.g., b, c, d). Possible values: Fomalhaut b, HD 209458 b, HD 209458 c, HD 80606 b, Kepler-11b, Kepler-11g, TRAPPIST-1b, TRAPPIST-1c.'
+    sql: '"PlanetDesignationInSystem"'
+  resonance_participation:
+    description: 'text. Description of participation in mean motion resonances. **NULL means no resonance participation detected.**. Possible values: 3:2 with b, 5:3 with f.'
+    sql: '"ResonanceParticipation"'
+  statistical_weight_in_surveys:
+    description: 'real. Statistical weight assigned in population studies. **NULL means statistical weight was not assigned.**. Possible values: 0.8, 0.9, 1.0.'
+    sql: '"StatisticalWeightInSurveys"'
+  system_stability_influence:
+    description: 'real. Influence of this planet on overall system stability. Possible values: 0.25, 0.35, 0.45, 0.65, 0.78, 0.82, 0.88, 0.92.'
+    sql: '"SystemStabilityInfluence"'
+  transit_timing_variation_amplitude_minutes:
+    description: 'real. TTV amplitude caused by this planet in minutes. Possible values: 0.5, 12.2, 125.6, 18.9, 2.8, 45.2, 8.5, 89.5.'
+    sql: '"TRANSIT_TIMING_VARIATION_AMPLITUDE_minutes"'
+  follow_up_observation_priority:
+    description: 'real. Priority score for follow-up observations. Possible values: 0.25, 0.35, 0.65, 0.75, 0.82, 0.88, 0.95.'
+    sql: follow_up_observation_priority
+  last_verification_date:
+    description: 'date. Date when system membership was last verified. Possible values: 2023-09-20, 2023-09-30, 2023-10-25, 2023-11-18, 2023-11-20, 2023-12-10, 2023-12-15, 2023-12-18, 2024-01-15.'
+    sql: last_verification_date
+  long_term_survival_probability:
+    description: 'real. Probability this planet survives long-term system evolution (0.0 to 1.0). Possible values: 0.68, 0.75, 0.85, 0.92, 0.96, 0.97, 0.98, 0.99.'
+    sql: long_term_survival_probability
+  membership_ref:
+    description: 'bigint. Primary key identifier for planet system membership records. PK. Possible values: 21001, 21002, 21003, 21004, 21005, 21006, 21007, 21008.'
+    sql: '"membershipRef"'
+  orbital_rank:
+    description: 'bigint. Rank of planet by orbital distance from host star (1 = innermost). Possible values: 1, 2, 6.'
+    sql: orbital_rank
+  perturbation_influence_on_others:
+    description: 'real. Measure of gravitational influence on other planets in system. Possible values: 0.08, 0.12, 0.15, 0.25, 0.32, 0.45, 0.75, 0.85.'
+    sql: perturbation_influence_on_others
+  system_dynamics_link:
+    description: 'bigint. Foreign key reference to the system dynamics analysis. FK to multi_planet_system_dynamics(systemDynamicsRef). Possible values: 20001, 20002, 20003, 20004, 20005.'
+    sql: system_dynamics_link
+  radial_velocity_contribution_m_s:
+    description: 'real. This planet''s contribution to RV signal in meters per second. Possible values: 0.8, 1.8, 125.8, 2.1, 3.2, 8.5, 85.4, 95.2.'
+    sql: '"radial_velocity_contribution_m/s"'

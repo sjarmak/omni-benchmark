@@ -1,0 +1,63 @@
+label: MerchandiseSales
+description: All columns of the public table MerchandiseSales.
+catalog: sports_events_large
+schema: public
+table_name: MerchandiseSales
+dimensions:
+  buyer_country:
+    description: 'TEXT. Buyer country Possible values: US, UK, DE, FR, IT, JP, AU, BR.'
+    sql: '"BUYER_COUNTRY"'
+  constructor_ref:
+    description: BIGINT. Foreign key referencing constructors(cstr_key). Related constructor
+    sql: '"CONSTRUCTOR_REF"'
+  licensed:
+    description: BOOLEAN. Whether product is officially licensed Boolean flag (true/false).
+    sql: '"LICENSED"'
+  margin_pct:
+    description: 'REAL. Profit margin percentage Typical range: 0 to 100.'
+    sql: '"MARGIN_PCT"'
+  merch_id:
+    description: BIGINT. Primary key. Unique merchandise sale identifier
+    sql: '"MERCH_ID"'
+  payment_method:
+    description: 'TEXT. Payment method Possible values: Card, Cash, Digital Wallet, Contactless.'
+    sql: '"PAYMENT_METHOD"'
+  product_name:
+    description: TEXT. Product name
+    sql: '"PRODUCT_NAME"'
+  quantity_sold:
+    description: BIGINT. Quantity sold
+    sql: '"QUANTITY_SOLD"'
+  sales_channel:
+    description: 'TEXT. Sales channel Possible values: Track Shop, Online, Hospitality, Pop-up.'
+    sql: '"SALES_CHANNEL"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  cost_of_goods_usd:
+    description: 'REAL. Cost of goods sold Typical range: 1 to 200.'
+    sql: cost_of_goods_usd
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  product_type:
+    description: 'TEXT. Type of merchandise Possible values: Team Cap, T-Shirt, Jacket, Model Car, Flag, Poster, Pin, Mug.'
+    sql: product_type
+  race_ref:
+    description: BIGINT. Foreign key referencing races(rak_id). Related race
+    sql: race_ref
+  returned:
+    description: BOOLEAN. Whether item was returned Boolean flag (true/false).
+    sql: returned
+  revenue_usd:
+    description: 'REAL. Total revenue in USD Typical range: 5 to 10000.'
+    sql: revenue_usd
+  sale_date:
+    description: DATE. Date of sale
+    sql: sale_date
+  size:
+    description: 'TEXT. Product size if applicable Possible values: XS, S, M, L, XL, XXL, One Size. **NULL means Product has no size.**'
+    sql: size
+  unit_price_usd:
+    description: 'REAL. Unit price in USD Typical range: 5 to 500.'
+    sql: unit_price_usd

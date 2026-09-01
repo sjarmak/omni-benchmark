@@ -1,0 +1,47 @@
+base_view: labor_certification_applications_large_public__cases
+label: Labor Certification Cases
+description: Application case rows with public visa, disclosure, status, worker-position, worksite-count, and worksite-density semantics.
+fields:
+- labor_certification_applications_large_public__cases.*
+- labor_certification_applications_large_public__preparer.*
+joins:
+  labor_certification_applications_large_public__preparer: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields worksite_density rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Application Processing Time (APT): APT is the number of days between the date the application is received and the date a decision is made. Both dates are recorded as part of the application data.
+
+  - Approval Rate (AR): AR = (Number of Certified Applications / Total Number of Applications) × 100%. Application status is tracked as part of the application data.
+
+  - Employer H-1B Concentration (EHC): EHC = (Number of H-1B Applications by Employer / Total Number of H-1B Applications) × 100%. Visa classification and employer information are tracked in the application data.
+
+  - Application Success Rate (ASR): ASR = (Number of Certified Applications by Employer / Total Applications by Employer) × 100%. Employer and application status are tracked as part of the application data.
+
+  - Occupational Demand Index (ODI): ODI = (Number of Applications for SOC Code / Average Applications per SOC Code). SOC code information is included in the job data for each application.
+
+  - Seasonal Application Index (SAI): SAI = (Number of Applications in Month / Average Monthly Applications). Application receipt dates are tracked as part of the application data.
+
+  - Employer Retention Rate (ERR): ERR = (Number of Continuation Applications / Total Number of Applications by Employer) × 100%. Employer and application type are tracked as part of the application data.
+
+  - Visa Class Distribution (VCD): VCD = (Number of Applications for Visa Class / Total Number of Applications) × 100%. Visa classification is tracked as part of the application data.
+
+  - Employer Scale Indicator (ESI): ESI = (Employer Number of Applications / Average Applications per Employer). Employer and application information are tracked as part of the application data.
+
+  - Visa Filing Window: The visa filing window represents when applications are submitted relative to the intended employment start date. Applications are categorized as: ''Optimal Window (4-6 Months)'' before start date, ''Early Filing'' (more than 6 months before), ''1-3 Months Before'', ''Same Month'', or ''After Start Date''. These categories help analyze filing patterns and potential processing challenges. Submission and start dates are tracked as part of the application data.
+
+  - Employer Size Classification: Employers are classified as Small-scale users (fewer than 5 applications annually), Medium-scale users (5-25 applications annually), or Large-scale users (more than 25 applications annually). Employer and application information are tracked as part of the application data.
+
+  - Seasonal Application Pattern: Seasonal patterns in visa application submissions include Peak Season (periods with higher submission rates), Off-Peak Season (lower submission rates), and Transition Periods (moderate activity between peaks). Application receipt dates are tracked as part of the application data.
+
+  - Processing Efficiency Ratio (PER): PER = (Average Processing Time / Application Processing Time), where values above 1 indicate faster than average processing. Processing time is calculated from application receipt and decision dates.
+
+  - Application Complexity Score (ACS): ACS is calculated as a weighted sum of factors such as H-1B dependency, willful violator status, new employment, and amendment status. Each factor is represented as a binary indicator in the application data.
+
+  - Premium Wage Employer: An employer is considered a premium wage employer if their average Wage Differential Rate (WDR) across all applications exceeds 15%, indicating a consistent strategy of offering premium compensation.
+
+  - Continuous Filing Employer: An employer is considered a continuous filer if they submit visa applications in at least 9 months of the year, indicating consistent reliance on foreign worker programs.
+
+  - Application Delay Risk Profile: Applications are classified as Low Risk (no special factors), Moderate Risk (1-2 complexity factors), or High Risk (3 or more complexity factors or from willful violators), based on the Application Complexity Score (ACS).'

@@ -1,0 +1,11 @@
+base_view: solar_panel_large_public__cleaning_robot_telemetry
+label: CleaningRobotTelemetry
+description: All columns of the public table CleaningRobotTelemetry.
+fields:
+- solar_panel_large_public__cleaning_robot_telemetry.*
+- solar_panel_large_public__panel_models.*
+- solar_panel_large_public__plants.*
+joins:
+  solar_panel_large_public__plants:
+    solar_panel_large_public__panel_models: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

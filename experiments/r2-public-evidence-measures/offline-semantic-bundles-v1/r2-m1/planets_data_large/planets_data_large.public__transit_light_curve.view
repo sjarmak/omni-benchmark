@@ -1,0 +1,81 @@
+label: TransitLightCurve
+description: All columns of the public table TransitLightCurve.
+catalog: planets_data_large
+schema: public
+table_name: TransitLightCurve
+dimensions:
+  baseline_flux:
+    description: 'REAL. Out-of-transit baseline flux (normalized) Typical range: 0.99 to 1.01.'
+    sql: '"BASELINE_FLUX"'
+  cadence_seconds:
+    description: 'REAL. Observation cadence in seconds Typical range: 2 to 1800.'
+    sql: '"CADENCE_SECONDS"'
+  chi_squared_reduced:
+    description: 'REAL. Reduced chi-squared of fit Typical range: 0.5 to 5.'
+    sql: '"CHI_SQUARED_REDUCED"'
+  filter_band:
+    description: 'TEXT. Photometric filter band Possible values: Kepler, TESS, V, R, I, g, r, z.'
+    sql: '"FILTER_BAND"'
+  fit_model:
+    description: 'TEXT. Transit model used for fitting Possible values: Mandel-Agol, Batman, JKTEBOP, Custom.'
+    sql: '"FIT_MODEL"'
+  ingress_duration_min:
+    description: 'REAL. Ingress duration in minutes Typical range: 1 to 120.'
+    sql: '"INGRESS_DURATION_min"'
+  instrument_ref:
+    description: BIGINT. Foreign key referencing instruments_surveys(instrumentref). Observing instrument
+    sql: '"INSTRUMENT_REF"'
+  lightcurve_id:
+    description: BIGINT. Primary key. Unique light curve identifier
+    sql: '"LIGHTCURVE_ID"'
+  limb_darkening_u1:
+    description: 'REAL. Linear limb darkening coefficient Typical range: 0 to 1.'
+    sql: '"LIMB_DARKENING_U1"'
+  transit_depth_ppm:
+    description: 'REAL. Transit depth in parts per million Typical range: 10 to 50000.'
+    sql: '"TRANSIT_DEPTH_ppm"'
+  transit_duration_hours:
+    description: 'REAL. Transit duration in hours Typical range: 0.5 to 15.'
+    sql: '"TRANSIT_DURATION_hours"'
+  ttv_amplitude_min:
+    description: 'REAL. TTV amplitude in minutes Typical range: 0.1 to 60. **NULL means No TTV detected.**'
+    sql: '"TTV_AMPLITUDE_min"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  data_points:
+    description: BIGINT. Number of data points in light curve
+    sql: data_points
+  detrending_method:
+    description: 'TEXT. Detrending method applied Possible values: GP, Polynomial, Spline, Wavelet, None.'
+    sql: detrending_method
+  duration_error_hours:
+    description: 'REAL. Duration uncertainty Typical range: 0.01 to 1.'
+    sql: duration_error_hours
+  impact_parameter:
+    description: 'REAL. Transit impact parameter b Typical range: 0 to 1.'
+    sql: impact_parameter
+  limb_darkening_u2:
+    description: 'REAL. Quadratic limb darkening coefficient Typical range: -0.5 to 0.5.'
+    sql: limb_darkening_u2
+  observation_epoch:
+    description: TIMESTAMP WITHOUT TIME ZONE. Mid-transit epoch timestamp
+    sql: observation_epoch
+  planet_ref:
+    description: BIGINT. Foreign key referencing planets(planetref). Related planet
+    sql: planet_ref
+  rms_residual_ppm:
+    description: 'REAL. RMS of fit residuals in ppm Typical range: 10 to 5000.'
+    sql: rms_residual_ppm
+  transit_depth_error_ppm:
+    description: 'REAL. Transit depth uncertainty Typical range: 1 to 2000.'
+    sql: transit_depth_error_ppm
+  ttv_detected:
+    description: BOOLEAN. Whether transit timing variation was detected Boolean flag (true/false).
+    sql: ttv_detected
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TransitLightCurve public identity values.
+    label: TransitLightCurve Count
+    sql: ${planets_data_large_public__transit_light_curve.lightcurve_id}

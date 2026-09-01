@@ -1,0 +1,19 @@
+base_view: museum_artifact_large_public__conservation_maintenance_log
+label: ConservationMaintenanceLog
+description: All columns of the public table ConservationMaintenanceLog.
+fields:
+- museum_artifact_large_public__conservation_maintenance_log.*
+- museum_artifact_large_public__conservation_and_maintenance.*
+- museum_artifact_large_public__environmental_readings_core.*
+- museum_artifact_large_public__exhibition_halls.*
+- museum_artifact_large_public__showcases.*
+- museum_artifact_large_public__staff.*
+- museum_artifact_large_public__surface_and_physical_readings.*
+joins:
+  museum_artifact_large_public__conservation_and_maintenance:
+    museum_artifact_large_public__environmental_readings_core:
+      museum_artifact_large_public__showcases:
+        museum_artifact_large_public__exhibition_halls: {}
+    museum_artifact_large_public__surface_and_physical_readings: {}
+  museum_artifact_large_public__staff: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,117 @@
+label: worksite_environmental_metrics
+description: All columns of the public table worksite_environmental_metrics.
+catalog: labor_certification_applications_large
+schema: public
+table_name: worksite_environmental_metrics
+dimensions:
+  airquality_idx:
+    description: 'REAL. Peak Air-Quality Index (U.S. AQI scale) recorded onsite. Example: 187.0.'
+    sql: '"AIRquality_idx"'
+  bike_rack_ct:
+    description: 'BIGINT. Number of bicycle rack slots. Example: 102.'
+    sql: '"BikeRack_ct"'
+  charging_station_ct:
+    description: 'BIGINT. Count of EV charging points. Example: 32.'
+    sql: '"ChargingStation_ct"'
+  eparegion:
+    description: 'TEXT. U.S. Environmental-Protection Agency region number. Possible values: Region 1 – Region 10. Example: Region 10.'
+    sql: '"EPAregion"'
+  firecode_class:
+    description: 'TEXT. NFPA fire-safety classification of the building. Possible values: Class A, Class B, Class C. Example: Class B.'
+    sql: '"FIREcode_class"'
+  ws_state_ref:
+    description: 'TEXT. Two-letter U.S. state code of the work-site (FK). Example: MN.'
+    sql: '"WS_STATE_ref"'
+  ws_env_code:
+    description: 'TEXT. Unique identifier for a work-site environmental record. PK. Example: ENV00002.'
+    sql: '"WS_env_CODE"'
+  asbestos_flag:
+    description: 'TEXT. Asbestos detected onsite? Possible values: Yes, No, Unknown. **NULL indicates no inspection data or indeterminate finding.** Example: No.'
+    sql: asbestos_flag
+  cooling_capacity_k_w:
+    description: 'REAL. Installed cooling-plant capacity, kilowatts. Example: 923.0.'
+    sql: '"coolingCapacity_kW"'
+  energy_emissions_summary:
+    description: JSONB column. Summarises core energy-use and greenhouse-gas KPIs for environmental reporting dashboards.
+    sql: energy_emissions_summary
+  flood_zone_flag:
+    description: 'TEXT. Work-site lies in FEMA-defined flood zone? Possible values: Yes, No. **NULL means mapping not completed or data unavailable.** Example: Yes.'
+    sql: '"floodZone_flag"'
+  green_building_cert:
+    description: 'TEXT. Highest green-building certificate held. Possible values: LEED Gold, LEED Silver, BREEAM Excellent, BREEAM Good, None. **NULL means the site is not certified or certificate data is missing.** Example: LEED Gold.'
+    sql: '"greenBuildingCert"'
+  last_inspection:
+    description: 'DATE. Date of last official environmental inspection. Example: 2023-02-09.'
+    sql: '"lastInspection"'
+  lead_risk_score:
+    description: 'REAL. Lead-exposure risk score (0 – 100). Example: 54.2.'
+    sql: '"leadRiskScore"'
+  nearest_transit_txt:
+    description: 'TEXT. Type of nearest public-transit stop. Possible values: Bus Stop, Subway Station, Train Station, None. Example: Subway Station.'
+    sql: '"nearestTransit_txt"'
+  next_inspection_window:
+    description: 'TEXT. Planned quarter or period for next inspection. Example: 2025-Q4.'
+    sql: '"nextInspectionWindow"'
+  noise_level_d_ba:
+    description: 'REAL. Typical onsite ambient noise level, decibels (A-weighted). Example: 81.3.'
+    sql: '"noiseLevel_dBA"'
+  parking_spots_ct:
+    description: 'BIGINT. Number of on-site car-parking spaces. **NULL denotes figure not recorded or parking unavailable.** Example: 1 042.'
+    sql: '"parkingSpots_ct"'
+  permit_expiry:
+    description: 'DATE. Expiry date of current environmental operating permit. Example: 2025-04-03.'
+    sql: '"permitExpiry"'
+  radon_level:
+    description: 'REAL. Average radon concentration, picocuries per litre. **NULL means radon measurement not performed or result pending.** Example: 8.41.'
+    sql: '"radonLevel"'
+  reasoning_note:
+    description: 'TEXT. Analyst comments or data provenance note. Example: Synthetic demo data.'
+    sql: '"reasoningNote"'
+  seismic_zone:
+    description: 'TEXT. U.S. seismic-risk zone rating. Possible values: Zone 0, Zone 1, Zone 2, Zone 3, Zone 4, Zone 5. Example: Zone 1.'
+    sql: '"seismicZONE"'
+  shift_coverage_span:
+    description: 'TEXT. Normal operating/shift coverage window. Possible values: 24 × 7, 06:00–18:00, 22:00–06:00. Example: 24 × 7.'
+    sql: '"shiftCoverage_span"'
+  storm_rating:
+    description: 'TEXT. Hurricane / severe-storm exposure rating. Possible values: Low, Moderate, High, Extreme. Example: High.'
+    sql: '"stormRating"'
+  transit_dist_km:
+    description: 'REAL. Straight-line distance to the nearest transit stop, kilometres. Example: 4.06.'
+    sql: '"transitDist_km"'
+  waste_landfill_t:
+    description: 'REAL. Solid waste sent to landfill, metric tonnes. Example: 900.7.'
+    sql: '"wasteLandfill_T"'
+  waste_recycle_t:
+    description: 'REAL. Solid waste diverted to recycling, metric tonnes. Example: 1 099.7.'
+    sql: '"wasteRecycle_t"'
+  water_use_m3:
+    description: 'REAL. Annual water consumption, cubic metres. Example: 362 588.'
+    sql: '"waterUse_m3"'
+  ws_zip_ref:
+    description: 'TEXT. Postal ZIP code of the work-site (FK). Example: 55437.'
+    sql: '"wsZip_ref"'
+  ws_addr_ref:
+    description: 'TEXT. Address line 1 of the work-site (FK to worksite). Example: 8300 NORMAN CENTER DR.'
+    sql: ws_addr_ref
+  ws_city_ref:
+    description: 'TEXT. City of the work-site (FK). Example: BLOOMINGTON.'
+    sql: '"ws_city_REF"'
+  energy_emissions_summary_energy_intensity_mwh_ft2_yr:
+    description: 'REAL. Site energy intensity, megawatt-hours per square-foot per year. Example: 0.90.'
+    sql: JSONB_EXTRACT_PATH_TEXT(energy_emissions_summary, 'energy_intensity_mwh_ft2_yr')
+  energy_emissions_summary_energy_use_mwh:
+    description: 'REAL. Annual energy use, megawatt-hours. Example: 28 867.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(energy_emissions_summary, 'energy_use_mwh')
+  energy_emissions_summary_ghg_emissions_tco2e:
+    description: 'REAL. Annual greenhouse-gas emissions, metric tonnes CO₂-equivalent. Example: 8431.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(energy_emissions_summary, 'ghg_emissions_tco2e')
+  energy_emissions_summary_renewable_pct:
+    description: 'REAL. Percentage of site energy sourced from renewables. Example: 38.63.'
+    sql: JSONB_EXTRACT_PATH_TEXT(energy_emissions_summary, 'renewable_pct')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct worksite_environmental_metrics public identity values.
+    label: worksite_environmental_metrics Count
+    sql: ${labor_certification_applications_large_public__worksite_environmental_metrics.ws_env_code}

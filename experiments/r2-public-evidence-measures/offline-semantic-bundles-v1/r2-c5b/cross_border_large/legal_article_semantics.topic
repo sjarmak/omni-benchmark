@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__legal_article
+label: Legal_Article
+description: All columns of the public table Legal_Article.
+fields:
+- cross_border_large_public__legal_article.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,124 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Bandwidth Saturation Index (BSI): BSI = (percentage of network used) multiplied by (amount of data sent divided by time spent sending)
+
+  - Cross-Border Compliance Gap: A compliance record where compliance with regulations is missing in at least one country and the transfer is international
+
+  - Risk Exposure Score (RES): RES = (risk level) multiplied by (one divided by control effectiveness)
+
+  - Risk Assessment Score: Ranges from 0 to 100. Higher means greater risk.
+
+  - Error Count: A higher value means more problems.
+
+  - Compliance Cost Ratio (CCR): CCR = (total cost for compliance) divided by (potential penalty amount plus one)
+
+  - Incident Resolution Efficiency (IRE): IRE = (percentage of incidents resolved on time) divided by (average resolution time plus one)
+
+  - Transfer Path: A string in the format: source country, an arrow, and destination country
+
+  - Cross-Border Data Flow: A transfer where the countries for sending and receiving data are different
+
+  - High-Risk Data Flow: A transfer where risk score is above 0.7 and data sensitivity index is above 100
+
+  - Sensitive Data Exposure: A case where data sensitivity index is above 100 and security robustness score is less than 2
+
+  - Vendor Risk Tier: High risk if vendor reliability index < 2, medium if ≥ 2 and < 3, low if ≥ 3
+
+  - Overloaded Data Flow: A transfer where bandwidth saturation index > 50 and data transfer efficiency < 1.0
+
+  - Data Flow Reliability Score (DFRS): DFRS = (transfer efficiency) multiplied by (one minus number of retries divided by errors plus one)
+
+  - Security Control Cost Ratio (SCCR): SCCR = (security strength score) divided by (compliance cost plus one)
+
+  - Vendor Compliance Burden (VCB): VCB = (audit severity) multiplied by (5 minus security rating)
+
+  - Encryption Coverage Ratio (ECR): ECR = (security robustness score) multiplied by (sensitivity index)
+
+  - Audit Remediation Load (ARL): ARL = (audit severity) multiplied by (number of data subject requests)
+
+  - Bandwidth Risk Factor (BRF): BRF = (bandwidth saturation index) multiplied by (data sensitivity index)
+
+  - Vendor Risk Amplification (VRA): VRA = (vendor reliability index) multiplied by (risk exposure score)
+
+  - Insecure High-Volume Flow: A case where data volume is above 500 and security robustness score is below 2
+
+  - Incident Impact Factor (IIF): IIF = (risk exposure score) multiplied by (one minus incident resolution efficiency)
+
+  - Data Retention Risk Score (DRRS): DRRS = (data sensitivity index) multiplied by (days data is kept divided by 365)
+
+  - Cross-Border Risk Factor (CBRF): CBRF = (overall risk score) multiplied by (2 if source country and target country are different, 1 if the same)
+
+  - Regulatory Risk Exposure: A transfer where cross-border risk factor > 1.5 and there is a compliance gap
+
+  - Cross-Border Data Volume Risk (CDVR): CDVR = (cross-border risk factor) multiplied by (data volume)
+
+  - Critical Data Flow Risk: A transfer where risk exposure score is above 0.7 and reliability score is below 0.5
+
+  - Overburdened Compliance Flow: A transfer where compliance cost ratio is above 0.8 and audit remediation load is above 10
+
+  - Unprotected Sensitive Data: A case where data sensitivity index is above 100 and encryption coverage ratio is below 2
+
+  - High-Pressure Data Flow: A transfer where data subject request pressure is above 50 and bandwidth saturation index is above 50
+
+  - Vendor-Driven Risk Flow: A transfer where vendor risk amplification is above 3 and vendor compliance burden is above 2
+
+  - Bandwidth-Constrained Risk: A transfer where bandwidth risk factor is above 100 and risk exposure score is above 0.7
+
+  - Incident-Prone Data Flow: A transfer where incident resolution efficiency is below 0.5 and high-risk data flow is true
+
+  - Data Flow Stability Index (DFSI): DFSI = (data flow reliability score) multiplied by (success percentage divided by error count plus one)
+
+  - Compliance Overhead Ratio (COR): COR = (data subject request pressure) divided by (compliance cost plus one)
+
+  - Security Posture Maturity (SPM): SPM = (encryption coverage ratio) multiplied by (number of days logs are kept divided by 365)
+
+  - Vendor Risk Concentration (VRC): VRC = (vendor risk amplification) multiplied by (one minus vendor reliability index)
+
+  - Audit Compliance Pressure (ACP): ACP = (audit remediation load) multiplied by (audit finding severity)
+
+  - Bandwidth Compliance Risk (BCR): BCR = (bandwidth risk factor) multiplied by (1.5 if compliance is partial, 2 if non-compliant, 1 otherwise)
+
+  - Vendor Security Cost Index (VSCI): VSCI = (vendor compliance burden) divided by (security control cost ratio plus one)
+
+  - Excessive Retention Risk: A case where data retention risk score is above 50 and data sensitivity index is above 100
+
+  - Incident-Prone Compliance Flow: A transfer where incident impact factor is above 0.8 and compliance is non-compliant
+
+  - Cross-Border Audit Risk: A transfer where cross-border data volume risk is above 1000 and audit finding severity is above 0.5
+
+  - Regulatory Overload Flow: A transfer where there is regulatory risk exposure and compliance is marked non-compliant
+
+  - Cross-Border Compliance Exposure (CBCE): CBCE = (cross-border data volume risk) multiplied by (2 if compliance is non-compliant, 1 otherwise)
+
+  - Unstable High-Risk Flow: A transfer where data flow stability index is below 0.5 and critical data flow risk exists
+
+  - Vendor Compliance Risk Cluster: A partner where vendor risk concentration is above 2 and vendor compliance burden is above 2
+
+  - Audit-Stressed Data Flow: A transfer where audit compliance pressure is above 5 and compliance overhead ratio is above 0.5
+
+  - Bandwidth-Limited Compliance Risk: A transfer where bandwidth compliance risk is above 50 and cross-border compliance gap exists
+
+  - Costly Vendor Risk Flow: A transfer where vendor security cost index is above 1 and vendor risk amplification is above 3
+
+  - Sensitive Unstable Flow: A transfer where data flow stability index is below 0.5 and sensitive data exposure exists
+
+  - High-Impact Audit Risk Flow: A transfer where regulatory risk exposure exists and audit compliance pressure is above 5
+
+  - High Audit Compliance Pressure: A transfer where audit compliance pressure is above 5
+
+  - Overloaded Security Flow: A transfer where security posture maturity is below 1 and cross-border compliance exposure is above 100'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

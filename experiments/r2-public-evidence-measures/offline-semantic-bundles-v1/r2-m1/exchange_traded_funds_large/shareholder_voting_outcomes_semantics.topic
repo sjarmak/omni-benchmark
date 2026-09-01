@@ -1,0 +1,9 @@
+base_view: exchange_traded_funds_large_public__shareholder_voting_outcomes
+label: ShareholderVotingOutcomes
+description: All columns of the public table ShareholderVotingOutcomes.
+fields:
+- exchange_traded_funds_large_public__shareholder_voting_outcomes.*
+- exchange_traded_funds_large_public__securities.*
+joins:
+  exchange_traded_funds_large_public__securities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

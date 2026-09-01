@@ -1,0 +1,11 @@
+base_view: sports_events_large_public__safety_equipment_inspection
+label: SafetyEquipmentInspection
+description: All columns of the public table SafetyEquipmentInspection.
+fields:
+- sports_events_large_public__safety_equipment_inspection.*
+- sports_events_large_public__constructors.*
+- sports_events_large_public__technical_regulations.*
+joins:
+  sports_events_large_public__constructors: {}
+  sports_events_large_public__technical_regulations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

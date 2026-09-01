@@ -1,0 +1,107 @@
+label: Interactions
+description: Interaction records with row-level watch, gift, chat, and duration semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: interactions
+dimensions:
+  session_duration_minutes:
+    description: SMALLINT. Duration of the interaction session in minutes.
+    label: Session Duration (minutes)
+    sql: sess_dur_min
+  total_watch_hours:
+    description: REAL. Total hours of content watched during the interaction session.
+    label: Total Watch Hours
+    sql: watch_hrs
+  total_gift_value_usd:
+    description: REAL. Total monetary value in USD of gifts sent during interaction.
+    label: Total Gift Value (USD)
+    sql: JSONB_EXTRACT_PATH_TEXT(gift_metrics, 'Gift_Val_Usd')
+  chat_messages:
+    description: BIGINT. Number of chat messages sent by the fan during this interaction.
+    label: Chat Messages
+    sql: JSONB_EXTRACT_PATH_TEXT(chat_activity, 'Chat_Msg')
+  gift_frequency:
+    description: TEXT. Frequency classification of gift-giving behavior during interaction.
+    label: Gift Frequency
+    sql: JSONB_EXTRACT_PATH_TEXT(gift_metrics, 'Gift_Freq')
+    ai_context: 'Gift Frequency: Classifies how often a fan gives virtual gifts during interactions. Categories include ''Often'', ''Frequently'', ''Occasionally'', and ''Rarely''.'
+  interaction_tone:
+    description: TEXT. Sentiment or tone analysis result of messages sent during interaction.
+    label: Interaction Tone
+    sql: JSONB_EXTRACT_PATH_TEXT(chat_activity, 'Msg_Tone')
+    ai_context: 'Interaction Tone: Indicates the overall sentiment of a fan''s chat messages. Common values are ''Positive'', ''Negative'', ''Neutral'', or ''Mixed''.'
+  act_kind:
+    description: 'TEXT. Type of interaction activity performed. **NULL means interaction type classification failed or is ambiguous.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    sql: act_kind
+  act_plat:
+    description: 'TEXT. Platform where the interaction took place. **NULL means platform identification failed or cross-platform activity.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    sql: act_plat
+  activity_reg:
+    description: TEXT. Unique identifier for individual fan-idol interaction activity session. PK = Interactions(Activity_Reg).
+    sql: activity_reg
+  app_ver:
+    description: TEXT. Application version used during the interaction session.
+    sql: app_ver
+  chat_activity:
+    description: JSONB column. Chat and messaging activity data including message counts, language, sentiment, and emoji usage
+    sql: chat_activity
+  dev_type:
+    description: 'TEXT. Device type used by fan for the interaction. **NULL means device detection failed or privacy settings block tracking.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    sql: dev_type
+  engagement_metrics:
+    description: JSON string tracking rates of gifts, actions, and messages per hour.
+    sql: engagement_metrics
+  gift_metrics:
+    description: JSONB column. Comprehensive gift-giving behavior metrics including frequency, quantities, values, and preferences
+    sql: gift_metrics
+  interact_fan_pivot:
+    description: TEXT. Reference to the fan user participating in this interaction. FK to Fans.
+    sql: interact_fan_pivot
+  interact_idol_pivot:
+    description: TEXT. Reference to the virtual_idol idol involved in this interaction. FK to virtual_idolIdols.
+    sql: interact_idol_pivot
+  live_att:
+    description: SMALLINT. Number of live stream sessions attended during this interaction.
+    sql: live_att
+  plat_used:
+    description: 'TEXT. Specific platform or service used for the interaction. **NULL means platform usage tracking incomplete or privacy mode enabled.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    sql: plat_used
+  time_mark:
+    description: TIMESTAMP. Precise timestamp when the interaction activity occurred.
+    sql: time_mark
+  chat_activity_chat_lang:
+    description: TEXT. Primary language used in chat messages during the interaction.
+    sql: JSONB_EXTRACT_PATH_TEXT(chat_activity, 'Chat_Lang')
+  chat_activity_emoji_count:
+    description: BIGINT. Total number of emojis used in messages during the interaction.
+    sql: JSONB_EXTRACT_PATH_TEXT(chat_activity, 'Emoji_Count')
+  chat_activity_stk_count:
+    description: BIGINT. Total number of stickers used during the interaction session.
+    sql: JSONB_EXTRACT_PATH_TEXT(chat_activity, 'Stk_Count')
+  gift_metrics_fav_gift_tag:
+    description: TEXT. Most frequently used or preferred gift type during interaction.
+    sql: JSONB_EXTRACT_PATH_TEXT(gift_metrics, 'Fav_Gift_Tag')
+  gift_metrics_gift_tot:
+    description: BIGINT. Total number of virtual_idol gifts sent during this interaction.
+    sql: JSONB_EXTRACT_PATH_TEXT(gift_metrics, 'Gift_Tot')
+  fan_monetization_index:
+    label: Fan Monetization Index (FMI)
+    description: Measures a fan's direct financial contribution per minute of engagement, indicating their propensity for in-session spending.
+    sql: CAST(${total_gift_value_usd} AS DOUBLE PRECISION) / NULLIF(${session_duration_minutes}, 0)
+    ai_context: Use this modeled field for Fan Monetization Index (FMI); do not reconstruct its formula.
+  content_consumption_index:
+    label: Content Consumption Index (CCI)
+    description: Quantifies a fan's level of passive engagement by measuring the hours of content they watch relative to their session time.
+    sql: ${total_watch_hours} / NULLIF(${session_duration_minutes}, 0)
+    ai_context: Use this modeled field for Content Consumption Index (CCI); do not reconstruct its formula.
+  chattiness_score:
+    label: Chattiness Score (CS)
+    description: Measures a fan's active communication during a session, reflecting their level of social interaction.
+    sql: CAST(${chat_messages} AS DOUBLE PRECISION) / NULLIF(${session_duration_minutes}, 0)
+    ai_context: Use this modeled field for Chattiness Score (CS); do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Interactions public identity values.
+    label: Interactions Count
+    sql: ${virtual_idol_large_public__interactions.activity_reg}

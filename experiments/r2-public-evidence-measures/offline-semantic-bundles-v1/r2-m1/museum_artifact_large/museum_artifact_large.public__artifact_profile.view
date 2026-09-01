@@ -1,0 +1,72 @@
+label: ArtifactProfile
+description: All columns of the public table ArtifactProfile.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactProfile
+dimensions:
+  acquisition_date:
+    description: 'VARCHAR(100). Date when artifact entered museum collection. Example: "2009-06-04".'
+    sql: '"acquisitionDate"'
+  acquisition_method:
+    description: 'VARCHAR(100). Method of acquisition (Purchase, Donation, Excavation, Loan, Bequest, Transfer). Possible values: "Bequest", "Donation", "Excavation", "Loan", "Purchase", "Transfer".'
+    sql: '"acquisitionMethod"'
+  artifact_name:
+    description: 'VARCHAR(100). Official name or title of the cultural artifact. Example: "Ogawa Kaito".'
+    sql: '"artifactName"'
+  artifact_reg_id:
+    description: 'VARCHAR(100). Registration identifier referencing ArtifactsCore.ARTregID (logical association). Example: "ART-ZYM-7614631429".'
+    sql: '"artifactRegId"'
+  conservation_priority:
+    description: 'VARCHAR(100). Conservation urgency level (Critical, High, Medium, Low, None). Possible values: "Critical", "High", "Low", "Medium", "None".'
+    sql: '"conservationPriority"'
+  copyright_status:
+    description: 'VARCHAR(100). Intellectual property status (PublicDomain, Copyrighted, Unknown, OrphanWork). Possible values: "Copyrighted", "OrphanWork", "PublicDomain", "Unknown".'
+    sql: '"copyrightStatus"'
+  creation_year:
+    description: 'VARCHAR(100). Year of artifact creation or origin. Example: "1337".'
+    sql: '"creationYear"'
+  creator_name:
+    description: 'VARCHAR(100). Name of artist, craftsman, or culture that created the artifact. Example: "Ogawa Kaito".'
+    sql: '"creatorName"'
+  cultural_period:
+    description: 'VARCHAR(100). Historical period or era of artifact origin. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"culturalPeriod"'
+  current_location:
+    description: 'VARCHAR(100). Current physical location within museum facilities. Example: "A man is not old until regrets take the place of dreams. Navicat provides powerful                  ".'
+    sql: '"currentLocation"'
+  dimensions:
+    description: 'VARCHAR(100). Physical dimensions in standardized format (L×W×H). Example: "SItl3ghtRU".'
+    sql: dimensions
+  display_eligibility:
+    description: 'VARCHAR(100). Eligibility status for public exhibition (Permanent, Temporary, Restricted, None). Possible values: "None", "Permanent", "Restricted", "Temporary".'
+    sql: '"displayEligibility"'
+  geographic_origin:
+    description: 'VARCHAR(100). Geographic region or country of artifact origin. Example: "A man is not old until regrets take the place of dreams. Navicat provides powerful                  ".'
+    sql: '"geographicOrigin"'
+  historical_significance:
+    description: 'VARCHAR(100). Description of historical, cultural, or artistic importance. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"historicalSignificance"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for artifact profile records. Example: 1.'
+    sql: id
+  insurance_value:
+    description: 'VARCHAR(100). Insured monetary value in USD. Example: "gaQZ2jDTYi".'
+    sql: '"insuranceValue"'
+  last_audit_date:
+    description: 'VARCHAR(100). Date of most recent collection audit or inventory verification. Example: "2013-01-13".'
+    sql: '"lastAuditDate"'
+  material_type:
+    description: 'VARCHAR(100). Primary material composition (e.g., Ceramic, Bronze, Painting, Textile). Possible values: "Bronze", "Ceramic", "Glass", "Metal", "Mixed", "Painting", "Paper", "Stone", "Textile", "Wood".'
+    sql: '"materialType"'
+  storage_condition:
+    description: 'VARCHAR(100). Environmental storage classification (ClimateControlled, Standard, ColdStorage, Vault, Offsite). Possible values: "ClimateControlled", "ColdStorage", "Offsite", "Standard", "Vault".'
+    sql: '"storageCondition"'
+  weight_kg:
+    description: 'VARCHAR(100). Weight measurement in kilograms. Example: "537".'
+    sql: '"weightKg"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ArtifactProfile public identity values.
+    label: ArtifactProfile Count
+    sql: ${museum_artifact_large_public__artifact_profile.id}

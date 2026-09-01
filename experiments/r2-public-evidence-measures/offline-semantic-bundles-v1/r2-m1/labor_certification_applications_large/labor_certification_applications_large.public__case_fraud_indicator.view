@@ -1,0 +1,72 @@
+label: CaseFraudIndicator
+description: All columns of the public table CaseFraudIndicator.
+catalog: labor_certification_applications_large
+schema: public
+table_name: CaseFraudIndicator
+dimensions:
+  cfi_code:
+    description: 'TEXT. Unique identifier for case fraud indicator assessment record. Example: CFI-1A2B3C.'
+    sql: '"CFI_code"'
+  address_verification_passed_flag:
+    description: 'BOOLEAN. Indicates if worksite address verification passed. Possible values: True, False.'
+    sql: '"addressVerificationPassed_flag"'
+  assessment_date:
+    description: 'TIMESTAMP. Date when fraud risk assessment was conducted. Example: 2024-01-01 12:00:00.'
+    sql: '"assessmentDate"'
+  beneficiary_history_flags_ct:
+    description: 'INTEGER. Number of historical flags associated with the beneficiary. Example: 1.'
+    sql: '"beneficiaryHistoryFlags_ct"'
+  data_consistency_score:
+    description: 'REAL. Score measuring consistency across submitted data points from 0-100. Example: 92.'
+    sql: '"dataConsistencyScore"'
+  document_authenticity_score:
+    description: 'REAL. Score assessing authenticity of submitted documents from 0-100. Example: 88.'
+    sql: '"documentAuthenticityScore"'
+  employer_verification_score:
+    description: 'REAL. Score from employer legitimacy verification from 0-100. Example: 90.'
+    sql: '"employerVerificationScore"'
+  file_ref:
+    description: TEXT. Foreign key reference to cases table filekey.
+    sql: file_ref
+  last_updated_timestamp:
+    description: 'TIMESTAMP. Timestamp of most recent update to fraud indicators. Example: 2024-01-01 12:00:00.'
+    sql: '"lastUpdatedTimestamp"'
+  manual_review_outcome:
+    description: 'TEXT. Outcome of manual fraud review if conducted. **NULL means Manual review not required or not yet completed.** Unique values: Cleared, Inconclusive, Suspicious, Confirmed Fraud, Referred to Investigation.'
+    sql: '"manualReviewOutcome"'
+  manual_review_required_flag:
+    description: 'BOOLEAN. Indicates if case requires manual fraud review. Possible values: True, False.'
+    sql: '"manualReviewRequired_flag"'
+  ml_model_version:
+    description: 'TEXT. Version of machine learning model used for assessment. Unique values: v2.1.0, v2.2.0, v2.3.1, v3.0.0, v3.1.0.'
+    sql: '"mlModelVersion"'
+  overall_risk_score:
+    description: 'REAL. Composite fraud risk score from 0-100 where higher indicates more risk. Example: 25.'
+    sql: '"overallRiskScore"'
+  petitioner_history_flags_ct:
+    description: 'INTEGER. Number of historical flags associated with the petitioner. Example: 1.'
+    sql: '"petitionerHistoryFlags_ct"'
+  related_cases_identified_ct:
+    description: 'INTEGER. Number of potentially related cases identified in network analysis. Example: 2.'
+    sql: '"relatedCasesIdentified_ct"'
+  risk_tier:
+    description: 'TEXT. Categorical risk tier classification based on overall score. Unique values: Minimal, Low, Moderate, Elevated, High, Critical.'
+    sql: '"riskTier"'
+  site_visit_completed_flag:
+    description: 'BOOLEAN. Indicates if required site visit has been completed. Possible values: True, False.'
+    sql: '"siteVisitCompleted_flag"'
+  site_visit_required_flag:
+    description: 'BOOLEAN. Indicates if a site visit is recommended based on risk. Possible values: True, False.'
+    sql: '"siteVisitRequired_flag"'
+  third_party_placement_flag:
+    description: 'BOOLEAN. Indicates if worker is placed at third-party worksite. Possible values: True, False.'
+    sql: '"thirdPartyPlacement_flag"'
+  wage_anomaly_score:
+    description: 'REAL. Score indicating wage data anomalies from 0-100. Example: 15.'
+    sql: '"wageAnomalyScore"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CaseFraudIndicator public identity values.
+    label: CaseFraudIndicator Count
+    sql: ${labor_certification_applications_large_public__case_fraud_indicator.cfi_code}

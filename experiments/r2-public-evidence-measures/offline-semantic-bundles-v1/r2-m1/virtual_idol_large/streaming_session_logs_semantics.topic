@@ -1,0 +1,9 @@
+base_view: virtual_idol_large_public__streaming_session_logs
+label: streaming_session_logs
+description: All columns of the public table streaming_session_logs.
+fields:
+- virtual_idol_large_public__streaming_session_logs.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

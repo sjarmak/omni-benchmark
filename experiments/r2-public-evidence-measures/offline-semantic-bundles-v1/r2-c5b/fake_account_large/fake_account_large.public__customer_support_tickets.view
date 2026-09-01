@@ -1,0 +1,66 @@
+label: customer_support_tickets
+description: All columns of the public table customer_support_tickets.
+catalog: fake_account_large
+schema: public
+table_name: customer_support_tickets
+dimensions:
+  ticket_code:
+    description: TEXT. Unique identifier for the support case.
+    sql: '"Ticket_CODE"'
+  active_handling_duration_sec:
+    description: 'INTEGER. Total time agent spent working on the ticket. Example: 300.'
+    sql: active_handling_duration_sec
+  assigned_agent_ref:
+    description: TEXT. ID of the support agent handling the case. **NULL means Unassigned/Bot only.**
+    sql: assigned_agent_ref
+  attachment_file_count:
+    description: 'INTEGER. Number of files uploaded by user for context. Example: 50.'
+    sql: attachment_file_count
+  bot_handoff_step:
+    description: 'INTEGER. Step number in conversation where bot yielded to human. **NULL means Human agent handled entirely.** Example: 4.'
+    sql: bot_handoff_step
+  category_l1_code:
+    description: 'TEXT. High-level category (Billing, Tech, Account). Unique values: BILLING, TECH, ACCT.'
+    sql: category_l1_code
+  channel_origin_type:
+    description: 'TEXT. Source of ticket (Email, Chat, Phone, Social). Unique values: EMAIL, CHAT, FORM.'
+    sql: channel_origin_type
+  csat_score_val:
+    description: 'INTEGER. Customer satisfaction score (1-5) post-resolution. **NULL means User did not rate.** Unique values: 1, 2, 3, 4, 5.'
+    sql: csat_score_val
+  escalation_level_idx:
+    description: 'INTEGER. Highest support tier reached (1-3). Unique values: 1, 2, 3.'
+    sql: escalation_level_idx
+  feedback_source_ref:
+    description: TEXT. Reference to the original user feedback item.
+    sql: feedback_source_ref
+  kb_article_link_ref:
+    description: TEXT. Reference to documentation sent to user. **NULL means No article shared.**
+    sql: kb_article_link_ref
+  macro_response_used:
+    description: 'BOOLEAN. True if agent used a canned response template. Possible values: True, False.'
+    sql: macro_response_used
+  priority_level_idx:
+    description: 'INTEGER. 1 (Low) to 5 (Critical) priority setting. Unique values: 1, 2, 3, 4, 5.'
+    sql: priority_level_idx
+  queue_wait_duration_sec:
+    description: 'INTEGER. Time ticket spent waiting for assignment. Example: 50.'
+    sql: queue_wait_duration_sec
+  reopening_count:
+    description: 'INTEGER. Number of times ticket was reopened after closing. Example: 50.'
+    sql: reopening_count
+  resolution_status_code:
+    description: 'TEXT. Final state (Resolved, Closed, Abandoned). Unique values: RESOLVED, CLOSED, ABANDONED.'
+    sql: resolution_status_code
+  sentiment_score_final:
+    description: 'REAL. NLP sentiment of the last user message. Example: 0.6.'
+    sql: sentiment_score_final
+  sentiment_score_initial:
+    description: 'REAL. NLP sentiment of the first user message (-1 to 1). Example: -0.4.'
+    sql: sentiment_score_initial
+  sla_breach_flag:
+    description: 'BOOLEAN. True if response time exceeded Service Level Agreement. Possible values: True, False.'
+    sql: sla_breach_flag
+  ticket_complexity_score:
+    description: 'REAL. Computed score based on text length and entity count. Example: 5.0.'
+    sql: ticket_complexity_score

@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__market_analysis_and_trends
+label: market_analysis_and_trends
+description: All columns of the public table market_analysis_and_trends.
+fields:
+- virtual_idol_large_public__market_analysis_and_trends.*
+joins: {}
+ai_context: This topic models no cross-table joins.

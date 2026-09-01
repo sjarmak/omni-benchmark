@@ -1,0 +1,9 @@
+base_view: disaster_relief_large_public__logistics_contracts
+label: LogisticsContracts
+description: All columns of the public table LogisticsContracts.
+fields:
+- disaster_relief_large_public__logistics_contracts.*
+- disaster_relief_large_public__distributionhubs.*
+joins:
+  disaster_relief_large_public__distributionhubs: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

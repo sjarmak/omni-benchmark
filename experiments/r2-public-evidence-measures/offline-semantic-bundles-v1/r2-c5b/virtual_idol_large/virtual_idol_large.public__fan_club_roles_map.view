@@ -1,0 +1,96 @@
+label: fan_club_roles_map
+description: All columns of the public table fan_club_roles_map.
+catalog: virtual_idol_large
+schema: public
+table_name: fan_club_roles_map
+dimensions:
+  access_card_id:
+    description: 'TEXT. An identifier for a physical or digital access card, if issued. Example: 1166134669736.'
+    sql: '"ACCESS_CARD_ID"'
+  achievements_in_role:
+    description: 'TEXT ARRAY. A list of notable achievements by the fan in this role. Example: {Increased member engagement by 15%, Curated monthly fan art showcase}.'
+    sql: '"ACHIEVEMENTS_IN_ROLE"'
+  assigned_by_user_registry:
+    description: 'TEXT. Foreign key referencing the user who assigned the role. FK to fans(user_registry). Example: FAN95411.'
+    sql: '"ASSIGNED_BY_USER_REGISTRY"'
+  attendance_record_percent:
+    description: 'REAL. The fan''s attendance percentage for meetings or required events. Example: 85.0.'
+    sql: '"AttendanceRecord_percent"'
+  committee_name:
+    description: 'TEXT. The name of the committee the fan belongs to in this role. Example: Content Moderation.'
+    sql: '"COMMITTEE_NAME"'
+  club_role_identifier:
+    description: 'BIGINT. Foreign key referencing the specific role. FK to club_roles(RoleID). Example: 13.'
+    sql: '"Club_Role_Identifier"'
+  expiry_date:
+    description: 'DATE. The date when the role assignment expires. **NULL means the role has no set expiration date.** Example: 2024-19-04.'
+    sql: '"ExpiryDate"'
+  feedback_from_members:
+    description: 'TEXT. A summary of feedback received from other club members about this fan''s performance. Example: Handles conflicts well..'
+    sql: '"FEEDBACK_FROM_MEMBERS"'
+  fan_member_identifier:
+    description: 'TEXT. Foreign key referencing the fan who holds the role. FK to fans(user_registry). Example: FAN89766.'
+    sql: '"Fan_Member_Identifier"'
+  is_probationary:
+    description: 'BOOLEAN. A flag indicating if the fan is currently in a probationary period for this role. Example: false.'
+    sql: '"IS_PROBATIONARY"'
+  last_activity_as_role:
+    description: 'DATE. The date of the fan''s last recorded activity in this role. Example: 2023-19-09.'
+    sql: '"LastActivityAsRole"'
+  mentorship_pair_id:
+    description: 'BIGINT. Identifier for a mentorship pairing, if applicable. **NULL means the fan is not currently in a formal mentorship program.** Example: 148.0.'
+    sql: '"MentorshipPairID"'
+  notes:
+    description: 'TEXT. General notes about this role assignment. **NULL means no notes have been added.** Example: Needs follow-up..'
+    sql: '"NOTES"'
+  performance_review_date:
+    description: 'DATE. The date for the next scheduled performance review. Example: 2026-24-07.'
+    sql: '"PERFORMANCE_REVIEW_DATE"'
+  permissions_granted:
+    description: 'TEXT ARRAY. A list of permissions granted to the fan in this role. Example: {Manage Forums, Post Announcements, Edit Wikis}.'
+    sql: '"PermissionsGranted"'
+  responsibilities:
+    description: 'TEXT ARRAY. A list of key responsibilities for this role. Example: {Content creation, New member onboarding}.'
+    sql: '"RESPONSIBILITIES"'
+  reason_for_status_change:
+    description: 'TEXT. The reason for the last change in the assignment''s status. **NULL means no status change has occurred or no reason was provided.** Example: End of term.'
+    sql: '"ReasonForStatusChange"'
+  recognition_awards:
+    description: 'TEXT ARRAY. A list of any awards or recognitions received. **NULL means no awards have been given.** Example: {Community Pillar Award 2024}.'
+    sql: '"RecognitionAwards"'
+  stipend_dollar:
+    description: 'REAL. The stipend amount in USD, if any. **NULL means the position is unpaid.** Example: 500.'
+    sql: '"Stipend_dollar"'
+  term_length_months:
+    description: 'BIGINT. The length of the role''s term in months. Example: 24.'
+    sql: '"TermLength_months"'
+  assigned_date:
+    description: 'DATE. The date when the role was assigned to the fan. Example: 2022-23-11.'
+    sql: assigned_date
+  disciplinary_actions:
+    description: TEXT. A summary of any disciplinary actions taken. **NULL means there have been no disciplinary actions.**
+    sql: disciplinary_actions
+  election_results_id:
+    description: BIGINT. Identifier for election results if the role was obtained through an election. **NULL means the role was assigned, not elected.**
+    sql: election_results_id
+  fan_club_role_id:
+    description: 'BIGINT. Unique identifier for the fan club role assignment. PK. Example: 1.'
+    sql: fan_club_role_id
+  is_volunteer:
+    description: 'BOOLEAN. A flag indicating if the role is a volunteer position. Example: true.'
+    sql: is_volunteer
+  performance_score:
+    description: 'REAL. The most recent performance score for the fan in this role. Example: 3.04.'
+    sql: performance_score
+  probation_end_date:
+    description: 'DATE. The end date of the probationary period. **NULL means the role is not probationary or the period has ended.** Example: 2025-10-15.'
+    sql: probation_end_date
+  project_assignments:
+    description: 'TEXT ARRAY. A list of projects this fan is assigned to. Example: {Charity Stream}.'
+    sql: project_assignments
+  status:
+    description: 'TEXT. The current status of the role assignment. Possible values: Active, Expired, Revoked. Example: Active.'
+    sql: status
+  training_completed:
+    description: 'TEXT ARRAY. A list of training modules the fan has completed for this role. Example: {Moderator Guidelines v2}.'
+    sql: training_completed

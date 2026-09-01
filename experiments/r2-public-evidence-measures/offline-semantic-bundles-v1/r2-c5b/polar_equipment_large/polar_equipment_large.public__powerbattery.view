@@ -1,0 +1,64 @@
+label: Power Battery
+description: Battery telemetry records with energy-sustainability semantics and field context.
+catalog: polar_equipment_large
+schema: public
+table_name: PowerBattery
+dimensions:
+  power_source:
+    description: 'TEXT. Source of the power for the battery. Possible values: Battery, Diesel, Hybrid, Solar, Wind.'
+    label: Power Source
+    sql: JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'power_state', 'primary_source')
+  energy_efficiency_percent:
+    description: 'REAL. Energy efficiency percentage of the battery. Example: 81.8.'
+    label: Energy Efficiency Percent
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'power_state', 'conversion_eff_pct') AS DOUBLE PRECISION)
+    ai_context: 'energyefficiencypercent: Energy efficiency percentage typically ranges from 10% to 99%. Values below 30% indicate inefficient systems typical of older equipment, 30-60% represent standard efficiency for conventional equipment, 60-80% indicate high-efficiency modern systems, while values above 80% represent cutting-edge technology with optimal efficiency that minimizes energy waste and operational costs.'
+  power_consumption_w:
+    description: 'REAL. Power consumption in watts. Example: 4383.2.'
+    label: Power Consumption (W)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'power_state', 'instant_consumption_w') AS DOUBLE PRECISION)
+    ai_context: 'powerconsumptionw: Power consumption measured in watts varies by equipment type. Small scientific instruments typically consume 5-50W, communication equipment 20-200W, heating systems 500-5000W, and vehicle systems 1000-10000W. Understanding consumption patterns is crucial for power budgeting and determining appropriate power source sizing in isolated polar environments.'
+  battery_level_percent:
+    description: 'REAL. Battery level percentage. Example: 19.'
+    label: Battery Level Percent
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'battery_pack', 'soc_pct') AS DOUBLE PRECISION)
+  pwr_batt_id:
+    description: BIGSERIAL. Unique identifier for the power battery. PK.
+    sql: '"PWR_BATT_ID"'
+  battery_telemetry:
+    description: JSONB column. Captures the full real-time power and battery state of a unit (operating mode, SOC, health, charge parameters, consumption, efficiency) as a single JSONB blob.
+    sql: battery_telemetry
+  equip_ref:
+    description: TEXT. Reference to the equipment. FK to Equipment.EQUIP_CODE.
+    sql: equip_ref
+  battery_telemetry_battery_pack_cycle_count:
+    description: 'BIGINT. Number of cycles the battery has undergone. Example: 79.'
+    sql: JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'battery_pack', 'cycle_count')
+  battery_telemetry_battery_pack_health_pct:
+    description: 'REAL. Battery health percentage. Example: 93.'
+    sql: JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'battery_pack', 'health_pct')
+  battery_telemetry_battery_pack_temperature_c:
+    description: 'REAL. Battery temperature in Celsius. Example: -22.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'battery_pack', 'temperature_c')
+  battery_telemetry_charging_charge_state:
+    description: 'TEXT. Charging status of the battery. Possible values: Charging, Error, Full, Not Charging.'
+    sql: JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'charging', 'charge_state')
+  battery_telemetry_charging_current_a:
+    description: 'REAL. Charging current in amperes. **NULL means no current recorded.**. Example: 24.12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'charging', 'current_a')
+  battery_telemetry_charging_voltage_v:
+    description: 'REAL. Charging voltage in volts. Example: 26.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'charging', 'voltage_v')
+  battery_telemetry_power_state_system_state:
+    description: 'TEXT. Power status of the battery. Possible values: Charging, Off, On, Sleep.'
+    sql: JSONB_EXTRACT_PATH_TEXT(battery_telemetry, 'power_state', 'system_state')
+  energy_sustainability_index:
+    label: Energy Sustainability Index (ESI)
+    description: Measures the sustainability of an equipment's energy usage by evaluating energy efficiency and renewable sources.
+    sql: ${energy_efficiency_percent} * CASE WHEN ${power_source} IN ('Solar', 'Wind', 'Hybrid') THEN 1.5 WHEN ${power_source} = 'Battery' THEN 1.0 WHEN ${power_source} = 'Diesel' THEN 0.7 ELSE 0.0 END
+    ai_context: Use this modeled field for Energy Sustainability Index (ESI); do not reconstruct its formula.
+  energy_sustainability_classification:
+    label: Energy Sustainability Classification
+    description: Categories equipment based on their energy sustainability index for environmental impact assessment.
+    sql: CASE WHEN ${energy_sustainability_index} > 0.8 THEN 'Green' WHEN ${energy_sustainability_index} >= 0.4 AND ${energy_sustainability_index} <= 0.8 THEN 'Intermediate' WHEN ${energy_sustainability_index} < 0.4 THEN 'High Impact' END
+    ai_context: Use this modeled field for Energy Sustainability Classification; do not reconstruct its formula.

@@ -1,0 +1,72 @@
+label: ObservationProposal
+description: All columns of the public table ObservationProposal.
+catalog: planets_data_large
+schema: public
+table_name: ObservationProposal
+dimensions:
+  abstract:
+    description: TEXT. Proposal abstract summary **NULL means Abstract not provided.**
+    sql: '"ABSTRACT"'
+  co_is:
+    description: BIGINT. Number of co-investigators
+    sql: '"CO_IS"'
+  pi_name:
+    description: TEXT. Principal investigator
+    sql: '"PI_NAME"'
+  pi_institution:
+    description: TEXT. PI affiliation
+    sql: '"PI_institution"'
+  proposal_id:
+    description: BIGINT. Primary key. Unique proposal identifier
+    sql: '"PROPOSAL_ID"'
+  status:
+    description: 'TEXT. Proposal status Possible values: Submitted, Under Review, Accepted, Rejected, Waitlisted, Withdrawn.'
+    sql: '"STATUS"'
+  submission_date:
+    description: DATE. Proposal submission date
+    sql: '"SUBMISSION_DATE"'
+  technical_feasibility:
+    description: 'TEXT. Technical feasibility assessment Possible values: Feasible, Marginally Feasible, Not Feasible. **NULL means Not yet assessed.**'
+    sql: '"TECHNICAL_FEASIBILITY"'
+  time_requested_hours:
+    description: 'REAL. Total time requested in hours Typical range: 1 to 500.'
+    sql: '"TIME_REQUESTED_HOURS"'
+  title:
+    description: 'TEXT. Proposal title Possible values: Characterizing Hot Jupiters, Metal-Poor Star Survey, Transit Timing Variations, Habitable Zone Super-Earths, Binary Star Orbits, Stellar Activity Monitoring.'
+    sql: '"TITLE"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  decision_date:
+    description: DATE. Date of TAC decision **NULL means Decision pending.**
+    sql: decision_date
+  program_ref:
+    description: BIGINT. Foreign key referencing research_programs(programRef). Related research program
+    sql: program_ref
+  proposal_code:
+    description: TEXT. Proposal reference code
+    sql: proposal_code
+  proposal_pdf_url:
+    description: TEXT. URL to proposal PDF
+    sql: proposal_pdf_url
+  proposal_type:
+    description: 'TEXT. Type of observing proposal Possible values: Standard, Large Program, Key Science, Director Discretionary, Filler.'
+    sql: proposal_type
+  science_justification_rating:
+    description: 'TEXT. TAC rating of science justification Possible values: Excellent, Very Good, Good, Fair, Poor. **NULL means Not yet rated.**'
+    sql: science_justification_rating
+  target_count:
+    description: BIGINT. Number of targets in proposal
+    sql: target_count
+  time_granted_hours:
+    description: 'REAL. Time granted Typical range: 0 to 500. **NULL means Proposal not yet reviewed or rejected.**'
+    sql: time_granted_hours
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ObservationProposal public identity values.
+    label: ObservationProposal Count
+    sql: ${planets_data_large_public__observation_proposal.proposal_id}

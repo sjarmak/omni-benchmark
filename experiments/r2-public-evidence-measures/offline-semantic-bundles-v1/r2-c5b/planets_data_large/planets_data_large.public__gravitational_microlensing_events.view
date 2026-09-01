@@ -1,0 +1,75 @@
+label: gravitational_microlensing_events
+description: All columns of the public table gravitational_microlensing_events.
+catalog: planets_data_large
+schema: public
+table_name: gravitational_microlensing_events
+dimensions:
+  chi_squared_minimum:
+    description: 'real. Minimum chi-squared value from light curve fitting. Possible values: 1247.8, 1568.3, 2145.6, 3456.7, 4892.1, 674.2, 892.5.'
+    sql: '"CHI_SQUARED_MINIMUM"'
+  detection_date:
+    description: 'date. Date when the microlensing event was first detected. Possible values: 2018-07-12, 2019-02-18, 2019-05-23, 2020-08-15, 2021-04-08, 2022-06-30, 2025-03-15.'
+    sql: '"DETECTION_DATE"'
+  discovery_team:
+    description: 'text. Team or collaboration that discovered the planetary signal. Possible values: KMTNet Collaboration, KMTNet Team, MOA Collaboration, MOA Team, OGLE Team, OGLE+Spitzer Team, Roman Microlensing Survey.'
+    sql: '"DISCOVERY_TEAM"'
+  data_quality_assessment:
+    description: 'text. Assessment of data quality and reliability. **NULL means data quality was not assessed.**. Possible values: {"baseline_flux": 18.2}, {"photometry_quality": "excellent"}, {"snr": 245, "coverage": 0.89}, {"spitzer_parallax": true}.'
+    sql: '"DataQualityAssessment"'
+  event_timescale_days:
+    description: 'real. Einstein crossing time or characteristic timescale in days. Possible values: 125.3, 18.2, 28.9, 34.7, 42.3, 65.4, 89.6.'
+    sql: '"EVENT_TIMESCALE_days"'
+  event_name:
+    description: 'text. Unique identifier or name assigned to the microlensing event. Possible values: KMT-2021-BLG-0240L, MOA-2019-BLG-008L, MOA-2020-BLG-135L, OGLE-2018-BLG-0596L, OGLE-2019-BLG-0468L, OGLE-2022-BLG-0123L, WFIRST-SIM-001L.'
+    sql: '"EventName"'
+  lens_star_distance_kpc:
+    description: 'real. Distance to the lens star in kiloparsecs. **NULL means lens distance could not be measured.**. Possible values: 3.5, 4.8, 5.2, 6.8, 7.2, 8.9.'
+    sql: '"LensStarDistance_kpc"'
+  notes:
+    description: 'text. Additional notes or comments about the microlensing event. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  planetary_separation_einstein_radii:
+    description: 'real. Planet-star separation in units of Einstein radius. **NULL means planetary separation could not be determined.**. Possible values: 0.76, 0.89, 1.24, 1.55, 2.14.'
+    sql: '"PLANETARY_SEPARATION_Einstein_radii"'
+  planetlink:
+    description: 'bigint. Foreign key reference to planet detected through microlensing. FK to planets(planetRef). **NULL means no planet was definitively associated with the event.**. Example: 1.'
+    sql: '"PLANETLINK"'
+  parallax_detection:
+    description: 'boolean. Flag indicating detection of parallax effect in the event. **NULL means parallax analysis was not performed.**. Possible values: False, True.'
+    sql: '"ParallaxDetection"'
+  peak_magnification:
+    description: 'real. Maximum magnification factor achieved during the event. Possible values: 125.8, 18.5, 2.1, 285.4, 4.2, 456.2, 8.9.'
+    sql: '"PeakMagnification"'
+  planetary_mass_ratio:
+    description: 'real. Mass ratio of planet to host star (Mp/M*). **NULL means planetary signal was not detected.**. Possible values: 0.00012, 0.00034, 0.00085, 0.00089, 0.00156.'
+    sql: '"PlanetaryMassRatio"'
+  telescope_networks_involved:
+    description: 'text. Names of telescope networks that observed the event. Possible values: KMTNet;LCOGT, MOA;MiNDSTEp, MOA;OGLE, OGLE;MOA;KMTNet, OGLE;Spitzer, OGLE;UKIRT, Roman Space Telescope.'
+    sql: '"TelescopeNetworksInvolved"'
+  angular_einstein_radius_mas:
+    description: 'real. Angular Einstein radius of the lens in milliarcseconds. **NULL means Einstein radius could not be calculated.**. Possible values: 0.45, 0.62, 0.73, 0.85, 1.12, 1.45.'
+    sql: angular_einstein_radius_mas
+  caustic_crossing_duration_hours:
+    description: 'real. Duration of caustic crossing feature in hours. **NULL means no caustic crossing was detected.**. Possible values: 18.5, 2.8, 4.2.'
+    sql: caustic_crossing_duration_hours
+  event_duration_days:
+    description: 'real. Total duration of the microlensing event in days. Possible values: 125.6, 156.2, 198.7, 312.8, 45.8, 78.5, 89.3.'
+    sql: event_duration_days
+  lens_star_mass_solar_masses:
+    description: 'real. Estimated mass of the lensing star in solar mass units. **NULL means lens star mass could not be determined.**. Possible values: 0.29, 0.42, 0.58, 0.68, 0.75.'
+    sql: lens_star_mass_solar_masses
+  lensing_ref:
+    description: 'bigint. Primary key identifier for gravitational microlensing event records. PK. Possible values: 18001, 18002, 18003, 18004, 18005, 18006, 18007.'
+    sql: '"lensingRef"'
+  lensing_star_link:
+    description: 'bigint. Foreign key reference to the lens star causing microlensing. FK to stars(STELLARREF). **NULL means lens star could not be identified or characterized.**. Possible values: 11.0, 12.0, 15.0, 23.0, 24.0.'
+    sql: lensing_star_link
+  photometric_precision_mag:
+    description: 'real. Photometric precision achieved in magnitudes. Possible values: 0.0008, 0.001, 0.002, 0.003, 0.004, 0.005, 0.008.'
+    sql: photometric_precision_mag
+  publication_status:
+    description: 'text. Publication status of the discovery (published, submitted, in prep, etc.). Possible values: In Preparation, In Review, Published, Simulated.'
+    sql: publication_status
+  relative_proper_motion_mas_year:
+    description: 'real. Relative proper motion between lens and source in milliarcseconds per year. **NULL means proper motion was not measurable.**. Possible values: 2.1, 2.8, 3.8, 4.5, 5.8, 6.2.'
+    sql: '"RELATIVE_PROPER_MOTION_mas/year"'

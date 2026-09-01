@@ -1,0 +1,69 @@
+label: TransportLogistics
+description: All columns of the public table TransportLogistics.
+catalog: archeology_scan_large
+schema: public
+table_name: TransportLogistics
+dimensions:
+  transport_logistics_id:
+    description: TEXT. Unique identifier for transport logistics record.
+    sql: '"TransportLogistics_id"'
+  cargo_weight_kg:
+    description: 'REAL. Total weight of cargo in kilograms. Example: 75.'
+    sql: cargo_weight_kg
+  checkpoint_location:
+    description: TEXT. Name of checkpoint location.
+    sql: checkpoint_location
+  checkpoint_timestamp:
+    description: 'TIMESTAMP. Date and time of logistics checkpoint. Example: 2024-01-01 12:00:00.'
+    sql: checkpoint_timestamp
+  condition_status:
+    description: 'TEXT. Overall condition status at checkpoint. Unique values: Excellent, Good, Acceptable, Concern Noted.'
+    sql: condition_status
+  customs_cleared:
+    description: 'BOOLEAN. Indicates if customs clearance obtained at checkpoint. Possible values: True, False.'
+    sql: customs_cleared
+  delay_minutes:
+    description: 'INTEGER. Delay time from schedule in minutes. Example: 50.'
+    sql: delay_minutes
+  delay_reason:
+    description: 'TEXT. Reason for any transport delay. Unique values: None, Weather, Customs, Mechanical, Traffic, Documentation.'
+    sql: delay_reason
+  distance_traveled_km:
+    description: 'REAL. Distance traveled since last checkpoint in kilometers. Example: 150.'
+    sql: distance_traveled_km
+  elapsed_time_hours:
+    description: 'REAL. Time elapsed since last checkpoint in hours. Example: 6.'
+    sql: elapsed_time_hours
+  gps_tracking_active:
+    description: 'BOOLEAN. Indicates if GPS tracking is active. Possible values: True, False.'
+    sql: gps_tracking_active
+  handler_count:
+    description: 'INTEGER. Number of handlers involved at checkpoint. Example: 50.'
+    sql: handler_count
+  insurance_value_usd:
+    description: 'REAL. Declared insurance value in US dollars. Example: 15000.'
+    sql: insurance_value_usd
+  package_count:
+    description: 'INTEGER. Number of packages in shipment. Example: 50.'
+    sql: package_count
+  security_seal_intact:
+    description: 'BOOLEAN. Indicates if security seal remains intact. Possible values: True, False.'
+    sql: security_seal_intact
+  shipment_ref:
+    description: 'INTEGER. Reference to parent shipping log record. Example: 50.'
+    sql: shipment_ref
+  shock_g_max:
+    description: 'REAL. Maximum shock recorded in G forces. **NULL means Shock sensor not installed.** Example: 1.5.'
+    sql: shock_g_max
+  transport_mode:
+    description: 'TEXT. Mode of transport at checkpoint. Unique values: Road, Air, Sea, Rail, Hand Carry.'
+    sql: transport_mode
+  vehicle_humidity_percent:
+    description: 'REAL. Humidity inside transport vehicle as percentage. **NULL means Humidity monitoring not active.** Example: 45.'
+    sql: vehicle_humidity_percent
+  vehicle_temperature_celsius:
+    description: 'REAL. Temperature inside transport vehicle in Celsius. **NULL means Temperature monitoring not active.** Example: 20.'
+    sql: vehicle_temperature_celsius
+  vibration_hz_avg:
+    description: 'REAL. Average vibration frequency in Hertz. **NULL means Vibration sensor not installed.** Example: 15.'
+    sql: vibration_hz_avg

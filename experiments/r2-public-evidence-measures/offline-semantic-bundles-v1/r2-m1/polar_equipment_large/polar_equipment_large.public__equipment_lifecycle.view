@@ -1,0 +1,111 @@
+label: EquipmentLifecycle
+description: All columns of the public table EquipmentLifecycle.
+catalog: polar_equipment_large
+schema: public
+table_name: EquipmentLifecycle
+dimensions:
+  audit_cycle_days:
+    description: 'BIGINT. Planned audit cadence in days. Example: 365.'
+    sql: '"auditCycle_days"'
+  book_value_usd:
+    description: 'REAL. Current book value (USD). Example: 221345.87.'
+    sql: '"bookValue_usd"'
+  capex_usd:
+    description: 'REAL. Capital expenditure (USD) at acquisition. Example: 382941.73.'
+    sql: capex_usd
+  comment:
+    description: 'TEXT. Lifecycle note or administrative comment. Example: Unit procured under capital budget FY2015.'
+    sql: comment
+  commission_date:
+    description: 'DATE. Date asset was commissioned/put in service. Example: 2016-05-07.'
+    sql: '"commissionDate"'
+  custodian:
+    description: 'TEXT. Responsible custodian/team. Possible values (from file): Dept A, Dept B, Dept C. Example: Dept B.'
+    sql: custodian
+  decom_plan_date:
+    description: 'DATE. Planned decommission date. Example: 2029-05-07.'
+    sql: '"decomPlanDate"'
+  decommissioned_on:
+    description: 'DATE. Actual decommission date if applicable. **NULL means the asset has not been decommissioned.** Example: NULL.'
+    sql: '"decommissionedOn"'
+  depr_method:
+    description: 'TEXT. Depreciation method. Possible values (from file): Declining Balance, Straight Line. Example: Straight Line.'
+    sql: '"deprMethod"'
+  depr_years:
+    description: 'REAL. Depreciable life in years. Example: 12.0.'
+    sql: '"deprYears"'
+  doc_ref:
+    description: 'TEXT. Reference document identifier/URL fragment. Example: LIFE-7738.'
+    sql: '"docRef"'
+  failure_cause_code:
+    description: 'TEXT. Coded cause of last failure (if any). **NULL means no recorded failures (e.g., rebuildCount = 0 and stateNow = Operational).** Possible values (from file): Electrical, HumanError, Overload, Wear. Example: Overload.'
+    sql: '"failureCauseCode"'
+  ins_coverage_usd:
+    description: 'REAL. Stated insurance coverage (USD). Example: 274118.42.'
+    sql: '"insCoverage_usd"'
+  insurance_policy:
+    description: 'TEXT. Insurance policy ID covering the asset. **NULL means low-capex asset covered by pooled/self-insurance.** Example: POL-6055.'
+    sql: '"insurancePolicy"'
+  last_audit_date:
+    description: 'DATE. Last audit date. Example: 2023-03-19.'
+    sql: '"lastAuditDate"'
+  lease_end_date:
+    description: 'DATE. Lease end date (if leased). **NULL means asset is not leased (leaseFlag = No).** Example: NULL.'
+    sql: '"leaseEndDate"'
+  lease_flag:
+    description: 'TEXT. Whether the asset is leased. Possible values (from file): Yes, No. Example: No.'
+    sql: '"leaseFlag"'
+  life_equip_ref:
+    description: 'TEXT. Equipment code this lifecycle row references; references Equipment(EQUIP_CODE). FK. Example: PE593707.'
+    sql: '"lifeEquipRef"'
+  life_extension_yrs:
+    description: 'REAL. Approved life extension in years. Example: 1.0.'
+    sql: '"lifeExtension_yrs"'
+  life_track:
+    description: BIGSERIAL. Surrogate primary key for the lifecycle row. PK.
+    sql: '"lifeTrack"'
+  migration_plan:
+    description: 'TEXT. Planned disposition (e.g., upgrade/replace). **NULL means asset remains operational with no pending change.** Possible values (from file): Replace, Retain, Upgrade. Example: Replace.'
+    sql: '"migrationPlan"'
+  next_audit_date:
+    description: 'DATE. Next scheduled audit date. Example: 2024-03-18.'
+    sql: '"nextAuditDate"'
+  owner_dept:
+    description: 'TEXT. Department owning the asset. Possible values (from file): Facilities, Logistics, Operations, R&D. Example: Operations.'
+    sql: '"ownerDept"'
+  procure_method:
+    description: 'TEXT. How the asset was acquired. Possible values (from file): Donation, Lease, Purchase. Example: Purchase.'
+    sql: '"procureMethod"'
+  purchase_date:
+    description: 'DATE. Purchase date (YYYY-MM-DD). Example: 2016-04-07.'
+    sql: '"purchaseDate"'
+  rebuild_count:
+    description: 'BIGINT. Number of major rebuilds performed. Example: 1.'
+    sql: '"rebuildCount"'
+  risk_class:
+    description: 'TEXT. Risk classification. Possible values (from file): High, Low, Medium. Example: Medium.'
+    sql: '"riskClass"'
+  salvage_value_usd:
+    description: 'REAL. Expected salvage value (USD). Example: 18442.75.'
+    sql: '"salvageValue_usd"'
+  state_now:
+    description: 'TEXT. Current operational state. Possible values (from file): Decommissioned, Operational, Under Maintenance. Example: Under Maintenance.'
+    sql: '"stateNow"'
+  usage_class:
+    description: 'TEXT. Operational usage classification. Possible values (from file): Heavy Duty, Light Duty, Prototype, Research. Example: Under Maintenance.'
+    sql: '"usageClass"'
+  warranty_end:
+    description: 'DATE. Warranty end date. Example: 2019-05-07.'
+    sql: '"warrantyEnd"'
+  warranty_start:
+    description: 'DATE. Warranty start date (often commission date). Example: 2016-05-07.'
+    sql: '"warrantyStart"'
+  warranty_years:
+    description: 'REAL. Warranty term in years. Example: 3.0.'
+    sql: '"warrantyYears"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EquipmentLifecycle public identity values.
+    label: EquipmentLifecycle Count
+    sql: ${polar_equipment_large_public__equipment_lifecycle.life_track}

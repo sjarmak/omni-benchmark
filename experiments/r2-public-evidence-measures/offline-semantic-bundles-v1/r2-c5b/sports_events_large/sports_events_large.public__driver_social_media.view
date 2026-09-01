@@ -1,0 +1,105 @@
+label: driver_social_media
+description: All columns of the public table driver_social_media.
+catalog: sports_events_large
+schema: public
+table_name: driver_social_media
+dimensions:
+  audience_55_plus_pct:
+    description: 'REAL. Audience share aged 55+. **NULL means not tracked.** Example: 0.08.'
+    sql: '"AUDIENCE_55_PLUS_PCT"'
+  avg_likes:
+    description: 'BIGINT. Average likes per post. Example: 35000.'
+    sql: '"AVG_LIKES"'
+  audience_25_34_pct:
+    description: 'REAL. Audience share aged 25–34. Example: 0.33.'
+    sql: '"Audience_25_34_pct"'
+  audience_45_54_pct:
+    description: 'REAL. Audience share aged 45–54. Example: 0.12.'
+    sql: '"Audience_45_54_pct"'
+  audience_female_pct:
+    description: 'REAL. Female audience share (0.0–1.0). Example: 0.38.'
+    sql: '"Audience_Female_pct"'
+  avg_comments:
+    description: 'BIGINT. Average comments per post. Example: 1200.'
+    sql: '"Avg_Comments"'
+  brand_safety_score:
+    description: 'REAL. Brand safety score of content (0.0–1.0). Example: 0.95.'
+    sql: '"Brand_Safety_Score"'
+  country_focus:
+    description: 'TEXT. Country where audience is most concentrated. Example: UK.'
+    sql: '"COUNTRY_FOCUS"'
+  content_topics_json:
+    description: 'JSONB. Topics distribution of posted content. Example: {racing:0.8}.'
+    sql: '"ContentTopics_JSON"'
+  driver_social_code:
+    description: BIGSERIAL. Surrogate primary key for driver_social_media rows. PK.
+    sql: '"DRIVER_SOCIAL_Code"'
+  followers:
+    description: 'BIGINT. Number of account followers. Example: 3000000.'
+    sql: '"FOLLOWERS"'
+  growth_30d_pct:
+    description: 'REAL. Follower growth in last 30 days (0.0–1.0). Example: 0.035.'
+    sql: '"Growth_30d_pct"'
+  handle:
+    description: 'TEXT. Platform-specific account handle. Example: @instagram_drv2.'
+    sql: '"Handle"'
+  last_post_time:
+    description: 'TIMESTAMP. Timestamp of the last post. Example: 2024-05-10 12:00:00.'
+    sql: '"LAST_POST_TIME"'
+  language_primary:
+    description: 'TEXT. Primary content language. Example: en.'
+    sql: '"Language_Primary"'
+  notes:
+    description: 'TEXT. Analyst notes about the account. **NULL means no notes recorded.** Example: Strong in LATAM.'
+    sql: '"NOTES"'
+  paid_collab_flag:
+    description: 'BOOLEAN. Whether account engages in paid collaborations. Example: true.'
+    sql: '"PaidCollab_Flag"'
+  platform:
+    description: 'TEXT. Social media platform name. Possible values: instagram, twitter, tiktok, youtube, twitch. Example: instagram.'
+    sql: '"Platform"'
+  posts_count:
+    description: 'BIGINT. Total number of posts/videos. Example: 1200.'
+    sql: '"Posts_Count"'
+  sentiment_score:
+    description: 'REAL. Sentiment score of content (-1.0–1.0). Example: 0.74.'
+    sql: '"SentimentScore"'
+  spam_score:
+    description: 'REAL. Spam likelihood score of account activity (0.0–1.0). **NULL means spam analysis not performed.** Example: 0.12.'
+    sql: '"Spam_Score"'
+  url:
+    description: 'TEXT. URL to driver’s social profile. Example: http://instagram.com/driver2.'
+    sql: '"Url"'
+  verified:
+    description: 'BOOLEAN. Whether account is verified. Example: true.'
+    sql: '"Verified"'
+  audience_18_24_pct:
+    description: 'REAL. Audience share aged 18–24. Example: 0.22.'
+    sql: audience_18_24_pct
+  audience_35_44_pct:
+    description: 'REAL. Audience share aged 35–44. **NULL means this segment is not measured or not reported.** Example: 0.25.'
+    sql: audience_35_44_pct
+  audience_male_pct:
+    description: 'REAL. Male audience share (0.0–1.0). Example: 0.62.'
+    sql: audience_male_pct
+  avg_engagement_rate:
+    description: 'REAL. Average engagement rate per post. Example: 0.045.'
+    sql: '"avgEngagementRate"'
+  avg_shares:
+    description: 'BIGINT. Average shares per post. Example: 900.'
+    sql: '"avg_SHARES"'
+  avg_views:
+    description: 'BIGINT. Average video views. Example: 500000.'
+    sql: avg_views
+  drv_ref:
+    description: 'INTEGER. Foreign key referencing drivers.drv_main. FK → drivers(drv_main). Example: 2.'
+    sql: drv_ref
+  following:
+    description: 'BIGINT. Number of accounts followed by driver. Example: 150.'
+    sql: following
+  growth_90_d_pct:
+    description: 'REAL. Follower growth in last 90 days (0.0–1.0). Example: 0.12.'
+    sql: '"growth_90D_pct"'
+  language_secondary:
+    description: 'TEXT. Secondary content language. **NULL means only one language is used or secondary language not tracked.** Example: es.'
+    sql: language_secondary

@@ -1,0 +1,36 @@
+label: accounts
+description: All columns of the public table accounts.
+catalog: fake_account_large
+schema: public
+table_name: accounts
+dimensions:
+  age_d:
+    description: 'BIGINT. Age of the account in days. Example: 393.'
+    sql: '"AGE_D"'
+  orig_stamp:
+    description: 'DATE. Original account creation timestamp. **NULL means account creation timestamp not provided.**. Example: 26-Dec-23.'
+    sql: '"OrigStamp"'
+  profile_score:
+    description: 'REAL. Profile score of the account. Example: 0.167.'
+    sql: '"ProfileScore"'
+  state_flag:
+    description: 'TEXT. Current state of the account. Possible values: Active, Deleted, Dormant, Suspended.'
+    sql: '"StateFlag"'
+  verify_mark:
+    description: 'TEXT. Verification status of the account. Possible values: Failed, Pending, Suspicious, Unverified.'
+    sql: '"VerifyMark"'
+  acct_form:
+    description: 'TEXT. Account form or type. Possible values: Bot, Business, Hybrid, Personal.'
+    sql: acct_form
+  acct_ref:
+    description: 'TEXT. Unique account reference. PK. Example: ACC7210284.'
+    sql: acct_ref
+  plt_key:
+    description: TEXT. Platform code reference. FK to platforms.
+    sql: plt_key
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct accounts public identity values.
+    label: accounts Count
+    sql: ${fake_account_large_public__accounts.acct_ref}

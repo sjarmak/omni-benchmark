@@ -1,0 +1,111 @@
+label: insurance_claim_evidence
+description: All columns of the public table insurance_claim_evidence.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: insurance_claim_evidence
+dimensions:
+  filehash:
+    description: 'TEXT. Hash value of the evidence file for integrity verification. Example: hash12345.'
+    sql: '"FILEhash"'
+  last_updated:
+    description: 'TIMESTAMP. Timestamp of the last update to this evidence record. Example: 2025-07-13 18:26:19.889424.'
+    sql: '"LAST_UPDATED"'
+  verifier:
+    description: 'TEXT. The person who verified the evidence. Example: Verifier1.'
+    sql: '"VERIFIER"'
+  access_control_list:
+    description: 'TEXT. Access permission level for viewing this evidence (e.g., Guest, User, Admin). Example: Admin.'
+    sql: access_control_list
+  age_since_event:
+    description: 'TEXT. Time elapsed since the incident occurred when evidence was collected. Example: +3 days post-incident.'
+    sql: '"ageSinceEvent"'
+  chain_of_custody_hash:
+    description: 'TEXT. Hash value for the chain of custody documentation. Example: hash67890.'
+    sql: '"chainOfCustodyHash"'
+  claim_ref:
+    description: 'TEXT. Reference to the insurance claim. FK to vendor_insurance_claims. Example: CLAIM00001.'
+    sql: '"claimRef"'
+  confidence_score:
+    description: 'REAL. Confidence score for the evidence''s reliability. Example: 0.9.'
+    sql: '"confidenceScore"'
+  decryption_key_hash:
+    description: 'TEXT. Hash value of the decryption key. Example: keyhash123.'
+    sql: '"decryptionKeyHash"'
+  description:
+    description: 'TEXT. Description of the evidence provided. Example: Evidence related to the incident.'
+    sql: description
+  download_count:
+    description: 'BIGINT. Number of times the evidence file has been downloaded. Example: 2.'
+    sql: download_count
+  duplicate_flag:
+    description: 'BOOLEAN. Indicates if the evidence is flagged as a duplicate. Example: False.'
+    sql: '"duplicateFLAG"'
+  encryption_method:
+    description: 'TEXT. Method used for encryption of the evidence. Example: AES.'
+    sql: encryption_method
+  evidence_ref:
+    description: TEXT. Unique identifier for each piece of evidence. PK.
+    sql: '"evidenceRef"'
+  evidence_type:
+    description: 'TEXT. The type of evidence (e.g., Photo, Document, Witness Statement). Example: Photo.'
+    sql: '"evidenceType"'
+  expiry_date:
+    description: DATE. Date when the evidence will expire. **NULL means the evidence has no expiration.**
+    sql: '"expiryDATE"'
+  file_size:
+    description: 'BIGINT. Size of the evidence file in bytes. Example: 2048.'
+    sql: '"fileSIZE"'
+  file_url:
+    description: 'TEXT. URL where the evidence file can be accessed. Example: http://file1.com.'
+    sql: file_url
+  is_encrypted:
+    description: 'BOOLEAN. Indicates if the evidence is encrypted. Example: True.'
+    sql: '"isEncrypted"'
+  last_accessed:
+    description: 'TIMESTAMP. The last time the evidence was accessed. Example: 202'
+    sql: last_accessed
+  location_stored:
+    description: 'TEXT. Location where the evidence is stored. Example: Cloud.'
+    sql: '"locationSTORED"'
+  mime_type:
+    description: 'TEXT. MIME type of the evidence file (e.g., image/jpeg, application/pdf). Example: image/jpeg.'
+    sql: '"mimeTYPE"'
+  notes:
+    description: 'TEXT. Additional notes or comments attached to the evidence. Example: Note1.'
+    sql: notes
+  redacted:
+    description: 'TEXT. Boolean flag indicating whether the evidence has been redacted. Example: true.'
+    sql: redacted
+  redaction_reason:
+    description: 'TEXT. Reason for redacting the evidence if applicable (e.g., Legal Requirement, Sensitive Information). Example: Legal Requirement.'
+    sql: redaction_reason
+  relevance_score:
+    description: 'REAL. Relevance score indicating how relevant the evidence is to the claim. Example: 0.85.'
+    sql: relevance_score
+  retention_period_days:
+    description: 'BIGINT. Number of days the evidence will be retained. Example: 365.'
+    sql: retention_period_days
+  size_window:
+    description: 'TEXT. Acceptable file size range for the evidence. Example: 10 KB-1 MB'
+    sql: '"sizeWindow"'
+  submission_date:
+    description: 'DATE. Date when the evidence was submitted. Example: 2025-07-16.'
+    sql: '"submissionDATE"'
+  submitted_by:
+    description: 'TEXT. The person who submitted the evidence. Example: User1.'
+    sql: submitted_by
+  verification_date:
+    description: DATE. Date when the evidence was verified. **NULL means the evidence has not been verified.**
+    sql: '"verificationDATE"'
+  verified:
+    description: 'BOOLEAN. Indicates if the evidence has been verified. Example: True.'
+    sql: verified
+  viewer_count:
+    description: 'BIGINT. Number of times the evidence has been viewed. Example: 5.'
+    sql: '"viewerCOUNT"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct insurance_claim_evidence public identity values.
+    label: insurance_claim_evidence Count
+    sql: ${cybermarket_pattern_large_public__insurance_claim_evidence.evidence_ref}

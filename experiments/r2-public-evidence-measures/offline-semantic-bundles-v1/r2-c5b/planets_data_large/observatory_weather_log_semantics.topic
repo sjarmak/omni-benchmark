@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__observatory_weather_log
+label: ObservatoryWeatherLog
+description: All columns of the public table ObservatoryWeatherLog.
+fields:
+- planets_data_large_public__observatory_weather_log.*
+joins: {}
+ai_context: This topic models no cross-table joins.

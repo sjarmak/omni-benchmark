@@ -1,0 +1,66 @@
+label: TransactionDisputeDetails
+description: All columns of the public table TransactionDisputeDetails.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: TransactionDisputeDetails
+dimensions:
+  tdd_id:
+    description: TEXT. Unique identifier for the transaction dispute record.
+    sql: '"TDD_id"'
+  assigned_agent_tier:
+    description: 'TEXT. Tier level of the agent assigned to the dispute. **NULL means Not yet assigned to an agent.** Unique values: Tier 1, Tier 2, Tier 3, Specialist, Manager.'
+    sql: assigned_agent_tier
+  buyer_communication_count:
+    description: 'INTEGER. Number of communications with the buyer. Example: 4.'
+    sql: buyer_communication_count
+  chargeback_initiated:
+    description: 'BOOLEAN. Whether a chargeback has been initiated. Possible values: True, False.'
+    sql: chargeback_initiated
+  customer_satisfaction_score:
+    description: 'REAL. Customer satisfaction rating after resolution (1-5). **NULL means No survey response or dispute not resolved.** Example: 3.5.'
+    sql: customer_satisfaction_score
+  days_since_opened:
+    description: 'INTEGER. Number of days since dispute was opened. Example: 50.'
+    sql: days_since_opened
+  dispute_amount:
+    description: 'REAL. Monetary amount in dispute in base currency. Example: 250.'
+    sql: dispute_amount
+  dispute_category:
+    description: 'TEXT. Primary category of the dispute. Unique values: Item Not Received, Item Not As Described, Unauthorized Transaction, Duplicate Charge, Service Issue, Refund Not Processed.'
+    sql: dispute_category
+  dispute_opened_date:
+    description: 'TIMESTAMP. Date and time when the dispute was initiated. Example: 2024-01-01 12:00:00.'
+    sql: dispute_opened_date
+  dispute_status:
+    description: 'TEXT. Current status of the dispute. Unique values: Open, Under Investigation, Awaiting Evidence, Escalated, Resolved, Closed.'
+    sql: dispute_status
+  escalation_count:
+    description: 'INTEGER. Number of times the dispute has been escalated. Example: 0.'
+    sql: escalation_count
+  event_ref:
+    description: TEXT. Reference to the disputed transaction.
+    sql: event_ref
+  evidence_submitted_count:
+    description: 'INTEGER. Number of evidence documents submitted. Example: 3.'
+    sql: evidence_submitted_count
+  fraud_suspected:
+    description: 'BOOLEAN. Whether fraud is suspected in the dispute. Possible values: True, False.'
+    sql: fraud_suspected
+  initiator_type:
+    description: 'TEXT. Party that initiated the dispute. Unique values: Buyer, Vendor, Platform, Payment Processor, Regulatory Body.'
+    sql: initiator_type
+  refund_amount_approved:
+    description: 'REAL. Amount approved for refund if applicable. **NULL means No refund approved or dispute pending.** Example: 180.'
+    sql: refund_amount_approved
+  resolution_date:
+    description: 'TIMESTAMP. Date and time when dispute was resolved. **NULL means Dispute still open.** Example: 2024-01-01 12:00:00.'
+    sql: resolution_date
+  resolution_type:
+    description: 'TEXT. Type of resolution applied to the dispute. **NULL means Dispute not yet resolved.** Unique values: Full Refund, Partial Refund, Replacement, Credit Issued, No Action, Pending.'
+    sql: resolution_type
+  sla_breach_risk:
+    description: 'BOOLEAN. Whether the dispute is at risk of breaching SLA. Possible values: True, False.'
+    sql: sla_breach_risk
+  vendor_communication_count:
+    description: 'INTEGER. Number of communications with the vendor. Example: 3.'
+    sql: vendor_communication_count

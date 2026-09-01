@@ -1,0 +1,75 @@
+label: Transportation
+description: Transportation records with row-level capacity, vehicle throughput, and last-mile status semantics.
+catalog: disaster_relief_large
+schema: public
+table_name: transportation
+dimensions:
+  daily_tons:
+    description: 'REAL. Daily delivery tonnage. Example: 227.'
+    label: Daily Delivery Tonnage
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'delivery_capacity', 'daily_tons') AS DOUBLE PRECISION)
+  vehicle_count:
+    description: 'BIGINT. Number of vehicles available. **NULL means vehicle count not recorded.**. Example: 141.0.'
+    label: Vehicle Count
+    sql: vehiclecount
+  last_mile_status:
+    description: 'TEXT. Status of the last-mile delivery. Possible values: Delayed, On Track, Suspended.'
+    label: Last-Mile Delivery Status
+    sql: lastmilestatus
+    ai_context: 'Last-Mile Delivery Status: ''On Track'': Deliveries are proceeding as planned. ''Delayed'': Deliveries are facing obstacles and are behind schedule. ''Suspended'': Deliveries have been halted due to safety, access, or other critical issues.'
+  boatsavailable:
+    description: 'BIGINT. Number of available boats. Example: 7.'
+    sql: boatsavailable
+  delivery_metrics:
+    description: JSONB column. Captures delivery statistics including capacity, performance, and vehicle metrics.
+    sql: delivery_metrics
+  deliverystatus:
+    description: TEXT. Overall delivery status.
+    sql: deliverystatus
+  distribution_points:
+    description: 'BIGINT. Number of distribution points. Example: 35.'
+    sql: distribution_points
+  helosavailable:
+    description: 'BIGINT. Number of available helicopters. Example: 7.'
+    sql: helosavailable
+  transport_hub_ref:
+    description: VARCHAR(20). Distribution hub reference. FK to DistributionHubs.
+    sql: transport_hub_ref
+  transportdistref:
+    description: VARCHAR(20). Disaster event reference. FK to DisasterEvents.
+    sql: transportdistref
+  transportregistry:
+    description: VARCHAR(20). Unique transportation registry identifier. PK.
+    sql: transportregistry
+  transportsupref:
+    description: VARCHAR(20). Supply reference. FK to Supplies.
+    sql: transportsupref
+  trucks_available:
+    description: 'BIGINT. Number of available trucks. Example: 88.'
+    sql: trucks_available
+  delivery_metrics_delivery_capacity_total_tons:
+    description: 'REAL. Total delivery tonnage. Example: 368.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'delivery_capacity', 'total_tons')
+  delivery_metrics_delivery_performance_avg_hours:
+    description: 'REAL. Average delivery hours. **NULL means delivery time not recorded.**. Example: 20.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'delivery_performance', 'avg_hours')
+  delivery_metrics_delivery_performance_route_optimization_status:
+    description: 'RouteOptStatus_enum. Route optimization status. Possible values: In Progress, Optimized, Required.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'delivery_performance', 'route_optimization_status')
+  delivery_metrics_delivery_performance_success_rate:
+    description: 'REAL. Delivery success rate percentage. Example: 79.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'delivery_performance', 'success_rate')
+  delivery_metrics_vehicle_metrics_break_rate:
+    description: 'REAL. Vehicle breakdown rate. Example: 9.17.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'vehicle_metrics', 'break_rate')
+  delivery_metrics_vehicle_metrics_fuel_efficiency_lpk:
+    description: 'REAL. Fuel efficiency in liters per kilometer. Example: 10.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'vehicle_metrics', 'fuel_efficiency_lpk')
+  delivery_metrics_vehicle_metrics_maintenance_state:
+    description: 'TEXT. Vehicle maintenance state. Possible values: Due, Overdue, Up to Date.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'vehicle_metrics', 'maintenance_state')
+  logistical_throughput_per_vehicle:
+    label: Logistical Throughput per Vehicle (LTV)
+    description: Measures the average daily delivery capacity in tons per available transport vehicle.
+    sql: ${daily_tons} / NULLIF(${vehicle_count}, 0)
+    ai_context: Use this modeled field for Logistical Throughput per Vehicle (LTV); do not reconstruct its formula.

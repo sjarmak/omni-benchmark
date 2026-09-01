@@ -1,0 +1,7 @@
+base_view: sports_events_large_public__innovation_technologies
+label: innovation_technologies
+description: All columns of the public table innovation_technologies.
+fields:
+- sports_events_large_public__innovation_technologies.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,54 @@
+label: inverters
+description: All columns of the public table inverters.
+catalog: solar_panel_large
+schema: public
+table_name: inverters
+dimensions:
+  asset_status:
+    description: 'TEXT. The current operational status of the inverter. Possible values: Failed, Maintenance, Operational.'
+    sql: '"ASSET_STATUS"'
+  commission_date:
+    description: 'DATE. The date the inverter was officially commissioned and began operation. Example: 2018/03/15.'
+    sql: '"COMMISSION_DATE"'
+  cost:
+    description: 'REAL. The original purchase cost of the inverter unit. Example: $25,000.00.'
+    sql: '"COST"'
+  ip_addr:
+    description: 'TEXT. The IP address of the inverter on the local network. Example: 192.168.1.101.'
+    sql: '"IP_ADDR"'
+  last_service:
+    description: 'DATE. The date of the last maintenance service performed on the inverter. Example: 2024/01/15.'
+    sql: '"LAST_SERVICE"'
+  model_identifier:
+    description: 'TEXT. FK -> inverter_models.InverterModelTag. The model of the inverter. Example: INV-M-A1.'
+    sql: '"ModelIdentifier"'
+  serial_num:
+    description: 'TEXT. Unique serial number of an individual inverter unit. Example: INV-SN-A001.'
+    sql: '"SerialNum"'
+  site_location:
+    description: 'TEXT. FK -> plants.sitekey. The plant where the inverter is installed. Example: SP9227.'
+    sql: '"SiteLocation"'
+  decommission_date:
+    description: 'DATE. The date the inverter was taken out of service. NULL if operational. Possible values: 2023/01/20, 2023/05/15, 2023/10/10, 2023/11/01, 2024/03/20, 2024/05/10.'
+    sql: decommission_date
+  firmware_ver:
+    description: 'TEXT. The current firmware version installed on the inverter. Example: fw-3.1.2.'
+    sql: firmware_ver
+  geolocation:
+    description: JSONB column. Stores the precise geographic coordinates (latitude and longitude) of an installed inverter.
+    sql: geolocation
+  install_date:
+    description: 'DATE. The date the inverter was physically installed. Example: 2018/03/10.'
+    sql: '"installDate"'
+  location_in_plant:
+    description: 'TEXT. The specific physical location of the inverter within the plant. Example: Block A, Unit 1.'
+    sql: location_in_plant
+  next_service_due:
+    description: 'DATE. The date the next scheduled maintenance is due. Example: 2024/07/15.'
+    sql: next_service_due
+  geolocation_longitude:
+    description: 'REAL. The GPS longitude of the inverter. Example: -118.2437.'
+    sql: JSONB_EXTRACT_PATH_TEXT(geolocation, 'LONGITUDE')
+  geolocation_latitude:
+    description: 'REAL. The GPS latitude of the inverter. Example: 34.0522.'
+    sql: JSONB_EXTRACT_PATH_TEXT(geolocation, 'latitude')

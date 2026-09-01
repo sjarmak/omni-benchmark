@@ -1,0 +1,28 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Attorney Success Rate (ASR_Attorney): ASR = (Number of Certified Applications by Attorney / Total Applications by Attorney) × 100%. Attorney assignment and application status are tracked as part of the application process.
+
+  - Worksite Diversity Index (WDI): WDI = 1 - sum((Number of Workers at Worksite i / Total Workers)^2) for all worksites. Worksite and worker information are included in the application data.
+
+  - Attorney Specialization Category: Attorneys are classified as Specialists (over 80% of cases in one visa type), Generalists (even distribution across visa types), or Hybrid Practitioners (significant experience in 2-3 visa categories). Attorney and visa type information are tracked as part of the application process.
+
+  - Attorney Specialization Index (ASI): ASI = 1 - (Number of Different Visa Types Handled by Attorney / Total Number of Visa Types), where values closer to 1 indicate higher specialization. Attorney and visa type information are tracked as part of the application process.
+
+  - Worksite Cost Index (WkCI): WkCI = (Worksite Cost of Living / National Average Cost of Living) × 100. Worksite and cost of living information are included in the application data.
+
+  - Position Scarcity Index: Positions are classified as Abundant (many qualified candidates), Moderate Scarcity (limited candidates), or High Scarcity (very few candidates), often correlated with wage premiums and processing priorities.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

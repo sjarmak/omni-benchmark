@@ -1,0 +1,15 @@
+base_view: planets_data_large_public__scheduled_observation
+label: ScheduledObservation
+description: All columns of the public table ScheduledObservation.
+fields:
+- planets_data_large_public__scheduled_observation.*
+- planets_data_large_public__instruments_surveys.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+- planets_data_large_public__telescope_allocation.*
+joins:
+  planets_data_large_public__planets:
+    planets_data_large_public__stars: {}
+  planets_data_large_public__telescope_allocation:
+    planets_data_large_public__instruments_surveys: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

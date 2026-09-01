@@ -1,0 +1,66 @@
+label: DisasterEventCore
+description: All columns of the public table DisasterEventCore.
+catalog: disaster_relief_large
+schema: public
+table_name: DisasterEventCore
+dimensions:
+  affected_area:
+    description: 'VARCHAR(100). Geographic region or administrative area impacted by disaster. Example: "9tVNOIpKL0".'
+    sql: '"affectedArea"'
+  coordinating_agency:
+    description: 'VARCHAR(100). Primary organization leading disaster response coordination. Example: "bsWf7HbOeA".'
+    sql: '"coordinatingAgency"'
+  displaced_persons:
+    description: 'VARCHAR(100). Count of individuals forced to leave primary residence due to disaster. Example: "y9YFfR6P6P".'
+    sql: '"displacedPersons"'
+  distregistry_ref:
+    description: 'VARCHAR(100). Logical reference to original disaster event identifier (disasterevents.distregistry). Example: "I destroy my enemies when I make them my friends. Navicat Monitor requires a repository             ".'
+    sql: '"distregistryRef"'
+  emergency_funding:
+    description: 'VARCHAR(100). Total financial resources allocated for emergency response in USD. Example: "537".'
+    sql: '"emergencyFunding"'
+  end_date:
+    description: 'VARCHAR(100). Official end date or stabilization date of disaster event. Example: "2006-08-29".'
+    sql: '"endDate"'
+  estimated_casualties:
+    description: 'VARCHAR(100). Projected number of fatalities and injuries resulting from disaster. Example: "hwylEdEKn3".'
+    sql: '"estimatedCasualties"'
+  event_name:
+    description: 'VARCHAR(100). Official name or title assigned to the disaster event. Example: "A comfort zone is a beautiful place, but nothing ever grows there. The Information                  ".'
+    sql: '"eventName"'
+  event_type:
+    description: 'VARCHAR(100). Classification of disaster type (Earthquake|Flood|Hurricane|Wildfire|Tsunami|Drought|Pandemic|Terrorism|IndustrialAccident|Landslide). Possible values: "Drought", "Earthquake", "Flood", "Hurricane", "IndustrialAccident", "Landslide", "Pandemic", "Terrorism", "Tsunami", "Wildfire".'
+    sql: '"eventType"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for disaster event core records. Example: 1.'
+    sql: id
+  infrastructure_damage:
+    description: 'VARCHAR(100). Assessment of built environment destruction level (None|Minor|Moderate|Severe|Total). Possible values: "Minor", "Moderate", "None", "Severe", "Total".'
+    sql: '"infrastructureDamage"'
+  latitude:
+    description: 'VARCHAR(100). Geographic latitude coordinate of disaster epicenter or primary impact zone (-90 to 90). Example: "hjr6NQWbA8".'
+    sql: latitude
+  longitude:
+    description: 'VARCHAR(100). Geographic longitude coordinate of disaster epicenter or primary impact zone (-180 to 180). Example: "hP2Ohu3HC5".'
+    sql: longitude
+  notes:
+    description: 'VARCHAR(100). Additional contextual information or observations about disaster event. Example: "WVuisp8C44".'
+    sql: notes
+  response_phase:
+    description: 'VARCHAR(100). Current operational phase (Preparedness|Response|Recovery|Mitigation|Reconstruction). Possible values: "Mitigation", "Preparedness", "Reconstruction", "Recovery", "Response".'
+    sql: '"responsePhase"'
+  severity_level:
+    description: 'VARCHAR(100). Impact severity rating (Minor|Moderate|Major|Catastrophic|Apocalyptic). Possible values: "Apocalyptic", "Catastrophic", "Major", "Minor", "Moderate".'
+    sql: '"severityLevel"'
+  shelter_capacity_used:
+    description: 'VARCHAR(100). Number of displaced persons accommodated in formal shelter facilities. Example: "877".'
+    sql: '"shelterCapacityUsed"'
+  start_date:
+    description: 'VARCHAR(100). Official start date of disaster event occurrence. Example: "2014-03-04".'
+    sql: '"startDate"'
+  supply_deployed:
+    description: 'VARCHAR(100). Total quantity of relief supplies distributed to affected populations. Example: "877".'
+    sql: '"supplyDeployed"'
+  volunteer_mobilized:
+    description: 'VARCHAR(100). Count of volunteer personnel deployed for disaster response. Example: "877".'
+    sql: '"volunteerMobilized"'

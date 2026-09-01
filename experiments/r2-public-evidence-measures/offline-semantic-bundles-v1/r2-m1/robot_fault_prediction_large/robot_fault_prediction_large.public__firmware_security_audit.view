@@ -1,0 +1,63 @@
+label: firmware_security_audit
+description: All columns of the public table firmware_security_audit.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: firmware_security_audit
+dimensions:
+  audit_auditor_signature:
+    description: TEXT. Digital signature of the auditing system.
+    sql: audit_auditor_signature
+  audit_log_id:
+    description: TEXT. Unique ID for the security scan.
+    sql: audit_log_id
+  boot_time_impact_ms:
+    description: 'INTEGER. Change in boot time compared to previous version. **NULL means Reboot not required.** Example: 100.'
+    sql: boot_time_impact_ms
+  checksum_sha256:
+    description: TEXT. Cryptographic hash of the installed firmware binary.
+    sql: checksum_sha256
+  compliance_standard_ref:
+    description: TEXT. The security standard adhered to (e.g., IEC-62443). **NULL means Internal standard only.**
+    sql: compliance_standard_ref
+  configuration_drift_detected:
+    description: 'BOOLEAN. Flag if config differs from default baseline. Possible values: True, False.'
+    sql: configuration_drift_detected
+  critical_warning_flag:
+    description: 'BOOLEAN. Overall pass/fail status of the audit. Possible values: True, False.'
+    sql: critical_warning_flag
+  cve_vulnerability_count:
+    description: 'INTEGER. Number of known vulnerabilities detected in dependencies. Example: 50.'
+    sql: cve_vulnerability_count
+  deployment_ref:
+    description: TEXT. Reference to the deployment event.
+    sql: deployment_ref
+  digital_signature_valid:
+    description: 'BOOLEAN. Verification status of the vendor signature. Possible values: True, False.'
+    sql: digital_signature_valid
+  encryption_standard_used:
+    description: 'TEXT. Primary encryption algorithm for communications. Unique values: AES-256, TLS 1.3, ChaCha20.'
+    sql: encryption_standard_used
+  memory_protection_active:
+    description: 'BOOLEAN. Status of ASLR/DEP protection mechanisms. Possible values: True, False.'
+    sql: memory_protection_active
+  open_ports_detected:
+    description: 'INTEGER. Count of network ports opened by new firmware. Example: 50.'
+    sql: open_ports_detected
+  privilege_level_requested:
+    description: 'TEXT. OS execution level (Root, User, Kernel). Unique values: User, Kernel, Root.'
+    sql: privilege_level_requested
+  rollback_capability_verified:
+    description: 'BOOLEAN. Confirmed ability to revert to previous version safely. Possible values: True, False.'
+    sql: rollback_capability_verified
+  scan_duration_ms:
+    description: 'INTEGER. Time taken to perform the security audit. Example: 2500.'
+    sql: scan_duration_ms
+  static_analysis_score:
+    description: 'REAL. Code quality score from SAST tools (0-10). Example: 8.5.'
+    sql: static_analysis_score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct firmware_security_audit public identity values.
+    label: firmware_security_audit Count
+    sql: ${robot_fault_prediction_large_public__firmware_security_audit.audit_log_id}

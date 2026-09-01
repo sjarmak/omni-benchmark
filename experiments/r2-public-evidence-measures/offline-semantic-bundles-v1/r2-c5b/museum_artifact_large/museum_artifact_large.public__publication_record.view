@@ -1,0 +1,66 @@
+label: PublicationRecord
+description: All columns of the public table PublicationRecord.
+catalog: museum_artifact_large
+schema: public
+table_name: PublicationRecord
+dimensions:
+  archival_location:
+    description: VARCHAR(100). Physical or digital archive location for preservation.
+    sql: '"archivalLocation"'
+  citation_count:
+    description: VARCHAR(100). Number of academic citations received.
+    sql: '"citationCount"'
+  copyright_holder:
+    description: VARCHAR(100). Entity holding publication copyright.
+    sql: '"copyrightHolder"'
+  cover_type:
+    description: VARCHAR(100). Physical binding type (Hardcover, Paperback, Spiral, DigitalOnly, LooseLeaf).
+    sql: '"coverType"'
+  digital_availability:
+    description: VARCHAR(100). Digital access status (FullText, AbstractOnly, BehindPaywall, Embargoed, None).
+    sql: '"digitalAvailability"'
+  distribution_channel:
+    description: VARCHAR(100). Primary distribution method (AcademicPress, CommercialPublisher, MuseumPress, SelfPublished, OpenAccess).
+    sql: '"distributionChannel"'
+  editorial_board:
+    description: VARCHAR(100). Composition and expertise of editorial board.
+    sql: '"editorialBoard"'
+  id:
+    description: BIGSERIAL. Auto-increment primary key for publication records.
+    sql: id
+  impact_factor:
+    description: VARCHAR(100). Journal impact factor metric where applicable.
+    sql: '"impactFactor"'
+  isbn_issn:
+    description: VARCHAR(100). ISBN or ISSN identifier for publication.
+    sql: '"isbnIssn"'
+  language:
+    description: VARCHAR(100). Primary language of publication content.
+    sql: language
+  licensing_terms:
+    description: VARCHAR(100). Copyright licensing terms (CC-BY, CC-NC, CC-ND, AllRightsReserved, PublicDomain).
+    sql: '"licensingTerms"'
+  open_access_status:
+    description: VARCHAR(100). Open access classification (Gold, Green, Hybrid, Bronze, Closed).
+    sql: '"openAccessStatus"'
+  page_count:
+    description: VARCHAR(100). Total number of pages in publication.
+    sql: '"pageCount"'
+  peer_review_type:
+    description: VARCHAR(100). Peer review methodology (SingleBlind, DoubleBlind, Open, None, PostPublication).
+    sql: '"peerReviewType"'
+  print_run:
+    description: VARCHAR(100). Total number of physical copies printed.
+    sql: '"printRun"'
+  publication_code:
+    description: VARCHAR(100). Unique identifier for publication entity.
+    sql: '"publicationCode"'
+  publication_title:
+    description: VARCHAR(100). Full title of published work.
+    sql: '"publicationTitle"'
+  publication_year:
+    description: VARCHAR(100). Year of publication release.
+    sql: '"publicationYear"'
+  publisher_name:
+    description: VARCHAR(100). Name of publishing organization.
+    sql: '"publisherName"'

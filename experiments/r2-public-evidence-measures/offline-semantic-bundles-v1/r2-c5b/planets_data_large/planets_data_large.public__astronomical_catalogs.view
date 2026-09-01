@@ -1,0 +1,78 @@
+label: astronomical_catalogs
+description: All columns of the public table astronomical_catalogs.
+catalog: planets_data_large
+schema: public
+table_name: astronomical_catalogs
+dimensions:
+  catalogref:
+    description: 'bigint. Primary key identifier for astronomical catalog records. PK. Possible values: 23001, 23002, 23003, 23004, 23005.'
+    sql: '"CATALOGREF"'
+  catalog_acronym:
+    description: 'text. Standard acronym or abbreviation for the catalog. Possible values: Gaia DR3, KOI, NEA, SIMBAD, TRAPPIST.'
+    sql: '"CatalogAcronym"'
+  citation_information:
+    description: 'text. Preferred citation format for using the catalog. **NULL means citation information was not provided.**. Possible values: Akeson et al. 2013, Gaia Collaboration et al. 2022, Wenger et al. 2000.'
+    sql: '"CitationInformation"'
+  data_completeness_fraction:
+    description: 'real. Estimated completeness fraction of the catalog (0.0 to 1.0). **NULL means completeness was not assessed.**. Possible values: 0.65, 0.78, 0.85, 0.99.'
+    sql: '"DATA_COMPLETENESS_FRACTION"'
+  data_release_version:
+    description: 'text. Version identifier for the catalog data release. **NULL means version information was not specified.**. Possible values: 2024.02, 4.1.7, DR3.'
+    sql: '"DataReleaseVersion"'
+  full_name:
+    description: 'text. Full formal name or title of the catalog. **NULL means full name was not specified.**. Possible values: Gaia Data Release 3, NASA Exoplanet Archive, Set of Identifications Measurements and Bibliography for Astronomical Data.'
+    sql: '"FULL_NAME"'
+  maintainer_institution:
+    description: 'text. Institution responsible for maintaining the catalog. Possible values: CDS Strasbourg, ESA, IPAC/Caltech, NASA Kepler Mission, University of Liège.'
+    sql: '"MAINTAINER_INSTITUTION"'
+  magnitude_limit_mag:
+    description: 'real. Limiting magnitude for objects included in the catalog. **NULL means magnitude limit was not specified.**. Possible values: 21.0.'
+    sql: '"MagnitudeLimit_mag"'
+  notes:
+    description: 'text. Additional notes or comments about the catalog. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  observatory_origin:
+    description: 'text. Observatory or facility that originated the catalog data. Possible values: Centre de Données astronomiques de Strasbourg, European Space Agency, NASA Exoplanet Science Institute, NASA Kepler Space Telescope, University of Liège.'
+    sql: '"OBSERVATORY_ORIGIN"'
+  publication_date:
+    description: 'date. Date when the catalog was first published or released. Example: 1983-01-01.'
+    sql: '"PUBLICATION_DATE"'
+  stellar_entries:
+    description: 'bigint. Number of stellar objects in the catalog. **NULL means stellar count was not specified.**. Possible values: 1468677805.0.'
+    sql: '"STELLAR_ENTRIES"'
+  survey_name:
+    description: 'text. Name of the survey that produced the catalog data. **NULL means survey name was not specified.**. Possible values: Gaia, Kepler, Multiple, TRAPPIST.'
+    sql: '"SurveyName"'
+  total_entries:
+    description: 'bigint. Total number of entries or objects in the catalog. Possible values: 13500000, 156, 1811709771, 5035, 8826.'
+    sql: '"TotalEntries"'
+  wavelength_bands:
+    description: 'text. Wavelength bands or filters covered by the catalog. **NULL means wavelength information was not specified.**. Possible values: All, G;BP;RP, I+z, Kepler.'
+    sql: '"WAVELENGTH_BANDS"'
+  web_interface_url:
+    description: 'text. URL of the catalog''s web interface or query portal. **NULL means no web interface is available.**. Possible values: http://simbad.cds.unistra.fr/, https://exoplanetarchive.ipac.caltech.edu/, https://gea.esac.esa.int/archive/.'
+    sql: '"WebInterfaceUrl"'
+  access_restrictions_flag:
+    description: 'boolean. Flag indicating presence of access restrictions or proprietary data. **NULL means access restrictions were not specified.**. Possible values: False.'
+    sql: access_restrictions_flag
+  catalog_name:
+    description: 'text. Official name of the astronomical catalog. Possible values: Exoplanet Archive, Gaia Data Release 3, Kepler Objects of Interest, SIMBAD Astronomical Database, TRAPPIST Exoplanet Survey.'
+    sql: catalog_name
+  catalog_type:
+    description: 'text. Type or category of catalog (star catalog, exoplanet archive, etc.). Possible values: Astrometric, Bibliographic, Exoplanet, Exoplanet Candidates, Exoplanet Transit Survey.'
+    sql: catalog_type
+  epoch_years:
+    description: 'real. Reference epoch for positions and proper motions in years. Possible values: 2013.0, 2016.0, 2020.5, 2023.5, 2023.8.'
+    sql: epoch_years
+  last_update_date:
+    description: 'date. Date of the most recent catalog update. **NULL means update date was not recorded.**. Possible values: 2022-12-03, 2023-09-15, 2024-02-15, 2024-02-20.'
+    sql: last_update_date
+  planetary_entries:
+    description: 'bigint. Number of planetary objects in the catalog. **NULL means planetary count was not specified.**. Possible values: 45.0, 5035.0, 8826.0.'
+    sql: planetary_entries
+  principal_investigator:
+    description: 'text. Name of the principal investigator or catalog manager. **NULL means PI information was not available.**. Possible values: Anthony Brown, Michaël Gillon, William Borucki.'
+    sql: principal_investigator
+  sky_coverage_square_degrees:
+    description: 'real. Total sky coverage of the catalog in square degrees. **NULL means sky coverage was not specified.**. Possible values: 115.0, 41253.0.'
+    sql: sky_coverage_square_degrees

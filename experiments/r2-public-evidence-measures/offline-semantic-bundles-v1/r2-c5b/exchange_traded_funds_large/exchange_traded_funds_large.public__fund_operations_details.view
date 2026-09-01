@@ -1,0 +1,96 @@
+label: fund_operations_details
+description: All columns of the public table fund_operations_details.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: fund_operations_details
+dimensions:
+  authorized_participants:
+    description: 'TEXT. Authorized participants eligible for creation/redemption. Possible values: Credit Suisse Securities, Deutsche Bank Securities, Goldman Sachs Securities, J.P. Morgan Securities, Morgan Stanley, UBS Securities.'
+    sql: authorized_participants
+  capital_gains_frequency:
+    description: 'TEXT. Frequency of capital gains distributions. Possible values: Annually.'
+    sql: capital_gains_frequency
+  cik_number:
+    description: 'TEXT. Central Index Key number assigned by SEC. Possible values: 1117010, 862084, 884394, 931142.'
+    sql: cik_number
+  creation_unit_size:
+    description: 'BIGINT. Number of shares in a creation unit for ETF operations. Possible values: 100000, 200000, 50000, 600000.'
+    sql: creation_unit_size
+  dividend_frequency:
+    description: 'TEXT. Frequency of dividend payments (Monthly, Quarterly, Annually). Possible values: Monthly, Quarterly.'
+    sql: dividend_frequency
+  dividend_payment_date:
+    description: 'DATE. Date of dividend payment. Possible values: 2024-01-05, 2024-03-15, 2024-03-19, 2024-03-21, 2024-03-27, 2024-03-28.'
+    sql: dividend_payment_date
+  ex_dividend_date:
+    description: 'DATE. Ex-dividend date for dividend eligibility. Possible values: 2024-01-03, 2024-03-13, 2024-03-17, 2024-03-19, 2024-03-25, 2024-03-26.'
+    sql: ex_dividend_date
+  foreign_tax_credit_scorings:
+    description: 'REAL. Foreign tax credits available to shareholders. Possible values: 0.01, 0.02, 0.03, 0.04, 0.08, 0.15.'
+    sql: foreign_tax_credit_scorings
+  fund_cusip:
+    description: 'TEXT. CUSIP identifier for the fund. Possible values: 464287103, 464287200, 464287614, 73935X102, 78462F103, 922908769.'
+    sql: fund_cusip
+  fund_ticker:
+    description: 'TEXT. Fund ticker symbol identifier. Possible values: AVMU, FALN, FTGC, QQD, USTB, UVXY.'
+    sql: fund_ticker
+  fund_type:
+    description: 'TEXT. Type classification of the fund (Open-end, Closed-end, ETF). Possible values: ETF.'
+    sql: fund_type
+  isin:
+    description: 'TEXT. International Securities Identification Number. Possible values: US4642871035, US4642872000, US4642876142, US73935X1029, US78462F1030, US9229087690.'
+    sql: isin
+  last_updated:
+    description: 'TEXT. Timestamp of last data update. Possible values: 2024-12-15 09:30:00 HKT+8.'
+    sql: last_updated
+  legal_structure:
+    description: 'TEXT. Legal structure of the fund (Trust, Corporation, LLC). Possible values: TRUST, Trust, trust.'
+    sql: legal_structure
+  liquidity_provider:
+    description: 'TEXT. Primary liquidity provider for the fund. Possible values: GTS Securities, Hudson River Trading, Jane Street Capital, Tower Research Capital, Two Sigma Securities, Wolverine Trading.'
+    sql: liquidity_provider
+  management_company:
+    description: 'TEXT. Name of the fund management company. **NULL means management company information is not disclosed or available.**. Possible values: Invesco, State Street GLOBAL Advisors, iShares by BlackRock, vanguard.'
+    sql: management_company
+  management_tenure:
+    description: 'TEXT. Duration of current management team tenure. Possible values: 144 months, 156 months, 168 months, 192 months, 198 months, 276 months.'
+    sql: management_tenure
+  minimum_investment:
+    description: 'REAL. Minimum investment amount required. Possible values: 1.0.'
+    sql: minimum_investment
+  operation_id:
+    description: 'BIGSERIAL. Primary key identifier for fund operations record. PK. Possible values: 1, 2, 3, 4, 5, 6.'
+    sql: operation_id
+  portfolio_manager_primary:
+    description: 'TEXT. Primary portfolio manager responsible for fund management. Possible values: Diane Hsiung, Gerard C. O''Reilly, Greg Savage, Michael J. Feehily, Ryan Issakainen, Scott Radell.'
+    sql: portfolio_manager_primary
+  portfolio_manager_secondary:
+    description: 'TEXT. Secondary or co-portfolio manager. Possible values: James Mauro, Jennifer Hsui, Michelle Louie, Robert Mitchnick, Sarah Chen, Tony Seisser.'
+    sql: portfolio_manager_secondary
+  primary_market_maker:
+    description: 'TEXT. Primary market maker facilitating trading. Possible values: Citadel Securities, Flow Traders, IMC Chicago, Knight Capital, Susquehanna International, Virtu Americas.'
+    sql: primary_market_maker
+  qualified_dividend_income:
+    description: 'REAL. Percentage of qualified dividend income. Possible values: 0.75, 0.82, 0.89, 0.91, 0.95, 0.98.'
+    sql: qualified_dividend_income
+  reporting_currency:
+    description: 'TEXT. Currency used for reporting fund performance. Possible values: USD.'
+    sql: reporting_currency
+  sec_file_number:
+    description: 'TEXT. SEC filing number for regulatory identification. Possible values: 811-04920, 811-05528, 811-07257, 811-09102.'
+    sql: sec_file_number
+  settlement_period:
+    description: 'TEXT. Settlement period for trades (T+1, T+2, T+3). Possible values: T+2.'
+    sql: settlement_period
+  share_classes:
+    description: 'TEXT. Available share classes for the fund. Possible values: Single Class.'
+    sql: share_classes
+  sub_advisor:
+    description: 'TEXT. Sub-advisor or co-manager of the fund. Possible values: BlackRock Fixed Income, BlackRock Fund Advisors, BlackRock International, Invesco QQS, State Street Associates, Vanguard Quantitative Equity Group.'
+    sql: sub_advisor
+  tax_classification:
+    description: 'TEXT. Tax classification status of the fund. Possible values: RIC.'
+    sql: tax_classification
+  trading_currency:
+    description: 'TEXT. Primary trading currency. **NULL means trading currency is not specified or varies.**. Possible values: USD, Usd, usd.'
+    sql: trading_currency

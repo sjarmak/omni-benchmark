@@ -1,0 +1,66 @@
+label: PhotoProcessingQueue
+description: All columns of the public table PhotoProcessingQueue.
+catalog: archeology_scan_large
+schema: public
+table_name: PhotoProcessingQueue
+dimensions:
+  photo_processing_queue_id:
+    description: TEXT. Unique identifier for each photo processing queue entry.
+    sql: '"PhotoProcessingQueue_id"'
+  auto_enhance_applied:
+    description: 'BOOLEAN. Whether automatic enhancement algorithms were applied. Possible values: True, False.'
+    sql: auto_enhance_applied
+  color_correction_applied:
+    description: 'BOOLEAN. Whether color correction algorithms were applied. Possible values: True, False.'
+    sql: color_correction_applied
+  compression_quality_percent:
+    description: 'INTEGER. JPEG compression quality setting from 1 to 100. Example: 50.'
+    sql: compression_quality_percent
+  crop_applied:
+    description: 'BOOLEAN. Whether the image was cropped during processing. Possible values: True, False.'
+    sql: crop_applied
+  metadata_preserved:
+    description: 'BOOLEAN. Whether EXIF and other metadata was preserved in output. Possible values: True, False.'
+    sql: metadata_preserved
+  noise_reduction_level:
+    description: 'REAL. Intensity of noise reduction applied from 0 to 100 percent. **NULL means Noise reduction step not yet executed.** Example: 25.0.'
+    sql: noise_reduction_level
+  output_format:
+    description: 'TEXT. File format of the processed output image. Unique values: JPEG, TIFF, PNG, DNG.'
+    sql: output_format
+  output_height_pixels:
+    description: 'INTEGER. Height of the processed output image in pixels. **NULL means Processing not completed.** Example: 50.'
+    sql: output_height_pixels
+  output_width_pixels:
+    description: 'INTEGER. Width of the processed output image in pixels. **NULL means Processing not completed.** Example: 50.'
+    sql: output_width_pixels
+  photography_ref:
+    description: TEXT. Reference to the source artifact photography record.
+    sql: photography_ref
+  processed_file_size_mb:
+    description: 'REAL. Size of the processed output file in megabytes. **NULL means Processing not yet completed.** Example: 12.0.'
+    sql: processed_file_size_mb
+  processing_duration_seconds:
+    description: 'REAL. Total time taken to process the image in seconds. **NULL means Processing not yet completed.** Example: 45.0.'
+    sql: processing_duration_seconds
+  processing_priority:
+    description: 'INTEGER. Priority level for processing from 1 lowest to 10 highest. Example: 50.'
+    sql: processing_priority
+  processing_status:
+    description: 'TEXT. Current status of the photo in processing pipeline. Unique values: Queued, Processing, Completed, Failed, On Hold.'
+    sql: processing_status
+  quality_score:
+    description: 'REAL. Automated quality assessment score from 0 to 100. **NULL means Quality assessment pending.** Example: 82.0.'
+    sql: quality_score
+  queue_entry_timestamp:
+    description: 'TIMESTAMP. Date and time when photo entered the processing queue. Example: 2024-01-01 12:00:00.'
+    sql: queue_entry_timestamp
+  raw_file_size_mb:
+    description: 'REAL. Size of the raw unprocessed image file in megabytes. Example: 45.0.'
+    sql: raw_file_size_mb
+  retry_count:
+    description: 'INTEGER. Number of times processing was retried after failure. Example: 50.'
+    sql: retry_count
+  sharpening_radius_pixels:
+    description: 'REAL. Pixel radius used for unsharp mask sharpening. **NULL means Sharpening not applied to this image.** Example: 50.0.'
+    sql: sharpening_radius_pixels

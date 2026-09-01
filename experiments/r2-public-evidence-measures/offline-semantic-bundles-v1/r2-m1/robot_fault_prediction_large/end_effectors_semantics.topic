@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__end_effectors
+label: end_effectors
+description: All columns of the public table end_effectors.
+fields:
+- robot_fault_prediction_large_public__end_effectors.*
+joins: {}
+ai_context: This topic models no cross-table joins.

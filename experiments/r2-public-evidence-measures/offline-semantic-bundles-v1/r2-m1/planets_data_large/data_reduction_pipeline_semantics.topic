@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__data_reduction_pipeline
+label: DataReductionPipeline
+description: All columns of the public table DataReductionPipeline.
+fields:
+- planets_data_large_public__data_reduction_pipeline.*
+joins: {}
+ai_context: This topic models no cross-table joins.

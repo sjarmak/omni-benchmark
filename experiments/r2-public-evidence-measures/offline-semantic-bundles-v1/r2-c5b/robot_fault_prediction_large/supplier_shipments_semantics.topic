@@ -1,0 +1,9 @@
+base_view: robot_fault_prediction_large_public__supplier_shipments
+label: supplier_shipments
+description: All columns of the public table supplier_shipments.
+fields:
+- robot_fault_prediction_large_public__supplier_shipments.*
+- robot_fault_prediction_large_public__materials.*
+joins:
+  robot_fault_prediction_large_public__materials: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

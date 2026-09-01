@@ -1,0 +1,105 @@
+label: transaction_settlement_info
+description: All columns of the public table transaction_settlement_info.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: transaction_settlement_info
+dimensions:
+  audit_trail_hash:
+    description: 'TEXT. SHA-256 hash of the immutable audit-trail document covering this settlement. Example: 85f90f8fb16d…db1441.'
+    sql: '"AuditTrailHash"'
+  cryptotx_hash:
+    description: 'TEXT. Blockchain transaction hash for crypto settlements (blank when fiat). Example: ceca49be2856…56014.**NULL means hash not existed'
+    sql: '"CRYPTOtxHash"'
+  eventcode:
+    description: 'TEXT. Event identifier from the `transactions` table (foreign key). Example: TX4833222.'
+    sql: '"EVENTCODE"'
+  lastupdated:
+    description: 'text. Datetime this record was last modified (DD/MM/YYYY HH:MM:SS). Example: 25/04/2025 00:00:00.'
+    sql: '"LASTUPDATED"'
+  payoutbank:
+    description: 'TEXT. Bank or payment institution associated with `payoutAccount`. Example: CITI.'
+    sql: '"PAYOUTBANK"'
+  settlement_date:
+    description: 'text. Date-time when funds were officially settled (DD/MM/YYYY HH:MM:SS). Example: 12/04/2024 00:00:00.'
+    sql: '"SettlementDATE"'
+  settlement_processor:
+    description: 'TEXT. Third-party payment processor executing the settlement. Example: Checkout.com.'
+    sql: '"SettlementProcessor"'
+  batch_seq:
+    description: 'BIGINT. Position of the settlement within its batch. Example: 1.'
+    sql: '"batchSEQ"'
+  clearing_house:
+    description: 'TEXT. Clearing network used for payout (FEDWIRE, SEPA, SWIFT, ACH). Example: FEDWIRE.'
+    sql: '"clearingHOUSE"'
+  compliance_status:
+    description: 'TEXT. Result of compliance screening (clear, flagged, manual_review). Example: manual_review.'
+    sql: '"complianceSTATUS"'
+  compliance_checked:
+    description: 'BOOLEAN. True if the settlement passed through AML/KYC compliance screening. Example: true.'
+    sql: compliance_checked
+  crypto_exchange_confirmations:
+    description: 'BIGINT. Number of block confirmations observed for the crypto transfer. **NULL means the settlement was fiat or the value has not been captured.** Example: 94.'
+    sql: '"crypto_exchangeCONFIRMATIONS"'
+  dispute_amount:
+    description: 'REAL. Funds temporarily held due to an open dispute. Example: 0.00.'
+    sql: dispute_amount
+  exchange_rate:
+    description: 'REAL. FX rate used when converting `settlementCurrency` to the platform’s ledger currency.** Example: 1.12.'
+    sql: exchange_rate
+  fee_ratio_pct:
+    description: 'REAL. Total fees as a percentage of `gross_amount`. Example: 2.76.'
+    sql: '"feeRatio_pct"'
+  lag_window_hrs:
+    description: 'TEXT. Typical settlement lag expressed as a range of hours (min–max). Example: 25–40.'
+    sql: lag_window_hrs
+  payout_account:
+    description: 'TEXT. Vendor’s destination account reference/token. Example: ACCT-ZMC8Q6Y21H.'
+    sql: '"payoutAccount"'
+  payout_country:
+    description: 'TEXT. ISO-3166-1 alpha-2 code of the payout destination country. Example: AU.'
+    sql: payout_country
+  payout_method:
+    description: 'TEXT. Channel used to pay the vendor (ACH, Wire, PayPal, Crypto). Example: PayPal.'
+    sql: payout_method
+  payoutchunk:
+    description: JSONB column. Holds payout gross/net/refund/fee amounts in a semi-coherent blob
+    sql: payoutchunk
+  processing_time_hrs:
+    description: 'REAL. Elapsed hours between transaction capture and vendor payout. Example: 4.11.'
+    sql: processing_time_hrs
+  settlement_currency:
+    description: 'TEXT. ISO currency or crypto ticker in which settlement occurred (USD, EUR, BTC, etc.). Example: USDT.'
+    sql: '"settlementCurrency"'
+  settlement_status:
+    description: 'TEXT. Current state of the settlement (completed, pending, failed, reversed). Example: pending.'
+    sql: '"settlementSTATUS"'
+  settlement_batch_ref:
+    description: 'TEXT. Identifier for the payout batch this settlement belongs to. Example: BATCH-IDT5C43JWF.'
+    sql: settlement_batch_ref
+  settlement_ref:
+    description: 'TEXT. Unique alphanumeric reference assigned to each settlement record (primary key). Example: SETT-01Z2SE4QSN.'
+    sql: settlement_ref
+  payoutchunk_chgback_amt:
+    description: 'REAL. Amount reversed by a chargeback process. Example: 0.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(payoutchunk, 'chgbackAMT')
+  payoutchunk_fee_s_escrow_fee:
+    description: 'REAL. Portion of `fee_amount` withheld as escrow-service fee. Example: 11.48.'
+    sql: JSONB_EXTRACT_PATH_TEXT(payoutchunk, 'feeS', 'escrowFee_')
+  payoutchunk_fee_s_plat_fee_val:
+    description: 'REAL. Portion of `fee_amount` retained by the marketplace platform. Example: 20.63.'
+    sql: JSONB_EXTRACT_PATH_TEXT(payoutchunk, 'feeS', 'platFeeVAL')
+  payoutchunk_fee_s_total_fee:
+    description: 'REAL. Aggregate fees deducted from the gross amount. Example: 32.11.'
+    sql: JSONB_EXTRACT_PATH_TEXT(payoutchunk, 'feeS', 'totalFEE')
+  payoutchunk_gross_amt:
+    description: 'REAL. Total value of the underlying transaction before any deductions. Example: 1165.45.'
+    sql: JSONB_EXTRACT_PATH_TEXT(payoutchunk, 'grossAmt$')
+  payoutchunk_net_amt_final:
+    description: 'REAL. Net amount credited after fees, refunds, disputes and chargebacks. Example: 1133.34.'
+    sql: JSONB_EXTRACT_PATH_TEXT(payoutchunk, 'net_amt_final')
+  payoutchunk_refund_to_buyer:
+    description: 'REAL. Funds returned to the buyer (zero if no refund). Example: 0.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(payoutchunk, 'refund_to_buyer')
+  payoutchunk_vendor_paid:
+    description: 'REAL. Final amount released to the vendor after all adjustments. Example: 1133.34.'
+    sql: JSONB_EXTRACT_PATH_TEXT(payoutchunk, 'vendorPAID')

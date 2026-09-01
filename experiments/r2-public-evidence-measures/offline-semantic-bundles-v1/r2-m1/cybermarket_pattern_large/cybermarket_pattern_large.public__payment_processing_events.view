@@ -1,0 +1,72 @@
+label: PaymentProcessingEvents
+description: All columns of the public table PaymentProcessingEvents.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: PaymentProcessingEvents
+dimensions:
+  ppe_id:
+    description: TEXT. Unique identifier for the payment processing event.
+    sql: '"PPE_id"'
+  amount_processed:
+    description: 'REAL. Actual amount processed. **NULL means Payment declined or not yet processed.** Example: 148.'
+    sql: amount_processed
+  amount_requested:
+    description: 'REAL. Original payment amount requested. Example: 150.'
+    sql: amount_requested
+  authorization_code:
+    description: TEXT. Authorization code from processor. **NULL means Authorization not completed.**
+    sql: authorization_code
+  avs_response_code:
+    description: 'TEXT. Address Verification System response. **NULL means AVS not performed.** Unique values: Match, Partial Match, No Match, Unavailable, Not Applicable.'
+    sql: avs_response_code
+  currency_code:
+    description: 'TEXT. Currency code for the payment. Unique values: USD, EUR, GBP, JPY, CAD, AUD, CHF.'
+    sql: currency_code
+  cvv_verification_passed:
+    description: 'BOOLEAN. Whether CVV verification passed. **NULL means CVV verification not applicable.** Possible values: True, False.'
+    sql: cvv_verification_passed
+  decline_reason:
+    description: 'TEXT. Reason for payment decline if applicable. **NULL means Payment not declined.** Unique values: Insufficient Funds, Card Expired, Invalid Card, Fraud Suspected, Issuer Declined, Technical Error.'
+    sql: decline_reason
+  event_timestamp:
+    description: 'TIMESTAMP. Timestamp when the payment event occurred. Example: 2024-01-01 12:00:00.'
+    sql: event_timestamp
+  fraud_check_passed:
+    description: 'BOOLEAN. Whether fraud checks passed. Possible values: True, False.'
+    sql: fraud_check_passed
+  fraud_score:
+    description: 'REAL. Fraud risk score (0-100). Example: 15.'
+    sql: fraud_score
+  payment_method_type:
+    description: 'TEXT. Type of payment method used. Unique values: Credit Card, Debit Card, Bank Transfer, Digital Wallet, Cryptocurrency, Buy Now Pay Later.'
+    sql: payment_method_type
+  processing_fee:
+    description: 'REAL. Fee charged for processing the payment. Example: 3.5.'
+    sql: processing_fee
+  processing_fee_pct:
+    description: 'REAL. Processing fee as percentage of transaction. Example: 2.8.'
+    sql: processing_fee_pct
+  processing_stage:
+    description: 'TEXT. Current stage in payment processing. Unique values: Initiated, Authorized, Captured, Settled, Declined, Refunded, Chargeback.'
+    sql: processing_stage
+  processing_time_ms:
+    description: 'INTEGER. Time to process payment in milliseconds. Example: 1500.'
+    sql: processing_time_ms
+  processor_name:
+    description: 'TEXT. Name of the payment processor. Unique values: Stripe, PayPal, Square, Adyen, Worldpay, Braintree.'
+    sql: processor_name
+  retry_count:
+    description: 'INTEGER. Number of payment retry attempts. Example: 0.'
+    sql: retry_count
+  three_ds_authenticated:
+    description: 'BOOLEAN. Whether 3D Secure authentication completed. **NULL means 3DS not required or not supported.** Possible values: True, False.'
+    sql: three_ds_authenticated
+  transaction_ref:
+    description: TEXT. Reference to the parent transaction.
+    sql: transaction_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct PaymentProcessingEvents public identity values.
+    label: PaymentProcessingEvents Count
+    sql: ${cybermarket_pattern_large_public__payment_processing_events.ppe_id}

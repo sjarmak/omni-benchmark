@@ -1,0 +1,102 @@
+label: crime_statistics
+description: All columns of the public table crime_statistics.
+catalog: residential_data_large
+schema: public
+table_name: crime_statistics
+dimensions:
+  burglary_incidents:
+    description: 'BIGINT. Number of burglary incidents reported. **NULL means burglary data not available.**. Possible values: 12.0, 15.0, 8.0.'
+    sql: '"BURGLARY_incidents"'
+  case_clearance_rate_percent:
+    description: 'REAL. Percentage of cases cleared or solved. **NULL means clearance rates not tracked.**. Possible values: 65.8, 68.5, 72.3.'
+    sql: '"CASE_clearance_rate_percent"'
+  community_policing_programs:
+    description: 'BIGINT. Number of community policing programs active. **NULL means community programs not tracked.**. Possible values: 2.0, 3.0, 4.0.'
+    sql: '"COMMUNITY_policing_programs"'
+  crime_district_zone:
+    description: 'BIGINT. District zone number for crime statistics. FK to locations(zonenum). Possible values: 222, 315.'
+    sql: '"Crime_District_Zone"'
+  crime_id:
+    description: 'BIGSERIAL. Primary key identifier for crime statistics record. PK. Possible values: 1, 2, 3, 4.'
+    sql: '"Crime_ID"'
+  crime_reporting_region:
+    description: 'TEXT. Regional identifier for crime reporting area. FK to locations(regioncode). Possible values: Guará, Taguatinga.'
+    sql: '"Crime_Reporting_Region"'
+  disaster_preparedness_score:
+    description: 'BIGINT. Emergency preparedness rating. **NULL means disaster preparedness not assessed.**. Possible values: 6.0, 7.0, 8.0.'
+    sql: '"DISASTER_preparedness_score"'
+  drug_related_incidents:
+    description: 'BIGINT. Number of drug-related incidents reported. **NULL means drug crime data not available.**. Possible values: 15.0, 18.0, 21.0.'
+    sql: '"DRUG_related_incidents"'
+  domestic_violence_incidents:
+    description: 'BIGINT. Number of domestic violence incidents reported. **NULL means domestic violence data not collected.**. Possible values: 12.0, 15.0, 18.0.'
+    sql: '"Domestic_Violence_Incidents"'
+  emergency_call_volume:
+    description: 'BIGINT. Number of emergency calls received. **NULL means call volume not tracked.**. Possible values: 156.0, 189.0, 201.0.'
+    sql: '"EMERGENCY_call_volume"'
+  fraud_incidents:
+    description: 'BIGINT. Number of fraud incidents reported. **NULL means fraud statistics not available.**. Possible values: 18.0, 22.0, 25.0.'
+    sql: '"FRAUD_incidents"'
+  hospital_emergency_distance_km:
+    description: 'REAL. Distance to nearest emergency hospital in kilometers. **NULL means hospital distance not measured.**. Possible values: 3.8, 3.9, 4.2.'
+    sql: '"Hospital_Emergency_Distance_KM"'
+  neighborhood_watch_groups:
+    description: 'BIGINT. Number of active neighborhood watch groups. **NULL means watch groups not tracked.**. Possible values: 3.0, 4.0, 5.0.'
+    sql: '"NEIGHBORHOOD_watch_groups"'
+  police_response_time_minutes:
+    description: 'REAL. Average police response time in minutes. **NULL means response time not measured.**. Possible values: 15.8, 18.2, 22.5.'
+    sql: '"Police_Response_Time_Minutes"'
+  police_station_distance_km:
+    description: 'REAL. Distance to nearest police station in kilometers. **NULL means police station distance not measured.**. Possible values: 1.8, 2.5, 3.2.'
+    sql: '"Police_Station_Distance_KM"'
+  safety_perception_score:
+    description: 'REAL. Community safety perception rating on 1-10 scale. **NULL means safety perception not surveyed.**. Possible values: 6.2, 6.8, 7.1.'
+    sql: '"Safety_Perception_Score"'
+  street_lighting_density_per_km:
+    description: 'REAL. Number of street lights per kilometer. **NULL means lighting density not measured.**. Possible values: 25.9, 28.5, 32.1.'
+    sql: '"Street_Lighting_Density_Per_KM"'
+  theft_incidents:
+    description: 'BIGINT. Number of theft incidents reported. **NULL means theft data not collected for this period.**. Possible values: 38.0, 45.0, 52.0.'
+    sql: '"Theft_Incidents"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"Updated_At"'
+  vandalism_incidents:
+    description: 'BIGINT. Number of vandalism incidents reported. **NULL means vandalism data not tracked.**. Possible values: 12.0, 3.0, 8.0.'
+    sql: '"Vandalism_Incidents"'
+  assault_incidents:
+    description: 'BIGINT. Number of assault incidents reported. **NULL means assault statistics not recorded.**. Possible values: 3.0, 5.0, 7.0.'
+    sql: '"assault_INCIDENTS"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"created_AT"'
+  crime_rate_per_1000_residents:
+    description: 'REAL. Crime rate per 1000 residents. **NULL means population-adjusted rate not calculated.**. Possible values: 12.8, 8.5, 9.8.'
+    sql: '"crime_rate_PER_1000_residents"'
+  fire_department_distance_km:
+    description: 'REAL. Distance to nearest fire department in kilometers. **NULL means fire station distance not measured.**. Possible values: 2.1, 2.5, 3.2.'
+    sql: '"fire_department_DISTANCE_km"'
+  patrol_frequency_per_day:
+    description: 'BIGINT. Number of police patrols per day. **NULL means patrol frequency not documented.**. Possible values: 10.0, 12.0, 8.0.'
+    sql: '"patrol_frequency_PER_day"'
+  reporting_month:
+    description: 'DATE. Month and year for crime statistics reporting period. Possible values: 2025-07-01, 2025-08-01.'
+    sql: '"reporting_MONTH"'
+  risk_assessment_level:
+    description: 'BIGINT. Overall risk assessment level. **NULL means risk assessment not conducted.**. Possible values: 4.0, 5.0, 6.0.'
+    sql: '"risk_assessment_LEVEL"'
+  security_camera_count:
+    description: 'BIGINT. Number of security cameras in area. **NULL means camera count not surveyed.**. Possible values: 125.0, 145.0, 168.0.'
+    sql: '"security_camera_COUNT"'
+  total_incidents:
+    description: 'BIGINT. Total number of all incidents combined. Possible values: 164, 195, 245, 268.'
+    sql: '"total_INCIDENTS"'
+  traffic_violations:
+    description: 'BIGINT. Number of traffic violations recorded. Possible values: 125, 142, 89, 98.'
+    sql: '"traffic_VIOLATIONS"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct crime_statistics public identity values.
+    label: crime_statistics Count
+    sql: ${residential_data_large_public__crime_statistics.crime_id}

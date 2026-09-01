@@ -1,0 +1,105 @@
+label: buyer_risk_history
+description: All columns of the public table buyer_risk_history.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: buyer_risk_history
+dimensions:
+  accountstatus:
+    description: 'TEXT. Lifecycle state of the buyer account (Active, Suspended, etc.). Example: Active.'
+    sql: '"ACCOUNTstatus"'
+  acqcode:
+    description: 'TEXT. Foreign-key to buyers.AcqCode identifying the buyer. Example: ACQ_1027.'
+    sql: '"ACQCODE"'
+  chargebacks:
+    description: 'BIGINT. Count of chargebacks issued. **NULL means the payment processor did not return chargeback stats for this period.** Example: 7.'
+    sql: '"CHARGEBACKS"'
+  max_risk_score:
+    description: 'REAL. Maximum risk score observed. Example: 92.0.'
+    sql: '"MAX_RISK_SCORE"'
+  notes:
+    description: 'TEXT. Free-form analyst comments. **NULL means no additional commentary was recorded.** Example: "Spike in chargebacks under investigation."'
+    sql: '"NOTES"'
+  analyst_ref:
+    description: 'TEXT. Username or ID of the last analyst who touched the record. Example: analyst_amy.'
+    sql: analyst_ref
+  assessment_date:
+    description: 'DATE (YYYY-MM-DD). Date that the risk metrics were calculated. Example: 2025-02-14.'
+    sql: '"assessmentDATE"'
+  avg_risk_score:
+    description: 'REAL. Average per-transaction risk score (0-100). Example: 42.9.'
+    sql: avg_risk_score
+  cluster_risk_score:
+    description: 'REAL. Cluster-level consolidated risk score. Example: 48.5.'
+    sql: cluster_risk_score
+  disputes:
+    description: 'BIGINT. Customer disputes opened. Example: 15.'
+    sql: disputes
+  flag_manual_review:
+    description: 'BOOLEAN. True if manual analyst review is required. Example: false.'
+    sql: flag_manual_review
+  fraudulent_txns:
+    description: 'BIGINT. Transactions confirmed as fraudulent. **NULL means fraud-lab data not received for this window.** Example: 12.'
+    sql: fraudulent_txns
+  geo_spread_regions_active:
+    description: 'TEXT. Count of distinct geographic regions with activity. Example: 3'
+    sql: '"geoSpread_regions_active"'
+  min_risk_score:
+    description: 'REAL. Minimum risk score observed. Example: 8.5.'
+    sql: '"minRiskScore"'
+  next_review_date:
+    description: 'DATE (YYYY-MM-DD). Scheduled date of next manual review. Example: 2025-06-18.'
+    sql: next_review_date
+  payment_method_var:
+    description: 'REAL. Normalised variety of payment methods used. Example: 0.9.'
+    sql: payment_method_var
+  peak_velocity:
+    description: 'REAL. Peak transactions per hour. Example: 11.4.'
+    sql: peak_velocity
+  risk_tier:
+    description: 'TEXT. Bucketed tier derived from risk score (Low, Medium, High, Critical). Example: Medium.'
+    sql: '"riskTIER"'
+  risk_hist_ref:
+    description: 'TEXT. Primary-key reference for a periodic risk assessment snapshot. Example: RISK-9e5c1a7b32.'
+    sql: risk_hist_ref
+  spend_bandwidth_usd_per_week:
+    description: 'TEXT. Typical spend range per week in USD. **NULL means spend data not available from PSP.** Example: 200–500'
+    sql: '"spendBandwidth_USD_per_week"'
+  time_on_platform:
+    description: 'BIGINT. Days since the buyer first appeared on the platform. Example: 280.'
+    sql: time_on_platform
+  total_txns:
+    description: 'BIGINT. Total transactions evaluated in the look-back window. Example: 2,410.'
+    sql: '"totalTXNS"'
+  txnbehav_risky_meta:
+    description: JSONB column. Group of stats about transaction values, velocity, and cross-geo behaviour sketch
+    sql: txnbehav_risky_meta
+  txnbehav_risky_meta_avg:
+    description: 'REAL. Mean transaction value in USD. Example: 142.37.'
+    sql: JSONB_EXTRACT_PATH_TEXT(txnbehav_risky_meta, 'avg$')
+  txnbehav_risky_meta_behav_rscore:
+    description: 'REAL. Multi-feature behaviour risk score (0-100). Example: 55.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(txnbehav_risky_meta, 'behav_rscore')
+  txnbehav_risky_meta_dev_varv2:
+    description: 'REAL. Number of distinct device fingerprints observed, normalised. Example: 1.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(txnbehav_risky_meta, 'devVARv2')
+  txnbehav_risky_meta_geo_var:
+    description: 'REAL. Entropy-style score for geographic diversity. **NULL means IP-to-geo lookup failed for most transactions.** Example: 2.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(txnbehav_risky_meta, 'geoVAR')
+  txnbehav_risky_meta_tx_hr:
+    description: 'REAL. Average transactions per hour. Example: 1.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(txnbehav_risky_meta, 'tx/hr')
+  txnbehav_risky_meta_txn_max:
+    description: 'REAL. Highest single transaction value. Example: 1,245.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(txnbehav_risky_meta, 'txnMAX')
+  txnbehav_risky_meta_txn_min:
+    description: 'REAL. Lowest transaction value. Example: 5.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(txnbehav_risky_meta, 'txnMIN')
+  txnbehav_risky_meta_txn_stddev:
+    description: 'REAL. Standard deviation of transaction values. Example: 184.55.'
+    sql: JSONB_EXTRACT_PATH_TEXT(txnbehav_risky_meta, 'txnSTDDEV')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct buyer_risk_history public identity values.
+    label: buyer_risk_history Count
+    sql: ${cybermarket_pattern_large_public__buyer_risk_history.risk_hist_ref}

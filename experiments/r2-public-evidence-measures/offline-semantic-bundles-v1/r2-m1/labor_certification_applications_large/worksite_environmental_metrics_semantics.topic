@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__worksite_environmental_metrics
+label: worksite_environmental_metrics
+description: All columns of the public table worksite_environmental_metrics.
+fields:
+- labor_certification_applications_large_public__worksite_environmental_metrics.*
+joins: {}
+ai_context: This topic models no cross-table joins.

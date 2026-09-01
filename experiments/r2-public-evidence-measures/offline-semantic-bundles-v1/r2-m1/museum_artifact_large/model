@@ -1,0 +1,118 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Conservation Priority Index (CPI): Calculated as: ((Historical Significance Rating + Research Value Rating + Cultural Score) * (10 - Conservation Status Value)) / 30, where the conservation status is numerically mapped: Excellent=1, Good=3, Fair=5, Poor=7, Critical=10.
+
+  - Sensitivity Weight Values: A mapping of qualitative sensitivity ratings to numerical values for calculation purposes. For example: Low=1, Medium=5, High=10 for various environmental factors like light, temperature, and humidity.
+
+  - High-Value Artifact: An artifact is considered high-value if its insurance value exceeds $1,000,000 OR if both its historical significance and cultural scores are in the top 10% of all artifacts.
+
+  - Conservation Emergency: A situation where an artifact''s conservation status is ''Critical'' AND its treatment priority is ''Urgent''.
+
+  - Environmental Instability Event: Occurs when the 24-hour temperature variation exceeds 1°C OR the 24-hour humidity variation exceeds 3% within a 24-hour period.
+
+  - Dynasty Value Artifact: Artifacts from specific historically significant dynasties (e.g., ''Ming'', ''Han'', ''Tang'') that also have a research value rating greater than 8.
+
+  - Organic Material Vulnerability: Artifacts made of organic materials like ''Wood'', ''Textile'', or ''Paper'' that also have a ''High'' overall environmental sensitivity rating. These require specialized environmental controls.
+
+  - Historical Significance Ratings: A numerical scale typically ranging from 1-10, where 1-3 indicates minor historical significance, 4-7 indicates moderate significance, and 8-10 indicates exceptional historical importance.
+
+  - Showcase Airtightness Levels: A numerical value representing air changes per day. Museum-grade showcases typically have values below 0.1, while values up to 5.0 indicate poor airtightness.
+
+  - Showcase Environmental Stability Rating (SESR): Calculated as: 10 - ((24-hour Temperature Variation + (24-hour Humidity Variation / 5) + Leak Rate) / 3). Higher scores indicate more stable showcases.
+
+  - Conservation Environment Chronology (CEC): Involves grouping environmental readings by fixed time intervals (such as by year) to discern patterns and inform conservation strategies.
+
+  - Showcase Failure Risk: Occurs when a showcase''s ''Showcase Environmental Stability Rating (SESR)'' is less than 4 OR at least three maintenance indicators (e.g., seal condition, maintenance status, filter status) are in a critical state.
+
+  - Visitor Crowd Risk: Occurs when the ''Visitor Impact Risk (VIR)'' score is greater than 5 AND any artifact in the hall has the lowest security level rating.
+
+  - Environmental Risk Factor (ERF): Calculated as the average of an artifact''s various environmental sensitivity scores. These scores are derived by converting qualitative ratings (e.g., ''Low'', ''High'') to numbers using ''Sensitivity Weight Values''.
+
+  - Conservation Backlog Risk (CBR): Calculated as: (''Conservation Priority Index (CPI)'' * (Days since last cleaning date - Cleaning interval days)) / 100. Higher values indicate higher risk.
+
+  - Display Safety Duration (DSD): Calculated as: (Base Duration * (10 - Light Sensitivity Weight) * (10 - Temperature Sensitivity Weight) * (10 - Humidity Sensitivity Weight)) / 1000. The Base Duration is typically 36 months, and sensitivity weights are based on ''Sensitivity Weight Values''.
+
+  - Security Risk Exposure (SRE): Calculated as: (Insurance Value / 100000) * (10 - ''Visitor Impact Risk'') / 10. Higher values indicate greater security risk.
+
+  - High-Value Category: An artifact is ''Monetary High-Value'' if its insurance value exceeds $1,000,000. It is ''Cultural/Historical High-Value'' if its significance and cultural scores are in the top 10%. Otherwise, it is in the ''Other'' category. This is derived from the ''High-Value Artifact'' criteria.
+
+  - Conservation Priority Level: Based on the ''Conservation Priority Index (CPI)'': ''High Priority'' for scores > 7, ''Medium Priority'' for scores between 4 and 7, and ''Low Priority'' for scores <= 4.
+
+  - Humidity Exposure Thresholds: High sensitivity artifacts must not exceed 55% RH; Medium sensitivity artifacts must not exceed 60% RH.
+
+  - Secondary Stability Threshold: A risk assessment level using a less stringent ''Showcase Environmental Stability Rating (SESR)'' threshold (e.g., a score < 5 instead of < 4) to prompt deeper evaluation.
+
+  - Light Exposure Risk (LER): Calculated as: (Light Level in Lux * Light Sensitivity Weight * Visible Light Exposure in Lux-Hours) / 1000. The light sensitivity weight is based on ''Sensitivity Weight Values''.
+
+  - Conservation Budget Efficiency (CBE): Calculated as the average of the product of each artifact''s ''Conservation Priority Index (CPI)'' and its allocated budget ratio. The budget ratio is the proportion of the total conservation budget allocated to that artifact.
+
+  - Exhibition Rotation Candidate: An artifact is a rotation candidate when its current display duration exceeds 75% of its ''Display Safety Duration (DSD)'' OR its ''Light Exposure Risk (LER)'' score is greater than 7.
+
+  - Conservation Budget Crisis: Occurs when the ''Conservation Budget Efficiency (CBE)'' score is less than 0.5 AND at least one artifact has a ''Critical'' conservation status and an ''Insufficient'' budget allocation status.
+
+  - Artifact Vulnerability Score (AVS): Calculated by multiplying the ''Conservation Priority Index (CPI)'' by the ''Environmental Risk Factor (ERF)''. Higher scores indicate artifacts requiring more urgent attention.
+
+  - Showcase Protection Adequacy (SPA): Calculated as: ''Showcase Environmental Stability Rating (SESR)'' - (''Environmental Risk Factor (ERF)'' * 0.5). Positive values indicate adequate protection.
+
+  - Conservation Resource Allocation Efficiency (CRAE): Calculated as: ''Conservation Budget Efficiency (CBE)'' * (1 - (''Conservation Backlog Risk (CBR)'' / 10)). Higher values indicate more efficient allocation.
+
+  - Exhibition Rotation Priority Score (ERPS): Calculated as: (''Display Safety Duration'' - Months on Display) * (''Light Exposure Risk'' + 1) * (''Conservation Priority Index'' + 1) / 100. Lower values indicate higher rotation priority.
+
+  - Environmental Compliance Index (ECI): Calculated as: 10 - (absolute difference in temperature from ideal + absolute difference in humidity from ideal / 5 + ''Environmental Risk Factor'' / 2). Higher values are better.
+
+  - High Security Priority Artifact: An artifact that is classified as a ''High-Value Artifact'' AND has a ''Security Risk Exposure (SRE)'' score greater than 5.
+
+  - Light Exposure Thresholds: High sensitivity artifacts (e.g., textiles, paper) must not exceed 50 lux; Medium sensitivity artifacts (e.g., paintings, wood) must not exceed 200 lux.
+
+  - Exposure Status: Classified as ''Over Exposure'' if the current relative humidity exceeds the ''Humidity Exposure Thresholds'' defined for its sensitivity level, otherwise ''Within Limits''.
+
+  - Artifact Exhibition Compatibility (AEC): Calculated as: 10 - the absolute difference between the artifact''s ''Environmental Risk Factor (ERF)'' and the showcase''s ''Showcase Environmental Stability Rating (SESR)''. A score closer to 10 indicates better compatibility.
+
+  - Material Deterioration Rate (MDR): Calculated as: (Artifact Age in Years * Environmental Risk Factor * (Relative Humidity - 50)^2 * Temperature in Celsius) / 100000. Higher values indicate faster deterioration.
+
+  - Accelerated Deterioration Scenario: Occurs when an artifact''s ''Material Deterioration Rate (MDR)'' score is greater than 5 AND it has at least two environmental sensitivities rated as ''High''.
+
+  - Total Environmental Threat Level (TETL): Calculated as: ''Environmental Risk Factor (ERF)'' + ''Light Exposure Risk (LER)'' + (''Material Deterioration Rate (MDR)'' * 2).
+
+  - Visitor Capacity Safety Factor (VCSF): Calculated as: ''Visitor Impact Risk (VIR)'' / (''Artifact Vulnerability Score (AVS)'' * 0.1). Lower values indicate safer visitor capacities.
+
+  - Exhibition Safety Quotient (ESQ): Calculated as the average of three components: (10 - ''Artifact Vulnerability Score''), ''Artifact Exhibition Compatibility'', and (10 - ''Visitor Impact Risk''). Higher values are safer.
+
+  - Critical Conservation Alert: An artifact that meets the ''Conservation Emergency'' criteria AND has an ''Artifact Vulnerability Score (AVS)'' greater than 8.
+
+  - Exhibition Rotation Urgency: Occurs when an artifact is an ''Exhibition Rotation Candidate'' AND has an ''Exhibition Rotation Priority Score (ERPS)'' less than 0.
+
+  - Showcase Compatibility Issue: Occurs when the ''Showcase Protection Adequacy (SPA)'' score is less than 0 AND the artifact is classified as a ''High-Value Artifact''.
+
+  - Conservation Resource Crisis: Occurs when the ''Conservation Resource Allocation Efficiency (CRAE)'' is less than 0.3 AND there is a ''Conservation Budget Crisis''.
+
+  - Environmental Control Failure: Occurs when the ''Environmental Compliance Index (ECI)'' is less than 4 AND there is an ''Environmental Instability Event''.
+
+  - ERPS Decision Threshold: An ''Exhibition Rotation Priority Score (ERPS)'' less than 0 triggers an ''Immediate Rotation'' recommendation; otherwise, the recommendation is ''Monitor''.
+
+  - Compliance Level: Assigns a level based on the ''Environmental Compliance Index (ECI)'' score: ''Excellent'' for scores > 7, ''Good'' for scores between 4 and 7 (inclusive), and ''Poor'' for scores <= 4.
+
+  - Material Aging Projection (MAP): Calculated as: ''Material Deterioration Rate (MDR)'' * (1 + (''Total Environmental Threat Level (TETL)'' / 20)). Higher values indicate faster projected aging.
+
+  - High Deterioration Risk Artifact: An artifact that has a ''Total Environmental Threat Level (TETL)'' greater than 15 AND falls under the ''Accelerated Deterioration Scenario''.
+
+  - Visitor Traffic Safety Concern: Occurs when the ''Visitor Capacity Safety Factor (VCSF)'' is greater than 2 AND there is a ''Visitor Crowd Risk'' situation.
+
+  - Organic Material Emergency: Occurs when an artifact falls under the ''Organic Material Vulnerability'' classification AND has a ''Total Environmental Threat Level (TETL)'' greater than 12.
+
+  - Dynasty Artifact at Risk: An artifact that qualifies as a ''Dynasty Value Artifact'' AND has a ''Material Aging Projection (MAP)'' score greater than 3.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

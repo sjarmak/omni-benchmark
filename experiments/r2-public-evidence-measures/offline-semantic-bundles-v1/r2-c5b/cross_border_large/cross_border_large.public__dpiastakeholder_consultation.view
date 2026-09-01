@@ -1,0 +1,60 @@
+label: DPIAStakeholderConsultation
+description: All columns of the public table DPIAStakeholderConsultation.
+catalog: cross_border_large
+schema: public
+table_name: DPIAStakeholderConsultation
+dimensions:
+  concerns_addressed:
+    description: BIGINT. Number of concerns addressed
+    sql: '"CONCERNS_ADDRESSED"'
+  consultation_id:
+    description: BIGINT. Primary key. Unique consultation record identifier
+    sql: '"CONSULTATION_ID"'
+  design_changes_requested:
+    description: BOOLEAN. Whether changes to processing design were requested Boolean flag (true/false).
+    sql: '"DESIGN_CHANGES_REQUESTED"'
+  dpia_ref:
+    description: BIGINT. Foreign key referencing DPIARecord(DPIA_ID). Related DPIA record
+    sql: '"DPIA_REF"'
+  follow_up_deadline:
+    description: DATE. Deadline for follow-up action **NULL means No follow-up required.**
+    sql: '"FOLLOW_UP_DEADLINE"'
+  format:
+    description: 'TEXT. Format of consultation Possible values: Meeting, Written Response, Workshop, Survey, Interview.'
+    sql: '"FORMAT"'
+  minutes_url:
+    description: TEXT. URL to consultation minutes/records
+    sql: '"MINUTES_URL"'
+  outcome:
+    description: 'TEXT. Consultation outcome Possible values: Supportive, Concerns Raised, Objections, Conditional Approval.'
+    sql: '"OUTCOME"'
+  stakeholder_name:
+    description: 'TEXT. Name of stakeholder or representative Possible values: Works Council, Consumer Advocacy, Privacy Expert Panel, IT Security Board, Legal Advisory, External DPA.'
+    sql: '"STAKEHOLDER_NAME"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  changes_implemented:
+    description: BOOLEAN. Whether requested changes were implemented Boolean flag (true/false).
+    sql: changes_implemented
+  concerns_raised_count:
+    description: BIGINT. Number of concerns raised
+    sql: concerns_raised_count
+  confidential:
+    description: BOOLEAN. Whether consultation is confidential Boolean flag (true/false).
+    sql: confidential
+  consultation_date:
+    description: DATE. Date of consultation
+    sql: consultation_date
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  follow_up_action:
+    description: TEXT. Required follow-up action **NULL means No follow-up required.**
+    sql: '"follow_up_Action"'
+  key_feedback_summary:
+    description: TEXT. Summary of key feedback provided **NULL means Feedback not yet summarized.**
+    sql: key_feedback_summary
+  stakeholder_type:
+    description: 'TEXT. Type of stakeholder consulted Possible values: Data Subject Representative, DPO, IT Security, Legal, Business Unit, External Expert, Supervisory Authority.'
+    sql: stakeholder_type

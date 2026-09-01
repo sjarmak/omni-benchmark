@@ -1,0 +1,66 @@
+label: ProperMotionCatalog
+description: All columns of the public table ProperMotionCatalog.
+catalog: planets_data_large
+schema: public
+table_name: ProperMotionCatalog
+dimensions:
+  astrometric_excess_noise:
+    description: 'REAL. Astrometric excess noise Typical range: 0 to 10.'
+    sql: '"ASTROMETRIC_EXCESS_NOISE"'
+  g_mag:
+    description: 'REAL. Gaia G magnitude Typical range: 2 to 21.'
+    sql: '"G_MAG"'
+  num_observations:
+    description: BIGINT. Number of astrometric observations
+    sql: '"NUM_OBSERVATIONS"'
+  parallax_mas:
+    description: 'REAL. Trigonometric parallax Typical range: 0.1 to 800. **NULL means Parallax not measured in this catalog.**'
+    sql: '"PARALLAX_mas"'
+  pm_dec_mas_per_yr:
+    description: 'REAL. Proper motion in Dec in mas/yr Typical range: -5000 to 5000.'
+    sql: '"PM_DEC_mas_per_yr"'
+  pm_entry_id:
+    description: BIGINT. Primary key. Unique proper motion catalog entry identifier
+    sql: '"PM_ENTRY_ID"'
+  pm_ra_mas_per_yr:
+    description: 'REAL. Proper motion in RA in mas/yr Typical range: -5000 to 5000.'
+    sql: '"PM_RA_mas_per_yr"'
+  quality_flag:
+    description: 'TEXT. Data quality flag Possible values: Gold, Silver, Bronze.'
+    sql: '"QUALITY_FLAG"'
+  source_catalog:
+    description: 'TEXT. Source catalog identifier Possible values: Gaia DR3, UCAC5, PPMXL, USNO-B1, 2MASS.'
+    sql: '"SOURCE_CATALOG"'
+  stellar_ref:
+    description: BIGINT. Foreign key referencing stars(stellarref). Related star
+    sql: '"STELLAR_REF"'
+  total_pm_mas_per_yr:
+    description: 'REAL. Total proper motion Typical range: 0 to 10000.'
+    sql: '"TOTAL_PM_mas_per_yr"'
+  binary_flag:
+    description: BOOLEAN. Whether astrometric binary signature detected Boolean flag (true/false).
+    sql: binary_flag
+  bp_rp_color:
+    description: 'REAL. Gaia BP-RP color index Typical range: -0.5 to 5.'
+    sql: bp_rp_color
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  epoch_years:
+    description: 'REAL. Reference epoch in years Typical range: 2000 to 2025.'
+    sql: epoch_years
+  goodness_of_fit:
+    description: 'REAL. Astrometric goodness of fit Typical range: 0 to 50.'
+    sql: goodness_of_fit
+  parallax_error_mas:
+    description: 'REAL. Parallax uncertainty Typical range: 0.001 to 5. **NULL means No parallax measurement.**'
+    sql: parallax_error_mas
+  pm_dec_error:
+    description: 'REAL. PM Dec uncertainty Typical range: 0.001 to 5.'
+    sql: pm_dec_error
+  pm_ra_error:
+    description: 'REAL. PM RA uncertainty Typical range: 0.001 to 5.'
+    sql: pm_ra_error
+  position_angle_deg:
+    description: 'REAL. Position angle of motion in degrees Typical range: 0 to 360.'
+    sql: position_angle_deg

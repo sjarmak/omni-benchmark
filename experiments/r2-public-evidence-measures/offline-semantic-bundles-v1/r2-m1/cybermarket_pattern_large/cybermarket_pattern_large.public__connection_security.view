@@ -1,0 +1,110 @@
+label: Connection Security
+description: Connection-session security records with authentication and anonymity semantics.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: connection_security
+dimensions:
+  authentication_protocol:
+    description: 'TEXT. Authentication protocol used during the session. Possible values: 2FA, Basic, Multi-factor.'
+    label: Authentication Protocol
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'auth_protocol_type')
+  anonymity_level:
+    description: 'TEXT. Level of anonymity observed. Possible values: High, Low, Medium.'
+    label: Anonymity Level
+    sql: '"AnonLevel"'
+    ai_context: 'Session Anonymity Levels: Values: High, Medium, Low.'
+  anomaly_value:
+    description: 'REAL. Aggregate anomaly score for the session. **NULL means anomaly metric has not been computed.**. Example: 38.9.'
+    sql: '"AnomalyValue"'
+  behavior_score:
+    description: 'REAL. Behavioural risk score for the session. Example: 15.8.'
+    sql: '"BehaviorScore"'
+  bot_act_index:
+    description: 'text. A metric representing bot activity, calculated as actions per IP per hour, measured in Actions/IP/hour. Example: 40.87 Actions/IP/hour.'
+    sql: '"Bot_act_index"'
+  connection_duration:
+    description: 'text. The diversity of connection durations in a given session, measured in hours. Example: 8.92 hours.'
+    sql: '"Connection_duration"'
+  correlation_value:
+    description: 'REAL. Correlation strength between session artefacts. Example: 69.6.'
+    sql: '"CorrelationValue"'
+  data_proctecteff:
+    description: 'text. A measure of data protection efficiency, calculated as the ratio of vulnerability count to data protection level, measured in Vulnerabilities/GB. Example: 1.82 Vulnerabilities/GB.'
+    sql: '"Data_proctecteff"'
+  detection_avoidance:
+    description: 'REAL. Score indicating detection-avoidance behaviour. Example: 94.65125815301414.'
+    sql: '"DetectionAvoidance"'
+  false_pos_prob:
+    description: 'REAL. Probability that the detection is a false positive. Example: 10.4.'
+    sql: '"FalsePosProb"'
+  ml_confidence:
+    description: 'REAL. Machine-learning confidence level for the classification. Example: 97.2.'
+    sql: '"ML_Confidence"'
+  op_sec_metric:
+    description: 'REAL. Operational-security metric for the transaction session. Example: 95.7.'
+    sql: '"OpSecMetric"'
+  pattern_match_score:
+    description: 'REAL. Pattern-match score against known malicious signatures. Example: 36.5.'
+    sql: '"PatternMatchScore"'
+  threat_intel_index:
+    description: 'REAL. Threat-intelligence index derived from external feeds. Example: 79.2.'
+    sql: '"ThreatIntelIndex"'
+  threat_handle_rate:
+    description: 'text. The rate at which threats are handled in the system, measured in Threats/hour. Example: 0.12 Threats/hour.'
+    sql: '"Threat_handle_rate"'
+  trace_score:
+    description: 'REAL. Score indicating how easily the actor can be traced. Example: 14.4.'
+    sql: '"TraceScore"'
+  txn_pointer:
+    description: TEXT. Identifier of the transaction under security review. PK. FK to transactions(EventCode).
+    sql: '"TxnPointer"'
+  anonymity_cost:
+    description: 'text. A score reflecting the level of traceability in a transaction, associated with the anonymity level, measured in USD/anonymity-point. Example: 51.71 USD/anonymity-point.'
+    sql: anonymity_cost
+  connection_security_metrics:
+    description: JSONB column. Captures the security metrics for the connection during the transaction, such as IP count, VPN usage, and encryption strength.
+    sql: connection_security_metrics
+  encrytion_cost:
+    description: 'text. The cost of encryption required for the transaction, measured in USD/encryption-bit. Example: 8.21 USD/encryption-bit.'
+    sql: encrytion_cost
+  connection_security_metrics_browser_fp_unique_scr:
+    description: 'REAL. Uniqueness score of the browser fingerprint. Example: 6.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'browser_fp_unique_scr')
+  connection_security_metrics_conn_pattern_metric_scr:
+    description: 'REAL. Metric describing anomalies in connection patterns. Example: 48.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'conn_pattern_metric_scr')
+  connection_security_metrics_data_protection_class:
+    description: 'TEXT. Data-protection classification assigned to the session. Possible values: Basic, Enhanced, Maximum.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'data_protection_class')
+  connection_security_metrics_device_fp_risk_score:
+    description: 'REAL. Risk score of the device fingerprint. **NULL means device-fingerprint data is unavailable.**. Example: 63.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'device_fp_risk_score')
+  connection_security_metrics_encryption_strength_scr:
+    description: 'TEXT. Strength classification of the TLS/SSL encryption. Possible values: Military-grade, Standard, Strong.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'encryption_strength_scr')
+  connection_security_metrics_ip_count_total:
+    description: 'BIGINT. Number of unique IP addresses observed for the transaction. **NULL means IP address data was not collected.**. Possible values: 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'ip_count_total')
+  connection_security_metrics_privacy_score_val:
+    description: 'REAL. Score measuring privacy preservation during the session. Example: 62.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'privacy_score_val')
+  connection_security_metrics_session_sec_rating_scr:
+    description: 'REAL. Overall security rating of the session. **NULL means session-security rating not assessed.**. Example: 45.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'session_sec_rating_scr')
+  connection_security_metrics_tor_node_count:
+    description: 'BIGINT. Count of Tor nodes traversed during the connection. **NULL means Tor-usage information is unavailable.**. Example: 4.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'tor_node_count')
+  connection_security_metrics_vpn_detect_status:
+    description: 'TEXT. Indicator whether a VPN was detected in the connection. Possible values: No, Suspected, Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(connection_security_metrics, 'vpn_detect_status')
+  has_premium_authentication:
+    label: Premium Authentication
+    description: Sessions with multi-factor authentication or 2FA.
+    sql: ${authentication_protocol} IN ('2FA', 'Multi-factor')
+    ai_context: Use this modeled field for Premium Authentication; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Connection Security public identity values.
+    label: Connection Security Count
+    sql: ${cybermarket_pattern_large_public__connection_security.txn_pointer}

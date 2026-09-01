@@ -1,0 +1,78 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Household Density: Calculated as the number of residents divided by the number of bedrooms.
+
+  - Vehicle Ownership Index: Calculated as the sum of car, bicycle, and motorcycle counts.
+
+  - Bathroom Ratio: Calculated as the number of bathrooms divided by the number of residents.
+
+  - Dwelling Capacity: Calculated as twice the number of bedrooms plus the number of bathrooms.
+
+  - Register New Household: Insert a new record into the household data with all required information.
+
+  - Residential Zone Types: Includes ''Urban'' (densely populated city areas), ''Suburban'' (residential outskirts), ''Rural'' (sparsely populated countryside), and ''Mixed'' (transitional areas). Null indicates unclassified or pending zoning.
+
+  - Dwelling Condition Status: Includes ''Excellent'' (well-maintained), ''Good'' (minor repairs needed), ''Fair'' (moderate repairs needed), ''Poor'' (significant repairs needed). Null indicates unassessed condition.
+
+  - Expenditure Ratio: Calculated as the expenditure coefficient divided by a numeric mapping of income bracket.
+
+  - Infrastructure Quality Score: Calculated as the average of the individual scores for Water Access, Road Surface, and Parking Availability.
+
+  - Mobility Score: The product of the vehicle count and a numeric mapping of the newest vehicle year.
+
+  - Affluent Household: A household with a ''Tenure_Type'' of ''OWNED'' and an ''Income_Bracket'' of either ''High Income'' or ''Very High Income''.
+
+  - Urban Household: A household with ''Municipal Piped'' Water Access Type and high-quality Road Surface Quality.
+
+  - Mobile Household: A household with a high Vehicle Ownership Index and a recent Vehicle Year Range.
+
+  - Crowded Household: A household with Household Density greater than a threshold.
+
+  - Modern Dwelling: A dwelling with specific Dwelling Type and active Cable TV Status.
+
+  - Purge Incomplete Transport Data: Delete records from the transportation assets data for any household where the income classification is NULL.
+
+  - Update Vehicle Inventory: Update the vehicle inventory data for a specific household, modifying fields such as newest vehicle year or vehicle counts.
+
+  - Utility Access Level: Includes ''Full'' (all utilities like water and cable available), ''Partial'' (some utilities available), ''Basic'' (only essential utilities like water), and ''None'' (no utility access). Null indicates unassessed connectivity.
+
+  - Compact Household: A household with specific Dwelling Type and a small resident count.
+
+  - High-Mobility Urban Household: A household with specific Residential Zone Type and Vehicle Type Distribution.
+
+  - Well-Maintained Dwelling: A dwelling with specific Dwelling Condition Status and Cable TV Status.
+
+  - Service Support Score: A weighted score combining domestic help availability and social assistance participation status (Yes/No).
+
+  - Socioeconomic Index: Calculated as a weighted sum of income score, expenditure ratio, and tenure score.
+
+  - Living Condition Score: Calculated as a 50/50 weighted average of the Dwelling Type score and the Infrastructure Quality Score.
+
+  - Supported Household: A household with social support status marked as ''Yes''.
+
+  - Self-Sufficient Household: A household with limited Domestic Help Availability, social support status of ''No'', and high Vehicle Ownership Index.
+
+  - Stable Infrastructure Household: A household with a specific Utility Access Level and Road Surface Quality.
+
+  - Economically Independent Household: A household with high Income Classification and social support status of ''No''.
+
+  - Well-Equipped Household: A household with a high Infrastructure Quality Score and a high Service Support Score.
+
+  - Economically Stable Household: A household with a high Socioeconomic Index and a low Expenditure Ratio.
+
+  - Comfortable Living Household: A household is considered ''Comfortable'' if its Living Condition Score is greater than 3 AND its Bathroom Ratio is greater than 0.5.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

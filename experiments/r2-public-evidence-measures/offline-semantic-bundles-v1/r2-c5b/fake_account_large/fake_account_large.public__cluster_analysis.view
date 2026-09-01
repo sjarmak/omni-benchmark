@@ -1,0 +1,23 @@
+label: Cluster Analysis
+description: Cluster-level analysis with row-local coordination semantics.
+catalog: fake_account_large
+schema: public
+table_name: cluster_analysis
+dimensions:
+  coordination_score:
+    description: 'REAL. Coordination score. Example: 0.363.'
+    label: Coordination Score
+    sql: '"CoordScore"'
+    ai_context: 'coordination score: Ranges from 0 to 1. Scores above 0.7 strongly indicate coordinated behavior, while scores below 0.2 suggest independent actions.'
+  clstr_pin:
+    description: 'TEXT. Unique cluster identifier. PK. Example: CL0029.'
+    sql: '"CLSTR_PIN"'
+  clu_role:
+    description: 'TEXT. Role or function of the cluster. Possible values: Botnet, Community, InfluenceNetwork, SocialGroup, SpamRing.'
+    sql: '"CluRole"'
+  cluster_qty:
+    description: 'BIGINT. Number of accounts in the cluster. Example: 5.'
+    sql: '"ClusterQty"'
+  net_infl:
+    description: 'REAL. Network influence score. Example: 0.362.'
+    sql: '"NetInfl"'

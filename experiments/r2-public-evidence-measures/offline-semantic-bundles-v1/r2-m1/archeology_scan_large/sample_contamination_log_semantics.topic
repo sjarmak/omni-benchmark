@@ -1,0 +1,17 @@
+base_view: archeology_scan_large_public__sample_contamination_log
+label: SampleContaminationLog
+description: All columns of the public table SampleContaminationLog.
+fields:
+- archeology_scan_large_public__sample_contamination_log.*
+- archeology_scan_large_public__artifacts.*
+- archeology_scan_large_public__lab_sample_processing.*
+- archeology_scan_large_public__personnel.*
+- archeology_scan_large_public__sample_analysis.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__lab_sample_processing:
+    archeology_scan_large_public__sample_analysis:
+      archeology_scan_large_public__artifacts:
+        archeology_scan_large_public__sites: {}
+      archeology_scan_large_public__personnel: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

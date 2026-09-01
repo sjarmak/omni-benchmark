@@ -1,0 +1,96 @@
+label: Control_Scenario_Map
+description: All columns of the public table Control_Scenario_Map.
+catalog: cross_border_large
+schema: public
+table_name: Control_Scenario_Map
+dimensions:
+  automated:
+    description: 'TEXT. Whether automated. Possible values: Yes, No, Partial. Example: Yes.'
+    sql: '"Automated"'
+  conflicts:
+    description: 'TEXT. Documented conflicts. Example: Overlapping controls. **NULL means none recorded.**'
+    sql: '"CONFLICTS"'
+  evidence_url:
+    description: 'TEXT. URL to evidence supporting control operation. Example: https://evidence.example/scn-14-ctrl-12. **NULL means no evidence provided.**'
+    sql: '"EVIDENCE_URL"'
+  introduced_at:
+    description: 'DATE. Date the mapping was created. Example: 2024-04-01.'
+    sql: '"Introduced_At"'
+  last_tested_at:
+    description: 'DATE. Date last tested. Example: 2025-04-07.'
+    sql: '"Last_Tested_At"'
+  metric3:
+    description: 'REAL. Custom metric 3. Example: 12.34.'
+    sql: '"METRIC3"'
+  metric7:
+    description: 'REAL. Custom metric 7. Example: 66.91.'
+    sql: '"METRIC7"'
+  metric1:
+    description: 'REAL. Custom metric 1. Example: 37.1.'
+    sql: '"Metric1"'
+  next_review_date:
+    description: 'DATE. Next review date. Example: 2026-08-10. **NULL means not scheduled.**'
+    sql: '"NEXT_REVIEW_DATE"'
+  notes:
+    description: 'TEXT. Additional notes. Example: Pending automation. **NULL means no notes provided.**'
+    sql: '"Notes"'
+  owner:
+    description: 'TEXT. Owner team. Possible values: GRC, SecurityOps, Platform, IT Operations, Data Privacy. Example: Platform.'
+    sql: '"Owner"'
+  priority:
+    description: 'TEXT. Priority level for control-scenario mapping. Possible values: P0, P1, P2, P3. Example: P0.'
+    sql: '"PRIORITY"'
+  residual_risk_reduction_pct:
+    description: 'REAL. Expected reduction in residual risk (%). Example: 33.5.'
+    sql: '"RESIDUAL_RISK_REDUCTION_PCT"'
+  status:
+    description: 'TEXT. Control mapping status. Possible values: Active, Planned, Retired. Example: Planned.'
+    sql: '"STATUS"'
+  tag1:
+    description: 'TEXT. Tag 1 classification. Example: Network.'
+    sql: '"TAG1"'
+  tooling:
+    description: 'TEXT. Tool used for enforcement. Example: Wazuh.'
+    sql: '"TOOLING"'
+  tag2:
+    description: 'TEXT. Tag 2 (priority/severity). Example: High.'
+    sql: '"Tag2"'
+  updated_at:
+    description: 'DATE. Record last update. Example: 2025-06-05.'
+    sql: '"UPDATED_AT"'
+  control_no:
+    description: 'BIGINT. Foreign key to Control_Library(control_code). Example: 12.'
+    sql: control_no
+  coverage_pct:
+    description: 'REAL. Estimated coverage provided by this control for the scenario (%). Example: 83.79.'
+    sql: coverage_pct
+  created_at:
+    description: 'DATE. Record creation date. Example: 2024-02-20.'
+    sql: created_at
+  dependency_controls:
+    description: 'TEXT. Dependencies on other controls. Example: AC-12,OPS-10. **NULL means no dependencies defined.**'
+    sql: dependency_controls
+  evidence_hash:
+    description: 'TEXT. Hash of the evidence artifact. Example: hash-768945. **NULL means no artifact recorded.**'
+    sql: evidence_hash
+  metric2:
+    description: 'REAL. Custom metric 2. Example: 84.67.'
+    sql: metric2
+  metric4:
+    description: 'REAL. Custom metric 4. Example: 45.19.'
+    sql: metric4
+  metric5:
+    description: 'REAL. Custom metric 5. Example: 26.82.'
+    sql: metric5
+  metric6:
+    description: 'REAL. Custom metric 6. Example: 71.35.'
+    sql: metric6
+  scenario_code:
+    description: 'BIGINT. Foreign key to Risk_Scenario(Scenario_Code). Example: 14.'
+    sql: scenario_code
+  tag3:
+    description: 'TEXT. Tag 3 (cohort/time). Example: Hot.'
+    sql: tag3
+  test_frequency_days:
+    description: 'BIGINT. Frequency of control testing (days). Example: 90.'
+    sql: test_frequency_days

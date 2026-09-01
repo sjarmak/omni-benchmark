@@ -1,0 +1,13 @@
+base_view: labor_certification_applications_large_public__recruitment_campaign_case_link
+label: recruitment_campaign_case_link
+description: All columns of the public table recruitment_campaign_case_link.
+fields:
+- labor_certification_applications_large_public__recruitment_campaign_case_link.*
+- labor_certification_applications_large_public__cases.*
+- labor_certification_applications_large_public__preparer.*
+- labor_certification_applications_large_public__recruitment_campaign.*
+joins:
+  labor_certification_applications_large_public__cases:
+    labor_certification_applications_large_public__preparer: {}
+  labor_certification_applications_large_public__recruitment_campaign: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

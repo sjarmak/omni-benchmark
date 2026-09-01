@@ -1,0 +1,96 @@
+label: disposal_vendors
+description: All columns of the public table disposal_vendors.
+catalog: reverse_logistics_large
+schema: public
+table_name: disposal_vendors
+dimensions:
+  audit_result:
+    description: 'TEXT. The result of the last audit. Possible values: Pass, Fail, Pass with recommendations.'
+    sql: audit_result
+  base_pickup_fee:
+    description: 'REAL. The base fee for a pickup service. Example: 62.25.'
+    sql: base_pickup_fee
+  can_handle_liquids:
+    description: 'BOOLEAN. Indicates if the vendor can handle liquid waste. Possible values: True, False.'
+    sql: can_handle_liquids
+  certification_id:
+    description: 'TEXT. The vendor''s certification ID number. Example: CERT-NELV1I.'
+    sql: certification_id
+  chain_of_custody_provided:
+    description: 'BOOLEAN. Indicates if a chain of custody document is provided. Possible values: True, False.'
+    sql: chain_of_custody_provided
+  contact_email:
+    description: 'TEXT. The main contact email for the vendor. Example: info@vendor1.com.'
+    sql: contact_email
+  contract_id:
+    description: 'TEXT. The contract ID with the vendor. **NULL indicates services are performed on an ad-hoc or non-contractual basis.** Example: VD-CON-2IKSO.'
+    sql: contract_id
+  cost_per_kg:
+    description: 'REAL. The cost per kilogram for disposal. Example: 4.12.'
+    sql: cost_per_kg
+  customer_portal_url:
+    description: 'TEXT. A URL to the vendor''s customer portal. **NULL means the vendor does not offer a customer portal.** Example: https://portal.vendor23.com.'
+    sql: customer_portal_url
+  data_destruction_method:
+    description: 'TEXT. The method used for data destruction. **NULL means this service is not applicable or not offered.** Possible values: Shredding, Degaussing, Wiping.'
+    sql: data_destruction_method
+  emergency_spill_response:
+    description: 'BOOLEAN. Indicates if the vendor offers emergency spill response services. Possible values: True, False.'
+    sql: emergency_spill_response
+  environmental_compliance_record:
+    description: 'TEXT. A summary of the vendor''s environmental compliance record. Example: Fully compliant with EPA regulations for electronic waste disposal.'
+    sql: environmental_compliance_record
+  epa_id_number:
+    description: 'TEXT. The vendor''s EPA identification number. **NULL means the vendor does not handle EPA-regulated materials.** Example: EPA-IULGJ4SRF.'
+    sql: epa_id_number
+  insurance_liability_amount:
+    description: 'BIGINT. The vendor''s insurance liability coverage amount. Example: 1000000.'
+    sql: insurance_liability_amount
+  last_audit_by_us:
+    description: 'DATE. The date of the last audit conducted by our company. **NULL means a new vendor that has not yet been audited.** Example: 2024-06-16.'
+    sql: last_audit_by_us
+  materials_accepted:
+    description: 'JSONB. A JSON array of materials the vendor accepts. Example: [Plastics, Electronics, Batteries].'
+    sql: materials_accepted
+  notes:
+    description: 'TEXT. General notes about the vendor. **NULL means there are no special notes on file.** Example: Forklift access is restricted in Zone B after 4 PM due to maintenance.'
+    sql: notes
+  online_scheduling:
+    description: 'BOOLEAN. Indicates if online pickup scheduling is available. Possible values: True, False.'
+    sql: online_scheduling
+  payment_methods:
+    description: 'TEXT. Accepted payment methods. Example: Credit Card, ACH, Check.'
+    sql: payment_methods
+  physical_address:
+    description: 'TEXT. The vendor''s physical address. Example: 4329 Maple St, Shelbyville, CA 33213.'
+    sql: physical_address
+  pickup_service_area:
+    description: 'TEXT. The geographic area the vendor services. Example: Nationwide.'
+    sql: pickup_service_area
+  reporting_capabilities:
+    description: 'TEXT. A summary of the reporting offered by the vendor. Example: Provides monthly and annual summary reports.'
+    sql: reporting_capabilities
+  required_documentation:
+    description: 'TEXT. A description of required documentation for services. Example: Waste Manifest required for all pickups.'
+    sql: required_documentation
+  response_time_for_pickup_hours:
+    description: 'BIGINT. The typical response time in hours for a pickup request. Example: 39.'
+    sql: response_time_for_pickup_hours
+  service_type:
+    description: 'TEXT. The type of disposal service offered. Possible values: Recycling, Hazardous Waste, Secure Destruction, Donation, General Waste.'
+    sql: service_type
+  sustainability_score:
+    description: 'REAL. An internal or third-party sustainability score. Example: 5.7.'
+    sql: sustainability_score
+  vendor_id:
+    description: 'BIGINT. Unique identifier for the disposal vendor. PK. Example: 1.'
+    sql: vendor_id
+  vendor_name:
+    description: 'TEXT. The name of the disposal vendor company. Example: Vendor 1 Solutions.'
+    sql: vendor_name
+  waste_broker:
+    description: 'BOOLEAN. Indicates if the vendor is a waste broker. Possible values: True, False.'
+    sql: waste_broker
+  years_in_business:
+    description: 'BIGINT. The number of years the vendor has been in business. Example: 17.'
+    sql: years_in_business

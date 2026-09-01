@@ -1,0 +1,102 @@
+label: constructor_profiles
+description: All columns of the public table constructor_profiles.
+catalog: sports_events_large
+schema: public
+table_name: constructor_profiles
+dimensions:
+  academy_drivers_json:
+    description: 'JSONB. IDs/metadata for academy drivers (constructor-run development program). **NULL means no academy driver data is available or no program operates.** Example: {drv_ids:[12,73]}.'
+    sql: '"AcademyDriversJSON"'
+  academy_program_flag:
+    description: 'BOOLEAN. Whether the constructor operates a junior/academy driver program. Example: true.'
+    sql: '"AcademyProgramFlag"'
+  budget_musd:
+    description: 'REAL. Annual operating budget in millions of USD. Example: 145.0.'
+    sql: '"Budget_MUSD"'
+  cfd_cluster_tflops:
+    description: 'REAL. Effective compute capacity of CFD cluster in TFLOPS. Example: 350.0.'
+    sql: '"CFD_Cluster_TFLOPS"'
+  cstr_ref:
+    description: 'INTEGER. Foreign key referencing constructors.cstr_key. FK → constructors(cstr_key). Example: 3.'
+    sql: '"CSTR_ref"'
+  chief_designer:
+    description: 'TEXT. Chief Designer responsible for chassis/aero concept. Example: Designer X.'
+    sql: '"ChiefDesigner"'
+  constructor_profile_no:
+    description: BIGSERIAL. Surrogate primary key for constructor_profiles rows. PK.
+    sql: '"Constructor_Profile_no"'
+  culture_keywords:
+    description: 'TEXT. Short cultural descriptors/values. Example: innovative, agile.'
+    sql: '"CultureKeywords"'
+  founded_year:
+    description: 'BIGINT. Year the constructor entity was founded. Example: 1963.'
+    sql: '"FOUNDED_YEAR"'
+  fan_club_members:
+    description: 'BIGINT. Estimated number of official fan club members. Example: 1200000.'
+    sql: '"FanClubMembers"'
+  fuel_supplier:
+    description: 'TEXT. Fuel partner/supplier. Possible values (observed): Shell, Petronas, BP, ExxonMobil. Example: BP.'
+    sql: '"FuelSupplier"'
+  hq_country:
+    description: 'TEXT. Country code or name for the headquarters location. Example: UK.'
+    sql: '"HQ_COUNTRY"'
+  headquarters_city:
+    description: 'TEXT. Primary headquarters city of the constructor. Example: Woking.'
+    sql: '"HeadquartersCity"'
+  hospitality_capacity:
+    description: 'BIGINT. Hospitality/guest capacity at events. Example: 400.'
+    sql: '"HospitalityCapacity"'
+  ip_portfolio_json:
+    description: 'JSONB. Intellectual property portfolio metrics. Example: {patents:45}.'
+    sql: '"IP_Portfolio_JSON"'
+  legal_entity_name:
+    description: 'TEXT. Registered legal entity name of the team. Example: Constructor3 Ltd.'
+    sql: '"LegalEntityName"'
+  lubricants_supplier:
+    description: 'TEXT. Lubricants partner/supplier. Possible values (observed): Castrol, Mobil1, Petronas. Example: Castrol.'
+    sql: '"Lubricants_Supplier"'
+  media_rights_partner:
+    description: 'TEXT. Media/rights commercialization partner. Example: IMG.'
+    sql: '"MediaRightsPartner"'
+  notes:
+    description: 'TEXT. Operations/strategy notes. **NULL means no notes logged or nothing noteworthy.** Example: WT upgrade in Q3.'
+    sql: '"Notes"'
+  parent_company:
+    description: 'TEXT. Ultimate parent/holding company. **NULL means the constructor is independent or the parent is undisclosed.** Example: McLaren Group.'
+    sql: '"ParentCompany"'
+  power_unit_supplier:
+    description: 'TEXT. Current engine/power unit supplier. Possible values (observed): Mercedes, Ferrari, Honda, Renault. Example: Mercedes.'
+    sql: '"PowerUnitSupplier"'
+  risk_score:
+    description: 'REAL. Composite operational/commercial risk score (0.0–1.0). Example: 0.23.'
+    sql: '"RISK_SCORE"'
+  staff_manufacturing:
+    description: 'BIGINT. Staff in manufacturing and production. Example: 220.'
+    sql: '"STAFF_MANUFACTURING"'
+  staff_race_ops:
+    description: 'BIGINT. Staff assigned to race operations and trackside. Example: 120.'
+    sql: '"Staff_RaceOps"'
+  staff_total:
+    description: 'BIGINT. Total staff across the constructor organization. Example: 900.'
+    sql: '"Staff_Total"'
+  technical_director:
+    description: 'TEXT. Technical Director responsible for car performance/engineering. Example: Tech Dir A.'
+    sql: '"TECHNICAL_DIRECTOR"'
+  team_principal:
+    description: 'TEXT. Team Principal / overall sporting lead. Example: Andrea Stella.'
+    sql: '"Team_Principal"'
+  title_sponsor:
+    description: 'TEXT. Title/naming-rights sponsor for the constructor. **NULL means no title sponsor secured for the period.** Example: Oracle.'
+    sql: '"Title_Sponsor"'
+  wind_tunnel_hours_week:
+    description: 'REAL. Typical weekly wind tunnel hours used (subject to regulatory limits). Example: 25.0.'
+    sql: '"WindTunnel_Hours_Week"'
+  wind_tunnel_location:
+    description: 'TEXT. Location/city of the wind tunnel used. Example: Cologne.'
+    sql: '"WindTunnel_Location"'
+  staff_rn_d:
+    description: 'BIGINT. Staff dedicated to research & development. Example: 300.'
+    sql: '"staff_RnD"'
+  sustainability_plan:
+    description: 'TEXT. Public sustainability strategy or framework commitment. **NULL means no plan is recorded or publicly declared.** Example: Net-zero by 2030.'
+    sql: sustainability_plan

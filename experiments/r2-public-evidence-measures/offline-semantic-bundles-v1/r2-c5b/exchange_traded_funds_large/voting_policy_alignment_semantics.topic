@@ -1,0 +1,11 @@
+base_view: exchange_traded_funds_large_public__voting_policy_alignment
+label: VotingPolicyAlignment
+description: All columns of the public table VotingPolicyAlignment.
+fields:
+- exchange_traded_funds_large_public__voting_policy_alignment.*
+- exchange_traded_funds_large_public__securities.*
+- exchange_traded_funds_large_public__shareholder_voting_outcomes.*
+joins:
+  exchange_traded_funds_large_public__shareholder_voting_outcomes:
+    exchange_traded_funds_large_public__securities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

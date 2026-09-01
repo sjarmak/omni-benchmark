@@ -1,0 +1,57 @@
+label: Artists
+description: All columns of the public table Artists.
+catalog: museum_artifact_large
+schema: public
+table_name: Artists
+dimensions:
+  artist_registry_code:
+    description: 'TEXT. No description provided. Example: 101.'
+    sql: '"Artist_Registry_Code"'
+  biography:
+    description: 'TEXT. No description provided. Example: A skilled but unknown artisan from the Tang Dynasty, believed to have worked in a state-sponsored workshop producing tomb figures. Their work is characterized by vibrant ''sancai'' glazes..'
+    sql: '"BIOGRAPHY"'
+  death_date:
+    description: 'TEXT. No description provided. Example: 1552.'
+    sql: '"DEATH_DATE"'
+  full_name:
+    description: 'TEXT. No description provided. Example: Anonymous Craftsman.'
+    sql: '"FullName"'
+  is_anonymous:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: '"IS_ANONYMOUS"'
+  primary_medium:
+    description: 'TEXT. No description provided. Example: Ceramic.'
+    sql: '"PRIMARY_MEDIUM"'
+  record_creation_date:
+    description: 'TEXT. No description provided. Example: 2012-09-15T14:20:10Z.'
+    sql: '"RECORD_CREATION_DATE"'
+  style_school:
+    description: 'TEXT. No description provided. Example: Imperial Workshop.'
+    sql: '"STYLE_SCHOOL"'
+  art_movement:
+    description: 'TEXT. No description provided. Example: Tang Dynasty Style.'
+    sql: art_movement
+  birth_date:
+    description: 'TEXT. No description provided. Example: 1494.'
+    sql: birth_date
+  nationality:
+    description: 'TEXT. No description provided. Possible values: Chinese, Dian, Italian, Japanese, Khitan, Ordos.'
+    sql: nationality
+  notable_works:
+    description: 'TEXT. No description provided. Example: ''Sancai'' Glazed Horse, Tomb Guardian Figures.'
+    sql: notable_works
+  primary_dynasty:
+    description: 'TEXT. No description provided. Example: Tang.'
+    sql: primary_dynasty
+  record_creator_staff_ref:
+    description: 'TEXT. No description provided. Possible values: 1, 16, 2, 27, 3, 42, 5, 6, 7.'
+    sql: record_creator_staff_ref
+  research_notes:
+    description: 'TEXT. No description provided. Example: Attribution is based on stylistic similarities and material analysis of items excavated from the Qianling Mausoleum..'
+    sql: research_notes
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Artists public identity values.
+    label: Artists Count
+    sql: ${museum_artifact_large_public__artists.artist_registry_code}

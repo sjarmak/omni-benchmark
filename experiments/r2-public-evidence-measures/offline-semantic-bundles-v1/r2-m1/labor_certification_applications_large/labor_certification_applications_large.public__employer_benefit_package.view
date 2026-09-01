@@ -1,0 +1,81 @@
+label: employer_benefit_package
+description: All columns of the public table employer_benefit_package.
+catalog: labor_certification_applications_large
+schema: public
+table_name: employer_benefit_package
+dimensions:
+  benefit_code:
+    description: 'TEXT. Unique identifier for a benefit-package record. PK. Example: BNF00001.'
+    sql: '"BENEFIT_code"'
+  pto_days:
+    description: 'BIGINT. Annual paid-time-off days. Example: 11.'
+    sql: '"PTO_days"'
+  zip_ref:
+    description: 'TEXT. Employer ZIP (FK). Example: 32751.'
+    sql: '"ZIP_ref"'
+  avail_window:
+    description: 'TEXT. Benefits help-desk operating hours. Example: 24 × 7 help-desk.'
+    sql: avail_window
+  child_care_flag:
+    description: 'TEXT. Employer-subsidized childcare offered? Possible values: Yes, No. **NULL means policy not defined.** Example: No.'
+    sql: '"childCare_flag"'
+  commuter_allow_usd:
+    description: 'REAL. Commuter benefit allowance, USD. **NULL means benefit not provided or untracked.** Example: 23.'
+    sql: '"commuter_allow_USD"'
+  corp_ref:
+    description: 'TEXT. Employer handle (FK). Example: Avant Healthcare Professionals, LLC.'
+    sql: corp_ref
+  cost_per_employee_usd:
+    description: 'REAL. Total employer cost per employee for all benefits, USD. Example: 268,253.'
+    sql: '"costPerEmployee_USD"'
+  dental_flag:
+    description: 'TEXT. Dental coverage offered? Possible values: Yes, No. Example: No.'
+    sql: dental_flag
+  espp_flag:
+    description: 'TEXT. Employee stock-purchase plan offered? Possible values: Yes, No. Example: Yes.'
+    sql: espp_flag
+  health_premium_pct:
+    description: 'REAL. Employee share of health-insurance premium %. Example: 1.44.'
+    sql: '"healthPremium_pct"'
+  holiday_ct:
+    description: 'BIGINT. Number of paid company holidays. Example: 11.'
+    sql: holiday_ct
+  k401_match_pct:
+    description: 'REAL. 401(k) employer-match %, if applicable. Example: 6.15.'
+    sql: k401_match_pct
+  parental_leave_weeks:
+    description: 'REAL. Paid parental-leave duration (weeks). Example: 20.05.'
+    sql: '"parentalLeave_weeks"'
+  plan_year:
+    description: 'TEXT. Benefit plan year. Example: 2022.'
+    sql: '"planYEAR"'
+  reasoning_pkg:
+    description: 'TEXT. Analyst notes on package details. Example: Synthetic demo data.'
+    sql: '"reasoningPKG"'
+  relocation_budget_usd:
+    description: 'REAL. Budget for employee relocation, USD. **NULL means relocation not offered or figure unreported.** Example: 17,144.'
+    sql: '"relocation_budget_USD"'
+  remote_equip_usd:
+    description: 'REAL. Employer stipend for remote-work equipment, USD. Example: 1,383.'
+    sql: '"remoteEquip_USD"'
+  sabbatical_after_yrs:
+    description: 'REAL. Years of service before sabbatical eligibility. Example: 5.27.'
+    sql: sabbatical_after_yrs
+  stock_grant_usd:
+    description: 'REAL. Annual RSU/stock-grant value, USD. **NULL means no stock grant program or data missing.** Example: 40,669.'
+    sql: '"stockGrant_USD"'
+  tuition_reimb_usd:
+    description: 'REAL. Annual tuition-reimbursement cap, USD. Example: 4,494.'
+    sql: '"tuitionReimb_USD"'
+  vision_flag:
+    description: 'TEXT. Vision coverage offered? Possible values: Yes, No. Example: No.'
+    sql: vision_flag
+  wellness_allow_usd:
+    description: 'REAL. Wellness allowance per employee, USD. **NULL means no wellness stipend or undisclosed.** Example: 3,188.'
+    sql: '"wellness_allow_USD"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct employer_benefit_package public identity values.
+    label: employer_benefit_package Count
+    sql: ${labor_certification_applications_large_public__employer_benefit_package.benefit_code}

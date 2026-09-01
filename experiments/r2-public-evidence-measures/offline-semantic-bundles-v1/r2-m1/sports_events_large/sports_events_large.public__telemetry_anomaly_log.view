@@ -1,0 +1,63 @@
+label: TelemetryAnomalyLog
+description: All columns of the public table TelemetryAnomalyLog.
+catalog: sports_events_large
+schema: public
+table_name: TelemetryAnomalyLog
+dimensions:
+  action_taken:
+    description: 'TEXT. Action taken in response Possible values: Monitoring, Mode Change, Pit Stop, Retirement, Component Swap, No Action.'
+    sql: '"ACTION_TAKEN"'
+  actual_value:
+    description: 'REAL. Actual measured value triggering the anomaly Typical range: 0 to 600.'
+    sql: '"ACTUAL_VALUE"'
+  anomaly_id:
+    description: BIGINT. Primary key. Unique anomaly log identifier
+    sql: '"ANOMALY_ID"'
+  anomaly_type:
+    description: 'TEXT. Type of anomaly detected Possible values: Over-temperature, Under-pressure, Sensor Failure, Vibration Alert, Power Loss, Electrical Fault, Hydraulic Warning, Brake Wear.'
+    sql: '"ANOMALY_TYPE"'
+  driver_notified:
+    description: BOOLEAN. Whether driver was notified via radio Boolean flag (true/false).
+    sql: '"DRIVER_NOTIFIED"'
+  engineer_notes:
+    description: TEXT. Race engineer notes **NULL means No notes recorded.**
+    sql: '"ENGINEER_NOTES"'
+  resolved_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When anomaly was resolved **NULL means Anomaly not yet resolved.**
+    sql: '"RESOLVED_AT"'
+  system_affected:
+    description: 'TEXT. System where anomaly was detected Possible values: Engine, Gearbox, ERS, Suspension, Brakes, Aero, Cooling, Hydraulics.'
+    sql: '"SYSTEM_AFFECTED"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  detected_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When anomaly was detected
+    sql: detected_at
+  deviation_pct:
+    description: 'REAL. Deviation from threshold (%) Typical range: 0.1 to 100.'
+    sql: deviation_pct
+  false_positive:
+    description: BOOLEAN. Whether anomaly was later confirmed as false positive Boolean flag (true/false).
+    sql: false_positive
+  pit_stop_triggered:
+    description: BOOLEAN. Whether anomaly triggered a pit stop Boolean flag (true/false).
+    sql: pit_stop_triggered
+  severity:
+    description: 'TEXT. Anomaly severity level Possible values: Critical, Warning, Info.'
+    sql: severity
+  telemetry_ref:
+    description: BIGINT. Foreign key referencing CarTelemetrySnapshot(TELEMETRY_ID). Related telemetry snapshot
+    sql: telemetry_ref
+  threshold_value:
+    description: 'REAL. Expected threshold value Typical range: 0 to 500.'
+    sql: threshold_value
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TelemetryAnomalyLog public identity values.
+    label: TelemetryAnomalyLog Count
+    sql: ${sports_events_large_public__telemetry_anomaly_log.anomaly_id}

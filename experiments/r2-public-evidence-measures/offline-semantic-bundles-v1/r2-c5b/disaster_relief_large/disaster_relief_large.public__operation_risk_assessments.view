@@ -1,0 +1,87 @@
+label: OperationRiskAssessments
+description: All columns of the public table OperationRiskAssessments.
+catalog: disaster_relief_large
+schema: public
+table_name: OperationRiskAssessments
+dimensions:
+  benefit_of_mitigation:
+    description: REAL. Quantified benefit (cost avoided, value protected) expressed in **U.S. dollars**.
+    sql: '"BenefitOfMitigation"'
+  cost_of_mitigation_usd:
+    description: REAL. Estimated or actual expenditure for mitigation in **U.S. dollars**.
+    sql: '"CostOfMitigationUSD"'
+  escalation_required:
+    description: BOOLEAN. TRUE if the risk must be elevated beyond the normal chain of command.
+    sql: '"EscalationRequired"'
+  impact_window:
+    description: TEXT. Timeframe during which the impact is most likely to materialise (e.g., Q1–Q2, Q3).
+    sql: '"ImpactWindow"'
+  last_updated:
+    description: TIMESTAMP (yyyy/mm/dd HH:MM:SS). Date-time of the latest modification to this record.
+    sql: '"LastUpdated"'
+  notes:
+    description: TEXT. Additional context, monitoring instructions, or commentary. **Nullable** when none.
+    sql: '"NOTES"'
+  ops_ref:
+    description: VARCHAR(20). References Operations(OpsRegistry); ties the risk to a specific operation.
+    sql: '"OPS_ref"'
+  responsible_party:
+    description: TEXT. Role or individual accountable for executing mitigation (e.g., Ops Manager, Safety Officer).
+    sql: '"RESPONSIBLE_PARTY"'
+  review_date:
+    description: DATE. Most recent formal review of this risk entry.
+    sql: '"REVIEW_DATE"'
+  risk_description:
+    description: TEXT. Concise narrative of the threat scenario (e.g., “Operational risk regarding potential supply delay”).
+    sql: '"RISK_Description"'
+  reviewer:
+    description: TEXT. Name of the person who performed the last review.
+    sql: '"Reviewer"'
+  risk_category:
+    description: TEXT. High-level domain of the risk (Safety, Security, Operational, Financial, Environmental, Legal).
+    sql: '"RiskCategory"'
+  status:
+    description: 'TEXT. Current handling stage: Open, In Progress, Closed, Deferred.'
+    sql: '"Status"'
+  target_date:
+    description: DATE (yyyy/mm/dd). Deadline to implement mitigation or reach an acceptable risk level.
+    sql: '"TargetDate"'
+  version_int:
+    description: INT. Record-schema or iteration version for internal tracking.
+    sql: '"VersionINT"'
+  contingency_plan_ref:
+    description: TEXT. Reference code or identifier for a contingency/continuity plan (e.g., “CP302”).
+    sql: '"contingencyPlanRef"'
+  escalated_to:
+    description: TEXT. Authority level to which the risk was escalated (e.g., “Senior Management”). **Nullable** when not escalated.
+    sql: '"escalatedTo"'
+  mitigation_measures:
+    description: TEXT. Planned or implemented actions to reduce likelihood and/or impact (e.g., “Develop backup supplier”).
+    sql: '"mitigationMeasures"'
+  risk_id:
+    description: VARCHAR(20). Unique risk-assessment identifier. Primary Key.
+    sql: '"riskID"'
+  risk_numbers:
+    description: JSONB column. Collects quantitative risk indicators, likelihood/impact tags, and control scores in one field.
+    sql: risk_numbers
+  risk_numbers_cost_range_kusd:
+    description: TEXT. Pre-mitigation cost-exposure range in **thousands of U.S. dollars** expressed as “low–high” (e.g., “63–139”).
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_numbers, 'costRange_kusd')
+  risk_numbers_impact:
+    description: 'TEXT. Qualitative consequence tier: Minor, Moderate, Major, Severe, Critical.'
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_numbers, 'impact')
+  risk_numbers_likelihood_pct:
+    description: INT. Likelihood expressed numerically as **percent** chance (e.g., 35).
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_numbers, 'likelihood', 'pct')
+  risk_numbers_likelihood_text:
+    description: 'TEXT. Qualitative probability tier: Very Low, Low, Medium, High, Very High.'
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_numbers, 'likelihood', 'text')
+  risk_numbers_scores_control_eff:
+    description: REAL. Estimated effectiveness of existing controls (0 = ineffective, 1 = fully effective).
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_numbers, 'scores', 'controlEff')
+  risk_numbers_scores_pre:
+    description: REAL. Pre-mitigation risk rating (often 1 – 25) derived from likelihood × impact matrices.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_numbers, 'scores', 'pre')
+  risk_numbers_scores_residual:
+    description: REAL. Expected risk rating *after* mitigation. **Nullable** when mitigation is not yet applied or assessed.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_numbers, 'scores', 'residual')

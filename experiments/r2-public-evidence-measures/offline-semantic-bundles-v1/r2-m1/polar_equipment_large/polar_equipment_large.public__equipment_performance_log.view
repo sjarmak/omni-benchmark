@@ -1,0 +1,72 @@
+label: EquipmentPerformanceLog
+description: All columns of the public table EquipmentPerformanceLog.
+catalog: polar_equipment_large
+schema: public
+table_name: EquipmentPerformanceLog
+dimensions:
+  core_temperature_c:
+    description: 'REAL. Processor core temperature in Celsius. **NULL means Thermal sensor malfunction.** Example: 55.'
+    sql: '"coreTemperatureC"'
+  cpu_load_pct:
+    description: 'REAL. CPU utilization percentage of onboard computer. **NULL means Onboard computer offline or sensor failure.** Example: 45.'
+    sql: '"cpuLoadPct"'
+  data_quality_flag:
+    description: 'TEXT. Quality indicator for this log record. Unique values: Valid, Partial, Suspect, Interpolated.'
+    sql: '"dataQualityFlag"'
+  disk_usage_pct:
+    description: 'REAL. Percentage of storage capacity utilized. **NULL means Disk subsystem not responding.** Example: 50.0.'
+    sql: '"diskUsagePct"'
+  equip_ref:
+    description: TEXT. Reference to the equipment being monitored.
+    sql: equip_ref
+  error_count:
+    description: 'INTEGER. Number of logged errors in measurement window. Example: 3.'
+    sql: '"errorCount"'
+  fan_speed_rpm:
+    description: 'INTEGER. Cooling fan rotational speed in RPM. **NULL means Fan sensor disconnected or passive cooling.** Example: 2200.'
+    sql: '"fanSpeedRPM"'
+  health_score:
+    description: 'REAL. Composite equipment health score 0-100. Example: 78.'
+    sql: '"healthScore"'
+  io_read_mbps:
+    description: 'REAL. Disk read throughput in megabytes per second. **NULL means IO subsystem measurement skipped.** Example: 150.'
+    sql: '"ioReadMBps"'
+  io_write_mbps:
+    description: 'REAL. Disk write throughput in megabytes per second. **NULL means IO subsystem measurement skipped.** Example: 120.'
+    sql: '"ioWriteMBps"'
+  memory_used_mb:
+    description: 'INTEGER. Memory consumption in megabytes. **NULL means Memory monitoring unavailable.** Example: 2048.'
+    sql: '"memoryUsedMB"'
+  network_latency_ms:
+    description: 'REAL. Network round-trip latency in milliseconds. **NULL means Network unreachable during measurement.** Example: 85.'
+    sql: '"networkLatency_ms"'
+  perf_log_seq:
+    description: TEXT. Unique identifier for each performance log entry.
+    sql: '"perfLogSeq"'
+  performance_mode:
+    description: 'TEXT. Current power/performance operating mode. Unique values: HighPerformance, Balanced, PowerSaver, Emergency.'
+    sql: '"performanceMode"'
+  record_timestamp:
+    description: 'TIMESTAMP. Timestamp when performance metrics were captured. Example: 2024-01-01 12:00:00.'
+    sql: '"recordTimestamp"'
+  task_queue_depth:
+    description: 'INTEGER. Number of pending tasks in processing queue. Example: 12.'
+    sql: '"taskQueueDepth"'
+  thermal_throttling:
+    description: 'TEXT. Whether thermal throttling is active. Possible values: True, False.'
+    sql: '"thermalThrottling"'
+  throughput_score:
+    description: 'REAL. Normalized throughput performance score 0-100. Example: 72.'
+    sql: '"throughputScore"'
+  uptime_hours:
+    description: 'REAL. Continuous operational hours since last restart. Example: 50.0.'
+    sql: '"uptimeHours"'
+  warning_count:
+    description: 'INTEGER. Number of logged warnings in measurement window. Example: 8.'
+    sql: '"warningCount"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EquipmentPerformanceLog public identity values.
+    label: EquipmentPerformanceLog Count
+    sql: ${polar_equipment_large_public__equipment_performance_log.perf_log_seq}

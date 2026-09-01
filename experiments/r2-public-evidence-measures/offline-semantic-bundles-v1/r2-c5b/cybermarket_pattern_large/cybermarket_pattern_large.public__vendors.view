@@ -1,0 +1,92 @@
+label: Vendors
+description: Vendor records with verification-tier semantics and access-level context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendors
+dimensions:
+  verification_tier:
+    description: 'TEXT. Verification-tier level assigned to the vendor. **NULL means verification tier not yet assigned or unavailable.**. Possible values: Advanced, Basic, Premium.'
+    label: Verification Tier
+    sql: '"VerTier"'
+  access_level:
+    description: 'TEXT. Access-privilege level granted to the vendor account. **NULL means access level has not been set.**. Possible values: Full, Partial.'
+    label: Access Level
+    sql: '"AccessLevel"'
+    ai_context: 'Vendor Access Levels: Values: Full, Partial. Label descriptions: - Full: Vendor can create listings, modify inventory, withdraw funds, and communicate without restriction. - Partial: Vendor functionality is limited, typically view only or blocked from withdrawals until verification is complete.'
+  completed_txns:
+    description: 'BIGINT. Number of transactions successfully completed by the vendor. Example: 572.'
+    sql: '"CompletedTxns"'
+  compliance_risk:
+    description: 'TEXT. Overall compliance-risk categorisation for the vendor. Possible values: High, Low, Medium.'
+    sql: '"ComplianceRisk"'
+  days_active:
+    description: 'BIGINT. Total number of days the vendor has been active across all platforms. Example: 319.'
+    sql: '"DaysActive"'
+  disputed_events:
+    description: 'BIGINT. Count of transactions that resulted in disputes. Example: 33.'
+    sql: '"DisputedEvents"'
+  investigation_flag:
+    description: 'TEXT. Indicator that the vendor is under investigation. **NULL means investigation status is not recorded.**. Possible values: Active, Closed, Monitoring.'
+    sql: '"InvestigationFlag"'
+  le_interest:
+    description: 'TEXT. Level of law-enforcement interest in the vendor. **NULL means no law-enforcement interest has been documented.**. Possible values: High, Low, Medium.'
+    sql: '"LE_Interest"'
+  last_active_dt:
+    description: 'TIMESTAMP. Datetime when the vendor was last observed active. **NULL means no last-active information is available.**. Example: 2025/2/5.'
+    sql: '"LastActiveDt"'
+  performance_rating:
+    description: 'REAL. Aggregated performance rating derived from vendor transactions. Example: 4.5.'
+    sql: '"PerformanceRating"'
+  reg_standeff:
+    description: 'text. The compliance efficiency score of a vendor, calculated as the ratio of compliance score to rule violation count. Example: 14.95 Score/violation.'
+    sql: '"RegStandeff"'
+  seller_key:
+    description: TEXT. Unique identifier for a vendor (seller) account. PK.
+    sql: '"SellerKey"'
+  total_txns:
+    description: 'TEXT. Total number of transactions associated with the vendor. Example: $917 .'
+    sql: '"TotalTxns"'
+  vendor_compliance_ratings:
+    description: JSONB column. Stores the vendor's compliance-related performance metrics, including verification scores, trust metrics, and conflict resolution scores.
+    sql: vendor_compliance_ratings
+  vendor_compliance_ratings_comm_trust_scr:
+    description: 'REAL. Communication trust metric derived from message analysis. **NULL means this metric has not been computed.**. Example: 35.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'comm_trust_scr')
+  vendor_compliance_ratings_conflict_res_scr:
+    description: 'REAL. Score reflecting the vendor’s conflict-resolution performance. **NULL means no conflict-resolution score is available.**. Example: 33.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'conflict_res_scr')
+  vendor_compliance_ratings_escrow_adher_score:
+    description: 'REAL. Percentage of the vendor’s transactions that adhere to escrow requirements. Example: 12.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'escrow_adher_score')
+  vendor_compliance_ratings_feedback_integrity_scr:
+    description: 'REAL. Metric indicating trustworthiness of feedback left for the vendor. Example: 87.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'feedback_integrity_scr')
+  vendor_compliance_ratings_id_ver_score_val:
+    description: 'REAL. Score indicating strength of identity-verification evidence. Example: 50.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'id_ver_score_val')
+  vendor_compliance_ratings_liq_rate:
+    description: 'text. The liquidity rate of the vendor, calculated based on successful transactions and product prices, measured in USD/day. Example: 350.45 USD/day.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'liq_rate')
+  vendor_compliance_ratings_penalty_event_count:
+    description: 'BIGINT. Number of penalty or sanction events applied to the vendor. Possible values: 0, 1, 2, 3, 4, 5, 6, 7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'penalty_event_count')
+  vendor_compliance_ratings_platform_engage_scr:
+    description: 'REAL. Measure of the vendor’s engagement across supported platforms. Example: 76.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'platform_engage_scr')
+  vendor_compliance_ratings_prof_complete_pct:
+    description: 'REAL. Percentage completeness of the vendor’s profile information. Example: 82.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'prof_complete_pct')
+  vendor_compliance_ratings_reg_compliance_scr:
+    description: 'REAL. Score measuring the vendor’s adherence to regulatory standards. Example: 20.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'reg_compliance_scr')
+  vendor_compliance_ratings_viol_count:
+    description: 'BIGINT. Total number of policy violations attributed to the vendor. Example: 10.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'viol_count')
+  vendor_compliance_ratings_warn_count:
+    description: 'BIGINT. Count of formal warnings issued to the vendor. Example: 6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(vendor_compliance_ratings, 'warn_count')
+  is_advanced_verification_tier:
+    label: Advanced Verification Tier
+    description: Vendors with strong identity validation.
+    sql: ${verification_tier} = 'Advanced'
+    ai_context: Use this modeled field for Advanced Verification Tier; do not reconstruct its formula.

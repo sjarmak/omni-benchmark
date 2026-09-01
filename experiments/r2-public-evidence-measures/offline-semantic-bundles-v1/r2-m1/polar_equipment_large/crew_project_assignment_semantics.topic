@@ -1,0 +1,11 @@
+base_view: polar_equipment_large_public__crew_project_assignment
+label: CrewProjectAssignment
+description: All columns of the public table CrewProjectAssignment.
+fields:
+- polar_equipment_large_public__crew_project_assignment.*
+- polar_equipment_large_public__crew_member.*
+- polar_equipment_large_public__project.*
+joins:
+  polar_equipment_large_public__crew_member: {}
+  polar_equipment_large_public__project: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

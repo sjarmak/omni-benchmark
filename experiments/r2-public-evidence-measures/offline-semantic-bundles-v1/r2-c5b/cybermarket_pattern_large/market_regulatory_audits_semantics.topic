@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__market_regulatory_audits
+label: market_regulatory_audits
+description: All columns of the public table market_regulatory_audits.
+fields:
+- cybermarket_pattern_large_public__market_regulatory_audits.*
+- cybermarket_pattern_large_public__markets.*
+joins:
+  cybermarket_pattern_large_public__markets: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

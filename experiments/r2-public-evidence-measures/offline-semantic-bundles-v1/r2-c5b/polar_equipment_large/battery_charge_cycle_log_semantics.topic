@@ -1,0 +1,13 @@
+base_view: polar_equipment_large_public__battery_charge_cycle_log
+label: BatteryChargeCycleLog
+description: All columns of the public table BatteryChargeCycleLog.
+fields:
+- polar_equipment_large_public__battery_charge_cycle_log.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__powerbattery.*
+joins:
+  polar_equipment_large_public__powerbattery:
+    polar_equipment_large_public__equipment:
+      polar_equipment_large_public__equipmenttype: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

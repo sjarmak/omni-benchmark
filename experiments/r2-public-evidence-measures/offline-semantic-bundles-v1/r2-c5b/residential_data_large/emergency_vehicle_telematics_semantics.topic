@@ -1,0 +1,11 @@
+base_view: residential_data_large_public__emergency_vehicle_telematics
+label: Emergency_Vehicle_Telematics
+description: All columns of the public table Emergency_Vehicle_Telematics.
+fields:
+- residential_data_large_public__emergency_vehicle_telematics.*
+- residential_data_large_public__crime_statistics.*
+- residential_data_large_public__public_safety_patrol_logs.*
+joins:
+  residential_data_large_public__public_safety_patrol_logs:
+    residential_data_large_public__crime_statistics: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,450 @@
+- join_from_view: sports_events_large_public__driver_profiles
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__driver_profiles.drv_ref} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__medical_incident_map
+  join_to_view: sports_events_large_public__driver_medical_record
+  join_type: always_left
+  on_sql: ${sports_events_large_public__medical_incident_map.medical_ref} = ${sports_events_large_public__driver_medical_record.medical_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__sprint_results
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__sprint_results.matchref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__constructor_standings
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__constructor_standings.rref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__strategy_scenarios
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__strategy_scenarios.rak_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__driver_biometric_metrics
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__driver_biometric_metrics.drv_ref} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__qualifying
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__qualifying.pilotrec} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__regulation_technology_links
+  join_to_view: sports_events_large_public__innovation_technologies
+  join_type: always_left
+  on_sql: ${sports_events_large_public__regulation_technology_links.technology_ref} = ${sports_events_large_public__innovation_technologies.technology_index}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__sprint_results
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__sprint_results.unitdrive} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__fan_race_attendance
+  join_to_view: sports_events_large_public__circuits
+  join_type: always_left
+  on_sql: ${sports_events_large_public__fan_race_attendance.circuit_ref} = ${sports_events_large_public__circuits.cctkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__broadcast_media_map
+  join_to_view: sports_events_large_public__media_assets
+  join_type: always_left
+  on_sql: ${sports_events_large_public__broadcast_media_map.media_ref} = ${sports_events_large_public__media_assets.media_asset_index}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__circuit_facilities
+  join_to_view: sports_events_large_public__circuits
+  join_type: always_left
+  on_sql: ${sports_events_large_public__circuit_facilities.cctkey_ref} = ${sports_events_large_public__circuits.cctkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__constructor_results
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__constructor_results.unitnode} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__financial_sponsor_map
+  join_to_view: sports_events_large_public__team_budget
+  join_type: always_left
+  on_sql: ${sports_events_large_public__financial_sponsor_map.budget_ref} = ${sports_events_large_public__team_budget.budget_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__sensor_configuration
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__sensor_configuration.constructor_ref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__team_travel_itinerary
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__team_travel_itinerary.race_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__team_budget
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__team_budget.constructor_ref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__merchandise_sales
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__merchandise_sales.race_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__staff_training_enrollments
+  join_to_view: sports_events_large_public__staff_directory
+  join_type: always_left
+  on_sql: ${sports_events_large_public__staff_training_enrollments.staff_ref} = ${sports_events_large_public__staff_directory.staff_index}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__constructor_profiles
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__constructor_profiles.cstr_ref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__medical_incident_map
+  join_to_view: sports_events_large_public__race_incidents
+  join_type: always_left
+  on_sql: ${sports_events_large_public__medical_incident_map.incident_ref} = ${sports_events_large_public__race_incidents.incident_number}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__constructor_results
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__constructor_results.matchref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__regulation_technology_links
+  join_to_view: sports_events_large_public__technical_regulations
+  join_type: always_left
+  on_sql: ${sports_events_large_public__regulation_technology_links.regulation_ref} = ${sports_events_large_public__technical_regulations.regulation_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__revenue_stream
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__revenue_stream.constructor_ref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__development_technology_map
+  join_to_view: sports_events_large_public__innovation_technologies
+  join_type: always_left
+  on_sql: ${sports_events_large_public__development_technology_map.technology_ref} = ${sports_events_large_public__innovation_technologies.technology_index}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__equipment_shipment
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__equipment_shipment.constructor_ref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__team_travel_itinerary
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__team_travel_itinerary.constructor_ref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__car_telemetry_snapshot
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__car_telemetry_snapshot.race_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__fan_race_attendance
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__fan_race_attendance.race_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__broadcast_media_map
+  join_to_view: sports_events_large_public__tvbroadcast
+  join_type: always_left
+  on_sql: ${sports_events_large_public__broadcast_media_map.broadcast_ref} = ${sports_events_large_public__tvbroadcast.broadcast_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__driver_standings
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__driver_standings.drive_link} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__financial_sponsor_map
+  join_to_view: sports_events_large_public__sponsor_entities
+  join_type: always_left
+  on_sql: ${sports_events_large_public__financial_sponsor_map.sponsor_ref} = ${sports_events_large_public__sponsor_entities.sponsor_record}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__tvbroadcast
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__tvbroadcast.race_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__lap_times
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__lap_times.wheel_unit} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__equipment_shipment
+  join_to_view: sports_events_large_public__circuits
+  join_type: always_left
+  on_sql: ${sports_events_large_public__equipment_shipment.circuit_ref} = ${sports_events_large_public__circuits.cctkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__cfdsimulation
+  join_to_view: sports_events_large_public__car_development_program
+  join_type: always_left
+  on_sql: ${sports_events_large_public__cfdsimulation.dev_program_ref} = ${sports_events_large_public__car_development_program.dev_program_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__circuit_aliases
+  join_to_view: sports_events_large_public__circuits
+  join_type: always_left
+  on_sql: ${sports_events_large_public__circuit_aliases.cctkey_ref} = ${sports_events_large_public__circuits.cctkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__qualifying
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__qualifying.corptag} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__streaming_metrics
+  join_to_view: sports_events_large_public__tvbroadcast
+  join_type: always_left
+  on_sql: ${sports_events_large_public__streaming_metrics.broadcast_ref} = ${sports_events_large_public__tvbroadcast.broadcast_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__safety_equipment_inspection
+  join_to_view: sports_events_large_public__technical_regulations
+  join_type: always_left
+  on_sql: ${sports_events_large_public__safety_equipment_inspection.regulation_ref} = ${sports_events_large_public__technical_regulations.regulation_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__logistics_circuit_map
+  join_to_view: sports_events_large_public__equipment_shipment
+  join_type: always_left
+  on_sql: ${sports_events_large_public__logistics_circuit_map.shipment_ref} = ${sports_events_large_public__equipment_shipment.shipment_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__telemetry_anomaly_log
+  join_to_view: sports_events_large_public__car_telemetry_snapshot
+  join_type: always_left
+  on_sql: ${sports_events_large_public__telemetry_anomaly_log.telemetry_ref} = ${sports_events_large_public__car_telemetry_snapshot.telemetry_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__sponsor_media_campaigns
+  join_to_view: sports_events_large_public__sponsor_entities
+  join_type: always_left
+  on_sql: ${sports_events_large_public__sponsor_media_campaigns.sponsor_ref} = ${sports_events_large_public__sponsor_entities.sponsor_record}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__car_telemetry_snapshot
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__car_telemetry_snapshot.driver_ref} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__lap_times
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__lap_times.rc_index} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__sprint_results
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__sprint_results.makeref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__trackside_medical_facility
+  join_to_view: sports_events_large_public__circuits
+  join_type: always_left
+  on_sql: ${sports_events_large_public__trackside_medical_facility.circuit_ref} = ${sports_events_large_public__circuits.cctkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__fan_zone_activity
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__fan_zone_activity.race_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__sponsor_technology_agreements
+  join_to_view: sports_events_large_public__sponsor_entities
+  join_type: always_left
+  on_sql: ${sports_events_large_public__sponsor_technology_agreements.sponsor_ref} = ${sports_events_large_public__sponsor_entities.sponsor_record}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__tire_telemetry
+  join_to_view: sports_events_large_public__car_telemetry_snapshot
+  join_type: always_left
+  on_sql: ${sports_events_large_public__tire_telemetry.telemetry_ref} = ${sports_events_large_public__car_telemetry_snapshot.telemetry_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__pit_stops
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__pit_stops.wunit} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__driver_social_media
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__driver_social_media.drv_ref} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__safety_equipment_inspection
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__safety_equipment_inspection.constructor_ref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__cost_cap_tracking
+  join_to_view: sports_events_large_public__team_budget
+  join_type: always_left
+  on_sql: ${sports_events_large_public__cost_cap_tracking.budget_ref} = ${sports_events_large_public__team_budget.budget_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__weather_observations
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__weather_observations.rak_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__driver_medical_record
+  join_to_view: sports_events_large_public__drivers
+  join_type: always_left
+  on_sql: ${sports_events_large_public__driver_medical_record.driver_ref} = ${sports_events_large_public__drivers.drv_main}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__ticket_sales
+  join_to_view: sports_events_large_public__circuits
+  join_type: always_left
+  on_sql: ${sports_events_large_public__ticket_sales.circuit_ref} = ${sports_events_large_public__circuits.cctkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__logistics_circuit_map
+  join_to_view: sports_events_large_public__circuits
+  join_type: always_left
+  on_sql: ${sports_events_large_public__logistics_circuit_map.circuit_ref} = ${sports_events_large_public__circuits.cctkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__ticket_sales
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__ticket_sales.race_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__constructor_standings
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__constructor_standings.contunit} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__sponsor_technology_agreements
+  join_to_view: sports_events_large_public__innovation_technologies
+  join_type: always_left
+  on_sql: ${sports_events_large_public__sponsor_technology_agreements.technology_ref} = ${sports_events_large_public__innovation_technologies.technology_index}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__circuit_details
+  join_to_view: sports_events_large_public__circuits
+  join_type: always_left
+  on_sql: ${sports_events_large_public__circuit_details.cct_ref} = ${sports_events_large_public__circuits.cctkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__qualifying
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__qualifying.rbind} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__engine_telemetry
+  join_to_view: sports_events_large_public__car_telemetry_snapshot
+  join_type: always_left
+  on_sql: ${sports_events_large_public__engine_telemetry.telemetry_ref} = ${sports_events_large_public__car_telemetry_snapshot.telemetry_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__races
+  join_to_view: sports_events_large_public__circuits
+  join_type: always_left
+  on_sql: ${sports_events_large_public__races.trkbind} = ${sports_events_large_public__circuits.cctkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__driver_standings
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__driver_standings.rlink} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__freight_container
+  join_to_view: sports_events_large_public__equipment_shipment
+  join_type: always_left
+  on_sql: ${sports_events_large_public__freight_container.shipment_ref} = ${sports_events_large_public__equipment_shipment.shipment_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__pit_stops
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__pit_stops.matchidx} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__wind_tunnel_result
+  join_to_view: sports_events_large_public__car_development_program
+  join_type: always_left
+  on_sql: ${sports_events_large_public__wind_tunnel_result.dev_program_ref} = ${sports_events_large_public__car_development_program.dev_program_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__sponsor_media_campaigns
+  join_to_view: sports_events_large_public__media_assets
+  join_type: always_left
+  on_sql: ${sports_events_large_public__sponsor_media_campaigns.media_asset_ref} = ${sports_events_large_public__media_assets.media_asset_index}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__race_incidents
+  join_to_view: sports_events_large_public__races
+  join_type: always_left
+  on_sql: ${sports_events_large_public__race_incidents.rak_ref} = ${sports_events_large_public__races.rak_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__car_development_program
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__car_development_program.constructor_ref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__staff_training_enrollments
+  join_to_view: sports_events_large_public__training_programs
+  join_type: always_left
+  on_sql: ${sports_events_large_public__staff_training_enrollments.training_ref} = ${sports_events_large_public__training_programs.training_identifier}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__development_technology_map
+  join_to_view: sports_events_large_public__car_development_program
+  join_type: always_left
+  on_sql: ${sports_events_large_public__development_technology_map.dev_program_ref} = ${sports_events_large_public__car_development_program.dev_program_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: sports_events_large_public__merchandise_sales
+  join_to_view: sports_events_large_public__constructors
+  join_type: always_left
+  on_sql: ${sports_events_large_public__merchandise_sales.constructor_ref} = ${sports_events_large_public__constructors.cstr_key}
+  relationship_type: many_to_one
+  reversible: false

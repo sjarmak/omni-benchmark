@@ -1,0 +1,9 @@
+base_view: exchange_traded_funds_large_public__sector_allocations
+label: Sector Allocations
+description: Per-fund sector allocation records with public sector-weight context.
+fields:
+- exchange_traded_funds_large_public__sector_allocations.*
+- exchange_traded_funds_large_public__sectors.*
+joins:
+  exchange_traded_funds_large_public__sectors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

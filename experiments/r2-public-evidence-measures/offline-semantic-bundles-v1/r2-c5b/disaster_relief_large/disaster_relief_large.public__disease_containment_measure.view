@@ -1,0 +1,66 @@
+label: DiseaseContainmentMeasure
+description: All columns of the public table DiseaseContainmentMeasure.
+catalog: disaster_relief_large
+schema: public
+table_name: DiseaseContainmentMeasure
+dimensions:
+  behavioral_change_observed:
+    description: 'VARCHAR(100). Measured behavior modification (Significant|Moderate|Minimal|None|Negative). Possible values: "Minimal", "Moderate", "Negative", "None", "Significant".'
+    sql: '"behavioralChangeObserved"'
+  community_compliance:
+    description: 'VARCHAR(100). Public adherence level (Excellent|Good|Fair|Poor|Resistant|Violent). Possible values: "Excellent", "Fair", "Good", "Poor", "Resistant", "Violent".'
+    sql: '"communityCompliance"'
+  cost_usd:
+    description: 'VARCHAR(100). Total expenditure for measure implementation in USD. Example: "537".'
+    sql: '"costUSD"'
+  coverage_pct:
+    description: 'VARCHAR(100). Percentage of target population reached (0-100). Example: "877".'
+    sql: '"coveragePct"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 1489.'
+    sql: '"disasterEventId"'
+  disease_outbreak_id:
+    description: 'BIGINT. Foreign key reference to disease outbreak (DiseaseOutbreakCore.id). Example: 1489.'
+    sql: '"diseaseOutbreakId"'
+  effectiveness_score:
+    description: 'VARCHAR(100). Measured impact rating (1-10 scale). Example: "64fBHg8omO".'
+    sql: '"effectivenessScore"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for disease containment records. Example: 1.'
+    sql: id
+  implementation_date:
+    description: 'VARCHAR(100). Date containment measure was activated. Example: "2016-09-24".'
+    sql: '"implementationDate"'
+  measure_type:
+    description: 'VARCHAR(100). Public health intervention type (Quarantine|Isolation|Vaccination|Testing|ContactTracing|Sanitization|PublicAwareness|TravelRestriction|SchoolClosure|MarketClosure). Possible values: "ContactTracing", "Isolation", "MarketClosure", "PublicAwareness", "Quarantine", "Sanitization", "SchoolClosure", "Testing", "TravelRestriction", "Vaccination".'
+    sql: '"measureType"'
+  media_coverage:
+    description: 'VARCHAR(100). News media attention level (Extensive|Moderate|Limited|Negative|None). Possible values: "Extensive", "Limited", "Moderate", "Negative", "None".'
+    sql: '"mediaCoverage"'
+  next_review_date:
+    description: 'VARCHAR(100). Scheduled date for measure effectiveness reassessment. Example: "2013-01-13".'
+    sql: '"nextReviewDate"'
+  notes:
+    description: 'VARCHAR(100). Public health officer observations or recommendations. Example: "kbrmQjgJrd".'
+    sql: notes
+  personnel_deployed:
+    description: 'VARCHAR(100). Count of personnel assigned to measure implementation. Example: "877".'
+    sql: '"personnelDeployed"'
+  public_awareness_score:
+    description: 'VARCHAR(100). Population knowledge assessment score (1-100). Example: "KDR810Hg62".'
+    sql: '"publicAwarenessScore"'
+  side_effects_reported:
+    description: 'VARCHAR(100). Unintended consequences or adverse events documented. Example: "NJVJft4Mxf".'
+    sql: '"sideEffectsReported"'
+  supplies_used:
+    description: 'VARCHAR(100). Consumable resources utilized during implementation. Example: "877".'
+    sql: '"suppliesUsed"'
+  target_population:
+    description: 'VARCHAR(100). Population segment affected (GeneralPublic|HealthcareWorkers|Elderly|Children|Travelers|HighRiskGroups|EntirePopulation|SpecificRegion). Possible values: "Children", "Elderly", "EntirePopulation", "GeneralPublic", "HealthcareWorkers", "HighRiskGroups", "SpecificRegion", "Travelers".'
+    sql: '"targetPopulation"'
+  transmission_reduction_pct:
+    description: 'VARCHAR(100). Measured reduction in disease transmission percentage (0-100). Example: "HZQBHVj4mX".'
+    sql: '"transmissionReductionPct"'
+  version:
+    description: 'VARCHAR(100). Record version number for audit purposes. Example: "MEpFzP3DMH".'
+    sql: version

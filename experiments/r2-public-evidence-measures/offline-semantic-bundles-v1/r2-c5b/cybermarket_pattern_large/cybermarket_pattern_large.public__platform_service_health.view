@@ -1,0 +1,66 @@
+label: PlatformServiceHealth
+description: All columns of the public table PlatformServiceHealth.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: PlatformServiceHealth
+dimensions:
+  psh_id:
+    description: 'TEXT. Unique identifier for the platform service health record. Example: PSH-1A2B3C.'
+    sql: '"PSH_id"'
+  active_connections:
+    description: 'INTEGER. Number of active connections to the service. Example: 500.'
+    sql: active_connections
+  auto_scaling_active:
+    description: 'BOOLEAN. Indicates if auto-scaling is currently active for service. Possible values: True, False.'
+    sql: auto_scaling_active
+  cpu_utilization_pct:
+    description: 'REAL. CPU utilization percentage of service infrastructure. Example: 45.0.'
+    sql: cpu_utilization_pct
+  disk_utilization_pct:
+    description: 'REAL. Disk utilization percentage of service storage. **NULL means Disk metrics not available for this service.** Example: 55.0.'
+    sql: disk_utilization_pct
+  error_rate_percentage:
+    description: 'REAL. Percentage of requests resulting in errors. Example: 0.5.'
+    sql: error_rate_percentage
+  health_check_timestamp:
+    description: 'TIMESTAMP. Timestamp when the health check was performed. Example: 2024-01-01 12:00:00.'
+    sql: health_check_timestamp
+  health_score:
+    description: 'REAL. Composite health score for the service (0-100). Example: 92.0.'
+    sql: health_score
+  incident_report_ref:
+    description: TEXT. Reference to the platform incident report.
+    sql: incident_report_ref
+  instance_count:
+    description: 'INTEGER. Number of active service instances running. Example: 8.'
+    sql: instance_count
+  memory_utilization_pct:
+    description: 'REAL. Memory utilization percentage of service infrastructure. Example: 62.0.'
+    sql: memory_utilization_pct
+  queue_depth:
+    description: 'INTEGER. Number of pending items in service processing queue. **NULL means Service does not use queuing.** Example: 50.'
+    sql: queue_depth
+  requests_per_second:
+    description: 'REAL. Current throughput in requests per second. Example: 1500.0.'
+    sql: requests_per_second
+  response_time_avg_ms:
+    description: 'REAL. Average response time in milliseconds. Example: 150.0.'
+    sql: response_time_avg_ms
+  response_time_p95_ms:
+    description: 'REAL. 95th percentile response time in milliseconds. Example: 350.0.'
+    sql: response_time_p95_ms
+  response_time_p99_ms:
+    description: 'REAL. 99th percentile response time in milliseconds. Example: 800.0.'
+    sql: response_time_p99_ms
+  service_name:
+    description: 'TEXT. Name of the platform service being monitored. Unique values: Payment Gateway, User Authentication, Search Service, Order Processing, Notification Engine, Analytics Pipeline, CDN, Database Cluster.'
+    sql: service_name
+  service_status:
+    description: 'TEXT. Current operational status of the service. Unique values: Healthy, Degraded, Partial Outage, Major Outage, Maintenance.'
+    sql: service_status
+  ssl_certificate_days_remaining:
+    description: 'INTEGER. Days remaining until SSL certificate expiration. Example: 50.'
+    sql: ssl_certificate_days_remaining
+  uptime_percentage_24h:
+    description: 'REAL. Service uptime percentage over last 24 hours. Example: 99.5.'
+    sql: uptime_percentage_24h

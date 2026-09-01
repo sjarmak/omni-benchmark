@@ -1,0 +1,111 @@
+label: Staff
+description: All columns of the public table Staff.
+catalog: museum_artifact_large
+schema: public
+table_name: Staff
+dimensions:
+  annual_leave_remaining:
+    description: 'TEXT. No description provided. Example: 25.0.'
+    sql: '"ANNUAL_LEAVE_REMAINING"'
+  employee_id_num:
+    description: 'TEXT. No description provided. Example: EID-001.'
+    sql: '"EMPLOYEE_ID_NUM"'
+  end_date:
+    description: 'TEXT. No description provided. Possible values: 05/31/2023, 06/30/2024.'
+    sql: '"END_DATE"'
+  first_name:
+    description: 'TEXT. No description provided. Example: Eleanor.'
+    sql: '"FirstName"'
+  homeaddress:
+    description: 'TEXT. No description provided. Example: 123 Heritage Ln, Capital City.'
+    sql: '"HOMEADDRESS"'
+  is_conservator:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: '"IS_CONSERVATOR"'
+  job_title:
+    description: 'TEXT. No description provided. Example: Museum Director.'
+    sql: '"JOB_TITLE"'
+  last_login:
+    description: 'TEXT. No description provided. Example: 2025-09-13T10:22:00Z.'
+    sql: '"LAST_LOGIN"'
+  last_name:
+    description: 'TEXT. No description provided. Example: VANCE.'
+    sql: '"LAST_NAME"'
+  manager_staff_code:
+    description: 'TEXT. No description provided. Example: 1.0.'
+    sql: '"Manager_Staff_Code"'
+  payroll_ref:
+    description: 'TEXT. No description provided. Example: PR-001.'
+    sql: '"PAYROLL_REF"'
+  phone_ext:
+    description: 'TEXT. No description provided. Example: 101.0.'
+    sql: '"PHONE_EXT"'
+  specialization:
+    description: 'TEXT. No description provided. Example: Museum Administration.'
+    sql: '"SPECIALIZATION"'
+  security_clearance:
+    description: 'TEXT. No description provided. Possible values: 1, 2, 3, 4, 5.'
+    sql: '"Security_Clearance"'
+  staff_code:
+    description: 'TEXT. No description provided. Example: 1.'
+    sql: '"Staff_Code"'
+  start_date:
+    description: 'TEXT. No description provided. Example: 03/15/2010.'
+    sql: '"StartDate"'
+  system_user_role:
+    description: 'TEXT. No description provided. Possible values: Admin, Editor, Viewer.'
+    sql: '"System_User_Role"'
+  training_records:
+    description: 'TEXT. No description provided. Example: {trainings: [{name: Leadership Summit, completed: 2024-08-15}, {name: Advanced Fundraising, completed: 2023-11-20}]}.'
+    sql: '"TRAINING_RECORDS"'
+  department:
+    description: 'TEXT. No description provided. Example: Administration.'
+    sql: department
+  dob:
+    description: 'TEXT. No description provided. Example: 05/20/1965.'
+    sql: dob
+  email_address:
+    description: 'TEXT. No description provided. Example: eleanor.vance@museuminternal.org.'
+    sql: email_address
+  emergency_contact_details:
+    description: JSONB column. Contains the emergency contact information for a staff member.
+    sql: emergency_contact_details
+  employment_status:
+    description: 'TEXT. No description provided. Possible values: Active, On Leave, Retired.'
+    sql: '"employment_Status"'
+  is_curator:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: '"isCurator"'
+  is_researcher:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: is_researcher
+  nationality:
+    description: 'TEXT. No description provided. Possible values: American, Australian, British, Canadian, Chinese, Indian, Korean, Mexican.'
+    sql: nationality
+  next_review:
+    description: 'TEXT. No description provided. Example: 03/15/2026.'
+    sql: next_review
+  office_location:
+    description: 'TEXT. No description provided. Example: Director''s Suite.'
+    sql: '"officeLocation"'
+  performance_score:
+    description: 'TEXT. No description provided. Possible values: 4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9.'
+    sql: '"performance_Score"'
+  professional_bio:
+    description: 'TEXT. No description provided. Example: Oversees all museum operations and strategic planning, with a focus on fundraising and community outreach. PhD in Art History..'
+    sql: professional_bio
+  sick_days:
+    description: 'TEXT. No description provided. Possible values: 0.0, 10.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0.'
+    sql: sick_days
+  emergency_contact_details_emergency_phone:
+    description: 'TEXT. No description provided. Example: 555-0101-2345.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emergency_contact_details, 'EMERGENCY_PHONE')
+  emergency_contact_details_emergency_contact:
+    description: 'TEXT. No description provided. Example: Marcus Vance.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emergency_contact_details, 'emergencyContact')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Staff public identity values.
+    label: Staff Count
+    sql: ${museum_artifact_large_public__staff.staff_code}

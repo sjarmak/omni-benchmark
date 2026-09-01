@@ -1,0 +1,17 @@
+base_view: archeology_scan_large_public__registration
+label: Scan Registration
+description: Registration records with row-level alignment method, accuracy, error, and quality-threshold semantics.
+fields:
+- archeology_scan_large_public__registration.*
+- archeology_scan_large_public__personnel.*
+- archeology_scan_large_public__projects.*
+joins:
+  archeology_scan_large_public__personnel: {}
+  archeology_scan_large_public__projects: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields meets_registration_quality_threshold rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Registration Confidence Level: A classification where ''High Confidence'' registrations have \text{RAR} > 1.5 and \text{Registration Method} containing ''Target'', where RAR is Registration Accuracy Ratio, ''Medium Confidence'' have RAR between 1.0-1.5, and ''Low Confidence'' otherwise, determining appropriate use cases for spatial analysis and interpretive visualization.'

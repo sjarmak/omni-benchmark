@@ -1,0 +1,19 @@
+base_view: cybermarket_pattern_large_public__risk_analytics
+label: risk_analytics
+description: All columns of the public table risk_analytics.
+fields:
+- cybermarket_pattern_large_public__risk_analytics.*
+- cybermarket_pattern_large_public__buyers.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__transactions.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__transactions:
+    cybermarket_pattern_large_public__buyers: {}
+    cybermarket_pattern_large_public__markets: {}
+    cybermarket_pattern_large_public__vendors: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Wallet Turnover Rate: WTR = \frac{\text{value\_moved}}{\text{wallet\_age\_in\_days}}'

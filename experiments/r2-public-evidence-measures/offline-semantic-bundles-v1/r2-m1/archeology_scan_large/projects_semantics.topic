@@ -1,0 +1,7 @@
+base_view: archeology_scan_large_public__projects
+label: projects
+description: All columns of the public table projects.
+fields:
+- archeology_scan_large_public__projects.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,99 @@
+label: service_categories
+description: All columns of the public table service_categories.
+catalog: residential_data_large
+schema: public
+table_name: service_categories
+dimensions:
+  average_benefit_value_brl:
+    description: 'REAL. Average benefit value in Brazilian Real. **NULL means benefit amounts not standardized.**. Possible values: 0.0, 450.0, 85000.0.'
+    sql: '"Average_Benefit_Value_BRL"'
+  budget_allocation_annual_brl:
+    description: 'REAL. Annual budget allocation in Brazilian Real. **NULL means budget information not disclosed.**. Possible values: 15000000.0, 2500000.0.'
+    sql: '"Budget_Allocation_Annual_BRL"'
+  category_name:
+    description: 'TEXT. Name of social service category. Possible values: Auxílio Alimentação, Capacitação Profissional, Moradia Popular, Saúde da Família.'
+    sql: '"CATEGORY_name"'
+  category_id:
+    description: 'BIGSERIAL. Primary key identifier for service category record. PK. Possible values: 1, 2, 3, 4.'
+    sql: '"Category_ID"'
+  compliance_audits_per_year:
+    description: 'BIGINT. Number of compliance audits conducted annually. **NULL means audit frequency not scheduled.**. Possible values: 1.0, 2.0, 4.0.'
+    sql: '"Compliance_Audits_Per_Year"'
+  created_at:
+    description: 'DATE. Record creation timestamp. **NULL means creation date not logged.**. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"Created_At"'
+  data_collection_frequency_days:
+    description: 'BIGINT. Frequency of data collection in days. **NULL means data collection schedule not established.**. Possible values: 30.0, 60.0.'
+    sql: '"Data_Collection_Frequency_Days"'
+  documentation_requirements_count:
+    description: 'BIGINT. Number of documents required for application. **NULL means documentation requirements not specified.**. Possible values: 15.0, 5.0, 8.0.'
+    sql: '"Documentation_Requirements_Count"'
+  eligibility_criteria:
+    description: 'TEXT. Eligibility requirements for service access. **NULL means eligibility criteria not defined.**. Possible values: Critérios socioeconômicos específicos, Renda familiar até 2 salários mínimos, Residência na área de cobertura.'
+    sql: '"ELIGIBILITY_criteria"'
+  impact_assessment_frequency_months:
+    description: 'BIGINT. Frequency of impact assessments in months. **NULL means impact evaluation not scheduled.**. Possible values: 12.0, 6.0.'
+    sql: '"IMPACT_assessment_frequency_months"'
+  maximum_benefit_duration_months:
+    description: 'BIGINT. Maximum duration of benefits in months. **NULL means duration limits not established.**. Possible values: 12.0.'
+    sql: '"MAXIMUM_benefit_duration_months"'
+  outcome_measurement_methods:
+    description: 'TEXT. Methods used to measure service outcomes. **NULL means outcome measurement not established.**. Possible values: Health indicators tracking, Surveys and field visits, Training completion rates.'
+    sql: '"Outcome_Measurement_Methods"'
+  participant_satisfaction_score:
+    description: 'REAL. Participant satisfaction rating on 1-10 scale. **NULL means satisfaction surveys not conducted.**. Possible values: 7.8, 8.2.'
+    sql: '"PARTICIPANT_satisfaction_score"'
+  partnership_organizations_count:
+    description: 'BIGINT. Number of partner organizations involved. **NULL means partnerships not tracked.**. Possible values: 15.0, 25.0, 8.0.'
+    sql: '"PARTNERSHIP_organizations_count"'
+  processing_fee_brl:
+    description: 'REAL. Application processing fee in Brazilian Real. **NULL means no processing fee or fee not determined.**. Possible values: 0.0, 25.0.'
+    sql: '"PROCESSING_fee_brl"'
+  reporting_requirements_count:
+    description: 'BIGINT. Number of reporting requirements. **NULL means reporting obligations not defined.**. Possible values: 10.0, 5.0, 8.0.'
+    sql: '"REPORTING_requirements_count"'
+  staff_requirement_count:
+    description: 'BIGINT. Number of staff required for service delivery. **NULL means staffing requirements not determined.**. Possible values: 12.0, 18.0, 25.0.'
+    sql: '"STAFF_requirement_count"'
+  target_demographic:
+    description: 'TEXT. Target population for service category. **NULL means demographic targeting not specified.**. Possible values: Famílias de baixa renda, Jovens e adultos desempregados, Toda a população local.'
+    sql: '"Target_Demographic"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. **NULL means update history not tracked.**. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  wait_list_average_days:
+    description: 'BIGINT. Average wait time on waiting list in days. **NULL means wait times not tracked.**. Possible values: 10.0, 25.0, 45.0.'
+    sql: '"Wait_List_Average_Days"'
+  application_process_duration_days:
+    description: 'BIGINT. Duration of application process in days. **NULL means processing time not established.**. Possible values: 15.0, 30.0, 60.0.'
+    sql: '"application_process_DURATION_days"'
+  approval_rate_percent:
+    description: 'REAL. Percentage of applications approved. **NULL means approval statistics not tracked.**. Possible values: 65.8, 78.5, 92.1.'
+    sql: '"approval_rate_PERCENT"'
+  category_description:
+    description: 'TEXT. Detailed description of service category. **NULL means description not provided.**. Possible values: Atenção básica de saúde comunitária, Programa de segurança alimentar para famílias vulneráveis, Programa habitacional para famílias de baixa renda.'
+    sql: '"category_DESCRIPTION"'
+  cost_effectiveness_ratio:
+    description: 'REAL. Cost-effectiveness ratio for service delivery. **NULL means cost-effectiveness not calculated.**. Possible values: 0.0, 125.5, 1250.75.'
+    sql: '"cost_effectiveness_RATIO"'
+  quality_metrics_count:
+    description: 'BIGINT. Number of quality metrics tracked. **NULL means quality measurement not implemented.**. Possible values: 12.0, 15.0, 8.0.'
+    sql: '"quality_metrics_COUNT"'
+  renewal_frequency_months:
+    description: 'BIGINT. Frequency of benefit renewal in months. **NULL means renewal process not required or defined.**. Possible values: 12.0, 6.0.'
+    sql: '"renewal_frequency_MONTHS"'
+  success_rate_percent:
+    description: 'REAL. Success rate percentage for service outcomes. **NULL means outcome tracking not available.**. Possible values: 72.5, 85.2, 88.9.'
+    sql: '"success_rate_PERCENT"'
+  technology_platform_required:
+    description: 'TEXT. Technology platform requirements for service delivery. **NULL means technology requirements not specified.**. Possible values: No, Yes.'
+    sql: '"technology_platform_REQUIRED"'
+  training_hours_required:
+    description: 'BIGINT. Training hours required for staff. **NULL means training requirements not established.**. Possible values: 120.0, 200.0.'
+    sql: '"training_hours_REQUIRED"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct service_categories public identity values.
+    label: service_categories Count
+    sql: ${residential_data_large_public__service_categories.category_id}

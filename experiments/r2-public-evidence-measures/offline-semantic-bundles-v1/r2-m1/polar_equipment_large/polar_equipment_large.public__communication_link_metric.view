@@ -1,0 +1,105 @@
+label: CommunicationLinkMetric
+description: All columns of the public table CommunicationLinkMetric.
+catalog: polar_equipment_large
+schema: public
+table_name: CommunicationLinkMetric
+dimensions:
+  antenna_az_deg:
+    description: 'REAL. Antenna azimuth pointing (deg). Example: 178.5.'
+    sql: '"antennaAz_deg"'
+  antenna_el_deg:
+    description: 'REAL. Antenna elevation pointing (deg). Example: 45.2.'
+    sql: '"antennaEl_deg"'
+  band_mhz:
+    description: 'REAL. Frequency band in MHz. Possible values (from file): 950, 1450, 2100, 3600, 5000, 12000. Example: 1450.'
+    sql: band_mhz
+  beam_id:
+    description: 'TEXT. Beam identifier. **NULL means terrestrial link (band_mhz = 5000).** Example: Beam-42.'
+    sql: '"beamID"'
+  ber:
+    description: 'REAL. Bit error rate. Example: 0.000321.'
+    sql: ber
+  carrier:
+    description: 'TEXT. Carrier/operator label. Possible values (from file): CarrierA, CarrierB, CarrierC, CarrierD. Example: CarrierB.'
+    sql: carrier
+  comm_measure_no:
+    description: BIGSERIAL. Surrogate primary key for the measurement row. PK.
+    sql: '"commMeasureNo"'
+  comment:
+    description: 'TEXT. Observation note. Example: Latency spikes observed during peak hours.'
+    sql: comment
+  doc_ref:
+    description: 'TEXT. Supporting document reference. Example: DOC-3185.'
+    sql: '"docRef"'
+  downtime_s:
+    description: 'BIGINT. Downtime during interval (seconds). Example: 240.'
+    sql: downtime_s
+  fail_code:
+    description: 'TEXT. Failure code. Possible values (from file): None, Timeout, CRCError, NoLock, PowerDrop. Example: Timeout.'
+    sql: '"failCode"'
+  fer:
+    description: 'REAL. Frame error rate. **NULL means ber = 0.0 (no frame errors calculated).** Example: 0.000245.'
+    sql: fer
+  for_comm_link:
+    description: 'BIGINT. FK to Communication(COMM_ID). Example: 20045.'
+    sql: for_comm_link
+  jitter_ms:
+    description: 'REAL. Jitter variation (ms). Example: 7.23.'
+    sql: jitter_ms
+  latency_p95_ms:
+    description: 'REAL. 95th percentile latency (ms). Example: 420.6.'
+    sql: '"latencyP95_ms"'
+  latency_p99_ms:
+    description: 'REAL. 99th percentile latency (ms). Example: 537.2.'
+    sql: '"latencyP99_ms"'
+  modulation:
+    description: 'TEXT. Modulation scheme in use. Possible values (from file): BPSK, QPSK, 16QAM, 64QAM. Example: QPSK.'
+    sql: modulation
+  packet_loss_pct:
+    description: 'REAL. Packet loss percentage. Example: 1.74.'
+    sql: '"packetLoss_pct"'
+  ping_ms:
+    description: 'REAL. Ping round-trip latency (ms). Example: 128.4.'
+    sql: ping_ms
+  polarization:
+    description: 'TEXT. Antenna polarization. Possible values (from file): H, V, RHCP, LHCP. Example: RHCP.'
+    sql: polarization
+  retries:
+    description: 'BIGINT. Retransmission attempts during session. Example: 12.'
+    sql: retries
+  rssi_d_bm:
+    description: 'REAL. Received signal strength indicator (dBm). Example: -85.3.'
+    sql: '"rssi_dBm"'
+  rtt_ms:
+    description: 'REAL. Round-trip time measured (ms). Example: 260.2.'
+    sql: rtt_ms
+  rx_noise_d_b:
+    description: 'REAL. Receiver noise figure (dB). Example: 6.1.'
+    sql: '"rxNoise_dB"'
+  satellite:
+    description: 'TEXT. Satellite name. **NULL means terrestrial link (band_mhz = 5000).** Possible values (from file): Sat-Alpha, Sat-Beta, Sat-Gamma, Sat-Delta. Example: Sat-Beta.'
+    sql: satellite
+  snr_d_b:
+    description: 'REAL. Signal-to-noise ratio (dB). Example: 22.1.'
+    sql: '"snr_dB"'
+  throughput_dn_mbps:
+    description: 'REAL. Downlink throughput (Mbps). **NULL means link unavailable (failCode = NoLock or Timeout).** Example: 127.6.'
+    sql: throughput_dn_mbps
+  throughput_up_mbps:
+    description: 'REAL. Uplink throughput (Mbps). **NULL means link unavailable (failCode = NoLock or Timeout).** Example: 42.8.'
+    sql: throughput_up_mbps
+  ts:
+    description: 'TIMESTAMP (dd-MMM-yyyy HH:MM:SS). Time of the measurement. Example: 05-Jul-2025 20:00:00.'
+    sql: ts
+  tx_power_d_bm:
+    description: 'REAL. Transmit power (dBm). Example: 28.4.'
+    sql: '"txPower_dBm"'
+  uptime_s:
+    description: 'BIGINT. Uptime during interval (seconds). Example: 32000.'
+    sql: uptime_s
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CommunicationLinkMetric public identity values.
+    label: CommunicationLinkMetric Count
+    sql: ${polar_equipment_large_public__communication_link_metric.comm_measure_no}

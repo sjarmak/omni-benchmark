@@ -1,0 +1,9 @@
+base_view: labor_certification_applications_large_public__attorney_case_specialization
+label: attorney_case_specialization
+description: All columns of the public table attorney_case_specialization.
+fields:
+- labor_certification_applications_large_public__attorney_case_specialization.*
+- labor_certification_applications_large_public__attorney.*
+joins:
+  labor_certification_applications_large_public__attorney: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

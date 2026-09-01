@@ -1,0 +1,108 @@
+label: financial_services
+description: All columns of the public table financial_services.
+catalog: residential_data_large
+schema: public
+table_name: financial_services
+dimensions:
+  budgeting_tool_usage:
+    description: 'TEXT. Usage of budgeting tools or applications. **NULL means budgeting tool usage not documented.**. Possible values: No, Yes.'
+    sql: '"Budgeting_Tool_Usage"'
+  credit_score_average:
+    description: 'BIGINT. Average credit score for household. **NULL means credit score not available or disclosed.**. Possible values: 650.0, 695.0, 720.0, 742.0, 785.0, 820.0.'
+    sql: '"CREDIT_score_average"'
+  cryptocurrency_holdings_brl:
+    description: 'REAL. Cryptocurrency holdings value in Brazilian Real. **NULL means cryptocurrency not held or value not disclosed.**. Possible values: 0.0, 1200.0, 2500.0, 5.0.'
+    sql: '"Cryptocurrency_Holdings_BRL"'
+  digital_payment_adoption_score:
+    description: 'BIGINT. Digital payment adoption rating score. **NULL means digital payment usage not assessed.**. Possible values: 4.0, 8.0, 9.0.'
+    sql: '"DIGITAL_payment_adoption_score"'
+  emergency_fund_months:
+    description: 'REAL. Number of months of expenses covered by emergency fund. **NULL means emergency fund not established or disclosed.**. Possible values: 12.5, 2.1, 4.5, 6.8, 8.2.'
+    sql: '"EMERGENCY_fund_months"'
+  financial_stress_level:
+    description: 'BIGINT. Financial stress level rating. **NULL means financial stress not assessed.**. Possible values: 12.2, 2.0, 3.0, 4.0, 6.0, 7.0.'
+    sql: '"FINANCIAL_stress_level"'
+  financial_goal_achievement_score:
+    description: 'BIGINT. Financial goal achievement progress rating. **NULL means financial goals not established or tracked.**. Possible values: 3.0, 5.0, 6.0, 7.0, 8.0.'
+    sql: '"Financial_Goal_Achievement_Score"'
+  financial_id:
+    description: 'BIGSERIAL. Primary key identifier for financial services record. PK. Possible values: 1, 2, 3, 4, 5, 6, 7.'
+    sql: '"Financial_ID"'
+  financial_services_household_account:
+    description: 'BIGINT. Reference to household for financial services tracking. FK to households(housenum). Possible values: 22, 4, 579, 611, 686, 7, 715.'
+    sql: '"Financial_Services_Household_Account"'
+  insurance_coverage_adequacy_score:
+    description: 'BIGINT. Insurance coverage adequacy rating. **NULL means insurance adequacy not assessed.**. Possible values: 5.0, 6.0, 7.0, 8.0, 9.0.'
+    sql: '"INSURANCE_coverage_adequacy_score"'
+  investment_portfolio_value_brl:
+    description: 'REAL. Total investment portfolio value in Brazilian Real. **NULL means investment portfolio value not disclosed.**. Possible values: 0.0, 125000.0, 42000.0, 85000.0.'
+    sql: '"Investment_Portfolio_Value_BRL"'
+  online_banking_usage_hours_per_month:
+    description: 'REAL. Hours of online banking usage per month. **NULL means online banking usage not monitored.**. Possible values: 12.5, 15.8, 18.2, 22.1, 8.5.'
+    sql: '"ONLINE_banking_usage_hours_per_month"'
+  payment_delay_incidents_per_year:
+    description: 'BIGINT. Number of payment delay incidents per year. **NULL means payment delays not tracked.**. Possible values: 0.0, 1.0, 2.0, 4.0.'
+    sql: '"PAYMENT_delay_incidents_per_year"'
+  retirement_savings_brl:
+    description: 'REAL. Retirement savings amount in Brazilian Real. **NULL means retirement savings not disclosed.**. Possible values: 12500.0, 28500.0, 45000.0, 8900.0, 89500.0.'
+    sql: '"RETIREMENT_savings_brl"'
+  tax_preparation_method:
+    description: 'TEXT. Method used for tax preparation. **NULL means tax preparation method not documented.**. Possible values: Professional, Self-prepared, Software.'
+    sql: '"Tax_Preparation_Method"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  account_portfolio:
+    description: JSONB column. Summary of all financial accounts and services held by the household for comprehensive financial profile analysis.
+    sql: account_portfolio
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: created_at
+  debt_to_income_ratio:
+    description: 'REAL. Ratio of total debt to household income. **NULL means debt ratio not calculated or disclosed.**. Possible values: 0.15, 0.18, 0.25, 0.28, 0.32, 0.35, 0.45, 0.55.'
+    sql: '"debt_to_INCOME_ratio"'
+  financial_advisor_consultation_hours:
+    description: 'REAL. Hours of financial advisor consultation per year. **NULL means financial advisory services not used.**. Possible values: 12.0, 18.0, 4.5, 6.0, 8.5.'
+    sql: '"financial_advisor_CONSULTATION_hours"'
+  financial_literacy_score:
+    description: 'BIGINT. Financial literacy assessment score. **NULL means financial literacy not evaluated.**. Possible values: 4.0, 5.0, 6.0, 7.0, 8.0, 9.0.'
+    sql: '"financial_literacy_SCORE"'
+  fraud_protection_score:
+    description: 'BIGINT. Fraud protection measures rating. **NULL means fraud protection not evaluated.**. Possible values: 6.0, 7.0, 8.0, 9.0.'
+    sql: '"fraud_protection_SCORE"'
+  monthly_banking_fees_brl:
+    description: 'REAL. Monthly banking fees in Brazilian Real. **NULL means banking fees not tracked.**. Possible values: 15.8, 22.4, 28.5, 32.1, 45.6.'
+    sql: '"monthly_banking_FEES_brl"'
+  savings_rate_percent:
+    description: 'REAL. Savings rate as percentage of income. **NULL means savings rate not calculated.**. Possible values: 18.5, 25.8, 32.1, 7.0.'
+    sql: '"savings_rate_PERCENT"'
+  account_portfolio_account_counts_credit_card_count:
+    description: 'BIGINT. Number of credit cards held by household. **NULL means credit card information not disclosed.**. Possible values: 1.0, 2.0, 3.0, 4.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(account_portfolio, 'account_counts', 'Credit_Card_Count')
+  account_portfolio_account_counts_insurance_policies_count:
+    description: 'BIGINT. Number of insurance policies held. **NULL means insurance information not available.**. Possible values: 2.0, 3.0, 4.0, 5.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(account_portfolio, 'account_counts', 'Insurance_Policies_Count')
+  account_portfolio_account_counts_loan_count:
+    description: 'BIGINT. Number of loans held by household. **NULL means loan information not available.**. Possible values: 0.0, 1.0, 2.0, 3.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(account_portfolio, 'account_counts', 'LOAN_count')
+  account_portfolio_account_counts_bank_account_count:
+    description: 'BIGINT. Number of bank accounts held by household. **NULL means bank account information not available.**. Possible values: 1.0, 2.0, 3.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(account_portfolio, 'account_counts', 'bank_account_COUNT')
+  account_portfolio_account_counts_investment_account_count:
+    description: 'BIGINT. Number of investment accounts held. **NULL means investment account information not disclosed.**. Possible values: 0.0, 1.0, 2.0, 3.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(account_portfolio, 'account_counts', 'investment_account_COUNT')
+  account_portfolio_usage_patterns_atm_usage_frequency_per_month:
+    description: 'BIGINT. Frequency of ATM usage per month. **NULL means ATM usage not tracked.**. Possible values: 10.0, 12.0, 15.0, 4.0, 6.0, 8.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(account_portfolio, 'usage_patterns', 'ATM_Usage_Frequency_Per_Month')
+  account_portfolio_usage_patterns_cash_transactions_percent:
+    description: 'REAL. Percentage of transactions conducted in cash. **NULL means transaction method distribution not analyzed.**. Possible values: 15.8, 28.9, 35.2, 42.1, 68.5, 75.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(account_portfolio, 'usage_patterns', 'Cash_Transactions_Percent')
+  account_portfolio_usage_patterns_mobile_banking_transactions_per_month:
+    description: 'BIGINT. Number of mobile banking transactions per month. **NULL means mobile banking activity not tracked.**. Possible values: 25.0, 38.0, 45.0, 52.0, 65.0, 85.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(account_portfolio, 'usage_patterns', 'mobile_banking_TRANSACTIONS_per_month')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct financial_services public identity values.
+    label: financial_services Count
+    sql: ${residential_data_large_public__financial_services.financial_id}

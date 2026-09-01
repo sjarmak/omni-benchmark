@@ -1,0 +1,105 @@
+label: idol_merchandise_details
+description: All columns of the public table idol_merchandise_details.
+catalog: virtual_idol_large
+schema: public
+table_name: idol_merchandise_details
+dimensions:
+  artist_designer:
+    description: 'TEXT. The name of the artist or designer of the item. Example: Mio Tanaka.'
+    sql: '"ARTIST_DESIGNER"'
+  autograph_idol_ref:
+    description: 'TEXT. Foreign key referencing the idol who autographed the item. FK to virtualidols(entity_reg). **NULL means the item is not autographed.** Example: VI1000.'
+    sql: '"Autograph_Idol_Ref"'
+  category:
+    description: 'TEXT. The category of the merchandise. Possible values: Figurines, Collectibles, Accessories, Stationery, Digital Goods, Apparel. Example: Figurines.'
+    sql: '"Category"'
+  commerce_record_id:
+    description: 'BIGINT. Foreign key referencing a commerce record. FK to commerceandcollection(commerce_reg). Example: 69.'
+    sql: '"Commerce_Record_ID"'
+  currency:
+    description: 'TEXT. The currency of the price. Example: USD.'
+    sql: '"Currency"'
+  customer_rating_avg:
+    description: 'REAL. The average customer rating for the item. Example: 3.7.'
+    sql: '"CustomerRating_Avg"'
+  edition_size:
+    description: 'BIGINT. The total number of units produced if it is a limited edition. **NULL means it is not a limited edition.** Example: 84.0.'
+    sql: '"EditionSize"'
+  is_digital_good:
+    description: 'BOOLEAN. A flag indicating if the item is a digital good. Example: false.'
+    sql: '"IS_DIGITAL_GOOD"'
+  item_sku:
+    description: 'TEXT. The unique Stock Keeping Unit for the item. Example: SKU-51246678.'
+    sql: '"ITEM_SKU"'
+  last_restock_date:
+    description: 'DATE. The date the item was last restocked. **NULL means the item has not been restocked.** Example: 2023/11/28.'
+    sql: '"LAST_RESTOCK_DATE"'
+  licensing_info:
+    description: 'TEXT. Licensing information for the item. Example: Official Licensed Product..'
+    sql: '"LicensingInfo"'
+  manufacturer_name:
+    description: 'TEXT. The name of the item''s manufacturer. Example: Hana''s Logistics.'
+    sql: '"MANUFACTURER_NAME"'
+  materials:
+    description: 'TEXT ARRAY. A list of materials used to make the item. Example: {Metal Alloy,PVC}.'
+    sql: '"Materials"'
+  merch_item_id:
+    description: 'BIGINT. Unique identifier for the merchandise item. PK. Example: 2001.'
+    sql: '"MerchItemID"'
+  number_of_reviews:
+    description: 'BIGINT. The number of customer reviews for the item. Example: 31.'
+    sql: '"NUMBER_OF_REVIEWS"'
+  release_date:
+    description: 'DATE. The date the merchandise was released. Example: 2024/07/09.'
+    sql: '"RELEASE_DATE"'
+  related_items_sku:
+    description: 'TEXT ARRAY. A list of SKUs for related items. Example: {SKU-50764582}.'
+    sql: '"RelatedItemsSKU"'
+  stock_quantity:
+    description: 'BIGINT. The current quantity of the item in stock. Example: 1233.'
+    sql: '"STOCK_QUANTITY"'
+  supplier_id:
+    description: 'BIGINT. The identifier for the item''s supplier. Example: 127.'
+    sql: '"SUPPLIER_ID"'
+  weight_grams:
+    description: 'REAL. The weight of the item in grams. **NULL means weight is not applicable (e.g., for digital goods).** Example: 512.41.'
+    sql: '"WEIGHT_grams"'
+  country_of_origin:
+    description: 'TEXT. The country where the item was manufactured. Example: USA.'
+    sql: country_of_origin
+  dimensions_cm:
+    description: 'TEXT. The dimensions of the item in centimeters. **NULL means dimensions are not applicable (e.g., for digital goods).** Example: 17x25x8.'
+    sql: dimensions_cm
+  discontinuation_date:
+    description: DATE. The date the item was discontinued. **NULL means the item is still available.**
+    sql: discontinuation_date
+  download_link:
+    description: 'TEXT. The download link for a digital good. **NULL means the item is not a digital good.** Example: https://media.example.com/download/06ec9f26-4b89-463f-ba24-68d259431cf3.'
+    sql: download_link
+  is_autographed:
+    description: 'BOOLEAN. A flag indicating if the item is autographed. Example: false.'
+    sql: is_autographed
+  is_limited_edition:
+    description: 'BOOLEAN. A flag indicating if the item is a limited edition. Example: false.'
+    sql: is_limited_edition
+  item_description:
+    description: 'TEXT. A description of the merchandise item. Example: Limited edition Poster from the latest event. A must-have for fans..'
+    sql: item_description
+  item_name:
+    description: 'TEXT. The name of the merchandise item. Example: Idol1002''s Starlight Poster.'
+    sql: item_name
+  price_dollar:
+    description: 'REAL. The price of the item in USD. Example: 69.75.'
+    sql: price_dollar
+  product_image_url:
+    description: 'TEXT. The URL for an image of the product. Example: https://cdn.example.com/images/2001.jpg.'
+    sql: product_image_url
+  profit_margin_percent:
+    description: 'REAL. The profit margin for the item as a percentage. Example: 31.76.'
+    sql: profit_margin_percent
+  tags:
+    description: 'TEXT ARRAY. A list of tags for the item. Example: {limited,anniversary,official}.'
+    sql: tags
+  units_sold:
+    description: 'BIGINT. The total number of units sold. Example: 86.'
+    sql: units_sold

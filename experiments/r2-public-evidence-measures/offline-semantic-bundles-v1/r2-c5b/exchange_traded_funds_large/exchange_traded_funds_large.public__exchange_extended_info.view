@@ -1,0 +1,102 @@
+label: exchange_extended_info
+description: All columns of the public table exchange_extended_info.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: exchange_extended_info
+dimensions:
+  city:
+    description: 'TEXT. Principal city of operation or primary trading floor. Example: New York.'
+    sql: city
+  clearing_organ_transplantization:
+    description: TEXT. Central counter-party or clearing house (e.g., NSCC, EuroCCP).
+    sql: clearing_organ_transplantization
+  country:
+    description: 'TEXT. Country of legal domicile. Example: United States.'
+    sql: country
+  custody_services:
+    description: TEXT. Securities depository / custodian (e.g., DTC).
+    sql: custody_services
+  delayed_data_available:
+    description: BOOLEAN. TRUE if a free 15-minute-delayed feed is published.
+    sql: delayed_data_available
+  exchange_code:
+    description: TEXT. Exchange / market identifier (e.g., NYSE, XNAS). FK to exchanges(marketcode).
+    sql: exchange_code
+  exchange_info_id:
+    description: BIGSERIAL. Surrogate identifier for each extended-info row. PK. Auto-increments from 1.
+    sql: exchange_info_id
+  last_updated:
+    description: TIMESTAMP. Server timestamp when this record was last modified; defaults to CURRENT_TIMESTAMP.
+    sql: last_updated
+  latency_average:
+    description: 'text. Typical round-trip order latency. Unit: microseconds (µs).'
+    sql: latency_average
+  listing_requirements:
+    description: TEXT. Headline listing thresholds (float, market-cap, governance, disclosures).
+    sql: listing_requirements
+  lot_size:
+    description: 'text. Standard round-lot quantity. Unit: shares (e.g., "100 shares").'
+    sql: lot_size
+  market_data_vendors:
+    description: TEXT. Semicolon-separated list of approved data distributors.
+    sql: market_data_vendors
+  market_hours_blob:
+    description: JSONB column. All raw clock-times and business-day info for each exchange, bundled together without any cleanup.
+    sql: market_hours_blob
+  market_model:
+    description: 'TEXT. Market structure category. Values: Order-Driven, Quote-Driven, Hybrid.'
+    sql: market_model
+  matching_algorithm:
+    description: TEXT. Priority rule used by the engine (e.g., Price-Time, Pro-Rata).
+    sql: matching_algorithm
+  max_order_size:
+    description: 'text. Per-order share cap. Unit: shares. **NULL means no hard limit.**'
+    sql: max_order_size
+  order_types:
+    description: TEXT. Comma-separated list of permitted order varieties (Market, Limit, Stop, Hidden, etc.).
+    sql: order_types
+  primary_regulator:
+    description: TEXT. Lead supervisory authority (e.g., SEC, FCA, JFSA).
+    sql: primary_regulator
+  real_time_data_fee_usd_month:
+    description: 'bigint. Cost of level-1 real-time feed. Unit: currency/month (e.g., "5.00 USD/month").'
+    sql: real_time_data_fee_usd_month
+  regulation_framework:
+    description: TEXT. Governing rule set (e.g., Reg-NMS, MiFID II).
+    sql: regulation_framework
+  settlement_cycle:
+    description: TEXT. Contractual settlement lag (e.g., "T+1", "T+2").
+    sql: settlement_cycle
+  system_uptime:
+    description: 'text. Historical platform availability. Unit: percent.'
+    sql: system_uptime
+  throughput_capacity_orders_s:
+    description: 'bigint. Sustained order-processing rate. Unit: orders/second.'
+    sql: throughput_capacity_orders_s
+  tick_size:
+    description: 'text. Minimum price increment. Unit: currency (e.g., "0.0001 USD").'
+    sql: tick_size
+  trading_system:
+    description: TEXT. Name or generation of the core matching engine (e.g., "X-Stream INET").
+    sql: trading_system
+  market_hours_blob_business_days:
+    description: TEXT. Days on which the venue is normally open (e.g., "Mon-Fri").
+    sql: JSONB_EXTRACT_PATH_TEXT(market_hours_blob, 'business_days')
+  market_hours_blob_post_market_close:
+    description: 'text. Local clock time (with DST offset) when the after-hours session ends. Example: "20:00:00-04:00".'
+    sql: JSONB_EXTRACT_PATH_TEXT(market_hours_blob, 'post_market_close')
+  market_hours_blob_pre_market_open:
+    description: 'text. Local clock time (including DST offset) when the pre-market session starts. Example: "04:00:00-04:00".'
+    sql: JSONB_EXTRACT_PATH_TEXT(market_hours_blob, 'pre_market_open')
+  market_hours_blob_regular_market_close:
+    description: 'text. Local clock time (with DST offset) when continuous trading ends. Example: "16:00:00-04:00".'
+    sql: JSONB_EXTRACT_PATH_TEXT(market_hours_blob, 'regular_market_close')
+  market_hours_blob_regular_market_open:
+    description: 'text. Local clock time (with DST offset) when continuous trading opens. Example: "09:30:00-04:00".'
+    sql: JSONB_EXTRACT_PATH_TEXT(market_hours_blob, 'regular_market_open')
+  market_hours_blob_time_zone_abbr:
+    description: TEXT. DST-aware time-zone abbreviation (e.g., PDT, EDT, CDT). Captures what traders actually see on the tape.
+    sql: JSONB_EXTRACT_PATH_TEXT(market_hours_blob, 'time_zone_abbr')
+  market_hours_blob_time_zone_offset:
+    description: TEXT. **Current Daylight-Saving-Time (DST) offset** from UTC in ±HH:MM format, suffixed with “ h” (e.g., "-04:00 h"). Updates when the venue switches between standard and daylight time.
+    sql: JSONB_EXTRACT_PATH_TEXT(market_hours_blob, 'time_zone_offset')

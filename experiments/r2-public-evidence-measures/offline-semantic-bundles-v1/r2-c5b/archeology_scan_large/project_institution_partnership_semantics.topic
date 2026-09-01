@@ -1,0 +1,11 @@
+base_view: archeology_scan_large_public__project_institution_partnership
+label: project_institution_partnership
+description: All columns of the public table project_institution_partnership.
+fields:
+- archeology_scan_large_public__project_institution_partnership.*
+- archeology_scan_large_public__projects.*
+- archeology_scan_large_public__research_institutions.*
+joins:
+  archeology_scan_large_public__projects: {}
+  archeology_scan_large_public__research_institutions: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

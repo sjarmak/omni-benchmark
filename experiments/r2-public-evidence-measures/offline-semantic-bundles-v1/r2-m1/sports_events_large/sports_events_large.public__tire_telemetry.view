@@ -1,0 +1,75 @@
+label: TireTelemetry
+description: All columns of the public table TireTelemetry.
+catalog: sports_events_large
+schema: public
+table_name: TireTelemetry
+dimensions:
+  blistering:
+    description: BOOLEAN. Whether blistering is detected Boolean flag (true/false).
+    sql: '"BLISTERING"'
+  camber_deg:
+    description: 'REAL. Tire camber angle in degrees Typical range: -5 to 0.'
+    sql: '"CAMBER_DEG"'
+  degradation_rate:
+    description: 'REAL. Degradation rate per lap (seconds) Typical range: 0 to 0.3.'
+    sql: '"DEGRADATION_RATE"'
+  flat_spot:
+    description: BOOLEAN. Whether flat spot is detected Boolean flag (true/false).
+    sql: '"FLAT_SPOT"'
+  inner_temp_c:
+    description: 'REAL. Tire inner temperature Typical range: 50 to 140.'
+    sql: '"INNER_TEMP_C"'
+  longitudinal_grip:
+    description: 'REAL. Longitudinal grip coefficient Typical range: 0.5 to 2.5.'
+    sql: '"LONGITUDINAL_GRIP"'
+  pressure_psi:
+    description: 'REAL. Tire pressure in PSI Typical range: 17 to 27.'
+    sql: '"PRESSURE_PSI"'
+  tire_age_laps:
+    description: BIGINT. Tire age in laps
+    sql: '"TIRE_AGE_LAPS"'
+  tire_position:
+    description: 'TEXT. Tire position on car Possible values: FL, FR, RL, RR.'
+    sql: '"TIRE_POSITION"'
+  tire_tel_id:
+    description: BIGINT. Primary key. Unique tire telemetry identifier
+    sql: '"TIRE_TEL_ID"'
+  captured_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Timestamp when captured
+    sql: captured_at
+  compound:
+    description: 'TEXT. Tire compound type Possible values: Soft, Medium, Hard, Intermediate, Wet.'
+    sql: compound
+  core_temp_c:
+    description: 'REAL. Tire core temperature Typical range: 45 to 130.'
+    sql: '"core_temp_C"'
+  graining:
+    description: BOOLEAN. Whether graining is detected Boolean flag (true/false).
+    sql: graining
+  lateral_grip_coefficient:
+    description: 'REAL. Lateral grip coefficient Typical range: 0.5 to 2.5.'
+    sql: lateral_grip_coefficient
+  rolling_circumference_mm:
+    description: 'REAL. Rolling circumference in mm Typical range: 1900 to 2050.'
+    sql: rolling_circumference_mm
+  surface_temp_c:
+    description: 'REAL. Tire surface temperature in Celsius Typical range: 40 to 140.'
+    sql: '"surface_temp_C"'
+  telemetry_ref:
+    description: BIGINT. Foreign key referencing CarTelemetrySnapshot(TELEMETRY_ID). Related telemetry snapshot
+    sql: telemetry_ref
+  toe_deg:
+    description: 'REAL. Tire toe angle in degrees Typical range: -0.5 to 0.5.'
+    sql: toe_deg
+  vibration_frequency_hz:
+    description: 'REAL. Vibration frequency in Hz Typical range: 0 to 200.'
+    sql: '"vibration_frequency_Hz"'
+  wear_pct:
+    description: 'REAL. Tire wear percentage (0=new, 100=worn) Typical range: 0 to 100.'
+    sql: wear_pct
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TireTelemetry public identity values.
+    label: TireTelemetry Count
+    sql: ${sports_events_large_public__tire_telemetry.tire_tel_id}

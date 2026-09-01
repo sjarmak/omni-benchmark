@@ -1,0 +1,108 @@
+label: fund_regulatory_compliance
+description: All columns of the public table fund_regulatory_compliance.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: fund_regulatory_compliance
+dimensions:
+  annual_filing_due:
+    description: 'DATE. Deadline for the fund’s annual regulatory filing. Example: 2025-03-31.'
+    sql: '"AnnualFilingDue"'
+  authority_id:
+    description: BIGINT. Foreign-key linking to the supervising regulatory authority.
+    sql: '"AuthorityID"'
+  capital_adequacy_ratio:
+    description: 'REAL. CurrentCapitalLevel ÷ MinimumCapitalRequirement. Example: 1.84.'
+    sql: '"CapitalAdequacyRatio"'
+  communication_frequency:
+    description: 'TEXT. Agreed frequency of routine communications. Possible values: Monthly, Quarterly, Semi-Annual, Annual.'
+    sql: '"CommunicationFrequency"'
+  compliance_id:
+    description: 'BIGSERIAL. Surrogate primary-key for this compliance record. Example: 842.'
+    sql: '"ComplianceID"'
+  compliance_status:
+    description: 'TEXT. Overall compliance assessment. Possible values: Compliant, Non-Compliant, Under Review.'
+    sql: '"ComplianceStatus"'
+  current_capital_level:
+    description: 'BIGINT. Fund’s current capital as last reported. Example: 18 450 000.'
+    sql: '"CurrentCapitalLevel"'
+  enforcement_actions:
+    description: 'TEXT. Enforcement measures imposed. Possible values: None, Warning, Penalty, License Restriction.'
+    sql: '"EnforcementActions"'
+  examination_result:
+    description: 'TEXT. Outcome of the most recent examination. **NULL means examination has not yet been graded or uploaded.**. Possible values: Satisfactory, Needs Improvement, Deficient.'
+    sql: '"ExaminationResult"'
+  filing_compliance_score:
+    description: 'REAL. Quantitative score (0-100) reflecting punctuality and completeness of filings. Example: 89.4.'
+    sql: '"FilingComplianceScore"'
+  fines_assessed:
+    description: 'REAL. Monetary fines assessed in base currency. Example: 250 000.00.'
+    sql: '"FinesAssessed"'
+  fund_ticker:
+    description: 'bigint. Ticker or product number of the ETF. Example: 1.'
+    sql: '"FundTicker"'
+  is_current_relationship:
+    description: 'BOOLEAN. Indicates if the authority-fund relationship is currently active. Possible values: true, false.'
+    sql: '"IsCurrentRelationship"'
+  last_examination_date:
+    description: 'DATE. Most recent on-site or desk examination date. Example: 2023-11-01.'
+    sql: '"LastExaminationDate"'
+  last_updated:
+    description: 'TIMESTAMP. Date-time when the compliance record was last refreshed. Example: 2025-07-06T14:27:10Z.'
+    sql: '"LastUpdated"'
+  minimum_capital_requirement:
+    description: 'BIGINT. Regulatory minimum capital (in base currency units). Example: 10 000 000.'
+    sql: '"MinimumCapitalRequirement"'
+  mitigation_measures:
+    description: 'TEXT. Measures in place to reduce regulatory risk. Possible values: Enhanced monitoring and controls.'
+    sql: '"MitigationMeasures"'
+  next_examination_date:
+    description: 'DATE. Scheduled next examination. **NULL means no examination date has been scheduled yet.**. Example: 2026-10-30.'
+    sql: '"NextExaminationDate"'
+  primary_contact_person:
+    description: 'TEXT. Main individual liaising with the regulator. **NULL means a contact person has not been designated.**. Example: Jane Johnson.'
+    sql: '"PrimaryContactPerson"'
+  public_reporting_requirements:
+    description: 'TEXT. Information that must be made public. Possible values: Publish quarterly performance reports.'
+    sql: '"PublicReportingRequirements"'
+  quarterly_filing_due:
+    description: 'DATE. Deadline for the next quarterly filing. Example: 2025-07-30.'
+    sql: '"QuarterlyFilingDue"'
+  registration_date:
+    description: 'DATE. Effective date of the registration or authorisation. Example: 2017-05-12.'
+    sql: '"RegistrationDate"'
+  registration_expiry_date:
+    description: 'DATE. Date on which the registration lapses if not renewed. Example: 2027-05-11.'
+    sql: '"RegistrationExpiryDate"'
+  registration_number:
+    description: 'TEXT. Official registration or licence number issued by the authority. Example: REG-19-SPY-80431.'
+    sql: '"RegistrationNumber"'
+  registration_status:
+    description: 'TEXT. Current standing of the registration. Possible values: Active, Pending, Suspended, Revoked.'
+    sql: '"RegistrationStatus"'
+  regulatory_risk_level:
+    description: 'TEXT. Overall regulatory risk tier. Possible values: Low, Medium, High.'
+    sql: '"RegulatoryRiskLevel"'
+  relationship_quality:
+    description: 'TEXT. Qualitative rating of regulator-fund relationship. Possible values: Excellent, Good, Fair, Poor.'
+    sql: '"RelationshipQuality"'
+  remediation_actions:
+    description: 'TEXT. Corrective actions required or completed. Possible values: Submitted remediation plan.'
+    sql: '"RemediationActions"'
+  reporting_frequency:
+    description: 'TEXT. How often regulatory reports are required. Possible values: Monthly, Quarterly, Semi-Annual, Annual.'
+    sql: '"ReportingFrequency"'
+  required_disclosures:
+    description: 'TEXT. Mandatory disclosures to the authority. Possible values: Annual audited financial statements.'
+    sql: '"RequiredDisclosures"'
+  risk_factors:
+    description: 'TEXT. Key factors driving the risk assessment. Possible values: Market Volatility, Liquidity Risk, Operational Risk.'
+    sql: '"RiskFactors"'
+  special_reports_due:
+    description: 'TEXT. Ad-hoc reports required by the authority. Possible values: None, Risk Exposure Report, Liquidity Stress Report.'
+    sql: '"SpecialReportsDue"'
+  violation_severity_score:
+    description: 'REAL. Weighted score (0-10) reflecting seriousness of violations. Example: 4.7.'
+    sql: '"ViolationSeverityScore"'
+  violations_count:
+    description: 'BIGINT. Total regulatory violations recorded on the fund. **NULL means no violation data have been logged.**. Example: 2.'
+    sql: '"ViolationsCount"'

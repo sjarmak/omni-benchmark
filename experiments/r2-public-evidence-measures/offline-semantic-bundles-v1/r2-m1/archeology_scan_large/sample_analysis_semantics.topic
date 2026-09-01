@@ -1,0 +1,13 @@
+base_view: archeology_scan_large_public__sample_analysis
+label: sample_analysis
+description: All columns of the public table sample_analysis.
+fields:
+- archeology_scan_large_public__sample_analysis.*
+- archeology_scan_large_public__artifacts.*
+- archeology_scan_large_public__personnel.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__artifacts:
+    archeology_scan_large_public__sites: {}
+  archeology_scan_large_public__personnel: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

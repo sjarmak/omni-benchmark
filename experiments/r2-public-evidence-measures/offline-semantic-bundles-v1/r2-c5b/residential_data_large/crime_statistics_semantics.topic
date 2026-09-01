@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__crime_statistics
+label: crime_statistics
+description: All columns of the public table crime_statistics.
+fields:
+- residential_data_large_public__crime_statistics.*
+joins: {}
+ai_context: This topic models no cross-table joins.

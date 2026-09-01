@@ -1,0 +1,111 @@
+label: data_access_logs
+description: All columns of the public table data_access_logs.
+catalog: archeology_scan_large
+schema: public
+table_name: data_access_logs
+dimensions:
+  access_timestamp:
+    description: 'TIMESTAMPTZ. The exact timestamp of the data access。 Example: 2020/11/5 10:22.'
+    sql: '"ACCESS_TIMESTAMP"'
+  anomaly_score:
+    description: 'REAL. A score indicating how anomalous this access event is。 Example: Score: 0.05.'
+    sql: '"ANOMALY_SCORE"'
+  access_log_index:
+    description: 'BIGINT. Unique identifier for a data access log entry. PK。 Example: 100001.'
+    sql: '"AccessLogIndex"'
+  accessed_record_ref:
+    description: 'TEXT. The specific record that was accessed. **NULL means multiple records or the entire table was accessed.**。 Example: ARTF-1005.'
+    sql: '"AccessedRecordRef"'
+  browser_name:
+    description: 'TEXT. The name of the web browser used。 Example: Chrome.'
+    sql: '"BROWSER_NAME"'
+  client_application_name:
+    description: 'TEXT. The name of the client application used。 Example: Web Portal.'
+    sql: '"ClientApplicationName"'
+  data_sensitivity_level:
+    description: 'TEXT. The sensitivity level of the accessed data。 Possible values: Critical, High, Low, Medium.'
+    sql: '"DATA_SENSITIVITY_LEVEL"'
+  download_size_mb:
+    description: 'REAL. The size of the downloaded data in megabytes. **NULL means no data was downloaded.**。 Example: 15.2 MB.'
+    sql: '"DOWNLOAD_SIZE_MB"'
+  data_format_downloaded:
+    description: 'TEXT. The format of the data if it was downloaded. **NULL means no data was downloaded.**。 Example: JSON.'
+    sql: '"DataFormatDownloaded"'
+  data_owner_notified:
+    description: 'BOOLEAN. A flag indicating if the data owner was notified of this access。 Possible values: False, True.'
+    sql: '"DataOwnerNotified"'
+  is_api_access:
+    description: 'BOOLEAN. A flag indicating if the access was made via an API。 Possible values: False, True.'
+    sql: '"IS_API_ACCESS"'
+  ip_address:
+    description: 'TEXT. The IP address from which the access was made。 Example: 195.113.23.1.'
+    sql: '"IpAddress"'
+  operating_system:
+    description: 'TEXT. The operating system of the client device。 Example: Windows 10.'
+    sql: '"OperatingSystem"'
+  processing_time_ms:
+    description: 'BIGINT. The time taken to process the request in milliseconds。 Example: 55 ms.'
+    sql: '"PROCESSING_TIME_MS"'
+  project_context_code:
+    description: 'TEXT. Foreign key for the project context in which the access occurred. FK. **NULL means the access was not project-specific.**。 Example: PR7509.'
+    sql: '"ProjectContextCode"'
+  query_executed:
+    description: 'TEXT. The actual query that was executed。 Example: SELECT * FROM artifacts WHERE Artifact_Tag = ''ARTF-1005''.'
+    sql: '"QueryExecuted"'
+  records_affected_count:
+    description: 'BIGINT. The number of records affected by the operation. **NULL means it was not applicable or not tracked.**。 Example: 1 record.'
+    sql: '"RecordsAffectedCount"'
+  two_factor_auth_status:
+    description: 'TEXT. The status of two-factor authentication for the session。 Possible values: Not Applicable, Verified.'
+    sql: '"TWO_FACTOR_AUTH_STATUS"'
+  user_agent:
+    description: 'TEXT. The user agent string of the client application。 Example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36.'
+    sql: '"USER_AGENT"'
+  vpn_used:
+    description: 'BOOLEAN. A flag indicating if a VPN was detected。 Possible values: False, True.'
+    sql: '"VpnUsed"'
+  was_successful:
+    description: 'BOOLEAN. A flag indicating if the access attempt was successful。 Possible values: False, True.'
+    sql: '"WAS_SUCCESSFUL"'
+  access_type:
+    description: 'TEXT. The type of access。 Possible values: DELETE, EXPORT, READ, SEARCH, WRITE.'
+    sql: access_type
+  accessed_table_name:
+    description: 'TEXT. The name of the table that was accessed。 Example: artifacts.'
+    sql: accessed_table_name
+  api_key_used:
+    description: 'TEXT. The API key used for the access. **NULL means it was not an API access or the key was not logged.**。 Possible values: ak_...def, ak_...ghi, ak_...jkl, ak_...lmn, ak_...mno, ak_...pqr, ak_...rst, ak_...stu, ak_...vwx.'
+    sql: api_key_used
+  authorization_role:
+    description: 'TEXT. The authorization role of the user at the time of access。 Example: Project Lead.'
+    sql: authorization_role
+  device_type:
+    description: 'TEXT. The type of device used for access。 Possible values: Desktop, Mobile, Server, Tablet.'
+    sql: device_type
+  error_message:
+    description: 'TEXT. The error message if the access was not successful. **NULL means the access was successful.**。 Possible values: Access denied. User not associated with this project., Duplicate primary key., Invalid character set in query., Permission denied, Permission denied., Permission denied. Record deletion requires admin privileges., Query timeout. Please refine your search., Record is locked. Contact admin..'
+    sql: error_message
+  geographic_location_of_access:
+    description: 'TEXT. The estimated geographic location of the access。 Example: Oxford, UK.'
+    sql: geographic_location_of_access
+  is_bulk_operation:
+    description: 'BOOLEAN. A flag indicating if this was a bulk data operation。 Possible values: False, True.'
+    sql: is_bulk_operation
+  notes:
+    description: 'TEXT. Any notes related to this access log. **NULL means no notes were added.**。 Possible values: Access violation flagged., Critical action blocked. User and admin notified., SQL injection attempt blocked..'
+    sql: notes
+  reason_for_access:
+    description: 'TEXT. The user-provided reason for accessing the data。 Example: Writing manuscript for J. Arch. Sci..'
+    sql: reason_for_access
+  session_id:
+    description: 'TEXT. The session identifier for the user''s session。 Example: SESS_abc123.'
+    sql: session_id
+  user_tag:
+    description: 'TEXT. Foreign key for the user who accessed the data. FK。 Example: OP9911.'
+    sql: user_tag
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct data_access_logs public identity values.
+    label: data_access_logs Count
+    sql: ${archeology_scan_large_public__data_access_logs.access_log_index}

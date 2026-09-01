@@ -1,0 +1,63 @@
+label: weather_stations
+description: All columns of the public table weather_stations.
+catalog: solar_panel_large
+schema: public
+table_name: weather_stations
+dimensions:
+  firmware:
+    description: 'TEXT. The current firmware version of the station''s data logger. Example: v3.2.1.'
+    sql: '"FIRMWARE"'
+  install_date:
+    description: 'DATE. The date the weather station was installed. Example: 2018-02-28.'
+    sql: '"INSTALL_DATE"'
+  last_calibration:
+    description: 'DATE. The date the station''s sensors were last calibrated. Example: 2024-01-10.'
+    sql: '"LAST_CALIBRATION"'
+  log_interval_sec:
+    description: 'BIGINT. The interval in seconds at which the station logs data. Possible values: 30, 300, 60, 600.'
+    sql: '"LOG_INTERVAL_SEC"'
+  model:
+    description: 'TEXT. The model name of the weather station. Possible values: CHP1 Pyrheliometer, CMP10 Pyranometer, CMP6 Pyranometer, CS1000 Weather Sensor, CS120 Visibility Sensor, MetData1 Weather Station, SR20 Pyranometer, SR30 Pyranometer, WXT530 Series, WXT536 Weather Transmitter.'
+    sql: '"MODEL"'
+  maker_code:
+    description: 'TEXT. FK -> asset_manufacturers.MfrCode. The code of the station''s manufacturer. Possible values: MFR-15, MFR-16, MFR-17, MFR-29.'
+    sql: '"MakerCode"'
+  purchase_cost:
+    description: 'REAL. The original purchase cost of the weather station. Possible values: 10500.0, 11000.0, 12000.0, 12500.0, 6200.0, 7500.0, 7800.0, 8200.0, 9500.0, 9800.0.'
+    sql: '"PURCHASE_COST"'
+  station_code:
+    description: 'TEXT. Unique identifier for a weather station. Example: WS-SP9227.'
+    sql: '"StationCode"'
+  asset_status:
+    description: 'TEXT. The current operational status of the station. Possible values: Maintenance, Operational.'
+    sql: '"assetStatus"'
+  location_coordinates:
+    description: JSONB column. Contains the geographic location of the weather station, including latitude, longitude, and elevation.
+    sql: location_coordinates
+  next_calibration_due:
+    description: 'DATE. The date the next calibration is due. Example: 2025-01-10.'
+    sql: next_calibration_due
+  plant_site_ref:
+    description: 'TEXT. FK -> plants.sitekey. The plant where the station is located. Example: SP9227.'
+    sql: plant_site_ref
+  protocol:
+    description: 'TEXT. The communication protocol used by the station. Possible values: API, DNP3, FTP, Modbus.'
+    sql: protocol
+  serial_num:
+    description: 'TEXT. The unique serial number of the weather station unit. Example: WSN-A12345.'
+    sql: serial_num
+  location_coordinates_lat:
+    description: 'REAL. The GPS latitude of the weather station. Example: 34.0522.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_coordinates, 'LAT')
+  location_coordinates_lon:
+    description: 'REAL. The GPS longitude of the weather station. Example: -118.2437.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_coordinates, 'LON')
+  location_coordinates_elevation:
+    description: 'REAL. The elevation of the station in meters above sea level. Example: 120.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_coordinates, 'elevation')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct weather_stations public identity values.
+    label: weather_stations Count
+    sql: ${solar_panel_large_public__weather_stations.station_code}

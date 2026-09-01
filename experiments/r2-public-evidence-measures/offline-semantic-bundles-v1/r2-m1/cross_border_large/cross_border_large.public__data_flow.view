@@ -1,0 +1,21 @@
+label: DataFlow
+description: All columns of the public table DataFlow.
+catalog: cross_border_large
+schema: public
+table_name: DataFlow
+dimensions:
+  flowstamp:
+    description: 'TIMESTAMP. Timestamp of the data flow event. Example: 2024-11-17T06:28:54.'
+    sql: '"FLOWSTAMP"'
+  record_registry:
+    description: 'TEXT. Unique identifier for the data flow record. PK. Example: CB100138.'
+    sql: '"RecordRegistry"'
+  flow_overview:
+    description: 'JSONB. A JSON object containing a detailed overview of the data flow. Example: {"routing": {"protocol": "HTTPS", ...}}.'
+    sql: flow_overview
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DataFlow public identity values.
+    label: DataFlow Count
+    sql: ${cross_border_large_public__data_flow.record_registry}

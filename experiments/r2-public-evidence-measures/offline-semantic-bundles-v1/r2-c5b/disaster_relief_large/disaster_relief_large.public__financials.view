@@ -1,0 +1,47 @@
+label: Financials
+description: Financial records with public funding-state context.
+catalog: disaster_relief_large
+schema: public
+table_name: financials
+dimensions:
+  funding_state:
+    description: 'TEXT. Funding state. Possible values: Adequate, Critical, Limited.'
+    label: Funding State
+    sql: funding_state
+    ai_context: 'Funding States: ''Adequate'': Sufficient funds are available. ''Limited'': Funding is available but does not cover all needs, requiring prioritization. ''Critical'': A severe funding gap threatens essential activities.'
+  budgetallotusd:
+    description: 'TEXT. Allotted budget in USD. Example: $4,227,090.00.'
+    sql: budgetallotusd
+  costbeneusd:
+    description: 'TEXT. Cost-benefit ratio in USD. Example: $844.12.'
+    sql: costbeneusd
+  donor_commitments_usd:
+    description: 'REAL. Donor commitments in USD. **NULL means no donor commitments.**. Example: 4068978.0.'
+    sql: donor_commitments_usd
+  fin_ops_ref:
+    description: VARCHAR(20). Operations reference. FK to Operations.
+    sql: fin_ops_ref
+  financeregistry:
+    description: VARCHAR(20). Unique financials registry identifier. PK.
+    sql: financeregistry
+  findistref:
+    description: VARCHAR(20). Disaster event reference. FK to DisasterEvents.
+    sql: findistref
+  funds_util_pct:
+    description: 'TEXT. Percentage of funds utilized. Example: 9.8%.'
+    sql: funds_util_pct
+  ops_costs_usd:
+    description: 'REAL. Operational costs in USD. Example: 88256.'
+    sql: ops_costs_usd
+  personnelcostsusd:
+    description: 'REAL. Personnel costs in USD. Example: 364821.'
+    sql: personnelcostsusd
+  resource_gaps_usd:
+    description: 'BIGINT. Resource gaps in USD. Example: 95367.'
+    sql: resource_gaps_usd
+  storage_costs_usd:
+    description: 'REAL. Storage costs in USD. Example: 111548.'
+    sql: storage_costs_usd
+  transportcostsusd:
+    description: 'BIGINT. Transportation costs in USD. Example: 976202.'
+    sql: transportcostsusd

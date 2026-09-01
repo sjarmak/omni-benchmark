@@ -1,0 +1,96 @@
+label: transportation_modes
+description: All columns of the public table transportation_modes.
+catalog: residential_data_large
+schema: public
+table_name: transportation_modes
+dimensions:
+  accessibility_for_disabled:
+    description: 'TEXT. Accessibility features for disabled users. Possible values: 2, Limited, No.'
+    sql: '"ACCESSIBILITY_for_disabled"'
+  average_speed_kmh:
+    description: 'REAL. Average operating speed in kilometers per hour. Possible values: 15.6, 18.2, 28.5, 45.2, 45.5, 55.8.'
+    sql: '"AVERAGE_speed_kmh"'
+  co2_emission_g_per_km:
+    description: 'REAL. Carbon dioxide emissions in grams per kilometer. **NULL means emissions not measured or applicable.**. Possible values: 0.0, 145.8.'
+    sql: '"CO2_Emission_G_Per_KM"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"CREATED_at"'
+  depreciation_rate_percent:
+    description: 'REAL. Annual depreciation rate percentage. **NULL means depreciation not tracked or applicable.**. Possible values: 12.5, 15.2.'
+    sql: '"Depreciation_Rate_Percent"'
+  environmental_impact_score:
+    description: 'BIGINT. Environmental impact rating. **NULL means environmental impact not evaluated.**. Possible values: 10, 4, Yes.'
+    sql: '"Environmental_Impact_Score"'
+  fuel_type:
+    description: 'TEXT. Type of fuel used by transportation mode. **NULL means fuel type not applicable or specified.**. Possible values: Diesel, Gasoline.'
+    sql: '"Fuel_Type"'
+  insurance_annual_brl:
+    description: 'REAL. Annual insurance cost in Brazilian Real. **NULL means insurance not required or cost not tracked.**. Possible values: 1800.0, 2800.4, 2950.75, 3200.75, 3600.2, 950.0.'
+    sql: '"INSURANCE_annual_brl"'
+  learning_curve_difficulty:
+    description: 'BIGINT. Learning difficulty rating. Possible values: 10, 4, 6, 7.'
+    sql: '"LEARNING_curve_difficulty"'
+  license_required:
+    description: 'TEXT. License requirement for operation. **NULL means licensing requirements not specified.**. Possible values: No, Yes.'
+    sql: '"LICENSE_required"'
+  maintenance_cost_per_km_brl:
+    description: 'REAL. Maintenance cost per kilometer in Brazilian Real. **NULL means maintenance costs not tracked.**. Possible values: 0.18, 0.25.'
+    sql: '"MAINTENANCE_cost_per_km_brl"'
+  mode_name:
+    description: 'TEXT. Name of transportation mode. Possible values: Automóvel Popular, Bicicleta, Motocicleta, Ônibus Público.'
+    sql: '"MODE_name"'
+  mode_id:
+    description: 'BIGSERIAL. Primary key identifier for transportation mode record. PK. Possible values: 1, 2, 3, 4.'
+    sql: '"Mode_ID"'
+  parking_requirement_m2:
+    description: 'REAL. Parking space requirement in square meters. Possible values: 0.5, 12.0, 4.0, No.'
+    sql: '"Parking_Requirement_M2"'
+  physical_fitness_required:
+    description: 'BIGINT. Physical fitness requirement level. Possible values: 2, 3, 4, 7.'
+    sql: '"Physical_Fitness_Required"'
+  purchase_cost_max_brl:
+    description: 'REAL. Maximum purchase cost in Brazilian Real. **NULL means maximum cost not determined.**. Possible values: 3500.0, 45000.0.'
+    sql: '"Purchase_Cost_MAX_BRL"'
+  resale_value_retention_percent:
+    description: 'REAL. Resale value retention percentage. **NULL means resale value not tracked.**. Possible values: 25.8, 65.2.'
+    sql: '"Resale_Value_Retention_Percent"'
+  safety_rating:
+    description: 'BIGINT. Safety rating score. **NULL means safety assessment not conducted.**. Possible values: 4.0, 5.0, 6.0, 8.0.'
+    sql: '"SAFETY_rating"'
+  storage_capacity_kg:
+    description: 'REAL. Storage capacity in kilograms. **NULL means storage capacity not applicable.**. Possible values: 15.0, 25.0, 400.0.'
+    sql: '"STORAGE_capacity_kg"'
+  weather_dependency:
+    description: 'BIGINT. Level of weather dependency for operation. **NULL means weather impact not evaluated.**. Possible values: 3.0, 5.0, 8.0.'
+    sql: '"Weather_Dependency"'
+  age_restriction_minimum:
+    description: 'BIGINT. Minimum age requirement for operation. **NULL means age restrictions not applicable or specified.**. Possible values: 18.0.'
+    sql: '"age_restriction_MINIMUM"'
+  comfort_level:
+    description: 'BIGINT. Comfort level rating. **NULL means comfort not assessed.**. Possible values: 5.0, 6.0, 8.0.'
+    sql: '"comfort_LEVEL"'
+  fuel_consumption_per_km:
+    description: 'REAL. Fuel consumption rate per kilometer. **NULL means fuel consumption not applicable or measured.**. Possible values: 0.045, 0.12.'
+    sql: '"fuel_consumption_PER_km"'
+  mode_description:
+    description: 'TEXT. Description of transportation mode characteristics. Possible values: Carro econômico para uso urbano, Meio de transporte sustentável e saudável, Transporte coletivo urbano, Transporte ágil para trânsito urbano.'
+    sql: '"mode_DESCRIPTION"'
+  passenger_capacity:
+    description: 'BIGINT. Maximum passenger capacity. **NULL means passenger capacity not applicable.**. Possible values: 1.0, 2.0, 5.0.'
+    sql: '"passenger_CAPACITY"'
+  purchase_cost_min_brl:
+    description: 'REAL. Minimum purchase cost in Brazilian Real. **NULL means purchase cost not applicable.**. Possible values: 25000.0, 800.0, 8000.0.'
+    sql: '"purchase_cost_MIN_brl"'
+  registration_cost_brl:
+    description: 'REAL. Registration cost in Brazilian Real. **NULL means registration not required or cost not applicable.**. Possible values: 180.0, 50.0.'
+    sql: '"registration_cost_BRL"'
+  social_acceptability_score:
+    description: 'BIGINT. Social acceptability rating. **NULL means social perception not assessed.**. Possible values: 7.0, 8.0, 9.0.'
+    sql: '"social_acceptability_SCORE"'
+  theft_risk_level:
+    description: 'BIGINT. Theft risk level rating. **NULL means theft risk not assessed.**. Possible values: 6.0, 8.0.'
+    sql: '"theft_risk_LEVEL"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: updated_at

@@ -1,0 +1,15 @@
+base_view: cross_border_large_public__security_profile
+label: Security Profiles
+description: Security-profile rows with encryption, access-control, log-retention, and modeled robustness semantics.
+fields:
+- cross_border_large_public__security_profile.*
+- cross_border_large_public__data_flow.*
+- cross_border_large_public__data_profile.*
+- cross_border_large_public__risk_management.*
+joins:
+  cross_border_large_public__data_flow: {}
+  cross_border_large_public__data_profile: {}
+  cross_border_large_public__risk_management: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields is_secure_data_flow, security_robustness_score rather than reconstructing their formulas.'

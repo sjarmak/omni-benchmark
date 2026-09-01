@@ -1,0 +1,36 @@
+label: loyaltyandachievements
+description: All columns of the public table loyaltyandachievements.
+catalog: virtual_idol_large
+schema: public
+table_name: loyaltyandachievements
+dimensions:
+  achiev_stats:
+    description: JSONB column. Achievement and recognition statistics including counts of achievements, badges, titles, and rankings
+    sql: achiev_stats
+  loyalty_engage_pivot:
+    description: BIGINT. Reference to engagement record for loyalty calculation. FK to Engagement.
+    sql: loyalty_engage_pivot
+  loyalty_events_pivot:
+    description: BIGINT. Reference to events record for loyalty program correlation. FK to EventsAndClub.
+    sql: loyalty_events_pivot
+  loyalty_reg:
+    description: BIGSERIAL. Auto-generated unique identifier for loyalty and achievements record. PK = LoyaltyAndAchievements(Loyalty_Reg).
+    sql: loyalty_reg
+  loyalty_snapshot:
+    description: JSON string summarizing points, reward tier, trust value, and reputation level.
+    sql: loyalty_snapshot
+  achiev_stats_ach_count:
+    description: BIGINT. Total number of achievements unlocked by the fan.
+    sql: JSONB_EXTRACT_PATH_TEXT(achiev_stats, 'Ach_Count')
+  achiev_stats_badge_coll:
+    description: BIGINT. Number of badges collected through various activities.
+    sql: JSONB_EXTRACT_PATH_TEXT(achiev_stats, 'Badge_Coll')
+  achiev_stats_infl_score:
+    description: REAL. Influence score measuring fan's impact on community and platform.
+    sql: JSONB_EXTRACT_PATH_TEXT(achiev_stats, 'Infl_Score')
+  achiev_stats_rank_pos:
+    description: BIGINT. Current ranking position among all platform users.
+    sql: JSONB_EXTRACT_PATH_TEXT(achiev_stats, 'Rank_Pos')
+  achiev_stats_spec_titles:
+    description: BIGINT. Number of special titles earned by the fan.
+    sql: JSONB_EXTRACT_PATH_TEXT(achiev_stats, 'Spec_Titles')

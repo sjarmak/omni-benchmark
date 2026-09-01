@@ -1,0 +1,72 @@
+label: WorksiteInspection
+description: All columns of the public table WorksiteInspection.
+catalog: labor_certification_applications_large
+schema: public
+table_name: WorksiteInspection
+dimensions:
+  wsi_code:
+    description: 'TEXT. Unique identifier for worksite inspection record. Example: WSI-1A2B3C.'
+    sql: '"WSI_code"'
+  corrective_action_required_flag:
+    description: 'BOOLEAN. Indicates if corrective action is required. Possible values: True, False.'
+    sql: '"correctiveActionRequired_flag"'
+  corrective_deadline_days:
+    description: 'INTEGER. Days allowed to complete corrective actions. **NULL means No corrective action required.** Example: 50.'
+    sql: '"correctiveDeadline_days"'
+  documents_reviewed_ct:
+    description: 'INTEGER. Number of documents reviewed during inspection. Example: 35.'
+    sql: '"documentsReviewed_ct"'
+  employees_on_site_ct:
+    description: 'INTEGER. Number of employees present at time of inspection. Example: 45.'
+    sql: '"employeesOnSite_ct"'
+  file_ref:
+    description: TEXT. Foreign key reference to cases table filekey linking inspection to specific case.
+    sql: file_ref
+  fine_assessed_usd:
+    description: 'REAL. Total fines assessed as result of inspection in USD. **NULL means No violations or fines assessed.** Example: 2500.'
+    sql: '"fineAssessed_USD"'
+  follow_up_required_flag:
+    description: 'BOOLEAN. Indicates if a follow-up inspection is required. Possible values: True, False.'
+    sql: '"followUpRequired_flag"'
+  foreign_workers_verified_ct:
+    description: 'INTEGER. Number of foreign workers verified during inspection. Example: 8.'
+    sql: '"foreignWorkersVerified_ct"'
+  i9_compliance_rate_pct:
+    description: 'REAL. Percentage of I-9 forms found in compliance. Example: 92.'
+    sql: '"i9ComplianceRate_pct"'
+  inspection_date:
+    description: 'TIMESTAMP. Date when worksite inspection was conducted. Example: 2024-01-01 12:00:00.'
+    sql: '"inspectionDate"'
+  inspection_duration_hrs:
+    description: 'REAL. Total duration of inspection in hours. Example: 4.5.'
+    sql: '"inspectionDuration_hrs"'
+  inspection_type:
+    description: 'TEXT. Type of inspection conducted at the worksite. Unique values: Routine, Complaint-Based, Follow-Up, Random Selection, Pre-Certification.'
+    sql: '"inspectionType"'
+  inspector_agency:
+    description: 'TEXT. Government agency that conducted the inspection. Unique values: USCIS FDNS, DOL WHD, ICE HSI, State Labor Dept, Joint Task Force.'
+    sql: '"inspectorAgency"'
+  overall_compliance_rating:
+    description: 'TEXT. Overall compliance rating assigned to employer. Unique values: Exemplary, Satisfactory, Needs Improvement, Unsatisfactory, Critical Non-Compliance.'
+    sql: '"overallComplianceRating"'
+  prior_notice_given_flag:
+    description: 'BOOLEAN. Indicates if employer was given prior notice of inspection. Possible values: True, False.'
+    sql: '"priorNoticeGiven_flag"'
+  violation_severity:
+    description: 'TEXT. Highest severity level of violations found. Unique values: None, Minor, Moderate, Serious, Willful.'
+    sql: '"violationSeverity"'
+  violations_found_ct:
+    description: 'INTEGER. Number of violations identified during inspection. Example: 1.'
+    sql: '"violationsFound_ct"'
+  wage_record_accuracy_pct:
+    description: 'REAL. Percentage accuracy of wage records reviewed. Example: 94.'
+    sql: '"wageRecordAccuracy_pct"'
+  working_conditions_score:
+    description: 'REAL. Assessment score of working conditions from 1-10. Example: 7.8.'
+    sql: '"workingConditionsScore"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct WorksiteInspection public identity values.
+    label: WorksiteInspection Count
+    sql: ${labor_certification_applications_large_public__worksite_inspection.wsi_code}

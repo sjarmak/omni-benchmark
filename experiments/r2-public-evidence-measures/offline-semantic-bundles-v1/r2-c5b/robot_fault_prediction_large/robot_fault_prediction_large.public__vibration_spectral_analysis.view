@@ -1,0 +1,57 @@
+label: vibration_spectral_analysis
+description: All columns of the public table vibration_spectral_analysis.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: vibration_spectral_analysis
+dimensions:
+  axis_orientation:
+    description: 'TEXT. Axis of measurement (X, Y, Z). Unique values: X, Y, Z.'
+    sql: axis_orientation
+  bearing_fault_freq_energy:
+    description: 'REAL. Energy in specific bearing fault bands. Example: 50.0.'
+    sql: bearing_fault_freq_energy
+  crest_factor:
+    description: 'REAL. Ratio of peak to RMS. Example: 3.'
+    sql: crest_factor
+  dominant_frequency_hz:
+    description: 'REAL. Peak frequency in FFT spectrum. Example: 120.'
+    sql: dominant_frequency_hz
+  gear_mesh_freq_energy:
+    description: 'REAL. Energy at gear meshing frequencies. Example: 5.'
+    sql: gear_mesh_freq_energy
+  iso_class_grade:
+    description: 'TEXT. ISO 10816 zone (A, B, C, D). Unique values: A, B, C, D.'
+    sql: iso_class_grade
+  joint_perf_ref:
+    description: 'INTEGER. Reference to the specific joint performance record. Example: 50.'
+    sql: joint_perf_ref
+  kurtosis_value:
+    description: 'REAL. Peakedness of the signal (bearing health). Example: 50.0.'
+    sql: kurtosis_value
+  lubrication_index:
+    description: 'REAL. Calculated lubrication efficacy metric. Example: 50.0.'
+    sql: lubrication_index
+  motor_current_signature_db:
+    description: 'REAL. Sideband amplitude in current analysis. Example: -40.'
+    sql: motor_current_signature_db
+  peak_amplitude_mm_s:
+    description: 'REAL. Highest vibration velocity. Example: 2.'
+    sql: peak_amplitude_mm_s
+  rms_velocity_mm_s:
+    description: 'REAL. Root Mean Square of velocity (ISO metric). Example: 1.5.'
+    sql: rms_velocity_mm_s
+  sample_duration_ms:
+    description: 'INTEGER. Length of time signal was recorded. Example: 50.'
+    sql: sample_duration_ms
+  sampling_rate_hz:
+    description: 'INTEGER. DAQ sampling frequency. Unique values: 10000, 20000.'
+    sql: sampling_rate_hz
+  sensor_temperature_c:
+    description: 'REAL. Temp of the vibration accelerometer. Example: 45.'
+    sql: sensor_temperature_c
+  skewness_value:
+    description: 'REAL. Asymmetry of the vibration signal. Example: 0.'
+    sql: skewness_value
+  spectral_sample_id:
+    description: TEXT. Unique key for the vibration data sample.
+    sql: spectral_sample_id

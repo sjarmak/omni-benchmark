@@ -1,0 +1,114 @@
+label: content_language_distribution
+description: All columns of the public table content_language_distribution.
+catalog: fake_account_large
+schema: public
+table_name: content_language_distribution
+dimensions:
+  code_switch_rate:
+    description: 'REAL. Rate of language shifts within messages (0–1). **NULL when the account is monolingual.** Example (when present): 0.32.'
+    sql: '"CODE_SWITCH_RATE"'
+  caps_lock_pct:
+    description: 'REAL. Upper-case character percentage. Example: 18.40.'
+    sql: '"CapsLockPct"'
+  langcode3:
+    description: 'TEXT. Third language code. Example: de.'
+    sql: '"LANGCODE3"'
+  langpct5:
+    description: 'REAL. Share of lang_code5 (%). **NULL corresponds to lang_code5 being NULL.** Example (when present): 13.70.'
+    sql: '"LANGPCT5"'
+  lang_entropy:
+    description: 'REAL. Shannon entropy across languages. Example: 2.70.'
+    sql: '"LANG_ENTROPY"'
+  lang_pct2:
+    description: 'REAL. Share of langCode2 (%). Example: 3.53.'
+    sql: '"LANG_PCT2"'
+  lang_pct4:
+    description: 'REAL. Share of langCode4 (%). Example: 15.94.'
+    sql: '"LANG_PCT4"'
+  lang_shift_trend:
+    description: 'TEXT. Recent trend in language usage. Possible values: TowardsEnglish, Stable, Diversifying, CodeSwitching. Example: Stable.'
+    sql: '"LANG_SHIFT_TREND"'
+  lang_code1:
+    description: 'TEXT. ISO code of most-used language. Example: ar.'
+    sql: '"LANG_code1"'
+  non_latin_pct:
+    description: 'REAL. % of characters outside Latin script. **NULL when no non-Latin characters are present.** Example (when present): 54.72.'
+    sql: '"NON_LATIN_PCT"'
+  slang_pct:
+    description: 'REAL. Slang share (%). Example: 13.26.'
+    sql: '"SLANG_PCT"'
+  symbol_pct:
+    description: 'REAL. Symbol/punctuation share (%). Example: 74.15.'
+    sql: '"SYMBOL_PCT"'
+  top_ngram1:
+    description: 'TEXT. Most frequent n-gram. Example: omg.'
+    sql: '"TOP_NGRAM1"'
+  top_ngram2:
+    description: 'TEXT. Second most frequent n-gram. Example: jk.'
+    sql: '"TopNgram2"'
+  unique_ngram_pct:
+    description: 'REAL. Percentage of unique n-grams. Example: 86.68.'
+    sql: '"UNIQUE_NGRAM_PCT"'
+  abbrev_pct:
+    description: 'REAL. Abbreviation share (%). Example: 87.26.'
+    sql: abbrev_pct
+  acct_slot_ref:
+    description: 'TEXT. PK. Foreign-key to content_activity.acct_slot. Example: ACC7210284.'
+    sql: acct_slot_ref
+  avg_lang_len:
+    description: 'REAL. Average token length of words across languages. Example: 8.09.'
+    sql: '"avgLangLen"'
+  dir_switch:
+    description: 'TEXT. Directionality pattern. Possible values: LTR, RTL, Mixed. Example: Mixed.'
+    sql: '"dirSwitch"'
+  emoji_lang_rt:
+    description: 'REAL. Rate of emoji per language token (0–1). Example: 0.45.'
+    sql: '"emojiLangRT"'
+  hashtag_lang_domin:
+    description: 'TEXT. Language code dominating hashtags. Example: zh.'
+    sql: '"hashtagLangDomin"'
+  lang_code2:
+    description: 'TEXT. Second language code. Example: pt.'
+    sql: '"langCode2"'
+  lang_code4:
+    description: 'TEXT. Fourth language code. Example: hi.'
+    sql: '"langCode4"'
+  lang_diversity:
+    description: 'REAL. Ratio of distinct languages to total tokens (0–1). Example: 0.84.'
+    sql: '"langDiversity"'
+  lang_pct1:
+    description: 'REAL. Share of messages in LANG_code1 (%). Example: 37.36.'
+    sql: '"langPct1"'
+  lang_score:
+    description: 'REAL. Composite language-complexity score (0–100). Example: 45.41.'
+    sql: '"langScore"'
+  lang_code5:
+    description: 'TEXT. Fifth language code (if any). Example: fr. **NULL means fewer than five languages detected.**'
+    sql: lang_code5
+  lang_pct3:
+    description: 'REAL. Share of LANGCODE3 (%). Example: 29.47.'
+    sql: lang_pct3
+  script_mix:
+    description: 'TEXT. Scripts detected, joined with “+” (e.g., Latin+Han). **NULL means only one script observed.** Example: Han+Latin.'
+    sql: script_mix
+  script_ratio:
+    description: 'TEXT. Split of major writing systems. Example: Latin 80 % / Cyrillic 20 %.'
+    sql: script_ratio
+  stopword_pct:
+    description: 'REAL. Stop-word share (%). Example: 28.99.'
+    sql: '"stopwordPct"'
+  top_ngram3:
+    description: 'TEXT. Third most frequent n-gram. Example: lmao.'
+    sql: top_ngram3
+  translates_freq:
+    description: 'REAL. % of posts containing auto-translations. Example: 2.79.'
+    sql: '"translatesFreq"'
+  unicode_rt:
+    description: 'REAL. Proportion of non-ASCII characters (0–1). Example: 0.93.'
+    sql: unicode_rt
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct content_language_distribution public identity values.
+    label: content_language_distribution Count
+    sql: ${fake_account_large_public__content_language_distribution.acct_slot_ref}

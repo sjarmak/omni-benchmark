@@ -1,0 +1,102 @@
+label: healthcare_facilities
+description: All columns of the public table healthcare_facilities.
+catalog: residential_data_large
+schema: public
+table_name: healthcare_facilities
+dimensions:
+  ambulance_count:
+    description: 'BIGINT. Number of ambulances operated by facility. **NULL means ambulance service not provided.**. Possible values: 0.0, 4.0.'
+    sql: '"AMBULANCE_count"'
+  annual_budget_brl:
+    description: 'REAL. Annual operating budget in Brazilian Real. Possible values: 12500000.0, 15500000.0, 180000.0, 420000.0, 850000.0, 980000.0.'
+    sql: '"ANNUAL_budget_brl"'
+  accreditation_level:
+    description: 'BIGINT. Healthcare accreditation rating. **NULL means accreditation status not available.**. Possible values: 5.0, 9.0.'
+    sql: '"Accreditation_Level"'
+  annual_patient_visits:
+    description: 'BIGINT. Total patient visits per year. Possible values: 125000, 15000, 45000.'
+    sql: '"Annual_Patient_Visits"'
+  bed_capacity:
+    description: 'BIGINT. Number of patient beds available. **NULL means bed capacity not applicable for facility type.**. Possible values: 0.0, 280.0.'
+    sql: '"BED_capacity"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"Created_At"'
+  distance_to_major_hospital_km:
+    description: 'REAL. Distance to nearest major hospital in kilometers. Possible values: 0.0, 2.1, 5.2.'
+    sql: '"DISTANCE_to_major_hospital_km"'
+  doctor_count:
+    description: 'BIGINT. Number of doctors on staff. Possible values: 2, 45, 8.'
+    sql: '"Doctor_Count"'
+  emergency_services:
+    description: 'TEXT. Availability of emergency medical services. Possible values: No, Yes.'
+    sql: '"Emergency_Services"'
+  facility_type:
+    description: 'TEXT. Type of healthcare facility (hospital, clinic, pharmacy). Possible values: clinic, hospital, pharmacy, school, university, vocational.'
+    sql: '"Facility_Type"'
+  healthcare_district_code:
+    description: 'BIGINT. District code within healthcare region. FK to locations(zonenum). Possible values: 315, 332, 353.'
+    sql: '"Healthcare_District_Code"'
+  healthcare_region_identifier:
+    description: 'TEXT. Regional identifier for facility location. FK to locations(regioncode). Possible values: Riacho Fundo Ii, Taguatinga, samambai.'
+    sql: '"Healthcare_Region_Identifier"'
+  icu_beds:
+    description: 'BIGINT. Number of intensive care unit beds. Possible values: 0, 18.'
+    sql: '"ICU_beds"'
+  mortality_rate_percent:
+    description: 'REAL. Patient mortality rate as percentage. **NULL means mortality statistics not available.**. Possible values: 0.0, 2.1.'
+    sql: '"MORTALITY_rate_percent"'
+  nurse_count:
+    description: 'BIGINT. Number of nurses on staff. Possible values: 120, 25, 3.'
+    sql: '"NURSE_count"'
+  operating_rooms:
+    description: 'BIGINT. Number of surgical operating rooms. Possible values: 0, 2, 8.'
+    sql: '"OPERATING_rooms"'
+  patient_satisfaction_score:
+    description: 'REAL. Patient satisfaction rating on 1-10 scale. Possible values: 7.8, 8.2, 8.9.'
+    sql: '"Patient_Satisfaction_Score"'
+  pharmacy_on_site:
+    description: 'TEXT. On-site pharmacy availability. Possible values: Yes.'
+    sql: '"Pharmacy_On_Site"'
+  staff_patient_ratio:
+    description: 'REAL. Ratio of staff members to patients. **NULL means staffing ratios not calculated.**. Possible values: 0.65, 0.73.'
+    sql: '"STAFF_patient_ratio"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  wait_time_hours:
+    description: 'REAL. Average patient wait time in hours. Possible values: 0.3, 1.2, 2.5.'
+    sql: '"Wait_Time_Hours"'
+  current_occupancy:
+    description: 'BIGINT. Current number of occupied beds. Possible values: 0, 245, 45.'
+    sql: '"current_OCCUPANCY"'
+  diagnostic_equipment_count:
+    description: 'BIGINT. Number of diagnostic equipment units. Possible values: 2, 25, 8.'
+    sql: '"diagnostic_equipment_COUNT"'
+  facility_name:
+    description: 'TEXT. Official name of healthcare facility. Possible values: Centro de Educacao Profissional, Clinica Popular da Tijuca, Colegio Particular Santos Dumont, Escola Estadual Dom Pedro II, Farmacia Drogasil Centro, Hospital Sao Camilo, Universidade Federal Fluminense.'
+    sql: facility_name
+  healthcare_id:
+    description: 'BIGSERIAL. Primary key identifier for healthcare facility record. PK. Possible values: 1, 2, 3.'
+    sql: '"healthcare_ID"'
+  infection_rate_percent:
+    description: 'REAL. Healthcare-associated infection rate as percentage. **NULL means infection tracking not conducted.**. Possible values: 0.0, 1.2.'
+    sql: '"infection_rate_PERCENT"'
+  insurance_accepted_count:
+    description: 'BIGINT. Number of insurance plans accepted. **NULL means insurance acceptance not documented.**. Possible values: 12.0, 8.0.'
+    sql: '"insurance_accepted_COUNT"'
+  response_time_minutes:
+    description: 'REAL. Average emergency response time in minutes. **NULL means response time not tracked.**. Possible values: 12.5, 8.3.'
+    sql: '"response_time_MINUTES"'
+  specialist_count:
+    description: 'BIGINT. Number of medical specialists on staff. **NULL means specialist count not tracked.**. Possible values: 28.0, 5.0.'
+    sql: '"specialist_COUNT"'
+  technology_level:
+    description: 'BIGINT. Medical technology advancement rating. Possible values: 4, 6, 8.'
+    sql: '"technology_LEVEL"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct healthcare_facilities public identity values.
+    label: healthcare_facilities Count
+    sql: ${residential_data_large_public__healthcare_facilities.healthcare_id}

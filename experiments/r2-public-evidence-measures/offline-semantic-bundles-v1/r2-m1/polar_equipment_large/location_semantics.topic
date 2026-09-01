@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__location
+label: Location
+description: All columns of the public table Location.
+fields:
+- polar_equipment_large_public__location.*
+joins: {}
+ai_context: This topic models no cross-table joins.

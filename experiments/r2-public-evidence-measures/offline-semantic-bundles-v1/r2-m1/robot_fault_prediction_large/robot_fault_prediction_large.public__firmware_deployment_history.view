@@ -1,0 +1,63 @@
+label: firmware_deployment_history
+description: All columns of the public table firmware_deployment_history.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: firmware_deployment_history
+dimensions:
+  automatic_reboot_count:
+    description: 'INTEGER. Number of reboots during install. Unique values: 0, 1, 2.'
+    sql: automatic_reboot_count
+  checksum_verification_status:
+    description: 'BOOLEAN. True if hash matched. Possible values: True, False.'
+    sql: checksum_verification_status
+  cpu_temperature_peak_c:
+    description: 'REAL. Max CPU temp during install. Example: 65.'
+    sql: cpu_temperature_peak_c
+  deployment_initiator:
+    description: 'TEXT. User or System triggering update. Unique values: SysAdmin, AutoScheduler, OnSiteTech.'
+    sql: deployment_initiator
+  deployment_record_key:
+    description: TEXT. Unique key for the software update event.
+    sql: deployment_record_key
+  disk_space_available_gb:
+    description: 'REAL. Storage free after update. Example: 50.0.'
+    sql: disk_space_available_gb
+  download_throughput_mbps:
+    description: 'REAL. Average download speed. Example: 100.'
+    sql: download_throughput_mbps
+  driver_compatibility_flag:
+    description: 'TEXT. Status of peripheral drivers. Unique values: All_OK, Warn_Legacy, Err_Missing.'
+    sql: driver_compatibility_flag
+  firmware_version_previous:
+    description: TEXT. SemVer of the displaced firmware.
+    sql: firmware_version_previous
+  firmware_version_target:
+    description: TEXT. SemVer of the new firmware.
+    sql: firmware_version_target
+  installation_duration_sec:
+    description: 'INTEGER. Time spent in install phase. Example: 300.'
+    sql: installation_duration_sec
+  kernel_panic_count:
+    description: 'INTEGER. Critical OS errors during update. Example: 50.'
+    sql: kernel_panic_count
+  package_size_mb:
+    description: 'REAL. Size of the update binary. Example: 250.'
+    sql: package_size_mb
+  post_install_health_score:
+    description: 'REAL. Self-test score after update (0-100). Example: 50.0.'
+    sql: post_install_health_score
+  rollback_triggered:
+    description: 'BOOLEAN. True if system reverted to prev version. Possible values: True, False.'
+    sql: rollback_triggered
+  target_bot_ref:
+    description: TEXT. Robot receiving the update.
+    sql: target_bot_ref
+  update_channel:
+    description: 'TEXT. Release stream (Stable, Beta, Nightly). Unique values: Stable, LTS, Beta.'
+    sql: update_channel
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct firmware_deployment_history public identity values.
+    label: firmware_deployment_history Count
+    sql: ${robot_fault_prediction_large_public__firmware_deployment_history.deployment_record_key}

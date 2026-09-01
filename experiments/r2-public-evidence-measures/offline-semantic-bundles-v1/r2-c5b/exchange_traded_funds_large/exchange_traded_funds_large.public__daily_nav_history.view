@@ -1,0 +1,108 @@
+label: daily_nav_history
+description: All columns of the public table daily_nav_history.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: daily_nav_history
+dimensions:
+  benchmark_return:
+    description: 'TEXT. Benchmark return percentage with units. Examples: 0.08%/day, -0.22%/day, 0.38%/day.'
+    sql: benchmark_return
+  bid_ask_spread:
+    description: 'REAL. Difference between bid and ask prices. Possible values: 0.03, 0.04.'
+    sql: bid_ask_spread
+  bid_ask_spread_percent:
+    description: 'TEXT. Bid-ask spread as percentage with units. Possible values: 0.06%/spread, 0.08%/spread, 0.10%/spread, 0.11%/spread, 0.12%/spread, 0.13%/spread, 0.16%/spread, 0.37%/spread.'
+    sql: bid_ask_spread_percent
+  data_source:
+    description: 'TEXT. Source of the pricing data. **NULL means data source is not recorded or unknown.**. Possible values: BLOOMBERG TERMINAL, Bloomberg Terminal, Reuters Feed, bloomberg terminal, reuters feed.'
+    sql: data_source
+  dollar_volume:
+    description: 'TEXT. Dollar volume traded with unit notation. Examples: $159.5K, $259.7K, $52.5M.'
+    sql: dollar_volume
+  fund_ticker:
+    description: 'TEXT. Fund ticker symbol identifier. Examples: AVMU, QQD, FALN.'
+    sql: fund_ticker
+  intranav_premium:
+    description: 'REAL. Intraday premium to NAV. Possible values: -0.02, -0.22, 0.0, 0.01, 0.02, 0.03, 0.25.'
+    sql: intranav_premium
+  last_updated:
+    description: 'TEXT. Timestamp of last data update. Possible values: 2024-12-01 16:00:00 HKT+8, 2024-12-02 16:00:00 HKT+8.'
+    sql: last_updated
+  market_return:
+    description: 'TEXT. Market return percentage with units. Examples: 0.15%/day, -0.18%/day, 0.42%/day.'
+    sql: market_return
+  nav_date:
+    description: 'DATE. Date of the NAV calculation. Possible values: 2024-12-01.'
+    sql: nav_date
+  nav_id:
+    description: 'BIGSERIAL. Primary key identifier for NAV history record. PK. Examples: 1, 2, 3.'
+    sql: nav_id
+  net_asset_value:
+    description: 'REAL. Net Asset Value per share. Examples: 49.82, 30.88, 29.99.'
+    sql: net_asset_value
+  number_of_trades:
+    description: 'BIGINT. Total number of trades executed. Examples: 45, 67, 1245.'
+    sql: number_of_trades
+  premium_discount:
+    description: 'REAL. Premium or discount to NAV. Possible values: -0.01, -0.04, -0.4, 0.03, 0.04, 0.06, 17.44.'
+    sql: premium_discount
+  premium_discount_percent:
+    description: 'TEXT. Premium or discount as percentage with units. Possible values: -0.03%/day, -0.16%/day, -3.55%/day, 0.06%/day, 0.13%/day, 0.16%/day, 0.23%/day, 94.7%/day.'
+    sql: premium_discount_percent
+  pricedata:
+    description: JSONB column. Groups all daily price points including open, high, low, close, and bid-ask information
+    sql: pricedata
+  sector_return:
+    description: 'TEXT. Sector return percentage with units. Possible values: -0.15%/day, -0.25%/day, -1.8%/day, -2.8%/day, 0.22%/day, 0.35%/day, 0.45%/day, 0.51%/day.'
+    sql: sector_return
+  shares_outstanding:
+    description: 'BIGINT. Total number of shares outstanding. Examples: 550000, 93750, 88050000.'
+    sql: shares_outstanding
+  total_net_assets:
+    description: 'TEXT. Total net assets with unit notation. Examples: $27.4M, $2.9M, $2.64B.'
+    sql: total_net_assets
+  volretmetrics:
+    description: JSONB column. Combines volatility and return measurements including daily, cumulative, and log returns with volatility metrics
+    sql: volretmetrics
+  volume:
+    description: 'BIGINT. Total shares traded during the day. Examples: 3200, 8400, 1750000.'
+    sql: volume
+  volume_weighted_average_price:
+    description: 'REAL. Volume-weighted average price for the day. Examples: 49.84, 30.9, 29.99.'
+    sql: volume_weighted_average_price
+  pricedata_ask_price:
+    description: 'REAL. Best ask price. Examples: 49.86, 30.94, 30.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(pricedata, 'ask_price')
+  pricedata_bid_price:
+    description: 'REAL. Best bid price. Examples: 49.83, 30.9, 29.97.'
+    sql: JSONB_EXTRACT_PATH_TEXT(pricedata, 'bid_price')
+  pricedata_close_price:
+    description: 'REAL. Closing price for the trading day. Examples: 49.85, 30.92, 29.98.'
+    sql: JSONB_EXTRACT_PATH_TEXT(pricedata, 'close_price')
+  pricedata_high_price:
+    description: 'REAL. Highest price during the trading day. Examples: 49.9, 30.95, 30.05.'
+    sql: JSONB_EXTRACT_PATH_TEXT(pricedata, 'high_price')
+  pricedata_low_price:
+    description: 'REAL. Lowest price during the trading day. Examples: 49.75, 30.8, 29.92.'
+    sql: JSONB_EXTRACT_PATH_TEXT(pricedata, 'low_price')
+  pricedata_market_price:
+    description: 'REAL. Market trading price per share. Examples: 49.85, 30.92, 29.98.'
+    sql: JSONB_EXTRACT_PATH_TEXT(pricedata, 'market_price')
+  pricedata_open_price:
+    description: 'REAL. Opening price for the trading day. Examples: 49.8, 30.85, 29.95.'
+    sql: JSONB_EXTRACT_PATH_TEXT(pricedata, 'open_price')
+  volretmetrics_cumulative_return:
+    description: 'TEXT. Cumulative return percentage with units. Examples: 2.35%/YTD, -8.45%/YTD, 18.2%/YTD.'
+    sql: JSONB_EXTRACT_PATH_TEXT(volretmetrics, 'cumulative_return')
+  volretmetrics_daily_return:
+    description: 'TEXT. Daily return percentage with units. Examples: 0.12%/day, -0.18%/day, 0.45%/day.'
+    sql: JSONB_EXTRACT_PATH_TEXT(volretmetrics, 'daily_return')
+  volretmetrics_intra_volatility:
+    description: 'TEXT. Intraday volatility percentage with units. Possible values: 0.9%/day, 1.2%/day, 1.3%/day, 1.5%/day, 1.8%/day, 15.8%/day, 2.2%/day, 65.8%/day.'
+    sql: JSONB_EXTRACT_PATH_TEXT(volretmetrics, 'intra_volatility')
+  volretmetrics_log_return:
+    description: 'TEXT. Logarithmic return with units. Examples: -0.0012 log/day, -0.0018 log/day, 0.0045 log/day.'
+    sql: JSONB_EXTRACT_PATH_TEXT(volretmetrics, 'log_return')
+  volretmetrics_realized_volatility:
+    description: 'TEXT. Realized volatility percentage with units. Examples: 0.85%/day, 1.45%/day, 0.95%/day.'
+    sql: JSONB_EXTRACT_PATH_TEXT(volretmetrics, 'realized_volatility')

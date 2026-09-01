@@ -1,0 +1,456 @@
+- join_from_view: virtual_idol_large_public__skin_ownership_certificates
+  join_to_view: virtual_idol_large_public__digital_skin_transaction_history
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__skin_ownership_certificates.origin_txn_ref} = ${virtual_idol_large_public__digital_skin_transaction_history.transaction_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__auction_payment_settlements
+  join_to_view: virtual_idol_large_public__fan_art_auction_bid_logs
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__auction_payment_settlements.winning_bid_ref} = ${virtual_idol_large_public__fan_art_auction_bid_logs.bid_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__virtual_idol_lore_and_storylines
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__virtual_idol_lore_and_storylines.idol_registration_id} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__interactions
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__interactions.interact_fan_pivot} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__membershipandspending
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__membershipandspending.member_fan_pivot} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_interest_tags_map
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_interest_tags_map.fan_account_identifier} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__server_regional_outage_logs
+  join_to_view: virtual_idol_large_public__global_server_latency_stats
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__server_regional_outage_logs.stat_trigger_ref} = ${virtual_idol_large_public__global_server_latency_stats.stat_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_asset_management
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_asset_management.virtual_idol_id} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__eventsandclub
+  join_to_view: virtual_idol_large_public__socialcommunity
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__eventsandclub.events_social_pivot} = ${virtual_idol_large_public__socialcommunity.social_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_skill_sets_map
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_skill_sets_map.idol_record_identifier} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__event_sponsors
+  join_to_view: virtual_idol_large_public__sponsors
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__event_sponsors.sponsor_identifier} = ${virtual_idol_large_public__sponsors.sponsor_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_fan_collaborations
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_fan_collaborations.fan_ref} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__engagement
+  join_to_view: virtual_idol_large_public__membershipandspending
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__engagement.engage_member_pivot} = ${virtual_idol_large_public__membershipandspending.member_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__projector_bulb_replacement_history
+  join_to_view: virtual_idol_large_public__hologram_projector_maintenance
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__projector_bulb_replacement_history.maintenance_ref} = ${virtual_idol_large_public__hologram_projector_maintenance.maintenance_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_genre_map
+  join_to_view: virtual_idol_large_public__genres
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_genre_map.music_genre_identifier} = ${virtual_idol_large_public__genres.genre_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__synthesized_voice_feedback
+  join_to_view: virtual_idol_large_public__voice_synthesis_quality_logs
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__synthesized_voice_feedback.voice_log_ref} = ${virtual_idol_large_public__voice_synthesis_quality_logs.voice_log_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__eventsandclub
+  join_to_view: virtual_idol_large_public__membershipandspending
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__eventsandclub.events_member_pivot} = ${virtual_idol_large_public__membershipandspending.member_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__sentiment_keyword_trends
+  join_to_view: virtual_idol_large_public__social_sentiment_trend_snapshots
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__sentiment_keyword_trends.snapshot_ref} = ${virtual_idol_large_public__social_sentiment_trend_snapshots.snapshot_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__event_sponsors
+  join_to_view: virtual_idol_large_public__eventsandclub
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__event_sponsors.event_identifier} = ${virtual_idol_large_public__eventsandclub.events_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__algorithm_recommendation_feeds
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__algorithm_recommendation_feeds.fan_user_ref} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_genre_map
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_genre_map.virtual_idol_identifier} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__merchandise_designers_map
+  join_to_view: virtual_idol_large_public__idol_merchandise_details
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__merchandise_designers_map.merchandise_item_identifier} = ${virtual_idol_large_public__idol_merchandise_details.merch_item_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__copyright_infringement_reports
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__copyright_infringement_reports.idol_entity_ref} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__virtual_reality_session_telemetry
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__virtual_reality_session_telemetry.fan_user_ref} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_collaboration_projects
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_collaboration_projects.project_lead_fan_id} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__recommendation_clickstream
+  join_to_view: virtual_idol_large_public__algorithm_recommendation_feeds
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__recommendation_clickstream.feed_ref} = ${virtual_idol_large_public__algorithm_recommendation_feeds.feed_event_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_training_and_development
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_training_and_development.idol_identifier} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__merchandise_designers_map
+  join_to_view: virtual_idol_large_public__designers
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__merchandise_designers_map.creator_identifier} = ${virtual_idol_large_public__designers.designer_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__moderationandcompliance
+  join_to_view: virtual_idol_large_public__interactions
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__moderationandcompliance.moderation_interact_pivot} = ${virtual_idol_large_public__interactions.activity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_interest_tags_map
+  join_to_view: virtual_idol_large_public__interest_tags
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_interest_tags_map.interest_tag_identifier} = ${virtual_idol_large_public__interest_tags.tag_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_content_submission_details
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_content_submission_details.fan_identifier} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__moderationandcompliance
+  join_to_view: virtual_idol_large_public__socialcommunity
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__moderationandcompliance.moderation_social_pivot} = ${virtual_idol_large_public__socialcommunity.social_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__loyaltyandachievements
+  join_to_view: virtual_idol_large_public__eventsandclub
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__loyaltyandachievements.loyalty_events_pivot} = ${virtual_idol_large_public__eventsandclub.events_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_collaboration_projects
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_collaboration_projects.associated_idol_record} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__co_creation_royalty_splits
+  join_to_view: virtual_idol_large_public__collaborative_song_writing_sessions
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__co_creation_royalty_splits.session_ref} = ${virtual_idol_large_public__collaborative_song_writing_sessions.collab_session_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__physics_simulation_data
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__physics_simulation_data.idol_id} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__socialcommunity
+  join_to_view: virtual_idol_large_public__engagement
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__socialcommunity.social_engage_pivot} = ${virtual_idol_large_public__engagement.engage_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__interactions
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__interactions.interact_idol_pivot} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__preferencesandsettings
+  join_to_view: virtual_idol_large_public__membershipandspending
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__preferencesandsettings.preferences_member_pivot} = ${virtual_idol_large_public__membershipandspending.member_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_club_roles_map
+  join_to_view: virtual_idol_large_public__club_roles
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_club_roles_map.club_role_identifier} = ${virtual_idol_large_public__club_roles.role_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_content_platforms_map
+  join_to_view: virtual_idol_large_public__platforms
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_content_platforms_map.platform_service_identifier} = ${virtual_idol_large_public__platforms.platform_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__engagement
+  join_to_view: virtual_idol_large_public__interactions
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__engagement.engage_activity_pivot} = ${virtual_idol_large_public__interactions.activity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__streaming_session_logs
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__streaming_session_logs.idol_ref_id} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_merchandise_details
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_merchandise_details.autograph_idol_ref} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__virtual_idol_sponsorships
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__virtual_idol_sponsorships.idol_record_id} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_sentiment_analysis
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_sentiment_analysis.fan_account_id} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_technical_profile
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_technical_profile.fan_user_id} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__global_server_latency_stats
+  join_to_view: virtual_idol_large_public__eventsandclub
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__global_server_latency_stats.event_ref} = ${virtual_idol_large_public__eventsandclub.events_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__voice_synthesis_quality_logs
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__voice_synthesis_quality_logs.idol_entity_ref} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__socialcommunity
+  join_to_view: virtual_idol_large_public__commerceandcollection
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__socialcommunity.social_commerce_pivot} = ${virtual_idol_large_public__commerceandcollection.commerce_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_fan_collaborations
+  join_to_view: virtual_idol_large_public__fan_collaboration_projects
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_fan_collaborations.project_reference_id} = ${virtual_idol_large_public__fan_collaboration_projects.project_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_content_platforms_map
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_content_platforms_map.idol_account_identifier} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_club_roles_map
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_club_roles_map.fan_member_identifier} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_art_auction_bid_logs
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_art_auction_bid_logs.bidder_fan_ref} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_content_submission_details
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_content_submission_details.associated_idol_ref} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__preferencesandsettings
+  join_to_view: virtual_idol_large_public__socialcommunity
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__preferencesandsettings.preferences_social_pivot} = ${virtual_idol_large_public__socialcommunity.social_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__collaborative_song_writing_sessions
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__collaborative_song_writing_sessions.idol_host_ref} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__retentionandinfluence
+  join_to_view: virtual_idol_large_public__engagement
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__retentionandinfluence.retain_engage_pivot} = ${virtual_idol_large_public__engagement.engage_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__retentionandinfluence
+  join_to_view: virtual_idol_large_public__loyaltyandachievements
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__retentionandinfluence.retain_loyalty_pivot} = ${virtual_idol_large_public__loyaltyandachievements.loyalty_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_merchandise_details
+  join_to_view: virtual_idol_large_public__commerceandcollection
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_merchandise_details.commerce_record_id} = ${virtual_idol_large_public__commerceandcollection.commerce_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__social_sentiment_trend_snapshots
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__social_sentiment_trend_snapshots.idol_entity_ref} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__virtual_idol_performance_metrics
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__virtual_idol_performance_metrics.idol_entity_identifier} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__commerceandcollection
+  join_to_view: virtual_idol_large_public__membershipandspending
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__commerceandcollection.commerce_member_pivot} = ${virtual_idol_large_public__membershipandspending.member_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__supportandfeedback
+  join_to_view: virtual_idol_large_public__interactions
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__supportandfeedback.support_interact_pivot} = ${virtual_idol_large_public__interactions.activity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__commerceandcollection
+  join_to_view: virtual_idol_large_public__engagement
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__commerceandcollection.commerce_engage_pivot} = ${virtual_idol_large_public__engagement.engage_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__copyright_takedown_appeals
+  join_to_view: virtual_idol_large_public__copyright_infringement_reports
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__copyright_takedown_appeals.report_ref} = ${virtual_idol_large_public__copyright_infringement_reports.report_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__fan_sentiment_analysis
+  join_to_view: virtual_idol_large_public__interactions
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__fan_sentiment_analysis.interaction_activity_id} = ${virtual_idol_large_public__interactions.activity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_fan_collaborations
+  join_to_view: virtual_idol_large_public__virtualidols
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_fan_collaborations.idol_ref} = ${virtual_idol_large_public__virtualidols.entity_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__digital_skin_transaction_history
+  join_to_view: virtual_idol_large_public__fans
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__digital_skin_transaction_history.buyer_fan_ref} = ${virtual_idol_large_public__fans.user_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__event_logistics_and_planning
+  join_to_view: virtual_idol_large_public__eventsandclub
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__event_logistics_and_planning.event_club_record_id} = ${virtual_idol_large_public__eventsandclub.events_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__vreye_tracking_heatmaps
+  join_to_view: virtual_idol_large_public__virtual_reality_session_telemetry
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__vreye_tracking_heatmaps.session_ref} = ${virtual_idol_large_public__virtual_reality_session_telemetry.vr_session_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__supportandfeedback
+  join_to_view: virtual_idol_large_public__preferencesandsettings
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__supportandfeedback.support_pref_pivot} = ${virtual_idol_large_public__preferencesandsettings.pref_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__loyaltyandachievements
+  join_to_view: virtual_idol_large_public__engagement
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__loyaltyandachievements.loyalty_engage_pivot} = ${virtual_idol_large_public__engagement.engage_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__hologram_projector_maintenance
+  join_to_view: virtual_idol_large_public__eventsandclub
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__hologram_projector_maintenance.event_venue_ref} = ${virtual_idol_large_public__eventsandclub.events_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__additionalnotes
+  join_to_view: virtual_idol_large_public__retentionandinfluence
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__additionalnotes.notes_retain_pivot} = ${virtual_idol_large_public__retentionandinfluence.ret_reg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: virtual_idol_large_public__idol_skill_sets_map
+  join_to_view: virtual_idol_large_public__skills
+  join_type: always_left
+  on_sql: ${virtual_idol_large_public__idol_skill_sets_map.skill_definition_identifier} = ${virtual_idol_large_public__skills.skill_id}
+  relationship_type: many_to_one
+  reversible: false

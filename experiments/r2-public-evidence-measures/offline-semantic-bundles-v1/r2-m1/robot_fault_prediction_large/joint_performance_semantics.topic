@@ -1,0 +1,13 @@
+base_view: robot_fault_prediction_large_public__joint_performance
+label: joint_performance
+description: All columns of the public table joint_performance.
+fields:
+- robot_fault_prediction_large_public__joint_performance.*
+- robot_fault_prediction_large_public__operation.*
+- robot_fault_prediction_large_public__robot_details.*
+- robot_fault_prediction_large_public__robot_record.*
+joins:
+  robot_fault_prediction_large_public__operation:
+    robot_fault_prediction_large_public__robot_record: {}
+  robot_fault_prediction_large_public__robot_details: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

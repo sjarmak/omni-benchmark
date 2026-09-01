@@ -1,0 +1,11 @@
+base_view: disaster_relief_large_public__supply_allocation
+label: SupplyAllocation
+description: All columns of the public table SupplyAllocation.
+fields:
+- disaster_relief_large_public__supply_allocation.*
+- disaster_relief_large_public__distributionhubs.*
+- disaster_relief_large_public__supply_item_catalogue.*
+joins:
+  disaster_relief_large_public__distributionhubs: {}
+  disaster_relief_large_public__supply_item_catalogue: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__exhibition_schedule
+label: ExhibitionSchedule
+description: All columns of the public table ExhibitionSchedule.
+fields:
+- museum_artifact_large_public__exhibition_schedule.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,69 @@
+label: Environmental_Microclimate_Sensors
+description: All columns of the public table Environmental_Microclimate_Sensors.
+catalog: residential_data_large
+schema: public
+table_name: Environmental_Microclimate_Sensors
+dimensions:
+  microclimate_sensor_pk:
+    description: 'TEXT. Primary key for hyper-local environmental monitoring. Example: EMS-1A2B3C.'
+    sql: '"Microclimate_Sensor_PK"'
+  ambient_noise_decibels:
+    description: 'REAL. Continuous background sound pressure level. Example: 55.'
+    sql: ambient_noise_decibels
+  atmospheric_pressure_hpa:
+    description: 'REAL. Local barometric pressure reading. Example: 1013.'
+    sql: atmospheric_pressure_hpa
+  carbon_monoxide_level_ppm:
+    description: 'REAL. Measured CO concentration in the air. Example: 0.5.'
+    sql: carbon_monoxide_level_ppm
+  data_packet_loss_ratio:
+    description: 'REAL. Reliability of the wireless telemetry link. Example: 0.01.'
+    sql: data_packet_loss_ratio
+  dew_point_celsius:
+    description: 'REAL. Temperature at which air saturation occurs. Example: 15.'
+    sql: dew_point_celsius
+  environmental_base_link:
+    description: TEXT. Link to the primary environmental data aggregate.
+    sql: environmental_base_link
+  gamma_radiation_level_u_sv_h:
+    description: 'REAL. Background ionizing radiation measurement. Example: 0.12.'
+    sql: gamma_radiation_level_u_sv_h
+  ground_surface_temp_celsius:
+    description: 'REAL. Radiant temperature of the immediate pavement or soil. Example: 28.'
+    sql: ground_surface_temp_celsius
+  leaf_wetness_duration_minutes:
+    description: 'INTEGER. Total time surface moisture was present on vegetation. Example: 50.'
+    sql: leaf_wetness_duration_minutes
+  nitrogen_dioxide_concentration_ppb:
+    description: 'REAL. Measured levels of NO2 typically from vehicle exhaust. Example: 25.'
+    sql: nitrogen_dioxide_concentration_ppb
+  particulate_matter_2_5_ugm3:
+    description: 'REAL. Concentration of fine breathable dust particles. **NULL means Sensor obstruction.** Example: 15.'
+    sql: particulate_matter_2_5_ugm3
+  pollen_count_grains_m3:
+    description: 'INTEGER. Atmospheric concentration of allergenic particles. **NULL means Off-season or non-monitored zone.** Example: 50.'
+    sql: pollen_count_grains_m3
+  sensor_battery_voltage:
+    description: 'REAL. Internal power supply level for the IoT node. Example: 50.0.'
+    sql: sensor_battery_voltage
+  soil_moisture_tension_kpa:
+    description: 'REAL. Force required by plants to extract water from soil. **NULL means Sensor located on paved surface.** Example: 50.0.'
+    sql: soil_moisture_tension_kpa
+  ultraviolet_index_value:
+    description: 'REAL. Intensity of solar UV radiation. **NULL means Nighttime or sensor indoor.** Example: 50.0.'
+    sql: ultraviolet_index_value
+  visibility_distance_meters:
+    description: 'INTEGER. Maximum distance for clear line-of-sight. Example: 10000.'
+    sql: visibility_distance_meters
+  volatile_organic_compounds_ppb:
+    description: 'REAL. Concentration of harmful gaseous chemicals. Example: 100.'
+    sql: volatile_organic_compounds_ppb
+  wind_gust_speed_ms:
+    description: 'REAL. Peak wind speed recorded in a 5-minute interval. Example: 50.0.'
+    sql: wind_gust_speed_ms
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Environmental_Microclimate_Sensors public identity values.
+    label: Environmental_Microclimate_Sensors Count
+    sql: ${residential_data_large_public__environmental_microclimate_sensors.microclimate_sensor_pk}

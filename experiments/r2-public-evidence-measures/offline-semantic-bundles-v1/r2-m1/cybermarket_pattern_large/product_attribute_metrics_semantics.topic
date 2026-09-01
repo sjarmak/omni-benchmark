@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__product_attribute_metrics
+label: product_attribute_metrics
+description: All columns of the public table product_attribute_metrics.
+fields:
+- cybermarket_pattern_large_public__product_attribute_metrics.*
+joins: {}
+ai_context: This topic models no cross-table joins.

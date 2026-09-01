@@ -1,0 +1,72 @@
+label: MaintenanceWorkOrder
+description: All columns of the public table MaintenanceWorkOrder.
+catalog: polar_equipment_large
+schema: public
+table_name: MaintenanceWorkOrder
+dimensions:
+  actual_cost_usd:
+    description: 'REAL. Actual total cost in US dollars. **NULL means Work not completed or cost pending.** Example: 1350.'
+    sql: '"actualCostUSD"'
+  actual_labor_hrs:
+    description: 'REAL. Actual labor hours expended. **NULL means Work not completed.** Example: 7.'
+    sql: '"actualLaborHrs"'
+  actual_start_date:
+    description: 'TIMESTAMP. Actual date and time work began. **NULL means Work not yet started.** Example: 2024-01-01 12:00:00.'
+    sql: '"actualStartDate"'
+  completion_date:
+    description: 'TIMESTAMP. Date and time work was completed. **NULL means Work still in progress or cancelled.** Example: 2024-01-01 12:00:00.'
+    sql: '"completionDate"'
+  created_timestamp:
+    description: 'TIMESTAMP. Timestamp when work order was created. Example: 2024-01-01 12:00:00.'
+    sql: '"createdTimestamp"'
+  customer_satisfaction:
+    description: 'REAL. Customer satisfaction rating 1-5. **NULL means Feedback not collected.** Example: 4.2.'
+    sql: '"customerSatisfaction"'
+  downtime_hrs:
+    description: 'REAL. Equipment downtime hours due to maintenance. **NULL means No downtime required.** Example: 8.'
+    sql: '"downtimeHrs"'
+  estimated_cost_usd:
+    description: 'REAL. Estimated total cost in US dollars. Example: 1200.'
+    sql: '"estimatedCostUSD"'
+  estimated_labor_hrs:
+    description: 'REAL. Estimated labor hours to complete work. Example: 6.'
+    sql: '"estimatedLaborHrs"'
+  opmaint_ref:
+    description: 'INTEGER. Reference to the operation maintenance record. Example: 50.'
+    sql: opmaint_ref
+  parts_ordered_count:
+    description: 'INTEGER. Number of parts ordered for work order. Example: 3.'
+    sql: '"partsOrderedCount"'
+  parts_used_count:
+    description: 'INTEGER. Number of parts actually used. **NULL means Work not completed.** Example: 2.'
+    sql: '"partsUsedCount"'
+  priority_level:
+    description: 'TEXT. Priority level of the work order. Unique values: Critical, High, Medium, Low, Routine.'
+    sql: '"priorityLevel"'
+  quality_check_passed:
+    description: 'TEXT. Whether post-work quality check passed. Unique values: Passed, Failed, Pending, Waived.'
+    sql: '"qualityCheckPassed"'
+  safety_permit_required:
+    description: 'TEXT. Whether safety permit was required. Possible values: True, False.'
+    sql: '"safetyPermitRequired"'
+  scheduled_start_date:
+    description: 'TIMESTAMP. Scheduled date and time for work to begin. **NULL means Not yet scheduled.** Example: 2024-01-01 12:00:00.'
+    sql: '"scheduledStartDate"'
+  technician_count:
+    description: 'INTEGER. Number of technicians assigned to work order. Example: 2.'
+    sql: '"technicianCount"'
+  work_order_seq:
+    description: TEXT. Unique identifier for each maintenance work order.
+    sql: '"workOrderSeq"'
+  work_order_status:
+    description: 'TEXT. Current status of the work order. Unique values: Open, InProgress, OnHold, Completed, Cancelled, Deferred.'
+    sql: '"workOrderStatus"'
+  work_order_type:
+    description: 'TEXT. Type of maintenance work order. Unique values: Preventive, Corrective, Emergency, Inspection, Upgrade, Calibration.'
+    sql: '"workOrderType"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct MaintenanceWorkOrder public identity values.
+    label: MaintenanceWorkOrder Count
+    sql: ${polar_equipment_large_public__maintenance_work_order.work_order_seq}

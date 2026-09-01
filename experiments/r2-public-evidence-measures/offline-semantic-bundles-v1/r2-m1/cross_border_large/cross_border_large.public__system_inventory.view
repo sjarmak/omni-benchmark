@@ -1,0 +1,108 @@
+label: System_Inventory
+description: All columns of the public table System_Inventory.
+catalog: cross_border_large
+schema: public
+table_name: System_Inventory
+dimensions:
+  system_code:
+    description: 'BIGINT. Unique identifier for each system. Example: 1.'
+    sql: '"SYSTEM_CODE"'
+  infra_capability_pack:
+    description: JSONB column. Summarizes deployment context, network/compute/storage capacity, resiliency, and physical attributes for a system asset.
+    sql: infra_capability_pack
+  infra_capability_pack_capacity_cpu_cores:
+    description: 'BIGINT. Number of CPU cores in the system. Example: 16.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'capacity', 'cpu_cores')
+  infra_capability_pack_capacity_network_bw_mbps:
+    description: 'REAL. Network bandwidth in Mbps. Example: 1000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'capacity', 'network_bw_mbps')
+  infra_capability_pack_capacity_nic_count:
+    description: 'BIGINT. Number of network interfaces. Example: 4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'capacity', 'nic_count')
+  infra_capability_pack_capacity_ram_gb:
+    description: 'REAL. Amount of RAM in GB. Example: 32. **NULL means RAM not specified.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'capacity', 'ram_gb')
+  infra_capability_pack_capacity_storage_tb:
+    description: 'REAL. Amount of storage in TB. Example: 10.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'capacity', 'storage_tb')
+  infra_capability_pack_identity_env_cloud_provider:
+    description: 'TEXT. Cloud provider for the system. Example: AWS.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'identity_env', 'cloud_provider')
+  infra_capability_pack_identity_env_containerized:
+    description: 'TEXT. Whether the system is containerized. Possible values: Yes, No. Example: No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'identity_env', 'containerized')
+  infra_capability_pack_identity_env_env:
+    description: 'TEXT. Environment for the system. Possible values: dev, test, prod. Example: prod.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'identity_env', 'env')
+  infra_capability_pack_identity_env_os_version:
+    description: 'TEXT. OS version for the system. Example: Ubuntu 20.04.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'identity_env', 'os_version')
+  infra_capability_pack_identity_env_owner_team:
+    description: 'TEXT. Team responsible for the system. Example: IT.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'identity_env', 'owner_team')
+  infra_capability_pack_identity_env_patch_level_date:
+    description: 'DATE. Date of the latest patch level. Example: 2025-06-15. **NULL means no patch applied.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'identity_env', 'patch_level_date')
+  infra_capability_pack_identity_env_system_name:
+    description: 'TEXT. Name of the system. Example: System_1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'identity_env', 'system_name')
+  infra_capability_pack_identity_env_system_type:
+    description: 'TEXT. Type of the system. Possible values: Database, Server, Storage, Network. Example: Server.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'identity_env', 'system_type')
+  infra_capability_pack_identity_env_virtualized:
+    description: 'TEXT. Whether the system is virtualized. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'identity_env', 'virtualized')
+  infra_capability_pack_placement_datacenter:
+    description: 'TEXT. Datacenter name where the system resides. Example: Datacenter_1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'placement', 'datacenter')
+  infra_capability_pack_placement_ip_cidr:
+    description: 'TEXT. IP CIDR block for the system. Example: 192.168.1.0/24. **NULL means no IP CIDR assigned.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'placement', 'ip_cidr')
+  infra_capability_pack_placement_region:
+    description: 'TEXT. Region where the system is located. Example: US.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'placement', 'region')
+  infra_capability_pack_placement_security_group:
+    description: 'TEXT. Security group associated with the system. Example: sg-12345.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'placement', 'security_group')
+  infra_capability_pack_placement_subnet_id:
+    description: 'TEXT. Subnet ID for the system. Example: subnet-9876543210.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'placement', 'subnet_id')
+  infra_capability_pack_placement_vpc_id:
+    description: 'TEXT. VPC ID for the system. Example: vpc-1234567890. **NULL means no VPC assigned.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'placement', 'vpc_id')
+  infra_capability_pack_placement_zone:
+    description: 'TEXT. Availability zone for the system. Example: Zone_1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'placement', 'zone')
+  infra_capability_pack_power_physical_cooling_kw:
+    description: 'REAL. Cooling consumption in kW. Example: 2.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'power_physical', 'cooling_kw')
+  infra_capability_pack_power_physical_power_kw:
+    description: 'REAL. Power consumption in kW. Example: 5.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'power_physical', 'power_kw')
+  infra_capability_pack_power_physical_rack_units:
+    description: 'BIGINT. Number of rack units occupied by the system. Example: 10.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'power_physical', 'rack_units')
+  infra_capability_pack_power_physical_weight_kg:
+    description: 'REAL. Weight of the system in kg. Example: 150.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'power_physical', 'weight_kg')
+  infra_capability_pack_resilience_ops_backup_state:
+    description: 'TEXT. Backup state of the system. Possible values: Completed, Pending, Failed. Example: Completed.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'resilience_ops', 'backup_state')
+  infra_capability_pack_resilience_ops_dr_state:
+    description: 'TEXT. Disaster recovery state of the system. Possible values: Active, Inactive. Example: Active.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'resilience_ops', 'dr_state')
+  infra_capability_pack_resilience_ops_mttf_hours:
+    description: 'REAL. Mean Time to Failure in hours. Example: 100000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'resilience_ops', 'mttf_hours')
+  infra_capability_pack_resilience_ops_mttr_hours:
+    description: 'REAL. Mean Time to Repair in hours. Example: 2.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'resilience_ops', 'mttr_hours')
+  infra_capability_pack_resilience_ops_uptime_pct:
+    description: 'REAL. Uptime percentage of the system. Example: 99.99%.'
+    sql: JSONB_EXTRACT_PATH_TEXT(infra_capability_pack, 'resilience_ops', 'uptime_pct')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct System_Inventory public identity values.
+    label: System_Inventory Count
+    sql: ${cross_border_large_public__system_inventory.system_code}

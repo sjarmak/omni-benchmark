@@ -1,0 +1,27 @@
+label: materials
+description: All columns of the public table materials.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: materials
+dimensions:
+  supplier_name:
+    description: 'TEXT. The name of the primary supplier for the material. Example: Global Steel Inc..'
+    sql: '"SUPPLIER_NAME"'
+  unit_of_measure:
+    description: 'TEXT. The unit of measure for the material. Possible values: board_foot, each, kg, liter, meter, square_meter.'
+    sql: '"UnitOfMeasure"'
+  cost_per_unit:
+    description: 'NUMERIC. The cost per unit of the material. Example: 1.2.'
+    sql: cost_per_unit
+  is_hazardous:
+    description: 'BOOLEAN. A flag indicating if the material is hazardous. Possible values: False, True.'
+    sql: is_hazardous
+  material_code:
+    description: 'TEXT. Unique identifier for the material. PK. Example: MAT-STL-1018.'
+    sql: material_code
+  material_name:
+    description: 'TEXT. Human-readable name of the material. Example: 1018 Carbon Steel Sheet.'
+    sql: material_name
+  storage_requirements:
+    description: 'TEXT. Special storage requirements for the material. Example: Dry environment.'
+    sql: storage_requirements

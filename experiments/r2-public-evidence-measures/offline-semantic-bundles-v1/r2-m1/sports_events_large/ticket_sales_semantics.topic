@@ -1,0 +1,11 @@
+base_view: sports_events_large_public__ticket_sales
+label: TicketSales
+description: All columns of the public table TicketSales.
+fields:
+- sports_events_large_public__ticket_sales.*
+- sports_events_large_public__circuits.*
+- sports_events_large_public__races.*
+joins:
+  sports_events_large_public__circuits: {}
+  sports_events_large_public__races: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

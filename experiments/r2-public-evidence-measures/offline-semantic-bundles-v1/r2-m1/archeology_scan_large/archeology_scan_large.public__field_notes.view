@@ -1,0 +1,72 @@
+label: FieldNotes
+description: All columns of the public table FieldNotes.
+catalog: archeology_scan_large
+schema: public
+table_name: FieldNotes
+dimensions:
+  field_notes_id:
+    description: TEXT. Unique identifier for field notes record.
+    sql: '"FieldNotes_id"'
+  confidence_level:
+    description: 'TEXT. Author confidence in observation accuracy. Unique values: High, Medium, Low, Uncertain.'
+    sql: confidence_level
+  depth_below_surface_cm:
+    description: 'REAL. Depth below ground surface in centimeters. **NULL means Surface observation.** Example: 40.'
+    sql: depth_below_surface_cm
+  entry_method:
+    description: 'TEXT. Method used to record the note. Unique values: Mobile App, Paper Transcribed, Voice Transcribed, Direct Tablet.'
+    sql: entry_method
+  entry_timestamp:
+    description: 'TIMESTAMP. Date and time when notes were recorded. Example: 2024-01-01 12:00:00.'
+    sql: entry_timestamp
+  follow_up_required:
+    description: 'BOOLEAN. Indicates if note requires follow-up action. Possible values: True, False.'
+    sql: follow_up_required
+  is_significant_finding:
+    description: 'BOOLEAN. Indicates if note documents significant discovery. Possible values: True, False.'
+    sql: is_significant_finding
+  linked_artifact_count:
+    description: 'INTEGER. Number of artifacts referenced in note. Example: 50.'
+    sql: linked_artifact_count
+  location_easting:
+    description: 'REAL. UTM easting coordinate of observation location. **NULL means GPS coordinates not recorded.** Example: 50.0.'
+    sql: location_easting
+  location_northing:
+    description: 'REAL. UTM northing coordinate of observation location. **NULL means GPS coordinates not recorded.** Example: 50.0.'
+    sql: location_northing
+  note_text_length:
+    description: 'INTEGER. Character count of note text content. Example: 50.'
+    sql: note_text_length
+  note_type:
+    description: 'TEXT. Category of field note. Unique values: Observation, Discovery, Context Change, Equipment Issue, Weather Event, Safety Concern.'
+    sql: note_type
+  personnel_ref:
+    description: TEXT. Reference to personnel who authored the notes.
+    sql: personnel_ref
+  photos_attached_count:
+    description: 'INTEGER. Number of photographs linked to this note. Example: 50.'
+    sql: photos_attached_count
+  review_status:
+    description: 'TEXT. Review status of field note. Unique values: Draft, Reviewed, Approved, Needs Revision.'
+    sql: review_status
+  revision_count:
+    description: 'INTEGER. Number of times note has been revised. Example: 50.'
+    sql: revision_count
+  sketches_attached_count:
+    description: 'INTEGER. Number of sketches or drawings linked. Example: 50.'
+    sql: sketches_attached_count
+  sync_timestamp:
+    description: 'TIMESTAMP. Date and time when note synced to central database. **NULL means Not yet synced.** Example: 2024-01-01 12:00:00.'
+    sql: sync_timestamp
+  temperature_celsius:
+    description: 'REAL. Temperature at time of note in Celsius. **NULL means Temperature not recorded.** Example: 22.'
+    sql: temperature_celsius
+  weather_at_time:
+    description: 'TEXT. Weather conditions when note was recorded. **NULL means Weather not noted.** Unique values: Clear, Partly Cloudy, Overcast, Light Rain, Heavy Rain, Windy.'
+    sql: weather_at_time
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct FieldNotes public identity values.
+    label: FieldNotes Count
+    sql: ${archeology_scan_large_public__field_notes.field_notes_id}

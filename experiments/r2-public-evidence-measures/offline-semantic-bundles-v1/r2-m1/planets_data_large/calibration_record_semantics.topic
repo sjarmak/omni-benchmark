@@ -1,0 +1,11 @@
+base_view: planets_data_large_public__calibration_record
+label: CalibrationRecord
+description: All columns of the public table CalibrationRecord.
+fields:
+- planets_data_large_public__calibration_record.*
+- planets_data_large_public__data_reduction_pipeline.*
+- planets_data_large_public__instruments_surveys.*
+joins:
+  planets_data_large_public__data_reduction_pipeline: {}
+  planets_data_large_public__instruments_surveys: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

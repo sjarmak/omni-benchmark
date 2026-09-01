@@ -1,0 +1,66 @@
+label: AlternativeDataQuality
+description: All columns of the public table AlternativeDataQuality.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: AlternativeDataQuality
+dimensions:
+  alternative_data_quality_id:
+    description: TEXT. Unique identifier for data quality record.
+    sql: '"AlternativeDataQuality_id"'
+  alt_data_signal_ref:
+    description: TEXT. Reference to the alternative data signal.
+    sql: alt_data_signal_ref
+  correlation_to_price:
+    description: 'REAL. Correlation between signal and subsequent price. **NULL means Correlation not calculated.** Example: 50.0.'
+    sql: correlation_to_price
+  coverage_universe_count:
+    description: 'INTEGER. Number of securities covered by data. Example: 50.'
+    sql: coverage_universe_count
+  data_completeness_pct:
+    description: 'REAL. Percentage of expected data points received. **NULL means Completeness check failed.** Example: 50.0.'
+    sql: data_completeness_pct
+  data_freshness_hours:
+    description: 'REAL. Age of data in hours. **NULL means Freshness timestamp missing.** Example: 50.0.'
+    sql: data_freshness_hours
+  data_source_type:
+    description: 'TEXT. Type of alternative data source. Unique values: Satellite Imagery, Credit Card, Web Scraping, Geolocation, Social Media, IoT Sensors, Job Postings.'
+    sql: data_source_type
+  decay_halflife_days:
+    description: 'INTEGER. Half-life of signal decay in days. **NULL means Decay analysis not performed.** Example: 50.'
+    sql: decay_halflife_days
+  has_regulatory_concerns:
+    description: 'BOOLEAN. Whether data has regulatory concerns. Possible values: True, False.'
+    sql: has_regulatory_concerns
+  historical_backtest_months:
+    description: 'INTEGER. Months of backtesting history available. Example: 50.'
+    sql: historical_backtest_months
+  hit_rate_pct:
+    description: 'REAL. Percentage of correct directional predictions. **NULL means Hit rate analysis pending.** Example: 50.0.'
+    sql: hit_rate_pct
+  information_coefficient:
+    description: 'REAL. Information coefficient of signal. **NULL means IC not yet calculated.** Example: 50.0.'
+    sql: information_coefficient
+  is_production_ready:
+    description: 'BOOLEAN. Whether data is approved for production use. Possible values: True, False.'
+    sql: is_production_ready
+  look_ahead_bias_score:
+    description: 'REAL. Score indicating look-ahead bias risk. **NULL means Bias assessment not performed.** Example: 50.0.'
+    sql: look_ahead_bias_score
+  quality_assessment_time:
+    description: 'TIMESTAMP. Timestamp of quality assessment. Example: 2024-01-01 12:00:00.'
+    sql: quality_assessment_time
+  quality_grade:
+    description: 'TEXT. Overall quality grade of data. Unique values: A, B, C, D, F.'
+    sql: quality_grade
+  signal_noise_ratio:
+    description: 'REAL. Ratio of signal to noise in data. **NULL means SNR analysis not performed.** Example: 50.0.'
+    sql: signal_noise_ratio
+  survivorship_bias_score:
+    description: 'REAL. Score indicating survivorship bias risk. **NULL means Bias assessment not performed.** Example: 50.0.'
+    sql: survivorship_bias_score
+  validation_status:
+    description: 'TEXT. Current validation status. Unique values: Validated, Pending Validation, Under Review, Failed Validation.'
+    sql: validation_status
+  vendor_reliability_score:
+    description: 'REAL. Reliability score of data vendor. **NULL means Vendor not yet rated.** Example: 50.0.'
+    sql: vendor_reliability_score

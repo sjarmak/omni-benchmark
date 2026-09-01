@@ -1,0 +1,72 @@
+label: InspectionRemediationTask
+description: All columns of the public table InspectionRemediationTask.
+catalog: labor_certification_applications_large
+schema: public
+table_name: InspectionRemediationTask
+dimensions:
+  irt_code:
+    description: 'TEXT. Unique identifier for inspection remediation task record. Example: IRT-1A2B3C.'
+    sql: '"IRT_code"'
+  actual_cost_usd:
+    description: 'REAL. Actual cost incurred for remediation in USD. **NULL means Task not completed yet.** Example: 2800.'
+    sql: '"actualCost_USD"'
+  actual_hours:
+    description: 'REAL. Actual hours spent on task. **NULL means Task not completed yet.** Example: 10.'
+    sql: '"actualHours"'
+  assigned_to:
+    description: TEXT. Person or department assigned to task.
+    sql: '"assignedTo"'
+  compliance_signoff_flag:
+    description: 'BOOLEAN. Indicates if compliance officer signed off. Possible values: True, False.'
+    sql: '"complianceSignoff_flag"'
+  due_date:
+    description: 'TIMESTAMP. Deadline for task completion. Example: 2024-01-01 12:00:00.'
+    sql: '"dueDate"'
+  estimated_cost_usd:
+    description: 'REAL. Estimated cost of remediation in USD. Example: 2500.'
+    sql: '"estimatedCost_USD"'
+  estimated_hours:
+    description: 'REAL. Estimated hours to complete task. Example: 8.'
+    sql: '"estimatedHours"'
+  evidence_required_flag:
+    description: 'BOOLEAN. Indicates if evidence of completion required. Possible values: True, False.'
+    sql: '"evidenceRequired_flag"'
+  evidence_submitted_flag:
+    description: 'BOOLEAN. Indicates if evidence has been submitted. Possible values: True, False.'
+    sql: '"evidenceSubmitted_flag"'
+  extension_granted_flag:
+    description: 'BOOLEAN. Indicates if deadline extension was granted. Possible values: True, False.'
+    sql: '"extensionGranted_flag"'
+  inspection_ref:
+    description: TEXT. Foreign key reference to WorksiteInspection table.
+    sql: inspection_ref
+  penalty_reduction_pct:
+    description: 'REAL. Percentage penalty reduction for timely remediation. **NULL means No penalty reduction applicable.** Example: 15.'
+    sql: '"penaltyReduction_pct"'
+  reinspection_required_flag:
+    description: 'BOOLEAN. Indicates if reinspection is required. Possible values: True, False.'
+    sql: '"reinspectionRequired_flag"'
+  task_created_date:
+    description: 'TIMESTAMP. Date when remediation task was created. Example: 2024-01-01 12:00:00.'
+    sql: '"taskCreatedDate"'
+  task_priority:
+    description: 'TEXT. Priority level of the remediation task. Unique values: Critical, High, Medium, Low.'
+    sql: '"taskPriority"'
+  task_status:
+    description: 'TEXT. Current status of the remediation task. Unique values: Not Started, In Progress, Completed, Overdue, Verified, Escalated.'
+    sql: '"taskStatus"'
+  task_type:
+    description: 'TEXT. Type of remediation task required. Unique values: Document Correction, Policy Update, Training Required, Physical Fix, Process Change, Record Keeping, Wage Adjustment.'
+    sql: '"taskType"'
+  verification_date:
+    description: 'TIMESTAMP. Date when remediation was verified complete. **NULL means Task not verified yet.** Example: 2024-01-01 12:00:00.'
+    sql: '"verificationDate"'
+  violation_category:
+    description: 'TEXT. Category of violation being remediated. Unique values: I-9 Compliance, Wage Violation, Safety Hazard, Record Keeping, Working Conditions, Discrimination, Other.'
+    sql: '"violationCategory"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct InspectionRemediationTask public identity values.
+    label: InspectionRemediationTask Count
+    sql: ${labor_certification_applications_large_public__inspection_remediation_task.irt_code}

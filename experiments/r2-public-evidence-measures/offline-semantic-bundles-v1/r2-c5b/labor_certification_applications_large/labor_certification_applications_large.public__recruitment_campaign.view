@@ -1,0 +1,99 @@
+label: recruitment_campaign
+description: All columns of the public table recruitment_campaign.
+catalog: labor_certification_applications_large
+schema: public
+table_name: recruitment_campaign
+dimensions:
+  camp_code:
+    description: 'TEXT. Unique identifier for the recruiting campaign. PK. Example: CAMP00001.'
+    sql: '"CAMP_code"'
+  eeo_tag:
+    description: 'TEXT. EEO focus tag. Possible values: Vet, Disability, Minority, Female, None. Example: Vet.'
+    sql: '"EEO_Tag"'
+  end_day:
+    description: 'DATE. Planned end date. Example: 2020-05-05.'
+    sql: '"EndDay"'
+  ad_spend_usd:
+    description: 'REAL. Paid-media spend, USD. Example: 21 177.'
+    sql: '"adSpend_USD"'
+  agency_name:
+    description: 'TEXT. Name of recruiting agency. **NULL when no agency engaged.** Example: Robert Half.'
+    sql: '"agencyName"'
+  agency_flag:
+    description: 'TEXT. External agency used? Values: Yes, No. Example: Yes.'
+    sql: agency_flag
+  avail_window:
+    description: 'TEXT. Typical posting refresh window. Examples: 09:00–17:00, 14:00–23:00, 24 × 7.'
+    sql: '"availWindow"'
+  budget_usd:
+    description: 'REAL. Total budget, USD. Example: 35 609.'
+    sql: '"budget_USD"'
+  campaign_name:
+    description: 'TEXT. Human-readable campaign name. Example: Campus Hiring 2021.'
+    sql: '"campaignNAME"'
+  channel_primary:
+    description: 'TEXT. Main recruiting channel. Possible values: LinkedIn, Indeed, Company Site, Referral. Example: LinkedIn.'
+    sql: '"channelPrimary"'
+  channel_secondary:
+    description: 'TEXT. Secondary channel. Possible values: Events, Agency, Craigslist, None. Example: Events.'
+    sql: '"channelSecondary"'
+  corp_ref:
+    description: 'TEXT. Employer corporate handle. Example: Chime Financial, Inc..'
+    sql: corp_ref
+  funnel_metrics:
+    description: JSONB column. Stores hiring-funnel counts and efficiency indicators in one nested JSONB field to simplify campaign KPI queries.
+    sql: funnel_metrics
+  h1b_focus_pct:
+    description: 'REAL. Percent of roles H-1B-suitable. Example: 2.23.'
+    sql: '"h1bFocus_pct"'
+  local_focus_pct:
+    description: 'REAL. Percent of roles targeting local hires. Example: 55.92.'
+    sql: '"localFocus_pct"'
+  objective_txt:
+    description: 'TEXT. Stated hiring goal. Example: Fill 38 positions.'
+    sql: '"objectiveTxt"'
+  pad_c1:
+    description: 'TEXT. Custom tag 1. Example: note.'
+    sql: '"padC1"'
+  pad_c2:
+    description: 'TEXT. Custom tag 2. Example: tag.'
+    sql: '"padC2"'
+  reasoning_note:
+    description: 'TEXT. Analyst comment. Example: Synthetic recruiting data.'
+    sql: '"reasoningNOTE"'
+  recruiter_lead:
+    description: 'TEXT. Lead recruiter. **NULL means campaign lead not assigned.** Example: Alex Kim.'
+    sql: '"recruiterLead"'
+  relocation_offered_flag:
+    description: 'TEXT. Relocation offered? Values: Yes, No. Example: Yes.'
+    sql: '"relocationOffered_flag"'
+  start_day:
+    description: 'DATE. Kick-off date. Example: 2020-01-01.'
+    sql: '"startDAY"'
+  zip_ref:
+    description: 'TEXT. Employer head-office ZIP. Example: 94111.'
+    sql: zip_ref
+  funnel_metrics_counts_applicant:
+    description: 'BIGINT. Applications received. Example: 1 031.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnel_metrics, 'counts', 'applicant')
+  funnel_metrics_counts_hire:
+    description: 'BIGINT. Candidates actually hired. **NULL when hiring still in progress or data pending.** Example: 117.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnel_metrics, 'counts', 'hire')
+  funnel_metrics_counts_interview:
+    description: 'BIGINT. Interviews conducted. Example: 207.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnel_metrics, 'counts', 'interview')
+  funnel_metrics_counts_offer:
+    description: 'BIGINT. Offers extended. Example: 139.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnel_metrics, 'counts', 'offer')
+  funnel_metrics_counts_posting:
+    description: 'BIGINT. Number of job postings created. Example: 58.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnel_metrics, 'counts', 'posting')
+  funnel_metrics_performance_avg_time_to_fill_days:
+    description: 'REAL. Average calendar days from posting to acceptance. Example: 68.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnel_metrics, 'performance', 'avg_time_to_fill_days')
+  funnel_metrics_performance_headroom_slots_ct:
+    description: 'REAL. Unfilled budgeted positions remaining. **NULL when headcount data unavailable.** Example: 7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnel_metrics, 'performance', 'headroom_slots_ct')
+  funnel_metrics_performance_roi_pct:
+    description: 'REAL. Return-on-investment estimate (%). **NULL when ROI not yet calculated.** Example: –4.94.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnel_metrics, 'performance', 'roi_pct')

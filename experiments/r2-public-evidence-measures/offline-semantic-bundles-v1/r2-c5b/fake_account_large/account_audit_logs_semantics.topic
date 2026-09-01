@@ -1,0 +1,11 @@
+base_view: fake_account_large_public__account_audit_logs
+label: account_audit_logs
+description: All columns of the public table account_audit_logs.
+fields:
+- fake_account_large_public__account_audit_logs.*
+- fake_account_large_public__accounts.*
+- fake_account_large_public__platforms.*
+joins:
+  fake_account_large_public__accounts:
+    fake_account_large_public__platforms: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

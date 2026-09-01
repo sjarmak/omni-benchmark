@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__emp_diversity_metrics
+label: emp_diversity_metrics
+description: All columns of the public table emp_diversity_metrics.
+fields:
+- labor_certification_applications_large_public__emp_diversity_metrics.*
+joins: {}
+ai_context: This topic models no cross-table joins.

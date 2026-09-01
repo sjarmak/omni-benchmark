@@ -1,0 +1,21 @@
+label: projects
+description: All columns of the public table projects.
+catalog: archeology_scan_large
+schema: public
+table_name: projects
+dimensions:
+  arcregistry:
+    description: 'TEXT. Unique identifier for archeologys project registration. PK = Projects(ArcRegistry). Example: PR7509.'
+    sql: arcregistry
+  authhalt:
+    description: 'TEXT. Permit expiration date or authorization termination date. Example: 05/12/2025.'
+    sql: authhalt
+  authpin:
+    description: 'TEXT. Official permit or authorization number for excavation. Example: PMT4719.'
+    sql: authpin
+  fundflux:
+    description: 'TEXT. Source of project funding or financial backing. Possible values: Government, Grant, Private, University.'
+    sql: fundflux
+  vesseltag:
+    description: 'TEXT. Project name or designation label. Example: Project Happy.'
+    sql: vesseltag

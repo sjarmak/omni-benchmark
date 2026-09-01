@@ -1,0 +1,108 @@
+label: interaction_topic_metrics
+description: All columns of the public table interaction_topic_metrics.
+catalog: fake_account_large
+schema: public
+table_name: interaction_topic_metrics
+dimensions:
+  praisetopicpct:
+    description: 'REAL. % of messages that praise or compliment. Example: 1.24.'
+    sql: '"PRAISETOPICPCT"'
+  question_topic_pct:
+    description: 'REAL. % of topic-classified messages that are questions. Example: 29.36.'
+    sql: '"QUESTION_TOPIC_PCT"'
+  sentiment_neg_pct:
+    description: 'REAL. % with negative sentiment. Example: 31.84.'
+    sql: '"SENTIMENT_NEG_PCT"'
+  thread_len_mean:
+    description: 'REAL. Average length (in messages) of DM threads. Example: 27.44.'
+    sql: '"THREAD_LEN_MEAN"'
+  topic2:
+    description: 'TEXT. Second-most frequent topic. Example: TP008.'
+    sql: '"TOPIC2"'
+  topic4_pct:
+    description: 'REAL. Percentage share of topic4. Example: 24.65.'
+    sql: '"TOPIC4PCT"'
+  topic5:
+    description: 'TEXT. Fifth-ranked topic. Example: TP030.'
+    sql: '"TOPIC5"'
+  topic_ent2:
+    description: 'TEXT. Second salient entity. Example: MovieRelease.'
+    sql: '"TOPIC_ENT2"'
+  topic_sim_mean:
+    description: 'REAL. Mean cosine similarity between topic vectors (0–1). Example: 0.84.'
+    sql: '"TOPIC_SIM_MEAN"'
+  topic_trend_score:
+    description: 'REAL. Directional score (−1 to 1) capturing recent topic momentum. Example: 0.84.'
+    sql: '"TOPIC_TREND_SCORE"'
+  topic1_pct:
+    description: 'REAL. Percentage of messages belonging to topic1. Example: 31.00.'
+    sql: '"Topic1PCT"'
+  topic3:
+    description: 'TEXT. Third-ranked topic. Example: TP019.'
+    sql: '"Topic3"'
+  acct_dm_ref:
+    description: 'TEXT. Foreign-key linking to interaction_metrics.acct_dm. PK. Example: ACC7210284.'
+    sql: acct_dm_ref
+  clarify_req_pct:
+    description: 'REAL. % requesting clarification or follow-up. Example: 2.04.'
+    sql: '"clarifyReqPct"'
+  complaint_topic_pct:
+    description: 'REAL. % of messages expressing complaints. Example: 27.27. **NULL means the classifier was not applied or no complaint analysis was run (distinct from a measured zero).**'
+    sql: complaint_topic_pct
+  conv_score:
+    description: 'REAL. Composite conversational quality score (0–100). Example: 72.71.'
+    sql: '"convScore"'
+  conversation_pace:
+    description: 'TEXT. Approximate messaging rate within active threads. Example: ≈2 msgs/min. **NULL means insufficient timestamp data to derive message cadence.**'
+    sql: conversation_pace
+  cross_border_topic_rt:
+    description: 'REAL. Ratio of topics within the interactions that are classified as cross-border themes. Example: 0.53.'
+    sql: '"cross_borderTopicRT"'
+  help_topic_pct:
+    description: 'REAL. % of messages requesting assistance/help. Example: 28.65.'
+    sql: '"helpTopicPct"'
+  keyword_rich_pct:
+    description: 'REAL. Density (%) of domain-specific keywords across messages. Example: 41.53.'
+    sql: '"keywordRichPct"'
+  reply_depth_mean:
+    description: 'REAL. Mean conversation-thread reply depth. Example: 5.81. **NULL when no replies were observed or the metric was not calculated.**'
+    sql: '"replyDepthMean"'
+  sentiment_pos_pct:
+    description: 'REAL. % of messages with positive sentiment. Example: 58.19.'
+    sql: '"sentimentPosPct"'
+  topic1:
+    description: 'TEXT. Highest-share topic code in the account’s direct-message interactions. Example: TP015.'
+    sql: topic1
+  topic2_pct:
+    description: 'REAL. Percentage of messages for TOPIC2. Example: 13.09.'
+    sql: '"topic2Pct"'
+  topic3pct:
+    description: 'REAL. Percentage share of Topic3. Example: 27.31.'
+    sql: topic3pct
+  topic4:
+    description: 'TEXT. Fourth-ranked topic. Example: TP001.'
+    sql: topic4
+  topic5_pct:
+    description: 'REAL. Percentage share of TOPIC5. Example: 3.95.'
+    sql: '"topic5Pct"'
+  topic_cluster:
+    description: 'TEXT. High-level thematic cluster assigned to the dominant topic mix. Example: Sports. Possible values: Tech & Gadgets, Politics & Policy, Lifestyle, Entertainment, Finance & Markets, Health & Wellness, Sports, Science, Travel.'
+    sql: '"topicCluster"'
+  topic_eng_score:
+    description: 'REAL. Scaled engagement score for topic-related messages (0–1). Example: 0.21.'
+    sql: '"topicEngScore"'
+  topic_ent1:
+    description: 'TEXT. Most salient named entity across all topics. Example: BrandX.'
+    sql: '"topicEnt1"'
+  topic_ent3:
+    description: 'TEXT. Third salient entity (if any). Example: FashionTrend. **NULL means fewer than three salient entities were extracted.**'
+    sql: '"topicEnt3"'
+  topic_sim_sd:
+    description: 'REAL. Standard deviation of topic similarity scores. Example: 0.06. **NULL indicates similarity variance could not be computed (e.g., only one topic present).**'
+    sql: '"topicSimSd"'
+  topic_var:
+    description: 'REAL. Variance of topic probability distribution (0–1). Example: 0.65.'
+    sql: '"topicVar"'
+  topic_shift_rt:
+    description: 'REAL. Probability (0–1) that the next message shifts to a new topic. Example: 0.18.'
+    sql: topic_shift_rt

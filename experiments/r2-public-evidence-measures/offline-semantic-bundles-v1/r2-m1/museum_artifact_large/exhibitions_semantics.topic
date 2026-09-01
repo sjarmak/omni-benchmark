@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__exhibitions
+label: Exhibitions
+description: All columns of the public table Exhibitions.
+fields:
+- museum_artifact_large_public__exhibitions.*
+joins: {}
+ai_context: This topic models no cross-table joins.

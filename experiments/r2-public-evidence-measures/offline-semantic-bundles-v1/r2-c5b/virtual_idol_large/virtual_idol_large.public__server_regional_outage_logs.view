@@ -1,0 +1,60 @@
+label: ServerRegionalOutageLogs
+description: All columns of the public table ServerRegionalOutageLogs.
+catalog: virtual_idol_large
+schema: public
+table_name: ServerRegionalOutageLogs
+dimensions:
+  affected_service:
+    description: 'TEXT. Login, Streaming, Chat. Unique values: Streaming, Login, Payments.'
+    sql: affected_service
+  automated_recovery_triggered:
+    description: 'BOOLEAN. True if self-healed. Possible values: True, False.'
+    sql: automated_recovery_triggered
+  compensation_issued:
+    description: 'BOOLEAN. True if users got free items. Possible values: True, False.'
+    sql: compensation_issued
+  customer_tickets_generated:
+    description: 'INTEGER. Volume of complaints. Example: 50.'
+    sql: customer_tickets_generated
+  financial_loss_estimate_usd:
+    description: 'REAL. Estimated revenue loss. **NULL means Not calculated.** Example: 5000.'
+    sql: financial_loss_estimate_usd
+  impacted_user_count:
+    description: 'INTEGER. Estimated users affected. Example: 10000.'
+    sql: impacted_user_count
+  incident_report_url:
+    description: TEXT. Post-mortem link.
+    sql: incident_report_url
+  on_call_engineer:
+    description: TEXT. Who fixed it.
+    sql: on_call_engineer
+  outage_end_ts:
+    description: 'TIMESTAMP. End time. **NULL means Ongoing.** Example: 2024-01-01 12:00:00.'
+    sql: outage_end_ts
+  outage_id:
+    description: TEXT. Unique ID for the downtime event.
+    sql: outage_id
+  outage_start_ts:
+    description: 'TIMESTAMP. Start time. Example: 2024-01-01 12:00:00.'
+    sql: outage_start_ts
+  provider_ticket_ref:
+    description: TEXT. AWS/Cloud ticket ID.
+    sql: provider_ticket_ref
+  region_code:
+    description: 'TEXT. Affected region. Unique values: us-east-1, eu-central-1.'
+    sql: region_code
+  resolution_time_minutes:
+    description: 'INTEGER. Duration in mins. **NULL means data unavailable.** Example: 45.'
+    sql: resolution_time_minutes
+  root_cause_category:
+    description: 'TEXT. Network, Code, External. **NULL means Investigating.** Unique values: ISP Failure, Bad Deploy, DDoS.'
+    sql: root_cause_category
+  severity_level:
+    description: 'TEXT. Sev1, Sev2, Sev3. Unique values: Sev1, Sev2.'
+    sql: severity_level
+  sla_breach_flag:
+    description: 'BOOLEAN. True if SLA violated. Possible values: True, False.'
+    sql: sla_breach_flag
+  stat_trigger_ref:
+    description: TEXT. FK to GlobalServerLatencyStats (the metric that triggered alert).
+    sql: stat_trigger_ref

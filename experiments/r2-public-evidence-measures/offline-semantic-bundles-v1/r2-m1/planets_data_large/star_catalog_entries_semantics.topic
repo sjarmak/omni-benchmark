@@ -1,0 +1,11 @@
+base_view: planets_data_large_public__star_catalog_entries
+label: star_catalog_entries
+description: All columns of the public table star_catalog_entries.
+fields:
+- planets_data_large_public__star_catalog_entries.*
+- planets_data_large_public__astronomical_catalogs.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__astronomical_catalogs: {}
+  planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

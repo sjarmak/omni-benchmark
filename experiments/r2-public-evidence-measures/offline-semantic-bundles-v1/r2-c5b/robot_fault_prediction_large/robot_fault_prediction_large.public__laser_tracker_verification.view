@@ -1,0 +1,66 @@
+label: laser_tracker_verification
+description: All columns of the public table laser_tracker_verification.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: laser_tracker_verification
+dimensions:
+  air_pressure_ref_hpa:
+    description: 'REAL. Air pressure used for refractive index compensation. Example: 1013.'
+    sql: air_pressure_ref_hpa
+  air_temp_ref_c:
+    description: 'REAL. Air temperature used for refractive index compensation. Example: 20.'
+    sql: air_temp_ref_c
+  azimuth_angle_deg:
+    description: 'REAL. Horizontal angle of the tracker head. Example: 50.0.'
+    sql: azimuth_angle_deg
+  beam_stability_percent:
+    description: 'REAL. Quality of the returned laser signal. Example: 50.0.'
+    sql: beam_stability_percent
+  calibration_ref:
+    description: TEXT. Reference to the calibration event being verified.
+    sql: calibration_ref
+  elevation_angle_deg:
+    description: 'REAL. Vertical angle of the tracker head. Example: 50.0.'
+    sql: elevation_angle_deg
+  interferometer_distance_mm:
+    description: 'REAL. Absolute distance measured by laser interferometer. Example: 50.0.'
+    sql: interferometer_distance_mm
+  line_of_sight_breaks:
+    description: 'INTEGER. Number of times the beam was interrupted. Example: 50.'
+    sql: line_of_sight_breaks
+  measurement_timestamp_precise:
+    description: TEXT. Microsecond precision timestamp.
+    sql: measurement_timestamp_precise
+  relative_humidity_ref_percent:
+    description: 'REAL. Humidity used for refractive index compensation. Example: 40.'
+    sql: relative_humidity_ref_percent
+  smr_diameter_mm:
+    description: 'REAL. Diameter of the retroreflector sphere used. Unique values: 12.7, 38.1.'
+    sql: smr_diameter_mm
+  target_reflectivity_index:
+    description: 'REAL. Reflectivity of the SMR (Spherically Mounted Retroreflector). Example: 0.95.'
+    sql: target_reflectivity_index
+  tracker_scan_id:
+    description: TEXT. Unique identifier for the laser measurement session.
+    sql: tracker_scan_id
+  tracker_warmup_time_min:
+    description: 'INTEGER. Time tracker was on before measurement. Example: 50.'
+    sql: tracker_warmup_time_min
+  vibration_during_measure_g:
+    description: 'REAL. Environmental vibration detected by tracker base. Example: 50.0.'
+    sql: vibration_during_measure_g
+  volumetric_error_vector_x:
+    description: 'REAL. Deviation from nominal X. Example: 0.'
+    sql: volumetric_error_vector_x
+  volumetric_error_vector_y:
+    description: 'REAL. Deviation from nominal Y. Example: 0.'
+    sql: volumetric_error_vector_y
+  volumetric_error_vector_z:
+    description: 'REAL. Deviation from nominal Z. Example: 0.'
+    sql: volumetric_error_vector_z
+  weather_station_sync_status:
+    description: 'BOOLEAN. Was external weather station connected?. Possible values: True, False.'
+    sql: weather_station_sync_status
+  _3d_point_uncertainty_mm:
+    description: 'REAL. Calculated uncertainty of the point coordinate. Example: 50.0.'
+    sql: '"3d_point_uncertainty_mm"'

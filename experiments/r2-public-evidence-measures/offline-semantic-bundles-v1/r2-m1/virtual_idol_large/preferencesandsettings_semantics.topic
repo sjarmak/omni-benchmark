@@ -1,0 +1,27 @@
+base_view: virtual_idol_large_public__preferencesandsettings
+label: Preferences and Settings
+description: Preference records with row-level usage and stability semantics.
+fields:
+- virtual_idol_large_public__preferencesandsettings.*
+- virtual_idol_large_public__commerceandcollection.*
+- virtual_idol_large_public__engagement.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__interactions.*
+- virtual_idol_large_public__membershipandspending.*
+- virtual_idol_large_public__socialcommunity.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__membershipandspending:
+    virtual_idol_large_public__fans: {}
+  virtual_idol_large_public__socialcommunity:
+    virtual_idol_large_public__commerceandcollection: {}
+    virtual_idol_large_public__engagement:
+      virtual_idol_large_public__interactions:
+        virtual_idol_large_public__virtualidols: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields platform_stickiness_score rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Power User: A fan is a Power User if they are a Premium Member, have a total session count greater than 400, and use more than 2 devices.'

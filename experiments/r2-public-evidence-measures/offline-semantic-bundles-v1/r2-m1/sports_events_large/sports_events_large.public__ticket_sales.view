@@ -1,0 +1,72 @@
+label: TicketSales
+description: All columns of the public table TicketSales.
+catalog: sports_events_large
+schema: public
+table_name: TicketSales
+dimensions:
+  buyer_country:
+    description: 'TEXT. Buyer country of origin Possible values: US, UK, DE, FR, IT, JP, AU, AE.'
+    sql: '"BUYER_COUNTRY"'
+  circuit_ref:
+    description: BIGINT. Foreign key referencing circuits(cctkey). Related circuit
+    sql: '"CIRCUIT_REF"'
+  grandstand_name:
+    description: 'TEXT. Grandstand name if applicable Possible values: Main Straight, Turn 1, Podium, Club Corner, Start/Finish. **NULL means General admission, no assigned stand.**'
+    sql: '"GRANDSTAND_NAME"'
+  price_original:
+    description: 'REAL. Price in original currency Typical range: 30 to 5000.'
+    sql: '"PRICE_ORIGINAL"'
+  price_usd:
+    description: 'REAL. Ticket price in USD Typical range: 50 to 5000.'
+    sql: '"PRICE_USD"'
+  purchase_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Date of ticket purchase
+    sql: '"PURCHASE_DATE"'
+  scanned:
+    description: BOOLEAN. Whether ticket was scanned at gate Boolean flag (true/false).
+    sql: '"SCANNED"'
+  ticket_id:
+    description: BIGINT. Primary key. Unique ticket sale identifier
+    sql: '"TICKET_ID"'
+  ticket_type:
+    description: 'TEXT. Type of ticket Possible values: General Admission, Grandstand, VIP Paddock, Hospitality Suite, 3-Day Pass, Single Day.'
+    sql: '"TICKET_TYPE"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  currency_original:
+    description: 'TEXT. Original purchase currency Possible values: USD, EUR, GBP, AED, SGD, JPY, AUD.'
+    sql: currency_original
+  day_type:
+    description: 'TEXT. Which day(s) the ticket covers Possible values: Friday Practice, Saturday Qualifying, Sunday Race, Full Weekend.'
+    sql: day_type
+  payment_method:
+    description: 'TEXT. Payment method used Possible values: Credit Card, Bank Transfer, PayPal, Corporate Account, Cryptocurrency.'
+    sql: payment_method
+  purchase_channel:
+    description: 'TEXT. Purchase channel Possible values: Official Website, Reseller, Box Office, Corporate, Hospitality Package.'
+    sql: purchase_channel
+  race_ref:
+    description: BIGINT. Foreign key referencing races(rak_id). Related race
+    sql: race_ref
+  refunded:
+    description: BOOLEAN. Whether ticket was refunded Boolean flag (true/false).
+    sql: refunded
+  repeat_buyer:
+    description: BOOLEAN. Whether buyer has purchased tickets before Boolean flag (true/false).
+    sql: repeat_buyer
+  scan_time:
+    description: TIMESTAMP WITHOUT TIME ZONE. Time ticket was scanned **NULL means Ticket not scanned.**
+    sql: scan_time
+  seat_section:
+    description: TEXT. Seat section **NULL means General admission.**
+    sql: seat_section
+  ticket_code:
+    description: TEXT. Unique ticket barcode/code
+    sql: ticket_code
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TicketSales public identity values.
+    label: TicketSales Count
+    sql: ${sports_events_large_public__ticket_sales.ticket_id}

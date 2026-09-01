@@ -1,0 +1,66 @@
+label: BenefitClaimDetail
+description: All columns of the public table BenefitClaimDetail.
+catalog: labor_certification_applications_large
+schema: public
+table_name: BenefitClaimDetail
+dimensions:
+  bcd_code:
+    description: 'TEXT. Unique identifier for benefit claim detail record. Example: BCD-1A2B3C.'
+    sql: '"BCD_code"'
+  allowed_amount_usd:
+    description: 'REAL. Amount allowed by insurance plan in USD. Example: 320.'
+    sql: '"allowedAmount_USD"'
+  appeal_filed_flag:
+    description: 'BOOLEAN. Indicates if appeal was filed. Possible values: True, False.'
+    sql: '"appealFiled_flag"'
+  benefit_ref:
+    description: TEXT. Foreign key reference to WorkerHealthBenefit table.
+    sql: benefit_ref
+  billed_amount_usd:
+    description: 'REAL. Total amount billed by provider in USD. Example: 450.'
+    sql: '"billedAmount_USD"'
+  claim_date:
+    description: 'TIMESTAMP. Date when claim was submitted. Example: 2024-01-01 12:00:00.'
+    sql: '"claimDate"'
+  claim_status:
+    description: 'TEXT. Current status of the claim. Unique values: Submitted, Processing, Approved, Partially Approved, Denied, Appealed, Paid.'
+    sql: '"claimStatus"'
+  claim_type:
+    description: 'TEXT. Type of healthcare claim. Unique values: Medical, Dental, Vision, Pharmacy, Mental Health, Emergency, Preventive.'
+    sql: '"claimType"'
+  copay_amount_usd:
+    description: 'REAL. Copay amount for the service in USD. Example: 30.'
+    sql: '"copayAmount_USD"'
+  deductible_applied_usd:
+    description: 'REAL. Amount applied toward deductible in USD. Example: 45.'
+    sql: '"deductibleApplied_USD"'
+  denial_reason:
+    description: 'TEXT. Reason for claim denial if applicable. Unique values: Not Covered, Out of Network, Pre-auth Required, Duplicate Claim, Coding Error, None.'
+    sql: '"denialReason"'
+  diagnosis_code_primary:
+    description: TEXT. Primary ICD diagnosis code. **NULL means Preventive service without diagnosis.**
+    sql: '"diagnosisCodePrimary"'
+  eob_sent_flag:
+    description: 'BOOLEAN. Indicates if Explanation of Benefits was sent. Possible values: True, False.'
+    sql: '"eobSent_flag"'
+  in_network_flag:
+    description: 'BOOLEAN. Indicates if provider is in-network. Possible values: True, False.'
+    sql: '"inNetwork_flag"'
+  paid_amount_usd:
+    description: 'REAL. Amount paid by insurance in USD. Example: 250.'
+    sql: '"paidAmount_USD"'
+  patient_responsibility_usd:
+    description: 'REAL. Amount patient is responsible for in USD. Example: 75.'
+    sql: '"patientResponsibility_USD"'
+  processing_days:
+    description: 'INTEGER. Days from submission to processing completion. **NULL means Claim still processing.** Example: 14.'
+    sql: '"processingDays"'
+  provider_name:
+    description: TEXT. Name of healthcare provider.
+    sql: '"providerName"'
+  service_category:
+    description: 'TEXT. Category of service provided. Unique values: Office Visit, Lab Work, Imaging, Surgery, Therapy, Prescription, Specialist, Hospital.'
+    sql: '"serviceCategory"'
+  service_date:
+    description: 'TIMESTAMP. Date when healthcare service was received. Example: 2024-01-01 12:00:00.'
+    sql: '"serviceDate"'

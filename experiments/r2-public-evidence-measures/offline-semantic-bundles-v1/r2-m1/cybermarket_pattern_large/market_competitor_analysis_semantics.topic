@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__market_competitor_analysis
+label: MarketCompetitorAnalysis
+description: All columns of the public table MarketCompetitorAnalysis.
+fields:
+- cybermarket_pattern_large_public__market_competitor_analysis.*
+- cybermarket_pattern_large_public__markets.*
+joins:
+  cybermarket_pattern_large_public__markets: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

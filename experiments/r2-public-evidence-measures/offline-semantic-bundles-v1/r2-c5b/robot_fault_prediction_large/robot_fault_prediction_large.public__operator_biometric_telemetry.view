@@ -1,0 +1,60 @@
+label: operator_biometric_telemetry
+description: All columns of the public table operator_biometric_telemetry.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: operator_biometric_telemetry
+dimensions:
+  bio_session_id:
+    description: TEXT. Unique identifier for the operator's physiological state.
+    sql: bio_session_id
+  blink_rate_per_min:
+    description: 'INTEGER. Frequency of blinks indicating fatigue. **NULL means Eye tracking occluded.** Example: 50.'
+    sql: blink_rate_per_min
+  blood_oxygen_percent:
+    description: 'INTEGER. SpO2 saturation level. **NULL means Poor perfusion.** Example: 50.'
+    sql: blood_oxygen_percent
+  body_temperature_c:
+    description: 'REAL. Estimated core body temperature. Example: 36.8.'
+    sql: body_temperature_c
+  fatigue_risk_score:
+    description: 'REAL. Aggregated risk score based on shift duration and bio-signals. Example: 20.'
+    sql: fatigue_risk_score
+  galvanic_skin_response_us:
+    description: 'REAL. Skin conductance measuring arousal/stress in microsiemens. **NULL means Sensor dry.** Example: 50.0.'
+    sql: galvanic_skin_response_us
+  gaze_focus_object:
+    description: 'TEXT. What the operator was looking at (Robot, Screen, Floor). **NULL means Eye tracking occluded.** Unique values: Robot, HMI, Environment.'
+    sql: gaze_focus_object
+  heart_rate_bpm:
+    description: 'INTEGER. Operators heart rate in beats per minute. **NULL means Poor contact.** Example: 75.'
+    sql: heart_rate_bpm
+  hrv_stress_index:
+    description: 'REAL. Heart Rate Variability indicating physiological stress (0-100). **NULL means Insufficient data duration.** Example: 40.'
+    sql: hrv_stress_index
+  motion_jerk_metric:
+    description: 'REAL. Smoothness of operator hand movements. Example: 50.0.'
+    sql: motion_jerk_metric
+  noise_exposure_db:
+    description: 'REAL. Audio level measured at operator ear. Example: 70.'
+    sql: noise_exposure_db
+  posture_classification:
+    description: 'TEXT. Ergonomic stance (Standing, Reaching, Crouching). Unique values: Neutral, Extended, Risk.'
+    sql: posture_classification
+  ppe_compliance_detected:
+    description: 'BOOLEAN. Computer vision verification of helmet/vest usage. Possible values: True, False.'
+    sql: ppe_compliance_detected
+  proximity_event_ref:
+    description: TEXT. Reference to the interaction with the robot.
+    sql: proximity_event_ref
+  pupil_dilation_mm:
+    description: 'REAL. Diameter of pupil indicating cognitive load/light. **NULL means Eye tracking occluded.** Example: 3.'
+    sql: pupil_dilation_mm
+  reaction_time_ms:
+    description: 'INTEGER. Time between stimulus and operator movement. **NULL means No stimulus event.** Example: 50.'
+    sql: reaction_time_ms
+  respiration_rate_rpm:
+    description: 'INTEGER. Breaths per minute. **NULL means Signal noisy.** Example: 16.'
+    sql: respiration_rate_rpm
+  shift_duration_hours:
+    description: 'REAL. Hours elapsed since shift start. Example: 50.0.'
+    sql: shift_duration_hours

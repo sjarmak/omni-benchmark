@@ -1,0 +1,66 @@
+label: ExcavationFindings
+description: All columns of the public table ExcavationFindings.
+catalog: archeology_scan_large
+schema: public
+table_name: ExcavationFindings
+dimensions:
+  excavation_findings_id:
+    description: TEXT. Unique identifier for each excavation finding record.
+    sql: '"ExcavationFindings_id"'
+  condition_grade:
+    description: 'TEXT. Assessment grade of the finding physical condition. Unique values: Excellent, Good, Fair, Poor, Fragmentary.'
+    sql: condition_grade
+  cultural_period:
+    description: 'TEXT. Assigned cultural or temporal period classification. Unique values: Neolithic, Bronze Age, Iron Age, Roman, Medieval, Post-Medieval, Unknown.'
+    sql: cultural_period
+  depth_below_surface_cm:
+    description: 'REAL. Depth at which finding was located below ground surface. Example: 85.0.'
+    sql: depth_below_surface_cm
+  discovery_timestamp:
+    description: 'TIMESTAMP. Exact date and time when the finding was discovered. Example: 2024-01-01 12:00:00.'
+    sql: discovery_timestamp
+  easting_coordinate:
+    description: 'REAL. East-west grid coordinate of finding location in meters. Example: 50.0.'
+    sql: easting_coordinate
+  estimated_age_years_bp:
+    description: 'INTEGER. Preliminary estimated age in years before present. **NULL means Age estimation pending laboratory analysis.** Example: 50.'
+    sql: estimated_age_years_bp
+  extraction_difficulty_score:
+    description: 'REAL. Difficulty rating for extracting finding from soil matrix 1-10. Example: 50.0.'
+    sql: extraction_difficulty_score
+  finding_length_mm:
+    description: 'REAL. Maximum length dimension of the finding in millimeters. Example: 75.0.'
+    sql: finding_length_mm
+  finding_thickness_mm:
+    description: 'REAL. Maximum thickness dimension of the finding in millimeters. **NULL means Irregular shape prevents accurate measurement.** Example: 20.0.'
+    sql: finding_thickness_mm
+  finding_weight_grams:
+    description: 'REAL. Measured weight of the finding in grams. **NULL means Finding too fragile to weigh immediately.** Example: 250.0.'
+    sql: finding_weight_grams
+  finding_width_mm:
+    description: 'REAL. Maximum width dimension of the finding in millimeters. Example: 45.0.'
+    sql: finding_width_mm
+  has_associated_features:
+    description: 'BOOLEAN. Whether finding is associated with architectural or other features. Possible values: True, False.'
+    sql: has_associated_features
+  is_in_situ:
+    description: 'BOOLEAN. Whether finding was discovered in original depositional context. Possible values: True, False.'
+    sql: is_in_situ
+  material_type:
+    description: 'TEXT. Primary material composition of the finding. Unique values: Ceramic, Stone, Metal, Bone, Glass, Organic, Composite.'
+    sql: material_type
+  northing_coordinate:
+    description: 'REAL. North-south grid coordinate of finding location in meters. Example: 50.0.'
+    sql: northing_coordinate
+  photo_count:
+    description: 'INTEGER. Number of photographs taken of the finding in situ. Example: 50.'
+    sql: photo_count
+  requires_conservation:
+    description: 'BOOLEAN. Whether finding needs immediate conservation treatment. Possible values: True, False.'
+    sql: requires_conservation
+  session_ref:
+    description: TEXT. Reference to the excavation session during which finding occurred.
+    sql: session_ref
+  soil_context_type:
+    description: 'TEXT. Stratigraphic soil context where finding was located. Unique values: Fill, Floor, Pit, Wall, Midden, Natural, Disturbed.'
+    sql: soil_context_type

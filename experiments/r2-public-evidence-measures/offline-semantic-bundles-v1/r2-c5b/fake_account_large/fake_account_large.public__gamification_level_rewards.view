@@ -1,0 +1,60 @@
+label: gamification_level_rewards
+description: All columns of the public table gamification_level_rewards.
+catalog: fake_account_large
+schema: public
+table_name: gamification_level_rewards
+dimensions:
+  reward_code:
+    description: TEXT. Unique ID for a level-up reward event.
+    sql: '"Reward_CODE"'
+  animation_skipped_flag:
+    description: 'BOOLEAN. True if user skipped the celebration animation. Possible values: True, False.'
+    sql: animation_skipped_flag
+  booster_active_flag:
+    description: 'BOOLEAN. True if an XP booster was active. Possible values: True, False.'
+    sql: booster_active_flag
+  churn_risk_at_level_up:
+    description: 'REAL. Model score for churn risk at this stage. Example: 50.0.'
+    sql: churn_risk_at_level_up
+  consumable_refill_count:
+    description: 'INTEGER. Number of energy/lives refilled. Unique values: 1, 5, 10.'
+    sql: consumable_refill_count
+  difficulty_rating_user_perceived:
+    description: 'INTEGER. User feedback on difficulty (1-5). **NULL means No feedback given.** Unique values: 1, 2, 3, 4, 5.'
+    sql: difficulty_rating_user_perceived
+  friend_notification_count:
+    description: 'INTEGER. Number of friends notified of this level up. Example: 50.'
+    sql: friend_notification_count
+  gamification_ref:
+    description: TEXT. Reference to the user's gamification profile.
+    sql: gamification_ref
+  leaderboard_rank_jump:
+    description: 'INTEGER. Positions climbed in leaderboard. Example: 50.'
+    sql: leaderboard_rank_jump
+  level_reached_index:
+    description: 'INTEGER. The specific level number achieved. Example: 50.'
+    sql: level_reached_index
+  next_level_preview_seen:
+    description: 'BOOLEAN. True if user viewed the next rewards. Possible values: True, False.'
+    sql: next_level_preview_seen
+  premium_item_unlock_ref:
+    description: TEXT. Reference to a cosmetic item unlocked. **NULL means No item rewarded.**
+    sql: premium_item_unlock_ref
+  reward_claim_latency_sec:
+    description: 'INTEGER. Time between unlock and user claiming reward. **NULL means Auto-claimed.** Example: 50.'
+    sql: reward_claim_latency_sec
+  session_continuation_flag:
+    description: 'BOOLEAN. True if user kept playing after leveling up. Possible values: True, False.'
+    sql: session_continuation_flag
+  social_share_trigger:
+    description: 'BOOLEAN. True if user shared this achievement. Possible values: True, False.'
+    sql: social_share_trigger
+  time_to_reach_level_hours:
+    description: 'REAL. Playtime spent in the previous level. Example: 10.'
+    sql: time_to_reach_level_hours
+  unlock_timestamp_offset_sec:
+    description: 'INTEGER. Time offset from account creation to unlock. Example: 50.'
+    sql: unlock_timestamp_offset_sec
+  virtual_currency_awarded:
+    description: 'INTEGER. Amount of soft currency given. Unique values: 50, 100, 500, 1000.'
+    sql: virtual_currency_awarded

@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__emp_financials_details
+label: emp_financials_details
+description: All columns of the public table emp_financials_details.
+fields:
+- labor_certification_applications_large_public__emp_financials_details.*
+joins: {}
+ai_context: This topic models no cross-table joins.

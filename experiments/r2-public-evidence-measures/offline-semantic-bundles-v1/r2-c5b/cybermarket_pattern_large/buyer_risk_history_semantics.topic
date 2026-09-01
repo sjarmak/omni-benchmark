@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__buyer_risk_history
+label: buyer_risk_history
+description: All columns of the public table buyer_risk_history.
+fields:
+- cybermarket_pattern_large_public__buyer_risk_history.*
+- cybermarket_pattern_large_public__buyers.*
+joins:
+  cybermarket_pattern_large_public__buyers: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

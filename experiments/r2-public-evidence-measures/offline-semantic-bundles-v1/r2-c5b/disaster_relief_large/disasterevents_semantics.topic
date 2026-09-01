@@ -1,0 +1,13 @@
+base_view: disaster_relief_large_public__disasterevents
+label: Disaster Events
+description: Disaster-event records with row-level population impact, infrastructure damage, severity, and damage-category semantics.
+fields:
+- disaster_relief_large_public__disasterevents.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Use the modeled business fields disaster_mortality_rate, infrastructure_damage_index, is_catastrophic_disaster, is_major_disaster, overall_disaster_severity_index, population_displacement_rate, population_impact_score rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Mass Casualty Incident (MCI): An event is classified as an ''MCI'' if the total number of fatalities and injuries is greater than 100, OR if the Medical Support Ratio (MSR) is less than 0.01.'

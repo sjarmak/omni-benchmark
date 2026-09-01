@@ -1,0 +1,11 @@
+base_view: exchange_traded_funds_large_public__fund_regulatory_compliance
+label: fund_regulatory_compliance
+description: All columns of the public table fund_regulatory_compliance.
+fields:
+- exchange_traded_funds_large_public__fund_regulatory_compliance.*
+- exchange_traded_funds_large_public__funds.*
+- exchange_traded_funds_large_public__regulatory_authorities.*
+joins:
+  exchange_traded_funds_large_public__funds: {}
+  exchange_traded_funds_large_public__regulatory_authorities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

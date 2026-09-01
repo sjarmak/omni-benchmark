@@ -1,0 +1,87 @@
+label: stellar_spectroscopy
+description: All columns of the public table stellar_spectroscopy.
+catalog: planets_data_large
+schema: public
+table_name: stellar_spectroscopy
+dimensions:
+  luminosity_class:
+    description: 'text. Morgan-Keenan luminosity class (I, II, III, IV, V) indicating stellar size and evolutionary state. Possible values: III, IV, V.'
+    sql: '"LUMINOSITY_CLASS"'
+  notes:
+    description: 'text. Additional notes or comments about the spectroscopic measurements. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  observation_date:
+    description: 'date. Date when the spectroscopic observations were conducted. Example: 2023-03-15.'
+    sql: '"OBSERVATION_DATE"'
+  spectroscopyref:
+    description: 'bigint. Primary key identifier for stellar spectroscopy records. PK. Possible values: 1001, 1002, 1003, 1004, 1005, 1006, 1007.'
+    sql: '"SPECTROSCOPYREF"'
+  signal_to_noise_ratio:
+    description: 'real. Signal-to-noise ratio of the spectroscopic measurements. Possible values: 105, 110, 120, 140, 85, 90, 95.'
+    sql: '"SignalToNoiseRatio"'
+  spectroscopic_binary_flag:
+    description: 'boolean. Flag indicating if star shows spectroscopic binary characteristics. Possible values: False, True.'
+    sql: '"SpectroscopicBinaryFlag"'
+  abundances:
+    description: JSONB column. Chemical abundance measurements of various elements in stellar atmospheres, expressed in dex units relative to solar values.
+    sql: abundances
+  activityindicators:
+    description: JSONB column. Stellar chromospheric and magnetic activity indicators derived from spectroscopic observations.
+    sql: activityindicators
+  spectral_class:
+    description: 'text. Harvard spectral classification (O, B, A, F, G, K, M) indicating stellar temperature and characteristics. Possible values: A0V, F8V, G2V, G5IV, K0V, K1III, M2V.'
+    sql: spectral_class
+  spectral_resolution:
+    description: 'real. Resolving power (λ/Δλ) of the spectroscopic observations. Possible values: 100.0, 115000.0, 38000, 41000, 42000, 44000, 45000, 48000, 50000.'
+    sql: spectral_resolution
+  spectrograph_used:
+    description: 'text. Name or identifier of the spectrograph instrument used for observations. Possible values: FEROS, HARPS, HIRES, SOPHIE, UVES.'
+    sql: spectrograph_used
+  stellar_link:
+    description: 'bigint. Foreign key reference to the parent star record. FK to stars(STELLARREF). Example: 1.'
+    sql: '"stellarLink"'
+  abundances_alpha_enhancement_dex:
+    description: 'real. Alpha-element enhancement [α/Fe] in dex units indicating stellar nucleosynthesis history. **NULL means alpha-element abundance could not be reliably measured.**. Possible values: 0.08, 0.12, 0.18, 0.25, 0.32.'
+    sql: JSONB_EXTRACT_PATH_TEXT(abundances, 'ALPHA_ENHANCEMENT_dex')
+  abundances_carbon_abundance_dex:
+    description: 'real. Carbon-to-iron abundance ratio [C/Fe] in dex units. Possible values: -0.05, -0.12, -0.18, 0.08, 0.12, 0.15, 0.22.'
+    sql: JSONB_EXTRACT_PATH_TEXT(abundances, 'CarbonAbundance_dex')
+  abundances_oxygen_abundance_dex:
+    description: 'real. Oxygen-to-iron abundance ratio [O/Fe] in dex units. Possible values: 0.05, 0.08, 0.15, 0.18, 0.2, 0.22, 0.28.'
+    sql: JSONB_EXTRACT_PATH_TEXT(abundances, 'OXYGEN_ABUNDANCE_dex')
+  abundances_lithium_abundance_dex:
+    description: 'real. Lithium abundance log N(Li) in dex units indicating stellar age and convection. **NULL means lithium lines were too weak to measure reliably.**. Possible values: -1.5, 0.9, 1.2, 2.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(abundances, 'lithium_abundance_dex')
+  abundances_magnesium_abundance_dex:
+    description: 'real. Magnesium-to-iron abundance ratio [Mg/Fe] in dex units. Possible values: 0.05, 0.08, 0.12, 0.15, 0.18, 0.22.'
+    sql: JSONB_EXTRACT_PATH_TEXT(abundances, 'magnesium_abundance_dex')
+  abundances_metallicity_fe_h_dex:
+    description: 'real. Iron-to-hydrogen abundance ratio [Fe/H] in dex units relative to solar values. Possible values: -0.02, -0.08, -0.12, -0.25, -0.34, -0.45, 0.18.'
+    sql: JSONB_EXTRACT_PATH_TEXT(abundances, 'metallicityFeH_dex')
+  activityindicators_ca_h_k_emission_index:
+    description: 'real. Calcium H&K emission index measuring stellar chromospheric activity level. **NULL means Ca H&K lines were not detected or contaminated.**. Possible values: 0.32, 0.45, 0.58, 0.75, 1.85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(activityindicators, 'CA_H_K_EMISSION_INDEX')
+  activityindicators_halpha_equivalent_width:
+    description: 'real. H-alpha emission line equivalent width measured in Angstroms indicating chromospheric activity. Possible values: 0.45, 1.89, 12.45, 2.34, 3.12, 4.23, 5.67.'
+    sql: JSONB_EXTRACT_PATH_TEXT(activityindicators, 'HAlphaEquivalentWidth_Å')
+  activityindicators_magnetic_field_strength_gauss:
+    description: 'real. Surface magnetic field strength measured in Gauss. **NULL means magnetic field measurements were not available or below detection threshold.**. Possible values: 1150.0, 1250.0, 3200.0, 850.0, 950.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(activityindicators, 'MAGNETIC_FIELD_STRENGTH_Gauss')
+  activityindicators_chromospheric_activity_index:
+    description: 'real. Quantitative index of stellar chromospheric activity level. Possible values: 0.05, 0.12, 0.15, 0.22, 0.28, 0.35, 0.82.'
+    sql: JSONB_EXTRACT_PATH_TEXT(activityindicators, 'chromospheric_activity_index')
+  activityindicators_rotation_velocity_km_s:
+    description: 'real. Projected rotational velocity v sin i in kilometers per second. Possible values: 1.8, 15.8, 2.1, 3.2, 5.2, 8.5, 85.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(activityindicators, 'rotation_velocity_km/s')
+  macro_turbulence_velocity_km_s:
+    description: 'real. Macroturbulent velocity in stellar atmosphere in kilometers per second. **NULL means macroturbulence could not be separated from other broadening mechanisms.**. Possible values: 1.8, 2.1, 2.5.'
+    sql: '"MacroTurbulenceVelocity_km/s"'
+  radial_velocity_amplitude_km_s:
+    description: 'real. Semi-amplitude of radial velocity variations in kilometers per second. Possible values: 0.5, 0.8, 0.9, 1.2, 12.8, 2.1, 4.5.'
+    sql: '"RADIAL_VELOCITY_AMPLITUDE_km/s"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct stellar_spectroscopy public identity values.
+    label: stellar_spectroscopy Count
+    sql: ${planets_data_large_public__stellar_spectroscopy.spectroscopyref}

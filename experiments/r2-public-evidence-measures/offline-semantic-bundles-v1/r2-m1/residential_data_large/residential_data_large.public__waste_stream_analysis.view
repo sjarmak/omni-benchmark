@@ -1,0 +1,69 @@
+label: Waste_Stream_Analysis
+description: All columns of the public table Waste_Stream_Analysis.
+catalog: residential_data_large
+schema: public
+table_name: Waste_Stream_Analysis
+dimensions:
+  waste_composition_pk:
+    description: 'TEXT. Primary key for detailed refuse breakdown. Example: WSA-1A2B3C.'
+    sql: '"Waste_Composition_PK"'
+  aluminum_recovery_value_brl:
+    description: 'REAL. Estimated market value of recyclable aluminum in batch. Example: 50.0.'
+    sql: aluminum_recovery_value_brl
+  average_particle_size_cm:
+    description: 'REAL. Mean diameter of shredded or raw waste objects. Example: 50.0.'
+    sql: average_particle_size_cm
+  cardboard_contamination_rate:
+    description: 'REAL. Percentage of fiber-based recyclables ruined by grease/liquid. Example: 50.0.'
+    sql: cardboard_contamination_rate
+  compaction_force_applied_psi:
+    description: 'REAL. Pressure used by the collection truck''s hydraulic ram. Example: 2000.'
+    sql: compaction_force_applied_psi
+  e_waste_component_count:
+    description: 'INTEGER. Number of discarded electronics (batteries, boards). Unique values: 0, 1, 3, 5.'
+    sql: e_waste_component_count
+  glass_cullet_color_mix:
+    description: 'TEXT. Primary color of glass shards detected. Unique values: Clear, Amber, Green, Mixed.'
+    sql: glass_cullet_color_mix
+  hazardous_heavy_metal_ppb:
+    description: 'REAL. Trace concentration of lead or mercury in the sample. Example: 5.0.'
+    sql: hazardous_heavy_metal_ppb
+  incineration_energy_value_btu:
+    description: 'REAL. Heating value per pound of the dry waste stream. Example: 5000.'
+    sql: incineration_energy_value_btu
+  methane_potential_m3_per_ton:
+    description: 'REAL. Theoretical biogas yield if anaerobically digested. Example: 50.0.'
+    sql: methane_potential_m3_per_ton
+  microplastic_particle_count_per_kg:
+    description: 'INTEGER. Estimated count of fragmented plastics < 5mm. Example: 150.'
+    sql: microplastic_particle_count_per_kg
+  moisture_content_ratio:
+    description: 'REAL. Weight of water vs dry solids in the refuse. Example: 0.2.'
+    sql: moisture_content_ratio
+  odor_intensity_index:
+    description: 'INTEGER. Measured concentration of sulfur compounds (1-10). Example: 4.'
+    sql: odor_intensity_index
+  organic_fraction_percent:
+    description: 'REAL. Percentage of waste consisting of food and yard debris. Example: 0.35.'
+    sql: organic_fraction_percent
+  plastic_polymer_type_dominance:
+    description: 'TEXT. Most common plastic resin found (e.g., PET, HDPE). Unique values: PET, HDPE, LDPE, Mixed.'
+    sql: plastic_polymer_type_dominance
+  sorting_efficiency_accuracy_percent:
+    description: 'REAL. Accuracy of the automated or manual sorting process. Example: 0.92.'
+    sql: sorting_efficiency_accuracy_percent
+  textile_waste_mass_kg:
+    description: 'REAL. Total weight of clothing or fabric found in bin. Example: 50.0.'
+    sql: textile_waste_mass_kg
+  vermin_activity_observation_score:
+    description: 'INTEGER. Visual indicator of rodent or insect presence (0-5). Unique values: 0, 1, 2, 3, 4, 5.'
+    sql: vermin_activity_observation_score
+  waste_monitor_link:
+    description: TEXT. Reference to the general waste management record.
+    sql: waste_monitor_link
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Waste_Stream_Analysis public identity values.
+    label: Waste_Stream_Analysis Count
+    sql: ${residential_data_large_public__waste_stream_analysis.waste_composition_pk}

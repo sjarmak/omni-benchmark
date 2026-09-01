@@ -1,0 +1,13 @@
+base_view: disaster_relief_large_public__shelter_occupancy_record
+label: ShelterOccupancyRecord
+description: All columns of the public table ShelterOccupancyRecord.
+fields:
+- disaster_relief_large_public__shelter_occupancy_record.*
+- disaster_relief_large_public__beneficiary_core.*
+- disaster_relief_large_public__disaster_event_core.*
+- disaster_relief_large_public__shelter_core.*
+joins:
+  disaster_relief_large_public__beneficiary_core:
+    disaster_relief_large_public__disaster_event_core: {}
+  disaster_relief_large_public__shelter_core: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

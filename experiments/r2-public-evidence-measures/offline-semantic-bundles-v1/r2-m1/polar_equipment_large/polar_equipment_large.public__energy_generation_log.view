@@ -1,0 +1,105 @@
+label: EnergyGenerationLog
+description: All columns of the public table EnergyGenerationLog.
+catalog: polar_equipment_large
+schema: public
+table_name: EnergyGenerationLog
+dimensions:
+  ambient_temp_c:
+    description: 'REAL. Ambient temperature at site (°C). Example: 21.6.'
+    sql: '"ambientTemp_C"'
+  ambient_wind_mps:
+    description: 'REAL. Ambient wind speed (m/s). Example: 4.7.'
+    sql: '"ambientWind_mps"'
+  azimuth_deg:
+    description: 'REAL. Panel azimuth angle (deg). **NULL means mode ≠ ''Solar''.** Example: 180.0.'
+    sql: azimuth_deg
+  bat_charge_a:
+    description: 'REAL. Battery charge/discharge current (A). **NULL means batSOC_pct < 5 (critically low battery; no charge data recorded).** Example: -45.6.'
+    sql: '"batCharge_A"'
+  bat_soc_pct:
+    description: 'REAL. Battery state of charge (%). Example: 62.3.'
+    sql: '"batSOC_pct"'
+  bat_temp_c:
+    description: 'REAL. Battery temperature (°C). Example: 28.4.'
+    sql: '"batTemp_C"'
+  bat_volt_v:
+    description: 'REAL. Battery voltage (V). Example: 610.0.'
+    sql: '"batVolt_V"'
+  comment:
+    description: 'TEXT. Operator note. Example: High wind gusts affected output.'
+    sql: comment
+  current_a:
+    description: 'REAL. Output current (A). Example: 354.1.'
+    sql: '"current_A"'
+  energy_log_no:
+    description: BIGSERIAL. Surrogate primary key for the log row. PK.
+    sql: '"energyLogNo"'
+  energy_k_wh:
+    description: 'REAL. Accumulated energy produced (kWh). Example: 1420.3.'
+    sql: '"energy_kWh"'
+  for_thermal_asset:
+    description: 'BIGINT. FK to ThermalSolarWindAndGrid(THERMAL_ID). Example: 3042.'
+    sql: for_thermal_asset
+  frequency_hz:
+    description: 'REAL. Output frequency (Hz). Example: 50.1.'
+    sql: '"frequency_Hz"'
+  fuel_cell_h2_pct:
+    description: 'REAL. Hydrogen utilization (%). **NULL means mode ≠ ''FuelCell''.** Example: 82.5.'
+    sql: '"fuelCellH2_pct"'
+  fuel_cell_o2_pct:
+    description: 'REAL. Oxygen utilization (%). **NULL means mode ≠ ''FuelCell''.** Example: 68.7.'
+    sql: '"fuelCellO2_pct"'
+  fuel_cell_temp_c:
+    description: 'REAL. Fuel cell stack temperature (°C). **NULL means mode ≠ ''FuelCell''.** Example: 73.2.'
+    sql: '"fuelCellTemp_C"'
+  grid_harm_thd_pct:
+    description: 'REAL. Grid harmonic distortion (% THD). Example: 3.5.'
+    sql: '"gridHarmTHD_pct"'
+  grid_status:
+    description: 'TEXT. Grid connection state. Possible values (from file): Connected, Islanded, Fault. Example: Connected.'
+    sql: '"gridStatus"'
+  mode:
+    description: 'TEXT. Energy source/mode in operation. Possible values (from file): Solar, Wind, FuelCell, Hybrid, Grid. Example: Solar.'
+    sql: mode
+  operator:
+    description: 'TEXT. Operator name. Possible values (from file): Operator A, Operator B, Tech C, Engineer D. Example: Operator B.'
+    sql: operator
+  panel_tilt_deg:
+    description: 'REAL. Panel tilt angle (deg). **NULL means mode ≠ ''Solar''.** Example: 25.0.'
+    sql: '"panelTilt_deg"'
+  pf:
+    description: 'REAL. Power factor (0–1). Example: 0.97.'
+    sql: pf
+  power_w:
+    description: 'REAL. Instantaneous power output (W). Example: 152340.0.'
+    sql: '"power_W"'
+  snow_load_kgm2:
+    description: 'REAL. Snow load on panels (kg/m²). **NULL means ambientTemp_C > 25 (no snow expected).** Example: 42.1.'
+    sql: '"snowLoad_kgm2"'
+  solar_eff_pct:
+    description: 'REAL. Solar conversion efficiency (%). **NULL means solarIrr_Wm2 < 50 or not a Solar mode.** Example: 18.3.'
+    sql: '"solarEff_pct"'
+  solar_irr_wm2:
+    description: 'REAL. Solar irradiance (W/m²). **NULL means mode ≠ ''Solar''.** Example: 840.0.'
+    sql: '"solarIrr_Wm2"'
+  solar_temp_c:
+    description: 'REAL. Solar panel temperature (°C). **NULL means mode ≠ ''Solar''.** Example: 42.1.'
+    sql: '"solarTemp_C"'
+  ts:
+    description: 'TIMESTAMP (dd-MMM-yyyy HH:MM:SS). Time of the generation record. Example: 05-Jul-2025 15:30:00.'
+    sql: ts
+  voltage_v:
+    description: 'REAL. Output voltage (V). Example: 430.5.'
+    sql: '"voltage_V"'
+  wind_rpm:
+    description: 'REAL. Turbine rotational speed (RPM). **NULL means mode ≠ ''Wind''.** Example: 820.0.'
+    sql: '"windRPM"'
+  wind_speed_mps:
+    description: 'REAL. Wind speed (m/s). **NULL means mode ≠ ''Wind''.** Example: 12.4.'
+    sql: '"windSpeed_mps"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EnergyGenerationLog public identity values.
+    label: EnergyGenerationLog Count
+    sql: ${polar_equipment_large_public__energy_generation_log.energy_log_no}

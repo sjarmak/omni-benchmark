@@ -1,0 +1,13 @@
+base_view: disaster_relief_large_public__environmentandhealth
+label: environmentandhealth
+description: All columns of the public table environmentandhealth.
+fields:
+- disaster_relief_large_public__environmentandhealth.*
+- disaster_relief_large_public__disasterevents.*
+joins:
+  disaster_relief_large_public__disasterevents: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Public Health Risk Score (PHRS): A composite risk score based on multiple factors. It is calculated by first deriving component scores: disease_risk_score (High=3, Medium=2, else 1), sanitation_risk (100 - sanitation_coverage), and water_quality_risk (100 - water_quality_index). The final formula is: ((1 - MSR) * 40) + (disease_risk_score * 10) + (sanitation_risk * 0.15) + (water_quality_risk * 0.15).'

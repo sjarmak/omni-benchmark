@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__interest_tags
+label: interest_tags
+description: All columns of the public table interest_tags.
+fields:
+- virtual_idol_large_public__interest_tags.*
+joins: {}
+ai_context: This topic models no cross-table joins.

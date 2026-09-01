@@ -1,0 +1,9 @@
+base_view: cross_border_large_public__employee_certification
+label: EmployeeCertification
+description: All columns of the public table EmployeeCertification.
+fields:
+- cross_border_large_public__employee_certification.*
+- cross_border_large_public__privacy_training_program.*
+joins:
+  cross_border_large_public__privacy_training_program: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

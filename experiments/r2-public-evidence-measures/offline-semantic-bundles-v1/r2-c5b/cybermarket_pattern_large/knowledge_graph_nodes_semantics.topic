@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__knowledge_graph_nodes
+label: knowledge_graph_nodes
+description: All columns of the public table knowledge_graph_nodes.
+fields:
+- cybermarket_pattern_large_public__knowledge_graph_nodes.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,9 @@
+base_view: exchange_traded_funds_large_public__trade_execution_audit
+label: TradeExecutionAudit
+description: All columns of the public table TradeExecutionAudit.
+fields:
+- exchange_traded_funds_large_public__trade_execution_audit.*
+- exchange_traded_funds_large_public__exchanges.*
+joins:
+  exchange_traded_funds_large_public__exchanges: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

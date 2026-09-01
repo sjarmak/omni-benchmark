@@ -1,0 +1,378 @@
+- join_from_view: disaster_relief_large_public__early_warning_systems
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__early_warning_systems.dist_ref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__volunteer_core
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__volunteer_core.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__community_infrastructure_assessments
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__community_infrastructure_assessments.dist_ref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__volunteer_skill_map
+  join_to_view: disaster_relief_large_public__skill_catalogue
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__volunteer_skill_map.skill_id} = ${disaster_relief_large_public__skill_catalogue.skill_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__distribution_hub_core
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__distribution_hub_core.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__volunteer_skill_map
+  join_to_view: disaster_relief_large_public__volunteer_profiles
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__volunteer_skill_map.volunteer_id} = ${disaster_relief_large_public__volunteer_profiles.volunteerid}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__operation_logistics
+  join_to_view: disaster_relief_large_public__operation_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__operation_logistics.operation_id} = ${disaster_relief_large_public__operation_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__beneficiariesandassessments
+  join_to_view: disaster_relief_large_public__operations
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__beneficiariesandassessments.beneopsref} = ${disaster_relief_large_public__operations.opsregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__operation_hub_map
+  join_to_view: disaster_relief_large_public__operations
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__operation_hub_map.opsregistry} = ${disaster_relief_large_public__operations.opsregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__beneficiary_assistance_record
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__beneficiary_assistance_record.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__communication_logs
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__communication_logs.dist_ref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__shelter_occupancy_record
+  join_to_view: disaster_relief_large_public__beneficiary_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__shelter_occupancy_record.beneficiary_id} = ${disaster_relief_large_public__beneficiary_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__humanresources
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__humanresources.hrdistref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__supply_allocation
+  join_to_view: disaster_relief_large_public__distributionhubs
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__supply_allocation.hub_ref} = ${disaster_relief_large_public__distributionhubs.hubregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__training_attendance
+  join_to_view: disaster_relief_large_public__volunteer_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__training_attendance.volunteer_id} = ${disaster_relief_large_public__volunteer_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__operation_logistics
+  join_to_view: disaster_relief_large_public__distribution_hub_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__operation_logistics.distribution_hub_id} = ${disaster_relief_large_public__distribution_hub_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__coordinationandevaluation
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__coordinationandevaluation.coord_dist_ref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__skill_session_map
+  join_to_view: disaster_relief_large_public__skill_catalogue
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__skill_session_map.skilref} = ${disaster_relief_large_public__skill_catalogue.skill_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__infrastructure_repair_log
+  join_to_view: disaster_relief_large_public__infrastructure_assessment_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__infrastructure_repair_log.infrastructure_assessment_id} = ${disaster_relief_large_public__infrastructure_assessment_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__disease_containment_measure
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__disease_containment_measure.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__infrastructure_assessment_core
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__infrastructure_assessment_core.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__shelter_facilities
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__shelter_facilities.dist_ref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__shelter_occupancy_record
+  join_to_view: disaster_relief_large_public__shelter_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__shelter_occupancy_record.shelter_id} = ${disaster_relief_large_public__shelter_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__beneficiary_households
+  join_to_view: disaster_relief_large_public__beneficiariesandassessments
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__beneficiary_households.beneregistry_ref} = ${disaster_relief_large_public__beneficiariesandassessments.beneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__financials
+  join_to_view: disaster_relief_large_public__operations
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__financials.fin_ops_ref} = ${disaster_relief_large_public__operations.opsregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__disaster_response_team
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__disaster_response_team.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__transportation
+  join_to_view: disaster_relief_large_public__distributionhubs
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__transportation.transport_hub_ref} = ${disaster_relief_large_public__distributionhubs.hubregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__supplies
+  join_to_view: disaster_relief_large_public__distributionhubs
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__supplies.supplyhubref} = ${disaster_relief_large_public__distributionhubs.hubregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__financials
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__financials.findistref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__operation_risk_assessments
+  join_to_view: disaster_relief_large_public__operations
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__operation_risk_assessments.ops_ref} = ${disaster_relief_large_public__operations.opsregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__training_attendance
+  join_to_view: disaster_relief_large_public__training_session_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__training_attendance.training_session_id} = ${disaster_relief_large_public__training_session_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__humanresources
+  join_to_view: disaster_relief_large_public__operations
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__humanresources.hr_ops_ref} = ${disaster_relief_large_public__operations.opsregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__volunteer_deployment
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__volunteer_deployment.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__disease_outbreak_core
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__disease_outbreak_core.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__vehicle_maintenance_logs
+  join_to_view: disaster_relief_large_public__transportation
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__vehicle_maintenance_logs.transport_ref} = ${disaster_relief_large_public__transportation.transportregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__beneficiary_core
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__beneficiary_core.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__beneficiary_assistance_record
+  join_to_view: disaster_relief_large_public__beneficiary_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__beneficiary_assistance_record.beneficiary_id} = ${disaster_relief_large_public__beneficiary_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__stakeholder_engagement
+  join_to_view: disaster_relief_large_public__coordinationandevaluation
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__stakeholder_engagement.coord_eval_ref} = ${disaster_relief_large_public__coordinationandevaluation.coordevalregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__transportation
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__transportation.transportdistref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__volunteer_profiles
+  join_to_view: disaster_relief_large_public__humanresources
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__volunteer_profiles.hr_ref} = ${disaster_relief_large_public__humanresources.hrregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__infrastructure_repair_log
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__infrastructure_repair_log.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__training_session_core
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__training_session_core.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__operation_core
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__operation_core.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__media_coverage
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__media_coverage.dist_ref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__logistics_contracts
+  join_to_view: disaster_relief_large_public__distributionhubs
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__logistics_contracts.hub_ref} = ${disaster_relief_large_public__distributionhubs.hubregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__disease_containment_measure
+  join_to_view: disaster_relief_large_public__disease_outbreak_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__disease_containment_measure.disease_outbreak_id} = ${disaster_relief_large_public__disease_outbreak_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__operation_hub_map
+  join_to_view: disaster_relief_large_public__distributionhubs
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__operation_hub_map.hubregistry} = ${disaster_relief_large_public__distributionhubs.hubregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__household_member_map
+  join_to_view: disaster_relief_large_public__beneficiary_households
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__household_member_map.household_id} = ${disaster_relief_large_public__beneficiary_households.household_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__coordinationandevaluation
+  join_to_view: disaster_relief_large_public__operations
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__coordinationandevaluation.coordopsref} = ${disaster_relief_large_public__operations.opsregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__shelter_core
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__shelter_core.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__supply_allocation
+  join_to_view: disaster_relief_large_public__supply_item_catalogue
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__supply_allocation.item_id} = ${disaster_relief_large_public__supply_item_catalogue.item_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__environmentandhealth
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__environmentandhealth.env_dist_ref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__member_profiles
+  join_to_view: disaster_relief_large_public__beneficiary_households
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__member_profiles.household_ref} = ${disaster_relief_large_public__beneficiary_households.household_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__supplies
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__supplies.supply_dist_ref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__household_member_map
+  join_to_view: disaster_relief_large_public__member_profiles
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__household_member_map.member_id} = ${disaster_relief_large_public__member_profiles.member_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__beneficiariesandassessments
+  join_to_view: disaster_relief_large_public__disasterevents
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__beneficiariesandassessments.bene_dist_ref} = ${disaster_relief_large_public__disasterevents.distregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__transportation
+  join_to_view: disaster_relief_large_public__supplies
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__transportation.transportsupref} = ${disaster_relief_large_public__supplies.supplyregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__emergency_communication_log
+  join_to_view: disaster_relief_large_public__disaster_event_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__emergency_communication_log.disaster_event_id} = ${disaster_relief_large_public__disaster_event_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__volunteer_deployment
+  join_to_view: disaster_relief_large_public__volunteer_core
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__volunteer_deployment.volunteer_id} = ${disaster_relief_large_public__volunteer_core.id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__data_analytics_reports
+  join_to_view: disaster_relief_large_public__operations
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__data_analytics_reports.ops_ref} = ${disaster_relief_large_public__operations.opsregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__training_sessions
+  join_to_view: disaster_relief_large_public__volunteer_profiles
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__training_sessions.trainer_id} = ${disaster_relief_large_public__volunteer_profiles.volunteerid}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__disease_outbreak_monitoring
+  join_to_view: disaster_relief_large_public__environmentandhealth
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__disease_outbreak_monitoring.env_health_ref} = ${disaster_relief_large_public__environmentandhealth.envhealthregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: disaster_relief_large_public__skill_session_map
+  join_to_view: disaster_relief_large_public__training_sessions
+  join_type: always_left
+  on_sql: ${disaster_relief_large_public__skill_session_map.session_id} = ${disaster_relief_large_public__training_sessions.session_id}
+  relationship_type: many_to_one
+  reversible: false

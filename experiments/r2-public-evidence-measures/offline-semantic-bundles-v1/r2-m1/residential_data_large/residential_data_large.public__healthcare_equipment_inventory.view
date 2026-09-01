@@ -1,0 +1,72 @@
+label: Healthcare_Equipment_Inventory
+description: All columns of the public table Healthcare_Equipment_Inventory.
+catalog: residential_data_large
+schema: public
+table_name: Healthcare_Equipment_Inventory
+dimensions:
+  inventory_tracker_pk:
+    description: 'TEXT. Unique identifier for specialized medical equipment tracking. Example: HEI-1A2B3C.'
+    sql: '"Inventory_Tracker_PK"'
+  ambulance_fleet_count:
+    description: 'INTEGER. Number of active ambulance vehicles assigned to the facility. Example: 50.'
+    sql: ambulance_fleet_count
+  backup_generator_fuel_liters:
+    description: 'REAL. Current volume of diesel fuel in the backup generator tank. Example: 50.0.'
+    sql: backup_generator_fuel_liters
+  blood_bank_refrigeration_temp:
+    description: 'REAL. Current temperature of the main blood storage refrigerator. Example: 4.0.'
+    sql: blood_bank_refrigeration_temp
+  defibrillator_charge_readiness:
+    description: 'TEXT. Ready-to-use status of mobile AED units. Unique values: Ready, Charging, Low Battery.'
+    sql: defibrillator_charge_readiness
+  dialysis_machine_usage_hours:
+    description: 'INTEGER. Total accumulated runtime hours for the primary dialysis unit. **NULL means Service not provided at this facility.** Example: 50.'
+    sql: dialysis_machine_usage_hours
+  emergency_room_wait_minutes:
+    description: 'INTEGER. Current average wait time for non-critical triage. Example: 45.'
+    sql: emergency_room_wait_minutes
+  facility_link:
+    description: 'INTEGER. Foreign key reference to healthcare_facilities table. Example: 50.'
+    sql: facility_link
+  isolation_ward_occupancy_rate:
+    description: 'REAL. Percentage of isolation beds currently occupied. **NULL means No isolation ward available.** Example: 50.0.'
+    sql: isolation_ward_occupancy_rate
+  janitorial_inspection_score:
+    description: 'REAL. Sanitation quality score out of 100. Example: 92.'
+    sql: janitorial_inspection_score
+  mri_scanner_status:
+    description: 'TEXT. Operational status of the MRI imaging unit. **NULL means No MRI equipment on site.** Unique values: Operational, Maintenance, Decommissioned.'
+    sql: mri_scanner_status
+  oxygen_purity_percentage:
+    description: 'REAL. Measured purity level of the central medical oxygen supply. **NULL means Sensor calibration in progress.** Example: 99.5.'
+    sql: oxygen_purity_percentage
+  patient_monitoring_screen_count:
+    description: 'INTEGER. Total number of wall-mounted patient vital sign monitors. Example: 30.'
+    sql: patient_monitoring_screen_count
+  pharmacy_dispensing_robot_model:
+    description: 'TEXT. Brand or generation of automated pill dispensing systems. Unique values: PharmaBot-X1, MedDispense-v4, Manual.'
+    sql: pharmacy_dispensing_robot_model
+  ppe_disposal_bin_capacity_kg:
+    description: 'REAL. Maximum weight capacity for hazardous medical waste bins. Example: 50.0.'
+    sql: ppe_disposal_bin_capacity_kg
+  staff_radiology_certification_count:
+    description: 'INTEGER. Number of staff members with active radiology licenses. Example: 8.'
+    sql: staff_radiology_certification_count
+  sterilization_chamber_temp_celsius:
+    description: 'REAL. Standard operating temperature for autoclave units. Example: 121.0.'
+    sql: sterilization_chamber_temp_celsius
+  surgical_mask_stock_level:
+    description: 'INTEGER. Inventory count of N95 or equivalent surgical masks. Example: 50.'
+    sql: surgical_mask_stock_level
+  ultrasound_probe_count:
+    description: 'INTEGER. Count of varied frequency ultrasound transducers available. Example: 50.'
+    sql: ultrasound_probe_count
+  ventilator_count:
+    description: 'INTEGER. Total number of functional mechanical ventilators available. Example: 15.'
+    sql: ventilator_count
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Healthcare_Equipment_Inventory public identity values.
+    label: Healthcare_Equipment_Inventory Count
+    sql: ${residential_data_large_public__healthcare_equipment_inventory.inventory_tracker_pk}

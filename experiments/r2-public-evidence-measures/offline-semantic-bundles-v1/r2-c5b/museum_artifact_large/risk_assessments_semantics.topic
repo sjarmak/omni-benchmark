@@ -1,0 +1,11 @@
+base_view: museum_artifact_large_public__risk_assessments
+label: RiskAssessments
+description: All columns of the public table RiskAssessments.
+fields:
+- museum_artifact_large_public__risk_assessments.*
+- museum_artifact_large_public__artifacts_core.*
+- museum_artifact_large_public__exhibition_halls.*
+joins:
+  museum_artifact_large_public__artifacts_core: {}
+  museum_artifact_large_public__exhibition_halls: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

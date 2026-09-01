@@ -1,0 +1,24 @@
+label: session_attendance
+description: All columns of the public table session_attendance.
+catalog: solar_panel_large
+schema: public
+table_name: session_attendance
+dimensions:
+  attendee_num:
+    description: 'TEXT. PK & FK -> technicians.TechNum. The technician attending the session. Example: T-101.'
+    sql: '"AttendeeNum"'
+  course_ref:
+    description: 'TEXT. PK & FK -> training_sessions.SessionTag. The training session being attended. Example: SESS-03.'
+    sql: '"CourseRef"'
+  rating:
+    description: 'BIGINT. The technician''s rating of the session, on a scale (e.g., 1-5). Possible values: 3.0, 4.0, 5.0.'
+    sql: '"RATING"'
+  status:
+    description: 'TEXT. The technician''s attendance status for the session. Possible values: Completed, In Progress, Registered.'
+    sql: '"STATUS"'
+  final_score:
+    description: 'REAL. The final score or grade received by the technician, if applicable. Example: 95.5.'
+    sql: '"finalScore"'
+  registration_dt:
+    description: 'DATE. The date the technician registered for the session. Example: 2023-07-20.'
+    sql: registration_dt

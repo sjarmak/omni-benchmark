@@ -1,0 +1,75 @@
+label: discovery_teams
+description: All columns of the public table discovery_teams.
+catalog: planets_data_large
+schema: public
+table_name: discovery_teams
+dimensions:
+  country_primary:
+    description: 'text. Primary country where the team is based. Possible values: Belgium, Germany, Switzerland, UK, USA.'
+    sql: '"COUNTRY_PRIMARY"'
+  graduate_student_count:
+    description: 'bigint. Number of graduate students involved with the team. Possible values: 12, 15, 18, 24, 28, 35, 45, 89.'
+    sql: '"GRADUATE_STUDENT_COUNT"'
+  institution_primary:
+    description: 'text. Primary institution or organization affiliated with the team. Possible values: ESO, Harvard-Smithsonian CfA, MIT, NASA Ames, UC Berkeley, University of Geneva, University of Liège, University of Warwick.'
+    sql: '"InstitutionPrimary"'
+  last_activity_date:
+    description: 'date. Date of the team''s most recent research activity or publication. Possible values: 2023-09-30, 2023-10-15, 2023-11-25, 2023-12-20, 2024-01-25, 2024-01-30, 2024-02-10, 2024-02-15.'
+    sql: '"LastActivityDate"'
+  primary_instruments_used:
+    description: 'text. Main instruments or facilities used by the team. Possible values: ESPRESSO/VLT, HARPS, Kepler Space Telescope, Lick/Keck HIRES, MEarth-North/South, SuperWASP, TESS, TRAPPIST-North/South.'
+    sql: '"PRIMARY_INSTRUMENTS_USED"'
+  postdoc_count:
+    description: 'bigint. Number of postdoctoral researchers on the team. **NULL means postdoc count was not tracked.**. Possible values: 12.0, 18.0, 42.0, 6.0, 8.0.'
+    sql: '"PostdocCount"'
+  research_interests_keywords:
+    description: 'text. Keywords describing the team''s primary research interests and focus areas. Possible values: M dwarfs;transit photometry;habitable zone, exoplanet occurrence rates;habitable zone planets, exoplanet transits;stellar variability;asteroseismology, hot jupiters;transit timing variations;stellar activity, precision RV;planet-star interactions;Doppler spectroscopy, precision radial velocity;Earth-like planets;stellar characterization, radial velocity;hot jupiters;stellar activity, ultra-cool dwarfs;planetary systems;habitability.'
+    sql: '"RESEARCH_INTERESTS_KEYWORDS"'
+  specialization_area:
+    description: 'text. Primary area of research specialization (transit photometry, radial velocity, etc.). Possible values: M Dwarf Transit Survey, Precision Radial Velocity, Radial Velocity Surveys, Statistical Exoplanet Survey, Transit Photometry, Ultra-cool Dwarf Survey, Ultra-precision RV, Wide-field Transit Survey.'
+    sql: '"SpecializationArea"'
+  teamref:
+    description: 'bigint. Primary key identifier for discovery team records. PK. Possible values: 13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008.'
+    sql: '"TEAMREF"'
+  team_leader_orcid:
+    description: 'text. ORCID identifier of the team leader for unique researcher identification. **NULL means ORCID was not available or not recorded.**. Possible values: 0000-0002-7522-6685, 0000-0002-9003-484X, 0000-0003-2058-6662.'
+    sql: '"TEAM_LEADER_ORCID"'
+  team_status:
+    description: 'text. Current operational status of the team (active, inactive, disbanded, etc.). Possible values: Active, Archive Mode.'
+    sql: '"TEAM_STATUS"'
+  total_publications_count:
+    description: 'bigint. Total number of peer-reviewed publications by the team. Possible values: 1247, 156, 2156, 287, 342, 458, 67, 98.'
+    sql: '"TOTAL_PUBLICATIONS_COUNT"'
+  team_leader_name:
+    description: 'text. Name of the principal investigator or team leader. Possible values: Coel Hellier, David Charbonneau, Francesco Pepe, Geoffrey Marcy, George Ricker, Michaël Gillon, Michel Mayor, William Borucki.'
+    sql: '"TeamLeaderName"'
+  total_discoveries_count:
+    description: 'bigint. Total number of exoplanets discovered by the team. Possible values: 178, 187, 23, 234, 4034, 45, 73, 892.'
+    sql: '"TotalDiscoveriesCount"'
+  website_url:
+    description: 'text. URL of the team''s official website or project page. Possible values: http://exoplanets.org/, http://www.cfa.harvard.edu/MEarth/, https://tess.mit.edu/, https://wasp-planets.net/, https://www.astro.ulg.ac.be/, https://www.eso.org/sci/facilities/paranal/instruments/espresso/, https://www.nasa.gov/kepler/, https://www.unige.ch/sciences/astro/.'
+    sql: '"WebsiteUrl"'
+  active_since_year:
+    description: 'bigint. Year when the team first became active in exoplanet research. Possible values: 1987, 1995, 2004, 2008, 2009, 2010, 2017.'
+    sql: active_since_year
+  awards_recognitions:
+    description: 'text. List of awards, honors, or recognitions received by the team. **NULL means no awards were recorded.**. Possible values: Breakthrough Prize, RAS Group Achievement Award, Shaw Prize in Astronomy.'
+    sql: awards_recognitions
+  co_investigator_count:
+    description: 'bigint. Number of co-investigators on the team. Possible values: 15, 156, 22, 28, 34, 45, 67, 89.'
+    sql: co_investigator_count
+  collaboration_name:
+    description: 'text. Name of larger collaboration or consortium if applicable. Possible values: CPS Consortium, ESPRESSO Consortium, HARPS-HARPS-N Consortium, Kepler Mission, MEarth Collaboration, TESS Science Team, TRAPPIST Consortium, Wide Angle Search for Planets.'
+    sql: collaboration_name
+  data_sharing_policy:
+    description: 'text. Team''s policy regarding data sharing and public access to research data. Example: Collaborative Sharing.'
+    sql: data_sharing_policy
+  h_index_team:
+    description: 'real. H-index metric for the team''s collective publication impact. Possible values: 35, 48, 62, 71, 78, 85, 92, 98.'
+    sql: h_index_team
+  notes:
+    description: 'text. Additional notes or comments about the discovery team. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: notes
+  team_name:
+    description: 'text. Official name of the research or discovery team. Possible values: California Planet Search, ESPRESSO Team, Geneva Exoplanet Team, Kepler Science Team, MEarth Project, TESS Follow-up Program, TRAPPIST Team, WASP Consortium.'
+    sql: team_name

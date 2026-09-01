@@ -1,0 +1,99 @@
+label: CrewMember
+description: All columns of the public table CrewMember.
+catalog: polar_equipment_large
+schema: public
+table_name: CrewMember
+dimensions:
+  crew_token:
+    description: 'TEXT. Unique crew identifier. PK. Example: CRW-1000.'
+    sql: '"crewToken"'
+  crew_profile:
+    description: JSONB column. Combines biographical info, physical attributes, certifications, and readiness details for a crew member.
+    sql: crew_profile
+  crew_profile_bio_birth_date:
+    description: 'DATE (yyyy/mm/dd). Date of birth. Example: 1990/04/08.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'bio', 'birthDate')
+  crew_profile_bio_first_name:
+    description: 'TEXT. Given name. Example: Ethan.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'bio', 'firstName')
+  crew_profile_bio_last_name:
+    description: 'TEXT. Family name. Example: Clark.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'bio', 'lastName')
+  crew_profile_bio_nationality:
+    description: 'TEXT. Nationality (safe regions only). Possible values (from file): Brazil, Canada, France, Germany, India, Japan, UK, USA. Example: UK.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'bio', 'nationality')
+  crew_profile_certifications_driving_cert:
+    description: 'TEXT. Driving certification. Possible values (from file): Class A, Class B, Class C, Off-road. Example: Class B.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'certifications', 'drivingCert')
+  crew_profile_certifications_first_aid_cert:
+    description: 'TEXT. First-aid certification. Possible values (from file): Advanced, Basic, Wilderness. Example: Advanced.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'certifications', 'firstAidCert')
+  crew_profile_certifications_medical_clear:
+    description: 'TEXT. Current medical clearance. Possible values (from file): Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'certifications', 'medicalClear')
+  crew_profile_certifications_resp_fit_test_date:
+    description: 'DATE (yyyy/mm/dd). Respirator fit test date. Example: 2024/08/24.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'certifications', 'respFitTestDate')
+  crew_profile_certifications_rf_safety_cert:
+    description: 'TEXT. RF safety certification level. Possible values (from file): RF Level 1, RF Level 2, RF Level 3. Example: RF Level 2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'certifications', 'rfSafetyCert')
+  crew_profile_contact_email:
+    description: 'TEXT. Work email address. **NULL means member is on Leave and email contact is disabled.** Example: ethan.clark@mission.ai.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'contact', 'email')
+  crew_profile_contact_emergency_contact:
+    description: 'TEXT. Emergency contact name. Example: Emma Anderson.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'contact', 'emergencyContact')
+  crew_profile_contact_emergency_phone:
+    description: 'TEXT. Emergency contact phone. Example: +1-424-623-3305.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'contact', 'emergencyPhone')
+  crew_profile_contact_phone:
+    description: 'TEXT. Primary phone number. **NULL means contact-by-phone is intentionally withheld for Standby personnel.** Example: +1-844-828-4050.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'contact', 'phone')
+  crew_profile_experience_cold_exp_hrs:
+    description: 'REAL. Accumulated cold-weather exposure (hours). Example: 325.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'experience', 'coldExpHrs')
+  crew_profile_experience_heat_exp_hrs:
+    description: 'REAL. Accumulated heat-exposure (hours). Example: 178.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'experience', 'heatExpHrs')
+  crew_profile_experience_hire_date:
+    description: 'DATE (yyyy/mm/dd). Initial hire date. Example: 2020/09/11.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'experience', 'hireDate')
+  crew_profile_experience_last_training_date:
+    description: 'DATE (yyyy/mm/dd). Date of most recent training. Example: 2025/01/22.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'experience', 'lastTrainingDate')
+  crew_profile_experience_training_hrs_total:
+    description: 'REAL. Cumulative training hours. Example: 894.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'experience', 'trainingHrs_total')
+  crew_profile_experience_training_hrs_year:
+    description: 'REAL. Training hours in current year. Example: 142.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'experience', 'trainingHrs_year')
+  crew_profile_languages_language1:
+    description: 'TEXT. Primary working language. Possible values (from file): English, French, German, Hindi, Japanese, Portuguese, Spanish. Example: English.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'languages', 'language1')
+  crew_profile_languages_language2:
+    description: 'TEXT. Secondary language. **NULL means no distinct second language (same as language1 or not provided).** Example: Spanish.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'languages', 'language2')
+  crew_profile_languages_language3:
+    description: 'TEXT. Tertiary language. **NULL means no distinct third language (same as language1 or not provided).** Example: Portuguese.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'languages', 'language3')
+  crew_profile_notes_notes:
+    description: 'TEXT. Administrative/readiness note. **NULL means no extra note is needed for Active personnel.** Example: Recent wilderness first-aid refresher completed.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'notes', 'notes')
+  crew_profile_physique_blood_type:
+    description: 'TEXT. ABO/Rh group. Possible values (from file): A+, A-, B+, B-, O+, O-, AB+, AB-. Example: A-.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'physique', 'bloodType')
+  crew_profile_physique_height_cm:
+    description: 'REAL. Height (cm). Example: 168.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'physique', 'height_cm')
+  crew_profile_physique_weight_kg:
+    description: 'REAL. Body weight (kg). Example: 60.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'physique', 'weight_kg')
+  crew_profile_role_rank:
+    description: 'TEXT. Rank/grade. Possible values (from file): Captain, Chief Scientist, Engineer, First Officer, Medic, Operator, Technician. Example: First Officer.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'role', 'RANK')
+  crew_profile_role_crew_status:
+    description: 'TEXT. Personnel status. Possible values (from file): Active, Leave, Standby. Example: Active.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'role', 'crewStatus')
+  crew_profile_role_role:
+    description: 'TEXT. Primary duty role. Possible values (from file): Comms, Engineer, Mechanic, Medic, Navigator, Pilot, Safety, Scientist. Example: Scientist.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crew_profile, 'role', 'role')

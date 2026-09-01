@@ -1,0 +1,72 @@
+label: carrier_invoice_reconciliations
+description: All columns of the public table carrier_invoice_reconciliations.
+catalog: reverse_logistics_large
+schema: public
+table_name: carrier_invoice_reconciliations
+dimensions:
+  accessorial_fees_total:
+    description: 'REAL. Sum of all other accessorial fees (liftgate, etc.). **NULL means No accessorials.** Example: 5.0.'
+    sql: accessorial_fees_total
+  approver_user_ref:
+    description: TEXT. User ID of the person approving the invoice.
+    sql: approver_user_ref
+  audit_check_status:
+    description: 'TEXT. Status of the internal automated audit. Unique values: Passed, Failed, Pending.'
+    sql: audit_check_status
+  base_zone_charge:
+    description: 'REAL. Base shipping cost based on zone. Example: 12.0.'
+    sql: base_zone_charge
+  billed_weight_kg:
+    description: 'REAL. Weight charged by the carrier. Example: 5.0.'
+    sql: billed_weight_kg
+  billing_currency_code:
+    description: 'TEXT. Currency code of the invoice (e.g., USD, EUR). Unique values: USD, EUR, CAD, GBP.'
+    sql: billing_currency_code
+  carrier_entity_ref:
+    description: 'INTEGER. Reference to the carrier issuing the invoice. Example: 50.'
+    sql: carrier_entity_ref
+  contract_rate_ref:
+    description: TEXT. Reference to the contract rate card used for audit.
+    sql: contract_rate_ref
+  dimensional_weight_kg:
+    description: 'REAL. Dimensional weight calculated by the carrier. Example: 6.0.'
+    sql: dimensional_weight_kg
+  dispute_amount_value:
+    description: 'REAL. Monetary amount currently in dispute. **NULL means No active dispute.** Example: 10.0.'
+    sql: dispute_amount_value
+  dispute_status_code:
+    description: 'TEXT. Current status of any dispute on this invoice. Unique values: None, Open, Resolved-Won, Resolved-Lost.'
+    sql: dispute_status_code
+  fuel_surcharge_billed:
+    description: 'REAL. Fuel surcharge amount billed. Example: 2.5.'
+    sql: fuel_surcharge_billed
+  gl_code_allocation:
+    description: 'TEXT. General Ledger code for cost allocation. Unique values: GL-5001, GL-5002, GL-6001.'
+    sql: gl_code_allocation
+  invoice_number:
+    description: TEXT. Invoice number provided by the carrier.
+    sql: invoice_number
+  invoice_reconciliation_ref:
+    description: TEXT. Unique identifier for the reconciliation record.
+    sql: invoice_reconciliation_ref
+  payment_due_date:
+    description: TIMESTAMP. Date payment is due to the carrier.
+    sql: payment_due_date
+  reconciliation_timestamp:
+    description: 'TIMESTAMP. When the reconciliation record was created. Example: 2024-01-01 12:00:00.'
+    sql: reconciliation_timestamp
+  residential_surcharge:
+    description: 'REAL. Surcharge for residential delivery. Unique values: 0.0, 3.5.'
+    sql: residential_surcharge
+  shipment_tracking_ref:
+    description: TEXT. Reference to the specific shipment being billed.
+    sql: shipment_tracking_ref
+  tax_amount_total:
+    description: 'REAL. Total tax included in the invoice. Example: 1.5.'
+    sql: tax_amount_total
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct carrier_invoice_reconciliations public identity values.
+    label: carrier_invoice_reconciliations Count
+    sql: ${reverse_logistics_large_public__carrier_invoice_reconciliations.invoice_reconciliation_ref}

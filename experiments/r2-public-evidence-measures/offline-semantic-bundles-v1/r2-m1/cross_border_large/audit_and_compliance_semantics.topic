@@ -1,0 +1,27 @@
+base_view: cross_border_large_public__audit_and_compliance
+label: Audit and Compliance
+description: Audit rows with finding counts, data-subject request counts, response time, remediation deadlines, and same-row modeled semantics.
+fields:
+- cross_border_large_public__audit_and_compliance.*
+- cross_border_large_public__compliance.*
+- cross_border_large_public__data_flow.*
+- cross_border_large_public__data_profile.*
+- cross_border_large_public__risk_management.*
+- cross_border_large_public__security_profile.*
+- cross_border_large_public__vendor_management.*
+joins:
+  cross_border_large_public__compliance:
+    cross_border_large_public__risk_management: {}
+  cross_border_large_public__data_profile:
+    cross_border_large_public__data_flow: {}
+  cross_border_large_public__vendor_management:
+    cross_border_large_public__security_profile: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields audit_finding_severity, data_subject_request_load, is_critical_audit_issue, is_nearing_remediation_deadline, is_slow_remediation_timeline, request_breakdown rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - High Vendor Risk Concentration: A case where the current date minus the fix deadline is greater than zero
+
+  - Data Subject Request Pressure (DSRP): DSRP = (total number of data subject requests) multiplied by (response time)'

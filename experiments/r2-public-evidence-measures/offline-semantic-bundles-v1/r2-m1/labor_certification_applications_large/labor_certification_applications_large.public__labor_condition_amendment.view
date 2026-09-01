@@ -1,0 +1,72 @@
+label: LaborConditionAmendment
+description: All columns of the public table LaborConditionAmendment.
+catalog: labor_certification_applications_large
+schema: public
+table_name: LaborConditionAmendment
+dimensions:
+  lca_code:
+    description: 'TEXT. Unique identifier for labor condition amendment record. Example: LCA-1A2B3C.'
+    sql: '"LCA_code"'
+  amendment_date:
+    description: 'TIMESTAMP. Date when amendment was filed. Example: 2024-01-01 12:00:00.'
+    sql: '"amendmentDate"'
+  amendment_reason:
+    description: 'TEXT. Primary reason for the amendment. Unique values: Promotion, Relocation, Market Adjustment, Regulatory Change, Error Correction, Business Restructure.'
+    sql: '"amendmentReason"'
+  amendment_status:
+    description: 'TEXT. Current status of the amendment. Unique values: Certified, Pending, Denied, Withdrawn.'
+    sql: '"amendmentStatus"'
+  amendment_type:
+    description: 'TEXT. Type of amendment being filed. Unique values: Wage Increase, Worksite Change, Job Duty Change, Extension, Material Change, Correction.'
+    sql: '"amendmentType"'
+  compliance_review_required_flag:
+    description: 'BOOLEAN. Indicates if compliance review triggered. Possible values: True, False.'
+    sql: '"complianceReviewRequired_flag"'
+  document_pages_ct:
+    description: 'INTEGER. Number of pages in amendment documentation. Example: 8.'
+    sql: '"documentPages_ct"'
+  effective_date:
+    description: 'TIMESTAMP. Effective date of the amendment if approved. **NULL means Amendment not yet approved.** Example: 2024-01-01 12:00:00.'
+    sql: '"effectiveDate"'
+  elc_ref:
+    description: TEXT. Foreign key reference to EmployerLaborCondition table.
+    sql: elc_ref
+  filed_by_attorney_flag:
+    description: 'BOOLEAN. Indicates if amendment was filed by attorney. Possible values: True, False.'
+    sql: '"filedByAttorney_flag"'
+  impacted_workers_ct:
+    description: 'INTEGER. Number of workers impacted by this amendment. Example: 1.'
+    sql: '"impactedWorkers_ct"'
+  msa_changed_flag:
+    description: 'BOOLEAN. Indicates if Metropolitan Statistical Area changed. Possible values: True, False.'
+    sql: msa_changed_flag
+  new_prevailing_wage_usd:
+    description: 'REAL. New prevailing wage determination amount in USD. **NULL means Prevailing wage unchanged.** Example: 85000.'
+    sql: '"newPrevailingWage_USD"'
+  new_wage_usd:
+    description: 'REAL. New annual wage after amendment in USD. **NULL means Not a wage-related amendment.** Example: 98000.'
+    sql: '"newWage_USD"'
+  new_worksite_state:
+    description: 'TEXT. New worksite state if location changed. **NULL means Not a worksite change amendment.** Example: CA.'
+    sql: '"newWorksiteState"'
+  previous_wage_usd:
+    description: 'REAL. Previous annual wage before amendment in USD. **NULL means Not a wage-related amendment.** Example: 90000.'
+    sql: '"previousWage_USD"'
+  processing_time_days:
+    description: 'INTEGER. Days to process the amendment. **NULL means Amendment still processing.** Example: 7.'
+    sql: '"processingTime_days"'
+  public_notice_posted_flag:
+    description: 'BOOLEAN. Indicates if public notice was posted as required. Possible values: True, False.'
+    sql: '"publicNoticePosted_flag"'
+  union_notified_flag:
+    description: 'BOOLEAN. Indicates if union was notified if applicable. Possible values: True, False.'
+    sql: '"unionNotified_flag"'
+  wage_increase_pct:
+    description: 'REAL. Percentage increase in wage if applicable. **NULL means Not a wage-related amendment.** Example: 8.'
+    sql: '"wageIncrease_pct"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct LaborConditionAmendment public identity values.
+    label: LaborConditionAmendment Count
+    sql: ${labor_certification_applications_large_public__labor_condition_amendment.lca_code}

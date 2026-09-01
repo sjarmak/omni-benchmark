@@ -1,0 +1,87 @@
+label: worker_position_history
+description: All columns of the public table worker_position_history.
+catalog: labor_certification_applications_large
+schema: public
+table_name: worker_position_history
+dimensions:
+  end_day:
+    description: 'DATE. Position end date (or projected). Example: 2024-06-04.'
+    sql: '"END_day"'
+  poshist_code:
+    description: 'TEXT. Unique identifier for a worker-position entry. PK. Example: POS000001.'
+    sql: '"POSHIST_code"'
+  soc_ref:
+    description: 'TEXT. U.S. SOC-2018 occupation code. Example: 15-1252.'
+    sql: '"SOC_ref"'
+  zip_ref:
+    description: 'TEXT. Employer ZIP code (FK). Example: 32751.'
+    sql: '"ZIP_ref"'
+  client_name:
+    description: 'TEXT. End-client name. **NULL if position not client facing or client undisclosed.** Example: Initech.'
+    sql: '"clientNAME"'
+  client_site_flag:
+    description: 'TEXT. Work performed at client site? Values: Yes, No. Example: Yes.'
+    sql: '"clientSite_flag"'
+  compensation_components:
+    description: JSONB column. Collects all monetary elements of a historical position for downstream compensation analytics.
+    sql: compensation_components
+  employer_ref:
+    description: 'TEXT. Employer’s corporate handle (FK). Example: Avant Healthcare Professionals, LLC.'
+    sql: employer_ref
+  hours_per_week:
+    description: 'REAL. Average scheduled hours per week. Example: 49.9.'
+    sql: '"hoursPerWeek"'
+  night_shift_flag:
+    description: 'TEXT. Night-shift work required? **NULL if schedule details absent.** Values: Yes, No. Example: Yes.'
+    sql: '"nightShift_flag"'
+  overtime_flag:
+    description: 'TEXT. Eligible for overtime? Values: Yes, No. Example: Yes.'
+    sql: '"overtimeFLAG"'
+  reasoning_row:
+    description: 'TEXT. Analyst notes for the row. Example: Synthetic demo data.'
+    sql: '"reasoningRow"'
+  remote_pct:
+    description: 'REAL. Percentage of work performed remotely. **NULL when remote ratio unknown.** Example: 49.3.'
+    sql: remote_pct
+  site_dist:
+    description: 'TEXT. Commute distance descriptor. Example: 6 mi commute.'
+    sql: '"siteDist"'
+  start_day:
+    description: 'DATE. Position start date. Example: 2021-09-09.'
+    sql: '"startDAY"'
+  super_visor:
+    description: 'TEXT. Direct supervisor’s name. Example: Jane Doe.'
+    sql: '"superVisor"'
+  supervisor_phone:
+    description: 'TEXT. Supervisor’s phone. Example: +1-229-429-1783.'
+    sql: '"supervisorPhone"'
+  tenure_span:
+    description: 'TEXT. Human readable tenure span. Example: 16 months.'
+    sql: '"tenureSpan"'
+  termination_reason:
+    description: 'TEXT. Reason for separation. Possible values: Resigned, Laid off, End of contract, Terminated for cause, Still employed. Example: Resigned.'
+    sql: '"terminationReason"'
+  title_held:
+    description: 'TEXT. Job title held. Example: Software Engineer.'
+    sql: '"titleHeld"'
+  travel_pct:
+    description: 'REAL. Percentage of time spent travelling. Example: 49.7.'
+    sql: travel_pct
+  weekend_shift_flag:
+    description: 'TEXT. Weekend work required? Values: Yes, No. Example: Yes.'
+    sql: '"weekendShift_flag"'
+  worker_ref:
+    description: 'TEXT. FK to worker_profile.worker_CODE. Example: W000001.'
+    sql: worker_ref
+  compensation_components_bonus_usd:
+    description: 'REAL. Annual bonus amount, USD. **NULL means no bonus awarded or figure undisclosed.** Example: 2 713.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compensation_components, 'bonus_usd')
+  compensation_components_per_diem_usd_day:
+    description: 'REAL. Daily per-diem allowance, USD. **NULL when no per diem applies or value unknown.** Example: 270.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compensation_components, 'per_diem_usd_day')
+  compensation_components_stock_usd:
+    description: 'REAL. Annualized stock/equity grant value, USD. Example: 14 833.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compensation_components, 'stock_usd')
+  compensation_components_wage_rate_usd_hr:
+    description: 'REAL. Base wage rate, USD per hour (annual converted ÷2080 if needed). Example: 65.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compensation_components, 'wage_rate_usd_hr')

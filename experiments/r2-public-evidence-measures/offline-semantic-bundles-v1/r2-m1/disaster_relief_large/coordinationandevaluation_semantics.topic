@@ -1,0 +1,21 @@
+base_view: disaster_relief_large_public__coordinationandevaluation
+label: Coordination and Evaluation
+description: Coordination and evaluation records with row-level quality, accountability, and effectiveness semantics.
+fields:
+- disaster_relief_large_public__coordinationandevaluation.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__operations.*
+joins:
+  disaster_relief_large_public__disasterevents: {}
+  disaster_relief_large_public__operations: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields coordination_quality_index, is_high_accountability_response rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - High-Risk Operation: An operation is ''High-Risk'' if it has a ''High Risk'' safety ranking OR if the number of security incidents exceeds 5 per week.
+
+  - Negative Media Narrative: A ''Negative Media Narrative'' is present if the media coverage sentiment is ''Negative'' and the public perception score is below 60.
+
+  - Data Quality Value: A score above 90 is ''Excellent''. 70-89 is ''Good''. 50-69 is ''Fair''. Below 50 is ''Poor'' and indicates that operational decisions are based on unreliable information.'

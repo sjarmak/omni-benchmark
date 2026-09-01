@@ -1,0 +1,108 @@
+label: energy_consumption
+description: All columns of the public table energy_consumption.
+catalog: residential_data_large
+schema: public
+table_name: energy_consumption
+dimensions:
+  backup_power_hours:
+    description: 'REAL. Hours of backup power available. **NULL means backup power not available or tracked.**. Possible values: 0.0, 2.5.'
+    sql: '"Backup_Power_Hours"'
+  battery_storage_kwh:
+    description: 'REAL. Battery storage capacity in kilowatt hours. **NULL means battery storage not available.**. Possible values: 0.0, 12.5, 18.5.'
+    sql: '"Battery_Storage_KWH"'
+  carbon_footprint_kg_co2:
+    description: 'REAL. Carbon footprint in kilograms of CO2. **NULL means carbon footprint not calculated.**. Possible values: 425.8, 445.8, 685.2.'
+    sql: '"CARBON_footprint_kg_co2"'
+  consumption_id:
+    description: 'BIGSERIAL. Primary key identifier for energy consumption record. PK. Possible values: 1, 2, 3, 4.'
+    sql: '"Consumption_ID"'
+  demand_charges_brl:
+    description: 'REAL. Demand charges in Brazilian Real. Possible values: 0.0, 45.2, 48.75, 58.9.'
+    sql: '"DEMAND_charges_brl"'
+  energy_audit_recommendations_count:
+    description: 'BIGINT. Number of energy audit recommendations. **NULL means energy audit not conducted.**. Possible values: 3.0, 4.0, 5.0.'
+    sql: '"ENERGY_audit_recommendations_count"'
+  energy_consumption_household_tracker:
+    description: 'BIGINT. Reference to household for energy consumption tracking. FK to households(housenum). Possible values: 22, 4, 547, 7.'
+    sql: '"Energy_Consumption_Household_Tracker"'
+  energy_cost_per_kwh_brl:
+    description: 'REAL. Energy cost per kilowatt hour in Brazilian Real. **NULL means per-unit pricing not tracked.**. Possible values: 0.58, 0.62, 0.65.'
+    sql: '"Energy_Cost_Per_KWH_BRL"'
+  energy_efficiency_score:
+    description: 'BIGINT. Energy efficiency rating score. **NULL means efficiency not assessed.**. Possible values: 6.0, 7.0, 8.0.'
+    sql: '"Energy_Efficiency_Score"'
+  hvac_efficiency_rating:
+    description: 'BIGINT. HVAC system efficiency rating. **NULL means HVAC efficiency not assessed.**. Possible values: 8.0, 9.0.'
+    sql: '"HVAC_efficiency_rating"'
+  peak_demand_kw:
+    description: 'REAL. Peak energy demand in kilowatts. Possible values: 12.8, 6.2, 8.5, 9.2.'
+    sql: '"PEAK_demand_kw"'
+  smart_meter_data_points:
+    description: 'BIGINT. Number of smart meter data points collected. **NULL means smart meter not installed or data not collected.**. Possible values: 2880.0, 4320.0.'
+    sql: '"Smart_Meter_Data_Points"'
+  time_of_use_optimization_savings_brl:
+    description: 'REAL. Savings from time-of-use optimization in Brazilian Real. **NULL means optimization savings not calculated.**. Possible values: 15.2, 28.5, 32.8.'
+    sql: '"TIME_of_use_optimization_savings_brl"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  window_efficiency_rating:
+    description: 'BIGINT. Window energy efficiency rating. **NULL means window efficiency not evaluated.**. Possible values: 5.0, 7.0, 8.0.'
+    sql: '"Window_Efficiency_Rating"'
+  consumption_breakdown:
+    description: JSONB column. Detailed breakdown of energy usage by category and type for comprehensive consumption analysis and efficiency tracking.
+    sql: consumption_breakdown
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: created_at
+  energy_cost_total_brl:
+    description: 'REAL. Total energy costs in Brazilian Real. **NULL means cost data not available.**. Possible values: 285.9, 342.65, 485.6.'
+    sql: '"energy_cost_TOTAL_brl"'
+  grid_reliability_outages:
+    description: 'BIGINT. Number of grid outages experienced. **NULL means outage tracking not available.**. Possible values: 1.0, 2.0.'
+    sql: '"grid_reliability_OUTAGES"'
+  insulation_quality_score:
+    description: 'BIGINT. Insulation quality rating score. **NULL means insulation not assessed.**. Possible values: 6.0, 7.0, 8.0.'
+    sql: '"insulation_quality_SCORE"'
+  measurement_month:
+    description: 'DATE. Month and year for energy consumption measurement. Possible values: 2025-07-01, 2025-08-01.'
+    sql: '"measurement_MONTH"'
+  off_peak_usage_percent:
+    description: 'REAL. Percentage of energy used during off-peak hours. **NULL means off-peak usage not tracked.**. Possible values: 65.2, 68.5.'
+    sql: '"off_peak_USAGE_percent"'
+  renewable_energy_percent:
+    description: 'REAL. Percentage of energy from renewable sources. **NULL means renewable energy tracking not available.**. Possible values: 0.0, 18.5, 22.1.'
+    sql: '"renewable_energy_PERCENT"'
+  solar_generation_kwh:
+    description: 'REAL. Solar energy generation in kilowatt hours. Possible values: 0.0, 125.5, 145.8, 85.2.'
+    sql: '"solar_generation_KWH"'
+  consumption_breakdown_electricity_usage_kwh_appliances_kwh:
+    description: 'REAL. Appliance energy consumption in kilowatt hours. **NULL means appliance consumption not measured separately.**. Possible values: 145.8, 158.9, 98.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(consumption_breakdown, 'electricity_usage_kwh', 'Appliances_KWH')
+  consumption_breakdown_electricity_usage_kwh_cooling_kwh:
+    description: 'REAL. Cooling energy consumption in kilowatt hours. **NULL means cooling consumption not measured.**. Possible values: 0.0, 185.6, 285.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(consumption_breakdown, 'electricity_usage_kwh', 'COOLING_kwh')
+  consumption_breakdown_electricity_usage_kwh_electricity_kwh:
+    description: 'REAL. Electricity consumption in kilowatt hours. **NULL means electricity consumption not measured.**. Possible values: 485.2, 512.5, 752.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(consumption_breakdown, 'electricity_usage_kwh', 'Electricity_KWH')
+  consumption_breakdown_electricity_usage_kwh_heating_kwh:
+    description: 'REAL. Heating energy consumption in kilowatt hours. **NULL means heating consumption not separately tracked.**. Possible values: 0.0, 45.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(consumption_breakdown, 'electricity_usage_kwh', 'Heating_KWH')
+  consumption_breakdown_electricity_usage_kwh_lighting_kwh:
+    description: 'REAL. Lighting energy consumption in kilowatt hours. **NULL means lighting consumption not tracked separately.**. Possible values: 28.5, 38.9, 45.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(consumption_breakdown, 'electricity_usage_kwh', 'LIGHTING_kwh')
+  consumption_breakdown_electricity_usage_kwh_hot_water_kwh:
+    description: 'REAL. Hot water heating energy consumption in kilowatt hours. **NULL means hot water consumption not tracked separately.**. Possible values: 102.8, 125.8, 95.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(consumption_breakdown, 'electricity_usage_kwh', 'hot_water_KWH')
+  consumption_breakdown_other_utilities_gas_m3:
+    description: 'REAL. Gas consumption in cubic meters. **NULL means gas consumption not tracked.**. Possible values: 18.7, 25.8, 28.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(consumption_breakdown, 'other_utilities', 'GAS_m3')
+  consumption_breakdown_other_utilities_water_liters:
+    description: 'REAL. Water consumption in liters. **NULL means water usage not monitored.**. Possible values: 12500.0, 15800.0, 8950.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(consumption_breakdown, 'other_utilities', 'water_LITERS')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct energy_consumption public identity values.
+    label: energy_consumption Count
+    sql: ${residential_data_large_public__energy_consumption.consumption_id}

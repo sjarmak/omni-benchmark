@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__buyer_device_fingerprints
+label: buyer_device_fingerprints
+description: All columns of the public table buyer_device_fingerprints.
+fields:
+- cybermarket_pattern_large_public__buyer_device_fingerprints.*
+- cybermarket_pattern_large_public__buyers.*
+joins:
+  cybermarket_pattern_large_public__buyers: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

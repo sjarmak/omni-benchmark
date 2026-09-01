@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__products
+label: products
+description: All columns of the public table products.
+fields:
+- robot_fault_prediction_large_public__products.*
+joins: {}
+ai_context: This topic models no cross-table joins.

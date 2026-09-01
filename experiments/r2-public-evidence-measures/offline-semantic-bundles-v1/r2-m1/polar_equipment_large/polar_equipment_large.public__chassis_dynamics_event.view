@@ -1,0 +1,108 @@
+label: ChassisDynamicsEvent
+description: All columns of the public table ChassisDynamicsEvent.
+catalog: polar_equipment_large
+schema: public
+table_name: ChassisDynamicsEvent
+dimensions:
+  brake_press_k_pa:
+    description: 'REAL. Brake hydraulic pressure (kPa). Example: 4325.7.'
+    sql: '"brakePress_kPa"'
+  brake_temp_c:
+    description: 'REAL. Brake component temperature (°C). **NULL means brakes not applied (brakePress_kPa = 0).** Example: 215.4.'
+    sql: '"brakeTemp_C"'
+  ch_record:
+    description: BIGSERIAL. Surrogate primary key for the dynamics row. PK.
+    sql: '"chRecord"'
+  comment:
+    description: 'TEXT. Freeform event note. **NULL means steady cruise (|longAccel_mps2| < 0.2 and |yawRate_dps| < 1.0) with no remark captured.** Example: Hard braking event recorded.'
+    sql: comment
+  drawbar_pull_n:
+    description: 'REAL. Drawbar pull (N). **NULL means Eco mode where pull was not measured.** Example: 1840.6.'
+    sql: '"drawbarPull_N"'
+  driver_id:
+    description: 'TEXT. Driver or controller ID. Possible values (from file): DriverA, DriverB, DriverC, TestEngineer, Autopilot. Example: TestEngineer.'
+    sql: '"driverID"'
+  for_chassis:
+    description: 'BIGINT. FK to ChassisAndVehicle(CHASSIS_ID). Example: 31012.'
+    sql: for_chassis
+  grade_deg:
+    description: 'REAL. Road grade (degrees; + uphill). Example: 3.2.'
+    sql: grade_deg
+  heading_deg:
+    description: 'REAL. Heading/course over ground (0–360°). Example: 278.4.'
+    sql: heading_deg
+  impulse_ns:
+    description: 'REAL. Impulse during event window (N·s). Example: 21450.7.'
+    sql: '"impulse_Ns"'
+  lat_accel_mps2:
+    description: 'REAL. Lateral acceleration (m/s²). Example: 3.87.'
+    sql: '"latAccel_mps2"'
+  load_kg:
+    description: 'REAL. Vehicle load (kg). Example: 2410.0.'
+    sql: load_kg
+  long_accel_mps2:
+    description: 'REAL. Longitudinal acceleration (m/s²). Example: -1.32.'
+    sql: '"longAccel_mps2"'
+  mode:
+    description: 'TEXT. Vehicle operating mode. Possible values (from file): Eco, Normal, Sport, Offroad, Autonomous. Example: Sport.'
+    sql: mode
+  momentum_kgms:
+    description: 'REAL. Linear momentum (kg·m/s). Example: 65959.5.'
+    sql: momentum_kgms
+  pitch_rate_dps:
+    description: 'REAL. Pitch rate (°/s). Example: -1.35.'
+    sql: '"pitchRate_dps"'
+  power_w:
+    description: 'REAL. Instantaneous power estimate (W). Example: 154320.0.'
+    sql: '"power_W"'
+  roll_rate_dps:
+    description: 'REAL. Roll rate (°/s). Example: 2.10.'
+    sql: '"rollRate_dps"'
+  speed_mps:
+    description: 'REAL. Vehicle speed (m/s). Example: 27.45.'
+    sql: speed_mps
+  steer_angle_deg:
+    description: 'REAL. Steering wheel angle (degrees). **NULL means vehicle is stationary (speed_mps < 1) and angle not captured.** Example: -135.0.'
+    sql: '"steerAngle_deg"'
+  susp_fl_mm:
+    description: 'REAL. Front-left suspension travel (mm). **NULL means test mode ''Autonomous'' where this sensor was skipped.** Example: 48.3.'
+    sql: '"suspFL_mm"'
+  susp_fr_mm:
+    description: 'REAL. Front-right suspension travel (mm). Example: 51.7.'
+    sql: '"suspFR_mm"'
+  susp_rl_mm:
+    description: 'REAL. Rear-left suspension travel (mm). Example: 22.5.'
+    sql: '"suspRL_mm"'
+  susp_rr_mm:
+    description: 'REAL. Rear-right suspension travel (mm). Example: 24.9.'
+    sql: '"suspRR_mm"'
+  tire_fl_mps:
+    description: 'REAL. Front-left tire linear speed (m/s). Example: 26.88.'
+    sql: '"tireFL_mps"'
+  tire_fr_mps:
+    description: 'REAL. Front-right tire linear speed (m/s). Example: 27.12.'
+    sql: '"tireFR_mps"'
+  tire_rl_mps:
+    description: 'REAL. Rear-left tire linear speed (m/s). Example: 26.74.'
+    sql: '"tireRL_mps"'
+  tire_rr_mps:
+    description: 'REAL. Rear-right tire linear speed (m/s). Example: 26.90.'
+    sql: '"tireRR_mps"'
+  tractive_eff_pct:
+    description: 'REAL. Tractive efficiency (%). Example: 87.5.'
+    sql: '"tractiveEff_pct"'
+  ts:
+    description: 'TIMESTAMP (dd-MMM-yyyy HH:MM:SS). Event timestamp. Example: 05-Jul-2025 20:00:00.'
+    sql: ts
+  vert_accel_mps2:
+    description: 'REAL. Vertical acceleration (m/s²). Example: 0.42.'
+    sql: '"vertAccel_mps2"'
+  yaw_rate_dps:
+    description: 'REAL. Yaw rate (°/s). Example: -4.75.'
+    sql: '"yawRate_dps"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ChassisDynamicsEvent public identity values.
+    label: ChassisDynamicsEvent Count
+    sql: ${polar_equipment_large_public__chassis_dynamics_event.ch_record}

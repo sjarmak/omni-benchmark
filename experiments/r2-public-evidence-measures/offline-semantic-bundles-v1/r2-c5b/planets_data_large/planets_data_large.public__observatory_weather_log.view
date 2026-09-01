@@ -1,0 +1,60 @@
+label: ObservatoryWeatherLog
+description: All columns of the public table ObservatoryWeatherLog.
+catalog: planets_data_large
+schema: public
+table_name: ObservatoryWeatherLog
+dimensions:
+  dew_point_c:
+    description: 'REAL. Dew point temperature in Celsius Typical range: -30 to 25.'
+    sql: '"DEW_POINT_C"'
+  dome_status:
+    description: 'TEXT. Observatory dome status Possible values: Open, Closed, Partially Open, Maintenance.'
+    sql: '"DOME_STATUS"'
+  humidity_pct:
+    description: 'REAL. Relative humidity percentage Typical range: 0 to 100.'
+    sql: '"HUMIDITY_PCT"'
+  observation_timestamp:
+    description: TIMESTAMP WITHOUT TIME ZONE. Timestamp of weather reading
+    sql: '"OBSERVATION_TIMESTAMP"'
+  observatory_site:
+    description: 'TEXT. Observatory site name Possible values: Mauna Kea, Cerro Paranal, La Silla, Roque de los Muchachos, Kitt Peak, Sutherland, Siding Spring, ALMA Chajnantor.'
+    sql: '"OBSERVATORY_SITE"'
+  photometric_night:
+    description: BOOLEAN. Whether night is photometric quality Boolean flag (true/false).
+    sql: '"PHOTOMETRIC_NIGHT"'
+  seeing_arcsec:
+    description: 'REAL. Atmospheric seeing in arcseconds Typical range: 0.2 to 5.0.'
+    sql: '"SEEING_ARCSEC"'
+  weather_alert:
+    description: 'TEXT. Active weather alert if any Possible values: None, Wind Warning, Humidity Alert, Cloud Warning, Dust Advisory. **NULL means No alert active.**'
+    sql: '"WEATHER_ALERT"'
+  weather_log_id:
+    description: BIGINT. Primary key. Unique weather log entry identifier
+    sql: '"WEATHER_LOG_ID"'
+  wind_direction_deg:
+    description: 'REAL. Wind direction in degrees Typical range: 0 to 360.'
+    sql: '"WIND_DIRECTION_DEG"'
+  ambient_temperature_c:
+    description: 'REAL. Ambient temperature in Celsius Typical range: -20 to 40.'
+    sql: ambient_temperature_c
+  barometric_pressure_hpa:
+    description: 'REAL. Barometric pressure in hPa Typical range: 600 to 1050.'
+    sql: barometric_pressure_hpa
+  cloud_cover_pct:
+    description: 'REAL. Cloud cover percentage Typical range: 0 to 100.'
+    sql: cloud_cover_pct
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  observing_conditions_ok:
+    description: BOOLEAN. Whether conditions allow observing Boolean flag (true/false).
+    sql: observing_conditions_ok
+  precipitable_water_mm:
+    description: 'REAL. Precipitable water vapor in mm Typical range: 0.1 to 20.'
+    sql: precipitable_water_mm
+  sky_brightness_mag:
+    description: 'REAL. Sky brightness in mag/arcsec^2 Typical range: 17 to 22.5.'
+    sql: sky_brightness_mag
+  wind_speed_ms:
+    description: 'REAL. Wind speed in m/s Typical range: 0 to 40.'
+    sql: wind_speed_ms

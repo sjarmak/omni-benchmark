@@ -1,0 +1,294 @@
+- join_from_view: reverse_logistics_large_public__automated_sorting_machine_events
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__automated_sorting_machine_events.sorted_item_ref} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__environmental_alert_history
+  join_to_view: reverse_logistics_large_public__warehouse_climate_sensor_logs
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__environmental_alert_history.triggering_log_ref} = ${reverse_logistics_large_public__warehouse_climate_sensor_logs.sensor_log_sequence}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__refurbishment_job_logs
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__refurbishment_job_logs.related_return_case} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__returns
+  join_to_view: reverse_logistics_large_public__orders
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__returns.srctxn} = ${reverse_logistics_large_public__orders.txnnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__circular_economy_impact_reports
+  join_to_view: reverse_logistics_large_public__product_disposal_guidelines
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__circular_economy_impact_reports.disposal_guideline_ref} = ${reverse_logistics_large_public__product_disposal_guidelines.guideline_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__sorter_jam_incidents
+  join_to_view: reverse_logistics_large_public__automated_sorting_machine_events
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__sorter_jam_incidents.related_sort_event} = ${reverse_logistics_large_public__automated_sorting_machine_events.sort_event_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__carrier_invoice_reconciliations
+  join_to_view: reverse_logistics_large_public__order_shipment_details
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__carrier_invoice_reconciliations.shipment_tracking_ref} = ${reverse_logistics_large_public__order_shipment_details.shipment_tracking_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__return_package_inspections
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__return_package_inspections.related_return_case} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__return_packaging_inventory
+  join_to_view: reverse_logistics_large_public__warehouses
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__return_packaging_inventory.warehouse_loc_ref} = ${reverse_logistics_large_public__warehouses.warehouse_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__order_shipment_details
+  join_to_view: reverse_logistics_large_public__orders
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__order_shipment_details.linked_order_transaction} = ${reverse_logistics_large_public__orders.txnnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__product_component_details
+  join_to_view: reverse_logistics_large_public__products
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__product_component_details.associated_product_item} = ${reverse_logistics_large_public__products.itemcode}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__refurb_qa_checklists
+  join_to_view: reverse_logistics_large_public__refurbishment_job_logs
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__refurb_qa_checklists.refurb_job_ref} = ${reverse_logistics_large_public__refurbishment_job_logs.job_log_reference}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__recycled_material_sales
+  join_to_view: reverse_logistics_large_public__circular_economy_impact_reports
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__recycled_material_sales.source_impact_report} = ${reverse_logistics_large_public__circular_economy_impact_reports.impact_report_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__warehouse_staff_assignments
+  join_to_view: reverse_logistics_large_public__warehouses
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__warehouse_staff_assignments.workplace_location} = ${reverse_logistics_large_public__warehouses.warehouse_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__return_packaging_inventory
+  join_to_view: reverse_logistics_large_public__suppliers
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__return_packaging_inventory.supplier_source_ref} = ${reverse_logistics_large_public__suppliers.supplier_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__customer_appeals_records
+  join_to_view: reverse_logistics_large_public__customers
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__customer_appeals_records.appealing_customer_ref} = ${reverse_logistics_large_public__customers.profilenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__warehouse_staff_assignments
+  join_to_view: reverse_logistics_large_public__employees
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__warehouse_staff_assignments.assigned_staff_member} = ${reverse_logistics_large_public__employees.employee_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__financial_management
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__financial_management.casetag} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__automated_sorting_machine_events
+  join_to_view: reverse_logistics_large_public__warehouses
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__automated_sorting_machine_events.facility_code_ref} = ${reverse_logistics_large_public__warehouses.warehouse_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__warehouse_climate_sensor_logs
+  join_to_view: reverse_logistics_large_public__warehouses
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__warehouse_climate_sensor_logs.monitored_warehouse_ref} = ${reverse_logistics_large_public__warehouses.warehouse_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__liquidation_buyer_feedback
+  join_to_view: reverse_logistics_large_public__liquidation_auction_lots
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__liquidation_buyer_feedback.auction_lot_ref} = ${reverse_logistics_large_public__liquidation_auction_lots.auction_lot_reference}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__repair_parts_inventory
+  join_to_view: reverse_logistics_large_public__suppliers
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__repair_parts_inventory.supplier_id_for_part} = ${reverse_logistics_large_public__suppliers.supplier_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__carrier_invoice_reconciliations
+  join_to_view: reverse_logistics_large_public__transportation_carriers
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__carrier_invoice_reconciliations.carrier_entity_ref} = ${reverse_logistics_large_public__transportation_carriers.carrier_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__refurbishment_job_logs
+  join_to_view: reverse_logistics_large_public__employees
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__refurbishment_job_logs.technician_employee_ref} = ${reverse_logistics_large_public__employees.employee_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__carrier_supported_regions
+  join_to_view: reverse_logistics_large_public__transportation_carriers
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__carrier_supported_regions.servicing_carrier_id} = ${reverse_logistics_large_public__transportation_carriers.carrier_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__product_supplier_link
+  join_to_view: reverse_logistics_large_public__suppliers
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__product_supplier_link.supplier_providing_product} = ${reverse_logistics_large_public__suppliers.supplier_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__packaging_compliance_certs
+  join_to_view: reverse_logistics_large_public__return_packaging_inventory
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__packaging_compliance_certs.packaging_sku_ref} = ${reverse_logistics_large_public__return_packaging_inventory.material_sku_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__freight_audit_discrepancies
+  join_to_view: reverse_logistics_large_public__carrier_invoice_reconciliations
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__freight_audit_discrepancies.invoice_recon_ref} = ${reverse_logistics_large_public__carrier_invoice_reconciliations.invoice_reconciliation_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__circular_economy_impact_reports
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__circular_economy_impact_reports.return_case_ref} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__liquidation_auction_lots
+  join_to_view: reverse_logistics_large_public__products
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__liquidation_auction_lots.dominant_sku_ref} = ${reverse_logistics_large_public__products.itemcode}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__return_fraud_flags
+  join_to_view: reverse_logistics_large_public__fraud_detection_rules
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__return_fraud_flags.triggered_fraud_alert_rule} = ${reverse_logistics_large_public__fraud_detection_rules.rule_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__financial_transaction_audits
+  join_to_view: reverse_logistics_large_public__financial_management
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__financial_transaction_audits.audited_credit_reference} = ${reverse_logistics_large_public__financial_management.creditref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__vendor_credit_memos
+  join_to_view: reverse_logistics_large_public__supplier_recovery_claims
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__vendor_credit_memos.recovery_claim_link} = ${reverse_logistics_large_public__supplier_recovery_claims.recovery_claim_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__product_disposal_guidelines
+  join_to_view: reverse_logistics_large_public__products
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__product_disposal_guidelines.product_to_dispose} = ${reverse_logistics_large_public__products.itemcode}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__dropoff_location_audits
+  join_to_view: reverse_logistics_large_public__omnichannel_return_points
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__dropoff_location_audits.target_return_point} = ${reverse_logistics_large_public__omnichannel_return_points.return_point_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__case_management
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__case_management.casetie} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__customer_appeals_records
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__customer_appeals_records.disputed_return_ref} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__supplier_recovery_claims
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__supplier_recovery_claims.related_return_ref} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__appeal_compliance_checks
+  join_to_view: reverse_logistics_large_public__customer_appeals_records
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__appeal_compliance_checks.target_appeal_ref} = ${reverse_logistics_large_public__customer_appeals_records.appeal_record_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__product_disposal_guidelines
+  join_to_view: reverse_logistics_large_public__disposal_vendors
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__product_disposal_guidelines.preferred_disposal_agent} = ${reverse_logistics_large_public__disposal_vendors.vendor_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__liquidation_auction_lots
+  join_to_view: reverse_logistics_large_public__warehouses
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__liquidation_auction_lots.storage_location_ref} = ${reverse_logistics_large_public__warehouses.warehouse_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__case_escalation_records
+  join_to_view: reverse_logistics_large_public__case_management
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__case_escalation_records.originating_case_link} = ${reverse_logistics_large_public__case_management.casetie}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__product_supplier_link
+  join_to_view: reverse_logistics_large_public__products
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__product_supplier_link.product_reference} = ${reverse_logistics_large_public__products.itemcode}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__supplier_recovery_claims
+  join_to_view: reverse_logistics_large_public__suppliers
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__supplier_recovery_claims.supplier_entity_ref} = ${reverse_logistics_large_public__suppliers.supplier_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__omnichannel_return_points
+  join_to_view: reverse_logistics_large_public__transportation_carriers
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__omnichannel_return_points.pickup_carrier_ref} = ${reverse_logistics_large_public__transportation_carriers.carrier_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__return_fraud_flags
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__return_fraud_flags.flagged_return_case} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__customer_communication_logs
+  join_to_view: reverse_logistics_large_public__customers
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__customer_communication_logs.logged_customer_profile} = ${reverse_logistics_large_public__customers.profilenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__quality_assessment
+  join_to_view: reverse_logistics_large_public__returns
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__quality_assessment.inspectref} = ${reverse_logistics_large_public__returns.casenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: reverse_logistics_large_public__returns
+  join_to_view: reverse_logistics_large_public__products
+  join_type: always_left
+  on_sql: ${reverse_logistics_large_public__returns.itemlink} = ${reverse_logistics_large_public__products.itemcode}
+  relationship_type: many_to_one
+  reversible: false

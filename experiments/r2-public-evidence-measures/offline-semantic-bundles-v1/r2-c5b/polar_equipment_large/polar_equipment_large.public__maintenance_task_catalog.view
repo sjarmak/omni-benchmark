@@ -1,0 +1,105 @@
+label: MaintenanceTaskCatalog
+description: All columns of the public table MaintenanceTaskCatalog.
+catalog: polar_equipment_large
+schema: public
+table_name: MaintenanceTaskCatalog
+dimensions:
+  doc_ref:
+    description: 'TEXT. Document or drawing reference. Example: DOC-7841.'
+    sql: '"docRef"'
+  post_run_min:
+    description: 'REAL. Post-run time after service (minutes). Example: 20.0.'
+    sql: '"postRunMin"'
+  skill_level:
+    description: 'TEXT. Required technician skill level. Possible values: Beginner, Intermediate, Advanced. Example: Intermediate.'
+    sql: '"skillLevel"'
+  task_code_token:
+    description: 'TEXT. Unique maintenance task code. PK. Example: MT-2007.'
+    sql: '"taskCodeToken"'
+  task_specs:
+    description: JSONB column. Groups procedure, requirements, risk and PPE, and resource needs for a maintenance task.
+    sql: task_specs
+  task_specs_identity_description:
+    description: 'TEXT. Short procedure description. Example: Use lockout-tagout and verify zero energy before work.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'identity', 'description')
+  task_specs_identity_task_category:
+    description: 'TEXT. Task category. Possible values (from file): Electrical, Mechanical, Hydraulics, Pneumatics, Controls, Safety, Calibration. Example: Calibration.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'identity', 'taskCategory')
+  task_specs_identity_task_name:
+    description: 'TEXT. Human-readable task name. Example: Calibrate pressure sensor.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'identity', 'taskName')
+  task_specs_meta_created_at:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Task record creation time. Example: 2025/06/12 09:30:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'meta', 'createdAt')
+  task_specs_meta_notes:
+    description: 'TEXT. Additional task notes. Example: Use calibrated torque wrench; record highest reading.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'meta', 'notes')
+  task_specs_meta_owner:
+    description: 'TEXT. Owning department. Possible values: Maintenance, Ops, QA, Engineering. Example: Maintenance.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'meta', 'owner')
+  task_specs_meta_updated_at:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Last update time. Example: 2025/06/20 08:45:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'meta', 'updatedAt')
+  task_specs_meta_version:
+    description: 'TEXT. Task version string. Example: v2.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'meta', 'version')
+  task_specs_procedure_cal_req:
+    description: 'TEXT. Calibration required? Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'procedure', 'calReq')
+  task_specs_procedure_expected_duration_h:
+    description: 'REAL. Planned duration (hours). Example: 2.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'procedure', 'expectedDuration_h')
+  task_specs_procedure_lockout_tagout:
+    description: 'TEXT. Whether LOTO is required. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'procedure', 'lockoutTagout')
+  task_specs_procedure_procedure_ref:
+    description: 'TEXT. Procedure reference ID. Example: PROC-412.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'procedure', 'procedureRef')
+  task_specs_procedure_quality_check:
+    description: 'TEXT. QC requirement. Possible values: QC-Spot, QC-100%, QC-N/A. Example: QC-Spot.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'procedure', 'qualityCheck')
+  task_specs_procedure_requires_shutdown:
+    description: 'TEXT. Whether equipment shutdown is required. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'procedure', 'requiresShutdown')
+  task_specs_requirements_check_clearance_mm:
+    description: 'REAL. Clearance check (mm). Example: 0.35.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'checkClearance_mm')
+  task_specs_requirements_check_torque_nm:
+    description: 'REAL. Torque check requirement (Nm). Example: 85.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'checkTorque_Nm')
+  task_specs_requirements_flush_flow_lpm:
+    description: 'REAL. Flush flow (L/min). Example: 18.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'flushFlow_lpm')
+  task_specs_requirements_grease_qty_g:
+    description: 'REAL. Grease quantity (g). Example: 40.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'greaseQty_g')
+  task_specs_requirements_oil_qty_l:
+    description: 'REAL. Oil quantity (L). Example: 3.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'oilQty_L')
+  task_specs_requirements_part_kit_no:
+    description: 'TEXT. Parts kit reference. Example: PK-4732.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'partKitNo')
+  task_specs_requirements_press_limit_k_pa:
+    description: 'REAL. Pressure limit (kPa). Example: 620.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'pressLimit_kPa')
+  task_specs_requirements_temp_limit_c:
+    description: 'REAL. Temperature limit (°C). Example: 85.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'tempLimit_C')
+  task_specs_requirements_test_speed_mps:
+    description: 'REAL. Test speed (m/s). Example: 4.75.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'testSpeed_mps')
+  task_specs_requirements_vibration_limit_mms2:
+    description: 'REAL. Vibration limit (mm/s²). Example: 7.50.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'requirements', 'vibrationLimit_mms2')
+  task_specs_risk_and_safety_env_impact_score:
+    description: 'REAL. Environmental impact score (0–10). Example: 3.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'risk_and_safety', 'envImpactScore')
+  task_specs_risk_and_safety_ppe_level:
+    description: 'TEXT. Required PPE level. Possible values: Basic, Enhanced, ARC-Flash, Resp-PAPR. Example: Enhanced.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'risk_and_safety', 'ppeLevel')
+  task_specs_risk_and_safety_risk_level:
+    description: 'TEXT. Task risk level. Possible values: Low, Medium, High. Example: Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'risk_and_safety', 'riskLevel')
+  task_specs_risk_and_safety_waste_disposal_type:
+    description: 'TEXT. Waste handling type. Possible values: Oil-Absorbent, Scrap-Metal, E-Waste, General. Example: Oil-Absorbent.'
+    sql: JSONB_EXTRACT_PATH_TEXT(task_specs, 'risk_and_safety', 'wasteDisposalType')

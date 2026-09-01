@@ -1,0 +1,72 @@
+label: DiseaseOutbreakCore
+description: All columns of the public table DiseaseOutbreakCore.
+catalog: disaster_relief_large
+schema: public
+table_name: DiseaseOutbreakCore
+dimensions:
+  alert_level:
+    description: 'VARCHAR(100). Public health emergency classification (Green|Yellow|Orange|Red|Black). Possible values: "Black", "Green", "Orange", "Red", "Yellow".'
+    sql: '"alertLevel"'
+  confirmed_cases:
+    description: 'VARCHAR(100). Laboratory-confirmed case count. Example: "877".'
+    sql: '"confirmedCases"'
+  deaths:
+    description: 'VARCHAR(100). Fatalities attributed to outbreak. Example: "877".'
+    sql: deaths
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 6114.'
+    sql: '"disasterEventId"'
+  disease_name:
+    description: 'VARCHAR(100). Official medical designation of disease or pathogen. Example: "Inoue Momoka".'
+    sql: '"diseaseName"'
+  field_hospitals_setup:
+    description: 'VARCHAR(100). Count of temporary medical facilities established. Example: "537".'
+    sql: '"fieldHospitalsSetup"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for disease outbreak records. Example: 1.'
+    sql: id
+  medical_staff_deployed:
+    description: 'VARCHAR(100). Count of healthcare personnel assigned to outbreak response. Example: "537".'
+    sql: '"medicalStaffDeployed"'
+  notes:
+    description: 'VARCHAR(100). Epidemiological notes or public health recommendations. Example: "0vQ62DIdpY".'
+    sql: notes
+  outbreak_end_date:
+    description: 'VARCHAR(100). Date of outbreak containment or official declaration end. Example: "2007-01-08".'
+    sql: '"outbreakEndDate"'
+  outbreak_id_ref:
+    description: 'VARCHAR(100). Logical reference to outbreak registry identifier (DiseaseOutbreakMonitoring.OUTBREAK_ID). Example: "cB5FequEXZ".'
+    sql: '"outbreakIdRef"'
+  outbreak_severity:
+    description: 'VARCHAR(100). Public health impact classification (Contained|Localized|Regional|National|Pandemic). Possible values: "Contained", "Localized", "National", "Pandemic", "Regional".'
+    sql: '"outbreakSeverity"'
+  outbreak_start_date:
+    description: 'VARCHAR(100). Date of first confirmed case identification. Example: "2014-03-04".'
+    sql: '"outbreakStartDate"'
+  r0_value:
+    description: 'VARCHAR(100). Basic reproduction number indicating transmission potential. Example: "SzL4ifWuP6".'
+    sql: '"r0Value"'
+  recovered:
+    description: 'VARCHAR(100). Count of individuals with confirmed recovery. Example: "877".'
+    sql: recovered
+  suspected_cases:
+    description: 'VARCHAR(100). Clinically suspected but unconfirmed case count. Example: "877".'
+    sql: '"suspectedCases"'
+  total_cases:
+    description: 'VARCHAR(100). Cumulative count of confirmed and suspected cases. Example: "537".'
+    sql: '"totalCases"'
+  vaccination_campaign:
+    description: 'VARCHAR(100). Vaccination program status (None|Planned|Ongoing|Completed|Suspended). Possible values: "Completed", "None", "Ongoing", "Planned", "Suspended".'
+    sql: '"vaccinationCampaign"'
+  vaccination_doses_administered:
+    description: 'VARCHAR(100). Total vaccine doses delivered to population. Example: "537".'
+    sql: '"vaccinationDosesAdministered"'
+  vaccination_start_date:
+    description: 'VARCHAR(100). Date mass vaccination campaign commenced. Example: "2006-08-29".'
+    sql: '"vaccinationStartDate"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DiseaseOutbreakCore public identity values.
+    label: DiseaseOutbreakCore Count
+    sql: ${disaster_relief_large_public__disease_outbreak_core.id}

@@ -1,0 +1,126 @@
+label: device_fingerprint_details
+description: All columns of the public table device_fingerprint_details.
+catalog: fake_account_large
+schema: public
+table_name: device_fingerprint_details
+dimensions:
+  browser_name:
+    description: 'TEXT. Name of the HTTP user-agent’s main browser. Example: Opera. Possible values: Chrome, Edge, Firefox, Opera, Safari.'
+    sql: '"BROWSER_NAME"'
+  colordepth:
+    description: 'TEXT. Reported color depth per pixel. Example: 24-bit. Possible values: 24-bit, 30-bit.'
+    sql: '"COLORDEPTH"'
+  canvas_hash:
+    description: 'TEXT. 32-character hex digest of the HTML5 canvas fingerprint. Example: 3207096250271b4e2a8e9d733d3b846c.'
+    sql: '"CanvasHash"'
+  dev_risk:
+    description: 'REAL. Risk score (0–100) derived from fingerprint anomalies and threat feeds. Example: 79.91.'
+    sql: '"DEV_RISK"'
+  fpscore:
+    description: 'REAL. Composite entropy score (0–100) representing fingerprint uniqueness. Example: 23.19.'
+    sql: '"FPScore"'
+  osname:
+    description: 'TEXT. Operating-system family detected. Example: macOS. Possible values: Android, HarmonyOS, iOS, macOS, Windows.'
+    sql: '"OSNAME"'
+  primary_dev_code:
+    description: 'TEXT. Internal device identifier issued by the collector. Example: DEV308399.'
+    sql: '"PRIMARY_DEV_CODE"'
+  ram_gb:
+    description: 'REAL. Reported system RAM in gigabytes. Example: 12.0.'
+    sql: '"Ram_GB"'
+  screen_res:
+    description: 'TEXT. Physical or logical screen resolution reported by the browser. Example: 1920x1080.'
+    sql: '"SCREEN_RES"'
+  storage_enabled:
+    description: 'TEXT. Whether modern Web Storage (local/session) is permitted. Example: Yes. Possible values: Yes, No.'
+    sql: '"STORAGE_ENABLED"'
+  webgl_hash:
+    description: 'TEXT. 32-character hex digest of the WebGL shader fingerprint. **NULL means WebGL is disabled or no GPU context was available.** Example: 7df4888159e3ace2a570b057a7d24460.'
+    sql: '"WEBGL_HASH"'
+  acct_gate:
+    description: 'TEXT. Foreign-key that ties the fingerprint to a single security session. PK. Example: ACC7210284.'
+    sql: acct_gate
+  audio_hash:
+    description: 'TEXT. 32-character hex digest of AudioContext fingerprint. Example: 66c7488689f1e7691b163470ecf127d4.'
+    sql: '"audioHash"'
+  bandwidth_cap_mbps:
+    description: 'REAL. Maximum observed download bandwidth in megabits per second. Example: 50.0.'
+    sql: '"bandwidth_cap_Mbps"'
+  browser_ver:
+    description: 'TEXT. Full browser version string. Example: 104.0.4276.128.'
+    sql: '"browserVer"'
+  cookie_enabled:
+    description: 'TEXT. Whether cookies are enabled in the browser. Example: Yes. Possible values: Yes, No.'
+    sql: '"cookieEnabled"'
+  cpu_arch:
+    description: 'TEXT. CPU architecture string from user-agent or OS query. Example: ARMv8. Possible values: x86, x86_64, ARMv8, arm64.'
+    sql: '"cpuArch"'
+  device_vendor:
+    description: 'TEXT. Manufacturer or brand reported by the client. Example: Apple. Possible values: Apple, Samsung, Google, Xiaomi, Huawei, Dell, HP, Lenovo, Asus, OnePlus.'
+    sql: '"deviceVendor"'
+  device_model:
+    description: 'TEXT. Marketing model string reported by the client. Example: MacBook Pro 16.'
+    sql: device_model
+  disk_free_gb:
+    description: 'REAL. Free disk space reported by client helper, in gigabytes. Example: 951.0.'
+    sql: '"diskFree_gb"'
+  engine_ver:
+    description: 'TEXT. Rendering-engine major version (Blink, WebKit, Gecko, etc.). Example: 104.'
+    sql: engine_ver
+  font_hash:
+    description: 'TEXT. 32-character hex digest representing installed/font-fallback set. Example: 6699468d19147c579c69d6f66087698f.'
+    sql: font_hash
+  gpu_model:
+    description: 'TEXT. GPU renderer string (WebGL `UNMASKED_RENDERER`). **NULL means GPU information was blocked or unavailable.** Example: Apple A17 Bionic. Possible values: Apple M2, Apple A17 Bionic, Adreno 730, Mali-G78, NVIDIA RTX 3080, NVIDIA RTX 4070 Laptop, AMD Radeon RX 6800M, Intel Iris Xe.'
+    sql: gpu_model
+  kernel_ver:
+    description: 'TEXT. Kernel version in <major>.<minor>.<patch> form. Example: 5.16.90.'
+    sql: '"kernelVer"'
+  lang_pref:
+    description: 'TEXT. Primary language–region code from navigator API. Example: en-US.'
+    sql: lang_pref
+  latency_range_ms:
+    description: 'TEXT. Typical measured network latency range in milliseconds (min–max). Example: 70–110.'
+    sql: latency_range_ms
+  os_ver:
+    description: 'TEXT. Major (and sometimes minor) OS version. Example: 14.4.'
+    sql: '"osVer"'
+  os_build:
+    description: 'TEXT. Build number or commit hash of the OS image. Example: e34252.'
+    sql: os_build
+  sensor_flags:
+    description: JSONB column. Stores availability flags and raw readings for device sensors and capabilities.
+    sql: sensor_flags
+  timezone_off:
+    description: 'BIGINT. Minutes offset from UTC (JavaScript `getTimezoneOffset()` negative sign flipped). Example: -300.'
+    sql: '"timezoneOff"'
+  usage_window:
+    description: 'TEXT. Daily time window when the device is usually active, 24-hour clock. Example: 09:00–18:00. Possible values: 00:00–24:00, 06:00–23:00, 08:00–22:00, 09:00–18:00, 18:00–02:00.'
+    sql: usage_window
+  sensor_flags_mag_sens:
+    description: 'TEXT. Magnetometer (digital compass) availability. **NULL means the sensor is absent or inaccessible.** Example: Yes. Possible values (when present): Yes, No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_flags, 'MAG_SENS')
+  sensor_flags_acc_sens:
+    description: 'TEXT. Accelerometer availability. Example: No. Possible values: Yes, No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_flags, 'accSens')
+  sensor_flags_battery_stat:
+    description: 'TEXT. Current battery charge reported by the Battery Status API. **NULL means the device has no battery or the browser suppressed this API.** Example: 85%.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_flags, 'batteryStat')
+  sensor_flags_gyro_sens:
+    description: 'TEXT. Gyroscope availability. **NULL means no gyroscope sensor detected or permission denied.** Example: Yes. Possible values (when present): Yes, No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_flags, 'gyro_sens')
+  sensor_flags_light_sens:
+    description: 'TEXT. Ambient-light sensor availability. Example: Yes. Possible values: Yes, No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_flags, 'lightSens')
+  sensor_flags_prox_sens:
+    description: 'TEXT. Proximity sensor availability. Example: No. Possible values: Yes, No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_flags, 'prox_sens')
+  sensor_flags_touch_support:
+    description: 'TEXT. Whether the environment advertises touch events. Example: No. Possible values: Yes, No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_flags, 'touch_support')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct device_fingerprint_details public identity values.
+    label: device_fingerprint_details Count
+    sql: ${fake_account_large_public__device_fingerprint_details.acct_gate}

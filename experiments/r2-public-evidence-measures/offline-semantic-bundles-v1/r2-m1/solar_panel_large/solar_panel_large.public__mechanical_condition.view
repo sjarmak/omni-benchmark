@@ -1,0 +1,112 @@
+label: Mechanical Condition
+description: Mechanical, structural, and electrical condition snapshots.
+catalog: solar_panel_large
+schema: public
+table_name: mechanical_condition
+dimensions:
+  tracker:
+    description: 'TEXT. Tracking system operational status. Possible values: Error, Maintenance, Normal.'
+    label: Tracker State
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'tracker', 'tracker_state')
+    ai_context: 'Tracker System State: Describes the current status of the solar tracking system. Common states include: ''Normal'' (actively tracking the sun), ''Maintenance'' (undergoing service), ''Error'' (malfunctioning), or ''Stow'' (locked in a safe, fixed position due to high winds).'
+  mount:
+    description: 'TEXT. Mounting structure condition. Possible values: Check Required, Stable, Unstable.'
+    label: Mount Structure Status
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'mount_cleaning', 'mount_structure_status')
+  busbar:
+    description: 'TEXT. Busbar corrosion status. NULL means the encoder does not report status or data are missing. Possible values: Severe, Visible.'
+    label: Busbar Corrosion
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'busbar_corrosion')
+    ai_context: 'Busbar Corrosion Severity: Describes the extent of corrosion on the metallic strips (busbars) that conduct electricity within a solar panel. Levels can range from ''None'' to ''Light'' (minor discoloration), ''Visible'' (clear corrosion affecting small areas), and ''Severe'' (widespread corrosion that can disrupt conductivity and reduce power output).'
+  delam:
+    description: 'TEXT. Delamination status. NULL means the encoder does not report status or data are missing. Possible values: Major, Minor.'
+    label: Delamination Status
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'delamination_status')
+  microcrack:
+    description: 'BIGINT. Count of microcracks detected. Example: 7.0.'
+    label: Microcrack Count
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'microcrack_count')
+  ground:
+    description: 'TEXT. Grounding system status. Possible values: Check Required, Failed, Normal.'
+    label: Grounding Status
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'electrical_integrity', 'grounding_status')
+  diode:
+    description: 'TEXT. Bypass diode functionality status. Possible values: Failed, Normal, Partial.'
+    label: Bypass Diode Status
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'electrical_integrity', 'bypass_diode_status')
+  mech_health_snapshot:
+    description: JSONB column. Captures tracker status, glass / back-sheet health, electrical connections and cleaning history for a panel string or block at a given snapshot, allowing O&M teams to query a single JSONB field for mechanical diagnostics.
+    sql: mech_health_snapshot
+  snapmk:
+    description: TEXT. PK & FK → plant_record.SnapKey. Links to mechanical condition snapshot.
+    sql: snapmk
+  mech_health_snapshot_electrical_integrity_cable_condition:
+    description: 'TEXT. Cable condition assessment. NULL means the encoder does not report status or data are missing. Possible values: Fair, Good, Poor.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'electrical_integrity', 'cable_condition')
+  mech_health_snapshot_electrical_integrity_connector_condition:
+    description: 'TEXT. Connector condition assessment. Possible values: Fair, Good, Poor.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'electrical_integrity', 'connector_condition')
+  mech_health_snapshot_electrical_integrity_junction_box_condition:
+    description: 'TEXT. Junction box condition assessment. Possible values: Fair, Good, Poor.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'electrical_integrity', 'junction_box_condition')
+  mech_health_snapshot_module_surface_backsheet_condition:
+    description: 'TEXT. Backsheet material condition assessment. Possible values: Fair, Good, Poor.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'backsheet_condition')
+  mech_health_snapshot_module_surface_encapsulant_yellowing:
+    description: 'TEXT. Encapsulant yellowing status. NULL means the encoder does not report status or data are missing. Possible values: Mild, Severe.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'encapsulant_yellowing')
+  mech_health_snapshot_module_surface_glass_condition:
+    description: 'TEXT. Front glass condition assessment. Possible values: Clear, Damaged, Dusty.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'glass_condition')
+  mech_health_snapshot_module_surface_hotspot_count:
+    description: 'BIGINT. Number of detected hot spots. NULL means the encoder does not report status or data are missing. Example: 1.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'hotspot_count')
+  mech_health_snapshot_module_surface_lid_status:
+    description: 'TEXT. Light-induced degradation status. Possible values: Ongoing, Stabilized, Unknown.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'lid_status')
+  mech_health_snapshot_module_surface_pid_severity:
+    description: 'TEXT. Potential induced degradation severity. NULL means the encoder does not report status or data are missing. Possible values: High, Low.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'pid_severity')
+  mech_health_snapshot_module_surface_snail_trail_severity:
+    description: 'TEXT. Snail trail severity. NULL means the encoder does not report status or data are missing. Possible values: Heavy, Light.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'module_surface', 'snail_trail_severity')
+  mech_health_snapshot_mount_cleaning_cleaning_cycle_days:
+    description: 'BIGINT. Number of cleaning cycles performed. Example: 38.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'mount_cleaning', 'cleaning_cycle_days')
+  mech_health_snapshot_mount_cleaning_last_clean_date:
+    description: 'DATE. Date of last cleaning. Example: 45671.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'mount_cleaning', 'last_clean_date')
+  mech_health_snapshot_tracker_tracker_angle_deg:
+    description: 'REAL. Tracking system deviation angle. Example: 20.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(mech_health_snapshot, 'tracker', 'tracker_angle_deg')
+  tracker_malfunction:
+    label: Tracker Malfunction
+    description: Indicates that a solar tracking system is not functioning correctly and may be stuck, in maintenance, or reporting an error.
+    sql: ${tracker} IN ('Error', 'Maintenance')
+    ai_context: Use this modeled field for Tracker Malfunction; do not reconstruct its formula.
+  structural_integrity_warning:
+    label: Structural Integrity Warning
+    description: Indicates that the physical mounting or support structure of the equipment may be compromised.
+    sql: ${mount} IN ('Unstable', 'Check Required')
+    ai_context: Use this modeled field for Structural Integrity Warning; do not reconstruct its formula.
+  electrical_integrity_failure:
+    label: Electrical Integrity Failure
+    description: Indicates a failure in the fundamental electrical safety or operational components of the system.
+    sql: ${ground} = 'Failed' OR ${diode} <> 'Normal'
+    ai_context: Use this modeled field for Electrical Integrity Failure; do not reconstruct its formula.
+  major_module_degradation:
+    label: Major Module Degradation
+    description: A composite indicator of severe physical aging and damage to solar modules.
+    sql: ${busbar} = 'Severe' AND ${delam} = 'Major' AND ${microcrack} > 5
+    ai_context: Use this modeled field for Major Module Degradation; do not reconstruct its formula.
+  critical_mechanical_health:
+    label: Critical Mechanical Health
+    description: Indicates that an asset is suffering from severe and concurrent mechanical failures.
+    sql: ${structural_integrity_warning} AND ${tracker_malfunction}
+    ai_context: Use this modeled field for Critical Mechanical Health; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Mechanical Condition public identity values.
+    label: Mechanical Condition Count
+    sql: ${solar_panel_large_public__mechanical_condition.snapmk}

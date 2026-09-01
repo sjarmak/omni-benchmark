@@ -1,0 +1,73 @@
+label: Archaeological Sites
+description: Site records with public business context for cultural period and estimated dating.
+catalog: archeology_scan_large
+schema: public
+table_name: sites
+dimensions:
+  phasefactor:
+    description: 'TEXT. Cultural period or chronological phase classification. **NULL means cultural period classification is undetermined or analysis incomplete.**. Example: Iron Age.'
+    label: Cultural Period
+    sql: phasefactor
+    ai_context: 'Cultural Period: Classifies archaeological sites into standardized chronological/cultural periods. Values like ''Neolithic'' (10,000-4,500 BCE), ''Bronze Age'' (3,300-1,200 BCE), ''Roman'' (27 BCE-476 CE), or ''Medieval'' (476-1453 CE) determine applicable research methodologies, conservation approaches, and contextual interpretation frameworks.'
+  guessdate:
+    description: 'TEXT. Estimated date or age of archeologys materials. Example: -2929 BCE.'
+    label: Estimated Dating
+    sql: guessdate
+    ai_context: 'Estimated Dating: Values like ''3500-3000 BCE'', ''1st c. CE'', or ''ca. 1450 CE'' represent estimated chronological placement based on excavation findings. Precision varies from specific years to century-level estimates depending on available evidence and dating methodologies employed.'
+  digunit:
+    description: 'TEXT. Excavation unit designation within the site. Example: Unit-C9.'
+    sql: digunit
+  geo_position:
+    description: JSONB column. Geographic positioning data including coordinates, elevation, and excavation depth measurements
+    sql: geo_position
+  gridtrace:
+    description: 'TEXT. Grid reference system coordinates for site location. Example: S29-E8.'
+    sql: gridtrace
+  guardhint:
+    description: 'TEXT. Weather protection measures in place at site. **NULL means weather protection assessment not completed or not applicable.**. Possible values: Permanent, Temporary.'
+    sql: guardhint
+  site_status:
+    description: JSONB column. Site condition and security assessment including preservation, access, safety, and risk evaluation status
+    sql: site_status
+  typesite:
+    description: 'TEXT. Classification of archeologys site type. **NULL means site type classification is pending or cannot be determined.**. Example: Bur..'
+    sql: typesite
+  zonelabel:
+    description: 'TEXT. Descriptive name of the archeologys site. Example: Site-North Alexanderville.'
+    sql: zonelabel
+  zoneregistry:
+    description: 'TEXT. Unique site code identifier for archeologys zone. PK = Sites(ZoneRegistry). Example: SC9016.'
+    sql: zoneregistry
+  geo_position_depth_c:
+    description: 'REAL. Excavation depth below surface in centimeters. Example: 329.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(geo_position, 'Depth_C')
+  geo_position_geo_x:
+    description: 'REAL. Latitude coordinate in decimal degrees. Example: -9.602135.'
+    sql: JSONB_EXTRACT_PATH_TEXT(geo_position, 'Geo_X')
+  geo_position_geo_y:
+    description: 'REAL. Longitude coordinate in decimal degrees. Example: -2.756411.'
+    sql: JSONB_EXTRACT_PATH_TEXT(geo_position, 'Geo_Y')
+  geo_position_height_m:
+    description: 'REAL. Altitude above sea level in meters. Example: 4391.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(geo_position, 'Height_M')
+  site_status_entry_stat:
+    description: 'TEXT. Site accessibility status for personnel and equipment. Possible values: Closed, Open, Restricted.'
+    sql: JSONB_EXTRACT_PATH_TEXT(site_status, 'Entry_Stat')
+  site_status_env_haz:
+    description: 'TEXT. Environmental risk factors present at the site. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(site_status, 'Env_Haz')
+  site_status_health_eval:
+    description: 'TEXT. Health and safety evaluation status for site conditions. Possible values: Approved, Pending, Review.'
+    sql: JSONB_EXTRACT_PATH_TEXT(site_status, 'Health_Eval')
+  site_status_insur_stat:
+    description: 'TEXT. Insurance coverage status for site operations. Possible values: Active, Expired, Pending.'
+    sql: JSONB_EXTRACT_PATH_TEXT(site_status, 'Insur_Stat')
+  site_status_pres_stat:
+    description: 'TEXT. Current preservation status of archeologys remains. Possible values: Critical, Excellent, Fair, Good, Poor.'
+    sql: JSONB_EXTRACT_PATH_TEXT(site_status, 'Pres_Stat')
+  site_status_risk_eval:
+    description: 'TEXT. Risk assessment status for site safety evaluation. **NULL means risk assessment not conducted or evaluation incomplete.**. Example: Req..'
+    sql: JSONB_EXTRACT_PATH_TEXT(site_status, 'Risk_Eval')
+  site_status_safe_rank:
+    description: 'TEXT. Security level classification for site protection. **NULL means security assessment not completed or classification pending.**. Example: Minimal.'
+    sql: JSONB_EXTRACT_PATH_TEXT(site_status, 'Safe_Rank')

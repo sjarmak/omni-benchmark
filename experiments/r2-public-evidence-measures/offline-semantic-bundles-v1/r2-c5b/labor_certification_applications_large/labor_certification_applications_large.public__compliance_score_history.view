@@ -1,0 +1,66 @@
+label: ComplianceScoreHistory
+description: All columns of the public table ComplianceScoreHistory.
+catalog: labor_certification_applications_large
+schema: public
+table_name: ComplianceScoreHistory
+dimensions:
+  csh_code:
+    description: 'TEXT. Unique identifier for compliance score history record. Example: CSH-1A2B3C.'
+    sql: '"CSH_code"'
+  benchmark_comparison:
+    description: 'TEXT. Comparison to industry benchmark. Unique values: Above Average, Average, Below Average, Bottom Quartile.'
+    sql: '"benchmarkComparison"'
+  i9_score_curr:
+    description: 'REAL. Current I-9 compliance component score. Example: 88.'
+    sql: '"i9Score_curr"'
+  improvement_plan_flag:
+    description: 'BOOLEAN. Indicates if improvement plan is active. Possible values: True, False.'
+    sql: '"improvementPlan_flag"'
+  new_violations_ct:
+    description: 'INTEGER. Count of new violations since last snapshot. Example: 0.'
+    sql: '"newViolations_ct"'
+  next_review_date:
+    description: 'TIMESTAMP. Scheduled date for next compliance review. **NULL means Review schedule pending.** Example: 2024-01-01 12:00:00.'
+    sql: '"nextReviewDate"'
+  overall_score_curr:
+    description: 'REAL. Current overall compliance score. Example: 82.'
+    sql: '"overallScore_curr"'
+  overall_score_prev:
+    description: 'REAL. Previous overall compliance score. **NULL means First score record.** Example: 80.'
+    sql: '"overallScore_prev"'
+  plan_progress_pct:
+    description: 'REAL. Progress on improvement plan as percentage. **NULL means No active improvement plan.** Example: 50.0.'
+    sql: '"planProgress_pct"'
+  records_score_curr:
+    description: 'REAL. Current record keeping component score. Example: 85.'
+    sql: '"recordsScore_curr"'
+  risk_trend:
+    description: 'TEXT. Trend in compliance risk. Unique values: Improving, Stable, Declining, Volatile.'
+    sql: '"riskTrend"'
+  score_change:
+    description: 'REAL. Change in score from previous period. **NULL means First score record.** Example: 1.5.'
+    sql: '"scoreChange"'
+  score_ref:
+    description: TEXT. Foreign key reference to EmployerComplianceScore table.
+    sql: score_ref
+  snapshot_date:
+    description: 'TIMESTAMP. Date of compliance score snapshot. Example: 2024-01-01 12:00:00.'
+    sql: '"snapshotDate"'
+  snapshot_type:
+    description: 'TEXT. Type of score snapshot. Unique values: Monthly, Quarterly, Annual, Event-Triggered, Audit-Based.'
+    sql: '"snapshotType"'
+  tier_changed_flag:
+    description: 'BOOLEAN. Indicates if tier changed from previous period. Possible values: True, False.'
+    sql: '"tierChanged_flag"'
+  tier_curr:
+    description: 'TEXT. Current compliance tier. Unique values: Exemplary, Good Standing, Satisfactory, Needs Improvement, Probationary, High Risk.'
+    sql: '"tierCurr"'
+  tier_prev:
+    description: 'TEXT. Previous compliance tier. **NULL means First tier assignment.** Unique values: Exemplary, Good Standing, Satisfactory, Needs Improvement, Probationary, High Risk.'
+    sql: '"tierPrev"'
+  violations_resolved_ct:
+    description: 'INTEGER. Count of violations resolved since last snapshot. Example: 1.'
+    sql: '"violationsResolved_ct"'
+  wage_score_curr:
+    description: 'REAL. Current wage compliance component score. Example: 90.'
+    sql: '"wageScore_curr"'

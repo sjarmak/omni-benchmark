@@ -1,0 +1,96 @@
+label: repair_parts_inventory
+description: All columns of the public table repair_parts_inventory.
+catalog: reverse_logistics_large
+schema: public
+table_name: repair_parts_inventory
+dimensions:
+  alternative_part_sku:
+    description: TEXT. The SKU of an alternative or replacement part. **NULL means no alternative part is specified.**
+    sql: alternative_part_sku
+  batch_id:
+    description: 'TEXT. The manufacturing batch ID for the part. Example: 3YLMFMQ3P0.'
+    sql: batch_id
+  compatible_product_codes:
+    description: 'JSONB. A JSON array of product item codes that this part is compatible with. Example: [PRD00011, PRD00170].'
+    sql: compatible_product_codes
+  cost_per_unit:
+    description: 'REAL. The cost of a single unit of this part. Example: 116.43.'
+    sql: cost_per_unit
+  count_variance:
+    description: 'BIGINT. The discrepancy found during the last count. Example: 5.'
+    sql: count_variance
+  current_stock_quantity:
+    description: 'BIGINT. The current quantity of this part in stock. Example: 212.'
+    sql: current_stock_quantity
+  customs_tariff_code:
+    description: 'TEXT. The customs tariff code for international shipping. Example: 7gpYs8H1.'
+    sql: customs_tariff_code
+  cycle_count_frequency_days:
+    description: 'BIGINT. The frequency in days for inventory cycle counts. Example: 90.'
+    sql: cycle_count_frequency_days
+  date_of_manufacture:
+    description: 'DATE. The date the part was manufactured. Example: 2025-04-16.'
+    sql: date_of_manufacture
+  is_discontinued:
+    description: 'BOOLEAN. Indicates if the part has been discontinued by the manufacturer. Example: False.'
+    sql: is_discontinued
+  is_oem_part:
+    description: 'BOOLEAN. Indicates if the part is an Original Equipment Manufacturer (OEM) part. Possible values: True, False.'
+    sql: is_oem_part
+  last_count_date:
+    description: 'DATE. The date of the last inventory count for this part. Example: 2025-06-18.'
+    sql: last_count_date
+  last_restock_date:
+    description: 'DATE. The date the part was last restocked. Example: 2025-08-21.'
+    sql: last_restock_date
+  lead_time_days:
+    description: 'BIGINT. The average lead time in days from ordering to receiving the part. Example: 20.'
+    sql: lead_time_days
+  material:
+    description: 'TEXT. The primary material of the part. Example: Plastic/Metal.'
+    sql: material
+  notes:
+    description: 'TEXT. General notes about the part. **NULL means there are no special notes.** Example: No issues.'
+    sql: notes
+  part_description:
+    description: 'TEXT. A brief description of the part. Example: Standard replacement part 1..'
+    sql: part_description
+  part_dimensions_mm:
+    description: 'TEXT. The dimensions of the part in LxWxH format (millimeters). Example: 31x35x16.'
+    sql: part_dimensions_mm
+  part_name:
+    description: 'TEXT. The human-readable name of the part. Example: Repair Part 1.'
+    sql: part_name
+  part_sku:
+    description: 'TEXT. Unique identifier (Stock Keeping Unit) for the repair part. PK. Example: RP-SCR-0001.'
+    sql: part_sku
+  part_weight_grams:
+    description: 'REAL. The weight of the part in grams. Example: 865.97.'
+    sql: part_weight_grams
+  quarantine_on_receipt:
+    description: 'BOOLEAN. Indicates if the part must be quarantined for inspection upon receipt. Example: False.'
+    sql: quarantine_on_receipt
+  reorder_threshold:
+    description: 'BIGINT. The stock quantity at which a reorder should be triggered. Example: 74.'
+    sql: reorder_threshold
+  safety_data_sheet_url:
+    description: 'TEXT. A URL to the part''s safety data sheet (SDS). **NULL means the part is not hazardous and does not require an SDS.** Example: https://example.com/sds/RP-SCR-0056.'
+    sql: safety_data_sheet_url
+  serialized:
+    description: 'BOOLEAN. Indicates if individual units of the part are serialized. Example: False.'
+    sql: serialized
+  shelf_life_months:
+    description: 'BIGINT. The shelf life of the part in months. **NULL means the part is durable and has no effective shelf life.** Example: 36.0.'
+    sql: shelf_life_months
+  storage_location_bin:
+    description: 'TEXT. The specific bin location in the warehouse where the part is stored. Example: BIN-C-194.'
+    sql: storage_location_bin
+  supplier_id_for_part:
+    description: 'BIGINT. The ID of the primary supplier for this part. FK to suppliers.supplier_id. Example: 43.'
+    sql: supplier_id_for_part
+  technical_spec_sheet_url:
+    description: 'TEXT. A URL to the part''s technical specification sheet. **NULL means a spec sheet is not available.** Example: https://example.com/specs/RP-CON-0057.'
+    sql: technical_spec_sheet_url
+  warehouse_location_code:
+    description: 'TEXT. The code of the warehouse where the part is stored. FK to warehouses.warehouse_code. Example: WH-ZUS-015.'
+    sql: warehouse_location_code

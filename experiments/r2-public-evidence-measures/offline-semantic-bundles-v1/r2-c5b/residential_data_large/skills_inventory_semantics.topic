@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__skills_inventory
+label: skills_inventory
+description: All columns of the public table skills_inventory.
+fields:
+- residential_data_large_public__skills_inventory.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,15 @@
+base_view: fake_account_large_public__content_topics
+label: content_topics
+description: All columns of the public table content_topics.
+fields:
+- fake_account_large_public__content_topics.*
+- fake_account_large_public__accounts.*
+- fake_account_large_public__content_activity.*
+- fake_account_large_public__platforms.*
+- fake_account_large_public__topics.*
+joins:
+  fake_account_large_public__content_activity:
+    fake_account_large_public__accounts:
+      fake_account_large_public__platforms: {}
+  fake_account_large_public__topics: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

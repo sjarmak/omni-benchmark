@@ -1,0 +1,66 @@
+label: AirQualityMonitor
+description: All columns of the public table AirQualityMonitor.
+catalog: museum_artifact_large
+schema: public
+table_name: AirQualityMonitor
+dimensions:
+  air_exchange_rate:
+    description: VARCHAR(100). Air changes per hour within enclosed space.
+    sql: '"airExchangeRate"'
+  anomaly_detected:
+    description: VARCHAR(100). Type of measurement anomaly (None, Spike, Drift, SensorFailure, Contamination).
+    sql: '"anomalyDetected"'
+  aq_reading_id:
+    description: BIGINT. Reference to base air quality sensor reading (foreign key to AirQualityReadings.aq_id).
+    sql: '"aqReadingId"'
+  benzene_ug_m3:
+    description: VARCHAR(100). Benzene concentration in micrograms per cubic meter.
+    sql: '"benzeneUgM3"'
+  co_ppm:
+    description: VARCHAR(100). Carbon monoxide concentration in parts per million.
+    sql: '"coPpm"'
+  corrective_action:
+    description: VARCHAR(100). Actions taken to address air quality issues.
+    sql: '"correctiveAction"'
+  filter_efficiency:
+    description: VARCHAR(100). Percentage efficiency of air filtration system.
+    sql: '"filterEfficiency"'
+  formaldehyde_mg_m3:
+    description: VARCHAR(100). Formaldehyde concentration in milligrams per cubic meter.
+    sql: '"formaldehydeMgM3"'
+  id:
+    description: BIGSERIAL. Auto-increment primary key for air quality monitoring records.
+    sql: id
+  maintenance_due:
+    description: VARCHAR(100). Scheduled date for next sensor maintenance.
+    sql: '"maintenanceDue"'
+  monitor_timestamp:
+    description: VARCHAR(100). Timestamp of air quality measurement capture.
+    sql: '"monitorTimestamp"'
+  no2_ppb:
+    description: VARCHAR(100). Nitrogen dioxide concentration in parts per billion.
+    sql: '"no2Ppb"'
+  o3_ppb:
+    description: VARCHAR(100). Ozone concentration in parts per billion.
+    sql: '"o3Ppb"'
+  pm10_ug_m3:
+    description: VARCHAR(100). Particulate matter concentration (PM10) in micrograms per cubic meter.
+    sql: '"pm10UgM3"'
+  pm25_ug_m3:
+    description: VARCHAR(100). Particulate matter concentration (PM2.5) in micrograms per cubic meter.
+    sql: '"pm25UgM3"'
+  sensor_calibration_date:
+    description: VARCHAR(100). Date of most recent sensor calibration.
+    sql: '"sensorCalibrationDate"'
+  showcase_id:
+    description: VARCHAR(100). Identifier of monitored showcase or display area.
+    sql: '"showcaseId"'
+  so2_ppb:
+    description: VARCHAR(100). Sulfur dioxide concentration in parts per billion.
+    sql: '"so2Ppb"'
+  staff_code:
+    description: BIGINT. Environmental monitoring specialist identifier (foreign key to Staff.Staff_Code).
+    sql: '"staffCode"'
+  tvoc_mg_m3:
+    description: VARCHAR(100). Total volatile organic compounds concentration in milligrams per cubic meter.
+    sql: '"tvocMgM3"'

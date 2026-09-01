@@ -1,0 +1,9 @@
+base_view: sports_events_large_public__circuit_details
+label: circuit_details
+description: All columns of the public table circuit_details.
+fields:
+- sports_events_large_public__circuit_details.*
+- sports_events_large_public__circuits.*
+joins:
+  sports_events_large_public__circuits: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

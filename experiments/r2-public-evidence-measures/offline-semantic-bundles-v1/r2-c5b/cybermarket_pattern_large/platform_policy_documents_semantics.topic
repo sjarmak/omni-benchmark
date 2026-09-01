@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__platform_policy_documents
+label: platform_policy_documents
+description: All columns of the public table platform_policy_documents.
+fields:
+- cybermarket_pattern_large_public__platform_policy_documents.*
+- cybermarket_pattern_large_public__markets.*
+joins:
+  cybermarket_pattern_large_public__markets: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

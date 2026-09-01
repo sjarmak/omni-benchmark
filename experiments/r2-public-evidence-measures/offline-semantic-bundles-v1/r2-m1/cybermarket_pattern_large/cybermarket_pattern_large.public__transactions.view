@@ -1,0 +1,100 @@
+label: Transactions
+description: Transaction records with row-level cross-border semantics and shipping and escrow context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: transactions
+dimensions:
+  cross_border:
+    description: 'BOOLEAN. Indicates whether the shipment crosses national borders. Possible values: No, Yes.'
+    label: Cross-Border Shipment
+    sql: '"CrossBorder"'
+  route_complexity:
+    description: 'TEXT. Complexity classification of the shipping route. Possible values: Complex, Medium, Simple.'
+    label: Shipping Route Complexity
+    sql: '"RouteComplex"'
+    ai_context: 'Shipping Route Complexity: Values: Simple, Medium, Complex.'
+  escrow_usage_state:
+    description: 'TEXT. Indicator describing escrow usage for the transaction. **NULL means escrow usage detail is unavailable.**. Possible values: No, Yes.'
+    label: Escrow Usage State
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'escrow_used_stat')
+    ai_context: 'Escrow Usage States: Values: Yes, No.
+
+      Label descriptions:
+
+      - Yes: Funds were held in escrow pending delivery confirmation or dispute resolution, reducing counterparty risk.
+
+      - No: Payment was released directly without escrow protection, increasing the chance of fraud.'
+  acq_link:
+    description: 'TEXT. Identifier of the buyer involved in the transaction. FK to buyers(AcqCode). Example: B41538.'
+    sql: '"AcqLink"'
+  border_cross_border_pre:
+    description: 'text. The premium associated with cross-border transactions, calculated based on payment amount and cross-border flag. Example: 78.04 USD/border-crossing.'
+    sql: '"Border_cross_border_pre"'
+  dest_region:
+    description: 'TEXT. Destination region of the shipment. Possible values: Region_X, Region_Y, Region_Z, Unknown.'
+    sql: '"DestRegion"'
+  event_code:
+    description: TEXT. Unique identifier for the commercial event (transaction). PK.
+    sql: '"EventCode"'
+  event_timestamp:
+    description: 'TIMESTAMP. Datetime when the transaction event was recorded. Example: 2024/4/2.'
+    sql: '"EventTimestamp"'
+  geo_dist_score:
+    description: 'text. The geographical distance involved in the transaction, measured in km. Example: 137.66 USD/border-crossing.'
+    sql: '"GeoDistScore"'
+  origin_region:
+    description: 'TEXT. Geographical origin region of the shipment. Possible values: Region_A, Region_B, Region_C, Unknown.'
+    sql: '"OriginRegion"'
+  platform_key:
+    description: TEXT. Code of the platform where the transaction occurred. FK to markets(PlatCode).
+    sql: '"PlatformKey"'
+  record_tag:
+    description: 'TEXT. Secondary unique tag for cross-system correlation. Example: DN541412.'
+    sql: '"RecordTag"'
+  transaction_velocity:
+    description: 'text. The rate at which transactions are completed, measured in USD/hour. Example: 45.67 USD/hour.'
+    sql: '"Transaction_Velocity"'
+  vendor_link:
+    description: 'TEXT. Identifier of the vendor involved in the transaction. FK to vendors(SellerKey). Example: V63085.'
+    sql: '"VendorLink"'
+  transaction_financials:
+    description: JSONB column. Contains financial details related to the transaction, such as value, fees, escrow usage, and shipping costs.
+    sql: transaction_financials
+  transaction_financials_completion_state_stat:
+    description: 'TEXT. Final completion state of the transaction (e.g., completed, disputed). Possible values: Completed, Disputed, Failed, In Progress.'
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'completion_state_stat')
+  transaction_financials_escrow_duration_hrs:
+    description: 'BIGINT. Number of hours funds were held in escrow. **NULL means escrow duration could not be determined.**. Example: 72.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'escrow_duration_hrs')
+  transaction_financials_fee_amt_usd:
+    description: 'TEXT. Platform or escrow fee charged for the transaction. Example: $637.83 .'
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'fee_amt_usd')
+  transaction_financials_multisig_flag_stat:
+    description: 'BOOLEAN. Indicates whether multisignature payments were employed. **NULL means multisignature information is missing.**. Possible values: No, Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'multisig_flag_stat')
+  transaction_financials_pmt_method_type:
+    description: 'TEXT. Payment method used for the transaction. **NULL means payment method information is not available.**. Possible values: Crypto_A, Crypto_B, Crypto_C, Token.'
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'pmt_method_type')
+  transaction_financials_process_time_hrs:
+    description: 'BIGINT. Processing time from order to completion, in hours. **NULL means processing time has not been calculated.**. Example: 114.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'process_time_hrs')
+  transaction_financials_shipping_cost_density:
+    description: 'text. The density of shipping cost per unit of geographical distance, measured in USD/km. Example: 1.95 USD/km.'
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'shipping_cost_density')
+  transaction_financials_shipping_method_type:
+    description: 'TEXT. Shipping method chosen for physical goods. Possible values: Custom, Digital, Express, Standard.'
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'shipping_method_type')
+  transaction_financials_value_amt_usd:
+    description: 'TEXT. Total monetary value of the transaction. Example: $16,635.50 .'
+    sql: JSONB_EXTRACT_PATH_TEXT(transaction_financials, 'value_amt_usd')
+  is_cross_border_transaction:
+    label: Cross-Border Transaction
+    description: Indicates the shipment moves across national boundaries.
+    sql: ${cross_border}
+    ai_context: Use this modeled field for Cross-Border Transaction; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Transactions public identity values.
+    label: Transactions Count
+    sql: ${cybermarket_pattern_large_public__transactions.event_code}

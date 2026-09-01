@@ -1,0 +1,57 @@
+label: operation
+description: Public semantic view for operation.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: operation
+dimensions:
+  o_operational_hours:
+    description: 'REAL. Total operational hours of the robot. **NULL means no operational hours data available.**. Example: 20009.0.'
+    label: O.operational_hours
+    sql: totopshrval
+  o_cycle_time_seconds:
+    description: 'REAL. Cycle time of the robot operation in seconds. **NULL means no cycle time data available.**. Example: 211.82.'
+    label: O.cycle_time_seconds
+    sql: cycletimesecval
+  o_application_type:
+    description: 'TEXT. Application type for the operation. **NULL means no application type specified.**. Possible values: Assembly, Material Handling, Painting, Palletizing, Welding.'
+    label: O.application_type
+    sql: apptypeval
+    ai_context: 'Common Application Groups: Application groups include: ''Material Handling'' (e.g., Picking, Packing, Palletizing), ''Processing'' (e.g., Grinding, Polishing), ''Assembly'', ''Welding'', and ''Standby''.
+
+      High-Wear Applications: High-Wear Applications include ''Welding'', ''Grinding'', ''Deburring'', ''Palletizing'', and ''Machine Tending''.
+
+      Precision-Critical Applications: Precision-Critical Applications include ''Assembly'', ''Electronics-Handling'', ''Inspection'', ''Dispensing'', and ''Laser Cutting''.'
+  axiscountval:
+    description: 'BIGINT. Number of axes in the robot. Possible values: 4, 5, 6, 7.'
+    sql: axiscountval
+  currprogval:
+    description: 'TEXT. Current program being executed by the robot. **NULL means no program is active.**. Example: PRG_4901.'
+    sql: currprogval
+  opermodeval:
+    description: 'text. Operating mode of the robot (e.g., automatic, manual). Possible values: MANU.'
+    sql: opermodeval
+  operrecref:
+    description: TEXT. Foreign key to the robot_record table (BotCode). FK to robot_record.
+    sql: operrecref
+  operreg:
+    description: TEXT. Unique operation record identifier. PK.
+    sql: operreg
+  progcyclecount:
+    description: 'BIGINT. Number of cycles executed by the robot. Example: 177681.'
+    sql: progcyclecount
+  hkb_12:
+    label: Throughput Rate
+    description: Calculates the number of cycles completed per minute, as a direct measure of production throughput.
+    sql: 60.0 / NULLIF(${o_cycle_time_seconds}, 0)
+    ai_context: Use this modeled field for Throughput Rate; do not reconstruct its formula.
+  hkb_63:
+    label: Throughput Rate (Cycles per Hour)
+    description: Calculates the number of cycles completed per hour.
+    sql: 3600.0 / NULLIF(${o_cycle_time_seconds}, 0)
+    ai_context: Use this modeled field for Throughput Rate (Cycles per Hour); do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct operation public identity values.
+    label: operation Count
+    sql: ${robot_fault_prediction_large_public__operation.operreg}

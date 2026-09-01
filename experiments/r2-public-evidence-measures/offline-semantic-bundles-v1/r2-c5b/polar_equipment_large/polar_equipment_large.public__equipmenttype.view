@@ -1,0 +1,26 @@
+label: Equipment Types
+description: Equipment-type records with public safety-index field context.
+catalog: polar_equipment_large
+schema: public
+table_name: EquipmentType
+dimensions:
+  safety_index:
+    description: 'REAL. Safety index for the equipment type. Example: 75.9.'
+    label: Safety Index
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(type_indices, 'safety_idx') AS DOUBLE PRECISION)
+    ai_context: 'safetyindex: Safety index typically ranges from 0 to 1, where values below 0.5 indicate equipment with significant safety concerns requiring immediate attention or limited operation, values between 0.5-0.7 represent equipment with acceptable safety for normal operations with appropriate precautions, and values above 0.7 indicate equipment with excellent safety features suitable for all operational conditions including those with elevated risks.'
+  equip_type:
+    description: TEXT. Unique identifier for the equipment type. PK.
+    sql: '"EquipType"'
+  type_indices:
+    description: JSONB column. Bundles the various performance-, efficiency-, safety- and sustainability-related indices that characterise an equipment family.
+    sql: type_indices
+  type_indices_energy_efficiency_idx:
+    description: 'REAL. Efficiency index for the equipment type. Example: 47.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_indices, 'energy_efficiency_idx')
+  type_indices_environmental_impact_idx:
+    description: 'REAL. Environmental impact index for the equipment type. Example: 36.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_indices, 'environmental_impact_idx')
+  type_indices_performance_score:
+    description: 'REAL. Performance index for the equipment type. Example: 72.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_indices, 'performance_score')

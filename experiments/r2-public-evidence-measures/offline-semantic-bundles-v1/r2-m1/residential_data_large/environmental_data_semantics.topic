@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__environmental_data
+label: environmental_data
+description: All columns of the public table environmental_data.
+fields:
+- residential_data_large_public__environmental_data.*
+joins: {}
+ai_context: This topic models no cross-table joins.

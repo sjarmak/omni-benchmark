@@ -1,0 +1,105 @@
+label: TransmissionDiagnosticEvent
+description: All columns of the public table TransmissionDiagnosticEvent.
+catalog: polar_equipment_large
+schema: public
+table_name: TransmissionDiagnosticEvent
+dimensions:
+  accel_mps2:
+    description: 'REAL. Housing acceleration (m/s²). Example: 2.15.'
+    sql: accel_mps2
+  bearing_temp_c:
+    description: 'REAL. Bearing temperature (°C). Example: 112.5.'
+    sql: '"bearingTempC"'
+  case_temp_c:
+    description: 'REAL. Transmission case temperature (°C). Example: 101.4.'
+    sql: '"caseTempC"'
+  comment:
+    description: 'TEXT. Freeform event comment. **NULL means severity=Low and shockEvents=0 (no remark captured).** Example: Oil sample taken for lab analysis.'
+    sql: comment
+  doc_ref:
+    description: 'TEXT. Document or work-order reference. Example: DOC-7352.'
+    sql: '"docRef"'
+  est_remain_life_hrs:
+    description: 'REAL. Estimated remaining life (hours). Example: 2450.0.'
+    sql: '"estRemainLife_hrs"'
+  event_severity:
+    description: 'TEXT. Severity classification of the event. Possible values (from file): Low, Medium, High, Critical. Example: Medium.'
+    sql: '"eventSeverity"'
+  fault_code:
+    description: 'TEXT. Diagnostic fault code if present. Possible values (from file): F001, F002, F003, F010, P0894, P0730, None. Example: P0894.'
+    sql: '"faultCode"'
+  fault_prob_pct:
+    description: 'REAL. Probability of fault occurrence (%). **NULL means faultCode=''None''.** Example: 65.3.'
+    sql: '"faultProb_pct"'
+  for_transmission:
+    description: 'BIGINT. FK to Transmission(TRANS_ID). Example: 1023.'
+    sql: for_transmission
+  gear:
+    description: 'TEXT. Gear selector state. Possible values (from file): N, 1, 2, 3, 4, 5, 6, 7, R. Example: 3.'
+    sql: gear
+  input_rpm:
+    description: 'REAL. Input shaft RPM. Example: 2450.0.'
+    sql: '"inputRPM"'
+  noise_d_ba:
+    description: 'REAL. Noise level (dBA). Example: 92.1.'
+    sql: '"noise_dBA"'
+  oil_debris_ppm:
+    description: 'REAL. Oil debris concentration (ppm). **NULL means slip_pct < 1.0 and debris sample was not taken.** Example: 243.0.'
+    sql: '"oilDebris_ppm"'
+  oil_temp_c:
+    description: 'REAL. Oil temperature (°C). Example: 110.3.'
+    sql: '"oilTempC"'
+  oil_visc_c_st:
+    description: 'REAL. Oil viscosity (centistokes). Example: 42.5.'
+    sql: '"oilVisc_cSt"'
+  oil_water_pct:
+    description: 'REAL. Oil water contamination (%). Example: 0.73.'
+    sql: '"oilWater_pct"'
+  output_rpm:
+    description: 'REAL. Output shaft RPM (after slip). Example: 2385.5.'
+    sql: '"outputRPM"'
+  press_k_pa:
+    description: 'REAL. Line pressure (kPa). Example: 820.0.'
+    sql: '"press_kPa"'
+  recommend_action:
+    description: 'TEXT. Recommended maintenance action. **NULL means severity=Low AND faultCode=''None'' (no action required).** Possible values (from file): Continue monitoring, Schedule inspection, Replace filter and oil, Perform bearing replacement, Shut down and repair immediately. Example: Replace filter and oil.'
+    sql: '"recommendAction"'
+  shock_events:
+    description: 'BIGINT. Number of detected shock events in this interval. Example: 3.'
+    sql: '"shockEvents"'
+  slip_pct:
+    description: 'REAL. Slip percentage between input and output. Example: 2.63.'
+    sql: slip_pct
+  tech:
+    description: 'TEXT. Technician/engineer who logged the event. Possible values (from file): Tech A, Tech B, Tech C, Engineer D, Inspector E. Example: Inspector E.'
+    sql: tech
+  temp_c:
+    description: 'REAL. Transmission fluid/system temperature (°C). Example: 98.7.'
+    sql: '"tempC"'
+  torque_in_nm:
+    description: 'REAL. Input torque (Nm). Example: 650.2.'
+    sql: '"torqueIn_Nm"'
+  torque_out_nm:
+    description: 'REAL. Output torque (Nm). Example: 590.3.'
+    sql: '"torqueOut_Nm"'
+  trans_diag_seq:
+    description: BIGSERIAL. Surrogate primary key for the diagnostic row. PK.
+    sql: '"transDiagSeq"'
+  ts:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Event timestamp. Example: 2025/07/05 14:32:00.'
+    sql: ts
+  valid_from:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Validity start time for this event record. Example: 2025/07/05 14:32:00.'
+    sql: '"validFrom"'
+  valid_to:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Validity end time for this event record. Example: 2025/08/20 14:32:00.'
+    sql: '"validTo"'
+  vibration_mms:
+    description: 'REAL. Measured vibration (mm/s). **NULL means gear=''N'' (neutral) where vibration measurement is not recorded.** Example: 7.35.'
+    sql: vibration_mms
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TransmissionDiagnosticEvent public identity values.
+    label: TransmissionDiagnosticEvent Count
+    sql: ${polar_equipment_large_public__transmission_diagnostic_event.trans_diag_seq}

@@ -1,0 +1,72 @@
+label: idol_training_and_development
+description: All columns of the public table idol_training_and_development.
+catalog: virtual_idol_large
+schema: public
+table_name: idol_training_and_development
+dimensions:
+  assessor_name:
+    description: Name of the trainer or assessor evaluating the performance.
+    sql: '"AssessorName"'
+  cancellation_reason:
+    description: 'TEXT. The reason for cancellation. **NULL means the module was not cancelled.** Example: Scheduling conflict.'
+    sql: '"CANCELLATION_REASON"'
+  certification_name:
+    description: TEXT. The name of the certification. **NULL means this is not a certification course.**
+    sql: '"CERTIFICATION_NAME"'
+  created_by:
+    description: 'TEXT. The user who created this training record. Example: Haru Chen.'
+    sql: '"CREATED_BY"'
+  completion_status:
+    description: 'TEXT. The completion status of the training module. Possible values: Cancelled, Completed, Ongoing. Example: Cancelled.'
+    sql: '"CompletionStatus"'
+  feedback_summary:
+    description: Summary of the feedback provided during the assessment.
+    sql: '"FEEDBACK_SUMMARY"'
+  idol_identifier:
+    description: 'TEXT. Foreign key referencing the virtual idol being trained. FK to virtualidols(entity_reg). Example: VI6182.'
+    sql: '"Idol_Identifier"'
+  is_certification_course:
+    description: 'BOOLEAN. A flag indicating if this is a certification course. Example: false.'
+    sql: '"IsCertificationCourse"'
+  last_modification_date:
+    description: 'TIMESTAMP. The timestamp of the last modification to this record. Example: 2025-08-06 06:21:34.'
+    sql: '"LAST_MODIFICATION_DATE"'
+  next_training_session_date:
+    description: 'DATE. The date for the next training session. **NULL means no next session is scheduled.** Example: 2024-11-19.'
+    sql: '"NextTrainingSessionDate"'
+  performance_assessment_score:
+    description: Numerical score reflecting the training performance.
+    sql: '"PERFORMANCE_ASSESSMENT_SCORE"'
+  trainer_name:
+    description: 'TEXT. The name of the trainer. Example: Haru Smith.'
+    sql: '"TRAINER_NAME"'
+  training_end_date:
+    description: 'DATE. The end date of the training. **NULL means the training is ongoing or was cancelled.** Example: 2024-03-12.'
+    sql: '"TRAINING_END_DATE"'
+  training_cost_dollar:
+    description: 'REAL. The cost of the training in USD. Example: 2875.27.'
+    sql: '"TrainingCost_dollar"'
+  training_materials_url:
+    description: 'TEXT. A URL to the training materials. Example: http://internal.training.co/7527.'
+    sql: '"TrainingMaterialsURL"'
+  training_module_id:
+    description: 'BIGINT. Unique identifier for the training module. PK. Example: 1.'
+    sql: '"TrainingModuleID"'
+  training_start_date:
+    description: 'DATE. The start date of the training. Example: 2024-07-21.'
+    sql: '"TrainingStartDate"'
+  assessment_date:
+    description: Date when the assessment took place.
+    sql: assessment_date
+  certification_expiry_date:
+    description: DATE. The expiry date of the certification. **NULL means no certification was awarded or it does not expire.**
+    sql: certification_expiry_date
+  skill_being_trained:
+    description: 'TEXT. The name of the skill being trained in the module. Example: Streaming Software.'
+    sql: skill_being_trained
+  trainer_credentials:
+    description: 'TEXT. The credentials of the trainer. Example: Certified Professional Coach.'
+    sql: trainer_credentials
+  training_hours_completed_hr:
+    description: 'REAL. The number of training hours completed. Example: 35.3.'
+    sql: training_hours_completed_hr

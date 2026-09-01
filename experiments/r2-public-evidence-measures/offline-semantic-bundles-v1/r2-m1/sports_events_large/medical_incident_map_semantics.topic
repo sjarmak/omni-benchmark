@@ -1,0 +1,17 @@
+base_view: sports_events_large_public__medical_incident_map
+label: Medical_Incident_Map
+description: All columns of the public table Medical_Incident_Map.
+fields:
+- sports_events_large_public__medical_incident_map.*
+- sports_events_large_public__circuits.*
+- sports_events_large_public__driver_medical_record.*
+- sports_events_large_public__drivers.*
+- sports_events_large_public__race_incidents.*
+- sports_events_large_public__races.*
+joins:
+  sports_events_large_public__driver_medical_record:
+    sports_events_large_public__drivers: {}
+  sports_events_large_public__race_incidents:
+    sports_events_large_public__races:
+      sports_events_large_public__circuits: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,96 @@
+label: sponsor_media_campaigns
+description: All columns of the public table sponsor_media_campaigns.
+catalog: sports_events_large
+schema: public
+table_name: sponsor_media_campaigns
+dimensions:
+  audience_segment:
+    description: 'TEXT. Audience segment targeted by the campaign. Example: motorsport fans.'
+    sql: '"AudienceSegment"'
+  brand_lift_score:
+    description: 'REAL. Brand lift score for the campaign. **NULL means the score is not available.** Example: 0.12.'
+    sql: '"BrandLiftScore"'
+  budget_musd:
+    description: 'REAL. Budget of the campaign in millions of USD. Example: 2.2.'
+    sql: '"Budget_MUSD"'
+  creative_version:
+    description: 'TEXT. Version of the creative used. Example: v3-final.'
+    sql: '"CREATIVE_VERSION"'
+  campaign_code:
+    description: 'TEXT. Unique campaign code. Example: Q2-GLOBAL-LAUNCH.'
+    sql: '"CampaignCode"'
+  conversion_rate:
+    description: 'REAL. Conversion rate of the campaign. Example: 0.012.'
+    sql: '"ConversionRate"'
+  end_date_:
+    description: 'DATE. End date of the campaign. Example: 2025-06-30.'
+    sql: '"EndDate_"'
+  frequency_cap:
+    description: 'BIGINT. Maximum frequency of ad placement per user. **NULL means no frequency cap.** Example: 3.'
+    sql: '"FrequencyCap"'
+  geo_scope:
+    description: 'TEXT. Geographic scope of the campaign. Example: EMEA.'
+    sql: '"GeoScope"'
+  influencer_count:
+    description: 'BIGINT. Number of influencers involved in the campaign. Example: 10.'
+    sql: '"InfluencerCount"'
+  influencer_tier:
+    description: 'TEXT. Tier of influencers used in the campaign. Possible values: mid, top, mega. Example: mid.'
+    sql: '"InfluencerTier"'
+  kpi_ctr:
+    description: 'REAL. Click-through rate (CTR) for the campaign. Example: 0.05.'
+    sql: '"KPI_CTR"'
+  kpi_impressions:
+    description: 'BIGINT. Key Performance Indicator (KPI) for impressions. Example: 5000000.'
+    sql: '"KPI_Impressions"'
+  kpi_vtr:
+    description: 'REAL. View-through rate (VTR) for the campaign. Example: 0.35.'
+    sql: '"Kpi_VTR"'
+  languages:
+    description: 'TEXT. Languages targeted by the campaign. Example: en, es, ar.'
+    sql: '"Languages"'
+  localizations_json:
+    description: 'JSONB. JSON object specifying language localization details. Example: {SA:ar}.'
+    sql: '"Localizations_JSON"'
+  make_goods_json:
+    description: 'JSONB. Make-good arrangements for the campaign. Example: {bonus:2}.'
+    sql: '"MakeGoods_JSON"'
+  media_asset_ref:
+    description: 'BIGINT. Foreign key referencing media_assets(MediaAssetID). FK → media_assets(MediaAssetID). Example: 3.'
+    sql: '"Media_Asset_ref"'
+  notes:
+    description: 'TEXT. Additional notes about the campaign. **NULL means no notes provided.** Example: Strong in KSA.'
+    sql: '"Notes"'
+  objective:
+    description: 'TEXT. Objective of the media campaign. Possible values: awareness, engagement, conversion. Example: awareness.'
+    sql: '"Objective"'
+  placements_json:
+    description: 'JSONB. JSON object specifying placement details. **NULL means no placements defined.** Example: {yt:60, ig:40}.'
+    sql: '"Placements_JSON"'
+  promo_code:
+    description: 'TEXT. Promotional code for the campaign. **NULL means no promo code is provided.** Example: GP25.'
+    sql: '"Promo_Code"'
+  revenue_credited_musd:
+    description: 'REAL. Revenue credited to the campaign in millions of USD. **NULL means no revenue credited.** Example: 1.4.'
+    sql: '"RevenueCredited_MUSD"'
+  smc_serial:
+    description: BIGSERIAL. Surrogate primary key for sponsor_media_campaigns rows. PK.
+    sql: '"SMC_serial"'
+  start_date:
+    description: 'DATE. Start date of the campaign. Example: 2025-04-01.'
+    sql: '"START_DATE"'
+  safety_brand_guard:
+    description: 'TEXT. Safety and brand protection guidelines. Example: IAS.'
+    sql: '"SafetyBrandGuard"'
+  sponsor_ref:
+    description: 'BIGINT. Foreign key referencing sponsor_entities(Sponsor_ID). FK → sponsor_entities(Sponsor_ID). Example: 1.'
+    sql: '"Sponsor_ref"'
+  tracking_partner:
+    description: 'TEXT. Third-party tracking partner. Example: Nielsen.'
+    sql: '"TrackingPartner"'
+  uplift_vs_baseline:
+    description: 'REAL. Uplift in key metrics compared to baseline. Example: 0.08.'
+    sql: '"Uplift_vs_Baseline"'
+  kpi_clicks:
+    description: 'BIGINT. KPI for clicks. Example: 250000.'
+    sql: kpi_clicks

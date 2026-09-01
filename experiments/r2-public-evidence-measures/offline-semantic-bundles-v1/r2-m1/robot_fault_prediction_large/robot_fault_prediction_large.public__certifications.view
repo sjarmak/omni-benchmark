@@ -1,0 +1,54 @@
+label: certifications
+description: All columns of the public table certifications.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: certifications
+dimensions:
+  category:
+    description: 'TEXT. The category of the certification. Possible values: Applications, Controls, Maintenance, Operations Management, Operator, Programming, Safety, Software, Vision Systems.'
+    sql: '"CATEGORY"'
+  cert_index:
+    description: 'TEXT. Unique identifier for the certification. PK. Example: CERT_FAN_01.'
+    sql: '"CERT_INDEX"'
+  cert_name:
+    description: 'TEXT. The full name of the certification. Example: FANUC Certified Robot Operator - Level 1.'
+    sql: '"CertName"'
+  compliance_standard:
+    description: 'TEXT. The industry compliance standard associated with the certification. Example: ANSI/RIA R15.06.'
+    sql: '"ComplianceStandard"'
+  date_created:
+    description: 'TEXT. The date the certification was first offered, formatted as DD-Mon-YYYY. Example: 10-Jan-2020.'
+    sql: '"DATE_CREATED"'
+  description:
+    description: 'TEXT. A brief description of the certification''s scope. Example: Basic operation and safety procedures for FANUC robotic arms. Covers teach pendant navigation..'
+    sql: '"DESCRIPTION"'
+  prerequisites:
+    description: 'TEXT. Required certifications or knowledge before this certification can be obtained. **NULL means there are no prerequisites.**. Example: Basic computer skills.'
+    sql: '"Prerequisites"'
+  renewal_cost_usd:
+    description: 'REAL. The cost in USD to renew the certification. **NULL indicates the renewal is free, internal, or the certification is lifelong.**. Example: 350.0.'
+    sql: '"RENEWAL_COST_USD"'
+  version_number:
+    description: 'TEXT. The version number of the certification. Example: 3.1.'
+    sql: '"VersionNumber"'
+  associated_robot_mfg:
+    description: 'TEXT. The robot manufacturer associated with the certification. **NULL indicates the certification is vendor-neutral.**. Possible values: ABB, FANUC, KUKA, Universal Robots, Yaskawa.'
+    sql: associated_robot_mfg
+  date_last_updated:
+    description: 'TEXT. The timestamp when the certification details were last updated, formatted as DD-Mon-YYYY HH24:MI:SS. Example: 01-Jun-2024.'
+    sql: date_last_updated
+  is_active_flag:
+    description: 'BOOLEAN. A flag indicating if the certification is still active and offered. Possible values: False, True.'
+    sql: is_active_flag
+  issuing_organization:
+    description: 'TEXT. The organization that issues the certification. Example: FANUC America.'
+    sql: issuing_organization
+  validity_period_months:
+    description: 'TEXT. The duration in months for which the certification is valid before requiring renewal. Possible values: 24 months, 36 months, 48 months, 60 months.'
+    sql: validity_period_months
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct certifications public identity values.
+    label: certifications Count
+    sql: ${robot_fault_prediction_large_public__certifications.cert_index}

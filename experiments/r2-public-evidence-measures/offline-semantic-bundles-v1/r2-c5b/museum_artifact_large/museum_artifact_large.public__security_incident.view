@@ -1,0 +1,66 @@
+label: SecurityIncident
+description: All columns of the public table SecurityIncident.
+catalog: museum_artifact_large
+schema: public
+table_name: SecurityIncident
+dimensions:
+  affected_artifacts:
+    description: 'VARCHAR(100). List of artifacts impacted by incident. Example: "A comfort zone is a beautiful place, but nothing ever grows there. The Information                  ".'
+    sql: '"affectedArtifacts"'
+  alarm_system_response:
+    description: 'VARCHAR(100). Performance of security alarm systems (Immediate, Delayed, Partial, Failed, NotTriggered). Possible values: "Delayed", "Failed", "Immediate", "NotTriggered", "Partial".'
+    sql: '"alarmSystemResponse"'
+  cctv_footage_available:
+    description: 'VARCHAR(100). Availability and quality of video evidence (FullCoverage, Partial, Corrupted, Overwritten, None). Possible values: "Corrupted", "FullCoverage", "None", "Overwritten", "Partial".'
+    sql: '"cctvFootageAvailable"'
+  containment_actions:
+    description: 'VARCHAR(100). Measures taken to contain incident impact. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"containmentActions"'
+  corrective_measures:
+    description: 'VARCHAR(100). Implemented actions to prevent recurrence. Example: "1Jril02Y06".'
+    sql: '"correctiveMeasures"'
+  damage_assessment:
+    description: 'VARCHAR(100). Preliminary evaluation of physical damage. Example: "Sometimes you win, sometimes you learn. The Information Pane shows the detailed object              ".'
+    sql: '"damageAssessment"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for security incident records. Example: 1.'
+    sql: id
+  incident_timestamp:
+    description: 'VARCHAR(100). Exact timestamp when incident occurred. Example: "10:08:45".'
+    sql: '"incidentTimestamp"'
+  incident_type:
+    description: 'VARCHAR(100). Classification of security event (UnauthorizedAccess, Vandalism, TheftAttempt, EnvironmentalBreach, EquipmentFailure, Fire, Flood, Earthquake). Possible values: "Earthquake", "EnvironmentalBreach", "EquipmentFailure", "Fire", "Flood", "TheftAttempt", "UnauthorizedAccess", "Vandalism".'
+    sql: '"incidentType"'
+  insurance_claim_filed:
+    description: 'VARCHAR(100). Status of insurance claim submission (Yes, No, Pending, Denied, Settled). Possible values: "Denied", "No", "Pending", "Settled", "Yes".'
+    sql: '"insuranceClaimFiled"'
+  investigation_status:
+    description: 'VARCHAR(100). Current state of incident investigation (Open, InProgress, Suspended, Closed, Reopened). Possible values: "Closed", "InProgress", "Open", "Reopened", "Suspended".'
+    sql: '"investigationStatus"'
+  lessons_learned:
+    description: 'VARCHAR(100). Key insights documented for future prevention. Example: "q7gE05x36V".'
+    sql: '"lessonsLearned"'
+  personnel_on_scene:
+    description: 'VARCHAR(100). Number of staff members responding to incident. Example: "I5UjtxIgdK".'
+    sql: '"personnelOnScene"'
+  public_disclosure:
+    description: 'VARCHAR(100). Public communication approach (PublicStatement, PressRelease, InternalOnly, Confidential, None). Possible values: "Confidential", "InternalOnly", "None", "PressRelease", "PublicStatement".'
+    sql: '"publicDisclosure"'
+  regulatory_reporting:
+    description: 'VARCHAR(100). Compliance with mandatory reporting requirements (Reported, NotRequired, Pending, Exempt, Confidential). Possible values: "Confidential", "Exempt", "NotRequired", "Pending", "Reported".'
+    sql: '"regulatoryReporting"'
+  response_time_sec:
+    description: 'VARCHAR(100). Time elapsed between incident detection and first responder arrival in seconds. Example: "12:43:45".'
+    sql: '"responseTimeSec"'
+  root_cause_analysis:
+    description: 'VARCHAR(100). Determined underlying cause of incident. Example: "dHLIdg3LJW".'
+    sql: '"rootCauseAnalysis"'
+  severity_level:
+    description: 'VARCHAR(100). Impact severity rating (Critical, High, Medium, Low, Informational). Possible values: "Critical", "High", "Informational", "Low", "Medium".'
+    sql: '"severityLevel"'
+  showcase_id:
+    description: 'VARCHAR(100). Identifier of affected showcase or display area. Example: "ef4wt1HusH".'
+    sql: '"showcaseId"'
+  staff_code:
+    description: 'BIGINT. Lead incident responder identifier (foreign key to Staff.Staff_Code). Example: 55.'
+    sql: '"staffCode"'

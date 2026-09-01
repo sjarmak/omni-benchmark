@@ -1,0 +1,7 @@
+base_view: robot_fault_prediction_large_public__technicians
+label: technicians
+description: All columns of the public table technicians.
+fields:
+- robot_fault_prediction_large_public__technicians.*
+joins: {}
+ai_context: This topic models no cross-table joins.

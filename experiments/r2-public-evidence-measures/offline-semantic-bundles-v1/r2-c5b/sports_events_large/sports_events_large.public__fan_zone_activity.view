@@ -1,0 +1,57 @@
+label: FanZoneActivity
+description: All columns of the public table FanZoneActivity.
+catalog: sports_events_large
+schema: public
+table_name: FanZoneActivity
+dimensions:
+  activity_id:
+    description: BIGINT. Primary key. Unique fan zone activity identifier
+    sql: '"ACTIVITY_ID"'
+  activity_name:
+    description: 'TEXT. Name of fan zone activity Possible values: Pit Stop Challenge, F1 Simulator, Driver Meet & Greet, Car Display, eSports Zone, Kids Zone, Live Music Stage, Heritage Exhibition.'
+    sql: '"ACTIVITY_NAME"'
+  attendance:
+    description: BIGINT. Actual attendance
+    sql: '"ATTENDANCE"'
+  duration_hours:
+    description: 'REAL. Duration in hours Typical range: 1 to 12.'
+    sql: '"DURATION_HOURS"'
+  event_date:
+    description: DATE. Date of activity
+    sql: '"EVENT_DATE"'
+  satisfaction_score:
+    description: 'REAL. Average visitor satisfaction (0-10) Typical range: 0 to 10.'
+    sql: '"SATISFACTION_SCORE"'
+  sponsor:
+    description: 'TEXT. Activity sponsor Possible values: Pirelli, DHL, Rolex, Heineken, AWS, Crypto.com. **NULL means No sponsor for this activity.**'
+    sql: '"SPONSOR"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  accessibility_compliant:
+    description: BOOLEAN. Whether activity is accessibility compliant Boolean flag (true/false).
+    sql: accessibility_compliant
+  activity_code:
+    description: TEXT. Activity code
+    sql: activity_code
+  capacity:
+    description: BIGINT. Maximum capacity
+    sql: capacity
+  category:
+    description: 'TEXT. Activity category Possible values: Interactive, Entertainment, Educational, Partner Activation, Food & Beverage.'
+    sql: category
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  race_ref:
+    description: BIGINT. Foreign key referencing races(rak_id). Related race
+    sql: race_ref
+  setup_cost_usd:
+    description: 'REAL. Setup cost Typical range: 500 to 200000.'
+    sql: setup_cost_usd
+  social_media_mentions:
+    description: BIGINT. Number of social media mentions
+    sql: social_media_mentions
+  utilization_pct:
+    description: 'REAL. Utilization rate Typical range: 0 to 100.'
+    sql: utilization_pct

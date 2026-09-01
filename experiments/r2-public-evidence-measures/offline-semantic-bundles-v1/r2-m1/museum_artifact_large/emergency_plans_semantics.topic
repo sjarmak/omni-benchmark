@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__emergency_plans
+label: EmergencyPlans
+description: All columns of the public table EmergencyPlans.
+fields:
+- museum_artifact_large_public__emergency_plans.*
+joins: {}
+ai_context: This topic models no cross-table joins.

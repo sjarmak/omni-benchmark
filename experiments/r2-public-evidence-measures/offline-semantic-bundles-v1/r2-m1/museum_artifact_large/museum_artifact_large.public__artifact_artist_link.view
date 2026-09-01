@@ -1,0 +1,36 @@
+label: ArtifactArtistLink
+description: All columns of the public table ArtifactArtistLink.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactArtistLink
+dimensions:
+  confidence:
+    description: 'TEXT. No description provided. Example: 0.98.'
+    sql: '"CONFIDENCE"'
+  is_primary_creator:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: '"IS_PRIMARY_CREATOR"'
+  artist_to_link:
+    description: 'TEXT. No description provided. Example: 102.'
+    sql: artist_to_link
+  artwork_to_link:
+    description: 'TEXT. No description provided. Example: ART54317.'
+    sql: artwork_to_link
+  attribution_date:
+    description: 'TEXT. No description provided. Example: 2019-10-10.'
+    sql: attribution_date
+  attribution_level:
+    description: 'TEXT. No description provided. Example: Signed.'
+    sql: attribution_level
+  attribution_pub_source:
+    description: 'TEXT. No description provided. Example: PUB-2018-BC.'
+    sql: attribution_pub_source
+  creation_role:
+    description: 'TEXT. No description provided. Example: Painter.'
+    sql: creation_role
+  verification_notes:
+    description: 'TEXT. No description provided. Example: Weave structure and motif are characteristic of the Khotan workshops during the Eastern Han period..'
+    sql: verification_notes
+  verifier_staff_code:
+    description: 'TEXT. No description provided. Possible values: 1, 16, 2, 27, 3, 42, 5, 6, 7.'
+    sql: verifier_staff_code

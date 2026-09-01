@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__worker_profile
+label: worker_profile
+description: All columns of the public table worker_profile.
+fields:
+- labor_certification_applications_large_public__worker_profile.*
+joins: {}
+ai_context: This topic models no cross-table joins.

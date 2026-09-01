@@ -1,0 +1,11 @@
+base_view: sports_events_large_public__regulation_technology_links
+label: regulation_technology_links
+description: All columns of the public table regulation_technology_links.
+fields:
+- sports_events_large_public__regulation_technology_links.*
+- sports_events_large_public__innovation_technologies.*
+- sports_events_large_public__technical_regulations.*
+joins:
+  sports_events_large_public__innovation_technologies: {}
+  sports_events_large_public__technical_regulations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

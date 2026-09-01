@@ -1,0 +1,66 @@
+label: InfrastructureRepairLog
+description: All columns of the public table InfrastructureRepairLog.
+catalog: disaster_relief_large
+schema: public
+table_name: InfrastructureRepairLog
+dimensions:
+  beneficiaries_impacted:
+    description: 'VARCHAR(100). Count of population benefiting from repairs. Example: "uvSET97Gvg".'
+    sql: '"beneficiariesImpacted"'
+  community_feedback:
+    description: 'VARCHAR(100). Community response to repair activities. Example: "877".'
+    sql: '"communityFeedback"'
+  contractor_name:
+    description: 'VARCHAR(100). Name of contracted repair organization (Company Name format). Example: "Inoue Momoka".'
+    sql: '"contractorName"'
+  cost_usd:
+    description: 'VARCHAR(100). Total expenditure for repair activities in USD. Example: "877".'
+    sql: '"costUSD"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 1489.'
+    sql: '"disasterEventId"'
+  equipment_used:
+    description: 'VARCHAR(100). Heavy equipment and tools deployed for repairs. Example: "877".'
+    sql: '"equipmentUsed"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for infrastructure repair records. Example: 1.'
+    sql: id
+  infrastructure_assessment_id:
+    description: 'BIGINT. Foreign key reference to infrastructure assessment (InfrastructureAssessmentCore.id). Example: 4790.'
+    sql: '"infrastructureAssessmentId"'
+  materials_used:
+    description: 'VARCHAR(100). Construction materials consumed during repairs. Example: "877".'
+    sql: '"materialsUsed"'
+  next_steps:
+    description: 'VARCHAR(100). Planned subsequent actions or phases. Example: "877".'
+    sql: '"nextSteps"'
+  notes:
+    description: 'VARCHAR(100). Project manager observations or issues. Example: "537".'
+    sql: notes
+  personnel_assigned:
+    description: 'VARCHAR(100). Count of workers assigned to repair project. Example: "877".'
+    sql: '"personnelAssigned"'
+  progress_pct:
+    description: 'VARCHAR(100). Completion percentage of repair scope (0-100). Example: "877".'
+    sql: '"progressPct"'
+  quality_check_passed:
+    description: 'VARCHAR(100). Quality assurance verification status (Yes|No|Partial|Pending|Failed). Possible values: "Failed", "No", "Partial", "Pending", "Yes".'
+    sql: '"qualityCheckPassed"'
+  repair_end_date:
+    description: 'VARCHAR(100). Date repair activities completed. Example: "2013-01-13".'
+    sql: '"repairEndDate"'
+  repair_start_date:
+    description: 'VARCHAR(100). Date repair activities commenced. Example: "2006-08-29".'
+    sql: '"repairStartDate"'
+  repair_type:
+    description: 'VARCHAR(100). Classification of repair work (Emergency|Temporary|Permanent|Preventive|Reconstruction|Upgrade). Possible values: "Emergency", "Permanent", "Preventive", "Reconstruction", "Temporary", "Upgrade".'
+    sql: '"repairType"'
+  restoration_status:
+    description: 'VARCHAR(100). Current repair status (NotStarted|InProgress|Completed|Suspended|Abandoned). Possible values: "Abandoned", "Completed", "InProgress", "NotStarted", "Suspended".'
+    sql: '"restorationStatus"'
+  safety_incidents:
+    description: 'VARCHAR(100). Workplace safety events (None|NearMiss|Minor|Major|Critical|Fatal). Possible values: "Critical", "Fatal", "Major", "Minor", "NearMiss", "None".'
+    sql: '"safetyIncidents"'
+  version:
+    description: 'VARCHAR(100). Record version number for audit purposes. Example: "537".'
+    sql: version

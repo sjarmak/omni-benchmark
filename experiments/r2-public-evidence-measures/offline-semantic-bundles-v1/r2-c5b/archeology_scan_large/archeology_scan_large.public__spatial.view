@@ -1,0 +1,42 @@
+label: spatial
+description: All columns of the public table spatial.
+catalog: archeology_scan_large
+schema: public
+table_name: spatial
+dimensions:
+  arcref:
+    description: TEXT. Reference to associated archeologys project. FK to Projects.
+    sql: arcref
+  crewref:
+    description: TEXT. Reference to operator who performed spatial measurements. FK to Personnel.
+    sql: crewref
+  domainregistry:
+    description: BIGSERIAL. Auto-generated unique identifier for spatial measurement record. PK = Spatial(DomainRegistry).
+    sql: domainregistry
+  spatial_dims:
+    description: JSONB column. Spatial dimensions and measurements including area, volume, bounding box coordinates, and orientation angles
+    sql: spatial_dims
+  spatial_dims_angles_angle_az:
+    description: 'REAL. Azimuth orientation angle in degrees. Example: 342.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spatial_dims, 'Angles', 'Angle_Az')
+  spatial_dims_angles_angle_tilt:
+    description: 'REAL. Tilt angle measurement in degrees. Example: 23.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spatial_dims, 'Angles', 'Angle_Tilt')
+  spatial_dims_area_m2:
+    description: 'REAL. Surface area measurement in square meters. Example: 78.01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spatial_dims, 'Area_M2')
+  spatial_dims_bounding_box_box_x:
+    description: 'REAL. Bounding box X-dimension in meters. Example: 40.12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spatial_dims, 'Bounding_Box', 'Box_X')
+  spatial_dims_bounding_box_box_y:
+    description: 'REAL. Bounding box Y-dimension in meters. Example: 1.06.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spatial_dims, 'Bounding_Box', 'Box_Y')
+  spatial_dims_bounding_box_box_z:
+    description: 'REAL. Bounding box Z-dimension in meters. Example: 8.74.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spatial_dims, 'Bounding_Box', 'Box_Z')
+  spatial_dims_ground_span:
+    description: 'REAL. Ground sampling distance in millimeters. Example: 4.13.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spatial_dims, 'Ground_Span')
+  spatial_dims_vol_m3:
+    description: 'REAL. Volume measurement in cubic meters. Example: 76.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spatial_dims, 'Vol_M3')

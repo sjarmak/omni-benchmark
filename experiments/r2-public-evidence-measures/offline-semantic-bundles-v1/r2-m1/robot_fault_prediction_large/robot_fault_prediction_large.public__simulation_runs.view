@@ -1,0 +1,39 @@
+label: simulation_runs
+description: All columns of the public table simulation_runs.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: simulation_runs
+dimensions:
+  cycle_time_achieved_sec:
+    description: 'REAL. The cycle time achieved in the simulation, in seconds. **NULL indicates the simulation failed.**. Example: 178.9.'
+    sql: cycle_time_achieved_sec
+  max_tcp_speed_m_s:
+    description: 'TEXT. The maximum speed of the tool center point achieved during the simulation, in meters per second. **NULL indicates the simulation failed.**. Example: 1.85 m/s.'
+    sql: max_tcp_speed_m_s
+  model_code:
+    description: 'TEXT. The code of the simulation model that was run. FK. Example: SIM-RB8530-01.'
+    sql: model_code
+  outcome_summary:
+    description: 'TEXT. A summary of the simulation''s result. **NULL indicates the simulation failed or was cancelled before completion.**. Example: Cycle time met, no collisions detected..'
+    sql: outcome_summary
+  parameters:
+    description: 'JSON. A JSON object of the parameters used for this specific run. Example: {panel_weight_kg: 15.5, target_cycle_time_sec: 180}.'
+    sql: parameters
+  run_pk:
+    description: 'BIGINT. Unique identifier for a single simulation run. PK. Example: 1.'
+    sql: run_pk
+  run_timestamp:
+    description: 'TEXT. The timestamp when the simulation was run, formatted as YYYY/MM/DD HH:MI:SS. Example: 2025/08/15 10:00:00.'
+    sql: run_timestamp
+  scenario_description:
+    description: 'TEXT. A description of the scenario being tested in this run. Example: Test new door panel variant..'
+    sql: scenario_description
+  was_successful:
+    description: 'BOOLEAN. A flag indicating if the simulation run completed successfully. Possible values: False, True.'
+    sql: was_successful
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct simulation_runs public identity values.
+    label: simulation_runs Count
+    sql: ${robot_fault_prediction_large_public__simulation_runs.run_pk}

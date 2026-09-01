@@ -1,0 +1,108 @@
+label: project_stakeholders
+description: All columns of the public table project_stakeholders.
+catalog: archeology_scan_large
+schema: public
+table_name: project_stakeholders
+dimensions:
+  address:
+    description: 'TEXT. The address of the stakeholder. **NULL means it is not on record.**。 Example: 1849 C Street NW.'
+    sql: '"ADDRESS"'
+  agreement_url:
+    description: 'TEXT. A URL to the legal agreement. **NULL means no agreement is in place or it is not online.**。 Example: https://digisite.org/agreements/stk3001.pdf.'
+    sql: '"AGREEMENT_URL"'
+  added_by_user_tag:
+    description: 'TEXT. The user who added this stakeholder record。 Example: OP8108.'
+    sql: '"AddedByUserTag"'
+  communication_frequency:
+    description: 'TEXT. The planned frequency of communication with this stakeholder。 Possible values: Annually, As needed, Bi-Weekly, Monthly, Quarterly, Semi-Annually, Weekly.'
+    sql: '"CommunicationFrequency"'
+  date_added:
+    description: 'DATE. The date the stakeholder was added to the system。 Example: 1-Dec-21.'
+    sql: '"DATE_ADDED"'
+  email:
+    description: 'TEXT. The email address for the stakeholder. **NULL means it is not available.**。 Example: kwaters@blm.gov.'
+    sql: '"Email"'
+  engagement_strategy:
+    description: 'TEXT. The strategy for engaging with this stakeholder。 Possible values: Keep Informed, Keep Satisfied, Manage Closely, Monitor.'
+    sql: '"EngagementStrategy"'
+  is_supportive:
+    description: 'BOOLEAN. A flag indicating if the stakeholder is generally supportive of the project。 Possible values: False, True.'
+    sql: '"IS_SUPPORTIVE"'
+  influence_level:
+    description: 'TEXT. The level of influence the stakeholder has。 Possible values: High, Low, Medium.'
+    sql: '"InfluenceLevel"'
+  last_contacted_date:
+    description: 'DATE. The last date contact was made with the stakeholder。 Example: 15-Mar-24.'
+    sql: '"LAST_CONTACTED_DATE"'
+  legal_agreement_in_place:
+    description: 'BOOLEAN. A flag indicating if a legal agreement is in place。 Possible values: False, True.'
+    sql: '"LegalAgreementInPlace"'
+  mitigation_plan:
+    description: 'TEXT. The plan to mitigate any identified risks。 Example: Regular reporting..'
+    sql: '"MITIGATION_PLAN"'
+  meeting_minutes_url:
+    description: 'TEXT. A URL to the minutes of the last meeting. **NULL means no minutes are available online.**。 Possible values: https://digisite.org/minutes/stk3001.pdf, https://digisite.org/minutes/stk3003.pdf, https://digisite.org/minutes/stk3006.pdf, https://digisite.org/minutes/stk3011.pdf, https://digisite.org/minutes/stk3014.pdf, https://digisite.org/minutes/stk3050.pdf.'
+    sql: '"MeetingMinutesUrl"'
+  organization_name:
+    description: 'TEXT. The name of the organization the stakeholder represents。 Example: BLM.'
+    sql: '"ORGANIZATION_NAME"'
+  phone:
+    description: 'TEXT. The phone number for the stakeholder. **NULL means it is not available.**。 Example: (202) 555-0172.'
+    sql: '"PHONE"'
+  power_interest_grid_quadrant:
+    description: 'TEXT. The quadrant on a power/interest grid。 Possible values: Keep Informed, Keep Satisfied, Key Player, Least Effort, Show Consideration.'
+    sql: '"POWER_INTEREST_GRID_QUADRANT"'
+  risk_assessment:
+    description: 'TEXT. An assessment of risks associated with this stakeholder。 Example: Low risk of non-compliance..'
+    sql: '"RiskAssessment"'
+  social_media_profile:
+    description: 'TEXT. A link to the stakeholder''s social media profile. **NULL means not applicable or unknown.**。 Example: @MHF_Org.'
+    sql: '"SocialMediaProfile"'
+  stakeholder_index:
+    description: 'BIGINT. Unique identifier for a stakeholder record. PK。 Example: 3001.'
+    sql: '"StakeholderIndex"'
+  stakeholder_type:
+    description: 'TEXT. The type of stakeholder。 Possible values: Anonymous Benefactor, Funder, Government Regulator, Land Owner, Local Community Rep, Media, Potential Acquirer, Stakeholder.'
+    sql: '"StakeholderType"'
+  contact_person_name:
+    description: 'TEXT. The name of the specific contact person. **NULL means the stakeholder is the contact.**。 Example: Ms. Karen Waters.'
+    sql: contact_person_name
+  country:
+    description: 'TEXT. The country of the stakeholder. **NULL means it is not on record.**。 Example: US.'
+    sql: country
+  initial_assessment_date:
+    description: 'DATE. The date the stakeholder was first assessed。 Example: 10-Dec-21.'
+    sql: initial_assessment_date
+  involvement_level:
+    description: 'TEXT. The level of involvement of the stakeholder。 Possible values: High, Low, Medium.'
+    sql: involvement_level
+  is_key_decision_maker:
+    description: 'BOOLEAN. A flag indicating if the stakeholder is a key decision-maker。 Possible values: False, True.'
+    sql: is_key_decision_maker
+  next_meeting_date:
+    description: 'DATE. The date of the next scheduled meeting. **NULL means no meeting is scheduled.**。 Example: 15-Apr-24.'
+    sql: next_meeting_date
+  notes:
+    description: 'TEXT. General notes about the stakeholder。 Example: Primary permitting agency..'
+    sql: notes
+  preferred_communication_method:
+    description: 'TEXT. The stakeholder''s preferred method of communication。 Possible values: Email, Encrypted Email, In-Person, Official Letter, Phone Call, Slack.'
+    sql: preferred_communication_method
+  primary_interest:
+    description: 'TEXT. The primary interest or concern of the stakeholder。 Example: Cultural resource protection, permit compliance.'
+    sql: primary_interest
+  project_association:
+    description: 'TEXT. Foreign key linking to the primary associated project. FK. **NULL means the stakeholder is not linked to a single project.**。 Example: PR7509.'
+    sql: project_association
+  site_association:
+    description: 'TEXT. Foreign key linking to the primary associated site. FK. **NULL means the stakeholder is not linked to a single site.**。 Example: SC1017.'
+    sql: site_association
+  stakeholder_name:
+    description: 'TEXT. The name of the stakeholder individual or group. **NULL means stakeholder name is not available.**。 Example: US Bureau of Land Management.'
+    sql: stakeholder_name
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct project_stakeholders public identity values.
+    label: project_stakeholders Count
+    sql: ${archeology_scan_large_public__project_stakeholders.stakeholder_index}

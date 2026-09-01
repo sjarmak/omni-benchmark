@@ -1,0 +1,66 @@
+label: StreamingMetrics
+description: All columns of the public table StreamingMetrics.
+catalog: sports_events_large
+schema: public
+table_name: StreamingMetrics
+dimensions:
+  avg_watch_time_min:
+    description: 'REAL. Average watch time in minutes Typical range: 5 to 200.'
+    sql: '"AVG_WATCH_TIME_MIN"'
+  buffering_pct:
+    description: 'REAL. Buffering ratio percentage Typical range: 0 to 5.'
+    sql: '"BUFFERING_PCT"'
+  chat_messages:
+    description: BIGINT. Number of live chat messages
+    sql: '"CHAT_MESSAGES"'
+  churn_count:
+    description: BIGINT. Subscribers who cancelled
+    sql: '"CHURN_COUNT"'
+  mobile_pct:
+    description: 'REAL. Percentage of viewers on mobile Typical range: 0 to 100.'
+    sql: '"MOBILE_PCT"'
+  platform:
+    description: 'TEXT. Streaming platform Possible values: F1 TV Pro, F1 TV Access, ESPN+, DAZN, Sky Go, Kayo, Star+.'
+    sql: '"PLATFORM"'
+  stream_id:
+    description: BIGINT. Primary key. Unique streaming metrics identifier
+    sql: '"STREAM_ID"'
+  tv_app_pct:
+    description: 'REAL. Percentage of viewers on TV apps Typical range: 0 to 100.'
+    sql: '"TV_APP_PCT"'
+  unique_viewers:
+    description: BIGINT. Number of unique viewers
+    sql: '"UNIQUE_VIEWERS"'
+  avg_bitrate_mbps:
+    description: 'REAL. Average streaming bitrate in Mbps Typical range: 1 to 25.'
+    sql: avg_bitrate_mbps
+  broadcast_ref:
+    description: BIGINT. Foreign key referencing TVBroadcast(BROADCAST_ID). Related broadcast
+    sql: broadcast_ref
+  completion_rate_pct:
+    description: 'REAL. Percentage who watched to end Typical range: 0 to 100.'
+    sql: completion_rate_pct
+  concurrent_peak:
+    description: BIGINT. Peak concurrent viewers
+    sql: concurrent_peak
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  desktop_pct:
+    description: 'REAL. Percentage of viewers on desktop Typical range: 0 to 100.'
+    sql: desktop_pct
+  metric_date:
+    description: DATE. Date of metrics
+    sql: metric_date
+  new_subscribers:
+    description: BIGINT. New subscribers gained
+    sql: new_subscribers
+  social_shares:
+    description: BIGINT. Number of social media shares
+    sql: social_shares
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct StreamingMetrics public identity values.
+    label: StreamingMetrics Count
+    sql: ${sports_events_large_public__streaming_metrics.stream_id}

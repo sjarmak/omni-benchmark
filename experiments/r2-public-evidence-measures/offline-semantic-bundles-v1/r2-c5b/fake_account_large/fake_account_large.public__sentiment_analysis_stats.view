@@ -1,0 +1,108 @@
+label: sentiment_analysis_stats
+description: All columns of the public table sentiment_analysis_stats.
+catalog: fake_account_large
+schema: public
+table_name: sentiment_analysis_stats
+dimensions:
+  excl_mark_rt:
+    description: 'REAL. Rate of exclamation-mark usage (0–1). Example: 0.21.'
+    sql: '"EXCL_MARK_RT"'
+  grade_level:
+    description: 'REAL. Estimated U.S. school grade level required to read the text. Example: 9.92.'
+    sql: '"GRADE_LEVEL"'
+  intensifier_rt:
+    description: 'REAL. Rate of intensifier adverbs (e.g., ‘very’, ‘extremely’). **NULL means parser did not compute this metric.** Example (when present): 0.58.'
+    sql: '"IntensifierRT"'
+  length_sd:
+    description: 'REAL. Std-dev of message length. Example: 22.76.'
+    sql: '"LENGTH_SD"'
+  polarity_sd:
+    description: 'REAL. Standard deviation of polarity. Example: 0.42.'
+    sql: '"POLARITY_SD"'
+  top_topic1:
+    description: 'TEXT. Highest-weighted topic code for this account. Example: TP006.'
+    sql: '"TOP_TOPIC1"'
+  toxic_cnt:
+    description: 'BIGINT. Count of toxic or abusive messages. Example: 76.'
+    sql: '"TOXIC_CNT"'
+  acct_slot_ref:
+    description: 'TEXT. Foreign-key linking back to content_activity.acct_slot. PK. Example: ACC7210284.'
+    sql: acct_slot_ref
+  emoji_rate:
+    description: 'REAL. Emoji per 100 tokens (0–1 scaled). **NULL means emoji data was unavailable or stripped.** Example (when present): 0.42.'
+    sql: '"emojiRate"'
+  emotion_mix:
+    description: JSONB column. Collects counts and proportions of detected sentiment and emotion for an account’s content.
+    sql: emotion_mix
+  lang_dominant:
+    description: 'TEXT. ISO-639-1 language code of dominant language (e.g., en, es, pt). Example: pt.'
+    sql: '"langDominant"'
+  length_avg:
+    description: 'REAL. Average message length in tokens. Example: 41.59.'
+    sql: '"lengthAvg"'
+  polar_equipmentity_mean:
+    description: 'REAL. Average sentiment polarity score of the content (ranging from negative to positive). Example: 0.138.'
+    sql: '"polar_equipmentityMean"'
+  question_rt:
+    description: 'REAL. Rate of question-mark usage (0–1). Example: 0.21.'
+    sql: '"questionRt"'
+  reading_ease:
+    description: 'REAL. Flesch–Kincaid reading-ease score (0–100). Example: 33.79.'
+    sql: '"readingEase"'
+  sarcasm_rt:
+    description: 'REAL. Detected sarcasm rate (0–1). Example: 0.15. **NULL means sarcasm was not detected or this metric was not computed.**'
+    sql: sarcasm_rt
+  subjectiv:
+    description: 'REAL. Proportion of sentences classed as subjective (0–1). Example: 0.17.'
+    sql: subjectiv
+  top_topic2:
+    description: 'TEXT. Second-highest topic code. Example: TP017.'
+    sql: '"topTopic2"'
+  top_topic3:
+    description: 'TEXT. Third-highest topic code. Example: TP025.'
+    sql: top_topic3
+  emotion_mix_emotion_fear:
+    description: 'REAL. Fear proportion (0–1). Example: 0.02.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'EMOTION_FEAR')
+  emotion_mix_emotion_anger:
+    description: 'REAL. Anger proportion (0–1). Example: 0.17.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'EmotionAnger')
+  emotion_mix_emotion_disgust:
+    description: 'REAL. Disgust proportion (0–1). Example: 0.06. **NULL means the disgust classifier lacked confidence or was skipped.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'EmotionDisgust')
+  emotion_mix_neg_cnt:
+    description: 'BIGINT. Number of negative-polarity posts/messages. Example: 497.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'NegCnt')
+  emotion_mix_pos_cnt:
+    description: 'BIGINT. Number of positive-polarity posts/messages. Example: 447.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'POS_CNT')
+  emotion_mix_sent_time_decay:
+    description: 'REAL. Time-decay weight applied to older messages (0–1). Example: 0.95.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'SENT_TIME_DECAY')
+  emotion_mix_sent_var:
+    description: 'REAL. Variance of sentiment scores. Example: 0.23.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'SENT_VAR')
+  emotion_mix_avg_sent:
+    description: 'REAL. Average sentiment score (−1 to 1). Example: −0.221.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'avgSent')
+  emotion_mix_emotion_joy:
+    description: 'REAL. Joy proportion (0–1). Example: 0.17.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'emotionJoy')
+  emotion_mix_emotion_surprise:
+    description: 'REAL. Surprise proportion (0–1). Example: 0.13. **NULL means surprise was not computed.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'emotionSurprise')
+  emotion_mix_emotion_sad:
+    description: 'REAL. Sadness proportion (0–1). Example: 0.20.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'emotion_sad')
+  emotion_mix_emotion_trust:
+    description: 'REAL. Trust proportion (0–1). Example: 0.14.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'emotion_trust')
+  emotion_mix_neu_cnt:
+    description: 'BIGINT. Number of neutral posts/messages. Example: 794.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'neu_cnt')
+  emotion_mix_sent_trend:
+    description: 'TEXT. Direction of recent sentiment trend. Possible values: Rising, Falling, Stable, Volatile. Example: Falling.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'sentTrend')
+  emotion_mix_sent_score:
+    description: 'REAL. Composite sentiment score combining polarity & emotion. Example: −0.42.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emotion_mix, 'sent_score')

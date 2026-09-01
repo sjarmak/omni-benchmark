@@ -1,0 +1,46 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Orbital Velocity: Assuming a circular orbit, the orbital velocity ($v_{orb}$) is: $v_{orb} = \sqrt{\frac{GM_{\star}}{a}}$, where $M_{\star}$ is the mass of the star and $a$ is the semi-major axis.
+
+  - Orbital Period Ratio: For two planets, an outer planet with period $P_{out}$ and an inner planet with period $P_{in}$, the ratio is: $R_{period} = \frac{P_{out}}{P_{in}}$.
+
+  - Planet-Star Mass Ratio: The mass ratio ($q$) is: $q = \frac{M_p}{M_{\star}}$, where $M_p$ is the planet''s mass and $M_{\star}$ is the star''s mass. Both must be in the same units.
+
+  - Minimum Mass Status: A flag indicating that the planet''s mass was determined using a method (like radial velocity) that measures the minimum mass ($M \sin i$) because the orbital inclination is unknown.
+
+  - Kepler Mission Discovery: A planet whose observation record is linked to the ''kep'' facility.
+
+  - Planetary Equilibrium Temperature: The equilibrium temperature ($T_{eq}$) of a planet is calculated as: $T_{eq} = T_{\star} \sqrt{\frac{R_{\star}}{2a}}$, where $T_{\star}$ is the star''s temperature, $R_{\star}$ is the star''s radius, and $a$ is the planet''s semi-major axis.
+
+  - Transit Timing Variation (TTV) Method: A planet whose observation record is linked to the ''ttv'' facility.
+
+  - Relative Uncertainty: For a value $v$ with positive error $e_1$ and negative error $e_2$, the relative uncertainty ($U_{rel}$) is: $U_{rel} = \frac{(e_1 - e_2) / 2}{v} \times 100\%$
+
+  - Transit Depth: The transit depth ($Delta F$) is the ratio of the planet''s surface area to the star''s: $Delta F = \left( \frac{R_p}{R_{\star}} \right)^2$, where $R_p$ is the planet''s radius and $R_{\star}$ is the star''s radius.
+
+  - Hot Jupiter: A planet that is classified as both a Gas Giant Planet and a Short-Period Planet.
+
+  - High-Precision Measurement: A parameter for which the calculated Relative Uncertainty is less than 5%.
+
+  - Compact System: A Multi-planetary System where the Orbital Period Ratio between all adjacent pairs of planets is less than 3.
+
+  - Goldilocks Value: A Goldilocks Value ($G$) can be defined as: $G = \frac{a - r_i}{r_o - r_i}$, where $a$ is the planet''s semi-major axis, and $r_i$ and $r_o$ are the Habitable Zone Inner Boundary and Outer Boundary. A value of 0.5 is perfectly centered.
+
+  - Planet in Habitable Zone: A planet whose semi-major axis ($a$) falls between the Habitable Zone Inner Boundary ($r_i$) and the Habitable Zone Outer Boundary ($r_o$).
+
+  - Well-Characterized Planet: A planet where the measurements for mass, radius, and orbital period are all considered High-Precision Measurements.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

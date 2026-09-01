@@ -1,0 +1,72 @@
+label: VendorComplianceDocuments
+description: All columns of the public table VendorComplianceDocuments.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: VendorComplianceDocuments
+dimensions:
+  vcd_id:
+    description: 'TEXT. Unique identifier for the vendor compliance document record. Example: VCD-1A2B3C.'
+    sql: '"VCD_id"'
+  compliance_audit_ref:
+    description: TEXT. Reference to the vendor compliance audit record.
+    sql: compliance_audit_ref
+  days_until_expiry:
+    description: 'INTEGER. Number of days until document expiration. **NULL means Document does not expire.** Example: 180.'
+    sql: days_until_expiry
+  document_status:
+    description: 'TEXT. Current verification status of the document. Unique values: Pending Review, Under Verification, Approved, Rejected, Expired, Requires Update.'
+    sql: document_status
+  document_submission_timestamp:
+    description: 'TIMESTAMP. Timestamp when the document was submitted. Example: 2024-01-01 12:00:00.'
+    sql: document_submission_timestamp
+  document_type:
+    description: 'TEXT. Type of compliance document submitted. Unique values: Business License, Tax Certificate, Identity Verification, Bank Statement, Insurance Certificate, Product Certification, Safety Compliance, Environmental Permit.'
+    sql: document_type
+  expiry_date:
+    description: 'TIMESTAMP. Date when the document expires. **NULL means Document does not have an expiration.** Example: 2024-01-01 12:00:00.'
+    sql: expiry_date
+  file_format:
+    description: 'TEXT. Format of the uploaded document file. Unique values: PDF, JPG, PNG, TIFF, DOCX.'
+    sql: file_format
+  file_size_kb:
+    description: 'INTEGER. Size of the uploaded document file in kilobytes. Example: 2500.'
+    sql: file_size_kb
+  issue_date:
+    description: 'TIMESTAMP. Date when the document was originally issued. **NULL means Issue date not visible or provided.** Example: 2024-01-01 12:00:00.'
+    sql: issue_date
+  issuing_authority:
+    description: TEXT. Authority or organization that issued the document. **NULL means Issuing authority not specified on document.**
+    sql: issuing_authority
+  language_code:
+    description: 'TEXT. Primary language of the document content. Unique values: EN, ZH, ES, DE, FR, JA, PT, AR.'
+    sql: language_code
+  notarization_verified:
+    description: 'BOOLEAN. Indicates if notarization on document was verified. **NULL means Document type does not require notarization.** Possible values: True, False.'
+    sql: notarization_verified
+  page_count:
+    description: 'INTEGER. Number of pages in the document. Example: 3.'
+    sql: page_count
+  rejection_reason:
+    description: 'TEXT. Reason for document rejection if applicable. **NULL means Document was not rejected.** Unique values: Expired Document, Poor Image Quality, Information Mismatch, Suspected Fraud, Incomplete Document, Wrong Document Type.'
+    sql: rejection_reason
+  resubmission_allowed:
+    description: 'BOOLEAN. Indicates if vendor is allowed to resubmit document. Possible values: True, False.'
+    sql: resubmission_allowed
+  tampering_detected:
+    description: 'BOOLEAN. Indicates if document tampering was detected. Possible values: True, False.'
+    sql: tampering_detected
+  translation_required:
+    description: 'BOOLEAN. Indicates if document requires translation for review. Possible values: True, False.'
+    sql: translation_required
+  verification_confidence_score:
+    description: 'REAL. Confidence score of verification process (0-100). **NULL means Verification not yet completed.** Example: 85.0.'
+    sql: verification_confidence_score
+  verification_method:
+    description: 'TEXT. Method used to verify document authenticity. **NULL means Verification not yet initiated.** Unique values: Manual Review, Automated OCR, Third Party API, Government Database, Notarized Copy.'
+    sql: verification_method
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct VendorComplianceDocuments public identity values.
+    label: VendorComplianceDocuments Count
+    sql: ${cybermarket_pattern_large_public__vendor_compliance_documents.vcd_id}

@@ -1,0 +1,18 @@
+label: genres
+description: All columns of the public table genres.
+catalog: virtual_idol_large
+schema: public
+table_name: genres
+dimensions:
+  genre_id:
+    description: 'BIGINT. Unique identifier for the music genre. PK. Example: 1.'
+    sql: '"GenreID"'
+  genre_name:
+    description: 'TEXT. The name of the music genre. Example: J-Pop.'
+    sql: genre_name
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct genres public identity values.
+    label: genres Count
+    sql: ${virtual_idol_large_public__genres.genre_id}

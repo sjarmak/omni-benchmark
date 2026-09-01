@@ -1,0 +1,99 @@
+label: SafetyInspection
+description: All columns of the public table SafetyInspection.
+catalog: polar_equipment_large
+schema: public
+table_name: SafetyInspection
+dimensions:
+  action_owner:
+    description: 'TEXT. Team responsible for corrective action. **NULL means faultsFound = 0.** Possible values (from file): Ops Team, Facilities, Safety Unit. Example: Safety Unit.'
+    sql: '"actionOwner"'
+  actions_taken:
+    description: 'TEXT. Actions performed to correct issues. **NULL means faultsFound = 0.** Example: Recharged extinguishers.'
+    sql: '"actionsTaken"'
+  alarm_stat:
+    description: 'TEXT. Alarm system status. Possible values: OK, Minor Issue, Major Fault. Example: Minor Issue.'
+    sql: '"alarmStat"'
+  approval:
+    description: 'TEXT. Approval status. Possible values: Pending, Approved, Rejected. Example: Approved.'
+    sql: approval
+  approved_by:
+    description: 'TEXT. Approver name. **NULL means approval ≠ ''Approved''.** Example: Safety Lead.'
+    sql: '"approvedBy"'
+  closed_date:
+    description: 'DATE (dd-MMM-yyyy). Closure date. **NULL means approval ≠ ''Approved'' (inspection still open).** Example: 25-Aug-2025.'
+    sql: '"closedDate"'
+  comments:
+    description: 'TEXT. Inspection notes. **NULL means all systems nominal (lighting/alarm/o2/med/waste/water all ''OK'', faultsFound=0, and environmental readings within normal thresholds).** Example: Follow-up required for extinguisher servicing.'
+    sql: comments
+  doc_ref:
+    description: 'TEXT. Supporting document reference. Example: DOC-9284.'
+    sql: '"docRef"'
+  due_date:
+    description: 'DATE (dd-MMM-yyyy). Follow-up due date. **NULL means faultsFound = 0 (no follow-up required).** Example: 20-Aug-2025.'
+    sql: '"dueDate"'
+  exit_sign_count:
+    description: 'BIGINT. Number of exit signs checked. Example: 12.'
+    sql: '"exitSignCount"'
+  extinguisher_count:
+    description: 'BIGINT. Number of fire extinguishers present. Example: 8.'
+    sql: '"extinguisherCount"'
+  extinguisher_ok_pct:
+    description: 'REAL. Percent of extinguishers within service limits. Example: 95.0.'
+    sql: '"extinguisherOK_pct"'
+  fault_severity:
+    description: 'TEXT. Severity of faults if any. Possible values: Low, Medium, High, Critical. **NULL means faultsFound = 0.** Example: Medium.'
+    sql: '"faultSeverity"'
+  faults_found:
+    description: 'BIGINT. Number of faults detected. Example: 2.'
+    sql: '"faultsFound"'
+  first_aid_kit:
+    description: 'TEXT. First aid kit present? Possible values: Yes, No. Example: Yes.'
+    sql: '"firstAidKit"'
+  for_light_asset:
+    description: 'BIGINT. FK to LightingAndSafety(LIGHT_ID). Example: 1012.'
+    sql: for_light_asset
+  gas_ppm:
+    description: 'REAL. Gas detector reading (ppm). Example: 12.5.'
+    sql: gas_ppm
+  insp_date:
+    description: 'DATE (dd-MMM-yyyy). Date of inspection. Example: 05-Jul-2025.'
+    sql: '"inspDate"'
+  insp_type:
+    description: 'TEXT. Inspection type. Possible values (from file): Monthly, Quarterly, Annual, Post-Incident. Example: Quarterly.'
+    sql: '"inspType"'
+  inspector:
+    description: 'TEXT. Inspector who performed the check. Example: Safety Officer D.'
+    sql: inspector
+  lighting_stat:
+    description: 'TEXT. Lighting system status. Possible values: OK, Minor Issue, Major Fault. Example: OK.'
+    sql: '"lightingStat"'
+  lux_lvl:
+    description: 'REAL. Lighting level (lux). Example: 420.0.'
+    sql: lux_lvl
+  med_equip_stat:
+    description: 'TEXT. Medical equipment status. Possible values: OK, Minor Issue, Major Fault. Example: Minor Issue.'
+    sql: '"medEquipStat"'
+  noise_d_ba:
+    description: 'REAL. Noise level (dBA). Example: 78.3.'
+    sql: '"noise_dBA"'
+  o2_supply_stat:
+    description: 'TEXT. Oxygen supply status. Possible values: OK, Minor Issue, Major Fault. Example: OK.'
+    sql: '"o2SupplyStat"'
+  photo_ref:
+    description: 'TEXT. Linked photo evidence. **NULL means faultsFound = 0 and approval = ''Approved'' (no evidence required).** Example: IMG-3475.jpg.'
+    sql: '"photoRef"'
+  safety_note:
+    description: BIGSERIAL. Surrogate primary key for the inspection record. PK.
+    sql: '"safetyNote"'
+  smoke_co_ppm:
+    description: 'REAL. Smoke/CO detector reading (ppm). Example: 4.2.'
+    sql: '"smokeCO_ppm"'
+  spill_kit:
+    description: 'TEXT. Spill kit available? Possible values: Yes, No. Example: No.'
+    sql: '"spillKit"'
+  waste_mgmt_stat:
+    description: 'TEXT. Waste management system status. Possible values: OK, Minor Issue, Major Fault. Example: OK.'
+    sql: '"wasteMgmtStat"'
+  water_supply_stat:
+    description: 'TEXT. Water supply status. Possible values: OK, Minor Issue, Major Fault. Example: Major Fault.'
+    sql: '"waterSupplyStat"'

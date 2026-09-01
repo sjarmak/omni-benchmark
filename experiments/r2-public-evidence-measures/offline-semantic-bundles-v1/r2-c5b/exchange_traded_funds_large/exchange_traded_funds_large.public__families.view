@@ -1,0 +1,12 @@
+label: families
+description: All columns of the public table families.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: families
+dimensions:
+  famcode:
+    description: A SERIAL primary key uniquely identifying each fund family or asset management company in the database.
+    sql: famcode
+  groupname:
+    description: Unique name of the fund family or asset management company (e.g., 'Vanguard', 'BlackRock', 'Fidelity'). Must be unique across all records.
+    sql: groupname

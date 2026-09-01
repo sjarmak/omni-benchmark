@@ -1,0 +1,111 @@
+label: account_subscriptions
+description: All columns of the public table account_subscriptions.
+catalog: fake_account_large
+schema: public
+table_name: account_subscriptions
+dimensions:
+  invoice_paid_cnt:
+    description: 'BIGINT. Paid invoices. Example: 11.'
+    sql: '"INVOICE_PAID_CNT"'
+  last_pay_status:
+    description: 'TEXT. Status of last payment. Values: Paid, Failed, Pending.'
+    sql: '"LAST_PAY_STATUS"'
+  overage_msgs:
+    description: 'BIGINT. Message overage. Example: 2 432.'
+    sql: '"OVERAGE_MSGS"'
+  renewal_ts:
+    description: 'TIMESTAMPTZ. Next scheduled renewal. Example: 2024/09/02 11:12:44.'
+    sql: '"RENEWAL_TS"'
+  status:
+    description: 'TEXT. Substatus. Values: Active, Canceled, Suspended, Expired, Trial.'
+    sql: '"STATUS"'
+  sub_end:
+    description: 'TIMESTAMPTZ. Current period end. Example: 2025/07/03 11:12:44.'
+    sql: '"SUB_END"'
+  sub_rank:
+    description: 'REAL. Relative rank (1–1000). Example: 278.'
+    sql: '"SUB_RANK"'
+  usage_storage_gb:
+    description: 'REAL. Storage used, GB. Example: 83.4.'
+    sql: '"USAGE_STORAGE_GB"'
+  acct_ref:
+    description: 'TEXT. FK → accounts.acct_ref. Part of PK. Example: ACC7210284.'
+    sql: acct_ref
+  alert_level:
+    description: 'TEXT. Latest usage alert. Values: None, Info, Warn, Critical.'
+    sql: '"alertLevel"'
+  cancel_ts:
+    description: TIMESTAMPTZ. Cancellation timestamp. **NULL when not cancelled.**
+    sql: '"cancelTs"'
+  fail_cnt:
+    description: 'BIGINT. Consecutive payment failures. Example: 0.'
+    sql: '"failCnt"'
+  grace_end_ts:
+    description: TIMESTAMPTZ. Suspension grace-period end. **NULL when sub not suspended.**
+    sql: '"graceEndTs"'
+  invoice_cnt:
+    description: 'BIGINT. Total invoices issued. Example: 12.'
+    sql: '"invoiceCnt"'
+  invoice_due_cnt:
+    description: 'BIGINT. Outstanding invoices. Example: 1.'
+    sql: '"invoiceDueCnt"'
+  last_alert_ts:
+    description: TIMESTAMPTZ. Timestamp of last alert. **NULL if no alerts sent.**
+    sql: '"lastAlertTs"'
+  last_pay_ts:
+    description: 'TIMESTAMPTZ. Timestamp of last payment. Example: 2025/01/03 05:20:09.'
+    sql: '"lastPayTs"'
+  next_pay_ts:
+    description: TIMESTAMPTZ. Next payment due. **NULL for cancelled subs.**
+    sql: '"nextPayTs"'
+  overage_api_calls:
+    description: 'BIGINT. API-call overage. Example: 4 822.'
+    sql: '"overageApiCalls"'
+  overage_posts:
+    description: 'BIGINT. Post overage count. Example: 183.'
+    sql: '"overagePosts"'
+  overage_storage_gb:
+    description: 'REAL. Storage overage, GB. Example: 8.2.'
+    sql: '"overageStorageGB"'
+  overage_usd:
+    description: REAL. Overage charges in USD. **NULL when no overage.**
+    sql: '"overageUsd"'
+  overage_band:
+    description: 'TEXT. Overage band descriptor. Example: ≤ 24 %.'
+    sql: overage_band
+  pack_ver:
+    description: 'TEXT. Version string from package. Example: v2.'
+    sql: '"packVer"'
+  pack_code_ref:
+    description: 'TEXT. FK → subscription_packages.Pack_CODE. Part of PK. Example: PACK3021987.'
+    sql: pack_code_ref
+  pay_method:
+    description: 'TEXT. Primary payment method. Values: Card, PayPal, Wire, Crypto.'
+    sql: '"payMethod"'
+  plan_switch_cnt:
+    description: 'BIGINT. Number of plan changes. Example: 1.'
+    sql: '"planSwitchCnt"'
+  sub_notes:
+    description: TEXT. CSR notes.
+    sql: '"subNotes"'
+  sub_score:
+    description: 'REAL. Health score (0–100). Example: 64.8.'
+    sql: '"subScore"'
+  sub_start:
+    description: 'TIMESTAMPTZ. Subscription start. Example: 2024/07/03 11:12:44.'
+    sql: '"subStart"'
+  suspended_flag:
+    description: TEXT. Yes/No.
+    sql: '"suspendedFlag"'
+  trial_flag:
+    description: 'TEXT. Yes/No — currently in trial. Example: No.'
+    sql: '"trialFlag"'
+  usage_api_calls:
+    description: 'BIGINT. API calls consumed. Example: 112 004.'
+    sql: '"usageApiCalls"'
+  usage_msgs:
+    description: 'BIGINT. Messages consumed. Example: 55 991.'
+    sql: '"usageMsgs"'
+  usage_posts:
+    description: 'BIGINT. Posts consumed in current cycle. Example: 14 433.'
+    sql: '"usagePosts"'

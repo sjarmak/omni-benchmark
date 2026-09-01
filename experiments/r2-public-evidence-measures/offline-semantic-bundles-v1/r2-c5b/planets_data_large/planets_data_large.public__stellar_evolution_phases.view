@@ -1,0 +1,72 @@
+label: stellar_evolution_phases
+description: All columns of the public table stellar_evolution_phases.
+catalog: planets_data_large
+schema: public
+table_name: stellar_evolution_phases
+dimensions:
+  central_temperature_k:
+    description: 'real. Temperature at stellar core center in Kelvin. **NULL means core temperature could not be calculated.**. Possible values: 15700000.0, 21000000.0, 45000000.0, 8900000.0.'
+    sql: '"CENTRAL_TEMPERATURE_K"'
+  current_age_gyr:
+    description: 'real. Current age of the star in billion years (Gyr). **NULL means age determination was inconclusive.**. Possible values: 0.78, 1.95, 4.6, 7.2.'
+    sql: '"CURRENT_AGE_Gyr"'
+  core_hydrogen_fraction:
+    description: 'real. Fraction of hydrogen remaining in stellar core (0.0 to 1.0). **NULL means core composition could not be modeled.**. Possible values: 0.0, 0.02, 0.08, 0.35, 0.85.'
+    sql: '"CoreHydrogenFraction"'
+  core_mass_solar_masses:
+    description: 'real. Mass of stellar core in solar mass units. **NULL means core mass could not be determined.**. Possible values: 0.15, 0.28, 0.58, 1.85.'
+    sql: '"CoreMass_solar_masses"'
+  main_sequence_lifetime_gyr:
+    description: 'real. Total main sequence lifetime in billion years (Gyr). **NULL means main sequence lifetime could not be calculated.**. Possible values: 0.85, 12.5, 2.1, 8.5, 9.8.'
+    sql: '"MainSequenceLifetime_Gyr"'
+  notes:
+    description: 'text. Additional notes or comments about stellar evolution analysis. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  nuclear_burning_rate_solar_luminosities:
+    description: 'real. Rate of nuclear energy generation in solar luminosity units. **NULL means nuclear burning rate could not be calculated.**. Possible values: 0.0, 0.35, 1250.0, 2.8.'
+    sql: '"NUCLEAR_BURNING_RATE_solar_luminosities"'
+  planetary_system_survival_probability:
+    description: 'real. Probability that planetary system will survive stellar evolution (0.0 to 1.0). **NULL means planetary survival assessment not available.**. Possible values: 0.15, 0.45, 0.88, 0.95, 0.98.'
+    sql: '"PlanetarySystemSurvivalProbability"'
+  rotation_period_days:
+    description: 'real. Stellar rotation period in days. **NULL means rotation period could not be determined.**. Possible values: 135.2, 18.9, 2.1, 25.4, 45.6.'
+    sql: '"ROTATION_PERIOD_days"'
+  red_giant_branch_tip_luminosity_solar_luminosities:
+    description: 'real. Predicted luminosity at red giant branch tip in solar luminosity units. **NULL means star will not evolve to red giant phase.**. Possible values: 1200.0, 2500.0.'
+    sql: '"RedGiantBranchTipLuminosity_solar_luminosities"'
+  stellarlink:
+    description: 'bigint. Foreign key reference to the star being analyzed. FK to stars(STELLARREF). Example: 1.'
+    sql: '"STELLARLINK"'
+  stellar_evolution_code:
+    description: 'text. Name or identifier of stellar evolution code used for modeling. Possible values: COLIBRI, Dartmouth, MESA, Montreal WD Models, PARSEC, YREC.'
+    sql: '"STELLAR_EVOLUTION_CODE"'
+  white_dwarf_final_mass_solar_masses:
+    description: 'real. Predicted final white dwarf mass in solar mass units. **NULL means white dwarf formation not predicted.**. Possible values: 0.52, 0.54, 0.58.'
+    sql: '"WHITE_DWARF_FINAL_MASS_solar_masses"'
+  current_evolutionary_phase:
+    description: 'text. Current evolutionary phase classification (main sequence, subgiant, red giant, etc.). Possible values: Asymptotic Giant Branch, Main Sequence, Pre-main Sequence, Red Giant Branch, Subgiant, White Dwarf Cooling.'
+    sql: current_evolutionary_phase
+  evolution_ref:
+    description: 'bigint. Primary key identifier for stellar evolution analysis records. PK. Possible values: 17001, 17002, 17003, 17004, 17005, 17006.'
+    sql: '"evolutionRef"'
+  gyrochronological_age_gyr:
+    description: 'real. Age estimate from rotation-age relationship in billion years. **NULL means gyrochronological age calibration not available.**. Possible values: 4.8.'
+    sql: '"gyrochronological_age_Gyr"'
+  last_model_update:
+    description: 'date. Date when stellar evolution model was last updated. Possible values: 2023-08-18, 2023-09-25, 2023-10-15, 2023-11-20, 2023-12-08, 2024-01-12.'
+    sql: last_model_update
+  supernova_probability:
+    description: 'real. Probability that star will undergo supernova explosion (0.0 to 1.0). **NULL means supernova probability could not be assessed.**. Possible values: 0.0, 0.001, 0.85.'
+    sql: supernova_probability
+  zero_age_main_sequence_mass_solar_masses:
+    description: 'real. Initial mass when star first reached main sequence in solar mass units. Possible values: 0.32, 0.58, 0.95, 1.0, 1.35, 2.8.'
+    sql: zero_age_main_sequence_mass_solar_masses
+  stellar_wind_velocity_km_s:
+    description: 'real. Velocity of stellar wind outflow in kilometers per second. **NULL means stellar wind velocity was not measured.**. Possible values: 125.8, 15.2, 2.1, 25.8, 8.5.'
+    sql: '"StellarWindVelocity_km/s"'
+  central_density_g_cm:
+    description: 'real. Density at stellar core center in grams per cubic centimeter. **NULL means core density could not be modeled.**. Possible values: 148.2, 182.5, 250.8, 45.2, 85.6.'
+    sql: '"central_density_g/cm³"'
+  mass_loss_rate_solar_masses_year:
+    description: 'real. Stellar mass loss rate through stellar wind in solar masses per year. **NULL means mass loss rate was below detection threshold.**. Possible values: 1.2e-14, 1.8e-06, 2.8e-10, 3.5e-13, 5.2e-12.'
+    sql: '"mass_loss_rate_solar_masses/year"'

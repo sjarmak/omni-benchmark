@@ -1,0 +1,11 @@
+base_view: cybermarket_pattern_large_public__vendor_compliance_documents
+label: VendorComplianceDocuments
+description: All columns of the public table VendorComplianceDocuments.
+fields:
+- cybermarket_pattern_large_public__vendor_compliance_documents.*
+- cybermarket_pattern_large_public__vendor_compliance_audits.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__vendor_compliance_audits:
+    cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

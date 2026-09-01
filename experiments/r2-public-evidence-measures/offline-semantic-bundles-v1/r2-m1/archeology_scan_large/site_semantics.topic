@@ -1,0 +1,15 @@
+base_view: archeology_scan_large_public__sites
+label: Archaeological Sites
+description: Site records with public business context for cultural period and estimated dating.
+fields:
+- archeology_scan_large_public__sites.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Domain definitions for this topic:
+
+  - Conservation Priority Index (CPI): CPI = \begin{cases} 100 - PS + AF \times \left(1 + \frac{TS}{10}\right), & \text{if in a Degradation Risk Zone} \\ 50 - PS + AF \times \left(1 + \frac{TS}{20}\right), & \text{otherwise} \end{cases}, \text{ where PS is 0-100 based on \text{Preservation Status} condition (''Excellent''=10, ''Good''=30, ''Fair''=50, ''Poor''=70, ''Critical''=90), AF is approximate age in millennia derived from \text{Estimated Date}, and TS is 0-10 based on \text{Site Type} rarity.}
+
+  - Digital Conservation Priority: A scoring system where sites in Degradation Risk Zones with \text{Estimated Date} older than 1000 BCE or with \text{Site Type} = ''Rare'' or ''Unique'' receive highest priority for digital preservation through Premium Quality Scans, requiring immediate allocation of scanning resources.
+
+  - High Temporal Value Site: A site with \text{Estimated Date} containing dates before 500 CE and \text{CPI} > 60, where CPI is Conservation Priority Index, representing locations of exceptional chronological significance requiring specialized documentation protocols to capture temporally significant features.'

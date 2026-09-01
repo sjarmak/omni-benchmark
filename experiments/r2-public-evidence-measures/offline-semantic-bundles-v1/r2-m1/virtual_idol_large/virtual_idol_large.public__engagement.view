@@ -1,0 +1,54 @@
+label: engagement
+description: All columns of the public table engagement.
+catalog: virtual_idol_large
+schema: public
+table_name: engagement
+dimensions:
+  act_days_wk:
+    description: SMALLINT. Number of days per week fan is active on platform.
+    sql: act_days_wk
+  act_freq:
+    description: TEXT. Frequency classification of fan's activity on the platform.
+    sql: act_freq
+  avg_sess_count:
+    description: SMALLINT. Average number of sessions per active day.
+    sql: avg_sess_count
+  cont_pref:
+    description: TEXT. Fan's preferred content type or category.
+    sql: cont_pref
+  eng_rate:
+    description: REAL. Overall engagement rate calculated from various interaction metrics.
+    sql: eng_rate
+  engage_activity_pivot:
+    description: TEXT. Reference to the interaction activity for engagement analysis. FK to Interactions.
+    sql: engage_activity_pivot
+  engage_member_pivot:
+    description: BIGINT. Reference to membership record for engagement correlation. FK to MembershipAndSpending.
+    sql: engage_member_pivot
+  engage_reg:
+    description: BIGSERIAL. Auto-generated unique identifier for engagement metrics record. PK = Engagement(Engage_Reg).
+    sql: engage_reg
+  interaction_efficiency:
+    description: 'TEXT. Social interaction frequency and community participation rate. Example: 26.200000762939453 interactions/hr.'
+    sql: interaction_efficiency
+  lang_pref:
+    description: TEXT. Fan's preferred language for content consumption.
+    sql: lang_pref
+  peak_time:
+    description: TEXT. Time period when fan shows highest activity levels.
+    sql: peak_time
+  session_productivity:
+    description: 'TEXT. Platform usage frequency and session completion rate. Example: 21 sessions/week, 14 sessions/week, 35 sessions/week.'
+    sql: session_productivity
+  soc_int_score:
+    description: REAL. Social interaction score measuring fan's community participation level.
+    sql: soc_int_score
+  trans_use:
+    description: TEXT. Usage pattern of translation features by the fan.
+    sql: trans_use
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct engagement public identity values.
+    label: engagement Count
+    sql: ${virtual_idol_large_public__engagement.engage_reg}

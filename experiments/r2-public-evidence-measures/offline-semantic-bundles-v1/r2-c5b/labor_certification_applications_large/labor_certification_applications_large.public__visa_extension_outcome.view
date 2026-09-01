@@ -1,0 +1,66 @@
+label: VisaExtensionOutcome
+description: All columns of the public table VisaExtensionOutcome.
+catalog: labor_certification_applications_large
+schema: public
+table_name: VisaExtensionOutcome
+dimensions:
+  veo_code:
+    description: 'TEXT. Unique identifier for visa extension outcome record. Example: VEO-1A2B3C.'
+    sql: '"VEO_code"'
+  adjudicator_center:
+    description: 'TEXT. USCIS service center that adjudicated. Unique values: California, Nebraska, Texas, Vermont, Potomac.'
+    sql: '"adjudicatorCenter"'
+  approved_duration_months:
+    description: 'INTEGER. Duration of extension approved in months. **NULL means Extension not approved.** Example: 24.'
+    sql: '"approvedDuration_months"'
+  denial_reason:
+    description: 'TEXT. Primary reason for denial if applicable. Unique values: Eligibility, Documentation, Specialty Occupation, Employer Issues, Fraud Concerns, Not Applicable.'
+    sql: '"denialReason"'
+  employment_authorized_flag:
+    description: 'BOOLEAN. Indicates if employment authorization continues. Possible values: True, False.'
+    sql: '"employmentAuthorized_flag"'
+  extension_ref:
+    description: TEXT. Foreign key reference to visa_extension_request table.
+    sql: extension_ref
+  i94_updated_flag:
+    description: 'BOOLEAN. Indicates if I-94 was updated. Possible values: True, False.'
+    sql: '"i94Updated_flag"'
+  max_stay_reached_flag:
+    description: 'BOOLEAN. Indicates if maximum stay limit reached. Possible values: True, False.'
+    sql: '"maxStayReached_flag"'
+  new_validity_end:
+    description: 'TIMESTAMP. End date of new validity period. **NULL means Extension not approved.** Example: 2024-01-01 12:00:00.'
+    sql: '"newValidityEnd"'
+  new_validity_start:
+    description: 'TIMESTAMP. Start date of new validity period. **NULL means Extension not approved.** Example: 2024-01-01 12:00:00.'
+    sql: '"newValidityStart"'
+  next_extension_eligible_flag:
+    description: 'BOOLEAN. Indicates if eligible for another extension. Possible values: True, False.'
+    sql: '"nextExtensionEligible_flag"'
+  outcome_date:
+    description: 'TIMESTAMP. Date when extension outcome was determined. Example: 2024-01-01 12:00:00.'
+    sql: '"outcomeDate"'
+  outcome_status:
+    description: 'TEXT. Final status of the extension request. Unique values: Approved, Denied, RFE Issued, Partially Approved, Withdrawn, Abandoned.'
+    sql: '"outcomeStatus"'
+  premium_processing_flag:
+    description: 'BOOLEAN. Indicates if premium processing was used. Possible values: True, False.'
+    sql: '"premiumProcessing_flag"'
+  processing_time_days:
+    description: 'INTEGER. Days from filing to decision. Example: 120.'
+    sql: '"processingTime_days"'
+  requested_vs_approved_diff:
+    description: 'INTEGER. Difference between requested and approved duration in months. **NULL means Extension not approved.** Example: 0.'
+    sql: '"requestedVsApproved_diff"'
+  rfe_received_flag:
+    description: 'BOOLEAN. Indicates if RFE was received during processing. Possible values: True, False.'
+    sql: '"rfeReceived_flag"'
+  rfe_response_days:
+    description: 'INTEGER. Days to respond to RFE. **NULL means No RFE issued.** Example: 45.'
+    sql: '"rfeResponseDays"'
+  travel_restriction_flag:
+    description: 'BOOLEAN. Indicates if travel restrictions apply. Possible values: True, False.'
+    sql: '"travelRestriction_flag"'
+  visa_stamp_required_flag:
+    description: 'BOOLEAN. Indicates if new visa stamp is required. Possible values: True, False.'
+    sql: '"visaStampRequired_flag"'

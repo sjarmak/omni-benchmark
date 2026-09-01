@@ -1,0 +1,54 @@
+label: personnel_skills
+description: All columns of the public table personnel_skills.
+catalog: archeology_scan_large
+schema: public
+table_name: personnel_skills
+dimensions:
+  assessment_score:
+    description: 'REAL. The score from a formal assessment of the skill。 Example: 95.5.'
+    sql: '"AssessmentScore"'
+  certified_by:
+    description: 'TEXT. The name of the person or body that certified this skill for the individual. **NULL means it is not a certified skill for this person.**。 Example: Internal Peer Review.'
+    sql: '"CERTIFIED_BY"'
+  certificate_expiry:
+    description: 'DATE. The expiration date of the certification. **NULL means the certification does not expire.**。 Example: 2025/5/20.'
+    sql: '"CertificateExpiry"'
+  date_last_used:
+    description: 'DATE. The last date the personnel member actively used this skill。 Example: 2023/11/10.'
+    sql: '"DateLastUsed"'
+  endorsement_count:
+    description: 'BIGINT. The number of endorsements received from colleagues for this skill。 Example: 12.'
+    sql: '"ENDORSEMENT_COUNT"'
+  is_primary_skill:
+    description: 'BOOLEAN. A flag indicating if this is a primary skill for the person''s role。 Possible values: False, True.'
+    sql: '"IsPrimarySkill"'
+  proficiency_level:
+    description: 'TEXT. The personnel member''s proficiency level in the skill。 Possible values: Expert, Intermediate, Proficient.'
+    sql: '"PROFICIENCY_LEVEL"'
+  verified_by_supervisor_ref:
+    description: 'TEXT. Foreign key linking to the supervisor who verified the skill. FK。 Example: OP4641.'
+    sql: '"VerifiedBySupervisorRef"'
+  years_of_experience:
+    description: 'BIGINT. The number of years of experience the person has with this skill。 Possible values: 1, 13, 2, 3, 4, 5, 6, 7, 8, 9.'
+    sql: '"YEARS_OF_EXPERIENCE"'
+  certificate_tag:
+    description: 'TEXT. An identifier for the certificate document. **NULL means no certificate is on file.**。 Example: CERT-TLS-98765.'
+    sql: certificate_tag
+  date_acquired:
+    description: 'DATE. The date the skill was acquired or learned。 Example: 2018/3/15.'
+    sql: date_acquired
+  notes:
+    description: 'TEXT. General notes about the person''s skill。 Example: Lead interpreter for the Göbekli Tepe GPR surveys..'
+    sql: notes
+  personnel_fk:
+    description: 'TEXT. Foreign key linking to the personnel member. Part of PK。 Example: OP6326.'
+    sql: personnel_fk
+  skill_ref:
+    description: 'BIGINT. Foreign key linking to the skill. Part of PK。 Example: 306.'
+    sql: skill_ref
+  training_hours_completed:
+    description: 'BIGINT. The number of training hours the person has completed for this skill。 Example: 80.'
+    sql: training_hours_completed
+  verification_date:
+    description: 'DATE. The date the skill was verified by a supervisor。 Example: 2023/12/1.'
+    sql: verification_date

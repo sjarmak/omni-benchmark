@@ -1,0 +1,66 @@
+label: liquidation_buyer_feedback
+description: All columns of the public table liquidation_buyer_feedback.
+catalog: reverse_logistics_large
+schema: public
+table_name: liquidation_buyer_feedback
+dimensions:
+  auction_lot_ref:
+    description: TEXT. Reference to the auction lot purchased.
+    sql: auction_lot_ref
+  buyer_industry_sector:
+    description: 'TEXT. Sector of the buyer (e.g., Recycler, Reseller). Unique values: Electronics Reseller, Scrap Recycler, Discount Retailer, Exporter.'
+    sql: buyer_industry_sector
+  buyer_user_hash:
+    description: TEXT. Anonymized hash of the buyer's user ID.
+    sql: buyer_user_hash
+  claim_link_ref:
+    description: TEXT. Link to a claim if one was opened based on this feedback. **NULL means No claim.**
+    sql: claim_link_ref
+  discrepancy_reported_flag:
+    description: BOOLEAN. Did the buyer report missing items?.
+    sql: discrepancy_reported_flag
+  feedback_entry_ref:
+    description: TEXT. Unique identifier for the buyer feedback entry.
+    sql: feedback_entry_ref
+  feedback_text_comment:
+    description: TEXT. Free text feedback from the buyer. **NULL means No comment.**
+    sql: feedback_text_comment
+  feedback_timestamp:
+    description: 'TIMESTAMP. When the feedback was submitted. Example: 2024-01-01 12:00:00.'
+    sql: feedback_timestamp
+  future_intent_score:
+    description: 'INTEGER. Likelihood to buy again (0-10 NPS style). Example: 50.'
+    sql: future_intent_score
+  item_condition_match_flag:
+    description: BOOLEAN. Did the condition match the description?.
+    sql: item_condition_match_flag
+  manifest_accuracy_score:
+    description: 'INTEGER. How accurately the manifest described the items (1-10). Example: 50.'
+    sql: manifest_accuracy_score
+  overall_satisfaction_rating:
+    description: 'INTEGER. Rating of the purchase (1-5 stars). Example: 50.'
+    sql: overall_satisfaction_rating
+  packaging_quality_rating:
+    description: 'TEXT. Buyer''s assessment of palletizing/packaging. Unique values: Excellent, Adequate, Poor, Unsafe.'
+    sql: packaging_quality_rating
+  platform_moderation_status:
+    description: 'TEXT. Status of platform moderation (Published, Hidden). Unique values: Published, Under Review, Hidden.'
+    sql: platform_moderation_status
+  repeat_buyer_flag:
+    description: BOOLEAN. Is this a repeat buyer?.
+    sql: repeat_buyer_flag
+  response_required_flag:
+    description: BOOLEAN. Does this feedback require a CS response?.
+    sql: response_required_flag
+  shipping_speed_rating:
+    description: 'INTEGER. Rating of the pickup/shipping process (1-5). Example: 50.'
+    sql: shipping_speed_rating
+  value_for_money_score:
+    description: 'REAL. Buyer''s perception of value (0-10). Example: 7.5.'
+    sql: value_for_money_score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct liquidation_buyer_feedback public identity values.
+    label: liquidation_buyer_feedback Count
+    sql: ${reverse_logistics_large_public__liquidation_buyer_feedback.feedback_entry_ref}

@@ -1,0 +1,63 @@
+label: Hospital_Critical_Care_Telemetry
+description: All columns of the public table Hospital_Critical_Care_Telemetry.
+catalog: residential_data_large
+schema: public
+table_name: Hospital_Critical_Care_Telemetry
+dimensions:
+  inventory_tracker_fk:
+    description: TEXT. Foreign key linking to the specific equipment used from inventory.
+    sql: '"Inventory_Tracker_FK"'
+  telemetry_session_pk:
+    description: 'TEXT. Primary key for patient critical care monitoring session. Example: HCT-1A2B3C.'
+    sql: '"Telemetry_Session_PK"'
+  bed_incline_angle_degrees:
+    description: 'REAL. Angle of the head of the bed. Example: 50.0.'
+    sql: bed_incline_angle_degrees
+  blood_glucose_mg_dl:
+    description: 'REAL. Concentration of glucose in the blood. **NULL means Intermittent sampling gap.** Example: 50.0.'
+    sql: blood_glucose_mg_dl
+  cardiac_output_liters_min:
+    description: 'REAL. Amount of blood the heart pumps through the circulatory system in a minute. **NULL means Requires invasive thermodilution.** Example: 5.0.'
+    sql: cardiac_output_liters_min
+  core_body_temperature_celsius:
+    description: 'REAL. Internal body temperature in Celsius. **NULL means Manual probe removal.** Example: 37.0.'
+    sql: core_body_temperature_celsius
+  diastolic_blood_pressure_mmhg:
+    description: 'INTEGER. Minimum arterial pressure during relaxation. **NULL means Sensor displacement.** Example: 80.'
+    sql: diastolic_blood_pressure_mmhg
+  end_tidal_co2_mmhg:
+    description: 'REAL. Partial pressure of CO2 at the end of an exhaled breath. **NULL means Capnography module absent.** Example: 38.'
+    sql: end_tidal_co2_mmhg
+  fraction_inspired_oxygen_ratio:
+    description: 'REAL. Concentration of oxygen in the gas mixture being inhaled. Example: 50.0.'
+    sql: fraction_inspired_oxygen_ratio
+  heart_rate_bpm:
+    description: 'INTEGER. Beats per minute of the cardiac cycle. **NULL means Signal interference.** Example: 75.'
+    sql: heart_rate_bpm
+  intracranial_pressure_mmhg:
+    description: 'REAL. Pressure inside the skull and on brain tissue. **NULL means Non-invasive patient monitoring.** Example: 10.5.'
+    sql: intracranial_pressure_mmhg
+  oxygen_saturation_percentage:
+    description: 'REAL. Percentage of hemoglobin bound to oxygen. **NULL means Poor peripheral perfusion.** Example: 97.5.'
+    sql: oxygen_saturation_percentage
+  patient_sedation_score:
+    description: 'INTEGER. Standardized score for level of consciousness (e.g., RASS). **NULL means Assessment skipped.** Example: -5.'
+    sql: patient_sedation_score
+  peak_inspiratory_pressure_cmh2o:
+    description: 'REAL. Highest level of pressure applied to the lungs during inhalation. **NULL means Ventilator disconnected.** Example: 20.'
+    sql: peak_inspiratory_pressure_cmh2o
+  respiratory_rate_bpm:
+    description: 'INTEGER. Breaths taken per minute. Example: 16.'
+    sql: respiratory_rate_bpm
+  serum_lactate_mmol_l:
+    description: 'REAL. Lactate level in blood indicating tissue perfusion. **NULL means Lab results pending.** Example: 50.0.'
+    sql: serum_lactate_mmol_l
+  systolic_blood_pressure_mmhg:
+    description: 'INTEGER. Maximum arterial pressure during contraction. **NULL means Sensor displacement.** Example: 120.'
+    sql: systolic_blood_pressure_mmhg
+  tidal_volume_milliliters:
+    description: 'REAL. Volume of air moved into or out of lungs during quiet breathing. **NULL means Patient not on mechanical ventilation.** Example: 500.'
+    sql: tidal_volume_milliliters
+  urine_output_ml_hour:
+    description: 'REAL. Hourly volume of urine produced by kidneys. **NULL means Catheter obstruction.** Example: 50.'
+    sql: urine_output_ml_hour

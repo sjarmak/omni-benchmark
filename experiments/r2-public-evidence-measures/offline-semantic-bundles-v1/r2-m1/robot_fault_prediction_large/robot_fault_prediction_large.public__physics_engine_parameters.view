@@ -1,0 +1,75 @@
+label: physics_engine_parameters
+description: All columns of the public table physics_engine_parameters.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: physics_engine_parameters
+dimensions:
+  angular_damping_factor:
+    description: 'REAL. Air resistance applied to rotation. Example: 50.0.'
+    sql: angular_damping_factor
+  collision_margin_mm:
+    description: 'REAL. Buffer distance for collision detection. Example: 0.04.'
+    sql: collision_margin_mm
+  constraint_force_mixing:
+    description: 'REAL. CFM: Softness of constraints (0 = rigid). Example: 50.0.'
+    sql: constraint_force_mixing
+  contact_breaking_threshold:
+    description: 'REAL. Distance at which contacts are destroyed. Example: 0.02.'
+    sql: contact_breaking_threshold
+  cpu_physics_load_percent:
+    description: 'REAL. Percentage of CPU frame time spent on physics. Example: 15.'
+    sql: cpu_physics_load_percent
+  error_reduction_parameter:
+    description: 'REAL. ERP: How fast errors are corrected (0-1). Example: 0.2.'
+    sql: error_reduction_parameter
+  friction_coefficient_kinetic:
+    description: 'REAL. Global kinetic friction setting for contacts. Example: 0.4.'
+    sql: friction_coefficient_kinetic
+  friction_coefficient_static:
+    description: 'REAL. Global static friction setting for contacts. Example: 0.6.'
+    sql: friction_coefficient_static
+  gravity_vector_x:
+    description: 'REAL. Gravity force component X axis. Example: 0.'
+    sql: gravity_vector_x
+  gravity_vector_y:
+    description: 'REAL. Gravity force component Y axis. Example: 0.'
+    sql: gravity_vector_y
+  gravity_vector_z:
+    description: 'REAL. Gravity force component Z axis. Example: -9.81.'
+    sql: gravity_vector_z
+  island_sleeping_threshold:
+    description: 'REAL. Velocity below which objects go to ''sleep''. Example: 0.05.'
+    sql: island_sleeping_threshold
+  linear_damping_factor:
+    description: 'REAL. Air resistance applied to linear motion. Example: 50.0.'
+    sql: linear_damping_factor
+  mesh_simplification_level:
+    description: 'INTEGER. LOD level used for collision meshes (0=High, 3=Low). Unique values: 0, 1, 2, 3.'
+    sql: mesh_simplification_level
+  raycast_query_count:
+    description: 'INTEGER. Number of sensor raycasts performed this frame. Example: 50.'
+    sql: raycast_query_count
+  restitution_coefficient:
+    description: 'REAL. Bounciness of collisions (0.0 to 1.0). Example: 50.0.'
+    sql: restitution_coefficient
+  sim_param_id:
+    description: TEXT. Unique identifier for the simulation config snapshot.
+    sql: sim_param_id
+  soft_body_simulation_active:
+    description: 'BOOLEAN. Are deformable objects being simulated?. Possible values: True, False.'
+    sql: soft_body_simulation_active
+  solver_iterations_count:
+    description: 'INTEGER. Number of constraint solver passes per step. Unique values: 10, 20, 50.'
+    sql: solver_iterations_count
+  sync_event_ref:
+    description: TEXT. Reference to the digital twin synchronization event.
+    sql: sync_event_ref
+  timestep_delta_ms:
+    description: 'REAL. Fixed time step for physics integration. Unique values: 16.66, 8.33.'
+    sql: timestep_delta_ms
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct physics_engine_parameters public identity values.
+    label: physics_engine_parameters Count
+    sql: ${robot_fault_prediction_large_public__physics_engine_parameters.sim_param_id}

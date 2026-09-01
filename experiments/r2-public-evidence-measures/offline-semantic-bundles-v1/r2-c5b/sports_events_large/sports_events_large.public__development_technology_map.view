@@ -1,0 +1,51 @@
+label: Development_Technology_Map
+description: All columns of the public table Development_Technology_Map.
+catalog: sports_events_large
+schema: public
+table_name: Development_Technology_Map
+dimensions:
+  dev_program_ref:
+    description: BIGINT. Foreign key referencing CarDevelopmentProgram(DEV_PROGRAM_ID). Related dev program
+    sql: '"DEV_PROGRAM_REF"'
+  dtm_id:
+    description: BIGINT. Primary key. Unique development-technology mapping identifier
+    sql: '"DTM_ID"'
+  fia_approved:
+    description: BOOLEAN. Whether FIA has approved this technology Boolean flag (true/false).
+    sql: '"FIA_APPROVED"'
+  integration_status:
+    description: 'TEXT. Technology integration status Possible values: Planned, In Development, Testing, Deployed, Abandoned.'
+    sql: '"INTEGRATION_STATUS"'
+  integration_target:
+    description: DATE. Target integration date
+    sql: '"INTEGRATION_TARGET"'
+  lead_engineer:
+    description: TEXT. Lead integration engineer
+    sql: '"LEAD_ENGINEER"'
+  performance_gain_pct:
+    description: 'REAL. Performance gain attributed to this technology Typical range: 0 to 100.'
+    sql: '"PERFORMANCE_GAIN_PCT"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  actual_deployment:
+    description: DATE. Actual deployment date **NULL means Not yet deployed.**
+    sql: actual_deployment
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  development_cost_usd:
+    description: 'REAL. Development cost for integration Typical range: 10000 to 5000000.'
+    sql: development_cost_usd
+  integration_start:
+    description: DATE. Start date of technology integration
+    sql: integration_start
+  risk_level:
+    description: 'TEXT. Integration risk level Possible values: Low, Medium, High.'
+    sql: risk_level
+  team_size:
+    description: BIGINT. Integration team size
+    sql: team_size
+  technology_ref:
+    description: BIGINT. Foreign key referencing innovation_technologies(TECHNOLOGY_Index). Related technology
+    sql: technology_ref

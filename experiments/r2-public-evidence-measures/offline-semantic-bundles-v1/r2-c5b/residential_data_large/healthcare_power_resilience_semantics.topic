@@ -1,0 +1,11 @@
+base_view: residential_data_large_public__healthcare_power_resilience
+label: Healthcare_Power_Resilience
+description: All columns of the public table Healthcare_Power_Resilience.
+fields:
+- residential_data_large_public__healthcare_power_resilience.*
+- residential_data_large_public__healthcare_equipment_inventory.*
+- residential_data_large_public__healthcare_facilities.*
+joins:
+  residential_data_large_public__healthcare_equipment_inventory:
+    residential_data_large_public__healthcare_facilities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,18 @@
+label: work_order_parts_usage
+description: All columns of the public table work_order_parts_usage.
+catalog: solar_panel_large
+schema: public
+table_name: work_order_parts_usage
+dimensions:
+  cost_at_time:
+    description: 'REAL. The cost of a single unit of the part at the time it was used. Example: $125.50.'
+    sql: '"COST_AT_TIME"'
+  part_ref:
+    description: 'TEXT. PK & FK -> spare_parts.PartSKU. The part that was used. Example: SP-FN-001.'
+    sql: '"PartRef"'
+  work_order_ref:
+    description: 'TEXT. PK & FK -> work_orders.OrderNum. The work order that used the parts. Example: WO-1001.'
+    sql: '"WorkOrderRef"'
+  quantity_used:
+    description: 'BIGINT. The number of units of the part that were used. Example: 1.'
+    sql: quantity_used

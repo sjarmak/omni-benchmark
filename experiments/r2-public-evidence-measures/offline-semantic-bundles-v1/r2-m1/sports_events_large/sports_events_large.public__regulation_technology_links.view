@@ -1,0 +1,96 @@
+label: regulation_technology_links
+description: All columns of the public table regulation_technology_links.
+catalog: sports_events_large
+schema: public
+table_name: regulation_technology_links
+dimensions:
+  allowed_from:
+    description: 'DATE. Date from which the technology is allowed under the regulation. Example: 2026-01-01.'
+    sql: '"ALLOWED_FROM"'
+  ambiguity_flag:
+    description: 'BOOLEAN. Whether the regulation is ambiguous. Example: false.'
+    sql: '"Ambiguity_Flag"'
+  appeals_possible:
+    description: 'BOOLEAN. Whether an appeal is possible. Example: true.'
+    sql: '"AppealsPossible"'
+  audit_window_days:
+    description: 'BIGINT. Audit window period in days. Example: 30.'
+    sql: '"AuditWindow_Days"'
+  clause_reference:
+    description: 'TEXT. Clause reference within the regulation document. Example: §3.2.1.'
+    sql: '"Clause_Reference"'
+  committee_abstain:
+    description: 'BIGINT. Number of committee abstentions. Example: 1.'
+    sql: '"CommitteeAbstain"'
+  committee_vote_against:
+    description: 'BIGINT. Number of committee votes against. Example: 3.'
+    sql: '"CommitteeVoteAgainst"'
+  committee_vote_for:
+    description: 'BIGINT. Number of committee votes in favor. Example: 7.'
+    sql: '"CommitteeVoteFor"'
+  cost_impact_musd:
+    description: 'REAL. Impact of the regulation on the cost cap in millions of USD. Example: 0.2.'
+    sql: '"CostImpact_MUSD"'
+  data_points_required:
+    description: 'BIGINT. Number of data points required for compliance. Example: 100.'
+    sql: '"DataPointsRequired"'
+  dimensional_limit:
+    description: 'REAL. Dimensional limit in millimeters imposed by the regulation. Example: 20.0.'
+    sql: '"DimensionalLimit"'
+  enforcement_phase:
+    description: 'TEXT. Enforcement phase for the regulation. Example: phase-in.'
+    sql: '"ENFORCEMENT_PHASE"'
+  impact_type:
+    description: 'TEXT. Type of impact this regulation has on the technology. Possible values: restriction, allowance. Example: restriction.'
+    sql: '"ImpactType"'
+  interpretation_notes:
+    description: 'TEXT. Notes on the interpretation of the regulation. Example: Grey area.'
+    sql: '"InterpretationNotes"'
+  notes_:
+    description: 'TEXT. Additional notes about the regulation and technology link. Example: Update after test.'
+    sql: '"Notes_"'
+  performance_impact_s:
+    description: 'REAL. Performance impact in seconds. Example: -0.05.'
+    sql: '"PerformanceImpact_s"'
+  precedent_case:
+    description: 'TEXT. Reference to any precedent case related to the regulation. Example: TD-039.'
+    sql: '"PrecedentCase"'
+  pressure_limit_k_pa:
+    description: 'REAL. Pressure limit in kilopascals imposed by the regulation. Example: 30.0.'
+    sql: '"PressureLimit_kPa"'
+  regulation_ref:
+    description: 'BIGINT. Foreign key referencing technical_regulations(RegulationID). FK → technical_regulations(RegulationID). Example: 1.'
+    sql: '"REGULATION_REF"'
+  rtl_code:
+    description: BIGSERIAL. Surrogate primary key for regulation_technology_links rows. PK.
+    sql: '"RTL_Code"'
+  review_date:
+    description: 'DATE. Date when the regulation will be reviewed. Example: 2025-10-01.'
+    sql: '"ReviewDate"'
+  safety_impact_score:
+    description: 'REAL. Safety impact score on a scale of -1.0 to 1.0. Example: 0.3.'
+    sql: '"SafetyImpactScore"'
+  submission_doc_url:
+    description: 'TEXT. URL of the submission document. Example: http://... .'
+    sql: '"SubmissionDocURL"'
+  test_requirement:
+    description: 'TEXT. Test requirement defined by the regulation. Example: deflection test.'
+    sql: '"TEST_REQUIREMENT"'
+  telemetry_tags:
+    description: 'TEXT. Telemetry tags associated with the technology under the regulation. Example: AERO_PRESS.'
+    sql: '"Telemetry_Tags"'
+  temp_limit_c:
+    description: 'REAL. Temperature limit in degrees Celsius imposed by the regulation. Example: 120.0.'
+    sql: '"Temp_Limit_C"'
+  banned_from:
+    description: 'DATE. Date from which the technology is banned under the regulation. Example: 2027-01-01.'
+    sql: banned_from
+  technology_ref:
+    description: 'BIGINT. Foreign key referencing innovation_technologies(TECHNOLOGY_ID). FK → innovation_technologies(TECHNOLOGY_ID). Example: 5.'
+    sql: '"technology_REF"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct regulation_technology_links public identity values.
+    label: regulation_technology_links Count
+    sql: ${sports_events_large_public__regulation_technology_links.rtl_code}

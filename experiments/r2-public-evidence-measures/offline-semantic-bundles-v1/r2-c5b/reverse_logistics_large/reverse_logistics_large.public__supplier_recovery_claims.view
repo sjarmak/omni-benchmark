@@ -1,0 +1,63 @@
+label: supplier_recovery_claims
+description: All columns of the public table supplier_recovery_claims.
+catalog: reverse_logistics_large
+schema: public
+table_name: supplier_recovery_claims
+dimensions:
+  approved_recovery_amount:
+    description: 'REAL. Amount the supplier agreed to pay. **NULL means Negotiation pending or rejected.** Example: 150.'
+    sql: approved_recovery_amount
+  chargeback_status_flag:
+    description: BOOLEAN. Indicates if this was processed as an automatic chargeback.
+    sql: chargeback_status_flag
+  claim_aging_days:
+    description: 'INTEGER. Number of days the claim has been open. Example: 50.'
+    sql: claim_aging_days
+  claim_category_type:
+    description: 'TEXT. Category of the claim (e.g., Defective, Shipping Damage). Unique values: Manufacturing Defect, Packaging Damage, Missing Accessories, Wrong Item.'
+    sql: claim_category_type
+  claim_currency_code:
+    description: 'TEXT. Currency of the claim. Unique values: USD, EUR, CNY.'
+    sql: claim_currency_code
+  claim_submission_date:
+    description: TIMESTAMP. Date the claim was sent to the supplier.
+    sql: claim_submission_date
+  claim_submitted_amount:
+    description: 'REAL. Total amount claimed from the supplier. Example: 200.'
+    sql: claim_submitted_amount
+  escalation_level_code:
+    description: 'INTEGER. Escalation level (0=Standard, 1=Manager, 2=Legal). Unique values: 0, 1, 2.'
+    sql: escalation_level_code
+  evidence_package_link:
+    description: TEXT. URL to the zip file containing photos/docs.
+    sql: evidence_package_link
+  internal_comments_log:
+    description: TEXT. Internal notes regarding the claim strategy.
+    sql: internal_comments_log
+  negotiation_stage_status:
+    description: 'TEXT. Current stage of the negotiation workflow. Unique values: Initial, Evidence Review, Finalizing, Closed.'
+    sql: negotiation_stage_status
+  payment_reference_id:
+    description: TEXT. Transaction ID of the payment received. **NULL means Payment not yet received.**
+    sql: payment_reference_id
+  recovery_claim_ref:
+    description: TEXT. Unique identifier for the supplier recovery claim.
+    sql: recovery_claim_ref
+  rejection_reason_desc:
+    description: TEXT. Reason provided if claim was rejected. **NULL means Accepted or pending.**
+    sql: rejection_reason_desc
+  related_return_ref:
+    description: TEXT. Reference to the return case originating the claim.
+    sql: related_return_ref
+  settlement_due_date:
+    description: TIMESTAMP. Target date for settlement.
+    sql: settlement_due_date
+  supplier_entity_ref:
+    description: 'INTEGER. Reference to the supplier involved. Example: 50.'
+    sql: supplier_entity_ref
+  supplier_rep_name:
+    description: TEXT. Name of the supplier representative handling the claim.
+    sql: supplier_rep_name
+  supplier_response_code:
+    description: 'TEXT. Response code from supplier (e.g., ACCEPT, REJECT). Unique values: Pending, Accepted, Rejected, Countered.'
+    sql: supplier_response_code

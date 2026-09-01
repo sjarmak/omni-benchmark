@@ -1,0 +1,66 @@
+label: TransportConditionReadings
+description: All columns of the public table TransportConditionReadings.
+catalog: archeology_scan_large
+schema: public
+table_name: TransportConditionReadings
+dimensions:
+  transport_condition_readings_id:
+    description: TEXT. Unique identifier for each transport condition reading.
+    sql: '"TransportConditionReadings_id"'
+  alert_triggered:
+    description: 'BOOLEAN. Whether any parameter triggered an alert. Possible values: True, False.'
+    sql: alert_triggered
+  battery_level_percent:
+    description: 'REAL. Sensor battery level as percentage. Example: 50.0.'
+    sql: battery_level_percent
+  data_transmitted_successfully:
+    description: 'BOOLEAN. Whether reading data was transmitted to server. Possible values: True, False.'
+    sql: data_transmitted_successfully
+  door_open_detected:
+    description: 'BOOLEAN. Whether container door was open at reading time. Possible values: True, False.'
+    sql: door_open_detected
+  external_temperature_celsius:
+    description: 'REAL. External ambient temperature in Celsius. Example: 22.0.'
+    sql: external_temperature_celsius
+  gps_latitude:
+    description: 'REAL. GPS latitude coordinate at reading time. **NULL means GPS signal unavailable.** Example: 50.0.'
+    sql: gps_latitude
+  gps_longitude:
+    description: 'REAL. GPS longitude coordinate at reading time. **NULL means GPS signal unavailable.** Example: 50.0.'
+    sql: gps_longitude
+  internal_humidity_percent:
+    description: 'REAL. Internal relative humidity as percentage. Example: 45.0.'
+    sql: internal_humidity_percent
+  internal_temperature_celsius:
+    description: 'REAL. Internal container temperature in Celsius. Example: 20.0.'
+    sql: internal_temperature_celsius
+  light_exposure_lux:
+    description: 'REAL. Light exposure level in lux. **NULL means Light sensor not installed.** Example: 50.0.'
+    sql: light_exposure_lux
+  logistics_ref:
+    description: TEXT. Reference to the parent transport logistics record.
+    sql: logistics_ref
+  pressure_kpa:
+    description: 'REAL. Atmospheric pressure in kilopascals. Example: 101.3.'
+    sql: pressure_kpa
+  reading_timestamp:
+    description: 'TIMESTAMP. Date and time when the condition reading was taken. Example: 2024-01-01 12:00:00.'
+    sql: reading_timestamp
+  shock_event_detected:
+    description: 'BOOLEAN. Whether a shock event was detected at this reading. Possible values: True, False.'
+    sql: shock_event_detected
+  shock_magnitude_g:
+    description: 'REAL. Magnitude of detected shock in g-force. **NULL means No shock event at this reading.** Example: 3.0.'
+    sql: shock_magnitude_g
+  signal_strength_dbm:
+    description: 'INTEGER. Cellular signal strength in dBm. Example: 50.'
+    sql: signal_strength_dbm
+  speed_kmh:
+    description: 'REAL. Vehicle speed in kilometers per hour. Example: 60.0.'
+    sql: speed_kmh
+  tilt_angle_degrees:
+    description: 'REAL. Container tilt angle in degrees from horizontal. Example: 2.0.'
+    sql: tilt_angle_degrees
+  vibration_level_g:
+    description: 'REAL. Vibration intensity measured in g-force. Example: 0.5.'
+    sql: vibration_level_g

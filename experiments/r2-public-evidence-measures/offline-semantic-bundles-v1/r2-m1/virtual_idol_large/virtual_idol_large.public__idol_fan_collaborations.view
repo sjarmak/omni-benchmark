@@ -1,0 +1,105 @@
+label: idol_fan_collaborations
+description: All columns of the public table idol_fan_collaborations.
+catalog: virtual_idol_large
+schema: public
+table_name: idol_fan_collaborations
+dimensions:
+  approval_status:
+    description: 'TEXT. The approval status from the idol''s management. Possible values: Pending, Approved. Example: Pending.'
+    sql: '"APPROVAL_STATUS"'
+  approval_date:
+    description: 'DATE. The date the collaboration was approved. **NULL means it has not been approved.** Example: 2025/03/16.'
+    sql: '"ApprovalDate"'
+  collaboration_id:
+    description: 'BIGINT. Unique identifier for the collaboration instance. PK. Example: 11001.'
+    sql: '"COLLABORATION_ID"'
+  compensation_details:
+    description: 'TEXT. Details about the compensation for the fan''s work. Example: Standard freelance rate of $35/hour, paid monthly..'
+    sql: '"CompensationDetails"'
+  contribution_summary:
+    description: 'TEXT. A summary of the fan''s contribution to the project. Example: Performed extensive quality assurance and bug testing for the fan game''s beta release..'
+    sql: '"ContributionSummary"'
+  creation_timestamp:
+    description: 'TIMESTAMP. The timestamp when this collaboration record was created. Example: 2024-07-12 07:10:28.'
+    sql: '"CreationTimestamp"'
+  dispute_status:
+    description: 'TEXT. The status of any disputes related to the collaboration. Possible values: In Review, Resolved, None. Example: In Review.'
+    sql: '"DISPUTE_STATUS"'
+  end_date:
+    description: 'DATE. The end date of the collaboration. **NULL means the collaboration is ongoing.** Example: 2025/03/27.'
+    sql: '"END_DATE"'
+  feedback_from_idol:
+    description: 'TEXT. Feedback provided by the idol or their management to the fan. **NULL means no feedback has been provided.** Example: The final product exceeded all our expectations. An amazing and unforgettable experience for every fan involved..'
+    sql: '"FEEDBACK_FROM_IDOL"'
+  fan_ref:
+    description: 'TEXT. Foreign key referencing the fan. FK to fans(user_registry). Example: FAN61698.'
+    sql: '"Fan_Ref"'
+  hours_contributed_hr:
+    description: 'REAL. The number of hours the fan contributed to the project. Example: 27.9.'
+    sql: '"HOURS_CONTRIBUTED_hr"'
+  invoice_id:
+    description: 'TEXT. The identifier for the invoice related to the payment. **NULL means no invoice was issued.** Example: INV-79278.'
+    sql: '"INVOICE_ID"'
+  idol_ref:
+    description: 'TEXT. Foreign key referencing the virtual idol. FK to virtualidols(entity_reg). Example: VI1076.'
+    sql: '"Idol_Ref"'
+  is_official:
+    description: 'BOOLEAN. A flag indicating if this is an officially sanctioned collaboration. Example: false.'
+    sql: '"IsOfficial"'
+  last_update_timestamp:
+    description: 'TIMESTAMP. The timestamp of the last update to this record. Example: 2025-08-16 07:01:00.'
+    sql: '"LAST_UPDATE_TIMESTAMP"'
+  nda_signed:
+    description: 'BOOLEAN. A flag indicating if a non-disclosure agreement was signed. Example: false.'
+    sql: '"NDA_SIGNED"'
+  priority_level:
+    description: 'TEXT. The priority level of this collaboration. Example: Low.'
+    sql: '"PRIORITY_LEVEL"'
+  project_reference_id:
+    description: 'BIGINT. Foreign key referencing the fan collaboration project. FK to fan_collaboration_projects(PROJECT_ID). Example: 9015.'
+    sql: '"PROJECT_REFERENCE_ID"'
+  payment_status:
+    description: 'TEXT. The status of payment for compensated collaborations. Possible values: Pending, Not Applicable, Paid. Example: Pending.'
+    sql: '"PaymentStatus"'
+  start_date:
+    description: 'DATE. The start date of the collaboration. Example: 2024/07/12.'
+    sql: '"StartDate"'
+  work_product_url:
+    description: 'TEXT. A URL to the final work product of the collaboration. **NULL means there is no linkable work product or it is not yet complete.** Example: https://fan-content.example.com/work-products/440358f8-1753-4468-aa96-ce12947a6d18.'
+    sql: '"WorkProductURL"'
+  approved_by:
+    description: 'TEXT. The entity that approved the collaboration. **NULL means it has not been approved.** Example: Agency Management.'
+    sql: approved_by
+  communication_log_id:
+    description: 'BIGINT. Identifier for a related communication log. Example: 1117.'
+    sql: communication_log_id
+  feedback_from_fan:
+    description: 'TEXT. Feedback provided by the fan about the collaboration experience. **NULL means no feedback has been provided.** Example: The entire process was smooth and well-organized. I would gladly participate in another project like this..'
+    sql: feedback_from_fan
+  next_check_in_date:
+    description: 'DATE. The date for the next scheduled check-in or milestone. **NULL means no future check-in is scheduled.** Example: 2025/09/30.'
+    sql: next_check_in_date
+  notes:
+    description: 'TEXT. General notes about the collaboration. Example: Contributor is a key member of the fan Discord community..'
+    sql: notes
+  rating_of_collaboration:
+    description: 'REAL. A rating of the collaboration experience. **NULL means it has not been rated.** Example: 4.5.'
+    sql: rating_of_collaboration
+  resolution_details:
+    description: TEXT. Details about the resolution of any disputes. **NULL means there are no disputes or no resolution has been reached.**
+    sql: resolution_details
+  role_in_collaboration:
+    description: 'TEXT. The role the fan played in the collaboration. Example: Translator.'
+    sql: role_in_collaboration
+  status:
+    description: 'TEXT. The current status of the collaboration. Possible values: Active, Withdrawn, Completed. Example: Active.'
+    sql: status
+  visibility:
+    description: 'TEXT. The visibility of this collaboration record. Example: Unlisted.'
+    sql: visibility
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct idol_fan_collaborations public identity values.
+    label: idol_fan_collaborations Count
+    sql: ${virtual_idol_large_public__idol_fan_collaborations.collaboration_id}

@@ -1,0 +1,69 @@
+label: Digital_Payment_Transactional_Flux
+description: All columns of the public table Digital_Payment_Transactional_Flux.
+catalog: residential_data_large
+schema: public
+table_name: Digital_Payment_Transactional_Flux
+dimensions:
+  transaction_flux_pk:
+    description: 'TEXT. Primary key for high-frequency payment behavior analysis. Example: DPF-1A2B3C.'
+    sql: '"Transaction_Flux_PK"'
+  average_transaction_latency_ms:
+    description: 'INTEGER. Processing time for digital authorization. Example: 1200.'
+    sql: average_transaction_latency_ms
+  biometric_verification_usage_rate:
+    description: 'REAL. Proportion of payments secured by fingerprint or face ID. Example: 50.0.'
+    sql: biometric_verification_usage_rate
+  chargeback_dispute_count:
+    description: 'INTEGER. Number of formally contested transactions. Unique values: 0, 1.'
+    sql: chargeback_dispute_count
+  contactless_tap_frequency_monthly:
+    description: 'INTEGER. Count of NFC-based card or phone payments. Example: 50.'
+    sql: contactless_tap_frequency_monthly
+  cryptocurrency_settlement_volume_brl:
+    description: 'REAL. Total value of payments made via crypto gateways. **NULL means No crypto activity detected.** Example: 200.'
+    sql: cryptocurrency_settlement_volume_brl
+  digital_wallet_balance_average_brl:
+    description: 'REAL. Mean daily liquidity held in non-bank digital apps. Example: 350.'
+    sql: digital_wallet_balance_average_brl
+  ecommerce_shopping_cart_abandon_rate:
+    description: 'REAL. Ratio of initiated but unfinished online checkouts. Example: 50.0.'
+    sql: ecommerce_shopping_cart_abandon_rate
+  failed_auth_attempt_count:
+    description: 'INTEGER. Number of declined transactions due to PIN/Biometric error. Unique values: 0, 1, 2, 5.'
+    sql: failed_auth_attempt_count
+  financial_account_link:
+    description: TEXT. Reference to the household financial profile.
+    sql: financial_account_link
+  fraud_detection_trigger_count:
+    description: 'INTEGER. Number of times AI flags halted a transaction. Unique values: 0, 1, 2.'
+    sql: fraud_detection_trigger_count
+  international_transaction_fee_total:
+    description: 'REAL. Cumulative fees for cross-border digital commerce. **NULL means No international purchases.** Example: 45.'
+    sql: international_transaction_fee_total
+  loyalty_point_redemption_value:
+    description: 'REAL. Financial equivalent of reward points spent. **NULL means No loyalty programs active.** Example: 50.0.'
+    sql: loyalty_point_redemption_value
+  merchant_category_diversity_score:
+    description: 'REAL. Entropy of spending across different business types (0.0-1.0). Example: 50.0.'
+    sql: merchant_category_diversity_score
+  micro_payment_count:
+    description: 'INTEGER. Count of transactions under 5.00 BRL. Example: 50.'
+    sql: micro_payment_count
+  peak_spending_hour_24h:
+    description: 'INTEGER. The hour of day with highest transaction volume. Example: 14.'
+    sql: peak_spending_hour_24h
+  peer_to_peer_transfer_count:
+    description: 'INTEGER. Count of direct transfers (e.g., PIX or similar). Example: 15.'
+    sql: peer_to_peer_transfer_count
+  qr_code_payment_ratio:
+    description: 'REAL. Percentage of transactions initiated via QR scanning. Example: 50.0.'
+    sql: qr_code_payment_ratio
+  subscription_autopay_count:
+    description: 'INTEGER. Number of recurring automated billing agreements. Example: 50.'
+    sql: subscription_autopay_count
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Digital_Payment_Transactional_Flux public identity values.
+    label: Digital_Payment_Transactional_Flux Count
+    sql: ${residential_data_large_public__digital_payment_transactional_flux.transaction_flux_pk}

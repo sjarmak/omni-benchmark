@@ -1,0 +1,30 @@
+label: Location
+description: All columns of the public table Location.
+catalog: polar_equipment_large
+schema: public
+table_name: Location
+dimensions:
+  lat_deg:
+    description: 'REAL. Latitude of the location in degrees. Example: 80.255202.'
+    sql: '"LAT_deg"'
+  lon_deg:
+    description: 'REAL. Longitude of the location in degrees. Example: -146.257874.'
+    sql: '"LON_deg"'
+  station_name:
+    description: TEXT. Unique name of the station. PK.
+    sql: '"STATION_name"'
+  time_stamp:
+    description: 'TIMESTAMP. Timestamp when the location data was recorded. Example: 2024-10-29T17:30:55.'
+    sql: '"TimeStamp"'
+  altitude_m:
+    description: 'REAL. Altitude of the location in meters. **NULL means no altitude provided.**. Example: 2054.5.'
+    sql: altitude_m
+  loc_type:
+    description: 'TEXT. Type of location (e.g., field, lab). Possible values: Antarctic, Arctic.'
+    sql: '"locType"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Location public identity values.
+    label: Location Count
+    sql: ${polar_equipment_large_public__location.station_name}

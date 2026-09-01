@@ -1,0 +1,108 @@
+label: ShelterFacilities
+description: All columns of the public table ShelterFacilities.
+catalog: disaster_relief_large
+schema: public
+table_name: ShelterFacilities
+dimensions:
+  capacity_persons:
+    description: BIGINT. Maximum number of people the facility can hold.
+    sql: '"Capacity_Persons"'
+  closing_date:
+    description: text in the same “YYYY mon.ddth” format. Date the shelter closed. **Nullable** for shelters currently open.
+    sql: '"ClosingDate"'
+  created_at:
+    description: text (“YYYY mon.ddth HH:MM:SS”). Record insertion time.
+    sql: '"Created_at"'
+  inspection_score:
+    description: REAL. 0 – 100 score from the last official inspection (higher = better).
+    sql: '"InspectionScore"'
+  last_inspection_date:
+    description: text (“YYYY mon.ddth”). Most recent inspection date.
+    sql: '"LAST_INSPECTION_DATE"'
+  lat:
+    description: REAL. Latitude of the shelter in decimal degrees (WGS-84).
+    sql: '"LAT"'
+  location_name:
+    description: TEXT. Human-readable name of the shelter (e.g., “Central Gymnasium Shelter”).
+    sql: '"LOCATION_Name"'
+  lon:
+    description: REAL. Longitude of the shelter in decimal degrees (WGS-84).
+    sql: '"Lon"'
+  manager_name:
+    description: TEXT. Full name of the shelter manager.
+    sql: '"MANAGER_NAME"'
+  notes:
+    description: TEXT. Concise, field-generated comments (e.g., “Near full capacity; Running on generator”).
+    sql: '"NOTES"'
+  occupancy_persons:
+    description: BIGINT. Current number of occupants.
+    sql: '"OCCUPANCY_persons"'
+  opening_date:
+    description: text formatted as “YYYY mon.ddth” (e.g., 2025 may.22nd). Calendar date when the shelter opened.
+    sql: '"OPENING_DATE"'
+  repair_needed:
+    description: BOOLEAN. TRUE if repairs are required based on the inspection.
+    sql: '"RepairNeeded"'
+  shelter_id:
+    description: VARCHAR(20). Unique shelter identifier. Primary Key.
+    sql: '"SHELTER_ID"'
+  shelter_status:
+    description: 'TEXT. Operational state of the shelter. Possible values: Open, Closed, Under Maintenance.'
+    sql: '"ShelterStatus"'
+  updated_at:
+    description: text (“YYYY mon.ddth HH:MM:SS”). Most recent modification time.
+    sql: '"UPDATED_AT"'
+  bed_price_human_usdper_guest:
+    description: INT. Shelter bed price in **U.S. dollars per guest** (e.g., 0, 5, 10).
+    sql: '"bedPriceHuman_USDperGuest"'
+  contact_phone:
+    description: TEXT. Contact telephone number in international format (e.g., “+81-555-1234”).
+    sql: '"contactPhone"'
+  dist_ref:
+    description: VARCHAR(20). References DisasterEvents(DistRegistry); links shelter to its disaster event.
+    sql: '"distRef"'
+  distance_to_hospital_km:
+    description: REAL. Straight-line distance to the nearest hospital in **kilometres** (e.g., 5.0).
+    sql: '"distanceToHospital_km"'
+  estimate_repair_cost_usd:
+    description: REAL. Estimated repair cost in U.S. dollars. Zero if no repair needed.
+    sql: '"estimateRepairCost_USD"'
+  utilities_services:
+    description: JSONB column. Groups live-service states, on-site staffing, and comfort/amenity flags for each shelter.
+    sql: utilities_services
+  version_no:
+    description: INT. Record-schema version for internal migrations.
+    sql: '"versionNo"'
+  utilities_services_amenities_accessible:
+    description: BOOLEAN. TRUE if the shelter has wheelchair access or similar features.
+    sql: JSONB_EXTRACT_PATH_TEXT(utilities_services, 'amenities', 'accessible')
+  utilities_services_amenities_kitchen:
+    description: BOOLEAN. TRUE if a kitchen facility is available; otherwise FALSE.
+    sql: JSONB_EXTRACT_PATH_TEXT(utilities_services, 'amenities', 'kitchen')
+  utilities_services_amenities_pet_friendly:
+    description: BOOLEAN. TRUE if pets are allowed; otherwise FALSE.
+    sql: JSONB_EXTRACT_PATH_TEXT(utilities_services, 'amenities', 'petFriendly')
+  utilities_services_staff_medical:
+    description: BIGINT. Number of on-site medical staff.
+    sql: JSONB_EXTRACT_PATH_TEXT(utilities_services, 'staff', 'medical')
+  utilities_services_staff_security:
+    description: BIGINT. Number of security personnel assigned.
+    sql: JSONB_EXTRACT_PATH_TEXT(utilities_services, 'staff', 'security')
+  utilities_services_temp_comfort_c:
+    description: TEXT. Temperature comfort range in **°C** expressed as “min–max” (e.g., “18–26”).
+    sql: JSONB_EXTRACT_PATH_TEXT(utilities_services, 'tempComfort_C')
+  utilities_services_utilities_power:
+    description: 'TEXT. Power status. Examples: Online, Generator Only, None.'
+    sql: JSONB_EXTRACT_PATH_TEXT(utilities_services, 'utilities', 'power')
+  utilities_services_utilities_sanitation:
+    description: 'TEXT. Sanitation-facility condition. Examples: Functional, Limited, Non-functional.'
+    sql: JSONB_EXTRACT_PATH_TEXT(utilities_services, 'utilities', 'sanitation')
+  utilities_services_utilities_water:
+    description: 'TEXT. Potable-water status. Examples: Operational, Contaminated, Out.'
+    sql: JSONB_EXTRACT_PATH_TEXT(utilities_services, 'utilities', 'water')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ShelterFacilities public identity values.
+    label: ShelterFacilities Count
+    sql: ${disaster_relief_large_public__shelter_facilities.shelter_id}

@@ -1,0 +1,66 @@
+label: ProjectExpenses
+description: All columns of the public table ProjectExpenses.
+catalog: archeology_scan_large
+schema: public
+table_name: ProjectExpenses
+dimensions:
+  project_expenses_id:
+    description: TEXT. Unique identifier for project expense record.
+    sql: '"ProjectExpenses_id"'
+  amount_local_currency:
+    description: 'REAL. Expense amount in local currency. Example: 1500.'
+    sql: amount_local_currency
+  amount_usd:
+    description: 'REAL. Expense amount converted to US dollars. Example: 1500.'
+    sql: amount_usd
+  approval_status:
+    description: 'TEXT. Current approval status of expense. Unique values: Approved, Pending, Rejected, Under Review.'
+    sql: approval_status
+  exchange_rate_used:
+    description: 'REAL. Currency exchange rate applied for conversion. **NULL means Transaction already in USD.** Example: 50.0.'
+    sql: exchange_rate_used
+  expense_category:
+    description: 'TEXT. Category classification of expense. Unique values: Personnel, Equipment, Travel, Supplies, Subcontractor, Lab Services, Permits.'
+    sql: expense_category
+  expense_date:
+    description: 'TIMESTAMP. Date when expense was incurred. Example: 2024-01-01 12:00:00.'
+    sql: expense_date
+  expense_justification_length:
+    description: 'INTEGER. Character count of expense justification text. Example: 50.'
+    sql: expense_justification_length
+  fiscal_year:
+    description: 'INTEGER. Fiscal year expense is charged to. Unique values: 2022, 2023, 2024, 2025.'
+    sql: fiscal_year
+  funding_source:
+    description: 'TEXT. Source of funds for this expense. Unique values: Federal Grant, Private Foundation, University Funds, Corporate Sponsor, Self-Funded.'
+    sql: funding_source
+  grant_line_item:
+    description: TEXT. Budget line item code from grant. **NULL means Not grant funded.**
+    sql: grant_line_item
+  invoice_number:
+    description: TEXT. Vendor invoice or receipt number. **NULL means Invoice not yet received.**
+    sql: invoice_number
+  is_budgeted:
+    description: 'BOOLEAN. Indicates if expense was in original budget. Possible values: True, False.'
+    sql: is_budgeted
+  payment_method:
+    description: 'TEXT. Method used for payment. Unique values: Credit Card, Wire Transfer, Check, Cash, Purchase Order.'
+    sql: payment_method
+  processing_days:
+    description: 'INTEGER. Days from submission to processing. **NULL means Not yet processed.** Example: 50.'
+    sql: processing_days
+  project_ref:
+    description: TEXT. Reference to the associated project.
+    sql: project_ref
+  receipt_attached:
+    description: 'BOOLEAN. Indicates if receipt documentation is attached. Possible values: True, False.'
+    sql: receipt_attached
+  reimbursable:
+    description: 'BOOLEAN. Indicates if expense is reimbursable by funder. Possible values: True, False.'
+    sql: reimbursable
+  tax_amount:
+    description: 'REAL. Tax portion of expense in local currency. **NULL means Tax exempt purchase.** Example: 120.'
+    sql: tax_amount
+  vendor_name:
+    description: TEXT. Name of vendor or payee.
+    sql: vendor_name

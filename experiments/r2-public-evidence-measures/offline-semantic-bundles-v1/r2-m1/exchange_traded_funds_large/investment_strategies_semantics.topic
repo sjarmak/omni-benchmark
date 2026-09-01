@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__investment_strategies
+label: investment_strategies
+description: All columns of the public table investment_strategies.
+fields:
+- exchange_traded_funds_large_public__investment_strategies.*
+joins: {}
+ai_context: This topic models no cross-table joins.

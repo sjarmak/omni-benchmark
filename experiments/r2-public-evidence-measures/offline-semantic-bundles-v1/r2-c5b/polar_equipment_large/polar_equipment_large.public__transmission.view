@@ -1,0 +1,33 @@
+label: Transmission
+description: All columns of the public table Transmission.
+catalog: polar_equipment_large
+schema: public
+table_name: Transmission
+dimensions:
+  trans_id:
+    description: BIGSERIAL. Unique identifier for the transmission record. PK.
+    sql: '"TRANS_ID"'
+  trans_gear:
+    description: 'TEXT. Gear setting of the transmission. **NULL means no gear setting recorded.**. Possible values: -1.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0.'
+    sql: '"TRANS_gear"'
+  axle_temp_c:
+    description: 'REAL. Axle temperature in Celsius. Example: 22.1.'
+    sql: '"axleTempC"'
+  diff_temp_c:
+    description: 'REAL. Differential temperature in Celsius. Example: 80.9.'
+    sql: '"diffTempC"'
+  engine_link:
+    description: BIGINT. Reference to the engine and fluids record. FK to EngineAndFluids.ENGINE_ID.
+    sql: engine_link
+  equip_ref:
+    description: TEXT. Reference to the equipment. FK to Equipment.EQUIP_CODE.
+    sql: '"equipRef"'
+  opmaint_link:
+    description: BIGINT. Reference to the operation and maintenance record. FK to OperationMaintenance.OP_MAINT_ID.
+    sql: opmaint_link
+  trans_press_kpa:
+    description: 'REAL. Transmission pressure in kPa. **NULL means no transmission pressure recorded.**. Example: 532.9.'
+    sql: '"transPress_kpa"'
+  trans_temp_c:
+    description: 'REAL. Transmission temperature in Celsius. Example: 94.5.'
+    sql: '"transTempC"'

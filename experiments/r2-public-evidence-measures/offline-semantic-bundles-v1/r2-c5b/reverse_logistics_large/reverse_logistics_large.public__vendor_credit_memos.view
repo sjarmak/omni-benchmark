@@ -1,0 +1,60 @@
+label: vendor_credit_memos
+description: All columns of the public table vendor_credit_memos.
+catalog: reverse_logistics_large
+schema: public
+table_name: vendor_credit_memos
+dimensions:
+  accounting_period_month:
+    description: TEXT. Accounting period (YYYY-MM).
+    sql: accounting_period_month
+  applied_to_invoice_ref:
+    description: TEXT. Invoice ID where this credit was applied. **NULL means Not applied yet.**
+    sql: applied_to_invoice_ref
+  approval_signature_ref:
+    description: TEXT. Digital signature reference of approver.
+    sql: approval_signature_ref
+  comment_notes:
+    description: TEXT. Notes regarding the credit memo.
+    sql: comment_notes
+  credit_amount_total:
+    description: 'REAL. Total value of the credit. Example: 150.'
+    sql: credit_amount_total
+  credit_issue_date:
+    description: TIMESTAMP. Date the credit was issued.
+    sql: credit_issue_date
+  credit_memo_ref:
+    description: TEXT. Unique identifier for the credit memo.
+    sql: credit_memo_ref
+  currency_code:
+    description: 'TEXT. Currency of the credit. Unique values: USD, EUR, CNY.'
+    sql: currency_code
+  exchange_rate_applied:
+    description: 'REAL. Exchange rate used if cross-currency. **NULL means Same currency.** Example: 1.1.'
+    sql: exchange_rate_applied
+  expiration_date:
+    description: TIMESTAMP. When the credit expires. **NULL means No expiration.**
+    sql: expiration_date
+  finance_posted_flag:
+    description: BOOLEAN. Has this been posted to the ERP system?.
+    sql: finance_posted_flag
+  reason_code_vendor:
+    description: 'TEXT. Vendor''s reason code for the credit. Unique values: Warranty, Goodwill, Correction.'
+    sql: reason_code_vendor
+  recovery_claim_link:
+    description: TEXT. Link to the recovery claim being settled.
+    sql: recovery_claim_link
+  remaining_balance:
+    description: 'REAL. Balance remaining on the credit memo. Example: 50.0.'
+    sql: remaining_balance
+  settlement_method:
+    description: 'TEXT. How the credit is settled (Cash, Deduction). Unique values: Future Deduction, Bank Transfer, Check.'
+    sql: settlement_method
+  tax_adjustment_amount:
+    description: 'REAL. Tax portion of the credit. Example: 10.'
+    sql: tax_adjustment_amount
+  utilization_status:
+    description: 'TEXT. Status of credit usage (Unused, Partially Used, Fully Used). Unique values: Unused, Partially Used, Fully Used.'
+    sql: utilization_status
+  vendor_memo_number:
+    description: TEXT. The vendor's internal document number.
+    sql: vendor_memo_number

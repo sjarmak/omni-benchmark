@@ -1,0 +1,72 @@
+label: CaseDecisionAudit
+description: All columns of the public table CaseDecisionAudit.
+catalog: labor_certification_applications_large
+schema: public
+table_name: CaseDecisionAudit
+dimensions:
+  cda_code:
+    description: 'TEXT. Unique identifier for each case decision audit record. Example: CDA-1A2B3C.'
+    sql: '"CDA_code"'
+  appeal_risk_level:
+    description: 'TEXT. Assessed risk level of successful appeal against decision. Unique values: Low, Medium, High, Critical.'
+    sql: '"appealRiskLevel"'
+  audit_notes_length:
+    description: 'INTEGER. Character length of detailed audit notes recorded. Example: 450.'
+    sql: '"auditNotes_length"'
+  audit_outcome:
+    description: 'TEXT. Final outcome classification of the audit review. Unique values: Approved, Approved with Notes, Requires Revision, Escalated, Reopened.'
+    sql: '"auditOutcome"'
+  audit_timestamp:
+    description: 'TIMESTAMP. Timestamp when the audit review was conducted. Example: 2024-01-01 12:00:00.'
+    sql: '"auditTimestamp"'
+  bias_indicator_score:
+    description: 'REAL. Algorithmic bias detection score from 0-1 where higher indicates potential bias. **NULL means Bias analysis not applicable.** Example: 0.15.'
+    sql: '"biasIndicatorScore"'
+  consistency_rating:
+    description: 'TEXT. Rating of decision consistency with similar cases. Unique values: Highly Consistent, Consistent, Minor Variance, Significant Variance, Outlier.'
+    sql: '"consistencyRating"'
+  correction_required_flag:
+    description: 'BOOLEAN. Indicates if corrections to the decision are required. Possible values: True, False.'
+    sql: '"correctionRequired_flag"'
+  decision_quality_score:
+    description: 'REAL. Quality assessment score of the original decision from 0-100. **NULL means Assessment not yet completed.** Example: 78.'
+    sql: '"decisionQualityScore"'
+  discrepancy_found_flag:
+    description: 'BOOLEAN. Indicates if any discrepancies were found during audit. Possible values: True, False.'
+    sql: '"discrepancyFound_flag"'
+  documentation_completeness_pct:
+    description: 'REAL. Percentage of required documentation present in case file. Example: 85.'
+    sql: '"documentationCompleteness_pct"'
+  evidence_weight_score:
+    description: 'REAL. Score indicating strength of evidence evaluation from 1-10. **NULL means Evidence review pending.** Example: 7.2.'
+    sql: '"evidenceWeightScore"'
+  file_ref:
+    description: TEXT. Foreign key reference to the cases table filekey.
+    sql: file_ref
+  legal_precedent_cited_ct:
+    description: 'INTEGER. Number of legal precedents cited in decision rationale. Example: 4.'
+    sql: '"legalPrecedentCited_ct"'
+  next_review_due_days:
+    description: 'INTEGER. Days until next scheduled audit review is due. **NULL means No follow-up review scheduled.** Example: 50.'
+    sql: '"nextReviewDue_days"'
+  procedural_compliance_flag:
+    description: 'BOOLEAN. Indicates whether all procedural requirements were followed. Possible values: True, False.'
+    sql: '"proceduralComplianceFlag"'
+  regulatory_compliance_pct:
+    description: 'REAL. Percentage compliance with current regulatory requirements. Example: 94.'
+    sql: '"regulatoryCompliance_pct"'
+  review_duration_hrs:
+    description: 'REAL. Hours spent conducting the audit review. Example: 3.5.'
+    sql: '"reviewDuration_hrs"'
+  reviewer_grade:
+    description: 'TEXT. Civil service grade level of the reviewing officer. Unique values: GS-9, GS-11, GS-12, GS-13, GS-14, GS-15.'
+    sql: '"reviewerGrade"'
+  supervisor_override_flag:
+    description: 'BOOLEAN. Indicates if supervisor override was applied to original decision. Possible values: True, False.'
+    sql: '"supervisorOverride_flag"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CaseDecisionAudit public identity values.
+    label: CaseDecisionAudit Count
+    sql: ${labor_certification_applications_large_public__case_decision_audit.cda_code}

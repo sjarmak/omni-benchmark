@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__performance
+label: Fund Performance
+description: Fund performance records with row-level price-range, historical consistency, concentration, and preservation semantics.
+fields:
+- exchange_traded_funds_large_public__performance.*
+joins: {}
+ai_context: "This topic models no cross-table joins.\nUse the modeled business fields capital_preservation_index, is_high_conviction_portfolio, positive_return_consistency_pct, price_position_52_week_pct rather than reconstructing their formulas.\nDomain definitions for this topic:\n- Median 1-Year Return: M = \text{The 50th percentile of 1-year returns for a specified group of funds.}"

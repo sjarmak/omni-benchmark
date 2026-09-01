@@ -1,0 +1,108 @@
+label: waste_management
+description: All columns of the public table waste_management.
+catalog: residential_data_large
+schema: public
+table_name: waste_management
+dimensions:
+  collection_frequency_per_week:
+    description: 'BIGINT. Frequency of waste collection per week. **NULL means collection frequency not standardized.**. Possible values: 2.0, 3.0.'
+    sql: '"COLLECTION_frequency_per_week"'
+  composting_volume_kg:
+    description: 'REAL. Volume of waste composted in kilograms. **NULL means composting not practiced or tracked.**. Possible values: 0.0, 12.8, 4.5, 6.5, 8.2.'
+    sql: '"COMPOSTING_volume_kg"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"CREATED_at"'
+  contamination_incidents:
+    description: 'BIGINT. Number of contamination incidents in recycling. **NULL means contamination not monitored.**. Possible values: 0.0, 1.0, 2.0.'
+    sql: '"Contamination_Incidents"'
+  donation_frequency_per_month:
+    description: 'BIGINT. Frequency of donating items per month. **NULL means donation activity not tracked.**. Possible values: 1.0, 2.0, 3.0, 4.0.'
+    sql: '"DONATION_frequency_per_month"'
+  educational_program_participation:
+    description: 'TEXT. Participation in waste education programs. **NULL means educational program participation not tracked.**. Possible values: No, Yes.'
+    sql: '"EDUCATIONAL_program_participation"'
+  environmental_awareness_score:
+    description: 'BIGINT. Environmental awareness rating score. **NULL means environmental awareness not assessed.**. Possible values: 6.0, 7.0, 8.0, 9.0.'
+    sql: '"Environmental_Awareness_Score"'
+  illegal_dumping_reports:
+    description: 'BIGINT. Number of illegal dumping incidents reported. **NULL means illegal dumping not reported or tracked.**. Possible values: 0.0, 1.0.'
+    sql: '"Illegal_Dumping_Reports"'
+  recycling_accuracy_percent:
+    description: 'REAL. Accuracy of recycling sorting percentage. **NULL means recycling accuracy not evaluated.**. Possible values: 78.6, 78.9, 82.1, 85.2, 88.5.'
+    sql: '"Recycling_Accuracy_Percent"'
+  reuse_initiatives_count:
+    description: 'BIGINT. Number of reuse initiatives participated in. **NULL means reuse activities not tracked.**. Possible values: 2.0, 3.0, 4.0, 5.0.'
+    sql: '"Reuse_Initiatives_Count"'
+  special_collection_requests:
+    description: 'BIGINT. Number of special collection requests made. **NULL means special collections not tracked.**. Possible values: 0.0, 1.0.'
+    sql: '"Special_Collection_Requests"'
+  total_waste_generated_kg:
+    description: 'REAL. Total waste generated in kilograms. **NULL means total waste not calculated.**. Possible values: 18.7, 19.8, 23.9, 25.6, 42.5.'
+    sql: '"Total_Waste_Generated_KG"'
+  waste_audit_participation:
+    description: 'TEXT. Participation in waste audit programs. **NULL means waste audit participation not documented.**. Possible values: No, Yes.'
+    sql: '"WASTE_audit_participation"'
+  waste_sorting_time_minutes:
+    description: 'REAL. Time spent sorting waste per week in minutes. **NULL means sorting time not measured.**. Possible values: 18.5, 22.0, 25.0, 35.0.'
+    sql: '"WASTE_sorting_time_minutes"'
+  waste_id:
+    description: 'BIGSERIAL. Primary key identifier for waste management record. PK. Possible values: 1, 2, 3, 4, 5, 6.'
+    sql: '"Waste_ID"'
+  waste_management_household_monitor:
+    description: 'BIGINT. Reference to household for waste management tracking. FK to households(housenum). Possible values: 22, 4, 432, 433, 575, 7.'
+    sql: '"Waste_Management_Household_Monitor"'
+  bulk_waste_disposal_events:
+    description: 'BIGINT. Number of bulk waste disposal events. **NULL means bulk disposal not tracked.**. Possible values: 0.0, 1.0.'
+    sql: '"bulk_waste_DISPOSAL_events"'
+  collection_week:
+    description: 'DATE. Week for waste collection data. Possible values: 2025-08-05, 2025-08-12.'
+    sql: '"collection_WEEK"'
+  community_cleanup_participation_hours:
+    description: 'REAL. Hours participated in community cleanup activities per month. **NULL means community participation not tracked.**. Possible values: 2.8, 3.8, 4.5, 5.2.'
+    sql: '"community_cleanup_PARTICIPATION_hours"'
+  disposal_cost_monthly_brl:
+    description: 'REAL. Monthly waste disposal costs in Brazilian Real. **NULL means disposal costs not tracked.**. Possible values: 45.8, 48.5, 52.1, 58.9, 65.2.'
+    sql: '"disposal_cost_MONTHLY_brl"'
+  missed_collections_count:
+    description: 'BIGINT. Number of missed waste collections. **NULL means missed collections not tracked.**. Possible values: 0.0, 1.0.'
+    sql: '"missed_collections_COUNT"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: updated_at
+  waste_reduction_efforts_score:
+    description: 'BIGINT. Waste reduction efforts rating score. **NULL means waste reduction not assessed.**. Possible values: 6.0, 7.0, 8.0, 9.0.'
+    sql: '"waste_reduction_EFFORTS_score"'
+  waste_type_breakdown:
+    description: JSONB column. Comprehensive categorization of waste generation by material type for recycling optimization and environmental impact assessment.
+    sql: waste_type_breakdown
+  zero_waste_goal_progress_percent:
+    description: 'REAL. Progress toward zero waste goal percentage. **NULL means zero waste goals not established.**. Possible values: 45.2, 58.9, 68.5, 72.8.'
+    sql: '"zero_waste_GOAL_progress_percent"'
+  waste_type_breakdown_recyclable_materials_0:
+    description: 'REAL. Recyclable waste generated in kilograms. **NULL means recyclable waste not measured separately.**. Possible values: 3.8, 4.2, 5.1, 6.5, 7.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(waste_type_breakdown, 'recyclable_materials', '0')
+  waste_type_breakdown_recyclable_materials_1:
+    description: 'REAL. Glass waste generated in kilograms. **NULL means glass waste not tracked separately.**. Possible values: 1.2, 1.8, 2.1, 2.9, 3.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(waste_type_breakdown, 'recyclable_materials', '1')
+  waste_type_breakdown_recyclable_materials_2:
+    description: 'REAL. Metal waste generated in kilograms. **NULL means metal waste not measured separately.**. Possible values: 0.5, 0.6, 0.8, 1.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(waste_type_breakdown, 'recyclable_materials', '2')
+  waste_type_breakdown_recyclable_materials_3:
+    description: 'REAL. Plastic waste generated in kilograms. **NULL means plastic waste not tracked separately.**. Possible values: 2.8, 3.2, 3.8, 4.8, 5.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(waste_type_breakdown, 'recyclable_materials', '3')
+  waste_type_breakdown_recyclable_materials_4:
+    description: 'REAL. Paper waste generated in kilograms. **NULL means paper waste not measured separately.**. Possible values: 2.1, 2.8, 3.2, 3.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(waste_type_breakdown, 'recyclable_materials', '4')
+  waste_type_breakdown_special_waste_types_electronic_waste_kg:
+    description: 'REAL. Electronic waste generated in kilograms. **NULL means electronic waste not generated or tracked.**. Possible values: 0.0, 0.5, 0.8, 1.2, 2.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(waste_type_breakdown, 'special_waste_types', 'Electronic_Waste_KG')
+  waste_type_breakdown_special_waste_types_organic_waste_kg:
+    description: 'REAL. Organic waste generated in kilograms. **NULL means organic waste not tracked separately.**. Possible values: 12.8, 15.2, 6.2, 8.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(waste_type_breakdown, 'special_waste_types', 'Organic_Waste_KG')
+  waste_type_breakdown_special_waste_types_textile_waste_kg:
+    description: 'REAL. Textile waste generated in kilograms. **NULL means textile waste not tracked separately.**. Possible values: 0.8, 0.9, 1.5, 1.8, 2.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(waste_type_breakdown, 'special_waste_types', 'TEXTILE_waste_kg')
+  waste_type_breakdown_special_waste_types_hazardous_waste_kg:
+    description: 'REAL. Hazardous waste generated in kilograms. **NULL means hazardous waste not tracked or generated.**. Possible values: 0.0, 0.1, 0.2, 0.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(waste_type_breakdown, 'special_waste_types', 'hazardous_waste_KG')

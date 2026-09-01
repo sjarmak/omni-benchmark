@@ -1,0 +1,96 @@
+label: service_level_agreements
+description: All columns of the public table service_level_agreements.
+catalog: reverse_logistics_large
+schema: public
+table_name: service_level_agreements
+dimensions:
+  creation_date:
+    description: 'TEXT. The date the SLA was created, in YYYY/MM/DD format. Example: 2023/03/10.'
+    sql: '"CREATION_DATE"'
+  is_active:
+    description: 'BOOLEAN. Indicates if the SLA is currently active. Possible values: True, False.'
+    sql: '"IS_ACTIVE"'
+  last_updated_date:
+    description: 'TEXT. The date the SLA was last updated, in YYYY/MM/DD format. Example: 2024/04/19.'
+    sql: '"LAST_UPDATED_DATE"'
+  metric_name:
+    description: 'TEXT. The specific metric being measured. Possible values: Turnaround Time, First Response Time, On-Time Delivery Rate.'
+    sql: '"METRIC_NAME"'
+  service_type:
+    description: 'TEXT. The type of service covered by the SLA. Possible values: Repair, Customer Response, Shipping.'
+    sql: '"SERVICE_TYPE"'
+  sla_id:
+    description: 'TEXT. Unique identifier for the Service Level Agreement. PK. Example: SLA-0001.'
+    sql: '"SLA_ID"'
+  sla_name:
+    description: 'TEXT. The human-readable name of the SLA. Example: SLA Shipping Tier 2.'
+    sql: '"SLA_NAME"'
+  valid_from:
+    description: 'TEXT. The date the SLA becomes effective, in YYYY/MM/DD format. Example: 2024/02/11.'
+    sql: '"VALID_FROM"'
+  valid_until:
+    description: 'TEXT. The date the SLA expires, in YYYY/MM/DD format. Example: 2028/08/13.'
+    sql: '"VALID_UNTIL"'
+  applicable_departments:
+    description: 'JSONB. A JSON array of departments to which the SLA applies. Example: [Repair, Logistics].'
+    sql: applicable_departments
+  approval_status:
+    description: 'TEXT. The current approval status of the SLA. Possible values: Approved, Draft, Pending Review.'
+    sql: approval_status
+  approved_by:
+    description: 'BIGINT. The employee ID of the manager who approved the SLA. **NULL means the SLA is not yet approved.** Example: 1003.0.'
+    sql: approved_by
+  audit_log:
+    description: 'JSONB. A JSON object or array containing the audit history of the SLA. Example: [{user: 1021, date: 2024-12-15, action: update}].'
+    sql: audit_log
+  business_hours_definition:
+    description: 'TEXT. The definition of business hours for this SLA. Example: Mon-Fri 9am-5pm EST.'
+    sql: business_hours_definition
+  description:
+    description: 'TEXT. A brief description of the SLA''s purpose. Example: Outlines the first-response time requirements for service type SLA-0001..'
+    sql: description
+  escalation_procedure_ref:
+    description: 'TEXT. A reference to the associated escalation procedure document. Example: ESC-PROC-1.'
+    sql: escalation_procedure_ref
+  exclusions:
+    description: 'TEXT. A description of exclusions from the SLA. **NULL means there are no formal exclusions.** Example: National holidays, force majeure events.'
+    sql: exclusions
+  geographic_scope:
+    description: 'TEXT. The geographic scope of the SLA. **NULL indicates the scope is global or not restricted geographically.** Example: Global.'
+    sql: geographic_scope
+  measurement_method:
+    description: 'TEXT. How the metric is measured. Possible values: Automated system tracking, Manual Audit, Ticket System Query.'
+    sql: measurement_method
+  metric_unit:
+    description: 'TEXT. The unit for the target value. Possible values: hours, days, percentage.'
+    sql: metric_unit
+  owner_employee_id:
+    description: 'BIGINT. The employee ID of the SLA owner. FK to employees.EMPLOYEE_ID. Example: 1036.'
+    sql: owner_employee_id
+  penalty_for_breach:
+    description: 'TEXT. The penalty for failing to meet the SLA target. **NULL indicates there is no formal penalty.** Example: Formal review meeting with stakeholders.'
+    sql: penalty_for_breach
+  priority_level:
+    description: 'TEXT. The priority of the SLA. Possible values: High, Medium, Low.'
+    sql: priority_level
+  related_contract_id:
+    description: 'TEXT. The ID of an external contract related to this SLA. **NULL means the SLA is an internal policy not tied to a specific contract.** Example: CON-wMm1afdT.'
+    sql: related_contract_id
+  related_kpis:
+    description: 'JSONB. A JSON array of related Key Performance Indicators (KPIs). Example: [KPI-2, KPI-6].'
+    sql: related_kpis
+  reporting_frequency:
+    description: 'TEXT. How often the SLA performance is reported. Possible values: Monthly, Quarterly, Weekly.'
+    sql: reporting_frequency
+  review_cycle_months:
+    description: 'BIGINT. The number of months between reviews of this SLA. Example: 24.'
+    sql: review_cycle_months
+  reward_for_exceeding:
+    description: 'TEXT. The reward for exceeding the SLA target. **NULL indicates there is no formal reward.** Example: 5% performance bonus.'
+    sql: reward_for_exceeding
+  sla_version:
+    description: 'TEXT. The version number of the SLA. Example: 3.2.'
+    sql: sla_version
+  target_value:
+    description: 'REAL. The target value for the metric. Example: 2.0.'
+    sql: target_value

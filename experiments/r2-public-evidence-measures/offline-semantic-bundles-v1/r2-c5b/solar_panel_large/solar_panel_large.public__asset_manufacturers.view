@@ -1,0 +1,54 @@
+label: asset_manufacturers
+description: All columns of the public table asset_manufacturers.
+catalog: solar_panel_large
+schema: public
+table_name: asset_manufacturers
+dimensions:
+  country:
+    description: 'TEXT. The country where the manufacturer is headquartered. Example: Israel.'
+    sql: '"COUNTRY"'
+  hq_address:
+    description: 'TEXT. The full headquarters address of the manufacturer. Example: 1 HaMada Street Herzliya.'
+    sql: '"HQ_Address"'
+  legal_name:
+    description: 'TEXT. The full legal name of the manufacturing company. Example: SolarEdge Technologies Inc..'
+    sql: '"LEGAL_NAME"'
+  mfr_code:
+    description: 'TEXT. Unique identifier for an asset manufacturer or vendor. Example: MFR-01.'
+    sql: '"MfrCode"'
+  stock_symbol:
+    description: 'TEXT. The stock market ticker symbol if the company is publicly traded. Example: SEDG.'
+    sql: '"StockSymbol"'
+  updated_at:
+    description: 'TIMESTAMP. Timestamp of the last modification to the manufacturer record. Example: 04/20/2024 14:00:00.'
+    sql: '"UPDATED_AT"'
+  contact_points:
+    description: JSONB column. Stores the various points of contact for a manufacturer, including sales, support, and warranty.
+    sql: contact_points
+  created_at:
+    description: 'TIMESTAMP. Timestamp when the manufacturer record was created. Example: 01/01/2015 00:00:00.'
+    sql: created_at
+  mfr_name:
+    description: 'TEXT. The common brand name of the manufacturer. Example: SolarEdge.'
+    sql: mfr_name
+  website_url:
+    description: 'TEXT. The official website URL of the manufacturer. Example: https://solaredge.com.'
+    sql: website_url
+  year_founded:
+    description: 'BIGINT. The year the manufacturing company was founded. Example: 2006.'
+    sql: '"yearFounded"'
+  contact_points_sales_sales_rep:
+    description: 'TEXT. The name of the sales representative for the account. Example: John Doe.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_points, 'sales', 'SALES_REP')
+  contact_points_sales_sales_rep_email:
+    description: 'TEXT. The email address of the sales representative. Example: j.doe@solaredge.com.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_points, 'sales', 'sales_rep_email')
+  contact_points_support_support_phone:
+    description: 'TEXT. The technical support phone number for the manufacturer. Example: (877) 360-5292.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_points, 'support', 'SUPPORT_PHONE')
+  contact_points_support_support_email:
+    description: 'TEXT. The technical support email address for the manufacturer. Example: support@solaredge.com.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_points, 'support', 'support_email')
+  contact_points_warranty_warranty_contact:
+    description: 'TEXT. The department or contact name for warranty claims. Example: Warranty Dept..'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_points, 'warranty', 'WarrantyContact')

@@ -1,0 +1,17 @@
+base_view: disaster_relief_large_public__household_member_map
+label: Household_Member_Map
+description: All columns of the public table Household_Member_Map.
+fields:
+- disaster_relief_large_public__household_member_map.*
+- disaster_relief_large_public__beneficiariesandassessments.*
+- disaster_relief_large_public__beneficiary_households.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__member_profiles.*
+- disaster_relief_large_public__operations.*
+joins:
+  disaster_relief_large_public__beneficiary_households:
+    disaster_relief_large_public__beneficiariesandassessments:
+      disaster_relief_large_public__disasterevents: {}
+      disaster_relief_large_public__operations: {}
+  disaster_relief_large_public__member_profiles: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

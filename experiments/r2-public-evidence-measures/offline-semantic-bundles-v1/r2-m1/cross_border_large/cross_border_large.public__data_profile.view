@@ -1,0 +1,79 @@
+label: Data Profiles
+description: Data-profile rows with volume, integrity, checksum, and same-row failure semantics.
+catalog: cross_border_large
+schema: public
+table_name: DataProfile
+dimensions:
+  vol_gb:
+    description: 'REAL. The volume of the data in gigabytes. Example: 9289.72.'
+    label: Data Volume (GB)
+    sql: vol_gb
+    ai_context: 'Data Volume: Ranges from small amounts (like 0.1) to large ones (like 1000).'
+  int_check:
+    description: 'TEXT. The status of the integrity check. Possible values: Partial, Failed, Passed.'
+    label: Integrity Check Status
+    sql: '"Int_check"'
+  csumverify:
+    description: 'TEXT. Status of checksum verification. Possible values: Success, Failed, Pending.'
+    label: Checksum Verification Status
+    sql: '"CSUMVERIFY"'
+  datatype:
+    description: 'TEXT. The general type of the data. Possible values: Financial, Personal, Industrial, Medical, Commercial.'
+    sql: '"DATATYPE"'
+  dest_val_state:
+    description: 'TEXT. The validation state at the destination. Possible values: Failed, Verified, Pending.'
+    sql: '"DEST_VAL_state"'
+  flow_sign:
+    description: 'TEXT. Foreign key to DataFlow(RecordRegistry). Example: CB604907.'
+    sql: '"Flow_Sign"'
+  format_type:
+    description: 'TEXT. The format type of the data. Possible values: Unstructured, Structured, Mixed.'
+    sql: '"FormatType"'
+  rec_tally:
+    description: 'BIGINT. A tally of the records processed. Example: 3823424.'
+    sql: '"REC_TALLY"'
+  record_registry:
+    description: 'TEXT. Foreign key to the record registry. Example: CB604907.'
+    sql: '"Record_Registry"'
+  data_sense:
+    description: 'TEXT. The sensitivity level of the data. Possible values: Critical, High, Medium, Low.'
+    sql: '"dataSense"'
+  profile_trace:
+    description: 'BIGINT. Unique identifier for the data profile trace. PK. Example: 461.'
+    sql: '"profileTrace"'
+  qlty_score:
+    description: 'REAL. The calculated data quality score. Example: 1.9.'
+    sql: qlty_score
+  ret_days:
+    description: 'BIGINT. The data retention period in days. Example: 3116.'
+    sql: ret_days
+  risk_join:
+    description: 'BIGINT. Foreign key to RiskManagement(RISKTRACE). Example: 461.'
+    sql: '"riskJoin"'
+  src_val_state:
+    description: 'TEXT. The validation state at the source. Possible values: Failed, Verified, Pending.'
+    sql: '"srcValState"'
+  subject_tally:
+    description: 'BIGINT. A tally of the data subjects involved. Example: 620647.'
+    sql: '"subjectTally"'
+  is_data_integrity_failure:
+    label: Data Integrity Failure
+    description: Shows data batches that failed integrity or checksum checks.
+    sql: ${int_check} = 'Failed' OR ${csumverify} = 'Failed'
+    ai_context: Use this modeled field for Data Integrity Failure; do not reconstruct its formula.
+  integrity_failure_count:
+    label: Integrity Failure Count (IFC)
+    description: Counts failed checks on a batch of data.
+    sql: CASE WHEN ${int_check} = 'Failed' THEN 1 ELSE 0 END + CASE WHEN ${csumverify} = 'Failed' THEN 1 ELSE 0 END
+    ai_context: Use this modeled field for Integrity Failure Count (IFC); do not reconstruct its formula.
+  failure_types_list:
+    label: Failure Types List
+    description: Lists the reasons for data batch check failures.
+    sql: CASE WHEN ${int_check} = 'Failed' AND ${csumverify} = 'Failed' THEN 'integrity check, verification' WHEN ${int_check} = 'Failed' THEN 'integrity check' WHEN ${csumverify} = 'Failed' THEN 'verification' ELSE '' END
+    ai_context: Use this modeled field for Failure Types List; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Data Profiles public identity values.
+    label: Data Profiles Count
+    sql: ${cross_border_large_public__data_profile.profile_trace}

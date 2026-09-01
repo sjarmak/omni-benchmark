@@ -1,0 +1,17 @@
+base_view: cross_border_large_public__data_profile
+label: Data Profiles
+description: Data-profile rows with volume, integrity, checksum, and same-row failure semantics.
+fields:
+- cross_border_large_public__data_profile.*
+- cross_border_large_public__data_flow.*
+- cross_border_large_public__risk_management.*
+joins:
+  cross_border_large_public__data_flow: {}
+  cross_border_large_public__risk_management: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields failure_types_list, integrity_failure_count, is_data_integrity_failure rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Data Sensitivity Index (DSI): DSI = (amount of data) multiplied by (3 if sensitivity is high, 2 if medium, 1 if low)'

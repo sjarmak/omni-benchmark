@@ -1,0 +1,78 @@
+label: multi_planet_system_dynamics
+description: All columns of the public table multi_planet_system_dynamics.
+catalog: planets_data_large
+schema: public
+table_name: multi_planet_system_dynamics
+dimensions:
+  collision_probability_per_gyr:
+    description: 'real. Probability of planetary collision per billion years. Possible values: 0.001, 0.002, 0.008, 0.025, 0.045, 0.158, 0.258.'
+    sql: '"COLLISION_PROBABILITY_per_Gyr"'
+  eccentricity_damping_timescale_myr:
+    description: 'real. Timescale for tidal damping of eccentricities in million years. **NULL means eccentricity damping was not modeled.**. Possible values: 125.0, 450.0, 85.0.'
+    sql: '"EccentricityDampingTimescale_Myr"'
+  formation_pathway_constraints:
+    description: 'text. Constraints on formation pathways from dynamical analysis. **NULL means formation constraints were not derived.**. Possible values: Convergent migration, Core accretion + migration, Disk migration + scattering, Gravitational instability, In-situ + pebble accretion, Multi-stage formation, Planet-disk interaction.'
+    sql: '"FORMATION_PATHWAY_CONSTRAINTS"'
+  hill_stability_criterion:
+    description: 'boolean. Flag indicating whether system satisfies Hill stability criterion. Possible values: False, True.'
+    sql: '"HILL_STABILITY_CRITERION"'
+  integration_duration_myr:
+    description: 'real. Duration of N-body integration in million years. Possible values: 1000, 10000, 2000, 500, 5000, 8000, Kozai-Lidov modeling.'
+    sql: '"IntegrationDuration_Myr"'
+  kozai_lidov_mechanism_active:
+    description: 'boolean. Flag indicating activity of Kozai-Lidov mechanism in the system. **NULL means Kozai-Lidov analysis was not performed.**. Possible values: False, True.'
+    sql: '"KozaiLidovMechanismActive"'
+  lyapunov_exponent_per_myr:
+    description: 'real. Lyapunov exponent indicating chaotic behavior per million years. **NULL means Lyapunov analysis was not performed.**. Possible values: 0.0001, 0.0002, 0.0003, 0.0012, 0.0045, 0.0085, 0.0156.'
+    sql: '"LyapunovExponent_per_Myr"'
+  notes:
+    description: 'text. Additional notes or comments about system dynamics analysis. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  observational_detectability_assessment:
+    description: 'text. Assessment of detectability with current observational techniques. Possible values: Excellent, High via RV + astrometry, High via transits, Low - long period, Moderate, Moderate via RV, Moderate via imaging, Very High.'
+    sql: '"ObservationalDetectabilityAssessment"'
+  planet_count:
+    description: 'bigint. Total number of confirmed planets in the system. Possible values: 1, 2, 3, 4, 6, 7.'
+    sql: '"PlanetCount"'
+  statistical_analysis_methods:
+    description: 'text. Statistical methods used for dynamical analysis. Possible values: 2023-10-22, Bootstrap + MCMC, Disk modeling, Long-term integration, N-body statistics, Survival analysis, Three-body dynamics, Transit timing analysis.'
+    sql: '"STATISTICAL_ANALYSIS_METHODS"'
+  stellarlink:
+    description: 'bigint. Foreign key reference to the host star of the planetary system. FK to stars(STELLARREF). Example: 1.'
+    sql: '"STELLARLINK"'
+  total_system_mass_jupiter_masses:
+    description: 'real. Total mass of all planets in the system in Jupiter mass units. Possible values: 0.68, 0.85, 0.95, 1.85, 15.8, 2.45, 4.25, 8.95.'
+    sql: '"TOTAL_SYSTEM_MASS_Jupiter_masses"'
+  transit_timing_variations_amplitude_minutes:
+    description: 'real. Amplitude of transit timing variations in minutes. Possible values: 12.8, 18.9, 2.1, 235.6, 45.2, 5.2, 8.9, 89.5.'
+    sql: '"TRANSIT_TIMING_VARIATIONS_AMPLITUDE_minutes"'
+  angular_momentum_deficit:
+    description: 'real. Angular momentum deficit compared to circular, coplanar configuration. Possible values: 0.05, 0.08, 0.12, 0.15, 0.42, 0.68, 0.85, 1.25.'
+    sql: angular_momentum_deficit
+  dynamical_stability_timescale_myr:
+    description: 'real. Timescale for dynamical stability of the system in million years. **NULL means stability timescale was not calculated.**. Possible values: 1200.0, 15000.0, 2100.0, 4500.0, 50000.0, 850.0, 8900.0.'
+    sql: '"dynamical_stability_timescale_Myr"'
+  last_analysis_date:
+    description: 'date. Date when dynamical analysis was last performed. Possible values: 2023-07-18, 2023-08-30, 2023-09-15, 2023-11-20, 2023-12-05, 2024-01-10, 2024-02-01, High eccentricity giants with secular interactions  .'
+    sql: last_analysis_date
+  mean_motion_resonances:
+    description: 'text. Description of mean motion resonances present in the system. **NULL means no resonances were detected.**. Possible values: 2:1, 3:2;5:3;2:1, 4:3;3:2;3:2;2:1;5:3, Multiple chains.'
+    sql: mean_motion_resonances
+  n_body_integration_results:
+    description: 'text. Summary of N-body integration simulation results. **NULL means N-body integration was not performed.**. Possible values: 100, {"binary_separation": 100}, {"inner_binary": 0.1}, {"max_eccentricity": 0.08}, {"stability_map": "stable"}, {"tidal_effects": true}.'
+    sql: n_body_integration_results
+  system_dynamics_ref:
+    description: 'bigint. Primary key identifier for multi-planet system dynamics records. PK. Possible values: 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008.'
+    sql: '"systemDynamicsRef"'
+  system_architecture:
+    description: 'text. Description of the overall planetary system architecture and configuration. Possible values: Compact Multi-planet, Debris Disk + Planet, Eccentric Giant System, Hierarchical Triple, Hot Jupiter + Companions, Super-Earth Chain, Ultra-compact System, Wide Binary Planets.'
+    sql: system_architecture
+  radial_velocity_variations_rms_m_s:
+    description: 'real. RMS amplitude of radial velocity variations in meters per second. Possible values: 125.8, 15.4, 18.5, 2.1, 3.8, 4.2, 45.2, 8.1.'
+    sql: '"radial_velocity_variations_rms_m/s"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct multi_planet_system_dynamics public identity values.
+    label: multi_planet_system_dynamics Count
+    sql: ${planets_data_large_public__multi_planet_system_dynamics.system_dynamics_ref}

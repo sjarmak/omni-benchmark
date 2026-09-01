@@ -1,0 +1,11 @@
+base_view: sports_events_large_public__equipment_shipment
+label: EquipmentShipment
+description: All columns of the public table EquipmentShipment.
+fields:
+- sports_events_large_public__equipment_shipment.*
+- sports_events_large_public__circuits.*
+- sports_events_large_public__constructors.*
+joins:
+  sports_events_large_public__circuits: {}
+  sports_events_large_public__constructors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

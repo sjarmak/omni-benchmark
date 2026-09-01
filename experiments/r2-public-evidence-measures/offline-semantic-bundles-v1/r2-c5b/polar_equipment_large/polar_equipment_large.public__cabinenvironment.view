@@ -1,0 +1,77 @@
+label: Cabin Environment
+description: Cabin environment records with habitability semantics and CO2 field context.
+catalog: polar_equipment_large
+schema: public
+table_name: CabinEnvironment
+dimensions:
+  cabin_temperature_c:
+    description: 'REAL. Cabin temperature in Celsius. **NULL means no cabin temperature data recorded.**. Example: -0.3.'
+    label: Cabin Temperature (C)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'air_metrics', 'temperature_c') AS DOUBLE PRECISION)
+  co2_level_ppm:
+    description: 'REAL. Cabin CO2 level in parts per million. Example: 557.'
+    label: CO2 Level (ppm)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'air_metrics', 'co2_ppm') AS DOUBLE PRECISION)
+    ai_context: 'cabinclimate.co2_ppm: CO2 levels in enclosed spaces like cabins are measured in parts per million (ppm). Levels below 600 ppm indicate excellent ventilation, 600-1000 ppm represent good air quality, 1000-2500 ppm indicate poor ventilation that may cause drowsiness and reduced cognitive function, while levels above 2500 ppm may cause headaches, sleepiness, and significantly impaired cognitive performance.'
+  oxygen_level_percent:
+    description: 'REAL. Cabin oxygen level in percentage. Example: 19.9.'
+    label: Oxygen Level Percent
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'air_metrics', 'o2_pct') AS DOUBLE PRECISION)
+  ventilation_status:
+    description: 'TEXT. Ventilation status. **NULL means no ventilation status recorded.**. Possible values: Auto, Off, On.'
+    label: Ventilation Status
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'hvac', 'vent_state')
+  heater_status:
+    description: 'TEXT. Heater status. Possible values: Auto, Off, On.'
+    label: Heater Status
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'hvac', 'heater_state')
+  cabin_id:
+    description: BIGSERIAL. Unique identifier for the cabin environment record. PK.
+    sql: '"CABIN_ID"'
+  cabin_env_snapshot:
+    description: JSONB column. Stores all atmosphere, HVAC, access and emergency-beacon readings relevant to crew comfort & safety in a single JSONB column.
+    sql: cabin_env_snapshot
+  comm_link:
+    description: BIGINT. Reference to the communication record. FK to Communication.COMM_ID.
+    sql: comm_link
+  equip_ref:
+    description: TEXT. Reference to the equipment. FK to Equipment.EQUIP_CODE.
+    sql: '"equipRef"'
+  loc_link:
+    description: TEXT. Reference to the location. FK to Location.STATION_name.
+    sql: loc_link
+  cabin_env_snapshot_access_door_state:
+    description: 'TEXT. Door status. Possible values: Closed, Locked, Open.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'access', 'door_state')
+  cabin_env_snapshot_access_hatch_state:
+    description: 'TEXT. Hatch status. Possible values: Closed, Locked, Open.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'access', 'hatch_state')
+  cabin_env_snapshot_access_window_state:
+    description: 'TEXT. Window status. Possible values: Closed, Open, Partial.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'access', 'window_state')
+  cabin_env_snapshot_air_metrics_air_quality_idx:
+    description: 'REAL. Cabin air quality index. Example: 237.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'air_metrics', 'air_quality_idx')
+  cabin_env_snapshot_air_metrics_humidity_pct:
+    description: 'REAL. Cabin humidity percentage. Example: 58.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'air_metrics', 'humidity_pct')
+  cabin_env_snapshot_air_metrics_pressure_kpa:
+    description: 'BIGINT. Cabin pressure in kPa. Example: 98.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'air_metrics', 'pressure_kpa')
+  cabin_env_snapshot_emergency:
+    description: 'TEXT. Emergency beacon status. Possible values: Active, Standby, Testing.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'emergency')
+  cabin_env_snapshot_hvac_defroster_state:
+    description: 'TEXT. Defroster status. Possible values: Auto, Off, On.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'hvac', 'defroster_state')
+  cabin_env_snapshot_hvac_heater_temp_c:
+    description: 'REAL. Heater temperature in Celsius. Example: 34.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'hvac', 'heater_temp_c')
+  cabin_env_snapshot_hvac_vent_speed_pct:
+    description: 'REAL. Ventilation speed percentage. Example: 13.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cabin_env_snapshot, 'hvac', 'vent_speed_pct')
+  meets_cabin_habitability_standard:
+    label: Cabin Habitability Standard
+    description: Defines the minimum standards for habitable cabin conditions in polar environments.
+    sql: ${cabin_temperature_c} >= 18.0 AND ${cabin_temperature_c} <= 24.0 AND ${oxygen_level_percent} > 19.5 AND ${co2_level_ppm} < 1000.0 AND ${ventilation_status} IN ('Auto', 'On') AND ${heater_status} IN ('Auto', 'On')
+    ai_context: Use this modeled field for Cabin Habitability Standard; do not reconstruct its formula.

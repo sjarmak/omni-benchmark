@@ -1,0 +1,71 @@
+label: Races
+description: Race records.
+catalog: sports_events_large
+schema: public
+table_name: races
+dimensions:
+  event_schedule:
+    description: JSONB column. Groups all date and time-related fields for a race weekend schedule including practice, qualifying, and sprint sessions.
+    label: Race event schedule
+    sql: event_schedule
+    ai_context: 'Indeterminate Event Timings: When the date or time for any session (practice, qualifying, sprint, or race) is not provided, it signifies that the schedule for that session is To Be Determined (TBD), not applicable for the event, or not yet published.'
+  rak_id:
+    description: 'INTEGER. Unique identifier for the race. PK. Example: 1.'
+    sql: rak_id
+  rnum:
+    description: 'INTEGER. Race number. Example: 1.'
+    sql: rnum
+  trkbind:
+    description: 'INTEGER. Foreign key to the circuits table (CCTKEY). FK to circuits. Example: 1.'
+    sql: trkbind
+  yr:
+    description: 'INTEGER. Year of the race. Example: 2009.'
+    sql: yr
+  event_schedule_date_set:
+    description: 'TEXT. Date set for the race. Example: 2009/03/29.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'date_set')
+  event_schedule_details_url:
+    description: 'VARCHAR. URL to additional race details. **NULL means no external reference is available.**. Example: http://en.wikipedia.org/wiki/2009_Chinese_Grand_Prix.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'details_url')
+  event_schedule_event_name:
+    description: 'VARCHAR. Official event name. **NULL means the event name is not yet finalised or entered.**. Example: Australian Grand Prix.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'event_name')
+  event_schedule_sessions_fp1_date:
+    description: 'VARCHAR. Free Practice 1 date. **NULL means FP1 is not scheduled or date not published.**. Example: 2022/03/18.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'fp1', 'date')
+  event_schedule_sessions_fp1_time:
+    description: 'VARCHAR. Free Practice 1 time. **NULL means FP1 time is not available.**. Possible values: 02:30:00, 04:30:00, 09:30:00, 10:00:00, 11:30:00, 12:00:00, 13:30:00, 16:30:00, 17:30:00, 18:00:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'fp1', 'time')
+  event_schedule_sessions_fp2_date:
+    description: 'VARCHAR. Free Practice 2 date. **NULL means FP2 is not planned or date is missing.**. Example: 2021/04/16.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'fp2', 'date')
+  event_schedule_sessions_fp2_time:
+    description: 'VARCHAR. Free Practice 2 time. **NULL means FP2 time is not available.**. Example: 15:00:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'fp2', 'time')
+  event_schedule_sessions_fp3_date:
+    description: 'VARCHAR. Free Practice 3 date. **NULL means FP3 does not occur or date not provided.**. Example: 2021/04/17.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'fp3', 'date')
+  event_schedule_sessions_fp3_time:
+    description: 'VARCHAR. Free Practice 3 time. **NULL means FP3 time is not recorded.**. Example: 12:00:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'fp3', 'time')
+  event_schedule_sessions_qualifying_date:
+    description: 'VARCHAR. Qualifying date. **NULL means qualifying date is unset.**. Example: 2021/04/17.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'qualifying', 'date')
+  event_schedule_sessions_qualifying_time:
+    description: 'VARCHAR. Qualifying time. **NULL means qualifying time is unknown.**. Example: 06:00:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'qualifying', 'time')
+  event_schedule_sessions_sprint_date:
+    description: 'VARCHAR. Sprint-race date. **NULL means no sprint race for this event or date not released.**. Possible values: 2021/07/17, 2021/09/11, 2022/04/23, 2022/07/09, 2022/11/12, 2023/10/07, 2023/11/04, 2024/05/04, 2024/11/02.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'sprint', 'date')
+  event_schedule_sessions_sprint_time:
+    description: 'VARCHAR. Sprint-race time. **NULL means sprint time is not applicable or missing.**. Possible values: 13:00:00, 13:30:00, 14:30:00, 18:00:00, 18:30:00, 22:00:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'sessions', 'sprint', 'time')
+  event_schedule_start_time:
+    description: 'VARCHAR. Scheduled race start time. **NULL means the start time is TBD or not recorded.**. Example: 06:00:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(event_schedule, 'start_time')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Races public identity values.
+    label: Races Count
+    sql: ${sports_events_large_public__races.rak_id}

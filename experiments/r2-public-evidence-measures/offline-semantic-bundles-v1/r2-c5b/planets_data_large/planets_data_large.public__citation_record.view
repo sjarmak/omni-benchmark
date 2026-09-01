@@ -1,0 +1,48 @@
+label: CitationRecord
+description: All columns of the public table CitationRecord.
+catalog: planets_data_large
+schema: public
+table_name: CitationRecord
+dimensions:
+  citation_id:
+    description: BIGINT. Primary key. Unique citation record identifier
+    sql: '"CITATION_ID"'
+  citation_year:
+    description: BIGINT. Year of citation
+    sql: '"CITATION_YEAR"'
+  cited_bibcode:
+    description: TEXT. Bibcode of cited work
+    sql: '"CITED_BIBCODE"'
+  first_citing_author:
+    description: TEXT. First author of citing paper
+    sql: '"FIRST_CITING_AUTHOR"'
+  impact_factor:
+    description: 'REAL. Impact factor of citing journal Typical range: 0.5 to 70.'
+    sql: '"IMPACT_FACTOR"'
+  international_collaboration:
+    description: BOOLEAN. Whether citing paper is international collab Boolean flag (true/false).
+    sql: '"INTERNATIONAL_COLLABORATION"'
+  self_citation:
+    description: BOOLEAN. Whether this is a self-citation Boolean flag (true/false).
+    sql: '"SELF_CITATION"'
+  citation_context:
+    description: 'TEXT. Section where citation appears Possible values: Introduction, Methods, Results, Discussion, Conclusion, Acknowledgment.'
+    sql: citation_context
+  citation_type:
+    description: 'TEXT. Context of the citation Possible values: Method, Data, Theory, Discovery, Review, Comparison, Software.'
+    sql: citation_type
+  citing_author_count:
+    description: BIGINT. Number of authors on citing paper
+    sql: citing_author_count
+  citing_journal:
+    description: 'TEXT. Journal of citing paper Possible values: A&A, ApJ, MNRAS, Nature, AJ.'
+    sql: citing_journal
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  field:
+    description: 'TEXT. Field of citing paper Possible values: Exoplanets, Stellar Physics, Galactic, Instrumentation, Methods, Other.'
+    sql: field
+  publication_ref:
+    description: BIGINT. Foreign key referencing ScientificPublication(PUBLICATION_ID). Citing publication
+    sql: publication_ref

@@ -1,0 +1,21 @@
+base_view: polar_equipment_large_public__weatherandstructure
+label: Weather And Structure
+description: Weather and structure records with structural-safety semantics and field context.
+fields:
+- polar_equipment_large_public__weatherandstructure.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__location.*
+- polar_equipment_large_public__operationmaintenance.*
+joins:
+  polar_equipment_large_public__location: {}
+  polar_equipment_large_public__operationmaintenance:
+    polar_equipment_large_public__equipment:
+      polar_equipment_large_public__equipmenttype: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields structural_safety_factor rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Extreme Climate Adaptation Coefficient (ECAC): ECAC = SSF \times (1 + TIE \times 0.5) \times \begin{cases} 0.7 & \text{if external temperature (°C) < -30} \\ 0.85 & \text{if external temperature (°C) < -15} \\ 1.0 & \text{otherwise} \end{cases}'

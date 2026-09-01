@@ -1,0 +1,11 @@
+base_view: labor_certification_applications_large_public__attorney_training_record
+label: AttorneyTrainingRecord
+description: All columns of the public table AttorneyTrainingRecord.
+fields:
+- labor_certification_applications_large_public__attorney_training_record.*
+- labor_certification_applications_large_public__attorney.*
+- labor_certification_applications_large_public__attorney_performance_metric.*
+joins:
+  labor_certification_applications_large_public__attorney_performance_metric:
+    labor_certification_applications_large_public__attorney: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

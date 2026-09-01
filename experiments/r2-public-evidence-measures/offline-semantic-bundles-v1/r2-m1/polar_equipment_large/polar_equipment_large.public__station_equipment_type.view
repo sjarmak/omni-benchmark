@@ -1,0 +1,12 @@
+label: StationEquipmentType
+description: All columns of the public table StationEquipmentType.
+catalog: polar_equipment_large
+schema: public
+table_name: StationEquipmentType
+dimensions:
+  equip_type:
+    description: 'TEXT. Reference to the equipment type. FK to EquipmentType.EquipType. Possible values: Communication, Generator, Safety, Scientific, Shelter, Vehicle.'
+    sql: equip_type
+  station_name:
+    description: 'TEXT. Reference to the station. FK to Location.STATION_name. Example: Station-14.'
+    sql: station_name

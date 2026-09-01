@@ -1,0 +1,48 @@
+label: Observer_Team_Map
+description: All columns of the public table Observer_Team_Map.
+catalog: planets_data_large
+schema: public
+table_name: Observer_Team_Map
+dimensions:
+  expertise:
+    description: 'TEXT. Primary expertise area Possible values: Spectroscopy, Photometry, Theory, Instrumentation, Statistics.'
+    sql: '"EXPERTISE"'
+  joined_date:
+    description: DATE. Date joined this proposal
+    sql: '"JOINED_DATE"'
+  night_observer:
+    description: BOOLEAN. Whether team member is designated night observer Boolean flag (true/false).
+    sql: '"NIGHT_OBSERVER"'
+  otm_id:
+    description: BIGINT. Primary key. Unique observer-team mapping identifier
+    sql: '"OTM_ID"'
+  proposal_ref:
+    description: BIGINT. Foreign key referencing ObservationProposal(PROPOSAL_ID). Related proposal
+    sql: '"PROPOSAL_REF"'
+  publication_rights:
+    description: BOOLEAN. Whether team member has publication rights Boolean flag (true/false).
+    sql: '"PUBLICATION_RIGHTS"'
+  role:
+    description: 'TEXT. Role in the observation Possible values: PI, Co-I, Postdoc, Student, Technical Support, Observer.'
+    sql: '"ROLE"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  contribution_pct:
+    description: 'REAL. Percentage contribution to the proposal Typical range: 0 to 100.'
+    sql: contribution_pct
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  data_reduction_role:
+    description: BOOLEAN. Whether involved in data reduction Boolean flag (true/false).
+    sql: data_reduction_role
+  institution:
+    description: 'TEXT. Team member institution Possible values: MIT, Geneva, Cambridge, Tokyo, Heidelberg, Caltech, Hawaii, ESO.'
+    sql: institution
+  status:
+    description: 'TEXT. Participation status Possible values: Active, Inactive, Withdrawn.'
+    sql: status
+  team_ref:
+    description: BIGINT. Foreign key referencing discovery_teams(TEAMREF). Related team
+    sql: team_ref

@@ -1,0 +1,93 @@
+label: training_program
+description: All columns of the public table training_program.
+catalog: labor_certification_applications_large
+schema: public
+table_name: training_program
+dimensions:
+  cert_name:
+    description: 'TEXT. Name of credential if offered. Example: PMP.'
+    sql: '"CertName"'
+  end_day:
+    description: 'DATE. Program end date. Example: 2024-05-03.'
+    sql: '"END_DAY"'
+  skill_area:
+    description: 'TEXT. Primary skill domain. Possible values: Leadership, Data Engineering, Cybersecurity, Project Management. Example: Project Management.'
+    sql: '"SkillArea"'
+  train_code:
+    description: 'TEXT. Unique code for a corporate training program. PK. Example: TRN000001.'
+    sql: '"TRAIN_code"'
+  zip_ref:
+    description: 'TEXT. Work-location ZIP (FK). Example: 32751.'
+    sql: '"ZIP_ref"'
+  alum_count:
+    description: 'BIGINT. Total alumni of program. **NULL indicates first cohort or metric not tracked.** Example: 172.'
+    sql: '"alumCount"'
+  availability_window:
+    description: 'TEXT. Scheduled class times. Example: 23:00–11:00.'
+    sql: availability_window
+  cert_offered_flag:
+    description: 'TEXT. Certification offered? Possible values: Yes, No. Example: Yes.'
+    sql: '"certOffered_flag"'
+  corp_ref:
+    description: 'TEXT. Employer handle (FK). Example: Avant Healthcare Professionals, LLC.'
+    sql: corp_ref
+  cost_per_head_usd:
+    description: 'REAL. Cost per participant, USD. Example: 1,444.'
+    sql: '"costPerHead_USD"'
+  delivery_hours_breakdown:
+    description: JSONB column. Aggregates total, online, and in-person contact hours for quick comparison of delivery modes across programmes.
+    sql: delivery_hours_breakdown
+  exam_pass_pct:
+    description: 'REAL. Pass rate %. **NULL means exam results not yet compiled.** Example: 68.13.'
+    sql: '"examPass_pct"'
+  exam_req_flag:
+    description: 'TEXT. Exam required to earn credential? Possible values: Yes, No. **NULL means requirement undecided or unrecorded.** Example: Yes.'
+    sql: '"examReq_flag"'
+  level_tag:
+    description: 'TEXT. Difficulty level. Possible values: Beginner, Intermediate, Advanced. Example: Beginner.'
+    sql: '"levelTag"'
+  pad_t1:
+    description: 'REAL. Reserved padding column. Example: 0.'
+    sql: '"padT1"'
+  pad_t2:
+    description: 'REAL. Reserved padding column. Example: 0.'
+    sql: '"padT2"'
+  pad_t3:
+    description: 'REAL. Reserved padding column. Example: 0.'
+    sql: '"padT3"'
+  program_name:
+    description: 'TEXT. Program title. Example: Cybersecurity Basics.'
+    sql: '"programName"'
+  provider_name:
+    description: 'TEXT. Training provider. Possible values: Coursera, Udemy, Pluralsight, In-house. Example: Udemy.'
+    sql: '"providerName"'
+  reasoning_info:
+    description: 'TEXT. Analyst comment on program. Example: Synthetic demo data.'
+    sql: '"reasoningINFO"'
+  seat_fill_pct:
+    description: 'REAL. Seats filled as % of capacity. **NULL means enrollment still open or figure not computed.** Example: 25.74.'
+    sql: '"seatFill_pct"'
+  seat_limit:
+    description: 'BIGINT. Maximum seats available. Example: 408.'
+    sql: '"seatLimit"'
+  start_day:
+    description: 'DATE. Program start date. Example: 2024-04-05.'
+    sql: '"startDay"'
+  stipend_usd:
+    description: 'REAL. Stipend paid to trainees, USD. **NULL means no stipend or data unavailable.** Example: 808.'
+    sql: '"stipend_USD"'
+  delivery_hours_breakdown_hours_in_person:
+    description: 'REAL. Hours delivered in person. Example: 2.29.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_hours_breakdown, 'hours_in_person')
+  delivery_hours_breakdown_hours_online:
+    description: 'REAL. Hours delivered online. **NULL indicates online hours not tracked.** Example: 43.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_hours_breakdown, 'hours_online')
+  delivery_hours_breakdown_hours_total:
+    description: 'REAL. Total contact hours. Example: 21.47.'
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_hours_breakdown, 'hours_total')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct training_program public identity values.
+    label: training_program Count
+    sql: ${labor_certification_applications_large_public__training_program.train_code}

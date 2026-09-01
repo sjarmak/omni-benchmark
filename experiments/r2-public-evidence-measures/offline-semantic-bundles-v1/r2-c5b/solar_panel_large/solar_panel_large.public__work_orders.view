@@ -1,0 +1,69 @@
+label: work_orders
+description: All columns of the public table work_orders.
+catalog: solar_panel_large
+schema: public
+table_name: work_orders
+dimensions:
+  assigned_technician:
+    description: 'TEXT. FK -> technicians.TechNum. The technician assigned to the work order. Example: T-101.'
+    sql: '"AssignedTechnician"'
+  completed_timestamp:
+    description: 'TIMESTAMP. The actual time the work was completed. Example: 2023/05/11 10:45:50 AM.'
+    sql: '"COMPLETED_TIMESTAMP"'
+  created_ts:
+    description: 'TIMESTAMP. Timestamp when the work order was created. Example: 2023/05/10 09:15:22 AM.'
+    sql: '"CREATED_TS"'
+  creator:
+    description: 'TEXT. FK -> technicians.TechNum. The person who created the work order. Example: T-101.'
+    sql: '"Creator"'
+  order_num:
+    description: 'TEXT. Unique identifier for a work order. Example: WO-1001.'
+    sql: '"OrderNum"'
+  plant_ref:
+    description: 'TEXT. FK -> plants.sitekey. The plant where the work is to be performed. Example: SP9227.'
+    sql: '"PlantRef"'
+  root_cause:
+    description: 'TEXT. A description of the root cause of the issue, filled upon completion. Example: Fan motor seizure due to dust ingress..'
+    sql: '"ROOT_CAUSE"'
+  scheduled_end:
+    description: 'TIMESTAMP. The planned end time for the work. Example: 2023/05/11 12:00:00 PM.'
+    sql: '"SCHEDULED_END"'
+  status:
+    description: 'TEXT. The current status of the work order. Possible values: Completed, In Progress, Registered.'
+    sql: '"STATUS"'
+  title:
+    description: 'TEXT. A brief, descriptive title for the work order. Example: Inverter Fan Failure Alert.'
+    sql: '"TITLE"'
+  triggering_alert:
+    description: 'TEXT. FK -> alert.snapalrt. The alert that triggered this work order, if any. Example: PV937101.'
+    sql: '"TriggeringAlert"'
+  actual_start_ts:
+    description: 'TIMESTAMP. The actual time the work began. Example: 2023/05/11 08:30:15 AM.'
+    sql: actual_start_ts
+  costing:
+    description: JSONB column. Provides a breakdown of the costs associated with a work order, including estimated, labor, and parts costs.
+    sql: costing
+  description:
+    description: 'TEXT. A detailed description of the issue or task. Example: Visual and functional check of all central inverters.'
+    sql: description
+  priority:
+    description: 'TEXT. The priority level of the work order. Possible values: Critical, High, Low, Medium.'
+    sql: priority
+  resolution:
+    description: 'TEXT. A summary of the resolution and actions taken, filled upon completion. Example: Replaced fan assembly model FN-001. System back online..'
+    sql: resolution
+  scheduled_start:
+    description: 'TIMESTAMP. The planned start time for the work. Example: 2023/05/11 08:00:00 AM.'
+    sql: scheduled_start
+  work_type:
+    description: 'TEXT. The classification of the work. Possible values: Corrective, Emergency, Preventive.'
+    sql: work_type
+  costing_labor_cost:
+    description: 'REAL. The actual cost of labor for the completed work. Example: $150.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(costing, 'LABOR_COST')
+  costing_estimated_cost:
+    description: 'REAL. The estimated total cost for the work order. Example: $300.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(costing, 'estimated_cost')
+  costing_parts_cost:
+    description: 'REAL. The actual cost of parts used for the completed work. Example: $125.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(costing, 'parts_cost')

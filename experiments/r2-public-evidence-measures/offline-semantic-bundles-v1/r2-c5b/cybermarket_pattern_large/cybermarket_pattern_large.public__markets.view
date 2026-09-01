@@ -1,0 +1,77 @@
+label: Marketplaces
+description: Marketplace records with public operational-status context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: markets
+dimensions:
+  operational_status:
+    description: 'TEXT. Current operational status of the platform (active, offline, seized, etc.). Possible values: Active, Closed, Suspended, Under Investigation.'
+    label: Operational Status
+    sql: '"OperStatus"'
+    ai_context: 'Platform Operational Status: Values: Active, Closed, Suspended, Under Investigation. Label descriptions: - Active: The marketplace is online, accepting new listings and processing transactions normally.- Closed: Operators have permanently shut down the marketplace; no further log ins or transactions are possible. - Suspended: The marketplace is temporarily offline, often due to policy violations or maintenance, and may return to service. - Under Investigation: Law enforcement or compliance review is in progress; user activity is restricted or frozen.'
+  acq_count:
+    description: 'BIGINT. Number of distinct buyer (acquirer) accounts on the platform. Example: 6009.'
+    sql: '"AcqCount"'
+  active_users_mo:
+    description: 'TEXT. Estimated number of active users per month. Example: $38,933 .'
+    sql: '"ActiveUsersMo"'
+  age_days:
+    description: 'BIGINT. Number of days since the platform’s first observed appearance. Example: 168.'
+    sql: '"AgeDays"'
+  confidence_level:
+    description: 'TEXT. Analyst-assigned confidence in the accuracy of platform metrics. Possible values: High, Low, Medium, Unknown.'
+    sql: '"ConfidenceLevel"'
+  day_txn_vol:
+    description: 'REAL. Average daily transaction volume on the platform. Example: 5388.'
+    sql: '"DayTxnVol"'
+  item_listings:
+    description: 'BIGINT. Current number of active product listings on the platform. Example: 34834.'
+    sql: '"ItemListings"'
+  plat_code:
+    description: TEXT. Unique identifier code for the marketplace platform. PK.
+    sql: '"PlatCode"'
+  plat_name:
+    description: 'TEXT. Human-readable name of the marketplace platform. Example: Market_84.'
+    sql: '"PlatName"'
+  platform_type:
+    description: TEXT. Classification of the platform (e.g., forum, service, marketplace).
+    sql: '"PlatformType"'
+  refresh_hrs:
+    description: 'BIGINT. Scheduled refresh interval for this record, in hours. Possible values: 1, 4, 8, 24.'
+    sql: '"RefreshHrs"'
+  rep_score:
+    description: 'TEXT. Reputation score assigned to the platform. **NULL means reputation has not yet been assessed or is unavailable.**. Example: $65.20 .'
+    sql: '"RepScore"'
+  seller_count:
+    description: 'BIGINT. Number of distinct sellers currently active on the platform. **NULL means seller count could not be determined at snapshot time.**. Example: 985.0.'
+    sql: '"SellerCount"'
+  size_cat:
+    description: 'TEXT. Categorical size bucket of the platform (small, medium, large). Possible values: Large, Medium, Mega, Small.'
+    sql: '"SizeCat"'
+  last_updated:
+    description: 'TIMESTAMP. Timestamp when this platform record was last refreshed. Example: 2025/2/16 15:29.'
+    sql: '"lastUpdated"'
+  platform_compliance:
+    description: JSONB column. Combines compliance and security-related metrics for the platform, including audit results, vulnerability instances, and security measures.
+    sql: platform_compliance
+  platform_compliance_data_ret_policy_stat:
+    description: 'TEXT. Declared data-retention policy of the platform. Possible values: Active, Archived, Deleted.'
+    sql: JSONB_EXTRACT_PATH_TEXT(platform_compliance, 'data_ret_policy_stat')
+  platform_compliance_geo_dist_scr:
+    description: 'text. A score representing the geographical distribution of market activity, calculated based on transaction volume and active users, measured in km. Example: 2140.32 km.'
+    sql: JSONB_EXTRACT_PATH_TEXT(platform_compliance, 'geo_dist_scr')
+  platform_compliance_laund_ve_score:
+    description: 'text. The probability of fraudulent activity in a market, based on laundering velocity, measured in USD/risk/day. Example: 0.62 USD/risk/day.'
+    sql: JSONB_EXTRACT_PATH_TEXT(platform_compliance, 'laund_ve_score')
+  platform_compliance_protection_meas_count:
+    description: 'BIGINT. Count of active security protection or mitigation measures. Example: 17.'
+    sql: JSONB_EXTRACT_PATH_TEXT(platform_compliance, 'protection_meas_count')
+  platform_compliance_sec_audit_stat:
+    description: 'TEXT. Status or date of the most recent security audit. Possible values: Fail, Pass, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(platform_compliance, 'sec_audit_stat')
+  platform_compliance_sec_event_count:
+    description: 'BIGINT. Total number of recorded security events/incidents. Example: 0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(platform_compliance, 'sec_event_count')
+  platform_compliance_vuln_inst_count:
+    description: 'BIGINT. Count of discovered security vulnerabilities on the platform. Example: 20.'
+    sql: JSONB_EXTRACT_PATH_TEXT(platform_compliance, 'vuln_inst_count')

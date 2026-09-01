@@ -1,0 +1,99 @@
+label: CrewProjectAssignment
+description: All columns of the public table CrewProjectAssignment.
+catalog: polar_equipment_large
+schema: public
+table_name: CrewProjectAssignment
+dimensions:
+  approval_status:
+    description: 'TEXT. Assignment approval state. Possible values (from file): Approved, Pending, Rejected. Example: Approved.'
+    sql: '"approvalStatus"'
+  approved_by:
+    description: 'TEXT. Approver name/title. **NULL means approvalStatus=Pending (not yet approved).** Example: QA Manager B.'
+    sql: '"approvedBy"'
+  assigned_from:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Assignment start. Example: 2025/02/18 08:00:00.'
+    sql: '"assignedFrom"'
+  assigned_to:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Assignment end. Example: 2025/05/21 08:00:00.'
+    sql: '"assignedTo"'
+  break_min:
+    description: 'BIGINT. Planned break duration (minutes). Example: 60.'
+    sql: '"breakMin"'
+  cold_weather_gear:
+    description: 'TEXT. Whether cold-weather gear issued. Possible values (from file): Yes, No. Example: Yes.'
+    sql: '"coldWeatherGear"'
+  crew_ref:
+    description: 'TEXT. Crew FK → CrewMember(crewToken). Part of composite PK. Example: CRW-1000.'
+    sql: crew_ref
+  equipment_issued:
+    description: 'TEXT. Field kit issued. **NULL means PPE was not issued (ppeIssued=No).** Example: Kit-C.'
+    sql: '"equipmentIssued"'
+  fit_for_duty:
+    description: 'TEXT. Fit-for-duty declaration. Possible values (from file): Yes, No. Example: No.'
+    sql: '"fitForDuty"'
+  flight_co2_kg:
+    description: 'REAL. Flight emissions (kg CO2). Example: 412.8.'
+    sql: '"flightCO2_kg"'
+  hazard_brief_date:
+    description: 'DATE (yyyy/mm/dd). Date of hazard briefing. Example: 2025/07/22.'
+    sql: '"hazardBriefDate"'
+  helicopter_min:
+    description: 'REAL. Helicopter minutes flown. Example: 120.5.'
+    sql: '"helicopterMin"'
+  hours_actual:
+    description: 'REAL. Actual recorded hours. Example: 339.9.'
+    sql: '"hoursActual"'
+  hours_planned:
+    description: 'REAL. Planned assignment hours. Example: 318.4.'
+    sql: '"hoursPlanned"'
+  incident_count:
+    description: 'BIGINT. Incident count for the assignment. **NULL means fitForDuty=Yes and no incident tracking is required.** Example: 0.'
+    sql: '"incidentCount"'
+  lodging_cost_usd:
+    description: 'REAL. Lodging expense for assignment. **NULL means short-distance work (travelKm < 10) with no lodging.** Example: 747.48.'
+    sql: '"lodgingCost_usd"'
+  per_diem_usd:
+    description: 'REAL. Per diem allowance (USD). Example: 186.72.'
+    sql: '"perDiem_usd"'
+  ppe_issued:
+    description: 'TEXT. Whether PPE was issued. Possible values (from file): Yes, No. Example: Yes.'
+    sql: '"ppeIssued"'
+  ppe_level:
+    description: 'TEXT. PPE level/type. Possible values (from file): ARC-Flash, Basic, Enhanced, Resp-PAPR. Example: Enhanced.'
+    sql: '"ppeLevel"'
+  project_ref:
+    description: 'TEXT. Project FK → Project(projectSlug). Part of composite PK. Example: PRJ-220.'
+    sql: project_ref
+  rate_usd_ph:
+    description: 'REAL. Hourly rate (USD). Example: 137.25.'
+    sql: rate_usd_ph
+  remarks:
+    description: 'TEXT. Operational remark. **NULL means no incidents occurred (incidentCount=0).** Example: Briefing completed; radios issued.'
+    sql: remarks
+  rf_monitor_issued:
+    description: 'TEXT. Whether RF monitor issued. Possible values (from file): Yes, No. Example: Yes.'
+    sql: '"rfMonitorIssued"'
+  risk_score:
+    description: 'REAL. Composite risk score (0–10). Example: 6.41.'
+    sql: '"riskScore"'
+  role_code:
+    description: 'TEXT. Role for this assignment. Part of composite PK. Possible values (from file): CoPI, Eng, Medic, Ops, PI, Safety, Scientist, Tech. Example: Scientist.'
+    sql: '"roleCode"'
+  shift_end_local:
+    description: 'TIME (HH:MM:SS). Shift end (local). Example: 17:00:00.'
+    sql: '"shiftEnd_local"'
+  shift_start_local:
+    description: 'TIME (HH:MM:SS). Shift start (local). Example: 07:00:00.'
+    sql: '"shiftStart_local"'
+  snowmobile_km:
+    description: 'REAL. Distance by snowmobile (km). Example: 55.4.'
+    sql: snowmobile_km
+  supervisor:
+    description: 'TEXT. Supervising person for assignment. Example: Emma Anderson.'
+    sql: supervisor
+  training_hrs_used:
+    description: 'REAL. Project-applied training hours used. Example: 56.4.'
+    sql: '"trainingHrs_used"'
+  travel_km:
+    description: 'REAL. Travel distance (km). Example: 600.3.'
+    sql: '"travelKm"'

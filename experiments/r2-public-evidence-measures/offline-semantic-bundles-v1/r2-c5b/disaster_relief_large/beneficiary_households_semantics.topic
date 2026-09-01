@@ -1,0 +1,13 @@
+base_view: disaster_relief_large_public__beneficiary_households
+label: BeneficiaryHouseholds
+description: All columns of the public table BeneficiaryHouseholds.
+fields:
+- disaster_relief_large_public__beneficiary_households.*
+- disaster_relief_large_public__beneficiariesandassessments.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__operations.*
+joins:
+  disaster_relief_large_public__beneficiariesandassessments:
+    disaster_relief_large_public__disasterevents: {}
+    disaster_relief_large_public__operations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

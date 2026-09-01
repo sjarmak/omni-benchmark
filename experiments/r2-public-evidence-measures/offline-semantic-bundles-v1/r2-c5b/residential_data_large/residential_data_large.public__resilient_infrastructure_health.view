@@ -1,0 +1,66 @@
+label: Resilient_Infrastructure_Health
+description: All columns of the public table Resilient_Infrastructure_Health.
+catalog: residential_data_large
+schema: public
+table_name: Resilient_Infrastructure_Health
+dimensions:
+  structural_health_pk:
+    description: 'TEXT. Primary key for civil engineering health monitoring. Example: RIH-1A2B3C.'
+    sql: '"Structural_Health_PK"'
+  asphalt_thermal_expansion_coefficient:
+    description: 'REAL. Rate of material change per degree Celsius. Example: 0.0.'
+    sql: asphalt_thermal_expansion_coefficient
+  bridge_deflection_mm:
+    description: 'REAL. Measured vertical movement under maximum traffic load. **NULL means Not a bridge or elevated structure.** Example: 12.'
+    sql: bridge_deflection_mm
+  concrete_compression_strength_mpa:
+    description: 'REAL. Measured load-bearing capacity of the core material. Example: 35.'
+    sql: concrete_compression_strength_mpa
+  drainage_clog_percentage:
+    description: 'REAL. Estimated debris accumulation in storm runoff pipes. Example: 50.0.'
+    sql: drainage_clog_percentage
+  expansion_joint_gap_cm:
+    description: 'REAL. Physical spacing between structural sections. Example: 50.0.'
+    sql: expansion_joint_gap_cm
+  flood_water_clearance_height_m:
+    description: 'REAL. Distance between road surface and maximum projected flood level. Example: 50.0.'
+    sql: flood_water_clearance_height_m
+  infra_detail_link:
+    description: TEXT. Link to physical specification of the asset.
+    sql: infra_detail_link
+  last_structural_ultrasound_score:
+    description: 'REAL. Rating from the most recent non-destructive test (0-100). Example: 90.'
+    sql: last_structural_ultrasound_score
+  load_bearing_limit_tons:
+    description: 'INTEGER. Certified maximum vehicle weight for the section. Unique values: 5, 10, 20, 40.'
+    sql: load_bearing_limit_tons
+  paint_reflectivity_mcd:
+    description: 'REAL. Brightness of lane markings under headlight illumination. Example: 250.'
+    sql: paint_reflectivity_mcd
+  pothole_density_per_km:
+    description: 'REAL. Surface degradation frequency for the road segment. Example: 2.5.'
+    sql: pothole_density_per_km
+  rebar_corrosion_potential_mv:
+    description: 'REAL. Electrochemical reading indicating rust risk in steel supports. **NULL means Fiberglass reinforcement used.** Example: 50.0.'
+    sql: rebar_corrosion_potential_mv
+  recycled_material_content_percent:
+    description: 'REAL. Proportion of recycled glass or rubber in the road base. Example: 50.0.'
+    sql: recycled_material_content_percent
+  salt_concentration_ppm:
+    description: 'REAL. Residual chemical levels from de-icing operations. Example: 50.0.'
+    sql: salt_concentration_ppm
+  seismic_vibration_sensor_status:
+    description: 'TEXT. Operational state of earthquake monitoring telemetry. Unique values: Active, Faulty, Legacy-NoSensor.'
+    sql: seismic_vibration_sensor_status
+  soil_saturation_beneath_foundation:
+    description: 'REAL. Moisture content of the supporting earth (0.0 - 1.0). Example: 0.4.'
+    sql: soil_saturation_beneath_foundation
+  street_lighting_lux_level:
+    description: 'INTEGER. Average nighttime illumination on the pavement. Example: 15.'
+    sql: street_lighting_lux_level
+  surface_friction_coefficient:
+    description: 'REAL. Grip rating for vehicle tires in wet conditions. Example: 0.65.'
+    sql: surface_friction_coefficient
+  vegetation_encroachment_index:
+    description: 'REAL. Rating of root or branch interference with infrastructure (1-10). Example: 50.0.'
+    sql: vegetation_encroachment_index

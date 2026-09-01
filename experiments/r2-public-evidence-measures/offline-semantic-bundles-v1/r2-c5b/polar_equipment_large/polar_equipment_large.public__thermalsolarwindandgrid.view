@@ -1,0 +1,86 @@
+label: Thermal Solar Wind And Grid
+description: Thermal and power-generation records with insulation, renewable-energy, and field-context semantics.
+catalog: polar_equipment_large
+schema: public
+table_name: ThermalSolarWindAndGrid
+dimensions:
+  insulation_status:
+    description: 'TEXT. Insulation status. Possible values: Fair, Good, Poor.'
+    label: Insulation Status
+    sql: '"insulationStat"'
+  heat_loss_rate_kwh:
+    description: 'REAL. Heat loss in kilowatt-hours. **NULL means no heat loss data recorded.**. Example: 1.11.'
+    label: Heat Loss Rate (kWh)
+    sql: '"heatLoss_kwh"'
+  solar_output_w:
+    description: 'REAL. Solar panel output in watts. Example: 746.1.'
+    label: Solar Output (W)
+    sql: '"solarOutput_w"'
+  wind_output_w:
+    description: 'REAL. Wind turbine output in watts. **NULL means no wind output data recorded.**. Example: 656.8.'
+    label: Wind Output (W)
+    sql: '"windOutput_w"'
+  fuel_cell_output_w:
+    description: 'REAL. Fuel cell output in watts. Example: 185.0.'
+    label: Fuel Cell Output (W)
+    sql: '"fuelCellOutput_w"'
+  fuel_cell_efficiency_percent:
+    description: 'REAL. Fuel cell efficiency percentage. Example: 48.2.'
+    label: Fuel Cell Efficiency Percent
+    sql: '"fuelCellEffPct"'
+    ai_context: 'fuelcellefficiencypercent: Fuel cell efficiency percentages typically range from 40% to 90%. Values below 50% represent older or degraded fuel cell technology, 50-70% indicate standard efficiency modern fuel cells suitable for general applications, and values above 70% represent high-performance fuel cells with optimal conversion of chemical energy to electrical power with minimal waste heat generation.'
+  h2_level_pct:
+    description: 'REAL. Hydrogen level percentage. Example: 95.'
+    sql: '"H2LevelPct"'
+  o2_level_pct:
+    description: 'REAL. Oxygen level percentage. Example: 82.'
+    sql: '"O2LevelPct"'
+  thermal_id:
+    description: BIGSERIAL. Unique identifier for the thermal, solar, wind, and grid record. PK.
+    sql: '"THERMAL_ID"'
+  backup_power_stat:
+    description: 'TEXT. Backup power status. **NULL means no backup power status recorded.**. Possible values: Active, Fault, Standby.'
+    sql: '"backupPowerStat"'
+  batt_link:
+    description: BIGINT. Reference to the battery record. FK to PowerBattery.PWR_BATT_ID.
+    sql: batt_link
+  comm_link:
+    description: BIGINT. Reference to the communication record. FK to Communication.COMM_ID.
+    sql: comm_link
+  fuel_cell_stat:
+    description: 'TEXT. Fuel cell status. Possible values: Fault, Operating, Standby.'
+    sql: '"fuelCellStat"'
+  power_grid_stat:
+    description: 'TEXT. Power grid status. Possible values: Connected, Disconnected, Island Mode.'
+    sql: '"powerGridStat"'
+  power_qual_idx:
+    description: 'REAL. Power quality index. Example: 95.'
+    sql: '"powerQualIdx"'
+  solar_eff_pct:
+    description: 'REAL. Solar efficiency percentage. Example: 2.0.'
+    sql: '"solarEffPct"'
+  solar_panel_stat:
+    description: 'TEXT. Solar panel status. Possible values: Active, Fault, Inactive.'
+    sql: '"solarPanelStat"'
+  solar_temp_c:
+    description: 'REAL. Solar panel temperature in Celsius. Example: -14.9.'
+    sql: '"solarTempC"'
+  thermal_img_stat:
+    description: 'TEXT. Thermal image status. Possible values: Critical, Normal, Warning.'
+    sql: '"thermalImgStat"'
+  wind_rpm:
+    description: 'BIGINT. Wind turbine RPM. Example: 130.3.'
+    sql: '"windRPM"'
+  wind_turbine_stat:
+    description: 'TEXT. Wind turbine status. Possible values: Fault, Operating, Stopped.'
+    sql: '"windTurbineStat"'
+  thermal_insulation_efficiency:
+    label: Thermal Insulation Efficiency (TIE)
+    description: Measures how effectively a structure retains heat based on insulation status and heat loss rate.
+    sql: CASE ${insulation_status} WHEN 'Good' THEN 0.9 - ${heat_loss_rate_kwh} / 10.0 WHEN 'Fair' THEN 0.6 - ${heat_loss_rate_kwh} / 10.0 WHEN 'Poor' THEN 0.3 - ${heat_loss_rate_kwh} / 10.0 END
+    ai_context: Use this modeled field for Thermal Insulation Efficiency (TIE); do not reconstruct its formula.
+  renewable_energy_contribution:
+    label: Renewable Energy Contribution (REC)
+    description: Calculates the percentage contribution of renewable energy sources to the total power generation.
+    sql: CASE WHEN (${fuel_cell_output_w} + ${solar_output_w} + ${wind_output_w}) <> 0 THEN (${solar_output_w} + ${wind_output_w}) / (${fuel_cell_output_w} + ${solar_output_w} + ${wind_output_w}) * 100.0 END
+    ai_context: Use this modeled field for Renewable Energy Contribution (REC); do not reconstruct its formula.

@@ -1,0 +1,234 @@
+- join_from_view: residential_data_large_public__household_transportation_usage
+  join_to_view: residential_data_large_public__transportation_modes
+  join_type: always_left
+  on_sql: ${residential_data_large_public__household_transportation_usage.transportation_usage_mode_key} = ${residential_data_large_public__transportation_modes.mode_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__amenities
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__amenities.houseid} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__household_member_skills
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__household_member_skills.member_skills_household_link} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__environmental_microclimate_sensors
+  join_to_view: residential_data_large_public__environmental_data
+  join_type: always_left
+  on_sql: ${residential_data_large_public__environmental_microclimate_sensors.environmental_base_link} = ${residential_data_large_public__environmental_data.env_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__infrastructure_details
+  join_to_view: residential_data_large_public__infrastructure
+  join_type: always_left
+  on_sql: ${residential_data_large_public__infrastructure_details.infrastructure_specification_code} = ${residential_data_large_public__infrastructure.infraref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__property_valuations
+  join_to_view: residential_data_large_public__properties
+  join_type: always_left
+  on_sql: ${residential_data_large_public__property_valuations.valuation_property_key} = ${residential_data_large_public__properties.propref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__professional_certification_audit
+  join_to_view: residential_data_large_public__household_skill_progression
+  join_type: always_left
+  on_sql: ${residential_data_large_public__professional_certification_audit.skill_growth_fk} = ${residential_data_large_public__household_skill_progression.skill_growth_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__household_skill_progression
+  join_to_view: residential_data_large_public__household_member_skills
+  join_type: always_left
+  on_sql: ${residential_data_large_public__household_skill_progression.assignment_link} = ${residential_data_large_public__household_member_skills.assignment_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__air_quality_health_correlation
+  join_to_view: residential_data_large_public__environmental_microclimate_sensors
+  join_type: always_left
+  on_sql: ${residential_data_large_public__air_quality_health_correlation.microclimate_sensor_fk} = ${residential_data_large_public__environmental_microclimate_sensors.microclimate_sensor_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__household_telecomm_metrix
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__household_telecomm_metrix.household_target} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__household_transportation_usage
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__household_transportation_usage.transportation_usage_household_ref} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__household_demographics
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__household_demographics.demographics_household_reference} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__waste_management
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__waste_management.waste_management_household_monitor} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__properties
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__properties.houselink} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__public_safety_patrol_logs
+  join_to_view: residential_data_large_public__crime_statistics
+  join_type: always_left
+  on_sql: ${residential_data_large_public__public_safety_patrol_logs.crime_stat_link} = ${residential_data_large_public__crime_statistics.crime_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__smart_home_bandwidth_allocation
+  join_to_view: residential_data_large_public__household_telecomm_metrix
+  join_type: always_left
+  on_sql: ${residential_data_large_public__smart_home_bandwidth_allocation.comms_stats_fk} = ${residential_data_large_public__household_telecomm_metrix.comms_stats_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__community_engagement
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__community_engagement.community_engagement_household_participation} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__digital_classroom_engagement
+  join_to_view: residential_data_large_public__education_facility_resources
+  join_type: always_left
+  on_sql: ${residential_data_large_public__digital_classroom_engagement.resource_inventory_fk} = ${residential_data_large_public__education_facility_resources.resource_inventory_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__education_facility_resources
+  join_to_view: residential_data_large_public__education_facilities
+  join_type: always_left
+  on_sql: ${residential_data_large_public__education_facility_resources.facility_link_ref} = ${residential_data_large_public__education_facilities.facility_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__energy_consumption
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__energy_consumption.energy_consumption_household_tracker} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__resilient_infrastructure_health
+  join_to_view: residential_data_large_public__infrastructure_details
+  join_type: always_left
+  on_sql: ${residential_data_large_public__resilient_infrastructure_health.infra_detail_link} = ${residential_data_large_public__infrastructure_details.detail_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__financial_services
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__financial_services.financial_services_household_account} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__industrial_hvac_sensor_array
+  join_to_view: residential_data_large_public__commercial_energy_efficiency
+  join_type: always_left
+  on_sql: ${residential_data_large_public__industrial_hvac_sensor_array.energy_audit_fk} = ${residential_data_large_public__commercial_energy_efficiency.energy_audit_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__waste_stream_analysis
+  join_to_view: residential_data_large_public__waste_management
+  join_type: always_left
+  on_sql: ${residential_data_large_public__waste_stream_analysis.waste_monitor_link} = ${residential_data_large_public__waste_management.waste_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__properties
+  join_to_view: residential_data_large_public__infrastructure
+  join_type: always_left
+  on_sql: ${residential_data_large_public__properties.infralink} = ${residential_data_large_public__infrastructure.infraref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__household_service_enrollment
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__household_service_enrollment.service_enrollment_household_connection} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__merchant_settlement_audit
+  join_to_view: residential_data_large_public__digital_payment_transactional_flux
+  join_type: always_left
+  on_sql: ${residential_data_large_public__merchant_settlement_audit.transaction_flux_fk} = ${residential_data_large_public__digital_payment_transactional_flux.transaction_flux_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__bridge_structural_monitoring
+  join_to_view: residential_data_large_public__resilient_infrastructure_health
+  join_type: always_left
+  on_sql: ${residential_data_large_public__bridge_structural_monitoring.structural_health_fk} = ${residential_data_large_public__resilient_infrastructure_health.structural_health_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__household_service_enrollment
+  join_to_view: residential_data_large_public__service_categories
+  join_type: always_left
+  on_sql: ${residential_data_large_public__household_service_enrollment.service_enrollment_category_link} = ${residential_data_large_public__service_categories.category_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__commercial_energy_efficiency
+  join_to_view: residential_data_large_public__commercial_establishments
+  join_type: always_left
+  on_sql: ${residential_data_large_public__commercial_energy_efficiency.business_ref} = ${residential_data_large_public__commercial_establishments.establishment_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__healthcare_equipment_inventory
+  join_to_view: residential_data_large_public__healthcare_facilities
+  join_type: always_left
+  on_sql: ${residential_data_large_public__healthcare_equipment_inventory.facility_link} = ${residential_data_large_public__healthcare_facilities.healthcare_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__hospital_critical_care_telemetry
+  join_to_view: residential_data_large_public__healthcare_equipment_inventory
+  join_type: always_left
+  on_sql: ${residential_data_large_public__hospital_critical_care_telemetry.inventory_tracker_fk} = ${residential_data_large_public__healthcare_equipment_inventory.inventory_tracker_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__digital_payment_transactional_flux
+  join_to_view: residential_data_large_public__financial_services
+  join_type: always_left
+  on_sql: ${residential_data_large_public__digital_payment_transactional_flux.financial_account_link} = ${residential_data_large_public__financial_services.financial_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__healthcare_power_resilience
+  join_to_view: residential_data_large_public__healthcare_equipment_inventory
+  join_type: always_left
+  on_sql: ${residential_data_large_public__healthcare_power_resilience.inventory_tracker_fk} = ${residential_data_large_public__healthcare_equipment_inventory.inventory_tracker_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__emergency_vehicle_telematics
+  join_to_view: residential_data_large_public__public_safety_patrol_logs
+  join_type: always_left
+  on_sql: ${residential_data_large_public__emergency_vehicle_telematics.patrol_log_fk} = ${residential_data_large_public__public_safety_patrol_logs.patrol_log_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__waste_processing_plant_efficiency
+  join_to_view: residential_data_large_public__waste_stream_analysis
+  join_type: always_left
+  on_sql: ${residential_data_large_public__waste_processing_plant_efficiency.waste_composition_fk} = ${residential_data_large_public__waste_stream_analysis.waste_composition_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__households
+  join_to_view: residential_data_large_public__service_types
+  join_type: always_left
+  on_sql: ${residential_data_large_public__households.serviceplan} = ${residential_data_large_public__service_types.serviceref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__transportation_assets
+  join_to_view: residential_data_large_public__households
+  join_type: always_left
+  on_sql: ${residential_data_large_public__transportation_assets.housetag} = ${residential_data_large_public__households.housenum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: residential_data_large_public__household_member_skills
+  join_to_view: residential_data_large_public__skills_inventory
+  join_type: always_left
+  on_sql: ${residential_data_large_public__household_member_skills.member_skills_ability_reference} = ${residential_data_large_public__skills_inventory.skill_id}
+  relationship_type: many_to_one
+  reversible: false

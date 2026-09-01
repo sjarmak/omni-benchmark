@@ -1,0 +1,108 @@
+label: Geo_Jurisdiction
+description: All columns of the public table Geo_Jurisdiction.
+catalog: cross_border_large
+schema: public
+table_name: Geo_Jurisdiction
+dimensions:
+  age_of_consent_years:
+    description: 'BIGINT. Digital age of consent (years). Example: 16.'
+    sql: '"AGE_OF_CONSENT_YEARS"'
+  authority_url:
+    description: 'TEXT. Public URL/portal of the supervisory authority. **NULL means no authority URL is available.** Example: https://authority.de.example.'
+    sql: '"AUTHORITY_URL"'
+  breach_notify_hours:
+    description: 'BIGINT. Maximum hours allowed to notify a breach. Example: 72.'
+    sql: '"BREACH_NOTIFY_HOURS"'
+  capital:
+    description: 'TEXT. Capital city. Example: Brussels.'
+    sql: '"CAPITAL"'
+  currency:
+    description: 'TEXT. Local currency code. Possible values include: EUR, USD, GBP, JPY, KRW, SGD, AUD, NZD, BRL, MXN, CAD, ZAR, AED, INR. Example: EUR.'
+    sql: '"Currency"'
+  dpo_required:
+    description: 'TEXT. Whether a Data Protection Officer is required. Possible values: Yes, No. Example: Yes.'
+    sql: '"DPO_REQUIRED"'
+  dp_regime:
+    description: 'TEXT. Primary data-protection regime. Possible values include: GDPR, CCPA, UK GDPR, LGPD, PIPEDA, POPIA, PDPA, APPI, PDPB, DPA. Example: GDPR.'
+    sql: '"DP_REGIME"'
+  driving_side:
+    description: 'TEXT. Side of the road for driving. Possible values: Left, Right. Example: Right.'
+    sql: '"DRIVING_SIDE"'
+  gdp_usd_b:
+    description: 'REAL. GDP in billions of USD. Example: 15000.00.'
+    sql: '"GDP_USD_B"'
+  iso3:
+    description: 'TEXT. ISO-3166 alpha-3 code. Example: EUX.'
+    sql: '"ISO3"'
+  jurisdiction_code:
+    description: 'BIGINT. Primary key for the jurisdiction record. Example: 1.'
+    sql: '"JURISDICTION_CODE"'
+  lon_deg:
+    description: 'REAL. Longitude of the capital in degrees. Example: 13.4050.'
+    sql: '"LON_DEG"'
+  max_penalty_usd_m:
+    description: 'REAL. Maximum penalty (millions USD). Example: 20.00.'
+    sql: '"MAX_PENALTY_USD_M"'
+  name:
+    description: 'TEXT. Jurisdiction full name. Example: European Union.'
+    sql: '"NAME"'
+  region:
+    description: 'TEXT. Geographic region. Possible values: Africa, Asia, Europe, Middle East, North America, Oceania, South America. Example: Europe.'
+    sql: '"Region"'
+  updated_at:
+    description: 'DATE. Last update date (yyyy-mm-dd). Example: 2025-07-10.'
+    sql: '"UPDATED_AT"'
+  adequacy_status:
+    description: 'TEXT. Adequacy standing for cross-border transfers. Possible values: Adequate, Partial, Not Adequate. Example: Adequate.'
+    sql: adequacy_status
+  code:
+    description: 'TEXT. Jurisdiction short code (country/region). Example: EU.'
+    sql: code
+  created_at:
+    description: 'DATE. Record creation date (yyyy-mm-dd). Example: 2024-03-05.'
+    sql: created_at
+  cross_border_mechanisms:
+    description: 'TEXT. Supported transfer mechanisms. Examples: SCCs,BCRs; Adequacy,SCCs; BCRs,Derogations.'
+    sql: cross_border_mechanisms
+  data_localization_required:
+    description: 'TEXT. Whether local storage of personal data is legally required. Possible values: Yes, No. **NULL means localization requirements are not specified or not recorded.** Example: Yes.'
+    sql: data_localization_required
+  electric_standard_v:
+    description: 'REAL. Mains voltage standard (V). Example: 230.'
+    sql: electric_standard_v
+  iso2:
+    description: 'TEXT. ISO-3166 alpha-2 code. Example: EU.'
+    sql: iso2
+  lat_deg:
+    description: 'REAL. Latitude of the capital in degrees. **NULL means coordinate is missing.** Example: 52.5200.'
+    sql: lat_deg
+  phone_code:
+    description: 'TEXT. International dialing prefix. **NULL means phone code not recorded.** Example: +49.'
+    sql: phone_code
+  population_m:
+    description: 'REAL. Population in millions. Example: 447.50.'
+    sql: population_m
+  primary_language:
+    description: 'TEXT. Primary official language. Example: English.'
+    sql: primary_language
+  records_required:
+    description: 'TEXT. Whether Records of Processing Activities are required. Possible values: Yes, No, Partial. Example: Yes.'
+    sql: records_required
+  subregion:
+    description: 'TEXT. Regional subdivision. Possible values include: Western Europe, Northern Europe, Southern Europe, Eastern Europe, East Asia, South Asia, Southeast Asia, North America, South America, Oceania, Southern Africa, Middle East. Example: Western Europe.'
+    sql: subregion
+  supervisory_authority:
+    description: 'TEXT. Name of the privacy/data protection authority. **NULL means the authority is not designated or not recorded.** Example: Germany SA.'
+    sql: supervisory_authority
+  time_zone:
+    description: 'TEXT. Time zone of the capital. Possible values include: UTC, UTC+1, UTC+2, UTC-5, UTC-8, UTC+7, UTC+9, UTC+10, UTC+3. Example: UTC+1.'
+    sql: time_zone
+  transfer_restrictions:
+    description: 'TEXT. General posture on cross-border transfers. Possible values: Restricted, Conditional, Free. Example: Restricted.'
+    sql: transfer_restrictions
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Geo_Jurisdiction public identity values.
+    label: Geo_Jurisdiction Count
+    sql: ${cross_border_large_public__geo_jurisdiction.jurisdiction_code}

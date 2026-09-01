@@ -1,0 +1,102 @@
+label: equipment_manufacturers
+description: All columns of the public table equipment_manufacturers.
+catalog: archeology_scan_large
+schema: public
+table_name: equipment_manufacturers
+dimensions:
+  address_line_2:
+    description: TEXT. The second line of the manufacturer's address. **NULL means it is not needed or not available.**
+    sql: '"ADDRESS_LINE_2"'
+  address_line1:
+    description: 'TEXT. The first line of the manufacturer''s address。 Example: Heinrich-Wild-Strasse.'
+    sql: '"AddressLine1"'
+  annual_revenue_usd:
+    description: 'BIGINT. The estimated annual revenue of the company in USD。 Example: $5,000,000,000.'
+    sql: '"AnnualRevenueUSD"'
+  company_description:
+    description: 'TEXT. A brief description of the company。 Example: Precision measurement and reality capture solutions..'
+    sql: '"COMPANY_DESCRIPTION"'
+  company_website:
+    description: 'TEXT. The official website of the company。 Example: https://leica-geosystems.com.'
+    sql: '"CompanyWebsite"'
+  headquarters_city:
+    description: 'TEXT. The city where the company is headquartered。 Example: Heerbrugg.'
+    sql: '"HEADQUARTERS_CITY"'
+  headquarters_country:
+    description: 'TEXT. The country where the company is headquartered。 Possible values: AT, CA, CH, CN, DE, GB, JP, LU, SE, US.'
+    sql: '"HeadquartersCountry"'
+  is_publicly_traded:
+    description: 'BOOLEAN. A flag indicating if the company is publicly traded。 Possible values: False, True.'
+    sql: '"IS_PUBLICLY_TRADED"'
+  linkedin_profile_url:
+    description: 'TEXT. The URL of the company''s LinkedIn profile. **NULL means it is not on record.**。 Example: linkedin.com/company/leica-geosystems.'
+    sql: '"LINKEDIN_PROFILE_URL"'
+  last_contacted_date:
+    description: 'DATE. The last date a contact was made with the manufacturer。 Example: 2023-11-20 10:00:00.'
+    sql: '"LastContactedDate"'
+  local_distributor_contact:
+    description: 'TEXT. Contact information for the local distributor. **NULL means no local distributor is on record.**。 Possible values: contact@positiontech.com, info@3dscans.net, info@geomeasure.jp, sales.ca@positiontech.com, sales.eu@quantumsol.com, sales@aerovision.com, sales@geo-surv.com, service@lidarvision.de.'
+    sql: '"LocalDistributorContact"'
+  manufacturer_tag:
+    description: 'BIGINT. Unique identifier for an equipment manufacturer. PK。 Example: 101.'
+    sql: '"ManufacturerTag"'
+  parent_company_code:
+    description: 'BIGINT. The identifier for the parent company, if any. **NULL means it is not a subsidiary or the parent is not in this database.**。 Possible values: 109.0, 114.0.'
+    sql: '"ParentCompanyCode"'
+  quality_certification_iso:
+    description: 'TEXT. ISO quality certifications held by the company. **NULL means no certification is recorded.**。 Possible values: ISO 14001, ISO 9001, ISO 9001:2015.'
+    sql: '"QUALITY_CERTIFICATION_ISO"'
+  rating_out_of_5:
+    description: 'REAL. An internal rating of the manufacturer on a scale of 1 to 5。 Possible values: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9.'
+    sql: '"RATING_OUT_OF_5"'
+  region:
+    description: 'TEXT. The state, province, or region of the manufacturer''s address。 Example: St. Gallen.'
+    sql: '"Region"'
+  support_phone:
+    description: 'TEXT. The technical support phone number for the company。 Example: +41-71-727-3131.'
+    sql: '"SUPPORT_PHONE"'
+  stock_symbol:
+    description: 'TEXT. The stock market ticker symbol for the company. **NULL means the company is not publicly traded or the symbol is unknown.**。 Possible values: 7732.T, FARO, HEXA-B, TRMB, UAVS.'
+    sql: '"StockSymbol"'
+  tax_id_number:
+    description: 'TEXT. The tax identification number of the company。 Example: CHE-101.9 Leica.'
+    sql: '"TAX_ID_NUMBER"'
+  twitter_handle:
+    description: 'TEXT. The company''s official Twitter handle。 Example: @LeicaGeo.'
+    sql: '"TwitterHandle"'
+  warranty_period_months:
+    description: 'BIGINT. The standard warranty period for products in months。 Possible values: 12, 18, 24, 30, 36.'
+    sql: '"WARRANTY_PERIOD_MONTHS"'
+  ceo_name:
+    description: 'TEXT. The name of the company''s Chief Executive Officer。 Example: Thomas Hasler.'
+    sql: ceo_name
+  local_distributor_name:
+    description: 'TEXT. The name of the local distributor for the manufacturer''s products. **NULL means no local distributor is on record.**。 Possible values: 3D Scan Solutions, AeroVision, Geo-Surv Inc., GeoMeasure Japan, LidarVision GmbH, PositionTech Canada, PositionTech USA, Quantum Solutions EU.'
+    sql: local_distributor_name
+  logo_url:
+    description: 'TEXT. A URL to an image of the company''s logo。 Example: https://example.com/logo101.png.'
+    sql: logo_url
+  manufacturer_name:
+    description: 'TEXT. The name of the manufacturing company. UNIQUE。 Example: Leica Geosystems.'
+    sql: manufacturer_name
+  notes:
+    description: 'TEXT. General notes about the manufacturer. **NULL means no notes have been added.**。 Possible values: Emerging tech., Part of AgEagle group., Part of Hexagon AB., Specializes in handheld scanners., Specializes in high-performance LiDAR..'
+    sql: notes
+  number_of_employees:
+    description: 'BIGINT. The estimated number of employees at the company。 Example: 25000.'
+    sql: number_of_employees
+  postal_code:
+    description: 'TEXT. The postal code for the manufacturer''s address。 Example: 9435.'
+    sql: postal_code
+  preferred_partner_status:
+    description: 'BOOLEAN. A flag indicating if this is a preferred partner。 Possible values: False, True.'
+    sql: preferred_partner_status
+  primary_industry:
+    description: 'TEXT. The primary industry the company operates in。 Example: Geospatial.'
+    sql: primary_industry
+  support_email:
+    description: 'TEXT. The technical support email address。 Example: support@leica-geo.com.'
+    sql: support_email
+  year_founded:
+    description: 'BIGINT. The year the company was founded。 Example: 1921.'
+    sql: year_founded

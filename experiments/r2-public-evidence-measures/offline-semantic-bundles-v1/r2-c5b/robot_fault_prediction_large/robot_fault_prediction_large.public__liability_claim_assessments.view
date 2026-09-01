@@ -1,0 +1,60 @@
+label: liability_claim_assessments
+description: All columns of the public table liability_claim_assessments.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: liability_claim_assessments
+dimensions:
+  brand_reputation_impact_score:
+    description: 'INTEGER. Estimated PR damage (0-10). Example: 50.'
+    sql: brand_reputation_impact_score
+  claim_assessment_id:
+    description: TEXT. Unique identifier for the insurance/legal assessment.
+    sql: claim_assessment_id
+  days_since_incident:
+    description: 'INTEGER. Age of the claim. Example: 50.'
+    sql: days_since_incident
+  equipment_replacement_val_usd:
+    description: 'REAL. Cost to replace damaged hardware. **NULL means No equipment damage.** Example: 50000.'
+    sql: equipment_replacement_val_usd
+  evidence_completeness_percent:
+    description: 'INTEGER. Percentage of required docs collected. Example: 50.'
+    sql: evidence_completeness_percent
+  fraud_detection_score:
+    description: 'REAL. Likelihood the claim is fraudulent (0-100). Example: 50.0.'
+    sql: fraud_detection_score
+  incident_ref:
+    description: TEXT. Reference to the original incident report.
+    sql: incident_ref
+  initial_reserve_amount_usd:
+    description: 'REAL. Funds set aside for potential payout. **NULL means Zero dollar claim.** Example: 50.0.'
+    sql: initial_reserve_amount_usd
+  investigation_status:
+    description: 'TEXT. Current state of the claim (Open, Closed, Subrogation). Unique values: Open, Closed, Appeal.'
+    sql: investigation_status
+  legal_counsel_hourly_rate:
+    description: 'REAL. Cost of external lawyers. **NULL means In-house counsel used.** Example: 450.'
+    sql: legal_counsel_hourly_rate
+  litigation_probability_score:
+    description: 'REAL. AI estimated likelihood of lawsuit (0-1). Example: 50.0.'
+    sql: litigation_probability_score
+  policy_deductible_usd:
+    description: 'REAL. Amount company pays before insurance kicks in. Unique values: 5000, 10000, 50000.'
+    sql: policy_deductible_usd
+  production_downtime_loss_usd:
+    description: 'REAL. Revenue lost due to line stoppage. Example: 50.0.'
+    sql: production_downtime_loss_usd
+  regulatory_fine_estimate_usd:
+    description: 'REAL. Estimated fines from OSHA/ISO bodies. **NULL means No regulatory breach.** Example: 50.0.'
+    sql: regulatory_fine_estimate_usd
+  root_cause_category:
+    description: 'TEXT. Final determination of cause for insurance. **NULL means Undetermined.** Unique values: Human Error, Mechanical Failure, Software Bug.'
+    sql: root_cause_category
+  settlement_offer_usd:
+    description: 'REAL. Current settlement amount on the table. **NULL means No settlement phase yet.** Example: 50.0.'
+    sql: settlement_offer_usd
+  third_party_liability_flag:
+    description: 'BOOLEAN. Is a supplier or contractor at fault?. Possible values: True, False.'
+    sql: third_party_liability_flag
+  workers_comp_cost_usd:
+    description: 'REAL. Medical and wage replacement costs. **NULL means No injury sustained.** Example: 50.0.'
+    sql: workers_comp_cost_usd

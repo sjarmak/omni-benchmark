@@ -1,0 +1,57 @@
+label: Publications
+description: All columns of the public table Publications.
+catalog: museum_artifact_large
+schema: public
+table_name: Publications
+dimensions:
+  abstract:
+    description: 'TEXT. No description provided. Example: This catalogue accompanies the exhibition of the same name, providing detailed entries for all objects displayed..'
+    sql: '"ABSTRACT"'
+  date_added:
+    description: 'TEXT. No description provided. Example: 2022-02-01.'
+    sql: '"DATE_ADDED"'
+  doi:
+    description: 'TEXT. No description provided. Example: 10.1234/museum.cat.2022.01.'
+    sql: '"DOI"'
+  is_peer_reviewed:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: '"IS_PEER_REVIEWED"'
+  published_on:
+    description: 'TEXT. No description provided. Example: 2022-02-15.'
+    sql: '"PUBLISHED_ON"'
+  publication_code:
+    description: 'TEXT. No description provided. Example: PUB-2022-01.'
+    sql: '"Publication_Code"'
+  title:
+    description: 'TEXT. No description provided. Example: Masters of the Ming Dynasty: A Retrospective.'
+    sql: '"TITLE"'
+  author_researcher_ref:
+    description: 'TEXT. No description provided. Example: 201.'
+    sql: author_researcher_ref
+  catalog_for_exhibit:
+    description: 'TEXT. No description provided. Example: EXH-2022-01.'
+    sql: catalog_for_exhibit
+  full_text_link:
+    description: 'TEXT. No description provided. Example: https://www.museum.org/publications/pub-2022-01.'
+    sql: full_text_link
+  isbn_code:
+    description: 'TEXT. No description provided. Example: 978-0-912345-01-1.'
+    sql: isbn_code
+  keywords:
+    description: 'TEXT. No description provided. Example: Ming Dynasty, Ceramics, Painting, Curatorial Studies.'
+    sql: keywords
+  language:
+    description: 'TEXT. No description provided. Possible values: English, French.'
+    sql: language
+  publication_type:
+    description: 'TEXT. No description provided. Possible values: Book, Book Chapter, Exhibition Catalogue, Journal Article, Journal of Chinese Women''s History, Journal of Conservation Science, Journal of Song-Yuan Studies, Journal of Zen Studies, PhD Dissertation.'
+    sql: publication_type
+  publisher:
+    description: 'TEXT. No description provided. Example: Capital Museum Press.'
+    sql: publisher
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Publications public identity values.
+    label: Publications Count
+    sql: ${museum_artifact_large_public__publications.publication_code}

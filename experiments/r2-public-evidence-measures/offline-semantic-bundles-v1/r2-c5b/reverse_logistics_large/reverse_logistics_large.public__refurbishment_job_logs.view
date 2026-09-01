@@ -1,0 +1,66 @@
+label: refurbishment_job_logs
+description: All columns of the public table refurbishment_job_logs.
+catalog: reverse_logistics_large
+schema: public
+table_name: refurbishment_job_logs
+dimensions:
+  bench_station_identifier:
+    description: TEXT. Identifier of the workbench where work was performed.
+    sql: bench_station_identifier
+  cleaning_method_used:
+    description: 'TEXT. Method used to clean the item. Unique values: Chemical, Ultrasonic, Air Blast, Manual Wipe.'
+    sql: cleaning_method_used
+  cosmetic_grade_post_repair:
+    description: 'TEXT. Cosmetic grade after work completed (A, B, C, D, F). Unique values: A, B, C, D, F.'
+    sql: cosmetic_grade_post_repair
+  cosmetic_grade_pre_repair:
+    description: 'TEXT. Cosmetic grade before work began (A, B, C, D, F). Unique values: A, B, C, D, F.'
+    sql: cosmetic_grade_pre_repair
+  difficulty_rating:
+    description: 'INTEGER. Technician assessed difficulty of the repair (1-10). Example: 50.'
+    sql: difficulty_rating
+  energy_consumed_kwh:
+    description: 'REAL. Energy consumed by test equipment during the job. Example: 1.5.'
+    sql: energy_consumed_kwh
+  functional_test_status:
+    description: 'TEXT. Result of the post-repair functional test. Unique values: Passed, Failed, Warning.'
+    sql: functional_test_status
+  job_end_timestamp:
+    description: 'TIMESTAMP. Exact time the refurbishment work was completed. **NULL means Job currently in progress.** Example: 2024-01-01 12:00:00.'
+    sql: job_end_timestamp
+  job_log_reference:
+    description: 'TEXT. Unique identifier for the refurbishment job log entry. Example: RJB-1A2B3C.'
+    sql: job_log_reference
+  job_start_timestamp:
+    description: 'TIMESTAMP. Exact time the refurbishment work started. Example: 2024-01-01 12:00:00.'
+    sql: job_start_timestamp
+  labor_cost_allocated:
+    description: 'REAL. Cost of labor allocated to this specific job. Example: 60.0.'
+    sql: labor_cost_allocated
+  next_step_recommendation:
+    description: 'TEXT. Technician recommendation for the next stage. Unique values: To Stock, To Scrap, Needs QA Review, Rework.'
+    sql: next_step_recommendation
+  parts_cost_incurred:
+    description: 'REAL. Total cost of spare parts used. Example: 45.0.'
+    sql: parts_cost_incurred
+  related_return_case:
+    description: TEXT. Reference to the return case being refurbished.
+    sql: related_return_case
+  software_version_installed:
+    description: 'TEXT. Version of the software/firmware installed during refurb. **NULL means Not applicable to this product type.** Unique values: v1.0, v1.2, v2.0, Legacy.'
+    sql: software_version_installed
+  soldering_temperature_c:
+    description: 'REAL. Max temperature used for soldering if applicable. **NULL means Soldering not required.** Example: 350.'
+    sql: soldering_temperature_c
+  success_flag:
+    description: BOOLEAN. Indicates if the refurbishment was successful.
+    sql: success_flag
+  technician_employee_ref:
+    description: 'INTEGER. Reference to the employee performing the refurbishment. Example: 50.'
+    sql: technician_employee_ref
+  technician_notes_summary:
+    description: TEXT. Brief summary of notes entered by the technician. **NULL means No notes provided.**
+    sql: technician_notes_summary
+  warranty_seal_applied:
+    description: BOOLEAN. Indicates if a new warranty seal was applied.
+    sql: warranty_seal_applied

@@ -1,0 +1,108 @@
+label: vendor_insurance_claims
+description: All columns of the public table vendor_insurance_claims.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendor_insurance_claims
+dimensions:
+  adjuster:
+    description: 'TEXT. The adjuster assigned to the claim. Example: Adjuster1.'
+    sql: '"ADJUSTER"'
+  appealdate:
+    description: DATE. Date when the appeal was submitted. **NULL means no appeal was submitted.**
+    sql: '"APPEALdate"'
+  claim_status:
+    description: 'TEXT. The current status of the claim (e.g., Pending, Approved, Denied). Example: Approved.'
+    sql: '"CLAIM_STATUS"'
+  excess:
+    description: 'REAL. The excess amount or deductible that the claimant must pay. Example: 200.00.'
+    sql: '"EXCESS"'
+  investigationresult:
+    description: 'TEXT. The result of the investigation (e.g., Resolved, Ongoing). Example: Resolved.'
+    sql: '"INVESTIGATIONresult"'
+  notes:
+    description: 'TEXT. Additional notes about the insurance claim. Example: Claim has been disputed.'
+    sql: '"NOTES"'
+  settlementdate:
+    description: DATE. Date when the claim was settled. **NULL means the claim has not been settled yet.**
+    sql: '"SETTLEMENTdate"'
+  adjustment_reason:
+    description: 'TEXT. Reason for the adjustment to the claim amount. Example: Policy Error.'
+    sql: '"adjustmentREASON"'
+  adjustment_amount:
+    description: 'REAL. The amount adjusted in the claim settlement. Example: 300.00.'
+    sql: adjustment_amount
+  appeal_status:
+    description: 'TEXT. Status of the appeal (e.g., Approved, Pending, Denied). Example: Pending.'
+    sql: '"appealSTATUS"'
+  appeal_submitted:
+    description: 'BOOLEAN. Indicates if an appeal has been submitted. Example: True.'
+    sql: appeal_submitted
+  claim_date:
+    description: 'DATE. Date when the insurance claim was filed. Example: 2025-07-16.'
+    sql: '"claimDATE"'
+  claim_ref:
+    description: TEXT. Unique identifier for each insurance claim. PK.
+    sql: '"claimRef"'
+  claim_amount:
+    description: 'REAL. The amount requested in the insurance claim. Example: 1500.00.'
+    sql: claim_amount
+  currency:
+    description: 'TEXT. Currency used for the claim. Example: USD.'
+    sql: currency
+  denial_reason:
+    description: 'TEXT. The reason the claim was denied, if applicable. Example: Fraud.'
+    sql: '"denialReason"'
+  fraud_flag:
+    description: 'BOOLEAN. Indicates if the claim is flagged for potential fraud. Example: False.'
+    sql: '"fraudFLAG"'
+  incident_date:
+    description: 'DATE. Date of the incident leading to the claim. Example: 2025-06-01.'
+    sql: incident_date
+  ins_policy_ref:
+    description: 'TEXT. Reference to the insurance policy. FK to vendor_insurance_policies. Example: Ia705b24c12c6.'
+    sql: ins_policy_ref
+  investigation_end:
+    description: DATE. Date when the investigation ended. **NULL means the investigation is ongoing.**
+    sql: '"investigationEND"'
+  investigation_start:
+    description: 'DATE. Date when the investigation into the claim started. Example: 2025-06-10.'
+    sql: investigation_start
+  investigator:
+    description: 'TEXT. The investigator assigned to the claim. Example: Investigator1.'
+    sql: investigator
+  lag_to_settlement:
+    description: 'TEXT. The time range between the claim date and the settlement date. Example: 30–90 days.'
+    sql: lag_to_settlement
+  last_updated:
+    description: 'TIMESTAMP. The last time the record was updated. Example: 2025-07-16 15:23:00.'
+    sql: '"lastUpdated"'
+  legal_action_flag:
+    description: 'BOOLEAN. Indicates if legal action is involved in the claim. Example: True.'
+    sql: legal_action_flag
+  legal_action_result:
+    description: 'TEXT. The result of any legal action taken regarding the claim. Example: Won.'
+    sql: legal_action_result
+  payout_amount:
+    description: 'REAL. The amount of money paid out for the claim. Example: 1000.00.'
+    sql: '"payoutAmount"'
+  payout_coverage:
+    description: 'TEXT. The percentage of the claim covered by the payout. Example: 80–95 % of claim.'
+    sql: '"payoutCoverage"'
+  payout_date:
+    description: DATE. Date when the payout was made. **NULL means no payout has been made yet.**
+    sql: '"payoutDATE"'
+  payout_method:
+    description: 'TEXT. Method used for the claim payout (e.g., Bank Transfer, Check). Example: Bank Transfer.'
+    sql: payout_method
+  recoverable_amount:
+    description: 'REAL. The amount recoverable from third parties. Example: 500.00.'
+    sql: recoverable_amount
+  seller_key:
+    description: 'TEXT. Seller identifier associated with the claim. FK to vendors. Example: V63085.'
+    sql: '"sellerKEY"'
+  settlement_amount:
+    description: 'REAL. The amount settled by the insurance company. Example: 1200.00.'
+    sql: settlement_amount
+  subrogation_flag:
+    description: 'BOOLEAN. Indicates if the claim is subject to subrogation. Example: False.'
+    sql: '"subrogationFLAG"'

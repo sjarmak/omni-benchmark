@@ -1,0 +1,11 @@
+base_view: solar_panel_large_public__shipment_tracking_updates
+label: ShipmentTrackingUpdates
+description: All columns of the public table ShipmentTrackingUpdates.
+fields:
+- solar_panel_large_public__shipment_tracking_updates.*
+- solar_panel_large_public__asset_manufacturers.*
+- solar_panel_large_public__supply_chain_shipments.*
+joins:
+  solar_panel_large_public__supply_chain_shipments:
+    solar_panel_large_public__asset_manufacturers: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

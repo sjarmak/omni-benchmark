@@ -1,0 +1,13 @@
+base_view: planets_data_large_public__dataset_publication_map
+label: Dataset_Publication_Map
+description: All columns of the public table Dataset_Publication_Map.
+fields:
+- planets_data_large_public__dataset_publication_map.*
+- planets_data_large_public__astronomical_catalogs.*
+- planets_data_large_public__research_programs.*
+- planets_data_large_public__scientific_publication.*
+joins:
+  planets_data_large_public__astronomical_catalogs: {}
+  planets_data_large_public__scientific_publication:
+    planets_data_large_public__research_programs: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

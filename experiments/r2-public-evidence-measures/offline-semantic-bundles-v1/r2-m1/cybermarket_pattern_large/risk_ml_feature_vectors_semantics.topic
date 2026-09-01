@@ -1,0 +1,17 @@
+base_view: cybermarket_pattern_large_public__risk_ml_feature_vectors
+label: risk_ml_feature_vectors
+description: All columns of the public table risk_ml_feature_vectors.
+fields:
+- cybermarket_pattern_large_public__risk_ml_feature_vectors.*
+- cybermarket_pattern_large_public__buyers.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__risk_analytics.*
+- cybermarket_pattern_large_public__transactions.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__risk_analytics:
+    cybermarket_pattern_large_public__transactions:
+      cybermarket_pattern_large_public__buyers: {}
+      cybermarket_pattern_large_public__markets: {}
+      cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

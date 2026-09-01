@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__employer
+label: employer
+description: All columns of the public table employer.
+fields:
+- labor_certification_applications_large_public__employer.*
+joins: {}
+ai_context: This topic models no cross-table joins.

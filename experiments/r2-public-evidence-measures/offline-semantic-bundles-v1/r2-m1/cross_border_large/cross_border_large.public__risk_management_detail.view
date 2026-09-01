@@ -1,0 +1,102 @@
+label: RiskManagement_Detail
+description: All columns of the public table RiskManagement_Detail.
+catalog: cross_border_large
+schema: public
+table_name: RiskManagement_Detail
+dimensions:
+  audit_dependency:
+    description: 'TEXT. The type of audit dependency associated with the risk. Possible values: InternalAudit, ExternalAudit, SOX, None. Example: InternalAudit.'
+    sql: '"AUDIT_DEPENDENCY"'
+  evidence:
+    description: 'JSONB. Evidence and validation information for the risk. Example: {source:synthetic,validation:yes}.'
+    sql: '"EVIDENCE"'
+  heatmap_quadrant:
+    description: 'TEXT. The quadrant in the risk heatmap where the risk is categorized. Possible values: Low Impact-Low Likelihood, High Impact-Low Likelihood, Low Impact-High Likelihood, High Impact-High Likelihood. Example: High Impact-Low Likelihood.'
+    sql: '"Heatmap_quadrant"'
+  insurance_coverage_pct:
+    description: 'REAL. The percentage of the risk covered by insurance. Example: 50.0. **NULL means the risk is not insured or insurance coverage is unknown.**'
+    sql: '"Insurance_coverage_pct"'
+  kri_breach_count:
+    description: 'BIGINT. Number of times Key Risk Indicators (KRIs) breached thresholds. Example: 1.'
+    sql: '"Kri_breach_count"'
+  max_exposure_usd:
+    description: 'REAL. The maximum potential exposure to the risk in USD. Example: 3000000.0.'
+    sql: '"MAX_EXPOSURE_USD"'
+  mitigation_eta_date:
+    description: 'DATE. The expected date by which mitigation actions should be completed. Example: 2025-09-30.'
+    sql: '"MITIGATION_ETA_DATE"'
+  methodology:
+    description: 'TEXT. Risk assessment methodology applied to the risk. Possible values: Quantitative, Qualitative, Hybrid. Example: Quantitative. **NULL means the methodology was not documented or unavailable.**'
+    sql: '"Methodology"'
+  mitigation_plan:
+    description: 'TEXT. Description of the mitigation plan for addressing the risk. Example: Enhance monitoring and controls. '
+    sql: '"Mitigation_plan"'
+  open_issue_count:
+    description: 'BIGINT. Number of unresolved issues related to the risk. Example: 2.'
+    sql: '"OPEN_ISSUE_COUNT"'
+  residual_risk_score:
+    description: 'REAL. The residual risk score after mitigation actions have been applied. Example: 12.8.'
+    sql: '"RESIDUAL_RISK_SCORE"'
+  risk_category:
+    description: 'TEXT. Classification of the risk. Possible values: Operational, Compliance, Strategic, Financial, Reputational. Example: Operational.'
+    sql: '"RISK_CATEGORY"'
+  risk_detail_code:
+    description: 'BIGINT. Surrogate primary key for each risk detail record. Example: 1.'
+    sql: '"RISK_DETAIL_CODE"'
+  review_frequency_days:
+    description: 'BIGINT. Frequency of risk reviews, in days. Possible values: 30, 90, 180, 365. Example: 90.'
+    sql: '"Review_frequency_days"'
+  risk_trend:
+    description: 'TEXT. The observed trend of the risk over time. Possible values: Increasing, Decreasing, Stable. Example: Increasing. **NULL means the risk trend has not been evaluated or is uncertain.**'
+    sql: '"Risk_trend"'
+  scenario_ref:
+    description: 'TEXT. A reference code for the scenario under which the risk is assessed. Example: SCEN-123.'
+    sql: '"SCENARIO_ref"'
+  sim_avg_loss_usd:
+    description: 'REAL. The average loss in USD from simulations. Example: 1250000.0.'
+    sql: '"SIM_AVG_LOSS_USD"'
+  stress_test_id:
+    description: 'TEXT. Identifier for the stress test scenario used in risk assessment. Example: ST-2345.'
+    sql: '"STRESS_TEST_ID"'
+  sim_runs:
+    description: 'BIGINT. Number of simulation runs performed to assess the risk. Example: 500.'
+    sql: '"Sim_runs"'
+  control_gap_count:
+    description: 'BIGINT. Number of identified control gaps for the risk. Example: 3.'
+    sql: '"control_gap_Count"'
+  expected_loss_usd:
+    description: 'REAL. The expected financial loss due to the risk in USD. Example: 1000000. **NULL means expected loss has not been calculated or quantified.**'
+    sql: '"expected_loss_USD"'
+  inherent_risk_score:
+    description: 'REAL. The inherent risk score before any mitigation actions. Example: 22.5.'
+    sql: '"inherent_Risk_score"'
+  mitigation_cost_usd:
+    description: 'REAL. Estimated cost of mitigating the risk in USD. Example: 50000.0.'
+    sql: mitigation_cost_usd
+  next_review_date:
+    description: 'DATE. The scheduled date for the next risk review. Example: 2025-08-01.'
+    sql: '"next_review_Date"'
+  regulatory_pressure_level:
+    description: 'TEXT. The level of regulatory pressure associated with the risk. Possible values: Low, Medium, High, Critical. Example: High.'
+    sql: '"regulatory_Pressure_level"'
+  residual_target_score:
+    description: 'REAL. The target residual risk score post-mitigation. Example: 8.0.'
+    sql: '"residual_Target_score"'
+  risk_flow_code:
+    description: 'BIGINT. Foreign key referencing RiskManagement(RISKTRACE). Example: RT-0001.'
+    sql: risk_flow_code
+  risk_owner:
+    description: 'TEXT. The owner or responsible party for the risk. Possible values: CISO, CFO, CTO, Operations Head, Compliance Officer. Example: CISO. **NULL means the risk owner has not been assigned or documented.**'
+    sql: risk_owner
+  risk_velocity_days:
+    description: 'BIGINT. The velocity at which the risk is expected to impact, measured in days. Example: 45.'
+    sql: '"risk_velocity_Days"'
+  sim_p95_loss_usd:
+    description: 'REAL. The 95th percentile loss in USD from simulations. Example: 1750000.0.'
+    sql: '"sim_p95_loss_USD"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct RiskManagement_Detail public identity values.
+    label: RiskManagement_Detail Count
+    sql: ${cross_border_large_public__risk_management_detail.risk_detail_code}

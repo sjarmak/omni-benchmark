@@ -1,0 +1,105 @@
+label: race_incidents
+description: All columns of the public table race_incidents.
+catalog: sports_events_large
+schema: public
+table_name: race_incidents
+dimensions:
+  corner_code:
+    description: 'TEXT. Code for the corner where the incident occurred. Example: T8.'
+    sql: '"CornerCode"'
+  incident_number:
+    description: BIGSERIAL. Surrogate primary key for race_incidents rows. PK.
+    sql: '"INCIDENT_NUMBER"'
+  incident_type:
+    description: 'TEXT. Type of the incident. Possible values: collision, spin, pit stop error, debris. Example: collision.'
+    sql: '"INCIDENT_TYPE"'
+  lap_number:
+    description: 'BIGINT. Lap number during which the incident occurred. Example: 23.'
+    sql: '"LAP_NUMBER"'
+  marshal_post:
+    description: 'TEXT. Code for the marshal post involved. Example: MP-12.'
+    sql: '"Marshal_Post"'
+  notes:
+    description: 'TEXT. Additional notes about the incident. **NULL means no notes provided.** Example: Avoidable contact.'
+    sql: '"Notes"'
+  rak_ref:
+    description: 'INTEGER. Foreign key referencing races(rak_id). FK → races(rak_id). Example: 2.'
+    sql: '"RAK_ref"'
+  time_of_incident:
+    description: 'TIMESTAMP. Timestamp of when the incident occurred. Example: 2025/03/12 15:08:21.'
+    sql: '"TimeOfIncident"'
+  incident_stewarding_outcome:
+    description: JSONB column. Combines flags, stewarding decisions/penalties, impact/cost metrics, medical/pit requirements, contextual conditions, and reference media/telemetry for each incident.
+    sql: incident_stewarding_outcome
+  incident_stewarding_outcome_context_conditions_ers_state_pct:
+    description: 'REAL. ERS (Energy Recovery System) state as a percentage at the time of the incident. Example: 0.65.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'ContextConditions', 'ERS_State_pct')
+  incident_stewarding_outcome_context_conditions_fuel_load_kg:
+    description: 'REAL. Fuel load in kilograms at the time of the incident. Example: 45.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'ContextConditions', 'FuelLoad_KG')
+  incident_stewarding_outcome_context_conditions_tyre_age_laps:
+    description: 'BIGINT. Age of the tyre in laps at the time of the incident. Example: 12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'ContextConditions', 'TyreAge_Laps')
+  incident_stewarding_outcome_context_conditions_tyre_compound:
+    description: 'TEXT. Tyre compound used during the incident. Example: C3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'ContextConditions', 'TyreCompound')
+  incident_stewarding_outcome_context_conditions_weather_snapshot:
+    description: 'TEXT. Weather snapshot during the incident. Example: light rain.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'ContextConditions', 'Weather_Snapshot')
+  incident_stewarding_outcome_flag_pack_red_flag:
+    description: 'BOOLEAN. Whether a red flag was deployed. Example: false.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'FlagPack', 'RED_FLAG')
+  incident_stewarding_outcome_flag_pack_sc_deployed:
+    description: 'BOOLEAN. Whether a Safety Car was deployed. Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'FlagPack', 'SC_DEPLOYED')
+  incident_stewarding_outcome_flag_pack_vsc_deployed:
+    description: 'BOOLEAN. Whether a Virtual Safety Car (VSC) was deployed. Example: false.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'FlagPack', 'VSC_Deployed')
+  incident_stewarding_outcome_flag_pack_yellow_flag:
+    description: 'BOOLEAN. Whether a yellow flag was deployed due to the incident. Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'FlagPack', 'YellowFlag')
+  incident_stewarding_outcome_impact_cost_car_damage_cost_musd:
+    description: 'REAL. Cost of car damage in millions of USD. Example: 0.35.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'ImpactCost', 'CarDamageCost_MUSD')
+  incident_stewarding_outcome_impact_cost_debris_field_m:
+    description: 'REAL. Length of the debris field in meters. Example: 35.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'ImpactCost', 'DebrisField_m')
+  incident_stewarding_outcome_impact_cost_delta_race_time_ms:
+    description: 'BIGINT. Time lost during the incident in milliseconds. Example: 120000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'ImpactCost', 'DeltaRaceTime_ms')
+  incident_stewarding_outcome_impact_cost_severity_score:
+    description: 'REAL. Severity score of the incident (0.0–1.0). Example: 0.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'ImpactCost', 'Severity_Score')
+  incident_stewarding_outcome_medical_pit_reqs_medical_check_required:
+    description: 'BOOLEAN. Whether a medical check is required for the driver involved. Example: false.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'MedicalPitReqs', 'MedicalCheckRequired')
+  incident_stewarding_outcome_medical_pit_reqs_pit_visit_required:
+    description: 'BOOLEAN. Whether a pit stop is required due to the incident. Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'MedicalPitReqs', 'PitVisitRequired')
+  incident_stewarding_outcome_refs_telemetry_ref:
+    description: 'TEXT. Reference for the telemetry data associated with the incident. Example: INC123.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'Refs', 'TelemetryRef')
+  incident_stewarding_outcome_refs_video_ref:
+    description: 'TEXT. Reference to the video footage of the incident. Example: CAM-T8-04.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'Refs', 'VideoRef')
+  incident_stewarding_outcome_stewarding_grid_penalty_places:
+    description: 'BIGINT. Grid penalty places imposed due to the incident. **NULL means no grid penalty was imposed.** Example: 3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'Stewarding', 'GridPenaltyPlaces')
+  incident_stewarding_outcome_stewarding_penalty_points:
+    description: 'BIGINT. Penalty points assigned. **NULL means no penalty points were assigned.** Example: 2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'Stewarding', 'PenaltyPoints')
+  incident_stewarding_outcome_stewarding_steward_investigation:
+    description: 'BOOLEAN. Whether the incident was investigated by the stewards. Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'Stewarding', 'StewardInvestigation')
+  incident_stewarding_outcome_stewarding_steward_outcome:
+    description: 'TEXT. Outcome of the steward''s investigation. Possible values: No further action, Penalty, Warning. Example: No further action.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'Stewarding', 'StewardOutcome')
+  incident_stewarding_outcome_stewarding_time_penalty_sec:
+    description: 'REAL. Time penalty in seconds imposed due to the incident. **NULL means no time penalty was assigned.** Example: 5.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(incident_stewarding_outcome, 'Stewarding', 'TimePenalty_sec')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct race_incidents public identity values.
+    label: race_incidents Count
+    sql: ${sports_events_large_public__race_incidents.incident_number}

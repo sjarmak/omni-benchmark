@@ -1,0 +1,37 @@
+base_view: labor_certification_applications_large_public__employer_labor_condition
+label: Employer Labor Conditions
+description: Employer labor-condition rows with public classification flags, occupational codes, annual wages, and same-row wage semantics.
+fields:
+- labor_certification_applications_large_public__employer_labor_condition.*
+- labor_certification_applications_large_public__prevailing_wage.*
+joins:
+  labor_certification_applications_large_public__prevailing_wage: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields is_premium_wage_position, wage_competitiveness_tier, wage_differential_rate rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Wage Premium Rate (WPR): WPR = ((Offered Wage - Minimum Required Wage) / Minimum Required Wage) × 100%. Minimum required wage is typically the prevailing wage or higher depending on regulations. Wage information is included in the wage determination data.
+
+  - Industry Application Distribution (IAD): IAD = (Number of Applications in Industry / Total Number of Applications) × 100%. Industry is determined by the employer''s NAICS code.
+
+  - Cost of Living Adjusted Wage (CLAW): CLAW = (Offered Wage / Cost of Living Index) × 100, where the Cost of Living Index is a standardized index with 100 as the national average. Wage and location information are included in the application data.
+
+  - Wage Competitiveness Index (WCI): WCI = (Employer Average Offered Wage / Industry Average Offered Wage). Wage and industry information are included in the application data.
+
+  - Visa-Dependent Industry: An industry is considered visa-dependent if the percentage of visa applications relative to the total workforce exceeds 15%, indicating significant reliance on foreign talent. Industry information is determined by the employer''s NAICS code.
+
+  - Occupational Specialization Levels: Job positions are classified as General (broad knowledge required), Specialized (focused expertise in one area), or Highly Specialized (deep expertise in niche areas), typically correlated with wage level and experience requirements. Job and wage information are included in the application data.
+
+  - Industry Wage Differential (IWD): IWD = (Sum of Wage Differential Rates in Industry / Number of Applications in Industry). Wage and industry information are included in the application data.
+
+  - Industry Concentration Ratio (ICR): ICR = sum((Applications in Industry i / Total Applications)^2) for all industries. Industry and application information are included in the application data.
+
+  - Wage Growth Rate (WGR): WGR = ((Current Year Average Wage - Previous Year Average Wage) / Previous Year Average Wage) × 100%. Wage and year information are included in the application data.
+
+  - Skill Shortage Occupation: Occupations with significant shortages of qualified U.S. workers are identified by a Wage Differential Rate (WDR) exceeding 10% and a statistically significant number of applications. These occupations may receive prioritized processing or cap exemptions.
+
+  - Application Complexity Tiers: Applications are classified as Standard (straightforward cases), or Complex (cases involving H-1B dependency, willful violator status, or special attestations). Complexity factors are tracked as part of the application data.
+
+  - Employer Dependency Level: Employers are classified as Low Dependency (less than 5% of workforce), Moderate Dependency (5-15%), or High Dependency (over 15%). H-1B dependent status typically applies to the high dependency category.'

@@ -1,0 +1,13 @@
+base_view: disaster_relief_large_public__training_attendance
+label: TrainingAttendance
+description: All columns of the public table TrainingAttendance.
+fields:
+- disaster_relief_large_public__training_attendance.*
+- disaster_relief_large_public__disaster_event_core.*
+- disaster_relief_large_public__training_session_core.*
+- disaster_relief_large_public__volunteer_core.*
+joins:
+  disaster_relief_large_public__training_session_core:
+    disaster_relief_large_public__disaster_event_core: {}
+  disaster_relief_large_public__volunteer_core: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

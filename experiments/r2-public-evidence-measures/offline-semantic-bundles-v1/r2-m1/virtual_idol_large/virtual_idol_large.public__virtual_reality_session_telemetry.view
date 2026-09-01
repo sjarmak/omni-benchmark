@@ -1,0 +1,72 @@
+label: VirtualRealitySessionTelemetry
+description: All columns of the public table VirtualRealitySessionTelemetry.
+catalog: virtual_idol_large
+schema: public
+table_name: VirtualRealitySessionTelemetry
+dimensions:
+  avatar_customization_id:
+    description: TEXT. ID of the avatar skin used by the fan.
+    sql: avatar_customization_id
+  average_fps:
+    description: 'REAL. Average frames per second delivered. Example: 90.'
+    sql: average_fps
+  controller_battery_start_pct:
+    description: 'INTEGER. Controller battery level at start. Example: 50.'
+    sql: controller_battery_start_pct
+  duration_seconds:
+    description: 'REAL. Length of the session in seconds. Example: 1800.'
+    sql: duration_seconds
+  fan_user_ref:
+    description: TEXT. Reference to the fan participating in VR.
+    sql: fan_user_ref
+  gesture_count_heart:
+    description: 'INTEGER. Number of heart-shape hand gestures made. Example: 50.'
+    sql: gesture_count_heart
+  gesture_count_wave:
+    description: 'INTEGER. Number of waving gestures detected. Example: 50.'
+    sql: gesture_count_wave
+  gpu_render_latency_ms:
+    description: 'REAL. Average time to render a frame. Example: 8.'
+    sql: gpu_render_latency_ms
+  haptic_feedback_events:
+    description: 'INTEGER. Count of tactile feedback pulses triggered. Example: 50.'
+    sql: haptic_feedback_events
+  headset_model:
+    description: 'TEXT. Hardware device used. Unique values: Meta Quest 3, Valve Index, HTC Vive Pro, Apple Vision Pro.'
+    sql: headset_model
+  interaction_mode:
+    description: 'TEXT. Type of interaction. Unique values: Seated, Standing, Room-Scale.'
+    sql: interaction_mode
+  motion_sickness_score:
+    description: 'INTEGER. Self-reported or detected discomfort level (1-10). **NULL means No sickness reported.** Example: 50.'
+    sql: motion_sickness_score
+  network_jitter_ms:
+    description: 'REAL. Average network jitter during session. Example: 15.'
+    sql: network_jitter_ms
+  room_scale_area_sqm:
+    description: 'REAL. Physical play area size available. **NULL means data unavailable.** Example: 4.'
+    sql: room_scale_area_sqm
+  session_exit_reason:
+    description: 'TEXT. Why the session ended. Unique values: Normal Quit, Crash, Battery Empty, Connection Lost.'
+    sql: session_exit_reason
+  session_start_ts:
+    description: 'TIMESTAMP. Start time of the VR immersion. Example: 2024-01-01 12:00:00.'
+    sql: session_start_ts
+  target_idol_ref:
+    description: TEXT. FK to virtualidols.entity_reg - the idol being interacted with. **NULL means data unavailable.**
+    sql: target_idol_ref
+  tracking_loss_count:
+    description: 'INTEGER. Number of times 6DOF tracking was lost. Example: 50.'
+    sql: tracking_loss_count
+  voice_chat_active_minutes:
+    description: 'REAL. Time spent with microphone open. Example: 10.'
+    sql: voice_chat_active_minutes
+  vr_session_id:
+    description: TEXT. Unique identifier for the VR session log.
+    sql: vr_session_id
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct VirtualRealitySessionTelemetry public identity values.
+    label: VirtualRealitySessionTelemetry Count
+    sql: ${virtual_idol_large_public__virtual_reality_session_telemetry.vr_session_id}

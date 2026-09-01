@@ -1,0 +1,72 @@
+label: RiskAssessmentDetail
+description: All columns of the public table RiskAssessmentDetail.
+catalog: museum_artifact_large
+schema: public
+table_name: RiskAssessmentDetail
+dimensions:
+  assessment_date:
+    description: VARCHAR(100). Date when risk assessment was conducted.
+    sql: '"assessmentDate"'
+  assessment_report:
+    description: VARCHAR(100). Reference to comprehensive risk assessment documentation.
+    sql: '"assessmentReport"'
+  condition_assessment_id:
+    description: BIGINT. Reference to baseline condition assessment (foreign key to ConditionAssessments.cond_id).
+    sql: '"conditionAssessmentId"'
+  contingency_plan:
+    description: VARCHAR(100). Actions to take if risk materializes.
+    sql: '"contingencyPlan"'
+  cost_estimate:
+    description: VARCHAR(100). Estimated financial cost for mitigation implementation in USD.
+    sql: '"costEstimate"'
+  id:
+    description: BIGSERIAL. Auto-increment primary key for detailed risk assessment records.
+    sql: id
+  impact_score:
+    description: VARCHAR(100). Consequence severity rating on 1-10 scale.
+    sql: '"impactScore"'
+  implementation_timeline:
+    description: VARCHAR(100). Projected timeframe for mitigation completion (Immediate, WithinWeek, WithinMonth, WithinYear, LongTerm).
+    sql: '"implementationTimeline"'
+  likelihood_score:
+    description: VARCHAR(100). Probability rating on 1-10 scale.
+    sql: '"likelihoodScore"'
+  mitigation_measures:
+    description: VARCHAR(100). Proposed actions to reduce risk exposure.
+    sql: '"mitigationMeasures"'
+  monitoring_indicators:
+    description: VARCHAR(100). Specific metrics to track risk status changes.
+    sql: '"monitoringIndicators"'
+  regulatory_compliance:
+    description: VARCHAR(100). Alignment with legal/regulatory requirements (Compliant, MinorGap, MajorGap, NonCompliant, Exempt).
+    sql: '"regulatoryCompliance"'
+  residual_risk:
+    description: VARCHAR(100). Remaining risk level after mitigation (Critical, High, Medium, Low, Negligible).
+    sql: '"residualRisk"'
+  review_frequency:
+    description: VARCHAR(100). Recommended interval for reassessment (Daily, Weekly, Monthly, Quarterly, Annually).
+    sql: '"reviewFrequency"'
+  risk_category:
+    description: VARCHAR(100). Classification of risk type (PhysicalDamage, Theft, Environmental, Biological, Chemical, HumanError, NaturalDisaster, SystemFailure).
+    sql: '"riskCategory"'
+  risk_level:
+    description: VARCHAR(100). Combined risk rating (Critical, High, Medium, Low, Negligible).
+    sql: '"riskLevel"'
+  staff_code:
+    description: BIGINT. Risk assessor identifier (foreign key to Staff.Staff_Code).
+    sql: '"staffCode"'
+  stakeholder_notification:
+    description: VARCHAR(100). Communication protocol for risk status (Immediate, Within24h, WithinWeek, NotRequired, Confidential).
+    sql: '"stakeholderNotification"'
+  threat_sources:
+    description: VARCHAR(100). Identified potential sources of harm or damage.
+    sql: '"threatSources"'
+  vulnerability_factors:
+    description: VARCHAR(100). Specific conditions increasing susceptibility to risk.
+    sql: '"vulnerabilityFactors"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct RiskAssessmentDetail public identity values.
+    label: RiskAssessmentDetail Count
+    sql: ${museum_artifact_large_public__risk_assessment_detail.id}

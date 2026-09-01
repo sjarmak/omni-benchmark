@@ -1,0 +1,102 @@
+label: case_processing_timeline
+description: All columns of the public table case_processing_timeline.
+catalog: labor_certification_applications_large
+schema: public
+table_name: case_processing_timeline
+dimensions:
+  proc_code:
+    description: 'TEXT. Unique identifier for a processing-timeline record. PK. Example: PROC00001.'
+    sql: '"PROC_code"'
+  pause_reason_list:
+    description: 'TEXT. Comma-delimited reasons for any pauses. **NULL means no pause data recorded.** Example: None.'
+    sql: '"Pause_reason_list"'
+  rfe_to_resp_days:
+    description: 'REAL. Days between RFE issuance and response filing. Example: 24.8.'
+    sql: '"RFE_to_resp_days"'
+  servicecenter:
+    description: 'TEXT. Adjudicating service center. Possible values: CSC, NSC, TSC, VSC, WAC, LIN, EAC. Example: CSC.'
+    sql: '"SERVICEcenter"'
+  sla_window_d_target:
+    description: 'REAL. Target SLA in days for this petition class. Example: 180.'
+    sql: '"SLA_window_d_target"'
+  appeal_filed_flag:
+    description: 'TEXT. Appeal actually filed? Possible values: Yes, No. Example: No.'
+    sql: '"appealFiled_flag"'
+  appeal_outcome:
+    description: 'TEXT. Disposition of the appeal. Possible values: Sustained, Denied, Withdrawn, Pending, N/A. Example: N/A.'
+    sql: '"appealOutcome"'
+  appeal_window_d:
+    description: 'REAL. Days permitted to file an appeal. Example: 60.'
+    sql: '"appealWindow_d"'
+  assign_to_rfe_days:
+    description: 'REAL. Days from assignment to any RFE issuance. Example: 3.0.'
+    sql: '"assign_to_RFE_days"'
+  clock_pauses_ct:
+    description: 'BIGINT. Number of official clock pauses. Example: 4.'
+    sql: clock_pauses_ct
+  doc_missing_cnt:
+    description: 'BIGINT. Count of missing required documents. Example: 5.'
+    sql: '"docMissing_cnt"'
+  doc_pages_submitted:
+    description: 'BIGINT. Total pages submitted with the petition. Example: 526.'
+    sql: '"docPages_submitted"'
+  docs_missing_flag:
+    description: 'TEXT. Filing found incomplete? **NULL means not yet evaluated.** Possible values: Yes, No. Example: NULL.'
+    sql: '"docsMissing_flag"'
+  expedited_flag:
+    description: 'TEXT. Expedite requested/approved? Possible values: Yes, No. Example: Yes.'
+    sql: expedited_flag
+  file_ref:
+    description: 'TEXT. Foreign-key to cases.fileKey. Example: I-200-23355-584296.'
+    sql: file_ref
+  final_disposition_day:
+    description: 'DATE. Date the case left USCIS control. Example: 2024-03-09.'
+    sql: '"finalDispositionDay"'
+  fingerprint_sched:
+    description: 'DATE. Biometrics appointment date. Example: 2024-02-17.'
+    sql: fingerprint_sched
+  interview_dur_min:
+    description: 'REAL. Interview duration, minutes. Example: 149.6.'
+    sql: interview_dur_min
+  interview_sched:
+    description: 'DATE. Scheduled in-person interview. **NULL if not yet scheduled / waived.** Example: NULL.'
+    sql: interview_sched
+  officer_name:
+    description: 'TEXT. USCIS adjudicator name/initials. **NULL indicates officer not yet assigned or redacted.** Example: J. Smith.'
+    sql: '"officerNAME"'
+  premium_paid_flag:
+    description: 'TEXT. Premium-processing fee paid? Possible values: Yes, No. Example: Yes.'
+    sql: '"premiumPaid_flag"'
+  queue_pos_final:
+    description: 'BIGINT. Queue position immediately before decision. Example: 224.'
+    sql: '"queuePos_final"'
+  queue_pos_initial:
+    description: 'BIGINT. Initial queue position when filed. Example: 96.'
+    sql: '"queuePos_initial"'
+  reasoning_timeline:
+    description: 'TEXT. Analyst comments. Example: Synthetic demo data.'
+    sql: '"reasoningTimeline"'
+  recv_to_assign_days:
+    description: 'REAL. Days from receipt to officer assignment. Example: 19.2.'
+    sql: recv_to_assign_days
+  reopen_outcome:
+    description: 'TEXT. Result of reopening. Possible values: Approved, Denied, Pending, N/A. Example: Pending.'
+    sql: '"reopenOutcome"'
+  reopen_flag:
+    description: 'TEXT. Case reopened? Possible values: Yes, No. Example: Yes.'
+    sql: reopen_flag
+  resp_to_decision_days:
+    description: 'REAL. Days from RFE response to final decision. Example: 13.4.'
+    sql: resp_to_decision_days
+  status_band:
+    description: 'TEXT. Overall schedule status. **NULL when status not assessed.** Possible values: On-track, Delayed. Example: On-track.'
+    sql: '"statusBand"'
+  transcript_pages:
+    description: 'BIGINT. Pages in interview transcript. Example: 59.'
+    sql: transcript_pages
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct case_processing_timeline public identity values.
+    label: case_processing_timeline Count
+    sql: ${labor_certification_applications_large_public__case_processing_timeline.proc_code}

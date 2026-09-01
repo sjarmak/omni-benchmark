@@ -1,0 +1,7 @@
+base_view: sports_events_large_public__drivers
+label: Drivers
+description: Driver records.
+fields:
+- sports_events_large_public__drivers.*
+joins: {}
+ai_context: This topic models no cross-table joins.

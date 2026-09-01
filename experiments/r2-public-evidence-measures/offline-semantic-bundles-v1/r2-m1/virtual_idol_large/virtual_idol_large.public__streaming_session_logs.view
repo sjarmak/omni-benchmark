@@ -1,0 +1,60 @@
+label: streaming_session_logs
+description: All columns of the public table streaming_session_logs.
+catalog: virtual_idol_large
+schema: public
+table_name: streaming_session_logs
+dimensions:
+  average_concurrent_viewers:
+    description: Average number of viewers watching concurrently.
+    sql: '"AverageConcurrentViewers"'
+  chat_message_count:
+    description: Total number of chat messages sent during the session.
+    sql: '"ChatMessageCount"'
+  donations_dollar:
+    description: 'REAL. The total amount of donations received in USD. Example: 2429.64.'
+    sql: '"Donations_dollar"'
+  idol_ref_id:
+    description: 'TEXT. Foreign key referencing the virtual idol who conducted the stream. FK to virtualidols(entity_reg). Example: VI9017.'
+    sql: '"Idol_Ref_ID"'
+  new_followers:
+    description: Number of new followers gained during the session.
+    sql: '"NEW_FOLLOWERS"'
+  performance_summary:
+    description: 'TEXT. A qualitative summary of the stream''s performance. **NULL means no summary was provided.** Example: Exceptional community response..'
+    sql: '"PERFORMANCE_SUMMARY"'
+  platform:
+    description: 'TEXT. The platform where the stream was hosted. Possible values: Niconico, Twitch, Bilibili, YouTube. Example: Niconico.'
+    sql: '"Platform"'
+  session_end_timestamp:
+    description: 'TIMESTAMP. The timestamp when the streaming session ended. Example: 2025-08-07 20:59:57.'
+    sql: '"SESSION_END_TIMESTAMP"'
+  stream_title:
+    description: 'TEXT. The title of the stream. Example: Spooky Game Sunday.'
+    sql: '"STREAM_TITLE"'
+  session_start_timestamp:
+    description: 'TIMESTAMP. The timestamp when the streaming session started. Example: 2025-08-07 19:39:00.'
+    sql: '"SessionStartTimestamp"'
+  unique_viewers:
+    description: Total number of unique viewers who tuned in.
+    sql: '"UNIQUE_VIEWERS"'
+  vod_url:
+    description: 'TEXT. The URL to the Video on Demand (VOD) of the stream. **NULL means a VOD is not available.** Example: https://platform.example/watch?v=783d3f409969fb79.'
+    sql: '"VOD_URL"'
+  error_logs:
+    description: 'TEXT. A summary of technical errors that occurred during the stream. **NULL means no errors were logged.** Example: API connection timeout..'
+    sql: error_logs
+  session_analytics:
+    description: JSON string summarizing revenue, engagement, and viewership metrics.
+    sql: session_analytics
+  session_duration_seconds:
+    description: 'BIGINT. The total duration of the session in seconds. Example: 4857.'
+    sql: session_duration_seconds
+  session_log_id:
+    description: 'BIGINT. Unique identifier for the streaming session log. PK. Example: 1.'
+    sql: session_log_id
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct streaming_session_logs public identity values.
+    label: streaming_session_logs Count
+    sql: ${virtual_idol_large_public__streaming_session_logs.session_log_id}

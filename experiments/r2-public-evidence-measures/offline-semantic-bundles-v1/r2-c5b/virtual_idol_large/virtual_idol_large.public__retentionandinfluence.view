@@ -1,0 +1,48 @@
+label: Retention and Influence
+description: Retention records with row-level viral-impact semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: retentionandinfluence
+dimensions:
+  churn_risk_flag:
+    description: TEXT. Churn risk classification and prediction status.
+    label: Churn Risk Flag
+    sql: churn_flag
+    ai_context: 'Churn Risk Flag: A predictive classification of a fan''s likelihood to stop using the platform. ''High'' indicates a strong probability of churning soon. ''Medium'' indicates a moderate risk. ''Low'' indicates a loyal and stable user.'
+  viral_content_pieces:
+    description: SMALLINT. Number of viral content pieces created or shared.
+    label: Viral Content Pieces
+    sql: JSONB_EXTRACT_PATH_TEXT(infl_impact, 'Viral_Cont')
+  trend_participation_count:
+    description: SMALLINT. Number of trending topics or events participated in.
+    label: Trend Participation Count
+    sql: JSONB_EXTRACT_PATH_TEXT(infl_impact, 'Trend_Part')
+  infl_impact:
+    description: JSONB column. User influence and viral impact metrics including content reach, viral content, and trending participation
+    sql: infl_impact
+  ref_count:
+    description: SMALLINT. Number of referrals made by this fan to bring new users.
+    sql: ref_count
+  ret_reg:
+    description: BIGSERIAL. Auto-generated unique identifier for retention and influence record. PK = RetentionAndInfluence(Ret_Reg).
+    sql: ret_reg
+  retain_engage_pivot:
+    description: BIGINT. Reference to engagement record for retention analysis. FK to Engagement.
+    sql: retain_engage_pivot
+  retain_loyalty_pivot:
+    description: BIGINT. Reference to loyalty record for retention correlation. FK to LoyaltyAndAchievements.
+    sql: retain_loyalty_pivot
+  infl_impact_cont_reach:
+    description: BIGINT. Reach and visibility metrics for fan-created content.
+    sql: JSONB_EXTRACT_PATH_TEXT(infl_impact, 'Cont_Reach')
+  infl_impact_hash_use:
+    description: SMALLINT. Number of hashtags used for content discovery and engagement.
+    sql: JSONB_EXTRACT_PATH_TEXT(infl_impact, 'Hash_Use')
+  infl_impact_react_count:
+    description: SMALLINT. Number of reactivation attempts or successful returns.
+    sql: JSONB_EXTRACT_PATH_TEXT(infl_impact, 'React_Count')
+  viral_potential_score:
+    label: Viral Potential Score (VPS)
+    description: Assesses a fan's ability to create and participate in viral trends.
+    sql: CAST(${viral_content_pieces} AS DOUBLE PRECISION) * (1 + CAST(${trend_participation_count} AS DOUBLE PRECISION))
+    ai_context: Use this modeled field for Viral Potential Score (VPS); do not reconstruct its formula.

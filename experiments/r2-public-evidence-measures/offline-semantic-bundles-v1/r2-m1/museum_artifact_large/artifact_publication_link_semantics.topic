@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__artifact_publication_link
+label: ArtifactPublicationLink
+description: All columns of the public table ArtifactPublicationLink.
+fields:
+- museum_artifact_large_public__artifact_publication_link.*
+joins: {}
+ai_context: This topic models no cross-table joins.

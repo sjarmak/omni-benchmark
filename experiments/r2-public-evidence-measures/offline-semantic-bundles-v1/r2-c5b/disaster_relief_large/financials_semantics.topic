@@ -1,0 +1,21 @@
+base_view: disaster_relief_large_public__financials
+label: Financials
+description: Financial records with public funding-state context.
+fields:
+- disaster_relief_large_public__financials.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__operations.*
+joins:
+  disaster_relief_large_public__disasterevents: {}
+  disaster_relief_large_public__operations: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Financial Health Score (FHS): A score assessing financial stability, calculated by averaging the budget remaining percentage and funding sufficiency. Formula: 0.5 * (100 - funds_util_pct) + 0.5 * ((budgetallotusd - COALESCE(resource_gaps_usd, 0)) / NULLIF(budgetallotusd, 0)) * 100.
+
+  - High Burn Rate Alert: A ''High Burn Rate'' alert is triggered for an operation if its total costs exceed 20% of its total allocated budget.
+
+  - Budget Runway (Days): The estimated number of days an operation can continue before its budget is exhausted. Formula: (allocated_budget - total_operational_costs) / Financial Burn Rate.
+
+  - Funding Crisis: A ''Funding Crisis'' is active when the operation''s funding state is ''Critical'' and its estimated Budget Runway is less than 7 days.'

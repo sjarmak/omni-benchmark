@@ -1,0 +1,68 @@
+label: Monitoring
+description: Monitoring records with public detection-confidence context.
+catalog: fake_account_large
+schema: public
+table_name: monitoring
+dimensions:
+  detection_confidence_score:
+    description: 'REAL. Detection confidence score. **NULL means detection confidence not recorded.**. Example: 0.132.'
+    label: Detection Confidence Score
+    sql: '"DetectConf"'
+    ai_context: 'detection score: Ranges from 0 to 1. Values above 0.8 indicate high-confidence detections, while values below 0.3 suggest uncertain results requiring manual review.'
+  action_done:
+    description: 'TEXT. Action taken. **NULL means no action recorded.**. Possible values: Restriction, Suspension, Warning.'
+    sql: '"ActionDone"'
+  conf_score:
+    description: 'REAL. Confidence score. **NULL means confidence score not assigned.**. Example: 0.253.'
+    sql: '"ConfScore"'
+  detect_src:
+    description: 'TEXT. Source of detection. Possible values: Algorithm, Manual Review, Pattern Match, User Report.'
+    sql: '"DetectSrc"'
+  fpp:
+    description: 'REAL. False positive probability. Example: 0.692.'
+    sql: '"FPP"'
+  feat_ver:
+    description: 'TEXT. Feature version used. Example: f1.7.'
+    sql: '"FeatVer"'
+  invest_state:
+    description: 'TEXT. Investigation state. Possible values: Active, Completed, Pending.'
+    sql: '"InvestState"'
+  last_rev:
+    description: 'DATE. Last review date. Example: 2025/1/1.'
+    sql: '"LastRev"'
+  last_up:
+    description: 'TIMESTAMPTZ. Last update timestamp. Example: 2025/2/18 12:00.'
+    sql: '"LastUp"'
+  meth_rel:
+    description: 'REAL. Method reliability score. Example: 0.927.'
+    sql: '"MethRel"'
+  model_ver:
+    description: 'TEXT. Model version used. Example: v1.5.'
+    sql: '"ModelVer"'
+  mon_prio:
+    description: 'TEXT. Monitoring priority. Possible values: High, Low, Medium, Urgent.'
+    sql: '"MonPrio"'
+  next_rev:
+    description: 'DATE. Next review date. Example: 2025/4/10.'
+    sql: '"NextRev"'
+  rec_key:
+    description: 'TEXT. Unique monitoring record key. PK. Example: FA410087.'
+    sql: '"RecKey"'
+  rev_freq:
+    description: 'TEXT. Review frequency. Possible values: Daily, Monthly, Quarterly, Weekly.'
+    sql: '"RevFreq"'
+  up_freq_h:
+    description: 'BIGINT. Update frequency in hours. Example: 3.'
+    sql: '"UpFreqH"'
+  acct_mon:
+    description: TEXT. Account reference for monitoring. FK to accounts.
+    sql: acct_mon
+  snap_ts:
+    description: 'TIMESTAMPTZ. Snapshot timestamp. **NULL means snapshot timestamp not recorded.**. Example: 2024-08-21T08:30:21.'
+    sql: snap_ts
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Monitoring public identity values.
+    label: Monitoring Count
+    sql: ${fake_account_large_public__monitoring.rec_key}

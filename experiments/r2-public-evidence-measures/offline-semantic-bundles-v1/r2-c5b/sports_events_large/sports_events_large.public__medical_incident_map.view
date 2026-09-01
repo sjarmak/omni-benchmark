@@ -1,0 +1,48 @@
+label: Medical_Incident_Map
+description: All columns of the public table Medical_Incident_Map.
+catalog: sports_events_large
+schema: public
+table_name: Medical_Incident_Map
+dimensions:
+  attending_doctor:
+    description: 'TEXT. Doctor who attended the incident Possible values: Dr. I. Roberts, Circuit Medical, FIA Doctor, Team Doctor.'
+    sql: '"ATTENDING_DOCTOR"'
+  clearance_date:
+    description: DATE. Date cleared to race again **NULL means No clearance needed.**
+    sql: '"CLEARANCE_DATE"'
+  concussion_protocol:
+    description: BOOLEAN. Whether concussion protocol was initiated Boolean flag (true/false).
+    sql: '"CONCUSSION_PROTOCOL"'
+  injury_type:
+    description: 'TEXT. Type of injury sustained Possible values: None, Minor Bruising, Whiplash, Concussion, Fracture, Burns, Laceration.'
+    sql: '"INJURY_TYPE"'
+  medical_ref:
+    description: BIGINT. Foreign key referencing DriverMedicalRecord(MEDICAL_ID). Related medical record
+    sql: '"MEDICAL_REF"'
+  mim_id:
+    description: BIGINT. Primary key. Unique medical-incident mapping identifier
+    sql: '"MIM_ID"'
+  race_continued:
+    description: BOOLEAN. Whether driver continued racing after incident Boolean flag (true/false).
+    sql: '"RACE_CONTINUED"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  hospital_transport:
+    description: BOOLEAN. Whether driver was transported to hospital Boolean flag (true/false).
+    sql: hospital_transport
+  impact_g_force:
+    description: 'TEXT. Estimated impact G-force Possible values: <10g, 10-25g, 25-50g, 50-75g, >75g. **NULL means G-force not measured.**'
+    sql: impact_g_force
+  incident_ref:
+    description: BIGINT. Foreign key referencing race_incidents(INCIDENT_NUMBER). Related race incident
+    sql: incident_ref
+  recovery_days:
+    description: BIGINT. Days of recovery required **NULL means No injury requiring recovery.**
+    sql: recovery_days
+  treatment_level:
+    description: 'TEXT. Level of treatment required Possible values: None Required, Trackside, Medical Centre, Hospital, Surgery.'
+    sql: treatment_level

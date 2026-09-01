@@ -1,0 +1,66 @@
+label: FundTaxEfficiencyMetrics
+description: All columns of the public table FundTaxEfficiencyMetrics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: FundTaxEfficiencyMetrics
+dimensions:
+  fund_tax_efficiency_metrics_id:
+    description: 'TEXT. Unique identifier for the tax efficiency record. Example: XX-1A2B3C.'
+    sql: '"FundTaxEfficiencyMetrics_id"'
+  accounting_method_used:
+    description: 'TEXT. Cost basis method (e.g. FIFO, HIFO). Unique values: FIFO, LIFO, HIFO, AvgCost.'
+    sql: accounting_method_used
+  after_tax_return_1y:
+    description: 'REAL. Return after estimated taxes for 1 year. Example: 0.06.'
+    sql: after_tax_return_1y
+  after_tax_return_3y:
+    description: 'REAL. Return after estimated taxes for 3 years. **NULL means Fund too young.** Example: 0.07.'
+    sql: after_tax_return_3y
+  capital_gains_dist_total:
+    description: 'REAL. Total capital gains distributed to shareholders. Example: 50.0.'
+    sql: capital_gains_dist_total
+  distribution_frequency_code:
+    description: 'TEXT. How often distributions occur. Unique values: Monthly, Quarterly, Annually.'
+    sql: distribution_frequency_code
+  fiscal_year_end:
+    description: 'TIMESTAMP. End date of the fiscal tax year. Example: 2024-01-01 12:00:00.'
+    sql: fiscal_year_end
+  foreign_tax_paid_credit:
+    description: 'REAL. Foreign taxes paid eligible for credit. **NULL means Domestic only.** Example: 50.0.'
+    sql: foreign_tax_paid_credit
+  long_term_gain_dist:
+    description: 'REAL. Distribution of long-term gains. **NULL means None.** Example: 50.0.'
+    sql: long_term_gain_dist
+  potential_cap_gains_exposure:
+    description: 'REAL. Unrealized gains as % of assets. Example: 10.0.'
+    sql: potential_cap_gains_exposure
+  product_ref:
+    description: 'INTEGER. Reference to the fund. Example: 50.'
+    sql: product_ref
+  qualified_dividend_pct:
+    description: 'REAL. Percentage of dividends qualifying for lower tax. **NULL means No dividends.** Example: 50.0.'
+    sql: qualified_dividend_pct
+  return_of_capital_amt:
+    description: 'REAL. Amount distributed as return of capital. **NULL means No return of capital.** Example: 50.0.'
+    sql: return_of_capital_amt
+  short_term_gain_dist:
+    description: 'REAL. Distribution of short-term gains (taxed higher). **NULL means None.** Example: 50.0.'
+    sql: short_term_gain_dist
+  tax_cost_ratio_pct:
+    description: 'REAL. Percentage of returns lost to taxes. Example: 50.0.'
+    sql: tax_cost_ratio_pct
+  tax_efficiency_grade:
+    description: 'TEXT. Morningstar or similar tax grade. Unique values: A, B, C, D, F.'
+    sql: tax_efficiency_grade
+  tax_loss_harvesting_benefit:
+    description: 'REAL. Estimated tax saved via loss harvesting. **NULL means Not utilized.** Example: 50.0.'
+    sql: tax_loss_harvesting_benefit
+  wash_sale_loss_deferred:
+    description: 'REAL. Losses deferred due to wash sale rules. **NULL means No wash sales.** Example: 50.0.'
+    sql: wash_sale_loss_deferred
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct FundTaxEfficiencyMetrics public identity values.
+    label: FundTaxEfficiencyMetrics Count
+    sql: ${exchange_traded_funds_large_public__fund_tax_efficiency_metrics.fund_tax_efficiency_metrics_id}

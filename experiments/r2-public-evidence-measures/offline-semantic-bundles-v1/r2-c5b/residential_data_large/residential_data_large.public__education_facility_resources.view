@@ -1,0 +1,63 @@
+label: Education_Facility_Resources
+description: All columns of the public table Education_Facility_Resources.
+catalog: residential_data_large
+schema: public
+table_name: Education_Facility_Resources
+dimensions:
+  facility_link_ref:
+    description: TEXT. Foreign key to the education_facilities table.
+    sql: '"Facility_Link_Ref"'
+  resource_inventory_pk:
+    description: 'TEXT. Primary key for educational asset tracking. Example: EFR-1A2B3C.'
+    sql: '"Resource_Inventory_PK"'
+  auditorium_acoustic_rating:
+    description: 'REAL. Measured reverb and clarity score for large gatherings. Example: 7.5.'
+    sql: auditorium_acoustic_rating
+  available_desktop_computers:
+    description: 'INTEGER. Total number of functional workstations in computer labs. Example: 50.'
+    sql: available_desktop_computers
+  backup_power_duration_hours:
+    description: 'REAL. Calculated runtime for critical systems under full load. **NULL means No backup power system.** Example: 50.0.'
+    sql: backup_power_duration_hours
+  braille_resource_availability_score:
+    description: 'REAL. Index of accessibility materials for visually impaired students. Example: 50.0.'
+    sql: braille_resource_availability_score
+  cafeteria_seating_capacity:
+    description: 'INTEGER. Max simultaneous occupancy for dining areas. Example: 300.'
+    sql: cafeteria_seating_capacity
+  classroom_interactive_whiteboards:
+    description: 'INTEGER. Count of classrooms equipped with digital projection or touch screens. Example: 50.'
+    sql: classroom_interactive_whiteboards
+  emergency_evacuation_time_minutes:
+    description: 'REAL. Timed duration for full campus clearance during last drill. Example: 4.5.'
+    sql: emergency_evacuation_time_minutes
+  gymnasium_floor_material:
+    description: 'TEXT. Surface type of the main indoor athletic facility. **NULL means No indoor gym.** Unique values: Hardwood, Synthetic Poly, Concrete.'
+    sql: gymnasium_floor_material
+  internet_bandwidth_gbps:
+    description: 'REAL. Dedicated fiber optic backbone speed for the campus. Unique values: 0.1, 0.5, 1.0, 10.0.'
+    sql: internet_bandwidth_gbps
+  library_book_volume_count:
+    description: 'INTEGER. Total count of physical cataloged items in the library. Example: 5000.'
+    sql: library_book_volume_count
+  playground_equipment_condition:
+    description: 'TEXT. Qualitative state of outdoor recreation structures. **NULL means No outdoor playground facilities.** Unique values: Excellent, Good, Needs Repair, Unsafe.'
+    sql: playground_equipment_condition
+  roof_integrity_index:
+    description: 'REAL. Structural health score for the primary building envelope. Example: 88.'
+    sql: roof_integrity_index
+  science_lab_safety_rating:
+    description: 'REAL. Standardized safety compliance score (0.0 - 100.0). **NULL means Facility lacks dedicated science labs.** Example: 85.'
+    sql: science_lab_safety_rating
+  security_camera_total_count:
+    description: 'INTEGER. Number of surveillance endpoints connected to local monitoring. Example: 50.'
+    sql: security_camera_total_count
+  solar_energy_contribution_kwh:
+    description: 'REAL. Daily average renewable energy generated on-site. **NULL means No solar array installed.** Example: 50.0.'
+    sql: solar_energy_contribution_kwh
+  student_to_teacher_ratio:
+    description: 'REAL. Average number of students per full-time faculty member. Example: 22.'
+    sql: student_to_teacher_ratio
+  water_filtration_system_type:
+    description: 'TEXT. Primary technology for drinking water purification. Unique values: Reverse Osmosis, UV, Carbon Filter, Direct.'
+    sql: water_filtration_system_type

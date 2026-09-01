@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__transportation_modes
+label: transportation_modes
+description: All columns of the public table transportation_modes.
+fields:
+- residential_data_large_public__transportation_modes.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,96 @@
+label: fan_interest_tags_map
+description: All columns of the public table fan_interest_tags_map.
+catalog: virtual_idol_large
+schema: public
+table_name: fan_interest_tags_map
+dimensions:
+  ad_targeting_segment:
+    description: 'TEXT. The advertising segment the fan has been placed in based on this interest. **NULL means the fan has not been assigned to a segment.** Example: Segment-E3.'
+    sql: '"AdTargetingSegment"'
+  data_source:
+    description: 'TEXT. The source of the data for this record. Example: User Provided.'
+    sql: '"DATA_SOURCE"'
+  date_added:
+    description: 'TIMESTAMP. The timestamp when this interest tag was first associated with the fan. Example: 10-23-2023 10:51.'
+    sql: '"DATE_ADDED"'
+  engagement_rate_with_topic:
+    description: 'REAL. The fan''s engagement rate with content related to this topic. Example: 0.224.'
+    sql: '"EngagementRateWithTopic"'
+  fan_account_identifier:
+    description: 'TEXT. Foreign key referencing the fan''s account. FK to fans(user_registry). Example: FAN27525.'
+    sql: '"Fan_Account_Identifier"'
+  inference_confidence_score:
+    description: 'REAL. A score from 0 to 1 indicating the confidence in the inferred interest level. Example: 0.86.'
+    sql: '"INFERENCE_CONFIDENCE_SCORE"'
+  is_negative_interest:
+    description: 'BOOLEAN. A flag indicating if the fan has a negative interest (e.g., has blocked this topic). Example: false.'
+    sql: '"IS_NEGATIVE_INTEREST"'
+  interest_tag_identifier:
+    description: 'BIGINT. Foreign key referencing the interest tag. FK to interest_tags(TAG_ID). Example: 44.'
+    sql: '"Interest_Tag_Identifier"'
+  is_primary_interest:
+    description: 'BOOLEAN. A flag indicating if this is a primary interest for the fan. Example: false.'
+    sql: '"IsPrimaryInterest"'
+  lifetime_value_contribution_dollar:
+    description: 'REAL. The estimated contribution of this interest to the fan''s lifetime value in USD. Example: 453.91.'
+    sql: '"LIFETIME_VALUE_CONTRIBUTION_dollar"'
+  opt_out_status:
+    description: 'BOOLEAN. A flag indicating if the fan has opted out of tracking for this interest. Example: false.'
+    sql: '"OptOutStatus"'
+  personalization_weight:
+    description: 'REAL. The weight of this interest in content personalization algorithms. Example: 0.17.'
+    sql: '"PERSONALIZATION_WEIGHT"'
+  related_events:
+    description: BIGINT ARRAY. A list of event IDs related to this interest. **NULL means no events are linked.**
+    sql: '"RELATED_EVENTS"'
+  related_purchases_count:
+    description: 'BIGINT. The number of purchases made by the fan related to this interest. **NULL means no related purchases have been recorded.** Example: 1.0.'
+    sql: '"RELATED_PURCHASES_COUNT"'
+  related_content_consumed_count:
+    description: 'BIGINT. The amount of content the fan has consumed related to this interest. Example: 122.'
+    sql: '"RelatedContentConsumedCount"'
+  related_idols:
+    description: 'TEXT ARRAY. A list of virtual idols related to this interest tag. Example: {VI7695}.'
+    sql: '"RelatedIdols"'
+  share_propensity_score:
+    description: 'REAL. A score predicting the likelihood the fan will share content on this topic. Example: 0.01.'
+    sql: '"SHARE_PROPENSITY_SCORE"'
+  seasonal_interest_score:
+    description: 'REAL. A score indicating if this interest is seasonal. **NULL means seasonality has not been determined.** Example: 0.88.'
+    sql: '"SeasonalInterestScore"'
+  source_of_interest:
+    description: 'TEXT. How the interest was determined. Possible values: Social Media, Inferred, Purchase History, Stream. Example: Social Media.'
+    sql: '"SourceOfInterest"'
+  updated_by_system:
+    description: 'BOOLEAN. A flag indicating if the last update was made by an automated system. Example: true.'
+    sql: '"UpdatedBySystem"'
+  date_updated:
+    description: 'TIMESTAMP. The timestamp of the last update to this record. Example: 08-23-2025 08:37.'
+    sql: date_updated
+  fan_interest_tag_id:
+    description: 'BIGINT. Unique identifier for the fan interest tag mapping. PK. Example: 1.'
+    sql: fan_interest_tag_id
+  interest_level:
+    description: 'REAL. A score representing the fan''s level of interest in the tag. Example: 2.3.'
+    sql: interest_level
+  last_activity_date:
+    description: 'DATE. The last date an activity related to this interest was observed. Example: 07-25-2025.'
+    sql: last_activity_date
+  notes:
+    description: 'TEXT. General notes about the fan''s interest. **NULL means no notes have been added.** Example: Frequently engages with art tutorials.'
+    sql: notes
+  privacy_level:
+    description: 'TEXT. The privacy level set by the fan for this interest data. Example: Aggregated.'
+    sql: privacy_level
+  purchase_propensity_score:
+    description: 'REAL. A score predicting the likelihood the fan will make a purchase related to this topic. Example: 0.35.'
+    sql: purchase_propensity_score
+  related_communities_joined:
+    description: 'BIGINT. The number of communities the fan has joined related to this interest. Example: 2.'
+    sql: related_communities_joined
+  time_spent_on_topic_minutes_min:
+    description: 'REAL. The total time in minutes the fan has spent on content related to this topic. Example: 3897.'
+    sql: time_spent_on_topic_minutes_min
+  trending_topic_relevance:
+    description: 'REAL. A score indicating the relevance of this interest to current trending topics. Example: 0.33.'
+    sql: trending_topic_relevance

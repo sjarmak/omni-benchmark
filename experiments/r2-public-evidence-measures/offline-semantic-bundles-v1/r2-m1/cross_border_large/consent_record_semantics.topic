@@ -1,0 +1,25 @@
+base_view: cross_border_large_public__consent_record
+label: ConsentRecord
+description: All columns of the public table ConsentRecord.
+fields:
+- cross_border_large_public__consent_record.*
+- cross_border_large_public__compliance.*
+- cross_border_large_public__data_flow.*
+- cross_border_large_public__data_profile.*
+- cross_border_large_public__data_subject_request.*
+- cross_border_large_public__dataset_catalog.*
+- cross_border_large_public__geo_jurisdiction.*
+- cross_border_large_public__risk_management.*
+- cross_border_large_public__security_profile.*
+- cross_border_large_public__vendor_management.*
+joins:
+  cross_border_large_public__data_subject_request:
+    cross_border_large_public__compliance:
+      cross_border_large_public__risk_management:
+        cross_border_large_public__data_flow: {}
+      cross_border_large_public__vendor_management:
+        cross_border_large_public__security_profile:
+          cross_border_large_public__data_profile: {}
+    cross_border_large_public__geo_jurisdiction: {}
+  cross_border_large_public__dataset_catalog: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

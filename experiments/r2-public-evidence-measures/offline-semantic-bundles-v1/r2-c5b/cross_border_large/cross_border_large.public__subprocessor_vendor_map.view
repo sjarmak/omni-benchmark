@@ -1,0 +1,51 @@
+label: Subprocessor_Vendor_Map
+description: All columns of the public table Subprocessor_Vendor_Map.
+catalog: cross_border_large
+schema: public
+table_name: Subprocessor_Vendor_Map
+dimensions:
+  active:
+    description: BOOLEAN. Whether relationship is currently active Boolean flag (true/false).
+    sql: '"ACTIVE"'
+  data_categories_shared:
+    description: 'TEXT. Categories of data shared Possible values: PII, Financial, Health, Behavioral, Mixed.'
+    sql: '"DATA_CATEGORIES_SHARED"'
+  dpa_in_place:
+    description: BOOLEAN. Whether a DPA covers this relationship Boolean flag (true/false).
+    sql: '"DPA_IN_PLACE"'
+  effective_date:
+    description: DATE. Relationship effective date
+    sql: '"EFFECTIVE_DATE"'
+  notes:
+    description: TEXT. Additional notes **NULL means No additional notes.**
+    sql: '"NOTES"'
+  relationship_type:
+    description: 'TEXT. Nature of relationship Possible values: Primary Vendor, Sub-subprocessor, Affiliate, Joint Controller, Independent Controller.'
+    sql: '"RELATIONSHIP_TYPE"'
+  subprocessor_ref:
+    description: BIGINT. Foreign key referencing SubprocessorRegistry(SUBPROCESSOR_ID). Related subprocessor
+    sql: '"SUBPROCESSOR_REF"'
+  svm_id:
+    description: BIGINT. Primary key. Unique mapping identifier
+    sql: '"SVM_ID"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  data_flow_direction:
+    description: 'TEXT. Direction of data flow Possible values: Vendor to Sub, Sub to Vendor, Bidirectional.'
+    sql: data_flow_direction
+  data_volume_pct:
+    description: 'REAL. Percentage of total data volume shared Typical range: 0 to 100.'
+    sql: data_volume_pct
+  review_date:
+    description: DATE. Next review date
+    sql: review_date
+  risk_level:
+    description: 'TEXT. Risk level of this relationship Possible values: High, Medium, Low.'
+    sql: risk_level
+  vendor_ref:
+    description: BIGINT. Foreign key referencing VendorManagement(Vendor_Trace). Related vendor
+    sql: vendor_ref

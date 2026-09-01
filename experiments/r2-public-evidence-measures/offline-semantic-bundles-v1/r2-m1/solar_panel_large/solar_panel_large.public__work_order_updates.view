@@ -1,0 +1,33 @@
+label: work_order_updates
+description: All columns of the public table work_order_updates.
+catalog: solar_panel_large
+schema: public
+table_name: work_order_updates
+dimensions:
+  author_ref:
+    description: 'TEXT. FK -> technicians.TechNum. The technician who made the update. Example: T-101.'
+    sql: '"AuthorRef"'
+  comment:
+    description: 'TEXT. A text comment describing the update. Example: New order created from alert PV937101..'
+    sql: '"COMMENT"'
+  new_status:
+    description: 'TEXT. The status of the work order after this update. Possible values: Cancelled, Closed, In Progress, Open.'
+    sql: '"NEW_STATUS"'
+  reference_order:
+    description: 'TEXT. FK -> work_orders.OrderNum. The work order this update pertains to. Example: WO-1001.'
+    sql: '"ReferenceOrder"'
+  update_index:
+    description: 'BIGINT. Unique identifier for a single update to a work order. Example: 1.'
+    sql: '"UpdateIndex"'
+  previous_status:
+    description: 'TEXT. The status of the work order before this update. Possible values: In Progress, Open.'
+    sql: '"previousStatus"'
+  update_ts:
+    description: 'TIMESTAMP. Timestamp when the update was made. Example: 05/10/2023 09:15 AM.'
+    sql: update_ts
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct work_order_updates public identity values.
+    label: work_order_updates Count
+    sql: ${solar_panel_large_public__work_order_updates.update_index}

@@ -1,0 +1,66 @@
+label: api_quota_adjustments
+description: All columns of the public table api_quota_adjustments.
+catalog: fake_account_large
+schema: public
+table_name: api_quota_adjustments
+dimensions:
+  adjustment_code:
+    description: TEXT. Unique ID for the quota modification event.
+    sql: '"Adjustment_CODE"'
+  adjustment_reason_code:
+    description: 'TEXT. Reason for change (Upgrade, Overage, Promo). Unique values: UPGRADE, OVERAGE_BUY, SUPPORT_CREDIT, SYSTEM_COMP.'
+    sql: adjustment_reason_code
+  applied_timestamp_offset_sec:
+    description: 'INTEGER. Time of day adjustment was applied. Example: 50.'
+    sql: applied_timestamp_offset_sec
+  audit_trail_hash:
+    description: TEXT. Cryptographic hash of the change record.
+    sql: audit_trail_hash
+  auto_scale_policy_ref:
+    description: TEXT. Policy ID if auto-triggered. **NULL means Manual/One-off.**
+    sql: auto_scale_policy_ref
+  billing_cycle_impact_flag:
+    description: 'BOOLEAN. True if this affects the recurring invoice. Possible values: True, False.'
+    sql: billing_cycle_impact_flag
+  cost_impact_micros:
+    description: 'INTEGER. Financial cost of this adjustment. **NULL means Free adjustment.** Example: 5000000.'
+    sql: cost_impact_micros
+  credit_card_auth_ref:
+    description: TEXT. Reference to payment if purchased. **NULL means Not a paid adjustment.**
+    sql: credit_card_auth_ref
+  meter_ref:
+    description: TEXT. Reference to the daily metering record.
+    sql: meter_ref
+  new_limit_val:
+    description: 'INTEGER. Quota limit after adjustment. Example: 60000.'
+    sql: new_limit_val
+  notification_sent_flag:
+    description: 'BOOLEAN. True if user was emailed about the change. Possible values: True, False.'
+    sql: notification_sent_flag
+  previous_limit_val:
+    description: 'INTEGER. Quota limit before adjustment. Unique values: 10000, 50000, 100000.'
+    sql: previous_limit_val
+  quota_delta_count:
+    description: 'INTEGER. Change in allowed calls (positive or negative). Example: 1000.'
+    sql: quota_delta_count
+  risk_assessment_score:
+    description: 'REAL. Risk score of granting this extra quota. Example: 50.0.'
+    sql: risk_assessment_score
+  system_load_factor_pct:
+    description: 'REAL. Global API load at time of adjustment. Example: 60.'
+    sql: system_load_factor_pct
+  temporary_burst_flag:
+    description: 'BOOLEAN. True if this is a temporary capacity boost. Possible values: True, False.'
+    sql: temporary_burst_flag
+  throttle_release_flag:
+    description: 'BOOLEAN. True if this unlocked a currently throttled user. Possible values: True, False.'
+    sql: throttle_release_flag
+  trigger_source:
+    description: 'TEXT. Who initiated (User, Auto-Scale, Admin). Unique values: USER, AUTO, ADMIN.'
+    sql: trigger_source
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct api_quota_adjustments public identity values.
+    label: api_quota_adjustments Count
+    sql: ${fake_account_large_public__api_quota_adjustments.adjustment_code}

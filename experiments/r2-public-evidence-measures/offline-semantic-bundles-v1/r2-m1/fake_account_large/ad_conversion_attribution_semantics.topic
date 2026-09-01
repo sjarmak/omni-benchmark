@@ -1,0 +1,11 @@
+base_view: fake_account_large_public__ad_conversion_attribution
+label: ad_conversion_attribution
+description: All columns of the public table ad_conversion_attribution.
+fields:
+- fake_account_large_public__ad_conversion_attribution.*
+- fake_account_large_public__ad_bid_auctions.*
+- fake_account_large_public__ad_campaigns.*
+joins:
+  fake_account_large_public__ad_bid_auctions:
+    fake_account_large_public__ad_campaigns: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

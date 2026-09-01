@@ -1,0 +1,48 @@
+label: InsurancePolicies
+description: All columns of the public table InsurancePolicies.
+catalog: museum_artifact_large
+schema: public
+table_name: InsurancePolicies
+dimensions:
+  is_active:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: '"IS_ACTIVE"'
+  policy_id_code:
+    description: 'TEXT. No description provided. Example: AXA-CM-23-001.'
+    sql: '"POLICY_ID_CODE"'
+  policy_contract_num:
+    description: 'TEXT. No description provided. Example: POL-2023-001.'
+    sql: '"Policy_Contract_Num"'
+  end_date:
+    description: 'TEXT. No description provided. Example: 2023-08-16.'
+    sql: end_date
+  policy_financials:
+    description: JSONB column. Contains the financial details of an insurance policy, including the total coverage value, annual premium, and deductible, all in USD.
+    sql: policy_financials
+  policy_for_exhibition:
+    description: 'TEXT. No description provided. Example: EXH-2022-01.'
+    sql: policy_for_exhibition
+  policy_for_loan:
+    description: 'TEXT. No description provided. Example: L-2023-001.'
+    sql: policy_for_loan
+  policy_type:
+    description: 'TEXT. No description provided. Possible values: Exhibition, General Collection, Incoming Loan, Outgoing Loan.'
+    sql: policy_type
+  policy_updated_by:
+    description: 'TEXT. No description provided. Possible values: 11, 17, 50.'
+    sql: policy_updated_by
+  provider_name:
+    description: 'TEXT. No description provided. Example: AXA XL.'
+    sql: provider_name
+  start_date:
+    description: 'TEXT. No description provided. Example: 2023-02-13.'
+    sql: start_date
+  policy_financials_annual_premium_usd:
+    description: 'TEXT. No description provided. Example: 5000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(policy_financials, 'annual_premium_usd')
+  policy_financials_deductible_usd:
+    description: 'TEXT. No description provided. Possible values: 0.0, 1000.0, 10000.0, 15000.0, 20000.0, 2500.0, 25000.0, 5000.0, 50000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(policy_financials, 'deductible_usd')
+  policy_financials_total_coverage_value_usd:
+    description: 'TEXT. No description provided. Example: 1500000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(policy_financials, 'total_coverage_value_usd')

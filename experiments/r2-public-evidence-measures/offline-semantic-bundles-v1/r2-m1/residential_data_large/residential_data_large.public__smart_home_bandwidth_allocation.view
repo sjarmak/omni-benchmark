@@ -1,0 +1,72 @@
+label: Smart_Home_Bandwidth_Allocation
+description: All columns of the public table Smart_Home_Bandwidth_Allocation.
+catalog: residential_data_large
+schema: public
+table_name: Smart_Home_Bandwidth_Allocation
+dimensions:
+  bandwidth_usage_pk:
+    description: 'TEXT. Unique identifier for granular bandwidth allocation report. Example: SBA-1A2B3C.'
+    sql: '"Bandwidth_Usage_PK"'
+  comms_stats_fk:
+    description: TEXT. Reference to the base household telecommunication metrics.
+    sql: '"Comms_Stats_FK"'
+  active_connected_clients_count:
+    description: 'INTEGER. Number of devices currently communicating. Example: 50.'
+    sql: active_connected_clients_count
+  dns_resolution_time_ms:
+    description: 'REAL. Time taken to resolve domain names. **NULL means Local cache hit.** Example: 25.'
+    sql: dns_resolution_time_ms
+  firewall_packets_dropped_count:
+    description: 'INTEGER. Number of packets rejected by security rules. Example: 50.'
+    sql: firewall_packets_dropped_count
+  gaming_udp_traffic_mbps:
+    description: 'REAL. Low-latency UDP traffic for online gaming. **NULL means No gaming detected.** Example: 5.0.'
+    sql: gaming_udp_traffic_mbps
+  guest_network_traffic_mbps:
+    description: 'REAL. Bandwidth consumed by isolated guest SSID. **NULL means Guest network inactive.** Example: 2.0.'
+    sql: guest_network_traffic_mbps
+  iot_sensor_heartbeat_kbps:
+    description: 'REAL. Background traffic from low-power IoT devices. Example: 50.0.'
+    sql: iot_sensor_heartbeat_kbps
+  jitter_variation_ms:
+    description: 'REAL. Variance in packet arrival time. Example: 3.'
+    sql: jitter_variation_ms
+  mesh_node_hop_count:
+    description: 'INTEGER. Number of wireless hops for the busiest client. Unique values: 0, 1, 2, 3.'
+    sql: mesh_node_hop_count
+  packet_retransmission_rate:
+    description: 'REAL. Ratio of packets resent due to loss or collision. Example: 0.0.'
+    sql: packet_retransmission_rate
+  router_cpu_load_percent:
+    description: 'REAL. Processor utilization of the gateway device. Example: 30.'
+    sql: router_cpu_load_percent
+  router_memory_usage_mb:
+    description: 'REAL. RAM utilization of the residential gateway. Example: 256.'
+    sql: router_memory_usage_mb
+  signal_to_noise_ratio_db:
+    description: 'REAL. Average SNR for the primary router-to-client link. Example: 35.'
+    sql: signal_to_noise_ratio_db
+  software_update_burst_mbps:
+    description: 'REAL. Peak bandwidth utilized by OS or application updates. **NULL means No active updates.** Example: 50.0.'
+    sql: software_update_burst_mbps
+  streaming_video_traffic_mbps:
+    description: 'REAL. Throughput consumed by video streaming services. Example: 25.0.'
+    sql: streaming_video_traffic_mbps
+  upload_saturation_ratio:
+    description: 'REAL. Current upload usage divided by max capacity. Example: 50.0.'
+    sql: upload_saturation_ratio
+  upnp_service_count:
+    description: 'INTEGER. Number of active Universal Plug and Play port maps. **NULL means UPnP disabled for security.** Example: 50.'
+    sql: upnp_service_count
+  wifi_6_channel_utilization:
+    description: 'REAL. Percentage of the airtime utilized on the 5GHz/6GHz band. Example: 50.0.'
+    sql: wifi_6_channel_utilization
+  work_from_home_vpn_mbps:
+    description: 'REAL. Encrypted VPN tunnel traffic for remote work. **NULL means No active VPN session.** Example: 8.0.'
+    sql: work_from_home_vpn_mbps
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Smart_Home_Bandwidth_Allocation public identity values.
+    label: Smart_Home_Bandwidth_Allocation Count
+    sql: ${residential_data_large_public__smart_home_bandwidth_allocation.bandwidth_usage_pk}

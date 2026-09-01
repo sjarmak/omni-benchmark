@@ -1,0 +1,66 @@
+label: CalibrationVerificationTests
+description: All columns of the public table CalibrationVerificationTests.
+catalog: archeology_scan_large
+schema: public
+table_name: CalibrationVerificationTests
+dimensions:
+  calibration_verification_tests_id:
+    description: TEXT. Unique identifier for each calibration verification test.
+    sql: '"CalibrationVerificationTests_id"'
+  ambient_temperature_celsius:
+    description: 'REAL. Ambient temperature during test in Celsius. Example: 23.0.'
+    sql: ambient_temperature_celsius
+  automated_test:
+    description: 'BOOLEAN. Whether test was performed automatically or manually. Possible values: True, False.'
+    sql: automated_test
+  calibration_ref:
+    description: TEXT. Reference to the parent scan calibration record.
+    sql: calibration_ref
+  confidence_level_percent:
+    description: 'REAL. Statistical confidence level of test results. Example: 95.0.'
+    sql: confidence_level_percent
+  deviation_absolute:
+    description: 'REAL. Absolute deviation from target value. Example: 2.5.'
+    sql: deviation_absolute
+  deviation_percentage:
+    description: 'REAL. Percentage deviation from target value. Example: 1.5.'
+    sql: deviation_percentage
+  documentation_complete:
+    description: 'BOOLEAN. Whether all test documentation was completed. Possible values: True, False.'
+    sql: documentation_complete
+  iterations_performed:
+    description: 'INTEGER. Number of test iterations performed. Example: 50.'
+    sql: iterations_performed
+  measured_value:
+    description: 'REAL. Actual measured value during the test. Example: 50.0.'
+    sql: measured_value
+  next_verification_days:
+    description: 'INTEGER. Days until next scheduled verification test. Example: 50.'
+    sql: next_verification_days
+  recalibration_recommended:
+    description: 'BOOLEAN. Whether recalibration is recommended based on results. Possible values: True, False.'
+    sql: recalibration_recommended
+  reference_standard_used:
+    description: 'TEXT. Type of reference standard used for verification. Unique values: NIST Traceable, ISO Standard, Internal Reference, Manufacturer Standard, Third Party Certified.'
+    sql: reference_standard_used
+  standard_deviation:
+    description: 'REAL. Standard deviation across test iterations. Example: 0.8.'
+    sql: standard_deviation
+  target_value:
+    description: 'REAL. Expected target value for the test. Example: 50.0.'
+    sql: target_value
+  test_duration_minutes:
+    description: 'INTEGER. Total duration of the verification test in minutes. Example: 50.'
+    sql: test_duration_minutes
+  test_passed:
+    description: 'BOOLEAN. Whether the verification test passed criteria. Possible values: True, False.'
+    sql: test_passed
+  test_timestamp:
+    description: 'TIMESTAMP. Date and time when verification test was performed. Example: 2024-01-01 12:00:00.'
+    sql: test_timestamp
+  test_type:
+    description: 'TEXT. Type of verification test performed. Unique values: Accuracy, Precision, Repeatability, Linearity, Stability, Range.'
+    sql: test_type
+  tolerance_threshold:
+    description: 'REAL. Maximum allowable deviation threshold. Example: 50.0.'
+    sql: tolerance_threshold

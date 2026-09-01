@@ -1,0 +1,62 @@
+label: Content Activity
+description: Account-level content activity with public content-uniqueness context.
+catalog: fake_account_large
+schema: public
+table_name: content_activity
+dimensions:
+  content_uniqueness_score:
+    description: 'REAL. Content uniqueness score. Example: 0.858.'
+    label: Content Uniqueness Score
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(content_metrics, 'content_quality', 'content_uniqueness') AS DOUBLE PRECISION)
+    ai_context: 'content uniqueness scoring: Ranges from 0 to 1. Scores above 0.8 indicate highly unique content, while scores below 0.3 suggest duplicate or templated content.'
+  acct_slot:
+    description: TEXT. Account reference for content activity. PK. FK to accounts.
+    sql: acct_slot
+  content_metrics:
+    description: JSONB column. Packs post-rate, linguistic diversity, hashtag / mention patterns and media-sharing ratios into one JSONB blob for real-time content-quality scoring.
+    sql: content_metrics
+  content_metrics_content_quality_content_diversity:
+    description: 'REAL. Content diversity score. Example: 0.153.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'content_quality', 'content_diversity')
+  content_metrics_content_quality_content_similarity:
+    description: 'REAL. Content similarity score. Example: 0.789.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'content_quality', 'content_similarity')
+  content_metrics_content_quality_topic_entropy:
+    description: 'REAL. Top entity identification score. Example: 0.859.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'content_quality', 'topic_entropy')
+  content_metrics_language_tags_hashtag_pattern:
+    description: 'TEXT. Tag pattern description. Possible values: Normal, Random, Spam, Trending.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'language_tags', 'hashtag_pattern')
+  content_metrics_language_tags_hashtag_ratio:
+    description: 'REAL. Tag relevance score. Example: 0.829.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'language_tags', 'hashtag_ratio')
+  content_metrics_language_tags_language_count:
+    description: 'BIGINT. Number of languages used. Possible values: 1, 2, 3, 4, 5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'language_tags', 'language_count')
+  content_metrics_language_tags_mention_pattern:
+    description: 'TEXT. Mention pattern. Possible values: Normal, Random, Spam, Targeted.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'language_tags', 'mention_pattern')
+  content_metrics_language_tags_mention_ratio:
+    description: 'TEXT. Mention response rate. Example: 0.40%.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'language_tags', 'mention_ratio')
+  content_metrics_link_media_media_reuse_rate:
+    description: 'REAL. Media response rate. **NULL means media response rate not recorded.**. Example: 0.109.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'link_media', 'media_reuse_rate')
+  content_metrics_link_media_media_upload_rate:
+    description: 'REAL. Media upload rate. Example: 0.733.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'link_media', 'media_upload_rate')
+  content_metrics_link_media_url_diversity:
+    description: 'REAL. URL diversity score. Example: 0.028.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'link_media', 'url_diversity')
+  content_metrics_link_media_url_freq:
+    description: 'REAL. URL frequency in content. **NULL means URL frequency not recorded.**. Example: 0.734.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'link_media', 'url_freq')
+  content_metrics_posting_post_gap_variability:
+    description: 'REAL. Variation in post gaps. Example: 0.835.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'posting', 'post_gap_variability')
+  content_metrics_posting_posts_per_day:
+    description: 'REAL. Posting frequency. Example: 28.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'posting', 'posts_per_day')
+  content_metrics_posting_total_posts:
+    description: 'BIGINT. Total number of posts. Example: 3713.'
+    sql: JSONB_EXTRACT_PATH_TEXT(content_metrics, 'posting', 'total_posts')

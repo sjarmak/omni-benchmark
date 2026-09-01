@@ -1,0 +1,96 @@
+label: Vendor_Contract_Detail
+description: All columns of the public table Vendor_Contract_Detail.
+catalog: cross_border_large
+schema: public
+table_name: Vendor_Contract_Detail
+dimensions:
+  vcontract_detail_no:
+    description: 'BIGINT. Unique identifier for each contract detail record. Example: 1.'
+    sql: '"VCONTRACT_DETAIL_NO"'
+  contract_security_no:
+    description: 'BIGINT. Unique identifier for the contract''s security details. Example: 1023. **NULL means the contract security number is not assigned or recorded.**'
+    sql: contract_security_no
+  contract_sla_pack:
+    description: JSONB column. Groups commercial terms, SLA targets, regulatory addenda, and renewal/termination metadata for a vendor contract.
+    sql: contract_sla_pack
+  risk_code:
+    description: 'BIGINT. Unique identifier for the associated risk. Example: 4567.'
+    sql: risk_code
+  vendor_code:
+    description: 'BIGINT. Foreign key referencing VendorManagement(Vendor_Trace). Example: VT-0001.'
+    sql: vendor_code
+  contract_sla_pack_commercials_auto_renew:
+    description: 'TEXT. Whether the contract automatically renews. Possible values: Yes, No. Example: Yes. **NULL means auto-renewal status is not defined or recorded.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'commercials', 'auto_renew')
+  contract_sla_pack_commercials_contract_value_usd:
+    description: 'REAL. Total monetary value of the contract in USD. Example: 500000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'commercials', 'contract_value_usd')
+  contract_sla_pack_commercials_insurance_required_usd:
+    description: 'REAL. The amount of insurance coverage required in USD. Example: 1000000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'commercials', 'insurance_required_usd')
+  contract_sla_pack_commercials_payment_terms:
+    description: 'TEXT. Payment terms of the contract. Possible values: Net 30, Net 60, Net 90, Advance Payment, Upon Delivery. Example: Net 30.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'commercials', 'payment_terms')
+  contract_sla_pack_commercials_penalty_rate_pct:
+    description: 'REAL. The penalty rate as a percentage for SLA breaches. Example: 5.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'commercials', 'penalty_rate_pct')
+  contract_sla_pack_commercials_renewal_date:
+    description: 'DATE. The date when the contract is set to renew. Example: 2025/12/01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'commercials', 'renewal_date')
+  contract_sla_pack_commercials_termination_clause:
+    description: 'TEXT. The termination clause of the contract. Example: 30 Days Notice. **NULL means no termination clause was defined or recorded.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'commercials', 'termination_clause')
+  contract_sla_pack_compliance_addenda_audit_rights:
+    description: 'TEXT. The rights granted for auditing the vendor''s data. Possible values: Full, Read-only, None. Example: Full.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'compliance_addenda', 'audit_rights')
+  contract_sla_pack_compliance_addenda_bcr_status:
+    description: 'TEXT. Status of the Binding Corporate Rules (BCR). Possible values: Compliant, Non-Compliant, Pending. Example: Compliant.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'compliance_addenda', 'bcr_status')
+  contract_sla_pack_compliance_addenda_breach_notice_hours:
+    description: 'BIGINT. The number of hours required for breach notice. Example: 48.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'compliance_addenda', 'breach_notice_hours')
+  contract_sla_pack_compliance_addenda_change_control_proc:
+    description: 'TEXT. The change control process in place. Possible values: Standard, Custom, None. Example: Standard.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'compliance_addenda', 'change_control_proc')
+  contract_sla_pack_compliance_addenda_dpa_version:
+    description: 'TEXT. Version of the Data Processing Agreement (DPA). Example: 1.0. **NULL means the DPA version was not defined or recorded.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'compliance_addenda', 'dpa_version')
+  contract_sla_pack_compliance_addenda_scc_version:
+    description: 'TEXT. Version of the Standard Contractual Clauses (SCC) used. Example: v1.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'compliance_addenda', 'scc_version')
+  contract_sla_pack_compliance_addenda_security_addendum:
+    description: 'TEXT. Whether a security addendum is included. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'compliance_addenda', 'security_addendum')
+  contract_sla_pack_contract_ids_contract_id:
+    description: 'TEXT. Unique identifier for the contract. Example: CONTRACT-1023.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'contract_ids', 'contract_id')
+  contract_sla_pack_contract_ids_contract_title:
+    description: 'TEXT. Title or name of the contract. Example: Software License Agreement.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'contract_ids', 'contract_title')
+  contract_sla_pack_contract_ids_currency:
+    description: 'TEXT. The currency used in the contract. Possible values: USD, EUR, GBP, JPY, AUD. Example: USD.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'contract_ids', 'currency')
+  contract_sla_pack_service_sla_data_isolation:
+    description: 'TEXT. The level of data isolation in the contract. Possible values: High, Medium, Low. Example: High.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'service_sla', 'data_isolation')
+  contract_sla_pack_service_sla_data_location:
+    description: 'TEXT. The location where data is stored under the contract. Example: US-East.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'service_sla', 'data_location')
+  contract_sla_pack_service_sla_service_region:
+    description: 'TEXT. The region where the service is provided. Possible values: North America, Europe, Asia Pacific, South America, Middle East. Example: North America.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'service_sla', 'service_region')
+  contract_sla_pack_service_sla_sla_latency_ms:
+    description: 'REAL. SLA latency in milliseconds. Example: 150.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'service_sla', 'sla_latency_ms')
+  contract_sla_pack_service_sla_sla_throughput_mbps:
+    description: 'REAL. SLA throughput in megabits per second. Example: 1000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'service_sla', 'sla_throughput_mbps')
+  contract_sla_pack_service_sla_sla_uptime_pct:
+    description: 'REAL. Service Level Agreement (SLA) uptime percentage. Example: 99.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'service_sla', 'sla_uptime_pct')
+  contract_sla_pack_third_parties_subprocessor_count:
+    description: 'BIGINT. The number of subprocessors involved in the contract. Example: 2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'third_parties', 'subprocessor_count')
+  contract_sla_pack_third_parties_subprocessor_list:
+    description: 'JSONB. A list of subprocessors involved in the contract. Example: [Subprocessor-1, Subprocessor-2]. **NULL means no subprocessors were defined or recorded.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(contract_sla_pack, 'third_parties', 'subprocessor_list')

@@ -1,0 +1,84 @@
+label: star_catalog_entries
+description: All columns of the public table star_catalog_entries.
+catalog: planets_data_large
+schema: public
+table_name: star_catalog_entries
+dimensions:
+  alternative_identifiers:
+    description: 'text. Alternative names or identifiers for the star in the catalog. **NULL means no alternative identifiers were recorded.**. Possible values: 2MASS J23062928-0502285, GJ 699;Barnard''s Star, TYC 2652-1256-1;HD 164595.'
+    sql: '"ALTERNATIVE_IDENTIFIERS"'
+  calibration_uncertainty_estimate:
+    description: 'real. Estimated systematic uncertainty from calibration. **NULL means calibration uncertainty was not estimated.**. Possible values: 0.001, 0.003, 0.02.'
+    sql: '"CALIBRATION_UNCERTAINTY_ESTIMATE"'
+  catalog_identifier:
+    description: 'text. Unique identifier for the star within the specific catalog. Possible values: Gaia DR3 1234567890123456789, Gaia DR3 4472832130942575872, Kepler-452 b host, SIMBAD J154428.34-054343.2, TRAPPIST-1.'
+    sql: '"CatalogIdentifier"'
+  catalog_specific_flags:
+    description: 'text. Flags or quality indicators specific to this catalog. **NULL means no catalog-specific flags were set.**. Possible values: Flare star, Multiple observations, RUWE > 1.4.'
+    sql: '"CatalogSpecificFlags"'
+  contamination_probability:
+    description: 'real. Probability of source contamination or confusion (0.0 to 1.0). **NULL means contamination probability was not assessed.**. Possible values: 0.001, 0.005, 0.008, 0.02.'
+    sql: '"ContaminationProbability"'
+  cross_match_distance_arcseconds:
+    description: 'real. Angular distance between cross-matched positions in arcseconds. **NULL means cross-match distance was not calculated.**. Possible values: 0.001, 0.025, 0.08, 0.18.'
+    sql: '"CrossMatchDistance_arcseconds"'
+  data_quality_indicators:
+    description: 'text. Quality indicators for the catalog measurements. Possible values: {"astrometric_excess_noise": 0.15}, {"kepler_disp": 0.03}, {"phot_g_mean_flux_over_error": 2850}, {"photometric_scatter": 0.015}, {"reliability": 0.95}.'
+    sql: '"DATA_QUALITY_INDICATORS"'
+  discovery_survey:
+    description: 'text. Survey or program that originally discovered this star. **NULL means discovery survey was not recorded.**. Possible values: Gaia, Kepler Survey, TRAPPIST.'
+    sql: '"DISCOVERY_SURVEY"'
+  last_verification_date:
+    description: 'date. Date when catalog entry was last verified or updated. Possible values: 2023-09-20, 2023-09-30, 2023-10-25, 2023-11-18, 2023-11-20, 2023-12-10, 2023-12-15, 2023-12-18, 2024-01-15.'
+    sql: '"LAST_VERIFICATION_DATE"'
+  magnitude_differences:
+    description: 'text. Magnitude differences across different photometric bands. **NULL means magnitude differences were not calculated.**. Possible values: -0.001, 0.002, 0.08.'
+    sql: '"MagnitudeDifferences"'
+  position_offset_ra_arcseconds:
+    description: 'real. Right ascension position offset from reference in arcseconds. **NULL means position offset was not calculated.**. Possible values: -0.008, 0.002, 0.012.'
+    sql: '"POSITION_OFFSET_RA_arcseconds"'
+  proper_motion_significance:
+    description: 'real. Statistical significance of proper motion detection. **NULL means proper motion significance was not calculated.**. Possible values: 1256.3, 15.8.'
+    sql: '"ProperMotionSignificance"'
+  spectral_type_agreement:
+    description: 'boolean. Flag indicating agreement of spectral type with other catalogs. **NULL means spectral type comparison was not performed.**. Possible values: True.'
+    sql: '"SPECTRAL_TYPE_AGREEMENT"'
+  stellarlink:
+    description: 'bigint. Foreign key reference to the star record. FK to stars(STELLARREF). Example: 1.'
+    sql: '"STELLARLINK"'
+  simbad_identifier:
+    description: 'text. SIMBAD database identifier for the star. Possible values: GJ 699, HD 164595, Kepler-452, SIMBAD J154428.34-054343.2, TRAPPIST-1.'
+    sql: '"SimbadIdentifier"'
+  catalog_entry_ref:
+    description: 'bigint. Primary key identifier for star catalog entry records. PK. Possible values: 24001, 24002, 24003, 24004, 24005.'
+    sql: '"catalogEntryRef"'
+  catalog_link:
+    description: 'bigint. Foreign key reference to the astronomical catalog. FK to astronomical_catalogs(CATALOGREF). Possible values: 23001, 23002, 23003, 23005.'
+    sql: catalog_link
+  cross_match_quality:
+    description: 'real. Quality score for cross-matching between catalogs (0.0 to 1.0). Possible values: 0.87, 0.92, 0.94, 0.98, 0.99.'
+    sql: cross_match_quality
+  gaia_dr3_source_id:
+    description: 'bigint. Gaia Data Release 3 source identifier for cross-reference. **NULL means no Gaia DR3 cross-match was available.**. Possible values: 1.2345678901234568e+18, 4.4728321309425756e+18.'
+    sql: gaia_dr3_source_id
+  measurement_epochs:
+    description: 'text. Epochs when measurements were made for this catalog entry. **NULL means measurement epochs were not recorded.**. Possible values: {"epochs": ["various"]}, {"epochs": [2014.5,2017.0]}, {"quarters": ["Q1-Q17"]}.'
+    sql: measurement_epochs
+  notes:
+    description: 'text. Additional notes or comments about the catalog entry. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: notes
+  parallax_agreement:
+    description: 'boolean. Flag indicating agreement of parallax measurements. **NULL means parallax comparison was not performed.**. Possible values: True.'
+    sql: parallax_agreement
+  photometric_variability_detected:
+    description: 'boolean. Flag indicating detection of photometric variability. Possible values: False, True.'
+    sql: photometric_variability_detected
+  position_offset_dec_arcseconds:
+    description: 'real. Declination position offset from reference in arcseconds. **NULL means position offset was not calculated.**. Possible values: -0.025, 0.012, 0.045.'
+    sql: position_offset_dec_arcseconds
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct star_catalog_entries public identity values.
+    label: star_catalog_entries Count
+    sql: ${planets_data_large_public__star_catalog_entries.catalog_entry_ref}

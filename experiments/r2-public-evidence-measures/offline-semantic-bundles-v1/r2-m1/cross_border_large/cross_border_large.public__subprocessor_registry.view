@@ -1,0 +1,78 @@
+label: SubprocessorRegistry
+description: All columns of the public table SubprocessorRegistry.
+catalog: cross_border_large
+schema: public
+table_name: SubprocessorRegistry
+dimensions:
+  audit_right:
+    description: 'TEXT. Level of audit rights over subprocessor Possible values: Full, Limited, None.'
+    sql: '"AUDIT_RIGHT"'
+  data_location:
+    description: 'TEXT. Where subprocessor stores/processes data Possible values: EU, US, UK, APAC, Multiple.'
+    sql: '"DATA_LOCATION"'
+  dpa_signed:
+    description: BOOLEAN. Whether Data Processing Agreement is signed Boolean flag (true/false).
+    sql: '"DPA_SIGNED"'
+  entity_name:
+    description: 'TEXT. Legal name of the subprocessor Possible values: CloudCorp Ltd, DataProcess GmbH, SecureHost Inc, AnalyticsPro SAS, GlobalStore Pty, NetOps AB, TechServe BV.'
+    sql: '"ENTITY_NAME"'
+  iso_27001_certified:
+    description: BOOLEAN. Whether subprocessor holds ISO 27001 Boolean flag (true/false).
+    sql: '"ISO_27001_CERTIFIED"'
+  jurisdiction_ref:
+    description: BIGINT. Foreign key referencing Geo_Jurisdiction(JURISDICTION_CODE). Subprocessor jurisdiction
+    sql: '"JURISDICTION_REF"'
+  onboarding_date:
+    description: DATE. Date when subprocessor was onboarded
+    sql: '"ONBOARDING_DATE"'
+  risk_tier:
+    description: 'TEXT. Risk classification tier Possible values: Critical, High, Medium, Low.'
+    sql: '"RISK_TIER"'
+  scc_required:
+    description: BOOLEAN. Whether Standard Contractual Clauses are required Boolean flag (true/false).
+    sql: '"SCC_REQUIRED"'
+  security_score:
+    description: 'REAL. Security assessment score (0-10) Typical range: 0 to 10.'
+    sql: '"SECURITY_SCORE"'
+  subprocessor_id:
+    description: BIGINT. Primary key. Unique subprocessor identifier
+    sql: '"SUBPROCESSOR_ID"'
+  approval_status:
+    description: 'TEXT. Approval status Possible values: Approved, Conditional, Under Review, Suspended, Rejected.'
+    sql: '"approval_Status"'
+  contract_expiry:
+    description: DATE. Contract expiry date
+    sql: contract_expiry
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  dpa_effective_date:
+    description: DATE. DPA effective date **NULL means DPA not yet signed.**
+    sql: dpa_effective_date
+  last_audit_date:
+    description: DATE. Date of last audit **NULL means No audit conducted yet.**
+    sql: last_audit_date
+  scc_signed:
+    description: BOOLEAN. Whether SCCs have been signed Boolean flag (true/false).
+    sql: scc_signed
+  service_type:
+    description: 'TEXT. Type of service provided Possible values: Cloud Hosting, Data Processing, Analytics, Customer Support, Payment Processing, Email Delivery, Data Backup, Security Monitoring.'
+    sql: service_type
+  soc2_certified:
+    description: BOOLEAN. Whether subprocessor holds SOC 2 certification Boolean flag (true/false).
+    sql: soc2_certified
+  subprocessor_code:
+    description: TEXT. Subprocessor reference code
+    sql: subprocessor_code
+  uptime_sla_pct:
+    description: 'REAL. Contracted uptime SLA Typical range: 0 to 100.'
+    sql: uptime_sla_pct
+  vendor_ref:
+    description: BIGINT. Foreign key referencing VendorManagement(Vendor_Trace). Related vendor record
+    sql: vendor_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct SubprocessorRegistry public identity values.
+    label: SubprocessorRegistry Count
+    sql: ${cross_border_large_public__subprocessor_registry.subprocessor_id}

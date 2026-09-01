@@ -1,0 +1,60 @@
+label: CoCreationRoyaltySplits
+description: All columns of the public table CoCreationRoyaltySplits.
+catalog: virtual_idol_large
+schema: public
+table_name: CoCreationRoyaltySplits
+dimensions:
+  admin_approval_ref:
+    description: TEXT. Manager who OK'd split.
+    sql: admin_approval_ref
+  agreement_date:
+    description: TIMESTAMP. Date signed.
+    sql: agreement_date
+  contract_version:
+    description: TEXT. Legal doc version.
+    sql: contract_version
+  contribution_description:
+    description: TEXT. What they did.
+    sql: contribution_description
+  contributor_fan_ref:
+    description: TEXT. FK to fans.user_registry.
+    sql: contributor_fan_ref
+  digital_signature_hash:
+    description: TEXT. Proof of agreement.
+    sql: digital_signature_hash
+  is_active:
+    description: 'BOOLEAN. True if valid. Possible values: True, False.'
+    sql: is_active
+  last_payout_date:
+    description: TIMESTAMP. Date of last check. **NULL means data unavailable.**
+    sql: last_payout_date
+  min_payout_threshold_usd:
+    description: 'REAL. Min balance to withdraw. Example: 50.0.'
+    sql: min_payout_threshold_usd
+  payout_method:
+    description: 'TEXT. PayPal, Crypto, Store Credit. Unique values: Store Credit, PayPal.'
+    sql: payout_method
+  performance_rights_org:
+    description: 'TEXT. ASCAP, BMI. **NULL means data unavailable.** Unique values: ASCAP, BMI, None.'
+    sql: performance_rights_org
+  role_type:
+    description: 'TEXT. Lyricist, Composer, Voter. Unique values: Lyricist, Composer.'
+    sql: role_type
+  session_ref:
+    description: TEXT. FK to CollaborativeSongWritingSessions.
+    sql: session_ref
+  share_percentage:
+    description: 'REAL. Percent ownership (0-100). Example: 5.'
+    sql: share_percentage
+  split_id:
+    description: TEXT. Unique ID for the royalty agreement.
+    sql: split_id
+  tax_form_status:
+    description: 'TEXT. W8-BEN, W9, Missing. Unique values: Submitted, Pending.'
+    sql: tax_form_status
+  total_earnings_paid_usd:
+    description: 'REAL. Cumulative payout. Example: 50.'
+    sql: total_earnings_paid_usd
+  wallet_address_hash:
+    description: TEXT. Encrypted payment destination. **NULL means data unavailable.**
+    sql: wallet_address_hash

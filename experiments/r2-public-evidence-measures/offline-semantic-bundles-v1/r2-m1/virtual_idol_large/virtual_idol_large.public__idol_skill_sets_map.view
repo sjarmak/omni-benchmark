@@ -1,0 +1,57 @@
+label: idol_skill_sets_map
+description: All columns of the public table idol_skill_sets_map.
+catalog: virtual_idol_large
+schema: public
+table_name: idol_skill_sets_map
+dimensions:
+  assessed_by:
+    description: 'TEXT. The name of the person who assessed the skill. **NULL means the skill has not been formally assessed or the assessor is not recorded.** Example: Mei Vector.'
+    sql: '"ASSESSED_BY"'
+  certification_body:
+    description: Organization or body that issued the skill certification.
+    sql: '"CERTIFICATION_BODY"'
+  fan_feedback_on_skill:
+    description: 'TEXT. A summary of fan feedback regarding this skill. **NULL means no significant fan feedback has been recorded.** Example: Known for incredibly detailed work..'
+    sql: '"FanFeedbackOnSkill"'
+  idol_record_identifier:
+    description: 'TEXT. Foreign key referencing the virtual idol. FK to virtualidols(entity_reg). Example: VI8895.'
+    sql: '"Idol_Record_Identifier"'
+  is_certified:
+    description: Boolean indicating if the idol holds a certification for this skill.
+    sql: '"IsCertified"'
+  last_assessed_date:
+    description: 'DATE. The date the idol''s skill was last assessed. **NULL means the skill has not been formally assessed.** Example: Aug 20, 2025.'
+    sql: '"LastAssessedDate"'
+  practical_experience_years:
+    description: 'REAL. The years of practical experience the idol has with this skill. Example: 4.0.'
+    sql: '"PRACTICAL_EXPERIENCE_years"'
+  skill_definition_identifier:
+    description: 'BIGINT. Foreign key referencing the skill. FK to skills(skill_id). Example: 39.'
+    sql: '"Skill_Definition_Identifier"'
+  training_hours_hr:
+    description: 'REAL. The number of hours the idol has trained in this skill. Example: 331.'
+    sql: '"TrainingHours_hr"'
+  certification_details:
+    description: JSON string containing certification body, date, and status.
+    sql: certification_details
+  idol_skill_id:
+    description: 'BIGINT. Unique identifier for the idol-skill mapping. PK. Example: 1.'
+    sql: idol_skill_id
+  improvement_plan:
+    description: 'TEXT. The plan for improving this skill. **NULL means no formal improvement plan is in place.** Example: Focus on breath control..'
+    sql: improvement_plan
+  next_assessment_date:
+    description: 'DATE. The date for the next scheduled assessment. **NULL means no future assessment is scheduled.** Example: Feb 16, 2026.'
+    sql: next_assessment_date
+  proficiency_level:
+    description: 'TEXT. The idol''s proficiency level in the skill. Possible values: Beginner, Intermediate, Advanced, Expert. Example: Beginner.'
+    sql: proficiency_level
+  self_assessment_score:
+    description: 'REAL. The idol''s self-assessed score for this skill. Example: 8.'
+    sql: self_assessment_score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct idol_skill_sets_map public identity values.
+    label: idol_skill_sets_map Count
+    sql: ${virtual_idol_large_public__idol_skill_sets_map.idol_skill_id}

@@ -1,0 +1,111 @@
+label: driver_profiles
+description: All columns of the public table driver_profiles.
+catalog: sports_events_large
+schema: public
+table_name: driver_profiles
+dimensions:
+  driver_profile_code:
+    description: BIGSERIAL. Surrogate primary key for driver_profiles rows. PK.
+    sql: '"DRIVER_Profile_Code"'
+  debut_year:
+    description: 'BIGINT. Year of the driver’s debut in professional racing. Example: 2018.'
+    sql: '"DebutYear"'
+  dominant_hand:
+    description: 'TEXT. Dominant hand of the driver. Possible values: right, left. Example: right.'
+    sql: '"DominantHand"'
+  extra_json:
+    description: 'JSONB. Free-form JSON with additional profile attributes. Example: {diet:plant-based}.'
+    sql: '"Extra_JSON"'
+  height_cm:
+    description: 'REAL. Driver height in centimeters. Range 150.0–200.0. Example: 182.5.'
+    sql: '"Height_cm"'
+  hometown_city:
+    description: 'TEXT. Driver’s hometown city. Example: Stevenage.'
+    sql: '"HometownCity"'
+  weight_kg:
+    description: 'REAL. Driver weight in kilograms. Range 50.0–95.0. Example: 72.3.'
+    sql: '"Weight_KG"'
+  driver_brand_presence_kit:
+    description: JSONB column. Collects public-facing/brand, representation, gear, rights/policy, comms reputation, languages/licenses, and audit stamp for a driver.
+    sql: driver_brand_presence_kit
+  drv_ref:
+    description: 'INTEGER. Foreign key referencing drivers.drv_main. FK → drivers(drv_main). Example: 2.'
+    sql: '"drvREF"'
+  hometown_country:
+    description: 'TEXT. Country code of the hometown. Example: UK.'
+    sql: hometown_country
+  driver_brand_presence_kit_audit_stamp_last_updated:
+    description: 'TIMESTAMP. Last update timestamp. Example: 2024-02-01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'AuditStamp', 'Last_Updated')
+  driver_brand_presence_kit_comms_reputation_charity_affiliation:
+    description: 'TEXT. Charity or foundation affiliation. **NULL means no charity affiliation is recorded.** Example: STEM Foundation.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'CommsReputation', 'CharityAffiliation')
+  driver_brand_presence_kit_comms_reputation_fan_sentiment_1_10:
+    description: 'REAL. Fan sentiment rating (1–10). Example: 9.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'CommsReputation', 'FanSentiment_1_10')
+  driver_brand_presence_kit_comms_reputation_notes:
+    description: 'TEXT. Additional notes on preferences or requirements. **NULL means no notes were recorded.** Example: Prefers neutral colors.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'CommsReputation', 'Notes_')
+  driver_brand_presence_kit_comms_reputation_press_rating_1_10:
+    description: 'REAL. Media press-friendliness rating (1–10). Example: 8.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'CommsReputation', 'PressRating_1_10')
+  driver_brand_presence_kit_comms_reputation_public_speaking:
+    description: 'TEXT. Public speaking skill level. Possible values: basic, intermediate, advanced. Example: advanced.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'CommsReputation', 'Public_Speaking')
+  driver_brand_presence_kit_gear_pack_helmet_brand:
+    description: 'TEXT. Brand of racing helmet used. Possible values: Bell, Arai, Schuberth. Example: Bell.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'GearPack', 'HelmetBrand')
+  driver_brand_presence_kit_gear_pack_suit_brand:
+    description: 'TEXT. Brand of racing suit used. Possible values: Alpinestars, OMP, Sparco. Example: Alpinestars.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'GearPack', 'SUIT_BRAND')
+  driver_brand_presence_kit_gear_pack_shoe_brand:
+    description: 'TEXT. Brand of racing shoes used. Possible values: Puma, Nike, Adidas. Example: Puma.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'GearPack', 'ShoeBrand')
+  driver_brand_presence_kit_gear_pack_sim_rig_brand:
+    description: 'TEXT. Simulator rig brand used for practice. Possible values: Fanatec, Simucube, Logitech. Example: Fanatec.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'GearPack', 'SimRigBrand')
+  driver_brand_presence_kit_gear_pack_sim_hours_week:
+    description: 'REAL. Average number of simulation training hours per week. Example: 6.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'GearPack', 'simHours_Week')
+  driver_brand_presence_kit_lang_licenses_languages_json:
+    description: 'JSONB. Languages spoken by the driver, keyed by ISO codes. Example: {en:true,es:true}.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'LangLicenses', 'LANGUAGES_JSON')
+  driver_brand_presence_kit_lang_licenses_licenses_json:
+    description: 'JSONB. Licenses held by the driver. Example: {FIA Super Licence:true}.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'LangLicenses', 'licensesJSON')
+  driver_brand_presence_kit_public_facing_instagram_handle:
+    description: 'TEXT. Driver’s Instagram handle. Example: @racer2_official.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'PublicFacing', 'Instagram_Handle')
+  driver_brand_presence_kit_public_facing_merch_store_url:
+    description: 'TEXT. URL of the official driver merchandise store. **NULL means the driver has no merchandise store.** Example: http://store.example.com/2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'PublicFacing', 'MerchStoreURL')
+  driver_brand_presence_kit_public_facing_personal_site_url:
+    description: 'TEXT. Driver’s official personal website URL. Example: http://driver2.com.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'PublicFacing', 'PersonalSiteUrl')
+  driver_brand_presence_kit_public_facing_tik_tok_handle:
+    description: 'TEXT. Driver’s TikTok handle. Example: @racer2speed.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'PublicFacing', 'TikTok_Handle')
+  driver_brand_presence_kit_public_facing_twitch_handle:
+    description: 'TEXT. Driver’s Twitch handle. Example: @racer2_streams.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'PublicFacing', 'Twitch_Handle')
+  driver_brand_presence_kit_public_facing_twitter_handle:
+    description: 'TEXT. Driver’s Twitter/X handle. Example: @Racer2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'PublicFacing', 'Twitter_Handle')
+  driver_brand_presence_kit_public_facing_youtube_handle:
+    description: 'TEXT. Driver’s YouTube handle. Example: @racer2YT.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'PublicFacing', 'YOUTUBE_Handle')
+  driver_brand_presence_kit_representation_agent_company:
+    description: 'TEXT. Agency or representation company of the driver. **NULL means the driver does not have agency representation.** Example: CAA.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'Representation', 'AgentCompany')
+  driver_brand_presence_kit_representation_manager_name:
+    description: 'TEXT. Name of the driver’s personal manager. **NULL means the driver is self-managed or manager data is not provided.** Example: Manager X.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'Representation', 'ManagerName')
+  driver_brand_presence_kit_rights_policy_data_rights_scope:
+    description: 'TEXT. Data rights access scope. Example: Telemetry excerpt only.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'RightsPolicy', 'DataRightsScope')
+  driver_brand_presence_kit_rights_policy_image_rights_scope:
+    description: 'TEXT. Image rights scope. Example: Non-exclusive.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'RightsPolicy', 'ImageRightsScope')
+  driver_brand_presence_kit_rights_policy_pr_restrictions:
+    description: 'TEXT. Public relations restrictions. Example: No ambush marketing.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_brand_presence_kit, 'RightsPolicy', 'PR_Restrictions')

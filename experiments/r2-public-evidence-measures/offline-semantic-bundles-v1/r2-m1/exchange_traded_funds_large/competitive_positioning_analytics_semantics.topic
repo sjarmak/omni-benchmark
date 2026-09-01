@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__competitive_positioning_analytics
+label: competitive_positioning_analytics
+description: All columns of the public table competitive_positioning_analytics.
+fields:
+- exchange_traded_funds_large_public__competitive_positioning_analytics.*
+joins: {}
+ai_context: This topic models no cross-table joins.

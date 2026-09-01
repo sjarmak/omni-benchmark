@@ -1,0 +1,66 @@
+label: warehouse_climate_sensor_logs
+description: All columns of the public table warehouse_climate_sensor_logs.
+catalog: reverse_logistics_large
+schema: public
+table_name: warehouse_climate_sensor_logs
+dimensions:
+  air_quality_index:
+    description: 'INTEGER. Air Quality Index (AQI) reading. Example: 50.'
+    sql: air_quality_index
+  alert_triggered_flag:
+    description: BOOLEAN. Indicates if this reading triggered an alert.
+    sql: alert_triggered_flag
+  barometric_pressure_hpa:
+    description: 'REAL. Atmospheric pressure in hPa. Example: 1013.'
+    sql: barometric_pressure_hpa
+  battery_voltage_v:
+    description: 'REAL. Current battery voltage of the sensor. Example: 3.7.'
+    sql: battery_voltage_v
+  co2_level_ppm:
+    description: 'REAL. Carbon Dioxide level in parts per million. Example: 400.'
+    sql: co2_level_ppm
+  dust_particle_count:
+    description: 'INTEGER. PM2.5 particle count. Example: 50.'
+    sql: dust_particle_count
+  energy_consumption_wh:
+    description: 'REAL. Cumulative energy consumed by the sensor. Example: 100.'
+    sql: energy_consumption_wh
+  firmware_version_str:
+    description: 'TEXT. Current firmware version of the sensor. Unique values: v1.0.4, v1.1.0, v2.0.0.'
+    sql: firmware_version_str
+  humidity_percent:
+    description: 'REAL. Relative humidity percentage. Example: 45.0.'
+    sql: humidity_percent
+  light_intensity_lux:
+    description: 'INTEGER. Ambient light intensity in Lux. Example: 500.'
+    sql: light_intensity_lux
+  maintenance_required_flag:
+    description: BOOLEAN. Indicates if sensor diagnostics suggest maintenance.
+    sql: maintenance_required_flag
+  monitored_warehouse_ref:
+    description: TEXT. Warehouse where the sensor is located.
+    sql: monitored_warehouse_ref
+  reading_timestamp:
+    description: 'TIMESTAMP. Exact time the reading was taken. Example: 2024-01-01 12:00:00.'
+    sql: reading_timestamp
+  sensor_device_code:
+    description: TEXT. Unique hardware ID of the sensor.
+    sql: sensor_device_code
+  sensor_log_sequence:
+    description: TEXT. Unique identifier for the sensor log entry.
+    sql: sensor_log_sequence
+  sensor_operational_status:
+    description: 'TEXT. Operational status of the device. Unique values: Active, Low Power, Error, Calibrating.'
+    sql: sensor_operational_status
+  signal_strength_dbm:
+    description: 'INTEGER. WiFi/network signal strength. Example: -60.'
+    sql: signal_strength_dbm
+  temperature_celsius:
+    description: 'REAL. Ambient temperature in Celsius. Example: 21.0.'
+    sql: temperature_celsius
+  vibration_level_g:
+    description: 'REAL. Measured vibration (g-force) indicating machinery usage. Example: 50.0.'
+    sql: vibration_level_g
+  zone_identifier_code:
+    description: TEXT. Zone within the warehouse (e.g., Z-01).
+    sql: zone_identifier_code

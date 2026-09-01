@@ -1,0 +1,15 @@
+base_view: sports_events_large_public__sprint_results
+label: sprint_results
+description: All columns of the public table sprint_results.
+fields:
+- sports_events_large_public__sprint_results.*
+- sports_events_large_public__circuits.*
+- sports_events_large_public__constructors.*
+- sports_events_large_public__drivers.*
+- sports_events_large_public__races.*
+joins:
+  sports_events_large_public__constructors: {}
+  sports_events_large_public__drivers: {}
+  sports_events_large_public__races:
+    sports_events_large_public__circuits: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,49 @@
+label: Artifact Sensitivity
+description: Artifact-sensitivity rows with light and humidity sensitivity context.
+catalog: museum_artifact_large
+schema: public
+table_name: SensitivityData
+dimensions:
+  light_sensitivity_level:
+    description: 'TEXT. Light sensitivity data for the artifact. **NULL means no light sensitivity data provided.**. Possible values: High, Low, Medium.'
+    label: Light Sensitivity Level
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'environment', 'light')
+    ai_context: 'Light Sensitivity Levels: Values include ''Low'' (can tolerate up to 300 lux), ''Medium'' (should be limited to 150-200 lux), and ''High'' (restricted to 50 lux or less).'
+  humidity_sensitivity_level:
+    description: 'TEXT. Humidity sensitivity data for the artifact. Possible values: High, Low, Medium.'
+    label: Humidity Sensitivity Level
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'environment', 'humidity')
+    ai_context: 'Humidity Sensitivity Levels: Values include ''Low'' (can tolerate a wide range of humidity), ''Medium'' (requires a controlled humidity range), and ''High'' (requires a very stable and narrow humidity range).'
+  art_link:
+    description: TEXT. Reference to the artifact in ArtifactsCore. FK to ArtifactsCore.ARTregID.
+    sql: '"ART_link"'
+  envsense:
+    description: 'TEXT. Environmental sensitivity identifier for the artifact. PK. Possible values: High, Low, Medium.'
+    sql: '"ENVsense"'
+  env_handling_sensitivity:
+    description: JSONB column. Bundles the full multi-factor sensitivity profile (environmental, pest, handling, transport, display, storage) needed for preventive-conservation decision-making.
+    sql: env_handling_sensitivity
+  env_handling_sensitivity_biological_pest:
+    description: 'TEXT. Pest sensitivity data for the artifact. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'biological', 'pest')
+  env_handling_sensitivity_context_display:
+    description: 'TEXT. Display sensitivity data for the artifact. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'context', 'display')
+  env_handling_sensitivity_context_storage:
+    description: 'TEXT. Storage sensitivity data for the artifact. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'context', 'storage')
+  env_handling_sensitivity_environment_pollutants:
+    description: 'TEXT. Pollution sensitivity data for the artifact. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'environment', 'pollutants')
+  env_handling_sensitivity_environment_temperature:
+    description: 'TEXT. Temperature sensitivity data for the artifact. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'environment', 'temperature')
+  env_handling_sensitivity_environment_vibration:
+    description: 'TEXT. Vibration sensitivity data for the artifact. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'environment', 'vibration')
+  env_handling_sensitivity_handling_transport_handling:
+    description: 'TEXT. Handling sensitivity data for the artifact. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'handling_transport', 'handling')
+  env_handling_sensitivity_handling_transport_transport:
+    description: 'TEXT. Sensitivity to transportation for the artifact. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(env_handling_sensitivity, 'handling_transport', 'transport')

@@ -1,0 +1,11 @@
+base_view: exchange_traded_funds_large_public__alternative_data_quality
+label: AlternativeDataQuality
+description: All columns of the public table AlternativeDataQuality.
+fields:
+- exchange_traded_funds_large_public__alternative_data_quality.*
+- exchange_traded_funds_large_public__alternative_data_signals.*
+- exchange_traded_funds_large_public__securities.*
+joins:
+  exchange_traded_funds_large_public__alternative_data_signals:
+    exchange_traded_funds_large_public__securities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

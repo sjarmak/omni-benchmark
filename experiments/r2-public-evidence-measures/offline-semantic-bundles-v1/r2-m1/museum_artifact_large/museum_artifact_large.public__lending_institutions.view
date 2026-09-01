@@ -1,0 +1,60 @@
+label: LendingInstitutions
+description: All columns of the public table LendingInstitutions.
+catalog: museum_artifact_large
+schema: public
+table_name: LendingInstitutions
+dimensions:
+  accreditation:
+    description: 'TEXT. No description provided. Example: AAM.'
+    sql: '"ACCREDITATION"'
+  contact_email:
+    description: 'TEXT. No description provided. Example: loans@metmuseum.org.'
+    sql: '"CONTACT_EMAIL"'
+  institution_type:
+    description: 'TEXT. No description provided. Possible values: Gallery, Museum, Private Collection, Private Foundation, Private Society, Science Museum, Specialist Museum, University Museum.'
+    sql: '"INSTITUTION_TYPE"'
+  institution_name:
+    description: 'TEXT. No description provided. Example: Metropolitan Museum of Art.'
+    sql: '"Institution_Name"'
+  institution_registry_num:
+    description: 'TEXT. No description provided. Example: 301.'
+    sql: '"Institution_Registry_Num"'
+  partnership_level:
+    description: 'TEXT. No description provided. Possible values: Special Partner, Tier 1, Tier 2, Tier 3.'
+    sql: '"PARTNERSHIP_LEVEL"'
+  primary_contact:
+    description: 'TEXT. No description provided. Example: Dr. Aaron Michaelson.'
+    sql: '"PrimaryContact"'
+  record_created:
+    description: 'TEXT. No description provided. Example: 2015-01-20T10:30:00Z.'
+    sql: '"RECORD_CREATED"'
+  contact_phone:
+    description: 'TEXT. No description provided. Example: 212-535-7710.'
+    sql: contact_phone
+  security_description:
+    description: 'TEXT. No description provided. Example: State-of-the-art systems, G4S guards on-site 24/7..'
+    sql: security_description
+  shipping_address:
+    description: JSONB column. Stores the complete shipping address for the lending institution.
+    sql: shipping_address
+  website:
+    description: 'TEXT. No description provided. Example: https://www.metmuseum.org.'
+    sql: website
+  shipping_address_address_shipping_address_1:
+    description: 'TEXT. No description provided. Example: 1000 5th Ave.'
+    sql: JSONB_EXTRACT_PATH_TEXT(shipping_address, 'address', 'SHIPPING_ADDRESS_1')
+  shipping_address_address_shipping_city:
+    description: 'TEXT. No description provided. Example: New York.'
+    sql: JSONB_EXTRACT_PATH_TEXT(shipping_address, 'address', 'SHIPPING_CITY')
+  shipping_address_address_shipping_postal:
+    description: 'TEXT. No description provided. Example: 10028.'
+    sql: JSONB_EXTRACT_PATH_TEXT(shipping_address, 'address', 'SHIPPING_POSTAL')
+  shipping_address_address_shipping_country:
+    description: 'TEXT. No description provided. Example: USA.'
+    sql: JSONB_EXTRACT_PATH_TEXT(shipping_address, 'address', 'shipping_country')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct LendingInstitutions public identity values.
+    label: LendingInstitutions Count
+    sql: ${museum_artifact_large_public__lending_institutions.institution_registry_num}

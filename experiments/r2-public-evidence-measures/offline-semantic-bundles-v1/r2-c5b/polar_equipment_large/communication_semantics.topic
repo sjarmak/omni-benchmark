@@ -1,0 +1,17 @@
+base_view: polar_equipment_large_public__communication
+label: Communication
+description: Communication records with reliability, stability, resilience, and data-completeness semantics.
+fields:
+- polar_equipment_large_public__communication.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__location.*
+- polar_equipment_large_public__operationmaintenance.*
+joins:
+  polar_equipment_large_public__equipment:
+    polar_equipment_large_public__equipmenttype: {}
+  polar_equipment_large_public__location: {}
+  polar_equipment_large_public__operationmaintenance: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields base_station_communication_stability_index, communication_network_resilience_assessment, communication_reliability_index, has_complete_bscsi_source_data rather than reconstructing their formulas.'

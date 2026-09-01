@@ -1,0 +1,105 @@
+label: warehouses
+description: All columns of the public table warehouses.
+catalog: reverse_logistics_large
+schema: public
+table_name: warehouses
+dimensions:
+  geographic_coordinates:
+    description: 'TEXT. The latitude and longitude of the warehouse. Example: -11.736648,-33.334628.'
+    sql: '"GEOGRAPHIC_COORDINATES"'
+  access_restrictions:
+    description: 'TEXT. Notes on any access restrictions. **NULL means there are no special access restrictions.** Example: Temperature-sensitive zone: maintain between 2-8°C.'
+    sql: access_restrictions
+  automation_level:
+    description: 'TEXT. The level of automation at the facility. Possible values: Manual, Semi-automated, Fully-automated.'
+    sql: automation_level
+  backup_power_status:
+    description: 'TEXT. The status of backup power systems. Possible values: Full, Partial, None.'
+    sql: backup_power_status
+  contact_phone:
+    description: 'TEXT. The primary contact phone number for the warehouse. Example: 555-656-2677.'
+    sql: contact_phone
+  email_address:
+    description: 'TEXT. The primary contact email address for the warehouse. Example: contact.wh1@examplecorp.com.'
+    sql: email_address
+  emergency_contact_info:
+    description: 'TEXT. Contact information for emergencies. Example: Security Desk: 555-752-7959.'
+    sql: emergency_contact_info
+  energy_efficiency_rating:
+    description: 'TEXT. The energy efficiency rating of the facility. Possible values: A, B, C.'
+    sql: energy_efficiency_rating
+  facility_details:
+    description: JSONB column. Contains key physical and operational metrics of the warehouse facility.
+    sql: facility_details
+  facility_type:
+    description: 'TEXT. The type of facility. Possible values: Distribution Center, Sorting Hub, Storage, Cross-Dock.'
+    sql: facility_type
+  insurance_policy_number:
+    description: 'TEXT. The insurance policy number covering the facility. **NULL means the policy number is pending or grouped under a corporate policy not listed here.** Example: POL-XW14WW76EA.'
+    sql: insurance_policy_number
+  is_climate_controlled:
+    description: 'BOOLEAN. Indicates if the warehouse has climate control. Possible values: True, False.'
+    sql: is_climate_controlled
+  last_safety_inspection:
+    description: 'DATE. The date of the last safety inspection. Example: 2025-02-01.'
+    sql: last_safety_inspection
+  location_address:
+    description: 'TEXT. The full physical address of the warehouse. Example: 1442 Oak St, Anytown, TX 18281.'
+    sql: location_address
+  manager_employee_id:
+    description: 'BIGINT. The employee ID of the warehouse manager. **NULL means the manager position is currently vacant or unassigned.** Example: 1076.0.'
+    sql: manager_employee_id
+  operating_hours:
+    description: 'TEXT. The operational hours of the warehouse. Possible values: 24/7, Mon-Fri 08:00-18:00, Mon-Sat 06:00-22:00.'
+    sql: operating_hours
+  property_lease_end_date:
+    description: 'DATE. The end date of the property lease. **NULL means the property is owned by the company, not leased.** Example: 2032-04-27.'
+    sql: property_lease_end_date
+  security_level:
+    description: 'TEXT. The security level of the facility. Possible values: High, Medium, Low.'
+    sql: security_level
+  seismic_bracing_rating:
+    description: 'TEXT. The facility''s seismic resistance rating. **NULL means a rating is not applicable or has not been assessed.** Possible values: High, Moderate, Low, None.'
+    sql: seismic_bracing_rating
+  solar_power_capacity_kw:
+    description: 'REAL. The power capacity of solar installations in kilowatts (kW). **NULL means the warehouse does not have a solar installation or its capacity is undocumented.** Example: 444.32.'
+    sql: solar_power_capacity_kw
+  specialized_handling_capabilities:
+    description: 'JSONB. A JSON object describing special handling capabilities. Example: {temperature_sensitive: false, hazardous_materials: false, oversized_items: true}.'
+    sql: specialized_handling_capabilities
+  telecommunication_provider:
+    description: 'TEXT. The telecommunications provider for the facility. Possible values: AT&T, Verizon, Comcast Business.'
+    sql: telecommunication_provider
+  warehouse_code:
+    description: 'TEXT. Unique identifier for the warehouse. PK. Example: WH-HKG-024.'
+    sql: warehouse_code
+  warehouse_name:
+    description: 'TEXT. The human-readable name of the warehouse. Example: East Logistics Hub.'
+    sql: warehouse_name
+  water_recycling_system:
+    description: 'BOOLEAN. Indicates if the facility has a water recycling system. Possible values: True, False.'
+    sql: water_recycling_system
+  year_opened:
+    description: 'BIGINT. The year the warehouse was opened. Example: 2009.'
+    sql: year_opened
+  facility_details_capacity_and_utilization_current_utilization_percent:
+    description: 'REAL. The percentage of storage capacity currently in use. Example: 57.72.'
+    sql: JSONB_EXTRACT_PATH_TEXT(facility_details, 'capacity_and_utilization', 'current_utilization_percent')
+  facility_details_capacity_and_utilization_daily_throughput_units:
+    description: 'BIGINT. The number of units the facility can process daily. Example: 444453.'
+    sql: JSONB_EXTRACT_PATH_TEXT(facility_details, 'capacity_and_utilization', 'daily_throughput_units')
+  facility_details_capacity_and_utilization_total_storage_m3:
+    description: 'REAL. Total storage capacity in cubic meters (m³). Example: 15402.98.'
+    sql: JSONB_EXTRACT_PATH_TEXT(facility_details, 'capacity_and_utilization', 'total_storage_m3')
+  facility_details_structural_info_floor_load_kg_per_m2:
+    description: 'BIGINT. The weight capacity of the floor in kg per square meter. Example: 2877.'
+    sql: JSONB_EXTRACT_PATH_TEXT(facility_details, 'structural_info', 'floor_load_kg_per_m2')
+  facility_details_structural_info_loading_docks:
+    description: 'BIGINT. The number of loading/unloading docks at the facility. Example: 85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(facility_details, 'structural_info', 'loading_docks')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct warehouses public identity values.
+    label: warehouses Count
+    sql: ${reverse_logistics_large_public__warehouses.warehouse_code}

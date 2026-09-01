@@ -1,0 +1,13 @@
+base_view: cross_border_large_public__retention_dataset_map
+label: Retention_Dataset_Map
+description: All columns of the public table Retention_Dataset_Map.
+fields:
+- cross_border_large_public__retention_dataset_map.*
+- cross_border_large_public__dataset_catalog.*
+- cross_border_large_public__geo_jurisdiction.*
+- cross_border_large_public__retention_schedule.*
+joins:
+  cross_border_large_public__dataset_catalog: {}
+  cross_border_large_public__retention_schedule:
+    cross_border_large_public__geo_jurisdiction: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

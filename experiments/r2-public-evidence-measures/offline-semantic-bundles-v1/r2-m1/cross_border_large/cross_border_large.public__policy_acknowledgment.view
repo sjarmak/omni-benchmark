@@ -1,0 +1,66 @@
+label: PolicyAcknowledgment
+description: All columns of the public table PolicyAcknowledgment.
+catalog: cross_border_large
+schema: public
+table_name: PolicyAcknowledgment
+dimensions:
+  acknowledged_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When acknowledgment was recorded **NULL means Not yet acknowledged.**
+    sql: '"ACKNOWLEDGED_AT"'
+  ack_id:
+    description: BIGINT. Primary key. Unique acknowledgment identifier
+    sql: '"ACK_ID"'
+  employee_name:
+    description: 'TEXT. Employee name Possible values: A. Mueller, B. Rossi, C. Park, D. Silva, E. Johansson, F. Wagner, G. Martin, H. Nakamura.'
+    sql: '"EMPLOYEE_NAME"'
+  exemption_reason:
+    description: 'TEXT. Reason for exemption Possible values: On Leave, Contractor, Not Applicable. **NULL means No exemption.**'
+    sql: '"EXEMPTION_REASON"'
+  overdue:
+    description: BOOLEAN. Whether acknowledgment is overdue Boolean flag (true/false).
+    sql: '"OVERDUE"'
+  policy_ref:
+    description: BIGINT. Foreign key referencing PolicyVersion(POLICY_VERSION_ID). Related policy version
+    sql: '"POLICY_REF"'
+  quiz_passed:
+    description: BOOLEAN. Whether comprehension quiz was passed Boolean flag (true/false). **NULL means No quiz required for this policy.**
+    sql: '"QUIZ_PASSED"'
+  reminder_count:
+    description: BIGINT. Number of reminders sent
+    sql: '"REMINDER_COUNT"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  ack_method:
+    description: 'TEXT. Method of acknowledgment Possible values: Digital Signature, Web Portal, Email Confirmation, Paper.'
+    sql: ack_method
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  deadline:
+    description: DATE. Acknowledgment deadline
+    sql: deadline
+  department:
+    description: 'TEXT. Employee department Possible values: Legal, IT, HR, Finance, Marketing, Operations, Engineering.'
+    sql: department
+  device_info:
+    description: JSONB. Device used for acknowledgment
+    sql: device_info
+  employee_code:
+    description: TEXT. Employee identifier
+    sql: employee_code
+  quiz_score_pct:
+    description: 'REAL. Quiz score if applicable Typical range: 0 to 100. **NULL means No quiz required.**'
+    sql: quiz_score_pct
+  reminder_sent:
+    description: BOOLEAN. Whether reminder was sent Boolean flag (true/false).
+    sql: reminder_sent
+  status:
+    description: 'TEXT. Acknowledgment status Possible values: Acknowledged, Pending, Overdue, Exempt.'
+    sql: status
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct PolicyAcknowledgment public identity values.
+    label: PolicyAcknowledgment Count
+    sql: ${cross_border_large_public__policy_acknowledgment.ack_id}

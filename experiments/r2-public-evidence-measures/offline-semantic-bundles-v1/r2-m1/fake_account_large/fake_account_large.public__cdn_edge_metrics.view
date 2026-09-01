@@ -1,0 +1,72 @@
+label: cdn_edge_metrics
+description: All columns of the public table cdn_edge_metrics.
+catalog: fake_account_large
+schema: public
+table_name: cdn_edge_metrics
+dimensions:
+  edge_metric_code:
+    description: TEXT. Unique identifier for the CDN aggregate report.
+    sql: '"EdgeMetric_CODE"'
+  avg_download_speed_mbps:
+    description: 'REAL. Average throughput observed by clients. Example: 25.0.'
+    sql: avg_download_speed_mbps
+  avg_tls_handshake_ms:
+    description: 'INTEGER. Time taken to negotiate SSL/TLS. Example: 30.'
+    sql: avg_tls_handshake_ms
+  avg_ttfb_ms:
+    description: 'INTEGER. Average Time To First Byte latency. Example: 45.'
+    sql: avg_ttfb_ms
+  bandwidth_egress_gb:
+    description: 'REAL. Total data transferred out to users. Example: 500.'
+    sql: bandwidth_egress_gb
+  cache_hit_ratio:
+    description: 'REAL. Percentage of requests served from edge cache. Example: 50.0.'
+    sql: cache_hit_ratio
+  cache_ttl_setting_sec:
+    description: 'INTEGER. Time To Live setting for this asset. Unique values: 3600, 86400, 604800.'
+    sql: cache_ttl_setting_sec
+  compression_ratio_val:
+    description: 'REAL. Ratio of original size to compressed transfer size. Example: 1.2.'
+    sql: compression_ratio_val
+  edge_pop_code:
+    description: 'TEXT. IATA-style code for the Point of Presence (e.g., LHR, JFK). Unique values: JFK, LHR, NRT, SIN, FRA.'
+    sql: edge_pop_code
+  error_4xx_count:
+    description: 'INTEGER. Count of client-side errors (Not Found, Forbidden). Example: 50.'
+    sql: error_4xx_count
+  error_5xx_count:
+    description: 'INTEGER. Count of server-side errors. Example: 50.'
+    sql: error_5xx_count
+  geo_country_iso:
+    description: 'TEXT. Dominant country code of traffic for this POP. Unique values: US, DE, JP, GB.'
+    sql: geo_country_iso
+  http_protocol_version:
+    description: 'TEXT. Dominant protocol (H2, H3, 1.1). Unique values: h2, h3, 1.1.'
+    sql: http_protocol_version
+  ipv6_traffic_pct:
+    description: 'REAL. Percentage of traffic using IPv6. Example: 50.0.'
+    sql: ipv6_traffic_pct
+  isp_asn_ref:
+    description: 'INTEGER. Autonomous System Number of the dominant ISP. Example: 50.'
+    sql: isp_asn_ref
+  media_asset_ref:
+    description: TEXT. Reference to the media file being distributed.
+    sql: media_asset_ref
+  mobile_network_traffic_pct:
+    description: 'REAL. Percentage of traffic originating from cellular networks. Example: 50.0.'
+    sql: mobile_network_traffic_pct
+  origin_fetch_time_avg_ms:
+    description: 'INTEGER. Time taken to fetch from origin on cache miss. **NULL means 100% cache hit.** Example: 200.'
+    sql: origin_fetch_time_avg_ms
+  purge_request_count:
+    description: 'INTEGER. Number of times this asset was manually cleared from cache. Example: 50.'
+    sql: purge_request_count
+  request_count_total:
+    description: 'INTEGER. Total HTTP requests for this asset at this node. Example: 10000.'
+    sql: request_count_total
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct cdn_edge_metrics public identity values.
+    label: cdn_edge_metrics Count
+    sql: ${fake_account_large_public__cdn_edge_metrics.edge_metric_code}

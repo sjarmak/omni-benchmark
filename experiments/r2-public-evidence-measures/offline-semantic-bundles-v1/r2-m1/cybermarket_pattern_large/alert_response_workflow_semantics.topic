@@ -1,0 +1,19 @@
+base_view: cybermarket_pattern_large_public__alert_response_workflow
+label: AlertResponseWorkflow
+description: All columns of the public table AlertResponseWorkflow.
+fields:
+- cybermarket_pattern_large_public__alert_response_workflow.*
+- cybermarket_pattern_large_public__alert_escalation_history.*
+- cybermarket_pattern_large_public__alerts.*
+- cybermarket_pattern_large_public__buyers.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__transactions.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__alert_escalation_history:
+    cybermarket_pattern_large_public__alerts:
+      cybermarket_pattern_large_public__transactions:
+        cybermarket_pattern_large_public__buyers: {}
+        cybermarket_pattern_large_public__markets: {}
+        cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

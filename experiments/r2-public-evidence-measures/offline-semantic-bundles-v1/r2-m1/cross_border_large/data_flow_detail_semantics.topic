@@ -1,0 +1,9 @@
+base_view: cross_border_large_public__data_flow_detail
+label: DataFlow_Detail
+description: All columns of the public table DataFlow_Detail.
+fields:
+- cross_border_large_public__data_flow_detail.*
+- cross_border_large_public__data_flow.*
+joins:
+  cross_border_large_public__data_flow: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

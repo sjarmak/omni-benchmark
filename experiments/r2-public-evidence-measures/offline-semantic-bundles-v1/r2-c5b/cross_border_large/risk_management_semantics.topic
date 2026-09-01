@@ -1,0 +1,9 @@
+base_view: cross_border_large_public__risk_management
+label: RiskManagement
+description: All columns of the public table RiskManagement.
+fields:
+- cross_border_large_public__risk_management.*
+- cross_border_large_public__data_flow.*
+joins:
+  cross_border_large_public__data_flow: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

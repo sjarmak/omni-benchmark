@@ -1,0 +1,93 @@
+label: household_transportation_usage
+description: All columns of the public table household_transportation_usage.
+catalog: residential_data_large
+schema: public
+table_name: household_transportation_usage
+dimensions:
+  alternative_mode_available:
+    description: 'TEXT. Availability of alternative transportation modes. **NULL means alternative options not assessed.**. Possible values: No, Yes.'
+    sql: '"ALTERNATIVE_mode_available"'
+  comfort_rating:
+    description: 'REAL. Comfort rating for transportation mode on 1-10 scale. **NULL means comfort not assessed.**. Possible values: -2.0, -5.0, 6.5, 7.2, 8.5, 8.8.'
+    sql: '"COMFORT_rating"'
+  environmental_consciousness_score:
+    description: 'BIGINT. Environmental consciousness rating for transportation choice. **NULL means environmental awareness not assessed.**. Possible values: 6.0, 7.0, 8.0, 9.0.'
+    sql: '"ENVIRONMENTAL_consciousness_score"'
+  insurance_claims_count:
+    description: 'BIGINT. Number of insurance claims filed. **NULL means insurance claims not tracked.**. Possible values: 0.0, 1.0.'
+    sql: '"INSURANCE_claims_count"'
+  learning_curve_months:
+    description: 'REAL. Time required to become proficient in months. **NULL means learning curve not applicable or measured.**. Possible values: 0.0, 0.5, 1.8, 2.5.'
+    sql: '"Learning_Curve_Months"'
+  maintenance_issues_per_year:
+    description: 'BIGINT. Number of maintenance issues per year. **NULL means maintenance tracking not available.**. Possible values: 0.0, 1.0, 2.0.'
+    sql: '"Maintenance_Issues_Per_Year"'
+  purpose_distribution_recreation_percent:
+    description: 'REAL. Percentage of trips for recreation purposes. **NULL means recreation trip tracking not maintained.**. Possible values: 10.0, 25.0, 5.0.'
+    sql: '"PURPOSE_distribution_recreation_percent"'
+  purpose_distribution_shopping_percent:
+    description: 'REAL. Percentage of trips for shopping purposes. **NULL means shopping trip data not tracked.**. Possible values: 15.0, 20.0, 25.0, 30.0, 40.0.'
+    sql: '"PURPOSE_distribution_shopping_percent"'
+  primary_user_position:
+    description: 'BIGINT. Position of primary user within household (1=head, 2=spouse, etc.). Possible values: 1, 2, 3.'
+    sql: '"Primary_User_Position"'
+  purpose_distribution_healthcare_percent:
+    description: 'REAL. Percentage of trips for healthcare purposes. **NULL means healthcare trip data not collected.**. Possible values: 10.0, 15.0, 5.0.'
+    sql: '"Purpose_Distribution_Healthcare_Percent"'
+  purpose_distribution_work_percent:
+    description: 'REAL. Percentage of trips for work purposes. **NULL means trip purpose not categorized.**. Possible values: 0.0, 20.0, 45.0, 60.0, 70.0.'
+    sql: '"Purpose_Distribution_Work_Percent"'
+  replacement_timeline_months:
+    description: 'BIGINT. Timeline for transportation replacement in months. **NULL means replacement timeline not established.**. Possible values: 0.0, 12.0, 18.0, 24.0.'
+    sql: '"Replacement_Timeline_Months"'
+  sharing_with_others_frequency:
+    description: 'BIGINT. Number of times per month transportation is shared with others. **NULL means sharing frequency not tracked.**. Possible values: 0.0, 1.0, 2.0, 3.0.'
+    sql: '"Sharing_With_Others_Frequency"'
+  time_saved_per_trip_minutes:
+    description: 'REAL. Time saved per trip compared to walking in minutes. **NULL means time savings not calculated.**. Possible values: 12.0, 15.0, 18.0, 22.0, 25.0.'
+    sql: '"Time_Saved_Per_Trip_Minutes"'
+  transportation_usage_household_ref:
+    description: 'BIGINT. Reference to household using transportation. FK to households(housenum). Possible values: 22, 242, 244, 4, 546, 547, 7.'
+    sql: '"Transportation_Usage_Household_Ref"'
+  transportation_usage_mode_key:
+    description: 'BIGINT. Reference to transportation mode used. FK to transportation_modes(Mode_ID). Possible values: 1, 2, 3, 4.'
+    sql: '"Transportation_Usage_Mode_Key"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  usage_frequency_per_week:
+    description: 'REAL. Number of times transportation is used per week. **NULL means usage frequency not tracked.**. Possible values: 10.0, 12.0, 14.0, 5.0, 8.5.'
+    sql: '"USAGE_frequency_per_week"'
+  usage_id:
+    description: 'BIGSERIAL. Primary key identifier for transportation usage record. PK. Possible values: 1, 2, 3, 4, 5, 6, 7.'
+    sql: '"Usage_ID"'
+  weather_impact_score:
+    description: 'BIGINT. Rating of weather impact on transportation usage. Possible values: 3, 4, 5, 6, 7, 8, 9.'
+    sql: '"WEATHER_impact_score"'
+  average_distance_per_trip_km:
+    description: 'REAL. Average distance per trip in kilometers. **NULL means trip distance not measured.**. Possible values: 12.8, 15.2, 2.8, 3.2, 6.5, 8.5.'
+    sql: '"average_distance_PER_trip_km"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: created_at
+  monthly_cost_brl:
+    description: 'REAL. Monthly transportation costs in Brazilian Real. **NULL means costs not tracked or calculated.**. Possible values: 220.0, 45.0, 580.0, 65.0, 85.0.'
+    sql: '"monthly_cost_BRL"'
+  purpose_distribution_education_percent:
+    description: 'REAL. Percentage of trips for education purposes. **NULL means education trip tracking not available.**. Possible values: 0.0, 10.0, 15.0, 25.0, 65.0, 80.0.'
+    sql: '"purpose_distribution_EDUCATION_percent"'
+  safety_concerns_count:
+    description: 'BIGINT. Number of safety concerns reported. **NULL means safety concerns not documented.**. Possible values: 0.0, 1.0, 2.0.'
+    sql: '"safety_concerns_COUNT"'
+  social_status_importance:
+    description: 'BIGINT. Importance of transportation for social status. **NULL means social status considerations not evaluated.**. Possible values: 1.0, 2.0, 3.0, 5.0, 7.0.'
+    sql: '"social_status_IMPORTANCE"'
+  storage_utilization_percent:
+    description: 'REAL. Percentage utilization of storage capacity. **NULL means storage utilization not measured.**. Possible values: 25.0, 60.0, 75.0, 85.0.'
+    sql: '"storage_utilization_PERCENT"'
+  theft_incidents_count:
+    description: 'BIGINT. Number of theft incidents experienced. **NULL means theft incidents not recorded.**. Possible values: 0.0, 1.0.'
+    sql: '"theft_incidents_COUNT"'
+  upgrade_plans:
+    description: 'TEXT. Plans for transportation upgrade or replacement. **NULL means upgrade plans not documented.**. Possible values: Better bike, Electric vehicle, New model, Upgrade to larger bike.'
+    sql: '"upgrade_PLANS"'

@@ -1,0 +1,66 @@
+label: SentimentKeywordTrends
+description: All columns of the public table SentimentKeywordTrends.
+catalog: virtual_idol_large
+schema: public
+table_name: SentimentKeywordTrends
+dimensions:
+  associated_emotion:
+    description: 'TEXT. Joy, Anger, Surprise. **NULL means data unavailable.** Unique values: Joy, Anger, Anticipation.'
+    sql: associated_emotion
+  blacklist_status:
+    description: 'BOOLEAN. True if word is banned. Possible values: True, False.'
+    sql: blacklist_status
+  context_category:
+    description: 'TEXT. Appearance, Performance, Merch. Unique values: Visuals, Audio, Price.'
+    sql: context_category
+  ctr_correlation:
+    description: 'REAL. Correlation with click-throughs. **NULL means data unavailable.** Example: 0.1.'
+    sql: ctr_correlation
+  first_seen_timestamp:
+    description: 'TIMESTAMP. When word appeared. Example: 2024-01-01 12:00:00.'
+    sql: first_seen_timestamp
+  frequency_count:
+    description: 'INTEGER. Mentions in this snapshot. Example: 100.'
+    sql: frequency_count
+  growth_rate_pct:
+    description: 'REAL. Change since last snapshot. Example: 5.'
+    sql: growth_rate_pct
+  is_hashtag:
+    description: 'BOOLEAN. True if starts with #. Possible values: True, False.'
+    sql: is_hashtag
+  is_slang:
+    description: 'BOOLEAN. True if non-dictionary word. Possible values: True, False.'
+    sql: is_slang
+  keyword_length:
+    description: 'INTEGER. Char count. Example: 8.'
+    sql: keyword_length
+  keyword_term:
+    description: 'TEXT. The specific word/hashtag. Unique values: #Cute, #Fail, Voice, Concert.'
+    sql: keyword_term
+  platform_specific_flag:
+    description: 'BOOLEAN. True if only on one platform. Possible values: True, False.'
+    sql: platform_specific_flag
+  sentiment_score_avg:
+    description: 'REAL. Avg sentiment for this word (-1 to 1). Example: 0.2.'
+    sql: sentiment_score_avg
+  snapshot_ref:
+    description: TEXT. FK to SocialSentimentTrendSnapshots.
+    sql: snapshot_ref
+  spam_likelihood:
+    description: 'REAL. Prob it''s bot spam. Example: 50.0.'
+    sql: spam_likelihood
+  top_user_influencer:
+    description: TEXT. User who popularized it.
+    sql: top_user_influencer
+  translation_en:
+    description: TEXT. English translation if foreign. **NULL means data unavailable.**
+    sql: translation_en
+  trend_id:
+    description: TEXT. Unique ID for the keyword record.
+    sql: trend_id
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct SentimentKeywordTrends public identity values.
+    label: SentimentKeywordTrends Count
+    sql: ${virtual_idol_large_public__sentiment_keyword_trends.trend_id}

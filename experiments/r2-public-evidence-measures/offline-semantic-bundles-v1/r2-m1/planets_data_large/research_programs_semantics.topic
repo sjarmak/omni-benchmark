@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__research_programs
+label: research_programs
+description: All columns of the public table research_programs.
+fields:
+- planets_data_large_public__research_programs.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,23 @@
+base_view: virtual_idol_large_public__eventsandclub
+label: Events and Club
+description: Event participation records with row-level attendance semantics.
+fields:
+- virtual_idol_large_public__eventsandclub.*
+- virtual_idol_large_public__commerceandcollection.*
+- virtual_idol_large_public__engagement.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__interactions.*
+- virtual_idol_large_public__membershipandspending.*
+- virtual_idol_large_public__socialcommunity.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__membershipandspending:
+    virtual_idol_large_public__fans: {}
+  virtual_idol_large_public__socialcommunity:
+    virtual_idol_large_public__commerceandcollection: {}
+    virtual_idol_large_public__engagement:
+      virtual_idol_large_public__interactions:
+        virtual_idol_large_public__virtualidols: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields event_participation_score rather than reconstructing their formulas.'

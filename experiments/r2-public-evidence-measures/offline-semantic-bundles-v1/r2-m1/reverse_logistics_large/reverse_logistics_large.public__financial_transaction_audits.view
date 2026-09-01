@@ -1,0 +1,105 @@
+label: financial_transaction_audits
+description: All columns of the public table financial_transaction_audits.
+catalog: reverse_logistics_large
+schema: public
+table_name: financial_transaction_audits
+dimensions:
+  ip_address:
+    description: 'TEXT. The IP address from which the change was made. Example: 192.168.1.100.'
+    sql: '"IP_ADDRESS"'
+  anomaly_score:
+    description: 'REAL. A score indicating the likelihood that this change is an anomaly. **NULL means the change was not scored by an anomaly detection system.** Example: 0.834.'
+    sql: anomaly_score
+  audit_id:
+    description: 'BIGINT. Unique identifier for the audit record. PK. Example: 9000.'
+    sql: audit_id
+  audit_log_hash:
+    description: 'TEXT. A hash of the audit log data to ensure integrity. Example: MzQhq4gg1bQqbJj0ly6Yh7WkepIvnwab.'
+    sql: audit_log_hash
+  audit_priority:
+    description: 'BIGINT. The priority level of the audit. Example: 1.'
+    sql: audit_priority
+  audited_credit_reference:
+    description: 'TEXT. The credit reference number of the financial transaction being audited. FK to financial_management.creditref. Example: CM44391.'
+    sql: audited_credit_reference
+  authorization_code:
+    description: 'TEXT. An authorization code for the change, if required. Example: r6xmlqWo.'
+    sql: authorization_code
+  change_timestamp:
+    description: 'TIMESTAMP. The exact date and time the change was made. Example: 2025-07-24 06:36:12.'
+    sql: change_timestamp
+  change_type:
+    description: 'TEXT. The type of database operation. Possible values: INSERT, UPDATE, DELETE.'
+    sql: change_type
+  changed_by_user:
+    description: 'TEXT. The user ID of the person or system that made the change. Example: user1043.'
+    sql: changed_by_user
+  data_snapshot_after:
+    description: 'JSONB. A JSON snapshot of the data record after the change. Example: {status_code: 8siiv, amount: 129.99}.'
+    sql: data_snapshot_after
+  data_snapshot_before:
+    description: 'JSONB. A JSON snapshot of the data record before the change. Example: {status_code: Ah94g, amount: 129.99}.'
+    sql: data_snapshot_before
+  discrepancy_flag:
+    description: 'BOOLEAN. A flag indicating if a discrepancy was found. Example: False.'
+    sql: discrepancy_flag
+  field_changed:
+    description: The specific field name that was modified during the transaction audit.
+    sql: field_changed
+  financial_impact_assessment:
+    description: 'REAL. The assessed financial impact of the change. Example: 35.76.'
+    sql: financial_impact_assessment
+  geographical_location_of_change:
+    description: 'TEXT. The geographical location from where the change was made. Example: New York, US.'
+    sql: geographical_location_of_change
+  is_automated_change:
+    description: 'BOOLEAN. Indicates if the change was made by an automated system. Example: False.'
+    sql: is_automated_change
+  new_value:
+    description: 'TEXT. The value of the field after the change. Example: 8siiv.'
+    sql: new_value
+  old_value:
+    description: 'TEXT. The value of the field before the change. **NULL means the change was an INSERT operation.** Example: fWXOa.'
+    sql: old_value
+  reason_for_change:
+    description: 'TEXT. The reason for the data modification. Possible values: System correction, User request, Data entry error.'
+    sql: reason_for_change
+  regulatory_compliance_check:
+    description: 'TEXT. The status of a regulatory compliance check. Example: Pass.'
+    sql: regulatory_compliance_check
+  related_case_id:
+    description: 'TEXT. A related customer service case ID. FK to case_management.casetie. Example: RL886688.'
+    sql: related_case_id
+  rollback_possible:
+    description: 'BOOLEAN. Indicates if the change can be rolled back. Example: True.'
+    sql: rollback_possible
+  supporting_document_ref:
+    description: 'TEXT. A reference to any supporting documents. **NULL means no supporting documents were required.** Example: DOC-ecX1lskz.'
+    sql: supporting_document_ref
+  system_module:
+    description: 'TEXT. The system module where the change occurred. Example: Finance.'
+    sql: system_module
+  user_session_id:
+    description: 'TEXT. The session ID of the user who made the change. Example: UijgdFqt54WTYgG2.'
+    sql: user_session_id
+  verification_info:
+    description: JSONB column. Contains details about the audit verification process, including the status and auditor.
+    sql: verification_info
+  verified_by_auditor_id:
+    description: 'BIGINT. The employee ID of the auditor who verified the change. **NULL means the change has not yet been verified.** Example: 1006.0.'
+    sql: verified_by_auditor_id
+  verification_info_notes:
+    description: 'TEXT. Notes from the auditor who reviewed the change. **NULL means no notes were added.** Example: Standard procedure..'
+    sql: JSONB_EXTRACT_PATH_TEXT(verification_info, 'notes')
+  verification_info_status:
+    description: 'TEXT. The verification status of the audit. Possible values: Verified, Pending.'
+    sql: JSONB_EXTRACT_PATH_TEXT(verification_info, 'status')
+  verification_info_verification_timestamp:
+    description: 'TIMESTAMP. The date and time the change was verified. **NULL means the change has not yet been verified.** Example: 2025-08-31 02:43:48.'
+    sql: JSONB_EXTRACT_PATH_TEXT(verification_info, 'verification_timestamp')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct financial_transaction_audits public identity values.
+    label: financial_transaction_audits Count
+    sql: ${reverse_logistics_large_public__financial_transaction_audits.audit_id}

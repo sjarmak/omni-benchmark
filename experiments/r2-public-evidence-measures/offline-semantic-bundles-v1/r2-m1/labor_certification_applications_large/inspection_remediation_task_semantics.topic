@@ -1,0 +1,13 @@
+base_view: labor_certification_applications_large_public__inspection_remediation_task
+label: InspectionRemediationTask
+description: All columns of the public table InspectionRemediationTask.
+fields:
+- labor_certification_applications_large_public__inspection_remediation_task.*
+- labor_certification_applications_large_public__cases.*
+- labor_certification_applications_large_public__preparer.*
+- labor_certification_applications_large_public__worksite_inspection.*
+joins:
+  labor_certification_applications_large_public__worksite_inspection:
+    labor_certification_applications_large_public__cases:
+      labor_certification_applications_large_public__preparer: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

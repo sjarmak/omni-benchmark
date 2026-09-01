@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__utility_services
+label: utility_services
+description: All columns of the public table utility_services.
+fields:
+- residential_data_large_public__utility_services.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,72 @@
+label: TransmissionServiceHistory
+description: All columns of the public table TransmissionServiceHistory.
+catalog: polar_equipment_large
+schema: public
+table_name: TransmissionServiceHistory
+dimensions:
+  clutch_wear_pct:
+    description: 'REAL. Estimated clutch wear percentage. **NULL means Clutch inspection not performed.** Example: 50.0.'
+    sql: '"clutchWearPct"'
+  fluid_added_l:
+    description: 'REAL. Volume of new transmission fluid added in liters. **NULL means No fluid added.** Example: 9.'
+    sql: '"fluidAdded_L"'
+  fluid_condition_pre:
+    description: 'TEXT. Condition of fluid before service. **NULL means Fluid condition not assessed.** Unique values: Good, Fair, Degraded, Contaminated, Burnt.'
+    sql: '"fluidConditionPre"'
+  fluid_drained_l:
+    description: 'REAL. Volume of transmission fluid drained in liters. **NULL means No fluid drain performed.** Example: 8.5.'
+    sql: '"fluidDrained_L"'
+  fluid_temp_at_service_c:
+    description: 'REAL. Transmission fluid temperature during service in Celsius. **NULL means Temperature not recorded.** Example: 45.'
+    sql: '"fluidTempAtService_C"'
+  gear_teeth_condition:
+    description: 'TEXT. Assessed condition of gear teeth. Unique values: Excellent, Good, Worn, Damaged, NotInspected.'
+    sql: '"gearTeethCondition"'
+  labor_cost_usd:
+    description: 'REAL. Total labor cost in US dollars. Example: 320.'
+    sql: '"laborCostUSD"'
+  labor_hours:
+    description: 'REAL. Total labor hours for service completion. Example: 3.5.'
+    sql: '"laborHours"'
+  next_service_due_km:
+    description: 'INTEGER. Recommended odometer for next service in kilometers. Example: 60000.'
+    sql: '"nextServiceDue_km"'
+  odometer_reading_km:
+    description: 'INTEGER. Odometer reading at time of service in kilometers. **NULL means Odometer not functioning.** Example: 50.'
+    sql: '"odometerReading_km"'
+  parts_cost_usd:
+    description: 'REAL. Total cost of parts in US dollars. Example: 280.'
+    sql: '"partsCostUSD"'
+  parts_replaced_count:
+    description: 'INTEGER. Number of parts replaced during service. Example: 2.'
+    sql: '"partsReplacedCount"'
+  seal_leak_detected:
+    description: 'TEXT. Whether seal leaks were detected. Possible values: True, False.'
+    sql: '"sealLeakDetected"'
+  service_date:
+    description: 'TIMESTAMP. Date when service was performed. Example: 2024-01-01 12:00:00.'
+    sql: '"serviceDate"'
+  service_type:
+    description: 'TEXT. Type of transmission service performed. Unique values: FluidChange, FilterReplace, Inspection, Adjustment, Overhaul, SealRepair.'
+    sql: '"serviceType"'
+  synchro_cond:
+    description: 'TEXT. Condition of synchronizer rings. Unique values: Normal, Worn, Replaced, NotApplicable.'
+    sql: '"synchroCond"'
+  total_service_cost_usd:
+    description: 'REAL. Combined total service cost in US dollars. Example: 600.'
+    sql: '"totalServiceCostUSD"'
+  trans_service_seq:
+    description: TEXT. Unique identifier for each transmission service record.
+    sql: '"transServiceSeq"'
+  transmission_ref:
+    description: 'INTEGER. Reference to the transmission unit serviced. Example: 50.'
+    sql: transmission_ref
+  warranty_applied:
+    description: 'TEXT. Whether warranty coverage was applied. Possible values: True, False.'
+    sql: '"warrantyApplied"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TransmissionServiceHistory public identity values.
+    label: TransmissionServiceHistory Count
+    sql: ${polar_equipment_large_public__transmission_service_history.trans_service_seq}

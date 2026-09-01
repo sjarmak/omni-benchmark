@@ -1,0 +1,9 @@
+base_view: planets_data_large_public__instrument_specifications
+label: instrument_specifications
+description: All columns of the public table instrument_specifications.
+fields:
+- planets_data_large_public__instrument_specifications.*
+- planets_data_large_public__instruments_surveys.*
+joins:
+  planets_data_large_public__instruments_surveys: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

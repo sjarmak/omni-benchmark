@@ -1,0 +1,30 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - High Environmental Risk Site: A classification assigned to a site based on its environmental risk tag being ''High''. This may be due to factors like extreme weather, high pollution, or other external risks.
+
+  - Thermal Loss Factor: The reduction in efficiency caused by cell temperature, calculated as: $L_{T} = (T_{cell} - T_{ref}) \times |\gamma|$, where $T_{cell}$ is the current cell temperature, $T_{ref}$ is the reference temperature (typically 25°C), and $\gamma$ is the panel''s temperature coefficient of power.
+
+  - Operational Expenditure Index: An index representing the cost per unit of capacity, calculated as: $OEI = \frac{C_{maint} + C_{clean} + C_{replace}}{P_{rated}}$, where C represents costs and $P_{rated}$ is the plant''s rated power.
+
+  - Temperature-Corrected Performance: The asset''s power output adjusted for temperature effects, providing a clearer view of performance irrespective of thermal conditions. Calculated as: $P_{corrected} = \frac{P_{actual}}{1 - \text{Thermal Loss Factor}}$.
+
+  - High-Cost Asset: An asset is flagged as high-cost when its Operational Expenditure Index exceeds a predefined value, indicating it is disproportionately expensive to run.
+
+  - Neglected Asset: An asset is defined as neglected if it has an active Critical Alert, is subject to Overdue Critical Maintenance, and also has a Data Quality Concern.
+
+  - Decommissioning Candidate: A plant is flagged as a decommissioning candidate if it is classified as both a Neglected Asset and a High-Cost Asset.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

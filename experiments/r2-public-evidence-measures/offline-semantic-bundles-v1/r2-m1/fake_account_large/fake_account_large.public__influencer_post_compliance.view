@@ -1,0 +1,66 @@
+label: influencer_post_compliance
+description: All columns of the public table influencer_post_compliance.
+catalog: fake_account_large
+schema: public
+table_name: influencer_post_compliance
+dimensions:
+  compliance_code:
+    description: TEXT. Unique ID for the compliance check on a post.
+    sql: '"Compliance_CODE"'
+  audience_sentiment_score:
+    description: 'REAL. Aggregate sentiment of comments on this post. Example: 0.7.'
+    sql: audience_sentiment_score
+  audio_clarity_score:
+    description: 'REAL. AI assessment of audio quality. **NULL means Muted/No Audio.** Example: 0.75.'
+    sql: audio_clarity_score
+  brand_logo_visibility_pct:
+    description: 'REAL. Computer vision score for logo prominence. **NULL means No image/video content.** Example: 50.0.'
+    sql: brand_logo_visibility_pct
+  brand_safety_risk_level:
+    description: 'TEXT. Risk category (Low, Med, High). Unique values: LOW, MED, HIGH.'
+    sql: brand_safety_risk_level
+  caption_keyword_match_count:
+    description: 'INTEGER. Number of required campaign keywords found. Example: 50.'
+    sql: caption_keyword_match_count
+  comment_toxicity_ratio:
+    description: 'REAL. Ratio of toxic comments to total comments. Example: 50.0.'
+    sql: comment_toxicity_ratio
+  competitor_mention_flag:
+    description: 'BOOLEAN. True if rival brands were mentioned/shown. Possible values: True, False.'
+    sql: competitor_mention_flag
+  correction_requested_flag:
+    description: 'BOOLEAN. True if brand asked for edits post-publishing. Possible values: True, False.'
+    sql: correction_requested_flag
+  deal_ref:
+    description: TEXT. Reference to the brand deal.
+    sql: deal_ref
+  disclosure_tag_found:
+    description: 'BOOLEAN. True if #ad or #sponsored was detected. Possible values: True, False.'
+    sql: disclosure_tag_found
+  fake_engagement_estimate_pct:
+    description: 'REAL. Estimated percentage of bot likes/comments. Example: 50.0.'
+    sql: fake_engagement_estimate_pct
+  ftc_compliance_status:
+    description: 'TEXT. Regulatory status (Compliant, Violation, Warning). Unique values: COMPLIANT, VIOLATION.'
+    sql: ftc_compliance_status
+  link_in_bio_click_count:
+    description: 'INTEGER. Clicks generated from bio link during post window. Example: 200.'
+    sql: link_in_bio_click_count
+  post_media_type:
+    description: 'TEXT. Format (Image, Video, Carousel, Story). Unique values: IMAGE, VIDEO, STORY.'
+    sql: post_media_type
+  post_url_hash:
+    description: TEXT. Hash of the post URL.
+    sql: post_url_hash
+  profanity_score:
+    description: 'REAL. NLP score for offensive language. Example: 50.0.'
+    sql: profanity_score
+  visual_quality_score:
+    description: 'REAL. AI assessment of image/video fidelity (0-1). Example: 0.8.'
+    sql: visual_quality_score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct influencer_post_compliance public identity values.
+    label: influencer_post_compliance Count
+    sql: ${fake_account_large_public__influencer_post_compliance.compliance_code}

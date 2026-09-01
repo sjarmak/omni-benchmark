@@ -1,0 +1,66 @@
+label: DigitalAssetLink
+description: All columns of the public table DigitalAssetLink.
+catalog: museum_artifact_large
+schema: public
+table_name: DigitalAssetLink
+dimensions:
+  access_frequency:
+    description: 'VARCHAR(100). Typical access pattern (Daily, Weekly, Monthly, Yearly, Rarely). Possible values: "Daily", "Monthly", "Rarely", "Weekly", "Yearly".'
+    sql: '"accessFrequency"'
+  ai_tagging_confidence:
+    description: 'VARCHAR(100). Confidence score percentage for AI-generated descriptive tags. Example: "T3hBoEYpUy".'
+    sql: '"aiTaggingConfidence"'
+  artifact_reg_id:
+    description: 'VARCHAR(100). Identifier of physical artifact being digitized (logical reference to ArtifactsCore.ARTregID). Example: "iVCuRYo1Cd".'
+    sql: '"artifactRegId"'
+  asset_registry_tag:
+    description: 'BIGINT. Identifier of digital asset record (foreign key to DigitalAssets.Asset_Registry_Tag). Example: 54.'
+    sql: '"assetRegistryTag"'
+  background_type:
+    description: 'VARCHAR(100). Background treatment during capture (Neutral, Contextual, Transparent, Gradient, None). Possible values: "Contextual", "Gradient", "Neutral", "None", "Transparent".'
+    sql: '"backgroundType"'
+  backup_location:
+    description: 'VARCHAR(100). Secondary backup storage location. Example: "Z6y0QVWYB4".'
+    sql: '"backupLocation"'
+  capture_date:
+    description: 'VARCHAR(100). Date when digital capture was performed. Example: "2014-03-04".'
+    sql: '"captureDate"'
+  color_depth:
+    description: 'VARCHAR(100). Color bit depth specification (8bit, 16bit, 24bit, 48bit, HDR). Possible values: "16bit", "24bit", "48bit", "8bit", "HDR".'
+    sql: '"colorDepth"'
+  copyright_owner:
+    description: 'VARCHAR(100). Entity holding copyright to digital representation. Example: "Rky6iolFDr".'
+    sql: '"copyrightOwner"'
+  file_format:
+    description: 'VARCHAR(100). Digital file format standard (JPEG, TIFF, PNG, RAW, DNG, PDF, MP4, WAV, OBJ, PTM). Possible values: "DNG", "JPEG", "MP4", "OBJ", "PDF", "PNG", "PTM", "RAW", "TIFF", "WAV".'
+    sql: '"fileFormat"'
+  format_migration_plan:
+    description: 'VARCHAR(100). Strategy for future format preservation and migration. Example: "tRI7tVQ0qT".'
+    sql: '"formatMigrationPlan"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for digital asset linkage records. Example: 1.'
+    sql: id
+  last_verified_date:
+    description: 'VARCHAR(100). Date of most recent file integrity verification. Example: "2013-01-13".'
+    sql: '"lastVerifiedDate"'
+  lighting_setup:
+    description: 'VARCHAR(100). Lighting configuration used during capture (Studio, Natural, Mixed, Raking, UV, IR). Possible values: "IR", "Mixed", "Natural", "Raking", "Studio", "UV".'
+    sql: '"lightingSetup"'
+  metadata_completeness:
+    description: 'VARCHAR(100). Completeness of embedded technical metadata (Complete, Partial, Minimal, Missing, Unknown). Possible values: "Complete", "Minimal", "Missing", "Partial", "Unknown".'
+    sql: '"metadataCompleteness"'
+  photographer:
+    description: 'VARCHAR(100). Name of photographer or imaging specialist. Example: "1OcHH36r34".'
+    sql: photographer
+  public_display_permission:
+    description: 'VARCHAR(100). Authorization status for public digital display (Yes, No, Restricted, Watermarked, LowResOnly). Possible values: "LowResOnly", "No", "Restricted", "Watermarked", "Yes".'
+    sql: '"publicDisplayPermission"'
+  resolution_dpi:
+    description: 'VARCHAR(100). Image resolution in dots per inch. Example: "Gg3cIzAoPJ".'
+    sql: '"resolutionDpi"'
+  storage_path:
+    description: 'VARCHAR(100). Primary digital storage location path. Example: "b77ls3hEY8".'
+    sql: '"storagePath"'
+  usage_rights:
+    description: 'VARCHAR(100). Permitted usage rights classification (PublicDomain, CC-BY, CC-NC, AllRightsReserved, Restricted). Example: "sIZ2YwxMX0".'
+    sql: '"usageRights"'

@@ -1,0 +1,9 @@
+base_view: labor_certification_applications_large_public__worker_education
+label: worker_education
+description: All columns of the public table worker_education.
+fields:
+- labor_certification_applications_large_public__worker_education.*
+- labor_certification_applications_large_public__worker_profile.*
+joins:
+  labor_certification_applications_large_public__worker_profile: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

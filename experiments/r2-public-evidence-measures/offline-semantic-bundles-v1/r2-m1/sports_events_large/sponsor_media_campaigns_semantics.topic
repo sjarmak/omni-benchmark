@@ -1,0 +1,11 @@
+base_view: sports_events_large_public__sponsor_media_campaigns
+label: sponsor_media_campaigns
+description: All columns of the public table sponsor_media_campaigns.
+fields:
+- sports_events_large_public__sponsor_media_campaigns.*
+- sports_events_large_public__media_assets.*
+- sports_events_large_public__sponsor_entities.*
+joins:
+  sports_events_large_public__media_assets: {}
+  sports_events_large_public__sponsor_entities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

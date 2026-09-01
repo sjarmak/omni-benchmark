@@ -1,0 +1,66 @@
+label: ConservationMaintenanceLog
+description: All columns of the public table ConservationMaintenanceLog.
+catalog: museum_artifact_large
+schema: public
+table_name: ConservationMaintenanceLog
+dimensions:
+  documentation_complete:
+    description: VARCHAR(100). Status of maintenance documentation (Yes, No, Partial, Pending, N/A).
+    sql: '"documentationComplete"'
+  duration_hours:
+    description: VARCHAR(100). Total labor hours expended on maintenance activity.
+    sql: '"durationHours"'
+  effectiveness_rating:
+    description: VARCHAR(100). Assessment of maintenance effectiveness (Excellent, Good, Fair, Poor, Failed).
+    sql: '"effectivenessRating"'
+  environmental_conditions:
+    description: VARCHAR(100). Environmental parameters during maintenance execution.
+    sql: '"environmentalConditions"'
+  equipment_used:
+    description: VARCHAR(100). Tools and equipment employed during maintenance.
+    sql: '"equipmentUsed"'
+  id:
+    description: BIGSERIAL. Auto-increment primary key for conservation maintenance records.
+    sql: id
+  issues_encountered:
+    description: VARCHAR(100). Problems or complications encountered during maintenance.
+    sql: '"issuesEncountered"'
+  maintenance_date:
+    description: VARCHAR(100). Date when maintenance activity was performed.
+    sql: '"maintenanceDate"'
+  maintenance_id:
+    description: BIGINT. Reference to scheduled maintenance record (foreign key to ConservationAndMaintenance.maint_id).
+    sql: '"maintenanceId"'
+  maintenance_report:
+    description: VARCHAR(100). Reference to comprehensive maintenance activity report.
+    sql: '"maintenanceReport"'
+  maintenance_type:
+    description: VARCHAR(100). Category of maintenance performed (Preventive, Corrective, Emergency, Routine, DeepClean).
+    sql: '"maintenanceType"'
+  materials_used:
+    description: VARCHAR(100). Consumable materials utilized during maintenance.
+    sql: '"materialsUsed"'
+  next_scheduled_date:
+    description: VARCHAR(100). Date for next scheduled maintenance activity.
+    sql: '"nextScheduledDate"'
+  post_maintenance_photos:
+    description: VARCHAR(100). Reference to post-maintenance photographic documentation.
+    sql: '"postMaintenancePhotos"'
+  pre_maintenance_photos:
+    description: VARCHAR(100). Reference to pre-maintenance photographic documentation.
+    sql: '"preMaintenancePhotos"'
+  quality_check_passed:
+    description: VARCHAR(100). Result of post-maintenance quality verification (Yes, No, Partial, Waived, Pending).
+    sql: '"qualityCheckPassed"'
+  safety_incidents:
+    description: VARCHAR(100). Safety events during maintenance (None, NearMiss, Minor, Major, Critical).
+    sql: '"safetyIncidents"'
+  staff_code:
+    description: BIGINT. Performing conservator identifier (foreign key to Staff.Staff_Code).
+    sql: '"staffCode"'
+  tasks_performed:
+    description: VARCHAR(100). Specific maintenance tasks completed during session.
+    sql: '"tasksPerformed"'
+  waste_generated:
+    description: VARCHAR(100). Types and quantities of waste materials produced.
+    sql: '"wasteGenerated"'

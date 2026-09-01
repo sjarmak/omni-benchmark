@@ -1,0 +1,66 @@
+label: DigitalSkinTransactionHistory
+description: All columns of the public table DigitalSkinTransactionHistory.
+catalog: virtual_idol_large
+schema: public
+table_name: DigitalSkinTransactionHistory
+dimensions:
+  asset_ref:
+    description: TEXT. FK to idol_asset_management.ASSET_ID.
+    sql: asset_ref
+  blockchain_tx_hash:
+    description: TEXT. Hash if NFT backed. **NULL means Off-chain item.**
+    sql: blockchain_tx_hash
+  bundle_id:
+    description: TEXT. ID if sold as part of a set. **NULL means data unavailable.**
+    sql: bundle_id
+  buyer_fan_ref:
+    description: TEXT. Fan purchasing the skin.
+    sql: buyer_fan_ref
+  gift_message:
+    description: TEXT. Note if sent as gift. **NULL means Not a gift.**
+    sql: gift_message
+  inspection_status:
+    description: 'TEXT. Validation of asset integrity. Unique values: Verified, Pending, Failed.'
+    sql: inspection_status
+  is_limited_edition:
+    description: 'BOOLEAN. True if supply is capped. Possible values: True, False.'
+    sql: is_limited_edition
+  payment_method:
+    description: 'TEXT. Source of funds. Unique values: Wallet Balance, Credit Card, Crypto.'
+    sql: payment_method
+  platform_fee_pct:
+    description: 'REAL. Tax taken by platform. Example: 50.0.'
+    sql: platform_fee_pct
+  previous_owner_count:
+    description: 'INTEGER. Number of times traded. Example: 50.'
+    sql: previous_owner_count
+  price_gold_coins:
+    description: 'INTEGER. In-app currency amount. Example: 500.'
+    sql: price_gold_coins
+  price_usd_equivalent:
+    description: 'REAL. Real money value. Example: 5.0.'
+    sql: price_usd_equivalent
+  rarity_tier:
+    description: 'TEXT. Common, Rare, Legendary. Unique values: Common, Rare, Epic, Legendary.'
+    sql: rarity_tier
+  seller_fan_ref:
+    description: TEXT. FK to fans.user_registry (if peer-to-peer). **NULL means System/Store Sale.**
+    sql: seller_fan_ref
+  serial_number:
+    description: 'INTEGER. Mint number of the limited asset. Example: 50.'
+    sql: serial_number
+  skin_wear_level:
+    description: 'REAL. Float value for skin condition (0.0-1.0) like CS:GO. **NULL means Mint condition/Fixed.** Example: 50.0.'
+    sql: skin_wear_level
+  transaction_date:
+    description: 'TIMESTAMP. Time of purchase. Example: 2024-01-01 12:00:00.'
+    sql: transaction_date
+  transaction_id:
+    description: TEXT. Unique ID for the digital asset trade.
+    sql: transaction_id
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DigitalSkinTransactionHistory public identity values.
+    label: DigitalSkinTransactionHistory Count
+    sql: ${virtual_idol_large_public__digital_skin_transaction_history.transaction_id}

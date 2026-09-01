@@ -1,0 +1,84 @@
+label: planetary_atmospheres
+description: All columns of the public table planetary_atmospheres.
+catalog: planets_data_large
+schema: public
+table_name: planetary_atmospheres
+dimensions:
+  albedo_geometric:
+    description: 'real. Geometric albedo indicating fraction of incident light reflected. Possible values: 0.12, 0.22, 0.31, 0.52, 0.65, 0.85.'
+    sql: '"ALBEDO_GEOMETRIC"'
+  atmosphere_type:
+    description: 'text. Classification of atmospheric composition and characteristics (e.g., hydrogen-rich, rocky). **NULL means atmospheric type classification is uncertain.**. Possible values: CH4-N2, CO2-dominated, H2-He, H2O-steam, N2-O2.'
+    sql: '"AtmosphereType"'
+  cloud_top_pressure_bar:
+    description: 'real. Atmospheric pressure at cloud top level measured in bar units. **NULL means cloud properties were not determined.**. Possible values: 0.3, 0.8, 1.2, 100000.0, 5.2.'
+    sql: '"CLOUD_TOP_PRESSURE_bar"'
+  cloud_coverage_fraction:
+    description: 'real. Fraction of planetary surface covered by clouds (0.0 to 1.0). **NULL means cloud coverage could not be assessed.**. Possible values: 0.12, 0.25, 0.68, 0.85, 0.95.'
+    sql: '"CloudCoverageFraction"'
+  detection_method:
+    description: 'text. Method used to detect or characterize the atmospheric properties. Possible values: Direct Imaging, Occultation, Radial Velocity, Spectroscopy, Transit, Transit Spectroscopy.'
+    sql: '"DETECTION_METHOD"'
+  data_quality_flag:
+    description: 'bigint. Numerical flag indicating quality and reliability of atmospheric data. Possible values: 1, 2, 3.'
+    sql: '"DataQualityFlag"'
+  equilibrium_temperature_k:
+    description: 'real. Theoretical equilibrium temperature assuming energy balance in Kelvin. Possible values: 110, 120, 255, 380, 464, 94.'
+    sql: '"EquilibriumTemperature_K"'
+  greenhouse_effect_strength_k:
+    description: 'real. Temperature increase due to greenhouse effect in Kelvin. **NULL means greenhouse effect was not modeled.**. Possible values: 12.0, 35.0, 462.0, 85.0.'
+    sql: '"GreenhouseEffectStrength_K"'
+  mean_molecular_weight_amu:
+    description: 'real. Average molecular weight of atmospheric constituents in atomic mass units. **NULL means molecular weight could not be calculated.**. Possible values: 16.0, 28.8, 44.0.'
+    sql: '"MeanMolecularWeight_amu"'
+  notes:
+    description: 'text. Additional notes or comments about atmospheric measurements and analysis. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  planetlink:
+    description: 'bigint. Foreign key reference to the parent planet record. FK to planets(planetRef). Example: 1.'
+    sql: '"PLANETLINK"'
+  surface_pressure_bar:
+    description: 'real. Atmospheric pressure at planetary surface measured in bar units. Possible values: 1.013, 1.47, 1000000.0, 15.8, 1e-06, 92.0.'
+    sql: '"SURFACE_PRESSURE_bar"'
+  atmosphere_ref:
+    description: 'bigint. Primary key identifier for planetary atmosphere records. PK. Possible values: 5001, 5002, 5003, 5004, 5005, 5006.'
+    sql: '"atmosphereRef"'
+  emission_temperature_k:
+    description: 'real. Effective emission temperature of the planet in Kelvin. Possible values: 120, 165, 255, 420, 735, 95.'
+    sql: '"emission_temperature_K"'
+  gasmixratios:
+    description: JSONB column. Volume mixing ratios of atmospheric gas constituents, representing the fraction of each gas species in the atmosphere.
+    sql: gasmixratios
+  has_atmosphere:
+    description: 'boolean. Flag indicating whether the planet possesses a detectable atmosphere. Possible values: False, True.'
+    sql: has_atmosphere
+  observation_epoch:
+    description: 'date. Date of atmospheric observations or measurements. Possible values: 2023-04-12, 2023-05-15, 2023-06-20, 2023-07-08, 2023-08-14, 2023-09-03.'
+    sql: observation_epoch
+  scale_height_km:
+    description: 'real. Atmospheric scale height in kilometers indicating pressure gradient. **NULL means scale height could not be determined.**. Possible values: 12.3, 27.0, 8.5.'
+    sql: scale_height_km
+  gasmixratios_co2_mixing_ratio:
+    description: 'real. Volume fraction of carbon dioxide in the atmosphere. **NULL means CO2 was not detected.**. Possible values: 0.0002, 0.0004, 0.05, 0.965, 1e-05.'
+    sql: JSONB_EXTRACT_PATH_TEXT(gasmixratios, 'CO2_MIXING_RATIO')
+  gasmixratios_h2_mixing_ratio:
+    description: 'real. Volume fraction of molecular hydrogen in the atmosphere. **NULL means hydrogen abundance was below detection threshold.**. Possible values: 0.02, 0.15, 0.898, 1e-05, 1e-06.'
+    sql: JSONB_EXTRACT_PATH_TEXT(gasmixratios, 'H2_MIXING_RATIO')
+  gasmixratios_h2o_mixing_ratio:
+    description: 'real. Volume fraction of water vapor in the atmosphere. **NULL means water vapor was not detected.**. Possible values: 0.0001, 0.01, 0.85, 2e-05.'
+    sql: JSONB_EXTRACT_PATH_TEXT(gasmixratios, 'H2oMixingRatio')
+  gasmixratios_ch4_mixing_ratio:
+    description: 'real. Volume fraction of methane in the atmosphere. **NULL means methane was not detected.**. Possible values: 0.0003, 0.001, 0.015, 1.7e-06, 1.8e-06.'
+    sql: JSONB_EXTRACT_PATH_TEXT(gasmixratios, 'ch4_mixing_ratio')
+  gasmixratios_he_mixing_ratio:
+    description: 'real. Volume fraction of helium in the atmosphere. **NULL means helium abundance was not measured.**. Possible values: 0.001, 0.102, 2e-06, 5e-06, 7e-06.'
+    sql: JSONB_EXTRACT_PATH_TEXT(gasmixratios, 'he_mixing_ratio')
+  atmospheric_escape_rate_kg_s:
+    description: 'real. Rate of atmospheric mass loss in kilograms per second. **NULL means escape rate was not calculated.**. Possible values: 120000000.0, 2100000.0, 320000.0, 8500000000000.0.'
+    sql: '"atmospheric_escape_rate_kg/s"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct planetary_atmospheres public identity values.
+    label: planetary_atmospheres Count
+    sql: ${planets_data_large_public__planetary_atmospheres.atmosphere_ref}

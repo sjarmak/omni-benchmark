@@ -1,0 +1,78 @@
+label: TrainingSessions
+description: All columns of the public table TrainingSessions.
+catalog: disaster_relief_large
+schema: public
+table_name: TrainingSessions
+dimensions:
+  capacity:
+    description: BIGINT. Maximum number of participants that can register.
+    sql: '"CAPACITY"'
+  cert_name:
+    description: TEXT. Name of the certificate awarded. **Null when Certification_Awarded is FALSE.**
+    sql: '"CERT_NAME"'
+  created_at:
+    description: TIMESTAMP. Date-time when the session record was first created.
+    sql: '"CREATED_at"'
+  certification_awarded:
+    description: BOOLEAN. Whether participants receive a certificate upon completion (TRUE/FALSE).
+    sql: '"Certification_Awarded"'
+  feedback_score:
+    description: REAL. Average post-session feedback rating (1.00 – 5.00). **Null when STATUS_FLAG is not Completed.**
+    sql: '"FeedbackScore"'
+  location:
+    description: 'TEXT. Venue name or description. Example: Community Center A or Virtual.'
+    sql: '"Location"'
+  materials_provided:
+    description: BOOLEAN. Indicates if training materials were distributed (TRUE/FALSE).
+    sql: '"MATERIALS_PROVIDED"'
+  post_test_avg:
+    description: REAL. Average post-training assessment score (percentage).
+    sql: '"POST_TEST_AVG"'
+  session_date:
+    description: 'DATE. Calendar date on which the session is/was held. Example: 2025-06-02.'
+    sql: '"SESSION_DATE"'
+  session_id:
+    description: VARCHAR(20). Unique training-session identifier. PK.
+    sql: '"SESSION_ID"'
+  session_window:
+    description: 'TEXT. Time window during which the training takes place. Example: "09:00–13:00".'
+    sql: '"SESSION_WINDOW"'
+  status_flag:
+    description: 'TEXT. Current session status. Possible values: Scheduled, Completed, Cancelled.'
+    sql: '"STATUS_FLAG"'
+  seat_price:
+    description: TEXT. Per-participant seat price string (e.g., "25 USD/participant", "Free").
+    sql: '"SeatPrice"'
+  trainer_id:
+    description: VARCHAR(20). Foreign-key reference to VolunteerProfiles.VOLUNTEERID identifying the trainer.
+    sql: '"TrainerId"'
+  training_notes:
+    description: TEXT. Facilitator notes or observations. **Null when no notes were recorded.**
+    sql: '"TrainingNotes"'
+  version:
+    description: INT. Schema or record version indicator for internal tracking.
+    sql: '"VERSION"'
+  attendance_count:
+    description: BIGINT. Actual number of attendees. **Null when STATUS_FLAG is not Completed.**
+    sql: attendance_count
+  cost_usd:
+    description: 'REAL. Total cost of running the session in USD. Example: 125.50.'
+    sql: '"cost_USD"'
+  duration_hours:
+    description: 'REAL. Planned duration of the session in hours (decimal allowed). Example: 2.5.'
+    sql: '"duration_HOURS"'
+  location_dist:
+    description: 'TEXT. Relative distance descriptor—typically distance from a reference point. Example: "2 km from CC".'
+    sql: '"location_DIST"'
+  pre_test_avg:
+    description: REAL. Average pre-training assessment score (percentage).
+    sql: '"preTestAvg"'
+  session_topic:
+    description: 'TEXT. Topic or subject of the training session. Example: Advanced CPR.'
+    sql: '"sessionTopic"'
+  training_objectives:
+    description: TEXT. Statement of learning objectives addressed in the session.
+    sql: '"training_OBJECTIVES"'
+  updated_at:
+    description: TIMESTAMP. Last modification timestamp. **Null when the record has never been updated after creation.**
+    sql: updated_at

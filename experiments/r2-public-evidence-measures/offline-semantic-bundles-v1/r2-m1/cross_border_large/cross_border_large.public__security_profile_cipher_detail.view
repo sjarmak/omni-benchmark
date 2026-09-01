@@ -1,0 +1,114 @@
+label: SecurityProfile_CipherDetail
+description: All columns of the public table SecurityProfile_CipherDetail.
+catalog: cross_border_large
+schema: public
+table_name: SecurityProfile_CipherDetail
+dimensions:
+  cipher_detail_no:
+    description: 'BIGINT. Unique identifier for each cipher detail record. Example: 1.'
+    sql: '"CIPHER_DETAIL_NO"'
+  cipher_flow_code:
+    description: 'TEXT. Foreign key referencing a specific flow code for the cipher transformation. Example: PT-0001. **NULL means no cipher flow code was recorded or is unavailable.**'
+    sql: cipher_flow_code
+  cipher_profile_no:
+    description: 'BIGINT. Unique identifier for the cipher profile. Example: 8765.'
+    sql: cipher_profile_no
+  crypto_stack:
+    description: JSONB column. Consolidates cryptographic configuration, key lifecycle, TLS settings, and authn/signature overheads for a security profile.
+    sql: crypto_stack
+  security_code:
+    description: 'BIGINT. Foreign key referencing SecurityProfile(SECURITY_TRACE). Example: ST-0001.'
+    sql: security_code
+  crypto_stack_attestation_attestation_doc:
+    description: 'JSONB. The attestation document for the cipher operation. Example: {source:synthetic,validated:yes}.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'attestation', 'attestation_doc')
+  crypto_stack_authn_api_api_sig_algo:
+    description: 'TEXT. The algorithm used for API signature generation. Possible values: HMAC, RSA, ECDSA. Example: HMAC.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'authn_api', 'api_sig_algo')
+  crypto_stack_authn_api_api_sig_latency_ms:
+    description: 'REAL. The latency in milliseconds for the API signature verification. Example: 120.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'authn_api', 'api_sig_latency_ms')
+  crypto_stack_authn_api_authn_strength_score:
+    description: 'REAL. The authentication strength score based on configured security policies. Example: 3.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'authn_api', 'authn_strength_score')
+  crypto_stack_authn_api_mfa_required:
+    description: 'TEXT. Whether multi-factor authentication (MFA) is required. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'authn_api', 'mfa_required')
+  crypto_stack_authn_api_token_ttl_min:
+    description: 'BIGINT. The time-to-live (TTL) of authentication tokens in minutes. Example: 60.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'authn_api', 'token_ttl_min')
+  crypto_stack_cipher_core_algo_name:
+    description: 'TEXT. The algorithm used for encryption. Possible values: AES, RSA, DES, SHA256, ECDSA. Example: AES.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'cipher_core', 'algo_name')
+  crypto_stack_cipher_core_cipher_overhead_pct:
+    description: 'REAL. The percentage overhead for the cipher operation. Example: 4.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'cipher_core', 'cipher_overhead_pct')
+  crypto_stack_cipher_core_iv_bytes:
+    description: 'BIGINT. The number of bytes of the initialization vector (IV) used in the cipher operation. Example: 16.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'cipher_core', 'iv_bytes')
+  crypto_stack_cipher_core_key_length_bits:
+    description: 'BIGINT. The length of the encryption key in bits. Example: 256.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'cipher_core', 'key_length_bits')
+  crypto_stack_cipher_core_mode_of_operation:
+    description: 'TEXT. Mode of operation used by the cipher. Possible values: ECB, CBC, CFB, OFB, CTR. Example: CBC. **NULL means no mode was specified or recorded.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'cipher_core', 'mode_of_operation')
+  crypto_stack_cipher_core_padding_scheme:
+    description: 'TEXT. Padding scheme used in encryption. Possible values: PKCS7, ANSIX923, ISO10126, ZeroPadding. Example: PKCS7. **NULL means no padding scheme was specified or recorded.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'cipher_core', 'padding_scheme')
+  crypto_stack_cipher_core_salt_bytes:
+    description: 'BIGINT. The number of bytes of salt used in the cipher operation. Example: 32.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'cipher_core', 'salt_bytes')
+  crypto_stack_cipher_core_side_channel_resistant:
+    description: 'TEXT. Indicates whether the cipher is resistant to side-channel attacks. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'cipher_core', 'side_channel_resistant')
+  crypto_stack_cipher_core_throughput_penalty_pct:
+    description: 'REAL. The throughput penalty percentage due to the cipher operation. Example: 1.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'cipher_core', 'throughput_penalty_pct')
+  crypto_stack_hashing_signing_hash_alg:
+    description: 'TEXT. The hashing algorithm used. Possible values: SHA256, SHA512, MD5, BLAKE2. Example: SHA256.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'hashing_signing', 'hash_alg')
+  crypto_stack_hashing_signing_hash_out_bytes:
+    description: 'BIGINT. The number of bytes in the output of the hash operation. Example: 32.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'hashing_signing', 'hash_out_bytes')
+  crypto_stack_hashing_signing_sign_alg:
+    description: 'TEXT. The signing algorithm used. Possible values: RS256, HS256, ES256, RS384. Example: RS256. **NULL means no signing algorithm was recorded or defined.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'hashing_signing', 'sign_alg')
+  crypto_stack_hashing_signing_sign_key_bits:
+    description: 'BIGINT. The number of bits in the signing key. Example: 2048.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'hashing_signing', 'sign_key_bits')
+  crypto_stack_key_mgmt_hsm_slot:
+    description: 'TEXT. The HSM slot number used for the encryption. Example: Slot-3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'key_mgmt', 'hsm_slot')
+  crypto_stack_key_mgmt_hsm_used:
+    description: 'TEXT. Whether a hardware security module (HSM) was used. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'key_mgmt', 'hsm_used')
+  crypto_stack_key_mgmt_key_custodian:
+    description: 'TEXT. The person responsible for the encryption key. Example: Alice.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'key_mgmt', 'key_custodian')
+  crypto_stack_key_mgmt_key_expiry_date:
+    description: 'DATE. The date the encryption key expires. Example: 2025/12/01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'key_mgmt', 'key_expiry_date')
+  crypto_stack_key_mgmt_key_rotation_days:
+    description: 'BIGINT. The number of days between key rotations. Example: 90. **NULL means no key rotation schedule is available.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'key_mgmt', 'key_rotation_days')
+  crypto_stack_key_mgmt_kms_provider:
+    description: 'TEXT. Key Management Service provider used for key management. Possible values: AWS KMS, Azure Key Vault, Google Cloud KMS, Thales. Example: AWS KMS.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'key_mgmt', 'kms_provider')
+  crypto_stack_timestamps_created_at:
+    description: 'TIMESTAMP. The timestamp when the cipher detail record was created. Example: Feb 28, 2025 14:25:12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'timestamps', 'created_at')
+  crypto_stack_timestamps_updated_at:
+    description: 'TIMESTAMP. The timestamp when the cipher detail record was last updated. Example: Mar 02, 2025 10:15:30.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'timestamps', 'updated_at')
+  crypto_stack_tls_tls_ciphersuite:
+    description: 'TEXT. The specific TLS cipher suite used. Example: TLS-ECDHE-RSA-AES128-GCM-SHA256.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'tls', 'tls_ciphersuite')
+  crypto_stack_tls_tls_version:
+    description: 'TEXT. The TLS version used in the connection. Possible values: TLS1.2, TLS1.3. Example: TLS1.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(crypto_stack, 'tls', 'tls_version')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct SecurityProfile_CipherDetail public identity values.
+    label: SecurityProfile_CipherDetail Count
+    sql: ${cross_border_large_public__security_profile_cipher_detail.cipher_detail_no}

@@ -1,0 +1,15 @@
+base_view: archeology_scan_large_public__features
+label: features
+description: All columns of the public table features.
+fields:
+- archeology_scan_large_public__features.*
+- archeology_scan_large_public__equipment.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__equipment: {}
+  archeology_scan_large_public__sites: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Texture-Critical Artifact: Features with \text{Texture Analysis} containing ''Detailed'' or ''Critical'' and \text{TDI} > 8.0, where TDI is the Texture Density Index, requiring specialized imaging techniques such as photometric stereo or multi-spectral imaging for complete surface characterization.'

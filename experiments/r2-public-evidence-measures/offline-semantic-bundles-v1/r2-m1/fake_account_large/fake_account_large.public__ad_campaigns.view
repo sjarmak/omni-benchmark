@@ -1,0 +1,129 @@
+label: ad_campaigns
+description: All columns of the public table ad_campaigns.
+catalog: fake_account_large
+schema: public
+table_name: ad_campaigns
+dimensions:
+  campname:
+    description: 'TEXT. Human-readable campaign name. Example: Campaign_12.'
+    sql: '"CAMPNAME"'
+  click_cnt:
+    description: 'BIGINT. Lifetime clicks. Example: 43 398.'
+    sql: '"CLICK_CNT"'
+  click_rate:
+    description: 'REAL. Click-through rate (clicks/impr). Example: 0.0666.'
+    sql: '"CLICK_RATE"'
+  camp_code:
+    description: 'TEXT. Unique campaign ID. PK. Example: CAMP23859364.'
+    sql: '"Camp_CODE"'
+  end_date:
+    description: 'DATE. Scheduled end date. Example: 2025/01/20.'
+    sql: '"END_DATE"'
+  objective:
+    description: 'TEXT. Detailed objective. Example: Lead Generation.'
+    sql: '"OBJECTIVE"'
+  owner_contact:
+    description: 'TEXT. Internal owner contact ID. Example: CNT60457.'
+    sql: '"OWNER_CONTACT"'
+  status:
+    description: 'TEXT. Serving status. Values: Active, Paused, Ended, Scheduled.'
+    sql: '"STATUS"'
+  target_behavior:
+    description: 'TEXT. Behavioural segment (shopper, traveller, etc.). **NULL means no behavioural targeting was applied.** Example (when present): Online Shoppers.'
+    sql: '"TARGET_BEHAVIOR"'
+  target_loc:
+    description: 'TEXT. Location scope. Example: US.'
+    sql: '"TARGET_LOC"'
+  target_interest:
+    description: 'TEXT. Interest cluster. Example: Tech.'
+    sql: '"TargetInterest"'
+  active_window:
+    description: 'TEXT. Scheduled flight hours. Example: Mon–Fri 09:00–21:00.'
+    sql: active_window
+  camp_score:
+    description: 'REAL. Composite quality score (0–100). Example: 78.3.'
+    sql: '"campScore"'
+  camp_tier:
+    description: 'TEXT. Internal tier. Values: Standard, Premium, Enterprise.'
+    sql: '"campTier"'
+  conv_cnt:
+    description: 'BIGINT. Lifetime conversions. Example: 2 445.'
+    sql: '"convCnt"'
+  conv_rate:
+    description: 'REAL. Conversion rate (conv/click). **NULL when clicks = 0 or conversions not tracked.** Example: 0.0563.'
+    sql: conv_rate
+  goal_type:
+    description: 'TEXT. Primary goal. Values: Awareness, Traffic, Conversions, AppInstalls.'
+    sql: goal_type
+  impr_cnt:
+    description: 'BIGINT. Lifetime impressions. Example: 652 441.'
+    sql: '"imprCnt"'
+  last_update_ts:
+    description: 'TIMESTAMPTZ. Last metadata update. Example: 2025/03/04 18:22:17.'
+    sql: '"lastUpdateTs"'
+  owner_org:
+    description: 'TEXT. Owning organisation. Example: OrgB.'
+    sql: '"ownerOrg"'
+  reach_radius_km:
+    description: 'TEXT. Geofence radius in kilometres. Example: 139.'
+    sql: reach_radius_km
+  spend_bid_metrics:
+    description: JSONB column. Bundles budget, bidding and cost-performance indicators for a campaign.
+    sql: spend_bid_metrics
+  start_date:
+    description: 'DATE. Campaign start date. Example: 2024/06/15.'
+    sql: '"startDate"'
+  target_demo:
+    description: 'TEXT. Age-gender or cohort target. Example: 25-34.'
+    sql: '"targetDemo"'
+  target_keyword:
+    description: 'TEXT. Keyword targeting term. **NULL when keyword targeting not used.** Example: AI.'
+    sql: '"targetKeyword"'
+  target_lang:
+    description: 'TEXT. Language ISO code. Example: en.'
+    sql: '"targetLang"'
+  target_device:
+    description: 'TEXT. Device targeting. Values: Mobile, Desktop, All.'
+    sql: target_device
+  view_rate:
+    description: 'REAL. Video view-through rate (0–1). **NULL for non-video creatives.** Example: 0.47.'
+    sql: '"viewRate"'
+  spend_bid_metrics_bidding_avg_bid:
+    description: 'REAL. Average realised bid (U S D). Example: 2.21.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'bidding', 'AVG_BID')
+  spend_bid_metrics_bidding_bid_strategy:
+    description: 'TEXT. Bidding model. Possible values: CPC, CPM, CPA, ROAS.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'bidding', 'bidStrategy')
+  spend_bid_metrics_bidding_max_bid:
+    description: 'REAL. Maximum bid allowed (unit = U S D). Example: 3.10.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'bidding', 'maxBid')
+  spend_bid_metrics_budget_budget_usd:
+    description: 'REAL. Planned budget in U S D. Example: 25 000.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'budget', 'BUDGET_USD')
+  spend_bid_metrics_budget_spend_usd:
+    description: 'REAL. Actual spend to date, U S D. Example: 18 432.57.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'budget', 'spendUsd')
+  spend_bid_metrics_performance_cpc_range_usd_per_click:
+    description: 'TEXT. Observed CPC range, unit in header. Example: 0.13–0.25.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'performance', 'cpc_range_USD_per_click')
+  spend_bid_metrics_performance_roas:
+    description: 'REAL. Return on ad spend (revenue/spend). **NULL when revenue tracking disabled.** Example: 2.44.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'performance', 'roas')
+  spend_bid_metrics_performance_spend_band:
+    description: 'TEXT. Spend bucket string. Example: 18 k–23 k USD.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'performance', 'spend_band')
+  spend_bid_metrics_unit_costs_cpa:
+    description: 'REAL. Cost per acquisition (U S D). Example: 7.54.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'unit_costs', 'CPA')
+  spend_bid_metrics_unit_costs_c_pc:
+    description: 'REAL. Cost per click (U S D). Example: 0.42.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'unit_costs', 'cPc')
+  spend_bid_metrics_unit_costs_cpm:
+    description: 'REAL. Cost per mille impressions (U S D). Example: 28.25.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spend_bid_metrics, 'unit_costs', 'cpm')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ad_campaigns public identity values.
+    label: ad_campaigns Count
+    sql: ${fake_account_large_public__ad_campaigns.camp_code}

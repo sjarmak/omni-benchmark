@@ -1,0 +1,75 @@
+label: photometric_variations
+description: All columns of the public table photometric_variations.
+catalog: planets_data_large
+schema: public
+table_name: photometric_variations
+dimensions:
+  airmass:
+    description: 'real. Atmospheric airmass during observation affecting extinction. Example: 1.05.'
+    sql: '"AIRMASS"'
+  exposure_time_seconds:
+    description: 'real. Duration of the photometric exposure in seconds. Possible values: 120, 180, 300, 600, 900.'
+    sql: '"ExposureTime_seconds"'
+  filter_band:
+    description: 'text. Photometric filter or bandpass used for observation (V, R, I, etc.). **NULL means filter information was not recorded.**. Possible values: B, I, R, U, V, g, r.'
+    sql: '"FILTER_BAND"'
+  flare_detection_flag:
+    description: 'boolean. Flag indicating detection of stellar flare activity. **NULL means flare detection analysis was not performed.**. Possible values: False, True.'
+    sql: '"FLARE_DETECTION_FLAG"'
+  julian_date_jd:
+    description: 'real. Julian Date of observation for astronomical time reference. Possible values: 2460080.4376, 2460081.4482, 2460098.3859, 2460099.389, 2460144.3371, 2460145.3422, 2460162.3125, 2460177.2815.'
+    sql: '"JulianDate_JD"'
+  magnitude_mag:
+    description: 'real. Measured stellar magnitude in the observation. Possible values: 11.789, 12.456, 12.461, 14.756, 14.892, 16.187, 16.234, 18.456.'
+    sql: '"MAGNITUDE_mag"'
+  notes:
+    description: 'text. Additional notes or comments about the photometric observation. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  seeing_fwhm_arcseconds:
+    description: 'real. Full width at half maximum of seeing disk in arcseconds. Possible values: 0.85, 0.92, 1.05, 1.08, 1.15, 1.72, 1.85, 2.15.'
+    sql: '"SEEING_FWHM_arcseconds"'
+  stellarlink:
+    description: 'bigint. Foreign key reference to the host star being monitored. FK to stars(STELLARREF). Example: 1.'
+    sql: '"STELLARLINK"'
+  stellar_activity_index:
+    description: 'real. Index quantifying level of stellar activity. Possible values: 0.08, 0.15, 0.18, 0.28, 0.31, 0.42, 0.58, 0.65.'
+    sql: '"StellarActivityIndex"'
+  systematic_uncertainty_mag:
+    description: 'real. Estimated systematic uncertainty in magnitudes. **NULL means systematic uncertainty was not estimated.**. Possible values: 0.002, 0.005, 0.008, 0.012.'
+    sql: '"SystematicUncertainty_mag"'
+  variability_period_days:
+    description: 'real. Period of stellar variability in days. **NULL means variability period could not be determined.**. Possible values: 0.847, 12.8, 2.34, 5.2.'
+    sql: '"VARIABILITY_PERIOD_days"'
+  variability_amplitude_mag:
+    description: 'real. Amplitude of detected stellar variability in magnitudes. **NULL means no variability detected.**. Possible values: 0.002, 0.003, 0.085, 0.125, 0.245.'
+    sql: '"VariabilityAmplitude_mag"'
+  effective_wavelength_micrometers:
+    description: 'real. Effective wavelength of the photometric filter in micrometers. Possible values: 0.36, 0.44, 0.48, 0.55, 0.62, 0.64, 0.71, 0.79.'
+    sql: effective_wavelength_micrometers
+  extinction_correction_mag:
+    description: 'real. Correction applied for atmospheric extinction in magnitudes. **NULL means extinction correction was not applied.**. Possible values: 0.12, 0.15, 0.16, 0.18, 0.25, 0.28.'
+    sql: extinction_correction_mag
+  magnitude_uncertainty_mag:
+    description: 'real. Statistical uncertainty in magnitude measurement. Possible values: 0.005, 0.008, 0.009, 0.015, 0.018, 0.032, 0.035, 0.089.'
+    sql: magnitude_uncertainty_mag
+  observation_date:
+    description: 'timestamp. Precise timestamp of photometric observation. Example: 2023-03-15.'
+    sql: observation_date
+  photometric_zero_point_mag:
+    description: 'real. Photometric zero point calibration in magnitudes. Possible values: 23.21, 23.95, 24.68, 24.89, 25.12, 25.68, 26.12, 26.84.'
+    sql: photometric_zero_point_mag
+  photometry_ref:
+    description: 'bigint. Primary key identifier for photometric variation records. PK. Possible values: 15001, 15002, 15003, 15004, 15005, 15006, 15007, 15008.'
+    sql: '"photometryRef"'
+  quality_flag:
+    description: 'text. Quality assessment flag for the photometric measurement. Possible values: A, B, C, D.'
+    sql: quality_flag
+  variability_type:
+    description: 'text. Classification of variability type (transit, rotation, pulsation, etc.). Possible values: Delta Scuti, Eclipsing Variable, Flare, Pulsating, Quiet, Rotational, Spot Modulation.'
+    sql: variability_type
+  flux_value_w_m_hz:
+    description: 'real. Measured stellar flux in watts per square meter per Hertz. **NULL means flux calibration was not available.**. Possible values: 2.1e-13, 3.2e-12, 4.7e-14, 8.9e-13.'
+    sql: '"FluxValue_W/m²/Hz"'
+  sky_background_mag_arcsec:
+    description: 'real. Sky background brightness in magnitudes per square arcsecond. Possible values: 18.2, 19.8, 19.9, 20.3, 20.5, 21.8, 22.1, 22.5.'
+    sql: '"SkyBackground_mag/arcsec²"'

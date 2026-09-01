@@ -1,0 +1,17 @@
+base_view: labor_certification_applications_large_public__worksite
+label: worksite
+description: All columns of the public table worksite.
+fields:
+- labor_certification_applications_large_public__worksite.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Domain definitions for this topic:
+
+  - State Application Distribution (SAD): SAD = (Number of Applications in State / Total Number of Applications) × 100%. State information is included in the worksite data.
+
+  - Geographic Application Hotspot: A geographic area (such as a state, metropolitan area, or city) is considered a hotspot if the volume of visa applications is at least 50% higher than the national average when adjusted for population. Location information is included in the worksite data.
+
+  - Geographic Concentration Index (GCI): GCI = sum((Applications in State i / Total Applications)^2) for all states. State and application information are included in the application data.
+
+  - Worksite Geographic Diversity: Employers are classified as Single-Location (all applications for one location), Regional (multiple locations in one region), or National (multiple regions), reflecting operational breadth. Worksite information is included in the application data.'

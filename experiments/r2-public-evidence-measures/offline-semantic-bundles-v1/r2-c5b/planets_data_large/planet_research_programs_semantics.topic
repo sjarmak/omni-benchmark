@@ -1,0 +1,13 @@
+base_view: planets_data_large_public__planet_research_programs
+label: planet_research_programs
+description: All columns of the public table planet_research_programs.
+fields:
+- planets_data_large_public__planet_research_programs.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__research_programs.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__planets:
+    planets_data_large_public__stars: {}
+  planets_data_large_public__research_programs: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

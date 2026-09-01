@@ -1,0 +1,66 @@
+label: RobotPathObstacles
+description: All columns of the public table RobotPathObstacles.
+catalog: solar_panel_large
+schema: public
+table_name: RobotPathObstacles
+dimensions:
+  action_taken:
+    description: 'TEXT. Robot response (Stop, Go Around, Climb). Unique values: Emergency Stop, Reroute, Alert Operator.'
+    sql: action_taken
+  cleared_automatically:
+    description: 'BOOLEAN. True if robot pushed it or moved around. Possible values: True, False.'
+    sql: cleared_automatically
+  confidence_score:
+    description: 'REAL. AI confidence it is an obstacle. Example: 0.9.'
+    sql: confidence_score
+  detection_timestamp:
+    description: 'TIMESTAMP. Exact time of detection. Example: 2024-01-01 12:00:00.'
+    sql: detection_timestamp
+  distance_from_robot_cm:
+    description: 'INTEGER. Distance when detected. Example: 50.'
+    sql: distance_from_robot_cm
+  false_positive:
+    description: 'BOOLEAN. Marked later as false positive. Possible values: True, False.'
+    sql: false_positive
+  gps_lat:
+    description: 'REAL. Location Lat. Example: 34.0.'
+    sql: gps_lat
+  gps_lon:
+    description: 'REAL. Location Lon. Example: -118.0.'
+    sql: gps_lon
+  image_snapshot_url:
+    description: TEXT. Camera image of the obstacle.
+    sql: image_snapshot_url
+  notes:
+    description: TEXT. Operator notes. **NULL means data unavailable.**
+    sql: notes
+  obstacle_id:
+    description: TEXT. Unique ID for the obstacle detection.
+    sql: obstacle_id
+  obstacle_type:
+    description: 'TEXT. Classification (Debris, Animal, Structure). Unique values: Rock, Branch, Panel Misalignment, Unknown.'
+    sql: obstacle_type
+  operator_intervention_req:
+    description: 'BOOLEAN. True if human help was needed. Possible values: True, False.'
+    sql: operator_intervention_req
+  panel_row_id:
+    description: TEXT. Row ID where obstacle was found.
+    sql: panel_row_id
+  resolution_time_sec:
+    description: 'INTEGER. Time lost dealing with obstacle. Example: 60.'
+    sql: resolution_time_sec
+  sensor_source:
+    description: 'TEXT. Which sensor saw it (Lidar, Camera, Ultrasonic). Unique values: Lidar, Stereo Camera, Ultrasonic.'
+    sql: sensor_source
+  size_estimate_cm:
+    description: 'REAL. Estimated diameter/width. Example: 10.'
+    sql: size_estimate_cm
+  telemetry_ref:
+    description: TEXT. FK to CleaningRobotTelemetry (the session/packet).
+    sql: telemetry_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct RobotPathObstacles public identity values.
+    label: RobotPathObstacles Count
+    sql: ${solar_panel_large_public__robot_path_obstacles.obstacle_id}

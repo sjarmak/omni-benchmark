@@ -1,0 +1,402 @@
+- join_from_view: planets_data_large_public__gravitational_microlensing_events
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__gravitational_microlensing_events.planetlink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__tidal_forces_effects
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__tidal_forces_effects.planetlink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__stellar_spectroscopy
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__stellar_spectroscopy.stellar_link} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__mission_target
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__mission_target.planet_ref} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__stellar_multiplicity_record
+  join_to_view: planets_data_large_public__binary_star_systems
+  join_type: always_left
+  on_sql: ${planets_data_large_public__stellar_multiplicity_record.binary_ref} = ${planets_data_large_public__binary_star_systems.binary_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__scientific_publication
+  join_to_view: planets_data_large_public__research_programs
+  join_type: always_left
+  on_sql: ${planets_data_large_public__scientific_publication.program_ref} = ${planets_data_large_public__research_programs.program_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__scheduled_observation
+  join_to_view: planets_data_large_public__telescope_allocation
+  join_type: always_left
+  on_sql: ${planets_data_large_public__scheduled_observation.allocation_ref} = ${planets_data_large_public__telescope_allocation.allocation_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__transit_light_curve
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__transit_light_curve.planet_ref} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__neighborhood_catalog_map
+  join_to_view: planets_data_large_public__astronomical_catalogs
+  join_type: always_left
+  on_sql: ${planets_data_large_public__neighborhood_catalog_map.catalog_ref} = ${planets_data_large_public__astronomical_catalogs.catalogref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__scheduled_observation
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__scheduled_observation.planet_ref} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planetary_formation_models
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planetary_formation_models.planet_link} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__dataset_publication_map
+  join_to_view: planets_data_large_public__astronomical_catalogs
+  join_type: always_left
+  on_sql: ${planets_data_large_public__dataset_publication_map.catalog_ref} = ${planets_data_large_public__astronomical_catalogs.catalogref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__spectral_instrument_map
+  join_to_view: planets_data_large_public__instruments_surveys
+  join_type: always_left
+  on_sql: ${planets_data_large_public__spectral_instrument_map.instrument_ref} = ${planets_data_large_public__instruments_surveys.instrumentref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__orbital_characteristics
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__orbital_characteristics.bodylink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__instrument_specifications
+  join_to_view: planets_data_large_public__instruments_surveys
+  join_type: always_left
+  on_sql: ${planets_data_large_public__instrument_specifications.instrument_link} = ${planets_data_large_public__instruments_surveys.instrumentref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__binary_star_systems
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__binary_star_systems.secondary_star_link} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__data_quality_tracking
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__data_quality_tracking.targetlink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__transit_light_curve
+  join_to_view: planets_data_large_public__instruments_surveys
+  join_type: always_left
+  on_sql: ${planets_data_large_public__transit_light_curve.instrument_ref} = ${planets_data_large_public__instruments_surveys.instrumentref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__mission_target
+  join_to_view: planets_data_large_public__space_mission
+  join_type: always_left
+  on_sql: ${planets_data_large_public__mission_target.mission_ref} = ${planets_data_large_public__space_mission.mission_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__proper_motion_catalog
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__proper_motion_catalog.stellar_ref} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planet_system_membership
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planet_system_membership.planetlink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__spectral_calibration
+  join_to_view: planets_data_large_public__instruments_surveys
+  join_type: always_left
+  on_sql: ${planets_data_large_public__spectral_calibration.instrument_ref} = ${planets_data_large_public__instruments_surveys.instrumentref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planet_instrument_observations
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planet_instrument_observations.subjectlink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__pipeline_instrument_map
+  join_to_view: planets_data_large_public__data_reduction_pipeline
+  join_type: always_left
+  on_sql: ${planets_data_large_public__pipeline_instrument_map.pipeline_ref} = ${planets_data_large_public__data_reduction_pipeline.pipeline_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planet_characterization_summary
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planet_characterization_summary.planet_ref} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__physical_properties
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__physical_properties.objectlink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__atmospheric_escape_rates
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__atmospheric_escape_rates.planet_link} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__chemical_abundance_analysis
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__chemical_abundance_analysis.stellar_ref} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planet_research_programs
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planet_research_programs.planet_link} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planet_instrument_observations
+  join_to_view: planets_data_large_public__instruments_surveys
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planet_instrument_observations.facilitylink} = ${planets_data_large_public__instruments_surveys.instrumentref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__observer_team_map
+  join_to_view: planets_data_large_public__discovery_teams
+  join_type: always_left
+  on_sql: ${planets_data_large_public__observer_team_map.team_ref} = ${planets_data_large_public__discovery_teams.teamref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__mission_planet_map
+  join_to_view: planets_data_large_public__space_mission
+  join_type: always_left
+  on_sql: ${planets_data_large_public__mission_planet_map.mission_ref} = ${planets_data_large_public__space_mission.mission_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__dataset_publication_map
+  join_to_view: planets_data_large_public__scientific_publication
+  join_type: always_left
+  on_sql: ${planets_data_large_public__dataset_publication_map.publication_ref} = ${planets_data_large_public__scientific_publication.publication_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__star_catalog_entries
+  join_to_view: planets_data_large_public__astronomical_catalogs
+  join_type: always_left
+  on_sql: ${planets_data_large_public__star_catalog_entries.catalog_link} = ${planets_data_large_public__astronomical_catalogs.catalogref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__stellar_multiplicity_record
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__stellar_multiplicity_record.stellar_ref} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__observation_conditions
+  join_to_view: planets_data_large_public__planet_instrument_observations
+  join_type: always_left
+  on_sql: ${planets_data_large_public__observation_conditions.observationlink} = ${planets_data_large_public__planet_instrument_observations.obsref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__emission_absorption_feature
+  join_to_view: planets_data_large_public__spectral_line_measurement
+  join_type: always_left
+  on_sql: ${planets_data_large_public__emission_absorption_feature.spectral_line_ref} = ${planets_data_large_public__spectral_line_measurement.spectral_line_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__mission_data_product
+  join_to_view: planets_data_large_public__mission_instrument
+  join_type: always_left
+  on_sql: ${planets_data_large_public__mission_data_product.instrument_ref} = ${planets_data_large_public__mission_instrument.instrument_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__calibration_record
+  join_to_view: planets_data_large_public__data_reduction_pipeline
+  join_type: always_left
+  on_sql: ${planets_data_large_public__calibration_record.pipeline_ref} = ${planets_data_large_public__data_reduction_pipeline.pipeline_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__telescope_allocation
+  join_to_view: planets_data_large_public__instruments_surveys
+  join_type: always_left
+  on_sql: ${planets_data_large_public__telescope_allocation.instrument_ref} = ${planets_data_large_public__instruments_surveys.instrumentref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__observer_team_map
+  join_to_view: planets_data_large_public__observation_proposal
+  join_type: always_left
+  on_sql: ${planets_data_large_public__observer_team_map.proposal_ref} = ${planets_data_large_public__observation_proposal.proposal_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__multi_planet_system_dynamics
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__multi_planet_system_dynamics.stellarlink} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__gravitational_microlensing_events
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__gravitational_microlensing_events.lensing_star_link} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__photometric_variations
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__photometric_variations.stellarlink} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__neighborhood_catalog_map
+  join_to_view: planets_data_large_public__nearby_star_survey
+  join_type: always_left
+  on_sql: ${planets_data_large_public__neighborhood_catalog_map.survey_ref} = ${planets_data_large_public__nearby_star_survey.survey_entry_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__nearby_star_survey
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__nearby_star_survey.stellar_ref} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__stellar_evolution_phases
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__stellar_evolution_phases.stellarlink} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__calibration_record
+  join_to_view: planets_data_large_public__instruments_surveys
+  join_type: always_left
+  on_sql: ${planets_data_large_public__calibration_record.instrument_ref} = ${planets_data_large_public__instruments_surveys.instrumentref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planet_research_programs
+  join_to_view: planets_data_large_public__research_programs
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planet_research_programs.program_link} = ${planets_data_large_public__research_programs.program_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__pipeline_instrument_map
+  join_to_view: planets_data_large_public__instruments_surveys
+  join_type: always_left
+  on_sql: ${planets_data_large_public__pipeline_instrument_map.instrument_ref} = ${planets_data_large_public__instruments_surveys.instrumentref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__pipeline_quality_metric
+  join_to_view: planets_data_large_public__data_reduction_pipeline
+  join_type: always_left
+  on_sql: ${planets_data_large_public__pipeline_quality_metric.pipeline_ref} = ${planets_data_large_public__data_reduction_pipeline.pipeline_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planetary_atmospheres
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planetary_atmospheres.planetlink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planet_system_membership
+  join_to_view: planets_data_large_public__multi_planet_system_dynamics
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planet_system_membership.system_dynamics_link} = ${planets_data_large_public__multi_planet_system_dynamics.system_dynamics_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planet_discovery_teams
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planet_discovery_teams.planetlink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__spectral_instrument_map
+  join_to_view: planets_data_large_public__spectral_line_measurement
+  join_type: always_left
+  on_sql: ${planets_data_large_public__spectral_instrument_map.spectral_line_ref} = ${planets_data_large_public__spectral_line_measurement.spectral_line_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__habitability_metrics
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__habitability_metrics.planet_link} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__mission_instrument
+  join_to_view: planets_data_large_public__space_mission
+  join_type: always_left
+  on_sql: ${planets_data_large_public__mission_instrument.mission_ref} = ${planets_data_large_public__space_mission.mission_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__star_catalog_entries
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__star_catalog_entries.stellarlink} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__exomoons
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__exomoons.planetlink} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__spectral_line_measurement
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__spectral_line_measurement.stellar_ref} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__radial_velocity_measurements
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__radial_velocity_measurements.stellar_link} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__citation_record
+  join_to_view: planets_data_large_public__scientific_publication
+  join_type: always_left
+  on_sql: ${planets_data_large_public__citation_record.publication_ref} = ${planets_data_large_public__scientific_publication.publication_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__mission_planet_map
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__mission_planet_map.planet_ref} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planet_discovery_teams
+  join_to_view: planets_data_large_public__discovery_teams
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planet_discovery_teams.team_link} = ${planets_data_large_public__discovery_teams.teamref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__observation_proposal
+  join_to_view: planets_data_large_public__research_programs
+  join_type: always_left
+  on_sql: ${planets_data_large_public__observation_proposal.program_ref} = ${planets_data_large_public__research_programs.program_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__transmission_spectrum
+  join_to_view: planets_data_large_public__planets
+  join_type: always_left
+  on_sql: ${planets_data_large_public__transmission_spectrum.planet_ref} = ${planets_data_large_public__planets.planetref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: planets_data_large_public__planets
+  join_to_view: planets_data_large_public__stars
+  join_type: always_left
+  on_sql: ${planets_data_large_public__planets.hostlink} = ${planets_data_large_public__stars.stellarref}
+  relationship_type: many_to_one
+  reversible: false

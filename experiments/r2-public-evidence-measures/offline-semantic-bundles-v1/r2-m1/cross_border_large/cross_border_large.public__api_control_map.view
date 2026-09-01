@@ -1,0 +1,90 @@
+label: API_Control_Map
+description: All columns of the public table API_Control_Map.
+catalog: cross_border_large
+schema: public
+table_name: API_Control_Map
+dimensions:
+  enforced:
+    description: 'TEXT. Enforcement state. Possible values: Yes, No, Partial. Example: Partial.'
+    sql: '"ENFORCED"'
+  error_rate_pct:
+    description: 'REAL. Error rate introduced/observed for the mapping (%). Example: 0.552.'
+    sql: '"ERROR_RATE_PCT"'
+  evidence_url:
+    description: 'TEXT. Evidence or artifact link. **NULL means not yet collected.** Example: https://evidence.company.com/23-25.'
+    sql: '"EVIDENCE_URL"'
+  introduced_at:
+    description: 'DATE. Date the mapping was introduced (yyyy-mm-dd). Example: 2024-01-24.'
+    sql: '"Introduced_At"'
+  metric3:
+    description: 'REAL. Custom metric 3. Example: 15.05.'
+    sql: '"METRIC3"'
+  mttd_hours:
+    description: 'REAL. Mean Time To Detect (hours). Example: 13.18.'
+    sql: '"MTTD_HOURS"'
+  metric1:
+    description: 'REAL. Custom metric 1. Example: 64.10.'
+    sql: '"Metric1"'
+  next_review_date:
+    description: 'DATE. Next review date. **NULL when Status = Inactive.** Example: (NULL).'
+    sql: '"NEXT_REVIEW_DATE"'
+  p95_latency_ms:
+    description: 'REAL. 95th percentile latency added by the control (ms). Example: 48.81.'
+    sql: '"P95_LATENCY_MS"'
+  rate_limit_rps:
+    description: 'REAL. Applied rate limit (requests/s) by this control layer. Example: 544.06.'
+    sql: '"RATE_LIMIT_RPS"'
+  status:
+    description: 'TEXT. Mapping status. Possible values: Active, Inactive. Example: Inactive.'
+    sql: '"Status"'
+  tag1:
+    description: 'TEXT. Tag/category 1. Example: Monitoring.'
+    sql: '"TAG1"'
+  tag2:
+    description: 'TEXT. Tag/category 2 (priority). Example: Low.'
+    sql: '"Tag2"'
+  updated_at:
+    description: 'DATE. Record last update (yyyy-mm-dd). Example: 2025-07-12.'
+    sql: '"UPDATED_AT"'
+  api_code:
+    description: 'BIGINT. FK to API_Endpoint(Api_code). Example: 23.'
+    sql: api_code
+  avg_latency_ms:
+    description: 'REAL. Average latency added by the control (ms). Example: 39.00.'
+    sql: avg_latency_ms
+  control_number:
+    description: 'BIGINT. FK to Control_Library(control_code). Example: 25.'
+    sql: control_number
+  coverage_pct:
+    description: 'REAL. Coverage level of the control on this API (%). Example: 95.62.'
+    sql: coverage_pct
+  created_at:
+    description: 'DATE. Record creation date (yyyy-mm-dd). Example: 2023-12-26.'
+    sql: created_at
+  evidence_hash:
+    description: 'TEXT. Hash of the evidence artifact. **NULL when no artifact is present.** Example: hash-362526.'
+    sql: evidence_hash
+  log_retention_days:
+    description: 'BIGINT. Log retention requirement applied by this mapping (days). **NULL means not applicable.** Example: 90.'
+    sql: log_retention_days
+  metric2:
+    description: 'REAL. Custom metric 2. Example: 32.01.'
+    sql: metric2
+  metric4:
+    description: 'REAL. Custom metric 4. Example: 1.02.'
+    sql: metric4
+  metric5:
+    description: 'REAL. Custom metric 5. Example: 18.83.'
+    sql: metric5
+  mode:
+    description: 'TEXT. Control mode. Possible values: detect, prevent. Example: detect.'
+    sql: mode
+  mttr_hours:
+    description: 'REAL. Mean Time To Repair for incidents related to this mapping (hours). **NULL means not yet measured.** Example: 24.42.'
+    sql: mttr_hours
+  owner:
+    description: 'TEXT. Mapping owner team. Possible values: SecEng, Platform, SRE, GRC. Example: Platform.'
+    sql: owner
+  tag3:
+    description: 'TEXT. Tag/category 3 (surface). Example: External.'
+    sql: tag3

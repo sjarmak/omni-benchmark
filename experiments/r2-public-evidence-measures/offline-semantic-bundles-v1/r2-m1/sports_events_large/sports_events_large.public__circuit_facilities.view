@@ -1,0 +1,129 @@
+label: circuit_facilities
+description: All columns of the public table circuit_facilities.
+catalog: sports_events_large
+schema: public
+table_name: circuit_facilities
+dimensions:
+  accessibility_rating:
+    description: 'TEXT. Accessibility assessment rating. Possible values (observed): A, A+, B. **NULL means not yet evaluated or not published.** Example: A+.'
+    sql: '"Accessibility_Rating"'
+  cctkey_ref:
+    description: 'INTEGER. Foreign key referencing circuits.cctkey for the circuit these facilities describe. FK → circuits(cctkey). Example: 3.'
+    sql: '"CCTKEY_ref"'
+  circuit_facility_code:
+    description: BIGSERIAL. Surrogate primary key for circuit_facilities rows. PK.
+    sql: '"CircuitFacilityCode"'
+  ev_chargers:
+    description: 'BIGINT. Public/operational EV chargers on site. Example: 40.'
+    sql: '"EV_CHARGERS"'
+  waste_sort_points:
+    description: 'BIGINT. Number of waste sorting points. Example: 30.'
+    sql: '"WASTE_SORT_POINTS"'
+  water_storage_m3:
+    description: 'REAL. On-site potable/utility water storage in cubic meters. Example: 500.0.'
+    sql: '"WATER_STORAGE_m3"'
+  venue_infrastructure_matrix:
+    description: JSONB column. Groups venue infrastructure, resilience, security, spectator amenities, mobility/logistics, environmental safeguards, and admin notes/meta.
+    sql: venue_infrastructure_matrix
+  venue_infrastructure_matrix_env_resilience_flood_barriers_m:
+    description: 'REAL. Typical flood barrier height in meters. Example: 1.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'EnvResilience', 'Flood_Barriers_M')
+  venue_infrastructure_matrix_env_resilience_lightning_rods:
+    description: 'BIGINT. Count of lightning protection rods. Example: 14.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'EnvResilience', 'Lightning_Rods')
+  venue_infrastructure_matrix_env_resilience_solar_kw_peak:
+    description: 'REAL. Peak installed solar capacity in kW. **NULL means no solar installation recorded or data unavailable (e.g., insufficient roof coverage).** Example: 595.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'EnvResilience', 'SOLAR_KW_PEAK')
+  venue_infrastructure_matrix_env_resilience_weather_station_present:
+    description: 'BOOLEAN. Whether a dedicated weather station is installed. Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'EnvResilience', 'WeatherStationPresent')
+  venue_infrastructure_matrix_env_resilience_wind_sensors:
+    description: 'BIGINT. Count of installed wind sensors. Example: 8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'EnvResilience', 'WindSensors')
+  venue_infrastructure_matrix_mobility_logistics_cold_storage_m2:
+    description: 'REAL. Cold storage area (m²) for F&B/logistics. **NULL means not provisioned or not recorded (e.g., very few Food_Stalls).** Example: 259.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'MobilityLogistics', 'Cold_Storage_m2')
+  venue_infrastructure_matrix_mobility_logistics_freight_warehouse_m2:
+    description: 'REAL. Freight warehouse area (m²). Example: 2500.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'MobilityLogistics', 'FreightWarehouse_m2')
+  venue_infrastructure_matrix_mobility_logistics_shuttle_bus_bays:
+    description: 'BIGINT. Count of shuttle bus bays. Example: 10.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'MobilityLogistics', 'ShuttleBusBays')
+  venue_infrastructure_matrix_mobility_logistics_team_truck_bays:
+    description: 'BIGINT. Number of paddock/team truck loading bays. Example: 20.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'MobilityLogistics', 'TeamTruckBays')
+  venue_infrastructure_matrix_mobility_logistics_vip_dropoffs:
+    description: 'BIGINT. Count of VIP drop-off points. Example: 4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'MobilityLogistics', 'VIP_DROPOFFS')
+  venue_infrastructure_matrix_mobility_logistics_ride_share_dropoffs:
+    description: 'BIGINT. Count of designated rideshare drop-off points. Example: 6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'MobilityLogistics', 'rideShareDropoffs')
+  venue_infrastructure_matrix_ops_notes_meta_meta:
+    description: 'JSONB. Vendor/deployment metadata (e.g., {vendor:…}). **NULL means vendor metadata not recorded.** Example: {vendor: Bosch}.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'OpsNotesMeta', 'META')
+  venue_infrastructure_matrix_ops_notes_meta_created_on:
+    description: 'TIMESTAMP. Row creation timestamp. Defaults to now(). Example: 2024-03-01 08:00:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'OpsNotesMeta', 'created_on')
+  venue_infrastructure_matrix_ops_notes_meta_notes:
+    description: 'TEXT. Operational notes or follow-ups (e.g., upgrades, maintenance). **NULL means no notes captured or no outstanding actions.** Example: Install more cameras.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'OpsNotesMeta', 'notes_')
+  venue_infrastructure_matrix_power_comms_backup_generators:
+    description: 'BIGINT. Count of backup generator units. Example: 8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'PowerComms', 'BackupGenerators')
+  venue_infrastructure_matrix_power_comms_fiber_backbones:
+    description: 'BIGINT. Number of fiber backbone paths (redundant links). Example: 4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'PowerComms', 'FiberBackbones')
+  venue_infrastructure_matrix_power_comms_power_grid_capacity_mw:
+    description: 'REAL. Available grid power capacity in megawatts. Example: 12.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'PowerComms', 'PowerGridCapacity_MW')
+  venue_infrastructure_matrix_power_comms_wi_fi_aps_installed:
+    description: 'BIGINT. Installed Wi-Fi access points across the venue. Example: 1200.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'PowerComms', 'WiFi_APs_Installed')
+  venue_infrastructure_matrix_power_comms_backup_fuel_autonomy_hr:
+    description: 'BIGINT. Hours of fuel autonomy for backup power. Example: 24.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'PowerComms', 'backupFuelAutonomy_hr')
+  venue_infrastructure_matrix_safety_security_cctv_cameras:
+    description: 'BIGINT. Deployed CCTV cameras. Example: 600.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SafetySecurity', 'CCTV_cameras')
+  venue_infrastructure_matrix_safety_security_fire_hydrants:
+    description: 'BIGINT. Number of fire hydrants across the venue. Example: 90.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SafetySecurity', 'FireHydrants')
+  venue_infrastructure_matrix_safety_security_medics_on_site:
+    description: 'BIGINT. Number of medical staff on site. Example: 80.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SafetySecurity', 'MedicsOnSite')
+  venue_infrastructure_matrix_safety_security_security_staff_capacity:
+    description: 'BIGINT. Maximum security staffing capacity. Example: 1200.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SafetySecurity', 'SecurityStaffCapacity')
+  venue_infrastructure_matrix_safety_security_turnstiles_count:
+    description: 'BIGINT. Number of entry turnstiles. Example: 120.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SafetySecurity', 'TURNSTILES_COUNT')
+  venue_infrastructure_matrix_safety_security_volunteer_capacity:
+    description: 'BIGINT. Maximum volunteer staffing capacity. Example: 900.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SafetySecurity', 'VolunteerCapacity')
+  venue_infrastructure_matrix_spectator_amenity_big_screens_count:
+    description: 'BIGINT. Number of large spectator video screens. Example: 12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SpectatorAmenity', 'BigScreensCount')
+  venue_infrastructure_matrix_spectator_amenity_first_aid_posts:
+    description: 'BIGINT. Number of first-aid posts. Example: 12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SpectatorAmenity', 'FirstAidPosts')
+  venue_infrastructure_matrix_spectator_amenity_food_stalls:
+    description: 'BIGINT. Count of food & beverage stalls. Example: 200.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SpectatorAmenity', 'Food_Stalls')
+  venue_infrastructure_matrix_spectator_amenity_grandstand_roof_coverage:
+    description: 'REAL. Fraction of grandstand seating covered by roofs (0.0–1.0). Example: 0.35.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SpectatorAmenity', 'GrandstandRoofCoverage')
+  venue_infrastructure_matrix_spectator_amenity_pa_speakers_zones:
+    description: 'BIGINT. Count of PA (public address) speaker zones. Example: 18.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SpectatorAmenity', 'PA_Speakers_Zones')
+  venue_infrastructure_matrix_spectator_amenity_water_refill_points:
+    description: 'BIGINT. Public water refill stations. Example: 60.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SpectatorAmenity', 'WaterRefillPoints')
+  venue_infrastructure_matrix_spectator_amenity_restroom_blocks:
+    description: 'BIGINT. Count of restroom blocks. Example: 45.'
+    sql: JSONB_EXTRACT_PATH_TEXT(venue_infrastructure_matrix, 'SpectatorAmenity', 'restroomBlocks')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct circuit_facilities public identity values.
+    label: circuit_facilities Count
+    sql: ${sports_events_large_public__circuit_facilities.circuit_facility_code}

@@ -1,0 +1,66 @@
+label: EmployerComplianceScore
+description: All columns of the public table EmployerComplianceScore.
+catalog: labor_certification_applications_large
+schema: public
+table_name: EmployerComplianceScore
+dimensions:
+  ecs_code:
+    description: 'TEXT. Unique identifier for employer compliance score record. Example: ECS-1A2B3C.'
+    sql: '"ECS_code"'
+  compliance_tier:
+    description: 'TEXT. Compliance tier classification based on overall score. Unique values: Exemplary, Good Standing, Satisfactory, Needs Improvement, Probationary, High Risk.'
+    sql: '"complianceTier"'
+  compliance_training_complete_flag:
+    description: 'BOOLEAN. Indicates if required compliance training is complete. Possible values: True, False.'
+    sql: '"complianceTrainingComplete_flag"'
+  debarment_risk_flag:
+    description: 'BOOLEAN. Indicates if employer is at risk of debarment. Possible values: True, False.'
+    sql: '"debarmentRisk_flag"'
+  fines_assessed_usd:
+    description: 'REAL. Total fines assessed to date in USD. Example: 5000.'
+    sql: '"finesAssessed_USD"'
+  fines_paid_usd:
+    description: 'REAL. Total fines paid to date in USD. Example: 4500.'
+    sql: '"finesPaid_USD"'
+  good_faith_compliance_flag:
+    description: 'BOOLEAN. Indicates if employer demonstrates good faith compliance efforts. Possible values: True, False.'
+    sql: '"goodFaithCompliance_flag"'
+  i9_compliance_score:
+    description: 'REAL. I-9 employment eligibility verification compliance score. Example: 88.'
+    sql: '"i9ComplianceScore"'
+  last_audit_date:
+    description: 'TIMESTAMP. Date of most recent compliance audit. **NULL means No audit conducted for this employer.** Example: 2024-01-01 12:00:00.'
+    sql: '"lastAuditDate"'
+  last_audit_result:
+    description: 'TEXT. Result of most recent compliance audit. **NULL means No audit conducted.** Unique values: No Violations, Minor Violations, Moderate Violations, Serious Violations, Willful Violations.'
+    sql: '"lastAuditResult"'
+  lca_compliance_score:
+    description: 'REAL. Labor Condition Application compliance score. Example: 85.'
+    sql: '"lcaComplianceScore"'
+  next_review_date:
+    description: 'TIMESTAMP. Scheduled date for next compliance review. **NULL means Review not yet scheduled.** Example: 2024-01-01 12:00:00.'
+    sql: '"nextReviewDate"'
+  open_investigations_ct:
+    description: 'INTEGER. Number of currently open investigations. Example: 0.'
+    sql: '"openInvestigations_ct"'
+  overall_compliance_score:
+    description: 'REAL. Composite compliance score from 0-100. Example: 82.'
+    sql: '"overallComplianceScore"'
+  poc_ref:
+    description: TEXT. Foreign key reference to employer_poc table contactmail linking to employer.
+    sql: poc_ref
+  public_access_file_score:
+    description: 'REAL. Public access file maintenance compliance score. Example: 78.'
+    sql: '"publicAccessFileScore"'
+  record_retention_score:
+    description: 'REAL. Record retention compliance score. Example: 82.'
+    sql: '"recordRetentionScore"'
+  score_date:
+    description: 'TIMESTAMP. Date when compliance score was calculated. Example: 2024-01-01 12:00:00.'
+    sql: '"scoreDate"'
+  violation_history_ct:
+    description: 'INTEGER. Count of historical violations on record. Example: 2.'
+    sql: '"violationHistory_ct"'
+  wage_compliance_score:
+    description: 'REAL. Wage and hour compliance score. Example: 90.'
+    sql: '"wageComplianceScore"'

@@ -1,0 +1,78 @@
+label: Risk Model Predictions
+description: Risk-model prediction records with row-level fraud-probability semantics.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: RiskModelPredictions
+dimensions:
+  fraud_probability:
+    description: 'REAL. Predicted probability of fraud (0-1). Example: 0.08.'
+    label: Fraud Probability
+    sql: fraud_probability
+  rmp_id:
+    description: TEXT. Unique identifier for the risk model prediction record.
+    sql: '"RMP_id"'
+  actual_outcome:
+    description: 'TEXT. Actual outcome after review (for model feedback). **NULL means Outcome not yet determined.** Unique values: Legitimate, Fraud Confirmed, Fraud Attempted, Disputed, Unknown.'
+    sql: actual_outcome
+  confidence_score:
+    description: 'REAL. Model confidence in the prediction (0-1). Example: 0.85.'
+    sql: confidence_score
+  ensemble_agreement_rate:
+    description: 'REAL. Agreement rate among ensemble models (0-1). **NULL means Single model used.** Example: 0.88.'
+    sql: ensemble_agreement_rate
+  feature_importance_amount:
+    description: 'REAL. Importance weight of amount features. Example: 0.22.'
+    sql: feature_importance_amount
+  feature_importance_behavior:
+    description: 'REAL. Importance weight of behavioral features. Example: 0.2.'
+    sql: feature_importance_behavior
+  feature_importance_device:
+    description: 'REAL. Importance weight of device features. Example: 0.15.'
+    sql: feature_importance_device
+  feature_importance_velocity:
+    description: 'REAL. Importance weight of velocity features. Example: 0.18.'
+    sql: feature_importance_velocity
+  manual_review_triggered:
+    description: 'BOOLEAN. Whether prediction triggered manual review. Possible values: True, False.'
+    sql: manual_review_triggered
+  model_drift_indicator:
+    description: 'REAL. Indicator of model drift from training distribution. Example: 0.05.'
+    sql: model_drift_indicator
+  model_name:
+    description: 'TEXT. Name of the risk model used. Unique values: FraudNet_v3, RiskClassifier_v2, AnomalyDetector_v4, BehaviorScore_v1, DeepRisk_v2.'
+    sql: model_name
+  model_version:
+    description: 'TEXT. Version of the model used for prediction. Unique values: 1.0, 1.1, 2.0, 2.1, 3.0.'
+    sql: model_version
+  prediction_latency_ms:
+    description: 'INTEGER. Time to generate prediction in milliseconds. Example: 50.'
+    sql: prediction_latency_ms
+  prediction_timestamp:
+    description: 'TIMESTAMP. Timestamp when prediction was generated. Example: 2024-01-01 12:00:00.'
+    sql: prediction_timestamp
+  recommendation_action:
+    description: 'TEXT. Recommended action based on prediction. Unique values: Approve, Review, Challenge, Decline, Block.'
+    sql: recommendation_action
+  risk_category_predicted:
+    description: 'TEXT. Predicted risk category. Unique values: Very Low, Low, Medium, High, Very High.'
+    sql: risk_category_predicted
+  risk_factors_count:
+    description: 'INTEGER. Number of risk factors triggered. Example: 2.'
+    sql: risk_factors_count
+  top_risk_factor:
+    description: 'TEXT. Primary risk factor identified. Unique values: Velocity Anomaly, Geographic Risk, Device Fingerprint, Amount Pattern, Time Pattern, Behavioral Deviation, Network Association.'
+    sql: top_risk_factor
+  txn_link_ref:
+    description: TEXT. Reference to the risk analytics transaction.
+    sql: txn_link_ref
+  is_fraud_flagged_transaction:
+    label: Fraud-Flagged Transaction
+    description: Transaction flagged by fraud model probability.
+    sql: ${fraud_probability} > 0.70
+    ai_context: Use this modeled field for Fraud-Flagged Transaction; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Risk Model Predictions public identity values.
+    label: Risk Model Predictions Count
+    sql: ${cybermarket_pattern_large_public__risk_model_predictions.rmp_id}

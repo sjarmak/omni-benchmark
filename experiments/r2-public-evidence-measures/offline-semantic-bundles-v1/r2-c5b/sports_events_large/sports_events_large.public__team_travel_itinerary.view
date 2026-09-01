@@ -1,0 +1,63 @@
+label: TeamTravelItinerary
+description: All columns of the public table TeamTravelItinerary.
+catalog: sports_events_large
+schema: public
+table_name: TeamTravelItinerary
+dimensions:
+  carbon_offset_status:
+    description: 'TEXT. Carbon offset status Possible values: Offset, Partial Offset, Not Offset.'
+    sql: '"CARBON_OFFSET_STATUS"'
+  constructor_ref:
+    description: BIGINT. Foreign key referencing constructors(cstr_key). Related constructor
+    sql: '"CONSTRUCTOR_REF"'
+  departure_city:
+    description: 'TEXT. Departure city Possible values: London, Maranello, Milton Keynes, Enstone, Woking, Brackley, Faenza, Basel.'
+    sql: '"DEPARTURE_CITY"'
+  departure_date:
+    description: DATE. Date of departure
+    sql: '"DEPARTURE_DATE"'
+  hotel_name:
+    description: 'TEXT. Hotel name Possible values: Hilton, Marriott, Four Seasons, Team Motorhome, Local Hotel.'
+    sql: '"HOTEL_NAME"'
+  itinerary_id:
+    description: BIGINT. Primary key. Unique travel itinerary identifier
+    sql: '"ITINERARY_ID"'
+  team_members:
+    description: BIGINT. Number of team members traveling
+    sql: '"TEAM_MEMBERS"'
+  travel_cost_usd:
+    description: 'REAL. Total travel cost Typical range: 500 to 300000.'
+    sql: '"TRAVEL_COST_USD"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  visa_required:
+    description: BOOLEAN. Whether visa is required for this trip Boolean flag (true/false).
+    sql: '"VISA_REQUIRED"'
+  accommodation_cost_usd:
+    description: 'REAL. Accommodation cost Typical range: 200 to 200000.'
+    sql: accommodation_cost_usd
+  arrival_city:
+    description: 'TEXT. Arrival city Possible values: Melbourne, Jeddah, Miami, Montreal, Barcelona, Monaco, Silverstone, Budapest.'
+    sql: arrival_city
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  nights:
+    description: BIGINT. Number of nights
+    sql: nights
+  race_ref:
+    description: BIGINT. Foreign key referencing races(rak_id). Related race event
+    sql: race_ref
+  return_date:
+    description: DATE. Date of return
+    sql: return_date
+  travel_type:
+    description: 'TEXT. Mode of travel Possible values: Commercial Flight, Charter Flight, Train, Bus, Private Car, Rental.'
+    sql: travel_type
+  traveler_category:
+    description: 'TEXT. Category of travelers Possible values: Race Team, Engineering, Management, Hospitality, Marketing, Medical.'
+    sql: traveler_category
+  visas_obtained:
+    description: BIGINT. Number of visas obtained
+    sql: visas_obtained

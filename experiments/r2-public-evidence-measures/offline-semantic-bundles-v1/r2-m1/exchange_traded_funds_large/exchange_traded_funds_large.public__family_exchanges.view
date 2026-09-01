@@ -1,0 +1,21 @@
+label: family_exchanges
+description: All columns of the public table family_exchanges.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: family_exchanges
+dimensions:
+  connectref:
+    description: A SERIAL primary key uniquely identifying each relationship between fund families and exchanges they list on.
+    sql: connectref
+  exchangeref:
+    description: Foreign key referencing exchanges.MarketCode, indicating which exchange the fund family lists products on.
+    sql: exchangeref
+  familyref:
+    description: Foreign key referencing families.GroupName, indicating which fund family has listings on the exchange.
+    sql: familyref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct family_exchanges public identity values.
+    label: family_exchanges Count
+    sql: ${exchange_traded_funds_large_public__family_exchanges.connectref}

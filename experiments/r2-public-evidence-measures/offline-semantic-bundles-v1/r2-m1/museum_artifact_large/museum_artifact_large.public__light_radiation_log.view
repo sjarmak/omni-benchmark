@@ -1,0 +1,72 @@
+label: LightRadiationLog
+description: All columns of the public table LightRadiationLog.
+catalog: museum_artifact_large
+schema: public
+table_name: LightRadiationLog
+dimensions:
+  beam_angle:
+    description: VARCHAR(100). Angular spread of illumination beam in degrees.
+    sql: '"beamAngle"'
+  blue_light_index:
+    description: VARCHAR(100). Relative intensity of high-energy visible blue light.
+    sql: '"blueLightIndex"'
+  color_temperature:
+    description: VARCHAR(100). Correlated color temperature in Kelvin.
+    sql: '"colorTemperature"'
+  cri_value:
+    description: VARCHAR(100). Color rendering index value (0-100 scale).
+    sql: '"criValue"'
+  cumulative_exposure:
+    description: VARCHAR(100). Total light dose accumulated over monitoring period.
+    sql: '"cumulativeExposure"'
+  distance_to_artifact_cm:
+    description: VARCHAR(100). Distance from light source to artifact surface in centimeters.
+    sql: '"distanceToArtifactCm"'
+  filter_status:
+    description: VARCHAR(100). Condition of UV/IR filtering systems (Installed, Degraded, Missing, NotRequired, Custom).
+    sql: '"filterStatus"'
+  flicker_percentage:
+    description: VARCHAR(100). Percentage of light intensity fluctuation.
+    sql: '"flickerPercentage"'
+  id:
+    description: BIGSERIAL. Auto-increment primary key for light and radiation monitoring records.
+    sql: id
+  ir_radiation_wm2:
+    description: VARCHAR(100). Infrared radiation intensity in watts per square meter.
+    sql: '"irRadiationWM2"'
+  light_source_type:
+    description: VARCHAR(100). Type of illumination source (LED, Halogen, Fluorescent, NaturalLight, FiberOptic).
+    sql: '"lightSourceType"'
+  maintenance_log:
+    description: VARCHAR(100). Record of lighting system maintenance activities.
+    sql: '"maintenanceLog"'
+  measurement_timestamp:
+    description: VARCHAR(100). Timestamp of radiation measurement capture.
+    sql: '"measurementTimestamp"'
+  radiation_reading_id:
+    description: BIGINT. Reference to base radiation sensor reading (foreign key to LightAndRadiationReadings.rad_id).
+    sql: '"radiationReadingId"'
+  sensor_position:
+    description: VARCHAR(100). Physical placement of radiation sensors relative to artifacts.
+    sql: '"sensorPosition"'
+  showcase_id:
+    description: VARCHAR(100). Identifier of monitored showcase or display area.
+    sql: '"showcaseId"'
+  staff_code:
+    description: BIGINT. Lighting specialist identifier (foreign key to Staff.Staff_Code).
+    sql: '"staffCode"'
+  uv_awm2:
+    description: VARCHAR(100). Ultraviolet-A radiation intensity in watts per square meter.
+    sql: '"uvAWM2"'
+  uv_bwm2:
+    description: VARCHAR(100). Ultraviolet-B radiation intensity in watts per square meter.
+    sql: '"uvBWM2"'
+  visible_light_lux:
+    description: VARCHAR(100). Visible light intensity measurement in lux units.
+    sql: '"visibleLightLux"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct LightRadiationLog public identity values.
+    label: LightRadiationLog Count
+    sql: ${museum_artifact_large_public__light_radiation_log.id}

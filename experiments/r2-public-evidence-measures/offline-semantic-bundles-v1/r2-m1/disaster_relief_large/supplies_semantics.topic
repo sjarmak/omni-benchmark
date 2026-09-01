@@ -1,0 +1,11 @@
+base_view: disaster_relief_large_public__supplies
+label: supplies
+description: All columns of the public table supplies.
+fields:
+- disaster_relief_large_public__supplies.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__distributionhubs.*
+joins:
+  disaster_relief_large_public__disasterevents: {}
+  disaster_relief_large_public__distributionhubs: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

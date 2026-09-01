@@ -1,0 +1,66 @@
+label: ArtifactLoan
+description: All columns of the public table ArtifactLoan.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactLoan
+dimensions:
+  approval_authority:
+    description: 'VARCHAR(100). Name of staff member who authorized the loan. Example: "Shen Anqi".'
+    sql: '"approvalAuthority"'
+  artifact_reg_id:
+    description: 'VARCHAR(100). Identifier of loaned artifact (logical reference to ArtifactsCore.ARTregID). Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"artifactRegId"'
+  customs_clearance:
+    description: 'VARCHAR(100). Customs documentation status (Completed, Pending, Exempt, Delayed, Denied). Possible values: "Completed", "Delayed", "Denied", "Exempt", "Pending".'
+    sql: '"customsClearance"'
+  damage_during_loan:
+    description: 'VARCHAR(100). Documentation of any damage occurring during loan period. Example: "VMvSHurjDx".'
+    sql: '"damageDuringLoan"'
+  environmental_limits:
+    description: 'VARCHAR(100). Permitted environmental parameter ranges during loan period. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"environmentalLimits"'
+  follow_up_actions:
+    description: 'VARCHAR(100). Required post-return conservation or documentation actions. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"followUpActions"'
+  handling_instructions:
+    description: 'VARCHAR(100). Special handling requirements during transport and display. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"handlingInstructions"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for loan transaction records. Example: 1.'
+    sql: id
+  institution_reg_num:
+    description: 'VARCHAR(100). Borrowing institution identifier (logical reference to LendingInstitutions.Institution_Registry_Num). Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"institutionRegNum"'
+  insurance_amount:
+    description: 'VARCHAR(100). Insured value for loan period in USD. Example: "3Z31SCcYAF".'
+    sql: '"insuranceAmount"'
+  legal_documents:
+    description: 'VARCHAR(100). Reference identifiers for executed legal agreements. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"legalDocuments"'
+  loan_end_date:
+    description: 'VARCHAR(100). Expected return date of artifact to museum custody. Example: "2016-09-24".'
+    sql: '"loanEndDate"'
+  loan_fee:
+    description: 'VARCHAR(100). Financial compensation received for loan in USD. Example: "lz9YHJOyuf".'
+    sql: '"loanFee"'
+  loan_start_date:
+    description: 'VARCHAR(100). Date when artifact departed museum custody. Example: "2013-01-13".'
+    sql: '"loanStartDate"'
+  packaging_type:
+    description: 'VARCHAR(100). Type of protective packaging used (CustomCrate, StandardBox, ClimateCase, SoftWrap, None). Possible values: "ClimateCase", "CustomCrate", "None", "SoftWrap", "StandardBox".'
+    sql: '"packagingType"'
+  purpose:
+    description: 'VARCHAR(100). Purpose of loan (Exhibition, Research, Conservation, Education, Diplomatic). Possible values: "Conservation", "Diplomatic", "Education", "Exhibition", "Research".'
+    sql: purpose
+  return_condition:
+    description: 'VARCHAR(100). Condition of artifact upon return (AsLoaned, Improved, Deteriorated, Damaged, Lost). Possible values: "AsLoaned", "Damaged", "Deteriorated", "Improved", "Lost".'
+    sql: '"returnCondition"'
+  security_requirements:
+    description: 'VARCHAR(100). Security specifications required at borrowing institution. Example: "A man is not old until regrets take the place of dreams. Navicat provides powerful                  ".'
+    sql: '"securityRequirements"'
+  staff_code:
+    description: 'BIGINT. Staff member managing loan logistics (foreign key to Staff.Staff_Code). Example: 55.'
+    sql: '"staffCode"'
+  transportation_method:
+    description: 'VARCHAR(100). Method of physical transport (AirFreight, SeaFreight, RoadTransport, Courier, HandCarry). Possible values: "AirFreight", "Courier", "HandCarry", "RoadTransport", "SeaFreight".'
+    sql: '"transportationMethod"'

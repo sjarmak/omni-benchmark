@@ -1,0 +1,72 @@
+label: DriverMedicalRecord
+description: All columns of the public table DriverMedicalRecord.
+catalog: sports_events_large
+schema: public
+table_name: DriverMedicalRecord
+dimensions:
+  examining_physician:
+    description: 'TEXT. Examining physician name Possible values: Dr. I. Roberts, Dr. A. Tremayne, Dr. M. Ceccarelli, Dr. J. Hartstein, Dr. P. Salmon.'
+    sql: '"EXAMINING_PHYSICIAN"'
+  exam_date:
+    description: DATE. Date of medical examination
+    sql: '"EXAM_DATE"'
+  fia_license_expiry:
+    description: DATE. FIA super license medical expiry
+    sql: '"FIA_LICENSE_EXPIRY"'
+  g_force_tolerance:
+    description: BIGINT. G-force tolerance rating
+    sql: '"G_FORCE_TOLERANCE"'
+  height_cm:
+    description: 'REAL. Height in centimeters Typical range: 155 to 195.'
+    sql: '"HEIGHT_CM"'
+  medical_id:
+    description: BIGINT. Primary key. Unique medical record identifier
+    sql: '"MEDICAL_ID"'
+  reaction_time_ms:
+    description: 'REAL. Reaction time in milliseconds Typical range: 130 to 250.'
+    sql: '"REACTION_TIME_MS"'
+  resting_hr_bpm:
+    description: 'REAL. Resting heart rate in BPM Typical range: 35 to 75.'
+    sql: '"RESTING_HR_BPM"'
+  restrictions:
+    description: JSONB. Any medical restrictions **NULL means No restrictions.**
+    sql: '"RESTRICTIONS"'
+  status:
+    description: 'TEXT. Medical fitness status Possible values: Fit to Race, Conditional, Unfit, Under Review.'
+    sql: '"STATUS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  vision_status:
+    description: 'TEXT. Vision status Possible values: Normal, Corrected, Minor Deficiency.'
+    sql: '"VISION_STATUS"'
+  vo2_max:
+    description: 'REAL. VO2 max (ml/kg/min) Typical range: 40 to 70.'
+    sql: '"VO2_MAX"'
+  body_fat_pct:
+    description: 'REAL. Body fat percentage Typical range: 0 to 100.'
+    sql: body_fat_pct
+  concussion_history:
+    description: BOOLEAN. Whether driver has concussion history Boolean flag (true/false).
+    sql: concussion_history
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  driver_ref:
+    description: BIGINT. Foreign key referencing drivers(drv_main). Related driver
+    sql: driver_ref
+  exam_type:
+    description: 'TEXT. Type of medical examination Possible values: Annual Physical, Pre-Season, Post-Incident, Return to Race, Specialist Referral.'
+    sql: exam_type
+  hearing_normal:
+    description: BOOLEAN. Whether hearing test is normal Boolean flag (true/false).
+    sql: hearing_normal
+  max_hr_bpm:
+    description: 'REAL. Maximum heart rate in BPM Typical range: 160 to 210.'
+    sql: max_hr_bpm
+  medical_center:
+    description: 'TEXT. Medical center location Possible values: FIA Medical Centre, London Sports Medicine, Maranello Medical.'
+    sql: medical_center
+  weight_kg:
+    description: 'REAL. Weight in kilograms Typical range: 55 to 85.'
+    sql: weight_kg

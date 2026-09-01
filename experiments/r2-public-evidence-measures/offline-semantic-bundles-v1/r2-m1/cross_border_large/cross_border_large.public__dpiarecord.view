@@ -1,0 +1,87 @@
+label: DPIARecord
+description: All columns of the public table DPIARecord.
+catalog: cross_border_large
+schema: public
+table_name: DPIARecord
+dimensions:
+  approval_authority:
+    description: 'TEXT. Authority that approved/rejected the DPIA Possible values: DPO, Privacy Board, CISO, Legal Director. **NULL means Awaiting approval.**'
+    sql: '"APPROVAL_AUTHORITY"'
+  automated_decision_making:
+    description: BOOLEAN. Whether automated decision-making is involved Boolean flag (true/false).
+    sql: '"AUTOMATED_DECISION_MAKING"'
+  business_owner:
+    description: 'TEXT. Business owner of the processing activity Possible values: Product, Marketing, HR, Finance, Operations, Engineering.'
+    sql: '"BUSINESS_OWNER"'
+  completion_date:
+    description: DATE. DPIA completion date **NULL means DPIA not yet completed.**
+    sql: '"COMPLETION_DATE"'
+  data_sensitivity:
+    description: 'TEXT. Highest sensitivity category of data involved Possible values: Standard, Special Category, Children, Financial, Biometric.'
+    sql: '"DATA_SENSITIVITY"'
+  dpia_id:
+    description: BIGINT. Primary key. Unique DPIA record identifier
+    sql: '"DPIA_ID"'
+  dpia_status:
+    description: 'TEXT. Current DPIA status Possible values: Initiated, In Progress, Under Review, Approved, Rejected, Archived.'
+    sql: '"DPIA_STATUS"'
+  next_review_date:
+    description: DATE. Next scheduled review date
+    sql: '"Next_Review_Date"'
+  processing_purposes_count:
+    description: BIGINT. Number of distinct processing purposes
+    sql: '"PROCESSING_PURPOSES_COUNT"'
+  project_name:
+    description: 'TEXT. Name of the project/processing activity being assessed Possible values: Customer Analytics Platform, HR Data Migration, Cloud Transition, Third Party Data Sharing, AI Model Training, Cross-Border Transfer.'
+    sql: '"PROJECT_NAME"'
+  residual_risks_count:
+    description: BIGINT. Number of residual risks after mitigation
+    sql: '"RESIDUAL_RISKS_COUNT"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  compliance_trace_ref:
+    description: BIGINT. Foreign key referencing Compliance(complianceTrace). Related compliance record
+    sql: compliance_trace_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  cross_border_processing:
+    description: BOOLEAN. Whether processing involves cross-border transfers Boolean flag (true/false).
+    sql: cross_border_processing
+  data_subjects_estimated:
+    description: BIGINT. Estimated number of data subjects
+    sql: data_subjects_estimated
+  document_url:
+    description: TEXT. URL to DPIA document
+    sql: document_url
+  dpia_code:
+    description: TEXT. DPIA reference code
+    sql: dpia_code
+  dpo_assigned:
+    description: 'TEXT. Assigned DPO Possible values: Dr. A. Mueller, J. Rossi, S. Tanaka, M. Laurent, K. O''Brien.'
+    sql: dpo_assigned
+  initiation_date:
+    description: DATE. DPIA initiation date
+    sql: initiation_date
+  legal_basis:
+    description: 'TEXT. Primary legal basis for processing Possible values: Consent, Legitimate Interest, Contract, Legal Obligation, Vital Interest, Public Task.'
+    sql: '"legal_Basis"'
+  mitigation_effectiveness_pct:
+    description: 'REAL. Effectiveness of proposed mitigations Typical range: 0 to 100.'
+    sql: mitigation_effectiveness_pct
+  profiling_involved:
+    description: BOOLEAN. Whether profiling of individuals is involved Boolean flag (true/false).
+    sql: profiling_involved
+  risk_level_overall:
+    description: 'TEXT. Overall privacy risk level Possible values: Low, Medium, High, Very High.'
+    sql: '"risk_Level_Overall"'
+  supervisory_consultation:
+    description: JSONB. Details of supervisory authority consultation **NULL means No consultation required.**
+    sql: supervisory_consultation
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DPIARecord public identity values.
+    label: DPIARecord Count
+    sql: ${cross_border_large_public__dpiarecord.dpia_id}

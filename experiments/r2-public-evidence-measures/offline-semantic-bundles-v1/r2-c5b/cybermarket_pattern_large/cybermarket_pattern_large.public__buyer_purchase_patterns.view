@@ -1,0 +1,66 @@
+label: BuyerPurchasePatterns
+description: All columns of the public table BuyerPurchasePatterns.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: BuyerPurchasePatterns
+dimensions:
+  bpp_id:
+    description: 'TEXT. Unique identifier for the buyer purchase pattern record. Example: BPP-1A2B3C.'
+    sql: '"BPP_id"'
+  avg_days_between_orders:
+    description: 'REAL. Average number of days between consecutive orders. **NULL means Only one order on record.** Example: 18.0.'
+    sql: avg_days_between_orders
+  avg_order_value_usd:
+    description: 'REAL. Average order value in USD over analysis period. Example: 85.0.'
+    sql: avg_order_value_usd
+  coupon_usage_rate_pct:
+    description: 'REAL. Percentage of orders using discount coupons. Example: 25.0.'
+    sql: coupon_usage_rate_pct
+  max_single_order_usd:
+    description: 'REAL. Maximum single order value in USD. Example: 250.0.'
+    sql: max_single_order_usd
+  median_order_value_usd:
+    description: 'REAL. Median order value in USD over analysis period. Example: 65.0.'
+    sql: median_order_value_usd
+  mobile_purchase_ratio:
+    description: 'REAL. Ratio of purchases made via mobile devices (0-1). Example: 50.0.'
+    sql: mobile_purchase_ratio
+  orders_last_30_days:
+    description: 'INTEGER. Number of orders placed in the last 30 days. Example: 3.'
+    sql: orders_last_30_days
+  orders_last_365_days:
+    description: 'INTEGER. Number of orders placed in the last 365 days. Example: 25.'
+    sql: orders_last_365_days
+  orders_last_90_days:
+    description: 'INTEGER. Number of orders placed in the last 90 days. Example: 8.'
+    sql: orders_last_90_days
+  pattern_analysis_timestamp:
+    description: 'TIMESTAMP. Timestamp when the purchase pattern analysis was performed. Example: 2024-01-01 12:00:00.'
+    sql: pattern_analysis_timestamp
+  preferred_payment_method:
+    description: 'TEXT. Most frequently used payment method. Unique values: Credit Card, Debit Card, PayPal, Apple Pay, Google Pay, Bank Transfer, Crypto.'
+    sql: preferred_payment_method
+  preferred_shopping_day:
+    description: 'TEXT. Day of week with highest purchase frequency. Unique values: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.'
+    sql: preferred_shopping_day
+  preferred_shopping_hour:
+    description: 'INTEGER. Hour of day (0-23) with highest purchase frequency. Example: 14.'
+    sql: preferred_shopping_hour
+  price_sensitivity_score:
+    description: 'REAL. Score indicating buyer price sensitivity (0-100, higher = more sensitive). Example: 55.0.'
+    sql: price_sensitivity_score
+  primary_category_preference:
+    description: 'TEXT. Most frequently purchased product category. Unique values: Electronics, Fashion, Home Garden, Health Beauty, Sports Outdoors, Books Media, Toys Games, Automotive.'
+    sql: primary_category_preference
+  return_rate_pct:
+    description: 'REAL. Percentage of orders that resulted in returns. Example: 8.0.'
+    sql: return_rate_pct
+  secondary_category_preference:
+    description: 'TEXT. Second most frequently purchased product category. **NULL means Buyer only purchases from one category.** Unique values: Electronics, Fashion, Home Garden, Health Beauty, Sports Outdoors, Books Media, Toys Games, Automotive.'
+    sql: secondary_category_preference
+  session_ref:
+    description: TEXT. Reference to the buyer session analytics record.
+    sql: session_ref
+  wishlist_conversion_rate_pct:
+    description: 'REAL. Percentage of wishlist items eventually purchased. **NULL means Buyer has not used wishlist feature.** Example: 15.0.'
+    sql: wishlist_conversion_rate_pct

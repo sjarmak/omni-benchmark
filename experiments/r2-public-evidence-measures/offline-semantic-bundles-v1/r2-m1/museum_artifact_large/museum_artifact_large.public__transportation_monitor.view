@@ -1,0 +1,72 @@
+label: TransportationMonitor
+description: All columns of the public table TransportationMonitor.
+catalog: museum_artifact_large
+schema: public
+table_name: TransportationMonitor
+dimensions:
+  anomaly_report:
+    description: 'VARCHAR(100). Documentation of any deviations from transport protocol. Example: "oOZ71JqIYl".'
+    sql: '"anomalyReport"'
+  arrival_time:
+    description: 'VARCHAR(100). Timestamp when artifact arrived at destination facility. Example: "09:20:57".'
+    sql: '"arrivalTime"'
+  artifact_reg_id:
+    description: 'VARCHAR(100). Identifier of transported artifact (logical reference to ArtifactsCore.ARTregID). Example: "FTaLhCx0ML".'
+    sql: '"artifactRegId"'
+  carrier_name:
+    description: 'VARCHAR(100). Name of transportation service provider. Example: "Carlos Allen".'
+    sql: '"carrierName"'
+  customs_delays:
+    description: 'VARCHAR(100). Total delay time in minutes due to customs procedures. Example: "zhZleRr0yG".'
+    sql: '"customsDelays"'
+  departure_time:
+    description: 'VARCHAR(100). Timestamp when artifact left origin facility. Example: "10:08:45".'
+    sql: '"departureTime"'
+  gps_accuracy:
+    description: 'VARCHAR(100). GPS positional accuracy in meters during tracking. Example: "nuE6BY3N99".'
+    sql: '"gpsAccuracy"'
+  handling_transfers:
+    description: 'VARCHAR(100). Number of physical handoffs between transport entities. Example: "zXXk3mFoB4".'
+    sql: '"handlingTransfers"'
+  humidity_max:
+    description: 'VARCHAR(100). Maximum recorded humidity during transit as percentage. Example: "7Ub1ASNqWR".'
+    sql: '"humidityMax"'
+  humidity_min:
+    description: 'VARCHAR(100). Minimum recorded humidity during transit as percentage. Example: "FigCgaH9Mh".'
+    sql: '"humidityMin"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for transport monitoring records. Example: 1.'
+    sql: id
+  packaging_integrity:
+    description: 'VARCHAR(100). Condition of protective packaging upon arrival (Intact, MinorDamage, ModerateDamage, Compromised, Failed). Possible values: "Compromised", "Failed", "Intact", "MinorDamage", "ModerateDamage".'
+    sql: '"packagingIntegrity"'
+  receiver_verification:
+    description: 'VARCHAR(100). Result of receiving facility condition verification (Verified, DiscrepancyNoted, Rejected, Pending, Unavailable). Possible values: "DiscrepancyNoted", "Pending", "Rejected", "Unavailable", "Verified".'
+    sql: '"receiverVerification"'
+  route_description:
+    description: 'VARCHAR(100). Detailed description of transport route taken. Example: "vCMercjgRM".'
+    sql: '"routeDescription"'
+  shipment_log_tag:
+    description: 'VARCHAR(100). Unique identifier for transport shipment batch. Example: "DtMEIT7Wqr".'
+    sql: '"shipmentLogTag"'
+  shock_events_count:
+    description: 'VARCHAR(100). Number of significant impact events recorded during transit. Example: "DCLgrRAmzW".'
+    sql: '"shockEventsCount"'
+  staff_code:
+    description: 'BIGINT. Logistics coordinator identifier (foreign key to Staff.Staff_Code). Example: 55.'
+    sql: '"staffCode"'
+  temperature_max:
+    description: 'VARCHAR(100). Maximum recorded temperature during transit in Celsius. Example: "Gg0ZWa1rtl".'
+    sql: '"temperatureMax"'
+  temperature_min:
+    description: 'VARCHAR(100). Minimum recorded temperature during transit in Celsius. Example: "hSTj7torL6".'
+    sql: '"temperatureMin"'
+  vehicle_type:
+    description: 'VARCHAR(100). Transport vehicle classification (ClimateControlledTruck, StandardVan, AirFreightContainer, SeaContainer, HandCarryCase). Possible values: "AirFreightContainer", "ClimateControlledTruck", "HandCarryCase", "SeaContainer", "StandardVan".'
+    sql: '"vehicleType"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TransportationMonitor public identity values.
+    label: TransportationMonitor Count
+    sql: ${museum_artifact_large_public__transportation_monitor.id}

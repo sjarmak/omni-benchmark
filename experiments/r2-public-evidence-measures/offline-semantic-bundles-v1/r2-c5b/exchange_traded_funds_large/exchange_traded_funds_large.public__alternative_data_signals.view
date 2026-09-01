@@ -1,0 +1,63 @@
+label: AlternativeDataSignals
+description: All columns of the public table AlternativeDataSignals.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: AlternativeDataSignals
+dimensions:
+  alternative_data_signals_id:
+    description: 'TEXT. Unique identifier for the alt data signal. Example: XX-1A2B3C.'
+    sql: '"AlternativeDataSignals_id"'
+  app_download_growth_pct:
+    description: 'REAL. Month-over-month app download growth. **NULL means No mobile app.** Example: 0.02.'
+    sql: app_download_growth_pct
+  brand_search_volume_index:
+    description: 'INTEGER. Normalized Google Trends score. Example: 50.'
+    sql: brand_search_volume_index
+  credit_card_spend_index:
+    description: 'REAL. Indexed consumer spend from CC aggregators. **NULL means Data unavailable.** Example: 100.'
+    sql: credit_card_spend_index
+  customer_churn_proxy_index:
+    description: 'REAL. Estimated churn based on cancellation keywords. **NULL means B2B only.** Example: 50.0.'
+    sql: customer_churn_proxy_index
+  employee_sentiment_score:
+    description: 'REAL. Aggregated employee review score (1-5). Example: 3.5.'
+    sql: employee_sentiment_score
+  esg_controversy_flag:
+    description: 'BOOLEAN. New viral controversy detected. Possible values: True, False.'
+    sql: esg_controversy_flag
+  geopolitical_risk_exposure:
+    description: 'REAL. Exposure to sanctioned or high-risk regions. Example: 50.0.'
+    sql: geopolitical_risk_exposure
+  import_bill_of_lading_count:
+    description: 'INTEGER. Number of import shipments detected. **NULL means Service company.** Example: 50.'
+    sql: import_bill_of_lading_count
+  insider_selling_ratio:
+    description: 'REAL. Ratio of insider sells to buys. Example: 50.0.'
+    sql: insider_selling_ratio
+  job_posting_growth_pct:
+    description: 'REAL. Growth in open job requisitions. Example: 0.05.'
+    sql: job_posting_growth_pct
+  patent_filing_velocity:
+    description: 'INTEGER. Number of new patents filed last quarter. Example: 50.'
+    sql: patent_filing_velocity
+  satellite_parking_fill_rate:
+    description: 'REAL. Retail parking lot occupancy from satellite. **NULL means Not a retail stock.** Example: 50.0.'
+    sql: satellite_parking_fill_rate
+  security_ref:
+    description: 'INTEGER. Reference to the security. Example: 50.'
+    sql: security_ref
+  signal_confidence_level:
+    description: 'REAL. Provider''s confidence in data accuracy. Example: 50.0.'
+    sql: signal_confidence_level
+  signal_date:
+    description: 'TIMESTAMP. Date of signal generation. Example: 2024-01-01 12:00:00.'
+    sql: signal_date
+  supply_chain_disruption_index:
+    description: 'REAL. Score measuring shipping delays. Example: 50.0.'
+    sql: supply_chain_disruption_index
+  weather_impact_score:
+    description: 'REAL. Risk to operations based on weather forecasts. Example: 50.0.'
+    sql: weather_impact_score
+  web_traffic_rank:
+    description: 'INTEGER. Global website traffic ranking. **NULL means No website.** Example: 50.'
+    sql: web_traffic_rank

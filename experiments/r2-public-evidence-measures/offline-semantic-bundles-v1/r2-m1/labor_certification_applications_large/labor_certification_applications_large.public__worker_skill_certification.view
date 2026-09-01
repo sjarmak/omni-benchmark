@@ -1,0 +1,72 @@
+label: WorkerSkillCertification
+description: All columns of the public table WorkerSkillCertification.
+catalog: labor_certification_applications_large
+schema: public
+table_name: WorkerSkillCertification
+dimensions:
+  wsc_code:
+    description: 'TEXT. Unique identifier for worker skill certification record. Example: WSC-1A2B3C.'
+    sql: '"WSC_code"'
+  certification_name:
+    description: 'TEXT. Official name of the professional certification. Example: PMP.'
+    sql: '"certificationName"'
+  certification_rank:
+    description: 'INTEGER. Industry ranking of this certification in its category from 1-100. Example: 35.'
+    sql: '"certificationRank"'
+  continuing_education_hrs:
+    description: 'REAL. Continuing education hours completed for certification maintenance. **NULL means CE not required for this certification.** Example: 35.'
+    sql: '"continuingEducation_hrs"'
+  digital_badge_issued_flag:
+    description: 'BOOLEAN. Indicates if a digital badge was issued for this certification. Possible values: True, False.'
+    sql: '"digitalBadgeIssued_flag"'
+  employer_sponsored_flag:
+    description: 'BOOLEAN. Indicates if certification was sponsored by employer. Possible values: True, False.'
+    sql: '"employerSponsored_flag"'
+  exam_score_pct:
+    description: 'REAL. Percentage score achieved on certification exam. **NULL means Score not disclosed or experience-based certification.** Example: 78.'
+    sql: '"examScore_pct"'
+  expiration_date:
+    description: 'TIMESTAMP. Date when certification expires and requires renewal. **NULL means Certification does not expire.** Example: 2024-01-01 12:00:00.'
+    sql: '"expirationDate"'
+  industry_relevance_score:
+    description: 'REAL. Score indicating current industry relevance of certification from 1-10. Example: 7.5.'
+    sql: '"industryRelevanceScore"'
+  issue_date:
+    description: 'TIMESTAMP. Date when certification was originally issued. Example: 2024-01-01 12:00:00.'
+    sql: '"issueDate"'
+  issuing_body:
+    description: 'TEXT. Organization that issued the certification. Example: PMI.'
+    sql: '"issuingBody"'
+  market_premium_pct:
+    description: 'REAL. Estimated salary premium percentage associated with certification. Example: 12.'
+    sql: '"marketPremium_pct"'
+  primary_skill_area:
+    description: 'TEXT. Primary skill domain covered by the certification. Example: Project Management.'
+    sql: '"primarySkillArea"'
+  reciprocity_states_ct:
+    description: 'INTEGER. Number of US states where certification has reciprocity. **NULL means Not a state-licensed certification.** Example: 50.'
+    sql: '"reciprocityStates_ct"'
+  renewal_cost_usd:
+    description: 'REAL. Cost in USD for certification renewal. **NULL means No renewal fee or lifetime certification.** Example: 350.'
+    sql: '"renewalCost_USD"'
+  renewal_cycle_months:
+    description: 'INTEGER. Number of months in the certification renewal cycle. **NULL means Lifetime certification with no renewal.** Example: 50.'
+    sql: '"renewalCycle_months"'
+  skill_level:
+    description: 'TEXT. Proficiency level indicated by the certification. Unique values: Entry, Associate, Professional, Expert, Master.'
+    sql: '"skillLevel"'
+  verification_date:
+    description: 'TIMESTAMP. Date when certification was last verified. **NULL means Verification not yet performed.** Example: 2024-01-01 12:00:00.'
+    sql: '"verificationDate"'
+  verification_status:
+    description: 'TEXT. Current verification status of the certification. Unique values: Verified, Pending Verification, Verification Failed, Expired, Revoked.'
+    sql: '"verificationStatus"'
+  worker_ref:
+    description: TEXT. Foreign key reference to worker_profile table.
+    sql: worker_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct WorkerSkillCertification public identity values.
+    label: WorkerSkillCertification Count
+    sql: ${labor_certification_applications_large_public__worker_skill_certification.wsc_code}

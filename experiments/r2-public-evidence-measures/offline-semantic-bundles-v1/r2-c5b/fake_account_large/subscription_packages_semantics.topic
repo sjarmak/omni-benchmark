@@ -1,0 +1,7 @@
+base_view: fake_account_large_public__subscription_packages
+label: subscription_packages
+description: All columns of the public table subscription_packages.
+fields:
+- fake_account_large_public__subscription_packages.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__vendor_social_media
+label: vendor_social_media
+description: All columns of the public table vendor_social_media.
+fields:
+- cybermarket_pattern_large_public__vendor_social_media.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

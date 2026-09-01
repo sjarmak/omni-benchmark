@@ -1,0 +1,57 @@
+label: compliance_audits
+description: All columns of the public table compliance_audits.
+catalog: solar_panel_large
+schema: public
+table_name: compliance_audits
+dimensions:
+  audit_type:
+    description: 'TEXT. The type of compliance audit performed. Possible values: Environmental, Financial, Grid Code, Safety.'
+    sql: '"AUDIT_TYPE"'
+  audit_tag:
+    description: 'TEXT. Unique identifier for a compliance audit. Example: AUD-22-001.'
+    sql: '"AuditTag"'
+  follow_up_due:
+    description: 'DATE. The due date for a follow-up audit, if required. Example: 15-Sep-22.'
+    sql: '"FOLLOW_UP_DUE"'
+  lead_auditor:
+    description: 'TEXT. The name of the lead auditor. Possible values: David Lee, Laura Palmer, Maria Garcia, Sam Johnson, Sarah Chen, Tom Harris.'
+    sql: '"LEAD_AUDITOR"'
+  minor_findings:
+    description: 'BIGINT. The number of minor non-compliance findings. Example: 1.'
+    sql: '"MINOR_FINDINGS"'
+  plant_ref:
+    description: 'TEXT. FK -> plants.sitekey. The solar plant that was audited. Example: SP9227.'
+    sql: '"PlantRef"'
+  report_url:
+    description: 'TEXT. A URL or file path to the full audit report. Example: /audits/AUD-22-001.pdf.'
+    sql: '"REPORT_URL"'
+  score:
+    description: 'REAL. The numerical score of the audit, if applicable. Example: 98.5.'
+    sql: '"SCORE"'
+  audit_date:
+    description: 'DATE. The date the audit was conducted. Example: 20-Feb-22.'
+    sql: '"auditDate"'
+  auditing_firm:
+    description: 'TEXT. The name of the external firm that conducted the audit. Possible values: EcoSure LLC, GreenLeaf Consulting, GridComply Inc., PowerFinance Auditors, SafeGrid Audits.'
+    sql: '"auditingFirm"'
+  cap_required:
+    description: 'BOOLEAN. A flag indicating if a corrective action plan is required. Possible values: False, True.'
+    sql: cap_required
+  entry_ts:
+    description: 'TIMESTAMP. Timestamp when the audit record was entered into the system. Example: 2022-03-05 11:00:00.'
+    sql: entry_ts
+  major_findings:
+    description: 'BIGINT. The number of major non-compliance findings. Possible values: 0, 1, 2, 3, 4.'
+    sql: major_findings
+  report_published:
+    description: 'DATE. The date the final audit report was published. Example: 05-Mar-22.'
+    sql: report_published
+  result:
+    description: 'TEXT. The final result or outcome of the audit. Possible values: Failed, Passed, Passed with Remarks.'
+    sql: result
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct compliance_audits public identity values.
+    label: compliance_audits Count
+    sql: ${solar_panel_large_public__compliance_audits.audit_tag}

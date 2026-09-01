@@ -1,0 +1,81 @@
+label: exomoons
+description: All columns of the public table exomoons.
+catalog: planets_data_large
+schema: public
+table_name: exomoons
+dimensions:
+  detection_confidence:
+    description: 'real. Statistical confidence level (0.0 to 1.0) in the moon detection. Possible values: 0.38, 0.45, 0.65, 0.68, 0.72, 0.78, 0.83, 0.85, 0.91.'
+    sql: '"DETECTION_CONFIDENCE"'
+  discovery_status:
+    description: 'text. Current status of moon discovery (candidate, confirmed, disputed, false positive). Possible values: Candidate, Disputed.'
+    sql: '"DiscoveryStatus"'
+  discovery_year:
+    description: 'bigint. Year when the exomoon was first detected or announced. Example: 1987.'
+    sql: '"DiscoveryYear"'
+  habitability_potential:
+    description: 'real. Assessment score for potential habitability of the exomoon. Possible values: 0.01, 0.02, 0.15, 0.42, 0.58, 0.75, 0.78, 0.82, 0.89.'
+    sql: '"HABITABILITY_POTENTIAL"'
+  last_updated:
+    description: 'date. Date when the exomoon record was last updated. Possible values: 2023-07-22, 2023-08-30, 2023-09-08, 2023-10-15, 2023-11-01, 2023-11-20, 2023-12-05, 2024-01-12, 2024-02-18.'
+    sql: '"LastUpdated"'
+  mass_estimate_earth_masses:
+    description: 'real. Estimated mass of the exomoon in Earth mass units. Possible values: 0.18, 0.35, 0.87, 0.92, 1.25, 1.58, 1.95, 2.15, 2.8.'
+    sql: '"MassEstimate_Earth_masses"'
+  notes:
+    description: 'text. Additional notes or comments about the exomoon detection and properties. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  orbital_period_uncertainty_days:
+    description: 'real. Uncertainty in orbital period measurement in days. **NULL means orbital period uncertainty was not calculated.**. Possible values: 0.15, 0.34, 1.2.'
+    sql: '"OrbitalPeriodUncertainty_days"'
+  planetlink:
+    description: 'bigint. Foreign key reference to the parent planet hosting the moon. FK to planets(planetRef). Example: 1.'
+    sql: '"PLANETLINK"'
+  radius_estimate_earth_radii:
+    description: 'real. Estimated radius of the exomoon in Earth radius units. Possible values: 0.65, 0.82, 1.05, 1.08, 1.18, 1.28, 1.32, 1.41, 1.45.'
+    sql: '"RADIUS_ESTIMATE_Earth_radii"'
+  semi_major_axis_planet_radii:
+    description: 'real. Semi-major axis of moon orbit in units of host planet radii. Possible values: 12.5, 1580.0, 18.7, 22.3, 28.2, 38.9, 4.2, 45.8, 8.5.'
+    sql: '"SEMI_MAJOR_AXIS_planet_radii"'
+  surface_temperature_k:
+    description: 'real. Estimated average surface temperature in Kelvin. Possible values: 165, 180, 1800, 185, 195, 215, 2250, 275, 95.'
+    sql: '"SurfaceTemperature_K"'
+  transit_depth_contribution_ppm:
+    description: 'real. Moon''s contribution to transit depth in parts per million. Possible values: 12.5, 125.5, 15.8, 18.9, 2.1, 28.7, 32.1, 4.2, 8.2.'
+    sql: '"TRANSIT_DEPTH_CONTRIBUTION_ppm"'
+  detection_method:
+    description: 'text. Observational method used to detect the exomoon (transit, TTV, etc.). Possible values: Direct Imaging, Occultation, Radial Velocity, Spectroscopy, Transit, Transit Spectroscopy.'
+    sql: detection_method
+  eccentricity:
+    description: 'real. Orbital eccentricity of the moon (0 = circular, approaching 1 = highly elliptical). Example: 0.01.'
+    sql: eccentricity
+  exo_moon_ref:
+    description: 'bigint. Primary key identifier for exomoon records. PK. Possible values: 9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009.'
+    sql: '"exoMoonRef"'
+  moon_designation:
+    description: 'text. Official designation or name assigned to the exomoon candidate. Possible values: 55 Cnc e-I, HD 106906 b-I, K2-18 b-I, Kepler-1708 b-I, LHS 1140 b-I, Proxima Cen c-I, TOI-715 c-I, TRAPPIST-1 g-I, WASP-12 b-I.'
+    sql: moon_designation
+  orbital_period_days:
+    description: 'real. Orbital period of the moon around its host planet in days. Example: 0.075.'
+    sql: orbital_period_days
+  subsurface_ocean_probability:
+    description: 'real. Probability (0.0 to 1.0) of subsurface liquid ocean existence. **NULL means subsurface ocean assessment was not performed.**. Possible values: 0.05, 0.25, 0.68, 0.85.'
+    sql: subsurface_ocean_probability
+  tidal_heating_rate_w:
+    description: 'real. Rate of internal heating due to tidal forces in watts. **NULL means tidal heating was not modeled.**. Possible values: 3200000000000000.0, 850000000000000.0.'
+    sql: '"tidal_heating_rate_W"'
+  escape_velocity_km_s:
+    description: 'real. Escape velocity from the exomoon surface in kilometers per second. Example: 1.58.'
+    sql: '"ESCAPE_VELOCITY_km/s"'
+  surface_gravity_m_s:
+    description: 'real. Estimated surface gravitational acceleration in meters per second squared. Possible values: 13.2, 14.5, 16.8, 18.6, 19.2, 3.8, 4.9, 9.2, 9.8.'
+    sql: '"SurfaceGravity_m/s²"'
+  density_estimate_g_cm:
+    description: 'real. Estimated bulk density of the exomoon in grams per cubic centimeter. **NULL means insufficient data to calculate density.**. Possible values: 4.2, 5.8.'
+    sql: '"density_estimate_g/cm³"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct exomoons public identity values.
+    label: exomoons Count
+    sql: ${planets_data_large_public__exomoons.exo_moon_ref}

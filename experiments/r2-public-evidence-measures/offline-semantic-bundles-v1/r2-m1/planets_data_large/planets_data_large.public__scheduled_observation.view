@@ -1,0 +1,66 @@
+label: ScheduledObservation
+description: All columns of the public table ScheduledObservation.
+catalog: planets_data_large
+schema: public
+table_name: ScheduledObservation
+dimensions:
+  actual_start:
+    description: TIMESTAMP WITHOUT TIME ZONE. Actual start time **NULL means Observation not yet executed.**
+    sql: '"ACTUAL_START"'
+  airmass_start:
+    description: 'REAL. Airmass at start of observation Typical range: 1.0 to 3.0.'
+    sql: '"AIRMASS_START"'
+  exposure_time_s:
+    description: 'REAL. Total exposure time in seconds Typical range: 1 to 36000.'
+    sql: '"EXPOSURE_TIME_S"'
+  overhead_minutes:
+    description: 'REAL. Telescope overhead in minutes Typical range: 1 to 60.'
+    sql: '"OVERHEAD_MINUTES"'
+  planet_ref:
+    description: BIGINT. Foreign key referencing planets(planetref). Target planet if applicable
+    sql: '"PLANET_REF"'
+  scheduled_start:
+    description: TIMESTAMP WITHOUT TIME ZONE. Scheduled observation start time
+    sql: '"SCHEDULED_START"'
+  sched_obs_id:
+    description: BIGINT. Primary key. Unique scheduled observation identifier
+    sql: '"SCHED_OBS_ID"'
+  seeing_arcsec:
+    description: 'REAL. Seeing conditions in arcseconds Typical range: 0.3 to 3.0. **NULL means Not yet measured.**'
+    sql: '"SEEING_ARCSEC"'
+  status:
+    description: 'TEXT. Observation status Possible values: Scheduled, Executing, Completed, Failed, Weather Loss, Technical Loss, Cancelled.'
+    sql: '"STATUS"'
+  actual_end:
+    description: TIMESTAMP WITHOUT TIME ZONE. Actual end time **NULL means Observation not yet executed.**
+    sql: actual_end
+  airmass_end:
+    description: 'REAL. Airmass at end of observation Typical range: 1.0 to 3.0.'
+    sql: airmass_end
+  allocation_ref:
+    description: BIGINT. Foreign key referencing TelescopeAllocation(ALLOCATION_ID). Related time allocation
+    sql: allocation_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  exposures_count:
+    description: BIGINT. Number of individual exposures
+    sql: exposures_count
+  guide_star_acquired:
+    description: BOOLEAN. Whether guide star was successfully acquired Boolean flag (true/false).
+    sql: guide_star_acquired
+  obs_block_id:
+    description: TEXT. Observation block identifier
+    sql: obs_block_id
+  observation_mode:
+    description: 'TEXT. Observation mode Possible values: Photometry, Spectroscopy, Imaging, Polarimetry, Time Series.'
+    sql: observation_mode
+  scheduled_end:
+    description: TIMESTAMP WITHOUT TIME ZONE. Scheduled observation end time
+    sql: scheduled_end
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ScheduledObservation public identity values.
+    label: ScheduledObservation Count
+    sql: ${planets_data_large_public__scheduled_observation.sched_obs_id}

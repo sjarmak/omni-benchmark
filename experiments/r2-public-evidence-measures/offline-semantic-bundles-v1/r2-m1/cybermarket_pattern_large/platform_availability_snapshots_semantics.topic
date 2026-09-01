@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__platform_availability_snapshots
+label: platform_availability_snapshots
+description: All columns of the public table platform_availability_snapshots.
+fields:
+- cybermarket_pattern_large_public__platform_availability_snapshots.*
+- cybermarket_pattern_large_public__markets.*
+joins:
+  cybermarket_pattern_large_public__markets: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

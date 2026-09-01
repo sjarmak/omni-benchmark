@@ -1,0 +1,66 @@
+label: CommunicationSessionLog
+description: All columns of the public table CommunicationSessionLog.
+catalog: polar_equipment_large
+schema: public
+table_name: CommunicationSessionLog
+dimensions:
+  avg_latency_ms:
+    description: 'REAL. Average round-trip latency in milliseconds. Example: 120.'
+    sql: '"avgLatency_ms"'
+  avg_throughput_kbps:
+    description: 'REAL. Average achieved throughput in kilobits per second. Example: 380.'
+    sql: '"avgThroughput_kbps"'
+  bandwidth_allocated_kbps:
+    description: 'INTEGER. Allocated bandwidth in kilobits per second. Unique values: 64, 128, 256, 512, 1024, 2048, 4096.'
+    sql: '"bandwidthAllocated_kbps"'
+  comm_session_seq:
+    description: TEXT. Unique identifier for each communication session.
+    sql: '"commSessionSeq"'
+  comm_ref:
+    description: 'INTEGER. Reference to the communication equipment. Example: 50.'
+    sql: comm_ref
+  data_rx_bytes:
+    description: 'INTEGER. Total bytes received during session. Example: 12000000.'
+    sql: '"dataRxBytes"'
+  data_tx_bytes:
+    description: 'INTEGER. Total bytes transmitted during session. Example: 5000000.'
+    sql: '"dataTxBytes"'
+  duration_seconds:
+    description: 'INTEGER. Total session duration in seconds. **NULL means Duration calculation pending.** Example: 1800.'
+    sql: '"durationSeconds"'
+  encryption_enabled:
+    description: 'TEXT. Whether encryption was active for session. Possible values: True, False.'
+    sql: '"encryptionEnabled"'
+  encryption_type:
+    description: 'TEXT. Type of encryption used if enabled. Unique values: AES256, AES128, TLS1_3, TLS1_2, None.'
+    sql: '"encryptionType"'
+  error_count:
+    description: 'INTEGER. Number of communication errors logged. Example: 3.'
+    sql: '"errorCount"'
+  jitter_ms:
+    description: 'REAL. Latency variation (jitter) in milliseconds. Example: 15.'
+    sql: jitter_ms
+  packet_loss_pct:
+    description: 'REAL. Percentage of packets lost during transmission. Example: 1.5.'
+    sql: '"packetLossPct"'
+  protocol_type:
+    description: 'TEXT. Communication protocol used for session. Unique values: TCP_IP, UDP, Satellite, Radio, Mesh, LTE.'
+    sql: '"protocolType"'
+  retransmission_count:
+    description: 'INTEGER. Number of packet retransmissions required. Example: 25.'
+    sql: '"retransmissionCount"'
+  session_end_time:
+    description: 'TIMESTAMP. Timestamp when communication session ended. **NULL means Session still active or abruptly terminated.** Example: 2024-01-01 12:00:00.'
+    sql: '"sessionEndTime"'
+  session_quality_score:
+    description: 'REAL. Overall session quality score 0-100. Example: 82.'
+    sql: '"sessionQualityScore"'
+  session_start_time:
+    description: 'TIMESTAMP. Timestamp when communication session began. Example: 2024-01-01 12:00:00.'
+    sql: '"sessionStartTime"'
+  signal_strength_d_bm:
+    description: 'REAL. Average signal strength in dBm. **NULL means Signal measurement unavailable.** Example: -65.'
+    sql: '"signalStrength_dBm"'
+  termination_reason:
+    description: 'TEXT. Reason for session termination. Unique values: Normal, Timeout, Error, UserAbort, LinkLoss, Handover.'
+    sql: '"terminationReason"'

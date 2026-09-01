@@ -1,0 +1,66 @@
+label: SentimentTradingSignals
+description: All columns of the public table SentimentTradingSignals.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: SentimentTradingSignals
+dimensions:
+  sentiment_trading_signals_id:
+    description: TEXT. Unique identifier for sentiment trading signal.
+    sql: '"SentimentTradingSignals_id"'
+  confidence_interval_lower_pct:
+    description: 'REAL. Lower bound of 95% confidence interval. **NULL means Confidence interval not computed.** Example: -2.0.'
+    sql: confidence_interval_lower_pct
+  confidence_interval_upper_pct:
+    description: 'REAL. Upper bound of 95% confidence interval. **NULL means Confidence interval not computed.** Example: 8.0.'
+    sql: confidence_interval_upper_pct
+  contrarian_indicator_score:
+    description: 'REAL. Score indicating contrarian opportunity. **NULL means Contrarian analysis not performed.** Example: 50.0.'
+    sql: contrarian_indicator_score
+  expected_return_pct:
+    description: 'REAL. Expected return based on sentiment signal. **NULL means Return forecast unavailable.** Example: 3.0.'
+    sql: expected_return_pct
+  historical_accuracy_pct:
+    description: 'REAL. Historical accuracy of similar signals. **NULL means No historical track record.** Example: 50.0.'
+    sql: historical_accuracy_pct
+  holding_period_days:
+    description: 'INTEGER. Recommended holding period in days. Example: 50.'
+    sql: holding_period_days
+  is_actionable:
+    description: 'BOOLEAN. Whether signal meets actionability threshold. Possible values: True, False.'
+    sql: is_actionable
+  is_high_conviction:
+    description: 'BOOLEAN. Whether signal is considered high conviction. Possible values: True, False.'
+    sql: is_high_conviction
+  news_event_correlation:
+    description: 'REAL. Correlation between news events and price moves. **NULL means Insufficient news data.** Example: 50.0.'
+    sql: news_event_correlation
+  recommended_position_size_pct:
+    description: 'REAL. Recommended position size as percentage of portfolio. **NULL means Position sizing model unavailable.** Example: 50.0.'
+    sql: recommended_position_size_pct
+  risk_category:
+    description: 'TEXT. Risk category of the trading signal. Unique values: Low Risk, Moderate Risk, High Risk, Speculative.'
+    sql: risk_category
+  sentiment_momentum_score:
+    description: 'REAL. Rate of change in sentiment over time. **NULL means Insufficient history for momentum.** Example: 0.0.'
+    sql: sentiment_momentum_score
+  sentiment_score_ref:
+    description: TEXT. Reference to the market sentiment score.
+    sql: sentiment_score_ref
+  signal_decay_hours:
+    description: 'INTEGER. Hours until signal loses significance. Example: 50.'
+    sql: signal_decay_hours
+  signal_direction:
+    description: 'TEXT. Recommended trading direction. Unique values: Strong Buy, Buy, Hold, Sell, Strong Sell.'
+    sql: signal_direction
+  signal_generation_time:
+    description: 'TIMESTAMP. Timestamp when trading signal was generated. Example: 2024-01-01 12:00:00.'
+    sql: signal_generation_time
+  signal_strength_score:
+    description: 'REAL. Normalized strength of trading signal from 0 to 100. **NULL means Signal calculation failed.** Example: 50.0.'
+    sql: signal_strength_score
+  stop_loss_pct:
+    description: 'REAL. Recommended stop loss percentage. **NULL means Stop loss not recommended.** Example: 50.0.'
+    sql: stop_loss_pct
+  take_profit_pct:
+    description: 'REAL. Recommended take profit percentage. **NULL means Take profit not recommended.** Example: 50.0.'
+    sql: take_profit_pct

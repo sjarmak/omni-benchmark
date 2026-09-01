@@ -1,0 +1,13 @@
+base_view: residential_data_large_public__smart_home_bandwidth_allocation
+label: Smart_Home_Bandwidth_Allocation
+description: All columns of the public table Smart_Home_Bandwidth_Allocation.
+fields:
+- residential_data_large_public__smart_home_bandwidth_allocation.*
+- residential_data_large_public__household_telecomm_metrix.*
+- residential_data_large_public__households.*
+- residential_data_large_public__service_types.*
+joins:
+  residential_data_large_public__household_telecomm_metrix:
+    residential_data_large_public__households:
+      residential_data_large_public__service_types: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

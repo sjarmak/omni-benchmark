@@ -1,0 +1,9 @@
+base_view: planets_data_large_public__radial_velocity_measurements
+label: radial_velocity_measurements
+description: All columns of the public table radial_velocity_measurements.
+fields:
+- planets_data_large_public__radial_velocity_measurements.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

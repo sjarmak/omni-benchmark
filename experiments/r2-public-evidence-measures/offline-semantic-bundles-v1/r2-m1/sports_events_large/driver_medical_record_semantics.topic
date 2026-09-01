@@ -1,0 +1,9 @@
+base_view: sports_events_large_public__driver_medical_record
+label: DriverMedicalRecord
+description: All columns of the public table DriverMedicalRecord.
+fields:
+- sports_events_large_public__driver_medical_record.*
+- sports_events_large_public__drivers.*
+joins:
+  sports_events_large_public__drivers: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

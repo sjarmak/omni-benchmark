@@ -1,0 +1,40 @@
+label: Households
+description: Public household records with socioeconomic context and resident counts.
+catalog: residential_data_large
+schema: public
+table_name: households
+dimensions:
+  tenure_status:
+    description: Household tenure classification indicating the ownership or occupancy status. Contains NULL when tenure status is unknown, transitional, or under legal dispute. Ex. OWNED, RENTED, OCCUPIED
+    label: Tenure Status
+    sql: JSONB_EXTRACT_PATH_TEXT(socioeconomic, 'Tenure_Type')
+    ai_context: 'Household Tenure Status: Values based on schema include ''OWNED'', ''RENTED'', ''OCCUPIED''. The ''OWNED'' status corresponds to owner-occupied properties.'
+  income_bracket:
+    description: 'Income classification level representing the household''s economic status and earning capacity. Contains NULL when income information is not disclosed, not available, or household income is irregular/informal. Ex.More than R$ 1,760 and less than R$ 2,640 '
+    label: Income Bracket
+    sql: JSONB_EXTRACT_PATH_TEXT(socioeconomic, 'Income_Bracket')
+    ai_context: 'Income Classification: Ranges from ''Low Income'' to ''Very High Income''. Null indicates undisclosed or irregular income.'
+  resident_count:
+    description: Number of people currently residing in the household, representing the total household size including all family members and occupants. EX. 1,2 3
+    label: Resident Count
+    sql: residentcount
+  zone_identifier:
+    description: Foreign key referencing locations.ZoneNum, indicating the specific macrozone within the administrative region. Part of composite foreign key constraint. EX.315,222,332
+    label: Zone Identifier
+    sql: loczone
+    ai_context: 'Urban Zone: A zone is considered urban if its `loczone` is 1.'
+  housenum:
+    description: A BIGINT primary key uniquely identifying each household unit in the database system. EX.3,4,7
+    sql: housenum
+  locregion:
+    description: Foreign key referencing locations.RegionCode, indicating the administrative region where this household is located. Part of composite foreign key constraint. EX.Taguatinga,Samambaia
+    sql: locregion
+  serviceplan:
+    description: Foreign key referencing service_types.ServiceRef, indicating which social service package or plan the household is enrolled in or eligible for. Contains NULL when household is not enrolled in any social service programs or eligibility has not been determined. EX. 1
+    sql: serviceplan
+  socioeconomic:
+    description: JSONB column. Groups socioeconomic characteristics of the household including tenure status, income classification, and expenditure patterns for demographic analysis.
+    sql: socioeconomic
+  socioeconomic_expend_coeff:
+    description: Household expenditure coefficient as a real number representing the spending pattern or consumption multiplier factor for economic analysis. Contains NULL when expenditure data is not available or household spending patterns cannot be reliably calculated. EX.60.6315
+    sql: JSONB_EXTRACT_PATH_TEXT(socioeconomic, 'Expend_Coeff')

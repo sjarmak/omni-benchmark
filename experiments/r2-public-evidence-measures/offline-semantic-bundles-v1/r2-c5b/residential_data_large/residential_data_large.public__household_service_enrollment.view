@@ -1,0 +1,96 @@
+label: household_service_enrollment
+description: All columns of the public table household_service_enrollment.
+catalog: residential_data_large
+schema: public
+table_name: household_service_enrollment
+dimensions:
+  application_score:
+    description: 'REAL. Application evaluation score. **NULL means application not scored.**. Possible values: 65.8, 78.9, 85.2, 88.5, 92.1.'
+    sql: '"APPLICATION_score"'
+  attendance_rate_percent:
+    description: 'REAL. Percentage attendance rate for programs requiring participation. **NULL means attendance not required or tracked.**. Possible values: 78.5, 95.2.'
+    sql: '"Attendance_Rate_Percent"'
+  audit_findings_count:
+    description: 'BIGINT. Number of audit findings related to enrollment. **NULL means audits not conducted or findings not tracked.**. Possible values: 0.0, 1.0.'
+    sql: '"Audit_Findings_Count"'
+  benefit_amount_monthly_brl:
+    description: 'REAL. Monthly benefit amount in Brazilian Real. **NULL means benefit amount not applicable or determined.**. Possible values: 0.0, 450.0, 75000.0.'
+    sql: '"Benefit_Amount_Monthly_BRL"'
+  complaint_count:
+    description: 'BIGINT. Number of complaints filed. **NULL means complaints not tracked.**. Possible values: 0.0, 1.0, 2.0.'
+    sql: '"COMPLAINT_count"'
+  case_worker_id:
+    description: 'TEXT. Identifier for assigned case worker. **NULL means case worker not assigned.**. Possible values: SW001, SW002, SW003, SW004, SW005, SW006.'
+    sql: '"Case_Worker_ID"'
+  documentation_complete:
+    description: 'TEXT. Status of required documentation completion. **NULL means documentation requirements not established.**. Possible values: Yes.'
+    sql: '"DOCUMENTATION_complete"'
+  duration_months:
+    description: 'BIGINT. Duration of service enrollment in months. **NULL means duration not specified or ongoing.**. Possible values: 12.0, 6.0.'
+    sql: '"DURATION_months"'
+  exit_reason:
+    description: 'TEXT. Reason for service termination or completion. **NULL means service ongoing or exit reason not recorded.**. Possible values: Completed training.'
+    sql: '"EXIT_reason"'
+  enrollment_date:
+    description: 'DATE. Date of service enrollment. Possible values: 2024-12-20, 2025-01-10, 2025-02-15, 2025-03-01, 2025-04-25, 2025-05-18, 2025-06-10.'
+    sql: '"Enrollment_Date"'
+  enrollment_id:
+    description: 'BIGSERIAL. Primary key identifier for service enrollment record. PK. Possible values: 1, 2, 3, 4, 5, 6, 7.'
+    sql: '"Enrollment_ID"'
+  follow_up_required:
+    description: 'TEXT. Whether follow-up services are required. **NULL means follow-up requirements not determined.**. Possible values: No, Yes.'
+    sql: '"Follow_Up_Required"'
+  overpayment_amount_brl:
+    description: 'REAL. Amount of overpayment in Brazilian Real. **NULL means no overpayments or tracking not maintained.**. Possible values: 0.0.'
+    sql: '"Overpayment_Amount_BRL"'
+  progress_milestones_achieved:
+    description: 'BIGINT. Number of progress milestones achieved. **NULL means milestone tracking not implemented.**. Possible values: 12.0, 3.0, 5.0, 6.0, 8.0.'
+    sql: '"PROGRESS_milestones_achieved"'
+  referral_source:
+    description: 'TEXT. Source that referred household to service. **NULL means referral source not documented.**. Possible values: Community Center, Employment Agency, Health Unit, Housing Department, Social Worker.'
+    sql: '"Referral_Source"'
+  status:
+    description: 'TEXT. Current enrollment status (active, suspended, completed, cancelled). **NULL means status not determined.**. Possible values: active, completed, suspended.'
+    sql: '"STATUS"'
+  satisfaction_rating:
+    description: 'REAL. Service satisfaction rating on 1-10 scale. **NULL means satisfaction not surveyed.**. Possible values: 6.5, 7.8, 8.1, 8.5, 8.8, 9.2.'
+    sql: '"Satisfaction_Rating"'
+  service_enrollment_category_link:
+    description: 'BIGINT. Reference to service category. FK to service_categories(Category_ID). Possible values: 1, 2, 3, 4.'
+    sql: '"Service_Enrollment_Category_Link"'
+  service_enrollment_household_connection:
+    description: 'BIGINT. Reference to enrolled household. FK to households(housenum). Possible values: 22, 242, 244, 245, 250, 4, 7.'
+    sql: '"Service_Enrollment_Household_Connection"'
+  underpayment_amount_brl:
+    description: 'REAL. Amount of underpayment in Brazilian Real. **NULL means no underpayments or payment discrepancies not tracked.**. Possible values: 0.0, 125.5, 4.0, 85.2.'
+    sql: '"UNDERPAYMENT_amount_brl"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  commendation_count:
+    description: 'BIGINT. Number of commendations or positive feedback received. **NULL means commendations not recorded.**. Possible values: 0.0, 1.0.'
+    sql: '"commendation_COUNT"'
+  compliance_rate_percent:
+    description: 'REAL. Percentage compliance with service requirements. **NULL means compliance not monitored.**. Possible values: 82.3, 88.7, 92.5, 95.8.'
+    sql: '"compliance_rate_PERCENT"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: created_at
+  fraud_risk_score:
+    description: 'BIGINT. Fraud risk assessment score. **NULL means fraud risk not evaluated.**. Possible values: 1.0, 2.0, 3.0.'
+    sql: '"fraud_risk_SCORE"'
+  outcome_achieved:
+    description: 'TEXT. Final outcome achieved from service participation. **NULL means outcome not assessed or service incomplete.**. Possible values: Attendance issues, Certificate obtained.'
+    sql: '"outcome_ACHIEVED"'
+  payment_delays_count:
+    description: 'BIGINT. Number of payment delays encountered. **NULL means payment tracking not applicable or maintained.**. Possible values: 0.0, 1.0, 2.0.'
+    sql: '"payment_delays_COUNT"'
+  priority_level:
+    description: 'BIGINT. Priority level for service access. **NULL means priority not assigned.**. Possible values: 1.0, 2.0, 3.0.'
+    sql: '"priority_LEVEL"'
+  renewal_count:
+    description: 'BIGINT. Number of times enrollment has been renewed. **NULL means renewal not applicable or tracked.**. Possible values: 0.0, 1.0.'
+    sql: '"renewal_COUNT"'
+  total_milestones:
+    description: 'BIGINT. Total number of milestones in service program. **NULL means milestones not established.**. Possible values: 10.0, 12.0, 8.0.'
+    sql: '"total_MILESTONES"'

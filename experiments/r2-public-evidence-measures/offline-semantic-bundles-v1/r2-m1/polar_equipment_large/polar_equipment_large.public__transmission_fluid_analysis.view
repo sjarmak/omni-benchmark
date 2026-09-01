@@ -1,0 +1,72 @@
+label: TransmissionFluidAnalysis
+description: All columns of the public table TransmissionFluidAnalysis.
+catalog: polar_equipment_large
+schema: public
+table_name: TransmissionFluidAnalysis
+dimensions:
+  aluminum_content_ppm:
+    description: 'REAL. Aluminum particle content in parts per million. **NULL means Spectrometric analysis failed.** Example: 12.'
+    sql: '"aluminumContent_ppm"'
+  analysis_notes:
+    description: TEXT. Additional notes from the fluid analysis. **NULL means No additional observations.**
+    sql: '"analysisNotes"'
+  copper_content_ppm:
+    description: 'REAL. Copper particle content in parts per million. **NULL means Spectrometric analysis failed.** Example: 18.'
+    sql: '"copperContent_ppm"'
+  fluid_analysis_seq:
+    description: 'TEXT. Unique identifier for the transmission fluid analysis record. Example: TFA-1A2B3C.'
+    sql: '"fluidAnalysisSeq"'
+  fluid_condition:
+    description: 'TEXT. Overall assessed condition of the transmission fluid. Unique values: Excellent, Good, Fair, Marginal, Critical.'
+    sql: '"fluidCondition"'
+  iron_content_ppm:
+    description: 'REAL. Iron particle content in parts per million. **NULL means Spectrometric analysis failed.** Example: 45.'
+    sql: '"ironContent_ppm"'
+  iso_cleanliness_code:
+    description: 'TEXT. ISO 4406 cleanliness code rating. Unique values: 16/14/11, 17/15/12, 18/16/13, 19/17/14, 20/18/15.'
+    sql: '"isoCleanlinessCode"'
+  lab_certified:
+    description: 'BOOLEAN. Flag indicating if analysis was performed by certified lab. Possible values: True, False.'
+    sql: '"labCertified"'
+  oxidation_level_abs:
+    description: 'REAL. Oxidation level measured by IR absorbance. **NULL means FTIR analysis unavailable.** Example: 50.0.'
+    sql: '"oxidationLevel_abs"'
+  particle_count_14um:
+    description: 'INTEGER. Particle count greater than 14 micrometers per mL. **NULL means Particle counter offline.** Example: 50.'
+    sql: '"particleCount_14um"'
+  particle_count_4um:
+    description: 'INTEGER. Particle count greater than 4 micrometers per mL. **NULL means Particle counter offline.** Example: 50.'
+    sql: '"particleCount_4um"'
+  recommended_action:
+    description: 'TEXT. Recommended maintenance action based on analysis. Unique values: Continue Use, Monitor Closely, Schedule Change, Change Immediately, Flush System.'
+    sql: '"recommendedAction"'
+  sample_timestamp:
+    description: 'TIMESTAMP. Timestamp when the fluid sample was collected. Example: 2024-01-01 12:00:00.'
+    sql: '"sampleTimestamp"'
+  silicon_content_ppm:
+    description: 'REAL. Silicon content indicating contamination in ppm. **NULL means Contamination test not run.** Example: 8.'
+    sql: '"siliconContent_ppm"'
+  total_acid_number_mg_kohg:
+    description: 'REAL. Total acid number in mg KOH per gram. **NULL means TAN test not conducted.** Example: 1.2.'
+    sql: '"totalAcidNumber_mgKOHg"'
+  trans_service_ref:
+    description: TEXT. Reference to the transmission service history record.
+    sql: trans_service_ref
+  viscosity100_c_c_st:
+    description: 'REAL. Kinematic viscosity at 100°C in centistokes. **NULL means Viscosity test not performed.** Example: 7.5.'
+    sql: '"viscosity100C_cSt"'
+  viscosity40_c_c_st:
+    description: 'REAL. Kinematic viscosity at 40°C in centistokes. **NULL means Viscosity test not performed.** Example: 35.'
+    sql: '"viscosity40C_cSt"'
+  viscosity_index:
+    description: 'INTEGER. Calculated viscosity index of the fluid. **NULL means VI calculation not possible.** Example: 165.'
+    sql: '"viscosityIndex"'
+  water_content_pct:
+    description: 'REAL. Water contamination as percentage by volume. **NULL means Karl Fischer test not performed.** Example: 50.0.'
+    sql: '"waterContent_pct"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TransmissionFluidAnalysis public identity values.
+    label: TransmissionFluidAnalysis Count
+    sql: ${polar_equipment_large_public__transmission_fluid_analysis.fluid_analysis_seq}

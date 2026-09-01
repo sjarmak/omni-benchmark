@@ -1,0 +1,102 @@
+label: commercial_establishments
+description: All columns of the public table commercial_establishments.
+catalog: residential_data_large
+schema: public
+table_name: commercial_establishments
+dimensions:
+  accessibility_compliant:
+    description: 'TEXT. Compliance with accessibility requirements. Possible values: Yes, no, yes.'
+    sql: '"Accessibility_Compliant"'
+  business_type:
+    description: 'TEXT. Type classification of business operation. Possible values: pharmacy, restaurant, retail.'
+    sql: '"BUSINESS_type"'
+  business_name:
+    description: 'TEXT. Official name of commercial business. Possible values: Farmácia Saúde Total, Loja de Roupas Moderna, Restaurante do Chef, Supermercado Big Box.'
+    sql: '"Business_Name"'
+  competition_density_per_km2:
+    description: 'REAL. Number of competing establishments per square kilometer. **NULL means competition analysis not conducted.**. Possible values: 1.5, 2.8, 3.2.'
+    sql: '"COMPETITION_density_per_km2"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"CREATED_at"'
+  commercial_area_code:
+    description: 'TEXT. Commercial area identifier for establishment location. FK to locations(regioncode). Possible values: Guará, Samambaia, Taguatinga.'
+    sql: '"Commercial_Area_Code"'
+  commercial_sector_number:
+    description: 'BIGINT. Sector number within commercial area. FK to locations(zonenum). Possible values: 222, 315, 332.'
+    sql: '"Commercial_Sector_Number"'
+  customer_satisfaction_score:
+    description: 'REAL. Customer satisfaction rating on 1-10 scale. **NULL means customer feedback not collected.**. Possible values: 7.2, 7.8, 8.5, 8.9, 9.2.'
+    sql: '"Customer_Satisfaction_Score"'
+  days_open_per_week:
+    description: 'BIGINT. Number of days open per week. **NULL means schedule not regular.**. Possible values: 6.0, 7.0.'
+    sql: '"DAYS_open_per_week"'
+  delivery_service:
+    description: 'TEXT. Availability of delivery services. Possible values: no, yes.'
+    sql: '"Delivery_Service"'
+  employee_count:
+    description: 'BIGINT. Number of employees working at establishment. **NULL means employee count not tracked.**. Possible values: 18.0, 8.0.'
+    sql: '"EMPLOYEE_count"'
+  environmental_certification:
+    description: 'TEXT. Environmental certification status. **NULL means environmental certification not pursued.**. Possible values: no, yes.'
+    sql: '"ENVIRONMENTAL_certification"'
+  floor_area_m2:
+    description: 'REAL. Total floor area of establishment in square meters. **NULL means floor area not measured.**. Possible values: 1250.5, 180.8.'
+    sql: '"Floor_Area_M2"'
+  monthly_rent_brl:
+    description: 'REAL. Monthly rent payment in Brazilian Real. **NULL means property owned or rent not disclosed.**. Possible values: 3200.6, 8500.25.'
+    sql: '"MONTHLY_rent_brl"'
+  monthly_revenue_brl:
+    description: 'REAL. Monthly revenue in Brazilian Real. **NULL means revenue data not disclosed.**. Possible values: 125000.75, 22000.9, 38000.4.'
+    sql: '"Monthly_Revenue_BRL"'
+  online_presence:
+    description: 'TEXT. Online business presence status. **NULL means online presence not assessed.**. Possible values: yes.'
+    sql: '"ONLINE_presence"'
+  opening_hours_per_day:
+    description: 'REAL. Number of operating hours per day. **NULL means operating hours not standardized.**. Possible values: 10.0, 12.0, 9.0.'
+    sql: '"Opening_Hours_Per_Day"'
+  safety_rating:
+    description: 'BIGINT. Safety rating for establishment. **NULL means safety assessment not conducted.**. Possible values: 4.0, 5.0, 6.0, 8.0.'
+    sql: '"SAFETY_rating"'
+  seasonal_variation_percent:
+    description: 'REAL. Percentage variation in business due to seasonal factors. **NULL means seasonal patterns not analyzed.**. Possible values: 15.2, 25.5.'
+    sql: '"Seasonal_Variation_Percent"'
+  technology_adoption_level:
+    description: 'BIGINT. Level of technology adoption rating. **NULL means technology usage not evaluated.**. Possible values: 3.0, 4.0.'
+    sql: '"Technology_Adoption_Level"'
+  business_category:
+    description: 'TEXT. Business category classification. Possible values: clothing, food_service, healthcare, supermarket.'
+    sql: '"business_CATEGORY"'
+  daily_customer_count:
+    description: 'BIGINT. Average number of customers per day. **NULL means customer traffic not monitored.**. Possible values: 120.0, 850.0.'
+    sql: '"daily_customer_COUNT"'
+  establishment_id:
+    description: 'BIGSERIAL. Primary key identifier for commercial establishment record. PK. Possible values: 1, 2, 3, 4.'
+    sql: '"establishment_ID"'
+  hygiene_rating:
+    description: 'BIGINT. Hygiene and cleanliness rating. **NULL means hygiene inspection not performed.**. Possible values: 4.0, 5.0.'
+    sql: '"hygiene_RATING"'
+  parking_spaces:
+    description: 'BIGINT. Number of customer parking spaces. **NULL means parking not provided or not counted.**. Possible values: 12.0, 45.0, 8.0.'
+    sql: '"parking_SPACES"'
+  payment_methods_accepted:
+    description: 'BIGINT. Number of different payment methods accepted. **NULL means payment methods not documented.**. Possible values: 5.0, 6.0, 8.0.'
+    sql: '"payment_methods_ACCEPTED"'
+  supply_chain_reliability_score:
+    description: 'BIGINT. Supply chain reliability rating. **NULL means supply chain not assessed.**. Possible values: 68.0, 78.0, 85.0.'
+    sql: '"supply_chain_RELIABILITY_score"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: updated_at
+  utility_cost_monthly_brl:
+    description: 'REAL. Monthly utility costs in Brazilian Real. **NULL means utility costs not tracked.**. Possible values: 4500.8, 850.45.'
+    sql: '"utility_cost_MONTHLY_brl"'
+  years_in_operation:
+    description: 'BIGINT. Number of years business has been operating. **NULL means operation history not recorded.**. Possible values: 12.0, 5.0, 8.0.'
+    sql: '"years_in_OPERATION"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct commercial_establishments public identity values.
+    label: commercial_establishments Count
+    sql: ${residential_data_large_public__commercial_establishments.establishment_id}

@@ -1,0 +1,66 @@
+label: DataReductionPipeline
+description: All columns of the public table DataReductionPipeline.
+catalog: planets_data_large
+schema: public
+table_name: DataReductionPipeline
+dimensions:
+  citation_doi:
+    description: TEXT. DOI for pipeline publication **NULL means Pipeline not yet published.**
+    sql: '"CITATION_DOI"'
+  documentation_url:
+    description: TEXT. Pipeline documentation URL
+    sql: '"DOCUMENTATION_URL"'
+  maintainer:
+    description: 'TEXT. Pipeline maintainer organization Possible values: ESO, STScI, NASA Ames, Geneva Observatory, IAC.'
+    sql: '"MAINTAINER"'
+  output_format:
+    description: 'TEXT. Output data format Possible values: FITS, CSV, HDF5, VOTable, Multiple.'
+    sql: '"OUTPUT_FORMAT"'
+  parallel_processing:
+    description: BOOLEAN. Whether pipeline supports parallel processing Boolean flag (true/false).
+    sql: '"PARALLEL_PROCESSING"'
+  pipeline_id:
+    description: BIGINT. Primary key. Unique pipeline identifier
+    sql: '"PIPELINE_ID"'
+  pipeline_name:
+    description: 'TEXT. Pipeline name Possible values: HARPS DRS, TESS SPOC, Kepler SOC, JWST CalWebb, Gaia DPAC, ESPaDOnS Libre, Custom Python.'
+    sql: '"PIPELINE_NAME"'
+  pipeline_type:
+    description: 'TEXT. Type of data reduction pipeline Possible values: Spectroscopic, Photometric, Imaging, Astrometric, Multi-purpose.'
+    sql: '"PIPELINE_TYPE"'
+  processing_steps:
+    description: BIGINT. Number of processing steps
+    sql: '"PROCESSING_STEPS"'
+  status:
+    description: 'TEXT. Pipeline status Possible values: Production, Testing, Deprecated, Development.'
+    sql: '"STATUS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  automatic_qc:
+    description: BOOLEAN. Whether automatic quality control is included Boolean flag (true/false).
+    sql: automatic_qc
+  avg_processing_time_min:
+    description: 'REAL. Average processing time per observation (min) Typical range: 0.1 to 300.'
+    sql: avg_processing_time_min
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  input_format:
+    description: 'TEXT. Expected input data format Possible values: FITS, RAW, HDF5, Multiple.'
+    sql: input_format
+  pipeline_code:
+    description: TEXT. Pipeline reference code
+    sql: pipeline_code
+  programming_language:
+    description: 'TEXT. Primary programming language Possible values: Python, C++, IDL, Fortran, Java, Julia.'
+    sql: programming_language
+  release_date:
+    description: DATE. Current version release date
+    sql: release_date
+  repository_url:
+    description: TEXT. Source code repository URL
+    sql: repository_url
+  version:
+    description: TEXT. Pipeline version
+    sql: version

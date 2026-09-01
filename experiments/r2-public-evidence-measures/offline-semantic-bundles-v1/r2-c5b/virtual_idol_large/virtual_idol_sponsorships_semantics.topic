@@ -1,0 +1,9 @@
+base_view: virtual_idol_large_public__virtual_idol_sponsorships
+label: virtual_idol_sponsorships
+description: All columns of the public table virtual_idol_sponsorships.
+fields:
+- virtual_idol_large_public__virtual_idol_sponsorships.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,17 @@
+base_view: archeology_scan_large_public__pointcloud
+label: Point Cloud Scans
+description: Point-cloud scan records with row-level resolution, coverage, noise, and quality semantics.
+fields:
+- archeology_scan_large_public__pointcloud.*
+- archeology_scan_large_public__personnel.*
+- archeology_scan_large_public__projects.*
+joins:
+  archeology_scan_large_public__personnel: {}
+  archeology_scan_large_public__projects: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields has_comprehensive_coverage, is_high_resolution_scan, is_premium_quality_scan, scan_coverage_effectiveness, scan_quality_score, scan_resolution_index rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Archaeological Documentation Completeness (ADC): ADC = \left(\text{SQS} \times 0.4\right) + \left(\text{MFS} \times 0.4\right) + \left(\text{SCE} \times 0.2\right) - 5 \times \sqrt{\frac{\text{Noise Level (dB)}}{10}}, \text{ where higher values indicate more complete documentation with multiple quality factors.}'

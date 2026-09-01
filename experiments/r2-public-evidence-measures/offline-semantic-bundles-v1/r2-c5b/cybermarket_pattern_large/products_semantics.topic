@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__products
+label: Products
+description: Product listing records with public product-category context.
+fields:
+- cybermarket_pattern_large_public__products.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

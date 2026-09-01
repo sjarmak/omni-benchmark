@@ -1,0 +1,108 @@
+label: market_regulatory_audits
+description: All columns of the public table market_regulatory_audits.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: market_regulatory_audits
+dimensions:
+  audittype:
+    description: 'TEXT. Category of audit (Financial, Security, Compliance, etc.). Example: Security.'
+    sql: '"AUDITTYPE"'
+  audit_ref:
+    description: 'TEXT. Primary-key reference string that uniquely identifies each audit engagement. Example: AUDIT-9f5c2ba3.'
+    sql: '"AUDIT_REF"'
+  highfindings:
+    description: 'BIGINT. Count of High-severity findings. Example: 3.'
+    sql: '"HIGHfindings"'
+  lastupdated:
+    description: 'TIMESTAMP (YYYY/MM/DD HH:MM:SS). When this row was last refreshed. Example: 2025/07/16 13:45:02.'
+    sql: '"LASTupdated"'
+  reporturl:
+    description: 'TEXT. HTTPS link to the full audit report in long-term storage. Example: https://reports.example.com/MKP_027/9f5c2.pdf.'
+    sql: '"REPORTurl"'
+  remediation_deadline:
+    description: 'DATE (YYYY/MM/DD). Date by which all findings must be remediated. Example: 2025/05/15.'
+    sql: '"Remediation_deadline"'
+  audit_date:
+    description: 'DATE (YYYY/MM/DD). Calendar date on which the audit fieldwork began. Example: 2025/02/14.'
+    sql: '"auditDATE"'
+  audit_firm:
+    description: 'TEXT. Name of the external firm that conducted the audit. Example: Deloitte.'
+    sql: audit_firm
+  audit_report_hash:
+    description: 'TEXT. SHA-256 hash of the signed audit PDF for tamper verification. Example: 5d41402abc4b2a76b9719d911017c592...'
+    sql: audit_report_hash
+  auditor_contact:
+    description: 'TEXT. Email or phone for the lead auditor. Example: Alice Smith <asmith@deloitte.com>.'
+    sql: '"auditorCONTACT"'
+  compliance_status:
+    description: 'TEXT. Outcome rating of the audit. Possible values: Compliant, Partially Compliant, Non-Compliant.'
+    sql: compliance_status
+  compliancematrixdump:
+    description: JSONB column. Encodes a mixture of audit score signals and checkbox-style compliance tags
+    sql: compliancematrixdump
+  cost_usd:
+    description: 'REAL. External audit cost in USD. Example: 38500.00.'
+    sql: cost_usd
+  critical_findings:
+    description: 'BIGINT. Count of Critical-severity findings. Example: 1.'
+    sql: critical_findings
+  findings_count:
+    description: 'BIGINT. Total number of findings recorded in the audit report. Example: 12.'
+    sql: '"findingsCOUNT"'
+  followup_audit_date:
+    description: 'DATE (YYYY/MM/DD). Planned date for the next follow-up audit. Example: 2026/01/20.'
+    sql: followup_audit_date
+  low_findings:
+    description: 'BIGINT. Count of Low-severity findings. Example: 4.'
+    sql: low_findings
+  medium_findings:
+    description: 'BIGINT. Count of Medium-severity findings. Example: 4.'
+    sql: '"mediumFindings"'
+  notes:
+    description: 'TEXT. Analyst notes or context about unusual findings. **NULL means no extra commentary was recorded.** Example: "Routine annual audit – no material anomalies."'
+    sql: notes
+  penalty_window_kusd_per_event:
+    description: 'TEXT. Monetary penalty range per compliance breach, expressed in thousands USD. **NULL means penalty schedule not disclosed.** Example: 25–50.'
+    sql: '"penaltyWindow_KUSD_per_event"'
+  platcode:
+    description: 'TEXT. Foreign-key link to markets.PlatCode indicating which marketplace was audited. Example: MKP_027.'
+    sql: platcode
+  remediate_span_days:
+    description: 'TEXT. Expected remediation window range in days. Example: 30–60.'
+    sql: '"remediateSpan_days"'
+  remediation_status:
+    description: 'TEXT. Current progress of remediation activities (Pending, In Progress, Completed, Overdue). Example: In Progress.'
+    sql: '"remediationSTATUS"'
+  compliancematrixdump_aud_score:
+    description: 'REAL. Normalised numeric score (0-100). **NULL means score could not be computed due to incomplete metrics.** Example: 92.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compliancematrixdump, 'AUD_SCORE')
+  compliancematrixdump_conf_lvl:
+    description: 'TEXT. Analyst confidence in the audit-data accuracy. Possible values: Low, Medium, High.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compliancematrixdump, 'CONF_lvl')
+  compliancematrixdump_iso_27001:
+    description: 'BOOLEAN. Whether the platform meets ISO 27001 requirements. Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compliancematrixdump, 'ISO_27001?')
+  compliancematrixdump_ccpa_check:
+    description: 'BOOLEAN. Whether CCPA obligations are satisfied. Example: false.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compliancematrixdump, 'ccpa_check')
+  compliancematrixdump_gdpr_comply:
+    description: 'BOOLEAN. Whether GDPR controls were found satisfactory. Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compliancematrixdump, 'gdprComply')
+  compliancematrixdump_hipaa:
+    description: 'BOOLEAN. HIPAA compliance indicator (relevant only to health-data marketplaces). Example: false.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compliancematrixdump, 'hipaa??')
+  compliancematrixdump_pci_dss_flag:
+    description: 'BOOLEAN. PCI-DSS compliance flag. **NULL means PCI status not assessed in this engagement.** Example: false.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compliancematrixdump, 'pciDSS_flag')
+  compliancematrixdump_risk_lvl:
+    description: 'TEXT. Qualitative risk band derived from findings. Possible values: Low, Medium, High, Critical.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compliancematrixdump, 'riskLvl')
+  compliancematrixdump_sox_onfile:
+    description: 'BOOLEAN. SOX compliance flag. **NULL means SOX applicability undetermined for this platform.** Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compliancematrixdump, 'sox_onfile')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct market_regulatory_audits public identity values.
+    label: market_regulatory_audits Count
+    sql: ${cybermarket_pattern_large_public__market_regulatory_audits.audit_ref}

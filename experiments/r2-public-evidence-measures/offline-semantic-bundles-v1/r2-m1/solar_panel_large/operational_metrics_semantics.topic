@@ -1,0 +1,19 @@
+base_view: solar_panel_large_public__operational_metrics
+label: Operational Metrics
+description: Reliability, cost, and loss metrics.
+fields:
+- solar_panel_large_public__operational_metrics.*
+- solar_panel_large_public__panel_models.*
+- solar_panel_large_public__plant_record.*
+- solar_panel_large_public__plants.*
+joins:
+  solar_panel_large_public__plant_record:
+    solar_panel_large_public__plants:
+      solar_panel_large_public__panel_models: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields maintenance_cost_to_revenue_impact_ratio, system_availability, system_unavailability rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Mean Repair Cost: The total maintenance cost divided by the number of failure events (which can be inferred from the total operational time and MTBF). $C_{repair} = \frac{\text{Total Maintenance Cost}}{\text{Total Time} / MTBF}$.'

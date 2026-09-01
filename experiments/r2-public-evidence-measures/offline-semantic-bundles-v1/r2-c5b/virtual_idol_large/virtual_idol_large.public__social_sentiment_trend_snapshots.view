@@ -1,0 +1,60 @@
+label: SocialSentimentTrendSnapshots
+description: All columns of the public table SocialSentimentTrendSnapshots.
+catalog: virtual_idol_large
+schema: public
+table_name: SocialSentimentTrendSnapshots
+dimensions:
+  algorithm_shift_detected:
+    description: 'BOOLEAN. True if sudden drop/spike unexplained by organic. Possible values: True, False.'
+    sql: algorithm_shift_detected
+  analysis_tool_version:
+    description: TEXT. Software ver.
+    sql: analysis_tool_version
+  brand_safety_score:
+    description: 'INTEGER. Safety for advertisers (1-100). Example: 85.'
+    sql: brand_safety_score
+  competitor_comparison_score:
+    description: 'REAL. Relative performance to rivals. Example: 1.0.'
+    sql: competitor_comparison_score
+  controversy_index:
+    description: 'REAL. Score indicating polarized views (0-1). Example: 50.0.'
+    sql: controversy_index
+  idol_entity_ref:
+    description: TEXT. Idol being analyzed.
+    sql: idol_entity_ref
+  influencer_mention_count:
+    description: 'INTEGER. Number of verified users posting. Example: 50.'
+    sql: influencer_mention_count
+  keyword_cloud_json:
+    description: TEXT. Top keywords as JSON.
+    sql: keyword_cloud_json
+  language_dominant:
+    description: 'TEXT. Main language. Unique values: en, ja, ko.'
+    sql: language_dominant
+  main_topic_cluster:
+    description: 'TEXT. Dominant discussion topic. Unique values: New Outfit, Concert, Scandal, Music Video.'
+    sql: main_topic_cluster
+  negative_sentiment_pct:
+    description: 'REAL. Percentage negative posts. Example: 10.'
+    sql: negative_sentiment_pct
+  neutral_sentiment_pct:
+    description: 'REAL. Percentage neutral posts. Example: 30.'
+    sql: neutral_sentiment_pct
+  platform_source:
+    description: 'TEXT. Where data came from. Unique values: Twitter/X, Reddit, TikTok, YouTube Comments.'
+    sql: platform_source
+  positive_sentiment_pct:
+    description: 'REAL. Percentage positive posts. Example: 60.'
+    sql: positive_sentiment_pct
+  snapshot_id:
+    description: TEXT. Unique ID for the sentiment aggregation.
+    sql: snapshot_id
+  snapshot_timestamp:
+    description: 'TIMESTAMP. Time of snapshot. Example: 2024-01-01 12:00:00.'
+    sql: snapshot_timestamp
+  total_mentions_count:
+    description: 'INTEGER. Volume of posts. Example: 5000.'
+    sql: total_mentions_count
+  viral_coefficient:
+    description: 'REAL. Rate of spread (K-factor). Example: 1.1.'
+    sql: viral_coefficient

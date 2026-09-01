@@ -1,0 +1,78 @@
+label: CarTelemetrySnapshot
+description: All columns of the public table CarTelemetrySnapshot.
+catalog: sports_events_large
+schema: public
+table_name: CarTelemetrySnapshot
+dimensions:
+  captured_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Timestamp when telemetry was captured
+    sql: '"CAPTURED_AT"'
+  driver_ref:
+    description: BIGINT. Foreign key referencing drivers(drv_main). Related driver
+    sql: '"DRIVER_REF"'
+  ers_deploy_kj:
+    description: 'REAL. ERS energy deployed in kJ Typical range: 0 to 4000.'
+    sql: '"ERS_DEPLOY_KJ"'
+  fuel_remaining_kg:
+    description: 'REAL. Fuel remaining in kg Typical range: 0 to 110.'
+    sql: '"FUEL_REMAINING_KG"'
+  longitudinal_g:
+    description: 'REAL. Longitudinal G-force Typical range: -5 to 5.'
+    sql: '"LONGITUDINAL_G"'
+  oil_temp_c:
+    description: 'REAL. Engine oil temperature in Celsius Typical range: 80 to 160.'
+    sql: '"OIL_TEMP_C"'
+  rpm:
+    description: BIGINT. Engine RPM
+    sql: '"RPM"'
+  steering_angle_deg:
+    description: 'REAL. Steering wheel angle in degrees Typical range: -180 to 180.'
+    sql: '"STEERING_ANGLE_DEG"'
+  telemetry_id:
+    description: BIGINT. Primary key. Unique telemetry snapshot identifier
+    sql: '"TELEMETRY_ID"'
+  throttle_pct:
+    description: 'REAL. Throttle position percentage Typical range: 0 to 100.'
+    sql: '"THROTTLE_PCT"'
+  track_position_m:
+    description: 'REAL. Position on track in meters from start/finish Typical range: 0 to 7000.'
+    sql: '"TRACK_POSITION_M"'
+  brake_pct:
+    description: 'REAL. Brake pressure percentage Typical range: 0 to 100.'
+    sql: brake_pct
+  drs_open:
+    description: 'REAL. DRS flap status (0=closed, 1=open) Typical range: 0 to 1.'
+    sql: drs_open
+  ers_harvest_kj:
+    description: 'REAL. ERS energy harvested in kJ Typical range: 0 to 4000.'
+    sql: ers_harvest_kj
+  gear:
+    description: BIGINT. Current gear
+    sql: gear
+  lap_number:
+    description: BIGINT. Lap number during which snapshot was taken
+    sql: lap_number
+  lateral_g:
+    description: 'REAL. Lateral G-force Typical range: -6 to 6.'
+    sql: lateral_g
+  oil_pressure_bar:
+    description: 'REAL. Oil pressure in bar Typical range: 2 to 7.'
+    sql: oil_pressure_bar
+  race_ref:
+    description: BIGINT. Foreign key referencing races(rak_id). Related race
+    sql: race_ref
+  sensor_flags:
+    description: JSONB. Sensor status flags
+    sql: sensor_flags
+  speed_kph:
+    description: 'REAL. Car speed in km/h Typical range: 0 to 370.'
+    sql: speed_kph
+  water_temp_c:
+    description: 'REAL. Engine water temperature in Celsius Typical range: 80 to 130.'
+    sql: '"water_temp_C"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CarTelemetrySnapshot public identity values.
+    label: CarTelemetrySnapshot Count
+    sql: ${sports_events_large_public__car_telemetry_snapshot.telemetry_id}

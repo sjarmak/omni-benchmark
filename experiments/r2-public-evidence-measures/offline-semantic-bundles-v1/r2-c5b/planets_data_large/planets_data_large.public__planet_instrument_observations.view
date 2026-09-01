@@ -1,0 +1,15 @@
+label: planet_instrument_observations
+description: All columns of the public table planet_instrument_observations.
+catalog: planets_data_large
+schema: public
+table_name: planet_instrument_observations
+dimensions:
+  facilitylink:
+    description: Foreign key INTEGER referencing instruments_surveys(InstrumentRef), indicating which facility made the observation.
+    sql: facilitylink
+  obsref:
+    description: A SERIAL primary key uniquely identifying each planet-instrument observation record.
+    sql: obsref
+  subjectlink:
+    description: Foreign key INTEGER referencing planets(PlanetRef), indicating which planet was observed.
+    sql: subjectlink

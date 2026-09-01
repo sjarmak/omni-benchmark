@@ -1,0 +1,11 @@
+base_view: museum_artifact_large_public__environmental_readings_core
+label: Environmental Readings
+description: Environmental-reading rows with temperature and humidity conservation context.
+fields:
+- museum_artifact_large_public__environmental_readings_core.*
+- museum_artifact_large_public__exhibition_halls.*
+- museum_artifact_large_public__showcases.*
+joins:
+  museum_artifact_large_public__showcases:
+    museum_artifact_large_public__exhibition_halls: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

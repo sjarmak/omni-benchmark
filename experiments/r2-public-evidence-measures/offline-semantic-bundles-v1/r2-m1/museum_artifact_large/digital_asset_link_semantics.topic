@@ -1,0 +1,9 @@
+base_view: museum_artifact_large_public__digital_asset_link
+label: DigitalAssetLink
+description: All columns of the public table DigitalAssetLink.
+fields:
+- museum_artifact_large_public__digital_asset_link.*
+- museum_artifact_large_public__digital_assets.*
+joins:
+  museum_artifact_large_public__digital_assets: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

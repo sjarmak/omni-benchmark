@@ -1,0 +1,81 @@
+label: instrument_specifications
+description: All columns of the public table instrument_specifications.
+catalog: planets_data_large
+schema: public
+table_name: instrument_specifications
+dimensions:
+  altitude_meters:
+    description: 'real. Elevation above sea level of instrument location in meters. Example: 1712.'
+    sql: '"ALTITUDE_meters"'
+  detector_type:
+    description: 'text. Type of detector technology used (CCD, CMOS, InGaAs, etc.). Possible values: CCD Array, CCD Mosaic, CCD e2v, Feeds Array, HgCdTe HAWAII-2RG.'
+    sql: '"DetectorType"'
+  exposure_time_min_seconds:
+    description: 'real. Minimum exposure time capability in seconds. Possible values: 0.1, 1.0, 10.0, 30.0, 300.0.'
+    sql: '"EXPOSURE_TIME_MIN_seconds"'
+  first_light_date:
+    description: 'date. Date when the instrument first achieved scientific observations. Possible values: 1963-11-01, 2003-05-12, 2009-10-15, 2013-03-13, 2021-12-25.'
+    sql: '"FIRST_LIGHT_DATE"'
+  instrumentspecref:
+    description: 'bigint. Primary key identifier for instrument specification records. PK. Possible values: 10001, 10002, 10003, 10004, 10005.'
+    sql: '"INSTRUMENTSPECREF"'
+  location_longitude_degrees:
+    description: 'real. Geographic longitude of instrument location in degrees. **NULL means instrument location was not specified.**. Possible values: -17.8792, -66.7528, -70.4042, -70.8046.'
+    sql: '"LocationLongitude_degrees"'
+  operating_temperature_kelvin:
+    description: 'real. Operating temperature of the instrument in Kelvin. Possible values: 165, 243, 273, 40, 80.'
+    sql: '"OperatingTemperature_Kelvin"'
+  operational_status:
+    description: 'text. Current operational status of the instrument (active, decommissioned, etc.). Possible values: Decommissioned, Operational.'
+    sql: '"OperationalStatus"'
+  photometric_precision_ppm:
+    description: 'real. Photometric precision capability in parts per million. **NULL means photometric precision was not characterized.**. Possible values: 20.0, 50.0.'
+    sql: '"PhotometricPrecision_ppm"'
+  exposure_time_max_seconds:
+    description: 'real. Maximum exposure time capability in seconds. Possible values: 10000, 14400, 300, 3600, 7200.'
+    sql: exposure_time_max_seconds
+  instrument_link:
+    description: 'bigint. Foreign key reference to the parent instrument record. FK to instruments_surveys(INSTRUMENTREF). Possible values: 1, 2, 3, 4, 5.'
+    sql: '"instrumentLink"'
+  instrument_type:
+    description: 'text. Type or category of astronomical instrument (spectrograph, photometer, etc.). Possible values: Ground-based Optical, High-res Spectrograph, Photometric Survey, Radio Telescope, Space Telescope.'
+    sql: instrument_type
+  limiting_magnitude_mag:
+    description: 'real. Limiting magnitude for point source detection. Possible values: 15.0, 19.5, 24.8, 28.2, 31.5.'
+    sql: limiting_magnitude_mag
+  location_latitude_degrees:
+    description: 'real. Geographic latitude of instrument location in degrees. **NULL means instrument location was not specified.**. Possible values: -24.6272, -30.1692, 18.3464, 28.7606.'
+    sql: location_latitude_degrees
+  notes:
+    description: 'text. Additional notes or comments about instrument specifications and capabilities. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: notes
+  techspecs:
+    description: JSONB column. Technical specifications and performance characteristics of astronomical instruments.
+    sql: techspecs
+  techspecs_field_of_view_square_degrees:
+    description: 'real. Angular field of view coverage in square degrees. Possible values: 0.00028, 0.0034, 0.013, 7.0, 9.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(techspecs, 'FIELD_OF_VIEW_square_degrees')
+  techspecs_pixel_scale_arcsec_pixel:
+    description: 'real. Pixel scale or plate scale in arcseconds per pixel. **NULL means pixel scale was not specified.**. Possible values: 0.015, 0.031, 0.168, 0.26.'
+    sql: JSONB_EXTRACT_PATH_TEXT(techspecs, 'PIXEL_SCALE_arcsec/pixel')
+  techspecs_telescope_diameter_meters:
+    description: 'real. Primary mirror or aperture diameter of the telescope in meters. Possible values: 1.8, 10.4, 305.0, 6.5, 8.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(techspecs, 'TelescopeDiameter_meters')
+  techspecs_angular_resolution_arcseconds:
+    description: 'real. Angular resolution capability in arcseconds. **NULL means angular resolution was not specified.**. Possible values: 0.4, 0.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(techspecs, 'angular_resolution_arcseconds')
+  techspecs_quantum_efficiency_percentage:
+    description: 'real. Peak quantum efficiency of the detector as a percentage. **NULL means quantum efficiency was not measured.**. Possible values: 85.0, 90.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(techspecs, 'quantum_efficiency_percentage')
+  techspecs_spectral_resolution:
+    description: 'real. Spectral resolving power (λ/Δλ) for spectroscopic instruments. **NULL means spectral resolution not applicable for this instrument type.**. Possible values: 100.0, 115000.0, 38000, 41000, 42000, 44000, 45000, 48000, 50000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(techspecs, 'spectral_resolution')
+  techspecs_wavelength_range_wavelength_range_max_micrometers:
+    description: 'real. Maximum wavelength sensitivity in micrometers. **NULL means wavelength range maximum was not specified.**. Possible values: 0.69, 1.1, 2.5, 28.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(techspecs, 'wavelength_range', 'WAVELENGTH_RANGE_MAX_micrometers')
+  techspecs_wavelength_range_wavelength_range_min_micrometers:
+    description: 'real. Minimum wavelength sensitivity in micrometers. **NULL means wavelength range minimum was not specified.**. Possible values: 0.31, 0.38, 0.4, 0.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(techspecs, 'wavelength_range', 'WavelengthRangeMin_micrometers')
+  radial_velocity_precision_m_s:
+    description: 'real. Radial velocity measurement precision in meters per second. **NULL means RV precision not applicable for this instrument.**. Possible values: 0.8, 1.2.'
+    sql: '"RADIAL_VELOCITY_PRECISION_m/s"'

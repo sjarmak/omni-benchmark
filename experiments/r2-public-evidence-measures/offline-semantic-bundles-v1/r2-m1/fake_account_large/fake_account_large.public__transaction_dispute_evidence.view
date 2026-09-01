@@ -1,0 +1,69 @@
+label: transaction_dispute_evidence
+description: All columns of the public table transaction_dispute_evidence.
+catalog: fake_account_large
+schema: public
+table_name: transaction_dispute_evidence
+dimensions:
+  dispute_code:
+    description: TEXT. Unique identifier for the dispute case.
+    sql: '"Dispute_CODE"'
+  arbitration_fee_micros:
+    description: 'INTEGER. Fees charged by card network for arbitration. Unique values: 0, 50000000.'
+    sql: arbitration_fee_micros
+  automated_representment_flag:
+    description: 'BOOLEAN. True if evidence was submitted by bot. Possible values: True, False.'
+    sql: automated_representment_flag
+  avs_check_result_code:
+    description: 'TEXT. Address Verification System result. Unique values: Y, N, A, Z.'
+    sql: avs_check_result_code
+  bank_chargeback_code:
+    description: 'TEXT. Standardized reason code from the issuing bank. Unique values: 10.4, 4837, C08, 30.'
+    sql: bank_chargeback_code
+  customer_history_dispute_count:
+    description: 'INTEGER. Number of previous disputes by this user. Example: 50.'
+    sql: customer_history_dispute_count
+  cvv_check_result_code:
+    description: 'TEXT. Card Verification Value result. Unique values: M, N, P.'
+    sql: cvv_check_result_code
+  digital_signature_match_score:
+    description: 'REAL. Match score of delivery signature to user name. **NULL means No signature required.** Example: 0.8.'
+    sql: digital_signature_match_score
+  dispute_reason_category:
+    description: 'TEXT. Category of the claim (e.g., Item Not Received, Unauthorized). Unique values: FRAUD, NOT_RECEIVED, DAMAGED, DUPLICATE.'
+    sql: dispute_reason_category
+  dispute_stage_status:
+    description: 'TEXT. Current phase (Inquiry, Chargeback, Pre-Arb). Unique values: INQUIRY, CHARGEBACK, PRE_ARB, WON, LOST.'
+    sql: dispute_stage_status
+  disputed_amount_micros:
+    description: 'INTEGER. Amount being contested (may differ from total). Example: 5000000.'
+    sql: disputed_amount_micros
+  evidence_file_size_kb:
+    description: 'INTEGER. Total size of uploaded counter-evidence. **NULL means No evidence uploaded.** Example: 2048.'
+    sql: evidence_file_size_kb
+  fraud_score_at_dispute_time:
+    description: 'REAL. Re-calculated fraud score using post-transaction data. Example: 50.0.'
+    sql: fraud_score_at_dispute_time
+  insurance_coverage_applied:
+    description: 'BOOLEAN. True if merchant insurance covered the loss. Possible values: True, False.'
+    sql: insurance_coverage_applied
+  issuer_response_latency_hours:
+    description: 'INTEGER. Time taken by bank to respond to evidence. **NULL means Case still open.** Example: 720.'
+    sql: issuer_response_latency_hours
+  merchant_win_probability:
+    description: 'REAL. Predicted likelihood of winning the dispute. Example: 50.0.'
+    sql: merchant_win_probability
+  refund_refusal_reason:
+    description: 'TEXT. Why the merchant refused initial refund request. **NULL means Refund not requested.** Unique values: POLICY, NO_RETURN, USED.'
+    sql: refund_refusal_reason
+  shipping_carrier_code:
+    description: 'TEXT. Carrier used for the original shipment. **NULL means Digital goods.** Unique values: UPS, FEDEX, DHL, USPS.'
+    sql: shipping_carrier_code
+  transaction_ref:
+    description: TEXT. Reference to the original contested transaction.
+    sql: transaction_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct transaction_dispute_evidence public identity values.
+    label: transaction_dispute_evidence Count
+    sql: ${fake_account_large_public__transaction_dispute_evidence.dispute_code}

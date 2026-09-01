@@ -1,0 +1,69 @@
+label: PlanetCharacterizationSummary
+description: All columns of the public table PlanetCharacterizationSummary.
+catalog: planets_data_large
+schema: public
+table_name: PlanetCharacterizationSummary
+dimensions:
+  atmosphere_type:
+    description: 'TEXT. Atmospheric classification Possible values: H/He dominated, Water world, Rocky/thin, Unknown, None detected. **NULL means Atmosphere not yet characterized.**'
+    sql: '"ATMOSPHERE_TYPE"'
+  char_summary_id:
+    description: BIGINT. Primary key. Unique characterization summary identifier
+    sql: '"CHAR_SUMMARY_ID"'
+  density_g_per_cm3:
+    description: 'REAL. Bulk density in g/cm3 Typical range: 0.1 to 15.'
+    sql: '"DENSITY_g_per_cm3"'
+  esm:
+    description: 'REAL. Emission spectroscopy metric Typical range: 0.01 to 500.'
+    sql: '"ESM"'
+  insolation_earth:
+    description: 'REAL. Stellar insolation relative to Earth Typical range: 0.01 to 10000.'
+    sql: '"INSOLATION_EARTH"'
+  last_updated:
+    description: DATE. Date of last characterization update
+    sql: '"LAST_UPDATED"'
+  mass_earth:
+    description: 'REAL. Planet mass in Earth masses Typical range: 0.1 to 13000.'
+    sql: '"MASS_EARTH"'
+  planet_type:
+    description: 'TEXT. Planet classification Possible values: Hot Jupiter, Warm Neptune, Super Earth, Sub Neptune, Earth-like, Gas Giant, Ice Giant, Ultra-hot Jupiter.'
+    sql: '"PLANET_TYPE"'
+  radius_earth:
+    description: 'REAL. Planet radius in Earth radii Typical range: 0.3 to 25.'
+    sql: '"RADIUS_EARTH"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  atmosphere_detected:
+    description: BOOLEAN. Whether atmosphere has been detected Boolean flag (true/false).
+    sql: atmosphere_detected
+  characterization_papers:
+    description: BIGINT. Number of characterization papers
+    sql: characterization_papers
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  equilibrium_temp_k:
+    description: 'REAL. Equilibrium temperature in Kelvin Typical range: 100 to 5000.'
+    sql: '"equilibrium_temp_K"'
+  in_habitable_zone:
+    description: BOOLEAN. Whether planet is in habitable zone Boolean flag (true/false).
+    sql: in_habitable_zone
+  mass_error_earth:
+    description: 'REAL. Mass uncertainty in Earth masses Typical range: 0.01 to 1000.'
+    sql: mass_error_earth
+  planet_ref:
+    description: BIGINT. Foreign key referencing planets(planetref). Related planet
+    sql: planet_ref
+  radius_error_earth:
+    description: 'REAL. Radius uncertainty Typical range: 0.01 to 5.'
+    sql: radius_error_earth
+  tsm:
+    description: 'REAL. Transmission spectroscopy metric Typical range: 0.1 to 1000.'
+    sql: tsm
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct PlanetCharacterizationSummary public identity values.
+    label: PlanetCharacterizationSummary Count
+    sql: ${planets_data_large_public__planet_characterization_summary.char_summary_id}

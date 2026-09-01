@@ -1,0 +1,111 @@
+label: strategy_scenarios
+description: All columns of the public table strategy_scenarios.
+catalog: sports_events_large
+schema: public
+table_name: strategy_scenarios
+dimensions:
+  base_lap_time_ms:
+    description: 'BIGINT. Base lap time for the strategy in milliseconds. Example: 89000.'
+    sql: '"BaseLapTime_MS"'
+  brake_temp_margin_c:
+    description: 'REAL. Margin for brake temperature in degrees Celsius. Example: 80.0.'
+    sql: '"BrakeTemp_Margin_C"'
+  cooling_margin_factor:
+    description: 'REAL. Cooling margin factor for the car. Example: 0.2.'
+    sql: '"CoolingMargin_Factor"'
+  deg_rate_ms_per_lap:
+    description: 'REAL. Degeneration rate of the tyres per lap in milliseconds. Example: 0.75.'
+    sql: '"DegRate_ms_per_lap"'
+  ers_deploy_plan:
+    description: 'TEXT. Plan for ERS deployment during the race. Example: mode 7 in T1-T3.'
+    sql: '"ERS_Deploy_Plan"'
+  expected_total_time_ms:
+    description: 'BIGINT. Total expected race time for the strategy in milliseconds. Example: 5278000.'
+    sql: '"ExpectedTotalTime_ms"'
+  expected_finish_pos:
+    description: 'BIGINT. Expected finish position for the strategy. Example: 4.'
+    sql: '"Expected_Finish_Pos"'
+  fuel_start_kg:
+    description: 'REAL. Starting fuel load in kilograms. Example: 110.0.'
+    sql: '"FuelStart_KG"'
+  fuel_save_laps:
+    description: 'BIGINT. Laps designated for fuel saving. Example: 3.'
+    sql: '"Fuel_Save_Laps"'
+  notes:
+    description: 'TEXT. Additional notes for the strategy scenario. Example: Cover undercut lap 17.'
+    sql: '"Notes"'
+  overcut_risk_score:
+    description: 'REAL. Risk score of executing an overcut strategy. Example: 0.18.'
+    sql: '"Overcut_Risk_Score"'
+  pit_loss_sec:
+    description: 'REAL. Time lost in the pit stop in seconds. Example: 20.5.'
+    sql: '"PIT_LOSS_SEC"'
+  push_laps_count:
+    description: 'BIGINT. Number of laps designated for pushing. Example: 8.'
+    sql: '"PushLaps_Count"'
+  rak_ref:
+    description: 'INTEGER. Foreign key referencing races(rak_id). FK → races(rak_id). Example: 5.'
+    sql: '"RAK_ref"'
+  rain_probability:
+    description: 'REAL. Probability of rain during the race. Example: 0.15.'
+    sql: '"Rain_Probability"'
+  rival_target_driver:
+    description: 'TEXT. Rival driver to target for the strategy. Example: VER.'
+    sql: '"RivalTargetDriver"'
+  rival_undercut_window:
+    description: 'BIGINT. Number of laps available for the rival''s undercut. Example: 2.'
+    sql: '"Rival_Undercut_Window"'
+  sc_vsc_probability:
+    description: 'REAL. Probability of Safety Car or Virtual Safety Car deployment. Example: 0.35.'
+    sql: '"SC_VSC_Probability"'
+  sim_outputs_json:
+    description: 'JSONB. Simulation outputs in JSON format. Example: {delta_ms:-2200}.'
+    sql: '"SIM_OUTPUTS_json"'
+  stop1_lap:
+    description: 'BIGINT. Lap at which the first stop is planned. Example: 18.'
+    sql: '"STOP1_LAP"'
+  stop3_tyre:
+    description: 'TEXT. Tyre used for the third stop. **NULL means no third stop planned.** Example: N/A.'
+    sql: '"STOP3_TYRE"'
+  sim_inputs_json:
+    description: 'JSONB. Inputs used for simulation in JSON format. Example: {weather:dry}.'
+    sql: '"SimInputs_JSON"'
+  start_tyre:
+    description: 'TEXT. Starting tyre compound. Example: C3.'
+    sql: '"StartTyre"'
+  stop1_tyre:
+    description: 'TEXT. Tyre used for the first stop. Example: C2.'
+    sql: '"Stop1_Tyre"'
+  stop2_tyre:
+    description: 'TEXT. Tyre used for the second stop. Example: C2.'
+    sql: '"Stop2_Tyre"'
+  stop3_lap:
+    description: 'BIGINT. Lap at which the third stop is planned. **NULL means no third stop planned.** Example: 0.'
+    sql: '"Stop3_Lap"'
+  strategy_code:
+    description: 'TEXT. Unique code for the strategy. Example: STRAT-A2.'
+    sql: '"Strategy_Code"'
+  strategy_index:
+    description: BIGSERIAL. Surrogate primary key for strategy_scenarios rows. PK.
+    sql: '"Strategy_Index"'
+  title:
+    description: 'TEXT. Title of the strategy scenario. Example: 2-stop medium-hard-hard.'
+    sql: '"TITLE"'
+  traffic_loss_sec:
+    description: 'REAL. Estimated traffic loss in seconds per lap. Example: 3.2.'
+    sql: '"TrafficLoss_sec"'
+  tyre_delam_risk:
+    description: 'REAL. Risk of tyre delamination. **NULL means no tyre delam risk calculated.** Example: 0.05.'
+    sql: '"TyreDelam_Risk"'
+  undercut_risk_score:
+    description: 'REAL. Risk score of executing an undercut strategy. **NULL means no undercut risk score calculated.** Example: 0.22.'
+    sql: '"UndercutRiskScore"'
+  stop2_lap:
+    description: 'BIGINT. Lap at which the second stop is planned. Example: 40.'
+    sql: stop2_lap
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct strategy_scenarios public identity values.
+    label: strategy_scenarios Count
+    sql: ${sports_events_large_public__strategy_scenarios.strategy_index}

@@ -1,0 +1,194 @@
+label: Electrical Performance
+description: Electrical health and energy-yield measurements.
+catalog: solar_panel_large
+schema: public
+table_name: electrical_performance
+dimensions:
+  specific_yield:
+    description: 'REAL. Specific yield in kWh/kWp. Example: 5.18.'
+    label: Specific Yield
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'energy_yield', 'specific_yield_kwh_kw')
+  capacity_factor:
+    description: 'REAL. Capacity factor percentage. Example: 27.47.'
+    label: Capacity Factor
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'energy_yield', 'capacity_factor_pct')
+  performance_ratio:
+    description: 'REAL. Performance ratio. NULL means the encoder does not report status or data are missing. Example: 0.846.'
+    label: Performance Ratio
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'energy_yield', 'performance_ratio')
+  availability:
+    description: 'REAL. System availability percentage. Example: 97.73.'
+    label: Availability
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'energy_yield', 'availability_pct')
+  power_now:
+    description: 'REAL. Current power output in watts. NULL means the encoder does not report status or data are missing. Example: 554.51.'
+    label: Power Output
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'power', 'power_now_w')
+  power_loss:
+    description: 'REAL. Power loss since installation. NULL means the encoder does not report status or data are missing. Example: 95.49.'
+    label: Power Loss
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'power', 'power_loss_w')
+  inverter_eff:
+    description: 'REAL. Inverter efficiency percentage. Example: 98.43.'
+    label: Inverter Efficiency
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'inverter', 'inverter_eff_pct')
+  power_factor:
+    description: 'REAL. Inverter power factor. NULL means the encoder does not report status or data are missing. Example: 0.979.'
+    label: Power Factor
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'inverter', 'power_factor')
+    ai_context: 'Power Factor: A dimensionless ratio ranging from -1 to 1 that represents the ratio of real power (doing work) to apparent power (flowing in the circuit). A value of 1.0 indicates perfect efficiency, while a value of 0.95 is typical for high-efficiency systems. Lower values indicate more reactive power, which does not perform work.'
+  harmonic:
+    description: 'REAL. Harmonic distortion percentage. Example: 4.01.'
+    label: Harmonic Distortion
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'grid', 'harmonic_distortion_pct')
+    ai_context: 'Total Harmonic Distortion (THD): A measurement of the harmonic distortion present in a signal, defined as the ratio of the sum of the powers of all harmonic components to the power of the fundamental frequency. In power systems, a low THD (e.g., <5%) is desirable for good power quality, while higher values can indicate potential problems for connected equipment.'
+  voc_initial:
+    description: 'REAL. Initial open-circuit voltage. NULL means the encoder does not report status or data are missing. Example: 49.74.'
+    label: Initial Open-Circuit Voltage
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'voc_initial_v')
+  voc_now:
+    description: 'REAL. Current open-circuit voltage. Example: 43.32.'
+    label: Current Open-Circuit Voltage
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'voc_now_v')
+  isc_initial:
+    description: 'REAL. Initial short-circuit current. Example: 9.09.'
+    label: Initial Short-Circuit Current
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'isc_initial_a')
+  isc_now:
+    description: 'REAL. Current short-circuit current. Example: 8.51.'
+    label: Current Short-Circuit Current
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'isc_now_a')
+  fill_initial:
+    description: 'REAL. Initial fill factor. Example: 0.773.'
+    label: Initial Fill Factor
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'fill_factor_initial')
+  fill_now:
+    description: 'REAL. Current fill factor. Example: 0.71.'
+    label: Current Fill Factor
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'fill_factor_now')
+    ai_context: 'IV Curve Fill Factor: A measure of the ''squareness'' of the current-voltage (IV) curve, indicating the quality of the solar cell. It is the ratio of the maximum actual power to the theoretical maximum power. A higher value (e.g., >0.8) indicates a higher quality cell with low internal power losses.'
+  soil_loss:
+    description: 'REAL. Power loss due to soiling. Example: 13.41.'
+    label: Soiling Loss
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'efficiency', 'soil_loss_pct')
+  cumulative_deg:
+    description: 'REAL. Cumulative degradation percentage. Example: 14.69.'
+    label: Cumulative Degradation
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'efficiency', 'cumulative_deg_pct')
+  elec_perf_snapshot:
+    description: JSONB column. Stores all IV-curve parameters, inverter & grid metrics, efficiency losses and energy-yield KPIs captured for a single timestamp, so analytics engines can fetch the entire electrical-health view from one JSONB column.
+    sql: elec_perf_snapshot
+  snaplink:
+    description: TEXT. PK & FK → plant_record.SnapKey. Links to performance snapshot record.
+    sql: snaplink
+  elec_perf_snapshot_efficiency_eff_loss_pct:
+    description: 'REAL. Efficiency loss since installation. Example: 2.32.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'efficiency', 'eff_loss_pct')
+  elec_perf_snapshot_efficiency_instant_eff_pct:
+    description: 'REAL. Current operational efficiency percentage. Example: 18.54.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'efficiency', 'instant_eff_pct')
+  elec_perf_snapshot_efficiency_spectral_mismatch:
+    description: 'TEXT. Specification mismatch factor. Example: 1.005.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'efficiency', 'spectral_mismatch')
+  elec_perf_snapshot_energy_yield_energy_yield_kwh:
+    description: 'REAL. Energy yield in watt-hours. Example: 15.64.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'energy_yield', 'energy_yield_kwh')
+  elec_perf_snapshot_grid_grid_frequency_hz:
+    description: 'REAL. Grid frequency measurement. Example: 49.73.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'grid', 'grid_frequency_hz')
+  elec_perf_snapshot_grid_grid_voltage_v:
+    description: 'REAL. Grid voltage measurement. NULL means the encoder does not report status or data are missing. Example: 226.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'grid', 'grid_voltage_v')
+  elec_perf_snapshot_grid_power_quality_idx:
+    description: 'REAL. Power quality index. Example: 0.467.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'grid', 'power_quality_idx')
+  elec_perf_snapshot_grid_reactive_power_var:
+    description: 'REAL. Reactive power measurement. NULL means the encoder does not report status or data are missing. Example: 33.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'grid', 'reactive_power_var')
+  elec_perf_snapshot_inverter_inverter_temp_c:
+    description: 'REAL. Inverter operating temperature. Example: 49.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'inverter', 'inverter_temp_c')
+  elec_perf_snapshot_iv_curve_imp_initial_a:
+    description: 'REAL. Initial current at maximum power. Example: 9.17.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'imp_initial_a')
+  elec_perf_snapshot_iv_curve_imp_now_a:
+    description: 'REAL. Current at maximum power. NULL means the encoder does not report status or data are missing. Example: 7.21.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'imp_now_a')
+  elec_perf_snapshot_iv_curve_series_res_ohm:
+    description: 'TEXT. Series resistance in ohms. Example: 0.174.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'series_res_ohm')
+  elec_perf_snapshot_iv_curve_shunt_res_ohm:
+    description: 'REAL. Shunt resistance in ohms. Example: 437.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'shunt_res_ohm')
+  elec_perf_snapshot_iv_curve_vmp_initial_v:
+    description: 'REAL. Initial voltage at maximum power. Example: 38.48.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'vmp_initial_v')
+  elec_perf_snapshot_iv_curve_vmp_now_v:
+    description: 'REAL. Current voltage at maximum power. Example: 36.98.'
+    sql: JSONB_EXTRACT_PATH_TEXT(elec_perf_snapshot, 'iv_curve', 'vmp_now_v')
+  specific_yield_metric:
+    label: Specific Yield
+    description: Measures the energy output of a solar plant relative to its rated power capacity over a period.
+    sql: CAST(${specific_yield} AS DOUBLE PRECISION)
+    ai_context: Use this modeled field for Specific Yield; do not reconstruct its formula.
+  power_capacity_factor:
+    label: Power Capacity Factor
+    description: Calculates the ratio of a plant's actual energy output over a period to its potential maximum output.
+    sql: CAST(${capacity_factor} AS DOUBLE PRECISION)
+    ai_context: Use this modeled field for Power Capacity Factor; do not reconstruct its formula.
+  inverter_efficiency_loss:
+    label: Inverter Efficiency Loss
+    description: Calculates the percentage of DC power that is lost as heat during the conversion to AC power within the inverter.
+    sql: 100.0 - CAST(${inverter_eff} AS DOUBLE PRECISION)
+    ai_context: Use this modeled field for Inverter Efficiency Loss; do not reconstruct its formula.
+  system_power_loss_ratio:
+    label: System Power Loss Ratio
+    description: Measures the proportion of power that is generated but lost within the system before reaching the grid.
+    sql: CAST(${power_loss} AS DOUBLE PRECISION) / NULLIF(CAST(${power_now} AS DOUBLE PRECISION) + CAST(${power_loss} AS DOUBLE PRECISION), 0.0)
+    ai_context: Use this modeled field for System Power Loss Ratio; do not reconstruct its formula.
+  voltage_degradation_factor:
+    label: Voltage Degradation Factor
+    description: Quantifies the decline in a panel's maximum power point voltage (Vmp) over time.
+    sql: (CAST(${voc_initial} AS DOUBLE PRECISION) - CAST(${voc_now} AS DOUBLE PRECISION)) / NULLIF(CAST(${voc_initial} AS DOUBLE PRECISION), 0.0)
+    ai_context: Use this modeled field for Voltage Degradation Factor; do not reconstruct its formula.
+  current_degradation_factor:
+    label: Current Degradation Factor
+    description: Quantifies the decline in a panel's maximum power point current (Imp) over time.
+    sql: (CAST(${isc_initial} AS DOUBLE PRECISION) - CAST(${isc_now} AS DOUBLE PRECISION)) / NULLIF(CAST(${isc_initial} AS DOUBLE PRECISION), 0.0)
+    ai_context: Use this modeled field for Current Degradation Factor; do not reconstruct its formula.
+  effective_power_output:
+    label: Effective Power Output
+    description: Calculates the net power delivered by the system after accounting for internal power losses.
+    sql: CAST(${power_now} AS DOUBLE PRECISION) * (1.0 - ${system_power_loss_ratio})
+    ai_context: Use this modeled field for Effective Power Output; do not reconstruct its formula.
+  soiling_loss_index:
+    label: Soiling Loss Index
+    description: Quantifies the percentage of power loss due to the accumulation of dirt, dust, and other particulates on panel surfaces.
+    sql: CAST(${soil_loss} AS DOUBLE PRECISION)
+    ai_context: Use this modeled field for Soiling Loss Index; do not reconstruct its formula.
+  severe_soiling_condition:
+    label: Severe Soiling Condition
+    description: Indicates that panel surfaces are heavily soiled, causing a significant loss of energy production.
+    sql: ${soiling_loss_index} > 15.0
+    ai_context: Use this modeled field for Severe Soiling Condition; do not reconstruct its formula.
+  performance_ratio_metric:
+    label: Performance Ratio (PR)
+    description: Measures the overall efficiency of a solar plant by comparing its actual energy output to its theoretically possible output under given climatic conditions.
+    sql: ${specific_yield_metric}
+    ai_context: Use this modeled field for Performance Ratio (PR); do not reconstruct its formula.
+  underperforming_asset:
+    label: Underperforming Asset
+    description: An asset whose energy conversion efficiency is significantly below its expected benchmark.
+    sql: ${performance_ratio_metric} < 0.75
+    ai_context: Use this modeled field for Underperforming Asset; do not reconstruct its formula.
+  fill_factor_degradation:
+    label: Fill Factor Degradation
+    description: Measures the reduction in the IV curve's fill factor from its initial value, indicating a decline in solar cell quality.
+    sql: CAST(${fill_initial} AS DOUBLE PRECISION) - CAST(${fill_now} AS DOUBLE PRECISION)
+    ai_context: Use this modeled field for Fill Factor Degradation; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Electrical Performance public identity values.
+    label: Electrical Performance Count
+    sql: ${solar_panel_large_public__electrical_performance.snaplink}

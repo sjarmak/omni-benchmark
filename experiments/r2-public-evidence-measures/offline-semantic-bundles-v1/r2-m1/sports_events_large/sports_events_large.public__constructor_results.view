@@ -1,0 +1,27 @@
+label: constructor_results
+description: All columns of the public table constructor_results.
+catalog: sports_events_large
+schema: public
+table_name: constructor_results
+dimensions:
+  cresref:
+    description: 'INTEGER. Unique result reference. PK. Example: 15178.'
+    sql: cresref
+  matchref:
+    description: 'INTEGER. Foreign key to the races table (RAK_ID). FK to races. Example: 943.'
+    sql: matchref
+  scoreval:
+    description: 'REAL. Points scored by constructor in the race. **NULL means the constructor was unclassified or data are missing.**. Example: 22.0.'
+    sql: scoreval
+  st_mark:
+    description: 'TEXT. Status mark for the result. Possible values: D, \N.'
+    sql: st_mark
+  unitnode:
+    description: 'INTEGER. Foreign key to the constructors table (CSTR_Key). FK to constructors. Example: 9.'
+    sql: unitnode
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct constructor_results public identity values.
+    label: constructor_results Count
+    sql: ${sports_events_large_public__constructor_results.cresref}

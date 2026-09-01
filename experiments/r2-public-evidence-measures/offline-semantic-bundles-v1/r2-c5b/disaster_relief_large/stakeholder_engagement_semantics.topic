@@ -1,0 +1,13 @@
+base_view: disaster_relief_large_public__stakeholder_engagement
+label: StakeholderEngagement
+description: All columns of the public table StakeholderEngagement.
+fields:
+- disaster_relief_large_public__stakeholder_engagement.*
+- disaster_relief_large_public__coordinationandevaluation.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__operations.*
+joins:
+  disaster_relief_large_public__coordinationandevaluation:
+    disaster_relief_large_public__disasterevents: {}
+    disaster_relief_large_public__operations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

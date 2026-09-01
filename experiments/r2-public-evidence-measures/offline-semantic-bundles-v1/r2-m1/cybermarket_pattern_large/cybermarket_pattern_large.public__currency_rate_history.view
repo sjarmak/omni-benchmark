@@ -1,0 +1,108 @@
+label: currency_rate_history
+description: All columns of the public table currency_rate_history.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: currency_rate_history
+dimensions:
+  askprice:
+    description: 'REAL. The ask price for the currency pair. Example: 1.1750.'
+    sql: '"ASKprice"'
+  exchange_code:
+    description: 'TEXT. Unique code for the exchange providing the rate. Example: BIN.'
+    sql: '"ExchangeCode"'
+  high:
+    description: 'REAL. The highest exchange rate during the day. Example: 1.1800.'
+    sql: '"High"'
+  last_trade_size:
+    description: 'REAL. The size of the last trade for the currency pair. Example: 1500.'
+    sql: '"LastTradeSize"'
+  open:
+    description: 'REAL. The opening exchange rate for the day. Example: 1.1701.'
+    sql: '"OPEN"'
+  quote_currency:
+    description: 'TEXT. The quote currency in the exchange rate pair. Example: EUR.'
+    sql: '"QuoteCurrency"'
+  ratetime:
+    description: 'TIME. The time of the exchange rate for the given day. Example: 15:30:00.'
+    sql: '"RATEtime"'
+  spread:
+    description: 'REAL. The spread between the bid and ask prices for the currency pair. Example: 0.0005.'
+    sql: '"SPREAD"'
+  updated_at:
+    description: 'TIMESTAMP. The timestamp when the currency rate record was last updated (YYYY-MM-DD HH:MM:SS). Example: 2024-05-21 12:30:00.'
+    sql: '"UPDATED_AT"'
+  volume:
+    description: 'REAL. The trading volume for the given currency pair on that day. **NULL means volume data was not recorded or unavailable.** Example: 10500000.'
+    sql: '"VOLUME"'
+  base_currency:
+    description: 'TEXT. The base currency of the exchange rate. Example: USD.'
+    sql: base_currency
+  bid_price:
+    description: 'REAL. The bid price for the currency pair. **NULL means bid price was not recorded or unavailable.** Example: 1.1735.'
+    sql: '"bidPrice"'
+  close:
+    description: 'REAL. The closing exchange rate for the day. Example: 1.1750.'
+    sql: close
+  created_at:
+    description: 'TIMESTAMP. The timestamp when the currency rate record was created (YYYY-MM-DD HH:MM:SS). Example: 2024-05-20 10:00:00.'
+    sql: created_at
+  data_source:
+    description: 'TEXT. The source of the exchange rate data. Example: CoinMarketCap.'
+    sql: '"dataSOURCE"'
+  data_quality_score:
+    description: 'REAL. Quality score of the data source. Example: 99.5.'
+    sql: data_quality_score
+  exchange_name:
+    description: 'TEXT. The name of the exchange that provided the rate. Example: Binance.'
+    sql: '"exchangeNAME"'
+  exchange_country:
+    description: 'TEXT. The country where the exchange is based. Example: US.'
+    sql: exchange_country
+  is_interpolated:
+    description: 'BOOLEAN. Whether the rate is interpolated due to missing data. Example: False.'
+    sql: '"isInterpolated"'
+  is_official:
+    description: 'BOOLEAN. Whether the exchange rate is considered official. Example: True.'
+    sql: is_official
+  last_trade_price:
+    description: 'REAL. The price at which the last trade occurred for the currency pair. **NULL means last trade price is not available.** Example: 1.1740.'
+    sql: last_trade_price
+  last_trade_time:
+    description: 'TIMESTAMP. The timestamp of the last trade for the currency pair (YYYY-MM-DD HH:MM:SS). Example: 2024-05-21 16:45:12.'
+    sql: last_trade_time
+  liquidity_score:
+    description: 'REAL. The liquidity score for the exchange rate, indicating the market’s depth and volume. **NULL means liquidity score could not be determined.** Example: 89.2.'
+    sql: '"liquiditySCORE"'
+  liquidity_window_m_usd_per_day:
+    description: 'TEXT. The liquidity window expressed in millions of USD per day. **NULL means liquidity window data was not available.** Example: 50–80.'
+    sql: '"liquidityWindow_M_USD_per_day"'
+  low:
+    description: 'REAL. The lowest exchange rate during the day. Example: 1.1650.'
+    sql: low
+  market_depth:
+    description: 'REAL. The depth of the market for the currency pair in terms of liquidity. Example: 10200000.'
+    sql: market_depth
+  mid_price:
+    description: 'REAL. The mid-price between bid and ask. Example: 1.1742.'
+    sql: mid_price
+  rate_date:
+    description: 'DATE. The date of the exchange rate. Example: 2024-05-21.'
+    sql: '"rateDATE"'
+  rate_ref:
+    description: 'TEXT. Unique reference code for the currency rate record. PK. Example: RATE-8E9J29.'
+    sql: '"rateRef"'
+  rate_value:
+    description: 'REAL. The exchange rate value between `base_currency` and `QuoteCurrency`. **NULL means exchange rate value was not available or could not be determined.** Example: 1.1742.'
+    sql: rate_value
+  volatility:
+    description: 'REAL. The volatility of the currency pair for the day. Example: 0.0054.'
+    sql: volatility
+  volatility_band_percent_24h:
+    description: 'TEXT. The volatility band expressed as a percentage per 24 hours. **NULL means volatility band was not calculated or is unavailable.** Example: ± 1.2.'
+    sql: '"volatilityBand_percent_24h"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct currency_rate_history public identity values.
+    label: currency_rate_history Count
+    sql: ${cybermarket_pattern_large_public__currency_rate_history.rate_ref}

@@ -1,0 +1,87 @@
+label: skill_Session_Map
+description: All columns of the public table skill_Session_Map.
+catalog: disaster_relief_large
+schema: public
+table_name: skill_Session_Map
+dimensions:
+  attendance_status:
+    description: 'TEXT. Completion status. Possible values: Completed, Absent, Partial.'
+    sql: '"AttendanceStatus"'
+  custom_field2:
+    description: TEXT. Second custom extensible field – never left NULL.
+    sql: '"CUSTOM_FIELD2"'
+  certificate_issued:
+    description: BOOLEAN. TRUE if a completion certificate was issued for the skill.
+    sql: '"CertificateIssued"'
+  created_at:
+    description: TIMESTAMP. Record creation timestamp.
+    sql: '"CreatedAt"'
+  early_leave:
+    description: BOOLEAN. TRUE if volunteer left before scheduled end.
+    sql: '"EARLY_LEAVE"'
+  engagement_level:
+    description: TEXT. Subjective engagement level (High, Medium, Low). May be NULL when not assessed.
+    sql: '"ENGAGEMENT_LEVEL"'
+  feedback_rating:
+    description: REAL. Post-session feedback (1-5). May be NULL if feedback not given.
+    sql: '"Feedback_Rating"'
+  follow_up_date:
+    description: DATE. Target date for follow-up activities.
+    sql: '"Follow_UP_Date"'
+  hours_participated:
+    description: REAL. Actual hours spent in session for this skill.
+    sql: '"HOURS_PARTICIPATED"'
+  join_date:
+    description: DATE. Date the skill was associated with the session.
+    sql: '"JOIN_DATE"'
+  performance_score:
+    description: REAL. Numerical performance / assessment score (0-100).
+    sql: '"PERFORMANCE_SCORE"'
+  remarks:
+    description: TEXT. General notes. Never NULL (auto-generated if blank).
+    sql: '"REMARKS"'
+  slot_number:
+    description: INT. Slot / room index for capacity planning.
+    sql: '"SLOT_NUMBER"'
+  safety_incidents_reported:
+    description: BIGINT. Count of safety incidents during the skill portion.
+    sql: '"SafetyIncidentsReported"'
+  session_id:
+    description: VARCHAR(20). FK → TrainingSessions.SESSION_ID. PK part.
+    sql: '"SessionID"'
+  snack_budget_usd_per_day:
+    description: REAL. Daily snack or meal budget for the session expressed in USD.
+    sql: '"Snack_Budget_USD_per_day"'
+  training_effect_score:
+    description: REAL. Post-training effect score (0-100).
+    sql: '"TrainingEffect_Score"'
+  updated_at:
+    description: TIMESTAMP. Last update timestamp.
+    sql: '"UPDATED_at"'
+  assignment_complete:
+    description: BOOLEAN. TRUE when associated coursework tasks were finished.
+    sql: '"assignmentComplete"'
+  attendance_window_hours_range:
+    description: TEXT. Scheduled attendance window (e.g., 10:00-17:00).
+    sql: '"attendanceWindow_hours_range"'
+  custom_field1:
+    description: TEXT. Custom extensible field – populated with placeholder when no real data available.
+    sql: custom_field1
+  follow_up_required:
+    description: BOOLEAN. TRUE if the volunteer needs follow-up coaching. May be NULL when evaluation not done.
+    sql: '"followUpRequired"'
+  late_arrival_minutes:
+    description: INT. Minutes late to the session (0 when on time).
+    sql: '"late_arrival_MINUTES"'
+  role_during_session:
+    description: TEXT. Volunteer role with respect to the skill (Instructor, Assistant, Observer). May be NULL if not recorded.
+    sql: '"role_During_Session"'
+  skilref:
+    description: VARCHAR(20). FK → SkillCatalogue.skillID. Skill taught or applied in the session.
+    sql: skilref
+  supervisor_comment:
+    description: TEXT. Free-text observation from session supervisor. May be NULL if supervisor omitted comments.
+    sql: '"supervisorCOMMENT"'
+  travel_time_minutes:
+    description: REAL. Estimated one-way travel time from the volunteer’s base to the session in minutes.
+    sql: '"travelTIME_minutes"'

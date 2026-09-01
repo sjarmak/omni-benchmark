@@ -1,0 +1,72 @@
+label: ExpenseReceipts
+description: All columns of the public table ExpenseReceipts.
+catalog: archeology_scan_large
+schema: public
+table_name: ExpenseReceipts
+dimensions:
+  expense_receipts_id:
+    description: TEXT. Unique identifier for each expense receipt record.
+    sql: '"ExpenseReceipts_id"'
+  approval_status:
+    description: 'TEXT. Current approval workflow status of the receipt. Unique values: Pending, Approved, Rejected, Under Review, Resubmitted.'
+    sql: approval_status
+  currency_code:
+    description: 'TEXT. ISO 4217 currency code for the transaction. Unique values: USD, EUR, GBP, JPY, CNY, AUD.'
+    sql: currency_code
+  days_to_submission:
+    description: 'INTEGER. Number of days between purchase and receipt submission. Example: 50.'
+    sql: days_to_submission
+  digital_signature_verified:
+    description: 'BOOLEAN. Whether the digital signature on electronic receipt was verified. Possible values: True, False.'
+    sql: digital_signature_verified
+  exchange_rate_to_usd:
+    description: 'REAL. Exchange rate applied to convert to USD at transaction time. Example: 50.0.'
+    sql: exchange_rate_to_usd
+  expense_ref:
+    description: TEXT. Reference to the parent project expense record.
+    sql: expense_ref
+  file_size_kb:
+    description: 'REAL. Size of the scanned receipt file in kilobytes. **NULL means Physical receipt not yet digitized.** Example: 350.0.'
+    sql: file_size_kb
+  is_itemized:
+    description: 'BOOLEAN. Whether the receipt contains itemized breakdown. Possible values: True, False.'
+    sql: is_itemized
+  line_item_count:
+    description: 'INTEGER. Number of individual line items on the receipt. Example: 50.'
+    sql: line_item_count
+  ocr_confidence_percent:
+    description: 'REAL. Confidence percentage of OCR text extraction accuracy. **NULL means OCR processing not completed.** Example: 92.0.'
+    sql: ocr_confidence_percent
+  payment_method:
+    description: 'TEXT. Method used to pay for the expense. Unique values: Credit Card, Cash, Wire Transfer, Check, Petty Cash.'
+    sql: payment_method
+  receipt_category:
+    description: 'TEXT. Classification category of the receipt expense type. Unique values: Equipment, Supplies, Travel, Lodging, Food, Services, Shipping.'
+    sql: receipt_category
+  receipt_scan_quality_score:
+    description: 'REAL. OCR quality score of scanned receipt image from 0 to 100. **NULL means Physical receipt not yet scanned.** Example: 85.0.'
+    sql: receipt_scan_quality_score
+  receipt_timestamp:
+    description: 'TIMESTAMP. Date and time the receipt was issued by vendor. Example: 2024-01-01 12:00:00.'
+    sql: receipt_timestamp
+  receipt_total_amount:
+    description: 'REAL. Total monetary amount shown on receipt in local currency. Example: 450.0.'
+    sql: receipt_total_amount
+  reimbursement_eligible:
+    description: 'BOOLEAN. Whether the expense qualifies for reimbursement. Possible values: True, False.'
+    sql: reimbursement_eligible
+  requires_manager_approval:
+    description: 'BOOLEAN. Whether expense amount triggers manager approval threshold. Possible values: True, False.'
+    sql: requires_manager_approval
+  tax_amount:
+    description: 'REAL. Tax portion of the receipt total in local currency. **NULL means Tax exempt purchase or tax included in price.** Example: 45.0.'
+    sql: tax_amount
+  vendor_name_length:
+    description: 'INTEGER. Character length of vendor business name. Example: 50.'
+    sql: vendor_name_length
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ExpenseReceipts public identity values.
+    label: ExpenseReceipts Count
+    sql: ${archeology_scan_large_public__expense_receipts.expense_receipts_id}

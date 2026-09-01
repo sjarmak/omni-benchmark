@@ -1,0 +1,87 @@
+label: habitability_metrics
+description: All columns of the public table habitability_metrics.
+catalog: planets_data_large
+schema: public
+table_name: habitability_metrics
+dimensions:
+  assessment_confidence:
+    description: 'real. Confidence level (0.0 to 1.0) in the habitability assessment results. Possible values: 0.68, 0.72, 0.85, 0.91.'
+    sql: '"ASSESSMENT_CONFIDENCE"'
+  axial_tilt_degrees:
+    description: 'real. Planetary obliquity or axial tilt in degrees. Possible values: 15.2, 22.5, 45.8, 8.9.'
+    sql: '"AXIAL_TILT_degrees"'
+  conservative_hz_outer_au:
+    description: 'real. Outer boundary of conservative habitable zone in astronomical units. Possible values: 1.37.'
+    sql: '"ConservativeHzOuter_AU"'
+  day_length_hours:
+    description: 'real. Length of planetary rotation period in hours. **NULL means rotation period could not be determined.**. Possible values: 26.8, 72.3.'
+    sql: '"DayLength_hours"'
+  habitabilityref:
+    description: 'bigint. Primary key identifier for habitability assessment records. PK. Possible values: 7001, 7002, 7003, 7004.'
+    sql: '"HABITABILITYREF"'
+  habitable_zone_distance_au:
+    description: 'real. Distance from host star in astronomical units within habitable zone context. Possible values: 0.78, 1.12, 1.34, 1.58.'
+    sql: '"HABITABLE_ZONE_DISTANCE_AU"'
+  in_habitable_zone:
+    description: 'boolean. Flag indicating whether planet orbits within the habitable zone. Possible values: False, True.'
+    sql: '"IN_HABITABLE_ZONE"'
+  last_assessment_date:
+    description: 'real. Date when habitability assessment was last updated or reviewed. Possible values: 2459695.1, 2459750.5, 2459820.3, 2459880.7.'
+    sql: '"LastAssessmentDate"'
+  ocean_coverage_estimate:
+    description: 'real. Estimated fraction of planetary surface covered by oceans (0.0 to 1.0). **NULL means ocean coverage could not be estimated.**. Possible values: 0.15, 0.45.'
+    sql: '"OceanCoverageEstimate"'
+  stellar_wind_pressure_pa:
+    description: 'real. Stellar wind dynamic pressure at planetary orbit in Pascals. Possible values: 1.2e-08, 2.1e-08, 5.2e-09, 8.5e-09.'
+    sql: '"STELLAR_WIND_PRESSURE_Pa"'
+  uv_radiation_index:
+    description: 'real. Index quantifying ultraviolet radiation exposure level. Possible values: 1.2, 1.8, 2.1, 3.8.'
+    sql: '"UvRadiationIndex"'
+  atmospheric_retention_score:
+    description: 'real. Score indicating planet''s ability to retain its atmosphere against escape processes. **NULL means atmospheric retention was not assessed.**. Possible values: 0.65, 0.82.'
+    sql: atmospheric_retention_score
+  conservative_hz_inner_au:
+    description: 'real. Inner boundary of conservative habitable zone in astronomical units. Possible values: 0.95.'
+    sql: '"conservative_hz_inner_AU"'
+  habitability_classification:
+    description: 'text. Categorical classification of habitability potential (e.g., habitable, marginal, uninhabitable). Possible values: Marginally Habitable, Non-Habitable, Potentially Habitable.'
+    sql: habitability_classification
+  habitscores:
+    description: JSONB column. Various habitability assessment scores and probabilities indicating potential for supporting life.
+    sql: habitscores
+  notes:
+    description: 'text. Additional notes or comments about habitability analysis and assumptions. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: notes
+  planet_link:
+    description: 'bigint. Foreign key reference to the parent planet record. FK to planets(planetRef). Example: 1.'
+    sql: '"planetLink"'
+  surface_temperature_estimate_k:
+    description: 'real. Estimated average surface temperature in Kelvin. Possible values: 195, 265, 288, 425.'
+    sql: '"surface_temperature_estimate_K"'
+  habitscores_biosignature_potential:
+    description: 'real. Assessment score for potential detectability of biological signatures. Possible values: 0.18, 0.28, 0.42, 0.65.'
+    sql: JSONB_EXTRACT_PATH_TEXT(habitscores, 'BIOSIGNATURE_POTENTIAL')
+  habitscores_liquid_water_probability:
+    description: 'real. Probability (0.0 to 1.0) that liquid water can exist on the surface. Possible values: 0.05, 0.12, 0.52, 0.78.'
+    sql: JSONB_EXTRACT_PATH_TEXT(habitscores, 'LiquidWaterProbability')
+  habitscores_planetary_habitability_index:
+    description: 'real. Planetary Habitability Index quantifying potential for life support. Possible values: 0.23, 0.41, 0.58, 0.84.'
+    sql: JSONB_EXTRACT_PATH_TEXT(habitscores, 'PlanetaryHabitabilityIndex')
+  habitscores_tidal_locking_probability:
+    description: 'real. Probability (0.0 to 1.0) that the planet is tidally locked to its host star. **NULL means tidal locking assessment was not performed.**. Possible values: 0.15, 0.85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(habitscores, 'TIDAL_LOCKING_PROBABILITY')
+  habitscores_climate_stability_index:
+    description: 'real. Index quantifying long-term climate stability and variability. Possible values: 0.34, 0.58, 0.63, 0.71.'
+    sql: JSONB_EXTRACT_PATH_TEXT(habitscores, 'climate_stability_index')
+  habitscores_earth_similarity_index:
+    description: 'real. Earth Similarity Index (ESI) ranging from 0 to 1, measuring Earth-like characteristics. Possible values: 0.45, 0.61, 0.72, 0.89.'
+    sql: JSONB_EXTRACT_PATH_TEXT(habitscores, 'earth_similarity_index')
+  stellar_flux_received_w_m:
+    description: 'real. Incident stellar flux received by the planet in watts per square meter. Possible values: 1285, 2150, 625, 985.'
+    sql: '"stellar_flux_received_W/m²"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct habitability_metrics public identity values.
+    label: habitability_metrics Count
+    sql: ${planets_data_large_public__habitability_metrics.habitabilityref}

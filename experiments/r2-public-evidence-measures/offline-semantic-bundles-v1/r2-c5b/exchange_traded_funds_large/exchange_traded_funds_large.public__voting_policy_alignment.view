@@ -1,0 +1,66 @@
+label: VotingPolicyAlignment
+description: All columns of the public table VotingPolicyAlignment.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: VotingPolicyAlignment
+dimensions:
+  voting_policy_alignment_id:
+    description: TEXT. Unique identifier for voting policy alignment record.
+    sql: '"VotingPolicyAlignment_id"'
+  alignment_assessment_date:
+    description: 'TIMESTAMP. Date of alignment assessment. Example: 2024-01-01 12:00:00.'
+    sql: alignment_assessment_date
+  client_mandate_compliance_pct:
+    description: 'REAL. Compliance percentage with client mandates. **NULL means No specific client mandates.** Example: 50.0.'
+    sql: client_mandate_compliance_pct
+  deviation_explanation_length:
+    description: 'INTEGER. Character length of policy deviation explanation. Example: 50.'
+    sql: deviation_explanation_length
+  engagement_attempts_count:
+    description: 'INTEGER. Number of engagement attempts with company. Example: 50.'
+    sql: engagement_attempts_count
+  escalation_level:
+    description: 'INTEGER. Escalation level if vote against management. **NULL means No escalation required.** Example: 50.'
+    sql: escalation_level
+  esg_policy_alignment_score:
+    description: 'REAL. Alignment score with ESG voting policy. **NULL means ESG policy not applicable.** Example: 50.0.'
+    sql: esg_policy_alignment_score
+  fiduciary_duty_score:
+    description: 'REAL. Score assessing fiduciary duty compliance. **NULL means Fiduciary assessment pending.** Example: 50.0.'
+    sql: fiduciary_duty_score
+  glass_lewis_alignment_pct:
+    description: 'REAL. Percentage alignment with Glass Lewis recommendations. **NULL means Glass Lewis recommendation not available.** Example: 50.0.'
+    sql: glass_lewis_alignment_pct
+  governance_policy_alignment_score:
+    description: 'REAL. Alignment with governance voting policy. **NULL means Governance policy not defined.** Example: 50.0.'
+    sql: governance_policy_alignment_score
+  has_engagement_follow_up:
+    description: 'BOOLEAN. Whether follow-up engagement is planned. Possible values: True, False.'
+    sql: has_engagement_follow_up
+  is_controversial_vote:
+    description: 'BOOLEAN. Whether vote is considered controversial. Possible values: True, False.'
+    sql: is_controversial_vote
+  iss_recommendation_alignment_pct:
+    description: 'REAL. Percentage alignment with ISS recommendations. **NULL means ISS recommendation not available.** Example: 50.0.'
+    sql: iss_recommendation_alignment_pct
+  management_alignment_pct:
+    description: 'REAL. Percentage alignment with management recommendations. **NULL means Management position unclear.** Example: 50.0.'
+    sql: management_alignment_pct
+  peer_fund_voting_similarity_pct:
+    description: 'REAL. Similarity to peer fund voting patterns. **NULL means Peer comparison unavailable.** Example: 50.0.'
+    sql: peer_fund_voting_similarity_pct
+  policy_alignment_score:
+    description: 'REAL. Score indicating alignment with voting policy. **NULL means Alignment score pending calculation.** Example: 50.0.'
+    sql: policy_alignment_score
+  policy_exception_category:
+    description: 'TEXT. Category of policy exception if applicable. Unique values: None, Market Specific, Company Specific, Client Request, Fiduciary Override.'
+    sql: policy_exception_category
+  requires_disclosure:
+    description: 'BOOLEAN. Whether vote requires special disclosure. Possible values: True, False.'
+    sql: requires_disclosure
+  review_status:
+    description: 'TEXT. Status of policy alignment review. Unique values: Auto-Approved, Manual Review, Escalated, Approved, Exception Granted.'
+    sql: review_status
+  voting_outcome_ref:
+    description: TEXT. Reference to the shareholder voting outcome.
+    sql: voting_outcome_ref

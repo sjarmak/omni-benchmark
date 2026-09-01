@@ -1,0 +1,12 @@
+label: Monitor_Showcase_Map
+description: All columns of the public table Monitor_Showcase_Map.
+catalog: museum_artifact_large
+schema: public
+table_name: Monitor_Showcase_Map
+dimensions:
+  case_id:
+    description: 'TEXT. Showcase case identifier. PK. FK to Showcases.caseID. Example: SC9857.'
+    sql: '"case_ID"'
+  mon_id:
+    description: 'TEXT. Monitor identifier. PK. Example: MM191823.'
+    sql: '"mon_ID"'

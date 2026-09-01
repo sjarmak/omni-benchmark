@@ -1,0 +1,105 @@
+label: weather_observations
+description: All columns of the public table weather_observations.
+catalog: sports_events_large
+schema: public
+table_name: weather_observations
+dimensions:
+  air_temp_c:
+    description: 'REAL. Air temperature in degrees Celsius. Example: 28.5.'
+    sql: '"AirTemp_C"'
+  aquaplaning_risk:
+    description: 'REAL. Risk of aquaplaning on the track. Example: 0.15.'
+    sql: '"AquaplaningRisk"'
+  cloud_cover_pct:
+    description: 'REAL. Cloud cover as a percentage. Example: 0.75.'
+    sql: '"CloudCover_pct"'
+  cooling_efficiency:
+    description: 'REAL. Cooling efficiency of the car''s cooling system. Example: 0.85.'
+    sql: '"CoolingEfficiency"'
+  crosswind_risk:
+    description: 'REAL. Risk of crosswind at the track. Example: 0.3.'
+    sql: '"Crosswind_Risk"'
+  dew_point_c:
+    description: 'REAL. Dew point temperature in degrees Celsius. Example: 19.0.'
+    sql: '"DewPoint_C"'
+  grip_coeff_estimate:
+    description: 'REAL. Estimated grip coefficient under the current weather conditions. Example: 0.88.'
+    sql: '"GripCoeff_Estimate"'
+  humidity_pct:
+    description: 'REAL. Humidity as a percentage. Example: 0.56.'
+    sql: '"HUMIDITY_PCT"'
+  headwind_risk:
+    description: 'REAL. Risk of headwind at the track. Example: 0.4.'
+    sql: '"HeadwindRisk"'
+  heat_stress_index:
+    description: 'REAL. Heat stress index based on observed weather. Example: 28.0.'
+    sql: '"HeatStressIndex"'
+  lightning_distance_km:
+    description: 'REAL. Distance to the nearest lightning strike in kilometers. Example: 12.5.'
+    sql: '"LightningDistance_km"'
+  model_confidence:
+    description: 'REAL. Confidence level of the weather forecast. Example: 0.72.'
+    sql: '"ModelConfidence"'
+  model_nowcast_code:
+    description: 'TEXT. Weather model nowcast code. Example: HRR.'
+    sql: '"ModelNowcastCode"'
+  notes:
+    description: 'TEXT. Additional notes on the weather observation. Example: Wind shift T3.'
+    sql: '"NOTES"'
+  observed_at:
+    description: 'TIMESTAMP. Timestamp when the weather observation was made. Example: 2025/03/12 14:00:00.'
+    sql: '"Observed_At"'
+  pressure_h_pa:
+    description: 'REAL. Atmospheric pressure in hPa. Example: 1012.3.'
+    sql: '"Pressure_hPa"'
+  rak_ref:
+    description: 'INTEGER. Foreign key referencing races(rak_id). FK → races(rak_id). Example: 3.'
+    sql: '"RAK_REF"'
+  rainfall_mm:
+    description: 'REAL. Rainfall in millimeters. **NULL means no rain recorded.** Example: 0.8.'
+    sql: '"Rainfall_mm"'
+  spray_risk:
+    description: 'REAL. Risk of spray on the track. Example: 0.2.'
+    sql: '"Spray_Risk"'
+  tailwind_risk:
+    description: 'REAL. Risk of tailwind at the track. Example: 0.1.'
+    sql: '"TailwindRisk"'
+  track_temp_c:
+    description: 'REAL. Track temperature in degrees Celsius. Example: 41.2.'
+    sql: '"Track_Temp_C"'
+  tyre_warmup_factor:
+    description: 'REAL. Tyre warm-up factor in relation to track conditions. Example: 0.65.'
+    sql: '"TyreWarmup_Factor"'
+  uv_index:
+    description: 'REAL. UV index during the observation. Example: 6.0.'
+    sql: '"UV_Index"'
+  visibility_km:
+    description: 'REAL. Visibility distance in kilometers. **NULL means visibility not measured.** Example: 10.0.'
+    sql: '"Visibility_km"'
+  wind_dir_deg:
+    description: 'REAL. Wind direction in degrees. Example: 230.0.'
+    sql: '"WIND_DIR_DEG"'
+  wind_speed_kph:
+    description: 'REAL. Wind speed in kilometers per hour. Example: 18.0.'
+    sql: '"WIND_SPEED_KPH"'
+  weather_obs_record:
+    description: BIGSERIAL. Surrogate primary key for weather_observations rows. PK.
+    sql: '"WeatherObs_Record"'
+  weather_source:
+    description: 'TEXT. Source of the weather data. Example: on-site station.'
+    sql: '"WeatherSource"'
+  wet_track:
+    description: 'BOOLEAN. Whether the track was wet at the time of observation. Example: true.'
+    sql: '"WetTrack"'
+  wind_gust_kph:
+    description: 'REAL. Wind gust speed in kilometers per hour. Example: 32.0.'
+    sql: '"WindGust_kph"'
+  rainfall_intensity:
+    description: 'TEXT. Intensity of rainfall. Possible values: light, moderate, heavy. **NULL means no intensity recorded.** Example: light.'
+    sql: rainfall_intensity
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct weather_observations public identity values.
+    label: weather_observations Count
+    sql: ${sports_events_large_public__weather_observations.weather_obs_record}

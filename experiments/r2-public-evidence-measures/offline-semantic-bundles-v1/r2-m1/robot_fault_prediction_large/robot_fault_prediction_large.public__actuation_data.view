@@ -1,0 +1,98 @@
+label: actuation_data
+description: Public semantic view for actuation_data.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: actuation_data
+dimensions:
+  a_position_error:
+    description: 'REAL. Position error in mm. **NULL means no position error data available.**. Example: 0.069.'
+    label: A.position_error
+    sql: poserrmmval
+  a_payload_weight:
+    description: 'REAL. Payload weight in kg. **NULL means no payload data available.**. Example: 144.85.'
+    label: A.payload_weight
+    sql: payloadwval
+  actoperref:
+    description: TEXT. Foreign key to the operation table (OperReg). FK to operation.
+    sql: actoperref
+  actrecref:
+    description: TEXT. Foreign key to the robot_record table (BotCode). FK to robot_record.
+    sql: actrecref
+  actreg:
+    description: TEXT. Unique actuation record identifier. PK.
+    sql: actreg
+  m1currval:
+    description: 'REAL. Motor 1 current in Amps. **NULL means no motor 1 data available.**. Example: 6.58.'
+    sql: m1currval
+  m1voltval:
+    description: 'REAL. Motor 1 voltage in Volts. Example: 1.26.'
+    sql: m1voltval
+  m2currval:
+    description: 'REAL. Motor 2 current in Amps. **NULL means no motor 2 data available.**. Example: 8.61.'
+    sql: m2currval
+  m2voltval:
+    description: 'REAL. Motor 2 voltage in Volts. Example: 15.66.'
+    sql: m2voltval
+  m3currval:
+    description: 'REAL. Motor 3 current in Amps. **NULL means no motor 3 data available.**. Example: 3.31.'
+    sql: m3currval
+  m3voltval:
+    description: 'REAL. Motor 3 voltage in Volts. Example: 10.6.'
+    sql: m3voltval
+  m4currval:
+    description: 'REAL. Motor 4 current in Amps. **NULL means no motor 4 data available.**. Example: 14.16.'
+    sql: m4currval
+  m4voltval:
+    description: 'REAL. Motor 4 voltage in Volts. Example: 9.13.'
+    sql: m4voltval
+  m5currval:
+    description: 'REAL. Motor 5 current in Amps. **NULL means no motor 5 data available.**. Example: 6.16.'
+    sql: m5currval
+  m5voltval:
+    description: 'REAL. Motor 5 voltage in Volts. Example: 28.47.'
+    sql: m5voltval
+  m6currval:
+    description: 'REAL. Motor 6 current in Amps. **NULL means no motor 6 data available.**. Example: 1.81.'
+    sql: m6currval
+  m6voltval:
+    description: 'REAL. Motor 6 voltage in Volts. Example: 32.12.'
+    sql: m6voltval
+  orienterrdegval:
+    description: 'REAL. Orientation error in degrees. **NULL means no orientation error data available.**. Example: 0.471.'
+    sql: orienterrdegval
+  pathaccmmval:
+    description: 'REAL. Path accuracy in mm. Example: 0.797.'
+    sql: pathaccmmval
+  payloadival:
+    description: 'REAL. Payload current in Amps. Example: 1.78.'
+    sql: payloadival
+  tcp_rxval:
+    description: 'REAL. TCP rotation around the X-axis in radians. Example: -156.28.'
+    sql: tcp_rxval
+  tcp_ryval:
+    description: 'REAL. TCP rotation around the Y-axis in radians. Example: -150.3.'
+    sql: tcp_ryval
+  tcp_rzval:
+    description: 'REAL. TCP rotation around the Z-axis in radians. Example: -6.26.'
+    sql: tcp_rzval
+  tcpaccelval:
+    description: 'REAL. Acceleration of the TCP in mm/s². Example: 6.65.'
+    sql: tcpaccelval
+  tcpspeedval:
+    description: 'REAL. Speed of the TCP in mm/s. Example: 1231.14.'
+    sql: tcpspeedval
+  tcpxval:
+    description: 'REAL. TCP X-coordinate in mm. **NULL means TCP pose data unavailable.**. Example: 1275.23.'
+    sql: tcpxval
+  tcpyval:
+    description: 'REAL. TCP Y-coordinate in mm. **NULL means TCP pose data unavailable.**. Example: 873.0.'
+    sql: tcpyval
+  tcpzval:
+    description: 'REAL. TCP Z-coordinate in mm. **NULL means TCP pose data unavailable.**. Example: 1618.63.'
+    sql: tcpzval
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct actuation_data public identity values.
+    label: actuation_data Count
+    sql: ${robot_fault_prediction_large_public__actuation_data.actreg}

@@ -1,0 +1,66 @@
+label: OperationalRiskEvents
+description: All columns of the public table OperationalRiskEvents.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: OperationalRiskEvents
+dimensions:
+  operational_risk_events_id:
+    description: 'TEXT. Unique identifier for the risk incident. Example: XX-1A2B3C.'
+    sql: '"OperationalRiskEvents_id"'
+  data_breach_records_count:
+    description: 'INTEGER. Number of client records compromised. **NULL means No data breach.** Example: 50.'
+    sql: data_breach_records_count
+  detection_method:
+    description: 'TEXT. How the issue was found. Unique values: Automated Alert, Manual Check, Client Report, Audit.'
+    sql: detection_method
+  event_category:
+    description: 'TEXT. Classification of the risk event. Unique values: Trade Error, Compliance Breach, IT Failure, Cyber Attack, Legal, HR Issue.'
+    sql: event_category
+  event_timestamp:
+    description: 'TIMESTAMP. When the incident occurred. Example: 2024-01-01 12:00:00.'
+    sql: event_timestamp
+  financial_loss_amount:
+    description: 'REAL. Direct financial loss incurred. **NULL means No direct financial loss.** Example: 50.0.'
+    sql: financial_loss_amount
+  fund_ref:
+    description: 'INTEGER. Reference to the fund involved. Example: 50.'
+    sql: fund_ref
+  incident_severity_level:
+    description: 'TEXT. High/Medium/Low severity. Unique values: Low, Medium, High, Critical.'
+    sql: incident_severity_level
+  insurance_claim_amount:
+    description: 'REAL. Amount claimed from insurance. **NULL means No claim filed.** Example: 50.0.'
+    sql: insurance_claim_amount
+  regulatory_fine_amount:
+    description: 'REAL. Fines levied by authorities. **NULL means No fine.** Example: 50.0.'
+    sql: regulatory_fine_amount
+  remediation_status:
+    description: 'TEXT. Current status of the fix. Unique values: Open, In Progress, Closed, Monitor.'
+    sql: remediation_status
+  reporting_lag_days:
+    description: 'INTEGER. Days between occurrence and reporting. Example: 50.'
+    sql: reporting_lag_days
+  reputational_damage_score:
+    description: 'INTEGER. Internal score of reputational harm (1-10). Example: 50.'
+    sql: reputational_damage_score
+  root_cause_code:
+    description: 'TEXT. Underlying cause category. Unique values: Human Error, Process Gap, Vendor Fail, Malice, Hardware.'
+    sql: root_cause_code
+  settlement_failure_flag:
+    description: 'BOOLEAN. Did this result in a failed settlement?. Possible values: True, False.'
+    sql: settlement_failure_flag
+  staff_remediation_hours:
+    description: 'REAL. Man-hours spent fixing the issue. Example: 50.0.'
+    sql: staff_remediation_hours
+  system_downtime_minutes:
+    description: 'INTEGER. Duration of technical outage. **NULL means Not an IT issue.** Example: 50.'
+    sql: system_downtime_minutes
+  trade_error_count:
+    description: 'INTEGER. Number of erroneous trades executed. **NULL means Not a trading error.** Example: 50.'
+    sql: trade_error_count
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct OperationalRiskEvents public identity values.
+    label: OperationalRiskEvents Count
+    sql: ${exchange_traded_funds_large_public__operational_risk_events.operational_risk_events_id}

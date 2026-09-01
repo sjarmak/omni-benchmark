@@ -1,0 +1,66 @@
+label: AnalystResearchConsensus
+description: All columns of the public table AnalystResearchConsensus.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: AnalystResearchConsensus
+dimensions:
+  analyst_research_consensus_id:
+    description: 'TEXT. Unique identifier for the consensus record. Example: XX-1A2B3C.'
+    sql: '"AnalystResearchConsensus_id"'
+  buy_ratings_count:
+    description: 'INTEGER. Number of Buy/Strong Buy ratings. Example: 50.'
+    sql: buy_ratings_count
+  consensus_date:
+    description: 'TIMESTAMP. Date of the consensus aggregation. Example: 2024-01-01 12:00:00.'
+    sql: consensus_date
+  conviction_score:
+    description: 'REAL. Score 1-10 indicating analyst agreement. Example: 50.0.'
+    sql: conviction_score
+  dividend_yield_forecast:
+    description: 'REAL. Forecasted dividend yield. **NULL means No dividend expected.** Example: 50.0.'
+    sql: dividend_yield_forecast
+  eps_estimate_next_quarter:
+    description: 'REAL. Consensus EPS for next quarter. Example: 2.5.'
+    sql: eps_estimate_next_quarter
+  growth_forecast_cagr:
+    description: 'REAL. Projected 5-year growth rate. **NULL means No long term forecast.** Example: 0.08.'
+    sql: growth_forecast_cagr
+  highest_target_price:
+    description: 'REAL. Highest price target on the street. Example: 120.'
+    sql: highest_target_price
+  hold_ratings_count:
+    description: 'INTEGER. Number of Hold/Neutral ratings. Example: 50.'
+    sql: hold_ratings_count
+  implied_upside_pct:
+    description: 'REAL. Percentage difference between current price and target. Example: 0.1.'
+    sql: implied_upside_pct
+  lowest_target_price:
+    description: 'REAL. Lowest price target on the street. Example: 80.'
+    sql: lowest_target_price
+  mean_target_price:
+    description: 'REAL. Average price target. Example: 100.'
+    sql: mean_target_price
+  median_target_price:
+    description: 'REAL. Median price target. Example: 100.'
+    sql: median_target_price
+  recommendation_trend:
+    description: 'TEXT. Direction of recent rating changes. Unique values: Improving, Deteriorating, Stable.'
+    sql: recommendation_trend
+  revenue_estimate_next_year:
+    description: 'REAL. Consensus Revenue for next fiscal year (Millions). Example: 5000.'
+    sql: revenue_estimate_next_year
+  security_ref:
+    description: 'INTEGER. Reference to the covered security. Example: 50.'
+    sql: security_ref
+  sell_ratings_count:
+    description: 'INTEGER. Number of Sell/Underperform ratings. Example: 50.'
+    sql: sell_ratings_count
+  total_analysts_covering:
+    description: 'INTEGER. Number of analysts providing estimates. Example: 50.'
+    sql: total_analysts_covering
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct AnalystResearchConsensus public identity values.
+    label: AnalystResearchConsensus Count
+    sql: ${exchange_traded_funds_large_public__analyst_research_consensus.analyst_research_consensus_id}

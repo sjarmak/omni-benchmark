@@ -1,0 +1,13 @@
+base_view: cybermarket_pattern_large_public__buyers
+label: Buyers
+description: Buyer records with public authentication and spending-pattern context.
+fields:
+- cybermarket_pattern_large_public__buyers.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Domain definitions for this topic:
+
+  - Suspicious Buyer: A buyer is labeled Suspicious when their behavioural consistency score is low and their risk per dollar metric is notably high.
+
+  - Buyer Risk Dollar Ratio: BRDR = \frac{\text{risk\_score}}{\text{total\_spending\_usd}}'

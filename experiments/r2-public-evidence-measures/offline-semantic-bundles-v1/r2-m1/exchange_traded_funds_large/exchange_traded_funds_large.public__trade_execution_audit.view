@@ -1,0 +1,66 @@
+label: TradeExecutionAudit
+description: All columns of the public table TradeExecutionAudit.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: TradeExecutionAudit
+dimensions:
+  trade_execution_audit_id:
+    description: 'TEXT. Unique identifier for the execution audit record. Example: XX-1A2B3C.'
+    sql: '"TradeExecutionAudit_id"'
+  algo_participation_rate:
+    description: 'REAL. Percentage of volume executed via algos. Example: 50.0.'
+    sql: algo_participation_rate
+  audit_timestamp:
+    description: 'TIMESTAMP. Date of the audit snapshot. Example: 2024-01-01 12:00:00.'
+    sql: audit_timestamp
+  average_latency_micros:
+    description: 'INTEGER. Average order round-trip time in microseconds. Example: 500.'
+    sql: average_latency_micros
+  average_order_size:
+    description: 'INTEGER. Average shares per order. Example: 50.'
+    sql: average_order_size
+  connectivity_status:
+    description: 'TEXT. Status of the physical line. Unique values: Stable, Jitter, Down.'
+    sql: connectivity_status
+  exchange_ref:
+    description: 'INTEGER. Reference to the exchange or venue. Example: 50.'
+    sql: exchange_ref
+  execution_venue_type:
+    description: 'TEXT. Type of venue. Unique values: Lit, Dark, Periodic.'
+    sql: execution_venue_type
+  market_impact_estimate:
+    description: 'REAL. Estimated price movement caused by trading. Example: 3.0.'
+    sql: market_impact_estimate
+  order_fill_rate:
+    description: 'REAL. Percentage of orders successfully filled. Example: 50.0.'
+    sql: order_fill_rate
+  price_reversion_1min_bps:
+    description: 'REAL. Price reversion 1 minute after trade. Example: 0.0.'
+    sql: price_reversion_1min_bps
+  protocol_type_code:
+    description: 'TEXT. Connection protocol used. Unique values: FIX4.2, FIX4.4, BINARY, REST.'
+    sql: protocol_type_code
+  quote_to_trade_ratio:
+    description: 'REAL. Ratio of quotes updates to trades. Example: 50.0.'
+    sql: quote_to_trade_ratio
+  rejection_rate_pct:
+    description: 'REAL. Percentage of orders rejected by venue. Example: 50.0.'
+    sql: rejection_rate_pct
+  slippage_bps:
+    description: 'REAL. Difference between expected and executed price. Example: 2.0.'
+    sql: slippage_bps
+  spread_capture_avg:
+    description: 'REAL. Average spread captured in execution. Example: 0.01.'
+    sql: spread_capture_avg
+  total_volume_audit:
+    description: 'INTEGER. Total volume analyzed in this audit window. Example: 50.'
+    sql: total_volume_audit
+  toxicity_score:
+    description: 'REAL. Measure of toxic flow interaction. Example: 50.0.'
+    sql: toxicity_score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TradeExecutionAudit public identity values.
+    label: TradeExecutionAudit Count
+    sql: ${exchange_traded_funds_large_public__trade_execution_audit.trade_execution_audit_id}

@@ -1,0 +1,7 @@
+base_view: sports_events_large_public__staff_directory
+label: staff_directory
+description: All columns of the public table staff_directory.
+fields:
+- sports_events_large_public__staff_directory.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,36 @@
+label: simulation_models
+description: All columns of the public table simulation_models.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: simulation_models
+dimensions:
+  botdetreg:
+    description: 'TEXT. The registration code of the robot being simulated. FK. Example: RB8530.'
+    sql: botdetreg
+  creation_date:
+    description: 'TEXT. The date the model was created, formatted as Month DD, YYYY. Example: January 15, 2023.'
+    sql: creation_date
+  description:
+    description: 'TEXT. A brief description of the model''s purpose. **NULL indicates no detailed description was provided.**. Example: Digital twin of the WC-101 cell for simulating the automotive door assembly process..'
+    sql: description
+  model_code:
+    description: 'TEXT. Unique identifier for the simulation model. PK. Example: SIM-RB8530-01.'
+    sql: model_code
+  model_name:
+    description: 'TEXT. A human-readable name for the simulation model. Example: WC-101 Assembly Process.'
+    sql: model_name
+  software_used:
+    description: 'TEXT. The software used to create and run the simulation. Possible values: CoppeliaSim, Gazebo, MSC Adams, NVIDIA Isaac Sim, Process Simulate, RoboDK, RobotStudio.'
+    sql: software_used
+  validation_accuracy:
+    description: 'TEXT. The accuracy of the simulation model compared to the real world, as a percentage. **NULL indicates the model has not yet been validated.**. Example: 98.5%.'
+    sql: validation_accuracy
+  version:
+    description: 'TEXT. The version of the simulation model. Example: 1.0.'
+    sql: version
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct simulation_models public identity values.
+    label: simulation_models Count
+    sql: ${robot_fault_prediction_large_public__simulation_models.model_code}

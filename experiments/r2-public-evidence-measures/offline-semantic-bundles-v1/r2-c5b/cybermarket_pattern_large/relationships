@@ -1,0 +1,318 @@
+- join_from_view: cybermarket_pattern_large_public__vendor_profile_details
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_profile_details.seller_key} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_compliance_audits
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_compliance_audits.seller_ref} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_payment_methods
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_payment_methods.vendor_link} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_insurance_policies
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_insurance_policies.seller_key} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_inventory_snapshot
+  join_to_view: cybermarket_pattern_large_public__vendor_performance_metrics
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_inventory_snapshot.vendor_metrics_ref} = ${cybermarket_pattern_large_public__vendor_performance_metrics.vpm_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_countries
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_countries.seller_key} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_insurance_claims
+  join_to_view: cybermarket_pattern_large_public__vendor_insurance_policies
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_insurance_claims.ins_policy_ref} = ${cybermarket_pattern_large_public__vendor_insurance_policies.ins_policy_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__buyer_loyalty_program
+  join_to_view: cybermarket_pattern_large_public__buyer_session_analytics
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__buyer_loyalty_program.session_analytics_ref} = ${cybermarket_pattern_large_public__buyer_session_analytics.bsa_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__risk_model_predictions
+  join_to_view: cybermarket_pattern_large_public__risk_analytics
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__risk_model_predictions.txn_link_ref} = ${cybermarket_pattern_large_public__risk_analytics.txn_link}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__connection_attack_surface
+  join_to_view: cybermarket_pattern_large_public__connection_security
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__connection_attack_surface.txnpointer} = ${cybermarket_pattern_large_public__connection_security.txn_pointer}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__risk_model_calibration
+  join_to_view: cybermarket_pattern_large_public__risk_model_predictions
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__risk_model_calibration.prediction_ref} = ${cybermarket_pattern_large_public__risk_model_predictions.rmp_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__payment_fraud_indicators
+  join_to_view: cybermarket_pattern_large_public__payment_processing_events
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__payment_fraud_indicators.payment_event_ref} = ${cybermarket_pattern_large_public__payment_processing_events.ppe_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_markets
+  join_to_view: cybermarket_pattern_large_public__markets
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_markets.platform_id} = ${cybermarket_pattern_large_public__markets.plat_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__buyer_purchase_patterns
+  join_to_view: cybermarket_pattern_large_public__buyer_session_analytics
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__buyer_purchase_patterns.session_ref} = ${cybermarket_pattern_large_public__buyer_session_analytics.bsa_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_social_media
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_social_media.seller_key} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__dispute_arbitration_details
+  join_to_view: cybermarket_pattern_large_public__transaction_dispute_details
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__dispute_arbitration_details.dispute_ref} = ${cybermarket_pattern_large_public__transaction_dispute_details.tdd_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__market_regulatory_audits
+  join_to_view: cybermarket_pattern_large_public__markets
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__market_regulatory_audits.platcode} = ${cybermarket_pattern_large_public__markets.plat_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__alert_response_workflow
+  join_to_view: cybermarket_pattern_large_public__alert_escalation_history
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__alert_response_workflow.escalation_ref} = ${cybermarket_pattern_large_public__alert_escalation_history.aeh_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__platform_incident_reports
+  join_to_view: cybermarket_pattern_large_public__markets
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__platform_incident_reports.platform_ref} = ${cybermarket_pattern_large_public__markets.plat_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__transaction_dispute_details
+  join_to_view: cybermarket_pattern_large_public__transactions
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__transaction_dispute_details.event_ref} = ${cybermarket_pattern_large_public__transactions.event_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__platform_policy_documents
+  join_to_view: cybermarket_pattern_large_public__markets
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__platform_policy_documents.platcode} = ${cybermarket_pattern_large_public__markets.plat_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__alert_case_actions
+  join_to_view: cybermarket_pattern_large_public__alerts
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__alert_case_actions.eventtag} = ${cybermarket_pattern_large_public__alerts.event_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__connection_security
+  join_to_view: cybermarket_pattern_large_public__transactions
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__connection_security.txn_pointer} = ${cybermarket_pattern_large_public__transactions.event_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__transaction_settlement_info
+  join_to_view: cybermarket_pattern_large_public__transactions
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__transaction_settlement_info.eventcode} = ${cybermarket_pattern_large_public__transactions.event_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__product_review_tag_map
+  join_to_view: cybermarket_pattern_large_public__tag_library
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__product_review_tag_map.tag_key} = ${cybermarket_pattern_large_public__tag_library.tag_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__communications
+  join_to_view: cybermarket_pattern_large_public__transactions
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__communications.event_link} = ${cybermarket_pattern_large_public__transactions.event_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__buyer_risk_history
+  join_to_view: cybermarket_pattern_large_public__buyers
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__buyer_risk_history.acqcode} = ${cybermarket_pattern_large_public__buyers.acq_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__insurance_claim_evidence
+  join_to_view: cybermarket_pattern_large_public__vendor_insurance_claims
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__insurance_claim_evidence.claim_ref} = ${cybermarket_pattern_large_public__vendor_insurance_claims.claim_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__risk_ml_feature_vectors
+  join_to_view: cybermarket_pattern_large_public__risk_analytics
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__risk_ml_feature_vectors.txn_link} = ${cybermarket_pattern_large_public__risk_analytics.txn_link}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__platform_availability_snapshots
+  join_to_view: cybermarket_pattern_large_public__markets
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__platform_availability_snapshots.plat_code} = ${cybermarket_pattern_large_public__markets.plat_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__market_traffic_analytics
+  join_to_view: cybermarket_pattern_large_public__markets
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__market_traffic_analytics.platcode} = ${cybermarket_pattern_large_public__markets.plat_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_regulatory_licenses
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_regulatory_licenses.seller_key} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__market_competitor_analysis
+  join_to_view: cybermarket_pattern_large_public__markets
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__market_competitor_analysis.platform_ref} = ${cybermarket_pattern_large_public__markets.plat_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__market_trend_analysis
+  join_to_view: cybermarket_pattern_large_public__market_competitor_analysis
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__market_trend_analysis.competitor_analysis_ref} = ${cybermarket_pattern_large_public__market_competitor_analysis.mca_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__alerts
+  join_to_view: cybermarket_pattern_large_public__transactions
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__alerts.event_tag} = ${cybermarket_pattern_large_public__transactions.event_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__buyer_session_analytics
+  join_to_view: cybermarket_pattern_large_public__buyers
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__buyer_session_analytics.acq_ref} = ${cybermarket_pattern_large_public__buyers.acq_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__transactions
+  join_to_view: cybermarket_pattern_large_public__markets
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__transactions.platform_key} = ${cybermarket_pattern_large_public__markets.plat_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_compliance_documents
+  join_to_view: cybermarket_pattern_large_public__vendor_compliance_audits
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_compliance_documents.compliance_audit_ref} = ${cybermarket_pattern_large_public__vendor_compliance_audits.vca_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__payment_processing_events
+  join_to_view: cybermarket_pattern_large_public__transactions
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__payment_processing_events.transaction_ref} = ${cybermarket_pattern_large_public__transactions.event_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_insurance_claims
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_insurance_claims.seller_key} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__transaction_products
+  join_to_view: cybermarket_pattern_large_public__transactions
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__transaction_products.event_link} = ${cybermarket_pattern_large_public__transactions.event_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__products
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__products.seller_pointer} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_markets
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_markets.vendor_key} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_financial_history
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_financial_history.sellerkey} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__transactions
+  join_to_view: cybermarket_pattern_large_public__buyers
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__transactions.acq_link} = ${cybermarket_pattern_large_public__buyers.acq_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__alert_escalation_history
+  join_to_view: cybermarket_pattern_large_public__alerts
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__alert_escalation_history.alert_ref} = ${cybermarket_pattern_large_public__alerts.event_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__product_review_tag_map
+  join_to_view: cybermarket_pattern_large_public__product_review_feedback
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__product_review_tag_map.review_ref} = ${cybermarket_pattern_large_public__product_review_feedback.review_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__platform_service_health
+  join_to_view: cybermarket_pattern_large_public__platform_incident_reports
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__platform_service_health.incident_report_ref} = ${cybermarket_pattern_large_public__platform_incident_reports.pir_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__buyer_device_fingerprints
+  join_to_view: cybermarket_pattern_large_public__buyers
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__buyer_device_fingerprints.acq_code} = ${cybermarket_pattern_large_public__buyers.acq_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_shipment_tracking
+  join_to_view: cybermarket_pattern_large_public__vendor_performance_metrics
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_shipment_tracking.vendor_perf_ref} = ${cybermarket_pattern_large_public__vendor_performance_metrics.vpm_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__risk_analytics
+  join_to_view: cybermarket_pattern_large_public__transactions
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__risk_analytics.txn_link} = ${cybermarket_pattern_large_public__transactions.event_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__transactions
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__transactions.vendor_link} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cybermarket_pattern_large_public__vendor_performance_metrics
+  join_to_view: cybermarket_pattern_large_public__vendors
+  join_type: always_left
+  on_sql: ${cybermarket_pattern_large_public__vendor_performance_metrics.seller_ref} = ${cybermarket_pattern_large_public__vendors.seller_key}
+  relationship_type: many_to_one
+  reversible: false

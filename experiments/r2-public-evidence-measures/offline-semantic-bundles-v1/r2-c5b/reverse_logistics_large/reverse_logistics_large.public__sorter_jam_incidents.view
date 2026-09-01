@@ -1,0 +1,60 @@
+label: sorter_jam_incidents
+description: All columns of the public table sorter_jam_incidents.
+catalog: reverse_logistics_large
+schema: public
+table_name: sorter_jam_incidents
+dimensions:
+  clearance_timestamp:
+    description: 'TIMESTAMP. When the jam was cleared. Example: 2024-01-01 12:00:00.'
+    sql: clearance_timestamp
+  cleared_by_user:
+    description: TEXT. User ID who cleared the jam.
+    sql: cleared_by_user
+  damage_sustained_flag:
+    description: BOOLEAN. Did the jam cause damage to packages?.
+    sql: damage_sustained_flag
+  detection_timestamp:
+    description: 'TIMESTAMP. When the jam was detected. Example: 2024-01-01 12:00:00.'
+    sql: detection_timestamp
+  downtime_duration_sec:
+    description: 'INTEGER. Total seconds the line was stopped. Example: 50.'
+    sql: downtime_duration_sec
+  incident_severity_code:
+    description: 'INTEGER. Severity 1-4 (1=Minor, 4=Major Stop). Example: 50.'
+    sql: incident_severity_code
+  jam_incident_id:
+    description: TEXT. Unique identifier for the jam incident.
+    sql: jam_incident_id
+  jam_location_code:
+    description: TEXT. Exact location on the line (e.g., Curve 3).
+    sql: jam_location_code
+  machine_age_years:
+    description: 'REAL. Age of the machine component involved. Example: 50.0.'
+    sql: machine_age_years
+  packages_affected_count:
+    description: 'INTEGER. Number of packages involved in the pile-up. Example: 50.'
+    sql: packages_affected_count
+  photo_evidence_link:
+    description: TEXT. Camera capture of the jam.
+    sql: photo_evidence_link
+  preventive_action_logged:
+    description: 'TEXT. Action taken to prevent recurrence. Unique values: Cleaned Sensor, Adjusted Guide, None, Speed Reduced.'
+    sql: preventive_action_logged
+  related_sort_event:
+    description: TEXT. Reference to the sort event where jam occurred.
+    sql: related_sort_event
+  restart_attempts_count:
+    description: 'INTEGER. Number of restart attempts before success. Example: 50.'
+    sql: restart_attempts_count
+  root_cause_prediction:
+    description: 'TEXT. AI predicted cause (e.g., Polybag Catch). Unique values: Polybag Catch, Overweight, Sensor Dirty, Belt Slip.'
+    sql: root_cause_prediction
+  sensor_reading_at_jam:
+    description: 'REAL. Motor torque/current spike value. Example: 8.5.'
+    sql: sensor_reading_at_jam
+  shift_identifier:
+    description: 'TEXT. Shift working during the jam. Unique values: Morning, Afternoon, Night.'
+    sql: shift_identifier
+  technician_intervention_req:
+    description: BOOLEAN. Did a human tech have to fix it?.
+    sql: technician_intervention_req

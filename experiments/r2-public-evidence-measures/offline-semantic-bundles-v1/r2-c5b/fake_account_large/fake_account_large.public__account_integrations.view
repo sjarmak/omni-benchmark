@@ -1,0 +1,105 @@
+label: account_integrations
+description: All columns of the public table account_integrations.
+catalog: fake_account_large
+schema: public
+table_name: account_integrations
+dimensions:
+  auth_ts:
+    description: 'TIMESTAMPTZ. Initial authorisation. Example: 2024/05/02 12:11:03.'
+    sql: '"AUTH_TS"'
+  call_cnt_month:
+    description: 'BIGINT. Calls in past 30 d. Example: 42 119.'
+    sql: '"CALL_CNT_MONTH"'
+  err_rate:
+    description: 'REAL. Error rate (0–1). Example: 0.0191.'
+    sql: '"ERR_RATE"'
+  int_rank:
+    description: 'REAL. Rank among integrations. Example: 184.'
+    sql: '"INT_RANK"'
+  notes:
+    description: TEXT. Analyst notes.
+    sql: '"NOTES"'
+  quota_pct_month:
+    description: 'REAL. % monthly quota used. Example: 0.18.'
+    sql: '"QuotaPctMonth"'
+  acct_ref:
+    description: TEXT. FK → accounts.acct_ref. Part of PK.
+    sql: acct_ref
+  audit_flag:
+    description: TEXT. Yes/No — under security audit.
+    sql: '"auditFlag"'
+  audit_ts:
+    description: TIMESTAMPTZ. Last audit time. **NULL when never audited.**
+    sql: '"auditTs"'
+  auth_actor:
+    description: 'TEXT. User or service that performed auth. Example: USR604501.'
+    sql: '"authActor"'
+  auth_status:
+    description: 'TEXT. Current auth state. Values: Authorized, Deauthorized, Pending.'
+    sql: '"authStatus"'
+  call_cnt_day:
+    description: 'BIGINT. Calls in the past 24 h. Example: 1 298.'
+    sql: '"callCntDay"'
+  deauth_ts:
+    description: TIMESTAMPTZ. De-authorisation time. **NULL if still authorised.**
+    sql: '"deauthTs"'
+  disable_ts:
+    description: TIMESTAMPTZ. Disable timestamp. **NULL when never disabled.**
+    sql: '"disableTs"'
+  disabled_flag:
+    description: TEXT. Yes/No — integration disabled.
+    sql: '"disabledFlag"'
+  event_sub_count:
+    description: 'BIGINT. Active webhook subscriptions. Example: 4.'
+    sql: '"eventSubCount"'
+  fail_cnt:
+    description: 'BIGINT. Failures today. Example: 1.'
+    sql: '"failCnt"'
+  int_score:
+    description: 'REAL. Integration health score (0–100). Example: 78.9.'
+    sql: '"intScore"'
+  last_call_ts:
+    description: TIMESTAMPTZ. Timestamp of last API call.
+    sql: '"lastCallTs"'
+  last_refresh_ts:
+    description: 'TIMESTAMPTZ. Last refresh. Example: 2024/08/09 04:01:51.'
+    sql: '"lastRefreshTs"'
+  last_webhook_ts:
+    description: TIMESTAMPTZ. Last webhook received. **NULL when no events yet.**
+    sql: '"lastWebhookTs"'
+  latency_avg_ms:
+    description: 'BIGINT. Average call latency (ms). Example: 277.'
+    sql: '"latencyAvgMs"'
+  partner_code_ref:
+    description: TEXT. FK → partner_integrations.Partner_CODE. Part of PK.
+    sql: partner_code_ref
+  perm_level:
+    description: 'TEXT. Permission tier. Values: Read, Write, Admin.'
+    sql: '"permLevel"'
+  quota_pct_day:
+    description: 'REAL. % of daily quota used. Example: 0.26.'
+    sql: '"quotaPctDay"'
+  quota_window:
+    description: 'TEXT. Allowed quota string. Example: 5000 calls/24 h.'
+    sql: quota_window
+  reenable_ts:
+    description: TIMESTAMPTZ. Re-enable timestamp. **NULL if still disabled / never disabled.**
+    sql: '"reenableTs"'
+  refresh_hash:
+    description: TEXT. Refresh-token hash.
+    sql: '"refreshHash"'
+  retry_cnt:
+    description: 'BIGINT. Retries attempted today. Example: 3.'
+    sql: '"retryCnt"'
+  scope_granted:
+    description: 'TEXT. OAuth scopes. Example: read,write.'
+    sql: '"scopeGranted"'
+  token_expiry:
+    description: 'TIMESTAMPTZ. Token expiration. Example: 2024/10/31 12:11:03.'
+    sql: '"tokenExpiry"'
+  token_hash:
+    description: TEXT. Access-token hash.
+    sql: '"tokenHash"'
+  webhook_url:
+    description: TEXT. Delivery URL of primary webhook.
+    sql: '"webhookUrl"'

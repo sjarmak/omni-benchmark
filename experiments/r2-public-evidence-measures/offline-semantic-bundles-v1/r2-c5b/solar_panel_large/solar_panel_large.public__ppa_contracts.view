@@ -1,0 +1,60 @@
+label: ppa_contracts
+description: All columns of the public table ppa_contracts.
+catalog: solar_panel_large
+schema: public
+table_name: ppa_contracts
+dimensions:
+  client_mgr:
+    description: 'TEXT. The name of the account manager on the client''s side. Example: Jennifer Lee.'
+    sql: '"CLIENT_MGR"'
+  contract_num:
+    description: 'TEXT. Unique identifier for a Power Purchase Agreement (PPA) contract. Example: PPA-001.'
+    sql: '"ContractNum"'
+  customer_code:
+    description: 'TEXT. FK -> clients.ClientCode. The client associated with this contract. Example: C1001.'
+    sql: '"CustomerCode"'
+  end_date:
+    description: 'DATE. The date the contract term ends. Example: 2038-02-28.'
+    sql: '"END_DATE"'
+  escalation_rate_pct:
+    description: 'REAL. The annual percentage rate at which the energy price increases. Example: 2.0% annual.'
+    sql: '"ESCALATION_RATE_PCT"'
+  last_modified:
+    description: 'TIMESTAMP. Timestamp of the last modification to the contract record. Example: 2024-05-15 09:30:00.'
+    sql: '"LAST_MODIFIED"'
+  penalty_clause:
+    description: 'TEXT. A description of the penalty for not meeting the guaranteed yield. Possible values: 95% of guaranteed yield, 95% of guaranteed yield or penalty, 96% of guaranteed yield, 97% of guaranteed yield, 97% of guaranteed yield or penalty, 98% of guaranteed yield, 98% of guaranteed yield or penalty.'
+    sql: '"PENALTY_CLAUSE"'
+  signed_date:
+    description: 'DATE. The date the contract was officially signed by all parties. Example: 2018-02-15.'
+    sql: '"SIGNED_DATE"'
+  site_ref:
+    description: 'TEXT. FK -> plants.sitekey. The solar plant associated with this contract. Example: SP9227.'
+    sql: '"SiteRef"'
+  total_value:
+    description: 'REAL. The total estimated monetary value of the contract over its term. Example: $77,274,000.00.'
+    sql: '"TOTAL_VALUE"'
+  contract_status:
+    description: 'TEXT. The current status of the contract. Possible values: Active, Expired, Negotiating.'
+    sql: '"contractStatus"'
+  document_url:
+    description: 'TEXT. A URL or file path to the scanned contract document. Example: /contracts/ppa001.pdf.'
+    sql: document_url
+  governing_law:
+    description: 'TEXT. The legal jurisdiction governing the contract. Example: State of CA.'
+    sql: '"governingLaw"'
+  guaranteed_yield_kwh_yr:
+    description: 'BIGINT. The amount of energy in kWh per year that is guaranteed to be produced. Example: 386,370,000 kWh/yr.'
+    sql: guaranteed_yield_kwh_yr
+  our_manager:
+    description: 'TEXT. The name of the internal manager responsible for the contract. Example: Mark Brown.'
+    sql: our_manager
+  start_date:
+    description: 'DATE. The date the contract term begins. Example: 2018-03-01.'
+    sql: start_date
+  term_months:
+    description: 'BIGINT. The total duration of the contract in months. Possible values: 240 months, 240 months (20 years), 300 months, 300 months (25 years), 360 months, 60 months, 60 months (5 years), 72 months, 72 months (6 years).'
+    sql: term_months
+  termination_fee:
+    description: 'REAL. The fee incurred for early termination of the contract. Example: $500,000.00.'
+    sql: termination_fee

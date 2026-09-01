@@ -732,6 +732,310 @@ action until the approved text has landed and every existing prerequisite is
 green. Once those conditions hold, D-196 is superseded only for the exact
 `R2-C5B` and `R2-M1` deployments and 272-attempt schedule described here.
 
+## Amendment: question-blind agent adjudication of the measures packet
+
+For `r2-public-evidence-measures-v1`, this amendment supersedes the requirement
+that the sole human reviewer record a row-level decision and active review time
+for every candidate. It also supersedes the corresponding claim that this series
+measures manual human review burden. No other part of the development-only
+extension is changed.
+
+The measure candidates and proposed Omni YAML remain outputs of the deterministic
+public-evidence generator. ChatGPT did not author, edit, or select the proposed
+YAML. It adjudicated the already generated packet, and the repository operator
+adopted that observed output at the artifact level without claiming to have
+personally reviewed every row.
+
+### Exact observed adjudication
+
+The adopted adjudication is the existing, question-blind ChatGPT workflow whose
+bounded provenance is
+`experiments/r2-public-evidence-measures/agent-adjudication-provenance-v1.json`.
+It records product `ChatGPT`, model `GPT-5.6 sol`, reasoning effort `High`, and
+the public shared-record URL. Its input is the frozen blank workbook with
+SHA-256
+`0e756de6661060b1ebf14abb271be86f7121e4a28b9097d97d76cdf96522955e`;
+its adopted output is
+`measure-review-workbook-v1-validated.csv` with SHA-256
+`94cabfcbcc997c99a6ef72f82b2781260203da965f73498c7133f8da8968ed9f`.
+The output contains all 812 candidate IDs exactly once, changes no immutable
+candidate cell, records 812 `accept` decisions with reason
+`public_identity_and_binding_confirmed`, and leaves both
+`active_review_seconds` and `binding_correction` blank on every row.
+
+The adjudication read the workbook's embedded public evidence and candidate
+metadata. It did not download or parse the public benchmark JSONL, inspect
+`query` or `normal_query`, iterate benchmark questions, or use protected/gold
+information, hidden annotations, dev-B, or sealed-test data. It opened the
+public Hugging Face landing page for contextual verification. It did not
+independently load or revalidate the underlying schema, column-meaning, or HKB
+files, so its acceptance decisions are packet-level adjudication, not an
+independent source audit.
+
+The recovered mechanical rule accepts an `entity_count` candidate when the
+proposed `${view.field}` reference names the workbook view, the embedded
+`identity_kind` is `primary_key`, and the referenced field equals the suffix of
+the embedded `identity_field_stable_id` after lowercasing and removing
+non-alphanumeric characters. The first ChatGPT output used a reason outside the
+frozen enum; one correction round replaced it with
+`public_identity_and_binding_confirmed`. The adopted output must reproduce the
+recovered rule exactly. This rule and the all-accept result describe the observed
+workflow; they are not a general claim about review accuracy or domain authority.
+
+### Provenance, validation, and freeze
+
+Before the decisions can materialize, a new append-only approval record must
+bind this exact amendment SHA-256 and Git blob plus the canonical provenance
+artifact SHA-256. The agent-adjudication validator
+must also authenticate the original approved protocol and approval record, the
+catalog, blank workbook, adopted output workbook, normalized transcript extract,
+and canonical provenance artifact by exact hashes. It rejects missing,
+duplicate, or extra candidates; any immutable-cell change; a decision that does
+not reproduce the recovered rule; a nonblank time or correction cell; altered
+information-boundary metadata; noncanonical provenance; or a mismatched approval
+chain.
+
+The materialized decision artifact records `active_review_seconds: null`, not
+zero, at both row and summary level and uses status `agent_adjudicated`. It
+preserves every decision and reason, the recovered rule, the adjudicator
+identity, the source and output hashes, the bounded transcript hash, and both
+protocol approvals. The original human-review validator and its finite-time
+requirement remain unchanged for any genuinely human-review artifact.
+
+The decision artifact and accepted catalog freeze before any dev-A question or
+question-coverage statistic is inspected. Only after that freeze may the
+separate analysis-only question-to-measure opportunity map begin. If validation
+or the approval chain fails, the adjudication is not partially accepted and the
+series remains stopped.
+
+### Narrow workflow-burden report
+
+The adjudication workflow is observational and was not preregistered as an agent
+comparison. Report only the facts recoverable from the shared record: an elapsed
+wall-clock envelope of `617.642452` seconds, two substantive user instruction
+messages, seven assistant text messages, 42 assistant tool-call messages, and
+one correction round. Human active time, token usage, and monetary cost are
+unavailable and must be reported as null, never zero. No comparison to manual
+labor, time saved, or authoring efficiency is permitted.
+
+This workflow does not evaluate Omni's Modeling Agent. That remains a separate,
+future Sandbox-only authoring comparator using public inputs, with query-history
+analysis prohibited. It cannot alter the adopted R2 catalog or contribute to
+the primary semantic-replacement claim.
+
+### Unchanged limits
+
+The primary estimand remains verified semantic replacement caused by adding the
+frozen measures to `R2-M1` relative to contemporaneous `R2-C5B`. Accuracy,
+reliability, and cost remain secondary. The strongest supported claim remains
+limited to governed reuse of this deterministically generated,
+agent-adjudicated public-evidence catalog on the dev-A frame. The series cannot
+establish domain correctness, independent review accuracy, manual modeling
+burden, customer-wide value, held-out generalization, or Omni Modeling Agent
+quality.
+
+D-196, the requirement that approved protocol text be committed before live
+control-plane use, full-source cleanup, credential ownership, action-specific
+receipts, budget preflights, exact deployment readback, append-only evidence,
+and the no-wrong-answer-rerun rule all remain in force. This amendment authorizes
+no dev-B or sealed-test access and no live action by itself.
+
+## Amendment: outcome-blind agent adjudication of the measure-opportunity packet
+
+For `r2-public-evidence-measures-v1`, this amendment supersedes the requirement
+that the separate 136-row public dev-A question-to-measure opportunity pass be
+performed as manual human review with finite row-level active review seconds. It
+also supersedes the corresponding requirement to report human opportunity-map
+review time. No other part of the development-only extension or the prior
+question-blind catalog-adjudication amendment is changed.
+
+The opportunity decisions are agent-adjudicated and may be adopted by the
+repository operator at the artifact level. They must not be described as human
+review, independent validation, domain-expert judgment, or evidence of manual
+review burden. Human active time, agent active time, token use, and monetary cost
+are unavailable unless directly evidenced; unavailable values are reported as
+null, never zero.
+
+### Exact prospective adjudication contract
+
+The only adjudication input is
+`experiments/r2-public-evidence-measures/measure-opportunity-review-workbook-v1.csv`,
+SHA-256
+`5412b1b815df9cf0ca00b4fc673df2c8ca71ff1559cbb05bed0d4b6fa240d6ec`.
+It contains exactly 136 public dev-A `query` values and, for each question, the
+complete same-database option list from the already frozen accepted catalog,
+whose SHA-256 is
+`2d2f9c15bc5f5271db924fa4377b41c26a0e61bcec221ed31d10b3365358039a`.
+The adjudication is run in a fresh ChatGPT conversation using model `GPT-5.6
+sol` at reasoning effort `High` under the exact instructions in
+`experiments/r2-public-evidence-measures/measure-opportunity-agent-adjudication-instructions-v1.md`,
+SHA-256
+`0a7e8a114be05a6369d811bcf245836a5c86dead112601db0dba3efcb3169e67`.
+
+The adjudicator may use local data-analysis tools to read, write, and validate
+the workbook. It may use no other input: no web browsing, dataset landing page,
+benchmark JSONL, repository file, accepted-catalog file, `normal_query`, SQL,
+gold or expected result, correctness, generated answer, hidden annotation,
+dev-B data, sealed-test data, or prior run outcome. The public `query` cells in
+the workbook are allowed only for this analysis-only mapping pass. The pass
+occurs after accepted-catalog freeze and before either arm, and its decisions
+cannot alter the catalog, semantic bundles, prompts, job bodies, or runtime.
+
+For every row the adjudicator records exactly one decision from `mapped`,
+`none`, or `ambiguous` and a sorted, unique JSON array containing only measure
+IDs present in that row's frozen eligible-option list. `mapped` requires at
+least one selected measure; `none` requires an empty array; `ambiguous` may
+retain zero or more plausible options. A measure is mapped only when its
+distinct-entity count can supply an aggregate explicitly or necessarily
+requested by the public question. Measures are not mapped merely because their
+entities occur as filters, groups, joins, subjects, or descriptive dimensions.
+The adjudicator leaves `active_review_seconds` blank on every row and changes no
+other cell.
+
+### Output adoption, validation, and freeze
+
+The adjudication output has no authority merely because the model produced it.
+Before materialization, a canonical provenance artifact must bind the product,
+model, reasoning effort, exact instruction and input hashes, exact output hash,
+available session evidence, and explicit information-boundary attestations. The
+repository operator must then approve and adopt that exact output by SHA-256 in
+a new append-only approval record. A replacement or corrected output requires a
+new hash and a new adoption; approval is never inferred from a filename.
+
+An agent-adjudication validator must authenticate this amendment and its
+approval, the instruction file, the frozen accepted catalog, the deterministic
+blank workbook, the observed output, the canonical provenance artifact, and the
+output-adoption record by exact hashes. It rejects a missing, duplicate, extra,
+or reordered row; any changed immutable cell; a decision outside the frozen
+enum; a selected measure not present in that row's same-database options;
+unsorted or duplicate IDs; `mapped` without an ID; `none` with an ID; a nonblank
+active-time cell; noncanonical provenance; or a mismatched approval chain. The
+existing finite-time human-review validator remains unchanged for genuinely
+human opportunity reviews.
+
+The materialized, question-text-free opportunity artifact records adjudication
+status `agent_adjudicated` and `active_review_seconds: null` at row and summary
+level. It binds the adjudicator, instructions, input, output, provenance, and
+both approval stages. It preserves every decision and selected measure ID but
+contains no question text or eligible-option payload. Only a fully validated
+and adopted artifact may freeze the opportunity set; partial acceptance and
+agent-side repair by the benchmark harness are prohibited.
+
+### Reporting and unchanged inference limits
+
+The primary opportunity set remains the rows decided `mapped`, frozen before
+either evaluated arm. Report the complete 136-row distribution of `mapped`,
+`none`, and `ambiguous`, selected-measure counts, and all available workflow
+provenance. The opportunity map is an outcome-blind semantic classification by
+one specified agent workflow, not an estimate of human agreement or domain
+authority. Ambiguous rows remain outside the primary opportunity denominator
+and are disclosed; no decision may be changed after outcomes are observed.
+
+The primary estimand remains verified semantic replacement caused by adding the
+frozen accepted measures to `R2-M1` relative to contemporaneous `R2-C5B`.
+Accuracy, reliability, and cost remain secondary. The strongest supported claim
+is limited to governed reuse of the deterministically generated,
+agent-adjudicated catalog on the opportunity set classified by this separately
+specified, outcome-blind agent workflow. The series cannot establish catalog
+domain correctness, opportunity-map human agreement, manual modeling burden,
+customer-wide value, held-out generalization, Omni Modeling Agent quality, or a
+causal effect outside the paired conditions as deployed.
+
+D-196, Git landing of all approved protocol text, full-source cleanup,
+credential ownership, action-specific receipts, budget preflights, exact
+deployment readback, append-only evidence, and the no-wrong-answer-rerun rule
+all remain in force. This amendment authorizes no dev-B or sealed-test access
+and no deployment or evaluated action by itself.
+
+## Amendment: exact observed measure-opportunity adjudication
+
+For the single artifact identified below, this amendment supersedes only the
+prospective timing, exact-model, and exposed-reasoning clauses in the prior
+outcome-blind opportunity-adjudication amendment. It does not change the frozen
+workbook, decision semantics, accepted catalog, primary estimand, runtime arms,
+settings, scoring, custody, budgets, receipts, or retry rules.
+
+### Observed workflow and bounded provenance
+
+The observed adjudication output is
+`experiments/r2-public-evidence-measures/measure-opportunity-review-workbook-v1-agent-adjudicated.csv`,
+SHA-256
+`4fa3efe45034ca3115179ce4f682fb5a64d211d77429dc9680d22900fc94540a`.
+It was produced before the repository operator approved the prospective
+opportunity-adjudication amendment. The operator-supplied agent report identifies
+the product as `ChatGPT Work`, the interface as `Codex`, and only the model
+family as `GPT-5`; the exact model was not exposed. Reasoning effort was
+runtime-managed and not exposed. These unavailable identity fields must remain
+null or explicitly unavailable and must not be rewritten as `GPT-5.6 sol` or
+`High`.
+
+The canonical bounded provenance artifact is
+`experiments/r2-public-evidence-measures/measure-opportunity-agent-adjudication-provenance-v1.json`,
+external SHA-256
+`13874ce7ef018f7ee0c15f495e9a2bc84093cd7e6e8c6917fc12d309ae0a8dde`
+and internal artifact SHA-256
+`eff575b097414039651758f299486f2908c347940ebc3d60cb0a1ba71985623e`.
+It records the actual identity limits, source and output hashes, agent-reported
+information boundary and tools, decision counts, mechanical validation, and
+limitations. No shared transcript, session timestamps, token count, monetary
+cost, or active review duration is available. Exact delivery of the instruction
+text is not independently authenticated, although the output mechanically
+conforms to its field-level contract.
+
+According to the supplied agent report, the attached CSV was the only data file.
+Local Python was used for CSV and JSON parsing, file generation, validation, and
+SHA-256 calculation. No web browsing or external file was accessed. No SQL,
+gold answer, correctness data, hidden annotation, dev-B data, sealed-test data,
+or prior run outcome was accessed. The workbook's public dev-A `query` cells
+were necessarily inspected for the mapping task. This is an operator-supplied
+provenance statement, not an independently replayed session audit.
+
+### Mechanical result and exact adoption
+
+Independent repository-side validation authenticates all 136 source rows in
+their original order, every immutable cell, the decision enum, same-row measure
+membership, sorted unique IDs, and blank active-time cells. The output contains
+45 `mapped`, 90 `none`, and one `ambiguous` decision, with 51 selected measure
+assignments. The ambiguous row is instance `cross_border_17` with three
+plausible measure IDs. Mechanical validation does not independently re-adjudicate
+the semantic choices or establish human or domain-expert agreement.
+
+Approval of this exact amendment proposal also adopts the exact output SHA-256
+above at the artifact level. The repository must materialize two append-only
+records from that approval: one binding this corrective amendment and one
+binding the adopted output, canonical provenance, frozen source workbook,
+instruction contract, and prior prospective-amendment approval. Neither record
+may claim the run was prospective or performed by the model configuration named
+in the superseded clause.
+
+Only after both approval records authenticate may the agent-specific validator
+materialize the question-text-free opportunity map. It records adjudication
+status `agent_adjudicated`, exact model `null`, reasoning effort `null`, and
+`active_review_seconds: null` at row and summary level. It binds this output and
+provenance by hash and preserves the original 45/90/1 decisions without repair.
+Any changed or replacement workbook requires a new proposal and adoption.
+
+### Interpretation and unchanged gates
+
+The primary opportunity set is the 45 rows decided `mapped`; the one ambiguous
+row remains outside the primary denominator and is disclosed. The map is a
+pre-outcome semantic classification by one observed agent workflow whose exact
+model and reasoning setting are unavailable. It is reproducible as a frozen
+artifact, not as a fully reproducible model invocation, and it is not evidence
+of human agreement, domain correctness, manual review effort, or the quality of
+Omni's Modeling Agent.
+
+The primary estimand remains verified semantic replacement caused by adding the
+frozen accepted measures to `R2-M1` relative to contemporaneous `R2-C5B`.
+Accuracy, reliability, and cost remain secondary. No decision may change after
+arm outcomes are observed.
+
+D-196, Git landing of all approved protocol text, full-source cleanup,
+credential ownership, action-specific receipts, budget preflights, exact
+deployment readback, append-only evidence, and the no-wrong-answer-rerun rule
+all remain in force. This amendment authorizes no dev-B or sealed-test access
+and no deployment or evaluated action by itself.
+
 ## Provenance
 
 Public dataset: <https://huggingface.co/datasets/birdsql/livesqlbench-large-v1>

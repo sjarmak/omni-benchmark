@@ -1,0 +1,66 @@
+label: OperationCore
+description: All columns of the public table OperationCore.
+catalog: disaster_relief_large
+schema: public
+table_name: OperationCore
+dimensions:
+  area_covered_km2:
+    description: 'VARCHAR(100). Geographic area under operational responsibility in square kilometers. Example: "537".'
+    sql: '"areaCoveredKm2"'
+  beneficiaries_served:
+    description: 'VARCHAR(100). Count of individuals receiving direct assistance through operation. Example: "537".'
+    sql: '"beneficiariesServed"'
+  budget_allotment_usd:
+    description: 'VARCHAR(100). Total financial allocation for operation in USD. Example: "877".'
+    sql: '"budgetAllotmentUSD"'
+  coordination_center:
+    description: 'VARCHAR(100). Physical or virtual location of command operations. Example: "3Ru3kQWm2F".'
+    sql: '"coordinationCenter"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 6114.'
+    sql: '"disasterEventId"'
+  emergency_level:
+    description: 'VARCHAR(100). Crisis severity classification (Level1|Level2|Level3|Level4|Level5). Possible values: "Level1", "Level2", "Level3", "Level4", "Level5".'
+    sql: '"emergencyLevel"'
+  estimated_duration_days:
+    description: 'VARCHAR(100). Projected operational timeline in days. Example: "KCQWCE8DI9".'
+    sql: '"estimatedDurationDays"'
+  funds_utilization_pct:
+    description: 'VARCHAR(100). Percentage of allocated budget expended (0-100). Example: "877".'
+    sql: '"fundsUtilizationPct"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for rescue operation records. Example: 1.'
+    sql: id
+  notes:
+    description: 'VARCHAR(100). Additional operational context or commander notes. Example: "A comfort zone is a beautiful place, but nothing ever grows there. The Information                  ".'
+    sql: notes
+  operation_name:
+    description: 'VARCHAR(100). Official designation or title of rescue operation. Example: "Arimura Tsubasa".'
+    sql: '"operationName"'
+  operation_status:
+    description: 'VARCHAR(100). Execution status (Planning|Active|Standby|Completed|Suspended|Cancelled). Possible values: "Active", "Cancelled", "Completed", "Planning", "Standby", "Suspended".'
+    sql: '"operationStatus"'
+  opsregistry_ref:
+    description: 'VARCHAR(100). Logical reference to operation registry identifier (operations.opsregistry). Example: "eIMUA6co60".'
+    sql: '"opsregistryRef"'
+  personnel_deployed:
+    description: 'VARCHAR(100). Count of personnel actively engaged in operation. Example: "537".'
+    sql: '"personnelDeployed"'
+  priority_rank:
+    description: 'VARCHAR(100). Strategic importance classification (Critical|High|Medium|Low|Deferred). Possible values: "Critical", "Deferred", "High", "Low", "Medium".'
+    sql: '"priorityRank"'
+  resource_allocation_status:
+    description: 'VARCHAR(100). Resource provisioning status (FullyAllocated|PartiallyAllocated|Pending|Insufficient|OverAllocated). Possible values: "FullyAllocated", "Insufficient", "OverAllocated", "PartiallyAllocated", "Pending".'
+    sql: '"resourceAllocationStatus"'
+  response_phase:
+    description: 'VARCHAR(100). Current operational phase (InitialResponse|Stabilization|Recovery|Reconstruction|Transition). Possible values: "InitialResponse", "Reconstruction", "Recovery", "Stabilization", "Transition".'
+    sql: '"responsePhase"'
+  start_date:
+    description: 'VARCHAR(100). Official commencement date of operation. Example: "2013-01-13".'
+    sql: '"startDate"'
+  supply_flow_status:
+    description: 'VARCHAR(100). Logistics pipeline status (Optimal|Adequate|Constrained|Critical|Stopped). Possible values: "Adequate", "Constrained", "Critical", "Optimal", "Stopped".'
+    sql: '"supplyFlowStatus"'
+  vehicles_deployed:
+    description: 'VARCHAR(100). Count of vehicles assigned to operation. Example: "537".'
+    sql: '"vehiclesDeployed"'

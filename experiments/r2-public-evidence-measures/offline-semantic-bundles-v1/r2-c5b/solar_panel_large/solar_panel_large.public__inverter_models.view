@@ -1,0 +1,54 @@
+label: inverter_models
+description: All columns of the public table inverter_models.
+catalog: solar_panel_large
+schema: public
+table_name: inverter_models
+dimensions:
+  dimensions:
+    description: 'TEXT. The physical dimensions of the inverter in centimeters (LxWxH). Example: 70x50x30.'
+    sql: '"Dimensions"'
+  efficiency:
+    description: 'REAL. The peak or weighted efficiency percentage of the inverter. Example: 98.5.'
+    sql: '"EFFICIENCY"'
+  eol_date:
+    description: 'DATE. The End-of-Life date when the manufacturer ceases support. NULL if still active. Example: 01-Aug-32.'
+    sql: '"EOL_DATE"'
+  inverter_model_tag:
+    description: 'TEXT. Unique identifier for a specific model of inverter. Example: INV-M-A1.'
+    sql: '"InverterModelTag"'
+  max_input_voltage:
+    description: 'REAL. The maximum DC input voltage the inverter can handle. Possible values: 1000, 1100, 1500, 42, 45, 480, 500, 60, 600, 64.'
+    sql: '"MAX_INPUT_VOLTAGE"'
+  product_line:
+    description: 'TEXT. The product family or series the inverter model belongs to. Example: Synergy.'
+    sql: '"PRODUCT_LINE"'
+  vendor_code:
+    description: 'TEXT. FK -> asset_manufacturers.MfrCode. The code of the inverter''s manufacturer. Example: MFR-01.'
+    sql: '"VendorCode"'
+  warranty_years:
+    description: 'BIGINT. The standard warranty period for the inverter model in years. Possible values: 10 Years, 10-year, 12 Years, 15 Years, 25-year, 40-year.'
+    sql: '"WARRANTY_YEARS"'
+  created_ts:
+    description: 'TIMESTAMP. Timestamp when the inverter model record was created. Example: 2019-01-15 09:00:00.'
+    sql: created_ts
+  datasheet:
+    description: 'TEXT. A URL or file path to the technical datasheet. Example: /sheets/INV-M-A1.pdf.'
+    sql: datasheet
+  last_modified_ts:
+    description: 'TIMESTAMP. Timestamp of the last modification to the inverter model record. Example: 2023-10-10 10:00:00.'
+    sql: last_modified_ts
+  max_power_kw:
+    description: 'REAL. The maximum continuous power output of the inverter in kilowatts. Example: 100 kW.'
+    sql: max_power_kw
+  model_name:
+    description: 'TEXT. The specific model name or number of the inverter. Example: SE100K-US.'
+    sql: '"modelName"'
+  mppt_channels:
+    description: 'BIGINT. The number of Maximum Power Point Tracker (MPPT) channels. Possible values: 1, 10, 12, 2, 3, 4, 5, 6, 8, 9.'
+    sql: mppt_channels
+  release_date:
+    description: 'DATE. The date the inverter model was first released to the market. Example: 20-May-19.'
+    sql: '"releaseDate"'
+  weight_kg:
+    description: 'REAL. The weight of the inverter in kilograms. Example: 78.0.'
+    sql: weight_kg

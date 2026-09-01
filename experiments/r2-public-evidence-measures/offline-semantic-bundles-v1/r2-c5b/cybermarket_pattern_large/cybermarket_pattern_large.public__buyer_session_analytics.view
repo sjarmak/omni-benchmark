@@ -1,0 +1,66 @@
+label: BuyerSessionAnalytics
+description: All columns of the public table BuyerSessionAnalytics.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: BuyerSessionAnalytics
+dimensions:
+  bsa_id:
+    description: TEXT. Unique identifier for the buyer session analytics record.
+    sql: '"BSA_id"'
+  acq_ref:
+    description: TEXT. Reference to the buyer account.
+    sql: acq_ref
+  avg_time_per_page_seconds:
+    description: 'REAL. Average time spent on each page in seconds. Example: 45.'
+    sql: avg_time_per_page_seconds
+  bounce_indicator:
+    description: 'BOOLEAN. Whether session resulted in immediate bounce. Possible values: True, False.'
+    sql: bounce_indicator
+  cart_additions_count:
+    description: 'INTEGER. Number of items added to cart during session. Example: 1.'
+    sql: cart_additions_count
+  cart_removals_count:
+    description: 'INTEGER. Number of items removed from cart during session. Example: 0.'
+    sql: cart_removals_count
+  checkout_completed:
+    description: 'BOOLEAN. Whether a purchase was completed. Possible values: True, False.'
+    sql: checkout_completed
+  checkout_initiated:
+    description: 'BOOLEAN. Whether checkout process was started. Possible values: True, False.'
+    sql: checkout_initiated
+  click_through_rate:
+    description: 'REAL. Rate of clicks on interactive elements (0-1). Example: 0.15.'
+    sql: click_through_rate
+  device_category:
+    description: 'TEXT. Category of device used for the session. Unique values: Desktop, Mobile, Tablet, Smart TV, Other.'
+    sql: device_category
+  error_encounters_count:
+    description: 'INTEGER. Number of errors encountered during session. Example: 0.'
+    sql: error_encounters_count
+  geo_region:
+    description: 'TEXT. Geographic region of the session. **NULL means Geo location could not be determined.** Unique values: North America, Europe, Asia Pacific, Latin America, Middle East, Africa.'
+    sql: geo_region
+  pages_viewed_count:
+    description: 'INTEGER. Number of pages viewed during the session. Example: 8.'
+    sql: pages_viewed_count
+  products_viewed_count:
+    description: 'INTEGER. Number of product pages viewed. Example: 5.'
+    sql: products_viewed_count
+  referral_source:
+    description: 'TEXT. Source of the session referral. **NULL means Referral source not tracked.** Unique values: Direct, Search Engine, Social Media, Email Campaign, Affiliate, Paid Ad.'
+    sql: referral_source
+  scroll_depth_pct:
+    description: 'REAL. Average scroll depth as percentage of page. Example: 60.'
+    sql: scroll_depth_pct
+  search_queries_count:
+    description: 'INTEGER. Number of search queries performed. Example: 2.'
+    sql: search_queries_count
+  session_duration_seconds:
+    description: 'INTEGER. Total duration of the session in seconds. Example: 480.'
+    sql: session_duration_seconds
+  session_start_time:
+    description: 'TIMESTAMP. Timestamp when the session started. Example: 2024-01-01 12:00:00.'
+    sql: session_start_time
+  session_value_estimate:
+    description: 'REAL. Estimated monetary value of the session. Example: 15.'
+    sql: session_value_estimate

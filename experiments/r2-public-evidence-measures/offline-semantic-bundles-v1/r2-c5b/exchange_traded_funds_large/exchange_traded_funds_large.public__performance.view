@@ -1,0 +1,206 @@
+label: Fund Performance
+description: Fund performance records with row-level price-range, historical consistency, concentration, and preservation semantics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: performance
+dimensions:
+  high_52_week:
+    description: 'DECIMAL. Highest trading price reached in the past 52 weeks. Example: 30.6, 62.6, 52.17. Contains NULL when insufficient trading history exists for 52-week calculation.'
+    label: 52-Week High
+    sql: high52w
+  low_52_week:
+    description: 'DECIMAL. Lowest trading price reached in the past 52 weeks. Example: 30.6, 89.5, 24.59. Contains NULL when insufficient trading history exists for 52-week calculation.'
+    label: 52-Week Low
+    sql: low52w
+  current_price_minus_52_week_low:
+    description: 'DECIMAL. Absolute price difference between current price and 52-week low. Positive values indicate current price is above the low. Example: 2.9145, 8.22, 11.7508. Contains NULL when 52-week low data is not available or calculation cannot be performed.'
+    label: Current Price Minus 52-Week Low
+    sql: lowdelta
+  positive_return_years:
+    description: 'INTEGER. Count of calendar years with positive total returns since fund inception. Used to assess historical consistency. Example: 13, 18, 4. Contains NULL when historical annual return data is incomplete or fund is too new.'
+    label: Positive Return Years
+    sql: positiveyears
+  negative_return_years:
+    description: 'INTEGER. Count of calendar years with negative total returns since fund inception. Used to assess historical downside frequency. Example: 13, 2, 9. Contains NULL when historical annual return data is incomplete or fund is too new.'
+    label: Negative Return Years
+    sql: negativeyears
+  largest_holding_weight:
+    description: Percentage (0-1) of total assets represented by the single largest holding in the fund. Contains  NULL when holdings data is not available or not disclosed.
+    label: Largest Holding Weight
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(histstats, 'Top_Weight') AS DOUBLE PRECISION)
+  benchr10y:
+    description: 'DECIMAL. Benchmark index annualized return over 10 years, expressed as a decimal (e.g., 0.0348 = 3.48%). Used for comparing fund performance against its benchmark. Example: 0.0348, 0.0467, 0.0703. Contains NULL when benchmark does not have 10-year history or benchmark data is not available.'
+    sql: benchr10y
+  benchr1m:
+    description: 'DECIMAL. Benchmark index return over the past 1 month, expressed as a decimal. Negative values indicate losses. Example: 0.0128, -0.001, -0.0199. Contains NULL when benchmark return data is not available for the period.'
+    sql: benchr1m
+  benchr1y:
+    description: 'DECIMAL. Benchmark index return over the past 1 year, expressed as a decimal. Example: 0.0494, -0.0223, 0.1736. Contains NULL when benchmark return data is not available for the period.'
+    sql: benchr1y
+  benchr3m:
+    description: 'DECIMAL. Benchmark index return over the past 3 months, expressed as a decimal. Example: 0.032, 0.0562, -0.0519. Contains NULL when benchmark return data is not available for the period.'
+    sql: benchr3m
+  benchr3y:
+    description: 'DECIMAL. Benchmark index annualized return over 3 years, expressed as a decimal. Example: 0.0024, 0.0589, 0.1317. Contains NULL when benchmark does not have 3-year history or data is not available.'
+    sql: benchr3y
+  benchr5y:
+    description: 'DECIMAL. Benchmark index annualized return over 5 years, expressed as a decimal. Example: 0.1576, 0.032, 0.1473. Contains NULL when benchmark does not have 5-year history or data is not available.'
+    sql: benchr5y
+  benchrytd:
+    description: 'DECIMAL. Benchmark index year-to-date return, expressed as a decimal. Example: 0.0392, 0.1375, 0.1483. Contains NULL when benchmark YTD return data is not available.'
+    sql: benchrytd
+  highdelta:
+    description: 'DECIMAL. Absolute price difference between current price and 52-week high. Negative values indicate current price is below the high. Example: -2.9842, -6.348, -28.98. Contains NULL when 52-week high data is not available or calculation cannot be performed.'
+    sql: highdelta
+  highdeltapct:
+    description: 'DECIMAL. Percentage difference between current price and 52-week high, expressed as a decimal. Negative values indicate distance below the high. Example: -0.03489, -0.39683, -0.06735. Contains NULL when 52-week high data is not available.'
+    sql: highdeltapct
+  histstats:
+    description: JSONB column. Consolidates historical performance statistics including positive/negative year counts and top holdings information for fund analysis.
+    sql: histstats
+  lowdeltapct:
+    description: 'DECIMAL. Percentage difference between current price and 52-week low, expressed as a decimal. Positive values indicate distance above the low. Example: 0.28562, 0.10058, 0.15487. Contains NULL when 52-week low data is not available.'
+    sql: lowdeltapct
+  perfid:
+    description: A SERIAL primary key uniquely identifying each fund performance record.
+    sql: perfid
+  pricerange52w:
+    description: JSONB column. Groups 52-week price range data including highs, lows, deltas, and percentage changes for price movement analysis and volatility assessment.
+    sql: pricerange52w
+  productref:
+    description: Foreign key referencing funds.TickerSym, ensuring 1:1 relationship for performance data per fund.
+    sql: productref
+  r10y:
+    description: 'DECIMAL. Fund''s annualized return over 10 years, expressed as a decimal. Negative values indicate losses. Example: 0.0061, 0.0454, -0.4632. Contains NULL when the fund does not have 10-year operating history.'
+    sql: r10y
+  r1m:
+    description: 'DECIMAL. Fund''s return over the past 1 month, expressed as a decimal. Example: -0.049, 0.0805, 0.1031. Contains NULL when monthly return data is not yet calculated or fund was not trading for full month.'
+    sql: r1m
+  r1y:
+    description: 'DECIMAL. Fund''s return over the past 1 year, expressed as a decimal. Example: 0.623, 0.4885, -0.2411. Contains NULL when the fund does not have 1-year operating history.'
+    sql: r1y
+  r3m:
+    description: 'DECIMAL. Fund''s return over the past 3 months, expressed as a decimal. Example: -0.049, -0.1339, -0.1841. Contains NULL when the fund does not have 3-month operating history or data is pending.'
+    sql: r3m
+  r3y:
+    description: 'DECIMAL. Fund''s annualized return over 3 years, expressed as a decimal. Example: 0.1576, 0.1197, 0.0593. Contains NULL when the fund does not have 3-year operating history.'
+    sql: r3y
+  r5y:
+    description: 'DECIMAL. Fund''s annualized return over 5 years, expressed as a decimal. Example: 0.0454, 0.1031, 0.0854. Contains NULL when the fund does not have 5-year operating history.'
+    sql: r5y
+  rangemove:
+    description: 'DECIMAL. Absolute price range between 52-week high and low, indicating price volatility span. Example: 8.92, 107.982, 45.06. Contains NULL when insufficient trading history for 52-week range calculation.'
+    sql: rangemove
+  rangemovepct:
+    description: 'DECIMAL. Percentage price range relative to 52-week low, measuring relative volatility. Example: 0.09161, 0.17467, 0.25442. Contains NULL when insufficient trading history for calculation.'
+    sql: rangemovepct
+  reportdate:
+    description: Date when the performance data was calculated or reported (YYYY-MM-DD). Contains  NULL when report date is not available.
+    sql: reportdate
+  returnmetrics:
+    description: JSONB column. Aggregates fund performance returns across different time periods including fund and benchmark returns for comprehensive performance comparison.
+    sql: returnmetrics
+  rytd:
+    description: 'DECIMAL. Fund''s year-to-date return, expressed as a decimal. Example: 0.4286, -0.3981, 0.338. Contains NULL when YTD return data is not yet calculated or fund launched during current year.'
+    sql: rytd
+  topholdings:
+    description: TEXT. List or description of the fund's largest portfolio holdings by weight. Contains NULL when holdings data is not disclosed or fund does not report top holdings.
+    sql: topholdings
+  topweight:
+    description: DECIMAL. Combined weight percentage of top holdings in the portfolio. Contains NULL when holdings weight data is not disclosed or not applicable.
+    sql: topweight
+  histstats_negative_years:
+    description: Number of calendar years with negative returns in the fund's history, indicating volatility periods. Contains  NULL when fund has insufficient history or annual return data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(histstats, 'Negative_Years')
+  histstats_positive_years:
+    description: Number of calendar years with positive returns in the fund's history, indicating consistency. Contains  NULL when fund has insufficient history or annual return data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(histstats, 'Positive_Years')
+  histstats_top_holdings:
+    description: Comma-separated list or description of the fund's largest security holdings for transparency. Contains  NULL when holdings data is not available or not disclosed.
+    sql: JSONB_EXTRACT_PATH_TEXT(histstats, 'Top_Holdings')
+  pricerange52w_high_metrics_high_52_w:
+    description: Highest price reached by the fund during the past 52 weeks. Contains  NULL when fund has less than 52 weeks of trading history.
+    sql: JSONB_EXTRACT_PATH_TEXT(pricerange52w, 'high_metrics', 'High_52W')
+  pricerange52w_high_metrics_high_delta:
+    description: Absolute price difference between current price and 52-week high. Contains  NULL when 52-week high is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(pricerange52w, 'high_metrics', 'High_Delta')
+  pricerange52w_high_metrics_high_delta_pct:
+    description: Percentage difference between current price and 52-week high, expressed as decimal (-1 to 0). Contains  NULL when 52-week high is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(pricerange52w, 'high_metrics', 'High_Delta_Pct')
+  pricerange52w_low_metrics_low_52_w:
+    description: Lowest price reached by the fund during the past 52 weeks. Contains  NULL when fund has less than 52 weeks of trading history.
+    sql: JSONB_EXTRACT_PATH_TEXT(pricerange52w, 'low_metrics', 'Low_52W')
+  pricerange52w_low_metrics_low_delta:
+    description: Absolute price difference between current price and 52-week low. Contains  NULL when 52-week low is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(pricerange52w, 'low_metrics', 'Low_Delta')
+  pricerange52w_low_metrics_low_delta_pct:
+    description: Percentage difference between current price and 52-week low, expressed as decimal (0 to positive). Contains  NULL when 52-week low is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(pricerange52w, 'low_metrics', 'Low_Delta_Pct')
+  pricerange52w_range_metrics_range_move:
+    description: Absolute price movement range between 52-week high and low. Contains  NULL when 52-week range data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(pricerange52w, 'range_metrics', 'Range_Move')
+  pricerange52w_range_metrics_range_move_pct:
+    description: Percentage movement range between 52-week high and low positions. Contains  NULL when 52-week range data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(pricerange52w, 'range_metrics', 'Range_Move_Pct')
+  returnmetrics_benchmark_returns_bench_return_10_y:
+    description: Benchmark or category average annualized 10-year return for performance comparison. Contains  NULL when benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'benchmark_returns', 'Bench_Return_10Y')
+  returnmetrics_benchmark_returns_bench_return_1_m:
+    description: Benchmark or category average 1-month return for performance comparison. Contains  NULL when benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'benchmark_returns', 'Bench_Return_1M')
+  returnmetrics_benchmark_returns_bench_return_1_y:
+    description: Benchmark or category average 1-year return for performance comparison. Contains  NULL when benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'benchmark_returns', 'Bench_Return_1Y')
+  returnmetrics_benchmark_returns_bench_return_3_m:
+    description: Benchmark or category average 3-month return for performance comparison. Contains  NULL when benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'benchmark_returns', 'Bench_Return_3M')
+  returnmetrics_benchmark_returns_bench_return_3_y:
+    description: Benchmark or category average annualized 3-year return for performance comparison. Contains  NULL when benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'benchmark_returns', 'Bench_Return_3Y')
+  returnmetrics_benchmark_returns_bench_return_5_y:
+    description: Benchmark or category average annualized 5-year return for performance comparison. Contains  NULL when benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'benchmark_returns', 'Bench_Return_5Y')
+  returnmetrics_benchmark_returns_bench_return_ytd:
+    description: Benchmark or category average year-to-date return for comparison with fund performance. Contains  NULL when benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'benchmark_returns', 'Bench_Return_YTD')
+  returnmetrics_fund_returns_return_10_y:
+    description: Fund's annualized 10-year return performance as decimal, measuring very long-term performance. Contains  NULL when fund has less than 10 years of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'fund_returns', 'Return_10Y')
+  returnmetrics_fund_returns_return_1_m:
+    description: Fund's 1-month return performance as decimal, measuring short-term performance. Contains  NULL when fund has less than 1 month of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'fund_returns', 'Return_1M')
+  returnmetrics_fund_returns_return_1_y:
+    description: Fund's 1-year return performance as decimal, measuring annual performance. Contains  NULL when fund has less than 1 year of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'fund_returns', 'Return_1Y')
+  returnmetrics_fund_returns_return_3_m:
+    description: Fund's 3-month return performance as decimal, measuring quarterly performance. Contains  NULL when fund has less than 3 months of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'fund_returns', 'Return_3M')
+  returnmetrics_fund_returns_return_3_y:
+    description: Fund's annualized 3-year return performance as decimal, measuring medium-term performance. Contains  NULL when fund has less than 3 years of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'fund_returns', 'Return_3Y')
+  returnmetrics_fund_returns_return_5_y:
+    description: Fund's annualized 5-year return performance as decimal, measuring long-term performance. Contains  NULL when fund has less than 5 years of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'fund_returns', 'Return_5Y')
+  returnmetrics_fund_returns_return_ytd:
+    description: Fund's year-to-date return performance as decimal (-1 to positive), calculated from January 1st to report date. Contains  NULL when YTD data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(returnmetrics, 'fund_returns', 'Return_YTD')
+  is_high_conviction_portfolio:
+    label: High-Conviction Portfolio
+    description: A portfolio where the manager allocates a significant portion of assets to a small number of their best ideas.
+    sql: ${largest_holding_weight} > 0.08
+    ai_context: Use this modeled field for High-Conviction Portfolio; do not reconstruct its formula.
+  price_position_52_week_pct:
+    label: Price Position in 52-Week Range
+    description: Calculates the current price's position within its 52-week high-low range as a percentage.
+    sql: CASE WHEN ${high_52_week} <> ${low_52_week} THEN ${current_price_minus_52_week_low} / NULLIF(${high_52_week} - ${low_52_week}, 0) * 100.0 END
+    ai_context: Use this modeled field for Price Position in 52-Week Range; do not reconstruct its formula.
+  positive_return_consistency_pct:
+    label: Positive Return Consistency
+    description: Calculates the percentage of a fund's historical years that have yielded positive returns.
+    sql: CASE WHEN ${positive_return_years} + ${negative_return_years} <> 0 THEN ${positive_return_years} / NULLIF(${positive_return_years} + ${negative_return_years}, 0) * 100.0 END
+    ai_context: Use this modeled field for Positive Return Consistency; do not reconstruct its formula.
+  capital_preservation_index:
+    label: Capital Preservation Index
+    description: Scores a fund on its ability to protect capital by combining its history of avoiding down years with its ability to stay above its 52-week lows.
+    sql: CASE WHEN 1.0 + ${negative_return_years} <> 0 AND ${low_52_week} <> 0 THEN (1.0 / (1.0 + ${negative_return_years})) * (1.0 + ${current_price_minus_52_week_low} / ${low_52_week}) END
+    ai_context: Use this modeled field for Capital Preservation Index; do not reconstruct its formula.

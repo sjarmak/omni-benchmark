@@ -1,0 +1,11 @@
+base_view: robot_fault_prediction_large_public__material_storage_environment
+label: material_storage_environment
+description: All columns of the public table material_storage_environment.
+fields:
+- robot_fault_prediction_large_public__material_storage_environment.*
+- robot_fault_prediction_large_public__materials.*
+- robot_fault_prediction_large_public__supplier_shipments.*
+joins:
+  robot_fault_prediction_large_public__supplier_shipments:
+    robot_fault_prediction_large_public__materials: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

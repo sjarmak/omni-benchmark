@@ -1,0 +1,108 @@
+label: buyer_device_fingerprints
+description: All columns of the public table buyer_device_fingerprints.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: buyer_device_fingerprints
+dimensions:
+  browserversion:
+    description: 'TEXT. Browser major version string. Example: 123.0.'
+    sql: '"BROWSERVERSION"'
+  firstseen:
+    description: 'TIMESTAMP (YYYY-MM-DD HH:MM:SS). First time this fingerprint was observed. Example: 2024-11-06 23:14:02.'
+    sql: '"FIRSTseen"'
+  language:
+    description: 'TEXT. Browser locale preference (RFC 5646). Example: en-US.'
+    sql: '"LANGUAGE"'
+  os:
+    description: 'TEXT. Operating-system family reported by the browser. Example: Android.'
+    sql: '"OS"'
+  screenres:
+    description: 'TEXT. Reported screen resolution in pixels (width × height). Example: 1920×1080.'
+    sql: '"SCREENres"'
+  tordetected:
+    description: 'BOOLEAN. True if the connection came from a Tor exit node. Example: false.'
+    sql: '"TORdetected"'
+  acq_code:
+    description: 'TEXT. Foreign-key to buyers.AcqCode linking the device to a buyer account. Example: ACQ_1027.'
+    sql: '"acqCode"'
+  audio_context_hash:
+    description: 'TEXT. Hash of AudioContext fingerprint. Example: 7b8a9430e5d0…'
+    sql: audio_context_hash
+  battery_level:
+    description: 'REAL. Normalised battery level (0–1). **NULL means browser API blocked the reading.** Example: 0.72.'
+    sql: '"batteryLEVEL"'
+  browser:
+    description: 'TEXT. Browser family used during the session. Example: Chrome.'
+    sql: browser
+  canvas_fingerprint_hash:
+    description: 'TEXT. Hash of HTML-canvas rendering output used for fingerprinting. Example: 9e2b17afc0d1…'
+    sql: canvas_fingerprint_hash
+  cookie_enabled:
+    description: 'BOOLEAN. Browser cookies enabled flag. Example: true.'
+    sql: '"cookieENABLED"'
+  device_motion:
+    description: 'BOOLEAN. True if DeviceMotion API is available. Example: false.'
+    sql: '"deviceMOTION"'
+  device_type:
+    description: 'TEXT. Form factor of the device that generated the fingerprint (Desktop, Mobile, Tablet). Example: Mobile.'
+    sql: '"deviceTYPE"'
+  device_fp_ref:
+    description: 'TEXT. Primary-key reference for one logical device fingerprint. Example: FP-a7d39e1c4b.'
+    sql: device_fp_ref
+  device_orientation:
+    description: 'BOOLEAN. True if DeviceOrientation API is supported. Example: true.'
+    sql: device_orientation
+  do_not_track:
+    description: 'BOOLEAN. True if the DNT header is set. Example: true.'
+    sql: do_not_track
+  fingerprint_score:
+    description: 'REAL. Similarity-based uniqueness score (0-100). Example: 83.5.'
+    sql: '"fingerprintSCORE"'
+  flash_enabled:
+    description: 'BOOLEAN. Legacy Flash support flag. Example: false.'
+    sql: flash_enabled
+  font_fingerprint_hash:
+    description: 'TEXT. Hash of installed-font fingerprint. Example: f1c4dcdab835…'
+    sql: '"fontFingerprintHASH"'
+  fp_stability_pct_unchanged_30d:
+    description: 'TEXT. Percentage of fingerprint attributes unchanged over the last 30 days. **NULL means there were too few observations to compute stability.** Example: 73.'
+    sql: '"fpStability_pct_unchanged_30d"'
+  incognito_mode:
+    description: 'BOOLEAN. Heuristic flag indicating private-browsing mode. Example: false.'
+    sql: '"incognitoMode"'
+  ip_hash:
+    description: 'TEXT. SHA-256 hash of the source IP address to preserve privacy. Example: 6f1d7d7e19d0af1b…'
+    sql: ip_hash
+  java_enabled:
+    description: 'BOOLEAN. Whether Java plugin is enabled. Example: false.'
+    sql: '"javaEnabled"'
+  last_seen:
+    description: 'TIMESTAMP (YYYY-MM-DD HH:MM:SS). Most recent usage of this fingerprint. Example: 2025-06-12 04:51:29.'
+    sql: last_seen
+  localstorage_enabled:
+    description: 'BOOLEAN. Whether Web Storage API is available. Example: true.'
+    sql: localstorage_enabled
+  os_version:
+    description: 'TEXT. Operating-system major version. Example: 14.'
+    sql: os_version
+  proxy_detected:
+    description: 'BOOLEAN. Whether an HTTP/SOCKS proxy was detected. **NULL means proxy status could not be resolved due to incomplete header data.** Example: true.'
+    sql: proxy_detected
+  risk_drift_score_per_quarter:
+    description: 'TEXT. Direction and magnitude of risk-score drift per quarter. **NULL means drift could not be computed yet.** Example: +0.3'
+    sql: '"riskDrift_score_per_quarter"'
+  risk_score:
+    description: 'REAL. Weighted risk rating derived from fingerprint signals. Example: 91.4.'
+    sql: risk_score
+  time_zone:
+    description: 'TEXT. Client-side time-zone offset (IANA or UTC±). Example: UTC+9.'
+    sql: time_zone
+  touch_support:
+    description: 'BOOLEAN. Indicates whether the device reports touch capability. Example: true.'
+    sql: touch_support
+  vpn_detected:
+    description: 'BOOLEAN. True if VPN usage was inferred from IP reputation or TLS fingerprint. **NULL means the VPN-detection module returned an indeterminate result.** Example: false.'
+    sql: '"vpnDetected"'
+  web_glfingerprint_hash:
+    description: 'TEXT. Hash of WebGL renderer fingerprint. Example: c4a881e7bd3c…'
+    sql: '"webGLfingerprintHash"'

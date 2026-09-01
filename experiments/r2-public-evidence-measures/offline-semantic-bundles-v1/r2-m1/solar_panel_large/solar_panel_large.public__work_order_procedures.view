@@ -1,0 +1,18 @@
+label: work_order_procedures
+description: All columns of the public table work_order_procedures.
+catalog: solar_panel_large
+schema: public
+table_name: work_order_procedures
+dimensions:
+  notes:
+    description: 'TEXT. Notes specific to the execution of this procedure within the work order. Example: Completed with no issues noted..'
+    sql: '"NOTES"'
+  procedure_link:
+    description: 'TEXT. PK & FK -> maintenance_procedures.ProcedureCode. The procedure used. Example: PROC-02.'
+    sql: '"ProcedureLink"'
+  work_order_link:
+    description: 'TEXT. PK & FK -> work_orders.OrderNum. The work order. Example: WO-1002.'
+    sql: '"WorkOrderLink"'
+  execution_status:
+    description: 'TEXT. The status of the execution of this specific procedure. Possible values: Closed, Completed, Failed, In Progress, Open, Skipped.'
+    sql: '"executionStatus"'

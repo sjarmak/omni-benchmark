@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__holdings_changes_history
+label: holdings_changes_history
+description: All columns of the public table holdings_changes_history.
+fields:
+- exchange_traded_funds_large_public__holdings_changes_history.*
+joins: {}
+ai_context: This topic models no cross-table joins.

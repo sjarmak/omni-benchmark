@@ -1,0 +1,33 @@
+label: qualifying
+description: All columns of the public table qualifying.
+catalog: sports_events_large
+schema: public
+table_name: qualifying
+dimensions:
+  corptag:
+    description: 'INTEGER. Foreign key to the constructors table (CSTR_Key). FK to constructors. Example: 131.'
+    sql: corptag
+  pilotrec:
+    description: 'INTEGER. Foreign key to the drivers table (DRV_MAIN). FK to drivers. Example: 1.'
+    sql: pilotrec
+  px_pos:
+    description: 'INTEGER. Position in qualifying. Example: 1.'
+    sql: px_pos
+  q1_r:
+    description: 'TEXT. Q1 qualifying result. **NULL means no Q1 result.**. Example: 1:14.121.'
+    sql: q1_r
+  q2_r:
+    description: 'TEXT. Q2 qualifying result. **NULL means no Q2 result.**. Example: 1:13.076.'
+    sql: q2_r
+  q3_r:
+    description: 'TEXT. Q3 qualifying result. **NULL means no Q3 result.**. Example: 1:12.812.'
+    sql: q3_r
+  qualkey:
+    description: 'INTEGER. Unique qualifying key. PK. Example: 6815.'
+    sql: qualkey
+  rbind:
+    description: 'INTEGER. Foreign key to the races table (RAK_ID). FK to races. Example: 954.'
+    sql: rbind
+  regno:
+    description: 'INTEGER. Registration number of the driver. Example: 44.'
+    sql: regno

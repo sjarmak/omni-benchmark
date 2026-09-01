@@ -1,0 +1,117 @@
+label: worker_profile
+description: All columns of the public table worker_profile.
+catalog: labor_certification_applications_large
+schema: public
+table_name: worker_profile
+dimensions:
+  dob_iso:
+    description: 'DATE. Date of birth (ISO-8601). Example: 1985-01-02.'
+    sql: '"DOB_iso"'
+  gender_mark:
+    description: 'TEXT. Self-identified gender code. Possible values: F, M, X, U. Example: F.'
+    sql: '"GenderMark"'
+  i94num:
+    description: 'TEXT. Most recent I-94 record number. Example: I949176000.'
+    sql: '"I94num"'
+  sevisid:
+    description: 'TEXT. SEVIS record number if ever in F/J status. Example: N1834567890.'
+    sql: '"SEVISid"'
+  avail_window:
+    description: 'TEXT. Time window when worker is normally reachable. Examples: 07:00–22:00, 24 × 7.'
+    sql: '"availWindow"'
+  contact_details:
+    description: JSONB column. Consolidates residential and communication details of the worker into one JSONB object.
+    sql: contact_details
+  dep_count:
+    description: 'BIGINT. Number of dependents claimed. Example: 4.'
+    sql: '"depCount"'
+  e_verify_flag:
+    description: 'TEXT. E-Verify employment-eligibility confirmed? Values: Yes, No. Example: Yes.'
+    sql: '"eVerify_flag"'
+  edu_field:
+    description: 'TEXT. Field of study for highest degree. Example: Art.'
+    sql: '"eduField"'
+  fav_color:
+    description: 'TEXT. Stated favourite colour. **NULL when not provided.** Example: Blue.'
+    sql: '"favColor"'
+  first_usentry:
+    description: 'DATE. Worker’s first arrival to the U.S. Example: 2002-11-07.'
+    sql: '"firstUSentry"'
+  grad_day:
+    description: 'DATE. Graduation date for highest degree. Example: 2003-09-18.'
+    sql: '"gradDAY"'
+  highest_edu:
+    description: 'TEXT. Highest completed education level. **NULL means education not reported.** Possible values: High School, Associate, Bachelor, Master, PhD. Example: High School.'
+    sql: '"highestEDU"'
+  hobbie_tag:
+    description: 'TEXT. Primary hobby tag. Example: Running.'
+    sql: '"hobbieTag"'
+  last_visa_class:
+    description: 'TEXT. Most recent visa class held (or None). Possible values: H1B, F1, L1, B2, TN, None. Example: TN.'
+    sql: '"lastVisaClass"'
+  last_visa_end_day:
+    description: 'DATE. Expiration date of last visa status. Example: 2024-06-14.'
+    sql: '"lastVisaEndDay"'
+  legal_fname:
+    description: 'TEXT. Worker’s legal first name. Example: Olivia.'
+    sql: '"legalFName"'
+  legal_lname:
+    description: 'TEXT. Worker’s legal last name. Example: Patel.'
+    sql: '"legalLName"'
+  marital_stat:
+    description: 'TEXT. Marital status. Possible values: Single, Married, Divorced, Widowed. Example: Single.'
+    sql: '"maritalSTAT"'
+  mid_init:
+    description: 'TEXT. Middle initial. Example: A.'
+    sql: '"midInit"'
+  passport_num:
+    description: 'TEXT. Passport number. Example: P46913810.'
+    sql: '"passportNUM"'
+  passport_nation:
+    description: 'TEXT. Passport‐issuing country (ISO-like). Example: PH.'
+    sql: '"passportNation"'
+  prev_visa_cnt:
+    description: 'BIGINT. Number of prior non-immigrant visas. **NULL when unknown or none.** Example: 4.'
+    sql: '"prevVisaCnt"'
+  reasoning_bio:
+    description: 'TEXT. Analyst notes or biography summary. Example: Synthetic demo data.'
+    sql: '"reasoningBIO"'
+  ssn_mask:
+    description: 'TEXT. Masked U.S. Social-Security number. Example: XXX-XX-1234.'
+    sql: '"ssnMASK"'
+  travel_radius_mi:
+    description: 'REAL. Acceptable commute or travel radius, miles. **NULL when not specified.** Example: 40.'
+    sql: '"travelRadius_mi"'
+  worker_code:
+    description: 'TEXT. Unique identifier for the worker. PK. Example: W000001.'
+    sql: '"worker_CODE"'
+  years_exp_total:
+    description: 'REAL. Total career experience in years. Example: 2.2.'
+    sql: '"yearsExp_total"'
+  yrs_exp_us:
+    description: 'REAL. Years of U.S.-based experience. **NULL when candidate has no U.S. experience or value unverified.** Example: 0.5.'
+    sql: '"yrsExp_US"'
+  yrs_exp_field:
+    description: 'REAL. Years of experience in the declared field. Example: 1.1.'
+    sql: '"yrsExp_field"'
+  contact_details_address_city:
+    description: 'TEXT. Home city. Example: Austin.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'address', 'city')
+  contact_details_address_line1:
+    description: 'TEXT. Primary street address. Example: 8493 Cedar St.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'address', 'line1')
+  contact_details_address_line2:
+    description: 'TEXT. Secondary address line. Example: Apt 275.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'address', 'line2')
+  contact_details_address_state:
+    description: 'TEXT. Home state/region code. Example: TX.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'address', 'state')
+  contact_details_address_zip:
+    description: 'TEXT. Home postal code. Example: 57093.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'address', 'zip')
+  contact_details_email_personal:
+    description: 'TEXT. Personal e-mail address. Example: olivia.patel@example.com.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'email_personal')
+  contact_details_phone_cell:
+    description: 'TEXT. Cell-phone number (E.164). Example: +1-229-429-1783.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'phone_cell')

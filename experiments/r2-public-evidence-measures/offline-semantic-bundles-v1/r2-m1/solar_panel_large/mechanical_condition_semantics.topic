@@ -1,0 +1,15 @@
+base_view: solar_panel_large_public__mechanical_condition
+label: Mechanical Condition
+description: Mechanical, structural, and electrical condition snapshots.
+fields:
+- solar_panel_large_public__mechanical_condition.*
+- solar_panel_large_public__panel_models.*
+- solar_panel_large_public__plant_record.*
+- solar_panel_large_public__plants.*
+joins:
+  solar_panel_large_public__plant_record:
+    solar_panel_large_public__plants:
+      solar_panel_large_public__panel_models: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields critical_mechanical_health, electrical_integrity_failure, major_module_degradation, structural_integrity_warning, tracker_malfunction rather than reconstructing their formulas.'

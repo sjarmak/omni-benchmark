@@ -1,0 +1,57 @@
+label: incident_reports
+description: All columns of the public table incident_reports.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: incident_reports
+dimensions:
+  asset_damage_usd:
+    description: TEXT. Estimated cost of hardware damage.
+    sql: asset_damage_usd
+  corrective_action_id:
+    description: TEXT. Link to maintenance/training fix.
+    sql: corrective_action_id
+  downtime_minutes:
+    description: 'INTEGER. Production time lost. Example: 50.'
+    sql: downtime_minutes
+  incident_category:
+    description: 'TEXT. Type (Collision, Electrical, Slip). Unique values: Collision, Electrical_Shock, Slip_Fall, Software_Erratic, Pinch_Point.'
+    sql: incident_category
+  incident_id:
+    description: TEXT. Unique key for safety incident.
+    sql: incident_id
+  injury_sustained:
+    description: 'BOOLEAN. Did a human get hurt?. Possible values: True, False.'
+    sql: injury_sustained
+  insurance_claim_ref:
+    description: TEXT. External claim number. **NULL means No claim filed.**
+    sql: insurance_claim_ref
+  investigation_status:
+    description: 'TEXT. Workflow state. Unique values: Open, In_Progress, Closed, Regulatory_Hold.'
+    sql: investigation_status
+  is_near_miss:
+    description: 'BOOLEAN. True if no damage/injury occurred. Possible values: True, False.'
+    sql: is_near_miss
+  reporting_tech_ref:
+    description: TEXT. Technician filing the report.
+    sql: reporting_tech_ref
+  robot_operation_mode:
+    description: 'TEXT. Mode during accident (Auto, Teach). Unique values: Automatic, Teach_T1, Teach_T2, Maintenance.'
+    sql: robot_operation_mode
+  root_cause_code:
+    description: 'TEXT. Classification of cause. Unique values: HUM_ERR, MECH_FAIL, SOFT_BUG, EXT_ENV.'
+    sql: root_cause_code
+  safety_override_active:
+    description: 'BOOLEAN. Were safeties bypassed?. Possible values: True, False.'
+    sql: safety_override_active
+  severity_level:
+    description: 'INTEGER. 1 (Minor) to 5 (Critical/Fatality). Unique values: 1, 2, 3, 4, 5.'
+    sql: severity_level
+  stop_category_triggered:
+    description: 'INTEGER. IEC 60204-1 stop category (0, 1, 2). Unique values: 0, 1, 2.'
+    sql: stop_category_triggered
+  weather_conditions:
+    description: TEXT. Relevant if outdoor/loading dock. **NULL means Indoor event.**
+    sql: weather_conditions
+  witness_count:
+    description: 'INTEGER. Number of people who saw it. Example: 50.'
+    sql: witness_count

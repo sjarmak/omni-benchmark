@@ -1,0 +1,72 @@
+label: GridInterconnectionEvents
+description: All columns of the public table GridInterconnectionEvents.
+catalog: solar_panel_large
+schema: public
+table_name: GridInterconnectionEvents
+dimensions:
+  actual_output_mw:
+    description: 'REAL. Actual average power output during the event. Example: 48.'
+    sql: actual_output_mw
+  communication_latency_ms:
+    description: 'INTEGER. Time delay between command and plant response in milliseconds. Example: 150.'
+    sql: communication_latency_ms
+  compliance_status:
+    description: 'TEXT. Did the plant meet the grid code requirement?. Unique values: Compliant, Non-Compliant, Under Investigation.'
+    sql: compliance_status
+  event_end_ts:
+    description: 'TIMESTAMP. End time of the grid event. **NULL means Event currently active.** Example: 2024-01-01 12:00:00.'
+    sql: event_end_ts
+  event_id:
+    description: TEXT. Unique identifier for the grid event.
+    sql: event_id
+  event_log_url:
+    description: TEXT. Link to detailed waveform or SCADA log.
+    sql: event_log_url
+  event_start_ts:
+    description: 'TIMESTAMP. Start time of the grid event. Example: 2024-01-01 12:00:00.'
+    sql: event_start_ts
+  event_type:
+    description: 'TEXT. Classification of the event. Unique values: Curtailment, Forced Outage, Frequency Response, Voltage Support, Island Mode.'
+    sql: event_type
+  financial_impact_usd:
+    description: 'REAL. Estimated revenue lost or penalty incurred. **NULL means Analysis pending.** Example: 5000.'
+    sql: financial_impact_usd
+  grid_frequency_hz:
+    description: 'REAL. Grid frequency recorded at onset. Example: 60.0.'
+    sql: grid_frequency_hz
+  grid_voltage_kv:
+    description: 'REAL. Grid voltage at the point of interconnection (POI) in kV. Example: 132.'
+    sql: grid_voltage_kv
+  is_billable_curtailment:
+    description: 'BOOLEAN. True if the PPA allows billing for deemed generation during this curtailment. Possible values: True, False.'
+    sql: is_billable_curtailment
+  operator_override:
+    description: 'BOOLEAN. True if a human operator manually overrode the automatic response. Possible values: True, False.'
+    sql: operator_override
+  ramp_rate_mw_min:
+    description: 'REAL. Rate of power change recorded. Example: 10.'
+    sql: ramp_rate_mw_min
+  reactive_power_mvar:
+    description: 'REAL. Reactive power injected/absorbed during event. Example: 5.'
+    sql: reactive_power_mvar
+  requested_limit_mw:
+    description: 'REAL. Power cap requested by the utility ISO in MW. **NULL means Not a curtailment event.** Example: 50.'
+    sql: requested_limit_mw
+  scada_signal_quality:
+    description: 'INTEGER. Quality score of the utility signal (0-100). Example: 99.'
+    sql: scada_signal_quality
+  site_ref:
+    description: TEXT. Reference to the affected solar plant.
+    sql: site_ref
+  utility_command_id:
+    description: TEXT. Reference ID provided by the utility SCADA. **NULL means Automatic local protection trip.**
+    sql: utility_command_id
+  utility_reason_code:
+    description: 'TEXT. Reason provided by the grid operator. **NULL means No reason provided.** Unique values: Congestion, Maintenance, Emergency, Overgeneration.'
+    sql: utility_reason_code
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct GridInterconnectionEvents public identity values.
+    label: GridInterconnectionEvents Count
+    sql: ${solar_panel_large_public__grid_interconnection_events.event_id}

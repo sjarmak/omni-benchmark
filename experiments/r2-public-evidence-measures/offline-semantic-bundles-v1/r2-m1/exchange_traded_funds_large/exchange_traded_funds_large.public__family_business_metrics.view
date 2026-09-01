@@ -1,0 +1,114 @@
+label: family_business_metrics
+description: All columns of the public table family_business_metrics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: family_business_metrics
+dimensions:
+  advisory_fee_revenue:
+    description: 'TEXT (unit-annotated). Revenue from advisory fees. Example: 1,600,000,000 USD.'
+    sql: advisory_fee_revenue
+  annual_revenue:
+    description: 'TEXT (unit-annotated). Latest fiscal-year revenue, currency-annotated. Example: 16,879,588,276 USD.'
+    sql: annual_revenue
+  average_client_tenure:
+    description: 'TEXT (unit-annotated). Mean client-relationship length, suffixed “ years”. Example: 10.46 years.'
+    sql: average_client_tenure
+  business_metric_id:
+    description: 'BIGSERIAL. Surrogate identifier for each metrics row. PK. Auto-increments from 1. Example: 1.'
+    sql: business_metric_id
+  client_retention_rate:
+    description: 'TEXT (unit-annotated). Annual retention percentage. Example: 81.46 %.'
+    sql: client_retention_rate
+  compliance_score:
+    description: 'TEXT (unit-annotated). Composite compliance rating with percent sign. Example: 74.09 %.'
+    sql: compliance_score
+  countries_of_operation:
+    description: 'TEXT (unit-annotated). Number of countries where products are offered, suffixed “ countries”. Example: 3 countries.'
+    sql: countries_of_operation
+  domestic_aum_ranking:
+    description: 'TEXT (unit-annotated). Ordinal home-market AUM rank, prefixed “#”. Example: #65.'
+    sql: domestic_aum_ranking
+  etf_market_share:
+    description: 'TEXT (unit-annotated). ETF market share with percent sign. Example: 2.28 %.'
+    sql: etf_market_share
+  family_name:
+    description: 'TEXT. Fund-family or asset-manager name. FK to families(groupname). Example: fund_family.'
+    sql: family_name
+  founded_year:
+    description: 'TEXT (unit-annotated). Calendar year founded, suffixed “ yr”. Example: 1,947 yr.'
+    sql: founded_year
+  global_aum_ranking:
+    description: 'TEXT (unit-annotated). Ordinal global AUM rank, prefixed “#”. Example: #1.'
+    sql: global_aum_ranking
+  growth_numbers_raw:
+    description: JSONB column. Unpolished year-over-year / multi-year growth stats kept in one JSONB lump.
+    sql: growth_numbers_raw
+  headquarters_location:
+    description: 'TEXT. City–country of the main office. Example: New York, USA.'
+    sql: headquarters_location
+  institutional_client_percent:
+    description: 'TEXT (unit-annotated). Share of institutional clients, percent. Example: 51.77 %.'
+    sql: institutional_client_percent
+  international_aum_percent:
+    description: 'TEXT (unit-annotated). Share of AUM invested outside home country, percent. Example: 37.48 %.'
+    sql: international_aum_percent
+  last_updated:
+    description: 'TIMESTAMP. System timestamp when the record was last modified (automatically set). Example: 2025-07-06.'
+    sql: last_updated
+  management_fee_revenue:
+    description: 'TEXT (unit-annotated). Revenue from management fees. Example: 3,191,567,616 USD.'
+    sql: management_fee_revenue
+  mutual_fund_market_share:
+    description: 'TEXT (unit-annotated). Mutual-fund market share with percent sign. Example: 13.04 %.'
+    sql: mutual_fund_market_share
+  number_of_employees:
+    description: 'TEXT (unit-annotated). Employee head-count, suffixed “ employees”. Example: 9,181 employees.'
+    sql: number_of_employees
+  number_of_exchange_traded_funds:
+    description: 'TEXT (unit-annotated). ETF count, suffixed “ exchange_extended_info_large”. Example: 83 ETFs'
+    sql: number_of_exchange_traded_funds
+  number_of_funds:
+    description: 'TEXT (unit-annotated). Total active funds, suffixed “ funds”. Example: 94 funds.'
+    sql: number_of_funds
+  number_of_mutual_funds:
+    description: 'TEXT (unit-annotated). Mutual-fund count, suffixed “ mutual funds”. Example: 79 mutual funds.'
+    sql: number_of_mutual_funds
+  parent_organ_transplantization:
+    description: 'TEXT. Owning conglomerate or “Private”/“None” if independent. Example: Private.'
+    sql: parent_organ_transplantization
+  patents_held:
+    description: 'TEXT (unit-annotated). Active patents owned, suffixed “ patents”. Example: 247 patents.'
+    sql: patents_held
+  profit_margin:
+    description: 'TEXT (unit-annotated). Net profit margin with percent sign. Example: 41.86 %.'
+    sql: profit_margin
+  r_d_investment_percent:
+    description: 'TEXT (unit-annotated). R&D spend as share of revenue, suffixed “ % of revenue”. Example: 7.25 % of revenue.'
+    sql: r_d_investment_percent
+  regulatory_violations:
+    description: 'TEXT (unit-annotated). Compliance breaches recorded, suffixed “ violations”. Example: 1 violations.'
+    sql: regulatory_violations
+  technology_investment_annual:
+    description: 'TEXT (unit-annotated). Annual technology spend, suffixed “ USD/year”. Example: 47,285,282 USD/year.'
+    sql: technology_investment_annual
+  total_assets_under_management:
+    description: 'TEXT (unit-annotated). Aggregate AUM with trailing currency unit. Example: 281,357,928,908 USD.'
+    sql: total_assets_under_management
+  growth_numbers_raw_aum_growth_rate_1y:
+    description: 'real (unit-annotated). One-year AUM growth, suffixed “ %/year”. Example: 14.68 %/year.'
+    sql: JSONB_EXTRACT_PATH_TEXT(growth_numbers_raw, 'aum_growth_rate_1y')
+  growth_numbers_raw_aum_growth_rate_3y:
+    description: 'text (unit-annotated). Three-year cumulative AUM growth, suffixed “ %/3y”. Example: 61.83 %/3y.'
+    sql: JSONB_EXTRACT_PATH_TEXT(growth_numbers_raw, 'aum_growth_rate_3y')
+  growth_numbers_raw_new_product_launches:
+    description: 'TEXT (unit-annotated). Count of new exchange_extended_info_large/funds launched, suffixed “ products”. Example: 26 products.'
+    sql: JSONB_EXTRACT_PATH_TEXT(growth_numbers_raw, 'new_product_launches')
+  growth_numbers_raw_revenue_growth_rate_1y:
+    description: 'real (unit-annotated). One-year revenue growth, suffixed “ %/year”. Example: -3.19 %/year.'
+    sql: JSONB_EXTRACT_PATH_TEXT(growth_numbers_raw, 'revenue_growth_rate_1y')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct family_business_metrics public identity values.
+    label: family_business_metrics Count
+    sql: ${exchange_traded_funds_large_public__family_business_metrics.business_metric_id}

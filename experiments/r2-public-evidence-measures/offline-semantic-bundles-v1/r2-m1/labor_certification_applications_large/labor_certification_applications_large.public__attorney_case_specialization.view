@@ -1,0 +1,36 @@
+label: attorney_case_specialization
+description: All columns of the public table attorney_case_specialization.
+catalog: labor_certification_applications_large
+schema: public
+table_name: attorney_case_specialization
+dimensions:
+  avg_proc_time_days:
+    description: 'REAL. Average processing time per case in calendar days. **NULL when insufficient data.** Example: 91.4.'
+    sql: '"avgProcTime_days"'
+  case_handled_ct:
+    description: 'BIGINT. Cumulative number of cases the attorney has handled in this specialty. Example: 852.'
+    sql: '"caseHandled_ct"'
+  cert_body:
+    description: 'TEXT. Certifying or professional body for the specialty (e.g., bar association). **NULL means the attorney is not certified in this specialty or data is unavailable.** Possible values: ABA, State Bar, AILA, NAFSA, None, International, National, Regional.'
+    sql: '"certBody"'
+  cert_year:
+    description: 'BIGINT. Year the certification (or first admission) was obtained. **NULL when no certification or date unknown.** Example: 2001.'
+    sql: '"certYEAR"'
+  fee_band_max_usd_hr:
+    description: 'REAL. Upper bound of the hourly billing range, USD/hour. Example: 548.0.'
+    sql: '"feeBand_max_USD_hr"'
+  fee_band_min_usd_hr:
+    description: 'REAL. Lower bound of the attorney’s hourly billing range for this specialty, USD/hour. **NULL when fee data not disclosed.** Example: 342.0.'
+    sql: '"feeBand_min_USD_hr"'
+  law_code_ref:
+    description: 'TEXT. Attorney’s primary e-mail (acts as FK to attorney.lawMail). Example: tyler.peace@muimmigration.com.'
+    sql: law_code_ref
+  reasoning_z:
+    description: 'TEXT. Analyst note or data provenance comment. Example: Synthetic specialization record.'
+    sql: '"reasoningZ"'
+  specialty_area:
+    description: 'TEXT. Legal practice specialty. Possible values: Immigration, Corporate, Tax, IP, Litigation, Labor, Real Estate, Environmental, Family, Criminal. Example: Labor.'
+    sql: '"specialtyArea"'
+  success_rate_pct:
+    description: 'REAL. Percentage of cases with favorable outcomes. **NULL when success rate not tracked or not enough data.** Example: 96.04.'
+    sql: '"successRate_pct"'

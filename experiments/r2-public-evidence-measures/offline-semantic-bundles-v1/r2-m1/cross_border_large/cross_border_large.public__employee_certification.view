@@ -1,0 +1,72 @@
+label: EmployeeCertification
+description: All columns of the public table EmployeeCertification.
+catalog: cross_border_large
+schema: public
+table_name: EmployeeCertification
+dimensions:
+  certification_expiry:
+    description: DATE. Certification expiry date
+    sql: '"CERTIFICATION_EXPIRY"'
+  cert_id:
+    description: BIGINT. Primary key. Unique certification record identifier
+    sql: '"CERT_ID"'
+  completion_date:
+    description: DATE. When employee completed training **NULL means Training not yet completed.**
+    sql: '"COMPLETION_DATE"'
+  employee_name:
+    description: 'TEXT. Employee full name Possible values: A. Schneider, B. Dupont, C. Yamamoto, D. Kowalski, E. Fernandez, F. Jensen, G. Ivanova, H. Moreau.'
+    sql: '"EMPLOYEE_NAME"'
+  feedback_rating:
+    description: 'TEXT. Employee feedback rating Possible values: Excellent, Good, Satisfactory, Poor.'
+    sql: '"FEEDBACK_RATING"'
+  module_scores:
+    description: JSONB. Per-module score breakdown
+    sql: '"MODULE_SCORES"'
+  passed:
+    description: BOOLEAN. Whether employee passed the assessment Boolean flag (true/false).
+    sql: '"PASSED"'
+  reminder_sent:
+    description: BOOLEAN. Whether renewal reminder was sent Boolean flag (true/false).
+    sql: '"REMINDER_SENT"'
+  seniority:
+    description: 'TEXT. Employee seniority level Possible values: Junior, Mid, Senior, Lead, Director, VP, C-Suite.'
+    sql: '"SENIORITY"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  attempts:
+    description: BIGINT. Number of assessment attempts
+    sql: attempts
+  cert_status:
+    description: 'TEXT. Current certification status Possible values: Valid, Expired, Revoked, Pending Renewal.'
+    sql: cert_status
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  department:
+    description: 'TEXT. Employee department Possible values: Legal, IT, HR, Finance, Marketing, Operations, Engineering, Compliance.'
+    sql: department
+  employee_code:
+    description: TEXT. Employee identifier
+    sql: employee_code
+  enrollment_date:
+    description: DATE. When employee enrolled
+    sql: enrollment_date
+  feedback_comments:
+    description: TEXT. Employee feedback comments **NULL means No feedback provided.**
+    sql: feedback_comments
+  score_pct:
+    description: 'REAL. Assessment score percentage Typical range: 0 to 100.'
+    sql: score_pct
+  time_spent_hours:
+    description: 'REAL. Total time spent on training in hours Typical range: 0.5 to 40.'
+    sql: time_spent_hours
+  training_prog_ref:
+    description: BIGINT. Foreign key referencing PrivacyTrainingProgram(TRAINING_PROG_ID). Related training program
+    sql: training_prog_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EmployeeCertification public identity values.
+    label: EmployeeCertification Count
+    sql: ${cross_border_large_public__employee_certification.cert_id}

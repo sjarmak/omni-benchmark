@@ -1,0 +1,99 @@
+label: sample_analysis
+description: All columns of the public table sample_analysis.
+catalog: archeology_scan_large
+schema: public
+table_name: sample_analysis
+dimensions:
+  analysis_type:
+    description: 'TEXT. The type of analysis performed。 Example: AMS Radiocarbon Dating.'
+    sql: '"ANALYSIS_TYPE"'
+  analysis_date:
+    description: 'DATE. The date the analysis was performed。 Example: 2020/2/15.'
+    sql: '"AnalysisDate"'
+  analysis_index:
+    description: 'BIGINT. Unique identifier for a sample analysis record. PK。 Example: OP6030.'
+    sql: '"AnalysisIndex"'
+  analyst_ref:
+    description: 'TEXT. Foreign key for the analyst who interpreted the results. FK。 Example: OP8108.'
+    sql: '"AnalystRef"'
+  confidence_level:
+    description: 'REAL. A confidence level or score for the results。 Possible values: 0.9, 0.92, 0.94, 0.95, 0.97, 0.98, 0.99.'
+    sql: '"CONFIDENCE_LEVEL"'
+  cost:
+    description: 'REAL. The cost of the analysis。 Example: $600.00.'
+    sql: '"COST"'
+  contamination_notes:
+    description: 'TEXT. Notes regarding any potential contamination. **NULL means no contamination was noted.**。 Possible values: Control samples taken from outside the burial., Modern DNA contamination below 1%., Modern DNA contamination below 1.2%., None noted., None., Sample handled in clean room conditions., Strict protocols followed to prevent cross-contamination..'
+    sql: '"ContaminationNotes"'
+  instrument_serial_number:
+    description: 'TEXT. The serial number of the instrument used. **NULL means it was not recorded.**。 Example: SN-AMS-0123.'
+    sql: '"INSTRUMENT_SERIAL_NUMBER"'
+  interpretation:
+    description: 'TEXT. The scientific interpretation of the analysis results。 Example: Confirms Early Neolithic dating for Enclosure D structure..'
+    sql: '"INTERPRETATION"'
+  is_destructive:
+    description: 'BOOLEAN. A flag indicating if the analysis destroyed the sample。 Possible values: False, True.'
+    sql: '"IS_DESTRUCTIVE"'
+  instrument_model:
+    description: 'TEXT. The model of the instrument used for the analysis。 Example: NEXUS AMS.'
+    sql: '"InstrumentModel"'
+  results_summary:
+    description: 'TEXT. A summary of the analysis results。 Example: Result: 9600-9500 BCE. Consistent with PPN A period..'
+    sql: '"RESULTS_SUMMARY"'
+  review_status:
+    description: 'TEXT. The status of the review process。 Possible values: Approved, Completed, In Review, Published.'
+    sql: '"REVIEW_STATUS"'
+  related_geological_survey_tag:
+    description: 'BIGINT. A link to a related geological survey. **NULL means no direct link.**。 Possible values: 2008.0.'
+    sql: '"RelatedGeologicalSurveyTag"'
+  report_url:
+    description: 'TEXT. A URL to the full analysis report。 Example: https://example.com/reports/4001.pdf.'
+    sql: '"ReportUrl"'
+  sample_location_on_artifact:
+    description: 'TEXT. A description of where on the artifact the sample was taken from。 Example: Pillar D, Layer III, residue scraping.'
+    sql: '"SampleLocationOnArtifact"'
+  sample_tag:
+    description: 'TEXT. The unique tag or identifier for the sample itself. UNIQUE。 Example: SAMP-GT-01A.'
+    sql: '"SampleTag"'
+  supervisor_reviewer_ref:
+    description: 'TEXT. A reference to the supervisor who reviewed the analysis。 Example: CR-001.'
+    sql: '"SupervisorReviewerRef"'
+  technician_name:
+    description: 'TEXT. The name of the technician who performed the analysis。 Example: Dr. Childs.'
+    sql: '"TechnicianName"'
+  turnaround_time_days:
+    description: 'BIGINT. The time in days from sample submission to results。 Example: 30.'
+    sql: '"TurnaroundTimeDays"'
+  artifact_fk:
+    description: 'BIGINT. Foreign key linking to the artifact from which the sample was taken. FK。 Example: 8042.'
+    sql: artifact_fk
+  calibration_curve_used:
+    description: 'TEXT. The calibration curve used in the analysis. **NULL means not applicable.**。 Possible values: IntCal20, hg19.'
+    sql: calibration_curve_used
+  currency_code:
+    description: 'TEXT. The currency of the analysis cost。 Possible values: CAD, EUR, GBP, USD.'
+    sql: currency_code
+  error_margin:
+    description: 'TEXT. The margin of error for the results. **NULL means it was not specified.**。 Possible values: 0.0001, 0.1years, 1 year, 150 years, 30 years.'
+    sql: error_margin
+  lab_accreditation_number:
+    description: 'TEXT. The accreditation number of the lab. **NULL means the lab is not accredited or the number is unknown.**。 Possible values: CLIA #12345, ISO 15189, ISO 9001, ISO/IEC 17025.'
+    sql: lab_accreditation_number
+  lab_name:
+    description: 'TEXT. The name of the laboratory that performed the analysis。 Example: Beta Analytic.'
+    sql: lab_name
+  raw_data_url:
+    description: 'TEXT. A URL to the raw data from the analysis。 Example: https://example.com/data/4001_raw.dat.'
+    sql: raw_data_url
+  review_date:
+    description: 'DATE. The date the analysis was reviewed。 Example: 2020/3/20.'
+    sql: review_date
+  sample_weight_grams:
+    description: 'REAL. The weight of the sample in grams. **NULL means it was not weighed.**。 Example: 0.05.'
+    sql: sample_weight_grams
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct sample_analysis public identity values.
+    label: sample_analysis Count
+    sql: ${archeology_scan_large_public__sample_analysis.analysis_index}

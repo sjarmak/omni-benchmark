@@ -1,0 +1,84 @@
+label: fund_strategy_implementations
+description: All columns of the public table fund_strategy_implementations.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: fund_strategy_implementations
+dimensions:
+  active_risk_from_modifications:
+    description: 'REAL. Additional active risk introduced by modifications (percentage). Example: 0.7.'
+    sql: '"ActiveRiskFromModifications"'
+  adherence_score:
+    description: 'REAL. Score measuring adherence to the intended strategy guidelines. Example: 92.0.'
+    sql: '"AdherenceScore"'
+  allocation_percentage:
+    description: 'REAL. Percentage of the fund’s assets allocated to this strategy. Example: 35.0.'
+    sql: '"AllocationPercentage"'
+  benchmark_adjustments:
+    description: 'TEXT. Any adjustments to the benchmark for this implementation. Possible values: Benchmark = Custom, Benchmark = MSCI ACWI, Benchmark = S&P 500.'
+    sql: '"BenchmarkAdjustments"'
+  complexity_score:
+    description: 'REAL. Operational complexity score for this implementation. Example: 4.2.'
+    sql: '"ComplexityScore"'
+  continuation_recommendation:
+    description: 'TEXT. Recommendation on whether to continue, hold, or discontinue. Possible values: Continue, Discontinue, Hold.'
+    sql: '"ContinuationRecommendation"'
+  custom_parameters:
+    description: 'TEXT. Specific parameters customised for this implementation. Possible values: Default, Param A=0.5, Param B=1, Param C=Low.'
+    sql: '"CustomParameters"'
+  deviation_from_target:
+    description: 'TEXT. Narrative describing deviations from target allocation or metrics. Possible values: Minor deviation, Significant deviation, Within tolerance.'
+    sql: '"DeviationFromTarget"'
+  fund_ticker:
+    description: 'bigint. Identifier of the fund (product number). Example: 1.'
+    sql: '"FundTicker"'
+  implementation_cost:
+    description: 'REAL. Cost incurred to implement and maintain the strategy (currency units). Example: 15 000.'
+    sql: '"ImplementationCost"'
+  implementation_effectiveness:
+    description: 'REAL. Score reflecting how effectively the strategy was implemented. Example: 86.5.'
+    sql: '"ImplementationEffectiveness"'
+  implementation_end_date:
+    description: 'DATE. Date the strategy implementation ended or is scheduled to end. **NULL means the implementation is still ongoing.** Example: 2024-12-31.'
+    sql: '"ImplementationEndDate"'
+  implementation_id:
+    description: 'BIGINT. Unique identifier for each fund-strategy implementation record. Example: 1001.'
+    sql: '"ImplementationID"'
+  implementation_start_date:
+    description: 'DATE. Date the strategy implementation began. Example: 2022-01-10.'
+    sql: '"ImplementationStartDate"'
+  is_current_implementation:
+    description: 'BOOLEAN. Indicates whether the implementation is currently active. Possible values: False, True.'
+    sql: '"IsCurrentImplementation"'
+  last_review_date:
+    description: 'DATE. Date of the most recent performance/operational review. Example: 2024-07-01.'
+    sql: '"LastReviewDate"'
+  last_updated:
+    description: 'TIMESTAMP. Timestamp of the last modification to this record. Example: 2025-06-30 18:20:12.'
+    sql: '"LastUpdated"'
+  next_review_date:
+    description: 'DATE. Scheduled date for the next review. **NULL means no future review has been scheduled.** Example: 2025-07-01.'
+    sql: '"NextReviewDate"'
+  performance_vs_expectation:
+    description: 'TEXT. Qualitative assessment of performance versus expectation. Possible values: Above, Below, Meeting.'
+    sql: '"PerformanceVsExpectation"'
+  resource_requirements:
+    description: 'TEXT. Staffing or system resources needed to run this implementation. Possible values: High specialized team, Low staff hours, Medium resources.'
+    sql: '"ResourceRequirements"'
+  risk_adjustments:
+    description: 'TEXT. Additional risk controls or overlays applied. Possible values: Stress scenarios, Tail risk hedge, VaR limit.'
+    sql: '"RiskAdjustments"'
+  strategy_contribution:
+    description: 'REAL. Contribution of the strategy to overall fund return (percentage). Example: 2.9.'
+    sql: '"StrategyContribution"'
+  strategy_id:
+    description: 'BIGINT. Identifier of the investment strategy applied. Example: 17.'
+    sql: '"StrategyID"'
+  strategy_modifications:
+    description: 'TEXT. Description of any modifications to the base strategy. **NULL means no modifications have been applied.** Possible values: Currency hedged, ESG screen added, Leverage adjusted.'
+    sql: '"StrategyModifications"'
+  strategy_performance:
+    description: 'REAL. Absolute performance of the strategy component (percentage). Example: 8.4.'
+    sql: '"StrategyPerformance"'
+  tracking_error_vs_pure_strategy:
+    description: 'REAL. Tracking error relative to the unmodified strategy (percentage). **NULL means tracking error has not been calculated.** Example: 1.3.'
+    sql: '"TrackingErrorVsPureStrategy"'

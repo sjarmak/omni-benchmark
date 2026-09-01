@@ -1,0 +1,72 @@
+label: PlatformIncidentReports
+description: All columns of the public table PlatformIncidentReports.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: PlatformIncidentReports
+dimensions:
+  pir_id:
+    description: TEXT. Unique identifier for the platform incident report.
+    sql: '"PIR_id"'
+  affected_services_count:
+    description: 'INTEGER. Number of services affected by the incident. Example: 3.'
+    sql: affected_services_count
+  affected_users_estimate:
+    description: 'INTEGER. Estimated number of users affected. **NULL means Impact assessment not completed.** Example: 5000.'
+    sql: affected_users_estimate
+  customer_notification_sent:
+    description: 'BOOLEAN. Whether customers were notified of the incident. Possible values: True, False.'
+    sql: customer_notification_sent
+  data_loss_occurred:
+    description: 'BOOLEAN. Whether any data loss occurred. Possible values: True, False.'
+    sql: data_loss_occurred
+  detection_method:
+    description: 'TEXT. How the incident was detected. Unique values: Automated Monitoring, User Report, Internal Staff, Third Party Alert, Security Scan.'
+    sql: detection_method
+  external_vendor_involved:
+    description: 'BOOLEAN. Whether external vendors were involved in resolution. Possible values: True, False.'
+    sql: external_vendor_involved
+  financial_impact_estimate:
+    description: 'REAL. Estimated financial impact in base currency. **NULL means Financial impact not yet assessed.** Example: 25000.'
+    sql: financial_impact_estimate
+  incident_detected_time:
+    description: 'TIMESTAMP. Timestamp when the incident was first detected. Example: 2024-01-01 12:00:00.'
+    sql: incident_detected_time
+  incident_status:
+    description: 'TEXT. Current status of the incident. Unique values: Investigating, Identified, Monitoring, Resolved, Closed.'
+    sql: incident_status
+  incident_type:
+    description: 'TEXT. Classification of the incident type. Unique values: Service Outage, Security Breach, Data Corruption, Performance Degradation, API Failure, Network Issue, Third Party Failure.'
+    sql: incident_type
+  platform_ref:
+    description: TEXT. Reference to the affected platform.
+    sql: platform_ref
+  post_mortem_completed:
+    description: 'BOOLEAN. Whether post-mortem analysis was completed. Possible values: True, False.'
+    sql: post_mortem_completed
+  preventive_actions_count:
+    description: 'INTEGER. Number of preventive actions identified. **NULL means Actions not yet documented.** Example: 3.'
+    sql: preventive_actions_count
+  recurrence_probability:
+    description: 'REAL. Assessed probability of incident recurrence (0-1). **NULL means Risk assessment not completed.** Example: 0.15.'
+    sql: recurrence_probability
+  responders_count:
+    description: 'INTEGER. Number of team members responding to incident. Example: 4.'
+    sql: responders_count
+  root_cause_identified:
+    description: 'BOOLEAN. Whether root cause has been identified. Possible values: True, False.'
+    sql: root_cause_identified
+  severity_level:
+    description: 'TEXT. Severity classification of the incident. Unique values: Critical, High, Medium, Low.'
+    sql: severity_level
+  time_to_acknowledge_minutes:
+    description: 'INTEGER. Minutes from detection to acknowledgment. Example: 15.'
+    sql: time_to_acknowledge_minutes
+  time_to_resolve_minutes:
+    description: 'INTEGER. Minutes from detection to resolution. **NULL means Incident not yet resolved.** Example: 120.'
+    sql: time_to_resolve_minutes
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct PlatformIncidentReports public identity values.
+    label: PlatformIncidentReports Count
+    sql: ${cybermarket_pattern_large_public__platform_incident_reports.pir_id}

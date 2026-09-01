@@ -1,0 +1,99 @@
+label: household_member_skills
+description: All columns of the public table household_member_skills.
+catalog: residential_data_large
+schema: public
+table_name: household_member_skills
+dimensions:
+  assignment_id:
+    description: 'BIGSERIAL. Primary key identifier for household member skill assignment. PK. Possible values: 1, 2, 3, 4, 5, 6.'
+    sql: '"Assignment_ID"'
+  cost_invested_brl:
+    description: 'REAL. Total cost invested in skill development in Brazilian Real. **NULL means financial investment not recorded.**. Possible values: 1200.0, 850.0.'
+    sql: '"COST_invested_brl"'
+  certification_status:
+    description: 'TEXT. Current certification status for skill. **NULL means certification not applicable or status unknown.**. Possible values: Active, No.'
+    sql: '"Certification_Status"'
+  improvement_rate_percent:
+    description: 'REAL. Annual skill improvement rate percentage. **NULL means improvement tracking not available.**. Possible values: 12.8, 15.5, 5.2, 8.7.'
+    sql: '"Improvement_Rate_Percent"'
+  last_used_date:
+    description: 'DATE. Date when skill was last used. **NULL means recent usage not tracked.**. Possible values: 2025-06-15, 2025-07-20, 2025-08-05, 2025-08-10.'
+    sql: '"LAST_used_date"'
+  market_relevance_score:
+    description: 'BIGINT. Market relevance rating for skill. **NULL means market relevance not assessed.**. Possible values: 7.0, 8.0, 9.0.'
+    sql: '"MARKET_relevance_score"'
+  mentorship_available:
+    description: 'TEXT. Availability of mentorship for skill development. **NULL means mentorship status not assessed.**. Possible values: No, Yes.'
+    sql: '"MENTORSHIP_available"'
+  member_position:
+    description: 'BIGINT. Position of member within household (1=head, 2=spouse, 3=child1, etc.). Possible values: 1, 2, 3.'
+    sql: '"Member_Position"'
+  member_skills_ability_reference:
+    description: 'BIGINT. Reference to skill in inventory. FK to skills_inventory(Skill_ID). Possible values: 1, 2, 3, 4, 5.'
+    sql: '"Member_Skills_Ability_Reference"'
+  member_skills_household_link:
+    description: 'BIGINT. Reference to household for skill assignment. FK to households(housenum). Possible values: 22, 37, 4, 43, 44, 7.'
+    sql: '"Member_Skills_Household_Link"'
+  natural_aptitude_score:
+    description: 'BIGINT. Natural aptitude rating for skill. **NULL means aptitude not assessed.**. Possible values: 5.0, 7.0, 8.0.'
+    sql: '"Natural_Aptitude_Score"'
+  networking_connections_count:
+    description: 'BIGINT. Number of professional networking connections related to skill. **NULL means networking not tracked.**. Possible values: 12.0, 15.0, 2.0, 25.0, 8.0.'
+    sql: '"Networking_Connections_Count"'
+  portfolio_projects_count:
+    description: 'BIGINT. Number of portfolio projects demonstrating skill. **NULL means portfolio not developed.**. Possible values: 1.0, 15.0, 3.0, 5.0, 8.0.'
+    sql: '"PORTFOLIO_projects_count"'
+  proficiency_level:
+    description: 'BIGINT. Skill proficiency level rating. **NULL means proficiency not assessed.**. Possible values: 4.0, 6.0, 7.0, 8.0, 9.0.'
+    sql: '"PROFICIENCY_level"'
+  skill_evolution_trend:
+    description: 'TEXT. Trend in skill development (improving, stable, declining). **NULL means evolution not tracked.**. Possible values: Improving, Stable.'
+    sql: '"SKILL_evolution_trend"'
+  skill_transferability_score:
+    description: 'BIGINT. Rating of skill transferability to other contexts. **NULL means transferability not evaluated.**. Possible values: 6.0, 7.0, 8.0, 9.0.'
+    sql: '"Skill_Transferability_Score"'
+  tools_equipment_owned:
+    description: 'TEXT. Ownership of tools or equipment for skill. **NULL means equipment ownership not documented.**. Possible values: No, Yes.'
+    sql: '"TOOLS_equipment_owned"'
+  teaching_others_hours:
+    description: 'BIGINT. Total hours spent teaching skill to others. **NULL means teaching activity not recorded.**. Possible values: 180.0, 25.0, 45.0, 5.0.'
+    sql: '"Teaching_Others_Hours"'
+  time_invested_hours:
+    description: 'BIGINT. Total hours invested in learning skill. **NULL means time investment not tracked.**. Possible values: 120.0, 1200.0, 180.0, 2400.0, 450.0.'
+    sql: '"Time_Invested_Hours"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: created_at
+  future_learning_plans:
+    description: 'TEXT. Plans for future skill development. **NULL means future plans not documented.**. Possible values: Advanced Python frameworks, Python web development, Restaurant management, Social media certification.'
+    sql: '"future_learning_PLANS"'
+  income_generated_monthly_brl:
+    description: 'REAL. Monthly income generated from skill in Brazilian Real. **NULL means income from skill not tracked.**. Possible values: 0.0, 1500.0, 2800.0, 4200.0.'
+    sql: '"income_generated_MONTHLY_brl"'
+  learning_method:
+    description: 'TEXT. Method used to learn skill. **NULL means learning method not documented.**. Possible values: Apprenticeship, Formal education, Online courses, Work experience.'
+    sql: '"learning_METHOD"'
+  passion_level:
+    description: 'BIGINT. Level of passion or interest in skill. **NULL means passion level not measured.**. Possible values: 6.0, 8.0, 9.0.'
+    sql: '"passion_LEVEL"'
+  practice_frequency_hours_per_week:
+    description: 'REAL. Hours of skill practice per week. **NULL means practice frequency not tracked.**. Possible values: 12.0, 25.0, 4.0, 40.0, 8.5.'
+    sql: '"practice_frequency_HOURS_per_week"'
+  recognition_awards_count:
+    description: 'BIGINT. Number of awards or recognition received for skill. **NULL means recognition not tracked.**. Possible values: 0.0, 1.0, 2.0, 3.0.'
+    sql: '"recognition_awards_COUNT"'
+  workspace_available_m2:
+    description: 'REAL. Available workspace for skill practice in square meters. **NULL means workspace not available or measured.**. Possible values: 12.0, 15.0, 2.5, 8.5.'
+    sql: '"workspace_available_M2"'
+  years_experience:
+    description: 'REAL. Years of experience with skill. **NULL means experience duration not recorded.**. Possible values: 1.2, 12.5, 3.5, 4.8, 8.2.'
+    sql: '"years_EXPERIENCE"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct household_member_skills public identity values.
+    label: household_member_skills Count
+    sql: ${residential_data_large_public__household_member_skills.assignment_id}

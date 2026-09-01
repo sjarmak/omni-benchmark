@@ -1,0 +1,93 @@
+label: staff_training_enrollments
+description: All columns of the public table staff_training_enrollments.
+catalog: sports_events_large
+schema: public
+table_name: staff_training_enrollments
+dimensions:
+  attempts:
+    description: 'BIGINT. Number of attempts made by the staff member. Example: 1.'
+    sql: '"Attempts"'
+  attendance_pct:
+    description: 'REAL. Percentage of attendance in the training. Example: 0.95.'
+    sql: '"Attendance_pct"'
+  certificate_url:
+    description: 'TEXT. URL for the staff member’s certificate. Example: http://training/cert/1.pdf.'
+    sql: '"Certificate_URL"'
+  delta_kpi:
+    description: 'REAL. Change in KPI score after training. Example: 0.23.'
+    sql: '"DELTA_KPI"'
+  enrollment_record:
+    description: BIGSERIAL. Surrogate primary key for staff_training_enrollments rows. PK.
+    sql: '"ENROLLMENT_Record"'
+  employer_sponsored:
+    description: 'BOOLEAN. Whether the training is sponsored by the employer. Example: true.'
+    sql: '"Employer_Sponsored"'
+  enrolled_at:
+    description: 'TIMESTAMP. Timestamp when the staff member enrolled in the training. Example: 2025/01/01 10:00:00.'
+    sql: '"EnrolledAt"'
+  expiry_date:
+    description: 'DATE. Expiry date of the training certification. Example: 2027-01-01.'
+    sql: '"ExpiryDate"'
+  feedback_score:
+    description: 'REAL. Feedback score for the training. Example: 4.7.'
+    sql: '"Feedback_Score"'
+  feedback_text:
+    description: 'TEXT. Feedback text from the staff member. Example: Great session.'
+    sql: '"Feedback_Text"'
+  kpi_after:
+    description: 'REAL. KPI score after the training. Example: 0.78.'
+    sql: '"KPI_AFTER"'
+  kpi_before:
+    description: 'REAL. KPI score before the training. Example: 0.55.'
+    sql: '"KPI_BEFORE"'
+  mentor_assigned:
+    description: 'TEXT. Mentor assigned to the staff member for the training. Example: Dr. Lee.'
+    sql: '"MentorAssigned"'
+  mentor_sessions:
+    description: 'BIGINT. Number of sessions with the mentor. Example: 2.'
+    sql: '"MentorSessions"'
+  notes:
+    description: 'TEXT. Additional notes on the staff member’s training. Example: High potential.'
+    sql: '"Notes"'
+  passed:
+    description: 'BOOLEAN. Whether the staff member passed the training. Example: true.'
+    sql: '"Passed"'
+  payment_ref:
+    description: 'TEXT. Payment reference number. Example: INV-123.'
+    sql: '"PaymentRef"'
+  payment_status:
+    description: 'TEXT. Payment status of the training program. Example: paid.'
+    sql: '"Payment_Status"'
+  project_score:
+    description: 'REAL. Score achieved for the project. Example: 0.9.'
+    sql: '"ProjectScore"'
+  project_assignment:
+    description: 'TEXT. Project assignment during training. Example: DAQ Pilot.'
+    sql: '"Project_Assignment"'
+  reminder_days_before:
+    description: 'BIGINT. Days before the certification expiry for the reminder. Example: 30.'
+    sql: '"ReminderDaysBefore"'
+  retake_recommended:
+    description: 'BOOLEAN. Whether the staff member is recommended to retake the training. Example: false.'
+    sql: '"RetakeRecommended"'
+  retake_reason:
+    description: 'TEXT. Reason for retake if applicable. **NULL means no retake is required.** Example: N/A.'
+    sql: '"Retake_Reason"'
+  status:
+    description: 'TEXT. Status of the enrollment. Possible values: enrolled, completed, pending. Example: enrolled.'
+    sql: '"STATUS"'
+  score_pct:
+    description: 'REAL. Percentage of the score achieved in the training. Example: 0.82.'
+    sql: '"Score_pct"'
+  special_accommodation:
+    description: 'TEXT. Special accommodation needs. **NULL means no accommodation requested.** Example: wheelchair access.'
+    sql: '"Special_Accommodation"'
+  sponsor_notes:
+    description: 'TEXT. Notes from the sponsor. **NULL means no notes provided.** Example: Compliance.'
+    sql: '"SponsorNotes"'
+  staff_ref:
+    description: 'BIGINT. Foreign key referencing staff_directory(StaffID). FK → staff_directory(StaffID). Example: 1.'
+    sql: '"Staff_ref"'
+  training_ref:
+    description: 'BIGINT. Foreign key referencing training_programs(TRAINING_ID). FK → training_programs(TRAINING_ID). Example: 3.'
+    sql: '"Training_ref"'

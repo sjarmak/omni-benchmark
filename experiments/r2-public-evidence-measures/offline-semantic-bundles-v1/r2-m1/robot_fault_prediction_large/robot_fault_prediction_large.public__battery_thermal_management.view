@@ -1,0 +1,66 @@
+label: battery_thermal_management
+description: All columns of the public table battery_thermal_management.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: battery_thermal_management
+dimensions:
+  ambient_temp_c:
+    description: 'REAL. Temperature of the environment surrounding the pack. **NULL means Sensor offline.** Example: 22.'
+    sql: ambient_temp_c
+  balancing_active:
+    description: 'BOOLEAN. Status of cell balancing circuits. Possible values: True, False.'
+    sql: balancing_active
+  battery_log_key:
+    description: TEXT. Unique record key for battery health snapshot.
+    sql: battery_log_key
+  bms_fault_code:
+    description: TEXT. Error code reported by Battery Management System. **NULL means No faults.**
+    sql: bms_fault_code
+  charge_throughput_kwh:
+    description: 'REAL. Energy delivered to the battery during this event. **NULL means Not charging.** Example: 50.0.'
+    sql: charge_throughput_kwh
+  coolant_flow_rate_lpm:
+    description: 'REAL. Rate of coolant flow through the thermal management system. **NULL means System passive/pump off.** Example: 50.0.'
+    sql: coolant_flow_rate_lpm
+  cycle_count_lifetime:
+    description: 'INTEGER. Total number of charge/discharge cycles. Example: 50.'
+    sql: cycle_count_lifetime
+  discharge_throughput_kwh:
+    description: 'REAL. Energy drawn from the battery during this event. **NULL means Not discharging.** Example: 50.0.'
+    sql: discharge_throughput_kwh
+  energy_efficiency_ratio:
+    description: 'REAL. Ratio of energy output to energy input. Example: 0.9.'
+    sql: energy_efficiency_ratio
+  grid_event_ref:
+    description: TEXT. Reference to the grid optimization event context.
+    sql: grid_event_ref
+  internal_resistance_mohm:
+    description: 'REAL. Calculated internal resistance of the pack. Example: 120.'
+    sql: internal_resistance_mohm
+  max_cell_temp_c:
+    description: 'REAL. Temperature of the hottest cell in the pack. Example: 35.'
+    sql: max_cell_temp_c
+  min_cell_temp_c:
+    description: 'REAL. Temperature of the coldest cell in the pack. Example: 30.'
+    sql: min_cell_temp_c
+  pack_current_a:
+    description: 'REAL. Instantaneous current flow (positive for charging, negative for discharging). Example: 0.'
+    sql: pack_current_a
+  pack_voltage_v:
+    description: 'REAL. Total voltage across the battery pack. Example: 400.'
+    sql: pack_voltage_v
+  state_of_charge_percent:
+    description: 'REAL. Current energy level relative to capacity. Example: 50.0.'
+    sql: state_of_charge_percent
+  state_of_health_percent:
+    description: 'REAL. Estimated battery capacity relative to new condition. Example: 92.'
+    sql: state_of_health_percent
+  thermal_runaway_risk_score:
+    description: 'REAL. Calculated probability of thermal event (0-100). Example: 50.0.'
+    sql: thermal_runaway_risk_score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct battery_thermal_management public identity values.
+    label: battery_thermal_management Count
+    sql: ${robot_fault_prediction_large_public__battery_thermal_management.battery_log_key}

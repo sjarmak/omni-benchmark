@@ -1,0 +1,9 @@
+base_view: robot_fault_prediction_large_public__calibration_events
+label: calibration_events
+description: All columns of the public table calibration_events.
+fields:
+- robot_fault_prediction_large_public__calibration_events.*
+- robot_fault_prediction_large_public__end_effectors.*
+joins:
+  robot_fault_prediction_large_public__end_effectors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

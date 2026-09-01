@@ -1,0 +1,114 @@
+label: EquipmentSpecification
+description: All columns of the public table EquipmentSpecification.
+catalog: polar_equipment_large
+schema: public
+table_name: EquipmentSpecification
+dimensions:
+  equip_perf_and_form:
+    description: JSONB column. Groups serial/origin, dimensions & weight, drivetrain/energy, operating limits, compliance, and performance metrics for a specific equipment item.
+    sql: equip_perf_and_form
+  spec_record:
+    description: BIGSERIAL. Surrogate primary key for the specification row. PK.
+    sql: '"specRecord"'
+  spec_for_equipment:
+    description: 'TEXT. Equipment code this spec belongs to; references Equipment(EQUIP_CODE). FK. Example: PE593707.'
+    sql: spec_for_equipment
+  equip_perf_and_form_compliance_insul_class:
+    description: 'TEXT. Insulation class. Possible values (from file): Class A, Class B, Class F, Class H. Example: Class A.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'compliance', 'InsulClass')
+  equip_perf_and_form_compliance_safety_std:
+    description: 'TEXT. Applicable product safety standard. Possible values (from file): IEC 60204-1, IEC 61010-1, ISO 13849-1. Example: IEC 60204-1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'compliance', 'safetyStd')
+  equip_perf_and_form_dims_weight_dimhei_m:
+    description: 'REAL. Overall height in meters. Example: 1.30.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'dims_weight', 'DIMHEI_M')
+  equip_perf_and_form_dims_weight_dim_wid_m:
+    description: 'REAL. Overall width in meters. Example: 1.94.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'dims_weight', 'DimWid_m')
+  equip_perf_and_form_dims_weight_dim_len_m:
+    description: 'REAL. Overall length in meters. Example: 6.04.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'dims_weight', 'dimLen_m')
+  equip_perf_and_form_dims_weight_ground_clear_mm:
+    description: 'REAL. Ground clearance in millimeters. Example: 289.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'dims_weight', 'groundClear_mm')
+  equip_perf_and_form_dims_weight_mass_kg:
+    description: 'REAL. Unladen mass in kilograms. Example: 4715.68.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'dims_weight', 'mass_kg')
+  equip_perf_and_form_dims_weight_payload_max_kg:
+    description: 'REAL. Maximum rated payload in kilograms. Example: 853.34.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'dims_weight', 'payloadMax_kg')
+  equip_perf_and_form_dims_weight_wheelbase_mm:
+    description: 'REAL. Wheelbase in millimeters (if applicable). **NULL means the equipment is static/very low-speed or wheelbase not meaningful.** Example: 2149.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'dims_weight', 'wheelbase_mm')
+  equip_perf_and_form_drivetrain_energy_battery_cap_kwh:
+    description: 'REAL. Battery capacity in kilowatt-hours (kWh) for electrified units. **NULL means not applicable (ICE-dominant unit; large fuel tank).** Example: 13.46.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'drivetrain_energy', 'batteryCap_kwh')
+  equip_perf_and_form_drivetrain_energy_cont_power_w:
+    description: 'REAL. Continuous/rated power in watts (W). Example: 91718.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'drivetrain_energy', 'contPower_W')
+  equip_perf_and_form_drivetrain_energy_fuel_tank_l:
+    description: 'REAL. Fuel tank capacity in liters for combustion units. **NULL means EV-dominant configuration (large battery; no fuel tank).** Example: 113.74.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'drivetrain_energy', 'fuelTank_L')
+  equip_perf_and_form_drivetrain_energy_peak_power_w:
+    description: 'REAL. Peak power in watts (W). Example: 195630.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'drivetrain_energy', 'peakPower_W')
+  equip_perf_and_form_drivetrain_energy_peak_torque_nm:
+    description: 'REAL. Peak torque in newton-meters. Example: 4202.24.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'drivetrain_energy', 'peakTorque_Nm')
+  equip_perf_and_form_drivetrain_energy_power_factor:
+    description: 'REAL. Electrical power factor at rated conditions. **NULL means not applicable to combustion/mechanical-only loads.** Example: 0.79.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'drivetrain_energy', 'powerFactor')
+  equip_perf_and_form_drivetrain_energy_rated_current_a:
+    description: 'REAL. Rated current in amperes. Example: 38.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'drivetrain_energy', 'ratedCurrent_A')
+  equip_perf_and_form_drivetrain_energy_rated_voltage_v:
+    description: 'REAL. Rated supply voltage in volts. Possible values (from file): 110.0, 220.0, 400.0, 480.0. Example: 220.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'drivetrain_energy', 'ratedVoltage_V')
+  equip_perf_and_form_env_limits_em_emission_gps:
+    description: 'REAL. Emissions (grams per second) for regulated pollutants (if tracked). Example: 0.317.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'env_limits', 'emEmission_gps')
+  equip_perf_and_form_env_limits_ingress_ip:
+    description: 'TEXT. Ingress protection rating (IEC 60529). Possible values (from file): IP54, IP65, IP67, IP68. Example: IP54.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'env_limits', 'ingressIP')
+  equip_perf_and_form_env_limits_noise_d_ba:
+    description: 'REAL. A-weighted acoustic noise level in dB(A). Example: 78.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'env_limits', 'noise_dBA')
+  equip_perf_and_form_env_limits_oper_temp_max_c:
+    description: 'REAL. Maximum rated operating temperature in °C. Example: 60.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'env_limits', 'operTempMax_C')
+  equip_perf_and_form_env_limits_oper_temp_min_c:
+    description: 'REAL. Minimum rated operating temperature in °C. Example: -20.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'env_limits', 'operTempMin_C')
+  equip_perf_and_form_env_limits_rf_emission_d_bm:
+    description: 'REAL. RF emission level in dBm (if radios present). **NULL means RF is disabled/not applicable (e.g., lab equipment under IEC 61010-1).** Example: -47.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'env_limits', 'rfEmission_dBm')
+  equip_perf_and_form_id_and_origin_doc_ref:
+    description: 'TEXT. Reference document identifier/URL fragment. Example: DOC-7738.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'id_and_origin', 'DocRef')
+  equip_perf_and_form_id_and_origin_notes:
+    description: 'TEXT. Freeform specification note. Example: Includes integrated GPS module for fleet tracking.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'id_and_origin', 'Notes')
+  equip_perf_and_form_id_and_origin_serial_no:
+    description: 'TEXT. Manufacturer serial number. Example: SN35660.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'id_and_origin', 'SerialNo')
+  equip_perf_and_form_id_and_origin_country_of_origin:
+    description: 'TEXT. Country of manufacture or final assembly. Possible values (from file): Brazil, Canada, France, Germany, India, Japan, UK, USA. Example: UK.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'id_and_origin', 'country_of_origin')
+  equip_perf_and_form_id_and_origin_year_manufactured:
+    description: 'BIGINT. Calendar year of manufacture. Example: 2020.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'id_and_origin', 'yearManufactured')
+  equip_perf_and_form_perf_accel_mps2:
+    description: 'REAL. Acceleration in m/s². Example: 2.41.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'perf', 'ACCEL_mps2')
+  equip_perf_and_form_perf_brake_dist_m:
+    description: 'REAL. Braking distance from a defined speed, meters. Example: 23.51.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'perf', 'brakeDist_m')
+  equip_perf_and_form_perf_max_speed_mps:
+    description: 'REAL. Maximum speed in meters per second. Example: 18.72.'
+    sql: JSONB_EXTRACT_PATH_TEXT(equip_perf_and_form, 'perf', 'maxSpeed_mps')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EquipmentSpecification public identity values.
+    label: EquipmentSpecification Count
+    sql: ${polar_equipment_large_public__equipment_specification.spec_record}

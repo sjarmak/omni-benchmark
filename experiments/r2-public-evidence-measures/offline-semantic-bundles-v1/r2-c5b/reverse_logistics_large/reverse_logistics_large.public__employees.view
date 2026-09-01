@@ -1,0 +1,99 @@
+label: employees
+description: All columns of the public table employees.
+catalog: reverse_logistics_large
+schema: public
+table_name: employees
+dimensions:
+  date_of_birth:
+    description: 'TEXT. The employee''s date of birth, in YYYY/MM/DD format. Example: 2002/03/02.'
+    sql: '"DATE_OF_BIRTH"'
+  department:
+    description: 'TEXT. The department the employee works in. Possible values: Logistics, Operations, Analytics, Human Resources, Quality.'
+    sql: '"DEPARTMENT"'
+  employee_id:
+    description: 'BIGINT. Unique identifier for the employee. PK. Example: 1001.'
+    sql: '"EMPLOYEE_ID"'
+  employment_status:
+    description: 'TEXT. The current employment status of the employee. Example: Active.'
+    sql: '"EMPLOYMENT_STATUS"'
+  hire_date:
+    description: 'TEXT. The date the employee was hired, in YYYY/MM/DD format. Example: 2013/03/10.'
+    sql: '"HIRE_DATE"'
+  job_title:
+    description: 'TEXT. The employee''s job title. Possible values: Warehouse Associate, Logistics Coordinator, Operations Manager, Data Analyst, HR Business Partner, Quality Control Inspector.'
+    sql: '"JOB_TITLE"'
+  last_name:
+    description: 'TEXT. The employee''s last name. Example: LastName1.'
+    sql: '"LAST_NAME"'
+  last_review_date:
+    description: 'TEXT. The date of the employee''s last performance review, in YYYY/MM/DD format. Example: 2022/08/08.'
+    sql: '"LAST_REVIEW_DATE"'
+  access_level:
+    description: 'BIGINT. A numerical value representing the employee''s system access level. Example: 5.'
+    sql: access_level
+  assigned_equipment_serial_numbers:
+    description: 'JSONB. A JSON array of serial numbers for equipment assigned to the employee. Example: [YwHML2tste9m, 88JxcNnlHy2h].'
+    sql: assigned_equipment_serial_numbers
+  badge_id:
+    description: 'TEXT. The unique ID of the employee''s access badge. Example: 3PCY32H1.'
+    sql: badge_id
+  emergency_contact:
+    description: JSONB column. Contains information for the employee's designated emergency contact.
+    sql: emergency_contact
+  first_name:
+    description: 'TEXT. The employee''s first name. Example: FirstName1.'
+    sql: first_name
+  hourly_rate:
+    description: 'REAL. The hourly pay rate for non-salaried employees. **NULL means this is a salaried employee.** Example: 41.55.'
+    sql: hourly_rate
+  is_manager:
+    description: 'BOOLEAN. Indicates if the employee is a manager. Possible values: True, False.'
+    sql: is_manager
+  is_remote_worker:
+    description: 'BOOLEAN. Indicates if the employee works remotely. Example: False.'
+    sql: is_remote_worker
+  manager_employee_id:
+    description: 'BIGINT. The employee ID of this employee''s direct manager. **NULL means the employee is a top-level executive or their manager is not yet assigned.** Example: 1039.0.'
+    sql: manager_employee_id
+  nationality:
+    description: 'TEXT. The employee''s nationality. Example: USA.'
+    sql: nationality
+  password_last_changed:
+    description: 'DATE. The date the employee last changed their system password. Example: 2025-08-18.'
+    sql: password_last_changed
+  performance_review_score:
+    description: 'REAL. The score from the employee''s most recent performance review. Example: 4.8.'
+    sql: performance_review_score
+  phone_extension:
+    description: 'TEXT. The employee''s internal phone extension. **NULL means the employee does not have a dedicated phone extension (e.g., remote worker).** Example: x6789.'
+    sql: phone_extension
+  photo_url:
+    description: 'TEXT. A URL to the employee''s profile photo. **NULL means a photo has not been uploaded yet.** Example: https://examplecorp.com/photos/1001.jpg.'
+    sql: photo_url
+  salary:
+    description: 'REAL. The annual salary for salaried employees. **NULL means this is an hourly employee.** Example: 110561.39.'
+    sql: salary
+  system_user_id:
+    description: 'TEXT. The employee''s user ID for logging into systems. Example: usr1001.'
+    sql: system_user_id
+  team_name:
+    description: 'TEXT. The name of the team the employee belongs to. **NULL means the employee is not part of a formally named team.** Example: Team Charlie.'
+    sql: team_name
+  training_certifications:
+    description: 'JSONB. A JSON array of training certifications the employee has completed. Example: [Safety Training, Forklift Certified].'
+    sql: training_certifications
+  work_email:
+    description: 'TEXT. The employee''s corporate email address. Example: user1001@examplecorp.com.'
+    sql: work_email
+  work_location_code:
+    description: 'TEXT. The code for the primary warehouse or office location. FK to warehouses.warehouse_code. Example: WH-IAX-003.'
+    sql: work_location_code
+  work_shift:
+    description: 'TEXT. The employee''s typical work shift. Possible values: Day, Night, Flex.'
+    sql: work_shift
+  emergency_contact_name:
+    description: 'TEXT. The name of the employee''s emergency contact. Example: EContact1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emergency_contact, 'name')
+  emergency_contact_phone:
+    description: 'TEXT. The phone number of the employee''s emergency contact. Example: 555-E001-1214.'
+    sql: JSONB_EXTRACT_PATH_TEXT(emergency_contact, 'phone')

@@ -1,0 +1,13 @@
+base_view: fake_account_large_public__account_subscriptions
+label: account_subscriptions
+description: All columns of the public table account_subscriptions.
+fields:
+- fake_account_large_public__account_subscriptions.*
+- fake_account_large_public__accounts.*
+- fake_account_large_public__platforms.*
+- fake_account_large_public__subscription_packages.*
+joins:
+  fake_account_large_public__accounts:
+    fake_account_large_public__platforms: {}
+  fake_account_large_public__subscription_packages: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

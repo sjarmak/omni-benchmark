@@ -1,0 +1,12 @@
+label: categories
+description: All columns of the public table categories.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: categories
+dimensions:
+  catref:
+    description: A SERIAL primary key uniquely identifying each fund category or investment classification in the database.
+    sql: catref
+  classtype:
+    description: Unique fund category classification (e.g., 'Large Cap Growth', 'International Equity', 'Bond Index', 'Sector Equity', 'Commodity'). Must be unique across all records.
+    sql: classtype

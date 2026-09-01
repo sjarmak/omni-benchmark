@@ -1,0 +1,51 @@
+label: warehouse_staff_assignments
+description: All columns of the public table warehouse_staff_assignments.
+catalog: reverse_logistics_large
+schema: public
+table_name: warehouse_staff_assignments
+dimensions:
+  access_card_id:
+    description: 'TEXT. The ID of the access card assigned for this location. Example: AC-9ABFLGZ2.'
+    sql: access_card_id
+  assigned_staff_member:
+    description: 'BIGINT. The ID of the assigned employee. FK to employees.EMPLOYEE_ID. Example: 1043.'
+    sql: assigned_staff_member
+  assigned_zone:
+    description: 'TEXT. The specific zone within the warehouse the employee is assigned to. **NULL means the employee has access to all zones.** Example: C.'
+    sql: assigned_zone
+  assignment_end_date:
+    description: 'DATE. The end date of the assignment. **NULL indicates the assignment is currently active.** Example: 2023-03-15.'
+    sql: assignment_end_date
+  assignment_id:
+    description: 'BIGINT. Unique identifier for the staff assignment. PK. Example: 2001.'
+    sql: assignment_id
+  assignment_start_date:
+    description: 'DATE. The start date of the assignment. Example: 2021-11-04.'
+    sql: assignment_start_date
+  emergency_drill_certified:
+    description: 'BOOLEAN. Indicates if the employee is certified in emergency drills for this location. Example: True.'
+    sql: emergency_drill_certified
+  forklift_license_expiry:
+    description: 'DATE. The expiry date of the employee''s forklift license. **NULL means the role does not require a forklift license or the employee is not certified.** Example: 2027-02-06.'
+    sql: forklift_license_expiry
+  is_active_assignment:
+    description: 'BOOLEAN. Indicates if the assignment is currently active. Example: True.'
+    sql: is_active_assignment
+  is_primary_location:
+    description: 'BOOLEAN. Indicates if this is the employee''s primary work location. Example: True.'
+    sql: is_primary_location
+  performance_metric:
+    description: 'REAL. A performance metric score for the employee in this role. **NULL indicates a metric has not been recorded yet (e.g., new assignment).** Example: 89.82.'
+    sql: performance_metric
+  role_in_warehouse:
+    description: 'TEXT. The employee''s role for this assignment. Possible values: Picker, Packer, Supervisor, Receiving Clerk.'
+    sql: role_in_warehouse
+  shift_pattern:
+    description: 'TEXT. The assigned shift pattern. **NULL means the employee has flexible or non-standard hours.** Example: 4x10 Day Shift.'
+    sql: shift_pattern
+  supervisor_id:
+    description: 'BIGINT. The employee ID of the direct supervisor for this assignment. **NULL means the employee is a warehouse manager or supervisor themself.** Example: 1030.0.'
+    sql: supervisor_id
+  workplace_location:
+    description: 'TEXT. The code for the warehouse location. FK to warehouses.warehouse_code. Example: WH-XVF-022.'
+    sql: workplace_location

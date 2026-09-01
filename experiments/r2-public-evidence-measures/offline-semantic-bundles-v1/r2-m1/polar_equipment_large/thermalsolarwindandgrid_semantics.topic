@@ -1,0 +1,27 @@
+base_view: polar_equipment_large_public__thermalsolarwindandgrid
+label: Thermal Solar Wind And Grid
+description: Thermal and power-generation records with insulation, renewable-energy, and field-context semantics.
+fields:
+- polar_equipment_large_public__thermalsolarwindandgrid.*
+- polar_equipment_large_public__communication.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__location.*
+- polar_equipment_large_public__operationmaintenance.*
+- polar_equipment_large_public__powerbattery.*
+joins:
+  polar_equipment_large_public__communication:
+    polar_equipment_large_public__equipment:
+      polar_equipment_large_public__equipmenttype: {}
+    polar_equipment_large_public__location: {}
+    polar_equipment_large_public__operationmaintenance: {}
+  polar_equipment_large_public__powerbattery: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields renewable_energy_contribution, thermal_insulation_efficiency rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Sustainable Energy Operation: An operation is considered ''Energy-Sustainable'' when it maintains a REC above 70% (meaning more than 70% of energy comes from renewable sources) while maintaining full operational capability and adequate power reserves for at least 48 hours in case of emergency.
+
+  - Comprehensive Environmental Adaptability Rating (CEAR): Equipment and systems are rated as having ''Excellent Adaptability'' (ECAC > 0.85 and SSF > 0.8 and insulation status = ''Good''), ''Good Adaptability'' (ECAC > 0.7 and SSF > 0.65 and insulation status != ''Poor''), or ''Limited Adaptability'' (other cases).'

@@ -1,0 +1,50 @@
+label: Circuits
+description: Circuit records with location metadata.
+catalog: sports_events_large
+schema: public
+table_name: circuits
+dimensions:
+  elevation_m:
+    description: 'INTEGER. Circuit elevation in metres. **NULL means elevation data were not provided for this circuit.**. Example: 10.0.'
+    label: Elevation (m)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(location_metadata, 'coordinates', 'elevation_m') AS DOUBLE PRECISION)
+  location_metadata:
+    description: JSONB column. Encapsulates all geographical and identification data related to the circuit’s location.
+    label: Circuit location metadata
+    sql: location_metadata
+    ai_context: 'Data Unavailability for Circuit Elevation: When a circuit''s elevation in meters is not provided, it signifies that this specific data point was not recorded for the circuit.'
+  cctkey:
+    description: 'INTEGER. Unique identifier for the circuit. PK. Example: 1.'
+    sql: cctkey
+  location_metadata_coordinates_latitude:
+    description: 'REAL. Latitude coordinate of the circuit. **NULL means the latitude is not recorded or the circuit''s exact position is uncertain.**. Example: -37.8497.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_metadata, 'coordinates', 'latitude')
+  location_metadata_coordinates_longitude:
+    description: 'REAL. Longitude coordinate of the circuit. **NULL means longitude is missing or unavailable.**. Example: 144.968.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_metadata, 'coordinates', 'longitude')
+  location_metadata_external_link:
+    description: 'VARCHAR. URL with more information about the circuit. **NULL means no official or stable link is on record.**. Example: http://en.wikipedia.org/wiki/Melbourne_Grand_Prix_Circuit.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_metadata, 'external_link')
+  location_metadata_location_city:
+    description: 'VARCHAR. City or locality of the circuit. **NULL means the locality was not supplied or is unknown in the source feed.**. Example: Melbourne.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_metadata, 'location', 'city')
+  location_metadata_location_country:
+    description: 'TEXT. Name of the country where the circuit is located. Example: Australia.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_metadata, 'location', 'country')
+  location_metadata_name:
+    description: 'TEXT. Name of the circuit. Example: Albert Park Grand Prix Circuit.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_metadata, 'name')
+  location_metadata_reference_code:
+    description: 'TEXT. Circuit reference code. Example: albert_park.'
+    sql: JSONB_EXTRACT_PATH_TEXT(location_metadata, 'reference_code')
+  high_altitude_circuit:
+    label: High-Altitude Circuit
+    description: Defines a circuit with specific environmental characteristics that impact vehicle performance.
+    sql: ${elevation_m} > 800
+    ai_context: Use this modeled field for High-Altitude Circuit; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Circuits public identity values.
+    label: Circuits Count
+    sql: ${sports_events_large_public__circuits.cctkey}

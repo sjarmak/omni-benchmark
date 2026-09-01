@@ -1,0 +1,81 @@
+label: SkillCatalogue
+description: All columns of the public table SkillCatalogue.
+catalog: disaster_relief_large
+schema: public
+table_name: SkillCatalogue
+dimensions:
+  avg_retention_months:
+    description: INT. Average number of months volunteers retain the skill before refresh is recommended.
+    sql: '"AVG_RETENTION_MONTHS"'
+  created_at:
+    description: TIMESTAMP. Record creation timestamp (UTC).
+    sql: '"Created_At"'
+  demand_index:
+    description: REAL. Relative demand (1-5 scale) derived from recent deployment statistics.
+    sql: '"DEMAND_index"'
+  difficulty_level:
+    description: 'TEXT. Difficulty tier of the skill. Possible values: Beginner, Intermediate, Advanced.'
+    sql: '"Difficulty_Level"'
+  governing_body:
+    description: TEXT. Authority that issues or recognises the certification (e.g., Red Cross, OSHA). May be NULL when no governing organisation applies.
+    sql: '"GOVERNING_BODY"'
+  is_active:
+    description: BOOLEAN. FALSE when the skill is retired from the catalogue.
+    sql: '"IS_ACTIVE"'
+  language:
+    description: 'TEXT. Primary language in which the skill is taught/materials exist. Example: EN.'
+    sql: '"Language"'
+  notes:
+    description: TEXT. Free-form remarks about the skill (QA comments, migration notes, etc.).
+    sql: '"Notes"'
+  skill_code:
+    description: TEXT. Short alphanumeric shorthand of the skill for rosters.
+    sql: '"SKILL_CODE"'
+  skill_name:
+    description: TEXT. Human-readable skill title (e.g., “Advanced Rope Rescue”).
+    sql: '"SKILL_name"'
+  standard_operating_proc:
+    description: TEXT. Reference to the SOP document or section ID. May be NULL for skills that follow general SOP.
+    sql: '"STANDARD_OPERATING_PROC"'
+  skill_demand_score_out_of_5:
+    description: REAL. Demand score (1.0-5.0) derived from internal analytics.
+    sql: '"SkillDemandScore_out_of_5"'
+  updated_at:
+    description: TIMESTAMP. Last metadata update timestamp (UTC).
+    sql: '"UPDATED_AT"'
+  version_no:
+    description: INT. Schema or curriculum version number for change tracking.
+    sql: '"VERSION_NO"'
+  certification_required:
+    description: BOOLEAN. TRUE if a formal certificate is mandatory before assignment.
+    sql: '"certification_REQUIRED"'
+  competency_framework:
+    description: TEXT. Framework code that maps to HR competency models (e.g., CF-2025). May be NULL if not mapped yet.
+    sql: '"competencyFRAMEWORK"'
+  equipment_required:
+    description: TEXT. Key items a volunteer must have (e.g., “Harness, Helmet”). May be NULL if none are needed.
+    sql: '"equipmentRequired"'
+  example_tasks:
+    description: TEXT. Sample tasks illustrating day-to-day use of the skill.
+    sql: example_tasks
+  related_skills:
+    description: TEXT. Comma-separated list of overlapping skills. May be NULL when no obvious overlap exists.
+    sql: '"relatedSkills"'
+  safety_risk_level:
+    description: 'TEXT. Inherent safety risk when performing the skill. Possible values: Low, Medium, High.'
+    sql: '"safetyRiskLevel"'
+  skill_category:
+    description: 'TEXT. Broad grouping of the skill. Example values: Technical, Soft, Administrative, Safety, Language, Medical.'
+    sql: '"skillCategory"'
+  skill_id:
+    description: VARCHAR(20). Unique identifier for a skill in the catalog. PK.
+    sql: '"skillID"'
+  skill_valid_period_months:
+    description: REAL. Months a certification stays valid before recertification (e.g., 24).
+    sql: '"skillValid_Period_months"'
+  typical_pay_rate_usd_per_h:
+    description: 'REAL. Typical external market pay rate for the skill expressed in USD per hour. Example: 28.0.'
+    sql: '"typicalPayRate_USD_per_h"'
+  typical_training_hours:
+    description: REAL. Typical hours of formal training needed (e.g., 24.0).
+    sql: '"typicalTrainingHours"'

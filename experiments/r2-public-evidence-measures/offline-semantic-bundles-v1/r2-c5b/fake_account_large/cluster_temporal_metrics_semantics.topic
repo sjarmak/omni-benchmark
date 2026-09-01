@@ -1,0 +1,9 @@
+base_view: fake_account_large_public__cluster_temporal_metrics
+label: cluster_temporal_metrics
+description: All columns of the public table cluster_temporal_metrics.
+fields:
+- fake_account_large_public__cluster_temporal_metrics.*
+- fake_account_large_public__cluster_analysis.*
+joins:
+  fake_account_large_public__cluster_analysis: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

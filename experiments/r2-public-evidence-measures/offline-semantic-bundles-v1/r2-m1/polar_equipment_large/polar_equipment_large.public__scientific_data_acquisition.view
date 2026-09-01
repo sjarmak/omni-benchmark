@@ -1,0 +1,72 @@
+label: ScientificDataAcquisition
+description: All columns of the public table ScientificDataAcquisition.
+catalog: polar_equipment_large
+schema: public
+table_name: ScientificDataAcquisition
+dimensions:
+  acquisition_end_time:
+    description: 'TIMESTAMP. Timestamp when data acquisition completed. **NULL means Acquisition still in progress.** Example: 2024-01-01 12:00:00.'
+    sql: '"acquisitionEndTime"'
+  acquisition_start_time:
+    description: 'TIMESTAMP. Timestamp when data acquisition began. Example: 2024-01-01 12:00:00.'
+    sql: '"acquisitionStartTime"'
+  anomaly_detected:
+    description: 'TEXT. Whether anomalies were detected in data. Possible values: True, False.'
+    sql: '"anomalyDetected"'
+  artifact_count:
+    description: 'INTEGER. Number of artifacts detected in data. Example: 12.'
+    sql: '"artifactCount"'
+  calibration_applied:
+    description: 'TEXT. Whether calibration correction was applied. Possible values: True, False.'
+    sql: '"calibrationApplied"'
+  compression_ratio:
+    description: 'REAL. Data compression ratio achieved. **NULL means No compression applied.** Example: 3.5.'
+    sql: '"compressionRatio"'
+  data_acq_seq:
+    description: TEXT. Unique identifier for each data acquisition event.
+    sql: '"dataAcqSeq"'
+  data_quality_pct:
+    description: 'REAL. Percentage of data passing quality checks. Example: 94.'
+    sql: '"dataQualityPct"'
+  data_size_bytes:
+    description: 'INTEGER. Total raw data size in bytes. Example: 50000000.'
+    sql: '"dataSizeBytes"'
+  filter_applied:
+    description: 'TEXT. Type of filter applied during acquisition. Unique values: None, LowPass, HighPass, BandPass, Notch, Adaptive.'
+    sql: '"filterApplied"'
+  filter_cutoff_hz:
+    description: 'REAL. Filter cutoff frequency in Hertz. **NULL means No filter or filter NA.** Example: 500.'
+    sql: '"filterCutoff_hz"'
+  gain_setting:
+    description: 'REAL. Amplifier gain setting applied. Unique values: 1, 2, 5, 10, 20, 50, 100.'
+    sql: '"gainSetting"'
+  operator_verified:
+    description: 'TEXT. Whether operator verified data quality. Possible values: True, False.'
+    sql: '"operatorVerified"'
+  processing_status:
+    description: 'TEXT. Current data processing status. Unique values: Raw, Preprocessed, Analyzed, Validated, Archived, Failed.'
+    sql: '"processingStatus"'
+  resolution_bits:
+    description: 'INTEGER. ADC resolution in bits. Unique values: 8, 12, 14, 16, 24.'
+    sql: '"resolutionBits"'
+  sample_count:
+    description: 'INTEGER. Number of samples collected during acquisition. Example: 5000.'
+    sql: '"sampleCount"'
+  sample_rate_hz:
+    description: 'REAL. Data sampling rate in Hertz. Unique values: 1, 10, 100, 1000, 10000, 44100.'
+    sql: '"sampleRate_hz"'
+  scientific_ref:
+    description: 'INTEGER. Reference to the scientific equipment record. Example: 50.'
+    sql: scientific_ref
+  signal_noise_ratio_d_b:
+    description: 'REAL. Signal to noise ratio in decibels. **NULL means SNR calculation not performed.** Example: 45.'
+    sql: '"signalNoiseRatio_dB"'
+  storage_location:
+    description: 'TEXT. Where acquired data is stored. Unique values: LocalDisk, NetworkShare, CloudStorage, TapeArchive, BufferOnly.'
+    sql: '"storageLocation"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ScientificDataAcquisition public identity values.
+    label: ScientificDataAcquisition Count
+    sql: ${polar_equipment_large_public__scientific_data_acquisition.data_acq_seq}

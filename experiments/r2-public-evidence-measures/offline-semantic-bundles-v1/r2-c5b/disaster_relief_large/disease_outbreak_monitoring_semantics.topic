@@ -1,0 +1,11 @@
+base_view: disaster_relief_large_public__disease_outbreak_monitoring
+label: DiseaseOutbreakMonitoring
+description: All columns of the public table DiseaseOutbreakMonitoring.
+fields:
+- disaster_relief_large_public__disease_outbreak_monitoring.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__environmentandhealth.*
+joins:
+  disaster_relief_large_public__environmentandhealth:
+    disaster_relief_large_public__disasterevents: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

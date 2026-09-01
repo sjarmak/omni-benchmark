@@ -1,0 +1,15 @@
+base_view: planets_data_large_public__planets
+label: Planets
+description: Planet identity records with public discovery-method semantics.
+fields:
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__stars: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields discovery_via_radial_velocity, discovery_via_transit_method rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Discovery Method Standardization: A process that groups different raw discovery method labels from the database into a clear, standardized set. The standard categories and their corresponding raw labels are: ''Radial Velocity'' (includes ''RadVel'', ''RV'', ''RV Method'', ''Radial Velocity'', ''Doppler''), ''Transit'' (includes ''Transit'', ''TR'', ''Transit Method'', ''Photometry'', ''Photometric''), ''Imaging'' (includes ''Direct Imaging'', ''DI'', ''Imaging'', ''IMG'', ''Direct''), ''TTV'' (includes ''TTV'', ''Transit Timing Variations'', ''Transit Timing'', ''TTV Method'', ''Timing Var''), ''Microlensing'' (includes ''Microlensing'', ''ML'', ''\u03bcLens'', ''Lensing'', ''Gravitational''). Any method not in these groups is classified as ''Other''.'

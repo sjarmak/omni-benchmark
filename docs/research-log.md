@@ -13674,3 +13674,512 @@ and custody posture. The governed dollar figures remain estimates and remain
 non-comparable with the direct arms; that limit is now carried by the data, not
 only by the prose around it. No Omni call, deployment, evaluated attempt, dev-B
 access, or sealed access was made.
+
+## 2026-09-01 — D-227: Freeze the offline R2 execution and arm-finalization contract
+
+### Hypothesis and boundary
+
+The frozen R2 bundles, paired schedule, and analyzers did not yet make an R2
+attempt executable: the production C1-C4 driver rejects `R2-C5B` and `R2-M1`,
+hard-codes C4 attempt identities, and groups work by database instead of
+preserving the R2 pair order. Extending that generic driver would widen a frozen
+surface and was expressly outside the approved series. The narrow alternative
+is a dedicated R2 contract that reuses the existing immutable artifact shape
+without exposing any live action.
+
+`src/omni_benchmark/r2_execution.py` now builds the exact 272-attempt plan only
+from a canonical Git archive. It regenerates the paired schedule from its public
+inputs, authenticates every file in the 3,533-file bundle tree, builds and hashes
+all 32 condition-by-database semantic plans, derives the harness, prompt, and
+instruction hashes from the same commit, enforces distinct execution and
+deployment run IDs, and binds the explicit Balanced settings digest. Pair
+adjacency and the frozen within-pair order remain exact. Cost projections are
+checked as unrounded `Decimal` totals against USD 500 per arm and USD 1,000
+total; verification caught and corrected an initial implementation that checked
+the two-decimal display value instead.
+
+The same module publishes one terminal attempt append-only, rejects protected or
+scored fields recursively, reconciles every record and manifest against the
+plan, and emits the two canonical 136-record generation JSONLs only after all
+272 scheduled attempts validate. Missing, partial, drifted, duplicated, or
+out-of-order evidence produces no finalization output. It has no retry loop and
+cannot rerun from an outcome. `src/omni_benchmark/r2_execution_cli.py` and
+`scripts/r2_execution.py` expose only dry-plan and finalization modes; there is
+deliberately no deployment or live-execution flag.
+
+### Offline freeze and verification
+
+The append-only mode-`0600` freeze manifest is
+`experiments/r2-public-evidence-measures/r2-execution-contract-freeze-v1.json`.
+It is 1,649 bytes, external SHA-256
+`d812c54739e46a902103574fed7807e4583b0a6a291223924f2d103ab67740ec`,
+and has internal digest
+`4eccdfb7a890cb2b040ff5d87e78a87cbaf7c9c7998055e0b6baa749a1928e7d`.
+It binds the source, CLI, script, tests, paired-schedule SHA-256
+`8498c35e…27bda`, bundle-set SHA-256 `bbea478e…a1a2`, Balanced-settings
+SHA-256 `68b36ac9…5d33`, budget gates, append-only policy, all-or-nothing
+finalization, and the absence of a live surface.
+
+Thirty-six focused planner, committed-snapshot, filesystem-boundary,
+publication, analyzer-compatibility, and CLI tests pass at 82.31% combined
+branch coverage. A real public-only working-tree readback authenticates all 32
+semantic plans and reproduces 136 pairs / 272 attempts across 16 databases. The
+same dry command against current Git HEAD fails closed with `committed R2 inputs
+are unavailable`, proving the uncommitted working tree cannot cross the control
+plane. The final cross-R2 collection contains 254 tests, all covered by the
+complete repository gate. That gate passes 2,552 tests with three expected live
+integration skips at 83.55% branch coverage. All-repository Ruff and format
+checks pass across 390 files, and `git diff --check` is clean.
+
+### Consequence
+
+R2 now has a frozen route from committed public inputs to canonical generation
+artifacts without changing the C1-C4 driver, but it still cannot run. The human
+opportunity map is incomplete, the R2 tree is not Git-landed, D-196 and the exact
+action receipts remain in force, and no attempt CLI or live dispatcher exists.
+This slice made no Omni call, deployment, evaluated attempt, correctness read,
+result-value read, credential access, dev-B access, or sealed access.
+
+## 2026-09-01 — D-228: Correct the frozen R2 root bundle inventory key
+
+### Discovery and hypothesis
+
+The first independent real-artifact check for the dedicated R2 runtime adapter
+failed inside D-227 before adapter code ran. The root bundle-set producer,
+published-artifact verifier, and all 3,532 records in the frozen bundle manifest
+use the canonical inventory key `path`; D-227's committed-snapshot loader and
+synthetic fixture instead expected `file`. The unchanged frozen bundle manifest
+still had its expected SHA-256 `bbea478e…a1a2`, so weakening its schema or
+regenerating it would have been the wrong repair. The narrow hypothesis was that
+changing only those two loader references and correcting the fixture would make
+the claimed 32-plan authentication reproducible without changing any schedule,
+bundle, semantic digest, identity, cost, publication, or finalization behavior.
+
+### Correction and verification
+
+The regression fixture now uses the production `path` schema and a separate
+test proves the legacy/wrong `file` key is rejected. The runtime change in
+`src/omni_benchmark/r2_execution.py` is exactly two key references. The complete
+execution-contract suite passes 37 tests at 82.54% combined branch coverage.
+The real public-only working-tree check then authenticated the full 3,532-file
+inventory, rebuilt both 16-database arms and all 32 semantic plans, and produced
+the 272-attempt execution-plan SHA-256
+`8378f3c7cecba8582271e18ec715f4714c5209eee26129208d1f56170214dfd5`.
+
+D-227's v1 freeze is preserved byte-for-byte but superseded for execution use by
+the append-only mode-`0600`
+`experiments/r2-public-evidence-measures/r2-execution-contract-freeze-v2.json`.
+The v2 file is 2,398 bytes, external SHA-256
+`663f3bb0551d395458047baa754fa3fffb0e747c677c068c9d5b64008ea078e7`,
+and internal artifact SHA-256
+`42042a4be0f017e69e3cd55c8174282e9541e11f72f4f59f0ae87f2cc046ec65`.
+It binds the corrected source and test hashes, the unchanged CLI/script and R2
+pins, the v1 external and internal hashes, the exact correction scope, and the
+real readback evidence.
+
+### Consequence
+
+The D-227 statement that v1 itself passed a real 32-plan readback was not
+reproducible and is corrected by this entry; v2 is the authoritative execution
+freeze. The fail-closed behavior did its job: no malformed plan could cross the
+control plane. No Omni call, deployment, evaluated attempt, question read,
+result-value read, correctness read, credential access, dev-B access, sealed
+access, commit, or push occurred. The R2 tree remains uncommitted, D-196 remains
+in force, and the runtime adapter is not frozen until its own gates pass.
+
+## 2026-09-01 — D-229: Freeze exact R2 deployment and single-attempt adapters without a live attempt bypass
+
+### Hypothesis and design boundary
+
+After D-228, the R2 execution contract could authenticate and finalize attempts
+but still could not select one arm for deployment, bind one scheduled attempt to
+a verified model/branch, perform a per-attempt exact readback, or translate the
+existing production-agent capture into the R2 condition identity. The narrow
+hypothesis was that those seams could reuse the existing product deployment,
+readback, capture, cost, and append-only publication primitives without changing
+the generic C1-C5 driver or adding a series loop.
+
+The first implementation draft exposed a direct live attempt flag. Review
+rejected that surface before freeze because the future series-level action
+receipt consumer does not exist yet; a user could otherwise bypass it by calling
+the leaf directly. The final `scripts/r2_attempt.py` is therefore dry-plan only.
+Its module retains a tested, programmatic single-attempt capture adapter for the
+future receipt-consuming dispatcher, but there is no live attempt CLI, loop,
+retry, receipt consumer, or series dispatcher. `scripts/r2_deployment.py` is
+dry-default and retains an explicit public-only Tier-1 deployment switch; the
+Git-bound loader cannot see the uncommitted R2 tree, and D-196 still prohibits
+using that switch until the approved sources land and all prerequisites are
+green.
+
+### Exact adapter behavior
+
+`src/omni_benchmark/r2_runtime_adapter.py` selects the complete scheduled
+database set for one arm, rebuilds semantic plans only from the execution plan's
+exact Git commit, verifies every semantic digest, derives the frozen remote
+identities and deployment run ID, and freezes the resulting mappings against
+post-validation mutation. One-attempt preparation requires a verified branch,
+model, and semantic digest exactly equal to the scheduled identity. The capture
+adapter binds the existing C4 probe scaffold's commit, instance, output root,
+run ID, repetition, harness, prompt, and instructions to the R2 plan; performs
+authentication and exact semantic readback before generation; preserves the
+production capture/cost telemetry; rewrites only the condition-specific R2
+identity fields; and publishes through `write_r2_attempt_artifacts`. Its receipt
+contains identities, paths, sizes, and hashes but no question, generated query,
+SQL, result values, credential, or raw job ID.
+
+The public-only real-artifact check authenticated both 16-database deployment
+arms and all 32 semantic plans against the 272-attempt execution-plan SHA-256
+`8378f3c7cecba8582271e18ec715f4714c5209eee26129208d1f56170214dfd5`.
+Sixteen focused adapter tests cover exact arm selection, cross-arm and digest
+drift, immutable mappings, committed-archive loading, target identity, C4-to-R2
+record rebinding, safe receipts, deployment delegation, dry-only attempt CLI,
+runtime readback ordering, drift stops, and sanitized failures. Together with
+execution v2, 53 tests pass at 84.46% combined branch coverage; focused Ruff and
+format gates pass.
+
+### Freeze and consequence
+
+The append-only mode-`0600` freeze is
+`experiments/r2-public-evidence-measures/r2-runtime-adapter-freeze-v1.json`,
+2,203 bytes, external SHA-256
+`0e12b94f849a1ab829460093c51395fe8dac4df5dad14040403223ed599378a0`,
+and internal artifact SHA-256
+`4b14fd61984e3a43cfad68ebc5f473bfff94806bab0ea6716295273e1c8c5bd8`.
+It binds all three adapter modules, both scripts, focused tests, execution-v2's
+external and internal hashes, real readback identity, and the explicit absence
+of a live attempt CLI, retry loop, receipt consumer, and series dispatcher.
+
+R2 now has exact deployment and per-attempt integration leaves, but it still
+cannot launch evaluated work. The human opportunity map is incomplete, the R2
+tree is uncommitted, D-196 remains in force, and a separately frozen
+receipt-consuming paired dispatcher is still required. No Omni call,
+deployment, evaluated attempt, question read, result-value read, correctness
+read, credential access, dev-B access, sealed access, commit, or push occurred.
+
+Final verification widened beyond the freeze-local checks: the complete R2
+collection passes 271 tests, and the full repository passes 2,569 tests with
+three expected live-integration skips at 83.60% branch coverage. All-repository
+Ruff and format checks pass across 396 files, and `git diff --check` is clean.
+
+## 2026-09-01 — D-230: Freeze the receipt-gated paired R2 dispatcher and correct runtime target identity
+
+### Hypothesis and discovered defect
+
+The D-229 deployment and single-attempt leaves were intentionally unable to run
+the paired evaluated series. The narrow hypothesis was that a distinct R2
+standing-authorization receipt could bind the complete two-arm state and that a
+top-level dispatcher could remain provider-inert until exclusive receipt
+consumption, then preserve the frozen 272-attempt order without adding a generic
+retry path. While building that gate, an execution-inventory check also exposed
+that runtime-adapter v1 compared product-generated `model_id` and `branch_id`
+values with the frozen isolated names. A real deployment would therefore have
+failed closed even when both identity forms were correct.
+
+### Corrected runtime and dispatch contract
+
+Runtime-adapter v2 now requires nonempty product-generated IDs, separately
+matches `model_name` and `branch_name` to the frozen identities, and verifies
+that every attempt's provider settings use the verified generated IDs. The
+paired dispatcher has three explicit stages: provider-inert preparation of the
+exact Git plan and all prerequisites; authentication of one exact, closed-human-
+decision-backed, maximum-24-hour approval receipt; and execution after exclusive
+receipt consumption. Preparation requires a clean exact runtime tree, a
+committed reproducible nonempty opportunity map, the closed human source-cleanup
+gate, two complete verified 16-database deployments, safe absent finalization
+output, and current append-only attempt reconciliation. The receipt binds those
+inputs plus schedule, bundles, Balanced settings, budget, run/output identities,
+projected costs, and reconciled-state hash. Execution constructs the live
+adapter only after consumption, follows schedule position with maximum
+concurrency one, exposes no automatic retry, and finalizes only after exact
+272-attempt reconciliation. The attempt leaf remains dry-only; the paired
+dispatcher is the sole live-attempt surface.
+
+### Freeze and verification
+
+The authoritative mode-`0600` runtime freeze is
+`experiments/r2-public-evidence-measures/r2-runtime-adapter-freeze-v2.json`,
+2,742 bytes, external SHA-256
+`1dd6f9f2380d523185df347243cd1d4f85e2e4c8b483f79cff61b3badc037df0`,
+and internal artifact SHA-256
+`1c0ce9a62bfb88582cb2695bac498809e32f64ca00e00de894549c74a3f4c184`.
+It supersedes v1 and binds the identity correction, implementation, and 16
+focused adapter tests. The mode-`0600` paired-dispatch freeze is
+`experiments/r2-public-evidence-measures/r2-paired-dispatch-freeze-v1.json`,
+3,741 bytes, external SHA-256
+`84fd2e0c536e7f6235211e47e5cddc1532e23208ae6380e4248052cd4c0d928c`,
+and internal artifact SHA-256
+`986387ba4a1b4324608680054c8e5d97cdb1df0dcb4a6d0f5948a11a13aac5fd`.
+Its 43 focused receipt, dispatch, executor, and CLI tests combine with the
+adapter tests for 59 tests at 82.42% branch coverage. The complete current R2
+collection passes 184 tests in 1.13 seconds; all-repository Ruff and format
+checks pass across 408 files, manifest member hashes, internal hashes, modes,
+and dependency hashes verify, and `git diff --check` is clean. The earlier
+2,569-test full-suite result remains broader evidence; it was not repeated for
+the final launcher-only formatting change.
+
+### Consequence
+
+The live path is now mechanically prepared but remains closed. The human
+opportunity map is incomplete, the human full-source cleanup gate remains open,
+and the entire R2 tree is uncommitted, so preparation fails before receipt
+authorization or provider construction. No real approval receipt was created or
+consumed; no Omni call, deployment, evaluated attempt, question read,
+result-value read, correctness read, credential access, dev-B access, sealed
+access, commit, or push occurred. D-196 and every existing live prerequisite
+remain in force.
+
+## 2026-09-01 — D-231: Harden the R2 receipt boundary before it can become live-eligible
+
+### Security-audit hypothesis and findings
+
+The D-230 dispatcher passed its functional gates, but its new authorization and
+credential boundary had not received a dedicated adversarial pass. The audit
+hypothesis was that replay, filesystem, environment, subprocess, and
+state-of-check/state-of-use checks should fail before a one-time receipt can be
+spent. Regression-first review confirmed five boundary defects and one reporting
+defect: the inherited Omni environment was validated only while constructing the
+executor after consumption; receipt validity was not rechecked at consumption;
+receipt metadata and content came from separate path operations with an
+unbounded read; local Beads subprocesses inherited the full parent environment;
+preexisting consumption directories were not forced private; and the completion
+report returned the pre-run rather than post-run reconciled count.
+
+### Correction
+
+The live CLI now validates the exact inherited auth mode and HTTPS origin and
+reduces the environment to the Omni allowlist before calling the receipt-
+consuming dispatcher. Token mode no longer retains profile-home variables, and
+unrelated variables never reach the executor. The executor repeats the same pure
+validation after construction without contacting the provider. Authenticated
+approvals now retain their approved and expiry instants, bind both into the
+process-local preflight capability, and recheck them immediately before exclusive
+consumption. Receipt input is opened once with no-follow semantics, inspected by
+descriptor, and read to a 65,536-byte bound. Consumption components are opened
+relative to directory descriptors and forced mode `0700`; the marker remains
+exclusive mode `0600`. The two exact no-shell local `bd` argument-vector calls
+now receive only a small non-secret control environment, excluding Omni and
+DoltHub tokens. The dispatch report now returns the final reconciliation count.
+
+### Freeze and verification
+
+The append-only mode-`0600` authoritative dispatcher freeze is now
+`experiments/r2-public-evidence-measures/r2-paired-dispatch-freeze-v2.json`,
+4,513 bytes, external SHA-256
+`a574f66a2b1e3b1ea591bd23e873e25b9fb398483c1a9470ad028e5be069b657`,
+and internal artifact SHA-256
+`f7c40b54e36648ab5badef13db4fbdfedb03d08d95378427835f67ebf632c862`.
+It supersedes v1, binds the unchanged runtime-adapter v2 and execution-contract
+v2 dependencies, and records each correction. Forty-eight focused tests pass at
+80.88% branch coverage, including expiry-after-authorization, descriptor-only
+receipt reads, hardlink and symlink rejection, private-directory enforcement,
+pre-consumption environment failure, secret exclusion, sequential consumption,
+and final reconciliation. The complete R2 collection passes 189 tests in 1.18
+seconds. All-repository Ruff and format checks pass across 408 files, the new
+freeze's member, dependency, internal, mode, and external hashes verify, and
+`git diff --check` is clean. A security-rule scan has only the expected S603 and
+S607 warnings for the two fixed local `bd` calls; both use bounded arguments,
+`shell=False`, sanitized failures, and the credential-free environment just
+described. The 48-minute full suite was not repeated because this slice is
+confined to the R2 dispatcher and its focused plus complete-R2 gates are green.
+
+### Consequence
+
+The new code makes an invalid provider environment or an expired approval fail
+without spending the receipt and removes parent-process credentials from local
+control subprocesses. It does not open live execution: the validated human
+opportunity workbook is still absent, full-source cleanup remains unconfirmed,
+the R2 tree remains uncommitted, D-196 remains in force, and no real approval
+receipt exists. No credential value was inspected; no Omni call, deployment,
+evaluated attempt, question read, result-value read, correctness read, dev-B
+access, sealed access, commit, or push occurred.
+
+## 2026-09-01 — D-232: Propose an outcome-blind agent opportunity-map pass
+
+### Hypothesis and boundary
+
+The pending 136-row opportunity map was designed as a separate human pass with
+row-level active review seconds, but the operator chose the same narrower
+agent-assisted scope already adopted for catalog adjudication and requested
+exact instructions for that agent. The hypothesis is that this denominator can
+remain defensible if the change is prospective, outcome-blind, hash-bound, and
+explicitly reported as agent adjudication rather than human review. Because the
+approved protocol and denominator authorship are human-controlled surfaces, no
+protocol or validator change is made before approval.
+
+### Proposal and instructions
+
+The exact proposed amendment is
+`docs/protocol-amendment-opportunity-agent-adjudication-proposal.md`, SHA-256
+`889c4e8e71f9b3f7023a206c88c3b06147a33ad2d781acc4b9096a432841afae`,
+Git blob `3cafd151ef37041a07d0fa14d8ece03c43ba3b71`. It replaces only the
+pending opportunity-review authorship and finite-time requirement. The source
+remains the deterministic 136-row workbook, SHA-256
+`5412b1b815df9cf0ca00b4fc673df2c8ca71ff1559cbb05bed0d4b6fa240d6ec`,
+whose same-database options derive from the already frozen accepted catalog,
+SHA-256
+`2d2f9c15bc5f5271db924fa4377b41c26a0e61bcec221ed31d10b3365358039a`.
+
+The paste-ready GPT-5.6 sol High contract is
+`experiments/r2-public-evidence-measures/measure-opportunity-agent-adjudication-instructions-v1.md`,
+SHA-256
+`0a7e8a114be05a6369d811bcf245836a5c86dead112601db0dba3efcb3169e67`.
+It permits only the workbook and local CSV-processing tools; prohibits web,
+JSONL, repository, SQL, gold, correctness, hidden, dev-B, sealed, and outcome
+inputs; freezes the `mapped|none|ambiguous` semantics; requires sorted unique
+same-row measure IDs; and leaves active-time cells blank. The proposal requires
+a later provenance artifact and explicit operator adoption of the exact output
+hash before a question-text-free map with null review time can materialize.
+
+### Consequence
+
+This is a proposal, not an authorization or completed review. The existing
+human task `omni-benchmark-w5x.11` remains authoritative and no adjudicated
+workbook or opportunity map exists. No benchmark outcome, SQL, gold, hidden
+annotation, dev-B, or sealed data was accessed; no protocol text, validator,
+runtime, deployment, receipt, credential, live attempt, commit, or push was
+changed or used. D-196, Git landing, full-source cleanup, and every live-action
+gate remain in force.
+
+## 2026-09-01 — D-233: Record the opportunity-adjudication approval and preserve an observed provenance mismatch
+
+### Approval and uploaded artifact
+
+The operator explicitly approved the prospective opportunity-adjudication
+proposal by its exact SHA-256
+`889c4e8e71f9b3f7023a206c88c3b06147a33ad2d781acc4b9096a432841afae`.
+The append-only mode-`0600` approval record is
+`experiments/r2-public-evidence-measures/measure-opportunity-agent-adjudication-amendment-approval-v1.json`,
+SHA-256
+`8bc9c23e573f6f5f118ba20dcf45c82a8e145a99aa85a2af9a59ca2f49f31f26`.
+The marked proposal block was inserted byte-for-byte into the working-tree
+`EVALUATION_PROTOCOL.md`; it remains uncommitted and therefore does not open
+live action under D-196.
+
+In the same turn the operator supplied
+`measure-opportunity-review-workbook-v1-agent-adjudicated.csv`, SHA-256
+`4fa3efe45034ca3115179ce4f682fb5a64d211d77429dc9680d22900fc94540a`,
+and its agent-reported provenance. Repository-side validation found exactly 136
+ordered rows, unchanged immutable cells, blank active-time cells, valid
+same-row sorted unique measure IDs, 45 `mapped`, 90 `none`, one `ambiguous`,
+and 51 total selected-measure assignments. The ambiguous instance is
+`cross_border_17` with three plausible IDs. The output file was restricted from
+mode `0644` to `0600`; its bytes and hash were unchanged.
+
+### Provenance mismatch and correction boundary
+
+The uploaded output does not satisfy two factual clauses in the approved
+prospective contract. It was produced before that contract's exact approval,
+and its report identifies `ChatGPT Work`, interface `Codex`, model family
+`GPT-5`, with exact model and reasoning effort unexposed—not the specified
+`GPT-5.6 sol` at `High`. The report says the attached CSV was the only data
+file; local Python handled CSV/JSON parsing, generation, validation, and hashing;
+and no web, external file, SQL, gold, correctness, hidden annotation, dev-B,
+sealed, or prior outcome input was accessed. Mechanical validity does not erase
+the identity and timing mismatch, so the workbook was not relabeled, silently
+adopted, or materialized.
+
+The canonical mode-`0600` observed provenance artifact is
+`experiments/r2-public-evidence-measures/measure-opportunity-agent-adjudication-provenance-v1.json`,
+external SHA-256
+`13874ce7ef018f7ee0c15f495e9a2bc84093cd7e6e8c6917fc12d309ae0a8dde`
+and internal SHA-256
+`eff575b097414039651758f299486f2908c347940ebc3d60cb0a1ba71985623e`.
+It keeps exact model, reasoning effort, time, tokens, and cost null; records the
+absence of a shared transcript; and does not claim independent semantic
+revalidation.
+
+### Corrective proposal and consequence
+
+The exact output-specific corrective proposal is
+`docs/protocol-amendment-observed-opportunity-adjudication-proposal.md`,
+SHA-256
+`d194c1da1f3bfe1dd2bb4ab1c88138f0b2b4feacf235b76acdee6d7fc559383e`,
+Git blob `eac15b2d5fdacebfc52c568041bfce4c37e27ba2`. Its approval would both
+supersede the inaccurate timing/model clauses for this artifact and explicitly
+adopt the exact output hash through two append-only records. Exact approval is
+tracked as human bead `omni-benchmark-w5x.24`. Until then the original human
+opportunity task also remains open, no question-text-free map exists, and no
+validator, schedule, runtime, deployment, receipt, credential, live attempt,
+commit, or push has changed. D-196, Git landing, full-source cleanup, and all
+other live gates remain in force.
+
+## 2026-09-01 — D-234: Adopt and freeze the observed agent opportunity map
+
+### Hypothesis and exact approval
+
+The corrective hypothesis was that the uploaded 136-row classification could
+replace the pending human pass without inventing provenance if, and only if,
+the exact observed workflow, output, and limitations were operator-approved and
+the final map reproduced from the complete committed evidence chain. The
+operator approved the corrective proposal by exact SHA-256
+`d194c1da1f3bfe1dd2bb4ab1c88138f0b2b4feacf235b76acdee6d7fc559383e`.
+Its exact marked block was inserted into the working-tree
+`EVALUATION_PROTOCOL.md`. The append-only mode-`0600` corrective approval is
+`measure-opportunity-observed-adjudication-amendment-approval-v1.json`, 543
+bytes, SHA-256
+`c9025cdf1dc860d8b1715c557ae3f88071c2935ed4f08fef65e745a8448ad489`.
+The separate mode-`0600` artifact-adoption record is
+`measure-opportunity-agent-adjudication-output-adoption-v1.json`, 882 bytes,
+SHA-256
+`367d639dcd0bad2b50cd480017781f031957f581e1baae2b6c8899142884527c`.
+
+### Agent-specific validation and result
+
+A test-first agent path now authenticates the exact accepted catalog, public
+manifest and dev-A IDs, deterministic blank workbook, adjudicated workbook,
+instruction contract, prospective proposal and approval, corrective proposal
+and approval, canonical provenance, and output-adoption record. It rejects
+approval or hash drift, duplicate JSON fields, changed immutable cells, missing
+or reordered IDs, invalid decisions, unknown or cross-database measures,
+unsorted or duplicate IDs, nonblank agent active time, false provenance claims,
+and changed final bytes. The finite-time human validator remains intact. The
+committed-tree dispatcher now loads every agent support artifact and calls this
+validator; it no longer names or accepts the nonexistent human
+`measure-opportunity-review-workbook-v1-validated.csv`.
+
+The append-only mode-`0600` question-text-free map is
+`experiments/r2-public-evidence-measures/measure-opportunity-map-v1.json`,
+52,535 bytes, external SHA-256
+`b834ebb7e2a033a85c0befc6eeba5949d40b71f5c3643da2ddb5f35c66afe279`,
+and internal artifact SHA-256
+`2178bb989fc64faac922b88a8ac35d6a25d6e6f587340180ba1ef3acdb0de213`.
+It preserves 45 `mapped`, 90 `none`, and one `ambiguous` decision. The mapped
+set has 48 selected assignments; the ambiguous row retains three candidates,
+for 51 selected IDs across the complete workbook. Every row and the summary
+record `active_review_seconds: null`, and the artifact records the observed
+`ChatGPT Work` / `Codex` / `GPT-5`-family identity with exact model and
+reasoning effort unavailable.
+
+### Downstream freezes and verification
+
+The semantic-reuse consumer accepts null time only for that exact
+`agent_adjudicated` identity and continues to require finite nonnegative time
+for human maps. Its authoritative mode-`0600` v2 freeze is
+`r2-semantic-reuse-classifier-freeze-v2.json`, 1,705 bytes, external SHA-256
+`4daf53d832285209365f66b5c48b4dc5663a2ae1ba493ecca8ed16e11b154cc1`,
+and internal SHA-256
+`e100d6558d047ac51e2d3deb3e97fd582b64af38144a37f70bb3344bcdf12988`.
+The dispatcher v3 freeze is mode `0600`, 7,321 bytes, external SHA-256
+`6d4ea1a069a6cff3c196373882026aa94032615f99148e0b64a9185a755aec01`,
+and internal SHA-256
+`ff77df4fe230f6f2bf72b596b01ff46f741544b3ff7490b1ec97bc25d58015a2`;
+it binds the complete agent chain and supersedes dispatcher v2.
+
+The focused opportunity suite passes 48 tests at 83.44% branch coverage. All
+192 R2 tests pass in 4.66 seconds, Ruff and format checks pass across 409 files,
+and `git diff --check`, canonical JSON, member hashes, internal hashes, and
+artifact modes pass. The security pass found no credential, provider, shell,
+protected-data, or correctness surface in this offline change; committed-tree
+loading remains bounded and fail-closed. The 48-minute full suite was not run
+because focused and complete-R2 gates cover this isolated slice.
+
+### Consequence
+
+The obsolete human opportunity-review task is superseded by the adopted agent
+map. This does not open live action: all approved protocol text and the full R2
+tree remain uncommitted, D-196 and Git landing remain in force, the human-owned
+full-source cleanup gate is still open, and no deployment, receipt, credential,
+provider call, evaluated attempt, result, correctness value, dev-B data, sealed
+data, commit, or push was created or accessed. The map is evidence from one
+outcome-blind agent classification workflow, not human agreement, domain
+authority, manual-review effort, or Omni Modeling Agent quality.

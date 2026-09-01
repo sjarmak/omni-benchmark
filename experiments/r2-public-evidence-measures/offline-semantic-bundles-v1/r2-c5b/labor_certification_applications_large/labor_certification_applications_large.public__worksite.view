@@ -1,0 +1,30 @@
+label: worksite
+description: All columns of the public table worksite.
+catalog: labor_certification_applications_large
+schema: public
+table_name: worksite
+dimensions:
+  secent:
+    description: 'TEXT. Secondary entity associated with the worksite. **NULL means no secondary entity specified.**. Possible values: No, Yes.'
+    sql: secent
+  secentname:
+    description: 'TEXT. Name of the secondary entity. **NULL means no secondary entity name provided.**. Example: Billings Clinic Health System.'
+    sql: secentname
+  w_addr1:
+    description: TEXT. Primary address line of the worksite. PK.
+    sql: w_addr1
+  waddr_2:
+    description: 'TEXT. Secondary address line of the worksite. **NULL means no secondary address provided.**. Example: 800.'
+    sql: waddr_2
+  wcity:
+    description: TEXT. City of the worksite. PK.
+    sql: wcity
+  wcnty:
+    description: 'TEXT. County of the worksite. **NULL means no county specified.**. Example: YELLOWSTONE.'
+    sql: wcnty
+  wstate:
+    description: TEXT. State of the worksite. PK.
+    sql: wstate
+  wzip:
+    description: TEXT. Postal code of the worksite. PK.
+    sql: wzip

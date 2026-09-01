@@ -1,0 +1,102 @@
+label: project_milestones
+description: All columns of the public table project_milestones.
+catalog: archeology_scan_large
+schema: public
+table_name: project_milestones
+dimensions:
+  approval_date:
+    description: 'DATE. The date the milestone was approved. **NULL means it has not been approved.**。 Possible values: 1-Jun-22, 10-Jan-18, 10-Jan-19, 15-Jul-18, 20-Apr-23, 5-Jul-22.'
+    sql: '"APPROVAL_DATE"'
+  approved_by_ref:
+    description: 'TEXT. Foreign key for the person who approved the milestone. FK. **NULL means it has not been approved.**。 Example: OP8108.'
+    sql: '"ApprovedByRef"'
+  deliverable_url:
+    description: 'TEXT. A URL to the deliverable document or artifact. **NULL means no deliverable is linked.**。 Possible values: https://digisite.org/data/PRJ001_P2.zip, https://digisite.org/reports/PRJ001_P3_weekly, https://digisite.org/reports/PRJ001_S1.pdf.'
+    sql: '"DELIVERABLE_URL"'
+  deliverable_description:
+    description: 'TEXT. A description of the deliverable associated with this milestone。 Example: Survey Report and Anomaly Map.'
+    sql: '"DeliverableDescription"'
+  dependency_milestone_tag:
+    description: 'BIGINT. The tag of a milestone that this one depends on. **NULL means no dependencies.**。 Example: 2001.0.'
+    sql: '"DependencyMilestoneTag"'
+  description:
+    description: 'TEXT. A detailed description of the milestone。 Example: Initial GPR and magnetometry survey of SITE-001..'
+    sql: '"Description"'
+  effort_actual_hours:
+    description: 'BIGINT. The actual effort in hours spent on the milestone。 Example: 300.'
+    sql: '"EffortActualHours"'
+  gantt_chart_task_ref:
+    description: 'TEXT. A reference to the task in a Gantt chart。 Example: 101.'
+    sql: '"GanttChartTaskRef"'
+  invoice_tag:
+    description: 'TEXT. The tag of the invoice triggered by this milestone. **NULL means no invoice was triggered.**。 Possible values: INV-M2-2017, INV-M2-2022, INV-P1-2022, INV-P2-2023.'
+    sql: '"InvoiceTag"'
+  milestone_tag:
+    description: 'BIGINT. Unique identifier for a project milestone. PK。 Example: 2001.'
+    sql: '"MilestoneTag"'
+  notes:
+    description: 'TEXT. General notes about the milestone. **NULL means no notes have been added.**。 Possible values: Completed 5 days ahead of schedule., Delayed due to weather., Discovered over 1,000 new features., High data density achieved., On track., Project funding cut short before this phase., Rainy season delaying access., Recruitment is ongoing..'
+    sql: '"NOTES"'
+  owner_ref:
+    description: 'TEXT. Foreign key for the personnel member who owns this milestone. FK。 Example: OP8108.'
+    sql: '"OwnerRef"'
+  payment_trigger:
+    description: 'BOOLEAN. A flag indicating if completing this milestone triggers a payment。 Possible values: False, True.'
+    sql: '"PaymentTrigger"'
+  story_points:
+    description: 'BIGINT. The story points assigned in an agile project。 Possible values: 100, 13, 20, 30, 50, 80.'
+    sql: '"STORY_POINTS"'
+  sprint_number:
+    description: 'BIGINT. The sprint number in an agile project。 Possible values: 1, 10, 12, 15, 2, 25, 5, 8.'
+    sql: '"SprintNumber"'
+  approval_status:
+    description: 'TEXT. The approval status of the completed milestone. **NULL means approval is not required.**。 Possible values: Approved, Pending, Submitted.'
+    sql: approval_status
+  effort_planned_hours:
+    description: 'BIGINT. The planned effort in hours to complete the milestone。 Example: 320.'
+    sql: effort_planned_hours
+  is_customer_facing:
+    description: 'BOOLEAN. A flag indicating if this milestone is visible to external stakeholders。 Possible values: False, True.'
+    sql: is_customer_facing
+  milestone_name:
+    description: 'TEXT. The name or title of the milestone。 Example: Phase 1: Site Survey.'
+    sql: milestone_name
+  milestone_progress_profile:
+    description: JSONB column. Combines schedule, progress, risk, and quality-related data for each project milestone.
+    sql: milestone_progress_profile
+  project_id_link:
+    description: 'TEXT. Foreign key linking to the project this milestone belongs to. FK。 Example: PR7509.'
+    sql: project_id_link
+  milestone_progress_profile_impact_resource_impact:
+    description: 'TEXT. A description of the resource impact of this milestone。 Example: 2 personnel, 1 GPR unit.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'impact', 'ResourceImpact')
+  milestone_progress_profile_impact_budget_impact:
+    description: 'REAL. The financial impact of this milestone。 Example: 50000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'impact', 'budget_impact')
+  milestone_progress_profile_impact_risk_level:
+    description: 'TEXT. The assessed risk level associated with this milestone。 Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'impact', 'risk_level')
+  milestone_progress_profile_progress_is_critical_path:
+    description: 'BOOLEAN. A flag indicating if this milestone is on the critical path of the project。 Possible values: False, True.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'progress', 'IS_CRITICAL_PATH')
+  milestone_progress_profile_progress_status:
+    description: 'TEXT. The current status of the milestone。 Possible values: Cancelled, Completed, In Progress, Planned.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'progress', 'Status')
+  milestone_progress_profile_progress_percent_complete:
+    description: 'REAL. The percentage of completion for this milestone。 Example: 100.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'progress', 'percent_complete')
+  milestone_progress_profile_quality_quality_metric_score:
+    description: 'REAL. A score from a quality assessment of the deliverable. **NULL means no quality score was assigned.**。 Possible values: 92.0, 95.0, 95.5, 98.0, 98.2, 99.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'quality', 'QUALITY_METRIC_SCORE')
+  milestone_progress_profile_quality_verification_method:
+    description: 'TEXT. The method used to verify the completion of the milestone. **NULL means it is not specified.**。 Possible values: Data Integrity Check, Editor Acceptance, Peer Review of Finds, QC Report, Report Review, Site Visit.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'quality', 'verification_method')
+  milestone_progress_profile_schedule_planned_completion_date:
+    description: 'DATE. The date the milestone is planned to be completed。 Example: 30-Jun-22.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'schedule', 'PLANNED_COMPLETION_DATE')
+  milestone_progress_profile_schedule_variance_days:
+    description: 'BIGINT. The variance in days between planned and actual completion. **NULL means it has not been calculated.**。 Possible values: -16.0, -36.0, -5.0, 0.0, 15.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'schedule', 'VARIANCE_DAYS')
+  milestone_progress_profile_schedule_actual_completion_date:
+    description: 'DATE. The date the milestone was actually completed. **NULL means the milestone is not yet complete.**。 Possible values: 15-Apr-23, 15-Dec-17, 15-Dec-18, 15-Jul-24, 25-Jun-22, 25-May-22, 30-Jun-18.'
+    sql: JSONB_EXTRACT_PATH_TEXT(milestone_progress_profile, 'schedule', 'actual_completion_date')

@@ -1,0 +1,51 @@
+label: DigitalAssets
+description: All columns of the public table DigitalAssets.
+catalog: museum_artifact_large
+schema: public
+table_name: DigitalAssets
+dimensions:
+  asset_description:
+    description: 'TEXT. No description provided. Example: Primary publication-quality image of the Ming blue-and-white vase..'
+    sql: '"ASSET_DESCRIPTION"'
+  asset_type:
+    description: 'TEXT. No description provided. Example: High-res Photo.'
+    sql: '"ASSET_TYPE"'
+  asset_registry_tag:
+    description: 'TEXT. No description provided. Example: 1.'
+    sql: '"Asset_Registry_Tag"'
+  file_size_mb:
+    description: 'TEXT. No description provided. Example: 150.2.'
+    sql: '"FileSize_MB"'
+  licensing:
+    description: 'TEXT. No description provided. Possible values: CC BY 4.0, CC BY-NC-ND 4.0, CC BY-SA 4.0, Internal Use Only, Public Domain, Rights Reserved.'
+    sql: '"Licensing"'
+  public_access:
+    description: 'TEXT. No description provided. Possible values: Private, Public, Researchers Only.'
+    sql: '"PUBLIC_ACCESS"'
+  qc_status:
+    description: 'TEXT. No description provided. Possible values: Approved, Pending Review.'
+    sql: '"QC_STATUS"'
+  storage_uri:
+    description: 'TEXT. No description provided. Example: s3://museum-archive/tiff/art20001_main.tiff.'
+    sql: '"STORAGE_URI"'
+  asset_of_artifact:
+    description: 'TEXT. No description provided. Example: ART20001.'
+    sql: asset_of_artifact
+  capture_timestamp:
+    description: 'TEXT. No description provided. Example: 2022/08/10 14:30.'
+    sql: capture_timestamp
+  copyright_owner:
+    description: 'TEXT. No description provided. Possible values: Capital Museum, Royal Collection Trust, U.S. Department of State, US Customs and Border Protection, University of Chicago, Yamanaka & Co. (original).'
+    sql: copyright_owner
+  fileformat:
+    description: 'TEXT. No description provided. Possible values: CR3, DCM, JPG, MOV, MP4, OBJ, PLY, RTI, TIFF.'
+    sql: fileformat
+  parent_asset_tag:
+    description: 'TEXT. No description provided. Possible values: 1.0.'
+    sql: parent_asset_tag
+  technician_staff_ref:
+    description: 'TEXT. No description provided. Possible values: 14.0, 23.0, 3.0, 35.0, 38.0, 4.0, 42.0, 46.0, 48.0.'
+    sql: technician_staff_ref
+  version:
+    description: 'TEXT. No description provided. Possible values: 1, 2.'
+    sql: version

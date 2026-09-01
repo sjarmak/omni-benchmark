@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__crew_member
+label: CrewMember
+description: All columns of the public table CrewMember.
+fields:
+- polar_equipment_large_public__crew_member.*
+joins: {}
+ai_context: This topic models no cross-table joins.

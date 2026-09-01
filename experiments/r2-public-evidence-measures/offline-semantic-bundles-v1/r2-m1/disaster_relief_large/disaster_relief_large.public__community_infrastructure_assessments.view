@@ -1,0 +1,90 @@
+label: CommunityInfrastructureAssessments
+description: All columns of the public table CommunityInfrastructureAssessments.
+catalog: disaster_relief_large
+schema: public
+table_name: CommunityInfrastructureAssessments
+dimensions:
+  assessment_date:
+    description: DATE (yyyy/mm/dd). Calendar date when the rapid assessment was performed.
+    sql: '"ASSESSMENT_DATE"'
+  assessor_count:
+    description: BIGINT. Number of assessors who contributed to the report.
+    sql: '"Assessor_Count"'
+  dist_ref:
+    description: VARCHAR(20). References DisasterEvents(DistRegistry); links the assessment to the related disaster event.
+    sql: '"Dist_Ref"'
+  hospital_capacity_pct:
+    description: 'REAL. Percentage of total hospital bed capacity currently available (e.g., 78.5). Units: percent.'
+    sql: '"HospitalCapacityPct"'
+  notes:
+    description: TEXT. Concise, human-written observations generated from field data (e.g., "Roads poor; Heavy debris burden; Elevated health risk").
+    sql: '"NOTES"'
+  repair_budget_human_musd:
+    description: REAL. Repair-budget estimate expressed in **millions of U.S. dollars** (e.g., 3.6 = USD 3.6 M).
+    sql: '"RepairBudgetHuman_MUSD"'
+  telecom_state:
+    description: 'TEXT. Telecommunications status. Possible values: Operational, Interrupted, Down. **Nullable** if telecom infrastructure was not evaluated.'
+    sql: '"TELECOM_state"'
+  updated_at:
+    description: TIMESTAMP (yyyy/mm/dd HH:MM:SS). Most recent update time.
+    sql: '"UPDATED_AT"'
+  version:
+    description: INT. Schema or record version for internal migration tracking.
+    sql: '"VERSION"'
+  water_system_state:
+    description: 'TEXT. Status of potable-water systems. Examples: Operational, Boil Advisory, Service Disruption.'
+    sql: '"WATER_system_state"'
+  avg_repair_cost_usd:
+    description: REAL. Average repair cost per damaged element, expressed in U.S. dollars.
+    sql: '"avgRepairCostUsd"'
+  created_at:
+    description: TIMESTAMP (yyyy/mm/dd HH:MM:SS). Record insertion time.
+    sql: created_at
+  damage_and_risk_summary:
+    description: JSONB column. Packs the chief damage indices and population-risk scores captured during a rapid community assessment.
+    sql: damage_and_risk_summary
+  infra_assess_id:
+    description: VARCHAR(20). Unique infrastructure-assessment identifier. Primary Key.
+    sql: '"infraAssessId"'
+  power_grid_state:
+    description: 'TEXT. Operational state of the electrical grid. Possible values: Online, Partial Outage, Offline.'
+    sql: '"powerGridState"'
+  rapid_assessmentteam:
+    description: TEXT. Name or code of the rapid-assessment team conducting the survey (e.g., "Team Alpha").
+    sql: '"rapidASSESSMENTteam"'
+  road_clearance_eta_h:
+    description: TEXT. Estimated range for full road clearance, in **hours** (format "12–24").
+    sql: '"roadClearanceETA_h"'
+  damage_and_risk_summary_critical_avail_pct:
+    description: 'REAL. Percentage of critical facilities (police, fire, shelters) that remain operational. Units: percent.'
+    sql: JSONB_EXTRACT_PATH_TEXT(damage_and_risk_summary, 'criticalAvailPct')
+  damage_and_risk_summary_damage_bridge_idx:
+    description: REAL. 0 – 10 structural-soundness score for bridges within the area. **Nullable** when bridges were not inspected.
+    sql: JSONB_EXTRACT_PATH_TEXT(damage_and_risk_summary, 'damage', 'bridgeIdx')
+  damage_and_risk_summary_damage_debris_load_m3:
+    description: REAL. Human-readable debris-load figure converted to pure **cubic metres** (e.g., 12 000).
+    sql: JSONB_EXTRACT_PATH_TEXT(damage_and_risk_summary, 'damage', 'debrisLoad_m3')
+  damage_and_risk_summary_damage_housing_dam_pct:
+    description: 'REAL. Percentage of residential housing stock damaged. Units: percent.'
+    sql: JSONB_EXTRACT_PATH_TEXT(damage_and_risk_summary, 'damage', 'housingDamPct')
+  damage_and_risk_summary_damage_road_idx:
+    description: REAL. 0 – 10 index of overall road usability (0 = impassable, 10 = excellent).
+    sql: JSONB_EXTRACT_PATH_TEXT(damage_and_risk_summary, 'damage', 'roadIdx')
+  damage_and_risk_summary_damage_school_dam_pct:
+    description: 'REAL. Share of school facilities reported damaged (0–100). Units: percent.'
+    sql: JSONB_EXTRACT_PATH_TEXT(damage_and_risk_summary, 'damage', 'schoolDamPct')
+  damage_and_risk_summary_debris_vol_m3:
+    description: REAL. Estimated debris volume still present, in **cubic metres**. **Nullable** when no estimate is available.
+    sql: JSONB_EXTRACT_PATH_TEXT(damage_and_risk_summary, 'debrisVol_m3')
+  damage_and_risk_summary_risks_health_risk:
+    description: REAL. Composite public-health risk score (0–100, higher = greater risk).
+    sql: JSONB_EXTRACT_PATH_TEXT(damage_and_risk_summary, 'risks', 'healthRisk')
+  damage_and_risk_summary_risks_security_risk:
+    description: REAL. Security or civil-unrest risk score (0–100).
+    sql: JSONB_EXTRACT_PATH_TEXT(damage_and_risk_summary, 'risks', 'securityRisk')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CommunityInfrastructureAssessments public identity values.
+    label: CommunityInfrastructureAssessments Count
+    sql: ${disaster_relief_large_public__community_infrastructure_assessments.infra_assess_id}

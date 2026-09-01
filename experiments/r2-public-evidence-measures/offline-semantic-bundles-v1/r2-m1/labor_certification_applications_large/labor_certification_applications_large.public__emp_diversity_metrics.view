@@ -1,0 +1,105 @@
+label: emp_diversity_metrics
+description: All columns of the public table emp_diversity_metrics.
+catalog: labor_certification_applications_large
+schema: public
+table_name: emp_diversity_metrics
+dimensions:
+  dei_spend_pct:
+    description: 'REAL. Company spend on DEI initiatives as % of payroll. **NULL means DEI budget not tracked.** Example: 2.6.'
+    sql: '"DEI_Spend_pct"'
+  div_code:
+    description: 'TEXT. Unique identifier code for a diversity snapshot. PK. Example: DIV00001.'
+    sql: '"DIV_CODE"'
+  erg_budget_usd:
+    description: 'REAL. Aggregate annual ERG budget, USD. **NULL means no separate ERG funding or undisclosed.** Example: 148,000.'
+    sql: '"ERG_Budget_USD"'
+  erg_count:
+    description: 'BIGINT. Number of active Employee-Resource Groups. Example: 7.'
+    sql: '"ERG_count"'
+  female_pct:
+    description: 'REAL. Percentage of employees identifying as female. Example: 41.7.'
+    sql: '"Female_pct"'
+  nonbinary_pct:
+    description: 'REAL. Percentage identifying as non-binary. **NULL means metric was not captured or too small to report.** Example: 1.9.'
+    sql: '"NONbinary_pct"'
+  pay_equity_gap_pct:
+    description: 'REAL. Median pay gap (women ÷ men − 1) × 100. Example: -1.7.'
+    sql: '"PayEquity_gap_pct"'
+  promotion_rate_pct:
+    description: 'REAL. Promotions granted ÷ headcount × 100. Example: 6.1.'
+    sql: '"PromotionRate_pct"'
+  veteran_pct:
+    description: 'REAL. Percentage of military veterans. **NULL means data not gathered for this employer.** Example: 3.0.'
+    sql: '"Veteran_pct"'
+  zip_ref:
+    description: 'TEXT. Employer ZIP code (FK). Example: 32751.'
+    sql: '"ZIP_ref"'
+  avail_window:
+    description: 'TEXT. HR service hours or data-collection availability window. Example: 09:00–17:30.'
+    sql: '"availWindow"'
+  avg_tenure_yrs:
+    description: 'REAL. Company-wide average tenure in years. Example: 5.7.'
+    sql: '"avgTenure_yrs"'
+  board_gender_gap_pct:
+    description: 'REAL. Female-to-male gap on company board. Example: 8.2.'
+    sql: '"board_GenderGap_pct"'
+  corp_ref:
+    description: 'TEXT. Employer corporate handle (FK). Example: Avant Healthcare Professionals, LLC.'
+    sql: '"corp_REF"'
+  disability_pct:
+    description: 'REAL. Percentage self-reporting disabilities. **NULL means employer hasn’t collected disability data.** Example: 4.8.'
+    sql: '"disability_PCT"'
+  flexible_hours_flag:
+    description: 'TEXT. Employer offers flexible scheduling. Possible values: Yes, No. Example: Yes.'
+    sql: '"flexibleHours_flag"'
+  head_count_note:
+    description: 'TEXT. Human-readable headcount statement. Example: 1,200 employees.'
+    sql: '"headCount_note"'
+  intl_employees_pct:
+    description: 'REAL. % of employees working outside HQ country. Example: 21.3.'
+    sql: '"intlEmployees_pct"'
+  male_pct:
+    description: 'REAL. Percentage of employees identifying as male. Example: 53.2.'
+    sql: '"male_PCT"'
+  mgr_gender_gap_pct:
+    description: 'REAL. Female-to-male gap in management representation. Example: -3.4.'
+    sql: '"mgrGenderGap_pct"'
+  minority_pct:
+    description: 'REAL. Percentage identifying with under-represented racial/ethnic groups. Example: 46.3.'
+    sql: minority_pct
+  new_hire_diversity_pct:
+    description: 'REAL. % of new hires from under-represented groups. Example: 54.6.'
+    sql: '"newHireDiversity_pct"'
+  reasoning_context:
+    description: 'TEXT. Analyst commentary about diversity metrics. Example: Synthetic demo data.'
+    sql: '"reasoningCONTEXT"'
+  retention_bonus_usd:
+    description: 'REAL. Retention-bonus outlay for the snapshot period, USD. Example: 621,000.'
+    sql: '"retentionBonus_usd"'
+  snapshot_date:
+    description: 'DATE. Observation date of the diversity snapshot. Example: 2025-04-04.'
+    sql: '"snapshotDate"'
+  training_hours_avg:
+    description: 'REAL. Average annual training hours per employee. Example: 18.4.'
+    sql: '"trainingHours_avg"'
+  turnover_rate_pct:
+    description: 'REAL. Annualized employee turnover %. Example: 18.9.'
+    sql: '"turnoverRATE_pct"'
+  work_mode_distribution:
+    description: JSONB column. Captures how the workforce is distributed across remote, hybrid, and onsite arrangements.
+    sql: work_mode_distribution
+  work_mode_distribution_hybrid_pct:
+    description: 'REAL. Workforce share in hybrid model. Example: 26.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(work_mode_distribution, 'hybrid_pct')
+  work_mode_distribution_onsite_pct:
+    description: 'REAL. Workforce share entirely onsite. Example: 26.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(work_mode_distribution, 'onsite_pct')
+  work_mode_distribution_remote_pct:
+    description: 'REAL. Workforce share working fully remote. Example: 47.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(work_mode_distribution, 'remote_pct')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct emp_diversity_metrics public identity values.
+    label: emp_diversity_metrics Count
+    sql: ${labor_certification_applications_large_public__emp_diversity_metrics.div_code}

@@ -1,0 +1,66 @@
+label: ScientificExperimentResult
+description: All columns of the public table ScientificExperimentResult.
+catalog: polar_equipment_large
+schema: public
+table_name: ScientificExperimentResult
+dimensions:
+  analysis_timestamp:
+    description: 'TIMESTAMP. Timestamp when the experiment analysis was completed. Example: 2024-01-01 12:00:00.'
+    sql: '"analysisTimestamp"'
+  baseline_deviation_pct:
+    description: 'REAL. Deviation from baseline as percentage. **NULL means Baseline not established.** Example: 5.'
+    sql: '"baselineDeviation_pct"'
+  data_points_rejected:
+    description: 'INTEGER. Number of data points rejected as outliers. **NULL means Outlier detection not performed.** Example: 50.'
+    sql: '"dataPointsRejected"'
+  data_points_valid:
+    description: 'INTEGER. Number of valid data points in the result set. **NULL means Data point count unavailable.** Example: 50.'
+    sql: '"dataPointsValid"'
+  data_acq_ref:
+    description: TEXT. Reference to the scientific data acquisition session.
+    sql: data_acq_ref
+  experiment_result_seq:
+    description: 'TEXT. Unique identifier for the scientific experiment result record. Example: SER-1A2B3C.'
+    sql: '"experimentResultSeq"'
+  experiment_type:
+    description: 'TEXT. Type of scientific experiment conducted. Unique values: Spectroscopy, Chromatography, Microscopy, Gravimetric, Thermal Analysis, Electrochemical.'
+    sql: '"experimentType"'
+  hypothesis_supported:
+    description: 'BOOLEAN. Flag indicating if initial hypothesis was supported. Possible values: True, False.'
+    sql: '"hypothesisSupported"'
+  measurement_uncertainty:
+    description: 'REAL. Uncertainty of the primary measurement as absolute value. **NULL means Uncertainty not calculated.** Example: 50.0.'
+    sql: '"measurementUncertainty"'
+  noise_floor:
+    description: 'REAL. Background noise level during measurement. **NULL means Noise analysis skipped.** Example: 15.'
+    sql: '"noiseFloor"'
+  peer_review_required:
+    description: 'BOOLEAN. Flag indicating if results require peer review. Possible values: True, False.'
+    sql: '"peerReviewRequired"'
+  primary_measurement:
+    description: 'REAL. Primary measurement value from the experiment. **NULL means Primary measurement failed.** Example: 0.'
+    sql: '"primaryMeasurement"'
+  processing_time_sec:
+    description: 'REAL. Time taken to process and analyze data in seconds. **NULL means Processing time not tracked.** Example: 50.0.'
+    sql: '"processingTime_sec"'
+  quality_flag:
+    description: 'TEXT. Data quality classification flag. Unique values: High, Medium, Low, Unverified.'
+    sql: '"qualityFlag"'
+  repeatability_score:
+    description: 'REAL. Repeatability coefficient from multiple runs (0-100). **NULL means Single run only, no repeatability data.** Example: 92.'
+    sql: '"repeatabilityScore"'
+  result_notes:
+    description: TEXT. Additional notes and observations about the results. **NULL means No additional notes.**
+    sql: '"resultNotes"'
+  result_status:
+    description: 'TEXT. Status of the experiment result. Unique values: Valid, Preliminary, Suspect, Invalid, Under Review.'
+    sql: '"resultStatus"'
+  secondary_measurement:
+    description: 'REAL. Secondary measurement value for correlation analysis. **NULL means Secondary measurement not applicable.** Example: 50.'
+    sql: '"secondaryMeasurement"'
+  signal_amplitude:
+    description: 'REAL. Peak signal amplitude detected. **NULL means No signal detected.** Example: 500.'
+    sql: '"signalAmplitude"'
+  snr_value_d_b:
+    description: 'REAL. Signal-to-noise ratio in decibels. **NULL means SNR calculation failed.** Example: 35.'
+    sql: '"snrValue_dB"'

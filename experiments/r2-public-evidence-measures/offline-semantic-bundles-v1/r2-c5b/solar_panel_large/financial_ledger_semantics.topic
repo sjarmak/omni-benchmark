@@ -1,0 +1,25 @@
+base_view: solar_panel_large_public__financial_ledger
+label: financial_ledger
+description: All columns of the public table financial_ledger.
+fields:
+- solar_panel_large_public__financial_ledger.*
+- solar_panel_large_public__alert.*
+- solar_panel_large_public__asset_manufacturers.*
+- solar_panel_large_public__clients.*
+- solar_panel_large_public__panel_models.*
+- solar_panel_large_public__plant_record.*
+- solar_panel_large_public__plants.*
+- solar_panel_large_public__ppa_contracts.*
+- solar_panel_large_public__technicians.*
+- solar_panel_large_public__work_orders.*
+joins:
+  solar_panel_large_public__asset_manufacturers: {}
+  solar_panel_large_public__clients: {}
+  solar_panel_large_public__plants:
+    solar_panel_large_public__panel_models: {}
+  solar_panel_large_public__ppa_contracts: {}
+  solar_panel_large_public__work_orders:
+    solar_panel_large_public__alert:
+      solar_panel_large_public__plant_record: {}
+    solar_panel_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

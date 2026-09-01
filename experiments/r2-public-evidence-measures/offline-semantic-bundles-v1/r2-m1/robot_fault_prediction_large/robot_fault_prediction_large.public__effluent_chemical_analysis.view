@@ -1,0 +1,66 @@
+label: effluent_chemical_analysis
+description: All columns of the public table effluent_chemical_analysis.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: effluent_chemical_analysis
+dimensions:
+  biochem_oxygen_demand_mg_l:
+    description: 'REAL. BOD: Oxygen consumed by bacteria. **NULL means 5-day test pending.** Example: 50.0.'
+    sql: biochem_oxygen_demand_mg_l
+  chemical_oxygen_demand_mg_l:
+    description: 'REAL. COD: Oxygen required to oxidize organic matter. Example: 50.0.'
+    sql: chemical_oxygen_demand_mg_l
+  color_spectral_code:
+    description: TEXT. Hex code representing fluid color.
+    sql: color_spectral_code
+  compliance_status_flag:
+    description: 'BOOLEAN. Does effluent meet local discharge regulations?. Possible values: True, False.'
+    sql: compliance_status_flag
+  conductivity_us_cm:
+    description: 'REAL. Ability of water to pass electrical flow (ion count). Example: 500.'
+    sql: conductivity_us_cm
+  dissolved_oxygen_mg_l:
+    description: 'REAL. Oxygen saturation in the effluent. Example: 6.'
+    sql: dissolved_oxygen_mg_l
+  effluent_sample_id:
+    description: TEXT. Unique identifier for the liquid waste sample.
+    sql: effluent_sample_id
+  effluent_temperature_c:
+    description: 'REAL. Temperature of discharge stream. Example: 25.'
+    sql: effluent_temperature_c
+  flow_rate_liters_min:
+    description: 'REAL. Volume of waste fluid generated per minute. Example: 50.0.'
+    sql: flow_rate_liters_min
+  heavy_metal_concentration_ppm:
+    description: 'REAL. Aggregated count of lead, mercury, etc. Example: 50.0.'
+    sql: heavy_metal_concentration_ppm
+  nitrate_nitrogen_mg_l:
+    description: 'REAL. Nutrient pollution indicator. Example: 5.'
+    sql: nitrate_nitrogen_mg_l
+  ph_level:
+    description: 'REAL. Acidity or basicity of the effluent (0-14). Example: 7.0.'
+    sql: ph_level
+  phosphate_phosphorus_mg_l:
+    description: 'REAL. Nutrient pollution indicator. Example: 1.'
+    sql: phosphate_phosphorus_mg_l
+  total_suspended_solids_mg_l:
+    description: 'REAL. Mass of particles suspended in the fluid. Example: 50.0.'
+    sql: total_suspended_solids_mg_l
+  toxicity_bioassay_result:
+    description: 'TEXT. Result of rapid biological toxicity test. **NULL means Test not run.** Unique values: Safe, Acute Toxicity, Chronic Toxicity.'
+    sql: toxicity_bioassay_result
+  treatment_chemicals_added_kg:
+    description: 'REAL. Amount of neutralizer added. **NULL means No treatment needed.** Example: 50.0.'
+    sql: treatment_chemicals_added_kg
+  turbidity_ntu:
+    description: 'REAL. Cloudiness of the fluid in Nephelometric Turbidity Units. Example: 50.0.'
+    sql: turbidity_ntu
+  waste_event_ref:
+    description: TEXT. Reference to the waste generation event.
+    sql: waste_event_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct effluent_chemical_analysis public identity values.
+    label: effluent_chemical_analysis Count
+    sql: ${robot_fault_prediction_large_public__effluent_chemical_analysis.effluent_sample_id}

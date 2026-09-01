@@ -1,0 +1,9 @@
+base_view: robot_fault_prediction_large_public__incident_reports
+label: incident_reports
+description: All columns of the public table incident_reports.
+fields:
+- robot_fault_prediction_large_public__incident_reports.*
+- robot_fault_prediction_large_public__technicians.*
+joins:
+  robot_fault_prediction_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

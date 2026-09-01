@@ -1,0 +1,66 @@
+label: CollaborativeSongWritingSessions
+description: All columns of the public table CollaborativeSongWritingSessions.
+catalog: virtual_idol_large
+schema: public
+table_name: CollaborativeSongWritingSessions
+dimensions:
+  bpm_tempo:
+    description: 'INTEGER. Beats per minute. Example: 120.'
+    sql: bpm_tempo
+  chat_message_count:
+    description: 'INTEGER. Volume of chat. Example: 5000.'
+    sql: chat_message_count
+  collab_session_id:
+    description: TEXT. Unique ID for the co-creation event.
+    sql: collab_session_id
+  collaboration_tool_used:
+    description: 'TEXT. Platform (Discord, Twitch Sings). Unique values: Discord, Custom App, Twitch.'
+    sql: collaboration_tool_used
+  duration_minutes:
+    description: 'REAL. Length of session. Example: 60.'
+    sql: duration_minutes
+  genre_tag:
+    description: 'TEXT. Musical style. Unique values: Pop, Rock, EDM, Ballad.'
+    sql: genre_tag
+  idol_host_ref:
+    description: TEXT. Idol leading the session.
+    sql: idol_host_ref
+  is_published:
+    description: 'BOOLEAN. True if released officially. Possible values: True, False.'
+    sql: is_published
+  key_signature:
+    description: 'TEXT. Musical key. Unique values: C Major, G Major, A Minor.'
+    sql: key_signature
+  lead_fan_contributor_ref:
+    description: TEXT. FK to fans.user_registry (Top contributor).
+    sql: lead_fan_contributor_ref
+  lyric_lines_contributed:
+    description: 'INTEGER. Lines written by fans. Example: 40.'
+    sql: lyric_lines_contributed
+  melody_variations_proposed:
+    description: 'INTEGER. Number of melodies suggested. Example: 50.'
+    sql: melody_variations_proposed
+  output_asset_link:
+    description: TEXT. Link to demo recording.
+    sql: output_asset_link
+  producer_moderator_ref:
+    description: TEXT. Staff managing the session. **NULL means data unavailable.**
+    sql: producer_moderator_ref
+  rights_split_agreement:
+    description: 'TEXT. Legal status of fan contribs. Unique values: Creative Commons, Idol Owned, Revenue Share.'
+    sql: rights_split_agreement
+  session_date:
+    description: TIMESTAMP. Date of event.
+    sql: session_date
+  song_title_draft:
+    description: TEXT. Working title.
+    sql: song_title_draft
+  vote_count:
+    description: 'INTEGER. Total votes on ideas. Example: 1000.'
+    sql: vote_count
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CollaborativeSongWritingSessions public identity values.
+    label: CollaborativeSongWritingSessions Count
+    sql: ${virtual_idol_large_public__collaborative_song_writing_sessions.collab_session_id}

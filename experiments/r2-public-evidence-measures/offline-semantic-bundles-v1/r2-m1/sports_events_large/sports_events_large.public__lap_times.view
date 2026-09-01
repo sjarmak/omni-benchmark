@@ -1,0 +1,30 @@
+label: Lap Times
+description: Lap-time records with millisecond measurements.
+catalog: sports_events_large
+schema: public
+table_name: lap_times
+dimensions:
+  msec_val:
+    description: 'INTEGER. Lap time in milliseconds. Example: 103848.'
+    label: Lap time in milliseconds
+    sql: msec_val
+  lapval:
+    description: 'INTEGER. Lap value in the race. Example: 55.'
+    sql: lapval
+  pp:
+    description: 'INTEGER. Position for the lap. Example: 7.'
+    sql: pp
+  rc_index:
+    description: 'INTEGER. Foreign key to the races table (RAK_ID). FK to races. Example: 1093.'
+    sql: rc_index
+  tmdesc:
+    description: 'VARCHAR. Recorded lap-time string. **NULL means the lap time was not captured or is invalid.**. Example: 1:43.848.'
+    sql: tmdesc
+  wheel_unit:
+    description: 'INTEGER. Foreign key to the drivers table (DRV_MAIN). FK to drivers. Example: 4.'
+    sql: wheel_unit
+  lap_time_seconds:
+    label: Lap Time in Seconds
+    description: Converts lap time measurements from milliseconds to seconds.
+    sql: ${msec_val} / 1000.0
+    ai_context: Use this modeled field for Lap Time in Seconds; do not reconstruct its formula.

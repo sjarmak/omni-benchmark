@@ -1,0 +1,114 @@
+label: content_topics
+description: All columns of the public table content_topics.
+catalog: fake_account_large
+schema: public
+table_name: content_topics
+dimensions:
+  demo_bias:
+    description: 'REAL. Demographic bias (0-1). Example: 0.957.'
+    sql: '"DEMO_BIAS"'
+  emoji_pct:
+    description: 'REAL. Emoji usage fraction (0-1). Example: 0.068.'
+    sql: '"EMOJI_PCT"'
+  media_pct:
+    description: 'REAL. Posts with media (0-1). Example: 0.104.'
+    sql: '"MEDIA_PCT"'
+  topic_burst_last_ts:
+    description: 'TIMESTAMPTZ. Last burst timestamp. Example: 2025/08/02 14:47:34.'
+    sql: '"TOPIC_BURST_LAST_TS"'
+  topic_eng_rate:
+    description: 'REAL. Topic-specific engagement rate (0-1). Example: 0.030.'
+    sql: '"TOPIC_ENG_RATE"'
+  topic_shared_url_pct:
+    description: 'REAL. Posts with shared URLs (0-1). Example: 0.275.'
+    sql: '"TOPIC_SHARED_URL_PCT"'
+  topic_trend_slope:
+    description: 'REAL. Slope of topic volume trend. Example: −0.23.'
+    sql: '"TOPIC_TREND_SLOPE"'
+  topic_weight:
+    description: 'REAL. Strength of topic in this account (0-1). Example: 0.231.'
+    sql: '"TOPIC_WEIGHT"'
+  tox_pct:
+    description: 'REAL. Toxic posts fraction. **NULL when toxicity not measured.** Example: 0.287.'
+    sql: '"TOX_PCT"'
+  updated_ts:
+    description: 'TIMESTAMPTZ. Row last updated. Example: 2025/08/02 14:47:34.'
+    sql: '"UPDATED_TS"'
+  url_pct:
+    description: 'REAL. URL inclusion fraction (0-1). Example: 0.437.'
+    sql: '"UrlPct"'
+  acct_slot_ref:
+    description: 'TEXT. FK to content_activity.acct_slot. Example: ACC7210284.'
+    sql: acct_slot_ref
+  geo_bias:
+    description: 'REAL. Geographic bias (0-1). Example: 0.267.'
+    sql: '"geoBias"'
+  gloss_div:
+    description: 'REAL. Gloss diversity (0-1). Example: 0.335.'
+    sql: '"glossDiv"'
+  hashtag_pct:
+    description: 'REAL. Posts containing hashtags (0-1). Example: 0.333.'
+    sql: '"hashtagPct"'
+  keyword_rich_pct:
+    description: 'REAL. Keyword density (0-1). Example: 0.632.'
+    sql: '"keywordRichPct"'
+  last_topic_ts:
+    description: 'TIMESTAMPTZ. Most recent post with topic. Example: 2025/08/02 14:47:34.'
+    sql: '"lastTopicTs"'
+  mention_pct:
+    description: 'REAL. Posts with @-mentions (0-1). Example: 0.226.'
+    sql: '"mentionPct"'
+  notes:
+    description: TEXT. Analyst notes. **NULL when none.**
+    sql: notes
+  nsfw_pct:
+    description: 'REAL. NSFW posts fraction. **NULL when classifier skipped.** Example: NULL.'
+    sql: '"nsfwPct"'
+  persistence_days:
+    description: 'REAL. Consecutive-day presence. Example: 76.'
+    sql: '"persistenceDays"'
+  post_topic_cnt:
+    description: 'BIGINT. Posts from account containing topic. Example: 136.'
+    sql: '"postTopicCnt"'
+  read_ease:
+    description: 'REAL. Readability score (0-100). Example: 14.39.'
+    sql: '"readEase"'
+  spam_pct:
+    description: 'REAL. Spam posts fraction. **NULL when spam classifier skipped.** Example: 0.097.'
+    sql: '"spamPct"'
+  topic_burst_cnt:
+    description: 'BIGINT. Burst episodes. **NULL when no bursts detected.** Example: 19.'
+    sql: '"topicBurstCnt"'
+  topic_decay_rate:
+    description: 'REAL. Decay factor (0-1). Example: 0.769.'
+    sql: '"topicDecayRate"'
+  topic_lang_domin:
+    description: 'TEXT. Dominant language for this topic/account. Example: pt.'
+    sql: '"topicLangDomin"'
+  topic_rank_acct:
+    description: 'REAL. Topic rank within the account (1 = top). Example: 25.'
+    sql: '"topicRankAcct"'
+  topic_risk_score:
+    description: 'REAL. Risk score for topic/account (0-100). Example: 66.42.'
+    sql: '"topicRiskScore"'
+  topic_score_acct:
+    description: 'REAL. Importance score of topic within account (0-100). Example: 57.53.'
+    sql: '"topicScoreAcct"'
+  topic_sent_shift:
+    description: 'REAL. Sentiment shift vs. prior period. Example: 0.91.'
+    sql: '"topicSentShift"'
+  topic_sentiment_avg:
+    description: 'REAL. Avg sentiment for this topic/account. Example: 0.09.'
+    sql: '"topicSentimentAvg"'
+  topic_trend_dir:
+    description: 'TEXT. Direction of topic trend for account. Values: Up, Down, Flat. Example: Up.'
+    sql: '"topicTrendDir"'
+  topic_vol_pct:
+    description: 'REAL. Share of account’s volume (0-1). Example: 0.876.'
+    sql: '"topicVolPct"'
+  topic_code_ref:
+    description: 'TEXT. FK to topics.Topic_CODE. Example: TPC9591000.'
+    sql: topic_code_ref
+  topic_impact_band:
+    description: 'TEXT. Impact tier (Low, Medium, Medium-High, High). Example: Medium.'
+    sql: topic_impact_band

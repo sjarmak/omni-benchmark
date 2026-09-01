@@ -1,0 +1,87 @@
+label: SupplyAllocation
+description: All columns of the public table SupplyAllocation.
+catalog: disaster_relief_large
+schema: public
+table_name: SupplyAllocation
+dimensions:
+  allocation_status:
+    description: TEXT. Workflow state (Allocated, Dispatched, Delivered, Partially Delivered).
+    sql: '"Allocation_Status"'
+  approval_date:
+    description: DATE. Date dispatch was approved.
+    sql: '"ApprovalDate"'
+  approved_by:
+    description: TEXT. Approver’s role or initials. May be NULL when approval automated.
+    sql: '"Approved_By"'
+  cost_estimate_usd:
+    description: REAL. Estimated total cost in USD at planning time.
+    sql: '"CostEstimateUSD"'
+  dispatch_date:
+    description: DATE. Date goods departed the origin hub.
+    sql: '"DISPATCH_date"'
+  delivery_date:
+    description: DATE. Date goods arrived at destination.
+    sql: '"DeliveryDate"'
+  hub_ref:
+    description: VARCHAR(20). FK → DistributionHubs.HubRegistry for destination hub.
+    sql: '"HubRef"'
+  packaging_type:
+    description: TEXT. Packaging form (Pallet, Crate, Box, Bag). May be NULL for bulk shipments.
+    sql: '"PACKAGING_TYPE"'
+  priority_level:
+    description: TEXT. Dispatch priority (High, Medium, Low).
+    sql: '"PRIORITY_LEVEL"'
+  remarks:
+    description: TEXT. Operational comments; may be NULL when uneventful.
+    sql: '"REMARKS"'
+  tracking_number:
+    description: TEXT. Parcel or freight tracking ID. May be NULL if not trackable.
+    sql: '"Tracking_Number"'
+  version:
+    description: INT. Metadata version counter.
+    sql: '"VERSION"'
+  actual_cost_usd:
+    description: REAL. Actual incurred logistics cost in USD.
+    sql: actual_cost_usd
+  allocation_id:
+    description: VARCHAR(20). Unique allocation/dispatch identifier. PK.
+    sql: '"allocationID"'
+  allocation_date:
+    description: DATE. Date allocation was authorised.
+    sql: '"allocation_Date"'
+  currency_code:
+    description: TEXT. Currency of cost figures (always USD in current data).
+    sql: currency_code
+  delivery_metrics:
+    description: JSONB column. Condenses quantity flow, transit performance, and cost/loss figures for a single allocation ticket.
+    sql: delivery_metrics
+  item_id:
+    description: VARCHAR(20). FK → SupplyItemCatalogue.itemID for the allocated item.
+    sql: '"item_Id"'
+  last_updated:
+    description: TIMESTAMP. Last update (UTC).
+    sql: '"lastUpdated"'
+  packaging_units:
+    description: BIGINT. Number of packages/pallets used.
+    sql: '"packagingUnits"'
+  delivery_metrics_costs_damage_loss_pct:
+    description: REAL. Percentage of goods damaged or lost. May be NULL when assessment pending.
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'costs', 'damageLossPct')
+  delivery_metrics_costs_per_unit_usd:
+    description: REAL. Actual logistics cost per unit delivered, expressed in USD.
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'costs', 'perUnitUSD')
+  delivery_metrics_qty_allocated:
+    description: REAL. Quantity reserved for this allocation.
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'qty', 'allocated')
+  delivery_metrics_qty_delivered:
+    description: REAL. Quantity confirmed delivered to the hub.
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'qty', 'delivered')
+  delivery_metrics_qty_dispatched:
+    description: REAL. Quantity physically shipped.
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'qty', 'dispatched')
+  delivery_metrics_transit_distance_km:
+    description: REAL. Approximate route distance in kilometres.
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'transit', 'distanceKm')
+  delivery_metrics_transit_time_days:
+    description: TEXT. Planned transit time range in days (e.g., 3-5).
+    sql: JSONB_EXTRACT_PATH_TEXT(delivery_metrics, 'transit', 'timeDays')

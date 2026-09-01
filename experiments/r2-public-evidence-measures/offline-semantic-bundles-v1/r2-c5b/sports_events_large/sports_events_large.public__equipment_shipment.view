@@ -1,0 +1,72 @@
+label: EquipmentShipment
+description: All columns of the public table EquipmentShipment.
+catalog: sports_events_large
+schema: public
+table_name: EquipmentShipment
+dimensions:
+  carrier:
+    description: 'TEXT. Shipping carrier Possible values: DHL, FedEx, Ceva Logistics, Kuehne+Nagel, DB Schenker.'
+    sql: '"CARRIER"'
+  circuit_ref:
+    description: BIGINT. Foreign key referencing circuits(cctkey). Destination circuit
+    sql: '"CIRCUIT_REF"'
+  container_count:
+    description: BIGINT. Number of containers/crates
+    sql: '"CONTAINER_COUNT"'
+  expected_arrival:
+    description: DATE. Expected arrival date
+    sql: '"EXPECTED_ARRIVAL"'
+  hazmat_flag:
+    description: BOOLEAN. Whether shipment contains hazardous materials Boolean flag (true/false).
+    sql: '"HAZMAT_FLAG"'
+  insurance_value_usd:
+    description: 'REAL. Insured value Typical range: 5000 to 2000000.'
+    sql: '"INSURANCE_VALUE_USD"'
+  shipment_id:
+    description: BIGINT. Primary key. Unique equipment shipment identifier
+    sql: '"SHIPMENT_ID"'
+  shipment_type:
+    description: 'TEXT. Mode of transport Possible values: Sea Freight, Air Freight, Road Transport, Charter Flight.'
+    sql: '"SHIPMENT_TYPE"'
+  status:
+    description: 'TEXT. Shipment status Possible values: Preparing, Dispatched, In Transit, Customs, Delivered, Delayed.'
+    sql: '"STATUS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  weight_kg:
+    description: 'REAL. Total shipment weight in kg Typical range: 50 to 40000.'
+    sql: '"WEIGHT_KG"'
+  actual_arrival:
+    description: DATE. Actual arrival date **NULL means Not yet arrived.**
+    sql: actual_arrival
+  cargo_type:
+    description: 'TEXT. Type of cargo Possible values: Car Components, Hospitality, IT Equipment, Garage Equipment, Spare Parts, Marketing Materials.'
+    sql: cargo_type
+  constructor_ref:
+    description: BIGINT. Foreign key referencing constructors(cstr_key). Related constructor
+    sql: constructor_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  customs_clearance_required:
+    description: BOOLEAN. Whether customs clearance is needed Boolean flag (true/false).
+    sql: customs_clearance_required
+  dispatch_date:
+    description: DATE. Date of dispatch
+    sql: dispatch_date
+  insurance_active:
+    description: BOOLEAN. Whether shipment insurance is active Boolean flag (true/false).
+    sql: insurance_active
+  shipping_cost_usd:
+    description: 'REAL. Shipping cost in USD Typical range: 1000 to 500000.'
+    sql: shipping_cost_usd
+  tracking_code:
+    description: TEXT. Shipment tracking code
+    sql: tracking_code
+  tracking_events:
+    description: JSONB. Shipment tracking event log
+    sql: tracking_events
+  volume_m3:
+    description: 'REAL. Total shipment volume in cubic meters Typical range: 1 to 200.'
+    sql: volume_m3

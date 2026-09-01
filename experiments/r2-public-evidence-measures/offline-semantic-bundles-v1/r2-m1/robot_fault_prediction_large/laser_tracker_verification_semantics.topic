@@ -1,0 +1,11 @@
+base_view: robot_fault_prediction_large_public__laser_tracker_verification
+label: laser_tracker_verification
+description: All columns of the public table laser_tracker_verification.
+fields:
+- robot_fault_prediction_large_public__laser_tracker_verification.*
+- robot_fault_prediction_large_public__calibration_events.*
+- robot_fault_prediction_large_public__end_effectors.*
+joins:
+  robot_fault_prediction_large_public__calibration_events:
+    robot_fault_prediction_large_public__end_effectors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

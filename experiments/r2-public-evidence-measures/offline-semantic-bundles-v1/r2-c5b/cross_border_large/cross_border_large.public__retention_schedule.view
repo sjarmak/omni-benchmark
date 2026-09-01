@@ -1,0 +1,60 @@
+label: RetentionSchedule
+description: All columns of the public table RetentionSchedule.
+catalog: cross_border_large
+schema: public
+table_name: RetentionSchedule
+dimensions:
+  cross_border_applicable:
+    description: BOOLEAN. Whether schedule applies to cross-border data Boolean flag (true/false).
+    sql: '"CROSS_BORDER_APPLICABLE"'
+  disposal_method:
+    description: 'TEXT. Method of disposal after retention Possible values: Secure Delete, Anonymization, Archival, Physical Destruction.'
+    sql: '"DISPOSAL_METHOD"'
+  next_review_date:
+    description: DATE. Next scheduled review date
+    sql: '"NEXT_REVIEW_DATE"'
+  regulatory_reference:
+    description: 'TEXT. Regulatory reference mandating retention Possible values: GDPR Art 5(1)(e), SOX Section 802, CCPA 1798.105, HIPAA. **NULL means No specific regulatory requirement.**'
+    sql: '"REGULATORY_REFERENCE"'
+  retention_id:
+    description: BIGINT. Primary key. Unique retention schedule identifier
+    sql: '"RETENTION_ID"'
+  retention_period_days:
+    description: BIGINT. Retention period in days
+    sql: '"RETENTION_PERIOD_DAYS"'
+  schedule_name:
+    description: 'TEXT. Name of the retention schedule Possible values: Customer Transaction Records, Employee HR Data, Marketing Consent Records, Financial Audit Trail, System Access Logs, Compliance Documentation, Contract Archives, Incident Reports.'
+    sql: '"SCHEDULE_NAME"'
+  status:
+    description: 'TEXT. Schedule status Possible values: Active, Under Review, Deprecated.'
+    sql: '"STATUS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  auto_disposal_enabled:
+    description: BOOLEAN. Whether automatic disposal is configured Boolean flag (true/false).
+    sql: auto_disposal_enabled
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  data_category:
+    description: 'TEXT. Category of data covered Possible values: PII, Financial, Health, HR, Operational, Legal, Marketing, Technical.'
+    sql: data_category
+  effective_date:
+    description: DATE. When this schedule became effective
+    sql: effective_date
+  jurisdiction_ref:
+    description: BIGINT. Foreign key referencing Geo_Jurisdiction(JURISDICTION_CODE). Applicable jurisdiction
+    sql: jurisdiction_ref
+  owner:
+    description: 'TEXT. Schedule owner Possible values: Privacy Office, Legal, Compliance, IT.'
+    sql: owner
+  retention_basis:
+    description: 'TEXT. Basis for the retention period Possible values: Legal Requirement, Business Need, Regulatory, Contractual, Consent-Based.'
+    sql: retention_basis
+  schedule_code:
+    description: TEXT. Retention schedule code
+    sql: schedule_code
+  systems_covered:
+    description: BIGINT. Number of systems covered by this schedule
+    sql: systems_covered

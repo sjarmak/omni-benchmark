@@ -1,0 +1,17 @@
+base_view: disaster_relief_large_public__humanresources
+label: Human Resources
+description: Human-resource records with row-level staff and volunteer footprint semantics.
+fields:
+- disaster_relief_large_public__humanresources.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__operations.*
+joins:
+  disaster_relief_large_public__disasterevents: {}
+  disaster_relief_large_public__operations: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields total_humanitarian_footprint rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Operational Readiness Score (ORS): A composite score indicating a team''s preparedness, based on personnel availability, equipment status, and maintenance levels.'

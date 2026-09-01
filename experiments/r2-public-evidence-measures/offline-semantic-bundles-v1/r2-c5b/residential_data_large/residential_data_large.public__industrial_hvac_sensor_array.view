@@ -1,0 +1,66 @@
+label: Industrial_HVAC_Sensor_Array
+description: All columns of the public table Industrial_HVAC_Sensor_Array.
+catalog: residential_data_large
+schema: public
+table_name: Industrial_HVAC_Sensor_Array
+dimensions:
+  energy_audit_fk:
+    description: TEXT. Reference to the energy efficiency audit data.
+    sql: '"Energy_Audit_FK"'
+  hvac_array_pk:
+    description: 'TEXT. Primary key for the HVAC sensor monitoring array. Example: HVA-1A2B3C.'
+    sql: '"HVAC_Array_PK"'
+  air_handler_static_pressure_pa:
+    description: 'REAL. Pressure difference within the air ducting system. Example: 250.'
+    sql: air_handler_static_pressure_pa
+  chiller_water_inlet_temp_c:
+    description: 'REAL. Temperature of water entering the chiller unit. Example: 12.0.'
+    sql: chiller_water_inlet_temp_c
+  chiller_water_outlet_temp_c:
+    description: 'REAL. Temperature of water leaving the chiller unit. Example: 7.0.'
+    sql: chiller_water_outlet_temp_c
+  co2_concentration_ppm:
+    description: 'INTEGER. Carbon dioxide level in return air for demand-controlled ventilation. Example: 600.'
+    sql: co2_concentration_ppm
+  compressor_vfd_frequency_hz:
+    description: 'REAL. Frequency of the Variable Frequency Drive for the compressor. **NULL means Direct drive bypass active.** Example: 50.0.'
+    sql: compressor_vfd_frequency_hz
+  condenser_fan_current_amps:
+    description: 'REAL. Electric current drawn by heat rejection fans. Example: 15.'
+    sql: condenser_fan_current_amps
+  cooling_tower_fan_speed_rpm:
+    description: 'INTEGER. Rotational speed of the heat rejection fans. Example: 1200.'
+    sql: cooling_tower_fan_speed_rpm
+  damper_opening_percentage:
+    description: 'REAL. Percentage of outside air intake damper opening. Example: 50.0.'
+    sql: damper_opening_percentage
+  duct_air_velocity_mps:
+    description: 'REAL. Speed of air moving through the ventilation ducts. **NULL means Anemometer obstructed.** Example: 5.5.'
+    sql: duct_air_velocity_mps
+  economizer_status_binary:
+    description: 'INTEGER. 1 if free-cooling mode is active, 0 otherwise. Unique values: 0, 1.'
+    sql: economizer_status_binary
+  evaporator_coil_temp_c:
+    description: 'REAL. Surface temperature of the heat exchange coil. Example: 5.0.'
+    sql: evaporator_coil_temp_c
+  filter_differential_pressure_pa:
+    description: 'REAL. Pressure drop across the HEPA/MERV filter. Example: 120.'
+    sql: filter_differential_pressure_pa
+  lubrication_oil_temp_c:
+    description: 'REAL. Temperature of the compressor lubricant. Example: 45.'
+    sql: lubrication_oil_temp_c
+  refrigerant_discharge_pressure_psi:
+    description: 'REAL. High side pressure of the refrigeration cycle. **NULL means Sensor fault.** Example: 350.'
+    sql: refrigerant_discharge_pressure_psi
+  refrigerant_suction_pressure_psi:
+    description: 'REAL. Low side pressure of the refrigeration cycle. **NULL means Sensor fault.** Example: 115.'
+    sql: refrigerant_suction_pressure_psi
+  supply_air_relative_humidity:
+    description: 'REAL. Humidity of air entering the conditioned space. Example: 50.0.'
+    sql: supply_air_relative_humidity
+  system_vibration_amplitude_mm:
+    description: 'REAL. Mechanical vibration magnitude of the main unit. **NULL means Accelerometer offline.** Example: 50.0.'
+    sql: system_vibration_amplitude_mm
+  thermal_energy_btu_hr:
+    description: 'REAL. Instantaneous cooling/heating load capacity. **NULL means Calculation error.** Example: 50.0.'
+    sql: thermal_energy_btu_hr

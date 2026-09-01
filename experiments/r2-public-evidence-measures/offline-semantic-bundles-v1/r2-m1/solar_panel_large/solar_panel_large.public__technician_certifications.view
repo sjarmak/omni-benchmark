@@ -1,0 +1,21 @@
+label: technician_certifications
+description: All columns of the public table technician_certifications.
+catalog: solar_panel_large
+schema: public
+table_name: technician_certifications
+dimensions:
+  certification_ref:
+    description: 'TEXT. PK & FK -> certifications.CertCode. Reference to the certification. Example: CERT-01.'
+    sql: '"CertificationRef"'
+  expiry:
+    description: 'DATE. The date the certification expires. Example: 2021-04-15.'
+    sql: '"EXPIRY"'
+  technician_ref:
+    description: 'TEXT. PK & FK -> technicians.TechNum. Reference to the technician. Example: T-101.'
+    sql: '"TechnicianRef"'
+  issue_date:
+    description: 'DATE. The date the certification was issued to the technician. Example: 2019-04-15.'
+    sql: issue_date
+  verification_path:
+    description: 'TEXT. A URL or path to a document for verifying the certification. Example: /verify?cert=PVIP-1-T101.'
+    sql: verification_path

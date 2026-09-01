@@ -1,0 +1,19 @@
+base_view: disaster_relief_large_public__skill_session_map
+label: skill_Session_Map
+description: All columns of the public table skill_Session_Map.
+fields:
+- disaster_relief_large_public__skill_session_map.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__humanresources.*
+- disaster_relief_large_public__operations.*
+- disaster_relief_large_public__skill_catalogue.*
+- disaster_relief_large_public__training_sessions.*
+- disaster_relief_large_public__volunteer_profiles.*
+joins:
+  disaster_relief_large_public__skill_catalogue: {}
+  disaster_relief_large_public__training_sessions:
+    disaster_relief_large_public__volunteer_profiles:
+      disaster_relief_large_public__humanresources:
+        disaster_relief_large_public__disasterevents: {}
+        disaster_relief_large_public__operations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

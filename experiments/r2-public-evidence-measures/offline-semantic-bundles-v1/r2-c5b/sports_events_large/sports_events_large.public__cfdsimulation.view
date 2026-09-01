@@ -1,0 +1,66 @@
+label: CFDSimulation
+description: All columns of the public table CFDSimulation.
+catalog: sports_events_large
+schema: public
+table_name: CFDSimulation
+dimensions:
+  cd_predicted:
+    description: 'REAL. Predicted drag coefficient Typical range: 0.5 to 1.5.'
+    sql: '"CD_PREDICTED"'
+  cfd_id:
+    description: BIGINT. Primary key. Unique CFD simulation identifier
+    sql: '"CFD_ID"'
+  converged:
+    description: BOOLEAN. Whether simulation converged Boolean flag (true/false).
+    sql: '"CONVERGED"'
+  cpu_cores_used:
+    description: BIGINT. Number of CPU cores used
+    sql: '"CPU_CORES_USED"'
+  delta_vs_baseline_counts:
+    description: 'REAL. Delta vs baseline in drag counts Typical range: -30 to 30.'
+    sql: '"DELTA_VS_BASELINE_COUNTS"'
+  dev_program_ref:
+    description: BIGINT. Foreign key referencing CarDevelopmentProgram(DEV_PROGRAM_ID). Related dev program
+    sql: '"DEV_PROGRAM_REF"'
+  mesh_cells_millions:
+    description: BIGINT. Number of mesh cells in millions
+    sql: '"MESH_CELLS_MILLIONS"'
+  run_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Date of simulation run
+    sql: '"RUN_DATE"'
+  wt_correlation_done:
+    description: BOOLEAN. Whether wind tunnel correlation was done Boolean flag (true/false).
+    sql: '"WT_CORRELATION_DONE"'
+  yaw_angle_deg:
+    description: 'REAL. Simulated yaw angle Typical range: -15 to 15.'
+    sql: '"YAW_ANGLE_DEG"'
+  car_component:
+    description: 'TEXT. Component being simulated Possible values: Full Car, Front Wing, Rear Wing, Floor, Diffuser, Sidepod, Brake Duct.'
+    sql: car_component
+  cl_predicted:
+    description: 'REAL. Predicted lift coefficient Typical range: -5 to -1.'
+    sql: cl_predicted
+  compute_hours:
+    description: 'REAL. Total compute hours used Typical range: 1 to 5000.'
+    sql: compute_hours
+  convergence_residual:
+    description: 'REAL. Convergence residual Typical range: 1e-05 to 0.01.'
+    sql: convergence_residual
+  correlation_error_pct:
+    description: 'REAL. Correlation error vs wind tunnel (%) Typical range: 0 to 15. **NULL means No correlation performed.**'
+    sql: correlation_error_pct
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  simulation_code:
+    description: TEXT. CFD simulation code
+    sql: simulation_code
+  simulation_type:
+    description: 'TEXT. Type of CFD simulation Possible values: RANS, DES, LES, Transient, Steady-State.'
+    sql: simulation_type
+  software:
+    description: 'TEXT. CFD software used Possible values: OpenFOAM, ANSYS Fluent, Star-CCM+, Custom.'
+    sql: software
+  wind_speed_mps:
+    description: 'REAL. Simulated wind speed in m/s Typical range: 10 to 100.'
+    sql: wind_speed_mps

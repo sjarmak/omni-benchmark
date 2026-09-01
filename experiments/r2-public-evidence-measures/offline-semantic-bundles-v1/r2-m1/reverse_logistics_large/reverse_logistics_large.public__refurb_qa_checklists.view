@@ -1,0 +1,69 @@
+label: refurb_qa_checklists
+description: All columns of the public table refurb_qa_checklists.
+catalog: reverse_logistics_large
+schema: public
+table_name: refurb_qa_checklists
+dimensions:
+  accessories_verified_flag:
+    description: BOOLEAN. Confirmed all required accessories are present.
+    sql: accessories_verified_flag
+  audit_photo_url:
+    description: TEXT. Link to final QA photo.
+    sql: audit_photo_url
+  battery_health_percentage:
+    description: 'REAL. Measured battery health capacity vs design. **NULL means No battery.** Example: 50.0.'
+    sql: battery_health_percentage
+  calibration_offset_val:
+    description: 'REAL. Calibration offset applied to sensors if needed. Example: 0.0.'
+    sql: calibration_offset_val
+  connectivity_test_result:
+    description: 'TEXT. Result of WiFi/Bluetooth functionality test. Unique values: Pass, Weak Signal, Fail.'
+    sql: connectivity_test_result
+  final_qa_verdict:
+    description: 'TEXT. Final decision: Approve, Reject, Rework. Unique values: Approve, Rework, Scrap.'
+    sql: final_qa_verdict
+  firmware_hash_verified:
+    description: BOOLEAN. Security check of the installed firmware hash.
+    sql: firmware_hash_verified
+  inspection_start_time:
+    description: 'TIMESTAMP. When the QA process started. Example: 2024-01-01 12:00:00.'
+    sql: inspection_start_time
+  inspector_badge_id:
+    description: TEXT. ID of the QA inspector (different from technician).
+    sql: inspector_badge_id
+  packaging_compliance_check:
+    description: 'TEXT. Check if packaging meets retail standards. Unique values: Compliant, Damaged, Wrong Box.'
+    sql: packaging_compliance_check
+  qa_checklist_ref:
+    description: TEXT. Unique identifier for the QA checklist execution.
+    sql: qa_checklist_ref
+  qa_rejection_reason:
+    description: 'TEXT. Primary reason if QA failed. Unique values: Cosmetic, Functional, Safety, None.'
+    sql: qa_rejection_reason
+  refurb_job_ref:
+    description: TEXT. Reference to the refurbishment job being checked.
+    sql: refurb_job_ref
+  safety_test_pass_flag:
+    description: BOOLEAN. Electrical safety/insulation test result.
+    sql: safety_test_pass_flag
+  screen_pixel_dead_count:
+    description: 'INTEGER. Number of dead pixels detected. Example: 50.'
+    sql: screen_pixel_dead_count
+  software_reset_confirmed:
+    description: BOOLEAN. Confirmed device is factory reset/wiped.
+    sql: software_reset_confirmed
+  stress_test_duration_min:
+    description: 'INTEGER. Duration of the automated stress test. Example: 30.'
+    sql: stress_test_duration_min
+  thermal_peak_temp_c:
+    description: 'REAL. Peak temperature recorded during stress test. Example: 65.'
+    sql: thermal_peak_temp_c
+  visual_inspection_score:
+    description: 'INTEGER. Score for visual condition (1-100). Example: 95.'
+    sql: visual_inspection_score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct refurb_qa_checklists public identity values.
+    label: refurb_qa_checklists Count
+    sql: ${reverse_logistics_large_public__refurb_qa_checklists.qa_checklist_ref}

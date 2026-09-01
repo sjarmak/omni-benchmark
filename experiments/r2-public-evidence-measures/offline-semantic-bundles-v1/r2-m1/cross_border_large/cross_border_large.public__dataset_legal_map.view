@@ -1,0 +1,87 @@
+label: Dataset_Legal_Map
+description: All columns of the public table Dataset_Legal_Map.
+catalog: cross_border_large
+schema: public
+table_name: Dataset_Legal_Map
+dimensions:
+  consent_required:
+    description: 'TEXT. Whether consent is required for processing. Example: Yes.'
+    sql: '"CONSENT_REQUIRED"'
+  data_subject_rights_supported:
+    description: 'TEXT. Data subject rights supported. Example: Rights for dataset 1 and article 1.'
+    sql: '"DATA_SUBJECT_RIGHTS_SUPPORTED"'
+  dpia_required:
+    description: 'TEXT. Whether a Data Protection Impact Assessment (DPIA) is required. Example: Yes.'
+    sql: '"DPIA_REQUIRED"'
+  jurisdiction_code:
+    description: 'TEXT. Jurisdiction code for the dataset and article. Example: EU.'
+    sql: '"JURISDICTION_CODE"'
+  metric3:
+    description: 'REAL. Metric value for the mapping. Example: 82.0.'
+    sql: '"METRIC3"'
+  metric1:
+    description: 'REAL. Metric value for the mapping. Example: 75.0.'
+    sql: '"Metric1"'
+  next_review_date:
+    description: 'DATE. Date when the entry should be reviewed next. Example: 2025-12-31.'
+    sql: '"Next_Review_Date"'
+  owner:
+    description: 'TEXT. Owner of the dataset-legal map entry. Example: Alice.'
+    sql: '"OWNER"'
+  purpose:
+    description: 'TEXT. Purpose of data processing for the dataset and article combination. Example: Purpose for dataset 1 and article 2.'
+    sql: '"PURPOSE"'
+  retention_days:
+    description: 'BIGINT. Retention days for the data. Example: 180.'
+    sql: '"RETENTION_DAYS"'
+  role:
+    description: 'TEXT. Role in data processing (controller or processor). Example: Controller.'
+    sql: '"ROLE"'
+  status:
+    description: 'TEXT. Status of the dataset-legal map entry. Example: Active.'
+    sql: '"Status"'
+  tag1:
+    description: 'TEXT. Tag 1 for the mapping. Example: TagA.'
+    sql: '"TAG1"'
+  transfer_mechanism:
+    description: 'TEXT. Data transfer mechanism. Example: Standard Contractual Clauses.'
+    sql: '"TRANSFER_MECHANISM"'
+  tag3:
+    description: 'TEXT. Tag 3 for the mapping. Example: TagC.'
+    sql: '"Tag3"'
+  article_number:
+    description: 'BIGINT. Foreign key referencing Legal_Article(ARTICLE_NO). Example: 1.'
+    sql: article_number
+  consent_renewal_days:
+    description: 'BIGINT. Number of days required for consent renewal. Example: 365.'
+    sql: consent_renewal_days
+  dataset_code:
+    description: 'BIGINT. Foreign key referencing Dataset_Catalog(dataset_code). Example: 1.'
+    sql: dataset_code
+  dpia_date:
+    description: 'DATE. Date when DPIA was performed. Example: 2025-03-01.'
+    sql: dpia_date
+  introduced_at:
+    description: 'TIMESTAMP. Timestamp when the mapping entry was introduced. Example: 2025-01-01T11:22:56Z.'
+    sql: introduced_at
+  legal_basis:
+    description: 'TEXT. Legal basis for the dataset and article combination. Example: Consent.'
+    sql: legal_basis
+  metric2:
+    description: 'REAL. Metric value for the mapping. Example: 60.5.'
+    sql: metric2
+  metric4:
+    description: 'REAL. Metric value for the mapping. Example: 90.0.'
+    sql: metric4
+  metric5:
+    description: 'REAL. Metric value for the mapping. Example: 65.5.'
+    sql: metric5
+  privacy_notice_url:
+    description: 'TEXT. URL for the privacy notice. Example: https://example.com/privacy/1.'
+    sql: privacy_notice_url
+  restriction_notes:
+    description: 'TEXT. Notes on restrictions for the dataset and article combination. Example: Data transfer restrictions for Regulation 1.'
+    sql: restriction_notes
+  tag2:
+    description: 'TEXT. Tag 2 for the mapping. Example: TagB.'
+    sql: tag2

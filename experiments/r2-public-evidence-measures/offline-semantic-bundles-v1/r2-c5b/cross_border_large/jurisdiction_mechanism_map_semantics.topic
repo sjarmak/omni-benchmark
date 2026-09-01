@@ -1,0 +1,11 @@
+base_view: cross_border_large_public__jurisdiction_mechanism_map
+label: Jurisdiction_Mechanism_Map
+description: All columns of the public table Jurisdiction_Mechanism_Map.
+fields:
+- cross_border_large_public__jurisdiction_mechanism_map.*
+- cross_border_large_public__geo_jurisdiction.*
+- cross_border_large_public__transfer_mechanism.*
+joins:
+  cross_border_large_public__geo_jurisdiction: {}
+  cross_border_large_public__transfer_mechanism: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

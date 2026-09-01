@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__astronomical_catalogs
+label: astronomical_catalogs
+description: All columns of the public table astronomical_catalogs.
+fields:
+- planets_data_large_public__astronomical_catalogs.*
+joins: {}
+ai_context: This topic models no cross-table joins.

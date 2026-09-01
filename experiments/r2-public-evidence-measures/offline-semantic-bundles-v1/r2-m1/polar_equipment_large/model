@@ -1,0 +1,58 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Equipment Efficiency Rating (EER): EER = \frac{\text{performance score} + \text{reliability index}}{2} \times (1 - \frac{\text{environmental impact index}}{100}), \text{ where higher values indicate more efficient equipment with better performance and lower environmental impact.}
+
+  - Critical Equipment: Equipment is designated as ''Critical'' if it belongs to the ''Safety'' equipment type, has a safety index > 0.75, and is associated with any of these life-critical systems: life support status, oxygen supply status, or heater systems where temperatures are below freezing (external temperature (°C) < 0).
+
+  - Vehicle Performance Composite (VPC): VPC = (1 - \frac{\text{brake pad wear percent} + \text{track wear percent}}{200}) \times \frac{\text{vehicle speed (km/h)}}{50} \times \frac{\text{engine load percent}}{100}, \text{ where lower wear percentages and optimal engine load contribute to better performance.}
+
+  - Extreme Weather Readiness (EWR): A composite rating where equipment is considered ''Extreme Weather Ready'' if it maintains an SSF > 0.7 and has operational heating systems (heater status not ''Off''), proper insulation (insulation status not ''Poor''), and functional emergency systems (emergency light status = ''On'' or ''Testing'').
+
+  - Communication Zone Status: A zone is classified as having ''Reliable Coverage'' when equipment within it maintains a CRI > 7, has active satellite connections (satellite status = ''Connected''), and supports emergency beacon functionality (emergency beacon status != ''Inactive'').
+
+  - Polar Transportation Efficiency Coefficient (PTEC): PTEC = VPC \times (0.6 + 0.4 \times ESI \div 100)
+
+  - Life Support System Reliability (LSSR): LSSR = 0.7 \times ORS + 0.3 \times TIE
+
+  - Scientific Mission Success Probability (SMSP): SMSP = SER \times (0.8 + 0.2 \times CRI \div 10)
+
+  - Resource Self-Sufficiency Index (RSSI): RSSI = 0.6 \times REC + 0.4 \times WRMI
+
+  - Comprehensive Operational Reliability Indicator (CORI): CORI = 0.4 \times EER + 0.4 \times ORS + 0.2 \times CRI
+
+  - Extreme Weather Readiness Status (EWRS): Equipment is classified as ''Extreme Weather Ready'' when (SSF > 0.7) and (heater status != ''Off'') and (insulation status != ''Good'') and (emergency light status is either (''On'', ''Testing'')); OTHERWISE equipment is classified as ''Not Ready''. This evaluation combines structural integrity checks with essential operational systems status to determine immediate readiness for extreme weather exposure.
+
+  - Temperature-Zoned Average Battery Health: AvgHealth_{\text{zone}} = \overline{\text{health percent}}_{\text{zone}} \text{ where zone is defined as:} \\ \begin{cases} \text{Extreme Cold} & \text{if external temperature (°C) < -40^\circ\text{C}} \\ \text{Standard Cold} & \text{if } -40^\circ\text{C} \le \text{external temperature (°C)} < -20^\circ\text{C} \\ \text{Mild Cold} & \text{if } \text{external temperature (°C)} \ge -20^\circ\text{C} \end{cases}
+
+  - Extreme Operating Conditions (EOC): Equipment is considered to ''operate safely under extreme conditions'' when its SSF > 0.65 and ECAC > 0.8.
+
+  - Emergency Response Readiness Status (ERRS): A polar site is rated as ''emergency response ready'' when its critical equipment maintains OSPI > 0.75 and LSSR > 0.8, with emergency communication status = ''Operational'' and backup power status = ''Active'' and battery level (%) > 85.
+
+  - Critical Scientific Equipment Status (CSES): Scientific equipment is classified as ''Fully Operational'' (SER > 0.9 and SMSP > 0.85), ''Degraded Operation'' (SER > 0.7 and SMSP > 0.6), or ''Needs Repair'' (other cases).
+
+  - Polar Vehicle Safe Operation Conditions (PVSOC): Polar vehicles are considered ''suitable for polar missions'' when they maintain PTEC > 0.7 and VPC > 0.75, with operational status = ''Active'' and safety index ≥ 0.8.
+
+  - Critical Infrastructure Protection Level (CIPL): Infrastructure is assigned protection level ''A'' (SSF > 0.8, LOSS > 0.85, and OSPI > 0.9), ''B'' (SSF > 0.7, LOSS > 0.75, and OSPI > 0.8), or ''C'' (other cases).
+
+  - Polar Base Energy Security Status (PBESS): A polar base is assessed as being in an ''energy secure'' state when it maintains REC > 65%, ESI > 0.7, and RSSI > 0.75, with battery level (%) > 75 and hydrogen level percent > 70.
+
+  - Life Support Reliability Classification (LSRC): Life support systems are classified into three reliability categories: ''High Reliability'' WHEN (LSSR >= 0.8), ''Moderate Reliability'' WHEN (LSSR >= 0.6 AND LSSR < 0.8), and ''Low Reliability'' WHEN (LSSR < 0.6).
+
+  - Energy Sustainability Classification System (ESCS): Operations are classified into three sustainability levels: ''Energy-Sustainable'' WHEN (REC > 70); ''Moderately Sustainable'' WHEN (REC > 50 AND REC <= 70); ''Low Sustainability'' WHEN (REC <= 50).
+
+  - Vehicle Efficiency and Sustainability Report: The process of calculating VPC and ESI for each vehicle, using those values to calculate PTEC, and finally ordering the vehicles by the resulting PTEC score to create a ranked performance report.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

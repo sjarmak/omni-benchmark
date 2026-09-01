@@ -1,0 +1,72 @@
+label: moderation_case_files
+description: All columns of the public table moderation_case_files.
+catalog: fake_account_large
+schema: public
+table_name: moderation_case_files
+dimensions:
+  case_file_code:
+    description: TEXT. Unique identifier for the human moderation review.
+    sql: '"CaseFile_CODE"'
+  account_age_at_event_days:
+    description: 'INTEGER. Age of the account when violation occurred. Example: 50.'
+    sql: account_age_at_event_days
+  action_taken_type:
+    description: 'TEXT. Outcome (Warning, Ban, Shadowban, None). Unique values: WARNING, TEMP_BAN, PERM_BAN, NO_ACTION.'
+    sql: action_taken_type
+  appeal_status:
+    description: 'TEXT. State of any user appeal regarding this case. Unique values: NONE, PENDING, GRANTED, DENIED.'
+    sql: appeal_status
+  audit_log_ref:
+    description: TEXT. Reference to the audit log entry triggering review.
+    sql: audit_log_ref
+  auto_preflag_score:
+    description: 'REAL. AI score that flagged the content initially. **NULL means Manually flagged by user.** Example: 50.0.'
+    sql: auto_preflag_score
+  ban_duration_hours:
+    description: 'INTEGER. Length of suspension if applicable. **NULL means No ban issued.** Unique values: 24, 72, 168, 720.'
+    sql: ban_duration_hours
+  content_hash_match_count:
+    description: 'INTEGER. Number of times this exact content appeared elsewhere. Example: 50.'
+    sql: content_hash_match_count
+  false_positive_correction_flag:
+    description: 'BOOLEAN. True if decision overturned a previous AI error. Possible values: True, False.'
+    sql: false_positive_correction_flag
+  geo_blocking_applied:
+    description: 'BOOLEAN. True if content was restricted in specific regions only. Possible values: True, False.'
+    sql: geo_blocking_applied
+  historical_violation_count:
+    description: 'INTEGER. Number of prior offenses by this user. Example: 50.'
+    sql: historical_violation_count
+  human_reviewer_confidence:
+    description: 'REAL. Self-reported confidence of the moderator decision. Example: 50.0.'
+    sql: human_reviewer_confidence
+  legal_takedown_ref:
+    description: TEXT. Reference to LEA or Court Order if applicable. **NULL means Not a legal request.**
+    sql: legal_takedown_ref
+  network_graph_risk_score:
+    description: 'REAL. Risk derived from the user''s connection cluster. Example: 50.0.'
+    sql: network_graph_risk_score
+  policy_violation_code:
+    description: 'TEXT. Specific platform rule allegedly broken. Unique values: HATE_SPEECH, NUDITY, SPAM, HARRASSMENT.'
+    sql: policy_violation_code
+  review_duration_sec:
+    description: 'INTEGER. Time spent analyzing the content before decision. Example: 45.'
+    sql: review_duration_sec
+  reviewer_tenure_days:
+    description: 'INTEGER. Experience level of the human moderator. Example: 300.'
+    sql: reviewer_tenure_days
+  training_dataset_inclusion_flag:
+    description: 'BOOLEAN. True if case marked for future model training. Possible values: True, False.'
+    sql: training_dataset_inclusion_flag
+  user_reputation_score_snapshot:
+    description: 'REAL. User''s standing score at moment of violation. Example: 0.6.'
+    sql: user_reputation_score_snapshot
+  violation_severity_score:
+    description: 'INTEGER. 1-100 score indicating harm potential. Example: 60.'
+    sql: violation_severity_score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct moderation_case_files public identity values.
+    label: moderation_case_files Count
+    sql: ${fake_account_large_public__moderation_case_files.case_file_code}

@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__product_review_feedback
+label: product_review_feedback
+description: All columns of the public table product_review_feedback.
+fields:
+- cybermarket_pattern_large_public__product_review_feedback.*
+joins: {}
+ai_context: This topic models no cross-table joins.

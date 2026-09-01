@@ -1,0 +1,9 @@
+base_view: planets_data_large_public__telescope_allocation
+label: TelescopeAllocation
+description: All columns of the public table TelescopeAllocation.
+fields:
+- planets_data_large_public__telescope_allocation.*
+- planets_data_large_public__instruments_surveys.*
+joins:
+  planets_data_large_public__instruments_surveys: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

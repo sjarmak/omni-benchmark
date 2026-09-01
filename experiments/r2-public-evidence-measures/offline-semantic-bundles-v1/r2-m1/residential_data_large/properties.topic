@@ -1,0 +1,17 @@
+base_view: residential_data_large_public__properties
+label: Properties
+description: Public residential property records with dwelling context.
+fields:
+- residential_data_large_public__properties.*
+- residential_data_large_public__households.*
+- residential_data_large_public__infrastructure.*
+- residential_data_large_public__service_types.*
+joins:
+  residential_data_large_public__households:
+    residential_data_large_public__service_types: {}
+  residential_data_large_public__infrastructure: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Dwelling Type Score: A scoring system where ''Brickwork house'' receives 4 points, ''Apartment'' receives 3 points, and all other types receive 1 point. This score is used in broader calculations like the Living Condition Score.'

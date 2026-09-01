@@ -1,0 +1,33 @@
+label: driver_standings
+description: All columns of the public table driver_standings.
+catalog: sports_events_large
+schema: public
+table_name: driver_standings
+dimensions:
+  acc_pt:
+    description: 'REAL. Driver''s cumulative season points. **NULL means the driver has no points or totals not updated.**. Example: 0.0.'
+    sql: acc_pt
+  drive_link:
+    description: 'INTEGER. Foreign key to the drivers table (DRV_MAIN). FK to drivers. Example: 531.'
+    sql: drive_link
+  drv_stnd:
+    description: 'INTEGER. Unique standings reference. PK. Example: 50065.'
+    sql: drv_stnd
+  px:
+    description: 'INTEGER. Driver''s rank in standings. **NULL means ranking not yet calculated.**. Example: 56.0.'
+    sql: px
+  px_desc:
+    description: 'VARCHAR. Descriptive rank label. **NULL means label not assigned.**. Example: 56.0.'
+    sql: px_desc
+  rlink:
+    description: 'INTEGER. Foreign key to the races table (RAK_ID). FK to races. Example: 752.'
+    sql: rlink
+  topmark:
+    description: 'INTEGER. Total wins by driver. **NULL means the driver has not won or data have not been entered.**. Example: 0.0.'
+    sql: topmark
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct driver_standings public identity values.
+    label: driver_standings Count
+    sql: ${sports_events_large_public__driver_standings.drv_stnd}

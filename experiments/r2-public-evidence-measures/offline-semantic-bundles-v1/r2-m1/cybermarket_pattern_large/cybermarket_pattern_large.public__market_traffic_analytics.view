@@ -1,0 +1,114 @@
+label: market_traffic_analytics
+description: All columns of the public table market_traffic_analytics.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: market_traffic_analytics
+dimensions:
+  bouncerate:
+    description: 'REAL. Percentage of single-page sessions. Example: 38.42.'
+    sql: '"BOUNCErate"'
+  error_rate:
+    description: 'REAL. HTTP error responses as percent of total requests. Example: 0.42.'
+    sql: '"ERROR_RATE"'
+  platcode:
+    description: 'TEXT. Foreign-key to markets.PlatCode. Example: MKP_027.'
+    sql: '"PLATCODE"'
+  referral_traffic_pct:
+    description: 'REAL. Traffic share coming from referral links. Example: 14.5.'
+    sql: '"REFERRAL_TRAFFIC_PCT"'
+  sessioncount:
+    description: 'BIGINT. Total sessions recorded. Example: 68,050.'
+    sql: '"SESSIONCOUNT"'
+  snapshot_date:
+    description: 'DATE (DD-Mon-YYYY). Day of the traffic snapshot. Example: 16-Jul-2025.'
+    sql: '"SNAPSHOT_date"'
+  topcity:
+    description: 'TEXT. City with the most sessions. Example: New York.'
+    sql: '"TOPCITY"'
+  api_request_count:
+    description: 'BIGINT. Total API requests served. Example: 18,903,122.'
+    sql: api_request_count
+  avg_load_time:
+    description: 'REAL. Mean page-load time in seconds. Example: 2.34.'
+    sql: avg_load_time
+  avg_session_duration:
+    description: 'REAL. Mean session length in seconds. Example: 245.73.'
+    sql: avg_session_duration
+  bot_trafficpct:
+    description: 'REAL. Estimated share of requests originating from bots. **NULL means bot-detection module disabled for this snapshot.** Example: 14.7.'
+    sql: '"botTRAFFICPCT"'
+  conversion_rate:
+    description: 'REAL. Percentage of sessions that triggered a defined conversion event. Example: 3.84.'
+    sql: '"conversionRate"'
+  data_throughput:
+    description: 'REAL. Average outbound data rate in Mbps. Example: 320.8.'
+    sql: '"dataThroughput"'
+  desktop_traffic_pct:
+    description: 'REAL. Percentage of sessions from desktop devices. Example: 42.0.'
+    sql: '"desktopTrafficPct"'
+  direct_traffic_pct:
+    description: 'REAL. Traffic share arriving directly (typed URL / bookmarks). Example: 28.3.'
+    sql: direct_traffic_pct
+  downtime_minutes:
+    description: 'BIGINT. Aggregate downtime minutes for the day. **NULL means monitoring gaps prevented downtime measurement.** Example: 12.'
+    sql: downtime_minutes
+  last_updated:
+    description: 'TIMESTAMP (DD-Mon-YYYY HH:MM). Row update time. Example: 16-Jul-2025 14:03.'
+    sql: '"lastUPDATED"'
+  latency_spread_ms:
+    description: 'TEXT. Observed min–max latency window in milliseconds. **NULL means latency histogram unavailable.** Example: 51–259.'
+    sql: '"latencySpread_ms"'
+  mobile_traffic_pct:
+    description: 'REAL. Percentage of sessions from mobile devices. Example: 58.0.'
+    sql: mobile_traffic_pct
+  new_visitor_pct:
+    description: 'REAL. Share of visitors who are new to the site. Example: 62.8.'
+    sql: '"newVisitorPct"'
+  page_views:
+    description: 'BIGINT. Total page impressions during the snapshot window. Example: 221,560.'
+    sql: page_views
+  pages_per_session:
+    description: 'REAL. Average pages viewed per session. Example: 3.26.'
+    sql: pages_per_session
+  paid_traffic_pct:
+    description: 'REAL. Share of sessions from paid campaigns. **NULL means no paid traffic recorded or data unavailable.** Example: 2.1.'
+    sql: paid_traffic_pct
+  peak_loadtime:
+    description: 'REAL. Highest observed page-load time in seconds. Example: 4.88.'
+    sql: '"peakLOADtime"'
+  returning_visitorpct:
+    description: 'REAL. Share of visitors with at least one prior visit. Example: 37.2.'
+    sql: '"returningVISITORpct"'
+  search_trafficpct:
+    description: 'REAL. Traffic share originating from organic search. Example: 43.7.'
+    sql: '"searchTRAFFICpct"'
+  social_trafficpct:
+    description: 'REAL. Percentage from social-media referrals. Example: 11.4.'
+    sql: '"socialTRAFFICpct"'
+  top_country:
+    description: 'TEXT. ISO country with the most sessions. Example: USA.'
+    sql: top_country
+  top_referrer:
+    description: 'TEXT. Referring domain that drove the most traffic. Example: google.com.'
+    sql: top_referrer
+  top_search_keyword:
+    description: 'TEXT. Highest-volume search keyword. **NULL means keyword data suppressed or unavailable.** Example: "buy gift cards".'
+    sql: top_search_keyword
+  traffic_burst_k_hits_per_peak_h:
+    description: 'TEXT. Peak load in thousands of hits per peak hour. Example: 437 k.'
+    sql: '"trafficBurst_kHits_per_peak_h"'
+  traffic_ref:
+    description: 'TEXT. Primary-key reference for each traffic snapshot. Example: TRF-a1c47e021f.'
+    sql: '"trafficRef"'
+  traffic_integrity_score:
+    description: 'REAL. Composite score (0-100) evaluating bot filtering and anomaly signals. Example: 88.9.'
+    sql: traffic_integrity_score
+  unique_visitors:
+    description: 'BIGINT. Distinct visitors in the 24-hour period. Example: 44,312.'
+    sql: '"uniqueVISITORS"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct market_traffic_analytics public identity values.
+    label: market_traffic_analytics Count
+    sql: ${cybermarket_pattern_large_public__market_traffic_analytics.traffic_ref}

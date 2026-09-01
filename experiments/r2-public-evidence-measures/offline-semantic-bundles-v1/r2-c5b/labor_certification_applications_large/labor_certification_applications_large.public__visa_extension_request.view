@@ -1,0 +1,90 @@
+label: visa_extension_request
+description: All columns of the public table visa_extension_request.
+catalog: labor_certification_applications_large
+schema: public
+table_name: visa_extension_request
+dimensions:
+  ext_code:
+    description: 'TEXT. Unique identifier for a visa-extension request. PK. Example: EXT00001.'
+    sql: '"EXT_code"'
+  file_ref:
+    description: 'TEXT. FK to cases.fileKey. Example: I-200-23355-584296.'
+    sql: '"FILE_ref"'
+  approval_day:
+    description: 'DATE. Approval date. **NULL if still pending/denied.** Example: NULL.'
+    sql: '"approvalDay"'
+  attorney_fee_usd:
+    description: 'REAL. Attorney fee, USD. Example: 4 786.'
+    sql: '"attorneyFee_USD"'
+  biometrics_req_flag:
+    description: 'TEXT. Biometrics required? Possible values: Yes, No. Example: Yes.'
+    sql: biometrics_req_flag
+  biometrics_sched:
+    description: 'DATE. Biometrics appointment date. Example: 2023-04-19.'
+    sql: biometrics_sched
+  bridge_flag:
+    description: 'TEXT. Bridge petition required? **NULL when not decided.** Possible values: Yes, No. Example: Yes.'
+    sql: bridge_flag
+  cost_bundle_usd:
+    description: 'REAL. Package total cost, USD (gov + attorney + other). Example: 2 819.'
+    sql: '"costBundle_USD"'
+  denial_reason:
+    description: 'TEXT. Reason for denial if applicable. Possible values: N/A, Insufficient docs, Status gap, Employer ineligible. Example: Insufficient docs.'
+    sql: '"denialReason"'
+  dep_count:
+    description: 'BIGINT. Number of dependents included. Example: 2.'
+    sql: '"depCount"'
+  dep_ext_flag:
+    description: 'TEXT. Dependents included? **NULL when not recorded.** Possible values: Yes, No. Example: No.'
+    sql: '"depExt_flag"'
+  duration_months:
+    description: 'REAL. Extension duration in months. Example: 26.2.'
+    sql: '"durationMonths"'
+  ext_reason:
+    description: 'TEXT. Stated reason for extension. Example: Family reasons.'
+    sql: '"extReason"'
+  filed_day:
+    description: 'DATE. Date USCIS extension was filed. Example: 2023-02-18.'
+    sql: '"filedDAY"'
+  filing_window:
+    description: 'TEXT. Filing timing descriptor. Possible values: In-time, Late, Bridge. Example: Bridge.'
+    sql: '"filingWINDOW"'
+  gap_in_status_days:
+    description: 'REAL. Documented status gap before filing. Example: 35.0.'
+    sql: gap_in_status_days
+  gov_fee_usd:
+    description: 'REAL. Government filing fee, USD. **NULL when fee not yet invoiced.** Example:  2 179.'
+    sql: '"govFee_USD"'
+  grace_period_d:
+    description: 'REAL. Grace period allowed (days). Example: 60.'
+    sql: '"gracePeriod_d"'
+  late_filing_flag:
+    description: 'TEXT. Filed after status expiration? **NULL when not determined.** Possible values: Yes, No. Example: No.'
+    sql: '"lateFiling_flag"'
+  new_end_txt:
+    description: 'DATE. Requested new end date. Example: 2025-09-08.'
+    sql: '"newEnd_txt"'
+  new_i94_num:
+    description: 'TEXT. New I-94 number issued. Example: I945518616.'
+    sql: '"newI94Num"'
+  new_lca_track_ref:
+    description: 'TEXT. TrackNo of new LCA (or NA). Example: 457.'
+    sql: '"newLCA_track_ref"'
+  old_i94_num:
+    description: 'TEXT. Previous I-94 number. Example: I949176000.'
+    sql: '"oldI94Num"'
+  orig_end_txt:
+    description: 'DATE. Previous I-797 or I-94 end date (ISO text). Example: 2022-06-09.'
+    sql: '"origEnd_txt"'
+  premium_flag:
+    description: 'TEXT. Premium-processing requested? Possible values: Yes, No. Example: Yes.'
+    sql: premium_flag
+  reasoning_comment:
+    description: 'TEXT. Analyst remarks. Example: None.'
+    sql: '"reasoningComment"'
+  receipt_day:
+    description: 'DATE. Date receipt notice was issued. Example: 2023-03-10.'
+    sql: '"receiptDAY"'
+  service_center:
+    description: 'TEXT. Processing center code. Values: CSC, NSC, TSC, VSC, WAC, LIN, EAC. Example: WAC.'
+    sql: '"serviceCENTER"'

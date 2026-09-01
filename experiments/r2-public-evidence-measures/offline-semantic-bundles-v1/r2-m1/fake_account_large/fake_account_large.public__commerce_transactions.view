@@ -1,0 +1,69 @@
+label: commerce_transactions
+description: All columns of the public table commerce_transactions.
+catalog: fake_account_large
+schema: public
+table_name: commerce_transactions
+dimensions:
+  transaction_code:
+    description: TEXT. Unique reference for the financial transaction.
+    sql: '"Transaction_CODE"'
+  chargeback_dispute_flag:
+    description: 'BOOLEAN. True if user filed a dispute with their bank. Possible values: True, False.'
+    sql: chargeback_dispute_flag
+  currency_iso:
+    description: 'TEXT. ISO 4217 currency code. Unique values: USD, EUR, JPY, GBP.'
+    sql: currency_iso
+  exchange_rate_to_usd:
+    description: 'REAL. Snapshot of exchange rate at moment of purchase. Example: 1.0.'
+    sql: exchange_rate_to_usd
+  failure_reason_code:
+    description: 'TEXT. Error code if transaction failed. **NULL means Transaction successful.** Unique values: INSUFFICIENT_FUNDS, FRAUD_BLOCK, TIMEOUT.'
+    sql: failure_reason_code
+  fraud_risk_score:
+    description: 'REAL. 0-100 score indicating likelihood of fraud. Example: 50.0.'
+    sql: fraud_risk_score
+  gross_amount_micros:
+    description: 'INTEGER. Total transaction amount in currency micros. Example: 15000000.'
+    sql: gross_amount_micros
+  invoice_generation_latency_ms:
+    description: 'INTEGER. Time taken to generate the PDF invoice. Example: 200.'
+    sql: invoice_generation_latency_ms
+  is_subscription_renewal:
+    description: 'BOOLEAN. True if transaction is an automated recurring payment. Possible values: True, False.'
+    sql: is_subscription_renewal
+  origin_device_type:
+    description: 'TEXT. Device type used for the purchase. Unique values: MOBILE, DESKTOP, CONSOLE.'
+    sql: origin_device_type
+  payer_acct_ref:
+    description: TEXT. Account reference of the user making the payment.
+    sql: payer_acct_ref
+  payment_gateway_ref:
+    description: 'TEXT. Code indicating the payment processor used. Unique values: STRIPE, PAYPAL, ADYEN.'
+    sql: payment_gateway_ref
+  platform_fee_micros:
+    description: 'INTEGER. Revenue share taken by the platform. Example: 4500000.'
+    sql: platform_fee_micros
+  product_bundle_hash:
+    description: TEXT. Hash representing the combination of products purchased.
+    sql: product_bundle_hash
+  promo_code_applied_flag:
+    description: 'BOOLEAN. True if a discount code was used. Possible values: True, False.'
+    sql: promo_code_applied_flag
+  sku_item_count:
+    description: 'INTEGER. Number of distinct items in the cart. Example: 50.'
+    sql: sku_item_count
+  tax_levied_micros:
+    description: 'INTEGER. Sales tax or VAT applied to the transaction. **NULL means Tax exempt region.** Example: 2000000.'
+    sql: tax_levied_micros
+  transaction_status:
+    description: 'TEXT. Current state of the transaction settlement. Unique values: CLEARED, PENDING, FAILED, REFUNDED.'
+    sql: transaction_status
+  wallet_balance_post_txn:
+    description: 'INTEGER. User''s store credit balance after transaction completes. **NULL means No wallet configured.** Example: 50.'
+    sql: wallet_balance_post_txn
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct commerce_transactions public identity values.
+    label: commerce_transactions Count
+    sql: ${fake_account_large_public__commerce_transactions.transaction_code}

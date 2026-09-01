@@ -1,0 +1,66 @@
+label: LightingAndSafety
+description: All columns of the public table LightingAndSafety.
+catalog: polar_equipment_large
+schema: public
+table_name: LightingAndSafety
+dimensions:
+  codetect_stat:
+    description: 'TEXT. CO detection status. Possible values: Alert, Fault, Normal.'
+    sql: '"COdetectStat"'
+  light_id:
+    description: BIGSERIAL. Unique identifier for the lighting and safety record. PK.
+    sql: '"LIGHT_ID"'
+  o2_supply_stat:
+    description: 'TEXT. Oxygen supply status. Possible values: Critical, Normal, Warning.'
+    sql: '"O2SupplyStat"'
+  alarm_stat:
+    description: 'TEXT. Alarm system status. Possible values: Critical, Normal, Warning.'
+    sql: alarm_stat
+  emer_light_stat:
+    description: 'TEXT. Emergency light status. Possible values: Off, On, Testing.'
+    sql: '"emerLightStat"'
+  emer_stop_stat:
+    description: 'TEXT. Emergency stop status. **NULL means no emergency stop status recorded.**. Possible values: Activated, Ready, Reset.'
+    sql: '"emerStopStat"'
+  equip_ref:
+    description: TEXT. Reference to the equipment. FK to Equipment.EQUIP_CODE.
+    sql: '"equipRef"'
+  ext_light_stat:
+    description: 'TEXT. External lighting status. **NULL means no external lighting status recorded.**. Possible values: Auto, Off, On.'
+    sql: '"extLightStat"'
+  fire_detect_stat:
+    description: 'TEXT. Fire detection status. Possible values: Alert, Fault, Normal.'
+    sql: '"fireDetectStat"'
+  gas_detect_stat:
+    description: 'TEXT. Gas detection status. Possible values: Alert, Fault, Normal.'
+    sql: '"gasDetectStat"'
+  life_support_stat:
+    description: 'TEXT. Life support system status. Possible values: Critical, Normal, Warning.'
+    sql: '"lifeSupportStat"'
+  light_intensity_pct:
+    description: 'REAL. Light intensity percentage. **NULL means no light intensity data recorded.**. Example: 21.0.'
+    sql: '"lightIntensityPct"'
+  lighting_stat:
+    description: 'TEXT. Lighting status. Possible values: Auto, Off, On.'
+    sql: '"lightingStat"'
+  med_equip_stat:
+    description: 'TEXT. Medical equipment status. Possible values: Critical, Normal, Warning.'
+    sql: '"medEquipStat"'
+  safety_sys_stat:
+    description: 'TEXT. Safety system status. Possible values: Active, Fault, Standby.'
+    sql: '"safetySysStat"'
+  smoke_detect_stat:
+    description: 'TEXT. Smoke detection status. Possible values: Alert, Fault, Normal.'
+    sql: '"smokeDetectStat"'
+  waste_mgmt_stat:
+    description: 'TEXT. Waste management status. Possible values: Critical, Normal, Warning.'
+    sql: '"wasteMgmtStat"'
+  water_supply_stat:
+    description: 'TEXT. Water supply status. Possible values: Critical, Normal, Warning.'
+    sql: '"waterSupplyStat"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct LightingAndSafety public identity values.
+    label: LightingAndSafety Count
+    sql: ${polar_equipment_large_public__lighting_and_safety.light_id}

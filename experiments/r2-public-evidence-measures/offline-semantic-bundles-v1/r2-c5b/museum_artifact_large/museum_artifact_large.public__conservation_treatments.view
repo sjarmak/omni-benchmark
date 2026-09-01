@@ -1,0 +1,51 @@
+label: ConservationTreatments
+description: All columns of the public table ConservationTreatments.
+catalog: museum_artifact_large
+schema: public
+table_name: ConservationTreatments
+dimensions:
+  actual_start:
+    description: 'TEXT. No description provided. Example: 2022-02-01.'
+    sql: '"ACTUAL_START"'
+  approval_status:
+    description: 'TEXT. No description provided. Possible values: Approved, Pending Approval.'
+    sql: '"APPROVAL_STATUS"'
+  final_report_url:
+    description: 'TEXT. No description provided. Example: https://www.museum.org/conservation/reports/TRMT-2022-001.pdf.'
+    sql: '"FINAL_REPORT_URL"'
+  priority:
+    description: 'TEXT. No description provided. Possible values: High, Low, Medium, Routine, Urgent.'
+    sql: '"PRIORITY"'
+  request_date:
+    description: 'TEXT. No description provided. Example: 2022-01-15.'
+    sql: '"REQUEST_DATE"'
+  treatment_work_order:
+    description: 'TEXT. No description provided. Example: TRMT-2022-001.'
+    sql: '"Treatment_Work_Order"'
+  actual_end_date:
+    description: 'TEXT. No description provided. Example: 2022-04-15.'
+    sql: actual_end_date
+  approval_date:
+    description: 'TEXT. No description provided. Example: 2022-01-20.'
+    sql: approval_date
+  approving_manager_code:
+    description: 'TEXT. No description provided. Possible values: 2, 3.'
+    sql: approving_manager_code
+  estimated_duration_hours:
+    description: 'TEXT. No description provided. Example: 250.0.'
+    sql: estimated_duration_hours
+  post_treatment_assessment:
+    description: 'TEXT. No description provided. Example: Stable for exhibition. Re-assess in 5 years..'
+    sql: post_treatment_assessment
+  proposed_treatment_plan:
+    description: 'TEXT. No description provided. Example: Consolidate painted surface, apply supportive backing, and rehouse in new archival frame..'
+    sql: proposed_treatment_plan
+  reason_for_treatment:
+    description: 'TEXT. No description provided. Example: Active textile deterioration noted in storage..'
+    sql: reason_for_treatment
+  requesting_staff_code:
+    description: 'TEXT. No description provided. Possible values: 13, 2, 3, 38, 54, 6, 67, 92.'
+    sql: requesting_staff_code
+  treatment_for_artifact:
+    description: 'TEXT. No description provided. Example: ART54254.'
+    sql: treatment_for_artifact

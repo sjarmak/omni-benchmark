@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__vendor_regulatory_licenses
+label: vendor_regulatory_licenses
+description: All columns of the public table vendor_regulatory_licenses.
+fields:
+- cybermarket_pattern_large_public__vendor_regulatory_licenses.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

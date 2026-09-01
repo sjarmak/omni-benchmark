@@ -1,0 +1,72 @@
+label: TrainingSessionCore
+description: All columns of the public table TrainingSessionCore.
+catalog: disaster_relief_large
+schema: public
+table_name: TrainingSessionCore
+dimensions:
+  attendance_count:
+    description: 'VARCHAR(100). Actual number of participants in attendance. Example: "hzOosjctay".'
+    sql: '"attendanceCount"'
+  capacity:
+    description: 'VARCHAR(100). Maximum participant capacity for session. Example: "Shenzhen".'
+    sql: capacity
+  cert_name:
+    description: 'VARCHAR(100). Official title of certification awarded upon completion. Example: "Shen Anqi".'
+    sql: '"certName"'
+  certification_awarded:
+    description: 'VARCHAR(100). Certification issuance status (Yes|No|Conditional|Pending). Possible values: "Conditional", "No", "Pending", "Yes".'
+    sql: '"certificationAwarded"'
+  cost_usd:
+    description: 'VARCHAR(100). Total cost of session delivery in USD. Example: "kPHxqdf34C".'
+    sql: '"costUSD"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 4790.'
+    sql: '"disasterEventId"'
+  duration_hours:
+    description: 'VARCHAR(100). Total instructional time in hours. Example: "MjEKjlvn5t".'
+    sql: '"durationHours"'
+  feedback_score:
+    description: 'VARCHAR(100). Average participant satisfaction rating (1-10 scale). Example: "GODbjoqRda".'
+    sql: '"feedbackScore"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for training session records. Example: 1.'
+    sql: id
+  location:
+    description: 'VARCHAR(100). Physical venue or virtual platform for training delivery. Example: "cSjzKKz2Uu".'
+    sql: location
+  materials_provided:
+    description: 'VARCHAR(100). Training materials distribution status (Yes|No|Partial|DigitalOnly|PhysicalOnly). Possible values: "DigitalOnly", "No", "Partial", "PhysicalOnly", "Yes".'
+    sql: '"materialsProvided"'
+  notes:
+    description: 'VARCHAR(100). Instructor observations or session-specific notes. Example: "F9zVe7nTDa".'
+    sql: notes
+  post_test_avg:
+    description: 'VARCHAR(100). Average post-training knowledge assessment score (0-100). Example: "3CtJ20CN58".'
+    sql: '"postTestAvg"'
+  pre_test_avg:
+    description: 'VARCHAR(100). Average pre-training knowledge assessment score (0-100). Example: "Xu1VgehB04".'
+    sql: '"preTestAvg"'
+  session_date:
+    description: 'VARCHAR(100). Scheduled date of training delivery. Example: "2009-10-22".'
+    sql: '"sessionDate"'
+  session_id_ref:
+    description: 'VARCHAR(100). Logical reference to session registry identifier (TrainingSessions.SESSION_ID). Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"sessionIdRef"'
+  session_topic:
+    description: 'VARCHAR(100). Subject matter or curriculum focus of training session. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"sessionTopic"'
+  status:
+    description: 'VARCHAR(100). Session execution status (Scheduled|InProgress|Completed|Cancelled|Postponed). Possible values: "Cancelled", "Completed", "InProgress", "Postponed", "Scheduled".'
+    sql: status
+  trainer_id:
+    description: 'VARCHAR(100). Identifier of lead instructor or trainer. Example: "Sometimes you win, sometimes you learn. The Information Pane shows the detailed object              ".'
+    sql: '"trainerId"'
+  training_objectives:
+    description: 'VARCHAR(100). Stated learning outcomes and competency targets. Example: "p5kWd47TpS".'
+    sql: '"trainingObjectives"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TrainingSessionCore public identity values.
+    label: TrainingSessionCore Count
+    sql: ${disaster_relief_large_public__training_session_core.id}

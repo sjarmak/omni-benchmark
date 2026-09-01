@@ -1,0 +1,66 @@
+label: ExhibitionSchedule
+description: All columns of the public table ExhibitionSchedule.
+catalog: museum_artifact_large
+schema: public
+table_name: ExhibitionSchedule
+dimensions:
+  climate_requirements:
+    description: 'VARCHAR(100). Specific environmental parameters required for exhibited artifacts. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"climateRequirements"'
+  curator_name:
+    description: 'VARCHAR(100). Name of lead curator responsible for exhibition. Example: "Shen Anqi".'
+    sql: '"curatorName"'
+  deinstallation_date:
+    description: 'VARCHAR(100). Date when artifacts were removed from exhibition space. Example: "2016-09-24".'
+    sql: '"deinstallationDate"'
+  educational_programs:
+    description: 'VARCHAR(100). Description of associated educational activities and programs. Example: "A comfort zone is a beautiful place, but nothing ever grows there. The Information                  ".'
+    sql: '"educationalPrograms"'
+  end_date:
+    description: 'VARCHAR(100). Official closing date of exhibition. Example: "2009-10-22".'
+    sql: '"endDate"'
+  exhibition_code:
+    description: 'VARCHAR(100). Unique identifier for exhibition event. Example: "EXH-GV-4491195512".'
+    sql: '"exhibitionCode"'
+  expected_visitors:
+    description: 'VARCHAR(100). Projected visitor count for exhibition duration. Example: "zzs6gBGR0h".'
+    sql: '"expectedVisitors"'
+  hall_id:
+    description: 'VARCHAR(100). Exhibition hall identifier (logical reference to ExhibitionHalls.Hall_ID). Example: "A man is not old until regrets take the place of dreams. Navicat provides powerful                  ".'
+    sql: '"hallId"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for exhibition scheduling records. Example: 1.'
+    sql: id
+  installation_date:
+    description: 'VARCHAR(100). Date when artifacts were installed in exhibition space. Example: "2003-03-21".'
+    sql: '"installationDate"'
+  insurance_coverage:
+    description: 'VARCHAR(100). Total insured value for all exhibited artifacts in USD. Example: "I destroy my enemies when I make them my friends. Navicat Monitor requires a repository             ".'
+    sql: '"insuranceCoverage"'
+  lighting_plan:
+    description: 'VARCHAR(100). Detailed lighting specifications for exhibition spaces. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"lightingPlan"'
+  loan_agreements:
+    description: 'VARCHAR(100). Reference identifiers for external loan agreements utilized. Example: "A man is not old until regrets take the place of dreams. Navicat provides powerful                  ".'
+    sql: '"loanAgreements"'
+  marketing_budget:
+    description: 'VARCHAR(100). Allocated budget for exhibition promotion and marketing. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"marketingBudget"'
+  post_exhibition_report:
+    description: 'VARCHAR(100). Reference to comprehensive post-exhibition evaluation report. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"postExhibitionReport"'
+  security_level:
+    description: 'VARCHAR(100). Required security classification (Public, Restricted, HighSecurity, ArmedGuard). Possible values: "ArmedGuard", "HighSecurity", "Public", "Restricted".'
+    sql: '"securityLevel"'
+  showcase_ids:
+    description: 'VARCHAR(100). Comma-separated list of showcase identifiers used in exhibition. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"showcaseIds"'
+  special_events:
+    description: 'VARCHAR(100). Scheduled special events during exhibition run. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"specialEvents"'
+  start_date:
+    description: 'VARCHAR(100). Official opening date of exhibition. Example: "2013-01-13".'
+    sql: '"startDate"'
+  theme_description:
+    description: 'VARCHAR(100). Conceptual theme and narrative of exhibition. Example: "Twv4V9PQ0n".'
+    sql: '"themeDescription"'

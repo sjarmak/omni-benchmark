@@ -1,0 +1,108 @@
+label: EquipmentLocationHistory
+description: All columns of the public table EquipmentLocationHistory.
+catalog: polar_equipment_large
+schema: public
+table_name: EquipmentLocationHistory
+dimensions:
+  lat_deg:
+    description: 'REAL. Latitude in decimal degrees (WGS84). Example: 19.75014.'
+    sql: '"LAT_deg"'
+  time_stamp:
+    description: 'TIMESTAMP. UTC timestamp when the sample was recorded. Example: 2024-06-24 08:00:00.'
+    sql: '"TimeStamp"'
+  accel_x_mps2:
+    description: 'REAL. Linear acceleration X in m/s² (sensor frame). Example: 0.59.'
+    sql: '"accelX_mps2"'
+  accel_y_mps2:
+    description: 'REAL. Linear acceleration Y in m/s² (sensor frame). Example: 1.42.'
+    sql: '"accelY_mps2"'
+  accel_z_mps2:
+    description: 'REAL. Linear acceleration Z in m/s² (sensor frame; includes gravity bias). Example: 9.63.'
+    sql: '"accelZ_mps2"'
+  altitude_m:
+    description: 'REAL. Altitude above mean sea level, meters. Example: 605.8.'
+    sql: altitude_m
+  at_station:
+    description: 'TEXT. Station/location label from Location(STATION_name) if the point was captured while associated with a known station. **NULL means the reading was taken off-station (en route) or the station was unknown at capture time.** Example: Station-15.'
+    sql: at_station
+  baro_h_pa:
+    description: 'REAL. Barometric pressure in hectopascals. Example: 1011.1.'
+    sql: '"baro_hPa"'
+  battery_pct:
+    description: 'REAL. Estimated battery state of charge (%). Example: 33.1.'
+    sql: '"batteryPct"'
+  data_rate_kbps:
+    description: 'REAL. Uplink/downlink data rate in kilobits per second. **NULL means modem idle or telemetry backhaul unavailable.** Example: 922.1.'
+    sql: '"dataRate_kbps"'
+  fix_type:
+    description: 'TEXT. GNSS fix quality. Possible values (from file): 2D, 3D, RTK. Example: 2D.'
+    sql: '"fixType"'
+  gps_hdop:
+    description: 'REAL. Horizontal dilution of precision (HDOP). Example: 2.88.'
+    sql: '"gpsHdop"'
+  gps_vdop:
+    description: 'REAL. Vertical dilution of precision (VDOP). Example: 1.56.'
+    sql: '"gpsVdop"'
+  heading_deg:
+    description: 'REAL. Course over ground in degrees (0–360). Example: 175.9.'
+    sql: heading_deg
+  link_quality:
+    description: 'TEXT. Qualitative link score. Possible values (from file): Excellent, Fair, Good, Poor. Example: Poor.'
+    sql: '"linkQuality"'
+  loc_seq:
+    description: BIGSERIAL. Surrogate primary key for the location record. PK.
+    sql: '"locSeq"'
+  loc_for_equipment:
+    description: 'TEXT. Equipment code this position belongs to; references Equipment(EQUIP_CODE). FK. Example: PE593707.'
+    sql: loc_for_equipment
+  lon_deg:
+    description: 'REAL. Longitude in decimal degrees (WGS84). Example: 74.588718.'
+    sql: '"lon_DEG"'
+  mission_phase:
+    description: 'TEXT. Operational phase of the mission. Possible values (from file): Idle, Transit, Task, Return. Example: Transit.'
+    sql: '"missionPhase"'
+  op_note:
+    description: 'TEXT. Operator note for the sample window. **NULL means no operator remark was recorded for this interval.** Example: Wind gusts affected speed; driver compensated.'
+    sql: '"opNote"'
+  operator:
+    description: 'TEXT. Operating team responsible for the run. Possible values (from file): Ops Team A, Ops Team B, Ops Team C. Example: Ops Team C.'
+    sql: operator
+  pitch_rate_dps:
+    description: 'REAL. Pitch rate in degrees per second (°/s). **NULL means rate gyro not available/disabled for this sample.** Example: 6.63.'
+    sql: '"pitchRate_dps"'
+  pitch_deg:
+    description: 'REAL. Vehicle pitch (°). Example: -3.63.'
+    sql: pitch_deg
+  roll_rate_dps:
+    description: 'REAL. Roll rate in degrees per second (°/s). **NULL means rate gyro not available/disabled for this sample.** Example: -3.33.'
+    sql: '"rollRate_dps"'
+  roll_deg:
+    description: 'REAL. Vehicle body roll (°). Example: 0.94.'
+    sql: roll_deg
+  sat_count:
+    description: 'BIGINT. Number of satellites used in solution. Example: 10.'
+    sql: '"satCount"'
+  signal_d_bm:
+    description: 'REAL. Radio link signal strength in dBm (negative values typical). Example: -94.6.'
+    sql: '"signal_dBm"'
+  speed_mps:
+    description: 'REAL. Ground speed in meters per second. **NULL means speed not computed/available (e.g., degraded fix).** Example: 19.98.'
+    sql: speed_mps
+  temp_c:
+    description: 'REAL. Ambient or enclosure temperature in °C. Example: 21.7.'
+    sql: '"tempC"'
+  wind_mps:
+    description: 'REAL. Wind speed estimate in m/s. **NULL means wind sensor not fitted or reading invalid at sample time.** Example: 3.8.'
+    sql: wind_mps
+  yaw_rate_dps:
+    description: 'REAL. Yaw rate in degrees per second (°/s). **NULL means stationary or rate gyro not reported.** Example: 10.54.'
+    sql: '"yawRate_dps"'
+  yaw_deg:
+    description: 'REAL. Vehicle yaw (°). Example: -8.10.'
+    sql: yaw_deg
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EquipmentLocationHistory public identity values.
+    label: EquipmentLocationHistory Count
+    sql: ${polar_equipment_large_public__equipment_location_history.loc_seq}

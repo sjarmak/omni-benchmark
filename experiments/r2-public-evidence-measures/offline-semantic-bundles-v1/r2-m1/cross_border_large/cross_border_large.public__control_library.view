@@ -1,0 +1,98 @@
+label: Control Library
+description: Control-library rows with public context for measured control effectiveness.
+catalog: cross_border_large
+schema: public
+table_name: Control_Library
+dimensions:
+  effectiveness_score_pct:
+    description: 'REAL. Measured effectiveness (%). Example: 61.24.'
+    label: Control Effectiveness (%)
+    sql: effectiveness_score_pct
+    ai_context: 'Control Effectiveness Score: Higher score means stronger controls.'
+  automatable:
+    description: 'TEXT. Whether the control is automatable. Possible values: Yes, No. Example: Yes.'
+    sql: '"Automatable"'
+  domain:
+    description: 'TEXT. Domain of the control. Possible values: Access Control, Asset Management, Cryptography, Operations Security, Network Security. Example: Operations Security.'
+    sql: '"DOMAIN"'
+  description:
+    description: 'TEXT. Summary of control. Example: Control description.'
+    sql: '"Description"'
+  encryption_required:
+    description: 'TEXT. Whether encryption is required. Possible values: Yes, No. Example: No.'
+    sql: '"ENCRYPTION_REQUIRED"'
+  evidence_required:
+    description: 'TEXT. Evidence requirement. Possible values: Yes, No. Example: No.'
+    sql: '"EVIDENCE_REQUIRED"'
+  family:
+    description: 'TEXT. Family prefix. Possible values: AC, AM, CRY, OPS, NET. Example: CRY.'
+    sql: '"Family"'
+  key_rotation_days:
+    description: 'BIGINT. Key rotation interval (days). Example: 60.'
+    sql: '"Key_Rotation_Days"'
+  min_password_length:
+    description: 'BIGINT. Minimum password length (chars). Example: 8.'
+    sql: '"MIN_PASSWORD_LENGTH"'
+  next_due_date:
+    description: 'DATE. Next due date for testing. **NULL for Draft/Retired controls.** Example: 2025-11-30.'
+    sql: '"NEXT_DUE_DATE"'
+  objective:
+    description: 'TEXT. Objective of the control. Example: Ensure control objective.'
+    sql: '"OBJECTIVE"'
+  owner:
+    description: 'TEXT. Control owner team. Possible values: GRC, SecurityOps, PlatformSec, ITOps. Example: SecurityOps.'
+    sql: '"Owner"'
+  patch_sla_days:
+    description: 'BIGINT. Patch SLA timeline (days). Example: 14.'
+    sql: '"PATCH_SLA_DAYS"'
+  related_controls:
+    description: 'TEXT. References to related controls. Example: CRY-80.'
+    sql: '"RELATED_CONTROLS"'
+  standard_ref:
+    description: 'TEXT. Standard reference identifier. Example: STD-190.'
+    sql: '"STANDARD_REF"'
+  status:
+    description: 'TEXT. Lifecycle status. Possible values: Draft, In Force, Retired, Planned. Example: In Force.'
+    sql: '"STATUS"'
+  test_frequency_days:
+    description: 'BIGINT. Frequency of testing (days). Example: 30.'
+    sql: '"TEST_FREQUENCY_DAYS"'
+  updated_at:
+    description: 'DATE. Record last update (yyyy-mm-dd). Example: 2025-06-12.'
+    sql: '"UPDATED_AT"'
+  created_at:
+    description: 'DATE. Record creation date (yyyy-mm-dd). Example: 2024-02-24.'
+    sql: created_at
+  framework:
+    description: 'TEXT. Control framework. Possible values: ISO27001, NIST CSF, SOC2, PCI-DSS, CIS. Example: NIST CSF.'
+    sql: framework
+  implementation_guidance:
+    description: 'TEXT. How to implement the control. Example: Use CrowdStrike.'
+    sql: implementation_guidance
+  last_tested_at:
+    description: 'DATE. Date last tested (yyyy-mm-dd). Example: 2025-05-01.'
+    sql: last_tested_at
+  min_log_retention_days:
+    description: 'BIGINT. Minimum log retention period (days). Example: 365.'
+    sql: min_log_retention_days
+  min_mfa_factors:
+    description: 'BIGINT. Minimum MFA factors required. **NULL means not applicable.** Example: 1.'
+    sql: min_mfa_factors
+  network_segmentation:
+    description: 'TEXT. Segmentation requirement. Possible values: Required, Recommended, Not Required. Example: Not Required.'
+    sql: network_segmentation
+  policy_ref:
+    description: 'TEXT. Policy reference identifier. Example: POL-420.'
+    sql: policy_ref
+  related_risks:
+    description: 'TEXT. Mapped risks mitigated by the control. **NULL means not applicable.** Example: (NULL).'
+    sql: related_risks
+  test_procedure:
+    description: 'TEXT. Procedure for testing control. **NULL means not documented yet.** Example: Review configs; verify alerts.'
+    sql: test_procedure
+  title:
+    description: 'TEXT. Human-readable control title. Example: Control 1.'
+    sql: title
+  tooling:
+    description: 'TEXT. Primary tool used. **NULL means none selected.** Example: CrowdStrike.'
+    sql: tooling

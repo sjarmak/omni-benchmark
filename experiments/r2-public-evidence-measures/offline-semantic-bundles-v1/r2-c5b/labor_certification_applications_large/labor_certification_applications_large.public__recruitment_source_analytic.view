@@ -1,0 +1,66 @@
+label: RecruitmentSourceAnalytic
+description: All columns of the public table RecruitmentSourceAnalytic.
+catalog: labor_certification_applications_large
+schema: public
+table_name: RecruitmentSourceAnalytic
+dimensions:
+  rsa_code:
+    description: 'TEXT. Unique identifier for recruitment source analytics record. Example: RSA-1A2B3C.'
+    sql: '"RSA_code"'
+  analytic_date:
+    description: 'TIMESTAMP. Date when analytics snapshot was captured. Example: 2024-01-01 12:00:00.'
+    sql: '"analyticDate"'
+  applications_ct:
+    description: 'INTEGER. Number of applications received from this source. Example: 45.'
+    sql: applications_ct
+  camp_ref:
+    description: TEXT. Foreign key reference to recruitment_campaign table.
+    sql: camp_ref
+  click_through_ct:
+    description: 'INTEGER. Number of click-throughs to application from this source. **NULL means Click data not tracked for this source.** Example: 250.'
+    sql: '"clickThrough_ct"'
+  conversion_rate_pct:
+    description: 'REAL. Percentage of applications resulting in hires. Example: 4.5.'
+    sql: '"conversionRate_pct"'
+  cost_per_applicant_usd:
+    description: 'REAL. Average cost per applicant from this source in USD. Example: 85.'
+    sql: '"costPerApplicant_USD"'
+  cost_per_hire_usd:
+    description: 'REAL. Average cost per hire from this source in USD. **NULL means No hires from this source in period.** Example: 3500.'
+    sql: '"costPerHire_USD"'
+  diversity_impact_score:
+    description: 'REAL. Score measuring source contribution to diversity goals from 1-10. Example: 5.5.'
+    sql: '"diversityImpactScore"'
+  impressions_ct:
+    description: 'INTEGER. Number of job posting impressions from this source. **NULL means Impression data not available for this source.** Example: 5000.'
+    sql: impressions_ct
+  interviews_scheduled_ct:
+    description: 'INTEGER. Number of interviews scheduled from this source. Example: 8.'
+    sql: '"interviewsScheduled_ct"'
+  offers_accepted_ct:
+    description: 'INTEGER. Number of offers accepted from this source. Example: 2.'
+    sql: '"offersAccepted_ct"'
+  offers_extended_ct:
+    description: 'INTEGER. Number of job offers extended to applicants from this source. Example: 3.'
+    sql: '"offersExtended_ct"'
+  qualified_applicants_ct:
+    description: 'INTEGER. Number of qualified applicants from this source. Example: 18.'
+    sql: '"qualifiedApplicants_ct"'
+  quality_score:
+    description: 'REAL. Quality score of candidates from this source from 1-10. Example: 6.8.'
+    sql: '"qualityScore"'
+  retention_rate90_day_pct:
+    description: 'REAL. 90-day retention rate of hires from this source. **NULL means Insufficient data for retention calculation.** Example: 88.'
+    sql: '"retentionRate90Day_pct"'
+  source_channel:
+    description: 'TEXT. Recruitment source channel being analyzed. Example: Job Board.'
+    sql: '"sourceChannel"'
+  source_roi_pct:
+    description: 'REAL. Return on investment percentage for this recruitment source. Example: 150.'
+    sql: '"sourceROI_pct"'
+  source_ranking:
+    description: 'INTEGER. Ranking of this source compared to others in campaign. Example: 50.'
+    sql: '"sourceRanking"'
+  time_to_fill_days:
+    description: 'REAL. Average time to fill positions from this source in days. **NULL means No hires from this source in period.** Example: 42.'
+    sql: '"timeToFill_days"'

@@ -1,0 +1,12 @@
+label: instruments_surveys
+description: All columns of the public table instruments_surveys.
+catalog: planets_data_large
+schema: public
+table_name: instruments_surveys
+dimensions:
+  facilityname:
+    description: 'Observational facility name derived from flag analysis. VARCHAR(100) NOT NULL UNIQUE with values: ''ttv'' (from pl_ttvflag=''T''), ''kep'' (from pl_kepflag=1), ''k2'' (from pl_k2flag=true) representing Transit Timing Variations, Kepler mission, and K2 mission respectively.'
+    sql: facilityname
+  instrumentref:
+    description: A SERIAL primary key uniquely identifying each observational facility or survey program.
+    sql: instrumentref

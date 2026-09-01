@@ -1,0 +1,13 @@
+base_view: reverse_logistics_large_public__packaging_compliance_certs
+label: packaging_compliance_certs
+description: All columns of the public table packaging_compliance_certs.
+fields:
+- reverse_logistics_large_public__packaging_compliance_certs.*
+- reverse_logistics_large_public__return_packaging_inventory.*
+- reverse_logistics_large_public__suppliers.*
+- reverse_logistics_large_public__warehouses.*
+joins:
+  reverse_logistics_large_public__return_packaging_inventory:
+    reverse_logistics_large_public__suppliers: {}
+    reverse_logistics_large_public__warehouses: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

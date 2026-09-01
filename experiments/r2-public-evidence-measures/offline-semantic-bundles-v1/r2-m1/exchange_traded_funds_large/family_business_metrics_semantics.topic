@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__family_business_metrics
+label: family_business_metrics
+description: All columns of the public table family_business_metrics.
+fields:
+- exchange_traded_funds_large_public__family_business_metrics.*
+joins: {}
+ai_context: This topic models no cross-table joins.

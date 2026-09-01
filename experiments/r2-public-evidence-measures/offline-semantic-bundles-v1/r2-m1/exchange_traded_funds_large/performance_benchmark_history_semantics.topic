@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__performance_benchmark_history
+label: performance_benchmark_history
+description: All columns of the public table performance_benchmark_history.
+fields:
+- exchange_traded_funds_large_public__performance_benchmark_history.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__discovery_teams
+label: discovery_teams
+description: All columns of the public table discovery_teams.
+fields:
+- planets_data_large_public__discovery_teams.*
+joins: {}
+ai_context: This topic models no cross-table joins.

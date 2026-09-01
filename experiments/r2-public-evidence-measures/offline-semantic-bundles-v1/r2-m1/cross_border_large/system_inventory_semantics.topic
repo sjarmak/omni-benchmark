@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__system_inventory
+label: System_Inventory
+description: All columns of the public table System_Inventory.
+fields:
+- cross_border_large_public__system_inventory.*
+joins: {}
+ai_context: This topic models no cross-table joins.

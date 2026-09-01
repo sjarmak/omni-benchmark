@@ -1,0 +1,57 @@
+label: employer_poc
+description: All columns of the public table employer_poc.
+catalog: labor_certification_applications_large
+schema: public
+table_name: employer_poc
+dimensions:
+  contactmail:
+    description: 'TEXT. Employer point of contact email address. PK. Example: skaul@avanthealthcare.com.'
+    sql: contactmail
+  firmlink:
+    description: TEXT. Reference to the employer’s firm. FK to employer.corpHandle.
+    sql: firmlink
+  firmzip:
+    description: TEXT. Reference to the employer’s postal code. FK to employer.ZipRef.
+    sql: firmzip
+  poc_contact_info:
+    description: JSONB column. Encapsulates personal and location-based contact details for the employer’s point of contact.
+    sql: poc_contact_info
+  poc_contact_info_address_city:
+    description: 'TEXT. City of the employer’s point of contact. Example: Maitland.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'address', 'city')
+  poc_contact_info_address_country:
+    description: 'TEXT. Country of the employer’s point of contact. Possible values: UNITED STATES OF AMERICA.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'address', 'country')
+  poc_contact_info_address_line1:
+    description: 'TEXT. Primary address line for the employer’s point of contact. Example: 2301 Lucien Way.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'address', 'line1')
+  poc_contact_info_address_line2:
+    description: 'TEXT. Secondary address line for the employer’s point of contact. **NULL means no secondary address provided.**. Example: Suite 360.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'address', 'line2')
+  poc_contact_info_address_province:
+    description: 'TEXT. Province or region of the employer’s point of contact. **NULL means no province specified.**. Possible values: CALIFORNIA, California, GEORGIA, New York, TEXAS, TX.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'address', 'province')
+  poc_contact_info_address_state:
+    description: 'TEXT. State of the employer’s point of contact. Example: FL.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'address', 'state')
+  poc_contact_info_address_zip:
+    description: 'TEXT. Postal code of the employer’s point of contact. Example: 32751.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'address', 'zip')
+  poc_contact_info_name_first:
+    description: 'TEXT. First name of the employer’s point of contact. Example: Saloni.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'name', 'first')
+  poc_contact_info_name_last:
+    description: 'TEXT. Last name of the employer’s point of contact. Example: Kaul.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'name', 'last')
+  poc_contact_info_name_middle:
+    description: 'TEXT. Middle name of the employer’s point of contact. **NULL means no middle name provided.**. Example: R..'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'name', 'middle')
+  poc_contact_info_phone_extension:
+    description: 'BIGINT. Extension number for the employer’s point of contact’s phone. **NULL means no extension provided.**. Example: 0.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'phone', 'extension')
+  poc_contact_info_phone_number:
+    description: 'TEXT. Phone number for the employer’s point of contact. Example: 14076812999.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'phone', 'number')
+  poc_contact_info_title:
+    description: 'TEXT. Job title of the employer’s point of contact. Example: Director of Immigration.'
+    sql: JSONB_EXTRACT_PATH_TEXT(poc_contact_info, 'title')

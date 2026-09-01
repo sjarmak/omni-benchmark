@@ -1,0 +1,59 @@
+label: Communications
+description: Communication-thread records with row-level suspicion-signal density and language-pattern context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: communications
+dimensions:
+  keyword_matches:
+    description: 'BIGINT. Count of significant keyword matches detected. Example: 20.'
+    label: Keyword Matches
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(communication_details, 'keyword_match_count') AS DOUBLE PRECISION)
+  total_messages:
+    description: 'BIGINT. Number of messages exchanged in the communication thread. Example: 36.'
+    label: Total Messages
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(communication_details, 'msg_count_total') AS DOUBLE PRECISION)
+  language_pattern:
+    description: 'TEXT. Language pattern or grammar classification inferred from messages. Possible values: Consistent, Suspicious, Variable.'
+    label: Language Pattern
+    sql: JSONB_EXTRACT_PATH_TEXT(communication_details, 'lang_pattern_type')
+    ai_context: 'Language Patterns: Values: Consistent, Suspicious, Variable.
+
+      Label descriptions:
+
+      - Consistent: Uniform grammar, vocabulary, and tone across messages, suggesting a single genuine author.
+
+      - Suspicious: Irregular phrasing, sudden language switches, or machine translated text indicating possible deception.
+
+      - Variable: Mixed linguistic styles from multiple senders or intentionally altered patterns to hinder profiling.'
+  event_link:
+    description: TEXT. Identifier of the transaction related to this communication record. PK. FK to transactions(EventCode).
+    sql: '"EventLink"'
+  communication_details:
+    description: JSONB column. Stores metadata about communications related to transactions, including sentiment and message frequency.
+    sql: communication_details
+  communication_details_comm_channel_type:
+    description: 'TEXT. Communication channel (e.g., forum PM, email). Possible values: External, Internal, Mixed.'
+    sql: JSONB_EXTRACT_PATH_TEXT(communication_details, 'comm_channel_type')
+  communication_details_comm_freq_type:
+    description: 'TEXT. Frequency classification of communications. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(communication_details, 'comm_freq_type')
+  communication_details_encryption_type:
+    description: 'TEXT. Type of encryption used in the communications. Possible values: Custom, Enhanced, Standard.'
+    sql: JSONB_EXTRACT_PATH_TEXT(communication_details, 'encryption_type')
+  communication_details_sentiment_val:
+    description: 'REAL. Sentiment-analysis score of the message corpus. Example: -0.69.'
+    sql: JSONB_EXTRACT_PATH_TEXT(communication_details, 'sentiment_val')
+  communication_details_suspic_index_scr:
+    description: 'REAL. Suspicion score derived from content analysis. Example: 14.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(communication_details, 'suspic_index_scr')
+  suspicion_signal_density:
+    label: Suspicion Signal Density
+    description: Keyword hits per message volume in communication.
+    sql: CASE WHEN ${total_messages} <> 0 THEN ${keyword_matches} / ${total_messages} END
+    ai_context: Use this modeled field for Suspicion Signal Density; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Communications public identity values.
+    label: Communications Count
+    sql: ${cybermarket_pattern_large_public__communications.event_link}

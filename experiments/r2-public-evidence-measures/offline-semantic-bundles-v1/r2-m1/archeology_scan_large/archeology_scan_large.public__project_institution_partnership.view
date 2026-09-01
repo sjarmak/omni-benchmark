@@ -1,0 +1,42 @@
+label: project_institution_partnership
+description: All columns of the public table project_institution_partnership.
+catalog: archeology_scan_large
+schema: public
+table_name: project_institution_partnership
+dimensions:
+  contribution_description:
+    description: 'TEXT. A description of the institution''s contribution。 Example: Primary funding and logistical support..'
+    sql: '"CONTRIBUTION_DESCRIPTION"'
+  currency_code:
+    description: 'TEXT. The currency of the financial contribution。 Possible values: AUD, CNY, DKK, EGP, EUR, GBP, NOK, USD, ZAR.'
+    sql: '"CURRENCY_CODE"'
+  end_date:
+    description: 'DATE. The end date of this specific partnership。 Example: 12/31/2025.'
+    sql: '"EndDate"'
+  financial_contribution_amount:
+    description: 'REAL. The financial contribution amount for this partnership. **NULL means the partnership is non-financial.**。 Possible values: $15,000.00 , $30,000.00 , kr100,000.00, kr25,000.00, � 150,000.00, � 20,000.00, � 500,000.00, � 75,000.00, ��10,000.00, ��80,000.00.'
+    sql: '"FinancialContributionAmount"'
+  notes:
+    description: TEXT. General notes about the partnership. **NULL means no notes have been added.**
+    sql: '"NOTES"'
+  partnership_type:
+    description: 'TEXT. The type of partnership。 Possible values: Collaborator, Consultant, Data Partner, Funder, Lead Collaborator, Permitting Authority, Service Provider, Technology Partner.'
+    sql: '"PARTNERSHIP_TYPE"'
+  status:
+    description: 'TEXT. The current status of the partnership。 Possible values: Active, Completed.'
+    sql: '"Status"'
+  agreement_document_url:
+    description: 'TEXT. A URL to the partnership agreement document. **NULL means no document is linked.**。 Example: https://digisite.org/agreements/prj001-dai.pdf.'
+    sql: agreement_document_url
+  institution_code:
+    description: 'BIGINT. Foreign key linking to the research institution. Part of PK。 Example: 211.'
+    sql: institution_code
+  primary_investigator_at_institution:
+    description: 'TEXT. The name of the primary investigator from the partner institution。 Example: Prof. Dr. Wagner.'
+    sql: primary_investigator_at_institution
+  project_fk:
+    description: 'TEXT. Foreign key linking to the project. Part of PK。 Example: PR7509.'
+    sql: project_fk
+  start_date:
+    description: 'DATE. The start date of this specific partnership。 Example: 03/01/2022.'
+    sql: start_date

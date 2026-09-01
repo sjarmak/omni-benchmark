@@ -1,0 +1,105 @@
+label: EquipmentTypeDetail
+description: All columns of the public table EquipmentTypeDetail.
+catalog: polar_equipment_large
+schema: public
+table_name: EquipmentTypeDetail
+dimensions:
+  for_type_code:
+    description: 'TEXT. Equipment type code; references EquipmentType(EquipType). FK. Possible values : Shelter, Scientific, Safety, Vehicle, Generator. Example: Generator.'
+    sql: for_type_code
+  type_detail_no:
+    description: BIGSERIAL. Surrogate primary key for the row. PK.
+    sql: '"typeDetailNo"'
+  type_env_ratings:
+    description: JSONB column. Bundles physical size, environmental limits, electrical/power ratings, reliability, and firmware/protocol info for an equipment type.
+    sql: type_env_ratings
+  type_env_ratings_dims_footprint_m2:
+    description: 'REAL. Installed footprint (length × width) in square meters (m²). Example: 1.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'dims', 'footprint_m2')
+  type_env_ratings_dims_height_m:
+    description: 'REAL. Overall height in meters (m). Example: 1.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'dims', 'height_m')
+  type_env_ratings_dims_length_m:
+    description: 'REAL. Overall length in meters (m). Example: 2.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'dims', 'length_m')
+  type_env_ratings_dims_mass_kg:
+    description: 'REAL. Mass in kilograms (kg). Example: 450.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'dims', 'mass_kg')
+  type_env_ratings_dims_volume_m3:
+    description: 'REAL. Bounding-box volume (footprint × height) in cubic meters (m³). Example: 2.16.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'dims', 'volume_m3')
+  type_env_ratings_dims_width_m:
+    description: 'REAL. Overall width in meters (m). Example: 0.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'dims', 'width_m')
+  type_env_ratings_electrical_power_design_voltage_v:
+    description: 'REAL. Nominal designed operating voltage in volts (V). Example: 400.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'electrical_power', 'DesignVoltage_v')
+  type_env_ratings_electrical_power_peak_power_w:
+    description: 'REAL. Peak power draw or output in watts (W). Example: 20000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'electrical_power', 'PEAK_POWER_w')
+  type_env_ratings_electrical_power_design_current_a:
+    description: 'REAL. Nominal operating current in amperes (A). Often derived from PEAK_POWER_w / DesignVoltage_v. Example: 50.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'electrical_power', 'designCurrent_A')
+  type_env_ratings_electrical_power_peak_torque_nm:
+    description: 'REAL. Peak torque in newton-meters (Nm) where applicable. Example: 180.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'electrical_power', 'peakTorque_Nm')
+  type_env_ratings_env_limits_humidity_max_pct:
+    description: 'REAL. Maximum non-condensing relative humidity in percent (%RH). Example: 95.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'env_limits', 'humidityMax_pct')
+  type_env_ratings_env_limits_ingress_salt_fog_hr:
+    description: 'REAL. Salt fog exposure endurance in hours (per test method). Example: 480.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'env_limits', 'ingressSaltFog_hr')
+  type_env_ratings_env_limits_ip_rating:
+    description: 'TEXT. Ingress Protection rating per IEC 60529. Possible values : IP54, IP20, IP67, IP55. Example: IP55.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'env_limits', 'ip_rating')
+  type_env_ratings_env_limits_oper_temp_max_c:
+    description: 'REAL. Maximum rated operating temperature in °C. Example: 55.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'env_limits', 'operTempMax_C')
+  type_env_ratings_env_limits_oper_temp_min_c:
+    description: 'REAL. Minimum rated operating temperature in °C. Example: -30.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'env_limits', 'operTempMin_C')
+  type_env_ratings_env_limits_shock_peak_g:
+    description: 'REAL. Peak mechanical shock tolerance in g. Example: 20.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'env_limits', 'shockPeak_g')
+  type_env_ratings_env_limits_storage_temp_max_c:
+    description: 'REAL. Maximum recommended storage temperature in °C. Example: 70.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'env_limits', 'storageTempMax_C')
+  type_env_ratings_env_limits_storage_temp_min_c:
+    description: 'REAL. Minimum recommended storage temperature in °C. Example: -40.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'env_limits', 'storageTempMin_C')
+  type_env_ratings_env_limits_vibration_peak_mms2:
+    description: 'REAL. Peak vibration tolerance in mm/s². Example: 30.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'env_limits', 'vibrationPeak_mms2')
+  type_env_ratings_fw_comm_firmware_family:
+    description: 'TEXT. Device firmware/OS family or branch name. Possible values : EnviroCtrl 2.0, LabCore 5.1, SafeGuard 1.0, TitanOS EV 3.2, GenControl 1.2. Example: GenControl 1.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'fw_comm', 'FirmwareFamily')
+  type_env_ratings_fw_comm_protocol:
+    description: 'TEXT. Primary communications/protocol interface. Possible values : Modbus RTU, Ethernet/IP, BLE, CAN, Modbus TCP. Example: Modbus TCP.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'fw_comm', 'protocol')
+  type_env_ratings_meta_category:
+    description: 'TEXT. High-level functional category. Possible values : Habitat, Lab Instrument, PPE, Transport, Power. Example: Power.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'meta', 'CATEGORY')
+  type_env_ratings_meta_notes:
+    description: 'TEXT. Free-form operational or configuration notes. **NULL means no narrative notes were provided (e.g., Vehicle/UTV row).** Example: 20 kW standby generator with automatic transfer switch integration.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'meta', 'Notes')
+  type_env_ratings_meta_standard_iso:
+    description: 'TEXT. Applicable ISO/IEC standard identifier. **NULL means no formal standard recorded or proprietary compliance (e.g., Scientific).** Possible values (exhaustive in current file, excluding NULL): ISO 5912, IEC 61010-1, ISO 16900-1, ISO 26262, ISO 8528-1. Example: ISO 8528-1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'meta', 'StandardIso')
+  type_env_ratings_meta_hazard_class:
+    description: 'TEXT. Hazard classification label if used by the organization. **NULL means no hazard class was recorded (e.g., Generator).** Possible values (exhaustive in current file, excluding NULL): Non-hazardous. Example: Non-hazardous.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'meta', 'hazardCLASS')
+  type_env_ratings_meta_manufacturer_country:
+    description: 'TEXT. Country/region of manufacture or final assembly. **NULL means origin not tracked in source (e.g., Safety).** Possible values (exhaustive in current file, excluding NULL): Japan, Germany, United States, China, India. Example: India.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'meta', 'manufacturer_country')
+  type_env_ratings_meta_sub_cat:
+    description: 'TEXT. More specific subtype within CATEGORY. **NULL means the subtype is not applicable or not captured for that equipment type (e.g., Shelter).** Possible values (exhaustive in current file, excluding NULL): Field Tent, Benchtop Spectrometer, Powered Respirator, All-Terrain UTV (Electric), Diesel Genset. Example: Diesel Genset.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'meta', 'subCat')
+  type_env_ratings_reliability_expected_life_yrs:
+    description: 'REAL. Expected service life in years under normal duty. Example: 15.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'reliability', 'expectedLife_yrs')
+  type_env_ratings_reliability_mtbf_hrs:
+    description: 'REAL. Mean time between failures in hours. Example: 30000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'reliability', 'mtbf_hrs')
+  type_env_ratings_reliability_warranty_yrs:
+    description: 'REAL. Warranty term in years. Example: 3.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(type_env_ratings, 'reliability', 'warranty_yrs')

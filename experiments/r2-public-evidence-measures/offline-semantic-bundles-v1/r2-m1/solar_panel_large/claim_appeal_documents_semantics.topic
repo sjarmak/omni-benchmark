@@ -1,0 +1,21 @@
+base_view: solar_panel_large_public__claim_appeal_documents
+label: ClaimAppealDocuments
+description: All columns of the public table ClaimAppealDocuments.
+fields:
+- solar_panel_large_public__claim_appeal_documents.*
+- solar_panel_large_public__alert.*
+- solar_panel_large_public__panel_models.*
+- solar_panel_large_public__plant_record.*
+- solar_panel_large_public__plants.*
+- solar_panel_large_public__technicians.*
+- solar_panel_large_public__warranty_claim_filings.*
+- solar_panel_large_public__work_orders.*
+joins:
+  solar_panel_large_public__warranty_claim_filings:
+    solar_panel_large_public__work_orders:
+      solar_panel_large_public__alert:
+        solar_panel_large_public__plant_record: {}
+      solar_panel_large_public__plants:
+        solar_panel_large_public__panel_models: {}
+      solar_panel_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

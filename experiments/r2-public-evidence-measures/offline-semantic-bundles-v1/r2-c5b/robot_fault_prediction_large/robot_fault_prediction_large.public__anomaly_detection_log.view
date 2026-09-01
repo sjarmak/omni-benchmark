@@ -1,0 +1,36 @@
+label: anomaly_detection_log
+description: All columns of the public table anomaly_detection_log.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: anomaly_detection_log
+dimensions:
+  work_order_tag:
+    description: 'TEXT. The work order tag created in response to the anomaly. FK. Example: WO-25-0001.'
+    sql: '"WorkOrderTag"'
+  actreg:
+    description: 'TEXT. The registration code of the actuation data record where the anomaly was detected. FK. Example: AC_4IQ9GC.'
+    sql: actreg
+  anomaly_pk:
+    description: 'BIGINT. Unique identifier for the detected anomaly. PK. Example: 1.'
+    sql: anomaly_pk
+  anomaly_score:
+    description: 'REAL. The score assigned to the anomaly by the model. Example: 0.92.'
+    sql: anomaly_score
+  detection_timestamp:
+    description: 'TEXT. The timestamp when the anomaly was detected. Example: 2025-08-10 15:25:10.'
+    sql: detection_timestamp
+  is_anomaly:
+    description: 'BOOLEAN. A flag from the model indicating if the data point is an anomaly. Possible values: False, True.'
+    sql: is_anomaly
+  model_name:
+    description: 'TEXT. The name of the machine learning model that detected the anomaly. Possible values: Air_Pressure_v1.0, Collision_Force_v1.0, Following_Error_v1.1, Motor_Current_v1.5, Motor_Torque_v1.2, Power_Consumption_v1.0, Safety_Circuit_v1.0, Vibration_FFT_v2.1.'
+    sql: model_name
+  severity_level:
+    description: 'TEXT. The assessed severity of the anomaly. Possible values: Low, Medium, High, Critical. Possible values: Critical, High, Low, Medium.'
+    sql: severity_level
+  status:
+    description: 'TEXT. The current status of the anomaly alert. Possible values: New, Investigating, Resolved, False-Positive. Possible values: Acknowledged, New, Resolved.'
+    sql: status
+  tech_code:
+    description: 'TEXT. The tech_code of the technician assigned to investigate the anomaly. FK. Example: TCH_1001.'
+    sql: tech_code

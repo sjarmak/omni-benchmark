@@ -1,0 +1,60 @@
+label: clients
+description: All columns of the public table clients.
+catalog: solar_panel_large
+schema: public
+table_name: clients
+dimensions:
+  customer_since:
+    description: 'DATE. The date when the entity officially became a client. Example: 01/15/2018.'
+    sql: '"CUSTOMER_SINCE"'
+  client_code:
+    description: 'TEXT. Unique identifier for a client or customer. Example: C1001.'
+    sql: '"ClientCode"'
+  client_name:
+    description: 'TEXT. The legal or common name of the client company or entity. Example: Global Utility Partners.'
+    sql: '"ClientName"'
+  credit_rating:
+    description: 'TEXT. The client''s credit rating as assessed by a rating agency. Possible values: A, AA+, AAA, BBB.'
+    sql: '"CreditRating"'
+  industry:
+    description: 'TEXT. The industry sector in which the client operates. Possible values: Education, Energy, Logistics, Manufacturing, Public Sector, Public Services, Retail, Technology.'
+    sql: '"INDUSTRY"'
+  last_modified:
+    description: 'TIMESTAMP. Timestamp of the last modification to the client record. Example: 2024-05-15 09:30:00.'
+    sql: '"LAST_MODIFIED"'
+  client_type:
+    description: 'TEXT. The classification of the client. Possible values: Corporate, Government, Utility.'
+    sql: client_type
+  contact_details:
+    description: JSONB column. Contains the primary contact information and billing address for a client.
+    sql: contact_details
+  record_created_ts:
+    description: 'TIMESTAMP. Timestamp when the client record was first created in the system. Example: 2018-01-10 10:00:00.'
+    sql: record_created_ts
+  contact_details_billing_address_state:
+    description: 'TEXT. The state or province of the client''s billing address. Example: CA.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'billing_address', 'STATE')
+  contact_details_billing_address_billing_address_line1:
+    description: 'TEXT. The first line of the client''s billing address. Example: 100 Market St.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'billing_address', 'billing_address_line1')
+  contact_details_billing_address_city:
+    description: 'TEXT. The city of the client''s billing address. Example: Metropolis.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'billing_address', 'city')
+  contact_details_billing_address_zip_code:
+    description: 'TEXT. The postal or zip code of the client''s billing address. Example: 90210.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'billing_address', 'zip_code')
+  contact_details_primary_contact_contact_phone:
+    description: 'TEXT. Phone number of the primary contact person. Example: (555) 123-4567.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'primary_contact', 'CONTACT_PHONE')
+  contact_details_primary_contact_primary_contact_name:
+    description: 'TEXT. Full name of the primary contact person at the client organization. Example: Sarah Jenkins.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'primary_contact', 'PrimaryContactName')
+  contact_details_primary_contact_primary_contact_email:
+    description: 'TEXT. Email address of the primary contact person. Example: s.jenkins@gup.com.'
+    sql: JSONB_EXTRACT_PATH_TEXT(contact_details, 'primary_contact', 'primary_contact_email')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct clients public identity values.
+    label: clients Count
+    sql: ${solar_panel_large_public__clients.client_code}

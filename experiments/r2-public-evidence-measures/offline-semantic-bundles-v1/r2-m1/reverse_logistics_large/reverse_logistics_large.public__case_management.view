@@ -1,0 +1,98 @@
+label: Case Management
+description: Case rows with public satisfaction-score semantics.
+catalog: reverse_logistics_large
+schema: public
+table_name: case_management
+dimensions:
+  satisfaction_score:
+    description: 'BIGINT. Satisfaction score for the case resolution. Possible values: 1, 2, 3, 4, 5.'
+    label: Satisfaction Score
+    sql: satisfscore
+    ai_context: 'Satisfaction Scores: Use 1-5 to quantify customer'' contentment. Larger number means more satified: 1 - Very Dissatisfied; 2 - Dissatisfied; 3 - Neutral; 4 - Satisfied; 5 - Very Satisfied.'
+  actioncount:
+    description: 'BIGINT. Number of actions taken for the case. Example: 0.'
+    sql: actioncount
+  actionident:
+    description: 'YesNo_enum. Indicates if an action was identified for the case. Possible values: No, Yes.'
+    sql: actionident
+  actionstate:
+    description: 'PreventiveActionStatus_enum. Status of the preventive action. Possible values: Completed, In Progress, Planned.'
+    sql: actionstate
+  analysisstate:
+    description: 'DataAnalysisStatus_enum. State of the data analysis for the case. Possible values: Completed, In Progress, Not Started.'
+    sql: analysisstate
+  casetie:
+    description: VARCHAR(50). Foreign key to the returns table (CaseNum). PK, FK to returns.
+    sql: casetie
+  closedate:
+    description: 'TEXT. Date when the case was closed. Example: 2025-02-19.'
+    sql: closedate
+  closenotes:
+    description: 'TEXT. Notes related to the closure of the case. Example: Above suggest statement likely sound..'
+    sql: closenotes
+  closestate:
+    description: 'CaseClosureStatus_enum. Current closure state of the case. Possible values: Closed, Open, Pending.'
+    sql: closestate
+  commstate:
+    description: 'CustomerCommunicationStatus_enum. Current state of communication with the customer. Possible values: In Progress, Initial, Resolved.'
+    sql: commstate
+  feedbacktype:
+    description: 'FeedbackCategory_enum. Type of feedback provided by the customer. **NULL means no feedback type provided.**. Possible values: Process, Product, Service.'
+    sql: feedbacktype
+  hascostanalysis:
+    description: 'YesNo_enum. Indicates if cost analysis was performed for the case. Possible values: No, Yes.'
+    sql: hascostanalysis
+  hasfeedback:
+    description: 'YesNo_enum. Indicates if feedback was provided by the customer. Possible values: No, Yes.'
+    sql: hasfeedback
+  hastrendanalysis:
+    description: 'YesNo_enum. Indicates if trend analysis was performed for the case. Possible values: No, Yes.'
+    sql: hastrendanalysis
+  kbupdated:
+    description: 'YesNo_enum. Indicates if the knowledge base was updated after the case. Possible values: No, Yes.'
+    sql: kbupdated
+  needsdocupdate:
+    description: 'YesNo_enum. Indicates if documentation updates are needed. Possible values: No, Yes.'
+    sql: needsdocupdate
+  needsfollowup:
+    description: 'YesNo_enum. Indicates if follow-up is needed for the case. Possible values: No, Yes.'
+    sql: needsfollowup
+  needsprocimprove:
+    description: 'YesNo_enum. Indicates if process improvements are needed. Possible values: No, Yes.'
+    sql: needsprocimprove
+  needssysupdate:
+    description: 'YesNo_enum. Indicates if system updates are needed. Possible values: No, Yes.'
+    sql: needssysupdate
+  nextreview:
+    description: 'TEXT. Date for the next review of the case. Example: 2025-04-28.'
+    sql: nextreview
+  preventopp:
+    description: 'ReturnPreventionOpportunity_enum. Opportunity for preventing future returns. Possible values: High, Low, Medium.'
+    sql: preventopp
+  recstate:
+    description: 'RecommendationStatus_enum. State of the recommendation for the case. **NULL means no recommendation state provided.**. Possible values: Approved, Draft.'
+    sql: recstate
+  reportstate:
+    description: 'ReportGenerationStatus_enum. State of the report generation for the case. Possible values: Generated, Pending, Reviewed.'
+    sql: reportstate
+  resolsatis:
+    description: 'ResolutionSatisfaction_enum. Satisfaction level of the customer after case resolution. Possible values: Dissatisfied, Neutral, Satisfied.'
+    sql: resolsatis
+  resptime:
+    description: 'REAL. Response time for handling the case. Example: 14.8.'
+    sql: resptime
+  trainident:
+    description: 'TEXT. Identifies if training was required after the case. Possible values: 0, 1, F, False, N, NO, P, True, Y, YES.'
+    sql: trainident
+  vendoraction:
+    description: 'SupplierCorrectiveAction_enum. Action taken by the vendor regarding the case. **NULL means no vendor action reported.**. Possible values: Completed, Initiated.'
+    sql: vendoraction
+  vendornotice:
+    description: 'YesNo_enum. Indicates if the vendor was notified about the case. Possible values: No, Yes.'
+    sql: vendornotice
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Case Management public identity values.
+    label: Case Management Count
+    sql: ${reverse_logistics_large_public__case_management.casetie}

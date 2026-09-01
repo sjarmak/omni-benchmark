@@ -1,0 +1,25 @@
+base_view: virtual_idol_large_public__event_sponsors
+label: event_sponsors
+description: All columns of the public table event_sponsors.
+fields:
+- virtual_idol_large_public__event_sponsors.*
+- virtual_idol_large_public__commerceandcollection.*
+- virtual_idol_large_public__engagement.*
+- virtual_idol_large_public__eventsandclub.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__interactions.*
+- virtual_idol_large_public__membershipandspending.*
+- virtual_idol_large_public__socialcommunity.*
+- virtual_idol_large_public__sponsors.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__eventsandclub:
+    virtual_idol_large_public__membershipandspending:
+      virtual_idol_large_public__fans: {}
+    virtual_idol_large_public__socialcommunity:
+      virtual_idol_large_public__commerceandcollection: {}
+      virtual_idol_large_public__engagement:
+        virtual_idol_large_public__interactions:
+          virtual_idol_large_public__virtualidols: {}
+  virtual_idol_large_public__sponsors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

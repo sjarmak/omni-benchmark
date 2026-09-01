@@ -1,0 +1,66 @@
+label: EnergyGenerationForecasts
+description: All columns of the public table EnergyGenerationForecasts.
+catalog: solar_panel_large
+schema: public
+table_name: EnergyGenerationForecasts
+dimensions:
+  confidence_interval_high:
+    description: 'REAL. Upper bound of prediction (P10). Example: 110.'
+    sql: confidence_interval_high
+  confidence_interval_low:
+    description: 'REAL. Lower bound of prediction (P90). Example: 90.'
+    sql: confidence_interval_low
+  forecast_generated_ts:
+    description: 'TIMESTAMP. When the forecast model was run. Example: 2024-01-01 12:00:00.'
+    sql: forecast_generated_ts
+  forecast_horizon_hours:
+    description: 'INTEGER. How far ahead the prediction was made (e.g. 24, 48). Unique values: 24, 48, 72, 168.'
+    sql: forecast_horizon_hours
+  forecast_id:
+    description: TEXT. Unique ID for the prediction record.
+    sql: forecast_id
+  grid_congestion_probability:
+    description: 'REAL. Likelihood of grid curtailment (0.0-1.0). Example: 50.0.'
+    sql: grid_congestion_probability
+  historical_accuracy_score:
+    description: 'REAL. Rolling average accuracy of this model (0-1). **NULL means data unavailable.** Example: 0.92.'
+    sql: historical_accuracy_score
+  is_fallback_strategy:
+    description: 'BOOLEAN. True if main model failed and backup logic was used. Possible values: True, False.'
+    sql: is_fallback_strategy
+  market_price_forecast_usd_mwh:
+    description: 'REAL. Predicted energy spot price. Example: 45.'
+    sql: market_price_forecast_usd_mwh
+  plant_ref:
+    description: TEXT. Reference to the plant being modeled.
+    sql: plant_ref
+  predicted_cloud_cover_pct:
+    description: 'REAL. Forecasted cloud opacity. Example: 50.0.'
+    sql: predicted_cloud_cover_pct
+  predicted_generation_mwh:
+    description: 'REAL. Forecasted energy output. Example: 100.'
+    sql: predicted_generation_mwh
+  predicted_irradiance_ghi:
+    description: 'REAL. Forecasted Global Horizontal Irradiance. Example: 500.'
+    sql: predicted_irradiance_ghi
+  predicted_temp_c:
+    description: 'REAL. Forecasted ambient temperature. Example: 25.'
+    sql: predicted_temp_c
+  revenue_potential_usd:
+    description: 'REAL. Predicted Gen * Predicted Price. Example: 4500.'
+    sql: revenue_potential_usd
+  submission_status:
+    description: 'TEXT. Was this forecast sent to the grid operator?. Unique values: Submitted, Pending, Failed.'
+    sql: submission_status
+  target_date:
+    description: TIMESTAMP. The day the energy will be generated.
+    sql: target_date
+  target_hour:
+    description: 'INTEGER. Hour of the day (0-23). Example: 50.'
+    sql: target_hour
+  updated_by_algorithm_ver:
+    description: TEXT. Version of the AI/ML model used.
+    sql: updated_by_algorithm_ver
+  weather_model_source:
+    description: 'TEXT. Source of weather data used. Unique values: GFS, ECMWF, NAM, LocalStation.'
+    sql: weather_model_source

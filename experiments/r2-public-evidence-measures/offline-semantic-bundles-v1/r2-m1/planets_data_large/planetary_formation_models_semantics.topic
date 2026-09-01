@@ -1,0 +1,11 @@
+base_view: planets_data_large_public__planetary_formation_models
+label: planetary_formation_models
+description: All columns of the public table planetary_formation_models.
+fields:
+- planets_data_large_public__planetary_formation_models.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__planets:
+    planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

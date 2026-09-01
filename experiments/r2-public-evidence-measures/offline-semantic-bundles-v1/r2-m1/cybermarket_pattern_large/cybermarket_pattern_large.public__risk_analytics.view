@@ -1,0 +1,63 @@
+label: risk_analytics
+description: All columns of the public table risk_analytics.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: risk_analytics
+dimensions:
+  chain_length:
+    description: 'BIGINT. Length of the associated blockchain transaction chain. **NULL means chain length could not be determined.**. Possible values: 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0.'
+    sql: '"ChainLength"'
+  fraud_prob:
+    description: 'REAL. Model-computed probability that the transaction is fraudulent. Example: 67.3.'
+    sql: '"FraudProb"'
+  linked_events:
+    description: 'BIGINT. Number of linked suspicious events. Example: 29.'
+    sql: '"LinkedEvents"'
+  ml_risk:
+    description: 'TEXT. Machine-learning-derived risk category. Possible values: High, Low, Medium.'
+    sql: '"ML_Risk"'
+  risk_indicator_count:
+    description: 'BIGINT. Number of risk indicators triggered for the transaction. Example: 9.'
+    sql: '"RiskIndicatorCount"'
+  txn_link:
+    description: TEXT. Identifier of the transaction under risk analysis. PK. FK to transactions(EventCode).
+    sql: '"TxnLink"'
+  wallet_risk_assessment:
+    description: JSONB column. Contains risk assessment metrics related to cryptocurrency wallets, such as wallet score, transaction chain length, and turnover rate.
+    sql: wallet_risk_assessment
+  wallet_risk_assessment_cluster_coeff_val:
+    description: 'REAL. Network cluster coefficient of the wallet node. Example: 0.695.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'cluster_coeff_val')
+  wallet_risk_assessment_conn_diversity_score:
+    description: 'REAL. Diversity of counterparties connected to the wallet. **NULL means diversity metric has not been calculated.**. Example: 63.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'conn_diversity_score')
+  wallet_risk_assessment_geo_dist_score_val:
+    description: 'REAL. Geographical distribution score of connected entities. Example: 27.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'geo_dist_score_val')
+  wallet_risk_assessment_network_centrality_val:
+    description: 'REAL. Network-centrality measure within the blockchain graph. Example: 40.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'network_centrality_val')
+  wallet_risk_assessment_pattern_classification:
+    description: 'TEXT. Behaviour pattern classification for the transaction group. Possible values: High-risk, Normal, Suspicious.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'pattern_classification')
+  wallet_risk_assessment_temporal_pattern_score:
+    description: 'REAL. Temporal-pattern score for transaction activity. Example: 5.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'temporal_pattern_score')
+  wallet_risk_assessment_turnover_rate_val:
+    description: 'REAL. Financial turnover rate of the wallet. **NULL means turnover rate has not been calculated.**. Example: 4.29.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'turnover_rate_val')
+  wallet_risk_assessment_wallet_age_days:
+    description: 'BIGINT. Age of the cryptocurrency wallet in days. Example: 722.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'wallet_age_days')
+  wallet_risk_assessment_wallet_score_val:
+    description: 'REAL. Risk score of the cryptocurrency wallet involved. Example: 34.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'wallet_score_val')
+  wallet_risk_assessment_wallet_value_usd:
+    description: 'REAL. Current value held in the wallet. Example: 98937.33.'
+    sql: JSONB_EXTRACT_PATH_TEXT(wallet_risk_assessment, 'wallet_value_usd')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct risk_analytics public identity values.
+    label: risk_analytics Count
+    sql: ${cybermarket_pattern_large_public__risk_analytics.txn_link}

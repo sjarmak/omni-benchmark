@@ -1,0 +1,66 @@
+label: VendorShipmentTracking
+description: All columns of the public table VendorShipmentTracking.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: VendorShipmentTracking
+dimensions:
+  vst_id:
+    description: 'TEXT. Unique identifier for the shipment tracking record. Example: VST-1A2B3C.'
+    sql: '"VST_id"'
+  actual_arrival_timestamp:
+    description: 'TIMESTAMP. Actual timestamp when shipment arrived at destination. **NULL means Shipment still in transit or not yet delivered.** Example: 2024-01-01 12:00:00.'
+    sql: actual_arrival_timestamp
+  carrier_name:
+    description: 'TEXT. Name of the shipping carrier handling the shipment. Example: FedEx.'
+    sql: carrier_name
+  current_location_checkpoint:
+    description: 'TEXT. Last known checkpoint or hub where shipment was scanned. **NULL means Tracking scan not yet available.** Unique values: Origin Hub, Regional Sort, Customs Clearance, Destination Hub, Out for Delivery, Delivered.'
+    sql: current_location_checkpoint
+  customs_duty_usd:
+    description: 'REAL. Customs duty amount charged in USD for international shipments. **NULL means Domestic shipment or duty-free threshold.** Example: 35.0.'
+    sql: customs_duty_usd
+  delivery_attempt_count:
+    description: 'INTEGER. Number of delivery attempts made for this shipment. **NULL means Shipment not yet at delivery stage.** Example: 1.'
+    sql: delivery_attempt_count
+  dispatch_timestamp:
+    description: 'TIMESTAMP. Timestamp when the shipment was dispatched from origin. **NULL means Dispatch time not yet recorded.** Example: 2024-01-01 12:00:00.'
+    sql: dispatch_timestamp
+  estimated_arrival_timestamp:
+    description: 'TIMESTAMP. Projected timestamp for shipment arrival at destination. **NULL means ETA calculation pending or unavailable.** Example: 2024-01-01 12:00:00.'
+    sql: estimated_arrival_timestamp
+  insurance_value_usd:
+    description: 'REAL. Declared insurance value for the shipment in USD. **NULL means No insurance purchased for shipment.** Example: 250.0.'
+    sql: insurance_value_usd
+  is_fragile:
+    description: 'BOOLEAN. Indicates whether the shipment contains fragile items. Possible values: True, False.'
+    sql: is_fragile
+  package_count:
+    description: 'INTEGER. Number of individual packages in the shipment. Example: 2.'
+    sql: package_count
+  requires_signature:
+    description: 'BOOLEAN. Indicates whether delivery requires recipient signature. Possible values: True, False.'
+    sql: requires_signature
+  shipment_destination_country:
+    description: 'TEXT. Country code where the shipment is being delivered. Example: US.'
+    sql: shipment_destination_country
+  shipment_origin_country:
+    description: 'TEXT. Country code where the shipment originated. Example: US.'
+    sql: shipment_origin_country
+  shipment_status:
+    description: 'TEXT. Current status of the shipment in the delivery lifecycle. Unique values: Processing, In Transit, Customs Hold, Out for Delivery, Delivered, Exception, Returned.'
+    sql: shipment_status
+  shipment_volume_cubic_m:
+    description: 'REAL. Total volume of the shipment in cubic meters. **NULL means Volume measurement not captured.** Example: 0.15.'
+    sql: shipment_volume_cubic_m
+  shipment_weight_kg:
+    description: 'REAL. Total weight of the shipment in kilograms. **NULL means Weight measurement unavailable.** Example: 12.5.'
+    sql: shipment_weight_kg
+  shipping_cost_usd:
+    description: 'REAL. Total shipping cost charged in USD. Example: 45.0.'
+    sql: shipping_cost_usd
+  shipping_method:
+    description: 'TEXT. Method of shipping used for the delivery. Unique values: Standard Ground, Express Air, Economy Sea, Overnight, Two-Day, Freight Rail.'
+    sql: shipping_method
+  vendor_perf_ref:
+    description: TEXT. Reference to the vendor performance metrics record.
+    sql: vendor_perf_ref

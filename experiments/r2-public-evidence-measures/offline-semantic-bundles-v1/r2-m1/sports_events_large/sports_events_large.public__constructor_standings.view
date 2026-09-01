@@ -1,0 +1,33 @@
+label: constructor_standings
+description: All columns of the public table constructor_standings.
+catalog: sports_events_large
+schema: public
+table_name: constructor_standings
+dimensions:
+  contunit:
+    description: 'INTEGER. Foreign key to the constructors table (CSTR_Key). FK to constructors. Example: 9.'
+    sql: contunit
+  cstnds:
+    description: 'INTEGER. Unique standings reference. PK. Example: 25335.'
+    sql: cstnds
+  poslab:
+    description: 'VARCHAR. Position text label. **NULL means no label available.**. Example: 1.'
+    sql: poslab
+  posno:
+    description: 'INTEGER. Constructor''s rank in standings. **NULL means no position computed.**. Example: 1.'
+    sql: posno
+  rref:
+    description: 'INTEGER. Foreign key to the races table (RAK_ID). FK to races. Example: 898.'
+    sql: rref
+  scr_tot:
+    description: 'REAL. Constructor''s cumulative season points. **NULL means the constructor has not yet scored or the tally is not updated.**. Example: 553.0.'
+    sql: scr_tot
+  trophy_w:
+    description: 'INTEGER. Total wins by constructor. **NULL means the constructor has no wins or the count is pending update.**. Example: 12.'
+    sql: trophy_w
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct constructor_standings public identity values.
+    label: constructor_standings Count
+    sql: ${sports_events_large_public__constructor_standings.cstnds}

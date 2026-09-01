@@ -1,0 +1,114 @@
+label: alert_case_actions
+description: All columns of the public table alert_case_actions.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: alert_case_actions
+dimensions:
+  actiondate:
+    description: 'TIMESTAMP. Date and time when the action was performed. Example: 2025-07-16 15:23:00.'
+    sql: '"ACTIONDATE"'
+  costusd:
+    description: 'REAL. The cost in USD associated with the action. Example: 100.5.'
+    sql: '"COSTusd"'
+  duedate:
+    description: 'DATE. Date by which the task or action is due. Example: 2025-07-18.'
+    sql: '"DUEdate"'
+  escalation_level:
+    description: TEXT. The level of escalation applied (e.g., Level 1, Level 2, Level 3).
+    sql: '"ESCALATION_LEVEL"'
+  eventtag:
+    description: TEXT. Reference to the EventTag in the alerts table. FK.
+    sql: '"EVENTTAG"'
+  outcome:
+    description: TEXT. Outcome of the action (e.g., Success, Failure, Pending).
+    sql: '"OUTCOME"'
+  action_ref:
+    description: TEXT. Unique identifier for each action performed. PK.
+    sql: '"actionRef"'
+  action_by:
+    description: 'TEXT. User who performed the action. Example: User1.'
+    sql: action_by
+  action_type:
+    description: TEXT. Type of action performed (e.g., Investigation, Notification, Escalation).
+    sql: action_type
+  approval_date:
+    description: DATE. The date when the action was approved. **NULL means approval has not occurred yet or is not required.**
+    sql: '"approvalDATE"'
+  approval_required:
+    description: 'BOOLEAN. Indicates if approval is required for the action. Example: True.'
+    sql: approval_required
+  approved_by:
+    description: TEXT. User who approved the action. **NULL means approval has not been granted or is not required.**
+    sql: '"approvedBY"'
+  closed:
+    description: 'BOOLEAN. Indicates if the case has been closed. Example: True.'
+    sql: closed
+  closure_date:
+    description: DATE. Date when the case was closed. **NULL means the case has not yet been closed.**
+    sql: '"closureDATE"'
+  completion_date:
+    description: DATE. Date when the action was completed. **NULL means the action is not yet completed or does not have a defined completion date.**
+    sql: '"completionDATE"'
+  corrective_action:
+    description: 'TEXT. Corrective actions taken to resolve the issue. Example: Action1.'
+    sql: corrective_action
+  cost_window_in_usd:
+    description: TEXT. The cost window for the action in USD (e.g., 100-500 USD). **NULL means no cost window was defined.**
+    sql: '"costWindow_in_USD"'
+  customer_notified:
+    description: 'BOOLEAN. Indicates if the customer has been notified about the action. Example: True.'
+    sql: customer_notified
+  evidence_collected:
+    description: 'BOOLEAN. Indicates if evidence was collected as part of the action. Example: True.'
+    sql: evidence_collected
+  evidence_location:
+    description: 'TEXT. The location where the evidence is stored. Example: Location1.'
+    sql: evidence_location
+  follow_up_date:
+    description: DATE. Date when follow-up is required. **NULL means follow-up is not needed or has not been scheduled.**
+    sql: '"followUpDATE"'
+  follow_up_required:
+    description: 'BOOLEAN. Indicates if follow-up is required after the action. Example: True.'
+    sql: follow_up_required
+  last_updated:
+    description: 'TIMESTAMP. The last time the record was updated. Example: 2025-07-16 15:30:00.'
+    sql: last_updated
+  next_step:
+    description: TEXT. The next step in the case workflow (e.g., Follow-up, Review, Escalate).
+    sql: next_step
+  notes:
+    description: 'TEXT. Additional notes or details related to the action. Example: Action completed successfully.'
+    sql: notes
+  preventive_action:
+    description: 'TEXT. Preventive measures implemented to avoid recurrence. Example: Action1.'
+    sql: '"preventiveACTION"'
+  remed_window:
+    description: TEXT. The window of remediation for the action (e.g., D+1–D+3).
+    sql: '"remedWindow"'
+  root_cause:
+    description: 'TEXT. The root cause identified during the investigation. Example: Cause1.'
+    sql: '"rootCAUSE"'
+  status:
+    description: TEXT. Current status of the action (e.g., Open, Closed, Pending).
+    sql: status
+  task_assigned_to:
+    description: 'TEXT. The team or user assigned to the task. Example: Team1.'
+    sql: task_assigned_to
+  time_spent_mins:
+    description: 'BIGINT. Total time spent in minutes on the action. Example: 45.'
+    sql: time_spent_mins
+  vendor_notified:
+    description: 'BOOLEAN. Indicates if the vendor has been notified about the action. Example: True.'
+    sql: '"vendorNOTIFIED"'
+  verification_date:
+    description: DATE. Date when verification of the action was completed. **NULL means verification is pending or was not required.**
+    sql: '"verificationDATE"'
+  verification_result:
+    description: TEXT. Result of the verification process (e.g., Passed, Failed).
+    sql: '"verificationRESULT"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct alert_case_actions public identity values.
+    label: alert_case_actions Count
+    sql: ${cybermarket_pattern_large_public__alert_case_actions.action_ref}

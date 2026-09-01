@@ -1,0 +1,96 @@
+label: Compliance_Detail
+description: All columns of the public table Compliance_Detail.
+catalog: cross_border_large
+schema: public
+table_name: Compliance_Detail
+dimensions:
+  automated_decision:
+    description: 'TEXT. Indicates whether the organization makes automated decisions. Possible values: Yes, No. Example: No.'
+    sql: '"AUTOMATED_DECISION"'
+  accountability_controls:
+    description: 'TEXT. Controls in place for accountability. Example: Audits.'
+    sql: '"Accountability_controls"'
+  article_ref:
+    description: 'TEXT. Reference to a specific article or section in the regulation. Example: Article-7.'
+    sql: '"Article_Ref"'
+  compliance_detail_no:
+    description: 'BIGINT. Unique identifier for each compliance detail record. Example: 1.'
+    sql: '"COMPLIANCE_DETAIL_NO"'
+  consent_required:
+    description: 'TEXT. Indicates if consent is required for processing. Possible values: Yes, No. Example: Yes.'
+    sql: '"CONSENT_REQUIRED"'
+  children_data:
+    description: 'TEXT. Indicates whether the organization processes children''s data. Possible values: Yes, No. Example: Yes.'
+    sql: '"Children_Data"'
+  dpia_required:
+    description: 'TEXT. Indicates if a Data Protection Impact Assessment (DPIA) is required. Possible values: Yes, No. Example: Yes.'
+    sql: '"DPIA_REQUIRED"'
+  purpose_limitation_score_pct:
+    description: 'REAL. Percentage score for purpose limitation compliance. Example: 90.0.'
+    sql: '"PURPOSE_LIMITATION_SCORE_PCT"'
+  regulation_name:
+    description: 'TEXT. Name of the regulation. Possible values: GDPR, CCPA, HIPAA, PCI-DSS, FISMA. Example: GDPR.'
+    sql: '"REGULATION_NAME"'
+  ropa_url:
+    description: 'TEXT. URL for the Records of Processing Activities (ROPA). Example: https://example.com/ropa/123. **NULL means no URL is defined or recorded.**'
+    sql: '"ROPA_URL"'
+  security_controls:
+    description: 'TEXT. Security controls in place for compliance. Example: Encryption, Access control.'
+    sql: '"SECURITY_CONTROLS"'
+  special_category:
+    description: 'TEXT. Special category of data processed. Possible values: Health Data, Biometric Data, Sensitive Personal Data, Criminal Conviction Data. Example: Health Data.'
+    sql: '"SPECIAL_CATEGORY"'
+  transfer_risk_level:
+    description: 'TEXT. Risk level associated with data transfers. Possible values: Low, Medium, High. Example: High.'
+    sql: '"TRANSFER_RISK_LEVEL"'
+  accuracy_controls:
+    description: 'TEXT. Controls in place for data accuracy. Example: Data validation.'
+    sql: accuracy_controls
+  compliance_code:
+    description: 'BIGINT. Foreign key referencing Compliance(complianceTrace). Example: CT-0001.'
+    sql: compliance_code
+  compliance_flow_code:
+    description: 'TEXT. Code for the flow of compliance. Example: CF-0001.'
+    sql: compliance_flow_code
+  compliance_risk_no:
+    description: 'BIGINT. Unique identifier for the associated compliance risk. Example: 2345. **NULL means no compliance risk is assigned or recorded.**'
+    sql: compliance_risk_no
+  compliance_vendor_code:
+    description: 'BIGINT. Foreign key referencing the vendor associated with the compliance. Example: 9876.'
+    sql: compliance_vendor_code
+  consent_renewal_days:
+    description: 'BIGINT. Number of days for consent renewal. Example: 365.'
+    sql: consent_renewal_days
+  controller_role:
+    description: 'TEXT. Role of the data controller in compliance. Possible values: Controller, Joint Controller. Example: Controller.'
+    sql: controller_role
+  cross_border_mechanism:
+    description: 'TEXT. Mechanism for data transfer across borders. Possible values: Standard Contractual Clauses, Binding Corporate Rules, Privacy Shield. Example: Standard Contractual Clauses. **NULL means no cross-border mechanism defined or recorded.**'
+    sql: cross_border_mechanism
+  data_minimization_score_pct:
+    description: 'REAL. Percentage score for data minimization compliance. Example: 85.0.'
+    sql: data_minimization_score_pct
+  dpia_date:
+    description: 'DATE. Date when the DPIA was conducted. Example: 2025/05/30.'
+    sql: dpia_date
+  jurisdiction_code:
+    description: 'TEXT. Code for the jurisdiction where compliance applies. Possible values: EU, US, UK, APAC, LATAM. Example: EU.'
+    sql: jurisdiction_code
+  legal_basis:
+    description: 'TEXT. Legal basis for processing data under the regulation. Possible values: Consent, Contractual necessity, Legitimate interest, Legal obligation, Vital interests. Example: Consent.'
+    sql: legal_basis
+  privacy_notice_url:
+    description: 'TEXT. URL for the organization''s privacy notice. Example: https://example.com/privacy/123.'
+    sql: privacy_notice_url
+  processor_role:
+    description: 'TEXT. Role of the data processor in compliance. Possible values: Processor, Subprocessor. Example: Processor. **NULL means the processor role is unspecified or not recorded.**'
+    sql: processor_role
+  profiling:
+    description: 'TEXT. Indicates whether the organization engages in profiling. Possible values: Yes, No. Example: Yes.'
+    sql: profiling
+  records_of_processing:
+    description: 'TEXT. Type of records maintained for compliance. Possible values: Manual records, Automated records, Hybrid. Example: Automated records.'
+    sql: records_of_processing
+  storage_limitation_days:
+    description: 'BIGINT. Number of days for which data is stored under compliance. Example: 180.'
+    sql: storage_limitation_days

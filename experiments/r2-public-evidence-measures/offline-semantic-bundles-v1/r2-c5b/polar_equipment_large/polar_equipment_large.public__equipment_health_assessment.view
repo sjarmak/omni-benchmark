@@ -1,0 +1,66 @@
+label: EquipmentHealthAssessment
+description: All columns of the public table EquipmentHealthAssessment.
+catalog: polar_equipment_large
+schema: public
+table_name: EquipmentHealthAssessment
+dimensions:
+  anomaly_detected:
+    description: 'BOOLEAN. Flag indicating whether anomalies were detected during assessment. Possible values: True, False.'
+    sql: '"anomalyDetected"'
+  assessment_method:
+    description: 'TEXT. Method used for health assessment. Unique values: Automated, Manual, Hybrid, AI-Assisted.'
+    sql: '"assessmentMethod"'
+  assessment_timestamp:
+    description: 'TIMESTAMP. Timestamp when the health assessment was performed. Example: 2024-01-01 12:00:00.'
+    sql: '"assessmentTimestamp"'
+  assessor_notes:
+    description: TEXT. Free-text notes from the assessor or system. **NULL means No additional notes provided.**
+    sql: '"assessorNotes"'
+  corrosion_level:
+    description: 'TEXT. Assessed corrosion severity level. Unique values: None, Minor, Moderate, Severe, Critical.'
+    sql: '"corrosionLevel"'
+  data_quality_score:
+    description: 'REAL. Quality score of input data used for assessment (0-100). **NULL means Data quality metrics unavailable.** Example: 85.'
+    sql: '"dataQualityScore"'
+  degradation_rate_pct_day:
+    description: 'REAL. Daily degradation rate as percentage per day. **NULL means Trend data insufficient.** Example: 0.05.'
+    sql: '"degradationRate_pctDay"'
+  electrical_health_pct:
+    description: 'REAL. Percentage score for electrical system health. **NULL means Electrical diagnostics unavailable.** Example: 78.'
+    sql: '"electricalHealthPct"'
+  failure_probability30d:
+    description: 'REAL. Probability of failure within the next 30 days (0 to 1). **NULL means Predictive model not applicable.** Example: 50.0.'
+    sql: '"failureProbability30d"'
+  health_assess_seq:
+    description: 'TEXT. Unique identifier for the equipment health assessment record. Example: EHA-1A2B3C.'
+    sql: '"healthAssessSeq"'
+  lubrication_quality_score:
+    description: 'REAL. Quality score of lubrication systems from 0 to 100. **NULL means Lubrication sensors not installed.** Example: 70.'
+    sql: '"lubricationQualityScore"'
+  maintenance_urgency:
+    description: 'TEXT. Urgency classification for maintenance action. Unique values: Routine, Soon, Urgent, Critical, Immediate.'
+    sql: '"maintenanceUrgency"'
+  mechanical_integrity_pct:
+    description: 'REAL. Percentage score for mechanical component integrity. **NULL means Mechanical sensors offline during assessment.** Example: 82.'
+    sql: '"mechanicalIntegrityPct"'
+  overall_health_score:
+    description: 'REAL. Composite health score from 0 to 100 indicating overall equipment condition. **NULL means Assessment algorithm failed to compute score.** Example: 75.'
+    sql: '"overallHealthScore"'
+  perf_log_ref:
+    description: TEXT. Reference to the equipment performance log entry being assessed.
+    sql: perf_log_ref
+  remaining_useful_life_hrs:
+    description: 'INTEGER. Estimated remaining useful life in operational hours. **NULL means RUL prediction model unavailable.** Example: 2500.'
+    sql: '"remainingUsefulLife_hrs"'
+  thermal_stress_factor:
+    description: 'REAL. Thermal stress coefficient indicating heat-related wear (0-10 scale). **NULL means Thermal sensors not calibrated.** Example: 50.0.'
+    sql: '"thermalStressFactor"'
+  vibration_amplitude_mm:
+    description: 'REAL. Peak vibration amplitude measured in millimeters. **NULL means Vibration sensor malfunction.** Example: 0.8.'
+    sql: '"vibrationAmplitude_mm"'
+  vibration_frequency_hz:
+    description: 'REAL. Dominant vibration frequency in Hertz. **NULL means Frequency analysis failed.** Example: 120.'
+    sql: '"vibrationFrequency_hz"'
+  wear_index:
+    description: 'REAL. Calculated wear index based on operational hours and stress factors. **NULL means Insufficient data for wear calculation.** Example: 50.0.'
+    sql: '"wearIndex"'

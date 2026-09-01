@@ -1,0 +1,9 @@
+base_view: museum_artifact_large_public__artifact_ratings
+label: ArtifactRatings
+description: All columns of the public table ArtifactRatings.
+fields:
+- museum_artifact_large_public__artifact_ratings.*
+- museum_artifact_large_public__artifacts_core.*
+joins:
+  museum_artifact_large_public__artifacts_core: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

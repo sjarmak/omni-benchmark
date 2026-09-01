@@ -1,0 +1,66 @@
+label: AlertResponseWorkflow
+description: All columns of the public table AlertResponseWorkflow.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: AlertResponseWorkflow
+dimensions:
+  arw_id:
+    description: 'TEXT. Unique identifier for the alert response workflow record. Example: ARW-1A2B3C.'
+    sql: '"ARW_id"'
+  assigned_team:
+    description: 'TEXT. Team responsible for handling this workflow. Unique values: Fraud Operations, Risk Analytics, Compliance, Customer Support, Security, Legal.'
+    sql: assigned_team
+  customer_notification_sent:
+    description: 'BOOLEAN. Indicates if affected customer has been notified. Possible values: True, False.'
+    sql: customer_notification_sent
+  escalation_ref:
+    description: TEXT. Reference to the alert escalation history record.
+    sql: escalation_ref
+  evidence_items_collected:
+    description: 'INTEGER. Number of evidence items collected during investigation. Example: 6.'
+    sql: evidence_items_collected
+  external_parties_contacted:
+    description: 'INTEGER. Number of external parties contacted during workflow. Example: 1.'
+    sql: external_parties_contacted
+  investigation_steps_completed:
+    description: 'INTEGER. Number of investigation steps completed in workflow. Example: 5.'
+    sql: investigation_steps_completed
+  investigation_steps_total:
+    description: 'INTEGER. Total number of investigation steps required. Example: 8.'
+    sql: investigation_steps_total
+  primary_analyst_handle:
+    description: TEXT. Username of the primary analyst assigned. **NULL means Analyst not yet assigned to workflow.**
+    sql: primary_analyst_handle
+  priority_level:
+    description: 'TEXT. Priority classification for the workflow. Unique values: Critical, High, Medium, Low.'
+    sql: priority_level
+  regulatory_reporting_required:
+    description: 'BOOLEAN. Indicates if incident requires regulatory reporting. Possible values: True, False.'
+    sql: regulatory_reporting_required
+  requires_legal_review:
+    description: 'BOOLEAN. Indicates if workflow requires legal team review. Possible values: True, False.'
+    sql: requires_legal_review
+  resolution_category:
+    description: 'TEXT. Category classification of the workflow resolution. **NULL means Workflow not yet resolved.** Unique values: Confirmed Fraud, False Positive, Inconclusive, Policy Violation, Technical Error, Duplicate Alert.'
+    sql: resolution_category
+  sla_breach_risk:
+    description: 'BOOLEAN. Indicates if workflow is at risk of breaching SLA. Possible values: True, False.'
+    sql: sla_breach_risk
+  sla_target_hours:
+    description: 'INTEGER. Target hours for workflow completion based on SLA. Unique values: 2, 4, 8, 24, 48, 72.'
+    sql: sla_target_hours
+  time_to_first_response_mins:
+    description: 'INTEGER. Minutes from alert creation to first analyst response. **NULL means No response recorded yet.** Example: 45.'
+    sql: time_to_first_response_mins
+  total_handling_time_mins:
+    description: 'INTEGER. Total minutes spent actively handling the workflow. **NULL means Workflow still in progress.** Example: 120.'
+    sql: total_handling_time_mins
+  workflow_completed_timestamp:
+    description: 'TIMESTAMP. Timestamp when the workflow was fully completed. **NULL means Workflow still in progress or abandoned.** Example: 2024-01-01 12:00:00.'
+    sql: workflow_completed_timestamp
+  workflow_initiated_timestamp:
+    description: 'TIMESTAMP. Timestamp when the response workflow was initiated. Example: 2024-01-01 12:00:00.'
+    sql: workflow_initiated_timestamp
+  workflow_status:
+    description: 'TEXT. Current status of the alert response workflow. Unique values: Pending, In Progress, Completed, On Hold, Cancelled, Failed.'
+    sql: workflow_status

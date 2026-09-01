@@ -1,0 +1,372 @@
+- join_from_view: solar_panel_large_public__session_attendance
+  join_to_view: solar_panel_large_public__technicians
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__session_attendance.attendee_num} = ${solar_panel_large_public__technicians.tech_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__cleaning_robot_telemetry
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__cleaning_robot_telemetry.site_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__plant_panel_model
+  join_to_view: solar_panel_large_public__panel_models
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__plant_panel_model.modlink} = ${solar_panel_large_public__panel_models.modkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__financial_ledger
+  join_to_view: solar_panel_large_public__clients
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__financial_ledger.linked_client} = ${solar_panel_large_public__clients.client_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__work_orders
+  join_to_view: solar_panel_large_public__technicians
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__work_orders.creator} = ${solar_panel_large_public__technicians.tech_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__weather_stations
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__weather_stations.plant_site_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__claim_appeal_documents
+  join_to_view: solar_panel_large_public__warranty_claim_filings
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__claim_appeal_documents.claim_ref} = ${solar_panel_large_public__warranty_claim_filings.claim_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__environmental_conditions
+  join_to_view: solar_panel_large_public__plant_record
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__environmental_conditions.snapref} = ${solar_panel_large_public__plant_record.snapkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__financial_ledger
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__financial_ledger.linked_site} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__ticket_resolution_steps
+  join_to_view: solar_panel_large_public__client_support_tickets
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__ticket_resolution_steps.ticket_ref} = ${solar_panel_large_public__client_support_tickets.ticket_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__warranty_claim_filings
+  join_to_view: solar_panel_large_public__work_orders
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__warranty_claim_filings.work_order_ref} = ${solar_panel_large_public__work_orders.order_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__drone_flight_logs
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__drone_flight_logs.site_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__energy_generation_forecasts
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__energy_generation_forecasts.plant_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__work_orders
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__work_orders.plant_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__electrical_performance
+  join_to_view: solar_panel_large_public__plant_record
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__electrical_performance.snaplink} = ${solar_panel_large_public__plant_record.snapkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__maintenance_procedures
+  join_to_view: solar_panel_large_public__technicians
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__maintenance_procedures.approver_ref} = ${solar_panel_large_public__technicians.tech_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__mechanical_condition
+  join_to_view: solar_panel_large_public__plant_record
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__mechanical_condition.snapmk} = ${solar_panel_large_public__plant_record.snapkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__battery_storage_units
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__battery_storage_units.site_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__safety_incident_reports
+  join_to_view: solar_panel_large_public__technicians
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__safety_incident_reports.reporter_ref} = ${solar_panel_large_public__technicians.tech_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__spare_parts
+  join_to_view: solar_panel_large_public__asset_manufacturers
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__spare_parts.manufacturer_code} = ${solar_panel_large_public__asset_manufacturers.mfr_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__drone_inspection_findings
+  join_to_view: solar_panel_large_public__drone_flight_logs
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__drone_inspection_findings.flight_log_ref} = ${solar_panel_large_public__drone_flight_logs.flight_log_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__shipment_tracking_updates
+  join_to_view: solar_panel_large_public__supply_chain_shipments
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__shipment_tracking_updates.shipment_ref} = ${solar_panel_large_public__supply_chain_shipments.shipment_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__supply_chain_shipments
+  join_to_view: solar_panel_large_public__asset_manufacturers
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__supply_chain_shipments.manufacturer_ref} = ${solar_panel_large_public__asset_manufacturers.mfr_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__grid_interconnection_events
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__grid_interconnection_events.site_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__financial_ledger
+  join_to_view: solar_panel_large_public__work_orders
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__financial_ledger.linked_order} = ${solar_panel_large_public__work_orders.order_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__battery_thermal_events
+  join_to_view: solar_panel_large_public__battery_storage_units
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__battery_thermal_events.storage_unit_ref} = ${solar_panel_large_public__battery_storage_units.storage_unit_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__weather_stations
+  join_to_view: solar_panel_large_public__asset_manufacturers
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__weather_stations.maker_code} = ${solar_panel_large_public__asset_manufacturers.mfr_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__plant_panel_model
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__plant_panel_model.sitelink} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__work_order_parts_usage
+  join_to_view: solar_panel_large_public__work_orders
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__work_order_parts_usage.work_order_ref} = ${solar_panel_large_public__work_orders.order_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__environmental_reports
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__environmental_reports.facility_tag} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__safety_corrective_actions
+  join_to_view: solar_panel_large_public__safety_incident_reports
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__safety_corrective_actions.incident_ref} = ${solar_panel_large_public__safety_incident_reports.incident_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__client_support_tickets
+  join_to_view: solar_panel_large_public__clients
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__client_support_tickets.client_ref} = ${solar_panel_large_public__clients.client_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__technician_certifications
+  join_to_view: solar_panel_large_public__technicians
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__technician_certifications.technician_ref} = ${solar_panel_large_public__technicians.tech_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__forecast_accuracy_metrics
+  join_to_view: solar_panel_large_public__energy_generation_forecasts
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__forecast_accuracy_metrics.forecast_ref} = ${solar_panel_large_public__energy_generation_forecasts.forecast_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__plants
+  join_to_view: solar_panel_large_public__panel_models
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__plants.modhook} = ${solar_panel_large_public__panel_models.modkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__vegetation_management_logs
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__vegetation_management_logs.site_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__financial_ledger
+  join_to_view: solar_panel_large_public__asset_manufacturers
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__financial_ledger.linked_mfr} = ${solar_panel_large_public__asset_manufacturers.mfr_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__inverters
+  join_to_view: solar_panel_large_public__inverter_models
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__inverters.model_identifier} = ${solar_panel_large_public__inverter_models.inverter_model_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__ppa_contracts
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__ppa_contracts.site_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__work_orders
+  join_to_view: solar_panel_large_public__alert
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__work_orders.triggering_alert} = ${solar_panel_large_public__alert.snapalrt}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__grid_event_settlements
+  join_to_view: solar_panel_large_public__grid_interconnection_events
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__grid_event_settlements.event_ref} = ${solar_panel_large_public__grid_interconnection_events.event_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__site_inventory
+  join_to_view: solar_panel_large_public__spare_parts
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__site_inventory.stock_item_sku} = ${solar_panel_large_public__spare_parts.part_sku}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__vegetation_task_materials
+  join_to_view: solar_panel_large_public__vegetation_management_logs
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__vegetation_task_materials.veg_log_ref} = ${solar_panel_large_public__vegetation_management_logs.veg_log_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__inverters
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__inverters.site_location} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__work_order_updates
+  join_to_view: solar_panel_large_public__work_orders
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__work_order_updates.reference_order} = ${solar_panel_large_public__work_orders.order_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__technician_certifications
+  join_to_view: solar_panel_large_public__certifications
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__technician_certifications.certification_ref} = ${solar_panel_large_public__certifications.cert_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__inverter_models
+  join_to_view: solar_panel_large_public__asset_manufacturers
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__inverter_models.vendor_code} = ${solar_panel_large_public__asset_manufacturers.mfr_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__ppa_contracts
+  join_to_view: solar_panel_large_public__clients
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__ppa_contracts.customer_code} = ${solar_panel_large_public__clients.client_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__alert
+  join_to_view: solar_panel_large_public__plant_record
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__alert.snapalrt} = ${solar_panel_large_public__plant_record.snapkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__operational_metrics
+  join_to_view: solar_panel_large_public__plant_record
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__operational_metrics.snapops} = ${solar_panel_large_public__plant_record.snapkey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__robot_path_obstacles
+  join_to_view: solar_panel_large_public__cleaning_robot_telemetry
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__robot_path_obstacles.telemetry_ref} = ${solar_panel_large_public__cleaning_robot_telemetry.telemetry_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__work_order_procedures
+  join_to_view: solar_panel_large_public__maintenance_procedures
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__work_order_procedures.procedure_link} = ${solar_panel_large_public__maintenance_procedures.procedure_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__plant_record
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__plant_record.sitetie} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__work_order_procedures
+  join_to_view: solar_panel_large_public__work_orders
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__work_order_procedures.work_order_link} = ${solar_panel_large_public__work_orders.order_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__financial_ledger
+  join_to_view: solar_panel_large_public__ppa_contracts
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__financial_ledger.linked_contract} = ${solar_panel_large_public__ppa_contracts.contract_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__training_sessions
+  join_to_view: solar_panel_large_public__certifications
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__training_sessions.ties_to_cert} = ${solar_panel_large_public__certifications.cert_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__energy_tariffs
+  join_to_view: solar_panel_large_public__ppa_contracts
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__energy_tariffs.for_contract_num} = ${solar_panel_large_public__ppa_contracts.contract_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__site_inventory
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__site_inventory.location_tag} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__work_order_parts_usage
+  join_to_view: solar_panel_large_public__spare_parts
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__work_order_parts_usage.part_ref} = ${solar_panel_large_public__spare_parts.part_sku}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__session_attendance
+  join_to_view: solar_panel_large_public__training_sessions
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__session_attendance.course_ref} = ${solar_panel_large_public__training_sessions.session_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__compliance_audits
+  join_to_view: solar_panel_large_public__plants
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__compliance_audits.plant_ref} = ${solar_panel_large_public__plants.sitekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: solar_panel_large_public__work_order_updates
+  join_to_view: solar_panel_large_public__technicians
+  join_type: always_left
+  on_sql: ${solar_panel_large_public__work_order_updates.author_ref} = ${solar_panel_large_public__technicians.tech_num}
+  relationship_type: many_to_one
+  reversible: false

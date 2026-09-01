@@ -1,0 +1,60 @@
+label: environmental_alert_history
+description: All columns of the public table environmental_alert_history.
+catalog: reverse_logistics_large
+schema: public
+table_name: environmental_alert_history
+dimensions:
+  acknowledged_by_user:
+    description: TEXT. User who acknowledged the alert. **NULL means Unacknowledged.**
+    sql: acknowledged_by_user
+  acknowledgment_time:
+    description: 'TIMESTAMP. Time of acknowledgment. **NULL means Unacknowledged.** Example: 2024-01-01 12:00:00.'
+    sql: acknowledgment_time
+  affected_zone_area:
+    description: 'TEXT. Warehouse area affected. Unique values: Cold Storage, Main Floor, Server Room.'
+    sql: affected_zone_area
+  alert_event_id:
+    description: TEXT. Unique identifier for the environmental alert.
+    sql: alert_event_id
+  alert_rule_version:
+    description: 'TEXT. Version of the rule engine config. Unique values: v1.0, v1.1.'
+    sql: alert_rule_version
+  alert_type_code:
+    description: 'TEXT. Type of alert (e.g., Temp High, Humidity Low). Unique values: High Temp, Low Temp, High Humidity, CO2 Warning, Offline.'
+    sql: alert_type_code
+  duration_minutes:
+    description: 'INTEGER. How long the condition persisted. Example: 50.'
+    sql: duration_minutes
+  escalation_level_reached:
+    description: 'INTEGER. Did this escalate to management? (0-3). Example: 50.'
+    sql: escalation_level_reached
+  false_positive_flag:
+    description: BOOLEAN. Marked as false positive after investigation.
+    sql: false_positive_flag
+  inventory_risk_score:
+    description: 'INTEGER. Calculated risk to inventory (1-10). Example: 50.'
+    sql: inventory_risk_score
+  notification_sent_timestamp:
+    description: 'TIMESTAMP. When the alert notification was broadcast. Example: 2024-01-01 12:00:00.'
+    sql: notification_sent_timestamp
+  recurrence_count_24h:
+    description: 'INTEGER. Number of times this alert fired in last 24h. Example: 50.'
+    sql: recurrence_count_24h
+  resolution_action_taken:
+    description: TEXT. Action taken to resolve (e.g., Turned on AC). **NULL means Pending or self-resolved.**
+    sql: resolution_action_taken
+  sensor_battery_level_at_alert:
+    description: 'REAL. Battery voltage at time of alert (contextual). Example: 3.6.'
+    sql: sensor_battery_level_at_alert
+  severity_classification:
+    description: 'TEXT. Criticality (Info, Warning, Critical). Unique values: Info, Warning, Critical.'
+    sql: severity_classification
+  threshold_violated_value:
+    description: 'REAL. The limit value that was crossed. Example: 30.0.'
+    sql: threshold_violated_value
+  ticket_created_ref:
+    description: TEXT. Reference to a maintenance ticket if created. **NULL means No ticket needed.**
+    sql: ticket_created_ref
+  triggering_log_ref:
+    description: TEXT. The specific sensor reading that triggered the alert.
+    sql: triggering_log_ref

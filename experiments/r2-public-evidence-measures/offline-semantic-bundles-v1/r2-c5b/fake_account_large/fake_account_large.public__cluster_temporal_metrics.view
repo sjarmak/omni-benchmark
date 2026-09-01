@@ -1,0 +1,114 @@
+label: cluster_temporal_metrics
+description: All columns of the public table cluster_temporal_metrics.
+catalog: fake_account_large
+schema: public
+table_name: cluster_temporal_metrics
+dimensions:
+  avg_deg:
+    description: 'REAL. Average degree per node. Example: 3.71.'
+    sql: '"AVG_DEG"'
+  bot_hit_pct:
+    description: 'REAL. % accounts flagged as bots. Example: 0.206.'
+    sql: '"BOT_HIT_PCT"'
+  clstr_pin_ref:
+    description: 'TEXT. Primary-key cluster pin (FK to cluster_analysis.CLSTR_PIN). Example: CL0029.'
+    sql: '"CLSTR_PIN_ref"'
+  cluster_rank:
+    description: 'REAL. Rank derived from clusterScore (0–100). Example: 25.9.'
+    sql: '"CLUSTER_RANK"'
+  coord_freq:
+    description: 'REAL. Coordination frequency (0–1). Example: 0.404.'
+    sql: '"COORD_FREQ"'
+  edge_cnt:
+    description: 'BIGINT. In-cluster edges observed. Example: 5 789.'
+    sql: '"EDGE_CNT"'
+  join_date_max:
+    description: 'DATE (pretty). Latest account join date. Example: Jul. 17th 2025.'
+    sql: '"JOIN_DATE_MAX"'
+  media_overlap_pct:
+    description: 'REAL. Media-asset overlap fraction (0–1). Example: 0.272.'
+    sql: '"MEDIA_OVERLAP_PCT"'
+  page_rank:
+    description: 'REAL. Mean PageRank (0–1). Example: 0.781.'
+    sql: '"PAGE_RANK"'
+  risk_avg:
+    description: 'REAL. Mean risk score of accounts (0–1). Example: 0.616.'
+    sql: '"RISK_AVG"'
+  sent_overlap_score:
+    description: 'REAL. Sentiment-pattern overlap (0–1). Example: 0.119.'
+    sql: '"SentOverlapScore"'
+  acct_cnt:
+    description: 'BIGINT. Accounts in cluster during window. Example: 1560.'
+    sql: '"acctCnt"'
+  burst_cnt:
+    description: 'BIGINT. Number of detected burst episodes. Example: 41.'
+    sql: '"burstCnt"'
+  burst_dur_mean:
+    description: 'REAL. Mean burst duration (s). Example: 2104.1.'
+    sql: '"burstDurMean"'
+  centrality:
+    description: 'REAL. Mean betweenness/degree centrality (0–1). Example: 0.095.'
+    sql: centrality
+  cluster_score:
+    description: 'REAL. Composite cluster risk/influence score. Example: 0.259.'
+    sql: '"clusterScore"'
+  density:
+    description: 'REAL. Graph density (0–1). Example: 0.0201.'
+    sql: density
+  dev_spread:
+    description: 'REAL. Device-fingerprint diversity (0–1). Example: 0.877.'
+    sql: '"devSpread"'
+  hash_overlap_pct:
+    description: 'REAL. Hashtag overlap fraction (0–1). Example: 0.831.'
+    sql: '"hashOverlap_pct"'
+  influence_rt:
+    description: 'REAL. Influence share of cluster (0–1). Example: 0.173.'
+    sql: '"influenceRt"'
+  ip_spread:
+    description: 'REAL. Unique IP spread (0–1). Example: 0.460.'
+    sql: '"ipSpread"'
+  join_date_min:
+    description: 'DATE (pretty). Earliest account join date. Example: Jun. 2nd 2016.'
+    sql: '"joinDateMin"'
+  lang_overlap_score:
+    description: 'REAL. Language-distribution overlap (0–1). **NULL when language mix below threshold.** Example: 0.637.'
+    sql: '"langOverlapScore"'
+  loc_spread:
+    description: 'REAL. Geographic spread index (0–1). Example: 0.637.'
+    sql: '"locSpread"'
+  modularity:
+    description: 'REAL. Community modularity score (0–1). Example: 0.015.'
+    sql: modularity
+  obs_window:
+    description: 'TEXT. Observation window (pretty date range). Example: Jul. 23rd 2025 – Jul. 14th 2025.'
+    sql: '"obsWindow"'
+  peak_align:
+    description: 'REAL. Alignment of traffic peaks (0–1). **NULL when no clear peaks.** Example in CSV: NULL.'
+    sql: '"peakAlign"'
+  risk_max:
+    description: 'REAL. Maximum individual risk score. Example: 0.628.'
+    sql: '"riskMax"'
+  spam_hit_pct:
+    description: 'REAL. % posts flagged as spam. **NULL when zero spam hits.** Example in CSV: NULL.'
+    sql: '"spamHitPct"'
+  syn_likes:
+    description: 'BIGINT. Likes on synchronous posts. **NULL when no synced likes recorded.** Example: 10 114.'
+    sql: '"synLikes"'
+  syn_post_pct:
+    description: 'REAL. % synchronous posts (0–1). Example: 0.262.'
+    sql: '"synPostPct"'
+  sync_window_sec:
+    description: 'text. ± posting-skew window converted to seconds (numeric). Example: 16.'
+    sql: sync_window_sec
+  time_lag_mean:
+    description: 'REAL. Mean posting lag between accounts (s). Example: 213.17.'
+    sql: '"timeLagMean"'
+  timelag_sd:
+    description: 'REAL. Std-dev of posting lags (s). Example: 62.91.'
+    sql: '"timelagSD"'
+  topic_alignpct:
+    description: 'REAL. Topic-vector alignment %. Example: 0.718.'
+    sql: '"topicALIGNPCT"'
+  url_overlap_pct:
+    description: 'REAL. URL overlap fraction (0–1). **NULL when no URLs shared.** Example: 0.564.'
+    sql: '"urlOverlapPct"'

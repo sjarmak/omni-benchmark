@@ -1,0 +1,72 @@
+label: DistributionPlatformMetrics
+description: All columns of the public table DistributionPlatformMetrics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: DistributionPlatformMetrics
+dimensions:
+  distribution_platform_metrics_id:
+    description: TEXT. Unique identifier for platform metrics record.
+    sql: '"DistributionPlatformMetrics_id"'
+  advisor_count_active:
+    description: 'INTEGER. Number of active advisors on platform. Example: 50.'
+    sql: advisor_count_active
+  advisor_penetration_pct:
+    description: 'REAL. Percentage of platform advisors using fund. **NULL means Penetration data unavailable.** Example: 50.0.'
+    sql: advisor_penetration_pct
+  average_account_size_thousands:
+    description: 'REAL. Average account size in thousands USD. **NULL means Account size calculation pending.** Example: 50.0.'
+    sql: average_account_size_thousands
+  closed_account_count:
+    description: 'INTEGER. Number of accounts closed. Example: 50.'
+    sql: closed_account_count
+  competitive_rank:
+    description: 'INTEGER. Fund rank among competitors on platform. **NULL means Ranking not yet computed.** Example: 50.'
+    sql: competitive_rank
+  distribution_ref:
+    description: TEXT. Reference to the wholesale distribution record.
+    sql: distribution_ref
+  gross_sales_millions:
+    description: 'REAL. Gross sales through platform in millions USD. **NULL means Sales data pending reconciliation.** Example: 50.0.'
+    sql: gross_sales_millions
+  has_exclusivity_agreement:
+    description: 'BOOLEAN. Whether exclusivity agreement exists. Possible values: True, False.'
+    sql: has_exclusivity_agreement
+  is_preferred_partner:
+    description: 'BOOLEAN. Whether fund family is preferred partner. Possible values: True, False.'
+    sql: is_preferred_partner
+  metrics_date:
+    description: 'TIMESTAMP. Date of metrics collection. Example: 2024-01-01 12:00:00.'
+    sql: metrics_date
+  net_sales_millions:
+    description: 'REAL. Net sales through platform in millions USD. **NULL means Net calculation pending.** Example: 25.0.'
+    sql: net_sales_millions
+  new_account_count:
+    description: 'INTEGER. Number of new accounts opened. Example: 50.'
+    sql: new_account_count
+  platform_fee_rate_bps:
+    description: 'REAL. Platform fee rate in basis points. Example: 50.0.'
+    sql: platform_fee_rate_bps
+  platform_rating_score:
+    description: 'REAL. Platform assigned rating score out of 5. **NULL means Not yet rated by platform.** Example: 50.0.'
+    sql: platform_rating_score
+  platform_tier:
+    description: 'TEXT. Classification tier on distribution platform. Unique values: Premier, Standard, Basic, Restricted.'
+    sql: platform_tier
+  redemptions_millions:
+    description: 'REAL. Redemptions through platform in millions USD. **NULL means Redemption data pending.** Example: 50.0.'
+    sql: redemptions_millions
+  relationship_status:
+    description: 'TEXT. Status of platform relationship. Unique values: Active, Probationary, Under Review, Suspended.'
+    sql: relationship_status
+  revenue_share_amount_thousands:
+    description: 'REAL. Revenue sharing payment in thousands USD. **NULL means Revenue share not applicable.** Example: 50.0.'
+    sql: revenue_share_amount_thousands
+  search_visibility_rank:
+    description: 'INTEGER. Fund visibility rank in platform search. **NULL means Search ranking not tracked.** Example: 50.'
+    sql: search_visibility_rank
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DistributionPlatformMetrics public identity values.
+    label: DistributionPlatformMetrics Count
+    sql: ${exchange_traded_funds_large_public__distribution_platform_metrics.distribution_platform_metrics_id}

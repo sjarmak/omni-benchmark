@@ -1,0 +1,60 @@
+label: DPIAAssessmentCriteria
+description: All columns of the public table DPIAAssessmentCriteria.
+catalog: cross_border_large
+schema: public
+table_name: DPIAAssessmentCriteria
+dimensions:
+  assessment_result:
+    description: 'TEXT. Assessment result Possible values: Compliant, Partially Compliant, Non-Compliant, Not Applicable.'
+    sql: '"ASSESSMENT_RESULT"'
+  criteria_category:
+    description: 'TEXT. Category of assessment criteria Possible values: Necessity, Proportionality, Data Minimization, Purpose Limitation, Storage Limitation, Security, Transparency, Rights Facilitation.'
+    sql: '"CRITERIA_CATEGORY"'
+  criteria_id:
+    description: BIGINT. Primary key. Unique assessment criteria identifier
+    sql: '"CRITERIA_ID"'
+  evidence_ref:
+    description: TEXT. Reference to supporting evidence **NULL means Evidence not yet collected.**
+    sql: '"EVIDENCE_REF"'
+  mitigation_proposed:
+    description: 'TEXT. Proposed mitigation measure Possible values: Encryption, Access Controls, Anonymization, Pseudonymization, Data Minimization, Audit Logging, Consent Management, Training.'
+    sql: '"MITIGATION_PROPOSED"'
+  requires_followup:
+    description: BOOLEAN. Whether follow-up action is needed Boolean flag (true/false).
+    sql: '"REQUIRES_FOLLOWUP"'
+  residual_risk_pct:
+    description: 'REAL. Residual risk after mitigation (%) Typical range: 0 to 100.'
+    sql: '"RESIDUAL_RISK_PCT"'
+  risk_likelihood:
+    description: 'TEXT. Likelihood of the risk materializing Possible values: Very Unlikely, Unlikely, Possible, Likely, Very Likely.'
+    sql: '"RISK_LIKELIHOOD"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  assessment_date:
+    description: DATE. Date of assessment
+    sql: assessment_date
+  assessor:
+    description: 'TEXT. Person who assessed this criterion Possible values: Privacy Analyst, DPO, Security Architect, Legal Counsel.'
+    sql: assessor
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  criteria_name:
+    description: 'TEXT. Name of the specific criterion Possible values: Lawfulness, Fairness, Purpose Specification, Data Quality, Accountability, Security Measures, Rights Access, Retention Policy.'
+    sql: criteria_name
+  dpia_ref:
+    description: BIGINT. Foreign key referencing DPIARecord(DPIA_ID). Related DPIA record
+    sql: dpia_ref
+  mitigation_status:
+    description: 'TEXT. Status of the mitigation Possible values: Proposed, Implementing, Implemented, Verified.'
+    sql: mitigation_status
+  notes:
+    description: TEXT. Additional assessment notes **NULL means No additional notes.**
+    sql: notes
+  risk_impact:
+    description: 'TEXT. Potential impact if risk materializes Possible values: Negligible, Minor, Moderate, Significant, Severe.'
+    sql: '"risk_Impact"'
+  risk_score:
+    description: 'REAL. Risk score for this criterion (0-10) Typical range: 0 to 10.'
+    sql: risk_score

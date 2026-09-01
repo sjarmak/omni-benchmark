@@ -1,0 +1,72 @@
+label: WarrantyClaimFilings
+description: All columns of the public table WarrantyClaimFilings.
+catalog: solar_panel_large
+schema: public
+table_name: WarrantyClaimFilings
+dimensions:
+  appeal_filed:
+    description: 'BOOLEAN. True if we contested the denial. Possible values: True, False.'
+    sql: appeal_filed
+  approved_amount_usd:
+    description: 'REAL. Amount manufacturer agreed to pay. **NULL means Pending or Denied.** Example: 1800.'
+    sql: approved_amount_usd
+  banking_ref_id:
+    description: TEXT. Transaction ID of the wire transfer. **NULL means Part replacement or pending.**
+    sql: banking_ref_id
+  claim_id:
+    description: TEXT. Unique identifier for the warranty claim.
+    sql: claim_id
+  claim_status:
+    description: 'TEXT. Current processing state. Unique values: Submitted, Under Review, Approved, Denied, Appealed, Paid.'
+    sql: claim_status
+  claim_type:
+    description: 'TEXT. Nature of claim. Unique values: Material Defect, Performance Guarantee, Labor Reimbursement.'
+    sql: claim_type
+  defect_description:
+    description: TEXT. Technical description of the failure.
+    sql: defect_description
+  defective_part_serial:
+    description: TEXT. Serial number of the failed component.
+    sql: defective_part_serial
+  denial_reason:
+    description: 'TEXT. Reason given if claim rejected. **NULL means Approved or Pending.** Unique values: Expired Warranty, Improper Installation, Act of God.'
+    sql: denial_reason
+  evidence_log_url:
+    description: TEXT. Link to downloaded device logs.
+    sql: evidence_log_url
+  evidence_photo_url:
+    description: TEXT. Link to photos of damage.
+    sql: evidence_photo_url
+  filing_date:
+    description: TIMESTAMP. Date the claim was submitted to the manufacturer.
+    sql: filing_date
+  internal_negotiator:
+    description: TEXT. Staff member handling the claim.
+    sql: internal_negotiator
+  manufacturer_ref:
+    description: 'TEXT. FK to asset_manufacturers.MfrCode. Unique values: MFR-01, MFR-02.'
+    sql: manufacturer_ref
+  manufacturer_response_days:
+    description: 'INTEGER. Time taken for Mfr to respond. **NULL means No response yet.** Example: 15.'
+    sql: manufacturer_response_days
+  replacement_part_sku:
+    description: TEXT. SKU of part sent as replacement. **NULL means Cash settlement.**
+    sql: replacement_part_sku
+  requested_amount_usd:
+    description: 'REAL. Total value claimed. Example: 2000.'
+    sql: requested_amount_usd
+  rma_tracking_number:
+    description: TEXT. Return Merchandise Authorization code. **NULL means Field scrap authorized.**
+    sql: rma_tracking_number
+  settlement_date:
+    description: TIMESTAMP. Date claim was finalized. **NULL means Open.**
+    sql: settlement_date
+  work_order_ref:
+    description: TEXT. The maintenance work order that identified the defect.
+    sql: work_order_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct WarrantyClaimFilings public identity values.
+    label: WarrantyClaimFilings Count
+    sql: ${solar_panel_large_public__warranty_claim_filings.claim_id}

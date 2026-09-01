@@ -1,0 +1,66 @@
+label: CleaningRobotTelemetry
+description: All columns of the public table CleaningRobotTelemetry.
+catalog: solar_panel_large
+schema: public
+table_name: CleaningRobotTelemetry
+dimensions:
+  battery_voltage_v:
+    description: 'REAL. Robot battery voltage. Example: 24.'
+    sql: battery_voltage_v
+  brush_rpm:
+    description: 'INTEGER. Rotation speed of cleaning brushes. **NULL means Robot idle.** Example: 120.'
+    sql: brush_rpm
+  cleaning_mode:
+    description: 'TEXT. Operational mode. Unique values: Auto, Spot Clean, Return to Dock, Manual.'
+    sql: cleaning_mode
+  distance_traveled_m:
+    description: 'REAL. Distance covered in this session. Example: 500.'
+    sql: distance_traveled_m
+  docking_status:
+    description: 'TEXT. Charging dock state. Unique values: Docked, Undocked, Docking Failed.'
+    sql: docking_status
+  error_code:
+    description: 'TEXT. Diagnostic error code. Unique values: E01, E05, None.'
+    sql: error_code
+  gps_latitude:
+    description: 'REAL. Current Lat. Example: 34.0.'
+    sql: gps_latitude
+  gps_longitude:
+    description: 'REAL. Current Lon. Example: -118.0.'
+    sql: gps_longitude
+  internal_temp_c:
+    description: 'REAL. Robot CPU/Battery temperature. Example: 35.'
+    sql: internal_temp_c
+  motor_current_amps:
+    description: 'REAL. Drive motor current draw. Example: 2.5.'
+    sql: motor_current_amps
+  obstacle_detected:
+    description: 'BOOLEAN. True if sensors see a blockage. Possible values: True, False.'
+    sql: obstacle_detected
+  panels_cleaned_count:
+    description: 'INTEGER. Estimated number of modules cleaned this run. Example: 200.'
+    sql: panels_cleaned_count
+  robot_serial_num:
+    description: TEXT. Unique HW ID of the cleaning robot.
+    sql: robot_serial_num
+  site_ref:
+    description: TEXT. Plant where the robot operates.
+    sql: site_ref
+  telemetry_id:
+    description: TEXT. Unique ID for the data packet.
+    sql: telemetry_id
+  timestamp:
+    description: 'TIMESTAMP. Time of data logging. Example: 2024-01-01 12:00:00.'
+    sql: timestamp
+  travel_speed_cm_sec:
+    description: 'REAL. Movement speed. Example: 15.'
+    sql: travel_speed_cm_sec
+  water_tank_level_pct:
+    description: 'INTEGER. Percentage of cleaning fluid remaining. **NULL means Dry cleaning model (no water).** Example: 50.'
+    sql: water_tank_level_pct
+  water_usage_liters:
+    description: 'REAL. Volume of water dispensed. **NULL means Dry clean model.** Example: 5.'
+    sql: water_usage_liters
+  wifi_signal_dbm:
+    description: 'INTEGER. Connection strength to base station. **NULL means Offline.** Example: -65.'
+    sql: wifi_signal_dbm

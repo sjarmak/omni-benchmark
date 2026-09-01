@@ -1,0 +1,66 @@
+label: DecisionAuditAppeal
+description: All columns of the public table DecisionAuditAppeal.
+catalog: labor_certification_applications_large
+schema: public
+table_name: DecisionAuditAppeal
+dimensions:
+  daa_code:
+    description: 'TEXT. Unique identifier for decision audit appeal record. Example: DAA-1A2B3C.'
+    sql: '"DAA_code"'
+  appeal_filed_date:
+    description: 'TIMESTAMP. Date when the appeal was formally filed. Example: 2024-01-01 12:00:00.'
+    sql: '"appealFiledDate"'
+  appeal_grounds:
+    description: 'TEXT. Primary legal grounds cited for the appeal. Unique values: Procedural Error, New Evidence, Misapplication of Law, Due Process Violation, Factual Error, Policy Change.'
+    sql: '"appealGrounds"'
+  appeal_outcome:
+    description: 'TEXT. Final outcome of the appeal. **NULL means Appeal still pending.** Unique values: Sustained, Dismissed, Remanded, Partially Sustained, Withdrawn.'
+    sql: '"appealOutcome"'
+  appeal_status:
+    description: 'TEXT. Current status of the appeal process. Unique values: Pending, Under Review, Hearing Scheduled, Decided, Withdrawn, Dismissed.'
+    sql: '"appealStatus"'
+  appeal_type:
+    description: 'TEXT. Type of appeal being filed against the audit decision. Unique values: Administrative Review, Motion to Reopen, Motion to Reconsider, AAO Appeal, Federal Court.'
+    sql: '"appealType"'
+  attorney_fees_usd:
+    description: 'REAL. Legal fees incurred for appeal representation in USD. Example: 8500.'
+    sql: '"attorneyFees_USD"'
+  audit_ref:
+    description: TEXT. Foreign key reference to CaseDecisionAudit table.
+    sql: audit_ref
+  brief_page_count:
+    description: 'INTEGER. Number of pages in the appeal brief submitted. Example: 25.'
+    sql: '"briefPageCount"'
+  days_to_decision:
+    description: 'INTEGER. Number of days from filing to final appeal decision. **NULL means Appeal still pending.** Example: 180.'
+    sql: '"daysToDecision"'
+  exhibits_submitted_ct:
+    description: 'INTEGER. Count of exhibits submitted with the appeal. Example: 8.'
+    sql: '"exhibitsSubmitted_ct"'
+  fee_waiver_granted_flag:
+    description: 'BOOLEAN. Indicates if filing fee waiver was granted. Possible values: True, False.'
+    sql: '"feeWaiverGranted_flag"'
+  filing_fee_usd:
+    description: 'REAL. Filing fee paid for the appeal in USD. Unique values: 675, 710, 930, 1500, 2250.'
+    sql: '"filingFee_USD"'
+  hearing_date:
+    description: 'TIMESTAMP. Scheduled date for appeal hearing if applicable. **NULL means No hearing scheduled or not applicable.** Example: 2024-01-01 12:00:00.'
+    sql: '"hearingDate"'
+  last_updated_timestamp:
+    description: 'TIMESTAMP. Timestamp of most recent update to appeal record. Example: 2024-01-01 12:00:00.'
+    sql: '"lastUpdatedTimestamp"'
+  oral_argument_granted_flag:
+    description: 'BOOLEAN. Indicates if oral argument request was granted. Possible values: True, False.'
+    sql: '"oralArgumentGranted_flag"'
+  oral_argument_requested_flag:
+    description: 'BOOLEAN. Indicates if oral argument was requested. Possible values: True, False.'
+    sql: '"oralArgumentRequested_flag"'
+  precedential_decision_flag:
+    description: 'BOOLEAN. Indicates if decision was designated as precedential. Possible values: True, False.'
+    sql: '"precedentialDecision_flag"'
+  remand_instructions_flag:
+    description: 'BOOLEAN. Indicates if specific remand instructions were issued. Possible values: True, False.'
+    sql: '"remandInstructions_flag"'
+  success_probability_score:
+    description: 'REAL. Predicted probability of appeal success from 0-100. Example: 35.'
+    sql: '"successProbabilityScore"'

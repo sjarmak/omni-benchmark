@@ -1,0 +1,17 @@
+base_view: reverse_logistics_large_public__returns
+label: Returns
+description: Return-case rows with public channel, timing, shipping, warranty, and fraud semantics.
+fields:
+- reverse_logistics_large_public__returns.*
+- reverse_logistics_large_public__orders.*
+- reverse_logistics_large_public__products.*
+joins:
+  reverse_logistics_large_public__orders: {}
+  reverse_logistics_large_public__products: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Fraud Flag Severity Score (FFS): $$FFS = F_f \times w_{risk}$$ where $F_f$ is number of fraud flags and $w_{risk}$ is weight based on Fraud Risk Level.
+
+  - Return Channel Cost Index (RCCI): $$RCCI = \frac{S_f}{\overline{S_{channel}}}$$ where $S_f$ is Shipping Fee and $\overline{S_{channel}}$ is average Shipping Fee for the same Return Channel.'

@@ -1,0 +1,11 @@
+base_view: residential_data_large_public__resilient_infrastructure_health
+label: Resilient_Infrastructure_Health
+description: All columns of the public table Resilient_Infrastructure_Health.
+fields:
+- residential_data_large_public__resilient_infrastructure_health.*
+- residential_data_large_public__infrastructure.*
+- residential_data_large_public__infrastructure_details.*
+joins:
+  residential_data_large_public__infrastructure_details:
+    residential_data_large_public__infrastructure: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

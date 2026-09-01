@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__attorney
+label: attorney
+description: All columns of the public table attorney.
+fields:
+- labor_certification_applications_large_public__attorney.*
+joins: {}
+ai_context: This topic models no cross-table joins.

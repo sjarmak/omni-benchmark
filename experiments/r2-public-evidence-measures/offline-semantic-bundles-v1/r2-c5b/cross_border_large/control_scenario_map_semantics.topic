@@ -1,0 +1,9 @@
+base_view: cross_border_large_public__control_scenario_map
+label: Control_Scenario_Map
+description: All columns of the public table Control_Scenario_Map.
+fields:
+- cross_border_large_public__control_scenario_map.*
+- cross_border_large_public__risk_scenario.*
+joins:
+  cross_border_large_public__risk_scenario: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

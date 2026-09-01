@@ -1,0 +1,24 @@
+label: driver_biometric_metrics
+description: All columns of the public table driver_biometric_metrics.
+catalog: sports_events_large
+schema: public
+table_name: driver_biometric_metrics
+dimensions:
+  bio_no:
+    description: BIGSERIAL. Surrogate primary key for driver_biometric_metrics rows. PK.
+    sql: '"Bio_No"'
+  drv_ref:
+    description: 'INTEGER. Foreign key referencing drivers.drv_main. FK → drivers(drv_main). Example: 2.'
+    sql: '"DRV_REF"'
+  endur_score:
+    description: 'REAL. Endurance score (20–100). Example: 80.5.'
+    sql: '"EndurScore"'
+  flex_score:
+    description: 'REAL. Flexibility score (20–100). Example: 75.0.'
+    sql: '"FlexScore"'
+  sprint_score:
+    description: 'REAL. Sprint performance score (20–100). Example: 70.2.'
+    sql: '"SprintScore"'
+  driver_brand_presence_kit:
+    description: 'TODO: 请为 driver_brand_presence_kit 添加描述。'
+    sql: driver_brand_presence_kit

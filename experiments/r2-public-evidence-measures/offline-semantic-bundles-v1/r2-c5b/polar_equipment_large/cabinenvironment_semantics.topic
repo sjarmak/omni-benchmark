@@ -1,0 +1,23 @@
+base_view: polar_equipment_large_public__cabinenvironment
+label: Cabin Environment
+description: Cabin environment records with habitability semantics and CO2 field context.
+fields:
+- polar_equipment_large_public__cabinenvironment.*
+- polar_equipment_large_public__communication.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__location.*
+- polar_equipment_large_public__operationmaintenance.*
+joins:
+  polar_equipment_large_public__communication:
+    polar_equipment_large_public__operationmaintenance: {}
+  polar_equipment_large_public__equipment:
+    polar_equipment_large_public__equipmenttype: {}
+  polar_equipment_large_public__location: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields meets_cabin_habitability_standard rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Energy-Water Resource Integration Index (EWRII): EWRII = 0.5 \times ESI + 0.5 \times WRMI \times (1 - \frac{\text{heater temperature (°C)}}{100})'

@@ -1,0 +1,66 @@
+label: FanArtAuctionBidLogs
+description: All columns of the public table FanArtAuctionBidLogs.
+catalog: virtual_idol_large
+schema: public
+table_name: FanArtAuctionBidLogs
+dimensions:
+  auction_round:
+    description: 'INTEGER. Round number if multi-stage. Example: 50.'
+    sql: auction_round
+  auction_type:
+    description: 'TEXT. English, Dutch, Sealed. Unique values: English, Sealed Bid.'
+    sql: auction_type
+  auctioneer_comment:
+    description: TEXT. System notes. **NULL means data unavailable.**
+    sql: auctioneer_comment
+  bid_amount_usd:
+    description: 'REAL. Value of the bid. Example: 50.'
+    sql: bid_amount_usd
+  bid_id:
+    description: TEXT. Unique ID for the auction bid.
+    sql: bid_id
+  bid_increment_step:
+    description: 'REAL. Minimum step size met. Example: 50.0.'
+    sql: bid_increment_step
+  bid_timestamp:
+    description: 'TIMESTAMP. Exact time bid was received. Example: 2024-01-01 12:00:00.'
+    sql: bid_timestamp
+  bidder_fan_ref:
+    description: TEXT. Fan placing the bid.
+    sql: bidder_fan_ref
+  bidder_ip_address:
+    description: TEXT. IP for fraud check.
+    sql: bidder_ip_address
+  currency_type:
+    description: TEXT. Currency used.
+    sql: currency_type
+  device_fingerprint:
+    description: TEXT. Device hash.
+    sql: device_fingerprint
+  is_winning_bid:
+    description: 'BOOLEAN. True if this bid won. Possible values: True, False.'
+    sql: is_winning_bid
+  max_auto_bid:
+    description: 'REAL. User''s hidden max bid. **NULL means Manual bid only.** Example: 100.'
+    sql: max_auto_bid
+  outbid_notification_sent:
+    description: 'BOOLEAN. True if user was notified they lost. **NULL means Winning bid.** Possible values: True, False.'
+    sql: outbid_notification_sent
+  payment_pre_auth_status:
+    description: 'TEXT. Card hold status. Unique values: Success, Pending, Failed.'
+    sql: payment_pre_auth_status
+  proxy_bidder_id:
+    description: TEXT. ID if bid placed by bot/agent. **NULL means data unavailable.**
+    sql: proxy_bidder_id
+  retraction_flag:
+    description: 'BOOLEAN. True if bid was cancelled. Possible values: True, False.'
+    sql: retraction_flag
+  submission_item_ref:
+    description: TEXT. FK to fan_content_submission_details.SUBMISSION_ID (The item).
+    sql: submission_item_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct FanArtAuctionBidLogs public identity values.
+    label: FanArtAuctionBidLogs Count
+    sql: ${virtual_idol_large_public__fan_art_auction_bid_logs.bid_id}

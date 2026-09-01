@@ -1,0 +1,93 @@
+label: StakeholderEngagement
+description: All columns of the public table StakeholderEngagement.
+catalog: disaster_relief_large
+schema: public
+table_name: StakeholderEngagement
+dimensions:
+  created_at:
+    description: TIMESTAMP (yyyy/mm/dd HH:MM:SS). Record creation time.
+    sql: '"CREATED_AT"'
+  commitment_level:
+    description: 'TEXT. Stakeholder’s commitment to the operation: Low, Medium, High.'
+    sql: '"CommitmentLevel"'
+  communication_preference:
+    description: TEXT. Preferred channel (Email, Phone, WhatsApp, In-person).
+    sql: '"CommunicationPreference"'
+  contact_info:
+    description: TEXT. Phone number or email for direct contact.
+    sql: '"ContactInfo"'
+  coord_eval_ref:
+    description: VARCHAR(20). References CoordinationAndEvaluation(CoordEvalRegistry); links the engagement to its coordination/evaluation cycle.
+    sql: '"CoordEvalRef"'
+  engagement_date:
+    description: DATE (yyyy/mm/dd). Day the engagement took place.
+    sql: '"ENGAGEMENT_DATE"'
+  engagement_method:
+    description: TEXT. Mode of interaction (Meeting, Workshop, Phone Call, Email, Field Visit).
+    sql: '"ENGAGEMENT_METHOD"'
+  feedback_received:
+    description: TEXT. Summary sentiment from the stakeholder (Positive, Neutral, Negative). **Nullable** if no feedback captured.
+    sql: '"Feedback_Received"'
+  issues_raised:
+    description: TEXT. Specific concerns voiced (e.g., “Budget constraints”). May be “None”.
+    sql: '"ISSUES_RAISED"'
+  influence_level:
+    description: 'TEXT. Stakeholder’s influence over the operation: Low, Medium, High.'
+    sql: '"InfluenceLevel"'
+  last_updated:
+    description: TIMESTAMP. System-generated last-modified time stamp.
+    sql: '"LAST_UPDATED"'
+  next_engagement_date:
+    description: text. Planned date for the next meeting or check-in.
+    sql: '"NEXT_Engagement_DATE"'
+  notes:
+    description: TEXT. Additional observations or context. **Nullable** when blank.
+    sql: '"NOTES"'
+  partnership_potential:
+    description: BOOLEAN. TRUE if the stakeholder is a candidate for a formal partnership.
+    sql: '"PartnershipPotential"'
+  responsible_person:
+    description: TEXT. Internal staff member tasked with follow-up.
+    sql: '"RESPONSIBLE_Person"'
+  resolution_status:
+    description: 'TEXT. Status of issues: Resolved, Pending, In Progress, Escalated.'
+    sql: '"ResolutionStatus"'
+  stakeholder_name:
+    description: TEXT. Full name of the individual or organisation contact (e.g., “Aiko Tanaka”).
+    sql: '"STAKEHOLDER_NAME"'
+  stakeholder_region:
+    description: TEXT. Geographic area where the stakeholder operates (e.g., “North Zone”).
+    sql: '"STAKEHOLDER_REGION"'
+  satisfaction_score:
+    description: REAL. Stakeholder-satisfaction rating on a 1–5 scale.
+    sql: '"SatisfactionScore"'
+  stakeholder_type:
+    description: TEXT. Classification of the stakeholder (Government, Donor, NGO, Community Group, Private Sector).
+    sql: '"StakeholderType"'
+  topics_discussed:
+    description: TEXT. Comma-separated list of agenda items or themes addressed.
+    sql: '"TopicsDiscussed"'
+  updated_at:
+    description: TIMESTAMP. Last edit time.
+    sql: '"UpdatedAt"'
+  version_no:
+    description: INT. Record-schema version for internal migrations.
+    sql: '"VersionNO"'
+  engagement_duration_min:
+    description: REAL. Length of the engagement session in **minutes** (e.g., 50.0).
+    sql: '"engagementDuration_min"'
+  engagement_level:
+    description: 'TEXT. Depth of relationship at the time of engagement: Low, Medium, High, Strategic.'
+    sql: '"engagementLevel"'
+  follow_up_actions:
+    description: TEXT. Agreed next steps (e.g., “Share data”, “Schedule field visit”). **Nullable** when none recorded.
+    sql: '"followUpActions"'
+  follow_up_window_days:
+    description: TEXT. Planned follow-up period expressed as a **range of days** (e.g., “15–55”).
+    sql: '"followUpWindow_days"'
+  pledge_amount_human_k_usd:
+    description: INT. Monetary pledge made by the stakeholder in **thousands of U.S. dollars** (e.g., 990 = USD 990 000). **Nullable** if no pledge.
+    sql: '"pledgeAmountHuman_kUSD"'
+  stakeholder_id:
+    description: VARCHAR(20). Unique stakeholder-engagement record identifier. Primary Key.
+    sql: '"stakeholderID"'

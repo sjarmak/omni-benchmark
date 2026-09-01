@@ -1,0 +1,66 @@
+label: SafetyIncidentReports
+description: All columns of the public table SafetyIncidentReports.
+catalog: solar_panel_large
+schema: public
+table_name: SafetyIncidentReports
+dimensions:
+  closure_date:
+    description: TIMESTAMP. Date the report was finalized. **NULL means Still open.**
+    sql: closure_date
+  description_narrative:
+    description: TEXT. Detailed description of what happened.
+    sql: description_narrative
+  equipment_damaged_id:
+    description: TEXT. ID of any equipment broken (e.g., Inverter Serial). **NULL means No equipment damaged.**
+    sql: equipment_damaged_id
+  estimated_damage_cost_usd:
+    description: 'REAL. Financial cost of equipment damage. **NULL means No financial damage.** Example: 1000.'
+    sql: estimated_damage_cost_usd
+  immediate_action_taken:
+    description: TEXT. Steps taken immediately after the incident.
+    sql: immediate_action_taken
+  incident_date:
+    description: TIMESTAMP. Date the incident occurred.
+    sql: incident_date
+  incident_id:
+    description: TEXT. Unique identifier for the safety incident.
+    sql: incident_id
+  incident_time:
+    description: 'TIMESTAMP. Time the incident occurred. Example: 2024-01-01 12:00:00.'
+    sql: incident_time
+  incident_type:
+    description: 'TEXT. Nature of the incident. Unique values: Electrical Shock, Fall from Height, Heat Stress, Vehicle Collision, Wildlife Encounter, Tool Injury.'
+    sql: incident_type
+  investigation_status:
+    description: 'TEXT. Current state of the safety investigation. Unique values: Open, Under Review, Closed, CAPA Assigned.'
+    sql: investigation_status
+  involved_person_count:
+    description: 'INTEGER. Number of people directly involved. Example: 50.'
+    sql: involved_person_count
+  lost_time_hours:
+    description: 'REAL. Work hours lost due to the incident. Example: 4.'
+    sql: lost_time_hours
+  medical_attention_required:
+    description: 'BOOLEAN. Did the incident require professional medical aid?. Possible values: True, False.'
+    sql: medical_attention_required
+  osha_reportable:
+    description: 'BOOLEAN. Does this meet regulatory reporting thresholds?. Possible values: True, False.'
+    sql: osha_reportable
+  reporter_ref:
+    description: TEXT. Technician who reported the incident.
+    sql: reporter_ref
+  root_cause_category:
+    description: 'TEXT. Final determination of cause. **NULL means Investigation ongoing.** Unique values: Human Error, Equipment Failure, Procedure Deficiency, Unpreventable External Factor.'
+    sql: root_cause_category
+  severity_level:
+    description: 'TEXT. Classification of severity. Unique values: Near Miss, Minor First Aid, Lost Time Injury, Fatality, Property Damage Only.'
+    sql: severity_level
+  site_ref:
+    description: 'TEXT. FK Reference to plants.sitekey. Unique values: SP9227, SP6740, SP7738.'
+    sql: site_ref
+  weather_contribution_factor:
+    description: 'TEXT. Role weather played in the incident. Unique values: None, Rain/Slippery, High Heat, Wind Gusts.'
+    sql: weather_contribution_factor
+  witness_statement_url:
+    description: TEXT. Link to recorded witness statements. **NULL means No witnesses.**
+    sql: witness_statement_url

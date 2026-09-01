@@ -1,0 +1,11 @@
+base_view: residential_data_large_public__air_quality_health_correlation
+label: Air_Quality_Health_Correlation
+description: All columns of the public table Air_Quality_Health_Correlation.
+fields:
+- residential_data_large_public__air_quality_health_correlation.*
+- residential_data_large_public__environmental_data.*
+- residential_data_large_public__environmental_microclimate_sensors.*
+joins:
+  residential_data_large_public__environmental_microclimate_sensors:
+    residential_data_large_public__environmental_data: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

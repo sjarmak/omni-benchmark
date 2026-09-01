@@ -1,0 +1,172 @@
+label: Fund Risk Metrics
+description: Fund risk records with row-level alpha, benchmark tracking, and appraisal semantics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: risk_metrics
+dimensions:
+  alpha_5_year:
+    description: 'DECIMAL. Jensen''s alpha measuring fund''s risk-adjusted excess return over 5 years relative to its benchmark. Example: -2.35, 1.81, 28.12. Contains NULL when the fund does not have 5-year history or benchmark data is unavailable.'
+    label: 5-Year Alpha
+    sql: alpha5y
+  r_squared_3_year_pct:
+    description: 'DECIMAL. R-squared value over 3 years, expressed as percentage. Higher values indicate closer tracking to benchmark. Example: 45.06, 86.01, 88.01. Contains NULL when R-squared calculation data is incomplete.'
+    label: 3-Year R-Squared (%)
+    sql: rsquared3y
+  alpha_3_year:
+    description: 'DECIMAL. Jensen''s alpha measuring fund''s risk-adjusted excess return over 3 years relative to its benchmark. Example: 10.87, -2.35, 4.32. Contains NULL when alpha calculation data is incomplete.'
+    label: 3-Year Alpha
+    sql: alpha3y
+  volatility_3_year:
+    description: 'DECIMAL. Annualized standard deviation of returns over 3 years. Example: 12.01, 5.13, 25.59.'
+    label: 3-Year Volatility
+    sql: volatility3y
+  r_squared_3_year_decimal:
+    description: 3-year R-squared statistic (0-1) measuring how closely the fund's performance correlates with its benchmark. Contains  NULL when fund has less than 3 years of history or benchmark data is not available.
+    label: 3-Year R-Squared (0-1)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(risk3y, 'risk_measures_3y', 'R_Squared_3Y') AS DOUBLE PRECISION)
+  alpha10y:
+    description: 'DECIMAL. Jensen''s alpha measuring fund''s risk-adjusted excess return over 10 years relative to its benchmark. Positive values indicate outperformance. Example: -2.35, 1.81, 8.45. Contains NULL when the fund does not have 10-year history or benchmark comparison is not available.'
+    sql: alpha10y
+  avgreturn10y:
+    description: 'DECIMAL. Average annual return over 10 years, expressed as percentage points. Negative values indicate average losses. Example: 1.6, 0.43, -1.32. Contains NULL when the fund does not have 10-year operating history.'
+    sql: avgreturn10y
+  avgreturn3y:
+    description: 'DECIMAL. Average annual return over 3 years, expressed as percentage points. Example: 0.43, 1.6, -1.32.'
+    sql: avgreturn3y
+  avgreturn5y:
+    description: 'DECIMAL. Average annual return over 5 years, expressed as percentage points. Example: 1.6, 0.43, -1.44. Contains NULL when the fund does not have 5-year operating history.'
+    sql: avgreturn5y
+  beta10y:
+    description: 'DECIMAL. Beta coefficient measuring fund''s systematic risk/volatility relative to its benchmark over 10 years. Values >1 indicate higher volatility than benchmark. Example: 17.11, 0.43, 1.6. Contains NULL when the fund does not have 10-year history or benchmark comparison unavailable.'
+    sql: beta10y
+  beta3y:
+    description: 'DECIMAL. Beta coefficient measuring fund''s systematic risk relative to benchmark over 3 years. Example: -2.35, 0.43, 5.15. Contains NULL when beta calculation data is incomplete.'
+    sql: beta3y
+  beta5y:
+    description: 'DECIMAL. Beta coefficient measuring fund''s systematic risk relative to benchmark over 5 years. Example: -2.35, 3.18, 1.6. Contains NULL when the fund does not have 5-year history or benchmark data unavailable.'
+    sql: beta5y
+  investmentref:
+    description: Foreign key referencing funds.TickerSym, ensuring 1:1 relationship for risk analysis per fund.
+    sql: investmentref
+  risk10y:
+    description: JSONB column. Groups 10-year risk and performance metrics including alpha, beta, returns, volatility, and risk-adjusted ratios for long-term risk analysis.
+    sql: risk10y
+  risk3y:
+    description: JSONB column. Groups 3-year risk and performance metrics including alpha, beta, returns, volatility, and risk-adjusted ratios for short-term risk analysis.
+    sql: risk3y
+  risk5y:
+    description: JSONB column. Groups 5-year risk and performance metrics including alpha, beta, returns, volatility, and risk-adjusted ratios for medium-term risk analysis.
+    sql: risk5y
+  riskid:
+    description: A SERIAL primary key uniquely identifying each risk metrics record for funds.
+    sql: riskid
+  rsquared10y:
+    description: 'DECIMAL. R-squared value indicating how much of the fund''s movement is explained by benchmark movement over 10 years, expressed as percentage (0-100). Example: 14.03, 69.04, 93. Contains NULL when the fund does not have 10-year history.'
+    sql: rsquared10y
+  rsquared5y:
+    description: 'DECIMAL. R-squared value over 5 years, expressed as percentage. Example: 98.8, 89.5, 52.17. Contains NULL when the fund does not have 5-year history.'
+    sql: rsquared5y
+  sharperatio10y:
+    description: 'DECIMAL. Sharpe ratio measuring risk-adjusted return over 10 years (excess return per unit of volatility). Higher values indicate better risk-adjusted performance. Example: -1.55, 0.35, 0.89. Contains NULL when the fund does not have 10-year history.'
+    sql: sharperatio10y
+  sharperatio3y:
+    description: 'DECIMAL. Sharpe ratio over 3 years. Negative values indicate returns below risk-free rate. Example: 0.89, -1.09, 0.37. Contains NULL when Sharpe ratio calculation data is incomplete.'
+    sql: sharperatio3y
+  sharperatio5y:
+    description: 'DECIMAL. Sharpe ratio over 5 years. Example: 0.89, 1.43, -1.41. Contains NULL when the fund does not have 5-year history.'
+    sql: sharperatio5y
+  treynorratio10y:
+    description: 'DECIMAL. Treynor ratio measuring excess return per unit of systematic risk (beta) over 10 years. Example: 15.33, -11.05, 11.41. Contains NULL when the fund does not have 10-year history or beta is unavailable.'
+    sql: treynorratio10y
+  treynorratio3y:
+    description: 'DECIMAL. Treynor ratio over 3 years. Example: 24.59, 16.13, -13.96.'
+    sql: treynorratio3y
+  treynorratio5y:
+    description: 'DECIMAL. Treynor ratio over 5 years. Example: 0.84, -0.46, 17.81. Contains NULL when the fund does not have 5-year history.'
+    sql: treynorratio5y
+  volatility10y:
+    description: 'DECIMAL. Annualized standard deviation of returns over 10 years, measuring total risk/price variability. Higher values indicate greater volatility. Example: 16, 18.67, 30.86. Contains NULL when the fund does not have 10-year history.'
+    sql: volatility10y
+  volatility5y:
+    description: 'DECIMAL. Annualized standard deviation of returns over 5 years. Example: 15.33, 40.25, 8.22. Contains NULL when the fund does not have 5-year history.'
+    sql: volatility5y
+  risk10y_risk_measures_10y_alpha_10_y:
+    description: 10-year alpha coefficient measuring long-term excess return and manager performance. Contains  NULL when fund has less than 10 years of history or benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk10y, 'risk_measures_10y', 'Alpha_10Y')
+  risk10y_risk_measures_10y_avg_return_10_y:
+    description: Average annualized return over 10 years as decimal for long-term risk analysis. Contains  NULL when fund has less than 10 years of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk10y, 'risk_measures_10y', 'Avg_Return_10Y')
+  risk10y_risk_measures_10y_beta_10_y:
+    description: 10-year beta coefficient measuring long-term market sensitivity and systematic risk. Contains  NULL when fund has less than 10 years of history or market correlation cannot be calculated.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk10y, 'risk_measures_10y', 'Beta_10Y')
+  risk10y_risk_measures_10y_r_squared_10_y:
+    description: 10-year R-squared statistic measuring long-term correlation with benchmark performance. Contains  NULL when fund has less than 10 years of history or benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk10y, 'risk_measures_10y', 'R_Squared_10Y')
+  risk10y_risk_measures_10y_sharpe_ratio_10_y:
+    description: 10-year Sharpe ratio for comprehensive long-term risk-adjusted performance evaluation. Contains  NULL when fund has less than 10 years of history or risk-free rate data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk10y, 'risk_measures_10y', 'Sharpe_Ratio_10Y')
+  risk10y_risk_measures_10y_treynor_ratio_10_y:
+    description: 10-year Treynor ratio for long-term systematic risk-adjusted return measurement. Contains  NULL when fund has less than 10 years of history or beta cannot be calculated.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk10y, 'risk_measures_10y', 'Treynor_Ratio_10Y')
+  risk10y_risk_measures_10y_volatility_10_y:
+    description: 10-year standard deviation measuring long-term volatility and risk profile. Contains  NULL when fund has less than 10 years of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk10y, 'risk_measures_10y', 'Volatility_10Y')
+  risk3y_risk_measures_3y_alpha_3_y:
+    description: 3-year alpha coefficient measuring the fund's excess return compared to its benchmark, indicating manager skill. Contains  NULL when fund has less than 3 years of history or benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk3y, 'risk_measures_3y', 'Alpha_3Y')
+  risk3y_risk_measures_3y_avg_return_3_y:
+    description: Average annualized return over 3 years as decimal, used for risk-adjusted performance calculations. Contains  NULL when fund has less than 3 years of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk3y, 'risk_measures_3y', 'Avg_Return_3Y')
+  risk3y_risk_measures_3y_beta_3_y:
+    description: 3-year beta coefficient measuring the fund's sensitivity to market movements (1.0 = same as market). Contains  NULL when fund has less than 3 years of history or market correlation cannot be calculated.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk3y, 'risk_measures_3y', 'Beta_3Y')
+  risk3y_risk_measures_3y_sharpe_ratio_3_y:
+    description: 3-year Sharpe ratio measuring risk-adjusted return per unit of volatility (higher is better). Contains  NULL when fund has less than 3 years of history or risk-free rate data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk3y, 'risk_measures_3y', 'Sharpe_Ratio_3Y')
+  risk3y_risk_measures_3y_treynor_ratio_3_y:
+    description: 3-year Treynor ratio measuring risk-adjusted return per unit of systematic risk (beta). Contains  NULL when fund has less than 3 years of history or beta cannot be calculated.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk3y, 'risk_measures_3y', 'Treynor_Ratio_3Y')
+  risk3y_risk_measures_3y_volatility_3_y:
+    description: 3-year standard deviation of returns measuring the fund's price volatility and risk level. Contains  NULL when fund has less than 3 years of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk3y, 'risk_measures_3y', 'Volatility_3Y')
+  risk5y_risk_measures_5y_alpha_5_y:
+    description: 5-year alpha coefficient measuring the fund's excess return compared to its benchmark over medium term. Contains  NULL when fund has less than 5 years of history or benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk5y, 'risk_measures_5y', 'Alpha_5Y')
+  risk5y_risk_measures_5y_avg_return_5_y:
+    description: Average annualized return over 5 years as decimal for medium-term risk analysis. Contains  NULL when fund has less than 5 years of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk5y, 'risk_measures_5y', 'Avg_Return_5Y')
+  risk5y_risk_measures_5y_beta_5_y:
+    description: 5-year beta coefficient measuring the fund's market sensitivity over medium term. Contains  NULL when fund has less than 5 years of history or market correlation cannot be calculated.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk5y, 'risk_measures_5y', 'Beta_5Y')
+  risk5y_risk_measures_5y_r_squared_5_y:
+    description: 5-year R-squared statistic measuring medium-term correlation with benchmark. Contains  NULL when fund has less than 5 years of history or benchmark data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk5y, 'risk_measures_5y', 'R_Squared_5Y')
+  risk5y_risk_measures_5y_sharpe_ratio_5_y:
+    description: 5-year Sharpe ratio for medium-term risk-adjusted performance evaluation. Contains  NULL when fund has less than 5 years of history or risk-free rate data is not available.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk5y, 'risk_measures_5y', 'Sharpe_Ratio_5Y')
+  risk5y_risk_measures_5y_treynor_ratio_5_y:
+    description: 5-year Treynor ratio for medium-term systematic risk-adjusted performance. Contains  NULL when fund has less than 5 years of history or beta cannot be calculated.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk5y, 'risk_measures_5y', 'Treynor_Ratio_5Y')
+  risk5y_risk_measures_5y_volatility_5_y:
+    description: 5-year standard deviation measuring medium-term volatility and risk characteristics. Contains  NULL when fund has less than 5 years of history.
+    sql: JSONB_EXTRACT_PATH_TEXT(risk5y, 'risk_measures_5y', 'Volatility_5Y')
+  is_alpha_generator:
+    label: Alpha Generator
+    description: A fund that has demonstrated an ability to outperform its benchmark on a risk-adjusted basis.
+    sql: ${alpha_5_year} > 0
+    ai_context: Use this modeled field for Alpha Generator; do not reconstruct its formula.
+  is_market_tracking_fund:
+    label: Market-Tracking Fund
+    description: A fund whose performance is highly correlated with its market benchmark.
+    sql: ${r_squared_3_year_pct} > 90.0
+    ai_context: Use this modeled field for Market-Tracking Fund; do not reconstruct its formula.
+  is_passive_alpha_generator:
+    label: Passive Alpha Generator
+    description: A rare type of fund that closely tracks a market benchmark but still manages to produce positive alpha.
+    sql: ${is_market_tracking_fund} AND ${is_alpha_generator}
+    ai_context: Use this modeled field for Passive Alpha Generator; do not reconstruct its formula.
+  appraisal_ratio:
+    label: Appraisal Ratio
+    description: Measures a fund manager's skill in stock selection by calculating the alpha generated per unit of specific, unsystematic risk taken.
+    sql: CASE WHEN ${volatility_3_year} <> 0 AND 1.0 - ${r_squared_3_year_decimal} > 0 THEN ${alpha_3_year} / NULLIF(${volatility_3_year} * SQRT(1.0 - ${r_squared_3_year_decimal}), 0) END
+    ai_context: Use this modeled field for Appraisal Ratio; do not reconstruct its formula.

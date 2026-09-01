@@ -1,0 +1,9 @@
+base_view: sports_events_large_public__trackside_medical_facility
+label: TracksideMedicalFacility
+description: All columns of the public table TracksideMedicalFacility.
+fields:
+- sports_events_large_public__trackside_medical_facility.*
+- sports_events_large_public__circuits.*
+joins:
+  sports_events_large_public__circuits: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

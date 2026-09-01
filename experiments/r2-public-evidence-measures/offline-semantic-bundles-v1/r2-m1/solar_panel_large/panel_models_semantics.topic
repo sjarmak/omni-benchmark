@@ -1,0 +1,15 @@
+base_view: solar_panel_large_public__panel_models
+label: Panel Models
+description: Solar panel model specifications.
+fields:
+- solar_panel_large_public__panel_models.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Use the modeled business fields is_high_degradation_panel_model rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Degradation-Adjusted Capacity: The plant''s nameplate capacity adjusted for long-term wear and aging. The calculation is: $P_{adj} = P_{rated} \times (1 - (\text{Annual Degradation Rate} \times \text{Age}))$.
+
+  - Accelerated Aging Asset: An asset is considered to be aging acceleratedly if it exhibits a high Annual Degradation Rate (ADR) and also shows signs of Major Module Degradation.'

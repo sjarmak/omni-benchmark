@@ -1,0 +1,66 @@
+label: SafetyCorrectiveActions
+description: All columns of the public table SafetyCorrectiveActions.
+catalog: solar_panel_large
+schema: public
+table_name: SafetyCorrectiveActions
+dimensions:
+  action_description:
+    description: TEXT. Details of the action to be taken.
+    sql: action_description
+  action_type:
+    description: 'TEXT. Category (Training, Engineering Control, Procedure Change). Unique values: Training, Engineering Control, PPE Update, Policy Revision.'
+    sql: action_type
+  approver_ref:
+    description: 'TEXT. Manager who approved the plan. Unique values: T-101, T-103.'
+    sql: approver_ref
+  assigned_to_person:
+    description: TEXT. Person responsible for implementation.
+    sql: assigned_to_person
+  capa_id:
+    description: TEXT. Unique ID for the Corrective/Preventive Action.
+    sql: capa_id
+  comments:
+    description: TEXT. Progress notes. **NULL means data unavailable.**
+    sql: comments
+  completion_date:
+    description: TIMESTAMP. Actual completion date. **NULL means Not yet completed.**
+    sql: completion_date
+  due_date:
+    description: TIMESTAMP. Deadline for completion.
+    sql: due_date
+  effectiveness_rating:
+    description: 'INTEGER. Score (1-5) of how well it worked. **NULL means Too early to tell.** Example: 50.'
+    sql: effectiveness_rating
+  estimated_cost_usd:
+    description: 'REAL. Budget for the correction. Example: 1000.'
+    sql: estimated_cost_usd
+  incident_ref:
+    description: TEXT. FK to SafetyIncidentReports.
+    sql: incident_ref
+  priority_level:
+    description: 'TEXT. Urgency. Unique values: High, Medium, Low.'
+    sql: priority_level
+  recurring_check_required:
+    description: 'BOOLEAN. True if this needs annual review. Possible values: True, False.'
+    sql: recurring_check_required
+  resources_required:
+    description: TEXT. Tools/people needed. **NULL means data unavailable.**
+    sql: resources_required
+  status:
+    description: 'TEXT. Current status. Unique values: Open, In Progress, Verified, Closed.'
+    sql: status
+  verification_date:
+    description: TIMESTAMP. Date of effectiveness check. **NULL means Not yet verified.**
+    sql: verification_date
+  verification_method:
+    description: 'TEXT. How effectiveness will be checked. Unique values: Audit, Observation, Quiz, Inspection.'
+    sql: verification_method
+  verifier_name:
+    description: TEXT. Name of person verifying. **NULL means data unavailable.**
+    sql: verifier_name
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct SafetyCorrectiveActions public identity values.
+    label: SafetyCorrectiveActions Count
+    sql: ${solar_panel_large_public__safety_corrective_actions.capa_id}

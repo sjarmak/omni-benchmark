@@ -1,0 +1,63 @@
+label: digital_twin_sync_log
+description: All columns of the public table digital_twin_sync_log.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: digital_twin_sync_log
+dimensions:
+  active_viewer_count:
+    description: 'INTEGER. Users watching the twin. Example: 50.'
+    sql: active_viewer_count
+  cloud_provider_region:
+    description: 'TEXT. Where the twin is hosted. Unique values: us-east-1, eu-central-1, ap-northeast-1.'
+    sql: cloud_provider_region
+  data_throughput_kbps:
+    description: 'REAL. Bandwidth consumed by twin stream. Example: 500.'
+    sql: data_throughput_kbps
+  desync_event_flag:
+    description: 'BOOLEAN. Did the twin lose coherence?. Possible values: True, False.'
+    sql: desync_event_flag
+  last_keyframe_age_ms:
+    description: 'INTEGER. Time since last full state refresh. Example: 50.'
+    sql: last_keyframe_age_ms
+  packet_loss_percent:
+    description: 'REAL. Data missing in transmission. Example: 50.0.'
+    sql: packet_loss_percent
+  physics_processing_time_ms:
+    description: 'REAL. Time to calculate collision/dynamics. Example: 8.'
+    sql: physics_processing_time_ms
+  positional_drift_mm:
+    description: 'REAL. Difference between Real and Twin coords. Example: 0.5.'
+    sql: positional_drift_mm
+  prediction_horizon_sec:
+    description: 'REAL. How far ahead twin is predicting. Example: 50.0.'
+    sql: prediction_horizon_sec
+  protocol_version:
+    description: 'TEXT. MQTT/DDS version used. Unique values: MQTT_5, DDS_RTPS.'
+    sql: protocol_version
+  rendering_time_ms:
+    description: 'REAL. Time to draw the visualization. Example: 10.'
+    sql: rendering_time_ms
+  round_trip_latency_ms:
+    description: 'REAL. Network delay (Real->Twin->Real). Example: 50.'
+    sql: round_trip_latency_ms
+  server_memory_usage_mb:
+    description: 'REAL. RAM used by simulation engine. Example: 4096.'
+    sql: server_memory_usage_mb
+  sim_model_ref:
+    description: TEXT. The digital twin model being updated.
+    sql: sim_model_ref
+  simulation_frame_rate_fps:
+    description: 'INTEGER. Speed of the twin simulation. Example: 60.'
+    sql: simulation_frame_rate_fps
+  state_synchronization_error:
+    description: 'REAL. Aggregate error metric (0-1). Example: 50.0.'
+    sql: state_synchronization_error
+  sync_event_id:
+    description: TEXT. Unique key for sync heartbeat.
+    sql: sync_event_id
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct digital_twin_sync_log public identity values.
+    label: digital_twin_sync_log Count
+    sql: ${robot_fault_prediction_large_public__digital_twin_sync_log.sync_event_id}

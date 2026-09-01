@@ -1,0 +1,87 @@
+label: DiseaseOutbreakMonitoring
+description: All columns of the public table DiseaseOutbreakMonitoring.
+catalog: disaster_relief_large
+schema: public
+table_name: DiseaseOutbreakMonitoring
+dimensions:
+  alert_level:
+    description: TEXT. Public-health alert tier (e.g., Alert-1 … Alert-4).
+    sql: '"ALERT_LEVEL"'
+  contact_tracing_teams:
+    description: BIGINT. Active teams dedicated to contact tracing.
+    sql: '"ContactTracingTeams"'
+  deaths:
+    description: BIGINT. Cumulative fatalities attributed to the outbreak.
+    sql: '"DEATHS"'
+  medical_staff_deployed:
+    description: BIGINT. Number of medical professionals deployed to the outbreak area.
+    sql: '"MEDICAL_Staff_Deployed"'
+  notes:
+    description: TEXT. Free-form commentary (response actions, community feedback, etc.). Often NULL when no remarks captured.
+    sql: '"Notes"'
+  outbreak_end_date:
+    description: DATE (yyyy/mm/dd). Date the outbreak was declared ended or contained.
+    sql: '"OUTBREAK_END_DATE"'
+  outbreak_id:
+    description: VARCHAR(20). Unique identifier for the outbreak record. PK.
+    sql: '"OUTBREAK_ID"'
+  r0_value:
+    description: REAL. Estimated basic reproduction number (R₀). May be NULL when not yet modelled.
+    sql: '"R0_value"'
+  recovered:
+    description: BIGINT. Patients officially marked as recovered.
+    sql: '"Recovered"'
+  suspected_cases:
+    description: BIGINT. Clinically suspected cases pending lab confirmation.
+    sql: '"SUSPECTED_CASES"'
+  total_cases:
+    description: BIGINT. Sum of confirmed and suspected cases reported.
+    sql: '"TOTAL_CASES"'
+  testing_kits_used:
+    description: BIGINT. Diagnostic test kits consumed. May be NULL if testing figures not reported.
+    sql: '"TestingKitsUsed"'
+  vaccination_doses_administered:
+    description: BIGINT. Total doses given. May be NULL if reporting incomplete or no campaign.
+    sql: '"VaccinationDosesAdministered"'
+  vaccination_start_date:
+    description: DATE (yyyy/mm/dd). First day vaccines were administered; blank when no campaign.
+    sql: '"Vaccination_Start_Date"'
+  version_no:
+    description: INT. Metadata version for internal change tracking.
+    sql: '"VersionNo"'
+  case_fatality_percent:
+    description: REAL. Case-fatality ratio expressed as percent (e.g., 2.1).
+    sql: '"caseFatality_percent"'
+  confirmed_cases:
+    description: BIGINT. Laboratory-confirmed cases.
+    sql: confirmed_cases
+  disease_name:
+    description: TEXT. Common name of the pathogen or syndrome (e.g., Cholera, Dengue).
+    sql: '"diseaseName"'
+  env_health_ref:
+    description: VARCHAR(20). FK → EnvironmentAndHealth.EnvHealthRegistry that links the outbreak to an environmental-health assessment site.
+    sql: '"envHealthRef"'
+  field_hospitals_setup:
+    description: BIGINT. Temporary field hospitals established. May be NULL while data pending.
+    sql: '"fieldHospitalsSetup"'
+  incidence_rate_per_10k:
+    description: REAL. Incidence rate expressed as cases per 10 000 population (e.g., 15.4).
+    sql: '"incidenceRate_per_10k"'
+  last_updated:
+    description: TIMESTAMP (yyyy/mm/dd HH:MM:SS). Last time the record was updated.
+    sql: '"lastUpdated"'
+  outbreak_severity:
+    description: 'TEXT. Qualitative severity level. Possible values: Low, Moderate, High, Severe, Critical.'
+    sql: '"outbreakSeverity"'
+  outbreak_start_date:
+    description: DATE (yyyy/mm/dd). Date when the first case in the outbreak was recorded.
+    sql: '"outbreakStartDate"'
+  quarantine_facilities:
+    description: BIGINT. Facilities designated for quarantine or isolation.
+    sql: '"quarantineFacilities"'
+  test_positivity_percent_range:
+    description: TEXT. Range of daily test-positivity percentages during the reporting period (e.g., “8-12”).
+    sql: '"testPositivity_percent_range"'
+  vaccination_campaign:
+    description: BOOLEAN. TRUE if vaccination activities were launched for this outbreak.
+    sql: '"vaccinationCampaign"'

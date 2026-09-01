@@ -1,0 +1,150 @@
+label: liquidity_risk_analytics
+description: All columns of the public table liquidity_risk_analytics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: liquidity_risk_analytics
+dimensions:
+  analysisdate:
+    description: 'DATE. Date of liquidity risk analysis. Possible values: 2024-12-01, 2024-12-02.'
+    sql: analysisdate
+  arbitrageefficiency_eff_arb:
+    description: 'TEXT. Arbitrage efficiency measure with unit notation. Examples: 0.92 , 0.88 , 0.85 .'
+    sql: arbitrageefficiency_eff_arb
+  averagedailyvolume:
+    description: 'BIGINT. Average daily trading volume in shares. Examples: 3200, 8400, 1750000.'
+    sql: averagedailyvolume
+  closingliquidity:
+    description: 'TEXT. Closing session liquidity score with unit notation. Examples: 0.92 score/closing, 0.88 score/closing, 0.72 score/closing.'
+    sql: closingliquidity
+  datasource:
+    description: 'TEXT. Source of the liquidity analytics data. Possible values: BLOOMBERG TERMINAL, Bloomberg Terminal, REUTERS FEED, Reuters Feed, bloomberg terminal, reuters feed.'
+    sql: datasource
+  daystoliquidate10percent:
+    description: 'BIGINT. Days required to liquidate 10% of position. Examples: 4, 6, 12.'
+    sql: daystoliquidate10percent
+  daystoliquidate25percent:
+    description: 'BIGINT. Days required to liquidate 25% of position. Examples: 12, 18, 35.'
+    sql: daystoliquidate25percent
+  daystoliquidate5percent:
+    description: 'BIGINT. Days required to liquidate 5% of position. Possible values: 1, 12, 15, 2, 25, 3, 4, 5.'
+    sql: daystoliquidate5percent
+  depthatbestask:
+    description: 'TEXT. Depth at best ask price with unit notation. Examples: $52000 USD, $38000 USD, $920000 USD.'
+    sql: depthatbestask
+  depthatbestbid:
+    description: 'TEXT. Depth at best bid price with unit notation. Examples: $48500 USD, $35000 USD, $850000 USD.'
+    sql: depthatbestbid
+  expectedshortfall:
+    description: 'TEXT. Expected shortfall liquidity measure with unit notation. Examples: 0.35%/shortfall, 0.58%/shortfall, 0.72%/shortfall.'
+    sql: expectedshortfall
+  flowliquidityratio:
+    description: 'TEXT. Flow-based liquidity ratio with unit notation. Examples: 3.2 ratio/flow, 2.8 ratio/flow, 2.2 ratio/flow.'
+    sql: flowliquidityratio
+  flowvolatilityimpact_flowimp:
+    description: 'TEXT. Impact of flow volatility with unit notation. Examples: 0.15, 0.28, 0.45.'
+    sql: flowvolatilityimpact_flowimp
+  fundticker:
+    description: 'TEXT. Fund ticker symbol identifier. Examples: AVMU, QQD, FALN.'
+    sql: fundticker
+  hotmoneyratio_ratio_hm:
+    description: 'TEXT. Hot money ratio assessment with unit notation. Examples: 0.18 , 0.28 , 0.35 .'
+    sql: hotmoneyratio_ratio_hm
+  illiquidholdingspercent:
+    description: 'TEXT. Percentage of illiquid holdings with unit notation. Examples: 2.5%/illiquid, 8.5%/illiquid, 15.8%/illiquid.'
+    sql: illiquidholdingspercent
+  intradayliquiditypattern:
+    description: 'TEXT. Intraday liquidity pattern description. Examples: U-Shape Pattern, Reverse U-Shape, Flat Pattern.'
+    sql: intradayliquiditypattern
+  lastupdated:
+    description: 'TEXT. Timestamp of last data update. Possible values: 2024-12-01 19:00:00 AKST-9, 2024-12-02 19:00:00 AKST-9.'
+    sql: lastupdated
+  liquidityid:
+    description: 'BIGSERIAL. Primary key identifier for liquidity risk analytics record. PK. Examples: 1, 2, 3.'
+    sql: liquidityid
+  liquiditymismatchratio_ratio_mm:
+    description: 'TEXT. Liquidity mismatch ratio with unit notation. Examples: 1.15, 1.35, 1.85.'
+    sql: liquiditymismatchratio_ratio_mm
+  liquidityriskscore_score_liq:
+    description: 'TEXT. Overall liquidity risk score with unit notation. Examples: 2.5, 3.8, 4.2.'
+    sql: liquidityriskscore_score_liq
+  liquiditystress:
+    description: JSONB column. Consolidates stress test scenarios and worst-case liquidity measurements across different market conditions
+    sql: liquiditystress
+  liquidityvar95:
+    description: 'TEXT. Liquidity Value at Risk at 95% confidence with unit notation. Examples: 0.15%/var95, 0.28%/var95, 0.35%/var95.'
+    sql: liquidityvar95
+  liquidityvar99:
+    description: 'TEXT. Liquidity Value at Risk at 99% confidence with unit notation. Examples: 0.28%/var99, 0.45%/var99, 0.58%/var99.'
+    sql: liquidityvar99
+  lunchtimeliquidity:
+    description: 'TEXT. Lunch-time liquidity score with unit notation. Examples: 0.78 score/lunch, 0.68 score/lunch, 0.65 score/lunch.'
+    sql: lunchtimeliquidity
+  marketdepthask:
+    description: 'TEXT. Market depth on ask side with unit notation. Examples: $128000 USD, $88000 USD, $2650000 USD.'
+    sql: marketdepthask
+  marketdepthbid:
+    description: 'TEXT. Market depth on bid side with unit notation. Examples: $125000 USD, $85000 USD, $2500000 USD.'
+    sql: marketdepthbid
+  mediandailyvolume:
+    description: 'BIGINT. Median daily trading volume in shares. Examples: 2800, 7680, 1825000.'
+    sql: mediandailyvolume
+  openingliquidity:
+    description: 'TEXT. Opening session liquidity score with unit notation. Examples: 0.85 score/opening, 0.75 score/opening, 0.68 score/opening.'
+    sql: openingliquidity
+  orderbookimbalance:
+    description: 'REAL. Order book imbalance ratio. Examples: 0.15, 0.25, 0.08.'
+    sql: orderbookimbalance
+  portfolioliquidityscore:
+    description: 'TEXT. Portfolio-level liquidity score with unit notation. Examples: 8.5 score/10, 6.5 score/10, 5.8 score/10.'
+    sql: portfolioliquidityscore
+  premiumdiscountvolatility_vol:
+    description: 'TEXT. Premium/discount volatility with unit notation. Examples: 0.12, 0.22, 0.35.'
+    sql: premiumdiscountvolatility_vol
+  spreadsmetrics:
+    description: JSONB column. Groups various spread measurements including bid-ask, effective, realized spreads and related trading costs
+    sql: spreadsmetrics
+  stickynessscore:
+    description: 'TEXT. Investor stickiness score with unit notation. Examples: 0.82 score/stickiness, 0.72 score/stickiness, 0.65 score/stickiness.'
+    sql: stickynessscore
+  volumevolatility:
+    description: 'REAL. Volatility of trading volume. Examples: 0.85, 1.45, 0.95.'
+    sql: volumevolatility
+  weightedaverageliquidity_liq_wtd:
+    description: 'TEXT. Weighted average liquidity measure with unit notation. Examples: 7.8 , 6.2 , 5.2 .'
+    sql: weightedaverageliquidity_liq_wtd
+  liquiditystress_emergency_liquidation_cost:
+    description: 'TEXT. Cost of emergency liquidation with unit notation. Examples: 0.25%/emergency, 0.45%/emergency, 0.85%/emergency.'
+    sql: JSONB_EXTRACT_PATH_TEXT(liquiditystress, 'emergency_liquidation_cost')
+  liquiditystress_stress_2008:
+    description: 'TEXT. Liquidity stress test based on 2008 crisis with unit notation. Examples: 0.45%/stress2008, 0.85%/stress2008, 1.85%/stress2008.'
+    sql: JSONB_EXTRACT_PATH_TEXT(liquiditystress, 'stress_2008')
+  liquiditystress_stress_covid:
+    description: 'TEXT. Liquidity stress test based on COVID pandemic with unit notation. Examples: 0.28%/stresscovid, 0.52%/stresscovid, 1.25%/stresscovid.'
+    sql: JSONB_EXTRACT_PATH_TEXT(liquiditystress, 'stress_covid')
+  liquiditystress_stress_flash_crash:
+    description: 'TEXT. Liquidity stress test based on flash crash scenario with unit notation. Examples: 0.18%/stresscrash, 0.35%/stresscrash, 0.85%/stresscrash.'
+    sql: JSONB_EXTRACT_PATH_TEXT(liquiditystress, 'stress_flash_crash')
+  liquiditystress_worst_case_cost:
+    description: 'TEXT. Worst-case liquidity cost estimate with unit notation. Examples: 0.65%/worstcase, 1.25%/worstcase, 2.85%/worstcase.'
+    sql: JSONB_EXTRACT_PATH_TEXT(liquiditystress, 'worst_case_cost')
+  spreadsmetrics_bid_ask_spread:
+    description: 'TEXT. Bid-ask spread measurement with unit notation. Examples: 0.06%/spread, 0.13%/spread, 0.10%/spread.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spreadsmetrics, 'bid_ask_spread')
+  spreadsmetrics_creation_redemption_spread:
+    description: 'TEXT. ETF creation/redemption spread with unit notation. Examples: 0.08%/creation, 0.15%/creation, 0.12%/creation.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spreadsmetrics, 'creation_redemption_spread')
+  spreadsmetrics_effective_spread:
+    description: 'TEXT. Effective spread measurement with unit notation. Examples: 0.04%/spread, 0.09%/spread, 0.07%/spread.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spreadsmetrics, 'effective_spread')
+  spreadsmetrics_impact_cost:
+    description: 'TEXT. Market impact cost assessment with unit notation. Possible values: 0.01%/impact, 0.02%/impact, 0.03%/impact, 0.04%/impact, 0.05%/impact, 0.06%/impact, 0.07%/impact, 0.12%/impact.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spreadsmetrics, 'impact_cost')
+  spreadsmetrics_intranav_spread:
+    description: 'TEXT. Intraday NAV spread measurement with unit notation. Examples: 0.03%/intranav, 0.08%/intranav, 0.15%/intranav.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spreadsmetrics, 'intranav_spread')
+  spreadsmetrics_realized_spread:
+    description: 'TEXT. Realized spread measurement with unit notation. Examples: 0.03%/spread, 0.07%/spread, 0.05%/spread.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spreadsmetrics, 'realized_spread')
+  spreadsmetrics_volume_weighted_spread:
+    description: 'TEXT. Volume-weighted spread measurement with unit notation. Examples: 0.05%/volume, 0.11%/volume, 0.08%/volume.'
+    sql: JSONB_EXTRACT_PATH_TEXT(spreadsmetrics, 'volume_weighted_spread')

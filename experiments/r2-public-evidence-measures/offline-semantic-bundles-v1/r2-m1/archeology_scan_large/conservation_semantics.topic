@@ -1,0 +1,11 @@
+base_view: archeology_scan_large_public__conservation
+label: Conservation
+description: Conservation records with public business context for structural stability.
+fields:
+- archeology_scan_large_public__conservation.*
+- archeology_scan_large_public__projects.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__projects: {}
+  archeology_scan_large_public__sites: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

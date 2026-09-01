@@ -1,0 +1,11 @@
+base_view: exchange_traded_funds_large_public__fund_manager_assignments
+label: fund_manager_assignments
+description: All columns of the public table fund_manager_assignments.
+fields:
+- exchange_traded_funds_large_public__fund_manager_assignments.*
+- exchange_traded_funds_large_public__funds.*
+- exchange_traded_funds_large_public__portfolio_managers.*
+joins:
+  exchange_traded_funds_large_public__funds: {}
+  exchange_traded_funds_large_public__portfolio_managers: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

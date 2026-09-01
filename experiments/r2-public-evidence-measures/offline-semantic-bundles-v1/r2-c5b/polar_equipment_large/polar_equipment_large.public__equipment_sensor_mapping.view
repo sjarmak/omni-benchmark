@@ -1,0 +1,99 @@
+label: EquipmentSensorMapping
+description: All columns of the public table EquipmentSensorMapping.
+catalog: polar_equipment_large
+schema: public
+table_name: EquipmentSensorMapping
+dimensions:
+  avg_latency_ms:
+    description: 'REAL. Average end-to-end latency (ms). Example: 7.42.'
+    sql: '"avgLatency_ms"'
+  bit_depth:
+    description: 'BIGINT. Local ADC/DAC resolution (bits). Example: 24.'
+    sql: '"bitDepth"'
+  cable_len_m:
+    description: 'REAL. Cable length to interface point (m). Example: 2.35.'
+    sql: '"cableLen_m"'
+  cal_profile_link:
+    description: 'BIGINT. FK to SensorModelMeasurementProfile(profileStamp) in use for this mapping. Example: 12.'
+    sql: cal_profile_link
+  comment:
+    description: 'TEXT. Mapping-specific integration note. **NULL means no errors were observed (errorCount=0) and a note was intentionally omitted.** Example: Mounted at Chassis-Front using profile ''default-1'' (512.3 Hz, IIR @ 120.0 Hz). Local ADC 24-bit @ 250.0 Hz; cable length 2.35 m. Health Fault, 25 error(s) since last self-test on 2023-10-18.'
+    sql: comment
+  equip_ref_map:
+    description: 'TEXT. Equipment code; references Equipment(EQUIP_CODE). Part of composite PK. Example: PE593707.'
+    sql: equip_ref_map
+  error_count:
+    description: 'BIGINT. Total logged errors since last self-test. **NULL means healthStatus=''OK'' and no errors tracked.** Example: 25.'
+    sql: '"errorCount"'
+  firmware_ver:
+    description: 'TEXT. Sensor/bridge firmware semantic version. Example: v2.7.4.'
+    sql: '"firmwareVer"'
+  health_status:
+    description: 'TEXT. Current health state. Possible values (from file): Fault, OK, Warning. Example: OK.'
+    sql: '"healthStatus"'
+  install_date:
+    description: 'DATE. Installation date. Example: 2023-06-15.'
+    sql: '"installDate"'
+  last_self_test:
+    description: 'DATE. Date of the most recent sensor self-test. Example: 2023-10-18.'
+    sql: '"lastSelfTest"'
+  max_press_k_pa:
+    description: 'REAL. Maximum qualified pressure at mount (kPa). Example: 108.8.'
+    sql: '"maxPress_kPa"'
+  max_temp_c:
+    description: 'REAL. Maximum qualified operating temperature at mount (°C). Example: 50.8.'
+    sql: '"maxTemp_C"'
+  min_press_k_pa:
+    description: 'REAL. Minimum qualified pressure at mount (kPa). Example: 91.2.'
+    sql: '"minPress_kPa"'
+  min_temp_c:
+    description: 'REAL. Minimum qualified operating temperature at mount (°C). Example: -14.3.'
+    sql: '"minTemp_C"'
+  mount_point:
+    description: 'TEXT. Physical mount location on the equipment. Possible values (from file): Cabin, Chassis-Front, Chassis-Rear, Engine-Bay, Roof. Example: Chassis-Front.'
+    sql: '"mountPoint"'
+  mount_x_mm:
+    description: 'REAL. Mount X coordinate referenced to equipment datum (mm). Example: -214.7.'
+    sql: '"mountX_mm"'
+  mount_y_mm:
+    description: 'REAL. Mount Y coordinate (mm). Example: 88.2.'
+    sql: '"mountY_mm"'
+  mount_z_mm:
+    description: 'REAL. Mount Z coordinate (mm). Example: 146.0.'
+    sql: '"mountZ_mm"'
+  noise_floor_units:
+    description: 'REAL. Measured noise floor in measurement units. **NULL means low-resolution ADC (≤14-bit) where noise floor is not recorded.** Example: 0.09398.'
+    sql: '"noiseFloor_units"'
+  offset_units:
+    description: 'REAL. Applied offset/zero at install in measurement units. Example: 0.0418.'
+    sql: offset_units
+  orient_pitch_deg:
+    description: 'REAL. Sensor pitch orientation (deg). Example: 4.7.'
+    sql: '"orientPitch_deg"'
+  orient_roll_deg:
+    description: 'REAL. Sensor roll orientation (deg). Example: -6.2.'
+    sql: '"orientRoll_deg"'
+  orient_yaw_deg:
+    description: 'REAL. Sensor yaw orientation (deg). Example: 302.1.'
+    sql: '"orientYaw_deg"'
+  remove_date:
+    description: 'DATE. Removal date if uninstalled/faulty. **NULL means still installed or not removed because health is not ''Fault''.** Example: 2024-02-10.'
+    sql: '"removeDate"'
+  samp_rate_hz:
+    description: 'REAL. Configured sampling rate (Hz). Example: 250.0.'
+    sql: '"sampRate_hz"'
+  sensor_model_ref:
+    description: 'TEXT. Sensor model handle; references SensorModel(modelHandle). Part of composite PK. Example: SM-LID-1000.'
+    sql: sensor_model_ref
+  shielded:
+    description: 'TEXT. Whether the sensor cable is shielded. **NULL means very short run (cableLen_m < 1.0 m) where the attribute is not tracked.** Possible values (from file): No, Yes. Example: Yes.'
+    sql: shielded
+  span_units:
+    description: 'REAL. Applied span/gain at install in measurement units. Example: 0.9679.'
+    sql: span_units
+  supply_curr_m_a:
+    description: 'REAL. Measured/expected current at install (mA). Example: 46.3.'
+    sql: '"supplyCurr_mA"'
+  supply_volt_v:
+    description: 'REAL. Supply voltage delivered to the sensor (V). Example: 5.0.'
+    sql: '"supplyVolt_V"'

@@ -1,0 +1,72 @@
+label: CorporateActionImpactAnalysis
+description: All columns of the public table CorporateActionImpactAnalysis.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: CorporateActionImpactAnalysis
+dimensions:
+  corporate_action_impact_analysis_id:
+    description: TEXT. Unique identifier for impact analysis record.
+    sql: '"CorporateActionImpactAnalysis_id"'
+  adjustment_factor:
+    description: 'REAL. Price adjustment factor for splits/dividends. **NULL means No adjustment required for event type.** Example: 50.0.'
+    sql: adjustment_factor
+  affected_fund_count:
+    description: 'INTEGER. Number of funds holding affected security. Example: 50.'
+    sql: affected_fund_count
+  analysis_timestamp:
+    description: 'TIMESTAMP. Timestamp when impact analysis was performed. Example: 2024-01-01 12:00:00.'
+    sql: analysis_timestamp
+  analyst_revision_count:
+    description: 'INTEGER. Number of analyst estimate revisions following event. Example: 50.'
+    sql: analyst_revision_count
+  bid_ask_spread_widening_bps:
+    description: 'REAL. Widening of bid-ask spread in basis points. **NULL means Spread data unavailable.** Example: 50.0.'
+    sql: bid_ask_spread_widening_bps
+  corporate_action_ref:
+    description: TEXT. Reference to the corporate action event.
+    sql: corporate_action_ref
+  event_complexity_score:
+    description: 'TEXT. Complexity rating of the corporate action. Unique values: Simple, Moderate, Complex, Highly Complex.'
+    sql: event_complexity_score
+  impact_assessment_status:
+    description: 'TEXT. Current status of impact assessment. Unique values: Preliminary, In Progress, Completed, Verified.'
+    sql: impact_assessment_status
+  is_material_event:
+    description: 'BOOLEAN. Whether event is considered material for disclosure. Possible values: True, False.'
+    sql: is_material_event
+  market_reaction_window_hours:
+    description: 'INTEGER. Hours taken for price to stabilize post-event. **NULL means Stabilization not yet achieved.** Example: 50.'
+    sql: market_reaction_window_hours
+  peer_correlation_impact:
+    description: 'REAL. Correlation of peer stock movements to event. **NULL means No defined peer group.** Example: 50.0.'
+    sql: peer_correlation_impact
+  post_event_price:
+    description: 'REAL. Security price after corporate action. **NULL means Post-event trading not yet commenced.** Example: 50.0.'
+    sql: post_event_price
+  pre_event_price:
+    description: 'REAL. Security price before corporate action. **NULL means Price data unavailable for thinly traded security.** Example: 50.0.'
+    sql: pre_event_price
+  price_impact_pct:
+    description: 'REAL. Percentage change in price due to event. **NULL means Impact calculation pending.** Example: 2.5.'
+    sql: price_impact_pct
+  requires_shareholder_action:
+    description: 'BOOLEAN. Whether shareholders need to take action. Possible values: True, False.'
+    sql: requires_shareholder_action
+  tax_implication_rate_pct:
+    description: 'REAL. Estimated tax rate applicable to distribution. **NULL means Non-taxable event.** Example: 50.0.'
+    sql: tax_implication_rate_pct
+  total_affected_aum_millions:
+    description: 'REAL. Total AUM affected by corporate action in millions USD. **NULL means AUM aggregation pending.** Example: 50.0.'
+    sql: total_affected_aum_millions
+  volatility_change_pct:
+    description: 'REAL. Change in implied volatility around event. **NULL means Options not traded on security.** Example: 5.0.'
+    sql: volatility_change_pct
+  volume_spike_multiplier:
+    description: 'REAL. Trading volume as multiple of average daily volume. **NULL means Volume data delayed.** Example: 50.0.'
+    sql: volume_spike_multiplier
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CorporateActionImpactAnalysis public identity values.
+    label: CorporateActionImpactAnalysis Count
+    sql: ${exchange_traded_funds_large_public__corporate_action_impact_analysis.corporate_action_impact_analysis_id}

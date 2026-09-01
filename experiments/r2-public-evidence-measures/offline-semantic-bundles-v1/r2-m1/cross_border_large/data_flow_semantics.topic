@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__data_flow
+label: DataFlow
+description: All columns of the public table DataFlow.
+fields:
+- cross_border_large_public__data_flow.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,135 @@
+label: security_detailed_analytics
+description: All columns of the public table security_detailed_analytics.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: security_detailed_analytics
+dimensions:
+  book_value:
+    description: 'TEXT (unit-annotated). Total GAAP book value, suffixed “ USD”. Example: 55,000,000,000 USD.'
+    sql: book_value
+  business_description:
+    description: 'TEXT. One-sentence company overview. Example: Diversified financial services company.'
+    sql: business_description
+  cash_ratio:
+    description: 'REAL. Cash ÷ current liabilities. Unit: ×. Example: 0.42.'
+    sql: cash_ratio
+  company_name:
+    description: 'TEXT. Legal or common company name. Example: Prime Foods.'
+    sql: company_name
+  company_ticker:
+    description: 'TEXT. Exchange-listed symbol (3–5 letters). Example: URL.'
+    sql: company_ticker
+  current_ratio:
+    description: 'REAL. Current assets ÷ current liabilities. Unit: ×. Example: 2.15.'
+    sql: current_ratio
+  cusip:
+    description: 'TEXT (9-char). North-America CUSIP identifier. Example: DZHDS901Z.'
+    sql: cusip
+  debt_to_equity_ratio:
+    description: 'REAL. Total debt ÷ equity. Unit: ×. Example: 0.67.'
+    sql: debt_to_equity_ratio
+  dividend_growth_rate_avg:
+    description: 'real (unit-annotated). Dividend CAGR, suffixed “ %/yr”. Example: -0.63 %/yr.'
+    sql: dividend_growth_rate_avg
+  dividend_per_share_usd_sh:
+    description: 'text (unit-annotated). Absolute dividend, suffixed “ USD/sh”. Example: 6.66 USD/sh.'
+    sql: dividend_per_share_usd_sh
+  dividend_yield:
+    description: 'REAL. Annual dividend ÷ price. Unit: %. Example: 4.37.'
+    sql: dividend_yield
+  earnings_growth_1y_avg:
+    description: 'text (unit-annotated). One-year EPS growth, suffixed “ %/yr”. Example: 14.22 %/yr.'
+    sql: earnings_growth_1y_avg
+  earnings_growth_3y_avg:
+    description: 'text (unit-annotated). Three-year cumulative EPS growth, suffixed “ %/3yr”. Example: 110.85 %/3yr.'
+    sql: earnings_growth_3y_avg
+  enterprise_value:
+    description: 'TEXT (unit-annotated). EV (equity + debt – cash), suffixed “ USD”. Example: 512,000,000,000 USD.'
+    sql: enterprise_value
+  ev_to_ebitda:
+    description: 'REAL. Enterprise value ÷ EBITDA. Unit: ×. Example: 9.8.'
+    sql: ev_to_ebitda
+  headquarters_country:
+    description: 'TEXT. Country where HQ is located. Example: Canada.'
+    sql: headquarters_country
+  incorporation_country:
+    description: 'TEXT. Country of legal registration. Example: United States.'
+    sql: incorporation_country
+  industry:
+    description: 'TEXT. GICS or custom industry bucket. Example: Financials.'
+    sql: industry
+  ipo_date:
+    description: 'DATE. Initial public-offering date (YYYY-MM-DD). Example: 2003-07-17.'
+    sql: ipo_date
+  isin:
+    description: 'TEXT (12-char). Global ISIN code. Example: US2H76DJ29F3.'
+    sql: isin
+  last_updated:
+    description: 'TIMESTAMP. Record-update time (defaults to CURRENT_TIMESTAMP). Example: 2025-07-06.'
+    sql: last_updated
+  market_capitalization:
+    description: 'TEXT (unit-annotated). Equity market cap suffixed “ USD”. Example: 425,000,000,000 USD.'
+    sql: market_capitalization
+  number_of_employees:
+    description: 'TEXT (unit-annotated). Employee head-count suffixed “ employees”. Example: 18,245 employees.'
+    sql: number_of_employees
+  payout_ratio:
+    description: 'REAL. Dividend ÷ earnings. Unit: %. Example: 70.03.'
+    sql: payout_ratio
+  price_to_book:
+    description: 'REAL. Price ÷ book value per share. Unit: ×. Example: 1.86.'
+    sql: price_to_book
+  price_to_cash_flow:
+    description: 'REAL. Price ÷ operating cash flow per share. Unit: ×. Example: 11.40.'
+    sql: price_to_cash_flow
+  price_to_earnings:
+    description: 'REAL. Market price ÷ EPS. Unit: ×. Example: 17.30.'
+    sql: price_to_earnings
+  price_to_sales:
+    description: 'REAL. Price ÷ revenue per share. Unit: ×. Example: 2.45.'
+    sql: price_to_sales
+  profitability_ratios_dump:
+    description: JSONB column. Dump of every margin / return ratio field exactly as stored, no renaming.
+    sql: profitability_ratios_dump
+  quick_ratio:
+    description: 'REAL. (Current assets – inventory) ÷ current liabilities. Unit: ×. Example: 1.75.'
+    sql: quick_ratio
+  revenue_growth_1y_avg:
+    description: 'text (unit-annotated). One-year revenue growth, suffixed “ %/yr”. Example: 22.45 %/yr.'
+    sql: revenue_growth_1y_avg
+  revenue_growth_3y_avg:
+    description: 'text (unit-annotated). Three-year cumulative revenue growth, suffixed “ %/3yr”. Example: 78.63 %/3yr.'
+    sql: revenue_growth_3y_avg
+  sector:
+    description: 'TEXT. Top-level sector classification. Example: Consumer Staples.'
+    sql: sector
+  security_analytics_id:
+    description: 'BIGSERIAL. Surrogate identifier for each analytics row. PK. Auto-increments from 1. Example: 1.'
+    sql: security_analytics_id
+  security_id:
+    description: 'BIGINT. FK to securities(securityref). Example: 1.'
+    sql: security_id
+  sub_industry:
+    description: 'TEXT. Finer industry slice. Example: Machinery.'
+    sql: sub_industry
+  tangible_book_value:
+    description: 'TEXT (unit-annotated). Book value excluding intangibles, suffixed “ USD”. Example: 37,000,000,000 USD.'
+    sql: tangible_book_value
+  profitability_ratios_dump_gross_margin:
+    description: 'REAL. Gross profit ÷ revenue. Unit: %. Example: 45.26.'
+    sql: JSONB_EXTRACT_PATH_TEXT(profitability_ratios_dump, 'gross_margin')
+  profitability_ratios_dump_net_profit_margin:
+    description: 'REAL. Net income ÷ revenue. Unit: %. Example: 11.92.'
+    sql: JSONB_EXTRACT_PATH_TEXT(profitability_ratios_dump, 'net_profit_margin')
+  profitability_ratios_dump_operating_margin:
+    description: 'REAL. EBIT ÷ revenue. Unit: %. Example: 18.74.'
+    sql: JSONB_EXTRACT_PATH_TEXT(profitability_ratios_dump, 'operating_margin')
+  profitability_ratios_dump_return_on_assets:
+    description: 'REAL. Net income ÷ average assets. Unit: %. Example: 6.42.'
+    sql: JSONB_EXTRACT_PATH_TEXT(profitability_ratios_dump, 'return_on_assets')
+  profitability_ratios_dump_return_on_equity:
+    description: 'REAL. Net income ÷ average equity. Unit: %. Example: 14.35.'
+    sql: JSONB_EXTRACT_PATH_TEXT(profitability_ratios_dump, 'return_on_equity')
+  profitability_ratios_dump_return_on_invested_capital:
+    description: 'REAL. NOPAT ÷ invested capital. Unit: %. Example: 12.11.'
+    sql: JSONB_EXTRACT_PATH_TEXT(profitability_ratios_dump, 'return_on_invested_capital')

@@ -1,0 +1,60 @@
+label: VegetationTaskMaterials
+description: All columns of the public table VegetationTaskMaterials.
+catalog: solar_panel_large
+schema: public
+table_name: VegetationTaskMaterials
+dimensions:
+  application_method:
+    description: 'TEXT. How the material was applied. **NULL means Consumable (Fuel).** Unique values: Spray Boom, Backpack, Pour, Install.'
+    sql: application_method
+  applicator_license_id:
+    description: TEXT. License number of person applying chemicals. **NULL means Not required.**
+    sql: applicator_license_id
+  batch_number:
+    description: TEXT. Batch/Lot number for chemical tracking. **NULL means Not applicable (Fuel/Parts).**
+    sql: batch_number
+  cost_per_unit_usd:
+    description: 'REAL. Unit cost. Example: 15.'
+    sql: cost_per_unit_usd
+  dilution_ratio:
+    description: 'TEXT. Mix ratio if diluted. **NULL means N/A.** Unique values: 1:100, 1:50, Pre-mixed.'
+    sql: dilution_ratio
+  environmental_impact_rating:
+    description: 'TEXT. Eco-toxicity rating. Unique values: Low, Medium, High.'
+    sql: environmental_impact_rating
+  inventory_deducted:
+    description: 'BOOLEAN. True if stock was decremented in inventory system. Possible values: True, False.'
+    sql: inventory_deducted
+  material_name:
+    description: 'TEXT. Name of item used (fuel, herbicide, mulch). Unique values: Diesel Fuel, Roundup Pro, Mulch, Replacement Trimmer Line.'
+    sql: material_name
+  material_usage_id:
+    description: TEXT. Unique ID for material usage record.
+    sql: material_usage_id
+  quantity_used:
+    description: 'REAL. Amount consumed. Example: 20.'
+    sql: quantity_used
+  safety_sds_ref:
+    description: TEXT. Reference to Safety Data Sheet.
+    sql: safety_sds_ref
+  supplier_vendor:
+    description: 'TEXT. Vendor the material was bought from. Unique values: AgSupply Co, Local Hardware, ChemDirect.'
+    sql: supplier_vendor
+  target_pest_plant:
+    description: 'TEXT. Specific weed/pest targeted. **NULL means N/A.** Unique values: Thistle, Kudzu, General Grass.'
+    sql: target_pest_plant
+  total_cost_usd:
+    description: 'REAL. Calculated total cost. Example: 300.'
+    sql: total_cost_usd
+  unit_of_measure:
+    description: 'TEXT. Unit (Liters, Kg, Meters). Unique values: Liters, Kg, Rolls, Gallons.'
+    sql: unit_of_measure
+  usage_timestamp:
+    description: 'TIMESTAMP. When the material was applied/filled. Example: 2024-01-01 12:00:00.'
+    sql: usage_timestamp
+  veg_log_ref:
+    description: TEXT. FK to VegetationManagementLogs.
+    sql: veg_log_ref
+  waste_generated_kg:
+    description: 'REAL. Packaging waste generated. Example: 0.5.'
+    sql: waste_generated_kg

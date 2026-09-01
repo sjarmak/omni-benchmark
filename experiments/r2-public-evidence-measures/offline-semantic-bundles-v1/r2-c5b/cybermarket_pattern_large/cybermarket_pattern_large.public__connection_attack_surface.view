@@ -1,0 +1,114 @@
+label: connection_attack_surface
+description: All columns of the public table connection_attack_surface.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: connection_attack_surface
+dimensions:
+  heartbleedvuln:
+    description: 'BOOLEAN. True if the host is susceptible to CVE-2014-0160 (Heartbleed). Example: false.'
+    sql: '"HEARTBLEEDvuln"'
+  hsts_enabled:
+    description: 'BOOLEAN. HTTP Strict-Transport-Security header present. Example: true.'
+    sql: '"HstsEnabled"'
+  ips_detected:
+    description: 'BOOLEAN. An inline intrusion-prevention system detected. Example: false.'
+    sql: '"IPS_DETECTED"'
+  last_scan_ts:
+    description: 'TIMESTAMP. Date-time the attack-surface scan completed (YYYY-MM-DD HH:MM:SS). Example: 2025-06-18 13:42:11.'
+    sql: '"LastScanTS"'
+  malwaredetected:
+    description: 'BOOLEAN. Malware (beacon or payload) observed during scan. Example: false.'
+    sql: '"MALWAREdetected"'
+  rc4_vulnerable:
+    description: 'BOOLEAN. True if RC4 cipher is allowed in any handshake. Example: true.'
+    sql: '"RC4_vulnerable"'
+  tls_versions:
+    description: 'TEXT. Comma-separated list of TLS/SSL protocol versions accepted by the host. Example: TLS 1.3, TLS 1.2.'
+    sql: '"TLS_VERSIONS"'
+  txnpointer:
+    description: 'TEXT. Foreign key referencing connection_security.TxnPointer, tying this scan to a specific network connection. Example: TXP-81778102.'
+    sql: '"TXNpointer"'
+  beast_vuln:
+    description: 'BOOLEAN. True if susceptible to the BEAST attack (CBC in TLS 1.0). Example: false.'
+    sql: '"beastVULN"'
+  breach_vuln:
+    description: 'BOOLEAN. True if compression plus reflection headers expose BREACH. Example: false.'
+    sql: '"breachVuln"'
+  cas_ref:
+    description: 'TEXT. Unique identifier for each connection-attack-surface scan (primary key). Example: CAS-9N8K3H2T5W7Q.'
+    sql: '"casRef"'
+  cipher_suites:
+    description: 'TEXT. Semicolon-delimited cipher-suite identifiers returned in the host’s handshake. Example: TLS_AES_128_GCM_SHA256;TLS_CHACHA20_POLY1305_SHA256.'
+    sql: '"cipherSuites"'
+  clickjacking_protect:
+    description: 'BOOLEAN. Composite detection of anti-clickjacking controls (header or JS). Example: false.'
+    sql: '"clickjackingPROTECT"'
+  content_security_policy_enabled:
+    description: 'BOOLEAN. Content-Security-Policy header present. Example: true.'
+    sql: content_security_policy_enabled
+  crime_vulnerable:
+    description: 'BOOLEAN. True if TLS compression is enabled (CRIME). Example: false.'
+    sql: crime_vulnerable
+  csrf_protection:
+    description: 'BOOLEAN. Presence of CSRF tokens or SameSite cookies detected. Example: true.'
+    sql: '"csrfProtection"'
+  deprecated_protocol_used:
+    description: 'BOOLEAN. True if SSL 3.0 or TLS 1.0/1.1 was accepted. Example: false.'
+    sql: '"deprecatedProtocolUsed"'
+  drown_vulnerable:
+    description: 'BOOLEAN. True if host supports SSLv2 and is thus DROWN-vulnerable. Example: false.'
+    sql: drown_vulnerable
+  exploit_attempt_cnt:
+    description: 'BIGINT. Count of exploit attempts logged by host during scan window. **NULL means log telemetry unavailable.** Example: 14.'
+    sql: exploit_attempt_cnt
+  freak_vulnerable:
+    description: 'BOOLEAN. Indicates exposure to the FREAK export-cipher attack. Example: false.'
+    sql: '"freakVulnerable"'
+  hpkp_enabled:
+    description: 'BOOLEAN. HTTP Public-Key-Pinning header detected. **NULL means header scan failed or header not parsed.** Example: true.'
+    sql: hpkp_enabled
+  ids_detected:
+    description: 'BOOLEAN. An intrusion-detection system was fingerprinted on the host. Example: false.'
+    sql: ids_detected
+  logjam_vuln:
+    description: 'BOOLEAN. Indicates weak Diffie-Hellman parameters (Logjam). Example: true.'
+    sql: '"logjamVULN"'
+  phishing_detected:
+    description: 'BOOLEAN. Presence of phishing kit artefacts on host. Example: false.'
+    sql: '"phishingDETECTED"'
+  poodle_vulnerable:
+    description: 'BOOLEAN. Indicates vulnerability to the POODLE attack on SSL 3.0. Example: false.'
+    sql: '"poodleVulnerable"'
+  port_spread_ports:
+    description: 'TEXT. Lowest–highest port observed open (range string with no unit). Example: 19–542.'
+    sql: '"portSpread_ports"'
+  scanning_tool_detected:
+    description: 'BOOLEAN. Evidence that automated scanners were active while host was scanned. Example: true.'
+    sql: '"scanningToolDetected"'
+  service_banner_fingerprint:
+    description: 'TEXT. Concatenated service banners from the highest-priority open ports (used for asset fingerprinting). Example: Apache 2.4.54.'
+    sql: service_banner_fingerprint
+  ssl_grade:
+    description: 'TEXT. Overall SSL Labs–style grade (A+ → F) summarising protocol/cipher quality. **NULL means grading failed or timed out.** Example: B.'
+    sql: ssl_grade
+  suspicious_openports:
+    description: 'BIGINT. Subset of total ports flagged as unusual for the host profile (e.g., admin interfaces exposed). Example: 17.'
+    sql: '"suspiciousOPENports"'
+  total_open_ports:
+    description: 'BIGINT. Number of TCP/UDP ports found listening during the scan. **NULL means port enumeration did not complete or the host was unreachable.** Example: 118.'
+    sql: total_open_ports
+  vuln_density_issues_per_svc:
+    description: 'REAL. Ratio of security findings per detected service (issues ÷ services). Example: 0.032'
+    sql: '"vulnDensity_issues_per_svc"'
+  waf_detected:
+    description: 'BOOLEAN. Web-application firewall identified via response signatures. Example: true.'
+    sql: '"wafDetected"'
+  weak_cipher_count:
+    description: 'BIGINT. Count of negotiated ciphers considered weak (e.g., RC4, 3DES). **NULL means scanner could not enumerate cipher suites.** Example: 2.'
+    sql: weak_cipher_count
+  x_frame_options_enabled:
+    description: 'BOOLEAN. X-Frame-Options header present, mitigating click-jacking via iframes. Example: false.'
+    sql: '"xFrameOptionsEnabled"'
+  xss_protection_enabled:
+    description: 'BOOLEAN. X-XSS-Protection header enabled. Example: true.'
+    sql: xss_protection_enabled

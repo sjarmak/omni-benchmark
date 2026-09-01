@@ -1,0 +1,21 @@
+base_view: polar_equipment_large_public__chassis_dynamics_event
+label: ChassisDynamicsEvent
+description: All columns of the public table ChassisDynamicsEvent.
+fields:
+- polar_equipment_large_public__chassis_dynamics_event.*
+- polar_equipment_large_public__chassis_and_vehicle.*
+- polar_equipment_large_public__engine_and_fluids.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__operationmaintenance.*
+- polar_equipment_large_public__powerbattery.*
+- polar_equipment_large_public__transmission.*
+joins:
+  polar_equipment_large_public__chassis_and_vehicle:
+    polar_equipment_large_public__engine_and_fluids:
+      polar_equipment_large_public__operationmaintenance: {}
+      polar_equipment_large_public__powerbattery: {}
+    polar_equipment_large_public__equipment:
+      polar_equipment_large_public__equipmenttype: {}
+    polar_equipment_large_public__transmission: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

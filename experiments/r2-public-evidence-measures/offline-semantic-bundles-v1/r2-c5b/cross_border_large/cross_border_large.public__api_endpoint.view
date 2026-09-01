@@ -1,0 +1,107 @@
+label: API Endpoints
+description: API endpoint observations with public context for the structured success-percentage field.
+catalog: cross_border_large
+schema: public
+table_name: API_Endpoint
+dimensions:
+  success_pct:
+    description: 'REAL. Percentage of successful responses. Example: 98.498.'
+    label: Success Percentage
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'success_pct') AS DOUBLE PRECISION)
+    ai_context: 'Success Percentage: Ranges from 0 to 100. Higher means more reliable transfers.'
+  api_code:
+    description: 'BIGINT. Unique identifier for the API endpoint. Example: 1.'
+    sql: '"Api_code"'
+  api_perf_obs:
+    description: JSONB column. Collects performance, reliability, limits, and security posture signals observed for an API endpoint version.
+    sql: api_perf_obs
+  endpoint_security_code:
+    description: 'BIGINT. FK to SecurityProfile(SECURITY_TRACE) mapped to surrogate. Example: 7.'
+    sql: endpoint_security_code
+  api_perf_obs_identity_base_url:
+    description: 'TEXT. API base URL. Example: https://api1.company.com.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'identity', 'base_url')
+  api_perf_obs_identity_deprecated:
+    description: 'TEXT. Deprecation flag. Possible values: Yes, No. Example: No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'identity', 'deprecated')
+  api_perf_obs_identity_method:
+    description: 'TEXT. HTTP method. Possible values: GET, POST, PUT, PATCH, DELETE. Example: PUT.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'identity', 'method')
+  api_perf_obs_identity_name:
+    description: 'TEXT. Service namespace/name. Example: svc-billing.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'identity', 'name')
+  api_perf_obs_identity_path:
+    description: 'TEXT. Resource path of the endpoint. Example: /orders/get.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'identity', 'path')
+  api_perf_obs_identity_schema_version:
+    description: 'TEXT. Contract/schema version. **NULL means unknown/legacy schema.** Example: (NULL).'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'identity', 'schema_version')
+  api_perf_obs_identity_sunset_date:
+    description: 'DATE. Target removal date if deprecated. **NULL when not deprecated.** Example: (NULL).'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'identity', 'sunset_date')
+  api_perf_obs_identity_version:
+    description: 'TEXT. API semantic version tag. Example: v1.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'identity', 'version')
+  api_perf_obs_ops_api_owner:
+    description: 'TEXT. Owning team. Possible values: api-core, payments, analytics, security, platform. Example: platform.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'ops', 'api_owner')
+  api_perf_obs_ops_contact_email:
+    description: 'TEXT. Contact email for the API owner. **NULL means no contact specified.** Example: platform@company.com.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'ops', 'contact_email')
+  api_perf_obs_ops_endpoint_flow_code:
+    description: 'TEXT. Upstream integration/flow reference. **NULL means not yet assigned.** Example: (NULL).'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'ops', 'endpoint_flow_code')
+  api_perf_obs_performance_avg_latency_ms:
+    description: 'REAL. Average end-to-end latency (ms). Example: 343.14.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'avg_latency_ms')
+  api_perf_obs_performance_avg_payload_kb:
+    description: 'REAL. Average payload size in kB. Example: 59.11.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'avg_payload_kb')
+  api_perf_obs_performance_cache_ttl_sec:
+    description: 'BIGINT. Cache TTL in seconds. **NULL means the endpoint is not cached** (was 0). Example: 900.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'cache_ttl_sec')
+  api_perf_obs_performance_error_rate_pct:
+    description: 'REAL. Error rate (% of requests). Example: 1.941.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'error_rate_pct')
+  api_perf_obs_performance_max_payload_kb:
+    description: 'REAL. Maximum payload size in kB. Example: 891.69.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'max_payload_kb')
+  api_perf_obs_performance_p95_latency_ms:
+    description: 'REAL. 95th percentile latency (ms). Example: 347.05.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'p95_latency_ms')
+  api_perf_obs_performance_rate_limit_rps:
+    description: 'REAL. Allowed request rate (requests/second). Example: 57.22.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'rate_limit_rps')
+  api_perf_obs_performance_request_count_24h:
+    description: 'BIGINT. Number of requests observed in the last 24 hours. Example: 7809580.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'request_count_24h')
+  api_perf_obs_performance_timeout_ms:
+    description: 'BIGINT. Server-side timeout in milliseconds. Example: 10000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'performance', 'timeout_ms')
+  api_perf_obs_security_authn_method:
+    description: 'TEXT. Client authentication method. Possible values: API Key, OAuth2, mTLS, HMAC, JWT. Example: OAuth2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'security', 'authn_method')
+  api_perf_obs_security_authz_framework:
+    description: 'TEXT. Authorization framework. Possible values: RBAC, ABAC, OAuth2 Scopes, None. Example: RBAC.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'security', 'authz_framework')
+  api_perf_obs_security_encrypted_at_rest:
+    description: 'TEXT. Payloads encrypted at rest. Possible values: Yes, No. Example: No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'security', 'encrypted_at_rest')
+  api_perf_obs_security_encrypted_in_transit:
+    description: 'TEXT. TLS in transit. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'security', 'encrypted_in_transit')
+  api_perf_obs_security_idempotent:
+    description: 'TEXT. Whether the endpoint is idempotent. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'security', 'idempotent')
+  api_perf_obs_security_scan_last_scan_at:
+    description: 'DATE. Last security scan date (yyyy-mm-dd). Example: 2025-08-09.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'security_scan', 'last_scan_at')
+  api_perf_obs_security_scan_scan_score:
+    description: 'REAL. Security scan score. Example: 84.01.'
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'security_scan', 'scan_score')
+  api_perf_obs_timestamps_created_at:
+    description: (No meaning found for cross_border_large|API_Endpoint|created_at)
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'timestamps', 'created_at')
+  api_perf_obs_timestamps_updated_at:
+    description: (No meaning found for cross_border_large|API_Endpoint|UPDATED_AT)
+    sql: JSONB_EXTRACT_PATH_TEXT(api_perf_obs, 'timestamps', 'updated_at')

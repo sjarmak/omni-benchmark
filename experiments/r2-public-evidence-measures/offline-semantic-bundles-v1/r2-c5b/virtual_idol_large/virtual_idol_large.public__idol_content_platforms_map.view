@@ -1,0 +1,54 @@
+label: idol_content_platforms_map
+description: All columns of the public table idol_content_platforms_map.
+catalog: virtual_idol_large
+schema: public
+table_name: idol_content_platforms_map
+dimensions:
+  follower_count:
+    description: 'BIGINT. The number of followers the idol has on the platform. Example: 210285.'
+    sql: '"FollowerCount"'
+  is_active:
+    description: 'BOOLEAN. A flag indicating if the idol is currently active on the platform. Example: true.'
+    sql: '"IS_ACTIVE"'
+  idol_account_identifier:
+    description: 'TEXT. Foreign key referencing the virtual idol. FK to virtualidols(entity_reg). Example: VI6888.'
+    sql: '"Idol_Account_Identifier"'
+  last_post_date:
+    description: 'DATE. The date of the idol''s last post on the platform. Example: Aug 26, 2025.'
+    sql: '"LastPostDate"'
+  last_sync_timestamp:
+    description: 'TIMESTAMP. The timestamp of the last data synchronization with the platform. Example: 2025-09-01 06:02:22.'
+    sql: '"LastSyncTimestamp"'
+  posting_frequency_per_week:
+    description: 'REAL. The average number of posts the idol makes per week. Example: 5.4.'
+    sql: '"POSTING_FREQUENCY_PER_WEEK"'
+  performance_analytics_dashboard_url:
+    description: TEXT. A URL to the performance analytics dashboard for this platform. **NULL means no dashboard URL is linked.**
+    sql: '"PerformanceAnalyticsDashboardURL"'
+  platform_service_identifier:
+    description: 'BIGINT. Foreign key referencing the platform. FK to platforms(platform_id). Example: 4.'
+    sql: '"Platform_Service_Identifier"'
+  subscriber_count:
+    description: 'BIGINT. The number of subscribers the idol has on the platform. Example: 101766.'
+    sql: '"SUBSCRIBER_COUNT"'
+  account_manager:
+    description: 'TEXT. The name of the account manager for this platform. **NULL means there is no assigned account manager.** Example: Ren Miller.'
+    sql: account_manager
+  api_integration_key:
+    description: 'TEXT. The API key for integration with the platform. **NULL means no API key is set up.** Example: ak_b6585ce0f12b3a14.'
+    sql: api_integration_key
+  date_joined:
+    description: 'DATE. The date the idol joined the platform. Example: Mar 13, 2022.'
+    sql: date_joined
+  idol_platform_id:
+    description: 'BIGINT. Unique identifier for the idol-platform mapping. PK. Example: 1.'
+    sql: idol_platform_id
+  monetization_enabled:
+    description: 'BOOLEAN. A flag indicating if monetization is enabled on the platform. Example: true.'
+    sql: monetization_enabled
+  notes:
+    description: 'TEXT. General notes about the idol''s presence on this platform. **NULL means no notes have been added.** Example: Low engagement, needs new strategy..'
+    sql: notes
+  profile_url:
+    description: 'TEXT. The URL of the idol''s profile on the platform. Example: https://platform.example/u/VI6888.'
+    sql: profile_url

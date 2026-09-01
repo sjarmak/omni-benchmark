@@ -1,0 +1,7 @@
+base_view: sports_events_large_public__technical_regulations
+label: technical_regulations
+description: All columns of the public table technical_regulations.
+fields:
+- sports_events_large_public__technical_regulations.*
+joins: {}
+ai_context: This topic models no cross-table joins.

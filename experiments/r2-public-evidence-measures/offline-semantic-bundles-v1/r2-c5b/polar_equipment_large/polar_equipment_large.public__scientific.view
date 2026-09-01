@@ -1,0 +1,34 @@
+label: Scientific
+description: Scientific equipment records with same-row reliability semantics.
+catalog: polar_equipment_large
+schema: public
+table_name: Scientific
+dimensions:
+  measurement_accuracy_percent:
+    description: 'REAL. Measurement accuracy percentage. Example: 99.3.'
+    label: Measurement Accuracy Percent
+    sql: '"measureAccPct"'
+  calibration_status:
+    description: 'TEXT. Calibration status. Possible values: Due, Expired, Valid.'
+    label: Calibration Status
+    sql: '"calibrStat"'
+  sci_id:
+    description: BIGSERIAL. Unique identifier for the scientific instrument record. PK.
+    sql: '"SCI_ID"'
+  data_log_stat:
+    description: 'TEXT. Data logging status for the equipment. Possible values: Active, Error, Paused.'
+    sql: '"dataLogStat"'
+  equip_ref:
+    description: TEXT. Reference to the equipment. FK to Equipment.EQUIP_CODE.
+    sql: '"equipRef"'
+  sci_equip_stat:
+    description: 'TEXT. Status of the scientific equipment. Possible values: Fault, Operating, Standby.'
+    sql: '"sciEquipStat"'
+  sensor_stat:
+    description: 'TEXT. Sensor status. Possible values: Error, Normal, Warning.'
+    sql: '"sensorStat"'
+  scientific_equipment_reliability:
+    label: Scientific Equipment Reliability (SER)
+    description: Quantifies the reliability of scientific equipment based on calibration status and measurement accuracy.
+    sql: ${measurement_accuracy_percent} * CASE ${calibration_status} WHEN 'Valid' THEN 1.0 WHEN 'Due' THEN 0.7 WHEN 'Expired' THEN 0.3 END
+    ai_context: Use this modeled field for Scientific Equipment Reliability (SER); do not reconstruct its formula.

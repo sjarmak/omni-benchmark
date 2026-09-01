@@ -1,0 +1,66 @@
+label: FundWholesaleDistribution
+description: All columns of the public table FundWholesaleDistribution.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: FundWholesaleDistribution
+dimensions:
+  fund_wholesale_distribution_id:
+    description: 'TEXT. Unique identifier for the distribution channel agreement. Example: XX-1A2B3C.'
+    sql: '"FundWholesaleDistribution_id"'
+  average_ticket_size:
+    description: 'REAL. Average investment size per account. Example: 25000.'
+    sql: average_ticket_size
+  compliance_status_code:
+    description: 'TEXT. Current compliance standing with the platform. Unique values: Good, Review, Restricted.'
+    sql: compliance_status_code
+  contract_renewal_date:
+    description: 'TIMESTAMP. Next renewal date for the agreement. Example: 2024-01-01 12:00:00.'
+    sql: contract_renewal_date
+  contract_start_date:
+    description: 'TIMESTAMP. Start date of the distribution agreement. Example: 2024-01-01 12:00:00.'
+    sql: contract_start_date
+  data_sharing_score:
+    description: 'INTEGER. Quality of investor data shared by platform (1-10). Example: 50.'
+    sql: data_sharing_score
+  is_preferred_partner:
+    description: 'BOOLEAN. Whether the fund is on the preferred list. Possible values: True, False.'
+    sql: is_preferred_partner
+  marketing_support_flag:
+    description: 'BOOLEAN. Whether the platform provides marketing support. Possible values: True, False.'
+    sql: marketing_support_flag
+  net_flows_ytd:
+    description: 'REAL. Net capital flows from this platform year-to-date. Example: 1000000.'
+    sql: net_flows_ytd
+  number_of_active_accounts:
+    description: 'INTEGER. Number of distinct investor accounts. Example: 50.'
+    sql: number_of_active_accounts
+  platform_fee_bps:
+    description: 'INTEGER. Fee charged by the platform in basis points. Example: 50.'
+    sql: platform_fee_bps
+  platform_name:
+    description: 'TEXT. Name of the distribution platform or bank. Unique values: Morgan Stanley, Merrill Lynch, Schwab, Fidelity, UBS, Pershing.'
+    sql: platform_name
+  product_ref:
+    description: 'INTEGER. Reference to the fund product. Example: 50.'
+    sql: product_ref
+  rebate_rate_bps:
+    description: 'INTEGER. Rebate returned to the platform in basis points. **NULL means No rebate agreement.** Example: 50.'
+    sql: rebate_rate_bps
+  region_code:
+    description: 'TEXT. Geographic region of the platform. Unique values: NA, EMEA, APAC, LATAM.'
+    sql: region_code
+  relationship_manager_name:
+    description: TEXT. Name of the assigned relationship manager.
+    sql: relationship_manager_name
+  service_tier_level:
+    description: 'TEXT. Service level agreement tier. Unique values: Platinum, Gold, Silver, Standard.'
+    sql: service_tier_level
+  total_aum_on_platform:
+    description: 'REAL. Total assets under management held on this platform. Example: 50000000.'
+    sql: total_aum_on_platform
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct FundWholesaleDistribution public identity values.
+    label: FundWholesaleDistribution Count
+    sql: ${exchange_traded_funds_large_public__fund_wholesale_distribution.fund_wholesale_distribution_id}

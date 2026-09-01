@@ -1,0 +1,9 @@
+base_view: archeology_scan_large_public__equipment_maintenance
+label: EquipmentMaintenance
+description: All columns of the public table EquipmentMaintenance.
+fields:
+- archeology_scan_large_public__equipment_maintenance.*
+- archeology_scan_large_public__equipment.*
+joins:
+  archeology_scan_large_public__equipment: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

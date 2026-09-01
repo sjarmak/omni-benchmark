@@ -1,0 +1,24 @@
+label: sponsors
+description: All columns of the public table sponsors.
+catalog: virtual_idol_large
+schema: public
+table_name: sponsors
+dimensions:
+  email:
+    description: 'TEXT. The contact email for the sponsor. **NULL means an email is not listed.** Example: alex.ray@cybercoreenergy.business.net.'
+    sql: '"EMAIL"'
+  sponsor_id:
+    description: 'BIGINT. Unique identifier for the sponsor. PK. Example: 1.'
+    sql: '"SPONSOR_ID"'
+  sponsor_name:
+    description: 'TEXT. The name of the sponsoring company. Example: CyberCore Energy.'
+    sql: '"SponsorName"'
+  website:
+    description: 'TEXT. The sponsor''s official website. **NULL means a website is not listed.** Example: https://www.cybercoreenergy.co.'
+    sql: '"WEBSITE"'
+  contact_person:
+    description: 'TEXT. The name of the contact person at the sponsoring company. **NULL means a contact person is not listed.** Example: Alex Ray.'
+    sql: contact_person
+  industry:
+    description: 'TEXT. The industry the sponsor belongs to. **NULL means the industry is not specified.** Example: Food & Beverage.'
+    sql: industry

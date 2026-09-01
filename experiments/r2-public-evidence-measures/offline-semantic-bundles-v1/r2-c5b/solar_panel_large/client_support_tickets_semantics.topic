@@ -1,0 +1,9 @@
+base_view: solar_panel_large_public__client_support_tickets
+label: ClientSupportTickets
+description: All columns of the public table ClientSupportTickets.
+fields:
+- solar_panel_large_public__client_support_tickets.*
+- solar_panel_large_public__clients.*
+joins:
+  solar_panel_large_public__clients: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,9 @@
+base_view: cross_border_large_public__policy_acknowledgment
+label: PolicyAcknowledgment
+description: All columns of the public table PolicyAcknowledgment.
+fields:
+- cross_border_large_public__policy_acknowledgment.*
+- cross_border_large_public__policy_version.*
+joins:
+  cross_border_large_public__policy_version: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

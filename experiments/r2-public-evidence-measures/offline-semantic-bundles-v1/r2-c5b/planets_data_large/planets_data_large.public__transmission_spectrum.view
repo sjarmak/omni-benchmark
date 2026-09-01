@@ -1,0 +1,54 @@
+label: TransmissionSpectrum
+description: All columns of the public table TransmissionSpectrum.
+catalog: planets_data_large
+schema: public
+table_name: TransmissionSpectrum
+dimensions:
+  instrument:
+    description: 'TEXT. Instrument used Possible values: JWST NIRSpec, JWST MIRI, HST WFC3, HST STIS, VLT FORS2, Spitzer IRAC, Ground.'
+    sql: '"INSTRUMENT"'
+  planet_radius_ratio:
+    description: 'REAL. Rp/Rs at this wavelength Typical range: 0.01 to 0.3.'
+    sql: '"PLANET_RADIUS_RATIO"'
+  species_detected:
+    description: 'TEXT. Chemical species detected at this wavelength Possible values: H2O, Na, K, CO2, CH4, CO, TiO, VO. **NULL means No species detection claimed.**'
+    sql: '"SPECIES_DETECTED"'
+  spectrum_id:
+    description: BIGINT. Primary key. Unique transmission spectrum identifier
+    sql: '"SPECTRUM_ID"'
+  systematic_error_ppm:
+    description: 'REAL. Estimated systematic error Typical range: 0 to 1000.'
+    sql: '"SYSTEMATIC_ERROR_ppm"'
+  transit_depth_ppm:
+    description: 'REAL. Transit depth at this wavelength Typical range: 10 to 50000.'
+    sql: '"TRANSIT_DEPTH_ppm"'
+  wavelength_nm:
+    description: 'REAL. Central wavelength of spectral bin in nm Typical range: 300 to 28000.'
+    sql: '"WAVELENGTH_nm"'
+  clouds_haze_detected:
+    description: BOOLEAN. Whether clouds/hazes are indicated Boolean flag (true/false).
+    sql: clouds_haze_detected
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  depth_error_ppm:
+    description: 'REAL. Transit depth uncertainty Typical range: 5 to 5000.'
+    sql: depth_error_ppm
+  detection_significance_sigma:
+    description: 'REAL. Detection significance in sigma Typical range: 0 to 20. **NULL means No detection claimed.**'
+    sql: detection_significance_sigma
+  observation_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Date of observation
+    sql: observation_date
+  planet_ref:
+    description: BIGINT. Foreign key referencing planets(planetref). Related planet
+    sql: planet_ref
+  reduction_method:
+    description: 'TEXT. Data reduction method Possible values: CASCADE, Eureka, Tiberius, ExoTiC-JEDI, Custom.'
+    sql: reduction_method
+  scale_height_km:
+    description: 'REAL. Atmospheric scale height implied Typical range: 10 to 5000. **NULL means Scale height not derivable.**'
+    sql: scale_height_km
+  wavelength_bin_width_nm:
+    description: 'REAL. Width of spectral bin Typical range: 0.1 to 2000.'
+    sql: wavelength_bin_width_nm

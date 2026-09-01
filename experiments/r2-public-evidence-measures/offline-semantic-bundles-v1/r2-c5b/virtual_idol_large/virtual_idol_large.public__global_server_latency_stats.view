@@ -1,0 +1,60 @@
+label: GlobalServerLatencyStats
+description: All columns of the public table GlobalServerLatencyStats.
+catalog: virtual_idol_large
+schema: public
+table_name: GlobalServerLatencyStats
+dimensions:
+  auto_scaling_group_size:
+    description: 'INTEGER. Number of servers running. Example: 50.'
+    sql: auto_scaling_group_size
+  avg_latency_ms:
+    description: 'REAL. Average ping. Example: 45.'
+    sql: avg_latency_ms
+  bandwidth_mbps:
+    description: 'REAL. Throughput. Example: 2000.'
+    sql: bandwidth_mbps
+  cdn_edge_hit_rate:
+    description: 'REAL. Cache hit ratio (0-1). Example: 0.92.'
+    sql: cdn_edge_hit_rate
+  concurrent_connections:
+    description: 'INTEGER. Number of active users on node. Example: 5000.'
+    sql: concurrent_connections
+  cpu_usage_pct:
+    description: 'REAL. Server load. Example: 60.'
+    sql: cpu_usage_pct
+  ddos_mitigation_active:
+    description: 'BOOLEAN. True if shield active. Possible values: True, False.'
+    sql: ddos_mitigation_active
+  error_5xx_count:
+    description: 'INTEGER. Server error count. Example: 50.'
+    sql: error_5xx_count
+  event_ref:
+    description: 'INTEGER. The virtual concert event. Example: 50.'
+    sql: event_ref
+  instance_type:
+    description: 'TEXT. Cloud instance size. Unique values: c5.4xlarge, g4dn.xlarge.'
+    sql: instance_type
+  is_peak_hour:
+    description: 'BOOLEAN. True if prime time. Possible values: True, False.'
+    sql: is_peak_hour
+  isp_name:
+    description: 'TEXT. Dominant ISP in region. Unique values: Comcast, Verizon, NTT, Orange.'
+    sql: isp_name
+  log_timestamp:
+    description: 'TIMESTAMP. Time of metric collection. Example: 2024-01-01 12:00:00.'
+    sql: log_timestamp
+  packet_loss_pct:
+    description: 'REAL. Packet loss percentage. Example: 0.1.'
+    sql: packet_loss_pct
+  player_buffer_health_sec:
+    description: 'REAL. Avg buffered content client-side. Example: 10.'
+    sql: player_buffer_health_sec
+  rebuffering_ratio:
+    description: 'REAL. Percentage of time users spent buffering. Example: 0.01.'
+    sql: rebuffering_ratio
+  server_region:
+    description: 'TEXT. AWS/Azure Region Code. Unique values: us-east-1, eu-central-1, ap-northeast-1, sa-east-1.'
+    sql: server_region
+  stat_id:
+    description: TEXT. Unique ID for the telemetry record.
+    sql: stat_id

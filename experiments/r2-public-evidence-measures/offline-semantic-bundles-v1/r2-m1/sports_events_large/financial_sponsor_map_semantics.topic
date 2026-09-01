@@ -1,0 +1,13 @@
+base_view: sports_events_large_public__financial_sponsor_map
+label: Financial_Sponsor_Map
+description: All columns of the public table Financial_Sponsor_Map.
+fields:
+- sports_events_large_public__financial_sponsor_map.*
+- sports_events_large_public__constructors.*
+- sports_events_large_public__sponsor_entities.*
+- sports_events_large_public__team_budget.*
+joins:
+  sports_events_large_public__sponsor_entities: {}
+  sports_events_large_public__team_budget:
+    sports_events_large_public__constructors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

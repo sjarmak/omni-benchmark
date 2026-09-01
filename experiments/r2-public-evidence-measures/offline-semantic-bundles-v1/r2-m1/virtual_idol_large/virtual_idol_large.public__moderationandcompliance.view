@@ -1,0 +1,41 @@
+label: Moderation and Compliance
+description: Moderation records with row-level status semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: moderationandcompliance
+dimensions:
+  moderation_status:
+    description: TEXT. Current moderation status and any active restrictions on the account.
+    label: Moderation Status
+    sql: mod_stat
+    ai_context: 'Moderation Status: Reflects a fan''s account standing. ''Good Standing'' means no issues. ''Warning'' indicates a minor violation. ''Restricted'' indicates temporary limitations due to a serious violation.'
+  cont_comp:
+    description: TEXT. Content compliance rating and adherence to platform guidelines.
+    sql: cont_comp
+  mod_reg:
+    description: BIGSERIAL. Auto-generated unique identifier for moderation and compliance record. PK = ModerationAndCompliance(Mod_Reg).
+    sql: mod_reg
+  moderation_interact_pivot:
+    description: TEXT. Reference to interaction record for moderation context. FK to Interactions.
+    sql: moderation_interact_pivot
+  moderation_social_pivot:
+    description: BIGINT. Reference to social community record for moderation analysis. FK to SocialCommunity.
+    sql: moderation_social_pivot
+  rpt_count:
+    description: SMALLINT. Number of reports filed against this fan's content or behavior.
+    sql: rpt_count
+  verification_status:
+    description: JSON string containing status of age, payment, and identity verification.
+    sql: verification_status
+  viol_hist:
+    description: TEXT. History of policy violations committed by the fan. **NULL means no violation history recorded or clean conduct record.**
+    sql: viol_hist
+  warn_count:
+    description: SMALLINT. Number of warnings issued to this fan for policy violations.
+    sql: warn_count
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Moderation and Compliance public identity values.
+    label: Moderation and Compliance Count
+    sql: ${virtual_idol_large_public__moderationandcompliance.mod_reg}

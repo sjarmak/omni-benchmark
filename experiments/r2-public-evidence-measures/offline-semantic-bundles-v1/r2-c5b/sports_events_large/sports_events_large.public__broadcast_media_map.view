@@ -1,0 +1,45 @@
+label: Broadcast_Media_Map
+description: All columns of the public table Broadcast_Media_Map.
+catalog: sports_events_large
+schema: public
+table_name: Broadcast_Media_Map
+dimensions:
+  aired_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When asset was aired
+    sql: '"AIRED_AT"'
+  bmm_id:
+    description: BIGINT. Primary key. Unique broadcast-media mapping identifier
+    sql: '"BMM_ID"'
+  broadcast_ref:
+    description: BIGINT. Foreign key referencing TVBroadcast(BROADCAST_ID). Related broadcast
+    sql: '"BROADCAST_REF"'
+  licensed:
+    description: BOOLEAN. Whether asset required separate licensing Boolean flag (true/false).
+    sql: '"LICENSED"'
+  replay_count:
+    description: BIGINT. Number of times replayed during broadcast
+    sql: '"REPLAY_COUNT"'
+  social_engagements:
+    description: BIGINT. Social media engagements on this clip **NULL means Not shared on social media.**
+    sql: '"SOCIAL_ENGAGEMENTS"'
+  usage_type:
+    description: 'TEXT. How the media asset was used in broadcast Possible values: Clip, Highlight, Replay, Interview, B-Roll, Archive Footage.'
+    sql: '"USAGE_TYPE"'
+  airtime_seconds:
+    description: BIGINT. Duration asset was on air in seconds
+    sql: airtime_seconds
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  licensing_fee_usd:
+    description: 'REAL. Licensing fee if applicable Typical range: 0 to 10000. **NULL means No licensing fee.**'
+    sql: licensing_fee_usd
+  media_ref:
+    description: BIGINT. Foreign key referencing media_assets(MediaAssetIndex). Related media asset
+    sql: media_ref
+  segment:
+    description: 'TEXT. Broadcast segment where asset appeared Possible values: Pre-Race, Race, Post-Race, Analysis, Qualifying Recap, Feature.'
+    sql: segment
+  social_media_shared:
+    description: BOOLEAN. Whether asset was shared on social media Boolean flag (true/false).
+    sql: social_media_shared

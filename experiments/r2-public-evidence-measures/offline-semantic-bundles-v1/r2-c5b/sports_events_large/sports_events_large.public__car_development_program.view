@@ -1,0 +1,66 @@
+label: CarDevelopmentProgram
+description: All columns of the public table CarDevelopmentProgram.
+catalog: sports_events_large
+schema: public
+table_name: CarDevelopmentProgram
+dimensions:
+  actual_downforce_improvement_pct:
+    description: 'REAL. Actual downforce improvement achieved Typical range: -5 to 20. **NULL means Not yet measured.**'
+    sql: '"ACTUAL_DOWNFORCE_IMPROVEMENT_PCT"'
+  budget_musd:
+    description: 'REAL. Development budget in millions USD Typical range: 30 to 150.'
+    sql: '"BUDGET_MUSD"'
+  car_designation:
+    description: 'TEXT. Car designation code Possible values: RB20, W15, SF-24, MCL38, AMR24, A524, AT04, FW46.'
+    sql: '"CAR_DESIGNATION"'
+  cfd_runs_completed:
+    description: BIGINT. Number of CFD simulations completed
+    sql: '"CFD_RUNS_COMPLETED"'
+  constructor_ref:
+    description: BIGINT. Foreign key referencing constructors(cstr_key). Related constructor
+    sql: '"CONSTRUCTOR_REF"'
+  dev_program_id:
+    description: BIGINT. Primary key. Unique car development program identifier
+    sql: '"DEV_PROGRAM_ID"'
+  fia_homologation_status:
+    description: 'TEXT. FIA homologation status Possible values: Pending, Approved, Conditional.'
+    sql: '"FIA_homologation_status"'
+  spec_upgrades_deployed:
+    description: BIGINT. Number of upgrades deployed
+    sql: '"SPEC_UPGRADES_DEPLOYED"'
+  staff_assigned:
+    description: BIGINT. Number of staff assigned
+    sql: '"STAFF_ASSIGNED"'
+  target_weight_reduction_kg:
+    description: 'REAL. Target weight reduction in kg Typical range: 0 to 20.'
+    sql: '"TARGET_WEIGHT_REDUCTION_KG"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  program_code:
+    description: TEXT. Development program code
+    sql: program_code
+  program_phase:
+    description: 'TEXT. Development phase Possible values: Concept, Design, Manufacturing, Testing, In-Season Development, Post-Season.'
+    sql: program_phase
+  season_year:
+    description: BIGINT. Season year
+    sql: season_year
+  spec_upgrades_planned:
+    description: BIGINT. Number of specification upgrades planned
+    sql: spec_upgrades_planned
+  spent_musd:
+    description: 'REAL. Amount spent to date Typical range: 10 to 150.'
+    sql: spent_musd
+  target_downforce_improvement_pct:
+    description: 'REAL. Target downforce improvement (%) Typical range: 0 to 20.'
+    sql: target_downforce_improvement_pct
+  target_drag_reduction_pct:
+    description: 'REAL. Target drag reduction (%) Typical range: 0 to 15.'
+    sql: target_drag_reduction_pct
+  wind_tunnel_hours_used:
+    description: BIGINT. Wind tunnel hours used
+    sql: wind_tunnel_hours_used

@@ -1,0 +1,66 @@
+label: TaxLotManagement
+description: All columns of the public table TaxLotManagement.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: TaxLotManagement
+dimensions:
+  tax_lot_management_id:
+    description: TEXT. Unique identifier for tax lot management record.
+    sql: '"TaxLotManagement_id"'
+  average_lot_holding_period_days:
+    description: 'INTEGER. Average holding period of lots in days. Example: 50.'
+    sql: average_lot_holding_period_days
+  cost_basis_method:
+    description: 'TEXT. Cost basis calculation method used. Unique values: FIFO, LIFO, Specific Identification, Average Cost, HIFO.'
+    sql: cost_basis_method
+  has_carryforward_losses:
+    description: 'BOOLEAN. Whether fund has capital loss carryforwards. Possible values: True, False.'
+    sql: has_carryforward_losses
+  is_tax_managed:
+    description: 'BOOLEAN. Whether fund employs active tax management. Possible values: True, False.'
+    sql: is_tax_managed
+  long_term_lots_count:
+    description: 'INTEGER. Number of long-term tax lots. Example: 50.'
+    sql: long_term_lots_count
+  lot_assessment_date:
+    description: 'TIMESTAMP. Date of tax lot assessment. Example: 2024-01-01 12:00:00.'
+    sql: lot_assessment_date
+  lot_selection_status:
+    description: 'TEXT. Status of lot selection optimization. Unique values: Optimized, Partially Optimized, Manual Override, Pending.'
+    sql: lot_selection_status
+  lots_approaching_lt_threshold:
+    description: 'INTEGER. Lots within 30 days of long-term status. Example: 50.'
+    sql: lots_approaching_lt_threshold
+  optimization_strategy:
+    description: 'TEXT. Tax lot optimization strategy employed. Unique values: Minimize ST Gains, Maximize Losses, Balanced, Defer Gains, None.'
+    sql: optimization_strategy
+  short_term_lots_count:
+    description: 'INTEGER. Number of short-term tax lots. Example: 50.'
+    sql: short_term_lots_count
+  tax_efficiency_ref:
+    description: TEXT. Reference to the fund tax efficiency metrics.
+    sql: tax_efficiency_ref
+  tax_loss_harvest_potential_millions:
+    description: 'REAL. Potential tax loss harvesting value in millions. **NULL means Harvest analysis not performed.** Example: 50.0.'
+    sql: tax_loss_harvest_potential_millions
+  total_lots_count:
+    description: 'INTEGER. Total number of tax lots in portfolio. Example: 50.'
+    sql: total_lots_count
+  unrealized_lt_gains_millions:
+    description: 'REAL. Unrealized long-term gains in millions USD. **NULL means Gain calculation pending.** Example: 50.0.'
+    sql: unrealized_lt_gains_millions
+  unrealized_lt_losses_millions:
+    description: 'REAL. Unrealized long-term losses in millions USD. **NULL means Loss calculation pending.** Example: 50.0.'
+    sql: unrealized_lt_losses_millions
+  unrealized_st_gains_millions:
+    description: 'REAL. Unrealized short-term gains in millions USD. **NULL means Gain calculation pending.** Example: 50.0.'
+    sql: unrealized_st_gains_millions
+  unrealized_st_losses_millions:
+    description: 'REAL. Unrealized short-term losses in millions USD. **NULL means Loss calculation pending.** Example: 50.0.'
+    sql: unrealized_st_losses_millions
+  uses_etf_heartbeat:
+    description: 'BOOLEAN. Whether fund uses ETF heartbeat trades. Possible values: True, False.'
+    sql: uses_etf_heartbeat
+  wash_sale_exposure_millions:
+    description: 'REAL. Exposure to wash sale rules in millions USD. **NULL means Wash sale tracking not enabled.** Example: 50.0.'
+    sql: wash_sale_exposure_millions

@@ -1,0 +1,15 @@
+base_view: polar_equipment_large_public__engine_and_fluids
+label: EngineAndFluids
+description: All columns of the public table EngineAndFluids.
+fields:
+- polar_equipment_large_public__engine_and_fluids.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__operationmaintenance.*
+- polar_equipment_large_public__powerbattery.*
+joins:
+  polar_equipment_large_public__equipment:
+    polar_equipment_large_public__equipmenttype: {}
+  polar_equipment_large_public__operationmaintenance: {}
+  polar_equipment_large_public__powerbattery: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

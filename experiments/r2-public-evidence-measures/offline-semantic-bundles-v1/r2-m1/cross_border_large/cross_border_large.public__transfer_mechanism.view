@@ -1,0 +1,93 @@
+label: Transfer_Mechanism
+description: All columns of the public table Transfer_Mechanism.
+catalog: cross_border_large
+schema: public
+table_name: Transfer_Mechanism
+dimensions:
+  dpia_trigger:
+    description: 'TEXT. Conditions triggering a DPIA. Possible values: High-risk processing, Large scale, Special category, None. Example: High-risk processing.'
+    sql: '"DPIA_TRIGGER"'
+  effective_date:
+    description: 'DATE. Effective date of the mechanism. Example: 2021-09-01.'
+    sql: '"EFFECTIVE_DATE"'
+  flag2:
+    description: 'TEXT. Optional categorical flag. Example: No.'
+    sql: '"FLAG2"'
+  flag3:
+    description: 'TEXT. Optional categorical flag. Example: .'
+    sql: '"Flag3"'
+  legal_reference:
+    description: 'TEXT. Legal reference code. Example: REF-321.'
+    sql: '"LEGAL_REFERENCE"'
+  metric1:
+    description: 'REAL. Custom metric 1. Example: 72.50.'
+    sql: '"METRIC1"'
+  metric5:
+    description: 'REAL. Custom metric 5. Example: 28.00.'
+    sql: '"METRIC5"'
+  major_version:
+    description: 'TEXT. Major version of the instrument. Example: 1.'
+    sql: '"Major_Version"'
+  metric3:
+    description: 'REAL. Custom metric 3. Example: 56.10.'
+    sql: '"Metric3"'
+  notes:
+    description: 'TEXT. Free-form notes. **NULL means no notes recorded.** Example: Legacy for some regions.'
+    sql: '"NOTES"'
+  name:
+    description: 'TEXT. Mechanism name. Example: SCCs 2021.'
+    sql: '"Name"'
+  required_artifacts:
+    description: 'TEXT. Required legal/operational artifacts. Example: DPA,SCC annex.'
+    sql: '"REQUIRED_ARTIFACTS"'
+  re_evaluation_cycle_days:
+    description: 'BIGINT. Re-evaluation cycle days. Typical values: 180, 365, 730. **NULL means not defined.** Example: 365.'
+    sql: '"RE_EVALUATION_CYCLE_DAYS"'
+  scope:
+    description: 'TEXT. Applicability scope. Possible values: controller, processor, both. Example: controller.'
+    sql: '"Scope"'
+  type:
+    description: 'TEXT. Mechanism type. Possible values: adequacy, SCC, BCR, derogation. Example: SCC.'
+    sql: '"TYPE"'
+  updated_at:
+    description: 'DATE. Last update date (yyyy-mm-dd). Example: 2025-06-15.'
+    sql: '"UPDATED_AT"'
+  applicability:
+    description: 'TEXT. Coverage context. Possible values: intra-group, extra-EU, global, regional. Example: global.'
+    sql: applicability
+  created_at:
+    description: 'DATE. Record creation date (yyyy-mm-dd). Example: 2024-03-11.'
+    sql: created_at
+  deprecated_date:
+    description: 'DATE. Date when the mechanism was deprecated. **NULL means still valid.** Example: 2026-03-15.'
+    sql: deprecated_date
+  flag1:
+    description: 'TEXT. Optional categorical flag. Possible values: Yes, No. **NULL means not set.** Example: Yes.'
+    sql: flag1
+  impact_assessment_required:
+    description: 'TEXT. Whether impact assessment is required. Possible values: Yes, No. Example: Yes.'
+    sql: impact_assessment_required
+  mechanism_no:
+    description: 'BIGINT. Primary key for the transfer mechanism. Example: 1.'
+    sql: mechanism_no
+  metric2:
+    description: 'REAL. Custom metric 2. Example: 41.30.'
+    sql: metric2
+  metric4:
+    description: 'REAL. Custom metric 4. Example: 63.25.'
+    sql: metric4
+  minor_version:
+    description: 'TEXT. Minor version. Example: 0.'
+    sql: minor_version
+  official_link:
+    description: 'TEXT. Official link to the instrument. **NULL means not provided.** Example: https://mechanisms.example/5.'
+    sql: official_link
+  supervisory_notification:
+    description: 'TEXT. Whether notification to authority is needed. Possible values: Required, Not Required. Example: Required.'
+    sql: supervisory_notification
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Transfer_Mechanism public identity values.
+    label: Transfer_Mechanism Count
+    sql: ${cross_border_large_public__transfer_mechanism.mechanism_no}

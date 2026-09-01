@@ -1,0 +1,119 @@
+label: Disaster Events
+description: Disaster-event records with row-level population impact, infrastructure damage, severity, and damage-category semantics.
+catalog: disaster_relief_large
+schema: public
+table_name: disasterevents
+dimensions:
+  affected_population:
+    description: 'BIGINT. Number of affected population. Example: 228943.'
+    label: Affected Population
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'affected') AS DOUBLE PRECISION)
+  displaced_population:
+    description: 'BIGINT. Number of displaced individuals. **NULL means displacement data not available.**. Example: 31578.0.'
+    label: Displaced Population
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'displaced') AS DOUBLE PRECISION)
+  casualties:
+    description: 'BIGINT. Number of casualties due to the disaster. Example: 174.'
+    label: Confirmed Deaths / Casualties
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'casualties') AS DOUBLE PRECISION)
+  injured_population:
+    description: 'BIGINT. Number of injuries caused by the disaster. **NULL means injury data not available.**. Example: 4524.0.'
+    label: Injured Population
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'injured') AS DOUBLE PRECISION)
+  missing_population:
+    description: 'BIGINT. Number of missing persons. **NULL means missing persons data not recorded.**. Example: 212.0.'
+    label: Missing Population
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'population_impact', 'missing') AS DOUBLE PRECISION)
+  infrastructure_damage_pct:
+    description: 'REAL. Percentage of infrastructure damaged. Example: 19.0.'
+    label: Infrastructure Damage (%)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'infrastructure_damage', 'infra_damage_pct') AS DOUBLE PRECISION)
+  power_outage_pct:
+    description: 'REAL. Percentage of power outages. **NULL means power outage data not recorded.**. Example: 93.2.'
+    label: Power Outage (%)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'infrastructure_damage', 'power_outage_pct') AS DOUBLE PRECISION)
+  water_damage_pct:
+    description: 'BIGINT. Percentage of water infrastructure damage. **NULL means water damage data not available.**. Example: 77.4.'
+    label: Water Infrastructure Damage (%)
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(impact_summary, 'infrastructure_damage', 'water_damage_pct') AS DOUBLE PRECISION)
+  hazard_level:
+    description: 'TEXT. Severity level of the disaster event. Possible values: Severity-1, Severity-2, Severity-3, Severity-4, Severity-5.'
+    label: Hazard Severity Level
+    sql: haz_level
+    ai_context: 'Hazard Severity Levels: ''Level 1'' indicates a minor, localized event. ''Level 3'' indicates a moderate event with regional impact. ''Level 5'' indicates a catastrophic event with widespread, severe impact requiring international assistance.'
+  damage_report:
+    description: 'TEXT. Detailed report of the damage caused by the disaster. Possible values: Catastrophic, Minor, Moderate, Severe.'
+    label: Damage Report Category
+    sql: damagereport
+    ai_context: 'Damage Report Categories: ''Minor'': Limited damage. ''Moderate'': Visible damage to some structures. ''Severe'': Widespread destruction. ''Catastrophic'': Near-total destruction of the built environment in the affected area.'
+  affectedarea:
+    description: 'TEXT. Geographic area impacted by the disaster. Example: East Jeremy.'
+    sql: affectedarea
+  distregistry:
+    description: VARCHAR(20). Unique disaster event identifier. PK.
+    sql: distregistry
+  haztype:
+    description: 'HazType_enum. Type of the disaster (e.g., Wildfire, Earthquake). Possible values: Earthquake, Flood, Hurricane, Tsunami, Wildfire.'
+    sql: haztype
+  impact_summary:
+    description: JSONB column. Summarizes the impact of the disaster including population effects and damage levels.
+    sql: impact_summary
+  latcoord:
+    description: 'REAL. Latitude coordinate of the disaster center. Example: 51.203609.'
+    sql: latcoord
+  lon_coord:
+    description: 'REAL. Longitude coordinate of the disaster center. Example: 36.221141.'
+    sql: lon_coord
+  region_tag:
+    description: 'TEXT. Regional tag for categorization. Example: RC7250.'
+    sql: region_tag
+  timemark:
+    description: 'TIMESTAMP. Timestamp when the disaster event was recorded. Example: 2024-12-21 19:49.'
+    sql: timemark
+  impact_summary_communication_and_transport_communication_state:
+    description: 'TEXT. Communication network status during the disaster. Possible values: Down, Limited, OP.'
+    sql: JSONB_EXTRACT_PATH_TEXT(impact_summary, 'communication_and_transport', 'communication_state')
+  impact_summary_communication_and_transport_transport_access:
+    description: 'TEXT. Access to transportation routes during the disaster. Possible values: Full, Limited, Minimal.'
+    sql: JSONB_EXTRACT_PATH_TEXT(impact_summary, 'communication_and_transport', 'transport_access')
+  disaster_mortality_rate:
+    label: Disaster Mortality Rate (DMR)
+    description: Calculates the percentage of the affected population that resulted in fatalities.
+    sql: CASE WHEN ${affected_population} <> 0 THEN ${casualties} * 100.0 / ${affected_population} END
+    ai_context: Use this modeled field for Disaster Mortality Rate (DMR); do not reconstruct its formula.
+  population_displacement_rate:
+    label: Population Displacement Rate (PDR)
+    description: Measures the percentage of the affected population that has been displaced from their homes.
+    sql: CASE WHEN ${affected_population} <> 0 THEN ${displaced_population} * 100.0 / ${affected_population} END
+    ai_context: Use this modeled field for Population Displacement Rate (PDR); do not reconstruct its formula.
+  infrastructure_damage_index:
+    label: Infrastructure Damage Index (IDI)
+    description: A composite score from 0 to 100 that quantifies the overall damage to critical infrastructure.
+    sql: (COALESCE(${infrastructure_damage_pct}, 0.0) + COALESCE(${power_outage_pct}, 0.0) + COALESCE(${water_damage_pct}, 0.0)) / 3.0
+    ai_context: Use this modeled field for Infrastructure Damage Index (IDI); do not reconstruct its formula.
+  population_impact_score:
+    label: Population Impact Score (PIS)
+    description: A weighted score quantifying the overall human impact of a disaster.
+    sql: 10.0 * COALESCE(${casualties}, 0.0) + 3.0 * COALESCE(${injured_population}, 0.0) + 2.0 * COALESCE(${missing_population}, 0.0) + COALESCE(${displaced_population}, 0.0)
+    ai_context: Use this modeled field for Population Impact Score (PIS); do not reconstruct its formula.
+  overall_disaster_severity_index:
+    label: Overall Disaster Severity Index (DSI)
+    description: A comprehensive index combining human and infrastructural impact into a single severity score.
+    sql: 0.6 * ${population_impact_score} + 0.4 * ${infrastructure_damage_index}
+    ai_context: Use this modeled field for Overall Disaster Severity Index (DSI); do not reconstruct its formula.
+  is_major_disaster:
+    label: Major Disaster
+    description: Classifies a disaster as 'Major' based on the comprehensive severity index, indicating a need for national-level response.
+    sql: ${overall_disaster_severity_index} BETWEEN 500000.0 AND 2000000.0
+    ai_context: Use this modeled field for Major Disaster; do not reconstruct its formula.
+  is_catastrophic_disaster:
+    label: Catastrophic Disaster
+    description: Classifies a disaster as 'Catastrophic' based on the DSI, indicating a need for maximum-level international response.
+    sql: ${overall_disaster_severity_index} > 15000.0
+    ai_context: Use this modeled field for Catastrophic Disaster; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Disaster Events public identity values.
+    label: Disaster Events Count
+    sql: ${disaster_relief_large_public__disasterevents.distregistry}

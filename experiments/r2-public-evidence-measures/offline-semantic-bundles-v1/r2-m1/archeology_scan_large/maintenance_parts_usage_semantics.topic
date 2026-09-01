@@ -1,0 +1,11 @@
+base_view: archeology_scan_large_public__maintenance_parts_usage
+label: MaintenancePartsUsage
+description: All columns of the public table MaintenancePartsUsage.
+fields:
+- archeology_scan_large_public__maintenance_parts_usage.*
+- archeology_scan_large_public__equipment.*
+- archeology_scan_large_public__equipment_maintenance.*
+joins:
+  archeology_scan_large_public__equipment_maintenance:
+    archeology_scan_large_public__equipment: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

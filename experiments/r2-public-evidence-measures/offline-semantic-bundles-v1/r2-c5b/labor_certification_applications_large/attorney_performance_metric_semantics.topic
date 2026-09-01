@@ -1,0 +1,13 @@
+base_view: labor_certification_applications_large_public__attorney_performance_metric
+label: AttorneyPerformanceMetric
+description: All columns of the public table AttorneyPerformanceMetric.
+fields:
+- labor_certification_applications_large_public__attorney_performance_metric.*
+- labor_certification_applications_large_public__attorney.*
+joins:
+  labor_certification_applications_large_public__attorney: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Attorney Performance Rating: Attorneys are rated as High Performers (over 95% approval rate), Standard Performers (85-95% approval rate), or Underperformers (below 85% approval rate), based on their application outcomes.'

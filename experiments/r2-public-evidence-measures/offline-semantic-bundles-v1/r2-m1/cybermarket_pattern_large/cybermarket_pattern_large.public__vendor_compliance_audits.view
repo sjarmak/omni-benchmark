@@ -1,0 +1,72 @@
+label: VendorComplianceAudits
+description: All columns of the public table VendorComplianceAudits.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: VendorComplianceAudits
+dimensions:
+  vca_id:
+    description: TEXT. Unique identifier for the vendor compliance audit record.
+    sql: '"VCA_id"'
+  aml_check_passed:
+    description: 'BOOLEAN. Whether anti-money laundering checks passed. Possible values: True, False.'
+    sql: aml_check_passed
+  audit_date:
+    description: 'TIMESTAMP. Date and time when the compliance audit was conducted. Example: 2024-01-01 12:00:00.'
+    sql: audit_date
+  audit_duration_hours:
+    description: 'REAL. Total hours spent conducting the audit. Example: 8.'
+    sql: audit_duration_hours
+  audit_outcome:
+    description: 'TEXT. Final outcome determination of the audit. Unique values: Approved, Conditionally Approved, Probation, Suspended, Terminated.'
+    sql: audit_outcome
+  audit_type:
+    description: 'TEXT. Type of compliance audit performed. Unique values: Annual Review, Quarterly Check, Incident Triggered, Random Spot Check, Regulatory Mandated.'
+    sql: audit_type
+  auditor_certification_level:
+    description: 'TEXT. Certification level of the auditor conducting review. Unique values: Junior, Senior, Lead, External Certified.'
+    sql: auditor_certification_level
+  compliance_score:
+    description: 'REAL. Overall compliance score from 0 to 100. **NULL means Audit incomplete or score pending calculation.** Example: 78.'
+    sql: compliance_score
+  critical_violations_count:
+    description: 'INTEGER. Number of critical severity violations found. Example: 0.'
+    sql: critical_violations_count
+  data_privacy_compliant:
+    description: 'BOOLEAN. Whether vendor meets data privacy requirements. Possible values: True, False.'
+    sql: data_privacy_compliant
+  document_completeness_pct:
+    description: 'REAL. Percentage of required documents submitted and valid. Example: 85.'
+    sql: document_completeness_pct
+  follow_up_required:
+    description: 'BOOLEAN. Whether a follow-up audit is required. Possible values: True, False.'
+    sql: follow_up_required
+  improvement_delta:
+    description: 'REAL. Change in compliance score from previous audit. **NULL means No previous audit for comparison.** Example: 3.'
+    sql: improvement_delta
+  kyc_verification_status:
+    description: 'TEXT. Status of Know Your Customer verification. Unique values: Verified, Pending, Failed, Expired, Under Review.'
+    sql: kyc_verification_status
+  previous_audit_score:
+    description: 'REAL. Compliance score from the previous audit cycle. **NULL means First audit for this vendor.** Example: 75.'
+    sql: previous_audit_score
+  remediation_deadline_days:
+    description: 'INTEGER. Days allowed for remediation of findings. **NULL means No violations requiring remediation.** Unique values: 7, 14, 30, 60, 90.'
+    sql: remediation_deadline_days
+  risk_tier_assigned:
+    description: 'TEXT. Risk tier assigned based on audit findings. Unique values: Low, Medium, High, Critical.'
+    sql: risk_tier_assigned
+  sanctions_screening_clear:
+    description: 'BOOLEAN. Whether vendor passed sanctions list screening. Possible values: True, False.'
+    sql: sanctions_screening_clear
+  seller_ref:
+    description: TEXT. Reference to the vendor being audited.
+    sql: seller_ref
+  violations_found_count:
+    description: 'INTEGER. Number of compliance violations identified. Example: 2.'
+    sql: violations_found_count
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct VendorComplianceAudits public identity values.
+    label: VendorComplianceAudits Count
+    sql: ${cybermarket_pattern_large_public__vendor_compliance_audits.vca_id}

@@ -1,0 +1,7 @@
+base_view: solar_panel_large_public__clients
+label: clients
+description: All columns of the public table clients.
+fields:
+- solar_panel_large_public__clients.*
+joins: {}
+ai_context: This topic models no cross-table joins.

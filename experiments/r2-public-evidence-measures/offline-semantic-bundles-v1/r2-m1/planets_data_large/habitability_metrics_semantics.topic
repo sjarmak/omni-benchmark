@@ -1,0 +1,11 @@
+base_view: planets_data_large_public__habitability_metrics
+label: habitability_metrics
+description: All columns of the public table habitability_metrics.
+fields:
+- planets_data_large_public__habitability_metrics.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__planets:
+    planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

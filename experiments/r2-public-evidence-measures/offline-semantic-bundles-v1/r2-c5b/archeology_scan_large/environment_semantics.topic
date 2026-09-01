@@ -1,0 +1,13 @@
+base_view: archeology_scan_large_public__environment
+label: Scanning Environment
+description: Environmental records with row-level temperature, humidity, illumination, and suitability semantics.
+fields:
+- archeology_scan_large_public__environment.*
+- archeology_scan_large_public__equipment.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__equipment: {}
+  archeology_scan_large_public__sites: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields environmental_condition_classification, environmental_suitability_index, is_optimal_scanning_condition rather than reconstructing their formulas.'

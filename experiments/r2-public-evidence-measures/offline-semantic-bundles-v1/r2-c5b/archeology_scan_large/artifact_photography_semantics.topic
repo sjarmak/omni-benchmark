@@ -1,0 +1,13 @@
+base_view: archeology_scan_large_public__artifact_photography
+label: ArtifactPhotography
+description: All columns of the public table ArtifactPhotography.
+fields:
+- archeology_scan_large_public__artifact_photography.*
+- archeology_scan_large_public__artifacts.*
+- archeology_scan_large_public__personnel.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__artifacts:
+    archeology_scan_large_public__personnel: {}
+    archeology_scan_large_public__sites: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

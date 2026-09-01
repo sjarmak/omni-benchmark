@@ -1,0 +1,13 @@
+base_view: planets_data_large_public__neighborhood_catalog_map
+label: Neighborhood_Catalog_Map
+description: All columns of the public table Neighborhood_Catalog_Map.
+fields:
+- planets_data_large_public__neighborhood_catalog_map.*
+- planets_data_large_public__astronomical_catalogs.*
+- planets_data_large_public__nearby_star_survey.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__astronomical_catalogs: {}
+  planets_data_large_public__nearby_star_survey:
+    planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

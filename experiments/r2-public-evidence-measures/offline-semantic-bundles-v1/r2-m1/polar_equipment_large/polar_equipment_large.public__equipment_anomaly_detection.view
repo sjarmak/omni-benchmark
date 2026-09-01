@@ -1,0 +1,72 @@
+label: EquipmentAnomalyDetection
+description: All columns of the public table EquipmentAnomalyDetection.
+catalog: polar_equipment_large
+schema: public
+table_name: EquipmentAnomalyDetection
+dimensions:
+  acknowledged:
+    description: 'BOOLEAN. Flag indicating if the anomaly has been acknowledged by operator. Possible values: True, False.'
+    sql: acknowledged
+  action_recommended:
+    description: 'TEXT. Recommended action based on anomaly analysis. Unique values: Monitor, Investigate, Schedule Maintenance, Immediate Intervention, No Action.'
+    sql: '"actionRecommended"'
+  analyst_notes:
+    description: TEXT. Notes from analyst reviewing the anomaly. **NULL means No analyst review performed.**
+    sql: '"analystNotes"'
+  anomaly_category:
+    description: 'TEXT. Category of the detected anomaly. Unique values: Point Anomaly, Contextual Anomaly, Collective Anomaly, Seasonal Deviation, Trend Break.'
+    sql: '"anomalyCategory"'
+  anomaly_detect_seq:
+    description: 'TEXT. Unique identifier for the equipment anomaly detection record. Example: EAD-1A2B3C.'
+    sql: '"anomalyDetectSeq"'
+  anomaly_score:
+    description: 'REAL. Anomaly score from detection algorithm (0-100). **NULL means Scoring algorithm failed.** Example: 65.'
+    sql: '"anomalyScore"'
+  baseline_value:
+    description: 'REAL. Expected baseline value for the anomalous metric. **NULL means Baseline not established.** Example: 50.'
+    sql: '"baselineValue"'
+  confidence_level_pct:
+    description: 'REAL. Confidence level of the anomaly detection as percentage. **NULL means Confidence calculation skipped.** Example: 82.'
+    sql: '"confidenceLevel_pct"'
+  correlated_anomaly_count:
+    description: 'INTEGER. Number of correlated anomalies detected simultaneously. **NULL means Correlation analysis not performed.** Example: 50.'
+    sql: '"correlatedAnomalyCount"'
+  detection_timestamp:
+    description: 'TIMESTAMP. Timestamp when the anomaly was detected. Example: 2024-01-01 12:00:00.'
+    sql: '"detectionTimestamp"'
+  deviation_magnitude:
+    description: 'REAL. Magnitude of deviation from normal behavior in standard deviations. **NULL means Deviation calculation error.** Example: 3.5.'
+    sql: '"deviationMagnitude"'
+  duration_seconds:
+    description: 'INTEGER. Duration of the anomaly in seconds. **NULL means Duration not tracked.** Example: 50.'
+    sql: '"durationSeconds"'
+  false_positive_probability:
+    description: 'REAL. Estimated probability that this is a false positive (0-1). **NULL means FP probability not estimated.** Example: 50.0.'
+    sql: '"falsePositiveProbability"'
+  model_version:
+    description: 'TEXT. Version of the anomaly detection model used. Unique values: v1.0, v1.5, v2.0, v2.1, v3.0.'
+    sql: '"modelVersion"'
+  observed_value:
+    description: 'REAL. Actual observed value that triggered the anomaly. **NULL means Observed value not captured.** Example: 70.'
+    sql: '"observedValue"'
+  perf_log_ref:
+    description: TEXT. Reference to the equipment performance log entry where anomaly was detected.
+    sql: perf_log_ref
+  rate_of_change:
+    description: 'REAL. Rate of change of the anomalous metric per minute. **NULL means Rate calculation not possible.** Example: 2.'
+    sql: '"rateOfChange"'
+  resolved_flag:
+    description: 'BOOLEAN. Flag indicating if the anomaly has been resolved. Possible values: True, False.'
+    sql: '"resolvedFlag"'
+  root_cause_hypothesis:
+    description: 'TEXT. Hypothesized root cause of the anomaly. Unique values: Sensor Drift, Component Wear, External Interference, Operational Change, Unknown, Data Quality Issue.'
+    sql: '"rootCauseHypothesis"'
+  severity_level:
+    description: 'TEXT. Severity classification of the anomaly. Unique values: Low, Medium, High, Critical.'
+    sql: '"severityLevel"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EquipmentAnomalyDetection public identity values.
+    label: EquipmentAnomalyDetection Count
+    sql: ${polar_equipment_large_public__equipment_anomaly_detection.anomaly_detect_seq}

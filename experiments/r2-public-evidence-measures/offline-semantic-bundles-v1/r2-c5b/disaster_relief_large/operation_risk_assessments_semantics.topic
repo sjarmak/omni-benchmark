@@ -1,0 +1,9 @@
+base_view: disaster_relief_large_public__operation_risk_assessments
+label: OperationRiskAssessments
+description: All columns of the public table OperationRiskAssessments.
+fields:
+- disaster_relief_large_public__operation_risk_assessments.*
+- disaster_relief_large_public__operations.*
+joins:
+  disaster_relief_large_public__operations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

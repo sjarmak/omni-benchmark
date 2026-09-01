@@ -1,0 +1,15 @@
+base_view: cybermarket_pattern_large_public__transaction_products
+label: transaction_products
+description: All columns of the public table transaction_products.
+fields:
+- cybermarket_pattern_large_public__transaction_products.*
+- cybermarket_pattern_large_public__buyers.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__transactions.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__transactions:
+    cybermarket_pattern_large_public__buyers: {}
+    cybermarket_pattern_large_public__markets: {}
+    cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

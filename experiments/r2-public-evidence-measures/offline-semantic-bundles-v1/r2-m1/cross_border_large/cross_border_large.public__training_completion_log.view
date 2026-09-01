@@ -1,0 +1,60 @@
+label: TrainingCompletionLog
+description: All columns of the public table TrainingCompletionLog.
+catalog: cross_border_large
+schema: public
+table_name: TrainingCompletionLog
+dimensions:
+  browser:
+    description: 'TEXT. Browser used Possible values: Chrome, Firefox, Safari, Edge. **NULL means Browser not detected.**'
+    sql: '"BROWSER"'
+  duration_seconds:
+    description: BIGINT. Time spent on module in seconds
+    sql: '"DURATION_SECONDS"'
+  interaction_level:
+    description: 'TEXT. Level of interaction/engagement Possible values: High, Medium, Low.'
+    sql: '"INTERACTION_LEVEL"'
+  log_id:
+    description: BIGINT. Primary key. Unique completion log entry identifier
+    sql: '"LOG_ID"'
+  passed:
+    description: BOOLEAN. Whether module quiz was passed Boolean flag (true/false).
+    sql: '"PASSED"'
+  program_ref:
+    description: BIGINT. Foreign key referencing PrivacyTrainingProgram(TRAINING_PROG_ID). Related training program
+    sql: '"PROGRAM_REF"'
+  questions_correct:
+    description: BIGINT. Number of correct answers
+    sql: '"QUESTIONS_CORRECT"'
+  start_time:
+    description: TIMESTAMP WITHOUT TIME ZONE. When module was started
+    sql: '"START_TIME"'
+  cert_ref:
+    description: BIGINT. Foreign key referencing EmployeeCertification(CERT_ID). Related certification record
+    sql: cert_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  device_type:
+    description: 'TEXT. Device used for training Possible values: Desktop, Laptop, Tablet, Mobile.'
+    sql: device_type
+  end_time:
+    description: TIMESTAMP WITHOUT TIME ZONE. When module was completed **NULL means Module not yet completed.**
+    sql: end_time
+  module_number:
+    description: BIGINT. Module number completed
+    sql: module_number
+  questions_total:
+    description: BIGINT. Total quiz questions
+    sql: questions_total
+  quiz_score_pct:
+    description: 'REAL. Quiz score for this module (%) Typical range: 0 to 100.'
+    sql: quiz_score_pct
+  video_watched_fully:
+    description: BOOLEAN. Whether video content was watched fully Boolean flag (true/false). **NULL means Module has no video content.**
+    sql: video_watched_fully
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TrainingCompletionLog public identity values.
+    label: TrainingCompletionLog Count
+    sql: ${cross_border_large_public__training_completion_log.log_id}

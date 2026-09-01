@@ -1,0 +1,51 @@
+label: product_disposal_guidelines
+description: All columns of the public table product_disposal_guidelines.
+catalog: reverse_logistics_large
+schema: public
+table_name: product_disposal_guidelines
+dimensions:
+  alternate_vendor_id:
+    description: 'BIGINT. The ID of an approved alternate disposal vendor. **NULL means no alternate vendor is specified.** Example: 24.0.'
+    sql: alternate_vendor_id
+  approved_by:
+    description: 'TEXT. The person or role that approved the guideline. **NULL means the guideline is in draft status.** Example: Approver-2.'
+    sql: approved_by
+  data_destruction_required:
+    description: 'BOOLEAN. Indicates if data must be destroyed before disposal. Possible values: True, False.'
+    sql: data_destruction_required
+  decommissioning_steps:
+    description: 'TEXT. Steps required to decommission the product before disposal. **NULL means no special steps are required.** Example: Remove battery before disposal..'
+    sql: decommissioning_steps
+  disposal_method:
+    description: 'TEXT. The recommended method of disposal. Possible values: Recycling, Hazardous Waste Disposal.'
+    sql: disposal_method
+  documentation_required:
+    description: 'TEXT. Any documentation required for disposal. Example: Certificate of Destruction.'
+    sql: documentation_required
+  estimated_disposal_cost:
+    description: 'REAL. The estimated cost for disposal. **NULL means the cost has not been assessed yet.** Example: 17.51.'
+    sql: estimated_disposal_cost
+  guideline_id:
+    description: 'BIGINT. Unique identifier for the disposal guideline. PK. Example: 4000.'
+    sql: guideline_id
+  handling_instructions:
+    description: 'TEXT. Special instructions for handling the product during disposal. Example: Wear protective gloves..'
+    sql: handling_instructions
+  is_hazardous:
+    description: 'BOOLEAN. Indicates if the product is considered hazardous waste. Possible values: True, False.'
+    sql: is_hazardous
+  last_updated:
+    description: 'DATE. The date the guideline was last updated. Example: 2025-05-27.'
+    sql: last_updated
+  preferred_disposal_agent:
+    description: 'BIGINT. The ID of the preferred vendor for disposal. FK to disposal_vendors.vendor_id. Example: 15.'
+    sql: preferred_disposal_agent
+  product_to_dispose:
+    description: 'TEXT. The item code of the product this guideline applies to. FK to products.itemcode. Example: PRD00355.'
+    sql: product_to_dispose
+  recyclable_material_yield_pct:
+    description: 'REAL. The estimated percentage of recyclable material yield. **NULL means the product is not considered recyclable.** Example: 69.1.'
+    sql: recyclable_material_yield_pct
+  regulatory_code:
+    description: 'TEXT. The relevant regulatory code for disposal. Example: RC-327.'
+    sql: regulatory_code

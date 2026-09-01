@@ -1,0 +1,13 @@
+base_view: polar_equipment_large_public__equipment_location_history
+label: EquipmentLocationHistory
+description: All columns of the public table EquipmentLocationHistory.
+fields:
+- polar_equipment_large_public__equipment_location_history.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__location.*
+joins:
+  polar_equipment_large_public__equipment:
+    polar_equipment_large_public__equipmenttype: {}
+  polar_equipment_large_public__location: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,15 @@
+base_view: cybermarket_pattern_large_public__markets
+label: Marketplaces
+description: Marketplace records with public operational-status context.
+fields:
+- cybermarket_pattern_large_public__markets.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Domain definitions for this topic:
+
+  - Marketplace Risk Score (MRS): MRS = \frac{0.4 \times \text{vuln\_count} + 0.3 \times \text{event\_count} + 0.3 \times \text{reputation\_score}}{100}
+
+  - Secure Platform: A platform with fewer than ten unresolved security vulnerabilities and more than fifteen active protection measures qualifies as Secure.
+
+  - Data Protection Efficiency: DPE = \frac{\text{protection\_measures}}{\text{vulnerability\_instances}}'

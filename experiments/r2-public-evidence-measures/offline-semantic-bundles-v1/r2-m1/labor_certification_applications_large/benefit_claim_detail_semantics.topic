@@ -1,0 +1,11 @@
+base_view: labor_certification_applications_large_public__benefit_claim_detail
+label: BenefitClaimDetail
+description: All columns of the public table BenefitClaimDetail.
+fields:
+- labor_certification_applications_large_public__benefit_claim_detail.*
+- labor_certification_applications_large_public__worker_health_benefit.*
+- labor_certification_applications_large_public__worker_profile.*
+joins:
+  labor_certification_applications_large_public__worker_health_benefit:
+    labor_certification_applications_large_public__worker_profile: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

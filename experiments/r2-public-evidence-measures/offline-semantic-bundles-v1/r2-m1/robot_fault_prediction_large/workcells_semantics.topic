@@ -1,0 +1,11 @@
+base_view: robot_fault_prediction_large_public__workcells
+label: workcells
+description: All columns of the public table workcells.
+fields:
+- robot_fault_prediction_large_public__workcells.*
+- robot_fault_prediction_large_public__robot_details.*
+- robot_fault_prediction_large_public__robot_record.*
+joins:
+  robot_fault_prediction_large_public__robot_details:
+    robot_fault_prediction_large_public__robot_record: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

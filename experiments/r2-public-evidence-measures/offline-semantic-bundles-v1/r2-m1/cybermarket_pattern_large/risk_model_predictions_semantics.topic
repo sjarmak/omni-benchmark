@@ -1,0 +1,19 @@
+base_view: cybermarket_pattern_large_public__risk_model_predictions
+label: Risk Model Predictions
+description: Risk-model prediction records with row-level fraud-probability semantics.
+fields:
+- cybermarket_pattern_large_public__risk_model_predictions.*
+- cybermarket_pattern_large_public__buyers.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__risk_analytics.*
+- cybermarket_pattern_large_public__transactions.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__risk_analytics:
+    cybermarket_pattern_large_public__transactions:
+      cybermarket_pattern_large_public__buyers: {}
+      cybermarket_pattern_large_public__markets: {}
+      cybermarket_pattern_large_public__vendors: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields is_fraud_flagged_transaction rather than reconstructing their formulas.'

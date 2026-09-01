@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__currency_rate_history
+label: currency_rate_history
+description: All columns of the public table currency_rate_history.
+fields:
+- cybermarket_pattern_large_public__currency_rate_history.*
+joins: {}
+ai_context: This topic models no cross-table joins.

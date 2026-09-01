@@ -1,0 +1,222 @@
+- join_from_view: labor_certification_applications_large_public__certification_verification_log
+  join_to_view: labor_certification_applications_large_public__worker_skill_certification
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__certification_verification_log.cert_ref} = ${labor_certification_applications_large_public__worker_skill_certification.wsc_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__case_worksite
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__case_worksite.dockkey} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__case_decision_audit
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__case_decision_audit.file_ref} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__case_fraud_indicator
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__case_fraud_indicator.file_ref} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__worker_education
+  join_to_view: labor_certification_applications_large_public__worker_profile
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__worker_education.worker_ref} = ${labor_certification_applications_large_public__worker_profile.worker_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__worker_dependent
+  join_to_view: labor_certification_applications_large_public__worker_profile
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__worker_dependent.worker_ref} = ${labor_certification_applications_large_public__worker_profile.worker_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__employer_labor_condition
+  join_to_view: labor_certification_applications_large_public__prevailing_wage
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__employer_labor_condition.track_ref} = ${labor_certification_applications_large_public__prevailing_wage.trackno}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__employer_compliance_score
+  join_to_view: labor_certification_applications_large_public__employer_poc
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__employer_compliance_score.poc_ref} = ${labor_certification_applications_large_public__employer_poc.contactmail}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__case_correspondence_log
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__case_correspondence_log.file_ref} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__recruitment_campaign_case_link
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__recruitment_campaign_case_link.file_ref} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__case_attorney
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__case_attorney.docketkey} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__visa_extension_request
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__visa_extension_request.file_ref} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__case_processing_timeline
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__case_processing_timeline.file_ref} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__worker_skill_certification
+  join_to_view: labor_certification_applications_large_public__worker_profile
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__worker_skill_certification.worker_ref} = ${labor_certification_applications_large_public__worker_profile.worker_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__fraud_investigation_action
+  join_to_view: labor_certification_applications_large_public__case_fraud_indicator
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__fraud_investigation_action.fraud_ref} = ${labor_certification_applications_large_public__case_fraud_indicator.cfi_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__case_rfe_details
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__case_rfe_details.file_ref} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__worker_position_history
+  join_to_view: labor_certification_applications_large_public__worker_profile
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__worker_position_history.worker_ref} = ${labor_certification_applications_large_public__worker_profile.worker_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__case_worksite
+  join_to_view: labor_certification_applications_large_public__prevailing_wage
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__case_worksite.wagetrack} = ${labor_certification_applications_large_public__prevailing_wage.trackno}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__benefit_claim_detail
+  join_to_view: labor_certification_applications_large_public__worker_health_benefit
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__benefit_claim_detail.benefit_ref} = ${labor_certification_applications_large_public__worker_health_benefit.whb_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__inspection_remediation_task
+  join_to_view: labor_certification_applications_large_public__worksite_inspection
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__inspection_remediation_task.inspection_ref} = ${labor_certification_applications_large_public__worksite_inspection.wsi_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__decision_audit_appeal
+  join_to_view: labor_certification_applications_large_public__case_decision_audit
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__decision_audit_appeal.audit_ref} = ${labor_certification_applications_large_public__case_decision_audit.cda_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__recruitment_campaign_case_link
+  join_to_view: labor_certification_applications_large_public__recruitment_campaign
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__recruitment_campaign_case_link.camp_code_ref} = ${labor_certification_applications_large_public__recruitment_campaign.camp_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__recruitment_campaign_worksite_link
+  join_to_view: labor_certification_applications_large_public__recruitment_campaign
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__recruitment_campaign_worksite_link.camp_code_ref} = ${labor_certification_applications_large_public__recruitment_campaign.camp_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__visa_extension_outcome
+  join_to_view: labor_certification_applications_large_public__visa_extension_request
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__visa_extension_outcome.extension_ref} = ${labor_certification_applications_large_public__visa_extension_request.ext_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__attorney_performance_metric
+  join_to_view: labor_certification_applications_large_public__attorney
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__attorney_performance_metric.law_ref} = ${labor_certification_applications_large_public__attorney.lawmail}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__recruitment_source_analytic
+  join_to_view: labor_certification_applications_large_public__recruitment_campaign
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__recruitment_source_analytic.camp_ref} = ${labor_certification_applications_large_public__recruitment_campaign.camp_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__source_channel_performance
+  join_to_view: labor_certification_applications_large_public__recruitment_source_analytic
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__source_channel_performance.analytic_ref} = ${labor_certification_applications_large_public__recruitment_source_analytic.rsa_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__case_attorney
+  join_to_view: labor_certification_applications_large_public__attorney
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__case_attorney.counselmail} = ${labor_certification_applications_large_public__attorney.lawmail}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__cases
+  join_to_view: labor_certification_applications_large_public__preparer
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__cases.preplink} = ${labor_certification_applications_large_public__preparer.prepmail}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__worker_health_benefit
+  join_to_view: labor_certification_applications_large_public__worker_profile
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__worker_health_benefit.worker_ref} = ${labor_certification_applications_large_public__worker_profile.worker_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__worksite_inspection
+  join_to_view: labor_certification_applications_large_public__cases
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__worksite_inspection.file_ref} = ${labor_certification_applications_large_public__cases.filekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__correspondence_response_tracking
+  join_to_view: labor_certification_applications_large_public__case_correspondence_log
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__correspondence_response_tracking.correspondence_ref} = ${labor_certification_applications_large_public__case_correspondence_log.ccl_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__attorney_case_specialization
+  join_to_view: labor_certification_applications_large_public__attorney
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__attorney_case_specialization.law_code_ref} = ${labor_certification_applications_large_public__attorney.lawmail}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__attorney_training_record
+  join_to_view: labor_certification_applications_large_public__attorney_performance_metric
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__attorney_training_record.perf_metric_ref} = ${labor_certification_applications_large_public__attorney_performance_metric.apm_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__compliance_score_history
+  join_to_view: labor_certification_applications_large_public__employer_compliance_score
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__compliance_score_history.score_ref} = ${labor_certification_applications_large_public__employer_compliance_score.ecs_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__wage_history
+  join_to_view: labor_certification_applications_large_public__prevailing_wage
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__wage_history.track_ref} = ${labor_certification_applications_large_public__prevailing_wage.trackno}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: labor_certification_applications_large_public__labor_condition_amendment
+  join_to_view: labor_certification_applications_large_public__employer_labor_condition
+  join_type: always_left
+  on_sql: ${labor_certification_applications_large_public__labor_condition_amendment.elc_ref} = ${labor_certification_applications_large_public__employer_labor_condition.elc_code}
+  relationship_type: many_to_one
+  reversible: false

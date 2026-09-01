@@ -1,0 +1,96 @@
+label: VehicleMaintenanceLogs
+description: All columns of the public table VehicleMaintenanceLogs.
+catalog: disaster_relief_large
+schema: public
+table_name: VehicleMaintenanceLogs
+dimensions:
+  maintenance_date:
+    description: DATE (yyyy/mm/dd). Calendar day the service work was carried out.
+    sql: '"MAINTENANCE_DATE"'
+  mechanic_name:
+    description: TEXT. Name of the mechanic or service lead. **Nullable** when not recorded.
+    sql: '"MechanicName"'
+  remarks:
+    description: TEXT. Free-form notes about issues found or actions taken. **Nullable** for routine services with no remarks.
+    sql: '"REMARKS"'
+  safety_inspection_passed:
+    description: BOOLEAN. TRUE if the overall safety inspection passed; FALSE otherwise.
+    sql: '"SafetyInspectionPassed"'
+  transport_ref:
+    description: VARCHAR(20). References Transportation(TransportRegistry); links the maintenance log to a specific fleet asset.
+    sql: '"TRANSPORT_REF"'
+  updated_at:
+    description: TIMESTAMP. Last modification time.
+    sql: '"UPDATED_AT"'
+  vehicle_id:
+    description: TEXT. In-house identifier or plate for the vehicle (e.g., “TR1234”).
+    sql: '"Vehicle_ID"'
+  version_no:
+    description: INT. Schema or record version for internal migrations.
+    sql: '"Version_No"'
+  warranty_status:
+    description: BOOLEAN. TRUE if the vehicle is still under warranty; otherwise FALSE. **Nullable** when status unknown.
+    sql: '"WarrantyStatus"'
+  created_at:
+    description: TIMESTAMP (yyyy/mm/dd HH:MM:SS). Record creation time.
+    sql: '"createdAt"'
+  fuel_type:
+    description: TEXT. Primary fuel used (Diesel, Petrol, Electric, Hybrid).
+    sql: '"fuelType"'
+  maintenance_id:
+    description: VARCHAR(20). Unique maintenance-record identifier. Primary Key.
+    sql: '"maintenanceId"'
+  next_due_date:
+    description: DATE. Next scheduled maintenance date according to the service plan.
+    sql: '"nextDueDate"'
+  odometer_reading_km:
+    description: REAL. Odometer reading at service time, in **kilometres**. **Nullable** if reading unavailable.
+    sql: '"odometerReadingKm"'
+  service_snapshot:
+    description: JSONB column. Captures one-stop technical & cost metrics from a single vehicle-service event.
+    sql: service_snapshot
+  vehicle_type:
+    description: TEXT. Category of vehicle (Truck, Ambulance, SUV, Helicopter, Boat, Van, etc.).
+    sql: '"vehicleTYPE"'
+  service_snapshot_costs_parts_usd:
+    description: REAL. Parts-only cost component in **U.S. dollars** (e.g., 450).
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'costs', 'partsUSD')
+  service_snapshot_costs_total_usd:
+    description: REAL. Total maintenance cost in **U.S. dollars** (labor + parts). **Nullable** if cost not yet finalised.
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'costs', 'totalUSD')
+  service_snapshot_down_time_h:
+    description: REAL. Total asset downtime caused by this service, in **hours**. **Nullable** for minor services done off-shift.
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'downTimeH')
+  service_snapshot_duration_h:
+    description: REAL. Total time the vehicle spent in service, in **hours** (e.g., 2.5).
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'duration_h')
+  service_snapshot_fuel_econ_l100:
+    description: REAL. Observed fuel consumption after service, in **litres per 100 kilometres** (e.g., 7.8).
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'fuelEconL100')
+  service_snapshot_service_status_status:
+    description: 'TEXT. Current status of the service task. Possible values: Completed, In Progress, Scheduled.'
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'serviceStatus', 'status')
+  service_snapshot_service_status_type:
+    description: 'TEXT. Kind of service performed. Typical values: Preventive, Corrective, Inspection, Emergency Repair.'
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'serviceStatus', 'type')
+  service_snapshot_tasks_0:
+    description: TEXT. Comma-separated list of parts changed (e.g., “Oil Filter, Brake Pads”). **Nullable** when no parts replaced.
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'tasks', '0')
+  service_snapshot_tests_brake_test:
+    description: TEXT. Result of brake effectiveness test (Pass/Fail). **Nullable** if not tested.
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'tests', 'brakeTest')
+  service_snapshot_tests_emissions:
+    description: TEXT. Result of emissions test (Pass/Fail). **Nullable** if not conducted.
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'tests', 'emissions')
+  service_snapshot_tests_oil_change:
+    description: BOOLEAN. TRUE if an oil change was completed during this service.
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'tests', 'oilChange')
+  service_snapshot_tests_tire_rotate:
+    description: BOOLEAN. TRUE if tire rotation was completed.
+    sql: JSONB_EXTRACT_PATH_TEXT(service_snapshot, 'tests', 'tireRotate')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct VehicleMaintenanceLogs public identity values.
+    label: VehicleMaintenanceLogs Count
+    sql: ${disaster_relief_large_public__vehicle_maintenance_logs.maintenance_id}

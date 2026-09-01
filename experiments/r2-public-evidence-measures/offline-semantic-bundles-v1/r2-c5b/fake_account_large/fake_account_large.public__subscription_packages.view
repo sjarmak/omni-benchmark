@@ -1,0 +1,117 @@
+label: subscription_packages
+description: All columns of the public table subscription_packages.
+catalog: fake_account_large
+schema: public
+table_name: subscription_packages
+dimensions:
+  lang_avail:
+    description: 'TEXT. Comma-separated supported UI languages. Example: en,es,pt.'
+    sql: '"LANG_AVAIL"'
+  limit_posts:
+    description: 'BIGINT. Monthly post limit. Example: 20000.'
+    sql: '"LIMIT_POSTS"'
+  media_limit:
+    description: 'BIGINT. Max media uploads / mo. Example: 7000.'
+    sql: '"MEDIA_LIMIT"'
+  notes:
+    description: TEXT. Product-manager notes.
+    sql: '"NOTES"'
+  packname:
+    description: 'TEXT. Human-readable plan label. Example: Plan_7.'
+    sql: '"PACKNAME"'
+  pack_score:
+    description: 'REAL. Composite attractiveness score (0–100). Example: 82.1.'
+    sql: '"PACK_SCORE"'
+  pack_rank:
+    description: 'REAL. Rank among all packages. Example: 14.'
+    sql: '"PackRank"'
+  pack_code:
+    description: 'TEXT. Unique package ID. PK. Example: PACK3021987.'
+    sql: '"Pack_CODE"'
+  support_level:
+    description: 'TEXT. Highest support channel. **NULL for self-service plans.** Possible values: Email, Chat, Phone, Dedicated.'
+    sql: '"SUPPORT_LEVEL"'
+  analytics_depth:
+    description: 'TEXT. Historical analytics depth. Values: Basic, Advanced, Full.'
+    sql: '"analyticsDepth"'
+  api_quota:
+    description: 'BIGINT. Monthly API-call quota. Example: 300000.'
+    sql: '"apiQuota"'
+  billing_policies:
+    description: JSONB column. Summarises pricing, cadence and fee policy details of a package.
+    sql: billing_policies
+  end_date:
+    description: 'DATE. Scheduled sunset date. Example: 2025/06/22.'
+    sql: '"endDate"'
+  feat_set:
+    description: 'JSONB. Enabled feature list. **NULL when feature bundle not specified.** Example: [core_api,analytics].'
+    sql: feat_set
+  last_update_ts:
+    description: 'TIMESTAMPTZ. Metadata last touched. Example: 2025/04/29 16:11:03.'
+    sql: '"lastUpdateTs"'
+  launch_date:
+    description: 'DATE. First availability. Example: 2024/03/12.'
+    sql: launch_date
+  limit_follows:
+    description: 'BIGINT. Max follows allowed. **NULL indicates unlimited or not enforced.** Example: 50000.'
+    sql: '"limitFollows"'
+  limit_msgs:
+    description: 'BIGINT. Monthly direct-message limit. Example: 80000.'
+    sql: '"limitMsgs"'
+  pack_type:
+    description: 'TEXT. Category of package. Possible values: Basic, Pro, Enterprise, Addon.'
+    sql: '"packType"'
+  pack_version:
+    description: 'TEXT. Version tag. Example: v2.'
+    sql: '"packVersion"'
+  priority_flag:
+    description: 'TEXT. Yes/No — queue priority. Example: Yes.'
+    sql: '"priorityFlag"'
+  region_avail:
+    description: 'TEXT. Regional scope. Example: EU.'
+    sql: '"regionAvail"'
+  status:
+    description: 'TEXT. Lifecycle state. Values: Active, Deprecated, Beta.'
+    sql: status
+  storage_gb:
+    description: 'REAL. Base media storage included, GB. Example: 240.0.'
+    sql: '"storageGB"'
+  storage_band_gb:
+    description: 'TEXT. Range of included storage — unit in header. Example: 120–240.'
+    sql: '"storage_band_GB"'
+  billing_policies_billing_cycle_cycle:
+    description: 'TEXT. Billing cadence. Values: Monthly, Annual.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'billing_cycle', 'CYCLE')
+  billing_policies_billing_cycle_auto_renew:
+    description: 'TEXT. Yes/No autorenew flag. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'billing_cycle', 'autoRenew')
+  billing_policies_billing_cycle_contract_term_d:
+    description: 'BIGINT. Minimum contract term in days. Example: 180.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'billing_cycle', 'contractTermD')
+  billing_policies_billing_cycle_trial_days:
+    description: 'BIGINT. Length of free trial in days. **NULL means plan has no trial.** Example: 14.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'billing_cycle', 'trialDays')
+  billing_policies_fees_cancel_fee_pct:
+    description: 'REAL. Early-cancel fee % of remaining term. Example: 10.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'fees', 'CANCEL_FEE_PCT')
+  billing_policies_fees_downg_fee_pct:
+    description: 'REAL. Downgrade fee %. Example: 1.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'fees', 'DOWNG_FEE_PCT')
+  billing_policies_fees_upgrade_fee_pct:
+    description: 'REAL. Surcharge % when upgrading mid-term. Example: 2.50.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'fees', 'upgradeFeePct')
+  billing_policies_pricing_currency:
+    description: 'TEXT. ISO-4217 currency code. Example: USD.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'pricing', 'currency')
+  billing_policies_pricing_discount_pct:
+    description: REAL. Promotional discount %. **NULL when no discount.**
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'pricing', 'discountPct')
+  billing_policies_pricing_price_usd:
+    description: 'REAL. Base cost per billing cycle in USD. Example: 49.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'pricing', 'priceUsd')
+  billing_policies_pricing_price_cycle_usd:
+    description: 'TEXT. Human string of price & cycle — unit now in header. Example: 49.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'pricing', 'price_cycle_USD')
+  billing_policies_pricing_tax_rate:
+    description: 'REAL. Jurisdiction tax rate (0–1). Example: 0.075.'
+    sql: JSONB_EXTRACT_PATH_TEXT(billing_policies, 'pricing', 'taxRate')

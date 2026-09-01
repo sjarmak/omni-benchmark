@@ -1,0 +1,50 @@
+label: Beneficiaries and Assessments
+description: Beneficiary-assessment records with row-level engagement and distribution-equity semantics.
+catalog: disaster_relief_large
+schema: public
+table_name: beneficiariesandassessments
+dimensions:
+  community_engagement_level:
+    description: 'TEXT. Level of community engagement in the process. Possible values: High, Low, Medium.'
+    label: Community Engagement Level
+    sql: commengagelvl
+  distribution_equity_index:
+    description: 'REAL. Index measuring the equity of aid distribution (0-1 scale). Example: 0.92.'
+    label: Distribution Equity Index
+    sql: distequityidx
+    ai_context: 'Distribution Equity Index: A score of 1.0 represents perfect equity. A score below 0.7 may indicate significant disparities. A score below 0.5 indicates severe inequity.'
+  bene_dist_ref:
+    description: 'TEXT. Reference identifier for the associated distribution to beneficiaries. Example: DIST_N8XNM.'
+    sql: bene_dist_ref
+  bene_feedbackscore:
+    description: 'REAL. Feedback score provided by beneficiaries. **NULL means no feedback has been received from beneficiaries.** Example: 1.6.'
+    sql: bene_feedbackscore
+  beneopsref:
+    description: 'TEXT. Reference identifier for the associated operation. Example: OPS_79SCC.'
+    sql: beneopsref
+  beneregister:
+    description: 'TEXT. Registration status of the beneficiary group. **NULL means the beneficiary is not found in the registry system.** Possible values: Complete, Partial, Pending.'
+    sql: beneregister
+  beneregistry:
+    description: 'TEXT. Unique identifier for the beneficiary assessment record. PK. Example: BENE_00RL.'
+    sql: beneregistry
+  local_capacity_growth:
+    description: 'TEXT. Indicator of growth in local capacity due to the intervention. **NULL means capacity growth has not been measured.** Possible values: Active, Limited.'
+    sql: local_capacity_growth
+  needs_assess_status:
+    description: 'TEXT. Status of the needs assessment process. Possible values: Due, Overdue, Updated.'
+    sql: needs_assess_status
+  vulnerability_review:
+    description: 'TEXT. Status of the vulnerability assessment review. Possible values: Complete, In Progress, Pending.'
+    sql: vulnerability_review
+  is_successful_community_partnership:
+    label: Successful Community Partnership
+    description: Identifies operations with excellent community relations and equitable aid distribution.
+    sql: ${community_engagement_level} = 'High' AND ${distribution_equity_index} > 0.9
+    ai_context: Use this modeled field for Successful Community Partnership; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Beneficiaries and Assessments public identity values.
+    label: Beneficiaries and Assessments Count
+    sql: ${disaster_relief_large_public__beneficiariesandassessments.beneregistry}

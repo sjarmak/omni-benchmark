@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__supply_item_catalogue
+label: SupplyItemCatalogue
+description: All columns of the public table SupplyItemCatalogue.
+fields:
+- disaster_relief_large_public__supply_item_catalogue.*
+joins: {}
+ai_context: This topic models no cross-table joins.

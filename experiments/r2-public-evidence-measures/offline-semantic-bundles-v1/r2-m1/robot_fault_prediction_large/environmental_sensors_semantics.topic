@@ -1,0 +1,13 @@
+base_view: robot_fault_prediction_large_public__environmental_sensors
+label: environmental_sensors
+description: All columns of the public table environmental_sensors.
+fields:
+- robot_fault_prediction_large_public__environmental_sensors.*
+- robot_fault_prediction_large_public__robot_details.*
+- robot_fault_prediction_large_public__robot_record.*
+- robot_fault_prediction_large_public__workcells.*
+joins:
+  robot_fault_prediction_large_public__workcells:
+    robot_fault_prediction_large_public__robot_details:
+      robot_fault_prediction_large_public__robot_record: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

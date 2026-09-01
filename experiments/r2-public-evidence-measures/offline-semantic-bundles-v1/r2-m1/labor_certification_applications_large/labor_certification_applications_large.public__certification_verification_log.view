@@ -1,0 +1,72 @@
+label: CertificationVerificationLog
+description: All columns of the public table CertificationVerificationLog.
+catalog: labor_certification_applications_large
+schema: public
+table_name: CertificationVerificationLog
+dimensions:
+  cvl_code:
+    description: 'TEXT. Unique identifier for certification verification log entry. Example: CVL-1A2B3C.'
+    sql: '"CVL_code"'
+  additional_docs_required_flag:
+    description: 'BOOLEAN. Indicates if additional documentation was required. Possible values: True, False.'
+    sql: '"additionalDocsRequired_flag"'
+  cert_ref:
+    description: TEXT. Foreign key reference to WorkerSkillCertification table.
+    sql: cert_ref
+  credential_match_score:
+    description: 'REAL. Score indicating how well credentials match records from 0-100. Example: 95.'
+    sql: '"credentialMatchScore"'
+  date_discrepancy_flag:
+    description: 'BOOLEAN. Indicates if date discrepancy was found. Possible values: True, False.'
+    sql: '"dateDiscrepancy_flag"'
+  document_authenticity_score:
+    description: 'REAL. Authenticity confidence score from 0-100. Example: 92.'
+    sql: '"documentAuthenticity_score"'
+  expedited_request_flag:
+    description: 'BOOLEAN. Indicates if expedited verification was requested. Possible values: True, False.'
+    sql: '"expeditedRequest_flag"'
+  fraud_indicator_flag:
+    description: 'BOOLEAN. Indicates if potential fraud was detected. Possible values: True, False.'
+    sql: '"fraudIndicator_flag"'
+  issuing_body_contacted_flag:
+    description: 'BOOLEAN. Indicates if issuing body was directly contacted. Possible values: True, False.'
+    sql: '"issuingBodyContacted_flag"'
+  name_discrepancy_flag:
+    description: 'BOOLEAN. Indicates if name discrepancy was found. Possible values: True, False.'
+    sql: '"nameDiscrepancy_flag"'
+  next_verification_due:
+    description: 'TIMESTAMP. Date when next verification is due. **NULL means No scheduled reverification.** Example: 2024-01-01 12:00:00.'
+    sql: '"nextVerificationDue"'
+  response_time_hrs:
+    description: 'REAL. Time in hours to receive verification response. **NULL means Instant verification or still pending.** Example: 24.'
+    sql: '"responseTime_hrs"'
+  reverification_required_flag:
+    description: 'BOOLEAN. Indicates if reverification is required in future. Possible values: True, False.'
+    sql: '"reverificationRequired_flag"'
+  system_confidence_level:
+    description: 'TEXT. System confidence level in verification result. Unique values: High, Medium, Low, Manual Review Required.'
+    sql: '"systemConfidenceLevel"'
+  verification_cost_usd:
+    description: 'REAL. Cost of verification service in USD. Example: 45.'
+    sql: '"verificationCost_USD"'
+  verification_date:
+    description: 'TIMESTAMP. Date when verification was performed. Example: 2024-01-01 12:00:00.'
+    sql: '"verificationDate"'
+  verification_method:
+    description: 'TEXT. Method used to verify the certification. Unique values: Online Registry, Direct Contact, Third-Party Service, Document Review, API Verification, Manual Check.'
+    sql: '"verificationMethod"'
+  verification_notes_length:
+    description: 'INTEGER. Character length of verification notes. Example: 150.'
+    sql: '"verificationNotes_length"'
+  verification_outcome:
+    description: 'TEXT. Result of the verification attempt. Unique values: Confirmed Valid, Confirmed Expired, Not Found, Discrepancy Found, Pending Response, Unable to Verify.'
+    sql: '"verificationOutcome"'
+  verifier_name:
+    description: TEXT. Name or ID of person who performed verification.
+    sql: '"verifierName"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CertificationVerificationLog public identity values.
+    label: CertificationVerificationLog Count
+    sql: ${labor_certification_applications_large_public__certification_verification_log.cvl_code}

@@ -1,0 +1,21 @@
+label: platforms
+description: All columns of the public table platforms.
+catalog: virtual_idol_large
+schema: public
+table_name: platforms
+dimensions:
+  platform_url:
+    description: 'TEXT. The main URL for the platform. **NULL means a URL is not applicable or unavailable.** Example: https://www.youtube.com.'
+    sql: '"PLATFORM_URL"'
+  platform_name:
+    description: 'TEXT. The name of the streaming or content platform. Example: YouTube.'
+    sql: '"PlatformName"'
+  platform_id:
+    description: 'BIGINT. Unique identifier for the platform. PK. Example: 1.'
+    sql: platform_id
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct platforms public identity values.
+    label: platforms Count
+    sql: ${virtual_idol_large_public__platforms.platform_id}

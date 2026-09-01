@@ -1,0 +1,84 @@
+label: Volunteer_Skill_Map
+description: All columns of the public table Volunteer_Skill_Map.
+catalog: disaster_relief_large
+schema: public
+table_name: Volunteer_Skill_Map
+dimensions:
+  availability_status:
+    description: 'TEXT. Current availability to use the skill. Example values: Available, Busy, Unavailable.'
+    sql: '"Availability_Status"'
+  created_at:
+    description: TIMESTAMP. Record creation timestamp.
+    sql: '"CREATED_AT"'
+  certification_date:
+    description: DATE. Issue date of the certificate.
+    sql: '"CertificationDate"'
+  certification_id:
+    description: TEXT. External certificate ID string. May be NULL when certificate is not tracked.
+    sql: '"Certification_Id"'
+  custom_field1:
+    description: TEXT. Flexible custom field – populated with placeholder when not used.
+    sql: '"CustomField1"'
+  endorsements_count:
+    description: BIGINT. Number of peer endorsements received for the skill.
+    sql: '"EndorsementsCount"'
+  hourly_value_usd_per_h:
+    description: REAL. Estimated hourly contribution value in USD.
+    sql: '"HOURLY_Value_USD_per_h"'
+  hours_utilized:
+    description: REAL. Total volunteer hours logged using this skill.
+    sql: '"HOURS_UTILIZED"'
+  importance_rank:
+    description: TEXT. Relative importance rated by coordinator (High, Medium, Low). May be NULL for uncategorised skills.
+    sql: '"Importance_Rank"'
+  last_used:
+    description: DATE. Date volunteer last practised the skill.
+    sql: '"LastUsed"'
+  preference_level:
+    description: TEXT. Volunteer’s own preference (Preferred, Neutral, Avoid). May be NULL if not stated.
+    sql: '"PreferenceLevel"'
+  refresh_cycle_months_range:
+    description: TEXT. Recommended refresh interval expressed as a range in months (e.g., 6-12).
+    sql: '"REFRESH_CYCLE_months_range"'
+  remarks:
+    description: TEXT. Miscellaneous comments – always populated (placeholder inserted if none).
+    sql: '"Remarks"'
+  training_ref:
+    description: VARCHAR(20). Reference to the latest training session.
+    sql: '"TRAINING_REF"'
+  trainer_id:
+    description: TEXT. Internal trainer identifier who assessed the volunteer. May be NULL if trainer not recorded.
+    sql: '"Trainer_ID"'
+  verified:
+    description: BOOLEAN. TRUE if certificate or experience has been internally verified.
+    sql: '"VERIFIED"'
+  volunteer_id:
+    description: VARCHAR(20). FK → VolunteerProfiles.VOLUNTEERID. PK part.
+    sql: '"VolunteerID"'
+  volunteer_shift_id:
+    description: TEXT. Shift reference when the skill is scheduled.
+    sql: '"VolunteerShiftId"'
+  years_experience:
+    description: REAL. Self-reported years of experience (e.g., 2.5).
+    sql: '"Years_Experience"'
+  evaluation_notes:
+    description: TEXT. Qualitative notes from trainer or assessor. May be NULL when no notes were made.
+    sql: '"evaluationNotes"'
+  proficiency_band_cerf:
+    description: 'TEXT. The proficiency band of the volunteer, based on the Common European Framework of Reference (CERF). Possible values: B1, B2, A2, A1, C1.'
+    sql: '"proficiencyBand_CERF"'
+  proficiency_score:
+    description: REAL. Normalised proficiency (1-5).
+    sql: '"proficiencyScore"'
+  skill_certified:
+    description: BOOLEAN. TRUE if volunteer holds a valid certificate for the skill.
+    sql: '"skillCertified"'
+  skill_id:
+    description: VARCHAR(20). FK → SkillCatalogue.skillID. PK part.
+    sql: '"skillID"'
+  updated_at:
+    description: TIMESTAMP. Record update timestamp.
+    sql: updated_at
+  usage_frequency:
+    description: REAL. Fraction (0-1) of shifts where the skill is used.
+    sql: usage_frequency

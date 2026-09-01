@@ -1,0 +1,102 @@
+label: portfolio_managers
+description: All columns of the public table portfolio_managers.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: portfolio_managers
+dimensions:
+  average_annual_return:
+    description: 'REAL. Average yearly return across all managed funds. Example: 12.4.'
+    sql: '"AverageAnnualReturn"'
+  best_performing_fund:
+    description: 'TEXT. Identifier for the manager’s historically best-performing fund. Example: ABC-1234.'
+    sql: '"BestPerformingFund"'
+  concentration_limits:
+    description: 'TEXT. Limits on position size or sector exposure per fund mandate. Example: Max 10% per holding, 30% per sector.'
+    sql: '"ConcentrationLimits"'
+  current_employer:
+    description: 'TEXT. The manager’s current employer organization. Example: Pierce Group.'
+    sql: '"CurrentEmployer"'
+  education_background:
+    description: 'TEXT. Educational qualifications and institutions attended by the manager. Example: MBA, Harvard University, MBA, Stanford University, PhD in Economics, MIT, CFA Charterholder, BSc in Finance, NYU'
+    sql: '"EducationBackground"'
+  industry_awards:
+    description: 'TEXT. Notable industry awards or accolades earned by the manager. Example: Morningstar Fund Manager of the Year.'
+    sql: '"IndustryAwards"'
+  information_ratio:
+    description: 'REAL. Risk-adjusted performance metric (return over tracking error). Example: 0.67.'
+    sql: '"InformationRatio"'
+  investment_approach:
+    description: 'TEXT. Investment strategy such as Top-down, Bottom-up, or Quantitative. Example: Bottom-up,Thematic,Quantitative,Top-down.'
+    sql: '"InvestmentApproach"'
+  investment_style:
+    description: 'TEXT. Broad style preference such as Growth, Value, Blend, or GARP. Example: Growth,Value,Blend,GARP'
+    sql: '"InvestmentStyle"'
+  is_active:
+    description: 'BOOLEAN. Indicates whether the manager is currently active. Example: true.'
+    sql: '"IsActive"'
+  last_updated:
+    description: 'TIMESTAMP. Last time the manager’s profile was updated. Example: 2025-07-06 10:35:21.'
+    sql: '"LastUpdated"'
+  linked_in_profile:
+    description: 'TEXT. Link to the manager’s public LinkedIn profile. Example: https://www.linkedin.com/in/janedoe'
+    sql: '"LinkedInProfile"'
+  manager_id:
+    description: 'BIGSERIAL. Unique identifier for each portfolio manager. Example: 42.'
+    sql: '"ManagerID"'
+  manager_name:
+    description: 'TEXT. Full name of the portfolio manager. Example: Jane Doe.'
+    sql: '"ManagerName"'
+  max_drawdown:
+    description: 'REAL. Largest peak-to-trough decline over a given period. Example: -25.3.'
+    sql: '"MaxDrawdown"'
+  media_recognition:
+    description: 'TEXT. Media articles or coverage highlighting the manager’s work. Example: Featured in Barron''s Top 100.'
+    sql: '"MediaRecognition"'
+  number_of_funds_managed:
+    description: 'BIGINT. Number of distinct funds the manager currently oversees. Example: 5.'
+    sql: '"NumberOfFundsManaged"'
+  portfolio_turnover_average:
+    description: 'REAL. Average percentage of portfolio assets turned over annually. **NULL means turnover data is unavailable or not tracked.** Example: 35.5.'
+    sql: '"PortfolioTurnoverAverage"'
+  preferred_sectors:
+    description: 'TEXT. Manager''s favored investment sectors. **NULL means no sector preferences have been recorded.** Example: Tech, Healthcare.'
+    sql: '"PreferredSectors"'
+  previous_employers:
+    description: 'TEXT. Names of previous employers. **NULL means employment history is not available.** Example: BlackRock, JP Morgan.'
+    sql: '"PreviousEmployers"'
+  professional_certifications:
+    description: 'TEXT. Professional certifications held by the manager. Example: CFA, CPA.'
+    sql: '"ProfessionalCertifications"'
+  public_email:
+    description: 'TEXT. Publicly available email address for contacting the manager. Example: jane.doe@example.com.'
+    sql: '"PublicEmail"'
+  published_research:
+    description: 'TEXT. Academic or industry research published by the manager. Example: Journal of Portfolio Management, 2022.'
+    sql: '"PublishedResearch"'
+  risk_management_approach:
+    description: 'TEXT. Methodology used by the manager to control investment risk. Example: Stress Testing, VaR-based, Stop-loss rules'
+    sql: '"RiskManagementApproach"'
+  risk_tolerance:
+    description: 'TEXT. The manager’s general attitude toward investment risk. Example: Medium,Low,High'
+    sql: '"RiskTolerance"'
+  start_date:
+    description: 'DATE. Date the manager started their current position. **NULL means start date is unknown or unreported.** Example: 2018-01-15.'
+    sql: '"StartDate"'
+  total_aummanaged:
+    description: 'BIGINT. Total assets under management by the manager across all funds. Example: 1500000000.'
+    sql: '"TotalAUMManaged"'
+  tracking_error:
+    description: 'REAL. Measure of deviation from the benchmark return. Example: 1.45.'
+    sql: '"TrackingError"'
+  worst_performing_fund:
+    description: 'TEXT. Identifier for the manager’s worst-performing fund to date. Example: XYZ-9876.'
+    sql: '"WorstPerformingFund"'
+  years_experience:
+    description: 'BIGINT. Total number of years the manager has worked in investment management. Example: 18.'
+    sql: '"YearsExperience"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct portfolio_managers public identity values.
+    label: portfolio_managers Count
+    sql: ${exchange_traded_funds_large_public__portfolio_managers.manager_id}

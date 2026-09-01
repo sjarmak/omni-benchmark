@@ -1,0 +1,11 @@
+base_view: archeology_scan_large_public__processing
+label: Scan Processing
+description: Processing records with public business context for the processing-stage lifecycle.
+fields:
+- archeology_scan_large_public__processing.*
+- archeology_scan_large_public__equipment.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__equipment: {}
+  archeology_scan_large_public__sites: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

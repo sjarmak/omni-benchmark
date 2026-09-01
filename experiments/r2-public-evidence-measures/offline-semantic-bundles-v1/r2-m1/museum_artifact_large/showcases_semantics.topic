@@ -1,0 +1,9 @@
+base_view: museum_artifact_large_public__showcases
+label: Showcases
+description: All columns of the public table Showcases.
+fields:
+- museum_artifact_large_public__showcases.*
+- museum_artifact_large_public__exhibition_halls.*
+joins:
+  museum_artifact_large_public__exhibition_halls: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

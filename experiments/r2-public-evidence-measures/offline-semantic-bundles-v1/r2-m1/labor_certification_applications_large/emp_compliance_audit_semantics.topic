@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__emp_compliance_audit
+label: emp_compliance_audit
+description: All columns of the public table emp_compliance_audit.
+fields:
+- labor_certification_applications_large_public__emp_compliance_audit.*
+joins: {}
+ai_context: This topic models no cross-table joins.

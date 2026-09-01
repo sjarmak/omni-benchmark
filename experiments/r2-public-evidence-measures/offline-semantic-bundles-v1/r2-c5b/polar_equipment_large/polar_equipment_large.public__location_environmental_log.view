@@ -1,0 +1,66 @@
+label: LocationEnvironmentalLog
+description: All columns of the public table LocationEnvironmentalLog.
+catalog: polar_equipment_large
+schema: public
+table_name: LocationEnvironmentalLog
+dimensions:
+  air_temp_c:
+    description: 'REAL. Ambient air temperature in Celsius. **NULL means Temperature sensor malfunction.** Example: 12.'
+    sql: '"airTempC"'
+  barometric_pressure_hpa:
+    description: 'REAL. Barometric pressure in hectopascals. **NULL means Barometer calibration required.** Example: 1013.'
+    sql: '"barometricPressure_hpa"'
+  co2_ppm:
+    description: 'REAL. Carbon dioxide concentration in parts per million. **NULL means CO2 sensor not calibrated.** Example: 420.'
+    sql: co2_ppm
+  data_quality_score:
+    description: 'REAL. Quality score for this measurement set 0-100. Example: 92.'
+    sql: '"dataQualityScore"'
+  dew_point_c:
+    description: 'REAL. Dew point temperature in Celsius. Example: 5.'
+    sql: '"dewPointC"'
+  env_log_seq:
+    description: TEXT. Unique identifier for each environmental log entry.
+    sql: '"envLogSeq"'
+  ground_temp_c:
+    description: 'REAL. Ground surface temperature in Celsius. **NULL means Ground sensor not installed.** Example: 10.'
+    sql: '"groundTempC"'
+  location_ref:
+    description: TEXT. Reference to the location station.
+    sql: location_ref
+  measurement_timestamp:
+    description: 'TIMESTAMP. Timestamp when environmental reading was taken. Example: 2024-01-01 12:00:00.'
+    sql: '"measurementTimestamp"'
+  noise_level_db:
+    description: 'REAL. Ambient noise level in decibels. **NULL means Acoustic sensor offline.** Example: 55.'
+    sql: '"noiseLevelDb"'
+  pm10_ugm3:
+    description: 'REAL. PM10 particulate concentration in micrograms per cubic meter. **NULL means Air quality sensor not equipped.** Example: 35.'
+    sql: pm10_ugm3
+  pm25_ugm3:
+    description: 'REAL. PM2.5 particulate concentration in micrograms per cubic meter. **NULL means Air quality sensor not equipped.** Example: 18.'
+    sql: pm25_ugm3
+  precipitation_rate_mmh:
+    description: 'REAL. Precipitation rate in millimeters per hour. **NULL means Rain gauge clogged or frozen.** Example: 1.5.'
+    sql: '"precipitationRate_mmh"'
+  relative_humidity_pct:
+    description: 'REAL. Relative humidity percentage. **NULL means Humidity sensor offline.** Example: 55.'
+    sql: '"relativeHumidityPct"'
+  solar_irradiance_wm2:
+    description: 'REAL. Solar irradiance in watts per square meter. **NULL means Pyranometer offline or nighttime.** Example: 450.'
+    sql: '"solarIrradiance_wm2"'
+  uv_index:
+    description: 'REAL. Ultraviolet radiation index. **NULL means UV sensor not equipped or nighttime.** Example: 5.'
+    sql: '"uvIndex"'
+  visibility_distance_m:
+    description: 'INTEGER. Horizontal visibility distance in meters. **NULL means Visibility sensor obscured.** Example: 8000.'
+    sql: '"visibilityDistance_m"'
+  weather_condition:
+    description: 'TEXT. Observed weather condition classification. Unique values: Clear, PartlyCloudy, Overcast, Rain, Snow, Fog, Storm.'
+    sql: '"weatherCondition"'
+  wind_direction_deg:
+    description: 'REAL. Wind direction in degrees from north. **NULL means Wind vane stuck or calm conditions.** Example: 50.0.'
+    sql: '"windDirection_deg"'
+  wind_speed_ms:
+    description: 'REAL. Wind speed in meters per second. **NULL means Anemometer frozen or damaged.** Example: 8.'
+    sql: '"windSpeed_ms"'

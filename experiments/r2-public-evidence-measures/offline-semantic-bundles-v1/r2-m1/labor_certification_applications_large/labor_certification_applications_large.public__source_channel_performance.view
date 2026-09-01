@@ -1,0 +1,72 @@
+label: SourceChannelPerformance
+description: All columns of the public table SourceChannelPerformance.
+catalog: labor_certification_applications_large
+schema: public
+table_name: SourceChannelPerformance
+dimensions:
+  scp_code:
+    description: 'TEXT. Unique identifier for source channel performance record. Example: SCP-1A2B3C.'
+    sql: '"SCP_code"'
+  analytic_ref:
+    description: TEXT. Foreign key reference to RecruitmentSourceAnalytic table.
+    sql: analytic_ref
+  application_complete_ct:
+    description: 'INTEGER. Count of applications completed. Example: 80.'
+    sql: '"applicationComplete_ct"'
+  application_start_ct:
+    description: 'INTEGER. Count of applications started. Example: 150.'
+    sql: '"applicationStart_ct"'
+  avg_session_duration_sec:
+    description: 'REAL. Average session duration in seconds. Example: 180.'
+    sql: '"avgSessionDuration_sec"'
+  bounce_rate_pct:
+    description: 'REAL. Percentage of single-page sessions. Example: 45.'
+    sql: '"bounceRate_pct"'
+  channel_rank_this_period:
+    description: 'INTEGER. Rank of channel compared to others this period. Example: 50.'
+    sql: '"channelRankThisPeriod"'
+  completion_rate_pct:
+    description: 'REAL. Percentage of started applications completed. Example: 55.'
+    sql: '"completionRate_pct"'
+  cost_per_application_usd:
+    description: 'REAL. Cost per completed application in USD. Example: 65.'
+    sql: '"costPerApplication_USD"'
+  cost_per_click_usd:
+    description: 'REAL. Cost per click for paid channels in USD. **NULL means Organic channel without paid spend.** Example: 2.5.'
+    sql: '"costPerClick_USD"'
+  measurement_date:
+    description: 'TIMESTAMP. Date of performance measurement. Example: 2024-01-01 12:00:00.'
+    sql: '"measurementDate"'
+  measurement_period:
+    description: 'TEXT. Time period of measurement. Unique values: Daily, Weekly, Monthly, Quarterly.'
+    sql: '"measurementPeriod"'
+  mobile_traffic_pct:
+    description: 'REAL. Percentage of traffic from mobile devices. Example: 45.'
+    sql: '"mobileTraffic_pct"'
+  page_views_ct:
+    description: 'INTEGER. Total page views from channel. Example: 8000.'
+    sql: '"pageViews_ct"'
+  quality_score:
+    description: 'REAL. Quality score of applicants from channel from 1-10. Example: 6.5.'
+    sql: '"qualityScore"'
+  rank_change:
+    description: 'INTEGER. Change in rank from previous period. **NULL means First measurement period.** Example: 0.'
+    sql: '"rankChange"'
+  recommended_action:
+    description: 'TEXT. Recommended action based on performance. Unique values: Increase Budget, Maintain, Optimize, Reduce Budget, Discontinue, Test New Creative.'
+    sql: '"recommendedAction"'
+  total_spend_usd:
+    description: 'REAL. Total advertising spend in USD. Example: 5000.'
+    sql: '"totalSpend_USD"'
+  trend_indicator:
+    description: 'TEXT. Performance trend indicator. Unique values: Strong Growth, Moderate Growth, Stable, Moderate Decline, Strong Decline.'
+    sql: '"trendIndicator"'
+  unique_visitors_ct:
+    description: 'INTEGER. Count of unique visitors from channel. Example: 2500.'
+    sql: '"uniqueVisitors_ct"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct SourceChannelPerformance public identity values.
+    label: SourceChannelPerformance Count
+    sql: ${labor_certification_applications_large_public__source_channel_performance.scp_code}

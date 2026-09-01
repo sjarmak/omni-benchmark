@@ -1,0 +1,57 @@
+label: attorney
+description: All columns of the public table attorney.
+catalog: labor_certification_applications_large
+schema: public
+table_name: attorney
+dimensions:
+  attorney_profile:
+    description: JSONB column. Captures identifying details of the attorney, including name, address, firm, and court affiliation.
+    sql: attorney_profile
+  lawmail:
+    description: TEXT. Attorney's email address. PK.
+    sql: lawmail
+  attorney_profile_address_city:
+    description: 'TEXT. City of the attorney. Example: Cincinnati.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'address', 'city')
+  attorney_profile_address_country:
+    description: 'TEXT. Country of the attorney. Possible values: CANADA, UNITED STATES OF AMERICA.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'address', 'country')
+  attorney_profile_address_line1:
+    description: 'TEXT. Primary address line for the attorney. Example: 302 West Third Street.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'address', 'line1')
+  attorney_profile_address_line2:
+    description: 'TEXT. Secondary address line for the attorney. **NULL means no secondary address provided.**. Example: Suite 710.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'address', 'line2')
+  attorney_profile_address_province:
+    description: 'TEXT. Province or region of the attorney. **NULL means no province specified.**. Example: Ontario.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'address', 'province')
+  attorney_profile_address_state:
+    description: 'TEXT. State of the attorney. Example: OH.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'address', 'state')
+  attorney_profile_address_zip:
+    description: 'TEXT. Postal code for the attorney. Example: 45202.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'address', 'zip')
+  attorney_profile_contact_extension:
+    description: 'BIGINT. Extension number for the attorney’s phone. **NULL means no extension provided.**. Example: 7375.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'contact', 'extension')
+  attorney_profile_contact_phone:
+    description: 'BIGINT. Phone number for the attorney. Example: 15133818472.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'contact', 'phone')
+  attorney_profile_firm:
+    description: 'TEXT. Law firm name or business name. Example: Musillo Unkenholt, LLC..'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'firm')
+  attorney_profile_highest_court_name:
+    description: 'TEXT. Name of the highest court the attorney is registered with. **NULL means no court name provided.**. Example: Supreme Court of Ohio.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'highest_court', 'name')
+  attorney_profile_highest_court_state:
+    description: 'TEXT. State of the highest court the attorney is registered with. **NULL means no state provided.**. Example: OH.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'highest_court', 'state')
+  attorney_profile_name_first:
+    description: 'TEXT. First name of the attorney. Example: Maria.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'name', 'first')
+  attorney_profile_name_last:
+    description: 'TEXT. Last name of the attorney. Example: Schneider.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'name', 'last')
+  attorney_profile_name_middle:
+    description: 'TEXT. Middle initial of the attorney. **NULL means no middle initial provided.**. Example: T..'
+    sql: JSONB_EXTRACT_PATH_TEXT(attorney_profile, 'name', 'middle')

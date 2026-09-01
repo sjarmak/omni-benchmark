@@ -1,0 +1,93 @@
+label: TaskCrewAssignment
+description: All columns of the public table TaskCrewAssignment.
+catalog: polar_equipment_large
+schema: public
+table_name: TaskCrewAssignment
+dimensions:
+  approval_status:
+    description: 'TEXT. Approval state. Possible values: Pending, Approved, Rejected. Example: Approved.'
+    sql: '"approvalStatus"'
+  approved_at:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Approval time. **NULL means approval is still Pending.** Example: 2025/07/15 16:05:00.'
+    sql: '"approvedAt"'
+  assign_date:
+    description: 'DATE (yyyy/mm/dd). Assignment date (keyed). Example: 2025/07/15.'
+    sql: '"assignDate"'
+  comment:
+    description: 'TEXT. General comment on execution/quality. Example: Vibration trending high; monitor next cycle.'
+    sql: comment
+  crew_ref_code:
+    description: 'TEXT. FK to CrewMember(crewToken). Part of composite PK. Example: CRW-1017.'
+    sql: crew_ref_code
+  duration_h:
+    description: 'REAL. Worked duration (hours). **NULL means the task is Assigned (not yet started) or Deferred.** Example: 3.5.'
+    sql: duration_h
+  end_time:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Actual/expected end time. Example: 2025/07/15 12:30:00.'
+    sql: '"endTime"'
+  energy_used_k_wh:
+    description: 'REAL. Electricity consumed (kWh). Example: 12.8.'
+    sql: '"energyUsed_kWh"'
+  incident_note:
+    description: 'TEXT. Incident note if any. **NULL means no incident or no note recorded (most cases).** Example: Minor pinch hazard observed; corrected.'
+    sql: '"incidentNote"'
+  near_miss:
+    description: 'TEXT. Near-miss reported? Possible values: Yes, No. Example: No.'
+    sql: '"nearMiss"'
+  overtime_h:
+    description: 'REAL. Overtime hours beyond 8 h. **NULL means duration_h ≤ 8 or duration not recorded.** Example: 1.0.'
+    sql: overtime_h
+  parts_used:
+    description: 'TEXT. Parts used (kit or None). Possible values: None, Kit-A, Kit-B, Kit-C. Example: Kit-B.'
+    sql: '"partsUsed"'
+  post_inspection:
+    description: 'TEXT. Post-work inspection result. Possible values: OK, Rework Needed, N/A. Example: OK.'
+    sql: '"postInspection"'
+  pre_inspection:
+    description: 'TEXT. Pre-work inspection result. Possible values: OK, Minor Defect, Major Defect. Example: Minor Defect.'
+    sql: '"preInspection"'
+  qty_parts:
+    description: 'BIGINT. Quantity of parts used. Example: 2.'
+    sql: '"qtyParts"'
+  safety_observ:
+    description: 'TEXT. Safety observation during work. Possible values (from file): All good, Area barricaded, Additional signage. Example: Area barricaded.'
+    sql: '"safetyObserv"'
+  shift:
+    description: 'TEXT. Shift designation. Possible values: Day, Swing, Night. Example: Day.'
+    sql: shift
+  signature_sup:
+    description: 'TEXT. Supervisor signature status. Possible values: Signed, Unsigned. Example: Signed.'
+    sql: '"signatureSup"'
+  signature_tech:
+    description: 'TEXT. Technician signature status. Possible values: Signed, Unsigned. Example: Signed.'
+    sql: '"signatureTech"'
+  start_time:
+    description: 'TIMESTAMP (yyyy/mm/dd HH:MM:SS). Actual/expected start time. Example: 2025/07/15 08:00:00.'
+    sql: '"startTime"'
+  status:
+    description: 'TEXT. Assignment status. Possible values (from file): Assigned, In Progress, Completed, Deferred. Example: In Progress.'
+    sql: status
+  task_ref_code:
+    description: 'TEXT. FK to MaintenanceTaskCatalog(taskCodeToken). Part of composite PK. Example: MT-2031.'
+    sql: task_ref_code
+  test_press_k_pa:
+    description: 'REAL. Test pressure (kPa). Example: 540.0.'
+    sql: '"testPress_kPa"'
+  test_speed_mps:
+    description: 'REAL. Test speed achieved (m/s). Example: 5.40.'
+    sql: '"testSpeed_mps"'
+  test_temp_c:
+    description: 'REAL. Test temperature (°C). Example: 42.1.'
+    sql: '"testTemp_C"'
+  tools_used:
+    description: 'TEXT. Primary tools used. Example: Torque Wrench.'
+    sql: '"toolsUsed"'
+  torque_applied_nm:
+    description: 'REAL. Torque applied (Nm), when relevant to the task. **NULL means torque not applicable to this assignment.** Example: 120.5.'
+    sql: '"torqueApplied_Nm"'
+  waste_gen_kg:
+    description: 'REAL. Waste generated (kg). Example: 1.25.'
+    sql: '"wasteGen_kg"'
+  water_used_l:
+    description: 'REAL. Water consumed (L). Example: 35.0.'
+    sql: '"waterUsed_L"'

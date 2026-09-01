@@ -1,0 +1,66 @@
+label: BatteryChargeCycleLog
+description: All columns of the public table BatteryChargeCycleLog.
+catalog: polar_equipment_large
+schema: public
+table_name: BatteryChargeCycleLog
+dimensions:
+  ambient_temp_c:
+    description: 'REAL. Ambient temperature during charging in Celsius. **NULL means Ambient sensor not available.** Example: 18.'
+    sql: '"ambientTempC"'
+  avg_charge_power_kw:
+    description: 'REAL. Average charging power during cycle in kilowatts. Example: 15.'
+    sql: '"avgChargePower_kw"'
+  battery_temp_peak_c:
+    description: 'REAL. Peak battery temperature during charge in Celsius. **NULL means Temperature sensor offline.** Example: 35.'
+    sql: '"batteryTempPeakC"'
+  battery_temp_start_c:
+    description: 'REAL. Battery temperature at cycle start in Celsius. **NULL means Temperature sensor offline.** Example: 22.'
+    sql: '"batteryTempStartC"'
+  battery_ref:
+    description: 'INTEGER. Reference to the power battery asset. Example: 50.'
+    sql: battery_ref
+  cell_balancing_active:
+    description: 'TEXT. Whether cell balancing was performed during cycle. Possible values: True, False.'
+    sql: '"cellBalancingActive"'
+  charge_cycle_seq:
+    description: TEXT. Unique identifier for each battery charge cycle record.
+    sql: '"chargeCycleSeq"'
+  charge_efficiency_pct:
+    description: 'REAL. Charging efficiency as percentage of input energy stored. Example: 92.'
+    sql: '"chargeEfficiencyPct"'
+  charger_type:
+    description: 'TEXT. Type of charging equipment used. Unique values: Level1_AC, Level2_AC, DC_Fast, Solar, Generator.'
+    sql: '"chargerType"'
+  completion_status:
+    description: 'TEXT. Final status of the charging cycle. Unique values: Completed, Interrupted, Faulted, Timeout, UserAborted.'
+    sql: '"completionStatus"'
+  cycle_count_total:
+    description: 'INTEGER. Cumulative charge cycle count for this battery. Example: 50.'
+    sql: '"cycleCountTotal"'
+  cycle_end_time:
+    description: 'TIMESTAMP. Timestamp when charging cycle completed. **NULL means Cycle still in progress or interrupted.** Example: 2024-01-01 12:00:00.'
+    sql: '"cycleEndTime"'
+  cycle_start_time:
+    description: 'TIMESTAMP. Timestamp when charging cycle began. Example: 2024-01-01 12:00:00.'
+    sql: '"cycleStartTime"'
+  cycle_type:
+    description: 'TEXT. Type of charging cycle performed. Unique values: Standard, FastCharge, Trickle, Conditioning, Emergency.'
+    sql: '"cycleType"'
+  degradation_estimate_pct:
+    description: 'REAL. Estimated battery capacity degradation percentage. **NULL means Degradation analysis not performed.** Example: 50.0.'
+    sql: '"degradationEstimatePct"'
+  end_soc_pct:
+    description: 'REAL. State of charge percentage at cycle end. **NULL means Cycle incomplete or measurement failed.** Example: 50.0.'
+    sql: '"endSocPct"'
+  energy_delivered_kwh:
+    description: 'REAL. Total energy delivered during charge in kilowatt-hours. **NULL means Energy meter malfunction.** Example: 45.'
+    sql: '"energyDelivered_kwh"'
+  fault_code_count:
+    description: 'INTEGER. Number of fault codes triggered during cycle. Example: 0.'
+    sql: '"faultCodeCount"'
+  peak_charge_power_kw:
+    description: 'REAL. Maximum charging power achieved in kilowatts. Example: 22.'
+    sql: '"peakChargePower_kw"'
+  start_soc_pct:
+    description: 'REAL. State of charge percentage at cycle start. Example: 50.0.'
+    sql: '"startSocPct"'

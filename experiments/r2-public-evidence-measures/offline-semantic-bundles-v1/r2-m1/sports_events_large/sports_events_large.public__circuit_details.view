@@ -1,0 +1,126 @@
+label: circuit_details
+description: All columns of the public table circuit_details.
+catalog: sports_events_large
+schema: public
+table_name: circuit_details
+dimensions:
+  circuit_detail_code:
+    description: BIGSERIAL. Surrogate primary key for circuit_details rows. PK.
+    sql: '"CIRCUIT_DETAIL_CODE"'
+  paddock_area_m2:
+    description: 'REAL. Paddock area in square meters. Example: 30000.0.'
+    sql: '"PADDOCK_AREA_m2"'
+  cct_ref:
+    description: 'INTEGER. Foreign key referencing circuits.cctkey for the circuit these details describe. FK → circuits(cctkey). Example: 3.'
+    sql: '"cctRef"'
+  circuit_ops_perf_compendium:
+    description: JSONB column. Bundles lap-record info, circuit layout, pit operations, capacity, safety/surface, operational environment, media/hospitality, and certification/heritage for a quick operational/performance view of a circuit.
+    sql: circuit_ops_perf_compendium
+  extra_json:
+    description: 'JSONB. Free-form additional notes/attributes. Example: {note:seasonal wind}.'
+    sql: '"extraJSON"'
+  circuit_ops_perf_compendium_capacity_pack_capacity_total:
+    description: 'BIGINT. Total spectator capacity. Example: 120000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'CapacityPack', 'CapacityTOTAL')
+  circuit_ops_perf_compendium_capacity_pack_capacity_grandstands:
+    description: 'BIGINT. Seated grandstand capacity. Example: 80000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'CapacityPack', 'Capacity_Grandstands')
+  circuit_ops_perf_compendium_capacity_pack_capacity_general:
+    description: 'BIGINT. General admission capacity. Example: 40000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'CapacityPack', 'capacity_general')
+  circuit_ops_perf_compendium_heritage_cert_pack_fia_grade:
+    description: 'TEXT. FIA homologation grade of the circuit. Possible values: Grade 1, Grade 2, Grade 3. Example: Grade 1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'HeritageCertPack', 'FIA_GRADE')
+  circuit_ops_perf_compendium_heritage_cert_pack_first_gpyear:
+    description: 'BIGINT. First year a Grand Prix (or equivalent top series) was held at the circuit. Range: 1950–2025. Example: 2001.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'HeritageCertPack', 'FirstGPYear')
+  circuit_ops_perf_compendium_lap_record_pack_lap_record_time:
+    description: 'TEXT. Lap record time formatted as M:SS.mmm. **NULL means the circuit has no official lap record time recorded/confirmed.** Example: 1:15.228.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'LapRecordPack', 'LAP_RECORD_TIME')
+  circuit_ops_perf_compendium_lap_record_pack_lap_record_driver_ref:
+    description: 'TEXT. Driver reference (lowercase slug) for the official lap record holder. Possible values (observed): hamilton, schumacher, senna, verstappen. **NULL means no official lap record is available/confirmed (e.g., new circuit or not recorded).** Example: hamilton.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'LapRecordPack', 'LapRecordDriverRef')
+  circuit_ops_perf_compendium_lap_record_pack_lap_record_year:
+    description: 'BIGINT. Year when the lap record was set. **NULL means the lap record year is unknown or no record exists yet.** Example: 2023.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'LapRecordPack', 'LapRecordYear')
+  circuit_ops_perf_compendium_lap_record_pack_lap_record_msec:
+    description: 'BIGINT. Lap record time in milliseconds. **NULL means lap record duration is not recorded/known.** Example: 74572.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'LapRecordPack', 'lapRecord_msec')
+  circuit_ops_perf_compendium_layout_pack_drs_zones:
+    description: 'BIGINT. Count of DRS activation zones. Typical values: 1, 2, 3. Example: 2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'LayoutPack', 'DRS_ZONES')
+  circuit_ops_perf_compendium_layout_pack_longest_straight_m:
+    description: 'REAL. Length of the longest straight in meters. Example: 1060.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'LayoutPack', 'LONGEST_STRAIGHT_M')
+  circuit_ops_perf_compendium_layout_pack_number_of_turns:
+    description: 'BIGINT. Count of distinct turns. Example: 20.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'LayoutPack', 'NumberOfTurns')
+  circuit_ops_perf_compendium_layout_pack_track_length_km:
+    description: 'REAL. Full lap length of the circuit in kilometers. Example: 5.412.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'LayoutPack', 'track_length_KM')
+  circuit_ops_perf_compendium_media_hosp_pack_emergency_heli_pads:
+    description: 'BIGINT. Number of emergency helicopter pads. Example: 1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'MediaHospPack', 'EmergencyHeliPads')
+  circuit_ops_perf_compendium_media_hosp_pack_hospitality_suites:
+    description: 'BIGINT. Count of hospitality suites. Example: 50.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'MediaHospPack', 'Hospitality_Suites')
+  circuit_ops_perf_compendium_media_hosp_pack_media_center_seats:
+    description: 'BIGINT. Number of media center seats. Example: 400.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'MediaHospPack', 'MediaCenterSeats')
+  circuit_ops_perf_compendium_media_hosp_pack_tv_compound_capacity:
+    description: 'BIGINT. Approximate media/TV compound vehicle bay capacity. Example: 40.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'MediaHospPack', 'TV_Compound_Capacity')
+  circuit_ops_perf_compendium_media_hosp_pack_parking_spaces_total:
+    description: 'BIGINT. Total on-site parking spaces for spectators and staff. Example: 15000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'MediaHospPack', 'parking_spaces_total')
+  circuit_ops_perf_compendium_ops_env_pack_evacuation_routes:
+    description: 'TEXT. Summary of main evacuation gate directions. Example: N, W gates.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'OpsEnvPack', 'EvacuationRoutes')
+  circuit_ops_perf_compendium_ops_env_pack_fire_suppression_type:
+    description: 'TEXT. Primary fire suppression systems. Possible values: foam, foam + water mist, CO2. Example: foam + water mist.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'OpsEnvPack', 'Fire_Suppression_Type')
+  circuit_ops_perf_compendium_ops_env_pack_has_night_lighting:
+    description: 'BOOLEAN. Whether the circuit has full-night racing lighting installed. Example: true.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'OpsEnvPack', 'HasNightLighting')
+  circuit_ops_perf_compendium_ops_env_pack_local_noise_limit_db:
+    description: 'REAL. Local regulatory noise limit in dB. Example: 105.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'OpsEnvPack', 'LOCAL_NOISE_LIMIT_DB')
+  circuit_ops_perf_compendium_ops_env_pack_sustainability_cert:
+    description: 'TEXT. Sustainability certification held by the venue. Possible values (observed): ISO 20121, LEED. **NULL means no certification on record or assessment not completed.** Example: LEED.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'OpsEnvPack', 'SustainabilityCert')
+  circuit_ops_perf_compendium_ops_env_pack_time_zone:
+    description: 'TEXT. Local time zone indicator (human-readable, not TZ database). Example: UTC+3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'OpsEnvPack', 'timeZone')
+  circuit_ops_perf_compendium_pit_ops_pack_garages_count:
+    description: 'BIGINT. Number of pit garages available. Example: 24.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'PitOpsPack', 'GaragesCount')
+  circuit_ops_perf_compendium_pit_ops_pack_pit_lane_speed_kph:
+    description: 'REAL. Pit lane speed limit in kilometers per hour. Typical values: 60.0, 80.0, 100.0. Example: 80.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'PitOpsPack', 'PIT_LANE_SPEED_KPH')
+  circuit_ops_perf_compendium_pit_ops_pack_pit_lane_length_m:
+    description: 'REAL. Pit lane length in meters. Example: 420.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'PitOpsPack', 'PitLaneLength_m')
+  circuit_ops_perf_compendium_surface_safety_pack_marshal_posts:
+    description: 'BIGINT. Number of marshal posts. Example: 40.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'SurfaceSafetyPack', 'MarshalPosts')
+  circuit_ops_perf_compendium_surface_safety_pack_safety_rating_score:
+    description: 'REAL. Composite safety score (0.0–100.0). Example: 92.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'SurfaceSafetyPack', 'SafetyRatingScore')
+  circuit_ops_perf_compendium_surface_safety_pack_surface_last_resurfaced_year:
+    description: 'BIGINT. Last resurfacing year. Example: 2020.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'SurfaceSafetyPack', 'SurfaceLastResurfacedYear')
+  circuit_ops_perf_compendium_surface_safety_pack_surface_material:
+    description: 'TEXT. Primary track surface. Possible values: asphalt, concrete. Example: asphalt.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'SurfaceSafetyPack', 'SurfaceMaterial')
+  circuit_ops_perf_compendium_surface_safety_pack_medical_center_grade:
+    description: 'TEXT. Medical facility capability level. Possible values: Level 1 trauma, Level 2 trauma. Example: Level 1 trauma.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'SurfaceSafetyPack', 'medicalCenterGrade')
+  circuit_ops_perf_compendium_surface_safety_pack_typical_grip_level:
+    description: 'TEXT. Qualitative grip level. Possible values: low, medium, medium-high, high. Example: medium-high.'
+    sql: JSONB_EXTRACT_PATH_TEXT(circuit_ops_perf_compendium, 'SurfaceSafetyPack', 'typicalGripLevel')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct circuit_details public identity values.
+    label: circuit_details Count
+    sql: ${sports_events_large_public__circuit_details.circuit_detail_code}

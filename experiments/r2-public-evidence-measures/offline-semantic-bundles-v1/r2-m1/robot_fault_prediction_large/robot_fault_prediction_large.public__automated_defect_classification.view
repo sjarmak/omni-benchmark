@@ -1,0 +1,69 @@
+label: automated_defect_classification
+description: All columns of the public table automated_defect_classification.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: automated_defect_classification
+dimensions:
+  anomaly_heatmap_intensity:
+    description: 'REAL. Peak activation value in the anomaly detection layer. Example: 50.0.'
+    sql: anomaly_heatmap_intensity
+  classification_id:
+    description: TEXT. Unique identifier for the AI classification result.
+    sql: classification_id
+  color_temperature_k:
+    description: 'INTEGER. Estimated color temperature of the scene. Example: 5500.'
+    sql: color_temperature_k
+  compression_artifact_level:
+    description: 'INTEGER. Quantization scale used during image transmission. Example: 50.'
+    sql: compression_artifact_level
+  contrast_ratio_local:
+    description: 'REAL. Contrast difference between defect and background. **NULL means Image uniform/blank.** Example: 15.'
+    sql: contrast_ratio_local
+  defect_area_pixels:
+    description: 'INTEGER. Total pixel count of the segmented defect. **NULL means No defect detected.** Example: 50.'
+    sql: defect_area_pixels
+  defect_category_label:
+    description: 'TEXT. The primary category of defect detected. Unique values: Surface Scratch, Dent, Discoloration, Misalignment, None.'
+    sql: defect_category_label
+  edge_sharpness_score:
+    description: 'REAL. Metric defining the clarity of edges in the image. **NULL means Focus failure.** Example: 0.9.'
+    sql: edge_sharpness_score
+  inference_latency_ms:
+    description: 'REAL. Time taken for the model to process the frame. Example: 45.'
+    sql: inference_latency_ms
+  lighting_uniformity_index:
+    description: 'REAL. Measure of light distribution consistency across the frame. Example: 0.95.'
+    sql: lighting_uniformity_index
+  manufacturing_cost_impact_usd:
+    description: 'REAL. Estimated cost of scrap/rework based on defect type. **NULL means No defect detected.** Example: 50.0.'
+    sql: manufacturing_cost_impact_usd
+  model_confidence_score:
+    description: 'REAL. Probability score of the primary classification (0.0 to 1.0). Example: 50.0.'
+    sql: model_confidence_score
+  model_version_hash:
+    description: 'TEXT. Hash of the specific neural network model used. Unique values: v1.2, v1.3-beta, v2.0.'
+    sql: model_version_hash
+  region_interest_x_px:
+    description: 'INTEGER. X-coordinate of the defect bounding box center. **NULL means No defect detected.** Example: 50.'
+    sql: region_interest_x_px
+  region_interest_y_px:
+    description: 'INTEGER. Y-coordinate of the defect bounding box center. **NULL means No defect detected.** Example: 50.'
+    sql: region_interest_y_px
+  requires_human_review:
+    description: 'BOOLEAN. Flag indicating if confidence was below threshold. Possible values: True, False.'
+    sql: requires_human_review
+  secondary_defect_label:
+    description: TEXT. Second most likely classification. **NULL means Single clear classification found.**
+    sql: secondary_defect_label
+  surface_roughness_ra:
+    description: 'REAL. Estimated surface roughness metric calculated from texture analysis. Example: 0.8.'
+    sql: surface_roughness_ra
+  vision_log_ref:
+    description: TEXT. Reference to the raw telemetry log.
+    sql: vision_log_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct automated_defect_classification public identity values.
+    label: automated_defect_classification Count
+    sql: ${robot_fault_prediction_large_public__automated_defect_classification.classification_id}

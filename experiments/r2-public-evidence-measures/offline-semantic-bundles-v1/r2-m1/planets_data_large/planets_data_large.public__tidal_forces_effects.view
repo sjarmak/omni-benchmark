@@ -1,0 +1,81 @@
+label: tidal_forces_effects
+description: All columns of the public table tidal_forces_effects.
+catalog: planets_data_large
+schema: public
+table_name: tidal_forces_effects
+dimensions:
+  axial_tilt_current_degrees:
+    description: 'real. Current axial tilt or obliquity in degrees. Possible values: 0.8, 12.1, 23.5.'
+    sql: '"AxialTiltCurrent_degrees"'
+  current_synchronization_state:
+    description: 'real. Current degree of tidal synchronization (0.0 = not synchronized, 1.0 = fully synchronized). Possible values: 0.35, 0.68, 0.95.'
+    sql: '"CURRENT_SYNCHRONIZATION_STATE"'
+  circularization_timescale_years:
+    description: 'real. Timescale for tidal circularization of orbit in years. Possible values: 1200000000.0, 38000000000.0, 45000000.0.'
+    sql: '"CircularizationTimescale_years"'
+  internal_heat_generation_w:
+    description: 'real. Total internal heat generation from tidal heating in watts. Possible values: 11000000000000.0, 520000000000000.0, 780000000000.0.'
+    sql: '"InternalHeatGeneration_W"'
+  love_number_k2:
+    description: 'real. Love number k2 indicating planetary deformation response to tidal forces. Possible values: 0.25, 0.28, 0.3.'
+    sql: '"LOVE_NUMBER_K2"'
+  last_calculation_date:
+    description: 'date. Date when tidal force calculations were last performed. Possible values: 2023-08-30, 2023-09-15, 2023-09-22, 2023-10-22, 2023-11-08, 2023-11-15, 2023-12-05, 2024-01-08.'
+    sql: '"LastCalculationDate"'
+  notes:
+    description: 'text. Additional notes or comments about tidal force analysis. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  planetlink:
+    description: 'bigint. Foreign key reference to the planet experiencing tidal effects. FK to planets(planetRef). Example: 1.'
+    sql: '"PLANETLINK"'
+  spin_orbit_resonance_ratio:
+    description: 'text. Ratio describing spin-orbit resonance state (e.g., 3:2, 1:1). **NULL means no resonance detected.**. Possible values: 1:1, 3:2.'
+    sql: '"SPIN_ORBIT_RESONANCE_RATIO"'
+  tidal_bulge_height_meters:
+    description: 'real. Height of tidal bulge on planetary surface in meters. Possible values: 180, 425, 850.'
+    sql: '"TIDAL_BULGE_HEIGHT_meters"'
+  tidal_frequency_hz:
+    description: 'real. Primary tidal frequency component in Hertz. Possible values: 1.35e-05, 3.24e-06, 6.78e-07.'
+    sql: '"TidalFrequency_Hz"'
+  tidal_heating_rate_w:
+    description: 'real. Rate of internal heating due to tidal dissipation in watts. Possible values: 1800000000000000.0, 2800000000000.0, 42000000000000.0.'
+    sql: '"TidalHeatingRate_W"'
+  libration_amplitude_degrees:
+    description: 'real. Amplitude of libration motion in degrees. **NULL means libration analysis was not performed.**. Possible values: 2.3.'
+    sql: libration_amplitude_degrees
+  synchronization_timescale_years:
+    description: 'real. Timescale for tidal synchronization to occur in years. Possible values: 1500000000.0, 2100000.0, 89000000.0.'
+    sql: synchronization_timescale_years
+  theoretical_model_used:
+    description: 'text. Name or reference of theoretical model used for tidal calculations. Possible values: 2024-01-15, Constant Time Lag Model, Darwin-de Sitter Model, Energy-Limited Model, Hydrodynamic Escape Model, Jeans Escape Model, Kaula Model, Magnetohydrodynamic Model, Parker Wind Model.'
+    sql: theoretical_model_used
+  tidal_ref:
+    description: 'bigint. Primary key identifier for tidal force analysis records. PK. Possible values: 12001, 12002, 12003.'
+    sql: '"tidalRef"'
+  tidal_force_magnitude_n:
+    description: 'real. Magnitude of tidal force acting on the planet in Newtons. Possible values: 1.2e+19, 2.3e+22, 5.8e+20.'
+    sql: '"tidal_force_magnitude_N"'
+  tidal_quality_factor:
+    description: 'real. Tidal quality factor Q indicating energy dissipation efficiency. **NULL means quality factor was not determined.**. Possible values: 100.0, 1500.0.'
+    sql: tidal_quality_factor
+  orbital_decay_rate_meters_year:
+    description: 'real. Rate of orbital decay due to tidal friction in meters per year. Possible values: -0.002, -0.008, -0.025.'
+    sql: '"ORBITAL_DECAY_RATE_meters/year"'
+  surface_heat_flux_w_m:
+    description: 'real. Surface heat flux from internal heating in watts per square meter. Possible values: 0.003, 0.012, 0.058.'
+    sql: '"SURFACE_HEAT_FLUX_W/m²"'
+  tidal_acceleration_m_s:
+    description: 'real. Tidal acceleration magnitude in meters per second squared. Possible values: 0.003, 0.012, 0.045.'
+    sql: '"TidalAcceleration_m/s²"'
+  angular_momentum_transfer_rate_kg_m_s_per_year:
+    description: 'real. Rate of angular momentum transfer due to tides in kg⋅m²/s per year. **NULL means angular momentum transfer was not calculated.**. Possible values: 4.2e+19, 8.5e+21.'
+    sql: '"angular_momentum_transfer_rate_kg⋅m²/s_per_year"'
+  mantle_viscosity_pa_s:
+    description: 'real. Mantle viscosity affecting tidal dissipation in Pascal-seconds. **NULL means mantle viscosity was not modeled.**. Possible values: 2.1e+22.'
+    sql: '"mantle_viscosity_Pa⋅s"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct tidal_forces_effects public identity values.
+    label: tidal_forces_effects Count
+    sql: ${planets_data_large_public__tidal_forces_effects.tidal_ref}

@@ -1,0 +1,102 @@
+label: community_engagement
+description: All columns of the public table community_engagement.
+catalog: residential_data_large
+schema: public
+table_name: community_engagement
+dimensions:
+  charitable_donation_frequency_per_year:
+    description: 'BIGINT. Frequency of charitable donations per year. **NULL means charitable giving not tracked.**. Possible values: 12.0, 24.0, 4.0, 6.0, 8.0.'
+    sql: '"CHARITABLE_donation_frequency_per_year"'
+  community_problem_reporting_count:
+    description: 'BIGINT. Number of community problems reported. **NULL means problem reporting not tracked.**. Possible values: 0.0, 1.0, 2.0, 3.0, 4.0.'
+    sql: '"COMMUNITY_problem_reporting_count"'
+  community_satisfaction_score:
+    description: 'REAL. Community satisfaction rating on 1-10 scale. **NULL means community satisfaction not surveyed.**. Possible values: 7.5, 7.8, 8.1, 8.2, 8.6, 8.8.'
+    sql: '"COMMUNITY_satisfaction_score"'
+  conflict_resolution_involvement_count:
+    description: 'BIGINT. Number of conflict resolution involvements. **NULL means conflict resolution participation not tracked.**. Possible values: 0.0, 1.0, 2.0.'
+    sql: '"CONFLICT_resolution_involvement_count"'
+  cultural_events_attended:
+    description: 'BIGINT. Number of cultural events attended. **NULL means cultural participation not tracked.**. Possible values: 2.0, 3.0, 4.0, 5.0, 6.0, 8.0.'
+    sql: '"CULTURAL_events_attended"'
+  community_engagement_household_participation:
+    description: 'BIGINT. Reference to household for community engagement tracking. FK to households(housenum). Possible values: 22, 4, 7, 719, 797, 852, 866, 908.'
+    sql: '"Community_Engagement_Household_Participation"'
+  community_event_organization_count:
+    description: 'BIGINT. Number of community events organized. **NULL means event organization not tracked.**. Possible values: 0.0, 1.0, 2.0, 3.0.'
+    sql: '"Community_Event_Organization_Count"'
+  community_garden_participation:
+    description: 'TEXT. Participation in community garden activities. **NULL means garden participation not documented.**. Possible values: No, Yes.'
+    sql: '"Community_Garden_Participation"'
+  cultural_diversity_acceptance_score:
+    description: 'BIGINT. Cultural diversity acceptance rating. **NULL means diversity acceptance not evaluated.**. Possible values: 7.0, 8.0, 9.0.'
+    sql: '"Cultural_Diversity_Acceptance_Score"'
+  engagement_id:
+    description: 'BIGSERIAL. Primary key identifier for community engagement record. PK. Possible values: 1, 2, 3, 4, 5, 6, 7, 8.'
+    sql: '"Engagement_ID"'
+  intergenerational_program_participation:
+    description: 'TEXT. Participation in intergenerational programs. **NULL means intergenerational activities not tracked.**. Possible values: No, Yes.'
+    sql: '"INTERGENERATIONAL_program_participation"'
+  local_business_patronage_frequency:
+    description: 'BIGINT. Frequency of local business patronage per month. **NULL means local business support not measured.**. Possible values: 12.0, 15.0, 18.0, 20.0, 25.0, 6.0, 8.0.'
+    sql: '"Local_Business_Patronage_Frequency"'
+  mentorship_relationships:
+    description: 'BIGINT. Number of mentorship relationships maintained. **NULL means mentorship not tracked.**. Possible values: 0.0, 1.0, 2.0, 3.0, 4.0.'
+    sql: '"Mentorship_Relationships"'
+  neighborhood_watch_participation:
+    description: 'TEXT. Participation in neighborhood watch programs. **NULL means watch program participation not tracked.**. Possible values: No, Yes.'
+    sql: '"NEIGHBORHOOD_watch_participation"'
+  neighbor_interaction_frequency:
+    description: 'BIGINT. Frequency of neighbor interactions per week. **NULL means neighbor interaction not tracked.**. Possible values: 10.0, 12.0, 14.0, 15.0, 18.0, 6.0, 8.0.'
+    sql: '"Neighbor_Interaction_Frequency"'
+  neighborhood_meetings_attended:
+    description: 'BIGINT. Number of neighborhood meetings attended. **NULL means meeting attendance not tracked.**. Possible values: 0.0, 1.0, 2.0, 3.0, 4.0, 5.0.'
+    sql: '"Neighborhood_Meetings_Attended"'
+  political_participation_score:
+    description: 'BIGINT. Political participation activity rating. **NULL means political engagement not assessed.**. Possible values: 5.0, 6.0, 7.0, 8.0.'
+    sql: '"POLITICAL_participation_score"'
+  religious_service_attendance_frequency:
+    description: 'BIGINT. Frequency of religious service attendance per month. **NULL means religious participation not tracked.**. Possible values: 0.0, 12.0, 16.0, 2.0, 4.0, 6.0, 8.0.'
+    sql: '"Religious_Service_Attendance_Frequency"'
+  social_media_community_group_participation:
+    description: 'BIGINT. Number of social media community groups participated in. **NULL means social media participation not tracked.**. Possible values: 1.0, 2.0, 3.0, 4.0, 5.0.'
+    sql: '"Social_Media_Community_Group_Participation"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  volunteer_hours_per_month:
+    description: 'REAL. Hours of volunteer work per month. **NULL means volunteer activity not tracked.**. Possible values: 12.2, 15.5, 18.9, 6.8, 8.5, 8.9.'
+    sql: '"VOLUNTEER_hours_per_month"'
+  charitable_donation_amount_annual_brl:
+    description: 'REAL. Annual charitable donation amount in Brazilian Real. **NULL means donation amounts not disclosed.**. Possible values: 1200.0, 1800.0, 2500.0, 3200.0, 850.0.'
+    sql: '"charitable_donation_AMOUNT_annual_brl"'
+  community_leadership_roles:
+    description: 'BIGINT. Number of community leadership roles held. **NULL means leadership roles not tracked.**. Possible values: 0.0, 1.0, 2.0, 3.0.'
+    sql: '"community_leadership_ROLES"'
+  community_organization_memberships:
+    description: 'BIGINT. Number of community organization memberships held. **NULL means organization memberships not tracked.**. Possible values: 1.0, 2.0, 3.0.'
+    sql: '"community_organization_MEMBERSHIPS"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: created_at
+  local_government_contact_frequency:
+    description: 'BIGINT. Frequency of local government contact per year. **NULL means government interaction not tracked.**. Possible values: 0.0, 1.0, 2.0, 3.0, 4.0, 5.0.'
+    sql: '"local_government_CONTACT_frequency"'
+  local_media_engagement_score:
+    description: 'BIGINT. Local media engagement rating. **NULL means media engagement not assessed.**. Possible values: 5.0, 6.0, 7.0, 8.0.'
+    sql: '"local_media_ENGAGEMENT_score"'
+  reporting_quarter:
+    description: 'DATE. Quarter for community engagement reporting period. Possible values: 2025-01-01, 2025-04-01, 2025-07-01.'
+    sql: '"reporting_QUARTER"'
+  sense_of_belonging_score:
+    description: 'BIGINT. Sense of belonging rating. **NULL means belonging assessment not conducted.**. Possible values: 7.0, 8.0, 9.0.'
+    sql: '"sense_of_BELONGING_score"'
+  skill_sharing_hours_per_month:
+    description: 'REAL. Hours spent sharing skills with community per month. **NULL means skill sharing not tracked.**. Possible values: 3.8, 4.5, 6.5, 8.2.'
+    sql: '"skill_sharing_HOURS_per_month"'
+  social_capital_index:
+    description: 'REAL. Social capital index measurement. **NULL means social capital not evaluated.**. Possible values: 6.5, 6.8, 7.2, 7.8, 8.5, 8.9.'
+    sql: '"social_capital_INDEX"'
+  sports_activities_participation_hours:
+    description: 'REAL. Hours of sports activities participation per week. **NULL means sports participation not tracked.**. Possible values: 2.5, 3.8, 4.5, 5.2, 6.2.'
+    sql: '"sports_activities_PARTICIPATION_hours"'

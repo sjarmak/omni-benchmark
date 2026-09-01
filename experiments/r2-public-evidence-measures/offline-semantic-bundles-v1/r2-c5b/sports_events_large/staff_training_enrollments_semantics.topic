@@ -1,0 +1,11 @@
+base_view: sports_events_large_public__staff_training_enrollments
+label: staff_training_enrollments
+description: All columns of the public table staff_training_enrollments.
+fields:
+- sports_events_large_public__staff_training_enrollments.*
+- sports_events_large_public__staff_directory.*
+- sports_events_large_public__training_programs.*
+joins:
+  sports_events_large_public__staff_directory: {}
+  sports_events_large_public__training_programs: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

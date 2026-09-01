@@ -1,0 +1,66 @@
+label: RemediationAction
+description: All columns of the public table RemediationAction.
+catalog: cross_border_large
+schema: public
+table_name: RemediationAction
+dimensions:
+  action_type:
+    description: 'TEXT. Type of remediation action Possible values: Technical Fix, Process Change, Policy Update, Training, System Patch, Access Revocation, Data Recovery, Monitoring Enhancement.'
+    sql: '"ACTION_TYPE"'
+  actual_cost_usd:
+    description: 'REAL. Actual cost incurred Typical range: 0 to 200000. **NULL means Costs not yet tracked.**'
+    sql: '"ACTUAL_COST_USD"'
+  assigned_to:
+    description: 'TEXT. Person or team assigned Possible values: Security Team, IT Ops, Network Team, DBA Team, Compliance, DevOps.'
+    sql: '"ASSIGNED_TO"'
+  downtime_minutes:
+    description: BIGINT. Expected downtime in minutes **NULL means No downtime required or not estimated.**
+    sql: '"DOWNTIME_MINUTES"'
+  notes:
+    description: TEXT. Additional notes **NULL means No additional notes.**
+    sql: '"NOTES"'
+  progress_pct:
+    description: 'REAL. Completion percentage Typical range: 0 to 100.'
+    sql: '"PROGRESS_PCT"'
+  remediation_id:
+    description: BIGINT. Primary key. Unique remediation action identifier
+    sql: '"REMEDIATION_ID"'
+  status:
+    description: 'TEXT. Current action status Possible values: Planned, In Progress, Completed, Verified, Deferred.'
+    sql: '"Status"'
+  target_date:
+    description: DATE. Target completion date
+    sql: '"TARGET_DATE"'
+  verified:
+    description: BOOLEAN. Whether remediation has been verified effective Boolean flag (true/false).
+    sql: '"VERIFIED"'
+  action_code:
+    description: TEXT. Remediation action code
+    sql: action_code
+  completion_date:
+    description: DATE. Actual completion date **NULL means Action not yet completed.**
+    sql: completion_date
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  estimated_cost_usd:
+    description: 'REAL. Estimated cost of remediation Typical range: 0 to 200000.'
+    sql: estimated_cost_usd
+  incident_ref:
+    description: BIGINT. Foreign key referencing IncidentRegister(INCIDENT_ID). Related incident
+    sql: incident_ref
+  priority:
+    description: 'TEXT. Action priority Possible values: Critical, High, Medium, Low.'
+    sql: priority
+  requires_downtime:
+    description: BOOLEAN. Whether action requires system downtime Boolean flag (true/false).
+    sql: requires_downtime
+  verification_method:
+    description: 'TEXT. Method to verify remediation effectiveness Possible values: Automated Scan, Manual Review, Penetration Test, Audit.'
+    sql: '"verification_Method"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct RemediationAction public identity values.
+    label: RemediationAction Count
+    sql: ${cross_border_large_public__remediation_action.remediation_id}

@@ -1,0 +1,99 @@
+label: Project
+description: All columns of the public table Project.
+catalog: polar_equipment_large
+schema: public
+table_name: Project
+dimensions:
+  budget_usd:
+    description: 'REAL. Total project budget (USD). Example: 12457890.33.'
+    sql: budget_usd
+  comm_plan_ref:
+    description: 'TEXT. Comms plan reference. Example: COMM-6242.'
+    sql: '"commPlanRef"'
+  data_policy:
+    description: 'TEXT. Data sharing policy. Possible values (from file): Internal, Partner-only, Public after embargo. Example: Public after embargo.'
+    sql: '"dataPolicy"'
+  doc_ref:
+    description: 'TEXT. Internal documentation reference. Example: DOC-7074.'
+    sql: '"docRef"'
+  elev_max_m:
+    description: 'REAL. Maximum elevation (m). Example: 1210.3.'
+    sql: '"elevMax_m"'
+  elev_min_m:
+    description: 'REAL. Minimum elevation (m). Example: -14.6.'
+    sql: '"elevMin_m"'
+  end_date:
+    description: 'DATE (yyyy/mm/dd). Scheduled/actual end date. **NULL means the project is still ongoing past the dataset’s ‘today’.** Example: 2025/04/17.'
+    sql: '"endDate"'
+  env_permit_no:
+    description: 'TEXT. Environmental permit reference. **NULL means permit has been Requested but not yet issued.** Example: ENV-34567.'
+    sql: '"envPermitNo"'
+  equip_budget_usd:
+    description: 'REAL. Equipment budget (USD). Example: 849221.17.'
+    sql: '"equipBudget_usd"'
+  fuel_budget_usd:
+    description: 'REAL. Fuel budget (USD). **NULL means not tracked for strictly Regional projects.** Example: 125000.0.'
+    sql: '"fuelBudget_usd"'
+  ip_owner:
+    description: 'TEXT. Intellectual property owner. Possible values (from file): Institution, Joint, Sponsor. Example: Sponsor.'
+    sql: '"ipOwner"'
+  lat_max_deg:
+    description: 'REAL. Bounding box max latitude (deg). Example: 30.156.'
+    sql: '"latMax_deg"'
+  lat_min_deg:
+    description: 'REAL. Bounding box min latitude (deg). Example: 24.706.'
+    sql: '"latMin_deg"'
+  lon_max_deg:
+    description: 'REAL. Bounding box max longitude (deg). Example: 139.425.'
+    sql: '"lonMax_deg"'
+  lon_min_deg:
+    description: 'REAL. Bounding box min longitude (deg). Example: 123.882.'
+    sql: '"lonMin_deg"'
+  notes:
+    description: 'TEXT. Project-level note. **NULL means status=Planned and no notes have been recorded yet.** Example: Drone operations limited to daytime VLOS.'
+    sql: notes
+  objective:
+    description: 'TEXT. Primary objective statement. Example: Deploy mobile lab for air quality study.'
+    sql: objective
+  permit_status:
+    description: 'TEXT. Permit status. Possible values (from file): Approved, Expired, Requested. Example: Approved.'
+    sql: '"permitStatus"'
+  person_days_actual:
+    description: 'REAL. Actual person-days. **NULL means status=Planned (no execution yet).** Example: 814.0.'
+    sql: '"personDays_actual"'
+  person_days_planned:
+    description: 'REAL. Planned person-days. Example: 1730.5.'
+    sql: '"personDays_planned"'
+  power_budget_k_wh:
+    description: 'REAL. Power/energy budget (kWh). Example: 125400.0.'
+    sql: '"powerBudget_kWh"'
+  priority:
+    description: 'TEXT. Work priority. Possible values (from file): Critical, High, Medium, Low. Example: High.'
+    sql: priority
+  project_name:
+    description: 'TEXT. Project short name. Example: Mission_21.'
+    sql: '"projectName"'
+  project_slug:
+    description: 'TEXT. Unique project slug. PK. Example: PRJ-220.'
+    sql: '"projectSlug"'
+  publish_plan:
+    description: 'TEXT. Publication plan. Possible values (from file): 12-month embargo, 6-month embargo, Immediate. Example: 6-month embargo.'
+    sql: '"publishPlan"'
+  risk_class:
+    description: 'TEXT. Risk level. Possible values (from file): Low, Medium, High. Example: Medium.'
+    sql: '"riskClass"'
+  safety_plan_ref:
+    description: 'TEXT. Safety plan document reference. Example: SAFE-3811.'
+    sql: '"safetyPlanRef"'
+  scope:
+    description: 'TEXT. Scope classification. Possible values (from file): International, Multi-site, National, Regional. Example: National.'
+    sql: scope
+  sponsor:
+    description: 'TEXT. Funding/sponsor entity. Possible values (from file): Brazil FINEP, Canada NSERC, CNRS-France, EU Horizon, India DST, Japan JST, NSF-USA, UKRI. Example: UKRI.'
+    sql: sponsor
+  start_date:
+    description: 'DATE (yyyy/mm/dd). Project start. Example: 2024/02/19.'
+    sql: '"startDate"'
+  status:
+    description: 'TEXT. Project status. Possible values (from file): Planned, Active, Paused, Closed. Example: Active.'
+    sql: status

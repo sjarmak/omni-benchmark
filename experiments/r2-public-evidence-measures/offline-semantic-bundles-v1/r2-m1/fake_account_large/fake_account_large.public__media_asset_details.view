@@ -1,0 +1,120 @@
+label: media_asset_details
+description: All columns of the public table media_asset_details.
+catalog: fake_account_large
+schema: public
+table_name: media_asset_details
+dimensions:
+  color_space:
+    description: 'TEXT. Embedded color profile. Possible values: sRGB, AdobeRGB, DisplayP3.'
+    sql: '"COLOR_SPACE"'
+  dominant_col:
+    description: 'TEXT. Hex code of dominant color. Example: #3357FF.'
+    sql: '"DOMINANT_COL"'
+  media_score:
+    description: 'REAL. Risk/quality composite (0-100). Example: 72.5.'
+    sql: '"MEDIA_SCORE"'
+  media_type:
+    description: 'TEXT. Asset type. Possible values: image, video, audio, gif.'
+    sql: '"MEDIA_TYPE"'
+  media_code:
+    description: 'TEXT. Unique media asset ID. PK. Example: MD9384726501.'
+    sql: '"Media_CODE"'
+  ocr_text_len:
+    description: 'BIGINT. Characters extracted by OCR. Example: 0.'
+    sql: '"OCR_TEXT_LEN"'
+  acct_ref:
+    description: 'TEXT. FK to accounts.acct_ref. Example: ACC7210284.'
+    sql: acct_ref
+  alt_text:
+    description: TEXT. Accessibility alt text. **NULL indicates missing alt description.**
+    sql: alt_text
+  caption_ai:
+    description: TEXT. AI-generated caption of the media.
+    sql: '"captionAi"'
+  duration_sec:
+    description: 'REAL. Length in seconds (video/audio only). **NULL for still images or GIFs.** Example: 13.28.'
+    sql: '"durationSec"'
+  face_count:
+    description: 'BIGINT. Faces detected. **NULL when face detection skipped.** Example (when present): 1.'
+    sql: '"faceCount"'
+  geo_tag:
+    description: 'TEXT. Geolocation tag (ISO region or empty). **NULL when not provided by uploader or EXIF.** Example (when present): JP.'
+    sql: '"geoTag"'
+  lang_det:
+    description: 'TEXT. Detected language of OCR or caption. Example: en.'
+    sql: '"langDet"'
+  media_hash:
+    description: 'TEXT. SHA-256 or perceptual hash of raw data. Example: 4e59a0f1b62f6c7d8120e774.'
+    sql: '"mediaHash"'
+  media_size_kb:
+    description: 'BIGINT. Encoded size in kilobytes. Example: 2458.'
+    sql: '"mediaSizeKB"'
+  media_width:
+    description: 'BIGINT. Pixel width. Example: 1920.'
+    sql: '"mediaWidth"'
+  media_height:
+    description: 'BIGINT. Pixel height. Example: 1080.'
+    sql: media_height
+  nsfw_safe:
+    description: 'TEXT. NSFW classifier outcome. Possible values: SAFE, UNSAFE, UNCERTAIN.'
+    sql: '"nsfwSAFE"'
+  obj_count:
+    description: 'BIGINT. Objects detected. Example: 7.'
+    sql: '"objCount"'
+  origin_url:
+    description: TEXT. Canonical URL where the asset originated, if known.
+    sql: '"originUrl"'
+  quality_metrics:
+    description: JSONB column. Stores computed visual-quality scores and colour/clarity properties for a media asset.
+    sql: quality_metrics
+  reuse_flag:
+    description: 'TEXT. Provenance flag. Possible values: Original, Reused, Remixed.'
+    sql: '"reuseFlag"'
+  scene_class:
+    description: 'TEXT. Scene classification label. Example: Indoor.'
+    sql: '"sceneClass"'
+  thumb_hash:
+    description: 'TEXT. Blur-hash or perceptual hash of thumbnail. Example: 3f2c8e0dcb9671f0.'
+    sql: '"thumbHash"'
+  transcribe_ai:
+    description: TEXT. Speech transcription (AV only). **NULL for non-AV media.**
+    sql: transcribe_ai
+  upload_ts:
+    description: 'TIMESTAMPTZ. Upload time. Example: 2025-04-12T14:27:09.'
+    sql: '"uploadTs"'
+  quality_metrics_contrast:
+    description: 'REAL. Overall contrast (0-1). Example: 0.66.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'CONTRAST')
+  quality_metrics_quality_score:
+    description: 'REAL. Composite quality score (0-100). Example: 88.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'QUALITY_SCORE')
+  quality_metrics_sharpness:
+    description: 'REAL. Sharpness index (0-1). Example: 0.78.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'SHARPNESS')
+  quality_metrics_blur_score:
+    description: 'REAL. Blur metric (0-1). Example: 0.12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'blurScore')
+  quality_metrics_brightness:
+    description: 'REAL. Brightness (0-1). Example: 0.55.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'brightness')
+  quality_metrics_color_temp_k:
+    description: 'REAL. White-balance color temperature in Kelvin (unit moved to header). Example: 5600.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'color_temp_K')
+  quality_metrics_edge_score:
+    description: 'REAL. Edge density (0-1). Example: 0.43.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'edgeScore')
+  quality_metrics_noise_score:
+    description: 'REAL. Noise metric (0-1). Example: 0.07.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'noise_score')
+  quality_metrics_res_band:
+    description: 'TEXT. Resolution band category. Possible values: 480p, 720p, 1080p–1440p, 4K.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'res_band')
+  quality_metrics_saturation:
+    description: 'REAL. Saturation (0-1). Example: 0.49.'
+    sql: JSONB_EXTRACT_PATH_TEXT(quality_metrics, 'saturation')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct media_asset_details public identity values.
+    label: media_asset_details Count
+    sql: ${fake_account_large_public__media_asset_details.media_code}

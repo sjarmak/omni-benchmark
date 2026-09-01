@@ -1,0 +1,69 @@
+label: SensorConfiguration
+description: All columns of the public table SensorConfiguration.
+catalog: sports_events_large
+schema: public
+table_name: SensorConfiguration
+dimensions:
+  calibration_date:
+    description: DATE. Last calibration date
+    sql: '"CALIBRATION_DATE"'
+  manufacturer:
+    description: 'TEXT. Sensor manufacturer Possible values: McLaren Applied, Bosch, Kistler, Honeywell, Sensata, TDK.'
+    sql: '"MANUFACTURER"'
+  mounting_position:
+    description: 'TEXT. Where sensor is mounted on car Possible values: Engine, Gearbox, Suspension, Wheel, Aero, Cockpit, Floor, Wing.'
+    sql: '"MOUNTING_POSITION"'
+  operating_temp_min_c:
+    description: 'REAL. Minimum operating temperature Typical range: -40 to 10.'
+    sql: '"OPERATING_TEMP_MIN_C"'
+  sampling_rate_hz:
+    description: 'REAL. Sampling rate in Hz Typical range: 1 to 1000.'
+    sql: '"SAMPLING_RATE_HZ"'
+  sensor_config_id:
+    description: BIGINT. Primary key. Unique sensor configuration identifier
+    sql: '"SENSOR_CONFIG_ID"'
+  sensor_name:
+    description: 'TEXT. Sensor name Possible values: GPS Antenna, IMU Module, Wheel Speed Sensor, Brake Temp Sensor, Tire Pressure Sensor, Fuel Flow Meter, Oil Pressure Sensor, Air Speed Pitot.'
+    sql: '"SENSOR_NAME"'
+  status:
+    description: 'TEXT. Sensor status Possible values: Active, Spare, Faulty, Retired.'
+    sql: '"STATUS"'
+  stock_count:
+    description: BIGINT. Number in stock
+    sql: '"STOCK_COUNT"'
+  accuracy_pct:
+    description: 'REAL. Measurement accuracy percentage Typical range: 95 to 100.'
+    sql: accuracy_pct
+  calibration_interval_days:
+    description: BIGINT. Required calibration interval
+    sql: calibration_interval_days
+  constructor_ref:
+    description: BIGINT. Foreign key referencing constructors(cstr_key). Related constructor
+    sql: constructor_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  firmware_version:
+    description: TEXT. Sensor firmware version
+    sql: firmware_version
+  operating_temp_max_c:
+    description: 'REAL. Maximum operating temperature Typical range: 80 to 300.'
+    sql: '"operating_temp_max_C"'
+  sensor_code:
+    description: TEXT. Sensor reference code
+    sql: sensor_code
+  sensor_type:
+    description: 'TEXT. Type of sensor Possible values: Position, Motion, Temperature, Pressure, Speed, Force, Flow, Electrical.'
+    sql: sensor_type
+  unit_cost_usd:
+    description: 'REAL. Cost per unit Typical range: 50 to 50000.'
+    sql: unit_cost_usd
+  weight_grams:
+    description: 'REAL. Sensor weight in grams Typical range: 5 to 500.'
+    sql: weight_grams
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct SensorConfiguration public identity values.
+    label: SensorConfiguration Count
+    sql: ${sports_events_large_public__sensor_configuration.sensor_config_id}

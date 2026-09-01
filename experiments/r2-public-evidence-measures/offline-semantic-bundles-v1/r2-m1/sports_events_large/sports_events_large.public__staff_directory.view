@@ -1,0 +1,105 @@
+label: staff_directory
+description: All columns of the public table staff_directory.
+catalog: sports_events_large
+schema: public
+table_name: staff_directory
+dimensions:
+  allergies:
+    description: 'TEXT. Allergies of the staff member. **NULL means no allergies recorded.** Example: nuts.'
+    sql: '"ALLERGIES"'
+  blood_type:
+    description: 'TEXT. Blood type of the staff member. Example: O+.'
+    sql: '"BLOOD_TYPE"'
+  base_location_country:
+    description: 'TEXT. Base location country of the staff member. Example: UK.'
+    sql: '"BaseLocationCountry"'
+  base_location_city:
+    description: 'TEXT. Base location city of the staff member. Example: Brackley.'
+    sql: '"Base_Location_City"'
+  certifications_json:
+    description: 'JSONB. Certifications held by the staff member in JSON format. Example: {FIA:valid}.'
+    sql: '"Certifications_JSON"'
+  contract_type:
+    description: 'TEXT. Type of employment contract. Example: permanent.'
+    sql: '"ContractType"'
+  department:
+    description: 'TEXT. Department the staff member works in. Example: Track Ops.'
+    sql: '"Department"'
+  dietary_restrictions:
+    description: 'TEXT. Dietary restrictions for the staff member. **NULL means no dietary restrictions.** Example: vegan.'
+    sql: '"Dietary_Restrictions"'
+  email:
+    description: 'TEXT. Email address of the staff member. Example: alex@team.com.'
+    sql: '"EMAIL"'
+  employee_code:
+    description: 'TEXT. Unique employee code. Example: E-10023.'
+    sql: '"EMPLOYEE_CODE"'
+  emergency_contact:
+    description: 'TEXT. Emergency contact information for the staff member. **NULL means no emergency contact recorded.** Example: Sam +44-20-5555-1001.'
+    sql: '"EmergencyContact"'
+  end_date:
+    description: 'DATE. End date of the employee''s contract. Example: 2026-01-09.'
+    sql: '"End_Date"'
+  equipment_json:
+    description: 'JSONB. Equipment assigned to the staff member. Example: {laptop:MBP}.'
+    sql: '"Equipment_JSON"'
+  full_name:
+    description: 'TEXT. Full name of the staff member. Example: Alex Brown.'
+    sql: '"FullName"'
+  languages_json:
+    description: 'JSONB. Languages spoken by the staff member in JSON format. Example: {en: true, es: false}.'
+    sql: '"Languages_json"'
+  manager_name:
+    description: 'TEXT. Name of the staff member''s manager. **NULL means the staff member does not have a manager (e.g., senior roles).** Example: Lead Eng.'
+    sql: '"ManagerName"'
+  on_track_days_year:
+    description: 'BIGINT. Number of track days worked by the staff member in a year. Example: 90.'
+    sql: '"OnTrackDaysYear"'
+  passport_expiry:
+    description: 'DATE. Expiry date of the staff member''s passport. Example: 2028-05-01.'
+    sql: '"Passport_Expiry"'
+  phone:
+    description: 'TEXT. Phone number of the staff member. Example: +44-20-5555-1001.'
+    sql: '"Phone"'
+  role_title:
+    description: 'TEXT. Title or role of the staff member. Example: Race Engineer.'
+    sql: '"RoleTitle"'
+  seniority_level:
+    description: 'TEXT. Seniority level of the staff member. Possible values: Junior, Senior, Lead. Example: Senior.'
+    sql: '"SENIORITY_LEVEL"'
+  salary_band:
+    description: 'TEXT. Salary band of the employee. Possible values: SB1, SB2, SB3, SB4. Example: SB4.'
+    sql: '"SalaryBand"'
+  security_clearance:
+    description: 'TEXT. Security clearance level of the staff member. Example: level-2.'
+    sql: '"Security_Clearance"'
+  shoe_size_eu:
+    description: 'REAL. Shoe size (EU) of the staff member. Example: 43.0.'
+    sql: '"ShoeSize_EU"'
+  staff_index:
+    description: BIGSERIAL. Surrogate primary key for staff_directory rows. PK.
+    sql: '"StaffIndex"'
+  start_date:
+    description: 'DATE. Start date of the employee in the organization. Example: 2022-01-10.'
+    sql: '"StartDate"'
+  travel_pct:
+    description: 'REAL. Percentage of travel time for the staff member. Example: 0.45.'
+    sql: '"TRAVEL_PCT"'
+  uniform_size_top:
+    description: 'TEXT. Size of the staff member''s uniform top. Example: M.'
+    sql: '"UniformSizeTop"'
+  visa_notes:
+    description: 'TEXT. Notes on the staff member''s visa status. Example: US B1/B2.'
+    sql: '"VisaNotes"'
+  notes:
+    description: 'TEXT. Additional notes about the staff member. **NULL means no notes provided.** Example: Night shifts ok.'
+    sql: notes
+  uniform_size_bottom:
+    description: 'TEXT. Size of the staff member''s uniform bottom. Example: 32.'
+    sql: uniform_size_bottom
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct staff_directory public identity values.
+    label: staff_directory Count
+    sql: ${sports_events_large_public__staff_directory.staff_index}

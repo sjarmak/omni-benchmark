@@ -1,0 +1,27 @@
+label: transaction_products
+description: All columns of the public table transaction_products.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: transaction_products
+dimensions:
+  event_link:
+    description: TEXT. Identifier of the transaction that sold the product. PK (composite). FK to transactions(EventCode).
+    sql: '"EventLink"'
+  listing_age:
+    description: 'BIGINT. Age of the listing at the time of sale. PK (composite). FK to products. Example: 155.'
+    sql: '"ListingAge"'
+  price_amt:
+    description: 'REAL. Price at which the item was sold. Example: 1166.46.'
+    sql: '"PriceAmt"'
+  prod_cat:
+    description: 'TEXT. Product category for the sold item. PK (composite). FK to products. Possible values: Data, Digital, Physical, Service.'
+    sql: '"ProdCat"'
+  qty_sold:
+    description: 'BIGINT. Quantity of items sold in the transaction. Example: 92.'
+    sql: '"QtySold"'
+  seller_pointer:
+    description: TEXT. Vendor identifier for the sold listing. PK (composite). FK to products.
+    sql: '"SellerPointer"'
+  subcategory:
+    description: 'TEXT. Product subcategory for the sold item. PK (composite). FK to products. Possible values: Type_A, Type_B, Type_C, Type_D.'
+    sql: '"Subcategory"'

@@ -1,0 +1,96 @@
+label: Dataset_Catalog
+description: All columns of the public table Dataset_Catalog.
+catalog: cross_border_large
+schema: public
+table_name: Dataset_Catalog
+dimensions:
+  bkp_frequency_days:
+    description: 'BIGINT. Frequency of backups in days. Example: 7.'
+    sql: '"BKP_FREQUENCY_DAYS"'
+  checksum:
+    description: 'TEXT. Checksum value for the dataset. Example: checksum_1234.'
+    sql: '"CHECKSUM"'
+  confidentiality:
+    description: 'TEXT. Confidentiality level of the dataset. Possible values: High, Medium, Low. Example: High.'
+    sql: '"CONFIDENTIALITY"'
+  classification:
+    description: 'TEXT. Classification of the dataset. Possible values: Public, Internal, Confidential. Example: Confidential.'
+    sql: '"Classification"'
+  dataset_alias:
+    description: 'TEXT. Alias name for the dataset. Example: Alias_1. **NULL means alias is not provided.**'
+    sql: '"Dataset_Alias"'
+  format:
+    description: 'TEXT. The file format of the dataset. Example: Parquet.'
+    sql: '"FORMAT"'
+  integrity:
+    description: 'TEXT. Integrity level of the dataset. Possible values: High, Medium, Low. Example: Medium.'
+    sql: '"Integrity"'
+  owner_team:
+    description: 'TEXT. Team responsible for the dataset. Example: Data Science.'
+    sql: '"OWNER_TEAM"'
+  pii_flag:
+    description: 'TEXT. Whether the dataset contains Personally Identifiable Information (PII). Possible values: Yes, No. Example: Yes.'
+    sql: '"PII_Flag"'
+  refresh_schedule:
+    description: 'TEXT. The refresh schedule of the dataset. Possible values: Daily, Weekly, Monthly. Example: Daily.'
+    sql: '"Refresh_Schedule"'
+  sla_throughput_mbps:
+    description: 'REAL. SLA throughput for the dataset. Example: 500.0 Mbps.'
+    sql: '"SLA_THROUGHPUT_MBPS"'
+  steward:
+    description: 'TEXT. Person assigned as the steward of the dataset. Example: John Doe.'
+    sql: '"Steward"'
+  availability:
+    description: 'TEXT. Availability level of the dataset. Possible values: High, Medium, Low. Example: High.'
+    sql: availability
+  avg_row_size_bytes:
+    description: 'BIGINT. Average size of each row in bytes. Example: 512.'
+    sql: avg_row_size_bytes
+  backup_state:
+    description: 'TEXT. State of the dataset backup. Possible values: Completed, Pending, Failed. Example: Completed.'
+    sql: backup_state
+  checksum_alg:
+    description: 'TEXT. Algorithm used for the checksum. Example: SHA256.'
+    sql: checksum_alg
+  compression:
+    description: 'TEXT. Compression type used on the dataset. Example: gzip.'
+    sql: compression
+  data_owner_email:
+    description: 'TEXT. Email of the dataset owner. Example: owner1@company.com.'
+    sql: data_owner_email
+  dataset_code:
+    description: 'BIGINT. Unique identifier for each dataset. Example: 1.'
+    sql: dataset_code
+  dataset_flow_code:
+    description: 'TEXT. Unique flow code for the dataset. Example: Flow_55.'
+    sql: dataset_flow_code
+  dataset_name:
+    description: 'TEXT. Name of the dataset. Example: Dataset_1.'
+    sql: dataset_name
+  dataset_profile_code:
+    description: 'BIGINT. Unique identifier for the dataset profile. Example: 3501.'
+    sql: dataset_profile_code
+  phi_flag:
+    description: 'TEXT. Whether the dataset contains Protected Health Information (PHI). Possible values: Yes, No. Example: No.'
+    sql: phi_flag
+  retention_days:
+    description: 'BIGINT. Number of days the dataset is retained. Example: 180.'
+    sql: retention_days
+  row_count:
+    description: 'BIGINT. The total row count in the dataset. Example: 500000. **NULL means row count is not recorded.**'
+    sql: row_count
+  size_gb:
+    description: 'REAL. Size of the dataset in GB. Example: 23.65.'
+    sql: size_gb
+  sla_latency_ms:
+    description: 'REAL. SLA latency for the dataset. Example: 120.5 ms.'
+    sql: sla_latency_ms
+  source_system:
+    description: 'TEXT. The source system of the dataset. Example: CRM.'
+    sql: source_system
+  storage_path:
+    description: 'TEXT. The storage path of the dataset. Example: /storage/raw/1.'
+    sql: storage_path
+  storage_system:
+    description: 'TEXT. The storage system used for the dataset. Example: HDFS.'
+    sql: storage_system

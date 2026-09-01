@@ -1,0 +1,66 @@
+label: packaging_compliance_certs
+description: All columns of the public table packaging_compliance_certs.
+catalog: reverse_logistics_large
+schema: public
+table_name: packaging_compliance_certs
+dimensions:
+  audit_frequency_months:
+    description: 'INTEGER. How often the cert body audits the vendor. Unique values: 12, 24, 36.'
+    sql: audit_frequency_months
+  certificate_url_link:
+    description: TEXT. Link to digital copy of certificate.
+    sql: certificate_url_link
+  certification_cost_annual:
+    description: 'REAL. Annual cost to maintain certification. Example: 2000.'
+    sql: certification_cost_annual
+  certification_id:
+    description: TEXT. Unique identifier for the certificate.
+    sql: certification_id
+  certifying_body_name:
+    description: 'TEXT. Organization issuing the cert (e.g., FSC). Unique values: FSC, PEFC, ASTM, ISO.'
+    sql: certifying_body_name
+  country_validity_scope:
+    description: 'TEXT. Region where cert is valid (Global, EU, US). Unique values: Global, EU, US, NA.'
+    sql: country_validity_scope
+  data_parsing_confidence:
+    description: 'REAL. Confidence if AI parsed the PDF (0-1.0). Example: 0.95.'
+    sql: data_parsing_confidence
+  expiry_date:
+    description: TIMESTAMP. Date certificate expires.
+    sql: expiry_date
+  is_mandatory_flag:
+    description: BOOLEAN. Is this cert mandatory for this material type?.
+    sql: is_mandatory_flag
+  issue_date:
+    description: TIMESTAMP. Date certificate was issued.
+    sql: issue_date
+  last_verified_by_user:
+    description: TEXT. User who last verified the document.
+    sql: last_verified_by_user
+  packaging_sku_ref:
+    description: TEXT. The packaging material being certified.
+    sql: packaging_sku_ref
+  renewal_in_progress_flag:
+    description: BOOLEAN. Is renewal currently underway?.
+    sql: renewal_in_progress_flag
+  scope_description:
+    description: TEXT. Scope of the certification coverage.
+    sql: scope_description
+  standard_name_code:
+    description: 'TEXT. Standard certified against (e.g., ISO 14001). Unique values: ISO 14001, ASTM D6400, FSC Mix, FSC 100%.'
+    sql: standard_name_code
+  sustainability_score_impact:
+    description: 'INTEGER. Points contributed to internal sustainability score. Example: 50.'
+    sql: sustainability_score_impact
+  vendor_contact_person:
+    description: TEXT. Contact person for compliance at vendor.
+    sql: vendor_contact_person
+  verification_status:
+    description: 'TEXT. Status of internal verification (Verified, Expired). Unique values: Verified, Pending, Expired, Revoked.'
+    sql: verification_status
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct packaging_compliance_certs public identity values.
+    label: packaging_compliance_certs Count
+    sql: ${reverse_logistics_large_public__packaging_compliance_certs.certification_id}

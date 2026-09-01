@@ -1,0 +1,15 @@
+base_view: robot_fault_prediction_large_public__battery_thermal_management
+label: battery_thermal_management
+description: All columns of the public table battery_thermal_management.
+fields:
+- robot_fault_prediction_large_public__battery_thermal_management.*
+- robot_fault_prediction_large_public__grid_load_optimization.*
+- robot_fault_prediction_large_public__power_consumption_log.*
+- robot_fault_prediction_large_public__robot_details.*
+- robot_fault_prediction_large_public__robot_record.*
+joins:
+  robot_fault_prediction_large_public__grid_load_optimization:
+    robot_fault_prediction_large_public__power_consumption_log:
+      robot_fault_prediction_large_public__robot_details:
+        robot_fault_prediction_large_public__robot_record: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

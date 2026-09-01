@@ -1,0 +1,18 @@
+label: RiskManagement
+description: All columns of the public table RiskManagement.
+catalog: cross_border_large
+schema: public
+table_name: RiskManagement
+dimensions:
+  risktrace:
+    description: 'BIGINT. Unique identifier for the risk trace. PK. Example: 461.'
+    sql: '"RISKTRACE"'
+  flow_link:
+    description: 'TEXT. Foreign key linking to the data flow. Example: CB604907.'
+    sql: flow_link
+  record_registry:
+    description: 'TEXT. Foreign key to the record registry. Example: CB604907.'
+    sql: '"recordRegistry"'
+  risk_management_profile:
+    description: 'JSONB. A JSON object containing the detailed risk management profile. Example: {"assessment": {"risk_score": 30.5, ...}}.'
+    sql: risk_management_profile

@@ -1,0 +1,66 @@
+label: ad_bid_auctions
+description: All columns of the public table ad_bid_auctions.
+catalog: fake_account_large
+schema: public
+table_name: ad_bid_auctions
+dimensions:
+  auction_code:
+    description: TEXT. Unique identifier for the RTB auction event.
+    sql: '"Auction_CODE"'
+  auction_latency_ms:
+    description: 'REAL. Total duration of the bidding process. Example: 80.'
+    sql: auction_latency_ms
+  bid_request_size_bytes:
+    description: 'INTEGER. Size of the data payload sent to bidders. Example: 2048.'
+    sql: bid_request_size_bytes
+  bid_strategy_type:
+    description: 'TEXT. Automated strategy used (e.g., Target CPA, Max Clicks). Unique values: TCPA, MAX_CONV, MANUAL.'
+    sql: bid_strategy_type
+  campaign_ref:
+    description: TEXT. Reference to the campaign participating in the bid.
+    sql: campaign_ref
+  competitor_count:
+    description: 'INTEGER. Number of other advertisers bidding for this slot. Example: 50.'
+    sql: competitor_count
+  creative_render_latency_ms:
+    description: 'INTEGER. Time to render the ad creative on device. **NULL means Ad pre-cached or not rendered.** Example: 300.'
+    sql: creative_render_latency_ms
+  ctr_prediction_model_score:
+    description: 'REAL. Model output for click-through rate probability. Example: 50.0.'
+    sql: ctr_prediction_model_score
+  device_context_score:
+    description: 'REAL. Score based on device quality and connection status. Example: 0.7.'
+    sql: device_context_score
+  dsp_response_time_ms:
+    description: 'INTEGER. Time taken for the Demand Side Platform to respond. Example: 45.'
+    sql: dsp_response_time_ms
+  exchange_connector_ref:
+    description: 'TEXT. Reference to the SSP or Exchange connection. Unique values: G-ADX, RUBICON, APP_NEXUS.'
+    sql: exchange_connector_ref
+  floor_price_micros:
+    description: 'INTEGER. Minimum acceptable bid for the inventory slot. Example: 500000.'
+    sql: floor_price_micros
+  placement_slot_type:
+    description: 'TEXT. Type of inventory (Feed, Banner, Interstitial). Unique values: FEED, STORY, SIDEBAR.'
+    sql: placement_slot_type
+  second_highest_bid_micros:
+    description: 'INTEGER. The bid price of the runner-up (for Vickrey auctions). Example: 1150000.'
+    sql: second_highest_bid_micros
+  user_relevance_score:
+    description: 'REAL. Calculated match between user interest and ad content. Example: 50.0.'
+    sql: user_relevance_score
+  viewability_prediction_pct:
+    description: 'REAL. Predicted probability the ad will be seen. Example: 50.0.'
+    sql: viewability_prediction_pct
+  win_notice_delay_ms:
+    description: 'INTEGER. Delay between auction close and win notification. Example: 50.'
+    sql: win_notice_delay_ms
+  winning_bid_micros:
+    description: 'INTEGER. The final clearing price of the auction. Example: 1200000.'
+    sql: winning_bid_micros
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ad_bid_auctions public identity values.
+    label: ad_bid_auctions Count
+    sql: ${fake_account_large_public__ad_bid_auctions.auction_code}

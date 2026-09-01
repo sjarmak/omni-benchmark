@@ -1,0 +1,11 @@
+base_view: robot_fault_prediction_large_public__technician_certifications
+label: technician_certifications
+description: All columns of the public table technician_certifications.
+fields:
+- robot_fault_prediction_large_public__technician_certifications.*
+- robot_fault_prediction_large_public__certifications.*
+- robot_fault_prediction_large_public__technicians.*
+joins:
+  robot_fault_prediction_large_public__certifications: {}
+  robot_fault_prediction_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

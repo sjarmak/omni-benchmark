@@ -1,0 +1,105 @@
+label: end_effectors
+description: All columns of the public table end_effectors.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: end_effectors
+dimensions:
+  asset_tag:
+    description: 'TEXT. The unique asset tag for the tool. Example: EOAT-001.'
+    sql: '"ASSET_TAG"'
+  cycle_time_ms:
+    description: 'REAL. The typical cycle time of the tool''s action in milliseconds. Example: 150.0.'
+    sql: '"CYCLE_TIME_MS"'
+  documentation_url:
+    description: 'TEXT. A URL to the tool''s documentation. Example: http://schunk.com/pgn100.pdf.'
+    sql: '"DOCUMENTATION_URL"'
+  has_force_torque_sensor:
+    description: 'BOOLEAN. A flag indicating if the tool has an integrated force-torque sensor. Possible values: False, True.'
+    sql: '"HAS_FORCE_TORQUE_SENSOR"'
+  manufacturer:
+    description: 'TEXT. The manufacturer of the tool. Example: Schunk.'
+    sql: '"MANUFACTURER"'
+  max_payload_kg:
+    description: 'REAL. The maximum payload the end-effector can handle, in kilograms. Example: 8.0.'
+    sql: '"MAX_PAYLOAD_KG"'
+  max_open_aperture_mm:
+    description: 'REAL. The maximum opening aperture of a gripper in millimeters. **NULL means this attribute is not applicable.**. Possible values: 10.0, 110.0, 160.0, 20.0, 200.0, 24.0, 40.0, 50.0, 85.0.'
+    sql: '"MaxOpenAperture_mm"'
+  model_number:
+    description: 'TEXT. The manufacturer''s model number for the tool. Example: PGN-plus 100-1.'
+    sql: '"ModelNumber"'
+  purchase_cost_usd:
+    description: 'REAL. The purchase cost of the tool in USD. Example: 1350.0.'
+    sql: '"PURCHASE_COST_USD"'
+  purchase_date:
+    description: 'TEXT. The date the tool was purchased, formatted as DD.MM.YYYY. Example: 10.02.2022.'
+    sql: '"PurchaseDate"'
+  software_driver_version:
+    description: 'TEXT. The version of the software driver required for the tool. Example: 1.1.'
+    sql: '"SOFTWARE_DRIVER_VERSION"'
+  status:
+    description: 'TEXT. The current status of the tool. Possible values: In Use, In Storage, Maintenance, Retired. Possible values: In Storage, In Use, Maintenance, Retired.'
+    sql: '"Status"'
+  total_operating_cycles:
+    description: 'BIGINT. The total number of operating cycles the tool has performed. Example: 1578000.'
+    sql: '"TOTAL_OPERATING_CYCLES"'
+  actuation_type:
+    description: 'TEXT. The actuation method for the tool. Possible values: Pneumatic, Electric. Possible values: Electric, Pneumatic.'
+    sql: actuation_type
+  calibration_data:
+    description: 'JSON. JSON object containing the tool''s calibration data. **NULL indicates no calibration data is stored.**. Example: {tcp_x:0,tcp_y:0,tcp_z:150.5}.'
+    sql: calibration_data
+  connector_type:
+    description: 'TEXT. The type of electrical connector the tool uses. Possible values: Custom Fiber/Control, Custom Multi-pin, Custom Power/Control, M12 12-pin Ethernet, M12 8-pin, M12 8-pin Ethernet, M8 3-pin, M8 4-pin, M8 8-pin.'
+    sql: connector_type
+  end_effector_tag:
+    description: 'TEXT. Unique identifier for the end-effector. PK. Example: GRIP-SCHUNK-001.'
+    sql: end_effector_tag
+  end_effector_type:
+    description: 'TEXT. The general type of the end-effector. Example: 2-Finger Parallel Gripper.'
+    sql: end_effector_type
+  firmware_version:
+    description: 'TEXT. The firmware version of the tool''s internal controller. Example: 1.2.'
+    sql: firmware_version
+  grip_force_n:
+    description: 'REAL. The gripping force of the end-effector in Newtons. **NULL means this attribute is not applicable (e.g., for a welding torch or scanner).**. Example: 840.0.'
+    sql: grip_force_n
+  has_integrated_camera:
+    description: 'BOOLEAN. A flag indicating if the tool has an integrated camera. Possible values: False, True.'
+    sql: has_integrated_camera
+  ip_rating:
+    description: 'TEXT. The IP (Ingress Protection) rating of the tool. Possible values: IP20, IP21, IP40, IP54, IP65, IP67.'
+    sql: ip_rating
+  last_maintenance_date:
+    description: 'TEXT. The date of the last maintenance performed on the tool, formatted as DD.MM.YYYY. Example: 01.08.2025.'
+    sql: last_maintenance_date
+  min_close_aperture_mm:
+    description: 'REAL. The minimum closing aperture of a gripper in millimeters. **NULL means this attribute is not applicable.**. Possible values: 0.0, 10.0, 5.0.'
+    sql: min_close_aperture_mm
+  storage_location:
+    description: 'TEXT. The physical storage location of the tool when not in use. Example: WC-101 Tool Stand.'
+    sql: storage_location
+  utility_requirements:
+    description: JSONB column. Consolidates the electrical and pneumatic requirements for the end-effector.
+    sql: utility_requirements
+  warranty_period_months:
+    description: 'BIGINT. The warranty period for the tool in months. Possible values: 12, 24.'
+    sql: warranty_period_months
+  weight_kg:
+    description: 'REAL. The weight of the end-effector in kilograms. Example: 1.5.'
+    sql: weight_kg
+  utility_requirements_air_pressure_pa:
+    description: 'REAL. The required air pressure in Pascals for pneumatic tools. Possible values: -75000.0, -80000.0, 0.0, 400000.0, 500000.0, 600000.0, 650000.0, 700000.0, 800000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(utility_requirements, 'air_pressure_pa')
+  utility_requirements_current_a:
+    description: 'TEXT. The current requirement for the tool in Amperes. Example: 0.5 A.'
+    sql: JSONB_EXTRACT_PATH_TEXT(utility_requirements, 'current_a')
+  utility_requirements_voltage_v:
+    description: 'TEXT. The voltage requirement for the tool. Possible values: 0, 24 VDC, 240 VAC, 36 VDC, 40 VDC, 400 VAC, 48 VDC.'
+    sql: JSONB_EXTRACT_PATH_TEXT(utility_requirements, 'voltage_v')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct end_effectors public identity values.
+    label: end_effectors Count
+    sql: ${robot_fault_prediction_large_public__end_effectors.end_effector_tag}

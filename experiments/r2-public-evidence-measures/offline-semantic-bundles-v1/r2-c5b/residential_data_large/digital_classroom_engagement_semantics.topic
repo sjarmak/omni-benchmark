@@ -1,0 +1,11 @@
+base_view: residential_data_large_public__digital_classroom_engagement
+label: Digital_Classroom_Engagement
+description: All columns of the public table Digital_Classroom_Engagement.
+fields:
+- residential_data_large_public__digital_classroom_engagement.*
+- residential_data_large_public__education_facilities.*
+- residential_data_large_public__education_facility_resources.*
+joins:
+  residential_data_large_public__education_facility_resources:
+    residential_data_large_public__education_facilities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

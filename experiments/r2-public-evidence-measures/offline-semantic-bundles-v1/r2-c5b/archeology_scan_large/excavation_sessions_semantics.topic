@@ -1,0 +1,9 @@
+base_view: archeology_scan_large_public__excavation_sessions
+label: ExcavationSessions
+description: All columns of the public table ExcavationSessions.
+fields:
+- archeology_scan_large_public__excavation_sessions.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__sites: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

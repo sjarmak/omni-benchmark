@@ -1,0 +1,69 @@
+label: RiskEventRemediation
+description: All columns of the public table RiskEventRemediation.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: RiskEventRemediation
+dimensions:
+  risk_event_remediation_id:
+    description: TEXT. Unique identifier for remediation record.
+    sql: '"RiskEventRemediation_id"'
+  actual_completion_days:
+    description: 'INTEGER. Actual days to complete remediation. **NULL means Remediation still in progress.** Example: 50.'
+    sql: actual_completion_days
+  control_enhancements_count:
+    description: 'INTEGER. Number of control enhancements implemented. Example: 50.'
+    sql: control_enhancements_count
+  current_status:
+    description: 'TEXT. Current status of remediation. Unique values: Not Started, In Progress, Testing, Completed, Verified.'
+    sql: current_status
+  effectiveness_score:
+    description: 'REAL. Score measuring remediation effectiveness. **NULL means Effectiveness not yet assessed.** Example: 50.0.'
+    sql: effectiveness_score
+  employees_retrained_count:
+    description: 'INTEGER. Number of employees retrained. Example: 50.'
+    sql: employees_retrained_count
+  estimated_completion_days:
+    description: 'INTEGER. Estimated days to complete remediation. Example: 50.'
+    sql: estimated_completion_days
+  external_consultants_engaged:
+    description: 'INTEGER. Number of external consultants engaged. Example: 50.'
+    sql: external_consultants_engaged
+  has_recurring_monitoring:
+    description: 'BOOLEAN. Whether ongoing monitoring is established. Possible values: True, False.'
+    sql: has_recurring_monitoring
+  is_regulatory_mandated:
+    description: 'BOOLEAN. Whether remediation is regulatory mandated. Possible values: True, False.'
+    sql: is_regulatory_mandated
+  policy_updates_count:
+    description: 'INTEGER. Number of policies updated. Example: 50.'
+    sql: policy_updates_count
+  process_changes_count:
+    description: 'INTEGER. Number of process changes implemented. Example: 50.'
+    sql: process_changes_count
+  remediation_cost_thousands:
+    description: 'REAL. Cost of remediation efforts in thousands USD. **NULL means Costs not yet finalized.** Example: 50.0.'
+    sql: remediation_cost_thousands
+  remediation_priority:
+    description: 'TEXT. Priority level of remediation effort. Unique values: Critical, High, Medium, Low.'
+    sql: remediation_priority
+  remediation_start_date:
+    description: 'TIMESTAMP. Date remediation efforts began. Example: 2024-01-01 12:00:00.'
+    sql: remediation_start_date
+  requires_board_approval:
+    description: 'BOOLEAN. Whether remediation requires board approval. Possible values: True, False.'
+    sql: requires_board_approval
+  residual_risk_score:
+    description: 'REAL. Remaining risk score after remediation. **NULL means Residual risk not assessed.** Example: 50.0.'
+    sql: residual_risk_score
+  resources_assigned_count:
+    description: 'INTEGER. Number of resources assigned to remediation. Example: 50.'
+    sql: resources_assigned_count
+  risk_event_ref:
+    description: TEXT. Reference to the operational risk event.
+    sql: risk_event_ref
+  system_changes_count:
+    description: 'INTEGER. Number of system changes implemented. Example: 50.'
+    sql: system_changes_count
+  training_sessions_conducted:
+    description: 'INTEGER. Number of training sessions conducted. Example: 50.'
+    sql: training_sessions_conducted

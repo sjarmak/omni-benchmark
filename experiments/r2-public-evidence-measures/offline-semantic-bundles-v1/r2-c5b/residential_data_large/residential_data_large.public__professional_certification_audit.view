@@ -1,0 +1,66 @@
+label: Professional_Certification_Audit
+description: All columns of the public table Professional_Certification_Audit.
+catalog: residential_data_large
+schema: public
+table_name: Professional_Certification_Audit
+dimensions:
+  cert_audit_pk:
+    description: 'TEXT. Primary key for the professional credential audit. Example: PCA-1A2B3C.'
+    sql: '"Cert_Audit_PK"'
+  skill_growth_fk:
+    description: TEXT. Link to the household skill progression data.
+    sql: '"Skill_Growth_FK"'
+  attempt_number:
+    description: 'INTEGER. Number of times the candidate has sat for this specific exam. Example: 1.'
+    sql: attempt_number
+  candidate_experience_years:
+    description: 'INTEGER. Years of professional experience reported by candidate. Example: 50.'
+    sql: candidate_experience_years
+  certification_status:
+    description: 'TEXT. Final result of the audit. Unique values: Pass, Fail, Pending, Audit_Flagged.'
+    sql: certification_status
+  difficulty_index_perceived:
+    description: 'REAL. Average difficulty rating of questions assigned to candidate. Example: 0.65.'
+    sql: difficulty_index_perceived
+  digital_badge_issued_binary:
+    description: 'INTEGER. Flag for verifiable digital credential issuance. Unique values: 0, 1.'
+    sql: digital_badge_issued_binary
+  exam_center_latency_ms:
+    description: 'INTEGER. Network delay at the testing computer. **NULL means Offline exam client.** Example: 40.'
+    sql: exam_center_latency_ms
+  exam_duration_minutes:
+    description: 'INTEGER. Time taken to complete the certification exam. Example: 120.'
+    sql: exam_duration_minutes
+  exam_fee_brl:
+    description: 'REAL. Cost of the examination in Brazilian Reais. Example: 50.0.'
+    sql: exam_fee_brl
+  industry_accreditation_rating:
+    description: 'REAL. Market value/prestige score of the issuing body. Example: 50.0.'
+    sql: industry_accreditation_rating
+  lab_practical_score:
+    description: 'REAL. Score achieved in the hands-on laboratory component. **NULL means Exam is multiple-choice only.** Example: 82.'
+    sql: lab_practical_score
+  peer_review_consensus_score:
+    description: 'REAL. Average rating from expert panel review (if applicable). **NULL means No portfolio review required.** Example: 4.2.'
+    sql: peer_review_consensus_score
+  proctor_validation_confidence:
+    description: 'REAL. AI-calculated confidence score of exam integrity. **NULL means In-person proctoring used.** Example: 50.0.'
+    sql: proctor_validation_confidence
+  question_count_total:
+    description: 'INTEGER. Number of items in the examination. Unique values: 50, 60, 100, 150.'
+    sql: question_count_total
+  recertification_cycle_years:
+    description: 'INTEGER. Validity period of the credential in years. Unique values: 1, 2, 3, 5, 10.'
+    sql: recertification_cycle_years
+  skill_overlap_coefficient:
+    description: 'REAL. Match between exam content and job market requirements. Example: 0.75.'
+    sql: skill_overlap_coefficient
+  study_material_cost_brl:
+    description: 'REAL. Estimated expenditure on preparation materials. **NULL means Self-study with free resources.** Example: 50.0.'
+    sql: study_material_cost_brl
+  theoretical_knowledge_score:
+    description: 'REAL. Score achieved in the written/theory component. Example: 78.'
+    sql: theoretical_knowledge_score
+  verification_source_type:
+    description: 'TEXT. Type of identity verification used. Unique values: Biometric, Gov_ID, Third_Party.'
+    sql: verification_source_type

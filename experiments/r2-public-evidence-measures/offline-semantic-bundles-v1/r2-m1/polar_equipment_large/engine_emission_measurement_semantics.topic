@@ -1,0 +1,19 @@
+base_view: polar_equipment_large_public__engine_emission_measurement
+label: EngineEmissionMeasurement
+description: All columns of the public table EngineEmissionMeasurement.
+fields:
+- polar_equipment_large_public__engine_emission_measurement.*
+- polar_equipment_large_public__engine_and_fluids.*
+- polar_equipment_large_public__engine_runtime_snapshot.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__operationmaintenance.*
+- polar_equipment_large_public__powerbattery.*
+joins:
+  polar_equipment_large_public__engine_runtime_snapshot:
+    polar_equipment_large_public__engine_and_fluids:
+      polar_equipment_large_public__equipment:
+        polar_equipment_large_public__equipmenttype: {}
+      polar_equipment_large_public__operationmaintenance: {}
+      polar_equipment_large_public__powerbattery: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,60 @@
+label: ClaimAppealDocuments
+description: All columns of the public table ClaimAppealDocuments.
+catalog: solar_panel_large
+schema: public
+table_name: ClaimAppealDocuments
+dimensions:
+  acknowledgment_date:
+    description: TIMESTAMP. Date of receipt. **NULL means data unavailable.**
+    sql: acknowledgment_date
+  checksum_hash:
+    description: TEXT. SHA-256 hash for integrity.
+    sql: checksum_hash
+  claim_ref:
+    description: TEXT. FK to WarrantyClaimFilings.
+    sql: claim_ref
+  doc_id:
+    description: TEXT. Unique ID for the document.
+    sql: doc_id
+  document_name:
+    description: TEXT. File name.
+    sql: document_name
+  document_type:
+    description: 'TEXT. Category (Invoice, Log, Letter). Unique values: Legal Letter, Technical Report, Invoice, Photo Evidence.'
+    sql: document_type
+  file_size_mb:
+    description: 'REAL. Size in MB. Example: 2.5.'
+    sql: file_size_mb
+  is_confidential:
+    description: 'BOOLEAN. True if restricted access. Possible values: True, False.'
+    sql: is_confidential
+  language_code:
+    description: TEXT. Language of doc.
+    sql: language_code
+  manufacturer_acknowledged:
+    description: 'BOOLEAN. True if they confirmed receipt. Possible values: True, False.'
+    sql: manufacturer_acknowledged
+  ocr_text_extract:
+    description: TEXT. Extracted text content. **NULL means data unavailable.**
+    sql: ocr_text_extract
+  page_count:
+    description: 'INTEGER. Number of pages. Example: 5.'
+    sql: page_count
+  related_email_id:
+    description: TEXT. Link to email thread.
+    sql: related_email_id
+  status:
+    description: 'TEXT. Draft, Final, Archived. Unique values: Final, Draft, Archived.'
+    sql: status
+  storage_path_url:
+    description: TEXT. S3/Blob path.
+    sql: storage_path_url
+  upload_date:
+    description: 'TIMESTAMP. When uploaded. Example: 2024-01-01 12:00:00.'
+    sql: upload_date
+  uploaded_by:
+    description: TEXT. User who uploaded.
+    sql: uploaded_by
+  version_number:
+    description: 'INTEGER. Document version. Example: 50.'
+    sql: version_number

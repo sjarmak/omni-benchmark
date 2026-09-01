@@ -1,0 +1,15 @@
+base_view: planets_data_large_public__stars
+label: Host Stars
+description: Host-star records with public stellar distance, structure, and derived star-system semantics.
+fields:
+- planets_data_large_public__stars.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Use the modeled business fields distance_light_years, gravitational_parameter, habitable_zone_inner_boundary, habitable_zone_outer_boundary, multi_planetary_system, stellar_density, stellar_luminosity rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Blended Measurement: A quality flag indicating that a measurement''s value is affected by light from stellar companions, potentially reducing its accuracy.
+
+  - Hertzsprung-Russell (HR) Diagram Position: The position is a coordinate pair ($T_{\star}$, $L_{\star}$) where $T_{\star}$ is the star''s effective temperature and $L_{\star}$ is its calculated Stellar Luminosity.'

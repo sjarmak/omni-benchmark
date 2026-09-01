@@ -1,0 +1,17 @@
+base_view: cybermarket_pattern_large_public__connection_security
+label: Connection Security
+description: Connection-session security records with authentication and anonymity semantics.
+fields:
+- cybermarket_pattern_large_public__connection_security.*
+- cybermarket_pattern_large_public__buyers.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__transactions.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__transactions:
+    cybermarket_pattern_large_public__buyers: {}
+    cybermarket_pattern_large_public__markets: {}
+    cybermarket_pattern_large_public__vendors: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields has_premium_authentication rather than reconstructing their formulas.'

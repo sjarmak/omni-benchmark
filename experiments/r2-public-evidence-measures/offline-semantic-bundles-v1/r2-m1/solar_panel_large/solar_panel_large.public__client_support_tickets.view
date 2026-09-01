@@ -1,0 +1,72 @@
+label: ClientSupportTickets
+description: All columns of the public table ClientSupportTickets.
+catalog: solar_panel_large
+schema: public
+table_name: ClientSupportTickets
+dimensions:
+  assigned_tech_ref:
+    description: 'TEXT. FK to technicians table (if technical). **NULL means Assigned to Admin/Billing dept.** Unique values: T-101, T-102.'
+    sql: assigned_tech_ref
+  category:
+    description: 'TEXT. Type of issue. Unique values: Billing Inquiry, Portal Access, Report Data Discrepancy, Outage Notification, General Info.'
+    sql: category
+  client_ref:
+    description: TEXT. FK to clients table.
+    sql: client_ref
+  closed_date:
+    description: 'TIMESTAMP. When the ticket was closed. **NULL means Still open.** Example: 2024-01-01 12:00:00.'
+    sql: closed_date
+  contact_channel:
+    description: 'TEXT. How the request came in. Unique values: Email, Phone, Web Portal, API.'
+    sql: contact_channel
+  contact_person_name:
+    description: TEXT. Name of client representative.
+    sql: contact_person_name
+  description_body:
+    description: TEXT. Full details provided by client.
+    sql: description_body
+  is_escalated:
+    description: 'BOOLEAN. Has this been bumped to management?. Possible values: True, False.'
+    sql: is_escalated
+  last_update_ts:
+    description: 'TIMESTAMP. Last activity timestamp. Example: 2024-01-01 12:00:00.'
+    sql: last_update_ts
+  priority:
+    description: 'TEXT. Urgency level. Unique values: Low, Normal, High, Critical.'
+    sql: priority
+  related_invoice_no:
+    description: TEXT. Linked invoice if billing related. **NULL means Not billing related.**
+    sql: related_invoice_no
+  resolution_summary:
+    description: TEXT. How the issue was solved. **NULL means Unresolved.**
+    sql: resolution_summary
+  response_time_hours:
+    description: 'REAL. Time taken to first human response. **NULL means Not yet responded.** Example: 4.'
+    sql: response_time_hours
+  satisfaction_score:
+    description: 'INTEGER. CSAT score (1-5) if surveyed. **NULL means No survey taken.** Example: 50.'
+    sql: satisfaction_score
+  sentiment_analysis_score:
+    description: 'REAL. AI score of text sentiment (-1.0 to 1.0). Example: 0.2.'
+    sql: sentiment_analysis_score
+  sla_deadline:
+    description: 'TIMESTAMP. Time by which resolution is required. Example: 2024-01-01 12:00:00.'
+    sql: sla_deadline
+  status:
+    description: 'TEXT. Current state of the ticket. Unique values: New, In Progress, Waiting for Customer, Resolved, Closed.'
+    sql: status
+  subject_line:
+    description: TEXT. Brief title of the request.
+    sql: subject_line
+  ticket_id:
+    description: TEXT. Unique identifier for support requests.
+    sql: ticket_id
+  ticket_open_date:
+    description: 'TIMESTAMP. When the ticket was created. Example: 2024-01-01 12:00:00.'
+    sql: ticket_open_date
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ClientSupportTickets public identity values.
+    label: ClientSupportTickets Count
+    sql: ${solar_panel_large_public__client_support_tickets.ticket_id}

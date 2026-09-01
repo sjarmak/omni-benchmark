@@ -1,0 +1,33 @@
+label: ArtifactPublicationLink
+description: All columns of the public table ArtifactPublicationLink.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactPublicationLink
+dimensions:
+  figure_ref:
+    description: 'TEXT. No description provided. Example: Cat. no. 35.'
+    sql: '"FIGURE_REF"'
+  link_created:
+    description: 'TEXT. No description provided. Example: 2022-02-10T10:00:00.152-05:00.'
+    sql: '"LINK_CREATED"'
+  citation_context:
+    description: 'TEXT. No description provided. Example: Detailed catalogue entry discussing the provenance and iconography of the vase..'
+    sql: citation_context
+  in_publication_tag:
+    description: 'TEXT. No description provided. Example: PUB-2022-01.'
+    sql: in_publication_tag
+  is_primary_subject:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: is_primary_subject
+  linked_by_staff_tag:
+    description: 'TEXT. No description provided. Example: 5.'
+    sql: linked_by_staff_tag
+  mentioned_artifact_tag:
+    description: 'TEXT. No description provided. Example: ART54317.'
+    sql: mentioned_artifact_tag
+  page_ref:
+    description: 'TEXT. No description provided. Example: 82-83.'
+    sql: page_ref
+  reference_type:
+    description: 'TEXT. No description provided. Possible values: Analyzed, Catalogue Entry, Cover Image, Data Contribution, Discussed, Illustrated, Mentioned.'
+    sql: reference_type

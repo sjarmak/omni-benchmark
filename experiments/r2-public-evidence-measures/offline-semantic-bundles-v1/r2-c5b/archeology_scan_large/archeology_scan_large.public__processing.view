@@ -1,0 +1,77 @@
+label: Scan Processing
+description: Processing records with public business context for the processing-stage lifecycle.
+catalog: archeology_scan_large
+schema: public
+table_name: processing
+dimensions:
+  flowstage:
+    description: 'TEXT. Current processing stage or workflow step. Possible values: Aligned, Final, Meshed, Raw, Textured.'
+    label: Processing Stage
+    sql: flowstage
+    ai_context: 'Processing Stage: A sequential classification system with defined stages: ''Raw'' (unprocessed scan data), ''Aligned'' (multiple scans registered together), ''Cleaned'' (noise and artifacts removed), ''Meshed'' (point cloud converted to polygon mesh), and ''Textured'' (surface textures applied to mesh). Each stage represents a discrete processing milestone.'
+  calib_status:
+    description: JSONB column. Calibration and correction status for various processing components including camera, lens, and color adjustments
+    sql: calib_status
+  coordframe:
+    description: 'TEXT. Coordinate system used for spatial reference. Possible values: CUSTOM, Custom, LOCAL, Local, WGS84, Wgs84, custom, local, wgs84.'
+    sql: coordframe
+  datalevel:
+    description: 'TEXT. Data access level and security classification. Possible values: Confidential, Public, Restricted.'
+    sql: datalevel
+  elevref:
+    description: 'TEXT. Elevation reference datum used for measurements. Possible values: Arbitrary, Local, Sea Level.'
+    sql: elevref
+  equipref:
+    description: TEXT. Reference to equipment used for data processing. FK to Equipment.
+    sql: equipref
+  flowregistry:
+    description: BIGSERIAL. Auto-generated unique identifier for processing record. PK = Processing(FlowRegistry).
+    sql: flowregistry
+  flowsoft:
+    description: 'TEXT. Software application used for data processing. **NULL means processing software not specified or custom processing pipeline used.**. Example: RealityCapture.'
+    sql: flowsoft
+  metabench:
+    description: 'TEXT. Metadata standard compliance and format. Possible values: CIDOC CRM, Custom, Dublin Core.'
+    sql: metabench
+  processing_rate:
+    description: 'TEXT. Data processing throughput rate. Example: 2.3 MB/s.'
+    sql: processing_rate
+  safebak:
+    description: 'TEXT. Backup status and redundancy measures. Possible values: Completed, In Progress, Pending.'
+    sql: safebak
+  stashloc:
+    description: 'TEXT. Storage location for processed data files. Possible values: Cloud, Local, Network.'
+    sql: stashloc
+  system_usage:
+    description: JSONB column. Computing system resource utilization during data processing including CPU, memory, GPU usage and processing time
+    sql: system_usage
+  zoneref:
+    description: TEXT. Reference to site where data was processed. FK to Sites.
+    sql: zoneref
+  calib_status_cam_cal:
+    description: 'TEXT. Camera calibration status and accuracy. Possible values: Calibrated, Invalid, Required.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calib_status, 'Cam_Cal')
+  calib_status_color_tune:
+    description: 'TEXT. Color balance and calibration status. **NULL means color calibration not performed or status not documented.**. Possible values: Adjusted, Required.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calib_status, 'Color_Tune')
+  calib_status_lens_dist:
+    description: 'TEXT. Lens distortion correction status. Possible values: Corrected, Uncorrected, Unknown.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calib_status, 'Lens_Dist')
+  calib_status_station_link:
+    description: 'TEXT. Total station integration status and connectivity. **NULL means total station not integrated or integration status not monitored.**. Example: Partial.'
+    sql: JSONB_EXTRACT_PATH_TEXT(calib_status, 'Station_Link')
+  system_usage_flow_hrs:
+    description: 'REAL. Processing time duration in hours. Example: 21.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(system_usage, 'Flow_Hrs')
+  system_usage_mem_usage_gb:
+    description: 'REAL. Memory usage in gigabytes during processing. Example: 70.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(system_usage, 'Mem_Usage_Gb')
+  system_usage_proc_cpu:
+    description: 'BIGINT. CPU usage percentage during processing. Example: 81.'
+    sql: JSONB_EXTRACT_PATH_TEXT(system_usage, 'Proc_CPU')
+  system_usage_proc_gpu:
+    description: 'BIGINT. GPU usage percentage during processing. Example: 84.'
+    sql: JSONB_EXTRACT_PATH_TEXT(system_usage, 'Proc_GPU')
+  system_usage_remain_gb:
+    description: 'REAL. Remaining storage space in gigabytes. Example: 983.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(system_usage, 'Remain_Gb')

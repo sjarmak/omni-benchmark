@@ -1,0 +1,57 @@
+label: Spectral_Instrument_Map
+description: All columns of the public table Spectral_Instrument_Map.
+catalog: planets_data_large
+schema: public
+table_name: Spectral_Instrument_Map
+dimensions:
+  observation_mode:
+    description: 'TEXT. Spectrograph observation mode Possible values: Echelle, Long-Slit, Fiber-Fed, Multi-Object, IFU.'
+    sql: '"OBSERVATION_MODE"'
+  sim_id:
+    description: BIGINT. Primary key. Unique spectral-instrument mapping identifier
+    sql: '"SIM_ID"'
+  snr_achieved:
+    description: 'REAL. Achieved signal-to-noise ratio Typical range: 5 to 500.'
+    sql: '"SNR_ACHIEVED"'
+  spectral_line_ref:
+    description: BIGINT. Foreign key referencing SpectralLineMeasurement(SPECTRAL_LINE_ID). Related spectral measurement
+    sql: '"SPECTRAL_LINE_REF"'
+  spectra_extracted:
+    description: BIGINT. Number of spectra extracted
+    sql: '"SPECTRA_EXTRACTED"'
+  telluric_corrected:
+    description: BOOLEAN. Whether telluric correction was applied Boolean flag (true/false).
+    sql: '"TELLURIC_CORRECTED"'
+  wavelength_coverage_max_nm:
+    description: 'REAL. Maximum wavelength covered Typical range: 500 to 5000.'
+    sql: '"WAVELENGTH_COVERAGE_MAX_nm"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  exposure_time_s:
+    description: 'REAL. Exposure time in seconds Typical range: 1 to 36000.'
+    sql: exposure_time_s
+  instrument_ref:
+    description: BIGINT. Foreign key referencing instruments_surveys(instrumentref). Related instrument
+    sql: instrument_ref
+  observation_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Date of observation
+    sql: observation_date
+  quality_flag:
+    description: 'TEXT. Data quality flag Possible values: A, B, C, D.'
+    sql: quality_flag
+  reduction_pipeline:
+    description: 'TEXT. Data reduction pipeline used Possible values: DRS, CERES, SERVAL, Custom, IRAF.'
+    sql: reduction_pipeline
+  resolution_achieved:
+    description: 'REAL. Achieved spectral resolution Typical range: 500 to 200000.'
+    sql: resolution_achieved
+  wavelength_coverage_min_nm:
+    description: 'REAL. Minimum wavelength covered Typical range: 100 to 1000.'
+    sql: wavelength_coverage_min_nm
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Spectral_Instrument_Map public identity values.
+    label: Spectral_Instrument_Map Count
+    sql: ${planets_data_large_public__spectral_instrument_map.sim_id}

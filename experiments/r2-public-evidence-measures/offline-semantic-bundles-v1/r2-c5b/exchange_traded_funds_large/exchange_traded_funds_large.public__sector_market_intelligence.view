@@ -1,0 +1,111 @@
+label: sector_market_intelligence
+description: All columns of the public table sector_market_intelligence.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: sector_market_intelligence
+dimensions:
+  average_company_size:
+    description: 'text. Mean market-cap of sector constituents. Unit: USD/company. Example: 32,844,810,796 USD/company.'
+    sql: average_company_size
+  average_debt_to_equity:
+    description: 'text. Mean debt-to-equity ratio. Unit: ×. Example: 0.42×.'
+    sql: average_debt_to_equity
+  average_esg_score:
+    description: 'text. Composite ESG-rating average (0 – 100). Unit: pts. Example: 74.23 pts.'
+    sql: average_esg_score
+  average_pb_ratio:
+    description: 'text. Mean price-to-book ratio. Unit: ×. Example: 3.27×.'
+    sql: average_pb_ratio
+  average_pe_ratio:
+    description: 'text. Mean price-to-earnings multiple. Unit: ×. Example: 18.42×.'
+    sql: average_pe_ratio
+  average_ps_ratio:
+    description: 'text. Mean price-to-sales ratio. Unit: ×. Example: 4.11×.'
+    sql: average_ps_ratio
+  average_roe:
+    description: 'text. Average return on equity. Unit: %. Example: 14.87 %.'
+    sql: average_roe
+  average_volatility_avg_year:
+    description: 'text. Annualised price volatility. Unit: %/yr. Example: 16.00 %/yr.'
+    sql: average_volatility_avg_year
+  commodity_sensitivity:
+    description: 'REAL. Correlation of sector returns to major commodity-price moves (−1 to +1). Example: 0.44.'
+    sql: commodity_sensitivity
+  cyclicality_type:
+    description: 'TEXT. Broad earnings/price behaviour classification. Possible values: Cyclical, Defensive, Growth.'
+    sql: cyclicality_type
+  disruptive_trends:
+    description: 'TEXT. Technological or structural shifts challenging incumbents. Possible values: AI disruption, Blockchain; Onshoring, 3D Printing; Decentralized Finance, EV Shift; Genomics, Quantum Computing.'
+    sql: disruptive_trends
+  economic_cycle_position:
+    description: 'TEXT. Phase of the macro cycle where the sector typically out-performs. Possible values: Expansion, Peak, Contraction, Trough.'
+    sql: economic_cycle_position
+  environmental_impact:
+    description: 'TEXT. Sector-level environmental footprint. Possible values: Low Carbon, High Emissions, Transitioning, Renewable Focus.'
+    sql: environmental_impact
+  gdp_correlation:
+    description: 'REAL. Correlation coefficient with GDP growth (−1 to +1). Example: 0.63.'
+    sql: gdp_correlation
+  governance_quality:
+    description: 'TEXT. Typical governance standards. Possible values: Transparent, Family Controlled, Shareholder Friendly, Opaque.'
+    sql: governance_quality
+  growth_prospects:
+    description: 'TEXT. Forward-looking growth view. Possible values: Positive, Stable, Negative.'
+    sql: growth_prospects
+  inflation_sensitivity:
+    description: 'REAL. Correlation of sector returns to CPI surprises (−1 to +1). Example: 0.08.'
+    sql: inflation_sensitivity
+  interest_rate_sensitivity:
+    description: 'REAL. Correlation of sector returns to interest-rate changes (−1 to +1). Example: −0.12.'
+    sql: interest_rate_sensitivity
+  key_investment_themes:
+    description: 'TEXT. High-level themes attracting capital. Possible values: Digital Transformation, Green Energy; Aging Population, Automation; Emerging Markets Consumer; Clean Tech Adoption.'
+    sql: key_investment_themes
+  last_updated:
+    description: 'TIMESTAMP. System timestamp when the record was last modified; defaults to CURRENT_TIMESTAMP. Example: 2025-07-06.'
+    sql: last_updated
+  market_concentration:
+    description: 'text. Herfindahl-Hirschman Index measuring concentration (0 – 1). Example: 0.089 HHI.'
+    sql: market_concentration
+  number_of_public_companies:
+    description: 'text. Count of listed firms in the sector. Unit: companies. Example: 373 companies.'
+    sql: number_of_public_companies
+  recommended_allocation:
+    description: 'text. Suggested portfolio weight. Unit: %. Example: 27.63 %.'
+    sql: recommended_allocation
+  regulatory_risks:
+    description: 'TEXT. Key policy or rule-change hazards. Possible values: Antitrust, Data Privacy; Environmental Regulations; Capital Controls; Tax Policy Changes.'
+    sql: regulatory_risks
+  return_1y_avg:
+    description: 'real. Total return over the past year. Unit: %/1y. Example: 12.98 %/1y.'
+    sql: return_1y_avg
+  return_3y_avg:
+    description: 'text. Cumulative return over three years. Unit: %/3y. Example: 80.94 %/3y.'
+    sql: return_3y_avg
+  return_5y_avg:
+    description: 'real. Cumulative return over five years. Unit: %/5y. Example: 142.60 %/5y.'
+    sql: return_5y_avg
+  risk_level:
+    description: 'TEXT. Overall risk assessment. Possible values: Low, Medium, High.'
+    sql: risk_level
+  seasonality_pattern:
+    description: 'TEXT. Recurring intra-year performance tendency. Possible values: Q1 boost, Summer lull, Holiday rally, None.'
+    sql: seasonality_pattern
+  sector_beta:
+    description: 'text. CAPM beta relative to the broad market (unitless). Example: 1.37 β.'
+    sql: sector_beta
+  sector_id:
+    description: 'BIGINT. FK to sectors(secid). Numeric identifier of the sector analysed. Example: 1.'
+    sql: sector_id
+  sector_intelligence_id:
+    description: 'BIGSERIAL. Surrogate identifier for each sector-intelligence row. PK. Auto-increments from 1. Example: 1.'
+    sql: sector_intelligence_id
+  social_responsibility:
+    description: 'TEXT. Sector stance on social issues. Possible values: Strong Labor Practices, Diversity Focus, Community Engagement, Mixed.'
+    sql: social_responsibility
+  technological_threats:
+    description: 'TEXT. Tech-related risks to the sector. Possible values: Cybersecurity Risk, Tech Obsolescence; Legacy Systems, Talent Shortage; Data Privacy Concerns; Regulatory Tech Crackdown.'
+    sql: technological_threats
+  total_market_capitalization:
+    description: 'text. Aggregate market value of all listed companies in the sector. Unit: USD. Example: 15,501,725,366,264 USD.'
+    sql: total_market_capitalization

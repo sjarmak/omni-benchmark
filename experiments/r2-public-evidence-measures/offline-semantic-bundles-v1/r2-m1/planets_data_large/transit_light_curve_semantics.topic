@@ -1,0 +1,13 @@
+base_view: planets_data_large_public__transit_light_curve
+label: TransitLightCurve
+description: All columns of the public table TransitLightCurve.
+fields:
+- planets_data_large_public__transit_light_curve.*
+- planets_data_large_public__instruments_surveys.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__instruments_surveys: {}
+  planets_data_large_public__planets:
+    planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

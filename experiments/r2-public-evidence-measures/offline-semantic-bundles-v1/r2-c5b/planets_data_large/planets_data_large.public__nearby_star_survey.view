@@ -1,0 +1,69 @@
+label: NearbyStarSurvey
+description: All columns of the public table NearbyStarSurvey.
+catalog: planets_data_large
+schema: public
+table_name: NearbyStarSurvey
+dimensions:
+  distance_error_pc:
+    description: 'REAL. Distance uncertainty in parsecs Typical range: 0.01 to 5.'
+    sql: '"DISTANCE_ERROR_pc"'
+  high_proper_motion:
+    description: BOOLEAN. Whether star has high proper motion (>500 mas/yr) Boolean flag (true/false).
+    sql: '"HIGH_PROPER_MOTION"'
+  kinematic_population:
+    description: 'TEXT. Kinematic population assignment Possible values: Thin Disk, Thick Disk, Halo, Uncertain.'
+    sql: '"KINEMATIC_POPULATION"'
+  parallax_error_mas:
+    description: 'REAL. Parallax uncertainty Typical range: 0.001 to 1.'
+    sql: '"PARALLAX_ERROR_mas"'
+  planet_count:
+    description: BIGINT. Number of known planets
+    sql: '"PLANET_COUNT"'
+  proper_motion_dec_mas_per_yr:
+    description: 'REAL. Proper motion in Dec Typical range: -2000 to 2000.'
+    sql: '"PROPER_MOTION_DEC_mas_per_yr"'
+  radial_velocity_km_per_s:
+    description: 'REAL. Radial velocity Typical range: -200 to 200.'
+    sql: '"RADIAL_VELOCITY_km_per_s"'
+  survey_entry_id:
+    description: BIGINT. Primary key. Unique nearby star survey entry identifier
+    sql: '"SURVEY_ENTRY_ID"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  v_velocity_km_per_s:
+    description: 'REAL. V space velocity component Typical range: -100 to 100.'
+    sql: '"V_VELOCITY_km_per_s"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  distance_pc:
+    description: 'REAL. Distance in parsecs Typical range: 1 to 100.'
+    sql: distance_pc
+  known_planet_host:
+    description: BOOLEAN. Whether star is known to host planets Boolean flag (true/false).
+    sql: known_planet_host
+  last_updated:
+    description: DATE. Date of last data update
+    sql: last_updated
+  parallax_mas:
+    description: 'REAL. Parallax in milliarcseconds Typical range: 10 to 800.'
+    sql: parallax_mas
+  proper_motion_ra_mas_per_yr:
+    description: 'REAL. Proper motion in RA Typical range: -2000 to 2000.'
+    sql: '"proper_motion_RA_mas_per_yr"'
+  stellar_ref:
+    description: BIGINT. Foreign key referencing stars(stellarref). Related star
+    sql: stellar_ref
+  survey_source:
+    description: 'TEXT. Source survey Possible values: Gaia DR3, Hipparcos, RECONS, CARMENES, Custom.'
+    sql: survey_source
+  total_proper_motion_mas_per_yr:
+    description: 'REAL. Total proper motion Typical range: 0 to 3000.'
+    sql: total_proper_motion_mas_per_yr
+  u_velocity_km_per_s:
+    description: 'REAL. U space velocity component Typical range: -100 to 100.'
+    sql: u_velocity_km_per_s
+  w_velocity_km_per_s:
+    description: 'REAL. W space velocity component Typical range: -80 to 80.'
+    sql: w_velocity_km_per_s

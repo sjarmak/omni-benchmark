@@ -1,0 +1,17 @@
+base_view: disaster_relief_large_public__volunteer_skill_map
+label: Volunteer_Skill_Map
+description: All columns of the public table Volunteer_Skill_Map.
+fields:
+- disaster_relief_large_public__volunteer_skill_map.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__humanresources.*
+- disaster_relief_large_public__operations.*
+- disaster_relief_large_public__skill_catalogue.*
+- disaster_relief_large_public__volunteer_profiles.*
+joins:
+  disaster_relief_large_public__skill_catalogue: {}
+  disaster_relief_large_public__volunteer_profiles:
+    disaster_relief_large_public__humanresources:
+      disaster_relief_large_public__disasterevents: {}
+      disaster_relief_large_public__operations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,72 @@
+label: user_gamification_stats
+description: All columns of the public table user_gamification_stats.
+catalog: fake_account_large
+schema: public
+table_name: user_gamification_stats
+dimensions:
+  gamification_code:
+    description: TEXT. Unique ID for the user's gamification profile.
+    sql: '"Gamification_CODE"'
+  avatar_customization_score:
+    description: 'REAL. Metric indicating complexity of user avatar. **NULL means Default avatar used.** Example: 0.5.'
+    sql: avatar_customization_score
+  avg_xp_per_session:
+    description: 'REAL. Average points earned per login session. Example: 50.'
+    sql: avg_xp_per_session
+  badge_count_total:
+    description: 'INTEGER. Total number of achievements unlocked. Example: 50.'
+    sql: badge_count_total
+  cumulative_xp_points:
+    description: 'INTEGER. Total experience points earned since inception. Example: 50.'
+    sql: cumulative_xp_points
+  current_daily_streak:
+    description: 'INTEGER. Consecutive days of activity. Example: 50.'
+    sql: current_daily_streak
+  current_level_idx:
+    description: 'INTEGER. Current user level based on XP. Example: 15.'
+    sql: current_level_idx
+  global_leaderboard_rank:
+    description: 'INTEGER. User''s rank across the entire platform. **NULL means User opted out of leaderboards.** Example: 50.'
+    sql: global_leaderboard_rank
+  hours_since_last_level_up:
+    description: 'REAL. Time elapsed since the user last leveled up. Example: 50.0.'
+    sql: hours_since_last_level_up
+  last_achievement_rarity_score:
+    description: 'REAL. Rarity score (0-1) of the most recent badge. **NULL means No achievements yet.** Example: 50.0.'
+    sql: last_achievement_rarity_score
+  max_daily_streak:
+    description: 'INTEGER. Highest historical streak count. Example: 30.'
+    sql: max_daily_streak
+  profile_ref:
+    description: TEXT. Reference to the user profile.
+    sql: profile_ref
+  quest_completion_rate_pct:
+    description: 'REAL. Percentage of started quests that were finished. Example: 50.0.'
+    sql: quest_completion_rate_pct
+  rare_badge_count:
+    description: 'INTEGER. Count of badges with <5% global attainment. Example: 50.'
+    sql: rare_badge_count
+  skill_tree_completion_pct:
+    description: 'REAL. Progress through platform feature mastery tree. Example: 50.0.'
+    sql: skill_tree_completion_pct
+  social_share_bonus_count:
+    description: 'INTEGER. Number of times user shared achievements for bonus. Example: 50.'
+    sql: social_share_bonus_count
+  successful_referral_count:
+    description: 'INTEGER. Number of new users recruited via referral link. Example: 50.'
+    sql: successful_referral_count
+  virtual_currency_earned:
+    description: 'INTEGER. Total coins/gems earned via gameplay. Example: 1000.'
+    sql: virtual_currency_earned
+  virtual_currency_spent:
+    description: 'INTEGER. Total coins/gems spent on items. Example: 800.'
+    sql: virtual_currency_spent
+  xp_to_next_level:
+    description: 'INTEGER. Points required to reach the next tier. Example: 500.'
+    sql: xp_to_next_level
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct user_gamification_stats public identity values.
+    label: user_gamification_stats Count
+    sql: ${fake_account_large_public__user_gamification_stats.gamification_code}

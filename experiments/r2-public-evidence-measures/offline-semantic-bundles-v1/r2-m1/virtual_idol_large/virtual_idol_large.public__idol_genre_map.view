@@ -1,0 +1,48 @@
+label: idol_genre_map
+description: All columns of the public table idol_genre_map.
+catalog: virtual_idol_large
+schema: public
+table_name: idol_genre_map
+dimensions:
+  award_details:
+    description: 'TEXT. Details about the award won. **NULL means no award has been won in this genre.** Example: Golden Play Button 2025.'
+    sql: '"AwardDetails"'
+  debut_date_for_genre:
+    description: 'DATE. The date the idol first performed in this genre. Example: 2023/08/25.'
+    sql: '"DEBUT_DATE_FOR_GENRE"'
+  fan_affinity_score:
+    description: 'REAL. A score representing fan affinity for the idol''s performances in this genre. Example: 0.95.'
+    sql: '"FanAffinityScore"'
+  music_genre_identifier:
+    description: 'BIGINT. Foreign key referencing the music genre. FK to genres(GenreID). Example: 7.'
+    sql: '"Music_Genre_Identifier"'
+  proficiency_level:
+    description: 'REAL. The idol''s proficiency level in this genre on a scale. Example: 3.4.'
+    sql: '"ProficiencyLevel"'
+  virtual_idol_identifier:
+    description: 'TEXT. Foreign key referencing the virtual idol. FK to virtualidols(entity_reg). Example: VI6888.'
+    sql: '"Virtual_Idol_Identifier"'
+  genre_expert_consultant:
+    description: 'TEXT. The name of an expert consulted for this genre. **NULL means no expert was consulted.** Example: Jordan Wright.'
+    sql: genre_expert_consultant
+  has_won_award_in_genre:
+    description: 'BOOLEAN. A flag indicating if the idol has won an award in this genre. Example: true.'
+    sql: has_won_award_in_genre
+  idol_genre_id:
+    description: 'BIGINT. Unique identifier for the idol-genre mapping. PK. Example: 1.'
+    sql: idol_genre_id
+  is_primary_genre:
+    description: 'BOOLEAN. A flag indicating if this is a primary genre for the idol. Example: false.'
+    sql: is_primary_genre
+  last_performance_date:
+    description: 'DATE. The date the idol last performed in this genre. **NULL means no recent performance or data is unavailable.** Example: 2025/07/14.'
+    sql: last_performance_date
+  notes:
+    description: 'TEXT. General notes about the idol''s activity in this genre. **NULL means no notes have been added.** Example: Fan favorite for karaoke..'
+    sql: notes
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct idol_genre_map public identity values.
+    label: idol_genre_map Count
+    sql: ${virtual_idol_large_public__idol_genre_map.idol_genre_id}

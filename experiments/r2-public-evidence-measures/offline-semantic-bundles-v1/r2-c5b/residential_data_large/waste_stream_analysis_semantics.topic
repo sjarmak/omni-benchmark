@@ -1,0 +1,13 @@
+base_view: residential_data_large_public__waste_stream_analysis
+label: Waste_Stream_Analysis
+description: All columns of the public table Waste_Stream_Analysis.
+fields:
+- residential_data_large_public__waste_stream_analysis.*
+- residential_data_large_public__households.*
+- residential_data_large_public__service_types.*
+- residential_data_large_public__waste_management.*
+joins:
+  residential_data_large_public__waste_management:
+    residential_data_large_public__households:
+      residential_data_large_public__service_types: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

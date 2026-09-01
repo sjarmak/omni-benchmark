@@ -1,0 +1,23 @@
+base_view: robot_fault_prediction_large_public__quality_inspections
+label: quality_inspections
+description: All columns of the public table quality_inspections.
+fields:
+- robot_fault_prediction_large_public__quality_inspections.*
+- robot_fault_prediction_large_public__operation.*
+- robot_fault_prediction_large_public__production_log.*
+- robot_fault_prediction_large_public__production_orders.*
+- robot_fault_prediction_large_public__products.*
+- robot_fault_prediction_large_public__robot_details.*
+- robot_fault_prediction_large_public__robot_record.*
+- robot_fault_prediction_large_public__technicians.*
+- robot_fault_prediction_large_public__workcells.*
+joins:
+  robot_fault_prediction_large_public__production_log:
+    robot_fault_prediction_large_public__operation:
+      robot_fault_prediction_large_public__robot_record: {}
+    robot_fault_prediction_large_public__production_orders:
+      robot_fault_prediction_large_public__products: {}
+      robot_fault_prediction_large_public__workcells:
+        robot_fault_prediction_large_public__robot_details: {}
+  robot_fault_prediction_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

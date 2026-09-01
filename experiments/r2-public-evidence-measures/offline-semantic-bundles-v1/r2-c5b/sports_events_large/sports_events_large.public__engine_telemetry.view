@@ -1,0 +1,69 @@
+label: EngineTelemetry
+description: All columns of the public table EngineTelemetry.
+catalog: sports_events_large
+schema: public
+table_name: EngineTelemetry
+dimensions:
+  battery_soc_pct:
+    description: 'REAL. Battery state of charge percentage Typical range: 0 to 100.'
+    sql: '"BATTERY_SOC_PCT"'
+  coolant_flow_lpm:
+    description: 'REAL. Coolant flow rate in liters per minute Typical range: 30 to 150.'
+    sql: '"COOLANT_FLOW_LPM"'
+  engine_mode:
+    description: 'TEXT. Current engine mode Possible values: Race, Qualifying, Overtake, Fuel Save, Cool Down.'
+    sql: '"ENGINE_MODE"'
+  engine_tel_id:
+    description: BIGINT. Primary key. Unique engine telemetry identifier
+    sql: '"ENGINE_TEL_ID"'
+  exhaust_temp_c:
+    description: 'REAL. Exhaust gas temperature Typical range: 500 to 1050.'
+    sql: '"EXHAUST_TEMP_C"'
+  fuel_flow_kg_per_hr:
+    description: 'REAL. Fuel flow rate in kg/hour Typical range: 0 to 100.'
+    sql: '"FUEL_FLOW_KG_PER_HR"'
+  knock_detected:
+    description: BOOLEAN. Whether engine knock is detected Boolean flag (true/false).
+    sql: '"KNOCK_DETECTED"'
+  limp_mode:
+    description: BOOLEAN. Whether engine is in limp/safe mode Boolean flag (true/false).
+    sql: '"LIMP_MODE"'
+  mgu_k_power_kw:
+    description: 'REAL. MGU-K power output in kW Typical range: -120 to 120.'
+    sql: '"MGU_K_POWER_KW"'
+  power_kw:
+    description: 'REAL. Power output in kilowatts Typical range: 0 to 750.'
+    sql: '"POWER_KW"'
+  telemetry_ref:
+    description: BIGINT. Foreign key referencing CarTelemetrySnapshot(TELEMETRY_ID). Related telemetry snapshot
+    sql: '"TELEMETRY_REF"'
+  battery_temp_c:
+    description: 'REAL. Battery temperature Typical range: 20 to 70.'
+    sql: '"battery_temp_C"'
+  captured_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Timestamp when captured
+    sql: captured_at
+  intake_air_temp_c:
+    description: 'REAL. Intake air temperature Typical range: 10 to 60.'
+    sql: '"intake_air_temp_C"'
+  lambda_value:
+    description: 'REAL. Air-fuel ratio lambda value Typical range: 0.8 to 1.2.'
+    sql: lambda_value
+  mgu_h_power_kw:
+    description: 'REAL. MGU-H power output in kW Typical range: -100 to 100.'
+    sql: mgu_h_power_kw
+  oil_scavenge_temp_c:
+    description: 'REAL. Oil scavenge temperature Typical range: 80 to 170.'
+    sql: '"oil_scavenge_temp_C"'
+  rpm:
+    description: BIGINT. Engine RPM
+    sql: rpm
+  torque_nm:
+    description: 'REAL. Torque in Newton-meters Typical range: 0 to 600.'
+    sql: torque_nm
+  turbo_boost_bar:
+    description: 'REAL. Turbocharger boost pressure in bar Typical range: 0 to 5.'
+    sql: turbo_boost_bar
+  vibration_level_g:
+    description: 'REAL. Engine vibration level in g Typical range: 0 to 3.'
+    sql: vibration_level_g

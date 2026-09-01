@@ -1,0 +1,78 @@
+label: atmospheric_escape_rates
+description: All columns of the public table atmospheric_escape_rates.
+catalog: planets_data_large
+schema: public
+table_name: atmospheric_escape_rates
+dimensions:
+  bow_shock_distance_planetary_radii:
+    description: 'real. Distance to bow shock boundary in planetary radius units. **NULL means bow shock distance was not calculated.**. Possible values: 1.5, 2.8, 4.2, 5.8.'
+    sql: '"BowShockDistance_planetary_radii"'
+  current_atmospheric_pressure_bar:
+    description: 'real. Current atmospheric surface pressure in bar units. **NULL means current atmospheric pressure is unknown.**. Possible values: 0.001, 0.15, 1.2, 15.8, 92.0.'
+    sql: '"CurrentAtmosphericPressure_bar"'
+  escaperef:
+    description: 'bigint. Primary key identifier for atmospheric escape analysis records. PK. Possible values: 16001, 16002, 16003, 16004, 16005, 16006.'
+    sql: '"ESCAPEREF"'
+  exosphere_temperature_k:
+    description: 'real. Temperature of planetary exosphere in Kelvin. Possible values: 12500, 15800, 3200, 4500, 6200, 8900.'
+    sql: '"EXOSPHERE_TEMPERATURE_K"'
+  escape_flux_measurement_method:
+    description: 'text. Observational or theoretical method used to determine escape rates. Possible values: 0.38, Atmospheric Modeling, Lyman-α Transit, Radio Observations, Transit Spectroscopy, UV Spectroscopy.'
+    sql: '"EscapeFluxMeasurementMethod"'
+  last_calculation_date:
+    description: 'date. Date when escape rate calculations were last performed. **NULL means calculation date was not recorded.**. Possible values: 2023-08-30, 2023-09-15, 2023-09-22, 2023-10-22, 2023-11-08, 2023-11-15, 2023-12-05, 2024-01-08.'
+    sql: '"LastCalculationDate"'
+  magnetic_field_protection_factor:
+    description: 'real. Factor indicating protection provided by planetary magnetic field. Possible values: 0.08, 0.15, 0.45, 0.85, 0.92, 0.98.'
+    sql: '"MagneticFieldProtectionFactor"'
+  notes:
+    description: 'text. Additional notes or comments about atmospheric escape analysis. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  plasma_temperature_k:
+    description: 'real. Temperature of escaping plasma in Kelvin. **NULL means plasma temperature was not modeled.**. Possible values: 110000.0, 1900000.0, 2800000.0, 3500000.0, 85000.0.'
+    sql: '"PLASMA_TEMPERATURE_K"'
+  theoretical_model_used:
+    description: 'text. Name or reference of theoretical model used for escape calculations. Possible values: 2024-01-15, Constant Time Lag Model, Darwin-de Sitter Model, Energy-Limited Model, Hydrodynamic Escape Model, Jeans Escape Model, Kaula Model, Magnetohydrodynamic Model, Parker Wind Model.'
+    sql: '"THEORETICAL_MODEL_USED"'
+  atmospheric_mass_loss_timescale_years:
+    description: 'real. Timescale for complete atmospheric loss in years. **NULL means atmospheric lifetime was not calculated.**. Possible values: 12000000000.0, 1500000.0, 2300000.0, 890000000.0.'
+    sql: atmospheric_mass_loss_timescale_years
+  escaperates:
+    description: JSONB column. Mass loss rates for different atmospheric escape mechanisms, measured in kilograms per second.
+    sql: escaperates
+  planet_link:
+    description: 'bigint. Foreign key reference to the planet experiencing atmospheric escape. FK to planets(planetRef). Example: 1.'
+    sql: '"planetLink"'
+  uncertainty_assessment:
+    description: 'real. Assessment of uncertainty in escape rate measurements. **NULL means uncertainty was not assessed.**. Possible values: 0.18, 0.25, 0.35, 0.45, 0.52.'
+    sql: uncertainty_assessment
+  escaperates_helium_escape_rate_kg_s:
+    description: 'real. Escape rate specifically for helium in kilograms per second. **NULL means helium escape was not modeled.**. Possible values: 140000000.0, 180000.0, 7200000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(escaperates, 'HELIUM_ESCAPE_RATE_kg/s')
+  escaperates_hydrodynamic_escape_rate_kg_s:
+    description: 'real. Hydrodynamic escape rate in kilograms per second. **NULL means hydrodynamic escape was not modeled.**. Possible values: 2700000000.0, 810000000.0, 820000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(escaperates, 'HydrodynamicEscapeRate_kg/s')
+  escaperates_hydrogen_escape_rate_kg_s:
+    description: 'real. Escape rate specifically for hydrogen in kilograms per second. **NULL means hydrogen escape rate was not calculated.**. Possible values: 2100000000.0, 28000.0, 38000000.0, 720000000.0, 950000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(escaperates, 'HydrogenEscapeRate_kg/s')
+  escaperates_stellar_wind_stripping_rate_kg_s:
+    description: 'real. Mass loss rate due to stellar wind stripping in kilograms per second. **NULL means stellar wind stripping was not calculated.**. Possible values: 120000.0, 150000000.0, 28000000.0, 45000000.0, 8200.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(escaperates, 'STELLAR_WIND_STRIPPING_RATE_kg/s')
+  escaperates_thermal_escape_rate_kg_s:
+    description: 'real. Thermal (Jean''s) escape rate in kilograms per second. **NULL means thermal escape was not calculated.**. Possible values: 120000000.0, 15000.0, 21000000.0, 350000.0, 480000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(escaperates, 'thermal_escape_rate_kg/s')
+  escape_velocity_km_s:
+    description: 'real. Escape velocity from planet surface in kilometers per second. Example: 1.58.'
+    sql: '"ESCAPE_VELOCITY_km/s"'
+  electron_density_cm:
+    description: 'real. Electron density in escaping atmosphere in particles per cubic centimeter. **NULL means electron density was not measured.**. Possible values: 1.2e8, 2.1e6, 5.8e6, Venus-like Dense Atmosphere Model.'
+    sql: '"electron_density_cm⁻³"'
+  planetary_wind_velocity_km_s:
+    description: 'real. Velocity of planetary wind outflow in kilometers per second. **NULL means planetary wind velocity was not measured.**. Possible values: 12.8, 25.3, 35.2, 5.4.'
+    sql: '"planetary_wind_velocity_km/s"'
+  solar_euv_flux_received_w_m:
+    description: 'real. Extreme ultraviolet flux received from host star in watts per square meter. Possible values: 125, 1850, 2250, 320, 425, 985.'
+    sql: '"solar_euv_flux_received_W/m²"'
+  total_escape_rate_kg_s:
+    description: 'real. Total rate of atmospheric mass loss in kilograms per second. Possible values: 1200000.0, 2800000000.0, 31000.0, 45000000.0, 620000.0, 890000000.0.'
+    sql: '"total_escape_rate_kg/s"'

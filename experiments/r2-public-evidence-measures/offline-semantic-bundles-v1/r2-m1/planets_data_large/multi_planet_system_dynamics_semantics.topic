@@ -1,0 +1,9 @@
+base_view: planets_data_large_public__multi_planet_system_dynamics
+label: multi_planet_system_dynamics
+description: All columns of the public table multi_planet_system_dynamics.
+fields:
+- planets_data_large_public__multi_planet_system_dynamics.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

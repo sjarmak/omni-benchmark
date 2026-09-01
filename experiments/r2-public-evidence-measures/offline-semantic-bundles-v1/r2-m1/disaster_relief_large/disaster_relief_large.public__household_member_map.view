@@ -1,0 +1,87 @@
+label: Household_Member_Map
+description: All columns of the public table Household_Member_Map.
+catalog: disaster_relief_large
+schema: public
+table_name: Household_Member_Map
+dimensions:
+  assistance_status:
+    description: TEXT. Status of assistance to this member (None, Ongoing, Completed).
+    sql: '"AssistanceStatus"'
+  created_at:
+    description: TIMESTAMP. Record creation time (UTC).
+    sql: '"Created_At"'
+  custom_field2:
+    description: TEXT. Second custom extensible field (always populated).
+    sql: '"Custom_Field2"'
+  end_residency:
+    description: DATE. Date the member left the household; blank when still present.
+    sql: '"END_RESIDENCY"'
+  feedback_given:
+    description: BOOLEAN. TRUE if beneficiary feedback captured for this assistance.
+    sql: '"FeedbackGiven"'
+  living_status:
+    description: TEXT. Current living status within the household (Present, Left, Deceased).
+    sql: '"LivingStatus"'
+  member_id:
+    description: VARCHAR(20). FK → MemberProfiles.Member_Id.
+    sql: '"MEMBER_ID"'
+  notes:
+    description: TEXT. Free-form remarks (auto-filled if blank).
+    sql: '"Notes"'
+  protection_case:
+    description: BOOLEAN. TRUE if an individual protection case is open.
+    sql: '"PROTECTION_CASE"'
+  protection_case_status:
+    description: TEXT. Status of the protection case (Open, Closed, Referred).
+    sql: '"ProtectionCaseStatus"'
+  psychosocial_support:
+    description: BOOLEAN. TRUE if psychosocial services provided.
+    sql: '"PsychosocialSupport"'
+  referral_status:
+    description: TEXT. Referral processing status (Pending, Completed, Rejected).
+    sql: '"REFERRAL_STATUS"'
+  satisfaction_score:
+    description: REAL. Beneficiary satisfaction rating (1.0-5.0).
+    sql: '"SATISFACTION_SCORE"'
+  updated_at:
+    description: TIMESTAMP. Last update time (UTC).
+    sql: '"UPDATED_at"'
+  assistance_start_date:
+    description: DATE. Date individual assistance began; blank if none.
+    sql: '"assistanceStartDate"'
+  assistance_end_date:
+    description: DATE. Date individual assistance ended; blank unless status = Completed.
+    sql: '"assistance_END_date"'
+  assistance_type:
+    description: TEXT. Primary modality of help (Cash, Food, Shelter, etc.).
+    sql: '"assistance_Type"'
+  custom_field1:
+    description: TEXT. Custom extensible field (always populated).
+    sql: custom_field1
+  education_support:
+    description: BOOLEAN. TRUE if receiving educational support.
+    sql: '"educationSupport"'
+  feedback_latency_days_avg:
+    description: REAL. Average days between service delivery and feedback receipt.
+    sql: '"feedbackLatency_days_avg"'
+  household_id:
+    description: VARCHAR(20). FK → BeneficiaryHouseholds.HOUSEHOLD_ID.
+    sql: '"householdID"'
+  is_head:
+    description: BOOLEAN. TRUE if the member is registered as the household head.
+    sql: '"isHead"'
+  livelihood_support:
+    description: BOOLEAN. TRUE if receiving livelihood support.
+    sql: livelihood_support
+  referral_org:
+    description: TEXT. Organisation handling the referral (UNHCR, UNICEF, etc.).
+    sql: '"referralOrg"'
+  start_residency:
+    description: DATE. Date the member began residing in this household.
+    sql: '"startResidency"'
+  support_allowance_usd_per_week:
+    description: REAL. Monetary allowance allocated to the member, expressed in USD per week.
+    sql: '"supportAllowance_USD_per_week"'
+  time_on_site_hours_per_day_range:
+    description: TEXT. Typical daily time spent at service site, hours range (e.g., “3–8”).
+    sql: '"timeOnSite_hours_per_day_range"'

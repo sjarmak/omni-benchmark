@@ -1,0 +1,7 @@
+base_view: fake_account_large_public__tags
+label: tags
+description: All columns of the public table tags.
+fields:
+- fake_account_large_public__tags.*
+joins: {}
+ai_context: This topic models no cross-table joins.

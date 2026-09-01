@@ -1,0 +1,7 @@
+base_view: fake_account_large_public__ad_campaigns
+label: ad_campaigns
+description: All columns of the public table ad_campaigns.
+fields:
+- fake_account_large_public__ad_campaigns.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,24 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Customer Tenure (Years): Calculated as the difference between current date and the customer''s first recorded transaction, divided by 365.
+
+  - Recovery Rate per Day (RRD): $$RRD = \frac{R_v}{D_l}$$ where $R_v$ is Recovery Value and $D_l$ is Days Lapsed.
+
+  - Warranty Claim Ratio (WCR): $$WCR = \frac{N_{claims}}{T_r}$$ where $N_{claims}$ is the number of authorised warranty claims.
+
+  - Total Return Cost (TRC): The Total Return Cost is calculated as the sum of Shipping Fee ($S_f$), Restocking Fee ($R_f$), Relabeling Cost ($L_c$), Disposal Cost ($D_c$) and Repair Estimate ($R_e$): $$TRC = S_f + R_f + L_c + D_c + R_e$$.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

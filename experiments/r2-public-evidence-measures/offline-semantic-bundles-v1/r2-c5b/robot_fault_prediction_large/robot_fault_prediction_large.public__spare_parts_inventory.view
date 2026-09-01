@@ -1,0 +1,93 @@
+label: spare_parts_inventory
+description: All columns of the public table spare_parts_inventory.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: spare_parts_inventory
+dimensions:
+  expected_delivery_date:
+    description: 'TEXT. The expected delivery date for an outstanding order, formatted as DD/MM/YYYY. **NULL indicates there is no current outstanding order.**. Example: 2025-10-10.'
+    sql: '"EXPECTED_DELIVERY_DATE"'
+  inventory_check_by_tech:
+    description: 'TEXT. The tech_code of the technician who performed the last inventory check. **NULL indicates the part has never been checked.**. Example: TCH_1011.'
+    sql: '"Inventory_Check_By_Tech"'
+  is_critical_part:
+    description: 'BOOLEAN. A flag indicating if this is a critical part that could cause significant downtime. Possible values: False, True.'
+    sql: '"IsCriticalPart"'
+  last_inventory_check_ts:
+    description: 'TEXT. The timestamp of the last physical inventory check for this part, formatted as DD/MM/YYYY HH24:MI:SS. Example: 2025-10-01 09:00:00.'
+    sql: '"LAST_INVENTORY_CHECK_TS"'
+  max_stock_level:
+    description: 'BIGINT. The maximum desired stock level for this part. Example: 10.'
+    sql: '"MAX_STOCK_LEVEL"'
+  min_stock_level:
+    description: 'BIGINT. The minimum desired stock level for this part. Example: 2.'
+    sql: '"MinStockLevel"'
+  model_number:
+    description: 'TEXT. The manufacturer''s model number for the part. Example: A06B-0235-B100.'
+    sql: '"ModelNumber"'
+  part_description:
+    description: 'TEXT. A detailed description of the spare part. Example: Servo motor for the primary axis of FANUC R-2000iC series robots. High torque model..'
+    sql: '"PART_DESCRIPTION"'
+  part_name:
+    description: 'TEXT. Human-readable name of the spare part. Example: J1 Axis Servo Motor.'
+    sql: '"PartName"'
+  quantity_on_hand:
+    description: 'BIGINT. The current quantity of this part in stock. Example: 5.'
+    sql: '"QUANTITY_ON_HAND"'
+  serial_num_tracking:
+    description: 'BOOLEAN. A flag indicating if individual units of this part are tracked by serial number. Possible values: False, True.'
+    sql: '"SERIAL_NUM_TRACKING"'
+  supplier_name:
+    description: 'TEXT. The name of the primary supplier for this part. Example: Global Robotics Supply.'
+    sql: '"SUPPLIER_NAME"'
+  storage_location:
+    description: 'TEXT. The physical location of the part in the warehouse. Example: WH-A-R12-S03.'
+    sql: '"StorageLocation"'
+  supplier_contact:
+    description: 'TEXT. Contact information for the supplier. **NULL indicates no specific contact is listed.**. Example: sales@globalrobotics.com.'
+    sql: '"SupplierContact"'
+  date_added_to_inventory:
+    description: 'TEXT. The date the part SKU was first added to the inventory system, formatted as DD/MM/YYYY. Example: 2022-01-20.'
+    sql: date_added_to_inventory
+  last_order_date:
+    description: 'TEXT. The date the part was last ordered, formatted as DD/MM/YYYY. Example: 2025-08-15.'
+    sql: last_order_date
+  lead_time_days:
+    description: 'TEXT. The typical lead time in days from ordering the part to receiving it. Example: 56.'
+    sql: lead_time_days
+  manufacturer:
+    description: 'TEXT. The manufacturer of the spare part. Example: FANUC.'
+    sql: manufacturer
+  material:
+    description: 'TEXT. The primary material of the part. Example: Steel/Copper.'
+    sql: material
+  notes:
+    description: 'TEXT. Additional notes about the part. Example: Handle with care. Electrostatic sensitive..'
+    sql: notes
+  part_sku:
+    description: 'TEXT. Unique identifier (Stock Keeping Unit) for the spare part. PK. Example: SP-FAN-MOT-001.'
+    sql: part_sku
+  physical_specs:
+    description: JSONB column. Groups the physical dimensions and weight of the spare part.
+    sql: physical_specs
+  quantity_on_order:
+    description: 'BIGINT. The quantity of this part currently on order from a supplier. Example: 2.'
+    sql: quantity_on_order
+  robot_compatibility:
+    description: 'TEXT ARRAY. An array of robot registration codes that are compatible with this part. Example: {RB8530,RB6554}.'
+    sql: robot_compatibility
+  unit_cost_usd:
+    description: 'REAL. The cost of a single unit of this part in USD. Example: 4500.0.'
+    sql: unit_cost_usd
+  physical_specs_dimensions_mm_height:
+    description: 'REAL. The height of the part in millimeters. Example: 150.'
+    sql: JSONB_EXTRACT_PATH_TEXT(physical_specs, 'dimensions_mm', 'height')
+  physical_specs_dimensions_mm_length:
+    description: 'REAL. The length of the part in millimeters. Example: 300.'
+    sql: JSONB_EXTRACT_PATH_TEXT(physical_specs, 'dimensions_mm', 'length')
+  physical_specs_dimensions_mm_width:
+    description: 'REAL. The width of the part in millimeters. Example: 150.'
+    sql: JSONB_EXTRACT_PATH_TEXT(physical_specs, 'dimensions_mm', 'width')
+  physical_specs_weight_kg:
+    description: 'REAL. The weight of the part in kilograms. Example: 25.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(physical_specs, 'weight_kg')

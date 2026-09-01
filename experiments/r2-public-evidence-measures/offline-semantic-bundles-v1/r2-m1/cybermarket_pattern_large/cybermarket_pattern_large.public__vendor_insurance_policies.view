@@ -1,0 +1,108 @@
+label: vendor_insurance_policies
+description: All columns of the public table vendor_insurance_policies.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendor_insurance_policies
+dimensions:
+  currency:
+    description: 'TEXT. Three-letter ISO currency code for monetary fields. Example: USD.'
+    sql: '"CURRENCY"'
+  deductible:
+    description: 'REAL. Deductible the vendor must pay per claim. Example: 2500.'
+    sql: '"DEDUCTIBLE"'
+  end_date:
+    description: 'text. Policy expiration date. Example: 15/02/2026 07:41:55.'
+    sql: '"END_date"'
+  graceperiod_days:
+    description: 'BIGINT. Grace period for late premium payment before cancellation. Example: 15.'
+    sql: '"GRACEperiodDays"'
+  aggregate_limit:
+    description: 'REAL. Maximum aggregate payout over the policy term. Example: 500000.'
+    sql: aggregate_limit
+  auto_renew:
+    description: 'BOOLEAN. True if the policy renews automatically at term-end. Example: True.'
+    sql: '"autoRenew"'
+  cancellation_date:
+    description: 'text. When the policy was cancelled (NULL if active). Example: NULL.'
+    sql: '"cancellationDate"'
+  cancellation_reason:
+    description: 'TEXT. Reason provided for cancellation. Example: NULL.'
+    sql: '"cancellationReason"'
+  claim_limit:
+    description: 'REAL. Maximum liability per individual claim. Example: 100000.'
+    sql: '"claimLIMIT"'
+  compliance_score:
+    description: 'REAL. Compliance score based on underwriting questionnaires. Example: 88.'
+    sql: compliance_score
+  coverage_window_kusd_per_incident:
+    description: 'TEXT. Coverage band expressed in thousand USD per incident. **NULL when still being finalised.** Example: 72–376.'
+    sql: '"coverageWindow_KUSD_per_incident"'
+  coverage_amount:
+    description: 'REAL. Maximum coverage amount in policy currency. **NULL when still negotiating cover.** Example: 405414.97.'
+    sql: coverage_amount
+  coverage_territory:
+    description: 'TEXT. Geographic scope of coverage (e.g., worldwide, US & Canada). Example: US & Canada.'
+    sql: coverage_territory
+  coverage_type:
+    description: 'TEXT. Type of coverage (e.g., general liability, cyber risk). Example: General Liability.'
+    sql: coverage_type
+  document_url:
+    description: 'TEXT. Link to the policy document stored in the vault. Example: https://docs.example.com/policies/AC-875-992-US.pdf'
+    sql: '"documentURL"'
+  document_hash:
+    description: 'TEXT. Hash of the insurance contract PDF for integrity checks. Example: 7e8f9a0b...'
+    sql: document_hash
+  incident_limit:
+    description: 'REAL. Incident-level limit (could equal claimLIMIT for some policies). Example: 250000.'
+    sql: '"incidentLIMIT"'
+  ins_policy_ref:
+    description: 'TEXT. Primary-key token uniquely identifying an insurance policy. Example: INS-V63085.'
+    sql: ins_policy_ref
+  last_updated:
+    description: 'text. Datetime the policy record was last synchronised (DD/MM/YYYY HH:MM:SS). Example: 05/01/2025 09:17:22.'
+    sql: '"lastUPDATED"'
+  payment_method:
+    description: 'TEXT. Payment method for premium (ACH, credit card). Example: ACH.'
+    sql: '"paymentMETHOD"'
+  policy_number:
+    description: 'TEXT. Policy number issued by the insurance provider. Example: AC-875-992-US.'
+    sql: '"policyNumber"'
+  policy_status:
+    description: 'TEXT. Current policy state (active, cancelled, lapsed). Example: active.'
+    sql: policy_status
+  premium_amount:
+    description: 'REAL. Premium cost per billing cycle. **NULL means premium not set yet.** Example: 4690.88.'
+    sql: '"premiumAmount"'
+  premium_rate_percent_per_year:
+    description: 'TEXT. Premium rate as percent of coverage amount per annum. **NULL means pending quote.** Example: 2 %/year.'
+    sql: '"premiumRate_percent_per_year"'
+  premium_frequency:
+    description: 'TEXT. Billing frequency (monthly, quarterly, annual). Example: annual.'
+    sql: premium_frequency
+  provider_name:
+    description: 'TEXT. Underwriting insurance company. Example: Acme Insurance Co.'
+    sql: provider_name
+  reinstatement_date:
+    description: 'text. Date the policy was reinstated after cancellation. Example: NULL.'
+    sql: reinstatement_date
+  renewal_date:
+    description: 'text. Next scheduled renewal date. Example: 15/01/2026 07:41:55.'
+    sql: renewal_date
+  risk_score:
+    description: 'REAL. Risk score assigned by the insurer. **NULL means not evaluated yet.** Example: 59.07.'
+    sql: risk_score
+  seller_key:
+    description: 'TEXT. FK linking policy to vendors.SellerKey. Example: V63085.'
+    sql: '"sellerKEY"'
+  start_date:
+    description: 'text. Policy inception date & time (DD/MM/YYYY HH:MM:SS). Example: 15/02/2023 07:41:55.'
+    sql: '"startDate"'
+  waiting_period_days:
+    description: 'BIGINT. Waiting period before coverage becomes effective. Example: 30.'
+    sql: waiting_period_days
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct vendor_insurance_policies public identity values.
+    label: vendor_insurance_policies Count
+    sql: ${cybermarket_pattern_large_public__vendor_insurance_policies.ins_policy_ref}

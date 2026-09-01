@@ -1,0 +1,19 @@
+base_view: solar_panel_large_public__work_order_updates
+label: work_order_updates
+description: All columns of the public table work_order_updates.
+fields:
+- solar_panel_large_public__work_order_updates.*
+- solar_panel_large_public__alert.*
+- solar_panel_large_public__panel_models.*
+- solar_panel_large_public__plant_record.*
+- solar_panel_large_public__plants.*
+- solar_panel_large_public__technicians.*
+- solar_panel_large_public__work_orders.*
+joins:
+  solar_panel_large_public__technicians: {}
+  solar_panel_large_public__work_orders:
+    solar_panel_large_public__alert:
+      solar_panel_large_public__plant_record: {}
+    solar_panel_large_public__plants:
+      solar_panel_large_public__panel_models: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

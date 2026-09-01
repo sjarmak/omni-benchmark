@@ -1,0 +1,11 @@
+base_view: exchange_traded_funds_large_public__sentiment_trading_signals
+label: SentimentTradingSignals
+description: All columns of the public table SentimentTradingSignals.
+fields:
+- exchange_traded_funds_large_public__sentiment_trading_signals.*
+- exchange_traded_funds_large_public__market_sentiment_scores.*
+- exchange_traded_funds_large_public__securities.*
+joins:
+  exchange_traded_funds_large_public__market_sentiment_scores:
+    exchange_traded_funds_large_public__securities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

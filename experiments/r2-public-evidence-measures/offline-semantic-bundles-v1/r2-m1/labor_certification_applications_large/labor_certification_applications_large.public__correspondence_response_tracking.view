@@ -1,0 +1,72 @@
+label: CorrespondenceResponseTracking
+description: All columns of the public table CorrespondenceResponseTracking.
+catalog: labor_certification_applications_large
+schema: public
+table_name: CorrespondenceResponseTracking
+dimensions:
+  crt_code:
+    description: 'TEXT. Unique identifier for correspondence response tracking record. Example: CRT-1A2B3C.'
+    sql: '"CRT_code"'
+  certified_mail_flag:
+    description: 'BOOLEAN. Indicates if sent via certified mail. Possible values: True, False.'
+    sql: '"certifiedMail_flag"'
+  correspondence_ref:
+    description: TEXT. Foreign key reference to CaseCorrespondenceLog table.
+    sql: correspondence_ref
+  days_to_respond:
+    description: 'INTEGER. Number of days from receipt to response. Example: 15.'
+    sql: '"daysToRespond"'
+  deficiency_identified_flag:
+    description: 'BOOLEAN. Indicates if deficiency in response was identified. Possible values: True, False.'
+    sql: '"deficiencyIdentified_flag"'
+  delivery_confirmed_flag:
+    description: 'BOOLEAN. Indicates if delivery was confirmed. Possible values: True, False.'
+    sql: '"deliveryConfirmed_flag"'
+  delivery_date:
+    description: 'TIMESTAMP. Date response was delivered. **NULL means Delivery not confirmed or electronic.** Example: 2024-01-01 12:00:00.'
+    sql: '"deliveryDate"'
+  exhibits_included_ct:
+    description: 'INTEGER. Number of exhibits included with response. Example: 5.'
+    sql: '"exhibitsIncluded_ct"'
+  follow_up_required_flag:
+    description: 'BOOLEAN. Indicates if follow-up response is required. Possible values: True, False.'
+    sql: '"followUpRequired_flag"'
+  outcome_impact:
+    description: 'TEXT. Impact of response on case outcome. Unique values: Positive, Neutral, Negative, Pending, Unknown.'
+    sql: '"outcomeImpact"'
+  preparation_cost_usd:
+    description: 'REAL. Cost to prepare response in USD. Example: 850.'
+    sql: '"preparationCost_USD"'
+  response_accepted_flag:
+    description: 'BOOLEAN. Indicates if response was accepted by agency. Possible values: True, False.'
+    sql: '"responseAccepted_flag"'
+  response_date:
+    description: 'TIMESTAMP. Date when response was sent. Example: 2024-01-01 12:00:00.'
+    sql: '"responseDate"'
+  response_method:
+    description: 'TEXT. Method used to send response. Unique values: Online Portal, Email, USPS, FedEx, Fax, In Person.'
+    sql: '"responseMethod"'
+  response_pages_ct:
+    description: 'INTEGER. Number of pages in response document. Example: 12.'
+    sql: '"responsePages_ct"'
+  response_quality_score:
+    description: 'REAL. Quality score of response from 1-10. **NULL means Quality not assessed.** Example: 7.5.'
+    sql: '"responseQualityScore"'
+  response_type:
+    description: 'TEXT. Type of response provided. Unique values: Full Compliance, Partial Response, Extension Request, Objection, Clarification, Appeal, No Response.'
+    sql: '"responseType"'
+  signed_by_attorney_flag:
+    description: 'BOOLEAN. Indicates if response was signed by attorney. Possible values: True, False.'
+    sql: '"signedByAttorney_flag"'
+  tracking_number:
+    description: TEXT. Shipping tracking number if applicable. **NULL means Electronic submission or non-tracked mail.**
+    sql: '"trackingNumber"'
+  within_deadline_flag:
+    description: 'BOOLEAN. Indicates if response was within deadline. Possible values: True, False.'
+    sql: '"withinDeadline_flag"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CorrespondenceResponseTracking public identity values.
+    label: CorrespondenceResponseTracking Count
+    sql: ${labor_certification_applications_large_public__correspondence_response_tracking.crt_code}

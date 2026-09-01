@@ -1,0 +1,96 @@
+label: Jurisdiction_Mechanism_Map
+description: All columns of the public table Jurisdiction_Mechanism_Map.
+catalog: cross_border_large
+schema: public
+table_name: Jurisdiction_Mechanism_Map
+dimensions:
+  jurisdiction_number:
+    description: 'BIGINT. Foreign key to Geo_Jurisdiction(JURISDICTION_CODE). Example: 23.'
+    sql: jurisdiction_number
+  mechanism_no:
+    description: 'BIGINT. Foreign key to Transfer_Mechanism(mechanism_no). Example: 5.'
+    sql: mechanism_no
+  xborder_mechanism_state:
+    description: JSONB column. Encapsulates the current applicability, regulatory stance, review cadence, and evidentiary artifacts of a transfer mechanism within a jurisdiction.
+    sql: xborder_mechanism_state
+  xborder_mechanism_state_applicability_adequacy_status:
+    description: 'TEXT. Adequacy status for this mapping. Possible values: Adequate, Partial, Not Adequate. Example: Adequate.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'applicability', 'adequacy_status')
+  xborder_mechanism_state_applicability_applicability:
+    description: 'TEXT. Applicability of the mechanism in the jurisdiction. Possible values: mandatory, recommended, optional. Example: mandatory.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'applicability', 'applicability')
+  xborder_mechanism_state_applicability_derogations:
+    description: 'TEXT. Applicable derogations. Possible values include: None, Contractual, Public interest, Vital interests. Example: Contractual.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'applicability', 'derogations')
+  xborder_mechanism_state_applicability_objections:
+    description: 'TEXT. Recorded objections/comments. **NULL means no objections documented.** Example: Raised by authority.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'applicability', 'objections')
+  xborder_mechanism_state_applicability_status:
+    description: 'TEXT. Mapping status. Possible values: Active, Under Review, Inactive. Example: Active.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'applicability', 'status')
+  xborder_mechanism_state_evidence_evidence_hash:
+    description: 'TEXT. Hash of evidence artifact. Example: hash-123456.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'evidence', 'evidence_hash')
+  xborder_mechanism_state_evidence_evidence_url:
+    description: 'TEXT. Link to supporting evidence. **NULL means evidence has not been uploaded.** Example: https://evidence.example/23-5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'evidence', 'evidence_url')
+  xborder_mechanism_state_evidence_notes:
+    description: 'TEXT. Additional notes on the mapping. Example: Pending legal review.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'evidence', 'notes')
+  xborder_mechanism_state_governance_audit_requirement:
+    description: 'TEXT. Whether audits are required. Possible values: Yes, No. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'governance', 'audit_requirement')
+  xborder_mechanism_state_governance_authority_contact:
+    description: 'TEXT. Authority contact (email/phone). **NULL means not available.** Example: contact@france.example.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'governance', 'authority_contact')
+  xborder_mechanism_state_governance_effective_date:
+    description: 'DATE. Effective date of the mapping. Example: 2022-05-10.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'governance', 'effective_date')
+  xborder_mechanism_state_governance_review_cycle_days:
+    description: 'BIGINT. Review cycle in days. Example: 365.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'governance', 'review_cycle_days')
+  xborder_mechanism_state_governance_risk_level:
+    description: 'TEXT. Risk level assigned. Possible values: Low, Medium, High. Example: High.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'governance', 'risk_level')
+  xborder_mechanism_state_governance_supervisory_authority:
+    description: 'TEXT. Relevant supervisory authority name. Example: France SA.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'governance', 'supervisory_authority')
+  xborder_mechanism_state_metrics_metric1:
+    description: 'REAL. Custom metric 1. Example: 64.50.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'metrics', 'metric1')
+  xborder_mechanism_state_metrics_metric2:
+    description: 'REAL. Custom metric 2. Example: 32.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'metrics', 'metric2')
+  xborder_mechanism_state_metrics_metric3:
+    description: 'REAL. Custom metric 3. Example: 15.10.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'metrics', 'metric3')
+  xborder_mechanism_state_metrics_metric4:
+    description: 'REAL. Custom metric 4. Example: 1.05.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'metrics', 'metric4')
+  xborder_mechanism_state_metrics_metric5:
+    description: 'REAL. Custom metric 5. **NULL means metric not collected or calculated.** Example: 18.80.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'metrics', 'metric5')
+  xborder_mechanism_state_metrics_metric6:
+    description: 'REAL. Custom metric 6. Example: 77.20.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'metrics', 'metric6')
+  xborder_mechanism_state_metrics_metric7:
+    description: 'REAL. Custom metric 7. Example: 54.10.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'metrics', 'metric7')
+  xborder_mechanism_state_ownership_time_created_at:
+    description: 'DATE. Record creation date (yyyy-mm-dd). Example: 2024-01-10.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'ownership_time', 'created_at')
+  xborder_mechanism_state_ownership_time_owner:
+    description: 'TEXT. Mapping owner team. Possible values include: Legal, Privacy, Security, GRC. Example: Legal.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'ownership_time', 'owner')
+  xborder_mechanism_state_ownership_time_updated_at:
+    description: 'DATE. Last update date (yyyy-mm-dd). Example: 2025-07-12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'ownership_time', 'updated_at')
+  xborder_mechanism_state_tags_tag1:
+    description: 'TEXT. Tag/category 1. Example: CrossBorder.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'tags', 'tag1')
+  xborder_mechanism_state_tags_tag2:
+    description: 'TEXT. Tag/category 2 (priority/severity). Example: High.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'tags', 'tag2')
+  xborder_mechanism_state_tags_tag3:
+    description: 'TEXT. Tag/category 3 (cohort/label). Example: 2025.'
+    sql: JSONB_EXTRACT_PATH_TEXT(xborder_mechanism_state, 'tags', 'tag3')

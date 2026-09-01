@@ -46,6 +46,15 @@ _RELATIONSHIP_FIELDS = frozenset(
     }
 )
 
+BALANCED_AI_SETTINGS: dict[str, object] = {
+    "query_all_views_and_fields": "enabled",
+    "validate_analysis": "disabled",
+    "conversation_prune_length": "max",
+    "analyze_configuration": {"model": "standard", "thinking": "none"},
+    "build_configuration": {"model": "smartest", "thinking": "none"},
+    "simple_summarize_configuration": {"model": "fastest", "thinking": "none"},
+}
+
 
 class OmniSemanticDeploymentError(ValueError):
     """Raised when a public bundle or branch readback is not exact."""
@@ -553,13 +562,20 @@ def _validate_relationship_document(value: object) -> None:
 
 
 def _validate_model_document(value: object) -> None:
-    if not isinstance(value, Mapping) or set(value) != {"ai_context"}:
+    if not isinstance(value, Mapping) or set(value) not in (
+        {"ai_context"},
+        {"ai_context", "ai_settings"},
+    ):
         raise OmniSemanticDeploymentError(
-            "model document must declare exactly ai_context"
+            "model document must declare ai_context and optionally ai_settings"
         )
     context = value.get("ai_context")
     if not isinstance(context, str) or not context.strip():
         raise OmniSemanticDeploymentError("model ai_context must be non-empty text")
+    if "ai_settings" in value and value["ai_settings"] != BALANCED_AI_SETTINGS:
+        raise OmniSemanticDeploymentError(
+            "model ai_settings must equal the frozen Balanced profile"
+        )
 
 
 def _semantic_documents_equal(left: object, right: object) -> bool:

@@ -1,0 +1,72 @@
+label: TeamBudget
+description: All columns of the public table TeamBudget.
+catalog: sports_events_large
+schema: public
+table_name: TeamBudget
+dimensions:
+  allocated_musd:
+    description: 'REAL. Amount allocated so far Typical range: 60 to 200.'
+    sql: '"ALLOCATED_MUSD"'
+  approval_date:
+    description: DATE. Budget approval date
+    sql: '"APPROVAL_DATE"'
+  audit_status:
+    description: 'TEXT. Audit status Possible values: Not Started, In Progress, Completed, Findings.'
+    sql: '"AUDIT_STATUS"'
+  budget_id:
+    description: BIGINT. Primary key. Unique budget record identifier
+    sql: '"BUDGET_ID"'
+  budget_type:
+    description: 'TEXT. Type of budget Possible values: Cost Cap, Operating, Capital, R&D, Marketing.'
+    sql: '"BUDGET_TYPE"'
+  category_breakdown:
+    description: JSONB. Budget breakdown by category
+    sql: '"CATEGORY_BREAKDOWN"'
+  cfo_approval:
+    description: 'TEXT. CFO who approved the budget Possible values: CFO Office, Board, Team Principal.'
+    sql: '"CFO_APPROVAL"'
+  status:
+    description: 'TEXT. Budget status Possible values: Draft, Approved, In Execution, Closed, Under Audit.'
+    sql: '"STATUS"'
+  under_cost_cap:
+    description: BOOLEAN. Whether team is under cost cap Boolean flag (true/false).
+    sql: '"UNDER_COST_CAP"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  utilization_pct:
+    description: 'REAL. Budget utilization percentage Typical range: 0 to 100.'
+    sql: '"UTILIZATION_PCT"'
+  audit_completion_date:
+    description: DATE. Expected audit completion **NULL means Audit not yet scheduled.**
+    sql: audit_completion_date
+  auditor:
+    description: 'TEXT. External auditor Possible values: Deloitte, PwC, EY, KPMG.'
+    sql: auditor
+  constructor_ref:
+    description: BIGINT. Foreign key referencing constructors(cstr_key). Related constructor
+    sql: constructor_ref
+  cost_cap_limit_musd:
+    description: 'REAL. FIA cost cap limit Typical range: 130 to 150.'
+    sql: cost_cap_limit_musd
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  fiscal_year:
+    description: BIGINT. Fiscal year
+    sql: fiscal_year
+  headroom_musd:
+    description: 'REAL. Headroom remaining under cost cap Typical range: -5 to 40.'
+    sql: headroom_musd
+  spent_musd:
+    description: 'REAL. Amount spent to date Typical range: 40 to 200.'
+    sql: spent_musd
+  total_budget_musd:
+    description: 'REAL. Total budget in millions USD Typical range: 80 to 200.'
+    sql: total_budget_musd
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TeamBudget public identity values.
+    label: TeamBudget Count
+    sql: ${sports_events_large_public__team_budget.budget_id}

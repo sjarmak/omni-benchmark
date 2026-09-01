@@ -1,0 +1,57 @@
+label: carrier_supported_regions
+description: All columns of the public table carrier_supported_regions.
+catalog: reverse_logistics_large
+schema: public
+table_name: carrier_supported_regions
+dimensions:
+  average_delivery_delay_hours:
+    description: 'REAL. The average delivery delay in hours for this region compared to standard delivery times. Example: 41.7.'
+    sql: average_delivery_delay_hours
+  country_code:
+    description: 'TEXT. The country code for the region. Example: US.'
+    sql: country_code
+  customs_brokerage_available:
+    description: 'BOOLEAN. Indicates if customs brokerage is available. Example: False.'
+    sql: customs_brokerage_available
+  effective_date:
+    description: 'DATE. The date from which this service information is effective. Example: 2023-07-25.'
+    sql: effective_date
+  is_remote_location:
+    description: 'BOOLEAN. Indicates if the region is considered remote. Possible values: True, False.'
+    sql: is_remote_location
+  local_partner_carrier:
+    description: 'TEXT. The name of a local partner carrier used for last-mile delivery. **NULL means the primary carrier handles the entire delivery.** Example: Local Express Inc..'
+    sql: local_partner_carrier
+  notes:
+    description: 'TEXT. General notes about service in this region. **NULL means no special notes.** Example: Service limitations may apply..'
+    sql: notes
+  pickup_services_offered:
+    description: 'BOOLEAN. Indicates if pickup services are offered in this region. Possible values: True, False.'
+    sql: pickup_services_offered
+  postal_code_range:
+    description: 'TEXT. The range of postal codes covered. **NULL means the entire region_name is covered.** Example: 48155-93109.'
+    sql: postal_code_range
+  region_name:
+    description: 'TEXT. The name of the region (e.g., state or province). Possible values: California, Texas, New York, Florida, Midwest Region.'
+    sql: region_name
+  regulatory_restrictions:
+    description: TEXT. Any regulatory restrictions for this region. **NULL or 'None' means no known restrictions.**
+    sql: regulatory_restrictions
+  service_level_available:
+    description: 'TEXT. The type of service available in this region. Possible values: Standard, Express, Freight.'
+    sql: service_level_available
+  service_region_id:
+    description: 'BIGINT. Unique identifier for the service region entry. PK. Example: 5000.'
+    sql: service_region_id
+  servicing_carrier_id:
+    description: 'BIGINT. The ID of the carrier that services this region. FK to transportation_carriers.carrier_id. Example: 9.'
+    sql: servicing_carrier_id
+  surcharge_for_region:
+    description: 'REAL. Any additional surcharge for this region. **NULL or 0.0 means there is no surcharge.** Example: 18.66.'
+    sql: surcharge_for_region
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct carrier_supported_regions public identity values.
+    label: carrier_supported_regions Count
+    sql: ${reverse_logistics_large_public__carrier_supported_regions.service_region_id}

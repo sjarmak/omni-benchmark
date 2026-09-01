@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__artifact_profile
+label: ArtifactProfile
+description: All columns of the public table ArtifactProfile.
+fields:
+- museum_artifact_large_public__artifact_profile.*
+joins: {}
+ai_context: This topic models no cross-table joins.

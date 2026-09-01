@@ -1,0 +1,13 @@
+base_view: fake_account_large_public__transaction_dispute_evidence
+label: transaction_dispute_evidence
+description: All columns of the public table transaction_dispute_evidence.
+fields:
+- fake_account_large_public__transaction_dispute_evidence.*
+- fake_account_large_public__accounts.*
+- fake_account_large_public__commerce_transactions.*
+- fake_account_large_public__platforms.*
+joins:
+  fake_account_large_public__commerce_transactions:
+    fake_account_large_public__accounts:
+      fake_account_large_public__platforms: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

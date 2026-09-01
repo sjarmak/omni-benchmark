@@ -1,0 +1,366 @@
+- join_from_view: robot_fault_prediction_large_public__spare_parts_inventory
+  join_to_view: robot_fault_prediction_large_public__technicians
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__spare_parts_inventory.inventory_check_by_tech} = ${robot_fault_prediction_large_public__technicians.tech_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__waste_recycling_log
+  join_to_view: robot_fault_prediction_large_public__production_log
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__waste_recycling_log.production_run_ref} = ${robot_fault_prediction_large_public__production_log.production_log_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__automated_defect_classification
+  join_to_view: robot_fault_prediction_large_public__vision_system_telemetry
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__automated_defect_classification.vision_log_ref} = ${robot_fault_prediction_large_public__vision_system_telemetry.vision_log_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__firmware_security_audit
+  join_to_view: robot_fault_prediction_large_public__firmware_deployment_history
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__firmware_security_audit.deployment_ref} = ${robot_fault_prediction_large_public__firmware_deployment_history.deployment_record_key}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__production_log
+  join_to_view: robot_fault_prediction_large_public__production_orders
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__production_log.order_num} = ${robot_fault_prediction_large_public__production_orders.order_num}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__joint_performance
+  join_to_view: robot_fault_prediction_large_public__operation
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__joint_performance.jperfoperref} = ${robot_fault_prediction_large_public__operation.operreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__effluent_chemical_analysis
+  join_to_view: robot_fault_prediction_large_public__waste_recycling_log
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__effluent_chemical_analysis.waste_event_ref} = ${robot_fault_prediction_large_public__waste_recycling_log.waste_event_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__workcells
+  join_to_view: robot_fault_prediction_large_public__robot_details
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__workcells.cell_primary_robot_code} = ${robot_fault_prediction_large_public__robot_details.botdetreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__robot_details
+  join_to_view: robot_fault_prediction_large_public__robot_record
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__robot_details.botdetreg} = ${robot_fault_prediction_large_public__robot_record.botcode}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__environmental_sensors
+  join_to_view: robot_fault_prediction_large_public__workcells
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__environmental_sensors.installed_in_workcell} = ${robot_fault_prediction_large_public__workcells.workcell_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__system_controller
+  join_to_view: robot_fault_prediction_large_public__operation
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__system_controller.systemoverseeroperation} = ${robot_fault_prediction_large_public__operation.operreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__anomaly_detection_log
+  join_to_view: robot_fault_prediction_large_public__actuation_data
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__anomaly_detection_log.actreg} = ${robot_fault_prediction_large_public__actuation_data.actreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__simulation_runs
+  join_to_view: robot_fault_prediction_large_public__simulation_models
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__simulation_runs.model_code} = ${robot_fault_prediction_large_public__simulation_models.model_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__joint_condition
+  join_to_view: robot_fault_prediction_large_public__robot_details
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__joint_condition.jcdetref} = ${robot_fault_prediction_large_public__robot_details.botdetreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__production_orders
+  join_to_view: robot_fault_prediction_large_public__products
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__production_orders.product_sku} = ${robot_fault_prediction_large_public__products.product_sku}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__maintenance_parts_usage
+  join_to_view: robot_fault_prediction_large_public__maintenance_logs
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__maintenance_parts_usage.maintenance_activity_link} = ${robot_fault_prediction_large_public__maintenance_logs.work_order_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__liability_claim_assessments
+  join_to_view: robot_fault_prediction_large_public__incident_reports
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__liability_claim_assessments.incident_ref} = ${robot_fault_prediction_large_public__incident_reports.incident_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__battery_thermal_management
+  join_to_view: robot_fault_prediction_large_public__grid_load_optimization
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__battery_thermal_management.grid_event_ref} = ${robot_fault_prediction_large_public__grid_load_optimization.grid_event_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__end_effector_attachment_log
+  join_to_view: robot_fault_prediction_large_public__robot_details
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__end_effector_attachment_log.attached_to_robot} = ${robot_fault_prediction_large_public__robot_details.botdetreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__operator_biometric_telemetry
+  join_to_view: robot_fault_prediction_large_public__human_proximity_events
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__operator_biometric_telemetry.proximity_event_ref} = ${robot_fault_prediction_large_public__human_proximity_events.proximity_event_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__maintenance_and_fault
+  join_to_view: robot_fault_prediction_large_public__operation
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__maintenance_and_fault.upkeepoperation} = ${robot_fault_prediction_large_public__operation.operreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__maintenance_and_fault
+  join_to_view: robot_fault_prediction_large_public__actuation_data
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__maintenance_and_fault.upkeepactuation} = ${robot_fault_prediction_large_public__actuation_data.actreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__simulation_models
+  join_to_view: robot_fault_prediction_large_public__robot_details
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__simulation_models.botdetreg} = ${robot_fault_prediction_large_public__robot_details.botdetreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__performance_and_safety
+  join_to_view: robot_fault_prediction_large_public__actuation_data
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__performance_and_safety.effectivenessactuation} = ${robot_fault_prediction_large_public__actuation_data.actreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__joint_lubrication_status
+  join_to_view: robot_fault_prediction_large_public__vibration_spectral_analysis
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__joint_lubrication_status.vibration_sample_ref} = ${robot_fault_prediction_large_public__vibration_spectral_analysis.spectral_sample_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__system_controller
+  join_to_view: robot_fault_prediction_large_public__actuation_data
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__system_controller.systemoverseeractuation} = ${robot_fault_prediction_large_public__actuation_data.actreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__vision_system_telemetry
+  join_to_view: robot_fault_prediction_large_public__workcells
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__vision_system_telemetry.workcell_ref} = ${robot_fault_prediction_large_public__workcells.workcell_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__production_log
+  join_to_view: robot_fault_prediction_large_public__operation
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__production_log.operreg} = ${robot_fault_prediction_large_public__operation.operreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__maintenance_parts_usage
+  join_to_view: robot_fault_prediction_large_public__spare_parts_inventory
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__maintenance_parts_usage.part_sku_link} = ${robot_fault_prediction_large_public__spare_parts_inventory.part_sku}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__production_orders
+  join_to_view: robot_fault_prediction_large_public__workcells
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__production_orders.workcell_code} = ${robot_fault_prediction_large_public__workcells.workcell_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__laser_tracker_verification
+  join_to_view: robot_fault_prediction_large_public__calibration_events
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__laser_tracker_verification.calibration_ref} = ${robot_fault_prediction_large_public__calibration_events.calibration_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__performance_and_safety
+  join_to_view: robot_fault_prediction_large_public__robot_details
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__performance_and_safety.effectivenessrobot} = ${robot_fault_prediction_large_public__robot_details.botdetreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__anomaly_detection_log
+  join_to_view: robot_fault_prediction_large_public__maintenance_logs
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__anomaly_detection_log.work_order_tag} = ${robot_fault_prediction_large_public__maintenance_logs.work_order_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__joint_condition
+  join_to_view: robot_fault_prediction_large_public__operation
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__joint_condition.jcondoperref} = ${robot_fault_prediction_large_public__operation.operreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__human_proximity_events
+  join_to_view: robot_fault_prediction_large_public__robot_record
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__human_proximity_events.involved_robot_ref} = ${robot_fault_prediction_large_public__robot_record.botcode}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__technician_certifications
+  join_to_view: robot_fault_prediction_large_public__technicians
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__technician_certifications.certified_technician_tag} = ${robot_fault_prediction_large_public__technicians.tech_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__technician_certifications
+  join_to_view: robot_fault_prediction_large_public__certifications
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__technician_certifications.certification_index} = ${robot_fault_prediction_large_public__certifications.cert_index}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__digital_twin_sync_log
+  join_to_view: robot_fault_prediction_large_public__simulation_models
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__digital_twin_sync_log.sim_model_ref} = ${robot_fault_prediction_large_public__simulation_models.model_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__product_materials
+  join_to_view: robot_fault_prediction_large_public__products
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__product_materials.product_sku_assoc} = ${robot_fault_prediction_large_public__products.product_sku}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__mechanical_status
+  join_to_view: robot_fault_prediction_large_public__robot_details
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__mechanical_status.mechdetref} = ${robot_fault_prediction_large_public__robot_details.botdetreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__material_storage_environment
+  join_to_view: robot_fault_prediction_large_public__supplier_shipments
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__material_storage_environment.shipment_ref} = ${robot_fault_prediction_large_public__supplier_shipments.shipment_tracking_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__incident_reports
+  join_to_view: robot_fault_prediction_large_public__technicians
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__incident_reports.reporting_tech_ref} = ${robot_fault_prediction_large_public__technicians.tech_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__operation
+  join_to_view: robot_fault_prediction_large_public__robot_record
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__operation.operrecref} = ${robot_fault_prediction_large_public__robot_record.botcode}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__end_effector_attachment_log
+  join_to_view: robot_fault_prediction_large_public__end_effectors
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__end_effector_attachment_log.effector_tool_code} = ${robot_fault_prediction_large_public__end_effectors.end_effector_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__joint_performance
+  join_to_view: robot_fault_prediction_large_public__robot_details
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__joint_performance.jperfdetref} = ${robot_fault_prediction_large_public__robot_details.botdetreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__calibration_events
+  join_to_view: robot_fault_prediction_large_public__end_effectors
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__calibration_events.end_effector_ref} = ${robot_fault_prediction_large_public__end_effectors.end_effector_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__firmware_deployment_history
+  join_to_view: robot_fault_prediction_large_public__robot_record
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__firmware_deployment_history.target_bot_ref} = ${robot_fault_prediction_large_public__robot_record.botcode}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__mechanical_status
+  join_to_view: robot_fault_prediction_large_public__actuation_data
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__mechanical_status.mechactref} = ${robot_fault_prediction_large_public__actuation_data.actreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__actuation_data
+  join_to_view: robot_fault_prediction_large_public__robot_record
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__actuation_data.actrecref} = ${robot_fault_prediction_large_public__robot_record.botcode}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__power_consumption_log
+  join_to_view: robot_fault_prediction_large_public__robot_details
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__power_consumption_log.botdetreg} = ${robot_fault_prediction_large_public__robot_details.botdetreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__mechanical_status
+  join_to_view: robot_fault_prediction_large_public__operation
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__mechanical_status.mechoperref} = ${robot_fault_prediction_large_public__operation.operreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__physics_engine_parameters
+  join_to_view: robot_fault_prediction_large_public__digital_twin_sync_log
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__physics_engine_parameters.sync_event_ref} = ${robot_fault_prediction_large_public__digital_twin_sync_log.sync_event_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__grid_load_optimization
+  join_to_view: robot_fault_prediction_large_public__power_consumption_log
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__grid_load_optimization.power_log_ref} = ${robot_fault_prediction_large_public__power_consumption_log.power_log_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__product_materials
+  join_to_view: robot_fault_prediction_large_public__materials
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__product_materials.material_code_assoc} = ${robot_fault_prediction_large_public__materials.material_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__anomaly_detection_log
+  join_to_view: robot_fault_prediction_large_public__technicians
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__anomaly_detection_log.tech_code} = ${robot_fault_prediction_large_public__technicians.tech_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__quality_inspections
+  join_to_view: robot_fault_prediction_large_public__production_log
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__quality_inspections.production_log_pk} = ${robot_fault_prediction_large_public__production_log.production_log_pk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__quality_inspections
+  join_to_view: robot_fault_prediction_large_public__technicians
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__quality_inspections.tech_code} = ${robot_fault_prediction_large_public__technicians.tech_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__actuation_data
+  join_to_view: robot_fault_prediction_large_public__operation
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__actuation_data.actoperref} = ${robot_fault_prediction_large_public__operation.operreg}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__environmental_readings
+  join_to_view: robot_fault_prediction_large_public__environmental_sensors
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__environmental_readings.source_sensor_tag} = ${robot_fault_prediction_large_public__environmental_sensors.sensor_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__supplier_shipments
+  join_to_view: robot_fault_prediction_large_public__materials
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__supplier_shipments.material_ref} = ${robot_fault_prediction_large_public__materials.material_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: robot_fault_prediction_large_public__vibration_spectral_analysis
+  join_to_view: robot_fault_prediction_large_public__joint_performance
+  join_type: always_left
+  on_sql: ${robot_fault_prediction_large_public__vibration_spectral_analysis.joint_perf_ref} = ${robot_fault_prediction_large_public__joint_performance.jperfid}
+  relationship_type: many_to_one
+  reversible: false

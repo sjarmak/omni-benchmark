@@ -1,0 +1,81 @@
+label: UsageRecords
+description: All columns of the public table UsageRecords.
+catalog: museum_artifact_large
+schema: public
+table_name: UsageRecords
+dimensions:
+  assess_freq:
+    description: 'TEXT. Frequency of condition assessments for the artifact or exhibit. Possible values: Annually, Monthly, Quarterly.'
+    sql: '"assessFreq"'
+  audit_status:
+    description: 'TEXT. Audit status for the artifact or exhibit. Possible values: Failed, Passed, Pending.'
+    sql: '"auditStatus"'
+  calib_freq:
+    description: 'TEXT. Frequency of calibration for monitoring equipment. Possible values: Annually, Monthly, Quarterly.'
+    sql: '"calibFreq"'
+  cert_status:
+    description: 'TEXT. Certification status for the artifact or exhibit. Possible values: Current, Expired, Pending.'
+    sql: '"certStatus"'
+  compliance_status:
+    description: 'TEXT. Compliance status for regulations or standards. Possible values: Compliant, Non-compliant, Partial.'
+    sql: '"complianceStatus"'
+  conserve_freq:
+    description: 'TEXT. Frequency of conservation treatments for the artifact or exhibit. Possible values: Frequent, Occasional, Rare.'
+    sql: '"conserveFreq"'
+  disp_reqs:
+    description: 'TEXT. The display requirements for the artifact, extracted from the handling_and_context_requirements JSON. Possible values: Custom, Special, Standard.'
+    sql: '"dispReqs"'
+  display_months:
+    description: 'BIGINT. Number of months the artifact or exhibit is displayed. Example: 1.'
+    sql: '"displayMonths"'
+  docu_freq:
+    description: 'TEXT. Frequency of documentation updates for the artifact or exhibit. Possible values: Frequent, Occasional, Rare.'
+    sql: '"docuFreq"'
+  env_link:
+    description: TEXT. Reference to the environmental reading linked to usage. FK to EnvironmentalReadingsCore.monitor_code.
+    sql: env_link
+  handle_freq:
+    description: 'TEXT. Frequency of handling the artifact or exhibit. Possible values: Frequent, Occasional, Rare.'
+    sql: '"handleFreq"'
+  handle_reqs:
+    description: 'TEXT. The handling requirements for the artifact, extracted from the handling_and_context_requirements JSON. Possible values: Special, Custom, Standard.'
+    sql: '"handleReqs"'
+  inspect_freq:
+    description: 'TEXT. Frequency of inspections for the artifact or exhibit. Possible values: Daily, Monthly, Weekly.'
+    sql: '"inspectFreq"'
+  loan_freq:
+    description: 'TEXT. Frequency of loans for the artifact or exhibit. Possible values: Frequent, Occasional, Rare.'
+    sql: '"loanFreq"'
+  maint_freq:
+    description: 'TEXT. Frequency of maintenance activities for the artifact or exhibit. Possible values: Monthly, Quarterly, Weekly.'
+    sql: '"maintFreq"'
+  monitor_freq:
+    description: 'TEXT. Frequency of monitoring for the artifact or exhibit. Possible values: Daily, Monthly, Weekly.'
+    sql: '"monitorFreq"'
+  pack_reqs:
+    description: 'TEXT. The packing requirements for the artifact, extracted from the handling_and_context_requirements JSON. Possible values: Custom, Special, Standard.'
+    sql: '"packReqs"'
+  public_disp:
+    description: 'TEXT. Public display status of the artifact or exhibit. Possible values: Frequent, Occasional, Rare.'
+    sql: '"publicDisp"'
+  quality_status:
+    description: 'TEXT. Quality status for the artifact or exhibit. Possible values: Failed, Passed, Review.'
+    sql: '"qualityStatus"'
+  res_access:
+    description: 'TEXT. Restrictions on access to the artifact or exhibit. Possible values: Frequent, Occasional, Rare.'
+    sql: '"resAccess"'
+  rest_months:
+    description: 'BIGINT. Number of months the artifact or exhibit is in rest or storage. Example: 22.0.'
+    sql: '"restMonths"'
+  rotate_sched:
+    description: 'TEXT. Schedule for rotating artifacts or exhibits. Possible values: Active, Permanent, Resting.'
+    sql: rotate_sched
+  store_reqs:
+    description: 'TEXT. The storage requirements for the artifact, extracted from the handling_and_context_requirements JSON. Possible values: Special, Custom, Standard.'
+    sql: '"storeReqs"'
+  transport_reqs:
+    description: 'TEXT. The transportation requirements for the artifact, extracted from the handling_and_context_requirements JSON. Possible values: Special, Custom, Standard.'
+    sql: '"transportReqs"'
+  usage_id:
+    description: BIGSERIAL. Unique identifier for each usage record. PK.
+    sql: usage_id

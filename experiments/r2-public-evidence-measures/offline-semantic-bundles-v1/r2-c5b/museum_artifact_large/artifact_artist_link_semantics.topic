@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__artifact_artist_link
+label: ArtifactArtistLink
+description: All columns of the public table ArtifactArtistLink.
+fields:
+- museum_artifact_large_public__artifact_artist_link.*
+joins: {}
+ai_context: This topic models no cross-table joins.

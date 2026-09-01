@@ -1,0 +1,42 @@
+label: quality_inspections
+description: All columns of the public table quality_inspections.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: quality_inspections
+dimensions:
+  failure_description:
+    description: 'TEXT. A human-readable description of the failure reason. **NULL indicates the inspection passed.**. Possible values: Connector pin A3 bent., Key dimension out of tolerance., Paint finish has orange peel effect., Surface scratch on exterior panel., Width below minimum spec..'
+    sql: failure_description
+  failure_reason_code:
+    description: 'TEXT. A code indicating the reason for failure. **NULL indicates the inspection passed.**. Possible values: CON-04, DIM-01, DIM-02, FIN-01, SCR-02.'
+    sql: failure_reason_code
+  inspection_pk:
+    description: 'BIGINT. Unique identifier for the quality inspection. PK. Example: 1.'
+    sql: inspection_pk
+  inspection_timestamp:
+    description: 'TEXT. The timestamp of the inspection, formatted as Day, DD Mon YYYY HH24:MI:SS. Example: Sun, 10 Aug 2025 13:20:00.'
+    sql: inspection_timestamp
+  notes:
+    description: 'TEXT. Additional notes from the inspector. **NULL indicates no special notes.**. Possible values: Manual inspection required for rework., Scrap part., Sent to rework for polishing., Weld distortion suspected..'
+    sql: notes
+  physical_measurements:
+    description: JSONB column. Contains the specific physical measurements recorded during the quality inspection.
+    sql: physical_measurements
+  production_log_pk:
+    description: 'BIGINT. A reference to the production log entry being inspected. FK. Example: 1.'
+    sql: production_log_pk
+  tech_code:
+    description: 'TEXT. The code of the technician who performed the inspection. **NULL indicates the inspection was performed by an automated system.**. Possible values: TCH_1025, TCH_1030, TCH_1040, TCH_1042, TCH_1043, TCH_1047.'
+    sql: tech_code
+  verdict:
+    description: 'TEXT. The result of the inspection. Possible values: Pass, Fail. Possible values: Fail, Pass.'
+    sql: verdict
+  physical_measurements_dimension_1_mm:
+    description: 'REAL. The measurement of the first key dimension in millimeters. Example: 1200.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(physical_measurements, 'dimension_1_mm')
+  physical_measurements_dimension_2_mm:
+    description: 'REAL. The measurement of the second key dimension in millimeters. Example: 900.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(physical_measurements, 'dimension_2_mm')
+  physical_measurements_weight_kg:
+    description: 'REAL. The measured weight of the product in kilograms. Example: 22.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(physical_measurements, 'weight_kg')

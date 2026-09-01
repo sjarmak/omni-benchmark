@@ -1,0 +1,66 @@
+label: VREyeTrackingHeatmaps
+description: All columns of the public table VREyeTrackingHeatmaps.
+catalog: virtual_idol_large
+schema: public
+table_name: VREyeTrackingHeatmaps
+dimensions:
+  analysis_timestamp:
+    description: 'TIMESTAMP. Time processed. Example: 2024-01-01 12:00:00.'
+    sql: analysis_timestamp
+  attention_score:
+    description: 'REAL. Calculated engagement level (0-100). Example: 75.'
+    sql: attention_score
+  avg_fixation_duration_ms:
+    description: 'REAL. Average time user stared at one point. Example: 300.'
+    sql: avg_fixation_duration_ms
+  blink_rate_per_min:
+    description: 'REAL. Blinks per minute. Example: 15.'
+    sql: blink_rate_per_min
+  calibration_status:
+    description: 'TEXT. Quality of eye tracking calibration. Unique values: Good, Fair, Poor.'
+    sql: calibration_status
+  dominant_eye:
+    description: 'TEXT. Left or Right eye dominance detected. **NULL means Balanced/Unknown.** Unique values: Right, Left.'
+    sql: dominant_eye
+  focus_target_idol_part:
+    description: 'TEXT. Object part receiving most gaze (Face, Costume, Hands). Unique values: Face, Costume, Stage Prop, Background.'
+    sql: focus_target_idol_part
+  heatmap_data_blob_url:
+    description: TEXT. Link to 3D coordinate heatmap file.
+    sql: heatmap_data_blob_url
+  heatmap_id:
+    description: TEXT. Unique ID for the eye tracking dataset.
+    sql: heatmap_id
+  ipd_measured_mm:
+    description: 'REAL. Interpupillary distance. Example: 63.'
+    sql: ipd_measured_mm
+  is_distracted:
+    description: 'BOOLEAN. True if gaze wandered off-stage frequently. Possible values: True, False.'
+    sql: is_distracted
+  privacy_consent_granted:
+    description: 'BOOLEAN. True if user opted into biometric data collection. Possible values: True, False.'
+    sql: privacy_consent_granted
+  pupil_dilation_avg_mm:
+    description: 'REAL. Average pupil size (emotional arousal proxy). **NULL means Hardware not supported.** Example: 3.5.'
+    sql: pupil_dilation_avg_mm
+  raw_sample_rate_hz:
+    description: 'INTEGER. Frequency of eye tracker. Unique values: 90, 120, 200.'
+    sql: raw_sample_rate_hz
+  saccade_count:
+    description: 'INTEGER. Number of rapid eye movements. Example: 50.'
+    sql: saccade_count
+  session_ref:
+    description: TEXT. FK to VirtualRealitySessionTelemetry.
+    sql: session_ref
+  vergence_depth_avg_m:
+    description: 'REAL. Average focal depth distance. Example: 2.0.'
+    sql: vergence_depth_avg_m
+  zone_of_interest_id:
+    description: TEXT. ID of the specific virtual zone focused on.
+    sql: zone_of_interest_id
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct VREyeTrackingHeatmaps public identity values.
+    label: VREyeTrackingHeatmaps Count
+    sql: ${virtual_idol_large_public__vreye_tracking_heatmaps.heatmap_id}

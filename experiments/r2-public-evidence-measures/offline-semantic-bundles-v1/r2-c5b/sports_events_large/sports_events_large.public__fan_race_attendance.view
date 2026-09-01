@@ -1,0 +1,60 @@
+label: Fan_Race_Attendance
+description: All columns of the public table Fan_Race_Attendance.
+catalog: sports_events_large
+schema: public
+table_name: Fan_Race_Attendance
+dimensions:
+  attendance_id:
+    description: BIGINT. Primary key. Unique attendance record identifier
+    sql: '"ATTENDANCE_ID"'
+  capacity_utilization_pct:
+    description: 'REAL. Percentage of circuit capacity used Typical range: 0 to 100.'
+    sql: '"CAPACITY_UTILIZATION_PCT"'
+  circuit_ref:
+    description: BIGINT. Foreign key referencing circuits(cctkey). Related circuit
+    sql: '"CIRCUIT_REF"'
+  day_type:
+    description: 'TEXT. Day of event Possible values: Friday, Saturday, Sunday, Thursday.'
+    sql: '"DAY_TYPE"'
+  general_admission:
+    description: BIGINT. General admission count
+    sql: '"GENERAL_ADMISSION"'
+  media_accredited:
+    description: BIGINT. Media accreditations
+    sql: '"MEDIA_ACCREDITED"'
+  revenue_fnb_musd:
+    description: 'REAL. Food & beverage revenue Typical range: 0.2 to 10.'
+    sql: '"REVENUE_FNB_MUSD"'
+  revenue_hospitality_musd:
+    description: 'REAL. Hospitality revenue Typical range: 0.5 to 15.'
+    sql: '"REVENUE_HOSPITALITY_MUSD"'
+  vip_count:
+    description: BIGINT. VIP/Paddock pass holders
+    sql: '"VIP_COUNT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  event_date:
+    description: DATE. Event date
+    sql: event_date
+  grandstand_count:
+    description: BIGINT. Grandstand ticket holders
+    sql: grandstand_count
+  hospitality_count:
+    description: BIGINT. Hospitality suite guests
+    sql: hospitality_count
+  race_ref:
+    description: BIGINT. Foreign key referencing races(rak_id). Related race
+    sql: race_ref
+  revenue_merchandise_musd:
+    description: 'REAL. Merchandise revenue Typical range: 0.1 to 8.'
+    sql: revenue_merchandise_musd
+  revenue_tickets_musd:
+    description: 'REAL. Ticket revenue in millions USD Typical range: 1 to 30.'
+    sql: revenue_tickets_musd
+  staff_count:
+    description: BIGINT. Total staff on site
+    sql: staff_count
+  total_attendance:
+    description: BIGINT. Total attendance count
+    sql: total_attendance

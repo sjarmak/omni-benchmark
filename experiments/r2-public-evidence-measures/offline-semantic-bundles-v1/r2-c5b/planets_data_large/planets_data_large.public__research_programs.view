@@ -1,0 +1,75 @@
+label: research_programs
+description: All columns of the public table research_programs.
+catalog: planets_data_large
+schema: public
+table_name: research_programs
+dimensions:
+  community_engagement_activities:
+    description: 'text. Community engagement and outreach activities. **NULL means community engagement was not specified.**. Possible values: Educational outreach programs, Public SETI@home participation, Public engagement priority, Public lectures and planetarium shows.'
+    sql: '"COMMUNITY_ENGAGEMENT_ACTIVITIES"'
+  data_sharing_policy:
+    description: 'text. Policy regarding data sharing and public access. **NULL means data sharing policy was not specified.**. Example: Collaborative Sharing.'
+    sql: '"DATA_SHARING_POLICY"'
+  expected_outcomes:
+    description: 'text. Expected outcomes and deliverables from the program. **NULL means expected outcomes were not specified.**. Possible values: Detection of potentially habitable worlds.'
+    sql: '"ExpectedOutcomes"'
+  funding_period_start:
+    description: 'date. Start date of the funding period. Possible values: 2014-04-01, 2015-07-01, 2021-06-01, 2022-01-01, 2030-01-01.'
+    sql: '"FUNDING_PERIOD_START"'
+  international_partnerships:
+    description: 'text. International partnerships or collaborations. **NULL means no international partnerships.**. Possible values: Chile Observatory Partnership, China;Australia;South Africa, ESA;JAXA.'
+    sql: '"InternationalPartnerships"'
+  notes:
+    description: 'text. Additional notes or comments about the research program. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  pi_institution:
+    description: 'text. Institution affiliation of the principal investigator. Possible values: Cornell University, Leiden University, MIT, NASA Goddard, UC Berkeley.'
+    sql: '"PI_INSTITUTION"'
+  primary_objective:
+    description: 'text. Main scientific objective or goal of the research program. Possible values: All-sky transit survey for exoplanets, Atmospheric spectroscopy of transiting exoplanets, Direct imaging of potentially habitable exoplanets, High-resolution spectroscopy of exoplanet atmospheres, Search for technosignatures around exoplanet systems.'
+    sql: '"PRIMARY_OBJECTIVE"'
+  program_name:
+    description: 'text. Official name of the research program. Possible values: Breakthrough Listen SETI Survey, Extremely Large Telescope Exoplanet Program, Habitable Worlds Observatory, JWST Exoplanet Atmospheric Characterization, Transiting Exoplanet Survey Satellite.'
+    sql: '"PROGRAM_NAME"'
+  principal_investigator:
+    description: 'text. Name of the principal investigator leading the program. **NULL means PI information was not available.**. Possible values: Andrew Siemion, George Ricker, Ignas Snellen, Nikole Lewis.'
+    sql: '"PrincipalInvestigator"'
+  program_type:
+    description: 'text. Type or category of research program (survey, follow-up, theoretical, etc.). Possible values: Ground-based, Private Foundation, Space Mission.'
+    sql: '"ProgramType"'
+  student_training_opportunities:
+    description: 'bigint. Number of student training positions or opportunities. **NULL means student opportunities were not tracked.**. Possible values: 12.0, 15.0, 45.0, 8.0.'
+    sql: '"StudentTrainingOpportunities"'
+  success_metrics:
+    description: 'text. Metrics used to evaluate program success. **NULL means success metrics were not defined.**. Possible values: {"habitable_candidates": 25}, {"planets_discovered": 5000}, {"spectra_obtained": 150}.'
+    sql: '"SuccessMetrics"'
+  target_demographics:
+    description: 'text. Target demographics for program outcomes or outreach. Possible values: European astronomical community, Global SETI community, Global scientific community, International exoplanet community, Professional astronomers and public.'
+    sql: '"TARGET_DEMOGRAPHICS"'
+  total_funding_amount_millions_usd:
+    description: 'real. Total funding amount in millions of US dollars. **NULL means funding amount was not disclosed.**. Possible values: 100.0, 200.0, 35.5, 8.8.'
+    sql: '"TotalFundingAmount_millions_USD"'
+  collaborating_institutions:
+    description: 'text. List of collaborating institutions involved in the program. Possible values: ESO member states, Harvard-CfA;STScI;Goddard, Multiple US and international institutions, STScI;ESA;CSA, Various radio observatories.'
+    sql: collaborating_institutions
+  funding_agency_primary:
+    description: 'text. Primary funding agency or organization supporting the program. Possible values: Breakthrough Foundation, European Southern Observatory, NASA, NASA/ESA/CSA.'
+    sql: funding_agency_primary
+  funding_period_end:
+    description: 'date. End date of the funding period. **NULL means program is ongoing or end date not specified.**. Possible values: 2025-09-30, 2026-05-31, 2027-12-31.'
+    sql: funding_period_end
+  primary_science_goals:
+    description: 'text. Primary scientific goals and research questions. Possible values: Atmospheric characterization of nearby exoplanets, Detailed atmospheric composition and structure, Detect Earth-sized planets around nearby stars, Detect evidence of technological civilizations, Search for biosignatures in exoplanet atmospheres.'
+    sql: primary_science_goals
+  program_ref:
+    description: 'bigint. Primary key identifier for research program records. PK. Possible values: 25001, 25002, 25003, 25004, 25005.'
+    sql: '"programRef"'
+  program_acronym:
+    description: 'text. Standard acronym or short name for the program. Possible values: BL-SETI, ELT-EP, HWO, JWST-EAC, TESS.'
+    sql: program_acronym
+  program_status:
+    description: 'text. Current status of the program (active, completed, cancelled, etc.). Possible values: Active, Planning.'
+    sql: program_status
+  publication_requirements:
+    description: 'text. Requirements or expectations for publications. **NULL means publication requirements were not specified.**. Possible values: ESO publication policy, Encourage collaboration, Peer-reviewed publications required.'
+    sql: publication_requirements

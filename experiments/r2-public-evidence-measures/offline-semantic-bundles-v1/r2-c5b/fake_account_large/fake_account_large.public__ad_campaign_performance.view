@@ -1,0 +1,120 @@
+label: ad_campaign_performance
+description: All columns of the public table ad_campaign_performance.
+catalog: fake_account_large
+schema: public
+table_name: ad_campaign_performance
+dimensions:
+  ad_rank:
+    description: 'REAL. Auction rank metric. Example: 3.17.'
+    sql: '"AD_RANK"'
+  cost_usd:
+    description: 'REAL. Spend (U S D). Example: 1 114.98.'
+    sql: '"COST_USD"'
+  cpm:
+    description: 'REAL. Cost per 1 000 impressions (U S D). Example: 56.11.'
+    sql: '"CPM"'
+  cvr:
+    description: 'REAL. Conversion-per-click rate. Example: 0.112.'
+    sql: '"CVR"'
+  camp_perf_code:
+    description: 'TEXT. Unique daily-performance ID. PK. Example: CPF680442913.'
+    sql: '"CampPerf_CODE"'
+  eng_score:
+    description: 'REAL. Engagement score (0–10). Example: 6.02.'
+    sql: '"ENG_SCORE"'
+  freq_avg:
+    description: 'REAL. Average impressions per user. Example: 1.46.'
+    sql: '"FREQ_AVG"'
+  neg_feedback:
+    description: 'BIGINT. Negative feedback count. Example: 9.'
+    sql: '"NEG_FEEDBACK"'
+  page_scroll_pct:
+    description: REAL. Median page scroll depth (0–1). **NULL when scroll tracking disabled.**
+    sql: '"PAGE_SCROLL_PCT"'
+  perf_trend:
+    description: 'TEXT. Daily trend flag. Values: Rising, Falling, Stable, Volatile.'
+    sql: '"PERF_TREND"'
+  relev_score:
+    description: 'REAL. Relevance/quality score (0–10). Example: 7.41.'
+    sql: '"RELEV_SCORE"'
+  roas:
+    description: 'REAL. Revenue / cost. Example: 3.76.'
+    sql: '"ROAS"'
+  unique_clicks:
+    description: 'BIGINT. Unique clickers. Example: 1 532.'
+    sql: '"UNIQUE_CLICKS"'
+  view_thru_conv:
+    description: BIGINT. View-through conversions. **NULL for non-video placements.**
+    sql: '"VIEW_THRU_CONV"'
+  acct_ref:
+    description: 'TEXT. FK → accounts.acct_ref. Example: ACC7210284.'
+    sql: acct_ref
+  attributed_conv:
+    description: 'BIGINT. Model-attributed conversions. Example: 89.'
+    sql: '"attributedConv"'
+  avg_pos:
+    description: 'REAL. Average auction position. Example: 4.1.'
+    sql: '"avgPos"'
+  bounce_rt:
+    description: 'REAL. Bounce rate (0–1). Example: 0.38.'
+    sql: '"bounceRt"'
+  c_pc:
+    description: 'REAL. Cost per click (U S D). Example: 0.59.'
+    sql: '"cPc"'
+  camp_code_ref:
+    description: 'TEXT. FK → ad_campaigns.Camp_CODE. Example: CAMP23859364.'
+    sql: camp_code_ref
+  click_cnt:
+    description: 'BIGINT. Daily clicks. Example: 1 906.'
+    sql: click_cnt
+  conv_cnt:
+    description: 'BIGINT. Daily conversions. Example: 213.'
+    sql: '"convCNT"'
+  cpa:
+    description: 'REAL. Cost per acquisition (U S D). Example: 5.23.'
+    sql: cpa
+  ctr:
+    description: 'REAL. Click-through rate. Example: 0.096.'
+    sql: ctr
+  impr_cnt:
+    description: 'BIGINT. Daily impressions. Example: 19 873.'
+    sql: '"imprCnt"'
+  latency_ms:
+    description: 'BIGINT. Ad-delivery latency (ms). Example: 277.'
+    sql: latency_ms
+  load_time_ms:
+    description: BIGINT. Landing-page load time (ms). **NULL when instrumentation absent.**
+    sql: '"loadTimeMs"'
+  perf_score:
+    description: 'REAL. Composite daily score (0–100). Example: 71.2.'
+    sql: '"perfScore"'
+  perf_date:
+    description: 'DATE. Performance date. Example: 2025/01/14.'
+    sql: perf_date
+  pos_feedback:
+    description: 'BIGINT. Positive feedback count. Example: 108.'
+    sql: '"posFeedback"'
+  post_view_conv:
+    description: BIGINT. Conversions within post-view window. **NULL when post-view attribution not enabled.**
+    sql: '"postViewConv"'
+  qual_score:
+    description: 'REAL. Publisher quality score (0–10). **NULL when API not available.** Example: 8.73.'
+    sql: '"qualScore"'
+  reach:
+    description: 'BIGINT. Unique users reached. Example: 15 822.'
+    sql: reach
+  revenue_usd:
+    description: 'REAL. Revenue attributed (U S D). Example: 4 188.36.'
+    sql: revenue_usd
+  spend_pct:
+    description: 'REAL. Share of daily spend vs. account budget (0–1). Example: 0.23.'
+    sql: '"spendPct"'
+  time_on_page:
+    description: 'REAL. Median seconds on landing page. Example: 42.7.'
+    sql: '"timeOnPage"'
+  unique_impr:
+    description: 'BIGINT. Unique impressions. Example: 17 332.'
+    sql: '"uniqueImpr"'
+  viewability_pct:
+    description: 'TEXT. Viewability descriptor. Example: 65 % in-view ≥ 1 s.'
+    sql: viewability_pct

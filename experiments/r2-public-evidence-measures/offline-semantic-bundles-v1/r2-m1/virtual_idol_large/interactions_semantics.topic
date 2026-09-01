@@ -1,0 +1,19 @@
+base_view: virtual_idol_large_public__interactions
+label: Interactions
+description: Interaction records with row-level watch, gift, chat, and duration semantics.
+fields:
+- virtual_idol_large_public__interactions.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__fans: {}
+  virtual_idol_large_public__virtualidols: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields chattiness_score, content_consumption_index, fan_monetization_index rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Cumulative Spending: A value calculated using a window function (SUM OVER PARTITION BY fan ORDER BY date) on time-ordered interaction data, specifically summing the Total Gift Value in USD from interaction gifts.
+
+  - Session Time Window: A session consists of all interactions with the same idol that occur within a 5-minute window (before and after) of a key interaction.'

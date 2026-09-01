@@ -1,0 +1,69 @@
+label: TelescopeAllocation
+description: All columns of the public table TelescopeAllocation.
+catalog: planets_data_large
+schema: public
+table_name: TelescopeAllocation
+dimensions:
+  allocation_id:
+    description: BIGINT. Primary key. Unique time allocation identifier
+    sql: '"ALLOCATION_ID"'
+  completion_pct:
+    description: 'REAL. Percentage of allocation used Typical range: 0 to 100.'
+    sql: '"COMPLETION_PCT"'
+  co_investigators:
+    description: BIGINT. Number of co-investigators
+    sql: '"CO_INVESTIGATORS"'
+  hours_allocated:
+    description: 'REAL. Hours of telescope time allocated Typical range: 1 to 500.'
+    sql: '"HOURS_ALLOCATED"'
+  pi_institution:
+    description: 'TEXT. PI institution Possible values: MIT, Geneva, Cambridge, Heidelberg, Tokyo, Caltech.'
+    sql: '"PI_INSTITUTION"'
+  pi_name:
+    description: 'TEXT. Principal investigator name Possible values: Dr. A. Queloz, Dr. M. Mayor, Dr. S. Seager, Dr. G. Marcy, Dr. D. Charbonneau, Dr. N. Santos.'
+    sql: '"PI_name"'
+  rank:
+    description: BIGINT. Priority ranking
+    sql: '"RANK"'
+  seeing_constraint_arcsec:
+    description: 'REAL. Maximum acceptable seeing Typical range: 0.3 to 3. **NULL means No seeing constraint.**'
+    sql: '"SEEING_CONSTRAINT_arcsec"'
+  semester:
+    description: 'TEXT. Observation semester Possible values: 2020A, 2020B, 2021A, 2021B, 2022A, 2022B, 2023A, 2023B.'
+    sql: '"SEMESTER"'
+  status:
+    description: 'TEXT. Allocation status Possible values: Approved, Scheduled, Executing, Completed, Cancelled.'
+    sql: '"STATUS"'
+  tac_score:
+    description: 'REAL. Time allocation committee score Typical range: 1 to 5.'
+    sql: '"TAC_SCORE"'
+  allocation_code:
+    description: TEXT. Allocation reference code
+    sql: allocation_code
+  allocation_date:
+    description: DATE. Date allocation was granted
+    sql: allocation_date
+  allocation_type:
+    description: 'TEXT. Type of time allocation Possible values: Standard, Large Program, Director Discretionary, Target of Opportunity, Guaranteed Time.'
+    sql: allocation_type
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  hours_used:
+    description: 'REAL. Hours actually used Typical range: 0 to 500.'
+    sql: hours_used
+  instrument_ref:
+    description: BIGINT. Foreign key referencing instruments_surveys(instrumentref). Related instrument
+    sql: instrument_ref
+  science_category:
+    description: 'TEXT. Science category Possible values: Exoplanets, Stellar Physics, Galactic, Extragalactic, Solar System, Cosmology.'
+    sql: science_category
+  weather_constraint:
+    description: 'TEXT. Required weather conditions Possible values: Any, Clear, Photometric, Spectroscopic.'
+    sql: weather_constraint
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TelescopeAllocation public identity values.
+    label: TelescopeAllocation Count
+    sql: ${planets_data_large_public__telescope_allocation.allocation_id}

@@ -1,0 +1,79 @@
+label: Vendor Management
+description: Vendor rows with policy and process compliance status and a modeled non-compliance flag.
+catalog: cross_border_large
+schema: public
+table_name: VendorManagement
+dimensions:
+  pol_comp:
+    description: 'TEXT. The vendor''s policy compliance status. Possible values: Partial, Non-compliant, Full.'
+    label: Policy Compliance
+    sql: pol_comp
+  proc_comp:
+    description: 'TEXT. The vendor''s process compliance status. Possible values: Partial, Non-compliant, Full.'
+    label: Process Compliance
+    sql: '"procComp"'
+  contr_expire:
+    description: 'DATE. The contract expiration date. Example: 2025-09-07.'
+    sql: '"CONTR_EXPIRE"'
+  monstate:
+    description: 'TEXT. The state of vendor monitoring. Possible values: Active, Partial, Inactive.'
+    sql: '"MONSTATE"'
+  sccstate:
+    description: 'TEXT. The state of Standard Contractual Clauses (SCCs). Possible values: Partial, Implemented, Not Required.'
+    sql: '"SCCSTATE"'
+  sec_join:
+    description: 'BIGINT. Foreign key to SecurityProfile(SECURITY_TRACE). Example: 75.'
+    sql: '"SEC_JOIN"'
+  vendassess:
+    description: 'TEXT. The status of the vendor assessment. Possible values: Due, Completed, In Progress.'
+    sql: '"VENDASSESS"'
+  vend_aud_date:
+    description: 'DATE. The date of the last vendor audit. Example: 2024-06-23.'
+    sql: '"VEND_AUD_DATE"'
+  vendor_trace:
+    description: 'BIGINT. Unique identifier for the vendor trace. PK. Example: 75.'
+    sql: '"Vendor_Trace"'
+  bcr_state:
+    description: 'TEXT. The state of Binding Corporate Rules (BCRs). Possible values: Pending, Not Applicable, Approved.'
+    sql: bcr_state
+  cert_state:
+    description: 'TEXT. The status of vendor certifications. Possible values: Expired, Valid, Pending.'
+    sql: '"certState"'
+  contr_state:
+    description: 'TEXT. The state of the vendor contract. Possible values: Under Review, Active, Expired.'
+    sql: '"contrState"'
+  docu_state:
+    description: 'TEXT. The state of vendor documentation. Possible values: Partial, Complete, Incomplete.'
+    sql: '"docuState"'
+  dpa_state:
+    description: 'TEXT. The state of the Data Processing Agreement (DPA). Possible values: Required, Pending, Signed.'
+    sql: dpa_state
+  recordregistry:
+    description: 'TEXT. Foreign key to the record registry. Example: CB735421.'
+    sql: recordregistry
+  rep_state:
+    description: 'TEXT. The status of vendor reporting. Possible values: Overdue, Current, Delayed.'
+    sql: rep_state
+  riskassoc:
+    description: 'BIGINT. Foreign key for associated risks to RiskManagement(RISKTRACE). Example: 75.'
+    sql: riskassoc
+  stake_comm:
+    description: 'TEXT. The level of stakeholder communication. Possible values: Regular, Limited, Poor.'
+    sql: '"stakeComm"'
+  train_state:
+    description: 'TEXT. The status of vendor training. Possible values: Overdue, Current, Due.'
+    sql: train_state
+  vend_sec_rate:
+    description: 'TEXT. The vendor''s security rating. Possible values: D, A, C, B.'
+    sql: '"vendSecRate"'
+  is_non_compliant_vendor:
+    label: Non-Compliant Vendor
+    description: Marks a partner as non-compliant if they fail key requirements.
+    sql: ${pol_comp} = 'Non-compliant' OR ${proc_comp} = 'Non-compliant'
+    ai_context: Use this modeled field for Non-Compliant Vendor; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Vendor Management public identity values.
+    label: Vendor Management Count
+    sql: ${cross_border_large_public__vendor_management.vendor_trace}

@@ -1,0 +1,12 @@
+label: vendor_markets
+description: All columns of the public table vendor_markets.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendor_markets
+dimensions:
+  platform_id:
+    description: TEXT. Identifier of the platform. PK (composite). FK to markets(PlatCode).
+    sql: '"PlatformID"'
+  vendor_key:
+    description: TEXT. Identifier of the vendor. PK (composite). FK to vendors(SellerKey).
+    sql: '"VendorKey"'

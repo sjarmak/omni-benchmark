@@ -1,0 +1,114 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Race Weekend Structure: A typical race weekend consists of several sessions: up to three Free Practice sessions for teams to tune their cars, a Qualifying session to determine the starting order for the main race, and the Grand Prix Race itself. Some weekends also include a Sprint session.
+
+  - Qualifying Format Explained: Qualifying is divided into three parts: Q1, Q2, and Q3. In Q1, all drivers compete, and the slowest are eliminated. The remaining drivers proceed to Q2, where more are eliminated. The final top drivers advance to Q3 to compete for Pole Position.
+
+  - Podium Finish: A Podium Finish is achieved when a driver''s final rank is 1st, 2nd, or 3rd.
+
+  - Race Winner: A Race Winner is the driver who is classified in 1st place at the conclusion of the main Grand Prix race.
+
+  - Driver Age: Age = \lfloor \frac{Date_{current} - Date_{birth}}{365.25} \rfloor
+
+  - Position Gain / Loss: G_{pos} = P_{start} - P_{finish}, \text{where } P_{start} \text{ is the starting grid position and } P_{finish} \text{ is the final race position. A positive value indicates a gain.}
+
+  - Driver''s Points Per Race (PPR): PPR = \frac{P_{total}}{R_{completed}}, \text{where } P_{total} \text{ is the driver''s cumulative points and } R_{completed} \text{ is the number of races the driver has participated in.}
+
+  - Constructor Reliability Rate: R_{reliability} = \frac{N_{finishes}}{N_{starts}} \times 100, \text{where } N_{finishes} \text{ is the total number of times the constructor''s cars were classified as finishers, and } N_{starts} \text{ is the total number of times they started a race.} A race is considered ''finished'' if the status mark is not specially marked (null).
+
+  - Data Unavailability for Circuit Location: When a circuit''s city, latitude, or longitude are not provided, it indicates that this information was not supplied or is unknown in the source data feed.
+
+  - Data Unavailability for Driver Identification: When a driver''s permanent number or three-letter identifier code is unavailable, it indicates that one has not been officially assigned or it is not present in the dataset.
+
+  - Constructors with Significant Participation: Constructors are considered to have significant participation if they have started more than 10 races, ensuring statistical validity for reliability rate calculations.
+
+  - Average Stops Per Car: For a given race, this is calculated as: (Total Number of Pit Stops) / (Number of Unique Cars that made a Pit Stop).
+
+  - Championship Points System (Race): Points are awarded to the top 10 finishers as follows: 1st place - 25 points, 2nd - 18, 3rd - 15, 4th - 12, 5th - 10, 6th - 8, 7th - 6, 8th - 4, 9th - 2, 10th - 1.
+
+  - Pole Position: A driver achieves Pole Position by setting the fastest lap time during the final stage of the Qualifying Format Explained.
+
+  - Points Finish: A Points Finish is a race classification within the top positions that are awarded points, as specified by the Championship Points System (Race).
+
+  - Constructor''s Double Podium: A Constructor''s Double Podium occurs when both drivers from the same team achieve a Podium Finish in the same race.
+
+  - Sprint Session Explained: A Sprint is a shorter race held on some race weekends. It has its own abbreviated qualifying and awards fewer championship points than the main Grand Prix. Its result determines the starting grid for the main race. The inclusion of a Sprint session modifies the standard Race Weekend Structure.
+
+  - Driver''s Average Lap Time: \bar{T}_{lap} = \frac{\sum_{i=1}^{n} T_{lap_i}}{n}, \text{where } T_{lap_i} \text{ is the Lap Time in Seconds for each lap } i \text{, and } n \text{ is the total number of laps completed by the driver.}
+
+  - Race Performance Index (RPI): RPI = (21 - P_{finish}) + G_{pos}, \text{where } P_{finish} \text{ is the final position of the Race Winner (or other driver) and } G_{pos} \text{ is the driver''s Position Gain / Loss.}
+
+  - Driver Performance Value: DPV = \frac{\text{Driver''s Points Per Race (PPR)}}{\text{Driver Age}}, \text{providing a measure of success relative to experience.}
+
+  - Clutch Performer: A driver is a Clutch Performer if their Position Gain / Loss is greater than 5 and they achieve a Podium Finish in the same race.
+
+  - Strategic Masterclass: A Strategic Masterclass is when a Race Winner also achieves one or more Efficient Pit Stops, demonstrating that flawless strategy contributed to the victory.
+
+  - Underdog Win: An Underdog Win occurs when a Race Winner has a Driver''s Points Per Race (PPR) of less than 5 prior to the event.
+
+  - Veteran''s Podium: A Veteran''s Podium is when a driver with a Driver Age of 35 years or more successfully achieves a Podium Finish.
+
+  - Pit Strategy Cluster: Three categories: ''Single-Stop Race'' (<1.5 stops), ''Standard Two-Stop'' (1.5-2.5 stops), ''High-Strategy Event'' (≥2.5 stops)
+
+  - Fastest Lap Award: The Fastest Lap Award is given to the driver who achieves the single quickest lap time during a race, under the condition that they must also secure a Points Finish.
+
+  - Sprint Winner: A Sprint Winner is the driver who is classified in 1st place at the conclusion of a Sprint Session.
+
+  - Constructor''s Total Race Points: P_{constructor} = \sum P_{driver}, \text{where the sum includes the points from all drivers of a constructor who had a Points Finish.}
+
+  - Qualifying Time Deficit to Pole: \Delta_{qualifying} = T_{driver} - T_{pole}, \text{where } T_{driver} \text{ is the driver''s best Lap Time in Seconds during qualifying, and } T_{pole} \text{ is the time achieved by the driver in Pole Position.}
+
+  - Lap Time Consistency: LTC = \sqrt{\frac{\sum (T_{lap_i} - \bar{T}_{lap})^2}{n}}, \text{where } \bar{T}_{lap} \text{ is the driver''s Driver''s Average Lap Time.}
+
+  - High-Altitude Performance Factor: HAPF = \frac{\text{Driver''s Average Lap Time at High-Altitude Circuit}}{\text{Driver''s Season Average Lap Time}}, \text{which evaluates performance specifically at a High-Altitude Circuit.}
+
+  - Team''s Combined Race Result: TCRR = P_{finishing position of driver 1} + P_{finishing result of driver 2}. \text{A lower score is better, reaching its minimum when a team achieves a Constructor''s Double Podium with a Race Winner.}
+
+  - High-Altitude Ace: A driver is a High-Altitude Ace if their Race Performance Index (RPI) at a High-Altitude Circuit is at least 20% higher than their seasonal average RPI.
+
+  - Flawless Team Weekend: A Flawless Team Weekend is when a driver secures Pole Position and is the Race Winner, and every service for their car is an Efficient Pit Stop.
+
+  - Pole-Based Race Win Probability: Assume a race win probability of 35% if the driver started from Pole Position, and 5% otherwise.
+
+  - Championship Points System (Sprint): Points are awarded to the top 8 finishers in a Sprint session as follows: 1st place - 8 points, 2nd - 7, 3rd - 6, 4th - 5, 5th - 4, 6th - 3, 7th - 2, 8th - 1. This is a key feature of the Sprint Session Explained.
+
+  - Hat Trick: A driver achieves a Hat Trick by securing Pole Position, being the Race Winner, and receiving the Fastest Lap Award all in the same event.
+
+  - Race Time Delta to Winner: \Delta_{race} = T_{driver} - T_{winner}, \text{where } T_{driver} \text{ is the driver''s total race time in seconds and } T_{winner} \text{ is the total race time of the Race Winner.}
+
+  - Constructor''s Performance Score (CPS): CPS = (\text{Season Total Points}) \times \frac{\text{Constructor Reliability Rate}}{100}, \text{where total points are derived from their Constructor''s Total Race Points over the season.}
+
+  - Qualifying to Race Pace Differential: QRD = \bar{T}_{lap} - T_{qualifying}, \text{where } \bar{T}_{lap} \text{ is the Driver''s Average Lap Time and } T_{qualifying} \text{ is their fastest qualifying lap from which the Qualifying Time Deficit to Pole is measured.}
+
+  - Sprint Performance Index: SPI = (9 - P_{sprint}) + S_{pts}, \text{where } P_{sprint} \text{ is the finishing position of the Sprint Winner (or other driver) and } S_{pts} \text{ is points awarded per the Championship Points System (Sprint).}
+
+  - Tyre Management Index: TMI = \frac{1}{\text{Lap Time Consistency} \times (1 + N_{stops})}, \text{ where a higher value is better. Uses the concept of pit stops from Efficient Pit Stop.}
+
+  - Qualifying Specialist: A driver is a Qualifying Specialist if their Qualifying Time Deficit to Pole is less than 0.2 seconds.
+
+  - Pole-Based Fastest Lap Probability: Assume a fastest lap probability of 25% if the driver started from Pole Position, and 8% otherwise.
+
+  - Qualifying Performance Cluster: Three tiers: ''Pole Threat'' (<0.15s), ''Mid Gap'' (0.15s-0.4s), ''Backmarker'' (≥0.4s)
+
+  - Adjusted Race Time Delta: \Delta_{Adjusted} = \Delta_{Race} - \sum D_{seconds}, \text{where } \Delta_{Race} \text{ is the Race Time Delta to Winner and } D_{seconds} \text{ is each Pit Stop Duration in Seconds.}
+
+  - Dominant Victory: A Dominant Victory is when a Race Winner''s final Race Time Delta to Winner over the second-place driver is greater than 5 seconds.
+
+  - Grand Chelem: A Grand Chelem is achieved when a driver successfully completes a Hat Trick and also leads every lap of the race from start to finish.
+
+  - Reliable and Performing Constructor: A team is a Reliable and Performing Constructor if their Constructor Reliability Rate is above 95% and their Constructor''s Performance Score (CPS) is in the top three for the season.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

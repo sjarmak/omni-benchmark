@@ -1,0 +1,11 @@
+base_view: cross_border_large_public__training_completion_log
+label: TrainingCompletionLog
+description: All columns of the public table TrainingCompletionLog.
+fields:
+- cross_border_large_public__training_completion_log.*
+- cross_border_large_public__employee_certification.*
+- cross_border_large_public__privacy_training_program.*
+joins:
+  cross_border_large_public__employee_certification: {}
+  cross_border_large_public__privacy_training_program: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

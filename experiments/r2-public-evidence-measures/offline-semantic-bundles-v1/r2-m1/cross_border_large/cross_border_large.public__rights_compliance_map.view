@@ -1,0 +1,57 @@
+label: Rights_Compliance_Map
+description: All columns of the public table Rights_Compliance_Map.
+catalog: cross_border_large
+schema: public
+table_name: Rights_Compliance_Map
+dimensions:
+  assessor:
+    description: 'TEXT. Person who assessed compliance Possible values: Privacy Analyst, DPO, Legal Counsel.'
+    sql: '"ASSESSOR"'
+  compliance_status:
+    description: 'TEXT. Compliance status for this article Possible values: Fully Compliant, Partially Compliant, Non-Compliant, Exemption Applied.'
+    sql: '"COMPLIANCE_STATUS"'
+  dispute_resolution:
+    description: 'TEXT. How dispute was resolved Possible values: Mediated, Escalated to DPA, Resolved Internally, Pending. **NULL means No dispute raised.**'
+    sql: '"DISPUTE_RESOLUTION"'
+  dsr_ref:
+    description: BIGINT. Foreign key referencing DataSubjectRequest(DSR_ID). Related data subject request
+    sql: '"DSR_REF"'
+  notes:
+    description: TEXT. Additional compliance notes **NULL means No additional notes.**
+    sql: '"NOTES"'
+  rcm_id:
+    description: BIGINT. Primary key. Unique rights-compliance mapping identifier
+    sql: '"RCM_ID"'
+  response_time_days:
+    description: BIGINT. Actual response time in days
+    sql: '"RESPONSE_TIME_DAYS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  article_ref:
+    description: BIGINT. Foreign key referencing Legal_Article(ARTICLE_NO). Applicable legal article
+    sql: article_ref
+  assessment_date:
+    description: DATE. Date of compliance assessment
+    sql: assessment_date
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  dispute_raised:
+    description: BOOLEAN. Whether the subject disputed the response Boolean flag (true/false).
+    sql: dispute_raised
+  exemption_basis:
+    description: 'TEXT. Legal basis for exemption if applied Possible values: Art 17(3)(a), Art 17(3)(b), Art 17(3)(d), Art 17(3)(e). **NULL means No exemption applied.**'
+    sql: exemption_basis
+  fulfillment_completeness_pct:
+    description: 'REAL. Completeness of request fulfillment Typical range: 0 to 100.'
+    sql: fulfillment_completeness_pct
+  within_statutory_deadline:
+    description: BOOLEAN. Whether response was within legal deadline Boolean flag (true/false).
+    sql: within_statutory_deadline
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Rights_Compliance_Map public identity values.
+    label: Rights_Compliance_Map Count
+    sql: ${cross_border_large_public__rights_compliance_map.rcm_id}

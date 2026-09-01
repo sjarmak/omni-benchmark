@@ -1,0 +1,72 @@
+label: EngineRuntimeSnapshot
+description: All columns of the public table EngineRuntimeSnapshot.
+catalog: polar_equipment_large
+schema: public
+table_name: EngineRuntimeSnapshot
+dimensions:
+  af_ratio:
+    description: 'REAL. Air-fuel ratio measured by oxygen sensor. **NULL means O2 sensor warming up or failed.** Example: 14.7.'
+    sql: '"afRatio"'
+  boost_pressure_kpa:
+    description: 'REAL. Turbo boost pressure in kilopascals. **NULL means Non-turbocharged engine or sensor absent.** Example: 120.'
+    sql: '"boostPressure_kpa"'
+  coolant_temp_c:
+    description: 'REAL. Engine coolant temperature in Celsius. **NULL means Coolant sensor fault.** Example: 88.'
+    sql: '"coolantTempC"'
+  cumulative_runtime_hrs:
+    description: 'REAL. Total engine runtime hours since manufacture. Example: 50.0.'
+    sql: '"cumulativeRuntimeHrs"'
+  diagnostic_code_active:
+    description: 'TEXT. Whether active diagnostic trouble codes exist. Possible values: True, False.'
+    sql: '"diagnosticCodeActive"'
+  emission_compliance:
+    description: 'TEXT. Current emission system compliance status. Unique values: Compliant, Warning, NonCompliant, CheckPending.'
+    sql: '"emissionCompliance"'
+  engine_rpm:
+    description: 'INTEGER. Engine rotational speed in revolutions per minute. **NULL means Engine off or tachometer failure.** Example: 2200.'
+    sql: '"engineRPM"'
+  engine_state:
+    description: 'TEXT. Current operational state of the engine. Unique values: Running, Idle, Cranking, Off, Fault.'
+    sql: '"engineState"'
+  engine_ref:
+    description: 'INTEGER. Reference to the engine and fluids record. Example: 50.'
+    sql: engine_ref
+  exhaust_gas_temp_c:
+    description: 'REAL. Exhaust gas temperature in Celsius. **NULL means EGT sensor not equipped.** Example: 450.'
+    sql: '"exhaustGasTempC"'
+  fuel_flow_rate_lph:
+    description: 'REAL. Fuel consumption rate in liters per hour. **NULL means Fuel flow meter offline.** Example: 12.'
+    sql: '"fuelFlowRate_lph"'
+  fuel_quality_index:
+    description: 'REAL. Computed fuel quality index 0-100. **NULL means Fuel quality analysis not available.** Example: 85.'
+    sql: '"fuelQualityIndex"'
+  intake_air_temp_c:
+    description: 'REAL. Intake manifold air temperature in Celsius. **NULL means IAT sensor disconnected.** Example: 35.'
+    sql: '"intakeAirTempC"'
+  load_pct:
+    description: 'REAL. Engine load as percentage of maximum capacity. Example: 55.'
+    sql: '"loadPct"'
+  oil_pressure_kpa:
+    description: 'REAL. Engine oil pressure in kilopascals. **NULL means Oil pressure sensor failure.** Example: 350.'
+    sql: '"oilPressure_kpa"'
+  oil_temp_c:
+    description: 'REAL. Engine oil temperature in Celsius. **NULL means Oil temperature sensor not installed.** Example: 95.'
+    sql: '"oilTempC"'
+  runtime_snap_seq:
+    description: TEXT. Unique identifier for each engine runtime snapshot.
+    sql: '"runtimeSnapSeq"'
+  snapshot_timestamp:
+    description: 'TIMESTAMP. Timestamp of runtime data capture. Example: 2024-01-01 12:00:00.'
+    sql: '"snapshotTimestamp"'
+  throttle_position_pct:
+    description: 'REAL. Throttle position as percentage of full open. **NULL means Throttle sensor disconnected.** Example: 50.0.'
+    sql: '"throttlePositionPct"'
+  vibration_level_g:
+    description: 'REAL. Engine vibration amplitude in g-force. **NULL means Vibration sensor not installed.** Example: 0.8.'
+    sql: '"vibrationLevel_g"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EngineRuntimeSnapshot public identity values.
+    label: EngineRuntimeSnapshot Count
+    sql: ${polar_equipment_large_public__engine_runtime_snapshot.runtime_snap_seq}

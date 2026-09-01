@@ -1,0 +1,66 @@
+label: AlertEscalationHistory
+description: All columns of the public table AlertEscalationHistory.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: AlertEscalationHistory
+dimensions:
+  aeh_id:
+    description: TEXT. Unique identifier for the alert escalation history record.
+    sql: '"AEH_id"'
+  alert_ref:
+    description: TEXT. Reference to the parent alert.
+    sql: alert_ref
+  automated_escalation:
+    description: 'BOOLEAN. Whether escalation was triggered automatically. Possible values: True, False.'
+    sql: automated_escalation
+  customer_contacted:
+    description: 'BOOLEAN. Whether customer was contacted about escalation. Possible values: True, False.'
+    sql: customer_contacted
+  escalation_effectiveness_score:
+    description: 'REAL. Score measuring escalation effectiveness (0-100). **NULL means Not yet evaluated.** Example: 70.'
+    sql: escalation_effectiveness_score
+  escalation_level:
+    description: 'INTEGER. Current escalation level (1-5). Example: 50.'
+    sql: escalation_level
+  escalation_path:
+    description: 'TEXT. Path or queue for escalation routing. Unique values: Technical Support, Billing Disputes, Fraud Investigation, Executive Relations, Legal Review, General Escalation.'
+    sql: escalation_path
+  escalation_reason:
+    description: 'TEXT. Reason for the escalation. Unique values: SLA Breach Risk, Severity Upgrade, Customer Escalation, Manual Override, Auto-Escalation Rule, No Response.'
+    sql: escalation_reason
+  escalation_timestamp:
+    description: 'TIMESTAMP. Timestamp when escalation occurred. Example: 2024-01-01 12:00:00.'
+    sql: escalation_timestamp
+  internal_notes_added:
+    description: 'BOOLEAN. Whether internal notes were added during escalation. Possible values: True, False.'
+    sql: internal_notes_added
+  new_owner_type:
+    description: 'TEXT. Type of new alert owner after escalation. Unique values: Tier 2 Agent, Senior Agent, Team Lead, Manager, Director, Specialist Team.'
+    sql: new_owner_type
+  new_priority_level:
+    description: 'TEXT. Priority level after escalation. Unique values: Critical, High, Medium, Low.'
+    sql: new_priority_level
+  previous_owner_type:
+    description: 'TEXT. Type of previous alert owner. **NULL means Initial escalation from queue.** Unique values: Tier 1 Agent, Tier 2 Agent, Senior Agent, Team Lead, Manager, Automated System.'
+    sql: previous_owner_type
+  priority_changed:
+    description: 'BOOLEAN. Whether priority was changed during escalation. Possible values: True, False.'
+    sql: priority_changed
+  resolution_target_hours:
+    description: 'REAL. Target resolution time for new level in hours. Example: 24.'
+    sql: resolution_target_hours
+  response_time_target_hours:
+    description: 'REAL. Target response time for new level in hours. Unique values: 1, 2, 4, 8, 24, 48.'
+    sql: response_time_target_hours
+  sla_already_breached:
+    description: 'BOOLEAN. Whether SLA was already breached at escalation. Possible values: True, False.'
+    sql: sla_already_breached
+  sla_remaining_hours:
+    description: 'REAL. Hours remaining until SLA breach at escalation time. Example: 8.'
+    sql: sla_remaining_hours
+  time_at_previous_level_hours:
+    description: 'REAL. Hours spent at previous escalation level. **NULL means Initial assignment.** Example: 12.'
+    sql: time_at_previous_level_hours
+  total_escalations_for_alert:
+    description: 'INTEGER. Total number of escalations for this alert to date. Example: 1.'
+    sql: total_escalations_for_alert

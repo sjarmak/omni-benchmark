@@ -1,0 +1,7 @@
+base_view: sports_events_large_public__media_assets
+label: media_assets
+description: All columns of the public table media_assets.
+fields:
+- sports_events_large_public__media_assets.*
+joins: {}
+ai_context: This topic models no cross-table joins.

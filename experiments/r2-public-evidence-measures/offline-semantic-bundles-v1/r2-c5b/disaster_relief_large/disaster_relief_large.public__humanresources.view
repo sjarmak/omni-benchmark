@@ -1,0 +1,52 @@
+label: Human Resources
+description: Human-resource records with row-level staff and volunteer footprint semantics.
+catalog: disaster_relief_large
+schema: public
+table_name: humanresources
+dimensions:
+  total_staff:
+    description: 'BIGINT. Total number of staff. **NULL means staff count not recorded.**. Example: 234.0.'
+    label: Total Staff
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(staffing_details, 'staff_counts', 'total') AS DOUBLE PRECISION)
+  volunteer_count:
+    description: 'BIGINT. Total number of volunteers. Example: 435.0.'
+    label: Volunteer Count
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(staffing_details, 'staff_counts', 'volunteers') AS DOUBLE PRECISION)
+  hr_ops_ref:
+    description: VARCHAR(20). Operations reference. FK to Operations.
+    sql: hr_ops_ref
+  hrdistref:
+    description: VARCHAR(20). Disaster event reference. FK to DisasterEvents.
+    sql: hrdistref
+  hrregistry:
+    description: VARCHAR(20). Unique human resources registry identifier. PK.
+    sql: hrregistry
+  staffing_details:
+    description: JSONB column. Details about staffing levels and composition across different roles.
+    sql: staffing_details
+  staffing_details_availability_and_equipment_availability_pct:
+    description: 'REAL. Staff availability percentage. Example: 94.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(staffing_details, 'availability_and_equipment', 'availability_pct')
+  staffing_details_availability_and_equipment_comm_equipment:
+    description: 'TEXT. Communication equipment status. Possible values: Insufficient, Limited, Sufficient.'
+    sql: JSONB_EXTRACT_PATH_TEXT(staffing_details, 'availability_and_equipment', 'comm_equipment')
+  staffing_details_availability_and_equipment_ppe_status:
+    description: 'TEXT. Personal protective equipment status. Possible values: Critical, LTD, ✓.'
+    sql: JSONB_EXTRACT_PATH_TEXT(staffing_details, 'availability_and_equipment', 'ppe_status')
+  staffing_details_availability_and_equipment_training_state:
+    description: 'TEXT. Training state of staff. **NULL means training state not recorded.**. Possible values: Complete, In Progress, Required.'
+    sql: JSONB_EXTRACT_PATH_TEXT(staffing_details, 'availability_and_equipment', 'training_state')
+  staffing_details_staff_counts_logistics:
+    description: 'BIGINT. Number of logistics staff. Example: 99.'
+    sql: JSONB_EXTRACT_PATH_TEXT(staffing_details, 'staff_counts', 'logistics')
+  staffing_details_staff_counts_medical:
+    description: 'BIGINT. Number of medical staff. Example: 52.'
+    sql: JSONB_EXTRACT_PATH_TEXT(staffing_details, 'staff_counts', 'medical')
+  staffing_details_staff_counts_security:
+    description: 'BIGINT. Number of security staff. **NULL means security staff not recorded.**. Example: 46.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(staffing_details, 'staff_counts', 'security')
+  total_humanitarian_footprint:
+    label: Total Humanitarian Footprint (THF)
+    description: A measure of the total personnel involved in the response, including staff and volunteers.
+    sql: COALESCE(${total_staff}, 0.0) + COALESCE(${volunteer_count}, 0.0)
+    ai_context: Use this modeled field for Total Humanitarian Footprint (THF); do not reconstruct its formula.

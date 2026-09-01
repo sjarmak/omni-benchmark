@@ -1,0 +1,48 @@
+label: employer
+description: All columns of the public table employer.
+catalog: labor_certification_applications_large
+schema: public
+table_name: employer
+dimensions:
+  corphandle:
+    description: TEXT. Unique identifier for the employer. PK.
+    sql: corphandle
+  employer_contact_info:
+    description: JSONB column. Groups the employer's full address, contact details, and classification data into a structured JSONB format.
+    sql: employer_contact_info
+  zipref:
+    description: 'TEXT. Unique identifier of Postal/ZIP code reference for the employer''s business location, used for geographic identification and wage determination purposes. Example: 75023, 28134, 33131, 8330, 85286. PK.'
+    sql: zipref
+  employer_contact_info_address_city:
+    description: 'TEXT. City of the employer’s location. Example: Maitland.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'address', 'city')
+  employer_contact_info_address_country:
+    description: 'TEXT. Country of the employer. **NULL means no country specified.**. Possible values: UNITED STATES OF AMERICA.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'address', 'country')
+  employer_contact_info_address_line1:
+    description: 'TEXT. Employer’s primary address line. Example: 2301 Lucien Way.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'address', 'line1')
+  employer_contact_info_address_line2:
+    description: 'TEXT. Employer’s secondary address line. **NULL means no secondary address provided.**. Example: Suite 360.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'address', 'line2')
+  employer_contact_info_address_province:
+    description: 'TEXT. Province or region of the employer. **NULL means no province specified.**. Example: TX.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'address', 'province')
+  employer_contact_info_address_state:
+    description: 'TEXT. State of the employer’s location. Example: FL.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'address', 'state')
+  employer_contact_info_address_zip:
+    description: TEXT. Postal code for the employer’s address. PK.
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'address', 'zip')
+  employer_contact_info_alternate_name:
+    description: 'TEXT. Alternate name or trade name of the employer. **NULL means no alternate name provided.**. Example: Lattice.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'alternate_name')
+  employer_contact_info_naics_code:
+    description: 'BIGINT. North American Industry Classification System (NAICS) code for the employer. Example: 561320.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'naics_code')
+  employer_contact_info_phone_extension:
+    description: 'BIGINT. Extension number for the employer''s phone. **NULL means no extension provided.**. Example: 0.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'phone', 'extension')
+  employer_contact_info_phone_number:
+    description: 'BIGINT. Employer’s main phone number. Example: (140) 768 12999.'
+    sql: JSONB_EXTRACT_PATH_TEXT(employer_contact_info, 'phone', 'number')

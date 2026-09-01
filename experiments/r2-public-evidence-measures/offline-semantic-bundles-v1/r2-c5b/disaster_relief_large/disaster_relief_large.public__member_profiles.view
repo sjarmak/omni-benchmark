@@ -1,0 +1,84 @@
+label: MemberProfiles
+description: All columns of the public table MemberProfiles.
+catalog: disaster_relief_large
+schema: public
+table_name: MemberProfiles
+dimensions:
+  bmi_kg_per_m2:
+    description: REAL. Body-mass-index numeric value (kg/m²).
+    sql: '"BMI_kg_per_m2"'
+  created_at:
+    description: TIMESTAMP. Record creation time (UTC).
+    sql: '"CreatedAt"'
+  date_of_birth:
+    description: DATE (yyyy-mm-dd). Member’s date of birth.
+    sql: '"DateOfBirth"'
+  email:
+    description: TEXT. Email address for electronic contact.
+    sql: '"EMAIL"'
+  first_name:
+    description: TEXT. Given name as recorded on ID documents.
+    sql: '"First_Name"'
+  gender:
+    description: 'TEXT. Self-identified gender. Possible values: Male, Female, Other.'
+    sql: '"GENDER"'
+  household_ref:
+    description: VARCHAR(20). FK → BeneficiaryHouseholds.HOUSEHOLD_ID linking the member’s primary household record.
+    sql: '"HOUSEHOLD_ref"'
+  id_document_number:
+    description: TEXT. Document number as printed on ID.
+    sql: '"ID_DOCUMENT_NUMBER"'
+  id_document_type:
+    description: TEXT. Type of identity document presented (NatID, Passport, UNHCR Card).
+    sql: '"Id_Document_Type"'
+  lang_proficiency:
+    description: TEXT. Language-proficiency reference, CEFR-like (A2 level, B1 level, etc.).
+    sql: '"LangProficiency"'
+  member_id:
+    description: VARCHAR(20). Unique identifier for the individual member. PK.
+    sql: '"Member_Id"'
+  occupation:
+    description: TEXT. Main livelihood activity (Teacher, Farmer, Student, etc.).
+    sql: '"OCCUPATION"'
+  phone_number:
+    description: TEXT. Primary contact phone in international format.
+    sql: '"PhoneNumber"'
+  special_needs:
+    description: TEXT. Special-needs indicator (Wheelchair, Hearing Aid, etc.). May be NULL when none reported.
+    sql: '"SPECIAL_NEEDS"'
+  schooling_level:
+    description: TEXT. Highest completed educational level (None, Primary, Secondary, Higher).
+    sql: '"SchoolingLevel"'
+  training_completed:
+    description: BOOLEAN. TRUE if required orientation/training was completed.
+    sql: '"TRAINING_COMPLETED"'
+  updated_at:
+    description: TIMESTAMP. Last update time (UTC).
+    sql: '"UPDATED_AT"'
+  vaccination_status:
+    description: TEXT. Immunisation status (Up-to-date, Partial, None).
+    sql: '"VaccinationStatus"'
+  version_n0:
+    description: INT. Metadata schema version.
+    sql: '"Version_N0"'
+  commute_time_human:
+    description: TEXT. Typical one-way commute time to work or school (e.g., “45 min to work”).
+    sql: '"commuteTimeHuman"'
+  last_health_check:
+    description: DATE. Date of last recorded health assessment.
+    sql: '"lastHealthCheck"'
+  last_name:
+    description: TEXT. Family / surname.
+    sql: last_name
+  medical_conditions:
+    description: TEXT. Chronic medical conditions (Diabetes, Asthma). May be NULL when none disclosed.
+    sql: medical_conditions
+  notes:
+    description: TEXT. Free-form notes (field-officer comments, special circumstances). Always populated with a placeholder if blank.
+    sql: notes
+  registered_as_volunteer:
+    description: BOOLEAN. TRUE if the member is also registered in the volunteer roster.
+    sql: '"registeredAsVolunteer"'
+  relationship_to_head:
+    description: TEXT. Relationship of the member to the household head (Head, Spouse, Child, etc.).
+    sql: '"relationship_To_Head"'

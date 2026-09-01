@@ -1,0 +1,18 @@
+label: interest_tags
+description: All columns of the public table interest_tags.
+catalog: virtual_idol_large
+schema: public
+table_name: interest_tags
+dimensions:
+  tag_id:
+    description: 'BIGINT. Unique identifier for the interest tag. PK. Example: 1.'
+    sql: '"TAG_ID"'
+  tag_name:
+    description: 'TEXT. The name of the interest tag. Example: #MechaArt.'
+    sql: '"TagName"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct interest_tags public identity values.
+    label: interest_tags Count
+    sql: ${virtual_idol_large_public__interest_tags.tag_id}

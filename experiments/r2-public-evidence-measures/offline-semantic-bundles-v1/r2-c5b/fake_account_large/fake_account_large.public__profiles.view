@@ -1,0 +1,54 @@
+label: profiles
+description: All columns of the public table profiles.
+catalog: fake_account_large
+schema: public
+table_name: profiles
+dimensions:
+  bio_l:
+    description: 'BIGINT. Length of bio information. Example: 118.0.'
+    sql: '"BIO_L"'
+  bio_kw_hit:
+    description: 'TEXT. Bio keyword hits. **NULL means bio keyword hits not counted.**. Possible values: Normal, Promo, Spam, Suspicious.'
+    sql: '"BioKwHit"'
+  bio_lang:
+    description: 'TEXT. Bio language type. Possible values: en, mixed, multiple, unknown.'
+    sql: '"BioLang"'
+  bio_links:
+    description: 'BIGINT. Number of bio links. Possible values: 0, 1, 2, 3, 4, 5.'
+    sql: '"BioLinks"'
+  disp_chg:
+    description: 'BIGINT. Displacement change value. **NULL means displacement change not recorded.**. Example: 8.0.'
+    sql: '"DispChg"'
+  handle_mask:
+    description: 'TEXT. Masked handle of the user. Possible values: Natural, Random, Sequential, Template.'
+    sql: '"HandleMask"'
+  loc_mov:
+    description: 'BIGINT. Location movement count. Example: 2.'
+    sql: '"LOC_MOV"'
+  loc_flag:
+    description: 'TEXT. Location flag status. Possible values: Fake, Multiple, No, Yes.'
+    sql: '"LocFlag"'
+  pic_score:
+    description: 'REAL. Profile picture score. Example: 0.772.'
+    sql: '"PicScore"'
+  tel_state:
+    description: 'TEXT. Telephone state. **NULL means telephone state not recorded.**. Possible values: Invalid, VOIP, Valid.'
+    sql: '"TelState"'
+  usr_len:
+    description: 'BIGINT. Length of the username. Example: 13.'
+    sql: '"USR_LEN"'
+  usr_ptn:
+    description: 'TEXT. User pattern description. Possible values: AlphaNum, Generated, Meaningful, Random.'
+    sql: '"UsrPtn"'
+  acct_anchor:
+    description: TEXT. Account reference. PK. FK to accounts.
+    sql: acct_anchor
+  mail_dom:
+    description: 'TEXT. Email domain. Possible values: Custom, Disposable, Free, Unknown.'
+    sql: mail_dom
+  pic_form:
+    description: 'TEXT. Picture format. **NULL means picture format not specified.**. Possible values: AI Generated, Celebrity, Real, Stock.'
+    sql: pic_form
+  usrn_ent:
+    description: 'REAL. User entry value. Example: 0.835.'
+    sql: '"usrn_Ent"'

@@ -1,0 +1,51 @@
+label: DPIARecommendation
+description: All columns of the public table DPIARecommendation.
+catalog: cross_border_large
+schema: public
+table_name: DPIARecommendation
+dimensions:
+  actual_completion_date:
+    description: DATE. Actual completion date **NULL means Not yet completed.**
+    sql: '"ACTUAL_COMPLETION_DATE"'
+  dpia_ref:
+    description: BIGINT. Foreign key referencing DPIARecord(DPIA_ID). Related DPIA record
+    sql: '"DPIA_REF"'
+  priority:
+    description: 'TEXT. Implementation priority Possible values: Critical, High, Medium, Low.'
+    sql: '"PRIORITY"'
+  recommendation_type:
+    description: 'TEXT. Type of recommendation Possible values: Technical, Organizational, Legal, Process, Monitoring, Training.'
+    sql: '"RECOMMENDATION_TYPE"'
+  requires_budget_approval:
+    description: BOOLEAN. Whether budget approval is needed Boolean flag (true/false).
+    sql: '"REQUIRES_BUDGET_APPROVAL"'
+  responsible_party:
+    description: 'TEXT. Team/person responsible for implementation Possible values: IT Security, Privacy Office, Legal, Engineering, Operations.'
+    sql: '"RESPONSIBLE_PARTY"'
+  risk_reduction_pct:
+    description: 'REAL. Expected risk reduction percentage Typical range: 0 to 100.'
+    sql: '"RISK_REDUCTION_PCT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  effectiveness_score:
+    description: 'REAL. Estimated effectiveness (0-10) Typical range: 0 to 10.'
+    sql: effectiveness_score
+  estimated_cost_usd:
+    description: 'REAL. Estimated implementation cost Typical range: 0 to 200000.'
+    sql: estimated_cost_usd
+  recommendation_id:
+    description: BIGINT. Primary key. Unique recommendation identifier
+    sql: recommendation_id
+  rejection_reason:
+    description: TEXT. Reason if recommendation was rejected **NULL means Recommendation not rejected.**
+    sql: rejection_reason
+  status:
+    description: 'TEXT. Current recommendation status Possible values: Proposed, Accepted, In Progress, Implemented, Rejected, Deferred.'
+    sql: status
+  target_date:
+    description: DATE. Target implementation date
+    sql: target_date
+  title:
+    description: 'TEXT. Short title of recommendation Possible values: Implement Encryption, Add Access Logging, Update Privacy Policy, Conduct Regular Audits, Deploy DLP Solution, Review Retention Periods.'
+    sql: title

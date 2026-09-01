@@ -1,0 +1,9 @@
+base_view: polar_equipment_large_public__location_environmental_log
+label: LocationEnvironmentalLog
+description: All columns of the public table LocationEnvironmentalLog.
+fields:
+- polar_equipment_large_public__location_environmental_log.*
+- polar_equipment_large_public__location.*
+joins:
+  polar_equipment_large_public__location: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

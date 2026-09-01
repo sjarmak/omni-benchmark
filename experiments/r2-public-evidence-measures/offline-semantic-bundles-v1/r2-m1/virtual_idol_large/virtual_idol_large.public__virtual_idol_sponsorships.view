@@ -1,0 +1,57 @@
+label: virtual_idol_sponsorships
+description: All columns of the public table virtual_idol_sponsorships.
+catalog: virtual_idol_large
+schema: public
+table_name: virtual_idol_sponsorships
+dimensions:
+  contract_end_date:
+    description: 'DATE. The end date of the sponsorship contract. Example: 12/24/2026.'
+    sql: '"CONTRACT_END_DATE"'
+  commission_rate_on_sales_percent:
+    description: 'REAL. The commission rate on sales as part of the sponsorship deal. **NULL means no commission is included.** Example: 6.7.'
+    sql: '"CommissionRateOnSales_percent"'
+  contract_start_date:
+    description: 'DATE. The start date of the sponsorship contract. Example: 12/24/2024.'
+    sql: '"ContractStartDate"'
+  idol_record_id:
+    description: 'TEXT. Foreign key referencing the sponsored virtual idol. FK to virtualidols(entity_reg). Example: VI8845.'
+    sql: '"Idol_Record_ID"'
+  internal_account_manager:
+    description: 'TEXT. The name of the internal account manager for this sponsor. Example: Hana Wright.'
+    sql: '"InternalAccountManager"'
+  renewal_option:
+    description: 'BOOLEAN. A flag indicating if there is an option to renew the contract. **NULL means no renewal option is specified.** Example: true.'
+    sql: '"RenewalOption"'
+  status:
+    description: 'TEXT. The current status of the sponsorship. Possible values: Active, Expired, Negotiating. Example: Active.'
+    sql: '"STATUS"'
+  sponsor_company_name:
+    description: 'TEXT. The name of the sponsoring company. Example: CyberCore Energy.'
+    sql: '"SponsorCompanyName"'
+  contract_document_url:
+    description: 'TEXT. A URL to the scanned contract document. **NULL means no document URL is available.** Example: https://internal.docs/contract_1502.'
+    sql: contract_document_url
+  exclusivity_clause:
+    description: 'BOOLEAN. A flag indicating if there is an exclusivity clause in the contract. Example: false.'
+    sql: exclusivity_clause
+  last_updated:
+    description: 'TIMESTAMP. The timestamp of the last update to this sponsorship record. Example: 2025-06-20 06:02:22.'
+    sql: last_updated
+  notes:
+    description: 'TEXT. General notes about the sponsorship. **NULL means no notes have been added.** Example: Contract renewal in discussion..'
+    sql: notes
+  sponsorship_id:
+    description: 'BIGINT. Unique identifier for the sponsorship. PK. Example: 1.'
+    sql: sponsorship_id
+  sponsorship_tier:
+    description: 'TEXT. The tier of the sponsorship. Possible values: Silver, Gold, Platinum. Example: Silver.'
+    sql: sponsorship_tier
+  sponsorship_value_dollar:
+    description: 'REAL. The total value of the sponsorship in USD. Example: 68178.'
+    sql: sponsorship_value_dollar
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct virtual_idol_sponsorships public identity values.
+    label: virtual_idol_sponsorships Count
+    sql: ${virtual_idol_large_public__virtual_idol_sponsorships.sponsorship_id}

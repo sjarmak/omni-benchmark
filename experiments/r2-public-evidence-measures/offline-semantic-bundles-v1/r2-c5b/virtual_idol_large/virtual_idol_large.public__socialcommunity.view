@@ -1,0 +1,92 @@
+label: Social Community
+description: Social community records with row-level network and content-creation semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: socialcommunity
+dimensions:
+  follower_count:
+    description: BIGINT. Number of other users following this fan.
+    label: Follower Count
+    sql: JSONB_EXTRACT_PATH_TEXT(network_stats, 'Foll_Count')
+  following_count:
+    description: BIGINT. Number of users this fan is following.
+    label: Following Count
+    sql: JSONB_EXTRACT_PATH_TEXT(network_stats, 'Fing_Count')
+  social_network_size:
+    description: BIGINT. Size of fan's social network within the platform.
+    label: Social Network Size
+    sql: JSONB_EXTRACT_PATH_TEXT(network_stats, 'Soc_Net_Sz')
+  friend_connections:
+    description: BIGINT. Number of mutual friend connections within the platform.
+    label: Friend Connections
+    sql: JSONB_EXTRACT_PATH_TEXT(network_stats, 'Friend_Con')
+  content_submissions:
+    description: BIGINT. Total user-generated content value or count created by fan.
+    label: Content Submissions
+    sql: JSONB_EXTRACT_PATH_TEXT(content_creation, 'UGC_Val')
+  collaborations:
+    description: SMALLINT. Number of collaborative projects participated in by the fan.
+    label: Collaborations
+    sql: JSONB_EXTRACT_PATH_TEXT(content_creation, 'Collab_Count')
+  average_content_quality_rating:
+    description: REAL. Quality rating of content created by the fan.
+    label: Average Content Quality Rating
+    sql: JSONB_EXTRACT_PATH_TEXT(content_creation, 'Cont_Qual_Rate')
+  community_contribution_level:
+    description: 'TEXT. Type and level of contribution to community activities. **NULL means contribution assessment incomplete or minimal community participation.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    label: Community Contribution Level
+    sql: comm_contrib
+    ai_context: 'Community Contribution Level: Measures a fan''s positive impact on the community. Levels include ''High'', ''Medium'', and ''Low'', often associated with group roles and content creation.'
+  community_role:
+    description: TEXT. Role or position held within community groups. **NULL means no specific group role assigned or participating as regular member.**
+    label: Community Role
+    sql: JSONB_EXTRACT_PATH_TEXT(network_stats, 'Grp_Role')
+    ai_context: 'Community Role Hierarchy: Defines a fan''s position within a community group. ''Member'' is a standard participant. ''Moderator'' helps enforce rules. ''Leader'' manages the group.'
+  cont_create_stat:
+    description: 'TEXT. Status of content creation activities by the fan. **NULL means content creation tracking incomplete or user has not created content.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    sql: cont_create_stat
+  content_creation:
+    description: JSONB column. User-generated content creation metrics including submissions, performances, and quality ratings
+    sql: content_creation
+  influence_metrics:
+    description: JSON string tracking influence rate, community growth, and content creation rate.
+    sql: influence_metrics
+  network_stats:
+    description: JSONB column. Social network statistics including connections, followers, and community involvement
+    sql: network_stats
+  social_commerce_pivot:
+    description: BIGINT. Reference to commerce record for social influence on purchasing. FK to CommerceAndCollection.
+    sql: social_commerce_pivot
+  social_engage_pivot:
+    description: BIGINT. Reference to engagement record for social behavior analysis. FK to Engagement.
+    sql: social_engage_pivot
+  social_reg:
+    description: BIGSERIAL. Auto-generated unique identifier for social community record. PK = SocialCommunity(Social_Reg).
+    sql: social_reg
+  content_creation_art_subs:
+    description: BIGINT. Number of fan art submissions made by the fan.
+    sql: JSONB_EXTRACT_PATH_TEXT(content_creation, 'Art_Subs')
+  content_creation_cover_perf_cnt:
+    description: BIGINT. Number of cover performances or tribute content created.
+    sql: JSONB_EXTRACT_PATH_TEXT(content_creation, 'Cover_Perf_Cnt')
+  content_creation_fic_subs:
+    description: BIGINT. Number of fan fiction submissions made by the fan.
+    sql: JSONB_EXTRACT_PATH_TEXT(content_creation, 'Fic_Subs')
+  network_stats_grp_memb:
+    description: SMALLINT. Number of groups or communities the fan belongs to.
+    sql: JSONB_EXTRACT_PATH_TEXT(network_stats, 'Grp_Memb')
+  social_capital_score:
+    label: Social Capital Score (SCS)
+    description: Represents the size and strength of a fan's social network on the platform.
+    sql: CAST(${social_network_size} AS DOUBLE PRECISION) + (CAST(${friend_connections} AS DOUBLE PRECISION) * 1.5)
+    ai_context: Use this modeled field for Social Capital Score (SCS); do not reconstruct its formula.
+  follower_to_following_ratio:
+    label: Follower-to-Following Ratio (FFR)
+    description: Measures a fan's social influence by comparing the number of users who follow them to the number of users they follow.
+    sql: CAST(${follower_count} AS DOUBLE PRECISION) / NULLIF(CAST(${following_count} AS DOUBLE PRECISION), 0)
+    ai_context: Use this modeled field for Follower-to-Following Ratio (FFR); do not reconstruct its formula.
+  content_creator_score:
+    label: Content Creator Score (CCS)
+    description: Evaluates a fan's contribution as a content creator by combining the volume and quality of their user-generated content.
+    sql: (CAST(${content_submissions} AS DOUBLE PRECISION) + CAST(${collaborations} AS DOUBLE PRECISION)) * CAST(${average_content_quality_rating} AS DOUBLE PRECISION)
+    ai_context: Use this modeled field for Content Creator Score (CCS); do not reconstruct its formula.

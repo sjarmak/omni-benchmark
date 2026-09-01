@@ -1,0 +1,66 @@
+label: ChassisAndVehicle
+description: All columns of the public table ChassisAndVehicle.
+catalog: polar_equipment_large
+schema: public
+table_name: ChassisAndVehicle
+dimensions:
+  chassis_id:
+    description: BIGSERIAL. Unique identifier for the chassis and vehicle record. PK.
+    sql: '"CHASSIS_ID"'
+  engine_link:
+    description: BIGINT. Reference to the engine and fluids record. FK to EngineAndFluids.ENGINE_ID.
+    sql: engine_link
+  equip_ref:
+    description: TEXT. Reference to the equipment. FK to Equipment.EQUIP_CODE.
+    sql: '"equipRef"'
+  ground_vehicle_status:
+    description: JSONB column. Wraps the principal running-gear and motion telemetry (brakes, tyres, tracks, suspension, speed & load) into a single JSONB field for rapid health checks.
+    sql: ground_vehicle_status
+  trans_link:
+    description: BIGINT. Reference to the transmission record. FK to Transmission.TRANS_ID.
+    sql: trans_link
+  ground_vehicle_status_brake_system_fluid_level_pct:
+    description: 'REAL. Brake fluid percentage. Example: 97.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'brake_system', 'fluid_level_pct')
+  ground_vehicle_status_brake_system_pad_wear_pct:
+    description: 'REAL. Brake pad wear percentage. **NULL means no brake pad wear data recorded.**. Example: 69.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'brake_system', 'pad_wear_pct')
+  ground_vehicle_status_brake_system_pressure_kpa_or_code:
+    description: 'TEXT. Brake pressure in kPa. Example: 370.8 hPa.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'brake_system', 'pressure_kpa_or_code')
+  ground_vehicle_status_suspension_ride_height_mm:
+    description: 'REAL. Suspension height in millimeters. **NULL means no suspension height data recorded.**. Example: 351.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'suspension', 'ride_height_mm')
+  ground_vehicle_status_tires_pressure_kpa:
+    description: 'BIGINT. Tire pressure in kPa. Example: 345.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'tires', 'pressure_kpa')
+  ground_vehicle_status_tires_temperature_c:
+    description: 'REAL. Tire temperature in Celsius. Example: 28.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'tires', 'temperature_c')
+  ground_vehicle_status_tires_tread_depth_mm:
+    description: 'REAL. Tire tread thickness in millimeters. Example: 12.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'tires', 'tread_depth_mm')
+  ground_vehicle_status_tracks_tension_k_n:
+    description: 'REAL. Track tension in kilonewtons. Example: 21.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'tracks', 'tension_kN')
+  ground_vehicle_status_tracks_wear_pct:
+    description: 'REAL. Track wear percentage. **NULL means no track wear data recorded.**. Example: 35.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'tracks', 'wear_pct')
+  ground_vehicle_status_vehicle_motion_attitude_angle_deg:
+    description: 'REAL. Vehicle angle in degrees. Example: 1.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'vehicle_motion', 'attitude_angle_deg')
+  ground_vehicle_status_vehicle_motion_heading_deg:
+    description: 'REAL. Vehicle heading in degrees. Example: 89.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'vehicle_motion', 'heading_deg')
+  ground_vehicle_status_vehicle_motion_payload_kg:
+    description: 'REAL. Vehicle load in kilograms. **NULL means no vehicle load data recorded.**. Example: 9585.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'vehicle_motion', 'payload_kg')
+  ground_vehicle_status_vehicle_motion_speed_kmh:
+    description: 'TEXT. Vehicle speed in kilometers per hour. Example: 49.30 m/s.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ground_vehicle_status, 'vehicle_motion', 'speed_kmh')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ChassisAndVehicle public identity values.
+    label: ChassisAndVehicle Count
+    sql: ${polar_equipment_large_public__chassis_and_vehicle.chassis_id}

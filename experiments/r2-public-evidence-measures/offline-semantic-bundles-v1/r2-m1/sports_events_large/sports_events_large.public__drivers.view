@@ -1,0 +1,43 @@
+label: Drivers
+description: Driver records.
+catalog: sports_events_large
+schema: public
+table_name: drivers
+dimensions:
+  driver_identity:
+    description: JSONB column. Consolidates driver’s identity, nationality, and references.
+    label: Driver identity
+    sql: driver_identity
+  drv_main:
+    description: 'INTEGER. Unique identifier for the driver. PK. Example: 1.'
+    sql: drv_main
+  driver_identity_birth_date:
+    description: 'VARCHAR. Date of birth. **NULL means the birth date is unknown or undisclosed.**. Example: 1985-01-07.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_identity, 'birth_date')
+  driver_identity_code:
+    description: 'VARCHAR. Three-letter identifier code. **NULL means an FIA code has not been assigned.**. Example: HAM.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_identity, 'code')
+  driver_identity_info_link:
+    description: 'VARCHAR. Link to the driver''s info page. **NULL means no profile link is available.**. Example: http://en.wikipedia.org/wiki/Nick_Heidfeld.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_identity, 'info_link')
+  driver_identity_name_first_name:
+    description: 'VARCHAR. Driver''s given name. **NULL means the given name is not stored.**. Example: Lewis.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_identity, 'name', 'first_name')
+  driver_identity_name_surname:
+    description: 'VARCHAR. Driver''s surname. **NULL means the surname is missing.**. Example: Hamilton.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_identity, 'name', 'surname')
+  driver_identity_nationality:
+    description: 'VARCHAR. Driver''s nationality. **NULL means nationality is not recorded.**. Example: British.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_identity, 'nationality')
+  driver_identity_racing_number:
+    description: 'VARCHAR. Permanent racing number. **NULL means the driver has no permanent number or it is not known.**. Example: 14.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_identity, 'racing_number')
+  driver_identity_reference:
+    description: 'TEXT. Driver reference code. Example: hamilton.'
+    sql: JSONB_EXTRACT_PATH_TEXT(driver_identity, 'reference')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Drivers public identity values.
+    label: Drivers Count
+    sql: ${sports_events_large_public__drivers.drv_main}

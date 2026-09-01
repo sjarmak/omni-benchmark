@@ -1,0 +1,87 @@
+label: LogisticsContracts
+description: All columns of the public table LogisticsContracts.
+catalog: disaster_relief_large
+schema: public
+table_name: LogisticsContracts
+dimensions:
+  contact_email:
+    description: TEXT. Email address of the contact person (RFC 5322 format).
+    sql: '"CONTACT_EMAIL"'
+  contractid:
+    description: VARCHAR(20). Unique logistics-contract identifier. PK.
+    sql: '"CONTRACTID"'
+  contract_type:
+    description: 'TEXT. Nature of the agreement. Possible values: Transportation, Warehousing, Last-Mile, Cold Chain, Air Freight, Multimodal.'
+    sql: '"CONTRACT_Type"'
+  compliance_flag:
+    description: BOOLEAN. TRUE when contract meets compliance review; may be NULL while audit in progress.
+    sql: '"ComplianceFlag"'
+  contact_phone:
+    description: TEXT. International phone number for the contact person.
+    sql: '"ContactPhone"'
+  contact_person:
+    description: TEXT. Named point of contact at the supplier.
+    sql: '"Contact_Person"'
+  created_at:
+    description: TIMESTAMP. Record creation timestamp (UTC).
+    sql: '"Created_AT"'
+  currency:
+    description: TEXT. Currency code for VALUE_USD (always “USD” in current data).
+    sql: '"Currency"'
+  delivery_terms:
+    description: TEXT. INCOTERMS or equivalent delivery terms (e.g., FOB origin, CIF destination).
+    sql: '"DeliveryTerms"'
+  delivery_window_days_range:
+    description: TEXT. Promised delivery window expressed as a day-range (e.g., “5–7”).
+    sql: '"Delivery_Window_days_range"'
+  end_date:
+    description: DATE. Contract expiration date (ISO 8601).
+    sql: '"EndDate"'
+  hub_ref:
+    description: VARCHAR(20). FK → DistributionHubs.HubRegistry. Hub with which the contract is associated.
+    sql: '"HUB_REF"'
+  notes:
+    description: TEXT. Free-form notes (audit remarks, renewal comments, etc.). May be NULL if no notes captured.
+    sql: '"Notes"'
+  performance_rating:
+    description: REAL. Latest supplier performance score (1.0-5.0). May be NULL when rating not yet issued.
+    sql: '"PERFORMANCE_RATING"'
+  payment_terms:
+    description: TEXT. Contractual payment terms (e.g., Net 30).
+    sql: '"Payment_Terms"'
+  penalty_clause:
+    description: TEXT. Textual description of late-delivery penalties (e.g., "0.5 % per day late").
+    sql: '"PenaltyClause"'
+  risk_score:
+    description: REAL. Quantified contract-risk score (0-100). May be NULL if risk assessment pending.
+    sql: '"RISK_SCORE"'
+  renewal_option:
+    description: BOOLEAN. TRUE if the contract allows optional renewal.
+    sql: '"RenewalOption"'
+  sla_text:
+    description: TEXT. Service-level statement (e.g., “Delivery within 7 days”). May be NULL when SLA not formalised.
+    sql: '"SLA_Text"'
+  start_date:
+    description: DATE. Contract commencement date (ISO 8601).
+    sql: '"START_DATE"'
+  status:
+    description: 'TEXT. Lifecycle status of the contract. Possible values: Active, Expired.'
+    sql: '"STATUS"'
+  supplier_name:
+    description: TEXT. Legal or trading name of the supplier (e.g., “Unity Cargo”).
+    sql: '"SupplierName"'
+  value_usd:
+    description: REAL. Face value of the contract in US dollars.
+    sql: '"VALUE_USD"'
+  version_no:
+    description: INT. Internal version number for contract metadata.
+    sql: '"VersionNo"'
+  contract_value_total_usd:
+    description: REAL. Total contract value converted to USD (e.g., 2 100 000.00).
+    sql: '"contractValue_total_USD"'
+  penalty_rate_percent_per_day:
+    description: REAL. Penalty rate for late delivery expressed as percent per day (e.g., 0.5).
+    sql: '"penaltyRate_percent_per_day"'
+  updated_at:
+    description: TIMESTAMP. Last record update timestamp (UTC).
+    sql: updated_at

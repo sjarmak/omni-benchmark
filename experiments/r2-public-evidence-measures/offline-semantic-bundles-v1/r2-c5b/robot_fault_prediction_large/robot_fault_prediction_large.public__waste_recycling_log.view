@@ -1,0 +1,54 @@
+label: waste_recycling_log
+description: All columns of the public table waste_recycling_log.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: waste_recycling_log
+dimensions:
+  bin_sensor_id:
+    description: TEXT. IoT sensor on the scrap bin.
+    sql: bin_sensor_id
+  carbon_footprint_kgco2:
+    description: 'REAL. Emissions associated with this waste. Example: 5.'
+    sql: carbon_footprint_kgco2
+  compaction_ratio:
+    description: 'REAL. Density increase from baling. Example: 50.0.'
+    sql: compaction_ratio
+  contamination_level_ppm:
+    description: 'REAL. Purity of the scrap stream. **NULL means Not tested.** Example: 50.0.'
+    sql: contamination_level_ppm
+  disposal_cost_usd:
+    description: TEXT. Cost to remove/treat.
+    sql: disposal_cost_usd
+  is_hazardous_material:
+    description: 'BOOLEAN. Requires special handling?. Possible values: True, False.'
+    sql: is_hazardous_material
+  machine_process_stage:
+    description: 'TEXT. Step where waste occurred (Milling, Welding). Unique values: Milling, Turning, Welding, Painting.'
+    sql: machine_process_stage
+  material_category:
+    description: 'TEXT. Type of scrap (Steel, Plastic, Chemical). Unique values: Steel_304, Alum_6061, ABS_Plastic, Coolant.'
+    sql: material_category
+  production_run_ref:
+    description: 'INTEGER. Link to the production run generating waste. Example: 50.'
+    sql: production_run_ref
+  recyclability_percent:
+    description: 'REAL. Percentage of mass recoverable. Example: 50.0.'
+    sql: recyclability_percent
+  regulatory_manifest_id:
+    description: TEXT. Govt tracking ID for hazmat. **NULL means Non-hazardous.**
+    sql: regulatory_manifest_id
+  salvage_value_usd:
+    description: TEXT. Revenue from selling scrap.
+    sql: salvage_value_usd
+  scrap_reason_code:
+    description: 'TEXT. Why it was scrapped (Defect, Offcut). Unique values: Geometry_Defect, Surface_Mar, Machine_Setup, Routine_Offcut.'
+    sql: scrap_reason_code
+  shift_supervisor_id:
+    description: TEXT. Manager on duty.
+    sql: shift_supervisor_id
+  waste_event_id:
+    description: TEXT. Unique identifier for waste generation event.
+    sql: waste_event_id
+  waste_mass_kg:
+    description: 'REAL. Weight of the scrap material. Example: 10.'
+    sql: waste_mass_kg

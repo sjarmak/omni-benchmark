@@ -1,0 +1,45 @@
+label: RegulatoryComplianceLog
+description: All columns of the public table RegulatoryComplianceLog.
+catalog: sports_events_large
+schema: public
+table_name: RegulatoryComplianceLog
+dimensions:
+  appeals_filed:
+    description: BOOLEAN. Whether an appeal has been filed Boolean flag (true/false).
+    sql: '"APPEALS_FILED"'
+  compliance_log_id:
+    description: BIGINT. Primary key. Unique compliance log entry identifier
+    sql: '"COMPLIANCE_LOG_ID"'
+  compliance_status:
+    description: 'TEXT. Current compliance status Possible values: Compliant, Non-Compliant, Under Review, Exempted, Pending.'
+    sql: '"COMPLIANCE_STATUS"'
+  effective_date:
+    description: DATE. Date regulation takes effect
+    sql: '"EFFECTIVE_DATE"'
+  regulation_body:
+    description: 'TEXT. Regulatory body issuing the regulation Possible values: FIA, FOM, ASN, WADA, Local Authority.'
+    sql: '"REGULATION_BODY"'
+  audit_date:
+    description: DATE. Date of compliance audit
+    sql: audit_date
+  compliance_category:
+    description: 'TEXT. Category of compliance requirement Possible values: Technical, Sporting, Financial, Safety, Environmental, Anti-Doping.'
+    sql: compliance_category
+  corrective_action:
+    description: TEXT. ['Design Modification', 'Process Change', 'Training Required', 'Equipment Replacement', 'Documentation Update', 'No Action Required']
+    sql: corrective_action
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  penalty_amount_usd:
+    description: 'REAL. Penalty amount if non-compliant Typical range: 0 to 1000000. **NULL means No penalty assessed.**'
+    sql: penalty_amount_usd
+  regulation_reference:
+    description: TEXT. Official regulation reference number
+    sql: regulation_reference
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct RegulatoryComplianceLog public identity values.
+    label: RegulatoryComplianceLog Count
+    sql: ${sports_events_large_public__regulatory_compliance_log.compliance_log_id}

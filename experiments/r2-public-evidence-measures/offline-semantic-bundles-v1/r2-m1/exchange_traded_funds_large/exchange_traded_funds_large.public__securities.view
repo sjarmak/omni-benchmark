@@ -1,0 +1,18 @@
+label: securities
+description: All columns of the public table securities.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: securities
+dimensions:
+  securitylabel:
+    description: Full company name or description of the security (e.g., 'Apple Inc.', 'Microsoft Corporation').
+    sql: securitylabel
+  securityref:
+    description: A SERIAL primary key uniquely identifying each individual security or holding instrument in the database.
+    sql: securityref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct securities public identity values.
+    label: securities Count
+    sql: ${exchange_traded_funds_large_public__securities.securityref}

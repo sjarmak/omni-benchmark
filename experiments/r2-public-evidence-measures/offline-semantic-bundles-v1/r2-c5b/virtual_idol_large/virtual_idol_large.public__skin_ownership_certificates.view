@@ -1,0 +1,60 @@
+label: SkinOwnershipCertificates
+description: All columns of the public table SkinOwnershipCertificates.
+catalog: virtual_idol_large
+schema: public
+table_name: SkinOwnershipCertificates
+dimensions:
+  acquisition_source:
+    description: 'TEXT. Marketplace, Drop, Crafting. Unique values: Marketplace, Lootbox, Event Reward.'
+    sql: acquisition_source
+  cert_id:
+    description: TEXT. Unique ID for the ownership record.
+    sql: cert_id
+  contract_address:
+    description: TEXT. Smart contract address if NFT. **NULL means data unavailable.**
+    sql: contract_address
+  current_owner_fan_ref:
+    description: TEXT. FK to fans.user_registry.
+    sql: current_owner_fan_ref
+  custodian_wallet_type:
+    description: 'TEXT. Custodial vs Non-custodial. Unique values: In-App Wallet, Metamask.'
+    sql: custodian_wallet_type
+  custom_name:
+    description: TEXT. User given name for the item. **NULL means Default name.**
+    sql: custom_name
+  expiry_date:
+    description: TIMESTAMP. If rental or temporary skin. **NULL means Permanent Ownership.**
+    sql: expiry_date
+  insurance_value_usd:
+    description: 'REAL. Estimated value. Example: 10.'
+    sql: insurance_value_usd
+  is_burned:
+    description: 'BOOLEAN. True if destroyed/consumed. Possible values: True, False.'
+    sql: is_burned
+  is_equipped:
+    description: 'BOOLEAN. True if currently wearing. Possible values: True, False.'
+    sql: is_equipped
+  issue_date:
+    description: TIMESTAMP. Date ownership started.
+    sql: issue_date
+  last_clean_date:
+    description: TIMESTAMP. Tamagotchi-style maintenance. **NULL means data unavailable.**
+    sql: last_clean_date
+  metadata_json:
+    description: TEXT. Attributes (Color, Texture ID).
+    sql: metadata_json
+  origin_txn_ref:
+    description: TEXT. FK to transaction that created/transferred this.
+    sql: origin_txn_ref
+  times_equipped:
+    description: 'INTEGER. Usage counter. Example: 10.'
+    sql: times_equipped
+  token_id:
+    description: TEXT. NFT Token ID. **NULL means data unavailable.**
+    sql: token_id
+  transfer_lock_until:
+    description: 'TIMESTAMP. Trade cooldown. **NULL means data unavailable.** Example: 2024-01-01 12:00:00.'
+    sql: transfer_lock_until
+  visual_glitch_count:
+    description: 'INTEGER. Reports of rendering bugs. Example: 50.'
+    sql: visual_glitch_count

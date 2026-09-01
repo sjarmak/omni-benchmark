@@ -1,0 +1,9 @@
+base_view: cross_border_large_public__training_material
+label: TrainingMaterial
+description: All columns of the public table TrainingMaterial.
+fields:
+- cross_border_large_public__training_material.*
+- cross_border_large_public__privacy_training_program.*
+joins:
+  cross_border_large_public__privacy_training_program: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

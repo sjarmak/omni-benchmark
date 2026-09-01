@@ -1,0 +1,108 @@
+label: market_analysis_and_trends
+description: All columns of the public table market_analysis_and_trends.
+catalog: virtual_idol_large
+schema: public
+table_name: market_analysis_and_trends
+dimensions:
+  access_level:
+    description: 'TEXT. The access level required to view the report. Possible values: Executive, Confidential, Internal. Example: Executive.'
+    sql: '"AccessLevel"'
+  analysis_id:
+    description: 'BIGINT. Unique identifier for the market analysis report. PK. Example: 3001.'
+    sql: '"AnalysisID"'
+  analyst_name:
+    description: 'TEXT. The name of the analyst who wrote the report. Example: B. Smith.'
+    sql: '"AnalystName"'
+  competitor_analysis:
+    description: 'JSONB. A JSON object containing analysis of competitors. Example: {"DigitalStarz": {"market_share": 13.6, "growth_qoq_pct": 7.4}, "CyberTalent": {"market_share": 33.8, "growth_qoq_pct": 6.2}}.'
+    sql: '"COMPETITOR_ANALYSIS"'
+  confidence_level:
+    description: 'REAL. The analyst''s confidence level in the report''s findings. Example: 0.91.'
+    sql: '"CONFIDENCE_LEVEL"'
+  consumer_behavior_insights:
+    description: 'TEXT. Insights into consumer behavior within this market. Example: A significant portion of superchat revenue comes from a small, highly dedicated group of ''whale'' supporters, often less than 2% of the audience..'
+    sql: '"CONSUMER_BEHAVIOR_INSIGHTS"'
+  created_at:
+    description: 'TIMESTAMP. The timestamp when the report record was created. Example: 2025-07-21 16:07:53.'
+    sql: '"CREATED_AT"'
+  executive_summary:
+    description: 'TEXT. A brief summary of the report''s key findings. Example: This report identifies ''Gamification of Viewer Engagement'' as a key market force. We recommend focusing on Explore strategic corporate partnerships to mitigate risks like Content moderation at scale..'
+    sql: '"ExecutiveSummary"'
+  forecast_horizon_years:
+    description: 'BIGINT. The number of years the forecast covers. Example: 2.'
+    sql: '"ForecastHorizon_years"'
+  investment_opportunities:
+    description: 'TEXT ARRAY. A list of potential investment opportunities. Example: {Develop deeper narrative content}.'
+    sql: '"InvestmentOpportunities"'
+  key_drivers:
+    description: 'TEXT ARRAY. A list of key factors driving the market trend. Example: {Creator economy tools,Lowering cost of VR hardware,Social media integration}.'
+    sql: '"KEY_DRIVERS"'
+  market_segment:
+    description: 'TEXT. The specific market segment being analyzed. Example: Interactive Streaming Hardware.'
+    sql: '"MARKET_SEGMENT"'
+  market_size_dollar:
+    description: 'BIGINT. The estimated total size of the market in USD. Example: 4971657240.'
+    sql: '"MarketSize_dollar"'
+  methodology:
+    description: 'TEXT. The methodology used to conduct the analysis. Example: Quantitative Trend Modeling.'
+    sql: '"Methodology"'
+  recommendations:
+    description: 'TEXT ARRAY. A list of recommended actions based on the analysis. Example: {Foster indie talent incubation programs,Diversify across multiple platforms,Launch short-form video campaigns}.'
+    sql: '"RECOMMENDATIONS"'
+  related_reports_ids:
+    description: BIGINT ARRAY. A list of IDs for related reports. **NULL means there are no related reports.**
+    sql: '"RELATED_REPORTS_IDS"'
+  revision_date:
+    description: DATE. The date the report was last revised. **NULL means the report has not been revised.**
+    sql: '"REVISION_DATE"'
+  risk_assessment:
+    description: 'TEXT. An assessment of risks within the market segment. Example: Negative public perception regarding NFTs and blockchain technologies could create backlash for idols entering that space..'
+    sql: '"RISK_ASSESSMENT"'
+  regulatory_changes:
+    description: 'TEXT ARRAY. A list of potential regulatory changes affecting the market. **NULL means no significant regulatory changes were noted.** Example: {Stricter data privacy laws,New guidelines on digital assets}.'
+    sql: '"RegulatoryChanges"'
+  social_and_cultural_impact:
+    description: 'TEXT. An analysis of the social and cultural impact of the market trend. Example: These digital personas provide a unique form of accessible companionship, combating loneliness for some viewers..'
+    sql: '"SOCIAL_AND_CULTURAL_IMPACT"'
+  technological_influences:
+    description: 'TEXT ARRAY. A list of technological influences on the market. Example: {Growing demand for interactive entertainment}.'
+    sql: '"TechnologicalInfluences"'
+  trend_description:
+    description: 'TEXT. A detailed description of the market trend. Example: Lower barriers to entry for avatar creation and streaming are leading to a boom in independent creators, diversifying the market..'
+    sql: '"TrendDescription"'
+  case_studies:
+    description: 'TEXT ARRAY. A list of case studies referenced in the report. **NULL means no case studies were included.** Example: {CaseStudy: Project Nova Launch,CaseStudy: RivalCorp Market Entry}.'
+    sql: case_studies
+  data_sources:
+    description: 'TEXT ARRAY. A list of data sources used for the analysis. Example: {Social media integration,Advancements in real-time rendering,Globalization of fan communities,Increased global internet bandwidth}.'
+    sql: data_sources
+  growth_projections_percent:
+    description: 'REAL. The projected growth for the market segment as a percentage. Example: 13.73.'
+    sql: growth_projections_percent
+  is_proprietary:
+    description: 'BOOLEAN. A flag indicating if the report is proprietary. Example: true.'
+    sql: is_proprietary
+  key_challenges:
+    description: 'TEXT ARRAY. A list of key challenges facing the market segment. Example: {Content moderation at scale,Platform algorithm dependency,Talent scouting and retention}.'
+    sql: key_challenges
+  regional_analysis:
+    description: 'JSONB. A JSON object containing analysis by geographical region. Example: {"NA": {"growth_pct": 10.2}, "APAC": {"growth_pct": 43.5}}.'
+    sql: regional_analysis
+  report_date:
+    description: 'DATE. The date the report was published. Example: 2025-07-21.'
+    sql: report_date
+  report_url:
+    description: 'TEXT. A URL to the full report. Example: https://analysis.example.com/reports/89454d2f-0633-4693-83eb-b7345dd2bcfa.'
+    sql: report_url
+  target_demographics:
+    description: 'TEXT ARRAY. A list of target demographics for this market segment. Example: {Tech Adopters,Mobile-First Users}.'
+    sql: target_demographics
+  trend_name:
+    description: 'TEXT. The name of the market trend identified in the report. Example: Emergence of Decentralized Fan Organizations (FanDAOs).'
+    sql: trend_name
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct market_analysis_and_trends public identity values.
+    label: market_analysis_and_trends Count
+    sql: ${virtual_idol_large_public__market_analysis_and_trends.analysis_id}

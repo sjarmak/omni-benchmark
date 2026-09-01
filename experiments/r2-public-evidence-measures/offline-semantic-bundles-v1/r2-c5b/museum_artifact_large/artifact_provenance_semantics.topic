@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__artifact_provenance
+label: ArtifactProvenance
+description: All columns of the public table ArtifactProvenance.
+fields:
+- museum_artifact_large_public__artifact_provenance.*
+joins: {}
+ai_context: This topic models no cross-table joins.

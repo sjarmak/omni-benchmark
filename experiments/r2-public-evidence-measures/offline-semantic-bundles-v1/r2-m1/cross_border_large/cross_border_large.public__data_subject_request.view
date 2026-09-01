@@ -1,0 +1,87 @@
+label: DataSubjectRequest
+description: All columns of the public table DataSubjectRequest.
+catalog: cross_border_large
+schema: public
+table_name: DataSubjectRequest
+dimensions:
+  assigned_to:
+    description: 'TEXT. Person handling the request Possible values: Privacy Analyst 1, Privacy Analyst 2, DPO Assistant, Legal Intern.'
+    sql: '"ASSIGNED_TO"'
+  compliance_ref:
+    description: BIGINT. Foreign key referencing Compliance(complianceTrace). Related compliance record
+    sql: '"COMPLIANCE_REF"'
+  deadline_date:
+    description: DATE. Response deadline
+    sql: '"DEADLINE_DATE"'
+  dsr_id:
+    description: BIGINT. Primary key. Unique data subject request identifier
+    sql: '"DSR_ID"'
+  extension_days:
+    description: BIGINT. Number of extension days granted **NULL means No extension applied.**
+    sql: '"EXTENSION_DAYS"'
+  fee_charged:
+    description: BOOLEAN. Whether a fee was charged to the subject Boolean flag (true/false).
+    sql: '"FEE_CHARGED"'
+  received_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When request was received
+    sql: '"RECEIVED_AT"'
+  records_found:
+    description: BIGINT. Number of records found **NULL means Search not yet completed.**
+    sql: '"RECORDS_FOUND"'
+  rejection_reason:
+    description: 'TEXT. Reason for rejection Possible values: Manifestly Unfounded, Excessive, Identity Not Verified, Legal Exemption, Third Party Rights. **NULL means Request not rejected.**'
+    sql: '"REJECTION_REASON"'
+  request_type:
+    description: 'TEXT. Type of data subject request Possible values: Access, Erasure, Rectification, Portability, Restriction, Objection, Automated Decision Review.'
+    sql: '"REQUEST_TYPE"'
+  subject_category:
+    description: 'TEXT. Category of data subject Possible values: Customer, Employee, Prospect, Vendor Contact, Website Visitor, Job Applicant.'
+    sql: '"SUBJECT_CATEGORY"'
+  submission_channel:
+    description: 'TEXT. How the request was submitted Possible values: Web Form, Email, Letter, Phone, In-Person, API.'
+    sql: '"SUBMISSION_CHANNEL"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  completed_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When request was fulfilled **NULL means Request not yet completed.**
+    sql: completed_at
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  extension_applied:
+    description: BOOLEAN. Whether response deadline was extended Boolean flag (true/false).
+    sql: extension_applied
+  extension_reason:
+    description: 'TEXT. Reason for extension Possible values: Complexity, High Volume, Third Party Dependency, Identity Verification Delay. **NULL means No extension applied.**'
+    sql: extension_reason
+  identity_verified_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When subject identity was verified **NULL means Identity verification pending.**
+    sql: identity_verified_at
+  jurisdiction_ref:
+    description: BIGINT. Foreign key referencing Geo_Jurisdiction(JURISDICTION_CODE). Applicable jurisdiction
+    sql: jurisdiction_ref
+  processing_cost_usd:
+    description: 'REAL. Cost to process this request Typical range: 50 to 5000.'
+    sql: processing_cost_usd
+  request_code:
+    description: TEXT. Request reference code
+    sql: request_code
+  response_details:
+    description: JSONB. Details of the response provided
+    sql: response_details
+  status:
+    description: 'TEXT. Current request status Possible values: Received, Identity Verified, In Progress, Extended, Completed, Partially Fulfilled, Rejected.'
+    sql: status
+  subject_identifier:
+    description: TEXT. Anonymized subject reference
+    sql: subject_identifier
+  systems_searched:
+    description: BIGINT. Number of systems searched for data
+    sql: systems_searched
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DataSubjectRequest public identity values.
+    label: DataSubjectRequest Count
+    sql: ${cross_border_large_public__data_subject_request.dsr_id}

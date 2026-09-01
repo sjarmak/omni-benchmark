@@ -1,0 +1,66 @@
+label: ErasureRequest
+description: All columns of the public table ErasureRequest.
+catalog: cross_border_large
+schema: public
+table_name: ErasureRequest
+dimensions:
+  actual_completion:
+    description: DATE. Actual completion date **NULL means Erasure not yet completed.**
+    sql: '"ACTUAL_COMPLETION"'
+  affected_systems:
+    description: JSONB. List of affected systems and their erasure status
+    sql: '"AFFECTED_SYSTEMS"'
+  backup_erasure_completed:
+    description: BOOLEAN. Whether backup erasure is completed Boolean flag (true/false).
+    sql: '"BACKUP_ERASURE_COMPLETED"'
+  confirmation_sent:
+    description: BOOLEAN. Whether erasure confirmation was sent to subject Boolean flag (true/false).
+    sql: '"Confirmation_Sent"'
+  erasure_id:
+    description: BIGINT. Primary key. Unique erasure request identifier
+    sql: '"ERASURE_ID"'
+  erasure_scope:
+    description: 'TEXT. Scope of erasure requested Possible values: Full, Partial, Specific Systems, Specific Categories.'
+    sql: '"ERASURE_SCOPE"'
+  exemption_justification:
+    description: TEXT. Justification for exemption **NULL means No exemption applied.**
+    sql: '"EXEMPTION_JUSTIFICATION"'
+  systems_erased:
+    description: BIGINT. Number of systems where erasure completed
+    sql: '"SYSTEMS_ERASED"'
+  third_parties_notified:
+    description: BIGINT. Number of third parties notified
+    sql: '"THIRD_PARTIES_NOTIFIED"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  verification_method:
+    description: 'TEXT. Method used to verify erasure Possible values: System Audit, Certification Letter, Automated Check, Manual Review.'
+    sql: '"VERIFICATION_METHOD"'
+  backup_erasure_required:
+    description: BOOLEAN. Whether erasure from backups is required Boolean flag (true/false).
+    sql: backup_erasure_required
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  dsr_ref:
+    description: BIGINT. Foreign key referencing DataSubjectRequest(DSR_ID). Related data subject request
+    sql: dsr_ref
+  erasure_deadline:
+    description: DATE. Deadline for completing erasure
+    sql: erasure_deadline
+  evidence_url:
+    description: TEXT. URL to erasure evidence/certificate
+    sql: evidence_url
+  legal_exemption_applied:
+    description: 'TEXT. Legal exemption preventing full erasure Possible values: Archiving, Legal Claims, Public Health, Freedom of Expression, None.'
+    sql: legal_exemption_applied
+  records_erased:
+    description: BIGINT. Total records erased across all systems
+    sql: records_erased
+  systems_to_erase:
+    description: BIGINT. Number of systems from which data must be erased
+    sql: systems_to_erase
+  third_party_notified:
+    description: BOOLEAN. Whether third parties were notified of erasure Boolean flag (true/false).
+    sql: third_party_notified

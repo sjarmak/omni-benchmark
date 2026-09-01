@@ -1,0 +1,114 @@
+label: risk_ml_feature_vectors
+description: All columns of the public table risk_ml_feature_vectors.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: risk_ml_feature_vectors
+dimensions:
+  feature02:
+    description: 'REAL. Second engineered feature. Example: -2.61.'
+    sql: '"FEATURE02"'
+  feature05:
+    description: 'REAL. Fifth engineered feature. **NULL means the upstream data point was missing or filtered out during preprocessing.** Example: 1.68.'
+    sql: '"FEATURE05"'
+  feature07:
+    description: 'REAL. Seventh engineered feature. Example: -0.77.'
+    sql: '"FEATURE07"'
+  feature13:
+    description: 'REAL. Thirteenth engineered feature. Example: 2.44.'
+    sql: '"FEATURE13"'
+  feature15:
+    description: 'REAL. Fifteenth engineered feature. Example: 0.13.'
+    sql: '"FEATURE15"'
+  feature18:
+    description: 'REAL. Eighteenth engineered feature. Example: -0.23.'
+    sql: '"FEATURE18"'
+  feature20:
+    description: 'REAL. Twentieth engineered feature. Example: -1.62.'
+    sql: '"FEATURE20"'
+  feature22:
+    description: 'REAL. Twenty-second engineered feature. Example: 1.22.'
+    sql: '"FEATURE22"'
+  feature24:
+    description: 'REAL. Twenty-fourth engineered feature. Example: 2.05.'
+    sql: '"FEATURE24"'
+  feature_11:
+    description: 'REAL. Eleventh engineered feature. Example: -1.03.'
+    sql: '"FEATURE_11"'
+  feature03:
+    description: 'REAL. Third engineered feature. Example: -1.43.'
+    sql: '"Feature03"'
+  feature09:
+    description: 'REAL. Ninth engineered feature. Example: 1.03.'
+    sql: '"Feature09"'
+  feature17:
+    description: 'REAL. Seventeenth engineered feature. Example: 1.81.'
+    sql: '"Feature17"'
+  label:
+    description: 'TEXT. Ground-truth or analyst review label when available (Fraud, Legit, Review). Example: Review.'
+    sql: '"LABEL"'
+  confidence:
+    description: 'REAL. Model-supplied confidence in the prediction (0-1). **NULL means confidence was not returned by this model version.** Example: 0.8621.'
+    sql: confidence
+  created_at:
+    description: 'TIMESTAMP (YYYY-MM-DD HH:MM:SS). When the feature vector was generated. Example: 2025-04-01 18:44:34.'
+    sql: created_at
+  explain_weight_pct:
+    description: 'TEXT. Short explanation showing the top contributing feature and its weight in % (percent sign removed). Example: "TopFeat F13 ≈ 5.8"'
+    sql: '"explainWeight_pct"'
+  feature10:
+    description: 'REAL. Tenth engineered feature. **NULL means the feature was out-of-range or not computed.** Example: 1.00.'
+    sql: feature10
+  feature12:
+    description: 'REAL. Twelfth engineered feature. Example: 0.55.'
+    sql: feature12
+  feature14:
+    description: 'REAL. Fourteenth engineered feature. Example: -0.89.'
+    sql: feature14
+  feature16:
+    description: 'REAL. Sixteenth engineered feature. Example: 2.11.'
+    sql: feature16
+  feature19:
+    description: 'REAL. Nineteenth engineered feature. Example: 0.44.'
+    sql: feature19
+  feature21:
+    description: 'REAL. Twenty-first engineered feature. Example: 0.78.'
+    sql: feature21
+  feature23:
+    description: 'REAL. Twenty-third engineered feature. Example: -0.37.'
+    sql: feature23
+  feature25:
+    description: 'REAL. Twenty-fifth engineered feature. Example: 0.91.'
+    sql: feature25
+  feature_01:
+    description: 'REAL. First engineered feature fed into the model. Example: -0.19.'
+    sql: feature_01
+  feature_04:
+    description: 'REAL. Fourth engineered feature. Example: -2.45.'
+    sql: feature_04
+  feature_06:
+    description: 'REAL. Sixth engineered feature. **NULL means feature derivation failed for this transaction.** Example: -1.15.'
+    sql: feature_06
+  feature_08:
+    description: 'REAL. Eighth engineered feature. Example: 2.10.'
+    sql: feature_08
+  feature_vector_ref:
+    description: 'TEXT. Primary-key reference for a single ML feature vector. Example: FV-972356244b.'
+    sql: feature_vector_ref
+  model_version:
+    description: 'TEXT. Semantic version of the scoring model that generated the vector. Example: v2.7.5.'
+    sql: '"modelVersion"'
+  prediction:
+    description: 'REAL. Model-predicted probability that the transaction is fraudulent (0-1). **NULL means the model could not score the transaction (e.g., missing mandatory features).** Example: 0.8773.'
+    sql: prediction
+  score_band_prob:
+    description: 'TEXT. Low–high band of plausible prediction probabilities after calibration (e.g., "0.63–1"). Example: 0.63–1.'
+    sql: '"scoreBand_prob"'
+  txn_link:
+    description: 'TEXT. Foreign-key link to risk_analytics.TxnLink identifying the transaction. Example: TX8238885.'
+    sql: '"txnLINK"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct risk_ml_feature_vectors public identity values.
+    label: risk_ml_feature_vectors Count
+    sql: ${cybermarket_pattern_large_public__risk_ml_feature_vectors.feature_vector_ref}

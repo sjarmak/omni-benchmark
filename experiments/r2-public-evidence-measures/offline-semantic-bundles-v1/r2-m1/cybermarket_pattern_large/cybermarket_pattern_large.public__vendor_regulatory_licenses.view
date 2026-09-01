@@ -1,0 +1,105 @@
+label: vendor_regulatory_licenses
+description: All columns of the public table vendor_regulatory_licenses.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendor_regulatory_licenses
+dimensions:
+  auditresult:
+    description: 'TEXT. Outcome summary of the last audit (pass, fail, minor findings, etc.). **NULL means awaiting audit.** Example: Pass with minor findings.'
+    sql: '"AUDITresult"'
+  expirydate:
+    description: 'text. Datetime licence lapses without renewal. Example: 2023 Aug.10th 09:22:33.'
+    sql: '"EXPIRYdate"'
+  license_type:
+    description: 'TEXT. Category of regulatory licence held (import, money-service, etc.). Example: Import.'
+    sql: '"LICENSE_type"'
+  licenseurl:
+    description: 'TEXT. Public or internal URL pointing to the licence document. Example: https://docs.example.com/licenses/IL-FIN-845729.pdf'
+    sql: '"LICENSEurl"'
+  notes:
+    description: 'TEXT. Free-form notes from compliance officers (e.g., special conditions). Example: Renewal in process.'
+    sql: '"NOTES"'
+  region:
+    description: 'TEXT. State/province if applicable. Example: IL.'
+    sql: '"REGION"'
+  renewal_submitted:
+    description: 'BOOLEAN. True if renewal paperwork has been lodged. Example: False.'
+    sql: '"RENEWAL_SUBMITTED"'
+  revocationflag:
+    description: 'BOOLEAN. True if the licence has been revoked. Example: False.'
+    sql: '"REVOCATIONflag"'
+  status:
+    description: 'TEXT. Current licence status (active, pending, expired, etc.). Example: pending.'
+    sql: '"STATUS"'
+  seller_key:
+    description: 'TEXT. FK linking to vendors.SellerKey. Example: V63085.'
+    sql: '"SellerKey"'
+  audit_freq_months:
+    description: 'BIGINT. Required audit cadence in months. **NULL when regulator doesn’t mandate periodic audits.** Example: 12.'
+    sql: audit_freq_months
+  compliance_area:
+    description: 'TEXT. Compliance domain (financial, food safety, import/export). Example: Financial.'
+    sql: '"complianceAREA"'
+  country_code:
+    description: 'TEXT. Country issuing/regulating authority (ISO-3166-1 alpha-2). Example: US.'
+    sql: '"countryCODE"'
+  fine_scope_kusd:
+    description: 'TEXT. Typical regulator fine range expressed in thousands of USD. Example: ≤ 10 K USD.'
+    sql: '"fineScope_KUSD"'
+  fine_amount:
+    description: 'REAL. Monetary penalties assessed under this licence. **NULL means no fines recorded.** Example: 0.0.'
+    sql: fine_amount
+  issue_date:
+    description: 'text. Datetime the licence became effective (YYYY Mon.DDth HH:MM:SS). Example: 2020 Feb.14th 13:55:09.'
+    sql: issue_date
+  issuing_auth:
+    description: 'TEXT. Regulatory authority that issued the licence. Example: Illinois DFR.'
+    sql: '"issuingAUTH"'
+  jurisdiction:
+    description: 'TEXT. Legal scope of the licence (state, federal, EU). Example: State-level.'
+    sql: jurisdiction
+  last_auditdate:
+    description: 'text. Datetime of the most recent regulatory audit. **NULL means audit not yet completed.** Example: 2022 Nov.30th 05:18:22.'
+    sql: '"lastAUDITdate"'
+  license_number:
+    description: 'TEXT. Official licence or registration number assigned by regulator. Example: IL-FIN-845729.'
+    sql: '"licenseNUMBER"'
+  license_ref:
+    description: 'TEXT. Primary-key token for the licence record. Example: LIC-V63085.'
+    sql: '"licenseRef"'
+  license_doc_hash:
+    description: 'TEXT. SHA-256 or similar hash of the licence PDF for data-integrity checks. Example: a1b2c3d4e5...'
+    sql: license_doc_hash
+  renew_window_days_before_expiry:
+    description: 'TEXT. Configured lead-time (days) before EXPIRYdate when renewal should start. Example: 90 days before expiry.'
+    sql: '"renewWindow_days_before_expiry"'
+  renewal_date:
+    description: 'text. Datetime the renewal application was filed. Example: 2023 May.12th 18:40:01.'
+    sql: '"renewalDATE"'
+  renewal_required:
+    description: 'BOOLEAN. Indicates whether a renewal is mandatory before EXPIRYdate. Example: True.'
+    sql: renewal_required
+  risk_impact_score:
+    description: 'REAL. Numerical rating of licence-related compliance risk. **NULL means not yet assessed.** Example: 4.2.'
+    sql: '"riskImpactScore"'
+  suspension_flag:
+    description: 'BOOLEAN. True if the licence is suspended. Example: False.'
+    sql: suspension_flag
+  update_timestamp:
+    description: 'text. Datetime this licence record was last modified. Example: 2025 Feb.27th 13:11:44.'
+    sql: '"updateTIMESTAMP"'
+  verification_status:
+    description: 'TEXT. Status of independent licence-verification process (verified, failed, pending). Example: verified.'
+    sql: '"verificationStatus"'
+  verification_date:
+    description: 'text. Datetime the licence verification passed. Example: 2020 Mar.02nd 11:08:12.'
+    sql: verification_date
+  verified_by:
+    description: 'TEXT. Name of third-party verifier or regulator who confirmed validity. Example: Third-Party Compliance Inc.'
+    sql: '"verifiedBY"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct vendor_regulatory_licenses public identity values.
+    label: vendor_regulatory_licenses Count
+    sql: ${cybermarket_pattern_large_public__vendor_regulatory_licenses.license_ref}

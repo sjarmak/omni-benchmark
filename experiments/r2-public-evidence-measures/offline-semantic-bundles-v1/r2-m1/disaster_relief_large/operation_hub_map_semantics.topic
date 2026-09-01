@@ -1,0 +1,11 @@
+base_view: disaster_relief_large_public__operation_hub_map
+label: operation_hub_map
+description: All columns of the public table operation_hub_map.
+fields:
+- disaster_relief_large_public__operation_hub_map.*
+- disaster_relief_large_public__distributionhubs.*
+- disaster_relief_large_public__operations.*
+joins:
+  disaster_relief_large_public__distributionhubs: {}
+  disaster_relief_large_public__operations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

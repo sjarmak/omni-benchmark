@@ -1,0 +1,63 @@
+label: RevenueStream
+description: All columns of the public table RevenueStream.
+catalog: sports_events_large
+schema: public
+table_name: RevenueStream
+dimensions:
+  contract_end:
+    description: DATE. Contract end date
+    sql: '"CONTRACT_END"'
+  contract_start:
+    description: DATE. Contract start date
+    sql: '"CONTRACT_START"'
+  contract_value_total_musd:
+    description: 'REAL. Total contract value Typical range: 0.5 to 500.'
+    sql: '"CONTRACT_VALUE_TOTAL_MUSD"'
+  currency:
+    description: 'TEXT. Contract currency Possible values: USD, EUR, GBP, CHF.'
+    sql: '"CURRENCY"'
+  min_guaranteed_musd:
+    description: 'REAL. Guaranteed minimum amount Typical range: 0.1 to 100. **NULL means No guaranteed minimum.**'
+    sql: '"MIN_GUARANTEED_MUSD"'
+  payment_frequency:
+    description: 'TEXT. Payment frequency Possible values: Annual, Quarterly, Monthly, Per-Race, One-time.'
+    sql: '"PAYMENT_FREQUENCY"'
+  performance_metric:
+    description: 'TEXT. Performance metric if linked Possible values: Championship Position, Podiums, Race Wins, Points. **NULL means Not performance-linked.**'
+    sql: '"PERFORMANCE_METRIC"'
+  revenue_id:
+    description: BIGINT. Primary key. Unique revenue stream identifier
+    sql: '"REVENUE_ID"'
+  revenue_type:
+    description: 'TEXT. Type of revenue Possible values: Prize Money, Sponsorship, Merchandise, Hospitality, PU Supply, Licensing, Other.'
+    sql: '"REVENUE_TYPE"'
+  source:
+    description: TEXT. Revenue source name
+    sql: '"SOURCE"'
+  amount_musd:
+    description: 'REAL. Revenue amount in millions USD Typical range: 0.1 to 200.'
+    sql: amount_musd
+  constructor_ref:
+    description: BIGINT. Foreign key referencing constructors(cstr_key). Related constructor
+    sql: constructor_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  fiscal_year:
+    description: BIGINT. Fiscal year
+    sql: fiscal_year
+  guaranteed_minimum:
+    description: BOOLEAN. Whether there is a guaranteed minimum Boolean flag (true/false).
+    sql: guaranteed_minimum
+  performance_linked:
+    description: BOOLEAN. Whether revenue is performance-linked Boolean flag (true/false).
+    sql: performance_linked
+  status:
+    description: 'TEXT. Revenue status Possible values: Contracted, Invoiced, Received, Projected, Disputed.'
+    sql: status
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct RevenueStream public identity values.
+    label: RevenueStream Count
+    sql: ${sports_events_large_public__revenue_stream.revenue_id}

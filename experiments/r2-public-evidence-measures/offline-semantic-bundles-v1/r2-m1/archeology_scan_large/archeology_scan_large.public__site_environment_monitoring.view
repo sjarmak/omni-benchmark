@@ -1,0 +1,72 @@
+label: SiteEnvironmentMonitoring
+description: All columns of the public table SiteEnvironmentMonitoring.
+catalog: archeology_scan_large
+schema: public
+table_name: SiteEnvironmentMonitoring
+dimensions:
+  site_environment_monitoring_id:
+    description: TEXT. Unique identifier for site environment monitoring record.
+    sql: '"SiteEnvironmentMonitoring_id"'
+  air_temperature_celsius:
+    description: 'REAL. Ambient air temperature in Celsius. **NULL means Sensor malfunction.** Example: 20.'
+    sql: air_temperature_celsius
+  barometric_pressure_hpa:
+    description: 'REAL. Barometric pressure in hectopascals. **NULL means Sensor malfunction.** Example: 1013.'
+    sql: barometric_pressure_hpa
+  data_quality_flag:
+    description: 'TEXT. Quality assessment flag for reading. Unique values: Valid, Suspect, Calibration Needed, Interpolated.'
+    sql: data_quality_flag
+  dust_concentration_ugm3:
+    description: 'REAL. Airborne dust concentration in micrograms per cubic meter. **NULL means Particulate sensor not installed.** Example: 35.'
+    sql: dust_concentration_ugm3
+  groundwater_depth_cm:
+    description: 'REAL. Depth to groundwater table in centimeters. **NULL means Groundwater not monitored at this location.** Example: 180.'
+    sql: groundwater_depth_cm
+  is_extreme_event:
+    description: 'BOOLEAN. Indicates if reading represents extreme weather event. Possible values: True, False.'
+    sql: is_extreme_event
+  light_intensity_lux:
+    description: 'REAL. Ambient light intensity in lux. **NULL means Light sensor malfunction.** Example: 25000.'
+    sql: light_intensity_lux
+  precipitation_mm:
+    description: 'REAL. Precipitation amount in millimeters since last reading. Example: 2.'
+    sql: precipitation_mm
+  reading_timestamp:
+    description: 'TIMESTAMP. Date and time when environmental reading was taken. Example: 2024-01-01 12:00:00.'
+    sql: reading_timestamp
+  relative_humidity_percent:
+    description: 'REAL. Relative humidity percentage. **NULL means Sensor malfunction.** Example: 60.'
+    sql: relative_humidity_percent
+  sensor_battery_percent:
+    description: 'REAL. Battery level of monitoring station as percentage. Example: 50.0.'
+    sql: sensor_battery_percent
+  site_ref:
+    description: TEXT. Reference to the monitored archaeological site.
+    sql: site_ref
+  soil_moisture_percent:
+    description: 'REAL. Volumetric soil moisture content percentage. **NULL means Moisture sensor not deployed.** Example: 25.'
+    sql: soil_moisture_percent
+  soil_ph:
+    description: 'REAL. Soil pH level. **NULL means pH probe not deployed.** Example: 6.5.'
+    sql: soil_ph
+  soil_temperature_celsius:
+    description: 'REAL. Soil temperature at 10cm depth in Celsius. **NULL means Soil sensor not deployed.** Example: 18.'
+    sql: soil_temperature_celsius
+  transmission_success:
+    description: 'BOOLEAN. Indicates if data transmitted successfully to server. Possible values: True, False.'
+    sql: transmission_success
+  uv_index:
+    description: 'REAL. Ultraviolet radiation index. **NULL means UV sensor not available.** Example: 5.'
+    sql: uv_index
+  wind_direction_degrees:
+    description: 'REAL. Wind direction in degrees from north. **NULL means Wind vane not installed.** Example: 50.0.'
+    sql: wind_direction_degrees
+  wind_speed_kmh:
+    description: 'REAL. Wind speed in kilometers per hour. **NULL means Anemometer not installed.** Example: 15.'
+    sql: wind_speed_kmh
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct SiteEnvironmentMonitoring public identity values.
+    label: SiteEnvironmentMonitoring Count
+    sql: ${archeology_scan_large_public__site_environment_monitoring.site_environment_monitoring_id}

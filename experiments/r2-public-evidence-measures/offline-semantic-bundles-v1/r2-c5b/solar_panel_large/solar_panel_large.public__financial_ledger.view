@@ -1,0 +1,51 @@
+label: financial_ledger
+description: All columns of the public table financial_ledger.
+catalog: solar_panel_large
+schema: public
+table_name: financial_ledger
+dimensions:
+  currency:
+    description: 'TEXT. The currency of the transaction amount. Possible values: EUR, GBP, USD.'
+    sql: '"CURRENCY"'
+  description:
+    description: 'TEXT. A detailed description of the transaction. Example: Entry-level certification for solar PV installers..'
+    sql: '"DESCRIPTION"'
+  linked_client:
+    description: 'TEXT. FK -> clients.ClientCode. The client associated with the transaction, if applicable. Example: C1001.'
+    sql: '"LinkedClient"'
+  linked_contract:
+    description: 'TEXT. FK -> ppa_contracts.ContractNum. The contract associated with the transaction, if applicable. Example: PPA-001.'
+    sql: '"LinkedContract"'
+  linked_mfr:
+    description: 'TEXT. FK -> asset_manufacturers.MfrCode. The manufacturer associated with the transaction, if applicable. Example: MFR-02.'
+    sql: '"LinkedMFR"'
+  linked_order:
+    description: 'TEXT. FK -> work_orders.OrderNum. The work order associated with the transaction, if applicable. Example: WO-1001.'
+    sql: '"LinkedOrder"'
+  linked_site:
+    description: 'TEXT. FK -> plants.sitekey. The site associated with the transaction, if applicable. Example: SP9227.'
+    sql: '"LinkedSite"'
+  payment_status:
+    description: 'TEXT. The current payment status of the transaction. Possible values: Overdue, Paid, Unpaid.'
+    sql: '"PAYMENT_STATUS"'
+  txn_type:
+    description: 'TEXT. The type of transaction (Credit or Debit). Possible values: Credit, Debit.'
+    sql: '"TXN_TYPE"'
+  txn_ref:
+    description: 'BIGINT. Unique identifier for a financial transaction. Example: 10001.'
+    sql: '"TxnRef"'
+  amount:
+    description: 'REAL. The monetary value of the transaction. Positive for credit, negative for debit. Example: $35,250.50.'
+    sql: amount
+  category:
+    description: 'TEXT. The accounting category for the transaction. Possible values: Manufacturer Specific, Safety, Technical.'
+    sql: category
+  entry_ts:
+    description: 'TIMESTAMP. Timestamp when the transaction was entered into the system. Example: 2022-03-05 11:00:00.'
+    sql: entry_ts
+  invoice_no:
+    description: 'TEXT. The associated invoice number, if any. Example: INV-2023-05-01.'
+    sql: invoice_no
+  transaction_date:
+    description: 'DATE. The date the transaction occurred. Example: 31-May-23.'
+    sql: transaction_date

@@ -1,0 +1,66 @@
+label: CaseCorrespondenceLog
+description: All columns of the public table CaseCorrespondenceLog.
+catalog: labor_certification_applications_large
+schema: public
+table_name: CaseCorrespondenceLog
+dimensions:
+  ccl_code:
+    description: 'TEXT. Unique identifier for case correspondence log entry. Example: CCL-1A2B3C.'
+    sql: '"CCL_code"'
+  acknowledged_date:
+    description: 'TIMESTAMP. Date when receipt of correspondence was acknowledged. **NULL means Acknowledgment not yet recorded.** Example: 2024-01-01 12:00:00.'
+    sql: '"acknowledgedDate"'
+  action_taken:
+    description: 'TEXT. Action taken in response to correspondence. Unique values: Filed, Responded, Escalated, Under Review, No Action Required, Pending.'
+    sql: '"actionTaken"'
+  attachments_ct:
+    description: 'INTEGER. Number of attachments included with correspondence. Example: 2.'
+    sql: attachments_ct
+  confidential_material_flag:
+    description: 'BOOLEAN. Indicates if correspondence contains confidential material. Possible values: True, False.'
+    sql: '"confidentialMaterial_flag"'
+  correspondence_date:
+    description: 'TIMESTAMP. Date and time when correspondence was sent or received. Example: 2024-01-01 12:00:00.'
+    sql: '"correspondenceDate"'
+  correspondence_type:
+    description: 'TEXT. Type of correspondence document. Example: Receipt Notice.'
+    sql: '"correspondenceType"'
+  delivery_method:
+    description: 'TEXT. Method used to deliver the correspondence. Unique values: USPS First Class, USPS Priority, FedEx, UPS, Email, Fax, Online Portal, In Person.'
+    sql: '"deliveryMethod"'
+  digitized_copy_flag:
+    description: 'BOOLEAN. Indicates if digital copy has been created and stored. Possible values: True, False.'
+    sql: '"digitizedCopy_flag"'
+  direction:
+    description: 'TEXT. Direction of correspondence flow. Unique values: Inbound, Outbound.'
+    sql: direction
+  file_ref:
+    description: TEXT. Foreign key reference to cases table filekey.
+    sql: file_ref
+  page_count:
+    description: 'INTEGER. Number of pages in the correspondence. Example: 5.'
+    sql: '"pageCount"'
+  processing_priority:
+    description: 'INTEGER. Numeric processing priority from 1-10. Example: 5.'
+    sql: '"processingPriority"'
+  response_deadline:
+    description: 'TIMESTAMP. Deadline by which response must be submitted. **NULL means No response deadline applicable.** Example: 2024-01-01 12:00:00.'
+    sql: '"responseDeadline"'
+  response_received_flag:
+    description: 'BOOLEAN. Indicates if required response has been received. Possible values: True, False.'
+    sql: '"responseReceived_flag"'
+  response_required_flag:
+    description: 'BOOLEAN. Indicates if a response is required to this correspondence. Possible values: True, False.'
+    sql: '"responseRequired_flag"'
+  retention_period_years:
+    description: 'INTEGER. Required retention period in years. Example: 50.'
+    sql: '"retentionPeriod_years"'
+  sender_entity:
+    description: 'TEXT. Entity that sent the correspondence. Unique values: USCIS, DOL, DOS, Petitioner, Beneficiary, Attorney, Employer, Third Party.'
+    sql: '"senderEntity"'
+  tracking_number:
+    description: TEXT. Shipping or tracking number for physical correspondence. **NULL means Electronic delivery or tracking not available.**
+    sql: '"trackingNumber"'
+  urgency_level:
+    description: 'TEXT. Urgency level assigned to the correspondence. Unique values: Low, Standard, High, Critical.'
+    sql: '"urgencyLevel"'

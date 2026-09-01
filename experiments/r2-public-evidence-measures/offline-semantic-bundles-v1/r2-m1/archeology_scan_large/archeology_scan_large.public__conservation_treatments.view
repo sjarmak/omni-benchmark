@@ -1,0 +1,72 @@
+label: ConservationTreatments
+description: All columns of the public table ConservationTreatments.
+catalog: archeology_scan_large
+schema: public
+table_name: ConservationTreatments
+dimensions:
+  conservation_treatments_id:
+    description: TEXT. Unique identifier for conservation treatment record.
+    sql: '"ConservationTreatments_id"'
+  after_condition_score:
+    description: 'REAL. Condition assessment score after treatment 0-100. **NULL means Treatment incomplete.** Example: 75.'
+    sql: after_condition_score
+  before_condition_score:
+    description: 'REAL. Condition assessment score before treatment 0-100. Example: 45.'
+    sql: before_condition_score
+  chemical_agent_used:
+    description: 'TEXT. Primary chemical agent used in treatment. Unique values: Paraloid B-72, Acetone, Distilled Water, Ethanol, Microcrystalline Wax, None.'
+    sql: chemical_agent_used
+  chemical_volume_ml:
+    description: 'REAL. Volume of chemical agent used in milliliters. **NULL means No chemical treatment applied.** Example: 50.'
+    sql: chemical_volume_ml
+  conservation_ref:
+    description: 'INTEGER. Reference to parent conservation record. Example: 50.'
+    sql: conservation_ref
+  conservator_experience_years:
+    description: 'REAL. Years of experience of treating conservator. Example: 50.0.'
+    sql: conservator_experience_years
+  follow_up_required_months:
+    description: 'INTEGER. Months until follow-up assessment required. Unique values: 3, 6, 12, 24.'
+    sql: follow_up_required_months
+  humidity_controlled:
+    description: 'BOOLEAN. Indicates if treatment performed in humidity controlled environment. Possible values: True, False.'
+    sql: humidity_controlled
+  is_reversible:
+    description: 'BOOLEAN. Indicates if treatment is reversible. Possible values: True, False.'
+    sql: is_reversible
+  photo_documentation_count:
+    description: 'INTEGER. Number of photographs documenting treatment. Example: 50.'
+    sql: photo_documentation_count
+  post_treatment_weight_grams:
+    description: 'REAL. Weight of object after treatment in grams. **NULL means Treatment incomplete or object too fragile.** Example: 255.'
+    sql: post_treatment_weight_grams
+  pre_treatment_weight_grams:
+    description: 'REAL. Weight of object before treatment in grams. **NULL means Object too fragile to weigh.** Example: 250.'
+    sql: pre_treatment_weight_grams
+  success_rating:
+    description: 'TEXT. Overall success rating of treatment. Unique values: Excellent, Good, Satisfactory, Partial, Unsuccessful.'
+    sql: success_rating
+  temperature_celsius:
+    description: 'REAL. Treatment environment temperature in Celsius. Example: 21.'
+    sql: temperature_celsius
+  treatment_cost_usd:
+    description: 'REAL. Total cost of treatment in US dollars. Example: 350.'
+    sql: treatment_cost_usd
+  treatment_duration_hours:
+    description: 'REAL. Total duration of treatment in hours. Example: 8.'
+    sql: treatment_duration_hours
+  treatment_end_date:
+    description: 'TIMESTAMP. Date and time when treatment completed. **NULL means Treatment ongoing.** Example: 2024-01-01 12:00:00.'
+    sql: treatment_end_date
+  treatment_start_date:
+    description: 'TIMESTAMP. Date and time when treatment began. Example: 2024-01-01 12:00:00.'
+    sql: treatment_start_date
+  treatment_type:
+    description: 'TEXT. Category of conservation treatment applied. Unique values: Cleaning, Stabilization, Consolidation, Reconstruction, Desalination, Coating.'
+    sql: treatment_type
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ConservationTreatments public identity values.
+    label: ConservationTreatments Count
+    sql: ${archeology_scan_large_public__conservation_treatments.conservation_treatments_id}

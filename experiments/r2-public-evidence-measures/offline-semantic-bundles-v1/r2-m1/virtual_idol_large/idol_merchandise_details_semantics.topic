@@ -1,0 +1,19 @@
+base_view: virtual_idol_large_public__idol_merchandise_details
+label: idol_merchandise_details
+description: All columns of the public table idol_merchandise_details.
+fields:
+- virtual_idol_large_public__idol_merchandise_details.*
+- virtual_idol_large_public__commerceandcollection.*
+- virtual_idol_large_public__engagement.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__interactions.*
+- virtual_idol_large_public__membershipandspending.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__commerceandcollection:
+    virtual_idol_large_public__engagement:
+      virtual_idol_large_public__interactions: {}
+    virtual_idol_large_public__membershipandspending:
+      virtual_idol_large_public__fans: {}
+  virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

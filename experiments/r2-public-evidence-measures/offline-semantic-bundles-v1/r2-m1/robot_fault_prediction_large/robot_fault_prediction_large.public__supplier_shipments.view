@@ -1,0 +1,63 @@
+label: supplier_shipments
+description: All columns of the public table supplier_shipments.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: supplier_shipments
+dimensions:
+  carrier_name:
+    description: 'TEXT. Logistics provider name. Unique values: DHL, FedEx, Maersk, LocalCourier.'
+    sql: carrier_name
+  container_humidity_avg_pct:
+    description: 'REAL. Average humidity during transit. **NULL means No logger installed.** Example: 50.'
+    sql: container_humidity_avg_pct
+  container_temp_avg_c:
+    description: 'REAL. Average temp during transit. **NULL means No logger installed.** Example: 20.'
+    sql: container_temp_avg_c
+  customs_fee_usd:
+    description: TEXT. Import duties paid.
+    sql: customs_fee_usd
+  expedite_fee_usd:
+    description: TEXT. Extra cost for rush delivery.
+    sql: expedite_fee_usd
+  invoice_payment_status:
+    description: 'TEXT. Financial status. Unique values: Paid, Net30, Overdue.'
+    sql: invoice_payment_status
+  material_ref:
+    description: TEXT. The raw material included in shipment.
+    sql: material_ref
+  origin_country_code:
+    description: 'TEXT. ISO country code of origin. Unique values: CHN, DEU, USA, JPN.'
+    sql: origin_country_code
+  packaging_condition_grade:
+    description: 'TEXT. Visual grade of pallets (A-F). Unique values: A, B, C, D, F.'
+    sql: packaging_condition_grade
+  quality_certificate_id:
+    description: TEXT. Link to vendor QA doc.
+    sql: quality_certificate_id
+  quantity_received:
+    description: 'INTEGER. Units actually counted on dock. **NULL means Not yet counted.** Example: 50.'
+    sql: quantity_received
+  quantity_shipped:
+    description: 'INTEGER. Units listed on manifest. Example: 500.'
+    sql: quantity_shipped
+  rejected_units_count:
+    description: 'INTEGER. Units damaged or non-conforming. Example: 50.'
+    sql: rejected_units_count
+  shipment_tracking_id:
+    description: TEXT. Logistics carrier tracking number.
+    sql: shipment_tracking_id
+  shipping_cost_usd:
+    description: TEXT. Freight charges.
+    sql: shipping_cost_usd
+  supplier_id_code:
+    description: TEXT. Internal ID of the vendor.
+    sql: supplier_id_code
+  transport_mode:
+    description: 'TEXT. Method of transit. Unique values: Air, Sea, Rail, Truck.'
+    sql: transport_mode
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct supplier_shipments public identity values.
+    label: supplier_shipments Count
+    sql: ${robot_fault_prediction_large_public__supplier_shipments.shipment_tracking_id}

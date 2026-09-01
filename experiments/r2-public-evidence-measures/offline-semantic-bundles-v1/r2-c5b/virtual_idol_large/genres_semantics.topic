@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__genres
+label: genres
+description: All columns of the public table genres.
+fields:
+- virtual_idol_large_public__genres.*
+joins: {}
+ai_context: This topic models no cross-table joins.

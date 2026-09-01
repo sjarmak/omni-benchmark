@@ -1,0 +1,57 @@
+label: TransportationLog
+description: All columns of the public table TransportationLog.
+catalog: museum_artifact_large
+schema: public
+table_name: TransportationLog
+dimensions:
+  damage_report:
+    description: 'TEXT. No description provided. Possible values: Crate seal was tampered with but object was secure inside. Customs delay of 4 hours., Datalogger failed mid-shipment. Replaced upon arrival. No damage to object., Minor abrasion noted on corner of crate. Object condition unaffected., No issues reported..'
+    sql: '"DAMAGE_REPORT"'
+  destination:
+    description: 'TEXT. No description provided. Example: Metropolitan Museum of Art.'
+    sql: '"DESTINATION"'
+  manifest_code:
+    description: 'TEXT. No description provided. Example: MAN-2023-001A.'
+    sql: '"MANIFEST_CODE"'
+  max_g_force_ms2:
+    description: 'TEXT. No description provided. Example: 0.8.'
+    sql: '"MAX_G_FORCE_ms2"'
+  shipment_end:
+    description: 'TEXT. No description provided. Example: 2023-02-14T18:00:00Z.'
+    sql: '"SHIPMENT_END"'
+  shipment_log_tag:
+    description: 'TEXT. No description provided. Example: SHIP-001.'
+    sql: '"Shipment_Log_Tag"'
+  total_weight_kg:
+    description: 'TEXT. No description provided. Example: 450.5.'
+    sql: '"TOTAL_WEIGHT_KG"'
+  arrival_check_passed:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: arrival_check_passed
+  max_internal_temp_celsius:
+    description: 'TEXT. No description provided. Possible values: 19.0, 19.5, 20.0, 20.5, 21.0, 21.5, 22.0.'
+    sql: max_internal_temp_celsius
+  origin:
+    description: 'TEXT. No description provided. Example: Capital Museum.'
+    sql: origin
+  shipment_for_loan:
+    description: 'TEXT. No description provided. Example: L-2023-001.'
+    sql: shipment_for_loan
+  shipment_start:
+    description: 'TEXT. No description provided. Example: 2023-02-13T10:00:00Z.'
+    sql: shipment_start
+  transport_company:
+    description: 'TEXT. No description provided. Example: Masterpiece International.'
+    sql: transport_company
+  transport_mode:
+    description: 'TEXT. No description provided. Possible values: Air Freight, Climate-Controlled Truck.'
+    sql: transport_mode
+  travel_distance_km:
+    description: 'TEXT. No description provided. Example: 350.2.'
+    sql: travel_distance_km
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TransportationLog public identity values.
+    label: TransportationLog Count
+    sql: ${museum_artifact_large_public__transportation_log.shipment_log_tag}

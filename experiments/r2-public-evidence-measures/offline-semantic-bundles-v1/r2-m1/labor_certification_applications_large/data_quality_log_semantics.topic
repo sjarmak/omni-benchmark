@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__data_quality_log
+label: data_quality_log
+description: All columns of the public table data_quality_log.
+fields:
+- labor_certification_applications_large_public__data_quality_log.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,72 @@
+label: AttorneyTrainingRecord
+description: All columns of the public table AttorneyTrainingRecord.
+catalog: labor_certification_applications_large
+schema: public
+table_name: AttorneyTrainingRecord
+dimensions:
+  atr_code:
+    description: 'TEXT. Unique identifier for attorney training record. Example: ATR-1A2B3C.'
+    sql: '"ATR_code"'
+  applicable_to_bar:
+    description: 'TEXT. State bar where credits are applicable. Unique values: California, New York, Texas, Florida, Illinois, Multiple States, Not Applicable.'
+    sql: '"applicableToBar"'
+  assessment_score_pct:
+    description: 'REAL. Score on post-training assessment as percentage. **NULL means No assessment required for this training.** Example: 85.'
+    sql: '"assessmentScore_pct"'
+  certificate_issued_flag:
+    description: 'BOOLEAN. Indicates if completion certificate was issued. Possible values: True, False.'
+    sql: '"certificateIssued_flag"'
+  credit_hours:
+    description: 'REAL. Number of CLE credit hours earned. Example: 3.0.'
+    sql: '"creditHours"'
+  delivery_format:
+    description: 'TEXT. Format in which training was delivered. Unique values: In-Person, Live Virtual, On-Demand, Hybrid.'
+    sql: '"deliveryFormat"'
+  employer_sponsored_flag:
+    description: 'BOOLEAN. Indicates if training was sponsored by employer. Possible values: True, False.'
+    sql: '"employerSponsored_flag"'
+  ethics_credits:
+    description: 'REAL. Number of ethics-specific credit hours earned. Example: 0.5.'
+    sql: '"ethicsCredits"'
+  follow_up_required_flag:
+    description: 'BOOLEAN. Indicates if follow-up training is recommended. Possible values: True, False.'
+    sql: '"followUpRequired_flag"'
+  material_retained_flag:
+    description: 'BOOLEAN. Indicates if training materials were retained. Possible values: True, False.'
+    sql: '"materialRetained_flag"'
+  perf_metric_ref:
+    description: TEXT. Foreign key reference to AttorneyPerformanceMetric table.
+    sql: perf_metric_ref
+  practice_impact_score:
+    description: 'REAL. Self-assessed impact on practice from 1-10. **NULL means Impact assessment not completed.** Example: 6.5.'
+    sql: '"practiceImpactScore"'
+  provider_name:
+    description: 'TEXT. Name of the training provider organization. Unique values: AILA, State Bar, ABA, Practising Law Institute, Lawline, ILRC, Private Firm.'
+    sql: '"providerName"'
+  renewal_cycle_year:
+    description: 'INTEGER. Bar renewal cycle year for which credits apply. Example: 50.'
+    sql: '"renewalCycleYear"'
+  satisfaction_rating:
+    description: 'REAL. Attorney satisfaction rating for training from 1-5. **NULL means Rating not submitted.** Example: 4.0.'
+    sql: '"satisfactionRating"'
+  specialization_credits:
+    description: 'REAL. Credits toward immigration law specialization. Example: 2.0.'
+    sql: '"specializationCredits"'
+  training_cost_usd:
+    description: 'REAL. Cost of the training in USD. Example: 350.'
+    sql: '"trainingCost_USD"'
+  training_date:
+    description: 'TIMESTAMP. Date when training was completed. Example: 2024-01-01 12:00:00.'
+    sql: '"trainingDate"'
+  training_topic:
+    description: 'TEXT. Primary topic area of the training. Unique values: Immigration Law Updates, H-1B Procedures, PERM Process, EB-5 Investment, Asylum Law, Ethics, Technology, Business Development.'
+    sql: '"trainingTopic"'
+  training_type:
+    description: 'TEXT. Type of professional training completed. Unique values: CLE Seminar, Webinar, Conference, Workshop, Self-Study, Certification Course.'
+    sql: '"trainingType"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct AttorneyTrainingRecord public identity values.
+    label: AttorneyTrainingRecord Count
+    sql: ${labor_certification_applications_large_public__attorney_training_record.atr_code}

@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__skills
+label: skills
+description: All columns of the public table skills.
+fields:
+- virtual_idol_large_public__skills.*
+joins: {}
+ai_context: This topic models no cross-table joins.

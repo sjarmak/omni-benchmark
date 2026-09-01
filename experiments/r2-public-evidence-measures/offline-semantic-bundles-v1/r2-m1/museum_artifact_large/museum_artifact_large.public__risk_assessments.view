@@ -1,0 +1,36 @@
+label: RiskAssessments
+description: All columns of the public table RiskAssessments.
+catalog: museum_artifact_large
+schema: public
+table_name: RiskAssessments
+dimensions:
+  art_concern:
+    description: TEXT. Reference to the artifact being assessed for risk. FK to ArtifactsCore.ARTregID.
+    sql: art_concern
+  conserve_score:
+    description: 'BIGINT. Conservation score for the artifact or hall. Example: 85.0.'
+    sql: conserve_score
+  emerg_plan:
+    description: 'TEXT. Emergency plan related to the risk. Possible values: Review Required, Under Revision, Updated.'
+    sql: emerg_plan
+  evac_prio:
+    description: 'TEXT. Evacuation priority level for the artifact or hall. Possible values: Priority 1, Priority 2, Priority 3.'
+    sql: '"evacPrio"'
+  hall_concern:
+    description: TEXT. Reference to the exhibition hall being assessed for risk. FK to ExhibitionHalls.Hall_ID.
+    sql: hall_concern
+  handle_rules:
+    description: 'TEXT. Handling rules for the artifact or hall. Possible values: Minimal, Strict.'
+    sql: handle_rules
+  risk_id:
+    description: TEXT. Unique identifier for each risk assessment. PK.
+    sql: risk_id
+  risk_level:
+    description: 'TEXT. Level of risk associated with the artifact or hall. Possible values: High, Low, Medium.'
+    sql: risk_level
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct RiskAssessments public identity values.
+    label: RiskAssessments Count
+    sql: ${museum_artifact_large_public__risk_assessments.risk_id}

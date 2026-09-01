@@ -1,0 +1,9 @@
+base_view: disaster_relief_large_public__disaster_response_team
+label: DisasterResponseTeam
+description: All columns of the public table DisasterResponseTeam.
+fields:
+- disaster_relief_large_public__disaster_response_team.*
+- disaster_relief_large_public__disaster_event_core.*
+joins:
+  disaster_relief_large_public__disaster_event_core: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

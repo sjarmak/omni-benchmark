@@ -1,0 +1,69 @@
+label: material_storage_environment
+description: All columns of the public table material_storage_environment.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: material_storage_environment
+dimensions:
+  ambient_humidity_percent:
+    description: 'REAL. Relative humidity in the storage container. Example: 45.'
+    sql: ambient_humidity_percent
+  ambient_temperature_c:
+    description: 'REAL. Air temperature in the storage unit. Example: 21.'
+    sql: ambient_temperature_c
+  atmospheric_pressure_hpa:
+    description: 'REAL. Barometric pressure of storage environment. Example: 1013.'
+    sql: atmospheric_pressure_hpa
+  container_seal_integrity:
+    description: 'BOOLEAN. Status of the vacuum or tamper-evident seal. Possible values: True, False.'
+    sql: container_seal_integrity
+  dew_point_c:
+    description: 'REAL. Calculated temperature where condensation forms. Example: 10.'
+    sql: dew_point_c
+  env_log_id:
+    description: TEXT. Unique identifier for the environmental sample.
+    sql: env_log_id
+  gps_latitude:
+    description: 'REAL. Geospatial location of storage. **NULL means Indoor/No GPS fix.** Example: 50.0.'
+    sql: gps_latitude
+  gps_longitude:
+    description: 'REAL. Geospatial location of storage. **NULL means Indoor/No GPS fix.** Example: 50.0.'
+    sql: gps_longitude
+  light_exposure_lux:
+    description: 'REAL. Intensity of light hitting the materials. **NULL means Sensor obscured.** Example: 50.0.'
+    sql: light_exposure_lux
+  logger_battery_level_percent:
+    description: 'INTEGER. Battery status of the IoT tracking device. Example: 50.'
+    sql: logger_battery_level_percent
+  max_shock_g_force:
+    description: 'REAL. Maximum acceleration shock recorded (impact). Example: 50.0.'
+    sql: max_shock_g_force
+  particulate_matter_pm25:
+    description: 'REAL. Concentration of fine dust particles. **NULL means Sensor maintenance.** Example: 50.0.'
+    sql: particulate_matter_pm25
+  shelf_life_remaining_days:
+    description: 'INTEGER. Dynamic calculation of expiration based on temp conditions. Example: 180.'
+    sql: shelf_life_remaining_days
+  shipment_ref:
+    description: TEXT. Reference to the specific shipment monitored.
+    sql: shipment_ref
+  storage_zone_classification:
+    description: 'TEXT. Type of storage facility (Cold Chain, Dry, Hazmat). Unique values: Dry, Cold, Ambient.'
+    sql: storage_zone_classification
+  tilt_angle_degrees:
+    description: 'REAL. Orientation of the container relative to vertical. Example: 0.'
+    sql: tilt_angle_degrees
+  uv_index:
+    description: 'REAL. Ultraviolet radiation level. Example: 50.0.'
+    sql: uv_index
+  vibration_rms_g:
+    description: 'REAL. Average vibration magnitude during transit/storage. Example: 50.0.'
+    sql: vibration_rms_g
+  voc_concentration_ppm:
+    description: 'REAL. Volatile Organic Compounds level. **NULL means Sensor calibration mode.** Example: 50.0.'
+    sql: voc_concentration_ppm
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct material_storage_environment public identity values.
+    label: material_storage_environment Count
+    sql: ${robot_fault_prediction_large_public__material_storage_environment.env_log_id}

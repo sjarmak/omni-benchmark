@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__geo_jurisdiction
+label: Geo_Jurisdiction
+description: All columns of the public table Geo_Jurisdiction.
+fields:
+- cross_border_large_public__geo_jurisdiction.*
+joins: {}
+ai_context: This topic models no cross-table joins.

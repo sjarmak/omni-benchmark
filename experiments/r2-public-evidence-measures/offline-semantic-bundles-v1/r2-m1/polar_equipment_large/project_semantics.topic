@@ -1,0 +1,7 @@
+base_view: polar_equipment_large_public__project
+label: Project
+description: All columns of the public table Project.
+fields:
+- polar_equipment_large_public__project.*
+joins: {}
+ai_context: This topic models no cross-table joins.

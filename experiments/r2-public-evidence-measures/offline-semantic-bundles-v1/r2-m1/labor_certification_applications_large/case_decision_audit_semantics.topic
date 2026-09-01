@@ -1,0 +1,11 @@
+base_view: labor_certification_applications_large_public__case_decision_audit
+label: CaseDecisionAudit
+description: All columns of the public table CaseDecisionAudit.
+fields:
+- labor_certification_applications_large_public__case_decision_audit.*
+- labor_certification_applications_large_public__cases.*
+- labor_certification_applications_large_public__preparer.*
+joins:
+  labor_certification_applications_large_public__cases:
+    labor_certification_applications_large_public__preparer: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

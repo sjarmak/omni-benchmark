@@ -1,0 +1,72 @@
+label: ShelterCore
+description: All columns of the public table ShelterCore.
+catalog: disaster_relief_large
+schema: public
+table_name: ShelterCore
+dimensions:
+  capacity_persons:
+    description: 'VARCHAR(100). Maximum designed occupancy capacity in persons. Example: "877".'
+    sql: '"capacityPersons"'
+  closing_date:
+    description: 'VARCHAR(100). Projected or actual date of shelter closure. Example: "2002-09-30".'
+    sql: '"closingDate"'
+  contact_phone:
+    description: 'VARCHAR(100). Primary contact telephone number for shelter operations. Example: "143-4089-7238".'
+    sql: '"contactPhone"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 6114.'
+    sql: '"disasterEventId"'
+  distance_to_hospital_km:
+    description: 'VARCHAR(100). Distance to nearest medical facility in kilometers. Example: "cICsyMgF54".'
+    sql: '"distanceToHospitalKm"'
+  estimate_repair_cost_usd:
+    description: 'VARCHAR(100). Projected cost for required repairs in USD. Example: "SWO2ETg23z".'
+    sql: '"estimateRepairCostUSD"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for shelter facility records. Example: 1.'
+    sql: id
+  inspection_score:
+    description: 'VARCHAR(100). Numerical rating from safety inspection (1-100 scale). Example: "eN22nWZyFs".'
+    sql: '"inspectionScore"'
+  last_inspection_date:
+    description: 'VARCHAR(100). Date of most recent facility safety inspection. Example: "2001-10-30".'
+    sql: '"lastInspectionDate"'
+  latitude:
+    description: 'VARCHAR(100). Geographic latitude coordinate of shelter location (-90 to 90). Example: "877".'
+    sql: latitude
+  location_name:
+    description: 'VARCHAR(100). Official name or address of shelter facility. Example: "Inoue Momoka".'
+    sql: '"locationName"'
+  longitude:
+    description: 'VARCHAR(100). Geographic longitude coordinate of shelter location (-180 to 180). Example: "877".'
+    sql: longitude
+  manager_name:
+    description: 'VARCHAR(100). Name of facility manager or coordinator. Example: "Inoue Momoka".'
+    sql: '"managerName"'
+  notes:
+    description: 'VARCHAR(100). Additional operational notes or special considerations. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: notes
+  occupancy_persons:
+    description: 'VARCHAR(100). Current actual occupancy count. Example: "537".'
+    sql: '"occupancyPersons"'
+  opening_date:
+    description: 'VARCHAR(100). Date facility commenced operations as shelter. Example: "2022-08-23".'
+    sql: '"openingDate"'
+  repair_needed:
+    description: 'VARCHAR(100). Required maintenance classification (None|Minor|Moderate|Major|Critical). Possible values: "Critical", "Major", "Minor", "Moderate", "None".'
+    sql: '"repairNeeded"'
+  shelter_id_ref:
+    description: 'VARCHAR(100). Logical reference to shelter registry identifier (ShelterFacilities.SHELTER_ID). Example: "4ZKmaHPd5W".'
+    sql: '"shelterIdRef"'
+  shelter_status:
+    description: 'VARCHAR(100). Operational status (Operational|Full|Partial|Closed|Damaged|UnderRepair). Possible values: "Closed", "Damaged", "Full", "Operational", "Partial", "UnderRepair".'
+    sql: '"shelterStatus"'
+  utilities_services:
+    description: 'VARCHAR(100). Available utility services and infrastructure status. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"utilitiesServices"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ShelterCore public identity values.
+    label: ShelterCore Count
+    sql: ${disaster_relief_large_public__shelter_core.id}

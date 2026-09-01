@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__designers
+label: designers
+description: All columns of the public table designers.
+fields:
+- virtual_idol_large_public__designers.*
+joins: {}
+ai_context: This topic models no cross-table joins.

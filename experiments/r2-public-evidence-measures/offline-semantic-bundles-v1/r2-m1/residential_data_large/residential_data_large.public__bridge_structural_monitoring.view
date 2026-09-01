@@ -1,0 +1,72 @@
+label: Bridge_Structural_Monitoring
+description: All columns of the public table Bridge_Structural_Monitoring.
+catalog: residential_data_large
+schema: public
+table_name: Bridge_Structural_Monitoring
+dimensions:
+  bridge_sensor_pk:
+    description: 'TEXT. Unique identifier for bridge structural monitoring record. Example: BSM-1A2B3C.'
+    sql: '"Bridge_Sensor_PK"'
+  structural_health_fk:
+    description: TEXT. Reference to general infrastructure health metrics.
+    sql: '"Structural_Health_FK"'
+  acoustic_emission_event_count:
+    description: 'INTEGER. Micro-crack sounds detected in steel members. **NULL means Ultrasonic sensor failure.** Example: 50.'
+    sql: acoustic_emission_event_count
+  cable_tension_kilonewtons:
+    description: 'REAL. Force exerted on suspension/stay cables. **NULL means Not a cable-supported bridge.** Example: 4500.'
+    sql: cable_tension_kilonewtons
+  chloride_ion_penetration_ppm:
+    description: 'REAL. Salt concentration in concrete indicating corrosion risk. **NULL means Lab sample pending.** Example: 50.0.'
+    sql: chloride_ion_penetration_ppm
+  deck_deflection_mm:
+    description: 'REAL. Downward curvature under live load. Example: 12.'
+    sql: deck_deflection_mm
+  dynamic_amplification_factor:
+    description: 'REAL. Ratio of dynamic to static stress. Example: 1.15.'
+    sql: dynamic_amplification_factor
+  expansion_joint_gap_mm:
+    description: 'REAL. Current width of the bridge expansion joint. Example: 45.'
+    sql: expansion_joint_gap_mm
+  fatigue_damage_index:
+    description: 'REAL. Cumulative calculation of stress-cycle fatigue. Example: 50.0.'
+    sql: fatigue_damage_index
+  ice_accretion_weight_kg_m:
+    description: 'REAL. Weight of ice buildup on structural components. **NULL means Tropical climate / no ice.** Example: 50.0.'
+    sql: ice_accretion_weight_kg_m
+  load_rating_factor_current:
+    description: 'REAL. Current capacity relative to design legal load. Example: 50.0.'
+    sql: load_rating_factor_current
+  modal_frequency_fundamental_hz:
+    description: 'REAL. Primary natural resonance frequency of the structure. Example: 0.8.'
+    sql: modal_frequency_fundamental_hz
+  paint_coating_thickness_microns:
+    description: 'REAL. Protective layer thickness on steel girders. **NULL means Concrete bridge (no paint).** Example: 250.'
+    sql: paint_coating_thickness_microns
+  pier_settlement_vertical_mm:
+    description: 'REAL. Vertical displacement of bridge piers over time. **NULL means Inaccessible sensor.** Example: 50.0.'
+    sql: pier_settlement_vertical_mm
+  relative_humidity_box_girder_percent:
+    description: 'REAL. Humidity inside enclosed structural members. **NULL means Open girder design.** Example: 50.0.'
+    sql: relative_humidity_box_girder_percent
+  scour_depth_riverbed_meters:
+    description: 'REAL. Erosion depth around underwater foundations. **NULL means Non-water crossing bridge.** Example: 50.0.'
+    sql: scour_depth_riverbed_meters
+  structural_damping_ratio:
+    description: 'REAL. Capability of the structure to dissipate kinetic energy. Example: 50.0.'
+    sql: structural_damping_ratio
+  tilt_angle_abutment_degrees:
+    description: 'REAL. Angular deviation from vertical for end supports. Example: 0.05.'
+    sql: tilt_angle_abutment_degrees
+  vehicle_axle_count_daily:
+    description: 'INTEGER. Volume of heavy vehicle traffic detected by sensors. Example: 5000.'
+    sql: vehicle_axle_count_daily
+  wind_speed_deck_level_kmh:
+    description: 'REAL. Air velocity at the bridge surface. Example: 15.'
+    sql: wind_speed_deck_level_kmh
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Bridge_Structural_Monitoring public identity values.
+    label: Bridge_Structural_Monitoring Count
+    sql: ${residential_data_large_public__bridge_structural_monitoring.bridge_sensor_pk}

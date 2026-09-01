@@ -1,0 +1,72 @@
+label: EngineAndFluids
+description: All columns of the public table EngineAndFluids.
+catalog: polar_equipment_large
+schema: public
+table_name: EngineAndFluids
+dimensions:
+  engine_id:
+    description: BIGSERIAL. Unique identifier for the engine and fluids record. PK.
+    sql: '"ENGINE_ID"'
+  batt_link:
+    description: BIGINT. Reference to the battery. FK to PowerBattery.PWR_BATT_ID.
+    sql: batt_link
+  engine_fluids_snapshot:
+    description: JSONB column. Consolidates engine operating metrics together with the levels, temperatures and pressures of all key fluids (fuel, oil, coolant, hydraulics) for easier telemetry ingestion.
+    sql: engine_fluids_snapshot
+  equip_ref:
+    description: TEXT. Reference to the equipment. FK to Equipment.EQUIP_CODE.
+    sql: '"equipRef"'
+  opmaint_link:
+    description: BIGINT. Reference to the operation and maintenance record. FK to OperationMaintenance.OP_MAINT_ID.
+    sql: opmaint_link
+  engine_fluids_snapshot_coolant_level_pct:
+    description: 'REAL. Coolant level percentage. Example: 64.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'coolant', 'level_pct')
+  engine_fluids_snapshot_coolant_pressure_kpa_or_code:
+    description: 'TEXT. Coolant pressure in kPa. Example: 88.9 hPa.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'coolant', 'pressure_kpa_or_code')
+  engine_fluids_snapshot_coolant_temperature_c:
+    description: 'REAL. Coolant temperature in Celsius. Example: 69.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'coolant', 'temperature_c')
+  engine_fluids_snapshot_engine_core_block_temp_c:
+    description: 'REAL. Engine temperature in Celsius. Example: 4.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'engine_core', 'block_temp_c')
+  engine_fluids_snapshot_engine_core_lifetime_hours:
+    description: 'REAL. Total engine hours. Example: 31452.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'engine_core', 'lifetime_hours')
+  engine_fluids_snapshot_engine_core_load_pct:
+    description: 'REAL. Engine load percentage. Example: 61.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'engine_core', 'load_pct')
+  engine_fluids_snapshot_engine_core_rpm:
+    description: 'BIGINT. Engine RPM. **NULL means no engine RPM data recorded.**. Example: 3133.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'engine_core', 'rpm')
+  engine_fluids_snapshot_fuel_consumption_lph:
+    description: 'REAL. Fuel consumption in liters per hour. Example: 44.48.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'fuel', 'consumption_lph')
+  engine_fluids_snapshot_fuel_level_pct:
+    description: 'REAL. Fuel level percentage. Example: 49.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'fuel', 'level_pct')
+  engine_fluids_snapshot_fuel_rail_pressure_kpa:
+    description: 'BIGINT. Fuel pressure in kPa. **NULL means no fuel pressure data recorded.**. Example: 89.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'fuel', 'rail_pressure_kpa')
+  engine_fluids_snapshot_fuel_temperature_c:
+    description: 'REAL. Fuel temperature in Celsius. Example: -37.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'fuel', 'temperature_c')
+  engine_fluids_snapshot_hydraulic_fluid_level_pct:
+    description: 'REAL. Hydraulic fluid percentage. Example: 59.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'hydraulic', 'fluid_level_pct')
+  engine_fluids_snapshot_hydraulic_pressure_kpa:
+    description: 'REAL. Hydraulic pressure in kPa. Example: 19647.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'hydraulic', 'pressure_kpa')
+  engine_fluids_snapshot_hydraulic_temperature_c:
+    description: 'REAL. Hydraulic temperature in Celsius. Example: 39.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'hydraulic', 'temperature_c')
+  engine_fluids_snapshot_oil_level_pct:
+    description: 'REAL. Oil level percentage. Example: 49.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'oil', 'level_pct')
+  engine_fluids_snapshot_oil_pressure_kpa:
+    description: 'BIGINT. Oil pressure in kPa. Example: 331.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'oil', 'pressure_kpa')
+  engine_fluids_snapshot_oil_temperature_c:
+    description: 'REAL. Oil temperature in Celsius. Example: 6.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engine_fluids_snapshot, 'oil', 'temperature_c')

@@ -1,0 +1,7 @@
+base_view: disaster_relief_large_public__disaster_event_core
+label: DisasterEventCore
+description: All columns of the public table DisasterEventCore.
+fields:
+- disaster_relief_large_public__disaster_event_core.*
+joins: {}
+ai_context: This topic models no cross-table joins.

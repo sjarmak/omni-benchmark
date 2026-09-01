@@ -1,0 +1,9 @@
+base_view: residential_data_large_public__public_safety_patrol_logs
+label: Public_Safety_Patrol_Logs
+description: All columns of the public table Public_Safety_Patrol_Logs.
+fields:
+- residential_data_large_public__public_safety_patrol_logs.*
+- residential_data_large_public__crime_statistics.*
+joins:
+  residential_data_large_public__crime_statistics: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

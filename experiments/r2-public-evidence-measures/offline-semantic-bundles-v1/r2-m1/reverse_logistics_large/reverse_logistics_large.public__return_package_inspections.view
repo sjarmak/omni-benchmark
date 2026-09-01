@@ -1,0 +1,102 @@
+label: return_package_inspections
+description: All columns of the public table return_package_inspections.
+catalog: reverse_logistics_large
+schema: public
+table_name: return_package_inspections
+dimensions:
+  xray_scan_result:
+    description: 'TEXT. The result of the X-ray scan. **NULL means the package was not scanned.** Example: No anomalies detected..'
+    sql: '"XRAY_SCAN_RESULT"'
+  actual_weight_kg:
+    description: 'REAL. The actual measured weight of the package in kilograms. Example: 3.83.'
+    sql: actual_weight_kg
+  barcode_scan_successful:
+    description: 'BOOLEAN. Indicates if the package barcode was scanned successfully. Example: True.'
+    sql: barcode_scan_successful
+  box_condition:
+    description: 'TEXT. The physical condition of the external box. Possible values: Good, Damaged, Opened, Taped.'
+    sql: box_condition
+  expected_weight_kg:
+    description: 'REAL. The expected weight of the package based on the RMA. Example: 4.16.'
+    sql: expected_weight_kg
+  final_receiving_status:
+    description: 'TEXT. The final status assigned upon receipt. Possible values: Accepted, Rejected - Wrong Item, Quarantined, Accepted - Damaged.'
+    sql: final_receiving_status
+  handling_priority:
+    description: 'TEXT. The handling priority for the package. Possible values: Normal, High, Low.'
+    sql: handling_priority
+  inspecting_employee_id:
+    description: 'BIGINT. The ID of the employee who performed the inspection. FK to employees.EMPLOYEE_ID. Example: 1038.'
+    sql: inspecting_employee_id
+  inspection_date:
+    description: 'DATE. The date the package was inspected. Example: 2025-08-17.'
+    sql: inspection_date
+  internal_packaging_condition:
+    description: 'TEXT. The condition of the internal packaging. Possible values: Good, Damaged, Missing, Adequate.'
+    sql: internal_packaging_condition
+  item_count_vs_rma:
+    description: 'BIGINT. The difference between the actual item count and the count on the RMA. Example: 0.'
+    sql: item_count_vs_rma
+  moisture_detection_level:
+    description: 'REAL. The level of moisture detected, from 0 (dry) to 1 (saturated). Example: 0.43.'
+    sql: moisture_detection_level
+  next_processing_step:
+    description: 'TEXT. The next step in the return process for this package. Possible values: To Triage, To Liquidation, Return to Vendor, Scrap.'
+    sql: next_processing_step
+  notes_on_discrepancies:
+    description: 'TEXT. Notes on any discrepancies found. **NULL indicates no discrepancies were noted.** Possible values: Item count mismatch., Wrong item returned., Box empty., Damage not consistent with report..'
+    sql: notes_on_discrepancies
+  package_inspection_id:
+    description: 'BIGINT. Unique identifier for the package inspection event. PK. Example: 6000.'
+    sql: package_inspection_id
+  package_odor_description:
+    description: TEXT. A description of any unusual odors. **NULL or 'None' means no unusual odor was detected.**
+    sql: package_odor_description
+  photographic_evidence_urls:
+    description: 'JSONB. A JSON array of URLs to photos taken during inspection. Example: [https://example.com/inspections/RL156055_0.jpg, https://example.com/inspections/RL156055_1.jpg, https://example.com/inspections/RL156055_2.jpg].'
+    sql: photographic_evidence_urls
+  quarantine_recommendation:
+    description: 'BOOLEAN. Indicates if the package is recommended for quarantine. Possible values: True, False.'
+    sql: quarantine_recommendation
+  receiving_dock_number:
+    description: 'TEXT. The receiving dock where the package was processed. Example: DOCK-12.'
+    sql: receiving_dock_number
+  related_return_case:
+    description: 'TEXT. The case number of the return this inspection is for. FK to returns.casenum. Example: RL156055.'
+    sql: related_return_case
+  rfid_tag_data:
+    description: 'TEXT. Data read from an RFID tag on the package. **NULL means the package did not have an RFID tag.** Example: DJpyk9VsjbKSmI1eoNiGY7yU.'
+    sql: rfid_tag_data
+  security_tape_color_code:
+    description: 'TEXT. The color code of the security tape on the package. Possible values: Red, Green, Blue, Clear.'
+    sql: security_tape_color_code
+  shipping_label_legibility:
+    description: 'BOOLEAN. Indicates if the shipping label is legible. Possible values: True, False.'
+    sql: shipping_label_legibility
+  shock_sensor_tripped:
+    description: BOOLEAN. Indicates if the package's shock sensor was tripped. **NULL means the package did not have a shock sensor.**
+    sql: shock_sensor_tripped
+  tamper_seal_status:
+    description: 'TEXT. The status of the tamper-evident seal. Possible values: Intact, Broken, Missing.'
+    sql: tamper_seal_status
+  temperature_log_fahrenheit:
+    description: 'REAL. The temperature reading from a logger in the package, in Fahrenheit. **NULL means the package did not have a temperature logger.** Example: 74.5.'
+    sql: temperature_log_fahrenheit
+  time_of_receipt:
+    description: 'TIME. The time the package was received. Example: 17:54.'
+    sql: time_of_receipt
+  unauthorized_item_found:
+    description: 'BOOLEAN. Indicates if any unauthorized items were found in the package. Example: False.'
+    sql: unauthorized_item_found
+  unboxing_video_ref:
+    description: 'TEXT. A reference to the unboxing video file. **NULL means no video was recorded.** Example: videos/RL549729.mp4.'
+    sql: unboxing_video_ref
+  weight_discrepancy_flag:
+    description: 'BOOLEAN. Indicates if there is a significant discrepancy between actual and expected weight. Possible values: True, False.'
+    sql: weight_discrepancy_flag
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct return_package_inspections public identity values.
+    label: return_package_inspections Count
+    sql: ${reverse_logistics_large_public__return_package_inspections.package_inspection_id}

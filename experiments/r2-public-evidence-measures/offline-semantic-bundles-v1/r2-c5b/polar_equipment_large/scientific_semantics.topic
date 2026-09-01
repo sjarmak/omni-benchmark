@@ -1,0 +1,19 @@
+base_view: polar_equipment_large_public__scientific
+label: Scientific
+description: Scientific equipment records with same-row reliability semantics.
+fields:
+- polar_equipment_large_public__scientific.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+joins:
+  polar_equipment_large_public__equipment:
+    polar_equipment_large_public__equipmenttype: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields scientific_equipment_reliability rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Scientific Data Reliability Classification: Scientific data is classified as ''Research Grade'' when collected by equipment with SER > 0.9, with valid calibration status, and under appropriate environmental conditions for the equipment type.
+
+  - Long-term Scientific Mission Viability (LSMV): Scientific missions are assessed as ''long-term viable'' when all involved scientific equipment maintains SMSP > 0.8 and overall site operations maintain CORI > 0.75, with calibration status = ''Valid'' and data logging status = ''Active''.'

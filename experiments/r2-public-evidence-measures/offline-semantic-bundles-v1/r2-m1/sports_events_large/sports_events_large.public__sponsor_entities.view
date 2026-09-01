@@ -1,0 +1,102 @@
+label: sponsor_entities
+description: All columns of the public table sponsor_entities.
+catalog: sports_events_large
+schema: public
+table_name: sponsor_entities
+dimensions:
+  activation_budget_musd:
+    description: 'REAL. Activation budget in millions of USD. Example: 1.2.'
+    sql: '"ActivationBudget_MUSD"'
+  activation_channels:
+    description: 'TEXT. Channels used for sponsor activation. Example: digital, trackside.'
+    sql: '"ActivationChannels"'
+  address_line1:
+    description: 'TEXT. Primary address line for the sponsor. Example: 1 Main St.'
+    sql: '"Address_Line1"'
+  annual_revenue_usd_m:
+    description: 'REAL. Annual revenue of the sponsor in millions of USD. Example: 1200.0.'
+    sql: '"AnnualRevenue_USD_M"'
+  brand_guidelines_url:
+    description: 'TEXT. URL for the sponsor''s brand guidelines. Example: http://brandx.com/guidelines.'
+    sql: '"BrandGuidelinesURL"'
+  brand_equity_score:
+    description: 'REAL. Brand equity score of the sponsor (0–100). **NULL means brand equity score is not available.** Example: 85.2.'
+    sql: '"Brand_EQUITY_SCORE"'
+  city:
+    description: 'TEXT. City where the sponsor is based. Example: SF.'
+    sql: '"CITY"'
+  contact_email:
+    description: 'TEXT. Email address for the primary contact. Example: jane@brandx.com.'
+    sql: '"ContactEmail"'
+  contact_phone:
+    description: 'TEXT. Phone number for the primary contact. Example: +1-555-0100.'
+    sql: '"ContactPhone"'
+  contract_term_years:
+    description: 'REAL. Duration of the sponsor contract in years. Example: 3.0.'
+    sql: '"ContractTermYears"'
+  contract_value_musd:
+    description: 'REAL. Total value of the sponsor contract in millions of USD. **NULL means contract value is not disclosed.** Example: 8.5.'
+    sql: '"ContractValue_MUSD"'
+  credit_rating:
+    description: 'TEXT. Credit rating of the sponsor. **NULL means credit rating is not available.** Example: A-.'
+    sql: '"CreditRating"'
+  deliverables_json:
+    description: 'JSONB. Deliverables agreed with the sponsor. Example: {logo:front wing}.'
+    sql: '"Deliverables_JSON"'
+  esg_score:
+    description: 'REAL. Environmental, social, and governance (ESG) score (0–100). **NULL means ESG score is not available.** Example: 78.0.'
+    sql: '"ESG_Score"'
+  hq_country:
+    description: 'TEXT. Country where the sponsor''s headquarters is located. Example: US.'
+    sql: '"HQ_Country"'
+  industry:
+    description: 'TEXT. Industry sector of the sponsor. Example: Tech.'
+    sql: '"INDUSTRY"'
+  invoicing_email:
+    description: 'TEXT. Email for invoicing and billing. Example: ap@brandx.com.'
+    sql: '"InvoicingEmail"'
+  legal_name:
+    description: 'TEXT. Official legal name of the sponsor. Example: Brand X Inc.'
+    sql: '"LegalName"'
+  make_goods_json:
+    description: 'JSONB. Make-good arrangements in case of underperformance. Example: {bonus:social}.'
+    sql: '"MAKE_GOODS_JSON"'
+  notes_:
+    description: 'TEXT. Notes on sponsorship or contract. **NULL means no additional notes recorded.** Example: Renewal in Q4.'
+    sql: '"NOTES_"'
+  payment_terms_days:
+    description: 'BIGINT. Number of days for payment terms in sponsor contracts. Example: 45.'
+    sql: '"PaymentTerms_DAYS"'
+  postal_code:
+    description: 'TEXT. Postal/ZIP code for the sponsor''s address. Example: 94105.'
+    sql: '"Postal_Code"'
+  primary_contact:
+    description: 'TEXT. Name of the primary contact for the sponsor. Example: Jane Doe.'
+    sql: '"PrimaryContact"'
+  rights_json:
+    description: 'JSONB. Rights granted by the sponsor. Example: {hospitality:50}.'
+    sql: '"Rights_json"'
+  sponsor_code:
+    description: 'TEXT. Unique identifier for the sponsor. Example: BRNDX.'
+    sql: '"SPONSOR_CODE"'
+  sponsor_record:
+    description: BIGSERIAL. Surrogate primary key for sponsor_entities rows. PK.
+    sql: '"Sponsor_Record"'
+  state_region:
+    description: 'TEXT. State or region for the sponsor''s location. Example: CA.'
+    sql: '"StateRegion"'
+  address_line2:
+    description: 'TEXT. Secondary address line for the sponsor. Example: Suite 100.'
+    sql: address_line2
+  country:
+    description: 'TEXT. Country of the sponsor. Example: US.'
+    sql: country
+  risk_score:
+    description: 'REAL. Risk score (0–1.0) for the sponsor''s financial stability. Example: 0.23.'
+    sql: risk_score
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct sponsor_entities public identity values.
+    label: sponsor_entities Count
+    sql: ${sports_events_large_public__sponsor_entities.sponsor_record}

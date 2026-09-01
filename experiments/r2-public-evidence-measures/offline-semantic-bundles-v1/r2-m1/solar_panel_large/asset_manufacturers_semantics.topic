@@ -1,0 +1,7 @@
+base_view: solar_panel_large_public__asset_manufacturers
+label: asset_manufacturers
+description: All columns of the public table asset_manufacturers.
+fields:
+- solar_panel_large_public__asset_manufacturers.*
+joins: {}
+ai_context: This topic models no cross-table joins.

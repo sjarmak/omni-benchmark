@@ -1,0 +1,105 @@
+label: suppliers
+description: All columns of the public table suppliers.
+catalog: reverse_logistics_large
+schema: public
+table_name: suppliers
+dimensions:
+  supplier_name:
+    description: 'TEXT. The legal name of the supplier company. Example: Supplier Corp 1.'
+    sql: '"SUPPLIER_NAME"'
+  bank_account_details:
+    description: 'TEXT. The supplier''s bank account number for payments. Example: 6U4720RKJC2H5BLAYDW2J9.'
+    sql: bank_account_details
+  certifications:
+    description: 'JSONB. A JSON array of certifications held by the supplier. Example: [Fair Trade, ISO 14001].'
+    sql: certifications
+  confidentiality_agreement_signed:
+    description: 'BOOLEAN. Indicates if a confidentiality agreement is signed. Possible values: True, False.'
+    sql: confidentiality_agreement_signed
+  contract_end_date:
+    description: 'DATE. The end date of the contract. **NULL means the contract is open-ended or on a rolling basis.** Example: 2030-07-04.'
+    sql: contract_end_date
+  contract_start_date:
+    description: 'DATE. The start date of the contract with the supplier. Example: 2020-02-12.'
+    sql: contract_start_date
+  country:
+    description: 'TEXT. The country where the supplier is headquartered. Example: USA.'
+    sql: country
+  defect_rate_pct:
+    description: 'REAL. The percentage of supplied items that are defective. Example: 2.364.'
+    sql: defect_rate_pct
+  duns_number:
+    description: 'TEXT. The supplier''s Dun & Bradstreet number. **NULL means the supplier does not have a D-U-N-S number or it is not on record.** Example: TSM8H96KF.'
+    sql: duns_number
+  ethical_sourcing_audit_score:
+    description: 'REAL. The score from the most recent ethical sourcing audit. **NULL means an audit has not yet been performed.** Example: 75.1.'
+    sql: ethical_sourcing_audit_score
+  headquarters_address:
+    description: 'TEXT. The full address of the supplier''s headquarters. Example: 1630 Maple St, Anytown, TX 95430.'
+    sql: headquarters_address
+  is_active_supplier:
+    description: 'BOOLEAN. Indicates if the supplier is currently active. Possible values: True, False.'
+    sql: is_active_supplier
+  language_preference:
+    description: 'TEXT. The preferred language for communication. Possible values: English, Mandarin, Spanish, German.'
+    sql: language_preference
+  last_audit_date:
+    description: 'DATE. The date of the last audit. Example: 2024-07-05.'
+    sql: last_audit_date
+  minimum_order_quantity:
+    description: 'BIGINT. The minimum quantity required for an order. Example: 100.'
+    sql: minimum_order_quantity
+  notes:
+    description: 'TEXT. General notes about the supplier. **NULL means there are no special notes.** Example: Carrier offers discounted rates for bulk shipments scheduled a week in advance.'
+    sql: notes
+  on_time_delivery_rate_pct:
+    description: 'REAL. The percentage of orders delivered on time. Example: 87.24.'
+    sql: on_time_delivery_rate_pct
+  parent_company_id:
+    description: 'BIGINT. The supplier_id of the parent company, if any. **NULL means the supplier is an independent company.** Example: 57.0.'
+    sql: parent_company_id
+  payment_terms:
+    description: 'TEXT. The agreed-upon payment terms. Possible values: Net 30, Net 60, Net 90, On Receipt.'
+    sql: payment_terms
+  preferred_shipping_carrier:
+    description: 'TEXT. The supplier''s preferred shipping carrier. Example: Carrier-1.'
+    sql: preferred_shipping_carrier
+  primary_product_category:
+    description: 'TEXT. The main category of products supplied. Possible values: Electronics, Plastics, Mechanical Parts, Raw Materials, Packaging.'
+    sql: primary_product_category
+  response_time_hours:
+    description: 'BIGINT. The average time in hours for the supplier to respond to inquiries. Example: 9.'
+    sql: response_time_hours
+  risk_assessment_level:
+    description: 'TEXT. The internal risk assessment level for this supplier. Possible values: Low, Medium, High.'
+    sql: risk_assessment_level
+  supplier_contact:
+    description: JSONB column. Stores the primary contact information for the supplier.
+    sql: supplier_contact
+  supplier_id:
+    description: 'BIGINT. Unique identifier for the supplier. PK. Example: 1.'
+    sql: supplier_id
+  supplier_rating:
+    description: 'REAL. An internal rating of the supplier''s performance, from 1-10. Example: 9.7.'
+    sql: supplier_rating
+  sustainability_report_url:
+    description: 'TEXT. A URL to the supplier''s sustainability report. **NULL means the supplier does not publish a report or the URL is unknown.** Example: https://example-supplier.com/sustainability.'
+    sql: sustainability_report_url
+  tax_id_number:
+    description: 'TEXT. The supplier''s tax identification number. Example: 8DLD2G630.'
+    sql: tax_id_number
+  supplier_contact_contact_person:
+    description: 'TEXT. The name of the primary contact at the supplier. Example: Contact Person 1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(supplier_contact, 'contact_person')
+  supplier_contact_email:
+    description: 'TEXT. The contact person''s email address. Example: contact.sup1@example.com.'
+    sql: JSONB_EXTRACT_PATH_TEXT(supplier_contact, 'email')
+  supplier_contact_phone_number:
+    description: 'TEXT. The contact person''s phone number. Example: 555-623-6568.'
+    sql: JSONB_EXTRACT_PATH_TEXT(supplier_contact, 'phone_number')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct suppliers public identity values.
+    label: suppliers Count
+    sql: ${reverse_logistics_large_public__suppliers.supplier_id}

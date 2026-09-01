@@ -1,0 +1,39 @@
+label: products
+description: All columns of the public table products.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: products
+dimensions:
+  date_discontinued:
+    description: 'TEXT. The month and year the product was discontinued, formatted as YYYY/MM. **NULL indicates the product is still active.**. Possible values: 2023/03, 2024/12.'
+    sql: date_discontinued
+  date_introduced:
+    description: 'TEXT. The month and year the product was introduced, formatted as YYYY/MM. Example: 2022/01.'
+    sql: date_introduced
+  dimensions_mm:
+    description: 'TEXT. The dimensions of the product in millimeters, formatted as LxWxH. Example: 1200x900x150.'
+    sql: dimensions_mm
+  product_description:
+    description: 'TEXT. A brief description of the product. **NULL indicates no detailed description is available.**. Example: Complete front-left door assembly for Model X vehicle..'
+    sql: product_description
+  product_name:
+    description: 'TEXT. Human-readable name of the product. Example: Automotive Door Assembly - Left.'
+    sql: product_name
+  product_sku:
+    description: 'TEXT. Unique identifier (Stock Keeping Unit) for the product. PK. Example: PROD-ASM-001.'
+    sql: product_sku
+  production_cycle_time_target_sec:
+    description: 'REAL. The target cycle time to produce one unit of the product, in seconds. Example: 180.5.'
+    sql: production_cycle_time_target_sec
+  sale_price:
+    description: 'NUMERIC. The sale price of a single unit of the product. Example: 450.0.'
+    sql: sale_price
+  unit_cost_to_produce:
+    description: 'NUMERIC. The cost to produce a single unit of the product. Example: 185.5.'
+    sql: unit_cost_to_produce
+  version:
+    description: 'TEXT. The version of the product. **NULL indicates the product does not have versioning.**. Example: 1.0.'
+    sql: version
+  weight_kg:
+    description: 'REAL. The weight of the product in kilograms. Example: 22.5.'
+    sql: weight_kg

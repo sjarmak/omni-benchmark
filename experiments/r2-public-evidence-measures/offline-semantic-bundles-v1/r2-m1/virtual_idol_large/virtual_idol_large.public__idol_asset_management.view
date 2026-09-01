@@ -1,0 +1,75 @@
+label: idol_asset_management
+description: All columns of the public table idol_asset_management.
+catalog: virtual_idol_large
+schema: public
+table_name: idol_asset_management
+dimensions:
+  asset_id:
+    description: 'BIGINT. Unique identifier for the asset. PK. Example: 1.'
+    sql: '"ASSET_ID"'
+  audio_sample_rate_hz:
+    description: BIGINT. The audio sample rate in Hertz. **NULL means the asset is not an audio file.**
+    sql: '"AUDIO_SAMPLE_RATE_hz"'
+  animation_length_seconds:
+    description: 'REAL. The length of the animation in seconds. **NULL means the asset is not an animation.** Example: 21.1.'
+    sql: '"AnimationLength_seconds"'
+  asset_type:
+    description: 'TEXT. The category of the asset. Possible values: Texture, Illustration, Audio, 3D Model, Animation. Example: Texture.'
+    sql: '"AssetType"'
+  author_creator:
+    description: 'TEXT. The name of the person or entity that created the asset. Example: Kenji Wright.'
+    sql: '"AuthorCreator"'
+  checksum:
+    description: 'TEXT. The checksum (e.g., MD5) of the asset file for integrity verification. Example: md5:42336939451393302246563887787297.'
+    sql: '"CHECKSUM"'
+  creation_date:
+    description: 'DATE. The date the asset was created. Example: 04-27-2024.'
+    sql: '"CREATION_DATE"'
+  file_format:
+    description: 'TEXT. The file format of the asset. Example: .anim.'
+    sql: '"FILE_FORMAT"'
+  is_archived:
+    description: 'BOOLEAN. A flag indicating if the asset is archived. Example: true.'
+    sql: '"IS_ARCHIVED"'
+  reviewer_name:
+    description: Name of the person who reviewed the asset.
+    sql: '"REVIEWER_NAME"'
+  resolution:
+    description: 'TEXT. The resolution of the asset (e.g., for images, textures). Example: 1920x1080.'
+    sql: '"Resolution"'
+  retrieval_instructions:
+    description: TEXT. Instructions on how to retrieve the asset from the archive. **NULL means the asset is not archived or has no special instructions.**
+    sql: '"RetrievalInstructions"'
+  review_status:
+    description: Current status of the asset review (e.g., Approved, Rejected, Pending).
+    sql: '"ReviewStatus"'
+  version_number:
+    description: 'REAL. The version number of the asset. Example: 2.3.'
+    sql: '"VERSION_NUMBER"'
+  virtual_idol_id:
+    description: 'TEXT. Foreign key referencing the virtual idol this asset belongs to. FK to virtualidols(entity_reg). Example: VI4009.'
+    sql: '"Virtual_Idol_ID"'
+  archive_date:
+    description: DATE. The date the asset was archived. **NULL means the asset is not archived.**
+    sql: archive_date
+  asset_name:
+    description: 'TEXT. The name of the asset file or entity. Example: VI5706_719.'
+    sql: asset_name
+  file_size_gb:
+    description: 'REAL. The size of the asset file in gigabytes. Example: 0.42.'
+    sql: file_size_gb
+  notes:
+    description: 'TEXT. General notes about the asset. **NULL means no notes have been added.** Example: v2.1 fixes clipping issue on left sleeve..'
+    sql: notes
+  review_date:
+    description: Date when the review was conducted.
+    sql: review_date
+  storage_location:
+    description: 'TEXT. The path to where the asset is stored. Example: /assets/VI5159/prod/.'
+    sql: storage_location
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct idol_asset_management public identity values.
+    label: idol_asset_management Count
+    sql: ${virtual_idol_large_public__idol_asset_management.asset_id}

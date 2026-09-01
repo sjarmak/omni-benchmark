@@ -1,0 +1,172 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Account Activity Frequency (AAF): It is defined as: AAF = session countthe age of an account.
+
+  - Content Authenticity Score (CAS): It is computed as 0.3 * authenticity score + 0.3 * content uniqueness score + 0.4 * conversation naturalness value; all three components are first scaled to the 0 to 1 range.
+
+  - Engagement Manipulator: An account where engagement authenticity < 0.3 and temporal interaction pattern = ''Automated''
+
+  - Serial Violator: An account with suspicious history count > 2 and warning count > 5
+
+  - Amplification Network: A cluster where cluster role = ''Amplifier'' and coordination score > 0.8
+
+  - engagement authenticity score: Ranges from 0 to 1. Scores above 0.9 indicate highly authentic engagement, while scores below 0.4 suggest artificial or automated engagement.
+
+  - profile completeness degree: Ranges from 0 to 1. Values above 0.8 indicate well-maintained profiles, while values below 0.4 suggest placeholder or abandoned profiles.
+
+  - bot-likely score: Ranges from 0 to 100. Scores above 70 strongly indicate bot behavior, while scores below 20 suggest human-like behavior patterns.
+
+  - Bot Behavior Index (BBI): BBI = 0.4 * bot likelihood score + 0.3 * automated behavior score + 0.3 * (1 - conversation naturalness value)
+
+  - Profile Credibility Index (PCI): PCI = 0.3 * credibility score + 0.3 * reputation score + 0.4 * profile completeness
+
+  - Network Influence Centrality (NIC): It is defined as: NIC = 0.4 * connection quality score + 0.3 * network influence score + 0.3 * interaction diversity.
+
+  - Coordinated Activity Score (CAS): CAS = 0.5 * coordination score + 0.3 * network influence centrality + 0.2 * cluster size
+
+  - Technical Evasion Index (TEI): TEI = 0.4 * VPN ratio + 0.3 * proxy count divided by 10 + 0.3 * login country count divided by 20
+
+  - Reputational Risk: An account with reputscore < 30 and high abuserepnum, prioritized by the top quartile of abuse reports.
+
+  - High-Impact Amplifier: An account with nic > 0.8 and posts per day > 30.
+
+  - High-Activity Account: An account with session_count > 1000 or total_post_frequency > 50.
+
+  - Session Count (SC): Session count equals the number of session entries where session profile reference matches the profile key and profile account reference equals the target account.
+
+  - Total Post Frequency (TPF): Total post frequency equals the sum of post frequencies from all content entries where content session reference matches session reference, session profile reference equals the profile key, and profile account reference equals the target account.
+
+  - Content Manipulation Score (CMS): CMS = 0.4 * (1 - content uniqueness score) + 0.3 * media reuse ratio + 0.3 * (1 - text uniqueness)
+
+  - last activity proxy time: It is defined as: Derived as max(detect time) from associated securitydetection records for an account.
+
+  - Moderation Priority Score (MPS): MPS = 0.3 * abuse report count divided by 1000 + 0.4 * impact value + 0.3 * risk value
+
+  - High-Risk Account: An account with SRS > 0.8 and at least one active security detection with threatlvl = ''Critical''
+
+  - Bot Network: A cluster where clustsize > 10 and average BBI > 0.7 for all accounts in cluster
+
+  - Trusted Account: An account with PCI > 0.8 and no security detections in the past 180 days
+
+  - Content Farm: An account with CMS > 0.7 and post over 50 posts per day
+
+  - Sockpuppet Network: A group of accounts where the number of linked accounts is greater than 5 and the coordinated activity score is above 0.8
+
+  - Dormant Bot: An account with account status = ''Dormant''.
+
+  - VPN Abuser: An account with TEI > 0.8 and at least 3 different countries in login locations
+
+  - Cross-Platform Risk Index (CPRI): It is defined as: CPRI = SRS * (1 + 0.2 *  login country count).
+
+  - Network Manipulation Index (NMI): It is defined as: NMI = 0.6 * BBI + 0.4 * CAS.
+
+  - Enhanced Trust Score (ETS): It is defined as: ETS = 0.5 * PCI + 0.5 * CAS.
+
+  - Coordinated Bot Risk (CBR): It is defined as: CBR = BBI * CAS * cluster size.
+
+  - Content Security Index (CSI): It is defined as: CSI = 0.7 * (1 - CMS) + 0.3 * CAS.
+
+  - Automated Behavior Score (ABS): It is defined as: ABS = 0.4 * BBI + 0.3 * TEI + 0.3 * (1 - CAS).
+
+  - Content Impact Score (CIS): It is defined as: CIS = cms * mps * network influence centrality nic.
+
+  - Authentication Risk Score (ARS): It is defined as: ARS = 0.5 * TEI + 0.3 * (1 - PCI) + 0.2 * SRS.
+
+  - Behavioral Anomaly Score (BAS): It is defined as: BAS = 0.4 * BBI + 0.4 * AAF + 0.2 * NGV.
+
+  - Reputation Volatility Index (RVI): It is the coefficient of variation (standard deviation divided by mean) of the account''s reputation score over time, scaled by the relative rate of change during the measurement window.
+
+  - TEI quartile: Assign each account to one of four quartiles based on its TEI distribution: quartile-1 for the lowest 25 percent of TEI values, quartile-2 for the next 25 percent, quartile-3 for the third quartile, and quartile-4 for the top 25 percent.
+
+  - Latest Bot Likelihood Score (LBS): For an account, use the bot-likelihood score that was recorded at its most recent detection timestamp.
+
+  - High-Activity Account: An account with session count > 1000 or total post frequency > 50.
+
+  - influence ranking by NIC: The rank of an account is equal to the number of other accounts with higher network influence centrality score, plus one.
+
+  - cluster identifier: In this context, the platform identifier (`platident`) associated with the accounts in the potential Amplification Network is the cluster identifier.
+
+  - Account Inactivity: Condition met when: last activity proxy time < (current date - 90 days)
+
+  - Network Trust Score (NTS): It is defined as: NTS = PCI * (1 - NGV) * (1 - CBR).
+
+  - High-Risk Bot Network: A Bot Network with CBR > 0.8 and SRS > 0.7
+
+  - Trusted Content Creator: An account with ETS > 0.8 and CIS < 0.2
+
+  - Authentication Risk Account: An account with ARS > 0.7 and at least one VPN Abuser detection
+
+  - Content Manipulation Ring: A Sockpuppet Network where all accounts have CMS > 0.7
+
+  - Automated Spam Network: A Bot Network where average ABS > 0.8 and all accounts are Content Farms
+
+  - Cross-Platform Threat: A High-Risk Account with CPRI > 0.9 and is part of a Sockpuppet Network
+
+  - Behavioral Anomaly Cluster: A cluster where average BAS > 0.8 and contains at least one Bot Network
+
+  - Temporal Pattern Deviation Score (TPDS): It is calculated by comparing the observed hourly activity of an account with its expected pattern: for each of the 24 hours, take the percentage deviation between observed and expected frequency, square these deviations, sum them for all hours, and finally take the square root of that total.
+
+  - Multi-Account Correlation Index (MACI): It is the average behavioural correlation across every pair of linked accounts, computed as the mean Pearson correlation coefficient for the chosen activity metric.
+
+  - Content Distribution Pattern Score (CDPS): It is defined as: CDPS = 0.4 * entropy of post times + 0.3 * burstiness + 0.3 * (1 - periodicity).
+
+  - Content Amplification Effect (CAE): It is defined as: CAE = cis * NIC * log(1 + reshare count).
+
+  - TEI Risk Category: A category assigned as ''Low Risk'' (Quartile 1), ''Moderate Risk'' (Quartile 2), ''High Risk'' (Quartile 3), or ''Very High Risk'' (Quartile 4) based on the account''s calculated TEI Quartile.
+
+  - member count: It is defined as: Calculated using COUNT(DISTINCT account_index) for accounts grouped by the cluster identifier.
+
+  - maximum coordination score: It refers to the maximum coordination score value among all accounts within the given cluster.
+
+  - member account IDs: It refers to the list of account identifiers for all members included in a specific cluster.
+
+  - review priority: A field in the `account` table set to a specific value like ''Review_Inactive_Trusted'' to signal that an otherwise trusted account requires review due to prolonged inactivity.
+
+  - Network Security Threat: An account with NTS < 0.3 and is part of a Bot Network
+
+  - Mass Manipulation Campaign: A Content Manipulation Ring where CIS > 0.8 for all accounts
+
+  - Advanced Persistent Threat: A High-Risk Bot Network with NMI > 0.9 and TEI > 0.8
+
+  - Behavioral Consistency Score (BCS): It is defined as: BCS = (1 - TPDS) * (1 - RVI) * (1 − behavior pattern deviation divided by 100).
+
+  - Network Synchronization Index (NSI): It is the mean time synchronisation score for all unique account pairs in the cluster, multiplied by the multi-account correlation index, thereby emphasising both pair-wise synchronicity and overall behavioural alignment.
+
+  - Cross-Platform Correlation Score (CPCS): It is defined as: CPCS = CPRI * MACI * (1 + platform link count divided by 10).
+
+  - Reputation Manipulation Ring: A Content Manipulation Ring where all accounts have RVI > 0.7 and similar CDPS patterns
+
+  - Authentication Pattern Score (APS): It is defined as: APS = (1 - TEI) * BCS * (1 - authentication anomaly count divided by 100).
+
+  - Coordinated Influence Operation: A network where NSI > 0.8 and CAE > 0.7 and contains at least one Content Manipulation Ring
+
+  - Behavioral Pattern Anomaly: An account with BCS < 0.3 and TPDS > 0.7 and is not a Trusted Account
+
+  - Cross-Platform Bot Network: A Bot Network where CPCS > 0.8 and all accounts have similar MACI patterns
+
+  - Synchronized Behavior Cluster: A cluster where NSI > 0.9 and all accounts have similar BCS patterns
+
+  - Authentication Anomaly Cluster: A cluster where average APS < 0.3 and contains at least one Authentication Risk Account
+
+  - Network Influence Hub: An account with NIC > 0.8 and CAE > 0.7 that is part of a Coordinated Influence Operation
+
+  - Multi-Platform Threat Network: A Cross-Platform Threat where CPCS > 0.8 and all accounts are part of a Synchronized Behavior Cluster
+
+  - Persistent Pattern Anomaly: A Behavioral Pattern Anomaly that persists for over 30 days and maintains high TPDS
+
+  - Advanced Influence Campaign: A Mass Manipulation Campaign containing at least one Network Influence Hub and high NSI'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

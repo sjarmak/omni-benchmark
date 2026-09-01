@@ -1,0 +1,60 @@
+label: virtual_idol_performance_metrics
+description: All columns of the public table virtual_idol_performance_metrics.
+catalog: virtual_idol_large
+schema: public
+table_name: virtual_idol_performance_metrics
+dimensions:
+  average_concurrent_viewers:
+    description: 'BIGINT. The average number of concurrent viewers. Example: 8356.'
+    sql: '"AverageConcurrentViewers"'
+  collaboration_effectiveness_score:
+    description: REAL. A score measuring the effectiveness of collaborations. **NULL means no collaboration occurred or was measured.**
+    sql: '"COLLABORATION_EFFECTIVENESS_SCORE"'
+  idol_entity_identifier:
+    description: 'TEXT. Foreign key referencing the virtual idol. FK to virtualidols(entity_reg). Example: VI6888.'
+    sql: '"Idol_Entity_Identifier"'
+  last_updated:
+    description: 'TIMESTAMP. The timestamp of the last update to this metric record. Example: 2025-09-01 03:02:22.'
+    sql: '"LAST_UPDATED"'
+  measurement_date:
+    description: 'DATE. The date the metrics were measured. Example: 2025-08-01.'
+    sql: '"MeasurementDate"'
+  merchandise_sales_during_stream_dollar:
+    description: 'REAL. Total merchandise sales in USD during streams. **NULL means no sales were recorded or occurred.** Example: 3847.52.'
+    sql: '"MerchandiseSalesDuringStream_dollar"'
+  peak_concurrent_viewers:
+    description: 'BIGINT. The peak number of concurrent viewers. Example: 42888.'
+    sql: '"PEAK_CONCURRENT_VIEWERS"'
+  performance_metric_id:
+    description: 'BIGINT. Unique identifier for the performance metric record. PK. Example: 1.'
+    sql: '"PERFORMANCE_METRIC_ID"'
+  sentiment_score:
+    description: 'REAL. The overall sentiment score from fan interactions. Example: 0.785.'
+    sql: '"SentimentScore"'
+  total_streaming_hours_weekly_hr:
+    description: 'REAL. Total hours streamed in the past week. Example: 10.4.'
+    sql: '"TotalStreamingHours_Weekly_hr"'
+  twitter_retweets:
+    description: 'BIGINT. Total retweets on Twitter. Example: 1476.'
+    sql: '"TwitterRetweets"'
+  youtube_video_views:
+    description: 'BIGINT. Total views on YouTube videos. Example: 425011.'
+    sql: '"YOUTUBE_VIDEO_VIEWS"'
+  ad_revenue_per_thousand_impressions_cpm_dollar:
+    description: 'REAL. Ad revenue per one thousand impressions (CPM) in USD. **NULL means no ad revenue was recorded.** Example: 8.02.'
+    sql: ad_revenue_per_thousand_impressions_cpm_dollar
+  fan_art_submissions_per_day:
+    description: 'REAL. The number of fan art submissions per day. Example: 15.'
+    sql: fan_art_submissions_per_day
+  new_followers_gained_daily:
+    description: 'BIGINT. New followers gained on the measurement date. Example: 2238.'
+    sql: new_followers_gained_daily
+  streaming_platform:
+    description: 'TEXT. The platform where the streaming occurred. Example: Bilibili.'
+    sql: streaming_platform
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct virtual_idol_performance_metrics public identity values.
+    label: virtual_idol_performance_metrics Count
+    sql: ${virtual_idol_large_public__virtual_idol_performance_metrics.performance_metric_id}

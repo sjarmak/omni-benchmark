@@ -1,0 +1,312 @@
+- join_from_view: fake_account_large_public__profiles
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__profiles.acct_anchor} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__risk_and_moderation
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__risk_and_moderation.acct_risk} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__ticket_message_metrics
+  join_to_view: fake_account_large_public__customer_support_tickets
+  join_type: always_left
+  on_sql: ${fake_account_large_public__ticket_message_metrics.ticket_ref} = ${fake_account_large_public__customer_support_tickets.ticket_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__content_topics
+  join_to_view: fake_account_large_public__content_activity
+  join_type: always_left
+  on_sql: ${fake_account_large_public__content_topics.acct_slot_ref} = ${fake_account_large_public__content_activity.acct_slot}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__ad_conversion_attribution
+  join_to_view: fake_account_large_public__ad_bid_auctions
+  join_type: always_left
+  on_sql: ${fake_account_large_public__ad_conversion_attribution.auction_ref} = ${fake_account_large_public__ad_bid_auctions.auction_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__profile_demographics
+  join_to_view: fake_account_large_public__profiles
+  join_type: always_left
+  on_sql: ${fake_account_large_public__profile_demographics.acct_anchor} = ${fake_account_large_public__profiles.acct_anchor}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__network_metrics
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__network_metrics.acct_node} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__api_usage_metering
+  join_to_view: fake_account_large_public__partner_integrations
+  join_type: always_left
+  on_sql: ${fake_account_large_public__api_usage_metering.partner_ref} = ${fake_account_large_public__partner_integrations.partner_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__account_subscriptions
+  join_to_view: fake_account_large_public__subscription_packages
+  join_type: always_left
+  on_sql: ${fake_account_large_public__account_subscriptions.pack_code_ref} = ${fake_account_large_public__subscription_packages.pack_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__behavioral_scores
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__behavioral_scores.acct_beh} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__interaction_metrics
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__interaction_metrics.acct_dm} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__account_tags
+  join_to_view: fake_account_large_public__tags
+  join_type: always_left
+  on_sql: ${fake_account_large_public__account_tags.tag_code_ref} = ${fake_account_large_public__tags.tag_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__ai_inference_traces
+  join_to_view: fake_account_large_public__risk_event_history
+  join_type: always_left
+  on_sql: ${fake_account_large_public__ai_inference_traces.risk_event_ref} = ${fake_account_large_public__risk_event_history.event_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__user_gamification_stats
+  join_to_view: fake_account_large_public__profiles
+  join_type: always_left
+  on_sql: ${fake_account_large_public__user_gamification_stats.profile_ref} = ${fake_account_large_public__profiles.acct_anchor}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__content_language_distribution
+  join_to_view: fake_account_large_public__content_activity
+  join_type: always_left
+  on_sql: ${fake_account_large_public__content_language_distribution.acct_slot_ref} = ${fake_account_large_public__content_activity.acct_slot}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__customer_support_tickets
+  join_to_view: fake_account_large_public__feedback_items
+  join_type: always_left
+  on_sql: ${fake_account_large_public__customer_support_tickets.feedback_source_ref} = ${fake_account_large_public__feedback_items.feedback_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__cluster_temporal_metrics
+  join_to_view: fake_account_large_public__cluster_analysis
+  join_type: always_left
+  on_sql: ${fake_account_large_public__cluster_temporal_metrics.clstr_pin_ref} = ${fake_account_large_public__cluster_analysis.clstr_pin}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__ad_bid_auctions
+  join_to_view: fake_account_large_public__ad_campaigns
+  join_type: always_left
+  on_sql: ${fake_account_large_public__ad_bid_auctions.campaign_ref} = ${fake_account_large_public__ad_campaigns.camp_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__influencer_post_compliance
+  join_to_view: fake_account_large_public__influencer_brand_deals
+  join_type: always_left
+  on_sql: ${fake_account_large_public__influencer_post_compliance.deal_ref} = ${fake_account_large_public__influencer_brand_deals.deal_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__moderation_appeals_process
+  join_to_view: fake_account_large_public__moderation_case_files
+  join_type: always_left
+  on_sql: ${fake_account_large_public__moderation_appeals_process.case_file_ref} = ${fake_account_large_public__moderation_case_files.case_file_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__account_audit_logs
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__account_audit_logs.acct_ref} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__transaction_dispute_evidence
+  join_to_view: fake_account_large_public__commerce_transactions
+  join_type: always_left
+  on_sql: ${fake_account_large_public__transaction_dispute_evidence.transaction_ref} = ${fake_account_large_public__commerce_transactions.transaction_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__media_asset_details
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__media_asset_details.acct_ref} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__feedback_items
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__feedback_items.acct_ref} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__model_feedback_loops
+  join_to_view: fake_account_large_public__ai_inference_traces
+  join_type: always_left
+  on_sql: ${fake_account_large_public__model_feedback_loops.inference_trace_ref} = ${fake_account_large_public__ai_inference_traces.trace_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__cdn_edge_metrics
+  join_to_view: fake_account_large_public__media_asset_details
+  join_type: always_left
+  on_sql: ${fake_account_large_public__cdn_edge_metrics.media_asset_ref} = ${fake_account_large_public__media_asset_details.media_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__content_activity
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__content_activity.acct_slot} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__sentiment_analysis_stats
+  join_to_view: fake_account_large_public__content_activity
+  join_type: always_left
+  on_sql: ${fake_account_large_public__sentiment_analysis_stats.acct_slot_ref} = ${fake_account_large_public__content_activity.acct_slot}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__commerce_transactions
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__commerce_transactions.payer_acct_ref} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__accounts
+  join_to_view: fake_account_large_public__platforms
+  join_type: always_left
+  on_sql: ${fake_account_large_public__accounts.plt_key} = ${fake_account_large_public__platforms.plt_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__account_subscriptions
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__account_subscriptions.acct_ref} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__stream_quality_logs
+  join_to_view: fake_account_large_public__media_asset_details
+  join_type: always_left
+  on_sql: ${fake_account_large_public__stream_quality_logs.media_ref_code} = ${fake_account_large_public__media_asset_details.media_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__security_sessions
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__security_sessions.acct_gate} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__account_clusters
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__account_clusters.acct_bridge} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__account_integrations
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__account_integrations.acct_ref} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__device_fingerprint_details
+  join_to_view: fake_account_large_public__security_sessions
+  join_type: always_left
+  on_sql: ${fake_account_large_public__device_fingerprint_details.acct_gate} = ${fake_account_large_public__security_sessions.acct_gate}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__gamification_level_rewards
+  join_to_view: fake_account_large_public__user_gamification_stats
+  join_type: always_left
+  on_sql: ${fake_account_large_public__gamification_level_rewards.gamification_ref} = ${fake_account_large_public__user_gamification_stats.gamification_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__ad_campaign_performance
+  join_to_view: fake_account_large_public__ad_campaigns
+  join_type: always_left
+  on_sql: ${fake_account_large_public__ad_campaign_performance.camp_code_ref} = ${fake_account_large_public__ad_campaigns.camp_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__stream_buffer_events
+  join_to_view: fake_account_large_public__stream_quality_logs
+  join_type: always_left
+  on_sql: ${fake_account_large_public__stream_buffer_events.stream_log_ref} = ${fake_account_large_public__stream_quality_logs.stream_log_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__account_integrations
+  join_to_view: fake_account_large_public__partner_integrations
+  join_type: always_left
+  on_sql: ${fake_account_large_public__account_integrations.partner_code_ref} = ${fake_account_large_public__partner_integrations.partner_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__feedback_responses
+  join_to_view: fake_account_large_public__feedback_items
+  join_type: always_left
+  on_sql: ${fake_account_large_public__feedback_responses.feedback_code_ref} = ${fake_account_large_public__feedback_items.feedback_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__moderation_case_files
+  join_to_view: fake_account_large_public__account_audit_logs
+  join_type: always_left
+  on_sql: ${fake_account_large_public__moderation_case_files.audit_log_ref} = ${fake_account_large_public__account_audit_logs.audit_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__api_quota_adjustments
+  join_to_view: fake_account_large_public__api_usage_metering
+  join_type: always_left
+  on_sql: ${fake_account_large_public__api_quota_adjustments.meter_ref} = ${fake_account_large_public__api_usage_metering.meter_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__cdn_traffic_spikes
+  join_to_view: fake_account_large_public__cdn_edge_metrics
+  join_type: always_left
+  on_sql: ${fake_account_large_public__cdn_traffic_spikes.edge_metric_ref} = ${fake_account_large_public__cdn_edge_metrics.edge_metric_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__interaction_topic_metrics
+  join_to_view: fake_account_large_public__interaction_metrics
+  join_type: always_left
+  on_sql: ${fake_account_large_public__interaction_topic_metrics.acct_dm_ref} = ${fake_account_large_public__interaction_metrics.acct_dm}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__content_topics
+  join_to_view: fake_account_large_public__topics
+  join_type: always_left
+  on_sql: ${fake_account_large_public__content_topics.topic_code_ref} = ${fake_account_large_public__topics.topic_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__monitoring
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__monitoring.acct_mon} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__account_clusters
+  join_to_view: fake_account_large_public__cluster_analysis
+  join_type: always_left
+  on_sql: ${fake_account_large_public__account_clusters.clu_ref} = ${fake_account_large_public__cluster_analysis.clstr_pin}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__influencer_brand_deals
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__influencer_brand_deals.influencer_acct_ref} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__risk_event_history
+  join_to_view: fake_account_large_public__risk_and_moderation
+  join_type: always_left
+  on_sql: ${fake_account_large_public__risk_event_history.acct_risk_ref} = ${fake_account_large_public__risk_and_moderation.acct_risk}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__ad_campaign_performance
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__ad_campaign_performance.acct_ref} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: fake_account_large_public__account_tags
+  join_to_view: fake_account_large_public__accounts
+  join_type: always_left
+  on_sql: ${fake_account_large_public__account_tags.acct_ref} = ${fake_account_large_public__accounts.acct_ref}
+  relationship_type: many_to_one
+  reversible: false

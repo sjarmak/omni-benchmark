@@ -1,0 +1,60 @@
+label: AuctionPaymentSettlements
+description: All columns of the public table AuctionPaymentSettlements.
+catalog: virtual_idol_large
+schema: public
+table_name: AuctionPaymentSettlements
+dimensions:
+  creator_payout_amt:
+    description: 'REAL. Amount sent to artist. Example: 50.'
+    sql: creator_payout_amt
+  currency_conversion_rate:
+    description: 'REAL. FX rate if foreign currency. **NULL means data unavailable.** Example: 50.0.'
+    sql: currency_conversion_rate
+  customer_support_ref:
+    description: TEXT. Ticket if issues arose. **NULL means data unavailable.**
+    sql: customer_support_ref
+  dispute_flag:
+    description: 'BOOLEAN. True if chargeback filed. Possible values: True, False.'
+    sql: dispute_flag
+  failure_code:
+    description: 'TEXT. Reason if failed. **NULL means Success.** Unique values: Insufficient Funds, Fraud Block.'
+    sql: failure_code
+  invoice_url:
+    description: TEXT. Link to PDF receipt.
+    sql: invoice_url
+  is_manual_adjustment:
+    description: 'BOOLEAN. True if admin fixed amount. Possible values: True, False.'
+    sql: is_manual_adjustment
+  payment_gateway:
+    description: 'TEXT. Stripe, PayPal. Unique values: Stripe, PayPal, Apple Pay.'
+    sql: payment_gateway
+  payment_status:
+    description: 'TEXT. Success, Failed, Refunded. Unique values: Success, Refunded.'
+    sql: payment_status
+  payout_batch_id:
+    description: TEXT. Group ID for artist payout.
+    sql: payout_batch_id
+  platform_commission_amt:
+    description: 'REAL. Cut taken by platform. Example: 5.'
+    sql: platform_commission_amt
+  settlement_cleared_date:
+    description: TIMESTAMP. Date funds available.
+    sql: settlement_cleared_date
+  settlement_id:
+    description: TEXT. Unique ID for the payment settlement.
+    sql: settlement_id
+  shipping_address_hash:
+    description: TEXT. Hash of physical address for merch. **NULL means Digital item only.**
+    sql: shipping_address_hash
+  tax_amount_usd:
+    description: 'REAL. Sales tax collected. Example: 4.'
+    sql: tax_amount_usd
+  total_amount_charged:
+    description: 'REAL. Final charge + fees. Example: 60.'
+    sql: total_amount_charged
+  transaction_date:
+    description: 'TIMESTAMP. When charge was processed. Example: 2024-01-01 12:00:00.'
+    sql: transaction_date
+  winning_bid_ref:
+    description: TEXT. FK to FanArtAuctionBidLogs (Winning bid only).
+    sql: winning_bid_ref

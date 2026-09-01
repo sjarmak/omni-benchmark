@@ -1,0 +1,66 @@
+label: ConservationTreatment
+description: All columns of the public table ConservationTreatment.
+catalog: museum_artifact_large
+schema: public
+table_name: ConservationTreatment
+dimensions:
+  archive_reference:
+    description: 'VARCHAR(100). Permanent archive location for treatment documentation. Example: "You will succeed because most people are lazy. With its well-designed Graphical User                ".'
+    sql: '"archiveReference"'
+  artifact_reg_id:
+    description: 'VARCHAR(100). Identifier of treated artifact (logical reference to ArtifactsCore.ARTregID). Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"artifactRegId"'
+  assistant_conservator:
+    description: 'BIGINT. Supporting conservator identifier (foreign key to Staff.Staff_Code). Example: 55.'
+    sql: '"assistantConservator"'
+  chemical_residues:
+    description: 'VARCHAR(100). Presence of residual treatment chemicals (None, Minimal, Moderate, Significant, Hazardous). Possible values: "Hazardous", "Minimal", "Moderate", "None", "Significant".'
+    sql: '"chemicalResidues"'
+  documentation_quality:
+    description: 'VARCHAR(100). Completeness of treatment documentation (Complete, Adequate, Partial, Poor, Missing). Possible values: "Adequate", "Complete", "Missing", "Partial", "Poor".'
+    sql: '"documentationQuality"'
+  duration_hours:
+    description: 'VARCHAR(100). Total labor hours expended on treatment. Example: "50".'
+    sql: '"durationHours"'
+  effectiveness_rating:
+    description: 'VARCHAR(100). Assessment of treatment success (Excellent, Good, Fair, Poor, Failed). Possible values: "Excellent", "Failed", "Fair", "Good", "Poor".'
+    sql: '"effectivenessRating"'
+  equipment_applied:
+    description: 'VARCHAR(100). Specialized equipment used during treatment process. Example: "A man is not old until regrets take the place of dreams. Navicat provides powerful                  ".'
+    sql: '"equipmentApplied"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for conservation treatment records. Example: 1.'
+    sql: id
+  lab_environment:
+    description: 'VARCHAR(100). Environmental conditions during treatment execution. Example: "You will succeed because most people are lazy. With its well-designed Graphical User                ".'
+    sql: '"labEnvironment"'
+  lead_conservator:
+    description: 'BIGINT. Primary conservator identifier (foreign key to Staff.Staff_Code). Example: 55.'
+    sql: '"leadConservator"'
+  materials_used:
+    description: 'VARCHAR(100). Conservation materials and chemicals applied during treatment. Example: "A man is not old until regrets take the place of dreams. Success consists of going                  ".'
+    sql: '"materialsUsed"'
+  post_treatment_photos:
+    description: 'VARCHAR(100). Reference to post-treatment photographic documentation. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"postTreatmentPhotos"'
+  pre_treatment_photos:
+    description: 'VARCHAR(100). Reference to pre-treatment photographic documentation. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"preTreatmentPhotos"'
+  quality_control_check:
+    description: 'VARCHAR(100). Result of post-treatment quality verification (Passed, MinorIssues, MajorIssues, Failed, Waived). Example: "AYBBSyc4RI".'
+    sql: '"qualityControlCheck"'
+  recommended_revisit:
+    description: 'VARCHAR(100). Suggested date for follow-up stability assessment. Example: "bZ3uJ0K9yW".'
+    sql: '"recommendedRevisit"'
+  side_effects_observed:
+    description: 'VARCHAR(100). Unintended consequences or complications from treatment. Example: "SBXUclNMfG".'
+    sql: '"sideEffectsObserved"'
+  stability_assessment:
+    description: 'VARCHAR(100). Post-treatment stability evaluation (Stable, Improving, Deteriorating, Unstable). Possible values: "Deteriorating", "Improving", "Stable", "Unstable".'
+    sql: '"stabilityAssessment"'
+  treatment_date:
+    description: 'VARCHAR(100). Date when conservation treatment was performed. Example: "2007-01-08".'
+    sql: '"treatmentDate"'
+  treatment_type:
+    description: 'VARCHAR(100). Category of conservation intervention (Cleaning, Stabilization, Consolidation, Retouching, StructuralRepair, PestControl). Possible values: "Cleaning", "Consolidation", "PestControl", "Retouching", "Stabilization", "StructuralRepair".'
+    sql: '"treatmentType"'

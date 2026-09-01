@@ -1,0 +1,72 @@
+label: PolicyVersion
+description: All columns of the public table PolicyVersion.
+catalog: cross_border_large
+schema: public
+table_name: PolicyVersion
+dimensions:
+  approved_date:
+    description: DATE. Approval date **NULL means Not yet approved.**
+    sql: '"APPROVED_DATE"'
+  author:
+    description: 'TEXT. Policy author Possible values: Legal Dept, Privacy Office, CISO Office, Compliance Team, HR.'
+    sql: '"AUTHOR"'
+  change_log:
+    description: JSONB. Summary of changes from previous version
+    sql: '"CHANGE_LOG"'
+  effective_date:
+    description: DATE. When this version becomes effective
+    sql: '"EFFECTIVE_DATE"'
+  language:
+    description: 'TEXT. Policy language Possible values: English, German, French, Spanish, Multi-language.'
+    sql: '"LANGUAGE"'
+  next_review_date:
+    description: DATE. Next scheduled review date
+    sql: '"NEXT_REVIEW_DATE"'
+  policy_name:
+    description: 'TEXT. Name of the policy Possible values: Data Protection Policy, Information Security Policy, Acceptable Use Policy, Data Retention Policy, Breach Notification Policy, Privacy Policy, BYOD Policy, Remote Access Policy.'
+    sql: '"POLICY_NAME"'
+  policy_version_id:
+    description: BIGINT. Primary key. Unique policy version identifier
+    sql: '"POLICY_VERSION_ID"'
+  regulatory_drivers:
+    description: 'TEXT. Regulatory requirements driving this policy Possible values: GDPR, CCPA, PIPL, LGPD, Multiple. **NULL means No specific regulatory driver.**'
+    sql: '"REGULATORY_DRIVERS"'
+  requires_acknowledgment:
+    description: BOOLEAN. Whether employee acknowledgment is required Boolean flag (true/false).
+    sql: '"REQUIRES_ACKNOWLEDGMENT"'
+  version_number:
+    description: TEXT. Version number
+    sql: '"VERSION_NUMBER"'
+  approver:
+    description: 'TEXT. Person who approved the policy Possible values: CISO, DPO, General Counsel, CEO, Board.'
+    sql: approver
+  change_count:
+    description: BIGINT. Number of changes from previous version
+    sql: change_count
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  document_url:
+    description: TEXT. URL to policy document
+    sql: document_url
+  pages:
+    description: BIGINT. Number of pages
+    sql: pages
+  policy_code:
+    description: TEXT. Policy reference code
+    sql: policy_code
+  policy_type:
+    description: 'TEXT. Policy category Possible values: Privacy, Security, Compliance, Operational, HR.'
+    sql: policy_type
+  review_cycle_months:
+    description: BIGINT. Review cycle in months
+    sql: review_cycle_months
+  scope:
+    description: 'TEXT. Policy scope Possible values: Global, Regional, Business Unit, Department.'
+    sql: scope
+  status:
+    description: 'TEXT. Policy version status Possible values: Draft, Under Review, Approved, Published, Superseded, Archived.'
+    sql: status
+  sunset_date:
+    description: DATE. When this version is superseded **NULL means Version is still current.**
+    sql: sunset_date

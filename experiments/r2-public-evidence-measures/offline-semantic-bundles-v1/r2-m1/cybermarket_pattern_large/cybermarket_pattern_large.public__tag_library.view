@@ -1,0 +1,108 @@
+label: tag_library
+description: All columns of the public table tag_library.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: tag_library
+dimensions:
+  deprecated:
+    description: 'BOOLEAN. Indicates if the tag is deprecated. Example: False.'
+    sql: '"DEPRECATED"'
+  notes:
+    description: 'TEXT. Any additional notes regarding the tag. Example: Tag related to new technology trends.'
+    sql: '"NOTES"'
+  relatedtag2:
+    description: 'TEXT. Another related tag. Example: RelatedTag2.'
+    sql: '"RELATEDTAG2"'
+  sentiment:
+    description: 'TEXT. Sentiment associated with the tag (e.g., Positive, Negative). Example: Positive.'
+    sql: '"SENTIMENT"'
+  source:
+    description: 'TEXT. The source from which the tag originated. Example: Source1.'
+    sql: '"SOURCE"'
+  synonym2:
+    description: 'TEXT. Another synonym of the tag. Example: SynonymB.'
+    sql: '"SYNONYM2"'
+  tagdescription:
+    description: 'TEXT. A brief description of the tag''s purpose or content. Example: Describes products related to technology.'
+    sql: '"TAGDESCRIPTION"'
+  usagecount:
+    description: 'BIGINT. The number of times the tag has been used or referenced. Example: 150.'
+    sql: '"USAGEcount"'
+  weight:
+    description: 'REAL. Weight assigned to the tag based on its importance. Example: 1.5.'
+    sql: '"WEIGHT"'
+  approval_date:
+    description: 'DATE. Date when the tag was approved. Example: 2025-07-16.'
+    sql: '"approvalDATE"'
+  approval_status:
+    description: 'TEXT. Current approval status of the tag. Possible values: Approved, Pending, Rejected. Example: Approved.'
+    sql: '"approvalSTATUS"'
+  approved_by:
+    description: 'TEXT. The user who approved the tag. Example: Admin1.'
+    sql: '"approvedBY"'
+  child_tag_count:
+    description: 'BIGINT. Number of child tags associated with this tag. Example: 5.'
+    sql: child_tag_count
+  color_code:
+    description: 'TEXT. The color code associated with the tag. Example: #FF0000.'
+    sql: '"colorCODE"'
+  created_at:
+    description: 'TIMESTAMP. Date and time when the tag was created. Example: 2025-07-16 15:23:00.'
+    sql: '"createdAT"'
+  deprecation_date:
+    description: DATE. Date when the tag was deprecated. **NULL means the tag has not been deprecated.**
+    sql: '"deprecationDATE"'
+  language:
+    description: 'TEXT. Language of the tag. Example: English.'
+    sql: language
+  last_used:
+    description: 'TIMESTAMP. The last time the tag was used or referenced. Example: 2025-07-16 15:30:00.'
+    sql: last_used
+  parent_tag_ref:
+    description: 'TEXT. Reference to the parent tag of this tag. Example: ParentTag1.'
+    sql: '"parentTagRef"'
+  popularity_pulse:
+    description: 'TEXT. The popularity pulse of the tag, representing the change in usage over a month. Example: +5.6 %/mo.'
+    sql: '"popularityPulse"'
+  related_tag1:
+    description: 'TEXT. A related tag to this one, representing similar content. Example: RelatedTag1.'
+    sql: '"relatedTag1"'
+  related_tag_3:
+    description: 'TEXT. A third related tag. Example: RelatedTag3.'
+    sql: related_tag_3
+  risk_level:
+    description: 'TEXT. The risk level associated with the tag. Example: Medium.'
+    sql: '"riskLEVEL"'
+  risk_slope:
+    description: 'TEXT. The direction of the risk slope for the tag. Example: ↗ low→medium.'
+    sql: '"riskSlope"'
+  scope:
+    description: 'TEXT. Scope of the tag (e.g., Local, Global). Example: Global.'
+    sql: scope
+  source_url:
+    description: 'TEXT. URL for the source of the tag. Example: http://url1.com.'
+    sql: source_url
+  synonym1:
+    description: 'TEXT. A synonym of the tag. Example: SynonymA.'
+    sql: synonym1
+  synonym_three:
+    description: 'TEXT. A third synonym of the tag. Example: SynonymC.'
+    sql: synonym_three
+  tag_category:
+    description: 'TEXT. The category to which the tag belongs. Example: Category1.'
+    sql: '"tagCategory"'
+  tag_key:
+    description: TEXT. Unique identifier for each tag in the tag library. PK.
+    sql: '"tagKey"'
+  tag_name:
+    description: 'TEXT. The name of the tag. Example: Technology, Health.'
+    sql: tag_name
+  updated_at:
+    description: TIMESTAMP. Date and time when the tag was last updated. **NULL means the tag has not been updated.**
+    sql: updated_at
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct tag_library public identity values.
+    label: tag_library Count
+    sql: ${cybermarket_pattern_large_public__tag_library.tag_key}

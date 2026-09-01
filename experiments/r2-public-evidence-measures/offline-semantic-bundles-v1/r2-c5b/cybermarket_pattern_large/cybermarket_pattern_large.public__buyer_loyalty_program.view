@@ -1,0 +1,66 @@
+label: BuyerLoyaltyProgram
+description: All columns of the public table BuyerLoyaltyProgram.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: BuyerLoyaltyProgram
+dimensions:
+  blp_id:
+    description: 'TEXT. Unique identifier for the buyer loyalty program record. Example: BLP-1A2B3C.'
+    sql: '"BLP_id"'
+  birthday_bonus_eligible:
+    description: 'BOOLEAN. Indicates whether buyer is eligible for birthday bonus rewards. Possible values: True, False.'
+    sql: birthday_bonus_eligible
+  churn_risk_score:
+    description: 'REAL. Predicted probability of buyer churning from program (0-1). Example: 50.0.'
+    sql: churn_risk_score
+  days_since_last_activity:
+    description: 'INTEGER. Number of days since buyer last engaged with loyalty program. Example: 25.'
+    sql: days_since_last_activity
+  engagement_score:
+    description: 'REAL. Calculated engagement score based on activity metrics (0-100). Example: 62.0.'
+    sql: engagement_score
+  enrollment_timestamp:
+    description: 'TIMESTAMP. Timestamp when the buyer enrolled in the loyalty program. Example: 2024-01-01 12:00:00.'
+    sql: enrollment_timestamp
+  exclusive_access_granted:
+    description: 'BOOLEAN. Indicates whether buyer has exclusive early access privileges. Possible values: True, False.'
+    sql: exclusive_access_granted
+  free_shipping_threshold_met:
+    description: 'BOOLEAN. Indicates whether buyer qualifies for tier-based free shipping. Possible values: True, False.'
+    sql: free_shipping_threshold_met
+  last_tier_upgrade_timestamp:
+    description: 'TIMESTAMP. Timestamp of the most recent tier upgrade. **NULL means Buyer has never been upgraded from initial tier.** Example: 2024-01-01 12:00:00.'
+    sql: last_tier_upgrade_timestamp
+  lifetime_spend_usd:
+    description: 'REAL. Total amount spent by buyer since loyalty enrollment in USD. Example: 2500.0.'
+    sql: lifetime_spend_usd
+  loyalty_tier:
+    description: 'TEXT. Current tier level of the buyer in the loyalty program. Unique values: Bronze, Silver, Gold, Platinum, Diamond.'
+    sql: loyalty_tier
+  points_balance_current:
+    description: 'INTEGER. Current available loyalty points balance. Example: 2500.'
+    sql: points_balance_current
+  points_expired_lifetime:
+    description: 'INTEGER. Total loyalty points that have expired unused. Example: 800.'
+    sql: points_expired_lifetime
+  points_redeemed_lifetime:
+    description: 'INTEGER. Total loyalty points redeemed over lifetime. Example: 6000.'
+    sql: points_redeemed_lifetime
+  preferred_reward_category:
+    description: 'TEXT. Buyer''s most frequently chosen reward redemption category. **NULL means Buyer has not yet redeemed any rewards.** Unique values: Discount Voucher, Free Product, Cashback, Gift Card, Experience, Charity Donation.'
+    sql: preferred_reward_category
+  qualifying_purchases_count:
+    description: 'INTEGER. Number of purchases that qualified for points earning. Example: 18.'
+    sql: qualifying_purchases_count
+  referral_bonus_points:
+    description: 'INTEGER. Total bonus points earned from referrals. Example: 500.'
+    sql: referral_bonus_points
+  referral_count:
+    description: 'INTEGER. Number of successful referrals made by the buyer. Example: 2.'
+    sql: referral_count
+  session_analytics_ref:
+    description: TEXT. Reference to the buyer session analytics record.
+    sql: session_analytics_ref
+  total_points_earned:
+    description: 'INTEGER. Cumulative loyalty points earned since enrollment. Example: 8500.'
+    sql: total_points_earned

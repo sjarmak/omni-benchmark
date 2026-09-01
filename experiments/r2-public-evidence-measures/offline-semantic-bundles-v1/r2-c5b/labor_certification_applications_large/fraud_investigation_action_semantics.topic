@@ -1,0 +1,13 @@
+base_view: labor_certification_applications_large_public__fraud_investigation_action
+label: FraudInvestigationAction
+description: All columns of the public table FraudInvestigationAction.
+fields:
+- labor_certification_applications_large_public__fraud_investigation_action.*
+- labor_certification_applications_large_public__case_fraud_indicator.*
+- labor_certification_applications_large_public__cases.*
+- labor_certification_applications_large_public__preparer.*
+joins:
+  labor_certification_applications_large_public__case_fraud_indicator:
+    labor_certification_applications_large_public__cases:
+      labor_certification_applications_large_public__preparer: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

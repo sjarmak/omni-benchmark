@@ -1,0 +1,72 @@
+label: TVBroadcast
+description: All columns of the public table TVBroadcast.
+catalog: sports_events_large
+schema: public
+table_name: TVBroadcast
+dimensions:
+  ad_revenue_musd:
+    description: 'REAL. Advertising revenue in millions USD Typical range: 0 to 30.'
+    sql: '"AD_REVENUE_MUSD"'
+  avg_viewers_millions:
+    description: BIGINT. Average viewership in millions
+    sql: '"AVG_VIEWERS_MILLIONS"'
+  broadcaster:
+    description: 'TEXT. Broadcasting network Possible values: Sky Sports, ESPN, Canal+, RTL, DAZN, Fox Sports, Star Sports, Movistar.'
+    sql: '"BROADCASTER"'
+  broadcast_id:
+    description: BIGINT. Primary key. Unique broadcast record identifier
+    sql: '"BROADCAST_ID"'
+  broadcast_start:
+    description: TIMESTAMP WITHOUT TIME ZONE. Broadcast start time
+    sql: '"BROADCAST_START"'
+  duration_minutes:
+    description: 'REAL. Broadcast duration in minutes Typical range: 30 to 300.'
+    sql: '"DURATION_MINUTES"'
+  hd_broadcast:
+    description: BOOLEAN. Whether broadcast was in HD or higher Boolean flag (true/false).
+    sql: '"HD_BROADCAST"'
+  rating_score:
+    description: 'REAL. Broadcast quality rating (1-10) Typical range: 3 to 10.'
+    sql: '"RATING_SCORE"'
+  resolution:
+    description: 'TEXT. Broadcast resolution Possible values: 1080p, 4K, 720p, 8K.'
+    sql: '"RESOLUTION"'
+  session_type:
+    description: 'TEXT. Which session is being broadcast Possible values: Practice, Qualifying, Sprint, Race, Pre-Race, Post-Race.'
+    sql: '"SESSION_TYPE"'
+  total_ad_seconds:
+    description: BIGINT. Total advertising seconds
+    sql: '"TOTAL_AD_SECONDS"'
+  ad_breaks_count:
+    description: BIGINT. Number of ad breaks
+    sql: ad_breaks_count
+  audience_share_pct:
+    description: 'REAL. Audience share percentage Typical range: 0.1 to 50.'
+    sql: audience_share_pct
+  broadcast_end:
+    description: TIMESTAMP WITHOUT TIME ZONE. Broadcast end time
+    sql: broadcast_end
+  commentary_language:
+    description: 'TEXT. Commentary language Possible values: English, German, French, Spanish, Italian, Dutch.'
+    sql: commentary_language
+  country:
+    description: 'TEXT. Broadcast country/region Possible values: UK, US, FR, DE, IT, ES, BR, IN.'
+    sql: country
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  live_broadcast:
+    description: BOOLEAN. Whether broadcast was live Boolean flag (true/false).
+    sql: live_broadcast
+  peak_viewers_millions:
+    description: BIGINT. Peak viewership in millions
+    sql: peak_viewers_millions
+  race_ref:
+    description: BIGINT. Foreign key referencing races(rak_id). Related race
+    sql: race_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TVBroadcast public identity values.
+    label: TVBroadcast Count
+    sql: ${sports_events_large_public__tvbroadcast.broadcast_id}

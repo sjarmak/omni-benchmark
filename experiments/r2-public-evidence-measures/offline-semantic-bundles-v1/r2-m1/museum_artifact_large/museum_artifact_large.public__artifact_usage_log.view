@@ -1,0 +1,72 @@
+label: ArtifactUsageLog
+description: All columns of the public table ArtifactUsageLog.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactUsageLog
+dimensions:
+  approval_authority:
+    description: VARCHAR(100). Name of staff member who authorized usage.
+    sql: '"approvalAuthority"'
+  conservation_review:
+    description: VARCHAR(100). Requirement for post-usage conservation assessment (Required, Completed, Waived, Pending, NotRequired).
+    sql: '"conservationReview"'
+  environmental_exposure:
+    description: VARCHAR(100). Environmental conditions during handling period.
+    sql: '"environmentalExposure"'
+  equipment_used:
+    description: VARCHAR(100). Specialized handling equipment employed.
+    sql: '"equipmentUsed"'
+  follow_up_required:
+    description: VARCHAR(100). Required post-usage actions (None, ConditionCheck, Conservation, Documentation, Report).
+    sql: '"followUpRequired"'
+  handling_duration_min:
+    description: VARCHAR(100). Total time artifact was outside secure storage in minutes.
+    sql: '"handlingDurationMin"'
+  id:
+    description: BIGSERIAL. Auto-increment primary key for artifact usage records.
+    sql: id
+  incident_during_use:
+    description: VARCHAR(100). Any incidents occurring during handling session (None, Minor, Moderate, Major, Critical).
+    sql: '"incidentDuringUse"'
+  physical_stress_level:
+    description: VARCHAR(100). Degree of physical handling stress (None, Minimal, Moderate, High, Extreme).
+    sql: '"physicalStressLevel"'
+  post_usage_condition:
+    description: VARCHAR(100). Artifact condition immediately after handling (Excellent, Good, Fair, Poor, Critical, Damaged).
+    sql: '"postUsageCondition"'
+  pre_usage_condition:
+    description: VARCHAR(100). Artifact condition immediately before handling (Excellent, Good, Fair, Poor, Critical).
+    sql: '"preUsageCondition"'
+  safety_measures:
+    description: VARCHAR(100). Safety protocols implemented during handling.
+    sql: '"safetyMeasures"'
+  staff_code:
+    description: BIGINT. Supervising staff member identifier (foreign key to Staff.Staff_Code).
+    sql: '"staffCode"'
+  supervision_level:
+    description: VARCHAR(100). Required supervision during handling (None, StaffPresent, ConservatorPresent, SecurityPresent, Multiple).
+    sql: '"supervisionLevel"'
+  usage_date:
+    description: VARCHAR(100). Date when artifact was utilized.
+    sql: '"usageDate"'
+  usage_record_id:
+    description: BIGINT. Reference to base usage requirements profile (foreign key to UsageRecords.usage_id).
+    sql: '"usageRecordId"'
+  usage_report:
+    description: VARCHAR(100). Reference to detailed usage session documentation.
+    sql: '"usageReport"'
+  usage_type:
+    description: VARCHAR(100). Purpose of artifact handling (Exhibition, Photography, Research, Conservation, LoanPrep, Education, MediaShoot).
+    sql: '"usageType"'
+  user_department:
+    description: VARCHAR(100). Department initiating usage request (Curatorial, Conservation, Education, Marketing, ExternalResearcher, VIP).
+    sql: '"userDepartment"'
+  user_purpose:
+    description: VARCHAR(100). Specific objective for artifact handling session.
+    sql: '"userPurpose"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ArtifactUsageLog public identity values.
+    label: ArtifactUsageLog Count
+    sql: ${museum_artifact_large_public__artifact_usage_log.id}

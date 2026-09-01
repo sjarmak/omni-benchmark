@@ -1,0 +1,15 @@
+base_view: cybermarket_pattern_large_public__transaction_dispute_details
+label: TransactionDisputeDetails
+description: All columns of the public table TransactionDisputeDetails.
+fields:
+- cybermarket_pattern_large_public__transaction_dispute_details.*
+- cybermarket_pattern_large_public__buyers.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__transactions.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__transactions:
+    cybermarket_pattern_large_public__buyers: {}
+    cybermarket_pattern_large_public__markets: {}
+    cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

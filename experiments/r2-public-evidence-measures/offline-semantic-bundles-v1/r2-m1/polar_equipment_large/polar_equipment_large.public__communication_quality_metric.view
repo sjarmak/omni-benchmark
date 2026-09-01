@@ -1,0 +1,72 @@
+label: CommunicationQualityMetric
+description: All columns of the public table CommunicationQualityMetric.
+catalog: polar_equipment_large
+schema: public
+table_name: CommunicationQualityMetric
+dimensions:
+  bit_error_rate:
+    description: 'REAL. Bit error rate as decimal fraction. **NULL means BER monitoring disabled.** Example: 50.0.'
+    sql: '"bitErrorRate"'
+  channel_utilization_pct:
+    description: 'REAL. Channel utilization as percentage. **NULL means Channel stats unavailable.** Example: 50.0.'
+    sql: '"channelUtilization_pct"'
+  comm_quality_seq:
+    description: 'TEXT. Unique identifier for the communication quality metric record. Example: CQM-1A2B3C.'
+    sql: '"commQualitySeq"'
+  comm_session_ref:
+    description: TEXT. Reference to the communication session log entry.
+    sql: comm_session_ref
+  connection_drop_count:
+    description: 'INTEGER. Number of connection drops during measurement period. **NULL means Drop counter reset.** Example: 50.'
+    sql: '"connectionDropCount"'
+  connection_type:
+    description: 'TEXT. Type of communication connection. Unique values: Satellite, Cellular 4G, Cellular 5G, WiFi, Radio, Wired.'
+    sql: '"connectionType"'
+  encryption_enabled:
+    description: 'BOOLEAN. Flag indicating if encryption was enabled. Possible values: True, False.'
+    sql: '"encryptionEnabled"'
+  handover_count:
+    description: 'INTEGER. Number of network handovers during session. **NULL means Handover tracking not supported.** Example: 50.'
+    sql: '"handoverCount"'
+  interference_detected:
+    description: 'BOOLEAN. Flag indicating if interference was detected. Possible values: True, False.'
+    sql: '"interferenceDetected"'
+  jitter_ms:
+    description: 'REAL. Latency variation (jitter) in milliseconds. **NULL means Jitter measurement error.** Example: 12.'
+    sql: jitter_ms
+  latency_ms:
+    description: 'REAL. Round-trip latency in milliseconds. **NULL means Latency probe failed.** Example: 85.'
+    sql: latency_ms
+  mean_opinion_score:
+    description: 'REAL. Mean opinion score for voice quality (1-5 scale). **NULL means Voice quality not applicable.** Example: 3.8.'
+    sql: '"meanOpinionScore"'
+  measurement_timestamp:
+    description: 'TIMESTAMP. Timestamp when quality metrics were captured. Example: 2024-01-01 12:00:00.'
+    sql: '"measurementTimestamp"'
+  packet_loss_rate_pct:
+    description: 'REAL. Packet loss rate as percentage. **NULL means Packet tracking unavailable.** Example: 50.0.'
+    sql: '"packetLossRate_pct"'
+  quality_grade:
+    description: 'TEXT. Overall quality grade classification. Unique values: Excellent, Good, Fair, Poor, Critical.'
+    sql: '"qualityGrade"'
+  quality_notes:
+    description: TEXT. Additional notes on communication quality. **NULL means No quality issues noted.**
+    sql: '"qualityNotes"'
+  signal_strength_d_bm:
+    description: 'REAL. Signal strength in decibels relative to milliwatt. **NULL means Signal measurement unavailable.** Example: -65.'
+    sql: '"signalStrength_dBm"'
+  signal_to_noise_ratio_d_b:
+    description: 'REAL. Signal to noise ratio in decibels. **NULL means SNR calculation failed.** Example: 25.'
+    sql: '"signalToNoiseRatio_dB"'
+  throughput_down_kbps:
+    description: 'REAL. Downstream throughput in kilobits per second. **NULL means Download speed test failed.** Example: 8000.'
+    sql: '"throughputDown_kbps"'
+  throughput_up_kbps:
+    description: 'REAL. Upstream throughput in kilobits per second. **NULL means Upload speed test failed.** Example: 2500.'
+    sql: '"throughputUp_kbps"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CommunicationQualityMetric public identity values.
+    label: CommunicationQualityMetric Count
+    sql: ${polar_equipment_large_public__communication_quality_metric.comm_quality_seq}

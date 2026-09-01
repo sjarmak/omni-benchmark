@@ -1,0 +1,114 @@
+label: risk_event_history
+description: All columns of the public table risk_event_history.
+catalog: fake_account_large
+schema: public
+table_name: risk_event_history
+dimensions:
+  detect_ver:
+    description: 'TEXT. Model version string. Example: v2.2.'
+    sql: '"DETECT_VER"'
+  devhash:
+    description: 'TEXT. Truncated MD5 hash of device fingerprint. Example: ce66ab04cec4ae13.'
+    sql: '"DEVHASH"'
+  duration_sec:
+    description: 'REAL. Exposure duration in seconds. Example: 942.5.'
+    sql: '"DurationSec"'
+  esc_actor:
+    description: 'TEXT. Moderator/agent responsible for escalation. **NULL when escAction = None.** Example in CSV: NULL.'
+    sql: '"ESC_ACTOR"'
+  event_score:
+    description: 'REAL. Composite risk score (0–1). Example: 0.038.'
+    sql: '"EVENT_SCORE"'
+  event_type:
+    description: 'TEXT. Classification of the event. Possible values include: PolicyViolation, RiskAlert, UserReport, SystemScan, ManualReview. Example: RiskAlert.'
+    sql: '"EVENT_TYPE"'
+  event_code:
+    description: 'TEXT. Unique risk-event ID. Example: EVT92896215.'
+    sql: '"Event_CODE"'
+  impact_cnt:
+    description: 'BIGINT. Count of entities impacted. Example: 2184.'
+    sql: '"IMPACT_CNT"'
+  ip_hash:
+    description: 'TEXT. Truncated SHA-256 hash of source IP. Example: 97a175f42383e5cc.'
+    sql: '"IP_HASH"'
+  impact_score:
+    description: 'REAL. Model-derived impact score (0–100). Example: 73.20.'
+    sql: '"ImpactScore"'
+  pol_clause:
+    description: 'TEXT. Clause label inside the section. Example: Clause 3.'
+    sql: '"POL_CLAUSE"'
+  severity:
+    description: 'TEXT. Severity bucket. Values: Low, Medium, High, Critical. Example: Critical.'
+    sql: '"SEVERITY"'
+  vector:
+    description: 'TEXT. Content vector analysed (Image, Text, Video, Audio, Link, Behavior). Example: Text.'
+    sql: '"VECTOR"'
+  acct_risk_ref:
+    description: 'TEXT. FK to risk_and_moderation.acct_risk. Example: ACC7210284.'
+    sql: acct_risk_ref
+  actor:
+    description: 'TEXT. Who triggered detection (System, Moderator, User). Example: System.'
+    sql: actor
+  detect_conf:
+    description: 'REAL. Detector confidence (0–1). Example: 0.72.'
+    sql: '"detectConf"'
+  detect_model:
+    description: 'TEXT. Detection model family. Example: VisionGuardian.'
+    sql: '"detectModel"'
+  esc_action:
+    description: 'TEXT. Escalation action. Values: Escalate, Notify, Block, Suspend, None. Example: Notify.'
+    sql: '"escAction"'
+  esc_ts:
+    description: 'TIMESTAMPTZ. Escalation timestamp. Example (if present): 2024/06/01 15:20:04.'
+    sql: '"escTs"'
+  event_src:
+    description: 'TEXT. Source pipeline that surfaced the event. Values: RealTime, BatchJob, UserFlag, PartnerFeed. Example: RealTime.'
+    sql: '"eventSrc"'
+  event_trend:
+    description: 'TEXT. Trend of account risk events (Increasing, Decreasing, Stable). Example: Increasing.'
+    sql: '"eventTrend"'
+  event_ts:
+    description: 'TIMESTAMPTZ. Event timestamp. Example: 2024/06/01 15:18:13.'
+    sql: '"eventTs"'
+  evidence_uri:
+    description: 'TEXT. Link to stored evidence blob. **NULL when evidence not stored/expired.** Example in CSV: NULL.'
+    sql: '"evidenceURI"'
+  impact_scope:
+    description: 'TEXT. Audience affected (Followers, Platform, Public, Private). Example: Platform.'
+    sql: '"impactScope"'
+  notes:
+    description: 'TEXT. Free-form moderator notes. Example in CSV: NULL.'
+    sql: notes
+  pol_section:
+    description: 'TEXT. Policy section identifier. Example: Sec5.'
+    sql: '"polSection"'
+  risk_band:
+    description: 'TEXT. Binned risk band. Values: Low (0–0.3), Medium (0.3–0.6), High (0.6–0.8), Critical (0.8–1.0). Example: Critical (0.8–1.0).'
+    sql: risk_band
+  rule_code:
+    description: 'TEXT. Matched policy rule. Example: R792.'
+    sql: '"ruleCODE"'
+  sanction_meta:
+    description: JSONB column. Combines sanction attributes and appeal lifecycle information for a risk event.
+    sql: sanction_meta
+  sanction_meta_appeal_filed:
+    description: 'TEXT. Yes/No — whether an appeal was filed. Example: No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sanction_meta, 'APPEAL_FILED')
+  sanction_meta_sanction_type:
+    description: 'TEXT. Enforcement outcome (TempBan, PermBan, ContentRemoval, Warning, MonetizationHold, None). Example: Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sanction_meta, 'SANCTION_TYPE')
+  sanction_meta_appeal_eligible:
+    description: 'TEXT. Yes/No — whether an appeal is allowed. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sanction_meta, 'appealEligible')
+  sanction_meta_appeal_outcome:
+    description: 'TEXT. Result of appeal (Pending, Accepted, Rejected). **NULL when no appeal filed.** Example in CSV: NULL.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sanction_meta, 'appealOutcome')
+  sanction_meta_recov_ts:
+    description: 'TIMESTAMPTZ. Recovery timestamp for reversible sanctions. **NULL when still active or not applicable.** Example in CSV: NULL.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sanction_meta, 'recovTs')
+  sanction_meta_repeat_off:
+    description: 'BIGINT. Number of prior similar offences. Example: 3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sanction_meta, 'repeatOff')
+  sanction_meta_sanction_len_d:
+    description: 'BIGINT. Sanction length in days. **NULL when sanction has no duration (PermBan, None, etc.).** Example in CSV: NULL.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sanction_meta, 'sanctionLenD')

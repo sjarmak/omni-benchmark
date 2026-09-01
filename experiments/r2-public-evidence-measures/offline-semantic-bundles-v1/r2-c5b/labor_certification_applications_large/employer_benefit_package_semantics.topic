@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__employer_benefit_package
+label: employer_benefit_package
+description: All columns of the public table employer_benefit_package.
+fields:
+- labor_certification_applications_large_public__employer_benefit_package.*
+joins: {}
+ai_context: This topic models no cross-table joins.

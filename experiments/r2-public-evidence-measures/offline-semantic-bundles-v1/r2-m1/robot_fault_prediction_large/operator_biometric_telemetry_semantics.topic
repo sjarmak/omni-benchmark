@@ -1,0 +1,11 @@
+base_view: robot_fault_prediction_large_public__operator_biometric_telemetry
+label: operator_biometric_telemetry
+description: All columns of the public table operator_biometric_telemetry.
+fields:
+- robot_fault_prediction_large_public__operator_biometric_telemetry.*
+- robot_fault_prediction_large_public__human_proximity_events.*
+- robot_fault_prediction_large_public__robot_record.*
+joins:
+  robot_fault_prediction_large_public__human_proximity_events:
+    robot_fault_prediction_large_public__robot_record: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

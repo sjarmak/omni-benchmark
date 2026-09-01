@@ -1,0 +1,11 @@
+base_view: cybermarket_pattern_large_public__vendor_insurance_claims
+label: vendor_insurance_claims
+description: All columns of the public table vendor_insurance_claims.
+fields:
+- cybermarket_pattern_large_public__vendor_insurance_claims.*
+- cybermarket_pattern_large_public__vendor_insurance_policies.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__vendor_insurance_policies: {}
+  cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

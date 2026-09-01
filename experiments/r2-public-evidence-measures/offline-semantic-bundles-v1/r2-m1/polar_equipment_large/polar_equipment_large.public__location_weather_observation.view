@@ -1,0 +1,72 @@
+label: LocationWeatherObservation
+description: All columns of the public table LocationWeatherObservation.
+catalog: polar_equipment_large
+schema: public
+table_name: LocationWeatherObservation
+dimensions:
+  air_temperature_c:
+    description: 'REAL. Air temperature in degrees Celsius. **NULL means Temperature sensor failure.** Example: 15.'
+    sql: '"airTemperatureC"'
+  automated_observation:
+    description: 'BOOLEAN. Flag indicating if observation was fully automated. Possible values: True, False.'
+    sql: '"automatedObservation"'
+  barometric_pressure_h_pa:
+    description: 'REAL. Barometric pressure in hectopascals. **NULL means Barometer malfunction.** Example: 1013.'
+    sql: '"barometricPressure_hPa"'
+  cloud_cover_pct:
+    description: 'REAL. Cloud cover as percentage of sky. **NULL means Cloud observation not made.** Example: 50.0.'
+    sql: '"cloudCover_pct"'
+  data_quality_flag:
+    description: 'TEXT. Quality assurance flag for the observation data. Unique values: Verified, Preliminary, Suspect, Estimated.'
+    sql: '"dataQualityFlag"'
+  dew_point_c:
+    description: 'REAL. Dew point temperature in degrees Celsius. **NULL means Dew point calculation failed.** Example: 8.'
+    sql: '"dewPointC"'
+  env_log_ref:
+    description: TEXT. Reference to the location environmental log entry.
+    sql: env_log_ref
+  feels_like_temperature_c:
+    description: 'REAL. Apparent temperature accounting for wind chill or heat index. **NULL means Cannot calculate feels-like temp.** Example: 14.'
+    sql: '"feelsLikeTemperatureC"'
+  observation_timestamp:
+    description: 'TIMESTAMP. Timestamp of the weather observation. Example: 2024-01-01 12:00:00.'
+    sql: '"observationTimestamp"'
+  precipitation_mm:
+    description: 'REAL. Precipitation amount in millimeters. **NULL means Rain gauge blocked.** Example: 50.0.'
+    sql: precipitation_mm
+  relative_humidity_pct:
+    description: 'REAL. Relative humidity as percentage. **NULL means Humidity sensor offline.** Example: 50.0.'
+    sql: '"relativeHumidityPct"'
+  severity_level:
+    description: 'TEXT. Weather severity classification. Unique values: Normal, Advisory, Watch, Warning, Emergency.'
+    sql: '"severityLevel"'
+  solar_radiation_wm2:
+    description: 'REAL. Solar radiation in watts per square meter. **NULL means Pyranometer offline.** Example: 50.0.'
+    sql: '"solarRadiation_wm2"'
+  uv_index:
+    description: 'REAL. UV radiation index (0-11+ scale). **NULL means UV sensor not installed.** Example: 50.0.'
+    sql: '"uvIndex"'
+  visibility_km:
+    description: 'REAL. Horizontal visibility in kilometers. **NULL means Visibility sensor unavailable.** Example: 15.'
+    sql: visibility_km
+  weather_condition:
+    description: 'TEXT. Current weather condition description. Unique values: Clear, Partly Cloudy, Cloudy, Rain, Snow, Fog, Thunderstorm, Hail.'
+    sql: '"weatherCondition"'
+  weather_obs_seq:
+    description: 'TEXT. Unique identifier for the weather observation record. Example: LWO-1A2B3C.'
+    sql: '"weatherObsSeq"'
+  wind_direction_deg:
+    description: 'INTEGER. Wind direction in degrees from true north. **NULL means Wind vane stuck.** Example: 50.'
+    sql: '"windDirection_deg"'
+  wind_gust_ms:
+    description: 'REAL. Maximum wind gust speed in meters per second. **NULL means Gust detection disabled.** Example: 8.'
+    sql: '"windGust_ms"'
+  wind_speed_ms:
+    description: 'REAL. Wind speed in meters per second. **NULL means Anemometer not responding.** Example: 5.'
+    sql: '"windSpeed_ms"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct LocationWeatherObservation public identity values.
+    label: LocationWeatherObservation Count
+    sql: ${polar_equipment_large_public__location_weather_observation.weather_obs_seq}

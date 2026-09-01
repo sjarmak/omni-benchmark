@@ -1,0 +1,17 @@
+base_view: robot_fault_prediction_large_public__joint_lubrication_status
+label: joint_lubrication_status
+description: All columns of the public table joint_lubrication_status.
+fields:
+- robot_fault_prediction_large_public__joint_lubrication_status.*
+- robot_fault_prediction_large_public__joint_performance.*
+- robot_fault_prediction_large_public__operation.*
+- robot_fault_prediction_large_public__robot_details.*
+- robot_fault_prediction_large_public__robot_record.*
+- robot_fault_prediction_large_public__vibration_spectral_analysis.*
+joins:
+  robot_fault_prediction_large_public__vibration_spectral_analysis:
+    robot_fault_prediction_large_public__joint_performance:
+      robot_fault_prediction_large_public__operation:
+        robot_fault_prediction_large_public__robot_record: {}
+      robot_fault_prediction_large_public__robot_details: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

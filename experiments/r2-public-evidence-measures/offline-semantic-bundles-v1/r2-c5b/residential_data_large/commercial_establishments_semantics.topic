@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__commercial_establishments
+label: commercial_establishments
+description: All columns of the public table commercial_establishments.
+fields:
+- residential_data_large_public__commercial_establishments.*
+joins: {}
+ai_context: This topic models no cross-table joins.

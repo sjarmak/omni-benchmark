@@ -1,0 +1,72 @@
+label: ForensicInvestigation
+description: All columns of the public table ForensicInvestigation.
+catalog: cross_border_large
+schema: public
+table_name: ForensicInvestigation
+dimensions:
+  attack_vector_identified:
+    description: 'TEXT. Identified attack vector Possible values: Phishing, Exploit, Credential Theft, Supply Chain, Insider, Unknown, Social Engineering. **NULL means Attack vector not yet determined.**'
+    sql: '"ATTACK_VECTOR_IDENTIFIED"'
+  case_number:
+    description: TEXT. Forensic case reference number
+    sql: '"CASE_NUMBER"'
+  data_volume_analyzed_gb:
+    description: 'REAL. Volume of data analyzed in GB Typical range: 0.1 to 5000.'
+    sql: '"DATA_VOLUME_ANALYZED_GB"'
+  encryption_encountered:
+    description: BOOLEAN. Whether encrypted data was encountered Boolean flag (true/false).
+    sql: '"ENCRYPTION_ENCOUNTERED"'
+  end_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Investigation end date **NULL means Investigation still ongoing.**
+    sql: '"END_DATE"'
+  examiner_cert:
+    description: 'TEXT. Examiner certification Possible values: GCFE, EnCE, CCE, CFCE, GCFA.'
+    sql: '"EXAMINER_CERT"'
+  findings_summary:
+    description: JSONB. Summary of key findings
+    sql: '"FINDINGS_SUMMARY"'
+  incident_ref:
+    description: BIGINT. Foreign key referencing IncidentRegister(INCIDENT_ID). Related incident
+    sql: '"INCIDENT_REF"'
+  status:
+    description: 'TEXT. Current investigation status Possible values: Initiated, Evidence Collection, Analysis, Reporting, Closed.'
+    sql: '"STATUS"'
+  start_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Investigation start date
+    sql: '"Start_Date"'
+  chain_of_custody_status:
+    description: 'TEXT. Chain of custody integrity Possible values: Maintained, Partial Gap, Compromised.'
+    sql: '"chain_of_Custody_Status"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  evidence_items_collected:
+    description: BIGINT. Number of evidence items collected
+    sql: evidence_items_collected
+  forensic_id:
+    description: BIGINT. Primary key. Unique forensic investigation identifier
+    sql: forensic_id
+  investigation_cost_usd:
+    description: 'REAL. Total investigation cost Typical range: 5000 to 200000.'
+    sql: '"investigation_cost_USD"'
+  investigation_type:
+    description: 'TEXT. Type of forensic investigation Possible values: Digital Forensics, Network Analysis, Malware Analysis, Log Analysis, Memory Forensics, Email Forensics.'
+    sql: investigation_type
+  lead_examiner:
+    description: 'TEXT. Lead forensic examiner Possible values: Dr. A. Reeves, M. Nakamura, S. Okonkwo, J. Fischer, L. Andersen.'
+    sql: lead_examiner
+  malware_found:
+    description: BOOLEAN. Whether malware was discovered Boolean flag (true/false).
+    sql: malware_found
+  report_url:
+    description: TEXT. URL to forensic report **NULL means Report not yet published.**
+    sql: report_url
+  tools_used:
+    description: 'TEXT. Forensic tools employed Possible values: EnCase, FTK, Volatility, Wireshark, Splunk, X-Ways.'
+    sql: tools_used
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ForensicInvestigation public identity values.
+    label: ForensicInvestigation Count
+    sql: ${cross_border_large_public__forensic_investigation.forensic_id}

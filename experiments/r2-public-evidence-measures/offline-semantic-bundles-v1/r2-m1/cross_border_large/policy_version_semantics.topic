@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__policy_version
+label: PolicyVersion
+description: All columns of the public table PolicyVersion.
+fields:
+- cross_border_large_public__policy_version.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,105 @@
+label: DataProfile_Lineage
+description: All columns of the public table DataProfile_Lineage.
+catalog: cross_border_large
+schema: public
+table_name: DataProfile_Lineage
+dimensions:
+  lineage_no:
+    description: 'BIGINT. Unique identifier for each lineage record. Example: 1.'
+    sql: '"LINEAGE_NO"'
+  lineage_flow_code:
+    description: 'TEXT. Foreign key referencing DataProfile(profileTrace). Example: PT-0001. **NULL means the lineage flow code is unavailable or not recorded.**'
+    sql: lineage_flow_code
+  lineage_runtime_stats:
+    description: JSONB column. Bundles lineage, transform runtime, quality drift, and sensitivity indicators for a lineage step.
+    sql: lineage_runtime_stats
+  lineage_runtime_stats_freshness_freshness_days:
+    description: 'BIGINT. Number of days since the last update of the data. Example: 5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'freshness', 'freshness_days')
+  lineage_runtime_stats_freshness_lineage_depth:
+    description: 'BIGINT. Depth of the data lineage. Example: 3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'freshness', 'lineage_depth')
+  lineage_runtime_stats_freshness_update_frequency_min:
+    description: 'BIGINT. Frequency of data updates in minutes. Possible values: 10, 30, 60, 120, 1440. Example: 60.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'freshness', 'update_frequency_min')
+  lineage_runtime_stats_output_output_format:
+    description: 'TEXT. The format of the output data. Possible values: parquet, csv, json, avro. Example: parquet.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'output', 'output_format')
+  lineage_runtime_stats_output_output_table:
+    description: 'TEXT. The output table where the transformed data is stored. Example: cleaned_orders. **NULL means the output table is undefined or not recorded.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'output', 'output_table')
+  lineage_runtime_stats_output_schema_drift_pct:
+    description: 'REAL. Percentage of schema drift in the data. Example: 2.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'output', 'schema_drift_pct')
+  lineage_runtime_stats_output_schema_version:
+    description: 'TEXT. Version of the schema for the output data. Example: v2.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'output', 'schema_version')
+  lineage_runtime_stats_ownership_owner:
+    description: 'TEXT. The owner of the lineage data. Possible values: DataOps, IT, DataScience, Business Intelligence. Example: DataOps.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'ownership', 'owner')
+  lineage_runtime_stats_quality_avg_row_rate_rows_per_s:
+    description: 'REAL. Average row processing rate (rows per second). Example: 45.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'quality', 'avg_row_rate_rows_per_s')
+  lineage_runtime_stats_quality_avg_row_size_bytes:
+    description: 'BIGINT. Average size of a row in bytes. Example: 1200.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'quality', 'avg_row_size_bytes')
+  lineage_runtime_stats_quality_checksum_mismatch_count:
+    description: 'BIGINT. The number of checksum mismatches found. Example: 0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'quality', 'checksum_mismatch_count')
+  lineage_runtime_stats_quality_dup_rate_pct:
+    description: 'REAL. Percentage of duplicate records in the data. Example: 0.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'quality', 'dup_rate_pct')
+  lineage_runtime_stats_quality_field_count:
+    description: 'BIGINT. The number of fields in the data. Example: 25.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'quality', 'field_count')
+  lineage_runtime_stats_quality_null_rate_pct:
+    description: 'REAL. Percentage of NULL values in the data. Example: 1.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'quality', 'null_rate_pct')
+  lineage_runtime_stats_sensitivity_masking_applied_pct:
+    description: 'REAL. Percentage of data that has had masking applied. Example: 15.0. **NULL means no masking was applied or recorded.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'sensitivity', 'masking_applied_pct')
+  lineage_runtime_stats_sensitivity_phi_detected_pct:
+    description: 'REAL. Percentage of protected health information (PHI) detected in the data. Example: 0.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'sensitivity', 'phi_detected_pct')
+  lineage_runtime_stats_sensitivity_pii_detected_pct:
+    description: 'REAL. Percentage of personal identifiable information (PII) detected in the data. Example: 5.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'sensitivity', 'pii_detected_pct')
+  lineage_runtime_stats_source_source_field:
+    description: 'TEXT. The field in the source table that is being tracked. Example: orders_id.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'source', 'source_field')
+  lineage_runtime_stats_source_source_system:
+    description: 'TEXT. The source system from which the data originates. Possible values: ERP, CRM, DataWarehouse, Analytics, SalesForce, HRSystem. Example: ERP.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'source', 'source_system')
+  lineage_runtime_stats_source_source_table:
+    description: 'TEXT. The source table in the system from which the data is extracted. Example: orders.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'source', 'source_table')
+  lineage_runtime_stats_timestamps_created_at:
+    description: 'TIMESTAMP. The timestamp when the lineage record was created. Example: 2025/01/12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'timestamps', 'created_at')
+  lineage_runtime_stats_timestamps_updated_at:
+    description: 'TIMESTAMP. The timestamp when the lineage record was last updated. Example: 2025/01/15.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'timestamps', 'updated_at')
+  lineage_runtime_stats_transform_cpu_pct:
+    description: 'REAL. Percentage of CPU usage during the transformation process. Example: 57.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'transform', 'cpu_pct')
+  lineage_runtime_stats_transform_duration_ms:
+    description: 'REAL. Duration of the transformation process in milliseconds. Example: 8000.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'transform', 'duration_ms')
+  lineage_runtime_stats_transform_mem_mb:
+    description: 'REAL. Memory usage in MB during the transformation process. Example: 256.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'transform', 'mem_mb')
+  lineage_runtime_stats_transform_transform_hash:
+    description: 'TEXT. A hash value representing the transformation for lineage tracking. Example: 1a2b3c4d.'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'transform', 'transform_hash')
+  lineage_runtime_stats_transform_transform_step:
+    description: 'TEXT. The data transformation step performed. Possible values: cleansing, enrichment, aggregation, filtering, anonymization. Example: cleansing. **NULL means the transformation step is unspecified or unavailable.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'transform', 'transform_step')
+  lineage_runtime_stats_transform_transform_version:
+    description: 'TEXT. The version of the transformation step applied. Possible values: v1.0, v1.1, v2.0. Example: v1.0. **NULL means the transformation version is not provided or recorded.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(lineage_runtime_stats, 'transform', 'transform_version')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DataProfile_Lineage public identity values.
+    label: DataProfile_Lineage Count
+    sql: ${cross_border_large_public__data_profile_lineage.lineage_no}

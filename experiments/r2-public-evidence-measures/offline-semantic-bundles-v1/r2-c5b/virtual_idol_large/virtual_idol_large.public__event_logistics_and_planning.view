@@ -1,0 +1,105 @@
+label: event_logistics_and_planning
+description: All columns of the public table event_logistics_and_planning.
+catalog: virtual_idol_large
+schema: public
+table_name: event_logistics_and_planning
+dimensions:
+  accessibility_accommodations:
+    description: 'TEXT. A description of the accessibility accommodations available at the event. Example: Wheelchair ramps, ASL interpreters, and designated seating areas available.'
+    sql: '"ACCESSIBILITY_ACCOMMODATIONS"'
+  actual_spending_dollar:
+    description: Total actual amount spent on the event in dollars.
+    sql: '"ACTUAL_SPENDING_dollar"'
+  budget_allocated_dollar:
+    description: Total budget allocated for the event in dollars.
+    sql: '"BudgetAllocated_dollar"'
+  catering_service_provider:
+    description: 'TEXT. The name of the company providing catering services. **NULL means no catering service is provided or it''s handled in-house.** Example: Gourmet Events Inc..'
+    sql: '"CateringServiceProvider"'
+  event_start_timestamp:
+    description: 'TIMESTAMP. The exact date and time when the event starts. Example: 2025-10-26 18:00:00.'
+    sql: '"EVENT_START_TIMESTAMP"'
+  event_logistics_id:
+    description: 'BIGINT. Unique identifier for the event logistics record. PK. Example: 1.'
+    sql: '"EventLogisticsID"'
+  event_type:
+    description: 'TEXT. The type or category of the event. Example: Concert.'
+    sql: '"EventType"'
+  event_club_record_id:
+    description: 'BIGINT. Foreign key referencing the main event record in the ''eventsandclub'' table. FK to eventsandclub(events_reg). Example: 1.'
+    sql: '"Event_Club_Record_ID"'
+  last_update_timestamp:
+    description: 'TIMESTAMP. The timestamp of the last update to this record. Example: 2025-09-01 10:00:00.'
+    sql: '"LAST_UPDATE_TIMESTAMP"'
+  live_stream_platform:
+    description: 'TEXT. The platform used for live streaming the event. **NULL means the event is not live-streamed.** Example: YouTube.'
+    sql: '"LiveStreamPlatform"'
+  power_consumption_kwh:
+    description: 'REAL. The estimated total power consumption for the event in kilowatt-hours. Example: 1200.5.'
+    sql: '"POWER_CONSUMPTION_kwh"'
+  permits_and_licenses_status:
+    description: 'TEXT. The current status of necessary permits and licenses for the event. Possible values: Approved, Pending, Denied. Example: Approved.'
+    sql: '"PermitsAndLicensesStatus"'
+  post_event_survey_id:
+    description: 'BIGINT. Identifier for the post-event survey sent to attendees. **NULL means a survey has not been created or linked.** Example: 101.'
+    sql: '"PostEventSurveyID"'
+  recording_and_archiving_plan:
+    description: 'TEXT. Details of the plan for recording and archiving the event footage. Example: Full event recording to be archived on private server.'
+    sql: '"RECORDING_AND_ARCHIVING_PLAN"'
+  sponsorship_tier:
+    description: 'TEXT. The primary sponsorship tier for the event. **NULL means there is no headline sponsor.** Example: Platinum.'
+    sql: '"SPONSORSHIP_TIER"'
+  staff_contact_list:
+    description: 'JSONB. A JSON object containing contact information for key event staff. Example: {"Event Manager": "John Doe", "Security Chief": "Jane Smith"}.'
+    sql: '"STAFF_CONTACT_LIST"'
+  tickets_sold:
+    description: Total number of tickets sold for the event.
+    sql: '"TICKETS_SOLD"'
+  technical_crew_count:
+    description: 'BIGINT. The number of technical crew members (sound, lighting, etc.) for the event. Example: 25.'
+    sql: '"TechnicalCrewCount"'
+  ticketing_provider:
+    description: 'TEXT. The company or platform handling ticket sales. Example: TicketMaster.'
+    sql: '"TicketingProvider"'
+  venue_name:
+    description: 'TEXT. The name of the venue where the event is held. Example: Grand Exhibition Hall.'
+    sql: '"VENUE_NAME"'
+  venue_capacity:
+    description: 'BIGINT. The maximum number of attendees the venue can accommodate. Example: 5000.'
+    sql: '"VenueCapacity"'
+  contingency_plan_details:
+    description: 'TEXT. A summary of the contingency plan for unforeseen issues. Example: Backup generators and secondary internet connection on standby.'
+    sql: contingency_plan_details
+  emergency_services_liaison:
+    description: 'TEXT. The name or contact information for the liaison with local emergency services. Example: Officer Mike.'
+    sql: emergency_services_liaison
+  environmental_impact_assessment:
+    description: 'TEXT. The status or summary of the event''s environmental impact assessment. **NULL means an assessment has not been conducted.** Example: Pending.'
+    sql: environmental_impact_assessment
+  event_end_timestamp:
+    description: 'TIMESTAMP. The exact date and time when the event ends. Example: 2025-10-26 22:00:00.'
+    sql: event_end_timestamp
+  event_name:
+    description: 'TEXT. The official name of the event. Example: Annual Fan Fest 2025.'
+    sql: event_name
+  internet_bandwidth_required_gbps:
+    description: 'REAL. The required internet bandwidth for the event in gigabits per second. Example: 10.5.'
+    sql: internet_bandwidth_required_gbps
+  last_updated_by:
+    description: 'TEXT. The name or ID of the user who last updated the record. Example: admin_user.'
+    sql: last_updated_by
+  marketing_campaign_id:
+    description: 'BIGINT. Identifier for the associated marketing campaign. **NULL means there is no linked marketing campaign.** Example: 2025001.'
+    sql: marketing_campaign_id
+  security_personnel_count:
+    description: 'BIGINT. The number of security personnel hired for the event. Example: 50.'
+    sql: security_personnel_count
+  ticket_price_dollar:
+    description: Price per single ticket in dollars.
+    sql: ticket_price_dollar
+  total_revenue_dollar:
+    description: Total revenue generated from the event in dollars.
+    sql: total_revenue_dollar
+  venue_address:
+    description: 'TEXT. The physical address of the event venue. Example: 123 Main St, Anytown, USA.'
+    sql: venue_address

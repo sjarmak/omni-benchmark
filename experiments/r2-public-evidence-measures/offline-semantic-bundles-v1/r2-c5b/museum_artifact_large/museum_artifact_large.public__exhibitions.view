@@ -1,0 +1,54 @@
+label: Exhibitions
+description: All columns of the public table Exhibitions.
+catalog: museum_artifact_large
+schema: public
+table_name: Exhibitions
+dimensions:
+  budget_usd:
+    description: 'TEXT. No description provided. Example: 750000.0.'
+    sql: '"BUDGET_USD"'
+  end_date:
+    description: 'TEXT. No description provided. Example: 2022-08-15.'
+    sql: '"END_DATE"'
+  exhibition_status:
+    description: 'TEXT. No description provided. Possible values: Archived.'
+    sql: '"EXHIBITION_STATUS"'
+  exhibition_title:
+    description: 'TEXT. No description provided. Example: Masters of the Ming Dynasty: A Retrospective.'
+    sql: '"ExhibitionTitle"'
+  exhibition_catalog_code:
+    description: 'TEXT. No description provided. Example: EXH-2022-01.'
+    sql: '"Exhibition_Catalog_Code"'
+  is_traveling:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: '"IS_TRAVELING"'
+  actual_cost:
+    description: 'TEXT. No description provided. Example: 785000.0.'
+    sql: actual_cost
+  attendance_figures:
+    description: JSONB column. Stores both the expected and actual visitor attendance numbers for an exhibition.
+    sql: attendance_figures
+  curator_in_charge_stafftag:
+    description: 'TEXT. No description provided. Possible values: 1, 16, 2, 5, 9.'
+    sql: curator_in_charge_stafftag
+  location_in_hall:
+    description: 'TEXT. No description provided. Example: Hall-3.'
+    sql: location_in_hall
+  press_release:
+    description: 'TEXT. No description provided. Example: https://www.museum.org/press/exh-2022-01.'
+    sql: press_release
+  sponsoring_organization:
+    description: 'TEXT. No description provided. Example: Bank of Capital City.'
+    sql: sponsoring_organization
+  start_date:
+    description: 'TEXT. No description provided. Example: 2022-02-15.'
+    sql: start_date
+  theme_description:
+    description: 'TEXT. No description provided. Example: A comprehensive look at the artistic achievements of the Ming Dynasty, featuring ceramics, paintings, and textiles..'
+    sql: theme_description
+  attendance_figures_actual_visitors:
+    description: 'TEXT. No description provided. Example: 165234.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attendance_figures, 'ACTUAL_VISITORS')
+  attendance_figures_expected_attendance:
+    description: 'TEXT. No description provided. Example: 150000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(attendance_figures, 'expected_attendance')

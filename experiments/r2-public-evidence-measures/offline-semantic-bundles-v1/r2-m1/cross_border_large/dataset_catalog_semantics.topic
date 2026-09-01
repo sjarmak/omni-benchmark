@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__dataset_catalog
+label: Dataset_Catalog
+description: All columns of the public table Dataset_Catalog.
+fields:
+- cross_border_large_public__dataset_catalog.*
+joins: {}
+ai_context: This topic models no cross-table joins.

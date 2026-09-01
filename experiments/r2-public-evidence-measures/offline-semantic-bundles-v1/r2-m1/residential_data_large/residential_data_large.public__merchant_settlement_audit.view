@@ -1,0 +1,72 @@
+label: Merchant_Settlement_Audit
+description: All columns of the public table Merchant_Settlement_Audit.
+catalog: residential_data_large
+schema: public
+table_name: Merchant_Settlement_Audit
+dimensions:
+  settlement_audit_pk:
+    description: 'TEXT. Unique key for financial settlement verification. Example: MSA-1A2B3C.'
+    sql: '"Settlement_Audit_PK"'
+  transaction_flux_fk:
+    description: TEXT. Reference to the daily transactional flux record.
+    sql: '"Transaction_Flux_FK"'
+  average_ticket_size_brl:
+    description: 'REAL. Average value of a single transaction for the merchant. Example: 85.0.'
+    sql: average_ticket_size_brl
+  chargeback_reserve_brl:
+    description: 'REAL. Funds held in escrow by the processor for potential disputes. Example: 50.0.'
+    sql: chargeback_reserve_brl
+  chargeback_volume_brl:
+    description: 'REAL. Total value of disputed transactions. Example: 50.0.'
+    sql: chargeback_volume_brl
+  foreign_card_volume_ratio:
+    description: 'REAL. Ratio of international vs domestic card usage. Example: 0.05.'
+    sql: foreign_card_volume_ratio
+  fraud_prevention_reject_count:
+    description: 'INTEGER. Transactions blocked by merchant-side security rules. Example: 50.'
+    sql: fraud_prevention_reject_count
+  installment_plan_ratio:
+    description: 'REAL. Ratio of credit sales made using installments (Parcelado). Example: 50.0.'
+    sql: installment_plan_ratio
+  interchange_fee_total_brl:
+    description: 'REAL. Sum of fees paid to card-issuing banks. Example: 50.0.'
+    sql: interchange_fee_total_brl
+  mcc_code_primary:
+    description: 'INTEGER. Merchant Category Code. Unique values: 5411, 5812, 5814, 5912, 7011.'
+    sql: mcc_code_primary
+  merchant_app_version:
+    description: 'TEXT. Software version of the merchant payment interface. **NULL means Legacy hardware terminal.** Unique values: v2.4.1, v2.5.0, v3.0.1-beta.'
+    sql: merchant_app_version
+  merchant_risk_score:
+    description: 'REAL. Internal assessment of fraud or insolvency risk. Example: 50.0.'
+    sql: merchant_risk_score
+  merchant_satisfaction_rating:
+    description: 'REAL. Merchant''s rating of the payment service (1-5). **NULL means No survey completed.** Example: 4.1.'
+    sql: merchant_satisfaction_rating
+  net_settlement_amount_brl:
+    description: 'REAL. Final amount deposited into the merchant account. Example: 50.0.'
+    sql: net_settlement_amount_brl
+  offline_transaction_volume_brl:
+    description: 'REAL. Value of transactions processed while terminal was offline. **NULL means Always online connectivity.** Example: 50.0.'
+    sql: offline_transaction_volume_brl
+  pos_terminal_count:
+    description: 'INTEGER. Number of physical payment terminals active. **NULL means E-commerce only merchant.** Example: 3.'
+    sql: pos_terminal_count
+  refund_count_daily:
+    description: 'INTEGER. Number of voluntarily issued refunds. Example: 1.'
+    sql: refund_count_daily
+  settlement_cycle_days:
+    description: 'INTEGER. Number of days between transaction and payout (T+N). Unique values: 0, 1, 2, 30.'
+    sql: settlement_cycle_days
+  tax_withholding_amount_brl:
+    description: 'REAL. Value of taxes (ISS, PIS, COFINS) withheld at source. Example: 50.0.'
+    sql: tax_withholding_amount_brl
+  terminal_battery_level_avg:
+    description: 'REAL. Average charge across mobile POS units. **NULL means Plugged-in desktop terminals.** Example: 50.0.'
+    sql: terminal_battery_level_avg
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Merchant_Settlement_Audit public identity values.
+    label: Merchant_Settlement_Audit Count
+    sql: ${residential_data_large_public__merchant_settlement_audit.settlement_audit_pk}

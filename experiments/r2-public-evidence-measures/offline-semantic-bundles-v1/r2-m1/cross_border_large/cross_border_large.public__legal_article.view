@@ -1,0 +1,99 @@
+label: Legal_Article
+description: All columns of the public table Legal_Article.
+catalog: cross_border_large
+schema: public
+table_name: Legal_Article
+dimensions:
+  article_no:
+    description: 'BIGINT. Unique identifier for each legal article. Example: 1.'
+    sql: '"ARTICLE_NO"'
+  article_number:
+    description: 'TEXT. Number of the article. Example: Article-10.'
+    sql: '"ARTICLE_NUMBER"'
+  automated_decision_rules:
+    description: 'TEXT. Rules related to automated decision making. Example: Automated decision rules for Regulation 1.'
+    sql: '"AUTOMATED_DECISION_RULES"'
+  breach_notify_hours:
+    description: 'BIGINT. Hours within which a breach must be notified. Example: 72.'
+    sql: '"BREACH_NOTIFY_HOURS"'
+  children_provisions:
+    description: 'TEXT. Provisions related to children''s data. Example: Yes.'
+    sql: '"Children_Provisions"'
+  clause:
+    description: 'TEXT. The clause of the article. Example: Clause 2.'
+    sql: '"Clause"'
+  effective_date:
+    description: 'DATE. Date when the regulation or article becomes effective. Example: 2025-01-01.'
+    sql: '"EFFECTIVE_DATE"'
+  notes:
+    description: 'TEXT. Additional notes for the legal article. Example: Notes for Regulation 1.'
+    sql: '"Notes"'
+  obligations:
+    description: 'TEXT. Obligations under the legal article. Example: Obligations for processor under Regulation 1.'
+    sql: '"OBLIGATIONS"'
+  official_link:
+    description: 'TEXT. Official link to the legal article. Example: https://example.com/legal/1.'
+    sql: '"OFFICIAL_LINK"'
+  processor_duties:
+    description: 'TEXT. Duties of the data processor under the legal article. Example: Processor duties for Regulation 1.'
+    sql: '"PROCESSOR_DUTIES"'
+  records_required:
+    description: 'TEXT. Records required for compliance. Example: Records required for Regulation 1.'
+    sql: '"RECORDS_REQUIRED"'
+  special_category_rules:
+    description: 'TEXT. Rules for special categories of data. Example: Special category rules for Regulation 1.'
+    sql: '"SPECIAL_CATEGORY_RULES"'
+  tag1:
+    description: 'TEXT. First tag for categorizing the legal article. Example: TagA.'
+    sql: '"TAG1"'
+  title:
+    description: 'TEXT. Title of the legal article. Example: Regulation 1 Title.'
+    sql: '"TITLE"'
+  transfer_restrictions:
+    description: 'TEXT. Restrictions for data transfer under the legal article. Example: Transfer restrictions for Regulation 1.'
+    sql: '"TRANSFER_RESTRICTIONS"'
+  tag3:
+    description: 'TEXT. Third tag for categorizing the legal article. Example: Tag1.'
+    sql: '"Tag3"'
+  allowed_legal_bases:
+    description: 'TEXT. Allowed legal bases for data processing. Example: Consent. **NULL means no legal bases allowed are defined.**'
+    sql: allowed_legal_bases
+  controller_duties:
+    description: 'TEXT. Duties of the data controller under the legal article. Example: Controller duties for Regulation 1.'
+    sql: controller_duties
+  data_subject_rights:
+    description: 'TEXT. Rights of data subjects under the legal article. Example: Data subject rights under Regulation 1.'
+    sql: data_subject_rights
+  dpo_requirements:
+    description: 'TEXT. Data Protection Officer (DPO) requirements under the article. Example: DPO requirements for Regulation 1.'
+    sql: dpo_requirements
+  international_transfers:
+    description: 'TEXT. International data transfer status. Possible values: Allowed, Not Allowed. Example: Allowed.'
+    sql: international_transfers
+  last_amended_date:
+    description: 'DATE. Date of the last amendment. Example: 2025-06-15.'
+    sql: last_amended_date
+  local_transposition:
+    description: 'TEXT. Notes about local transposition. Example: Local transposition for Regulation 1.'
+    sql: local_transposition
+  penalties_usd_max:
+    description: 'REAL. Maximum penalties for non-compliance in USD. Example: 500000.0.'
+    sql: penalties_usd_max
+  profiling_rules:
+    description: 'TEXT. Profiling rules under the article. Example: Profiling rules for Regulation 1.'
+    sql: profiling_rules
+  regulation:
+    description: 'TEXT. The regulation name. Example: GDPR.'
+    sql: regulation
+  summary:
+    description: 'TEXT. A brief summary of the legal article. Example: Summary of Regulation 1.'
+    sql: summary
+  tag2:
+    description: 'TEXT. Second tag for categorizing the legal article. Example: TagX.'
+    sql: tag2
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Legal_Article public identity values.
+    label: Legal_Article Count
+    sql: ${cross_border_large_public__legal_article.article_no}

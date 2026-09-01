@@ -1,0 +1,60 @@
+label: PortabilityRequest
+description: All columns of the public table PortabilityRequest.
+catalog: cross_border_large
+schema: public
+table_name: PortabilityRequest
+dimensions:
+  data_volume_mb:
+    description: 'REAL. Total data volume in MB Typical range: 0.1 to 5000.'
+    sql: '"DATA_VOLUME_MB"'
+  delivery_method:
+    description: 'TEXT. How data will be delivered Possible values: Secure Download, Encrypted Email, API Transfer, Physical Media, Direct Transfer.'
+    sql: '"DELIVERY_METHOD"'
+  downloaded:
+    description: BOOLEAN. Whether data was downloaded by subject Boolean flag (true/false).
+    sql: '"DOWNLOADED"'
+  download_url:
+    description: TEXT. Secure download URL
+    sql: '"DOWNLOAD_URL"'
+  dsr_ref:
+    description: BIGINT. Foreign key referencing DataSubjectRequest(DSR_ID). Related data subject request
+    sql: '"DSR_REF"'
+  encryption_method:
+    description: 'TEXT. Encryption method used Possible values: AES-256, RSA, PGP, TLS 1.3. **NULL means No encryption applied.**'
+    sql: '"ENCRYPTION_METHOD"'
+  integrity_hash:
+    description: TEXT. Hash for data integrity verification **NULL means Integrity check not performed.**
+    sql: '"INTEGRITY_HASH"'
+  portability_id:
+    description: BIGINT. Primary key. Unique portability request identifier
+    sql: '"PORTABILITY_ID"'
+  recipient_specified:
+    description: BOOLEAN. Whether a receiving controller was specified Boolean flag (true/false).
+    sql: '"RECIPIENT_SPECIFIED"'
+  available_until:
+    description: DATE. Date until which download link is active
+    sql: available_until
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  data_categories_included:
+    description: BIGINT. Number of data categories included
+    sql: data_categories_included
+  download_timestamp:
+    description: TIMESTAMP WITHOUT TIME ZONE. When data was downloaded **NULL means Data not yet downloaded.**
+    sql: download_timestamp
+  encryption_applied:
+    description: BOOLEAN. Whether data was encrypted before transfer Boolean flag (true/false).
+    sql: encryption_applied
+  integrity_check:
+    description: BOOLEAN. Whether data integrity verification was performed Boolean flag (true/false).
+    sql: integrity_check
+  output_format:
+    description: 'TEXT. Requested output format Possible values: JSON, CSV, XML, PDF, Custom API.'
+    sql: output_format
+  recipient_controller:
+    description: TEXT. Name of receiving controller **NULL means No recipient controller specified.**
+    sql: recipient_controller
+  records_exported:
+    description: BIGINT. Total records exported
+    sql: records_exported

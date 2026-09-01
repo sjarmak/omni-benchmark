@@ -1,0 +1,51 @@
+label: Neighborhood_Catalog_Map
+description: All columns of the public table Neighborhood_Catalog_Map.
+catalog: planets_data_large
+schema: public
+table_name: Neighborhood_Catalog_Map
+dimensions:
+  catalog_identifier:
+    description: TEXT. Identifier in the referenced catalog
+    sql: '"CATALOG_IDENTIFIER"'
+  cross_match_date:
+    description: DATE. Date cross-match was performed
+    sql: '"CROSS_MATCH_DATE"'
+  match_probability:
+    description: 'REAL. Probability that cross-match is correct Typical range: 0 to 100.'
+    sql: '"MATCH_PROBABILITY"'
+  match_quality:
+    description: 'TEXT. Quality of the cross-match Possible values: Exact, Good, Fair, Uncertain.'
+    sql: '"MATCH_QUALITY"'
+  ncm_id:
+    description: BIGINT. Primary key. Unique neighborhood-catalog mapping identifier
+    sql: '"NCM_ID"'
+  proper_motion_consistent:
+    description: BOOLEAN. Whether proper motions are consistent Boolean flag (true/false).
+    sql: '"PROPER_MOTION_CONSISTENT"'
+  survey_ref:
+    description: BIGINT. Foreign key referencing NearbyStarSurvey(SURVEY_ENTRY_ID). Related survey entry
+    sql: '"SURVEY_REF"'
+  catalog_ref:
+    description: BIGINT. Foreign key referencing astronomical_catalogs(CATALOGREF). Related catalog
+    sql: catalog_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  cross_match_distance_arcsec:
+    description: 'REAL. Cross-match angular distance Typical range: 0 to 5.'
+    sql: cross_match_distance_arcsec
+  magnitude_offset:
+    description: 'REAL. Magnitude offset between catalogs Typical range: -1 to 1.'
+    sql: magnitude_offset
+  pm_offset_mas_per_yr:
+    description: 'REAL. Proper motion offset between catalogs Typical range: 0 to 50.'
+    sql: pm_offset_mas_per_yr
+  primary_designation:
+    description: BOOLEAN. Whether this is the primary catalog designation Boolean flag (true/false).
+    sql: primary_designation
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Neighborhood_Catalog_Map public identity values.
+    label: Neighborhood_Catalog_Map Count
+    sql: ${planets_data_large_public__neighborhood_catalog_map.ncm_id}

@@ -1,0 +1,9 @@
+base_view: polar_equipment_large_public__crew_certification_record
+label: CrewCertificationRecord
+description: All columns of the public table CrewCertificationRecord.
+fields:
+- polar_equipment_large_public__crew_certification_record.*
+- polar_equipment_large_public__crew_member.*
+joins:
+  polar_equipment_large_public__crew_member: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

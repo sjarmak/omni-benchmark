@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__fund_flow_history
+label: fund_flow_history
+description: All columns of the public table fund_flow_history.
+fields:
+- exchange_traded_funds_large_public__fund_flow_history.*
+joins: {}
+ai_context: This topic models no cross-table joins.

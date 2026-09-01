@@ -1,0 +1,75 @@
+label: binary_star_systems
+description: All columns of the public table binary_star_systems.
+catalog: planets_data_large
+schema: public
+table_name: binary_star_systems
+dimensions:
+  circumbinary_planet_potential:
+    description: 'boolean. Flag indicating potential for circumbinary planet existence. Possible values: False, True.'
+    sql: '"CIRCUMBINARY_PLANET_POTENTIAL"'
+  discovery_year:
+    description: 'bigint. Year when the binary system was first discovered. Example: 1987.'
+    sql: '"DiscoveryYear"'
+  eccentricity:
+    description: 'real. Orbital eccentricity of binary system (0 = circular, approaching 1 = highly elliptical). Example: 0.01.'
+    sql: '"Eccentricity"'
+  flux_ratio_vband:
+    description: 'real. Flux ratio of secondary to primary star in V-band. Possible values: 0.15, 0.45, 0.58, 0.62, 0.72, 0.88.'
+    sql: '"FluxRatioVBand"'
+  inclination_degrees:
+    description: 'real. Orbital inclination angle in degrees relative to sky plane. Possible values: 45.0, 65.0, 78.9, 82.5, 85.2, 89.1.'
+    sql: '"INCLINATION_degrees"'
+  last_orbital_update:
+    description: 'date. Date when orbital parameters were last updated. Possible values: 2023-08-15, 2023-09-30, 2023-10-18, 2023-11-20, 2023-12-05, 2024-01-10.'
+    sql: '"LastOrbitalUpdate"'
+  notes:
+    description: 'text. Additional notes or comments about the binary star system. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  orbital_period_days:
+    description: 'real. Orbital period of binary system in days. Example: 0.075.'
+    sql: '"ORBITAL_PERIOD_days"'
+  primary_star_link:
+    description: 'bigint. Foreign key reference to the primary star in the binary system. FK to stars(STELLARREF). Possible values: 1, 17, 2396, 3, 5, 6.'
+    sql: '"PRIMARY_STAR_LINK"'
+  spectroscopic_binary:
+    description: 'boolean. Flag indicating if system shows spectroscopic binary characteristics. Possible values: False, True.'
+    sql: '"SPECTROSCOPIC_BINARY"'
+  system_type:
+    description: 'text. Classification of binary system type (visual, spectroscopic, eclipsing, etc.). Possible values: Astrometric Binary, Cataclysmic Variable, Contact Binary, Detached Binary, Semi-detached Binary, Spectroscopic Binary.'
+    sql: '"SystemType"'
+  x_ray_emission_detected:
+    description: 'boolean. Flag indicating detection of X-ray emission from the system. **NULL means X-ray observations were not available.**. Possible values: False, True.'
+    sql: '"X_RAY_EMISSION_DETECTED"'
+  binary_ref:
+    description: 'bigint. Primary key identifier for binary star system records. PK. Possible values: 11001, 11002, 11003, 11004, 11005, 11006.'
+    sql: '"binaryRef"'
+  discovery_method:
+    description: 'text. Method used to discover or confirm the binary nature. Possible values: Astrometry, Eclipse Photometry, Radial Velocity, Spectroscopy, X-ray Detection.'
+    sql: discovery_method
+  eclipsing_binary:
+    description: 'boolean. Flag indicating if system shows eclipsing behavior. Possible values: False, True.'
+    sql: eclipsing_binary
+  habitable_zone_modification_factor:
+    description: 'real. Factor by which binary nature modifies the habitable zone extent. **NULL means habitable zone modification not calculated.**. Possible values: 0.95, 1.25, 1.35.'
+    sql: habitable_zone_modification_factor
+  mass_ratio:
+    description: 'real. Mass ratio of secondary to primary star (M2/M1). Possible values: 0.35, 0.65, 0.72, 0.78, 0.85, 0.92.'
+    sql: mass_ratio
+  secondary_star_link:
+    description: 'bigint. Foreign key reference to the secondary star in the binary system. FK to stars(STELLARREF). **NULL means secondary star is unresolved or below detection threshold.**. Possible values: 2.0, 32.0, 4.0, 7.0.'
+    sql: secondary_star_link
+  semi_major_axis_au:
+    description: 'real. Semi-major axis of binary orbit in astronomical units. Possible values: 0.005, 0.021, 0.08, 0.18, 0.35, 8.5.'
+    sql: '"semi_major_axis_AU"'
+  mass_transfer_rate_solar_masses_year:
+    description: 'real. Rate of mass transfer between binary components in solar masses per year. **NULL means no mass transfer detected or system is detached.**. Possible values: 2.3e-08, 5.8e-07.'
+    sql: '"MassTransferRate_solar_masses/year"'
+  proper_motion_dec_mas_year:
+    description: 'real. Proper motion in declination in milliarcseconds per year. Possible values: -18.7, -25.8, -31.2, -42.5, -67.4, -8.9.'
+    sql: '"PROPER_MOTION_DEC_mas/year"'
+  proper_motion_ra_mas_year:
+    description: 'real. Proper motion in right ascension in milliarcseconds per year. Possible values: 12.4, 23.8, 34.1, 45.2, 67.3, 89.2.'
+    sql: '"ProperMotionRa_mas/year"'
+  systemic_radial_velocity_km_s:
+    description: 'real. Systemic radial velocity of binary system center of mass in kilometers per second. Possible values: -12.5, -18.7, -5.2, 15.6, 22.1, 8.9.'
+    sql: '"systemic_radial_velocity_km/s"'

@@ -1,0 +1,7 @@
+base_view: planets_data_large_public__instruments_surveys
+label: instruments_surveys
+description: All columns of the public table instruments_surveys.
+fields:
+- planets_data_large_public__instruments_surveys.*
+joins: {}
+ai_context: This topic models no cross-table joins.

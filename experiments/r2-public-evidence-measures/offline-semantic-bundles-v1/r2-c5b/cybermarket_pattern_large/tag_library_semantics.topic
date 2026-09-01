@@ -1,0 +1,7 @@
+base_view: cybermarket_pattern_large_public__tag_library
+label: tag_library
+description: All columns of the public table tag_library.
+fields:
+- cybermarket_pattern_large_public__tag_library.*
+joins: {}
+ai_context: This topic models no cross-table joins.

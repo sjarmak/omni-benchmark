@@ -1,0 +1,222 @@
+- join_from_view: museum_artifact_large_public__emergency_response_log
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__emergency_response_log.support_staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__air_quality_readings
+  join_to_view: museum_artifact_large_public__environmental_readings_core
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__air_quality_readings.env_link} = ${museum_artifact_large_public__environmental_readings_core.monitor_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__showcases
+  join_to_view: museum_artifact_large_public__exhibition_halls
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__showcases.hall_ref} = ${museum_artifact_large_public__exhibition_halls.hall_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__air_quality_monitor
+  join_to_view: museum_artifact_large_public__air_quality_readings
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__air_quality_monitor.aq_reading_id} = ${museum_artifact_large_public__air_quality_readings.aq_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__transportation_monitor
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__transportation_monitor.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__artifact_ratings
+  join_to_view: museum_artifact_large_public__artifacts_core
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__artifact_ratings.art_link} = ${museum_artifact_large_public__artifacts_core.artreg_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__condition_assessments
+  join_to_view: museum_artifact_large_public__light_and_radiation_readings
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__condition_assessments.light_link} = ${museum_artifact_large_public__light_and_radiation_readings.rad_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__risk_assessments
+  join_to_view: museum_artifact_large_public__exhibition_halls
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__risk_assessments.hall_concern} = ${museum_artifact_large_public__exhibition_halls.hall_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__artifact_loan
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__artifact_loan.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__material_analysis_log
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__material_analysis_log.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__environmental_readings_core
+  join_to_view: museum_artifact_large_public__showcases
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__environmental_readings_core.case_link} = ${museum_artifact_large_public__showcases.case_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__sensitivity_data
+  join_to_view: museum_artifact_large_public__artifacts_core
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__sensitivity_data.art_link} = ${museum_artifact_large_public__artifacts_core.artreg_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__usage_records
+  join_to_view: museum_artifact_large_public__environmental_readings_core
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__usage_records.env_link} = ${museum_artifact_large_public__environmental_readings_core.monitor_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__conservation_and_maintenance
+  join_to_view: museum_artifact_large_public__surface_and_physical_readings
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__conservation_and_maintenance.surf_link} = ${museum_artifact_large_public__surface_and_physical_readings.surf_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__surface_and_physical_readings
+  join_to_view: museum_artifact_large_public__environmental_readings_core
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__surface_and_physical_readings.env_link} = ${museum_artifact_large_public__environmental_readings_core.monitor_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__insurance_policy_detail
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__insurance_policy_detail.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__showcase_environment
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__showcase_environment.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__digital_asset_link
+  join_to_view: museum_artifact_large_public__digital_assets
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__digital_asset_link.asset_registry_tag} = ${museum_artifact_large_public__digital_assets.asset_registry_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__risk_assessment_detail
+  join_to_view: museum_artifact_large_public__condition_assessments
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__risk_assessment_detail.condition_assessment_id} = ${museum_artifact_large_public__condition_assessments.cond_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__risk_assessment_detail
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__risk_assessment_detail.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__conservation_and_maintenance
+  join_to_view: museum_artifact_large_public__environmental_readings_core
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__conservation_and_maintenance.monitor_link} = ${museum_artifact_large_public__environmental_readings_core.monitor_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__security_incident
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__security_incident.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__artifact_usage_log
+  join_to_view: museum_artifact_large_public__usage_records
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__artifact_usage_log.usage_record_id} = ${museum_artifact_large_public__usage_records.usage_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__air_quality_monitor
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__air_quality_monitor.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__light_radiation_log
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__light_radiation_log.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__conservation_maintenance_log
+  join_to_view: museum_artifact_large_public__conservation_and_maintenance
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__conservation_maintenance_log.maintenance_id} = ${museum_artifact_large_public__conservation_and_maintenance.maint_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__conservation_treatment
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__conservation_treatment.lead_conservator} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__artifact_usage_log
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__artifact_usage_log.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__researcher_access
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__researcher_access.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__material_analysis_log
+  join_to_view: museum_artifact_large_public__surface_and_physical_readings
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__material_analysis_log.surface_reading_id} = ${museum_artifact_large_public__surface_and_physical_readings.surf_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__artifact_condition
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__artifact_condition.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__condition_assessments
+  join_to_view: museum_artifact_large_public__showcases
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__condition_assessments.case_exam} = ${museum_artifact_large_public__showcases.case_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__light_and_radiation_readings
+  join_to_view: museum_artifact_large_public__environmental_readings_core
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__light_and_radiation_readings.env_link} = ${museum_artifact_large_public__environmental_readings_core.monitor_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__conservation_maintenance_log
+  join_to_view: museum_artifact_large_public__staff
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__conservation_maintenance_log.staff_code} = ${museum_artifact_large_public__staff.staff_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__risk_assessments
+  join_to_view: museum_artifact_large_public__artifacts_core
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__risk_assessments.art_concern} = ${museum_artifact_large_public__artifacts_core.artreg_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__light_radiation_log
+  join_to_view: museum_artifact_large_public__light_and_radiation_readings
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__light_radiation_log.radiation_reading_id} = ${museum_artifact_large_public__light_and_radiation_readings.rad_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: museum_artifact_large_public__condition_assessments
+  join_to_view: museum_artifact_large_public__artifacts_core
+  join_type: always_left
+  on_sql: ${museum_artifact_large_public__condition_assessments.art_exam} = ${museum_artifact_large_public__artifacts_core.artreg_id}
+  relationship_type: many_to_one
+  reversible: false

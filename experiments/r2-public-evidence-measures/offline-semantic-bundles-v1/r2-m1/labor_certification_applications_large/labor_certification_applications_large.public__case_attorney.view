@@ -1,0 +1,15 @@
+label: case_attorney
+description: All columns of the public table case_attorney.
+catalog: labor_certification_applications_large
+schema: public
+table_name: case_attorney
+dimensions:
+  counselfor:
+    description: 'enum_agent_representing_employer. Indicates if the attorney is representing the employer. Possible values: No, Yes.'
+    sql: counselfor
+  counselmail:
+    description: 'TEXT. Attorney''s email address. FK to attorney.lawMail. Example: tyler.peace@muimmigration.com.'
+    sql: counselmail
+  docketkey:
+    description: TEXT. Case number reference. FK to cases.fileKey.
+    sql: docketkey

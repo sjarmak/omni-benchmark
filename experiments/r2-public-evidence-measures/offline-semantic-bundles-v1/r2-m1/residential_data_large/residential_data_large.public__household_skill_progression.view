@@ -1,0 +1,69 @@
+label: Household_Skill_Progression
+description: All columns of the public table Household_Skill_Progression.
+catalog: residential_data_large
+schema: public
+table_name: Household_Skill_Progression
+dimensions:
+  skill_growth_pk:
+    description: 'TEXT. Primary key for tracking professional development of household members. Example: HSP-1A2B3C.'
+    sql: '"Skill_Growth_PK"'
+  assignment_link:
+    description: TEXT. Reference to the specific skill assignment record.
+    sql: assignment_link
+  automation_vulnerability_index:
+    description: 'REAL. Probability of current skill set being replaced by AI (0.0-1.0). Example: 50.0.'
+    sql: automation_vulnerability_index
+  average_annual_salary_increase_percent:
+    description: 'REAL. Mean pay raise attributed to skill growth. **NULL means Unemployed or self-employed.** Example: 0.06.'
+    sql: average_annual_salary_increase_percent
+  certification_exam_score:
+    description: 'REAL. Last recorded score on a standardized industry test. **NULL means No formal exam taken.** Example: 78.'
+    sql: certification_exam_score
+  continuing_education_hours:
+    description: 'REAL. Hours spent on training in the last 6 months. Example: 50.0.'
+    sql: continuing_education_hours
+  industry_award_recognition_count:
+    description: 'INTEGER. Formal accolades or professional certifications won. Unique values: 0, 1, 3.'
+    sql: industry_award_recognition_count
+  language_fluency_count:
+    description: 'INTEGER. Number of languages spoken at professional level. Unique values: 1, 2, 3, 4.'
+    sql: language_fluency_count
+  mentorship_engagement_level:
+    description: 'INTEGER. Frequency of sessions with a senior professional (0-10). Example: 50.'
+    sql: mentorship_engagement_level
+  occupational_hazard_exposure_rating:
+    description: 'INTEGER. Level of physical risk in current role (1-10). Example: 50.'
+    sql: occupational_hazard_exposure_rating
+  patent_contribution_count:
+    description: 'INTEGER. Number of intellectual property filings. Unique values: 0, 1, 2.'
+    sql: patent_contribution_count
+  professional_network_size_estimate:
+    description: 'INTEGER. Estimated number of active industry connections. Example: 300.'
+    sql: professional_network_size_estimate
+  project_leadership_count:
+    description: 'INTEGER. Number of initiatives spearheaded by the member. Example: 50.'
+    sql: project_leadership_count
+  public_speaking_frequency_annually:
+    description: 'INTEGER. Count of presentations or workshops delivered. Example: 50.'
+    sql: public_speaking_frequency_annually
+  remote_collaboration_proficiency:
+    description: 'REAL. Efficiency rating for distributed team environments. Example: 0.8.'
+    sql: remote_collaboration_proficiency
+  soft_skill_adaptability_score:
+    description: 'REAL. Psychometric rating of workplace flexibility. Example: 0.72.'
+    sql: soft_skill_adaptability_score
+  technical_stack_diversity_count:
+    description: 'INTEGER. Number of software tools or specialized machines mastered. Example: 50.'
+    sql: technical_stack_diversity_count
+  transferable_skill_index:
+    description: 'REAL. Score representing ease of switching industries. Example: 0.65.'
+    sql: transferable_skill_index
+  workshop_attendance_satisfaction:
+    description: 'REAL. Subjective value rating of last training session. **NULL means No recent workshops.** Example: 50.0.'
+    sql: workshop_attendance_satisfaction
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Household_Skill_Progression public identity values.
+    label: Household_Skill_Progression Count
+    sql: ${residential_data_large_public__household_skill_progression.skill_growth_pk}

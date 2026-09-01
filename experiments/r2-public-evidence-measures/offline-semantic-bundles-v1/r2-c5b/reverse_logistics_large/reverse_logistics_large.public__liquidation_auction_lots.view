@@ -1,0 +1,63 @@
+label: liquidation_auction_lots
+description: All columns of the public table liquidation_auction_lots.
+catalog: reverse_logistics_large
+schema: public
+table_name: liquidation_auction_lots
+dimensions:
+  auction_closing_timestamp:
+    description: 'TIMESTAMP. Date and time the auction closes. Example: 2024-01-01 12:00:00.'
+    sql: auction_closing_timestamp
+  auction_lot_reference:
+    description: TEXT. Unique identifier for the auction lot.
+    sql: auction_lot_reference
+  buyer_region_restriction:
+    description: 'TEXT. Geographic restriction for potential buyers. Unique values: None, Domestic Only, Export Only, No EU.'
+    sql: buyer_region_restriction
+  condition_grade_mix:
+    description: TEXT. Summary of the condition mix (e.g., 80% A, 20% C).
+    sql: condition_grade_mix
+  dominant_sku_ref:
+    description: TEXT. The primary product SKU contained in this lot.
+    sql: dominant_sku_ref
+  estimated_retail_value:
+    description: 'REAL. Estimated original retail value of the items in lot. Example: 15000.'
+    sql: estimated_retail_value
+  hazardous_content_flag:
+    description: BOOLEAN. Indicates if the lot contains hazardous materials.
+    sql: hazardous_content_flag
+  listing_platform_name:
+    description: 'TEXT. Name of the B2B auction platform used. Unique values: B-Stock, Liquidation.com, Direct, Salvex.'
+    sql: listing_platform_name
+  lot_manifest_url:
+    description: TEXT. URL to the detailed item manifest.
+    sql: lot_manifest_url
+  lot_total_weight_kg:
+    description: 'REAL. Total weight of the auction lot in kilograms. Example: 500.'
+    sql: lot_total_weight_kg
+  pallet_count:
+    description: 'INTEGER. Number of pallets included in the lot. Example: 50.'
+    sql: pallet_count
+  payment_status_code:
+    description: 'TEXT. Current status of the payment. Unique values: Paid, Pending, Overdue, Cancelled.'
+    sql: payment_status_code
+  pickup_deadline_date:
+    description: TIMESTAMP. Deadline for the buyer to collect the lot. **NULL means Not sold yet.**
+    sql: pickup_deadline_date
+  platform_commission_fee:
+    description: 'REAL. Fee charged by the auction platform. Example: 150.'
+    sql: platform_commission_fee
+  reserve_price_threshold:
+    description: 'REAL. Minimum price required to sell the lot. Example: 1500.'
+    sql: reserve_price_threshold
+  shrink_wrap_color:
+    description: 'TEXT. Color of shrink wrap used for identification. Unique values: Clear, Black, Red, Blue.'
+    sql: shrink_wrap_color
+  starting_bid_amount:
+    description: 'REAL. Starting bid price for the auction. Example: 1000.'
+    sql: starting_bid_amount
+  storage_location_ref:
+    description: TEXT. Warehouse where the lot is physically stored.
+    sql: storage_location_ref
+  winning_bid_amount:
+    description: 'REAL. Final winning bid amount. **NULL means Auction active or unsold.** Example: 2200.'
+    sql: winning_bid_amount

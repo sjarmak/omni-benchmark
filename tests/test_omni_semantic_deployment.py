@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from omni_benchmark.omni_semantic_deployment import (
+    BALANCED_AI_SETTINGS,
     OmniSemanticDeploymentError,
     build_semantic_deployment_plan,
     verify_semantic_deployment_readback,
@@ -123,6 +124,67 @@ def test_plan_accepts_and_verifies_exact_global_relationship_sequence(
     readback = _readback()
     readback["relationships"] = RELATIONSHIPS
     verify_semantic_deployment_readback(plan, readback)
+
+
+def test_plan_accepts_an_explicit_exact_balanced_ai_settings_block(
+    tmp_path: Path,
+) -> None:
+    files = {
+        VIEW_NAME: VIEW.encode(),
+        TOPIC_NAME: TOPIC.encode(),
+        "model": (
+            "ai_context: Public context.\n"
+            + "ai_settings:\n"
+            + "  query_all_views_and_fields: enabled\n"
+            + "  validate_analysis: disabled\n"
+            + "  conversation_prune_length: max\n"
+            + "  analyze_configuration:\n"
+            + "    model: standard\n"
+            + "    thinking: none\n"
+            + "  build_configuration:\n"
+            + "    model: smartest\n"
+            + "    thinking: none\n"
+            + "  simple_summarize_configuration:\n"
+            + "    model: fastest\n"
+            + "    thinking: none\n"
+        ).encode(),
+    }
+    root = _bundle(tmp_path, files)
+
+    plan = build_semantic_deployment_plan(root)
+
+    model = next(item for item in plan.files if item.local_name == "model")
+    assert model.remote_path == "model"
+    assert BALANCED_AI_SETTINGS["query_all_views_and_fields"] == "enabled"
+
+
+@pytest.mark.parametrize(
+    "settings",
+    [
+        {"query_all_views_and_fields": "enabled"},
+        {
+            **BALANCED_AI_SETTINGS,
+            "validate_analysis": "enabled",
+        },
+    ],
+)
+def test_plan_rejects_partial_or_changed_balanced_ai_settings(
+    tmp_path: Path, settings: dict[str, object]
+) -> None:
+    import yaml
+
+    files = {
+        VIEW_NAME: VIEW.encode(),
+        TOPIC_NAME: TOPIC.encode(),
+        "model": yaml.safe_dump(
+            {"ai_context": "Public context.", "ai_settings": settings},
+            sort_keys=False,
+        ).encode(),
+    }
+    root = _bundle(tmp_path, files)
+
+    with pytest.raises(OmniSemanticDeploymentError, match="ai_settings"):
+        build_semantic_deployment_plan(root)
 
 
 def test_plan_still_rejects_a_sequence_for_a_topic(tmp_path: Path) -> None:

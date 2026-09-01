@@ -1,0 +1,66 @@
+label: api_usage_metering
+description: All columns of the public table api_usage_metering.
+catalog: fake_account_large
+schema: public
+table_name: api_usage_metering
+dimensions:
+  meter_code:
+    description: TEXT. Unique identifier for the daily usage record.
+    sql: '"Meter_CODE"'
+  avg_response_time_ms:
+    description: 'REAL. Average server-side latency for this partner. Example: 100.'
+    sql: avg_response_time_ms
+  billable_call_count:
+    description: 'INTEGER. Subset of calls that incur a financial charge. Example: 50.'
+    sql: billable_call_count
+  burst_allowance_remaining:
+    description: 'INTEGER. Remaining capacity for short-term spikes. Example: 50.'
+    sql: burst_allowance_remaining
+  cache_lookup_count:
+    description: 'INTEGER. Number of calls served via API gateway cache. Example: 50.'
+    sql: cache_lookup_count
+  client_library_version:
+    description: 'TEXT. Version of the SDK used by partner. Unique values: v1.0, v1.2, REST.'
+    sql: client_library_version
+  concurrent_connection_peak:
+    description: 'INTEGER. Max simultaneous connections observed. Example: 50.'
+    sql: concurrent_connection_peak
+  daily_quota_limit:
+    description: 'INTEGER. Max allowed calls for this tier. Unique values: 1000, 10000, 1000000.'
+    sql: daily_quota_limit
+  daily_quota_used:
+    description: 'INTEGER. Actual calls made today. Example: 50.'
+    sql: daily_quota_used
+  deprecated_endpoint_usage_count:
+    description: 'INTEGER. Calls made to old API versions. Example: 50.'
+    sql: deprecated_endpoint_usage_count
+  endpoint_distribution_hash:
+    description: TEXT. Hash representing the mix of endpoints called.
+    sql: endpoint_distribution_hash
+  error_rate_pct:
+    description: 'REAL. Percentage of 4xx/5xx responses. Example: 50.0.'
+    sql: error_rate_pct
+  p99_response_time_ms:
+    description: 'REAL. 99th percentile latency (tail latency). Example: 400.'
+    sql: p99_response_time_ms
+  partner_ref:
+    description: TEXT. Reference to the partner app consuming the API.
+    sql: partner_ref
+  payload_size_avg_kb:
+    description: 'REAL. Average size of data exchanged. Example: 15.'
+    sql: payload_size_avg_kb
+  region_routing_code:
+    description: 'TEXT. Data center region handling the traffic. Unique values: US-EAST, EU-WEST, AP-SOUTH.'
+    sql: region_routing_code
+  security_violation_attempts:
+    description: 'INTEGER. Invalid tokens or SQLi attempts blocked. Example: 50.'
+    sql: security_violation_attempts
+  server_side_retry_count:
+    description: 'INTEGER. Internal retries due to timeouts. Example: 50.'
+    sql: server_side_retry_count
+  throttle_event_count:
+    description: 'INTEGER. Number of requests rejected due to rate limits. Example: 50.'
+    sql: throttle_event_count
+  webhook_delivery_success_pct:
+    description: 'REAL. Success rate of callbacks sent to partner. **NULL means No webhooks configured.** Example: 50.0.'
+    sql: webhook_delivery_success_pct

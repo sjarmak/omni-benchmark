@@ -1,0 +1,11 @@
+base_view: virtual_idol_large_public__idol_genre_map
+label: idol_genre_map
+description: All columns of the public table idol_genre_map.
+fields:
+- virtual_idol_large_public__idol_genre_map.*
+- virtual_idol_large_public__genres.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__genres: {}
+  virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

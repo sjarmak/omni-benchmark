@@ -1,0 +1,32 @@
+label: Conservation
+description: Conservation records with public business context for structural stability.
+catalog: archeology_scan_large
+schema: public
+table_name: conservation
+dimensions:
+  structstate:
+    description: 'TEXT. Structural stability assessment status. Possible values: Moderate condition, careful monitoring required.'
+    label: Structural Stability
+    sql: structstate
+    ai_context: 'Structural Stability: A categorical assessment with specific values: ''Stable'' indicates structures that maintain integrity under normal conditions, ''Unstable'' indicates structures showing signs of deterioration requiring intervention, and ''Critical'' indicates structures at imminent risk of collapse requiring emergency stabilization.'
+  arcref:
+    description: TEXT. Reference to associated archeologys project. FK to Projects.
+    sql: arcref
+  curerank:
+    description: 'TEXT. Conservation priority ranking classification. Possible values: Critical priority, immediate conservation required.'
+    sql: curerank
+  cureregistry:
+    description: BIGSERIAL. Auto-generated unique identifier for conservation record. PK = Conservation(CureRegistry).
+    sql: cureregistry
+  harmassess:
+    description: 'TEXT. Damage assessment evaluation results. **NULL means damage assessment not conducted or evaluation pending.**. Possible values: Minor, Moderate, Severe.'
+    sql: harmassess
+  intervhistory:
+    description: 'TEXT. History of previous conservation interventions. **NULL means no prior conservation interventions recorded or documentation unavailable.**. Possible values: Major, Minor.'
+    sql: intervhistory
+  priordocs:
+    description: 'TEXT. Previous documentation and records available. **NULL means no previous documentation exists or records not accessible.**. Possible values: Complete, Partial.'
+    sql: priordocs
+  zoneref:
+    description: TEXT. Reference to site requiring conservation attention. FK to Sites.
+    sql: zoneref

@@ -1,0 +1,123 @@
+label: emp_financials_details
+description: All columns of the public table emp_financials_details.
+catalog: labor_certification_applications_large
+schema: public
+table_name: emp_financials_details
+dimensions:
+  cap_ex_spend_usd:
+    description: 'REAL. Annual capital-expenditure outlay, USD. Example: 9,405,411.'
+    sql: '"CapEx_spendUSD"'
+  fin_code:
+    description: 'TEXT. Unique identifier code for an employer-financials record. PK. Example: FIN00001.'
+    sql: '"FIN_code"'
+  fine_total_usd:
+    description: 'REAL. Aggregate dollar value of fines, USD. Example: 364,811.'
+    sql: '"Fine_total_USD"'
+  profitmargin_pct:
+    description: 'REAL. Net profit divided by revenue × 100. Example: 17.34.'
+    sql: '"PROFITmargin_pct"'
+  stockticker:
+    description: 'TEXT. Exchange ticker symbol (3–4 uppercase letters). Example: QRM.'
+    sql: '"STOCKticker"'
+  amort_pct:
+    description: 'REAL. Amortization expense as % of intangible assets. Example: 8.05.'
+    sql: amort_pct
+  audit_opinion:
+    description: 'TEXT. Opinion issued in latest audit report. Possible values: Unqualified, Qualified, Adverse, Disclaimer. **NULL means no audit opinion registered yet.** Example: Qualified.'
+    sql: '"auditOpinion"'
+  audit_firm:
+    description: 'TEXT. External audit firm of record. Possible values: PwC, EY, KPMG, Deloitte, BDO. Example: EY.'
+    sql: '"audit_Firm"'
+  bond_issuance_txt:
+    description: 'REAL. Face value of corporate bonds issued during period, USD. **NULL means the employer has no bond issuance or disclosure is absent.** Example: 292,640,459.'
+    sql: '"bondIssuance_txt"'
+  cash_on_hand_usd:
+    description: 'REAL. Liquid cash reserves at fiscal year-end, USD. Example: 609387650.'
+    sql: '"cashOnHand_USD"'
+  compensation_overview:
+    description: JSONB column. Bundles high-level employee-related compensation expenses into one JSONB column for easier reporting on labour-cost structure.
+    sql: compensation_overview
+  compliance_flag:
+    description: 'TEXT. High-level compliance assessment. Possible values: Compliant, Non-compliant. Example: Compliant.'
+    sql: '"complianceFlag"'
+  corp_ref:
+    description: 'TEXT. Employer’s corporate handle (FK to employer table). Example: Avant Healthcare Professionals, LLC.'
+    sql: corp_ref
+  cost_cogs_pct:
+    description: 'REAL. Cost of goods sold as % of revenue. Example: 63.4.'
+    sql: '"costCOGS_pct"'
+  credit_scoring_score:
+    description: 'TEXT. Long-term issuer credit rating. Possible values: AAA, AA, A, BBB, BB, B, CCC. Example: BBB.'
+    sql: '"credit_scoring_Score"'
+  debt_ratio:
+    description: 'REAL. Total debt ÷ total assets. Example: 1.234.'
+    sql: '"debtRATIO"'
+  depreciation_pct:
+    description: 'REAL. Depreciation expense as % of fixed assets. Example: 11.12.'
+    sql: depreciation_pct
+  equity_usd:
+    description: 'REAL. Shareholders’ equity, USD. Example: 2,774,542,143.'
+    sql: equity_usd
+  filing_status:
+    description: 'TEXT. Current filing status with regulators (e.g., Open, Closed, Filed, Pending, In Progress, Completed). Example: Closed.'
+    sql: '"filingSTATUS"'
+  fine_cnt:
+    description: 'BIGINT. Count of regulatory fines imposed in fiscal year. Example: 4.'
+    sql: '"fineCNT"'
+  fiscal_year:
+    description: 'TEXT. Fiscal year represented by the figures. Example: 2022.'
+    sql: '"fiscalYEAR"'
+  growth_rate_pct:
+    description: 'REAL. Year-over-year revenue growth %. **NULL means growth not computed for the period.** Example: 5.71.'
+    sql: '"growthRate_pct"'
+  last_audit_day:
+    description: 'DATE. Close date of most recent audit. Example: 2024-11-03.'
+    sql: '"lastAudit_day"'
+  layoff_6mo:
+    description: 'BIGINT. Headcount laid off in the past 6 months. Example: 42.'
+    sql: layoff_6mo
+  liquidity_window:
+    description: 'TEXT. Cash runway or liquidity horizon. Example: 90 d cash runway.'
+    sql: '"liquidityWindow"'
+  next_audit_window:
+    description: 'TEXT. Scheduled quarter for next audit. Example: Q3 2026.'
+    sql: '"nextAuditWindow"'
+  reasoning_note:
+    description: 'TEXT. Analyst notes or explanation of financial context. Example: Synthetic demo data.'
+    sql: '"reasoningNOTE"'
+  rev_usd:
+    description: 'REAL. Total annual revenue in US dollars. Example: 880544675.'
+    sql: '"rev_USD"'
+  rnd_spend_pct:
+    description: 'REAL. R&D spend as % of revenue. **NULL means value was unavailable or not applicable for that record.** Example: 22.76.'
+    sql: '"rndSpend_pct"'
+  sec_filings:
+    description: 'TEXT. Latest SEC filing reference and date. Example: 10-K 2025-03-01.'
+    sql: '"secFILINGS"'
+  tax_jurisdiction:
+    description: 'TEXT. Primary filing jurisdiction for corporate taxes. Example: TX, USA.'
+    sql: '"taxJurisdiction"'
+  wage_violation_cnt:
+    description: 'BIGINT. Number of wage-and-hour violations cited. **NULL means none recorded or data missing.** Example: 17.'
+    sql: '"wageViolation_cnt"'
+  zip_ref:
+    description: 'TEXT. Employer ZIP code (FK to employer table). Example: 32751.'
+    sql: zip_ref
+  compensation_overview_avg_salary_usd_per_yr:
+    description: 'REAL. Average annual salary expense per employee, USD. Example: 102000.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compensation_overview, 'avg_salary_usd_per_yr')
+  compensation_overview_benefit_cost_pct:
+    description: 'REAL. Employer benefit spend as % of salary. Example: 23.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compensation_overview, 'benefit_cost_pct')
+  compensation_overview_payroll_cost_usd:
+    description: 'REAL. Total payroll expenses, USD. Example: 136,216,053.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compensation_overview, 'payroll_cost_usd')
+  compensation_overview_wage_band_usd:
+    description: 'REAL. Mid-point of the reported wage band, USD. Example: 96,500.'
+    sql: JSONB_EXTRACT_PATH_TEXT(compensation_overview, 'wage_band_usd')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct emp_financials_details public identity values.
+    label: emp_financials_details Count
+    sql: ${labor_certification_applications_large_public__emp_financials_details.fin_code}

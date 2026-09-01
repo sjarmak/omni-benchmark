@@ -1,0 +1,114 @@
+label: profile_demographics
+description: All columns of the public table profile_demographics.
+catalog: fake_account_large
+schema: public
+table_name: profile_demographics
+dimensions:
+  age_band:
+    description: 'TEXT. Age bucket derived from birth_date at snapshot time. Example: 18-24. Possible values: 18-24, 25-34, 35-44, 45-54, 55-64, 65-74, 75+.'
+    sql: '"AgeBand"'
+  children_num:
+    description: 'BIGINT. Number of dependent children in household. Example: 0.'
+    sql: '"ChildrenNum"'
+  citizen_flag:
+    description: 'TEXT. Whether the respondent is a citizen of their residence country. Example: Yes. Possible values: Yes, No.'
+    sql: '"CitizenFlag"'
+  city:
+    description: 'TEXT. Primary city of residence. Example: Rio de Janeiro.'
+    sql: '"City"'
+  demo_score:
+    description: 'REAL. Composite demographic score (0–100). Example: 92.2.'
+    sql: '"DemoScore"'
+  edu_level:
+    description: 'TEXT. Highest completed education level. Example: Bachelor. Possible values: High School, Associate, Bachelor, Master, PhD.'
+    sql: '"EDU_LEVEL"'
+  ethnicity:
+    description: 'TEXT. Self-identified ethnicity. Example: Hispanic. Possible values: Asian, Black, Hispanic, Middle Eastern, Native American, Other, White, Mixed.'
+    sql: '"ETHNICITY"'
+  edu_field:
+    description: 'TEXT. Field of study for highest education credential. Example: Engineering. Possible values: Arts, Business, Computer Science, Education, Engineering, Law, Medicine, Science. **NULL means no tertiary specialization or the respondent declined to specify.**'
+    sql: '"EduField"'
+  gender:
+    description: 'TEXT. Self-reported gender identity. Example: Non-binary. Possible values: Non-binary, Female, Prefer not to say, Male.'
+    sql: '"GENDER"'
+  health_focus:
+    description: 'TEXT. Level of personal focus on health & wellness. Example: Low. Possible values: Low, Medium, High.'
+    sql: '"HEALTH_FOCUS"'
+  income_range:
+    description: 'TEXT. Household income band in local currency (k USD equivalent). Example: 70-90k. Possible values: 30-50k, 50-70k, 70-90k, 90-120k, 120-150k, 150k+.'
+    sql: '"INCOME_RANGE"'
+  job_sector:
+    description: 'TEXT. Economic sector of employment. Example: Healthcare. Possible values: Education, Finance, Government, Healthcare, Hospitality, Manufacturing, Retail, Technology.'
+    sql: '"JOB_SECTOR"'
+  language1:
+    description: 'TEXT. Primary language spoken at home. Example: German. Possible values: Arabic, English, French, German, Hindi, Japanese, Korean, Mandarin, Portuguese, Spanish.'
+    sql: '"LANGUAGE1"'
+  language2:
+    description: 'TEXT. Second language (if any). Example: Portuguese. Possible values: Arabic, English, French, German, Hindi, Japanese, Korean, Mandarin, Portuguese, Spanish. **NULL means the individual speaks only one language or chose not to disclose a second language.**'
+    sql: '"Language2"'
+  lifestyle_seg:
+    description: 'TEXT. Marketing lifestyle segment classification. Example: Young Singles. Possible values: Rural Traditionalists, Senior Leisure, Suburban Families, Urban Professionals, Young Singles.'
+    sql: '"LifestyleSeg"'
+  media_pref:
+    description: 'TEXT. Most-used media channel. Example: Podcasts. Possible values: Cable TV, Podcasts, Print, Radio, Social Media, Streaming.'
+    sql: '"MediaPref"'
+  religion:
+    description: 'TEXT. Religious affiliation. Example: Judaism. Possible values: Buddhism, Christianity, Hinduism, Islam, Judaism, No religion, Other. **NULL means the respondent is unaffiliated or chose not to answer.**'
+    sql: '"RELIGION"'
+  time_zone:
+    description: 'TEXT. IANA time-zone identifier for City. Example: America/Argentina/Buenos_Aires.'
+    sql: '"TimeZone"'
+  acct_anchor:
+    description: 'TEXT. Unique identifier anchoring a profile across tables. PK. FK. Example: ACC7210284.'
+    sql: acct_anchor
+  age_span:
+    description: 'TEXT. Human-readable age span phrase. Example: 18–24 yrs. Possible values: 18–24 yrs, 25–34 yrs, 35–44 yrs, 45–54 yrs, 55–64 yrs, 65–74 yrs, 75+ yrs.'
+    sql: age_span
+  birth_date:
+    description: 'DATE. Date of birth (ISO-8601). Example: 2007-07-19.'
+    sql: birth_date
+  commute_dist:
+    description: 'TEXT. Typical one-way commute time to central business district. Example: 60 min to CBD. Possible values: 15 min to CBD, 30 min to CBD, 45 min to CBD, 60 min to CBD, Remote.'
+    sql: commute_dist
+  device_pref:
+    description: 'TEXT. Primary digital device or operating system. Example: iOS. Possible values: Android, iOS, Mac Desktop, Tablet, Windows Desktop.'
+    sql: device_pref
+  household_size:
+    description: 'BIGINT. Number of people living in the household. Example: 2.'
+    sql: '"householdSize"'
+  income_bracket:
+    description: 'TEXT. Formatted income bracket string. Example: 70–90 k USD/yr. Possible values: 30–50 k USD/yr, 50–70 k USD/yr, 70–90 k USD/yr, 90–120 k USD/yr, 120–150 k USD/yr, 150 k+ USD/yr.'
+    sql: income_bracket
+  industry:
+    description: 'TEXT. Industry classification. Example: Software. Possible values: Automotive, Banking, Education, E-commerce, Energy, Healthcare, Software, Telecommunications.'
+    sql: industry
+  job_title:
+    description: 'TEXT. Current job title. Example: Marketing Manager.'
+    sql: job_title
+  language_3:
+    description: 'TEXT. Third language (if any). Example: Spanish. Possible values: Arabic, English, French, German, Hindi, Japanese, Korean, Mandarin, Portuguese, Spanish. **NULL means the individual speaks fewer than three languages or chose not to disclose a third language.**'
+    sql: language_3
+  marital_status:
+    description: 'TEXT. Current marital status. Example: Domestic Partnership. Possible values: Single, Married, Domestic Partnership, Divorced, Widowed.'
+    sql: marital_status
+  music_taste:
+    description: 'TEXT. Dominant music genre preference. Example: Classical. Possible values: Classical, Country, Electronic, Hip-Hop, Jazz, Pop, R&B, Rock.'
+    sql: music_taste
+  nationality:
+    description: 'TEXT. Country of nationality. Example: South Africa.'
+    sql: nationality
+  political_lean:
+    description: 'TEXT. Self-identified political ideology. Example: Libertarian. Possible values: Conservative, Liberal, Libertarian, Moderate, Other. **NULL means the respondent declined to state political views.**'
+    sql: political_lean
+  purchase_power:
+    description: 'REAL. Relative discretionary spending index (0–100). Example: 38.3.'
+    sql: '"purchasePower"'
+  region:
+    description: 'TEXT. Broad global region of residence. Example: South America. Possible values: Africa, Asia, Europe, North America, Oceania, South America, Middle East.'
+    sql: region
+  sports_interests:
+    description: 'TEXT. Primary sport the respondent follows or participates in. Example: Football. Possible values: Baseball, Basketball, Cycling, Football, Running, Soccer, Swimming, Tennis.'
+    sql: '"sportsInterests"'
+  travel_freq:
+    description: 'REAL. Average leisure/business trips per year. Example: 9.8.'
+    sql: '"travelFreq"'

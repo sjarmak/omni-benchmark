@@ -1,0 +1,99 @@
+label: product_review_feedback
+description: All columns of the public table product_review_feedback.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: product_review_feedback
+dimensions:
+  body:
+    description: 'TEXT. Full review text. Example: "Excellent quality, the seller was responsive…"'
+    sql: '"BODY"'
+  devicefingerprint_hash:
+    description: 'TEXT. Hash of device/browser fingerprint. Example: 7aa379182065d7e6…'
+    sql: '"DEVICEfingerprintHash"'
+  follow_up_need:
+    description: 'BOOLEAN. Flag indicating further follow-up is required. Example: false.'
+    sql: '"FOLLOW_UP_NEED"'
+  lastupdated:
+    description: 'TIMESTAMP (YYYY-MM-DD HH:MM:SS). Last modification time. Example: 2025-03-07 00:42:22.'
+    sql: '"LASTupdated"'
+  listingage:
+    description: 'BIGINT. Age of the listing (days) when the review was posted. Example: 155.'
+    sql: '"LISTINGAGE"'
+  mediatype:
+    description: 'TEXT. Type of attached media (image, video). **NULL means no media attached.** Example: image.'
+    sql: '"MEDIAtype"'
+  prodcat:
+    description: 'TEXT. Top-level product category from the products table. Example: Digital.'
+    sql: '"PRODCAT"'
+  rating:
+    description: 'INTEGER. Star rating (1–5) given by the reviewer. Example: 5.'
+    sql: '"RATING"'
+  review_ref:
+    description: 'TEXT. Primary-key reference string for the review. Example: REV-a9d4e7182f31.'
+    sql: '"ReviewRef"'
+  complaint_flag:
+    description: 'BOOLEAN. True if the review is classified as a complaint (rating ≤ 2 or user-flagged). Example: false.'
+    sql: '"complaintFLAG"'
+  follow_up_date:
+    description: 'DATE (YYYY-MM-DD). Scheduled follow-up date if FOLLOW_UP_NEED is true. **NULL means no follow-up is planned or required.** Example: 2025-04-03.'
+    sql: follow_up_date
+  fraud_indicator:
+    description: 'BOOLEAN. Internal flag for suspected fraudulent reviews. **NULL means fraud analysis was inconclusive or skipped.** Example: true.'
+    sql: '"fraud_INDICATOR"'
+  helpfulness_votes:
+    description: 'BIGINT. Count of users who marked the review helpful. Example: 42.'
+    sql: helpfulness_votes
+  ip_hash:
+    description: 'TEXT. SHA-256 hash of reviewer IP for privacy. Example: 1e4b6f8d3a9c…'
+    sql: '"ipHASH"'
+  lang:
+    description: 'TEXT. ISO-639 language code detected. Example: en.'
+    sql: lang
+  media_included:
+    description: 'BOOLEAN. True if the review contains media (image/video). Example: true.'
+    sql: media_included
+  media_url:
+    description: 'TEXT. CDN URL of the media asset. **NULL means no media or link removed.** Example: https://media.example.com/5f5329.jpg.'
+    sql: media_url
+  platform_source:
+    description: 'TEXT. Channel where review was submitted (web, mobile, api). Example: web.'
+    sql: platform_source
+  rating_spread:
+    description: 'TEXT. Historical rating range for this listing (e.g., "1–5★"). Example: 1–5★.'
+    sql: '"ratingSpread"'
+  reporting_user:
+    description: 'TEXT. Platform user ID of the reviewer. Example: user_1032.'
+    sql: '"reportingUSER"'
+  resolved:
+    description: 'BOOLEAN. True if the seller marked the issue resolved. Example: true.'
+    sql: resolved
+  response_lag_hrs:
+    description: 'TEXT. Categorised seller-response lag in hours (< 24 or > 24). Example: < 24'
+    sql: '"responseLag_hrs"'
+  response_time_hrs:
+    description: 'REAL. Seller reply time in hours. **NULL means no seller response recorded yet.** Example: 19.6.'
+    sql: response_time_hrs
+  review_date:
+    description: 'DATE (YYYY-MM-DD). Calendar date the review was created. Example: 2025-01-17.'
+    sql: '"reviewDATE"'
+  review_integrity_score:
+    description: 'REAL. Automated integrity score (0-100). Example: 80.8.'
+    sql: review_integrity_score
+  seller_pointer:
+    description: 'TEXT. Foreign-key pointer to the seller. Example: V63085.'
+    sql: seller_pointer
+  sentiment_score:
+    description: 'REAL. Machine-learning sentiment score (-1 to +1). **NULL means the language model could not evaluate this review (e.g., unsupported language or empty body).** Example: 0.84.'
+    sql: sentiment_score
+  subcategory:
+    description: 'TEXT. Second-level product category. Example: Type_B.'
+    sql: subcategory
+  title:
+    description: 'TEXT. Review headline. Example: "Great value and fast delivery."'
+    sql: title
+  vendor_response:
+    description: 'TEXT. Seller’s public reply. **NULL means the seller hasn’t responded.** Example: "We’re sorry for the delay—please contact support…"'
+    sql: '"vendorRESPONSE"'
+  verified_purchase:
+    description: 'BOOLEAN. True if the reviewer actually purchased the item. Example: true.'
+    sql: '"verifiedPURCHASE"'

@@ -1,0 +1,11 @@
+base_view: fake_account_large_public__api_quota_adjustments
+label: api_quota_adjustments
+description: All columns of the public table api_quota_adjustments.
+fields:
+- fake_account_large_public__api_quota_adjustments.*
+- fake_account_large_public__api_usage_metering.*
+- fake_account_large_public__partner_integrations.*
+joins:
+  fake_account_large_public__api_usage_metering:
+    fake_account_large_public__partner_integrations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

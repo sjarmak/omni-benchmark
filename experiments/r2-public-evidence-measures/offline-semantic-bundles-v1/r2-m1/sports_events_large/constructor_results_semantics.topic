@@ -1,0 +1,13 @@
+base_view: sports_events_large_public__constructor_results
+label: constructor_results
+description: All columns of the public table constructor_results.
+fields:
+- sports_events_large_public__constructor_results.*
+- sports_events_large_public__circuits.*
+- sports_events_large_public__constructors.*
+- sports_events_large_public__races.*
+joins:
+  sports_events_large_public__constructors: {}
+  sports_events_large_public__races:
+    sports_events_large_public__circuits: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

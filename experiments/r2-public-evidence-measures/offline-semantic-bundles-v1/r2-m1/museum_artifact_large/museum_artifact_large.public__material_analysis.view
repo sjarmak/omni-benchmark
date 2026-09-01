@@ -1,0 +1,60 @@
+label: MaterialAnalysis
+description: All columns of the public table MaterialAnalysis.
+catalog: museum_artifact_large
+schema: public
+table_name: MaterialAnalysis
+dimensions:
+  analysis_cost:
+    description: 'TEXT. No description provided. Example: 1200.0.'
+    sql: '"ANALYSIS_COST"'
+  analysis_method:
+    description: 'TEXT. No description provided. Example: X-ray fluorescence (XRF).'
+    sql: '"ANALYSIS_METHOD"'
+  analysis_date:
+    description: 'TEXT. No description provided. Example: 2021-11-15.'
+    sql: '"Analysis_Date"'
+  analysis_log_ref:
+    description: 'TEXT. No description provided. Example: 1.'
+    sql: '"Analysis_Log_Ref"'
+  confidence:
+    description: 'TEXT. No description provided. Possible values: High, Low, Medium, Very High.'
+    sql: '"CONFIDENCE"'
+  purpose_of_analysis:
+    description: 'TEXT. No description provided. Example: Composition Verification.'
+    sql: '"PURPOSE_OF_ANALYSIS"'
+  sample_weight_mg:
+    description: 'TEXT. No description provided. Example: 15.2.'
+    sql: '"SAMPLE_WEIGHT_MG"'
+  sample_location:
+    description: 'TEXT. No description provided. Example: Surface scan, leg section.'
+    sql: '"SampleLocation"'
+  technician:
+    description: 'TEXT. No description provided. Example: Cynthia Parker.'
+    sql: '"TECHNICIAN"'
+  analysis_report_code:
+    description: 'TEXT. No description provided. Example: MA-2021-056.'
+    sql: analysis_report_code
+  analysis_subject_artifact:
+    description: 'TEXT. No description provided. Example: ART20003.'
+    sql: analysis_subject_artifact
+  composition_data:
+    description: 'TEXT. No description provided. Example: {Cu: 84.5%, Sn: 11.2%, Pb: 3.1%}.'
+    sql: composition_data
+  density_g_cm3:
+    description: 'TEXT. No description provided. Example: 8.73 g/cm^3.'
+    sql: density_g_cm3
+  is_destructive:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: is_destructive
+  laboratory_name:
+    description: 'TEXT. No description provided. Example: Museum Conservation Lab 3.'
+    sql: laboratory_name
+  next_analysis_due:
+    description: 'TEXT. No description provided. Example: 2031-11-15.'
+    sql: next_analysis_due
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct MaterialAnalysis public identity values.
+    label: MaterialAnalysis Count
+    sql: ${museum_artifact_large_public__material_analysis.analysis_log_ref}

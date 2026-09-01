@@ -1,0 +1,78 @@
+label: SpaceMission
+description: All columns of the public table SpaceMission.
+catalog: planets_data_large
+schema: public
+table_name: SpaceMission
+dimensions:
+  angular_resolution_arcsec:
+    description: 'REAL. Angular resolution in arcseconds Typical range: 0.001 to 10.'
+    sql: '"ANGULAR_RESOLUTION_arcsec"'
+  data_access:
+    description: 'TEXT. Data access policy Possible values: Public, Proprietary, Embargoed, Mixed.'
+    sql: '"DATA_ACCESS"'
+  end_date:
+    description: DATE. Mission end date **NULL means Mission still active or not yet launched.**
+    sql: '"END_DATE"'
+  instruments_count:
+    description: BIGINT. Number of science instruments onboard
+    sql: '"INSTRUMENTS_COUNT"'
+  lead_agency:
+    description: 'TEXT. Lead space agency Possible values: NASA, ESA, JAXA, CNSA, ISRO, Roscosmos, CSA.'
+    sql: '"LEAD_AGENCY"'
+  mission_name:
+    description: 'TEXT. Official mission name Possible values: Kepler, TESS, JWST, PLATO, ARIEL, Gaia, Hubble, Spitzer.'
+    sql: '"MISSION_NAME"'
+  mission_url:
+    description: TEXT. Official mission website URL
+    sql: '"MISSION_URL"'
+  orbit_type:
+    description: 'TEXT. Type of orbit Possible values: LEO, Sun-synchronous, L2 Halo, Heliocentric, GEO, Ground.'
+    sql: '"ORBIT_TYPE"'
+  planets_discovered:
+    description: BIGINT. Number of planets discovered
+    sql: '"PLANETS_DISCOVERED"'
+  status:
+    description: 'TEXT. Current mission status Possible values: Operational, Completed, Planned, In Development, Decommissioned.'
+    sql: '"STATUS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  data_volume_tb:
+    description: 'REAL. Total data volume in terabytes Typical range: 0.01 to 500.'
+    sql: '"data_volume_TB"'
+  field_of_view_sq_deg:
+    description: 'REAL. Field of view in square degrees Typical range: 0.001 to 2400. **NULL means Not applicable for this mission type.**'
+    sql: field_of_view_sq_deg
+  launch_date:
+    description: DATE. Mission launch date
+    sql: launch_date
+  mission_code:
+    description: TEXT. Mission designation code
+    sql: mission_code
+  mission_cost_musd:
+    description: 'REAL. Total mission cost in millions USD Typical range: 10 to 10000.'
+    sql: '"mission_cost_MUSD"'
+  mission_id:
+    description: BIGINT. Primary key. Unique mission identifier
+    sql: mission_id
+  mission_type:
+    description: 'TEXT. Type of mission Possible values: Space Telescope, Flyby, Orbiter, Lander, Ground Survey, Interferometer.'
+    sql: mission_type
+  orbital_altitude_km:
+    description: 'REAL. Orbital altitude in km Typical range: 200 to 1500000. **NULL means Ground-based or L2 orbit.**'
+    sql: orbital_altitude_km
+  partner_agencies:
+    description: 'TEXT. Partner agencies involved Possible values: NASA/ESA, ESA/JAXA, NASA/CSA, Multi-agency. **NULL means Single agency mission.**'
+    sql: partner_agencies
+  principal_investigator:
+    description: 'TEXT. PI name Possible values: Dr. W. Borucki, Dr. G. Ricker, Dr. J. Gardner, Dr. H. Rauer.'
+    sql: principal_investigator
+  total_observations:
+    description: BIGINT. Total number of observations made
+    sql: total_observations
+  wavelength_coverage:
+    description: JSONB. Wavelength bands covered
+    sql: wavelength_coverage

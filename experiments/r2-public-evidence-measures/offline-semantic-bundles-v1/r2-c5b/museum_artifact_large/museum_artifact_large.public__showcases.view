@@ -1,0 +1,60 @@
+label: Showcases
+description: All columns of the public table Showcases.
+catalog: museum_artifact_large
+schema: public
+table_name: Showcases
+dimensions:
+  case_id:
+    description: TEXT. Unique identifier for each showcase. PK.
+    sql: '"caseID"'
+  case_environment_profile:
+    description: JSONB column. Packs the showcase’s physical condition, filtration/adsorption capacity, leak performance and safety-power states into a single field for monitoring dashboards.
+    sql: case_environment_profile
+  hall_ref:
+    description: TEXT. Reference to the exhibition hall where the showcase is located. FK to ExhibitionHalls.Hall_ID.
+    sql: hall_ref
+  case_environment_profile_buffer_capacity_humidity_capacity_g:
+    description: 'BIGINT. Humidity capacity of the showcase. Example: 81.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'buffer_capacity', 'humidity_capacity_g')
+  case_environment_profile_buffer_capacity_pollutant_capacity_mg:
+    description: 'REAL. Pollutant capacity of the showcase. Example: 79.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'buffer_capacity', 'pollutant_capacity_mg')
+  case_environment_profile_maintenance_filter_status:
+    description: 'TEXT. Filter status in the showcase. Possible values: Clean, Replace Now, Replace Soon.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'maintenance', 'filter_status')
+  case_environment_profile_maintenance_maint_status:
+    description: 'TEXT. Maintenance status of the showcase. Possible values: Due, Good, Overdue.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'maintenance', 'maint_status')
+  case_environment_profile_maintenance_silica_last_replaced:
+    description: 'DATE. Date when silica gel was last replaced. Example: 09/15/2024.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'maintenance', 'silica_last_replaced')
+  case_environment_profile_maintenance_silica_status:
+    description: 'TEXT. Silica gel status in the showcase. Possible values: Active, Replace Now, Replace Soon.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'maintenance', 'silica_status')
+  case_environment_profile_physical_state_airtightness_factor:
+    description: 'REAL. Airtightness level of the showcase. Example: 95.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'physical_state', 'airtightness_factor')
+  case_environment_profile_physical_state_construction_material:
+    description: 'TEXT. Material of the showcase. **NULL means no material specified.**. Possible values: Acrylic, Glass, Tempered Glass.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'physical_state', 'construction_material')
+  case_environment_profile_physical_state_internal_pressure_pa:
+    description: 'BIGINT. Pressure level inside the showcase. Example: -2.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'physical_state', 'internal_pressure_pa')
+  case_environment_profile_physical_state_leak_rate_per_day:
+    description: 'REAL. Leak rate of the showcase. Example: 0.41.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'physical_state', 'leak_rate_per_day')
+  case_environment_profile_physical_state_seal_state:
+    description: 'TEXT. Seal state of the showcase. Possible values: Excellent, Fair, Good, Poor.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'physical_state', 'seal_state')
+  case_environment_profile_safety_and_power_backup_power_state:
+    description: 'TEXT. Backup system status for the showcase. Possible values: Maintenance, Ready, Testing.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'safety_and_power', 'backup_power_state')
+  case_environment_profile_safety_and_power_fire_system_state:
+    description: 'TEXT. Fire system status in the showcase. Possible values: Active, Maintenance, Standby.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'safety_and_power', 'fire_system_state')
+  case_environment_profile_safety_and_power_inert_gas_state:
+    description: 'TEXT. Inert gas status inside the showcase. Possible values: Active, Maintenance, Standby.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'safety_and_power', 'inert_gas_state')
+  case_environment_profile_safety_and_power_primary_power_state:
+    description: 'TEXT. Power status for the showcase. Possible values: Active, Standby, Testing.'
+    sql: JSONB_EXTRACT_PATH_TEXT(case_environment_profile, 'safety_and_power', 'primary_power_state')

@@ -1,0 +1,13 @@
+base_view: planets_data_large_public__observer_team_map
+label: Observer_Team_Map
+description: All columns of the public table Observer_Team_Map.
+fields:
+- planets_data_large_public__observer_team_map.*
+- planets_data_large_public__discovery_teams.*
+- planets_data_large_public__observation_proposal.*
+- planets_data_large_public__research_programs.*
+joins:
+  planets_data_large_public__discovery_teams: {}
+  planets_data_large_public__observation_proposal:
+    planets_data_large_public__research_programs: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

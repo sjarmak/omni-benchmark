@@ -1,0 +1,102 @@
+label: media_assets
+description: All columns of the public table media_assets.
+catalog: sports_events_large
+schema: public
+table_name: media_assets
+dimensions:
+  asset_code:
+    description: 'TEXT. Unique asset code for each media asset. Example: MX-2024-001.'
+    sql: '"ASSET_CODE"'
+  aspect_ratio:
+    description: 'TEXT. Aspect ratio of the media asset. Example: 16:9.'
+    sql: '"Aspect_Ratio"'
+  audio_channels:
+    description: 'BIGINT. Number of audio channels in the media asset. Example: 2.'
+    sql: '"AudioChannels"'
+  avg_completion_rate:
+    description: 'REAL. Average completion rate for the media asset. Example: 0.42.'
+    sql: '"AvgCompletionRate"'
+  avg_view_time_sec:
+    description: 'BIGINT. Average view time in seconds for the media asset. Example: 95.'
+    sql: '"AvgViewTime_sec"'
+  camera_list:
+    description: 'TEXT. List of cameras used for the media asset. Example: onboard, heli.'
+    sql: '"CameraList"'
+  checksum_md5:
+    description: 'TEXT. MD5 checksum of the media asset file for integrity verification. Example: abc123.'
+    sql: '"ChecksumMD5"'
+  clip_count:
+    description: 'BIGINT. Number of clips contained in the media asset. Example: 12.'
+    sql: '"ClipCount"'
+  content_rating:
+    description: 'TEXT. Content rating of the media asset. Possible values: G, PG, R. Example: G.'
+    sql: '"ContentRating"'
+  duration_seconds:
+    description: 'BIGINT. Duration of the media asset in seconds. Example: 180.'
+    sql: '"Duration_Seconds"'
+  embargo_until:
+    description: 'TIMESTAMP. Timestamp indicating when the media asset can be publicly released. Example: 2025-03-01 00:00:00.'
+    sql: '"Embargo_Until"'
+  engagement_rate:
+    description: 'REAL. Engagement rate for the media asset. Example: 0.18.'
+    sql: '"EngagementRate"'
+  file_size_mb:
+    description: 'REAL. File size of the media asset in megabytes. **NULL means file size is not recorded.** Example: 512.3.'
+    sql: '"FILE_SIZE_MB"'
+  format:
+    description: 'TEXT. Format of the media asset file. Example: mp4.'
+    sql: '"Format"'
+  lang_code:
+    description: 'TEXT. Language code of the media asset. Example: en.'
+    sql: '"LANG_CODE"'
+  license_expiry:
+    description: 'DATE. Expiry date of the media asset’s license. Example: 2026-12-31.'
+    sql: '"LICENSE_EXPIRY"'
+  license_scope:
+    description: 'TEXT. Scope of the license granted for the media asset. Example: global.'
+    sql: '"LicenseScope"'
+  media_asset_index:
+    description: BIGSERIAL. Surrogate primary key for media_assets rows. PK.
+    sql: '"MediaAssetIndex"'
+  media_type:
+    description: 'TEXT. Type of media asset. Possible values: video, image, audio. Example: video.'
+    sql: '"MediaType"'
+  notes:
+    description: 'TEXT. Notes regarding the media asset. **NULL means no notes recorded.** Example: Cut for TikTok.'
+    sql: '"Notes"'
+  resolution:
+    description: 'TEXT. Resolution of the media asset. Example: 4K.'
+    sql: '"RESOLUTION"'
+  rights_holder:
+    description: 'TEXT. The entity that holds the rights to the media asset. **NULL means no rights holder specified.** Example: Team X.'
+    sql: '"RightsHolder"'
+  social_push_flag:
+    description: 'BOOLEAN. Whether the media asset is pushed to social media platforms. Example: true.'
+    sql: '"SOCIAL_PUSH_FLAG"'
+  storage_uri:
+    description: 'TEXT. URI where the media asset is stored (e.g., S3 bucket). Example: s3://... .'
+    sql: '"STORAGE_URI"'
+  source_:
+    description: 'TEXT. Source of the media asset. Example: in-house.'
+    sql: '"Source_"'
+  subtitles_available:
+    description: 'BOOLEAN. Whether subtitles are available for the media asset. **NULL means no data on subtitles availability.** Example: true.'
+    sql: '"SubtitlesAvailable"'
+  tags:
+    description: 'TEXT. Tags assigned to the media asset. **NULL means no tags assigned.** Example: recap, highlights.'
+    sql: '"TAGS"'
+  title:
+    description: 'TEXT. Title of the media asset. Example: Saudi GP Recap.'
+    sql: '"Title"'
+  transcript_json:
+    description: 'JSONB. Transcript data in JSON format for the media asset. **NULL means no transcript available.** Example: {segments: [...]}.'
+    sql: '"Transcript_JSON"'
+  visibility:
+    description: 'TEXT. Visibility status of the media asset. Possible values: public, restricted. Example: public.'
+    sql: '"VISIBILITY"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct media_assets public identity values.
+    label: media_assets Count
+    sql: ${sports_events_large_public__media_assets.media_asset_index}

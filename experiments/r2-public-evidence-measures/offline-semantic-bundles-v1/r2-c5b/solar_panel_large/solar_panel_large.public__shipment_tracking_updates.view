@@ -1,0 +1,60 @@
+label: ShipmentTrackingUpdates
+description: All columns of the public table ShipmentTrackingUpdates.
+catalog: solar_panel_large
+schema: public
+table_name: ShipmentTrackingUpdates
+dimensions:
+  carrier_message:
+    description: TEXT. Raw message from carrier API.
+    sql: carrier_message
+  delay_reason:
+    description: 'TEXT. Reason if status is Delay. **NULL means On time.** Unique values: Weather, Customs, Traffic.'
+    sql: delay_reason
+  estimated_delivery_update:
+    description: TIMESTAMP. Revised ETA provided at this step. **NULL means data unavailable.**
+    sql: estimated_delivery_update
+  gps_lat:
+    description: 'REAL. GPS Latitude (if live tracking). **NULL means Not available.** Example: 34.0.'
+    sql: gps_lat
+  gps_lon:
+    description: 'REAL. GPS Longitude (if live tracking). **NULL means Not available.** Example: -118.0.'
+    sql: gps_lon
+  hub_facility_code:
+    description: TEXT. Sorting facility ID.
+    sql: hub_facility_code
+  location_city:
+    description: 'TEXT. City where shipment was scanned. Unique values: Shanghai, Los Angeles, Memphis, Rotterdam, Dallas.'
+    sql: location_city
+  location_country:
+    description: 'TEXT. Country code. Unique values: CN, US, NL, DE.'
+    sql: location_country
+  shipment_ref:
+    description: TEXT. FK to SupplyChainShipments.
+    sql: shipment_ref
+  shock_g_force:
+    description: 'REAL. Impact force recorded. **NULL means No sensor.** Example: 0.5.'
+    sql: shock_g_force
+  signed_by:
+    description: TEXT. Name if signed for at this step. **NULL means Not a delivery step.**
+    sql: signed_by
+  status_code:
+    description: 'TEXT. Carrier status code. Unique values: PU, AR, DP, DL, X.'
+    sql: status_code
+  status_description:
+    description: 'TEXT. Readable description (Picked Up, Arrived, Departed). Unique values: Picked Up, Arrived at Facility, Departed Facility, Delivered, Delay.'
+    sql: status_description
+  temperature_c:
+    description: 'REAL. Cargo temp if monitored. **NULL means No sensor.** Example: 20.'
+    sql: temperature_c
+  tracking_update_id:
+    description: TEXT. Unique ID for the tracking event.
+    sql: tracking_update_id
+  transport_mode:
+    description: 'TEXT. Mode at this leg (Air, Ocean, Truck). Unique values: Truck, Ocean, Air, Rail.'
+    sql: transport_mode
+  update_timestamp:
+    description: 'TIMESTAMP. Time of the status update. Example: 2024-01-01 12:00:00.'
+    sql: update_timestamp
+  vessel_flight_number:
+    description: TEXT. Vehicle ID. **NULL means data unavailable.**
+    sql: vessel_flight_number

@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__employer_poc
+label: employer_poc
+description: All columns of the public table employer_poc.
+fields:
+- labor_certification_applications_large_public__employer_poc.*
+joins: {}
+ai_context: This topic models no cross-table joins.

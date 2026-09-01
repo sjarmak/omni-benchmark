@@ -1,0 +1,48 @@
+label: scans
+description: All columns of the public table scans.
+catalog: archeology_scan_large
+schema: public
+table_name: scans
+dimensions:
+  arcref:
+    description: TEXT. Reference to associated archeologys project. FK to Projects.
+    sql: arcref
+  chronotag:
+    description: 'TEXT. Precise timestamp when scan was performed. Example: 2024-09-03 07:20:28.479288 GMT+8.'
+    sql: chronotag
+  climtune:
+    description: 'TEXT. Weather conditions during scanning session. **NULL means weather conditions not recorded or monitoring equipment unavailable.**. Example: Windy conditions, potential equipment stability issues.'
+    sql: climtune
+  crewref:
+    description: TEXT. Reference to operator who performed the scan. FK to Personnel.
+    sql: crewref
+  fmtfile:
+    description: 'TEXT. File format used for storing scan data. Example: PTS.'
+    sql: fmtfile
+  huecatch:
+    description: 'TEXT. Color capture mode or settings used during scan. **NULL means color capture not enabled or settings not recorded.**. Possible values: Grayscale, RGB.'
+    sql: huecatch
+  questregistry:
+    description: 'TEXT. Unique identifier for scan session record. PK = Scans(QuestRegistry). Example: ASD409481.'
+    sql: questregistry
+  scan_cost:
+    description: 'TEXT. Equipment cost per GB. Example: 3.22 USD/GB.'
+    sql: scan_cost
+  scancount:
+    description: 'TEXT. Total number of individual scans in session. Example: 5 scans, moderate coverage session.'
+    sql: scancount
+  scanning_rate:
+    description: 'TEXT. Data acquisition rate during scanning. Example: 63 MB/min.'
+    sql: scanning_rate
+  size:
+    description: 'TEXT. Total file size of scan data in gigabytes. Example: 24.71 GB.'
+    sql: size
+  zoneref:
+    description: TEXT. Reference to site where scan was conducted. FK to Sites.
+    sql: zoneref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct scans public identity values.
+    label: scans Count
+    sql: ${archeology_scan_large_public__scans.questregistry}

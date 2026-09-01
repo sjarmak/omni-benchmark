@@ -1,0 +1,66 @@
+label: MarketCompetitorAnalysis
+description: All columns of the public table MarketCompetitorAnalysis.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: MarketCompetitorAnalysis
+dimensions:
+  mca_id:
+    description: TEXT. Unique identifier for the market competitor analysis record.
+    sql: '"MCA_id"'
+  analysis_date:
+    description: 'TIMESTAMP. Date when the competitive analysis was conducted. Example: 2024-01-01 12:00:00.'
+    sql: analysis_date
+  api_integration_count:
+    description: 'INTEGER. Number of third-party integrations available. Example: 50.'
+    sql: api_integration_count
+  brand_recognition_score:
+    description: 'REAL. Brand recognition score (0-100). Example: 55.'
+    sql: brand_recognition_score
+  competitor_segment:
+    description: 'TEXT. Market segment of the competitor. Unique values: Direct Competitor, Indirect Competitor, Adjacent Market, Emerging Player, Market Leader.'
+    sql: competitor_segment
+  customer_acquisition_cost:
+    description: 'REAL. Estimated customer acquisition cost. **NULL means Data not available.** Example: 45.'
+    sql: customer_acquisition_cost
+  customer_retention_rate:
+    description: 'REAL. Estimated customer retention rate percentage. **NULL means Retention data unavailable.** Example: 75.'
+    sql: customer_retention_rate
+  feature_parity_score:
+    description: 'REAL. Score measuring feature coverage vs competitors (0-100). Example: 72.'
+    sql: feature_parity_score
+  geographic_coverage_score:
+    description: 'REAL. Score for geographic market coverage (0-100). Example: 60.'
+    sql: geographic_coverage_score
+  market_share_change_pct:
+    description: 'REAL. Change in market share from previous period. **NULL means First analysis or insufficient historical data.** Example: 0.5.'
+    sql: market_share_change_pct
+  market_share_pct:
+    description: 'REAL. Estimated market share percentage. Example: 12.'
+    sql: market_share_pct
+  platform_ref:
+    description: TEXT. Reference to the primary platform being analyzed.
+    sql: platform_ref
+  pricing_competitiveness_score:
+    description: 'REAL. Score comparing pricing vs competitors (0-100). Example: 65.'
+    sql: pricing_competitiveness_score
+  regulatory_compliance_status:
+    description: 'TEXT. Regulatory compliance status assessment. Unique values: Fully Compliant, Mostly Compliant, Partially Compliant, Non-Compliant, Unknown.'
+    sql: regulatory_compliance_status
+  swot_strength_count:
+    description: 'INTEGER. Number of identified competitive strengths. Example: 6.'
+    sql: swot_strength_count
+  swot_weakness_count:
+    description: 'INTEGER. Number of identified competitive weaknesses. Example: 4.'
+    sql: swot_weakness_count
+  technology_stack_modernity:
+    description: 'TEXT. Assessment of technology stack modernity. Unique values: Cutting Edge, Modern, Standard, Legacy, Outdated.'
+    sql: technology_stack_modernity
+  threat_level:
+    description: 'TEXT. Competitive threat level assessment. Unique values: Critical, High, Medium, Low, Minimal.'
+    sql: threat_level
+  unique_features_count:
+    description: 'INTEGER. Number of unique features not offered by competitors. Example: 8.'
+    sql: unique_features_count
+  user_experience_rating:
+    description: 'REAL. User experience rating from analysis (1-10). Example: 7.2.'
+    sql: user_experience_rating

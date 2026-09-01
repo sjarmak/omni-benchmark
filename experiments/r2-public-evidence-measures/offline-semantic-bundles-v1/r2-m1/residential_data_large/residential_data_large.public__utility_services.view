@@ -1,0 +1,102 @@
+label: utility_services
+description: All columns of the public table utility_services.
+catalog: residential_data_large
+schema: public
+table_name: utility_services
+dimensions:
+  billing_accuracy_percent:
+    description: 'REAL. Billing accuracy percentage. **NULL means billing accuracy not monitored.**. Possible values: 97.8, 99.5.'
+    sql: '"BILLING_accuracy_percent"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"CREATED_at"'
+  customer_complaints_per_month:
+    description: 'BIGINT. Number of customer complaints per month. **NULL means complaint tracking not available.**. Possible values: 38.0, 45.0.'
+    sql: '"Customer_Complaints_Per_Month"'
+  emergency_backup_availability:
+    description: 'TEXT. Emergency backup system availability. **NULL means backup systems not documented.**. Possible values: 45.2, 68.9.'
+    sql: '"EMERGENCY_backup_availability"'
+  fiber_optic_coverage_percent:
+    description: 'REAL. Percentage of area with fiber optic coverage (internet services). **NULL means fiber coverage not applicable or tracked.**. Possible values: No, Yes.'
+    sql: '"Fiber_Optic_Coverage_Percent"'
+  green_energy_percent:
+    description: 'REAL. Percentage of energy from renewable sources (electricity services). **NULL means renewable energy data not applicable or tracked.**. Possible values: 25.8.'
+    sql: '"Green_Energy_Percent"'
+  households_served:
+    description: 'BIGINT. Number of households served by utility. **NULL means customer count not available.**. Possible values: 12500.0, 15800.0.'
+    sql: '"Households_Served"'
+  maintenance_frequency_months:
+    description: 'BIGINT. Maintenance schedule frequency in months. Possible values: 2, 3, 6.'
+    sql: '"Maintenance_Frequency_Months"'
+  off_peak_demand_units:
+    description: 'REAL. Off-peak demand measurement in service-specific units. **NULL means off-peak tracking not available.**. Possible values: 400.0, 850.0.'
+    sql: '"OFF_peak_demand_units"'
+  outage_frequency_per_year:
+    description: 'BIGINT. Number of service outages per year. Possible values: 12, 2, 8.'
+    sql: '"OUTAGE_frequency_per_year"'
+  peak_demand_units:
+    description: 'REAL. Peak demand measurement in service-specific units. **NULL means peak demand not monitored.**. Possible values: 1000.0, 2500.0.'
+    sql: '"Peak_Demand_Units"'
+  regulatory_compliance_score:
+    description: BIGINT. Regulatory compliance rating. **NULL means compliance assessment not available.**
+    sql: '"Regulatory_Compliance_Score"'
+  repair_response_time_hours:
+    description: 'REAL. Average repair response time in hours. Possible values: 1.2, 4.8, 6.2.'
+    sql: '"Repair_Response_Time_Hours"'
+  service_quality_rating:
+    description: 'REAL. Service quality rating on 1-10 scale. **NULL means quality assessment not conducted.**. Possible values: 8.2, 9.1.'
+    sql: '"SERVICE_quality_rating"'
+  service_reliability_percent:
+    description: 'REAL. Service reliability percentage. **NULL means reliability metrics not tracked.**. Possible values: 94.5, 98.2.'
+    sql: '"SERVICE_reliability_percent"'
+  service_type:
+    description: 'TEXT. Type of utility service (electricity, water, gas, internet, waste). Possible values: electricity, internet, water.'
+    sql: '"SERVICE_type"'
+  service_provider:
+    description: 'TEXT. Name of utility service provider company. Possible values: CEB Distribuição, Caesb Saneamento, Claro Internet Fibra.'
+    sql: '"Service_Provider"'
+  utility_coverage_zone:
+    description: 'BIGINT. Coverage zone number within service region. FK to locations(zonenum). Possible values: 222, 315.'
+    sql: '"Utility_Coverage_Zone"'
+  utility_id:
+    description: 'BIGSERIAL. Primary key identifier for utility service record. PK. Possible values: 1, 2, 3.'
+    sql: '"Utility_ID"'
+  utility_service_region:
+    description: 'TEXT. Regional identifier for utility service area. FK to locations(regioncode). Possible values: Guará, Taguatinga.'
+    sql: '"Utility_Service_Region"'
+  water_loss_percent:
+    description: 'REAL. Percentage of water lost in distribution system (water services). **NULL means water loss data not applicable or tracked.**. Possible values: 18.5.'
+    sql: '"WATER_loss_percent"'
+  average_monthly_cost_brl:
+    description: 'REAL. Average monthly service cost in Brazilian Real. Possible values: 125.8, 185.5, 89.9.'
+    sql: '"average_monthly_COST_brl"'
+  average_outage_duration_hours:
+    description: 'REAL. Average duration of service outages in hours. **NULL means outage duration not tracked.**. Possible values: 0.5, 2.5.'
+    sql: '"average_outage_DURATION_hours"'
+  coverage_area_km2:
+    description: 'REAL. Service coverage area in square kilometers. **NULL means coverage area not measured.**. Possible values: 38.7, 45.2.'
+    sql: '"coverage_area_KM2"'
+  digital_payment_adoption_percent:
+    description: 'REAL. Percentage of customers using digital payment methods. **NULL means payment method data not tracked.**. Possible values: 72.5, 85.2.'
+    sql: '"digital_payment_ADOPTION_percent"'
+  infrastructure_age_years:
+    description: 'BIGINT. Age of utility infrastructure in years. **NULL means infrastructure age not documented.**. Possible values: 15.0, 22.0.'
+    sql: '"infrastructure_age_YEARS"'
+  installation_wait_time_days:
+    description: 'BIGINT. Average wait time for new installations in days. **NULL means installation timing not tracked.**. Possible values: 3.0, 7.0.'
+    sql: '"installation_wait_TIME_days"'
+  recycling_rate_percent:
+    description: 'REAL. Waste recycling rate percentage (waste services). **NULL means recycling data not applicable or tracked.**. Possible values: 28.5, 32.7, 85.6.'
+    sql: '"recycling_rate_PERCENT"'
+  smart_meter_penetration_percent:
+    description: 'REAL. Percentage of customers with smart meters. **NULL means smart meter deployment not tracked.**. Possible values: 8.0, 9.0.'
+    sql: '"smart_meter_PENETRATION_percent"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: updated_at
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct utility_services public identity values.
+    label: utility_services Count
+    sql: ${residential_data_large_public__utility_services.utility_id}

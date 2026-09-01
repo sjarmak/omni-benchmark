@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__material_analysis
+label: MaterialAnalysis
+description: All columns of the public table MaterialAnalysis.
+fields:
+- museum_artifact_large_public__material_analysis.*
+joins: {}
+ai_context: This topic models no cross-table joins.

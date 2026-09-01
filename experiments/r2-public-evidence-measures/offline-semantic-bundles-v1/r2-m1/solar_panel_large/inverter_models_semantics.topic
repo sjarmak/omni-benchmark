@@ -1,0 +1,9 @@
+base_view: solar_panel_large_public__inverter_models
+label: inverter_models
+description: All columns of the public table inverter_models.
+fields:
+- solar_panel_large_public__inverter_models.*
+- solar_panel_large_public__asset_manufacturers.*
+joins:
+  solar_panel_large_public__asset_manufacturers: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__esg_integration_analytics
+label: esg_integration_analytics
+description: All columns of the public table esg_integration_analytics.
+fields:
+- exchange_traded_funds_large_public__esg_integration_analytics.*
+joins: {}
+ai_context: This topic models no cross-table joins.

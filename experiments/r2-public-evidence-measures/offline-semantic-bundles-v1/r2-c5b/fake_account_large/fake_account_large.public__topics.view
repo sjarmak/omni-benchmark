@@ -1,0 +1,111 @@
+label: topics
+description: All columns of the public table topics.
+catalog: fake_account_large
+schema: public
+table_name: topics
+dimensions:
+  acct_cnt:
+    description: 'BIGINT. Distinct accounts using topic. Example: 8 408.'
+    sql: '"ACCT_CNT"'
+  dem_spread:
+    description: 'REAL. Demographic spread (0-1). Example: 0.159.'
+    sql: '"DEM_SPREAD"'
+  last_seen:
+    description: 'DATE. Most recent usage. Example: 2025-07-07.'
+    sql: '"LAST_SEEN"'
+  neu_pct:
+    description: 'REAL. Fraction neutral. Example: 0.421.'
+    sql: '"NEU_PCT"'
+  peak_score:
+    description: 'REAL. Popularity score at peak (0-100). Example: 42.62.'
+    sql: '"PEAK_SCORE"'
+  pos_pct:
+    description: 'REAL. Fraction of positive posts (0-1). Example: 0.430.'
+    sql: '"POS_PCT"'
+  spam_pct:
+    description: 'REAL. Spam share. **NULL means spam classifier not run.** Example: 0.217.'
+    sql: '"SPAM_PCT"'
+  topic_cluster:
+    description: 'TEXT. High-level cluster grouping. Possible values include: Politics, Tech, Sports, Culture, Finance, Health. Example: Politics.'
+    sql: '"TOPIC_CLUSTER"'
+  topic_rank:
+    description: 'REAL. Rank among all topics. Example: 277.'
+    sql: '"TOPIC_RANK"'
+  topic_type:
+    description: 'TEXT. Taxonomy type. Values: Hashtag, Entity, Concept, Event. Example: Entity.'
+    sql: '"TOPIC_TYPE"'
+  topic_vol:
+    description: 'BIGINT. Total messages mentioning topic. Example: 189 705.'
+    sql: '"TOPIC_VOL"'
+  topic_name:
+    description: 'TEXT. Human-readable topic label. Example: Topic_1.'
+    sql: '"TopicName"'
+  topic_code:
+    description: 'TEXT. Unique topic identifier (PK). Example: TPC1856866.'
+    sql: '"Topic_CODE"'
+  updated_ts:
+    description: 'TIMESTAMPTZ. Row last updated. Example: 2025/08/02 14:47:34.'
+    sql: '"UPDATED_TS"'
+  volatility:
+    description: 'REAL. Volatility index (0-1). Example: 0.736.'
+    sql: '"VOLATILITY"'
+  eng_rate:
+    description: 'REAL. Engagement rate (0-1). Example: 0.363.'
+    sql: '"engRate"'
+  first_seen:
+    description: 'DATE. First observed date. Example: 2023-09-30.'
+    sql: '"firstSeen"'
+  geo_spread:
+    description: 'REAL. Geographic dispersion (0-1). Example: 0.121.'
+    sql: '"geoSpread"'
+  interest_score:
+    description: 'REAL. Audience-interest score (0-100). Example: 40.11.'
+    sql: '"interestScore"'
+  lang_dominant:
+    description: 'TEXT. ISO-639-1 dominant language. Example: pt.'
+    sql: '"langDominant"'
+  neg_pct:
+    description: 'REAL. Fraction negative. Example: 0.839.'
+    sql: '"negPct"'
+  notes:
+    description: TEXT. Analyst comments. **NULL when none provided.**
+    sql: notes
+  nsfw_pct:
+    description: 'REAL. NSFW share. **NULL when NSFW model skipped.** Example in CSV: NULL.'
+    sql: '"nsfwPct"'
+  parent_topic:
+    description: 'TEXT. Hierarchical parent. **NULL means top-level topic.** Example in CSV: NULL.'
+    sql: '"parentTopic"'
+  peak_date:
+    description: 'DATE. Peak-volume date. Example: 2024-09-12.'
+    sql: '"peakDate"'
+  post_cnt:
+    description: 'BIGINT. Posts containing topic in entire corpus. Example: 49 175.'
+    sql: '"postCnt"'
+  recur_freq:
+    description: 'REAL. Recurrence frequency (0-1). Example: 0.501.'
+    sql: '"recurFreq"'
+  seasonality:
+    description: 'REAL. Seasonality strength (0-1). Example: 0.025.'
+    sql: seasonality
+  seasonality_band:
+    description: 'TEXT. Qualitative seasonality note (e.g., “Q4 spike”). **NULL if no pattern flagged.** Example: Q1 dip.'
+    sql: seasonality_band
+  sentiment_avg:
+    description: 'REAL. Average sentiment (−1 to 1). Example: 0.70.'
+    sql: '"sentimentAvg"'
+  stability:
+    description: 'REAL. Stability index (0-1). Example: 0.112.'
+    sql: stability
+  topic_depth:
+    description: 'BIGINT. Depth in the topic tree (1 = root). Example: 2.'
+    sql: '"topicDepth"'
+  topic_score:
+    description: 'REAL. Overall importance score (0-100). Example: 59.86.'
+    sql: '"topicScore"'
+  tox_pct:
+    description: 'REAL. Toxic-content share. Example: 0.884.'
+    sql: '"toxPct"'
+  trend_dir:
+    description: 'TEXT. Trend direction. Values: Up, Down, Flat. Example: Flat.'
+    sql: '"trendDir"'

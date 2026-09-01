@@ -1,0 +1,192 @@
+- join_from_view: exchange_traded_funds_large_public__fund_manager_assignments
+  join_to_view: exchange_traded_funds_large_public__portfolio_managers
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__fund_manager_assignments.manager_id} = ${exchange_traded_funds_large_public__portfolio_managers.manager_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__shareholder_voting_outcomes
+  join_to_view: exchange_traded_funds_large_public__securities
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__shareholder_voting_outcomes.security_ref} = ${exchange_traded_funds_large_public__securities.securityref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__bond_allocations
+  join_to_view: exchange_traded_funds_large_public__bond_ratings
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__bond_allocations.ratinglink} = ${exchange_traded_funds_large_public__bond_ratings.ratekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__sector_allocations
+  join_to_view: exchange_traded_funds_large_public__sectors
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__sector_allocations.sectorlink} = ${exchange_traded_funds_large_public__sectors.secid}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__operational_risk_events
+  join_to_view: exchange_traded_funds_large_public__funds
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__operational_risk_events.fund_ref} = ${exchange_traded_funds_large_public__funds.productnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__market_sentiment_scores
+  join_to_view: exchange_traded_funds_large_public__securities
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__market_sentiment_scores.security_ref} = ${exchange_traded_funds_large_public__securities.securityref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__voting_policy_alignment
+  join_to_view: exchange_traded_funds_large_public__shareholder_voting_outcomes
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__voting_policy_alignment.voting_outcome_ref} = ${exchange_traded_funds_large_public__shareholder_voting_outcomes.shareholder_voting_outcomes_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__security_detailed_analytics
+  join_to_view: exchange_traded_funds_large_public__securities
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__security_detailed_analytics.security_id} = ${exchange_traded_funds_large_public__securities.securityref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__analyst_estimate_revisions
+  join_to_view: exchange_traded_funds_large_public__analyst_research_consensus
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__analyst_estimate_revisions.consensus_ref} = ${exchange_traded_funds_large_public__analyst_research_consensus.analyst_research_consensus_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__fund_regulatory_compliance
+  join_to_view: exchange_traded_funds_large_public__funds
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__fund_regulatory_compliance.fund_ticker} = ${exchange_traded_funds_large_public__funds.productnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__risk_event_remediation
+  join_to_view: exchange_traded_funds_large_public__operational_risk_events
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__risk_event_remediation.risk_event_ref} = ${exchange_traded_funds_large_public__operational_risk_events.operational_risk_events_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__corporate_action_impact_analysis
+  join_to_view: exchange_traded_funds_large_public__corporate_action_events
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__corporate_action_impact_analysis.corporate_action_ref} = ${exchange_traded_funds_large_public__corporate_action_events.corporate_action_events_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__fund_manager_assignments
+  join_to_view: exchange_traded_funds_large_public__funds
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__fund_manager_assignments.fund_ticker} = ${exchange_traded_funds_large_public__funds.productnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__fund_wholesale_distribution
+  join_to_view: exchange_traded_funds_large_public__funds
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__fund_wholesale_distribution.product_ref} = ${exchange_traded_funds_large_public__funds.productnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__alternative_data_signals
+  join_to_view: exchange_traded_funds_large_public__securities
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__alternative_data_signals.security_ref} = ${exchange_traded_funds_large_public__securities.securityref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__holdings
+  join_to_view: exchange_traded_funds_large_public__securities
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__holdings.securitykey} = ${exchange_traded_funds_large_public__securities.securityref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__sentiment_trading_signals
+  join_to_view: exchange_traded_funds_large_public__market_sentiment_scores
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__sentiment_trading_signals.sentiment_score_ref} = ${exchange_traded_funds_large_public__market_sentiment_scores.market_sentiment_scores_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__analyst_research_consensus
+  join_to_view: exchange_traded_funds_large_public__securities
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__analyst_research_consensus.security_ref} = ${exchange_traded_funds_large_public__securities.securityref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__fund_regulatory_compliance
+  join_to_view: exchange_traded_funds_large_public__regulatory_authorities
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__fund_regulatory_compliance.authority_id} = ${exchange_traded_funds_large_public__regulatory_authorities.authority_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__bond_rating_market_data
+  join_to_view: exchange_traded_funds_large_public__bond_ratings
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__bond_rating_market_data.rating_id} = ${exchange_traded_funds_large_public__bond_ratings.ratekey}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__fund_strategy_implementations
+  join_to_view: exchange_traded_funds_large_public__funds
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__fund_strategy_implementations.fund_ticker} = ${exchange_traded_funds_large_public__funds.productnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__execution_quality_metrics
+  join_to_view: exchange_traded_funds_large_public__trade_execution_audit
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__execution_quality_metrics.execution_audit_ref} = ${exchange_traded_funds_large_public__trade_execution_audit.trade_execution_audit_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__distribution_platform_metrics
+  join_to_view: exchange_traded_funds_large_public__fund_wholesale_distribution
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__distribution_platform_metrics.distribution_ref} = ${exchange_traded_funds_large_public__fund_wholesale_distribution.fund_wholesale_distribution_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__sector_market_intelligence
+  join_to_view: exchange_traded_funds_large_public__sectors
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__sector_market_intelligence.sector_id} = ${exchange_traded_funds_large_public__sectors.secid}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__trade_execution_audit
+  join_to_view: exchange_traded_funds_large_public__exchanges
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__trade_execution_audit.exchange_ref} = ${exchange_traded_funds_large_public__exchanges.xchgnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__portfolio_stress_test_results
+  join_to_view: exchange_traded_funds_large_public__funds
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__portfolio_stress_test_results.fund_ref} = ${exchange_traded_funds_large_public__funds.productnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__stress_scenario_parameters
+  join_to_view: exchange_traded_funds_large_public__portfolio_stress_test_results
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__stress_scenario_parameters.stress_test_ref} = ${exchange_traded_funds_large_public__portfolio_stress_test_results.portfolio_stress_test_results_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__corporate_action_events
+  join_to_view: exchange_traded_funds_large_public__securities
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__corporate_action_events.security_ref} = ${exchange_traded_funds_large_public__securities.securityref}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__fund_tax_efficiency_metrics
+  join_to_view: exchange_traded_funds_large_public__funds
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__fund_tax_efficiency_metrics.product_ref} = ${exchange_traded_funds_large_public__funds.productnum}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__alternative_data_quality
+  join_to_view: exchange_traded_funds_large_public__alternative_data_signals
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__alternative_data_quality.alt_data_signal_ref} = ${exchange_traded_funds_large_public__alternative_data_signals.alternative_data_signals_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__fund_strategy_implementations
+  join_to_view: exchange_traded_funds_large_public__investment_strategies
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__fund_strategy_implementations.strategy_id} = ${exchange_traded_funds_large_public__investment_strategies.strategy_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: exchange_traded_funds_large_public__tax_lot_management
+  join_to_view: exchange_traded_funds_large_public__fund_tax_efficiency_metrics
+  join_type: always_left
+  on_sql: ${exchange_traded_funds_large_public__tax_lot_management.tax_efficiency_ref} = ${exchange_traded_funds_large_public__fund_tax_efficiency_metrics.fund_tax_efficiency_metrics_id}
+  relationship_type: many_to_one
+  reversible: false

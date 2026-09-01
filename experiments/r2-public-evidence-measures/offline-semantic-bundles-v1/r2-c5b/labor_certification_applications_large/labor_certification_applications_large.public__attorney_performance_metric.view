@@ -1,0 +1,66 @@
+label: AttorneyPerformanceMetric
+description: All columns of the public table AttorneyPerformanceMetric.
+catalog: labor_certification_applications_large
+schema: public
+table_name: AttorneyPerformanceMetric
+dimensions:
+  apm_code:
+    description: 'TEXT. Unique identifier for attorney performance metric record. Example: APM-1A2B3C.'
+    sql: '"APM_code"'
+  appeals_filed_ct:
+    description: 'INTEGER. Number of appeals filed during the period. Example: 3.'
+    sql: '"appealsFiled_ct"'
+  appeals_won_ct:
+    description: 'INTEGER. Number of appeals won during the period. Example: 2.'
+    sql: '"appealsWon_ct"'
+  approval_rate_pct:
+    description: 'REAL. Percentage of cases that received approval. Example: 82.'
+    sql: '"approvalRate_pct"'
+  avg_billable_hours:
+    description: 'REAL. Average billable hours per case. Example: 18.'
+    sql: '"avgBillableHours"'
+  avg_processing_time_days:
+    description: 'REAL. Average case processing time in days. Example: 120.'
+    sql: '"avgProcessingTime_days"'
+  bar_complaints_filed_ct:
+    description: 'INTEGER. Number of bar complaints filed against attorney. Example: 0.'
+    sql: '"barComplaintsFiled_ct"'
+  cases_handled_ct:
+    description: 'INTEGER. Total number of cases handled during the period. Example: 45.'
+    sql: '"casesHandled_ct"'
+  client_satisfaction_score:
+    description: 'REAL. Average client satisfaction rating from 1-5. **NULL means No client feedback collected.** Example: 4.2.'
+    sql: '"clientSatisfactionScore"'
+  continuing_legal_ed_hrs:
+    description: 'REAL. Continuing legal education hours completed. Example: 24.'
+    sql: '"continuingLegalEd_hrs"'
+  law_ref:
+    description: TEXT. Foreign key reference to attorney table lawmail.
+    sql: law_ref
+  metric_period_end:
+    description: 'TIMESTAMP. End date of the performance measurement period. Example: 2024-01-01 12:00:00.'
+    sql: '"metricPeriodEnd"'
+  metric_period_start:
+    description: 'TIMESTAMP. Start date of the performance measurement period. Example: 2024-01-01 12:00:00.'
+    sql: '"metricPeriodStart"'
+  peer_ranking_percentile:
+    description: 'REAL. Percentile ranking among peer attorneys. Example: 50.0.'
+    sql: '"peerRankingPercentile"'
+  performance_tier:
+    description: 'TEXT. Overall performance tier classification. Unique values: Elite, High Performer, Standard, Developing, Under Review.'
+    sql: '"performanceTier"'
+  premium_processing_usage_pct:
+    description: 'REAL. Percentage of eligible cases using premium processing. Example: 35.'
+    sql: '"premiumProcessingUsage_pct"'
+  revenue_generated_usd:
+    description: 'REAL. Total revenue generated during the period in USD. Example: 180000.'
+    sql: '"revenueGenerated_USD"'
+  rfe_overcome_rate_pct:
+    description: 'REAL. Percentage of RFEs successfully overcome. Example: 75.'
+    sql: '"rfeOvercomeRate_pct"'
+  rfe_rate_pct:
+    description: 'REAL. Percentage of cases that received Request for Evidence. Example: 25.'
+    sql: '"rfeRate_pct"'
+  visa_category_diversity_ct:
+    description: 'INTEGER. Number of different visa categories handled. Example: 50.'
+    sql: '"visaCategoryDiversity_ct"'

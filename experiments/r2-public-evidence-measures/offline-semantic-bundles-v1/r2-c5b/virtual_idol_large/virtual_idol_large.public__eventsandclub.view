@@ -1,0 +1,56 @@
+label: Events and Club
+description: Event participation records with row-level attendance semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: eventsandclub
+dimensions:
+  online_events:
+    description: SMALLINT. Number of online events attended by the fan.
+    label: Online Events
+    sql: JSONB_EXTRACT_PATH_TEXT(evt_participation, 'On_Evt_Att')
+  offline_events:
+    description: SMALLINT. Number of offline events attended by the fan.
+    label: Offline Events
+    sql: JSONB_EXTRACT_PATH_TEXT(evt_participation, 'Off_Evt_Att')
+  meet_and_greets:
+    description: SMALLINT. Number of meet-and-greet events attended.
+    label: Meet-and-Greets
+    sql: JSONB_EXTRACT_PATH_TEXT(evt_participation, 'Meet_Att')
+  camp_part:
+    description: TEXT. Participation level in campaigns and promotional activities. **NULL means campaign participation tracking incomplete or no campaigns joined.**
+    sql: camp_part
+  club_contrib:
+    description: 'TEXT. Type and level of contribution to fan club activities. **NULL means fan club contribution assessment incomplete or minimal participation.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    sql: club_contrib
+  club_j_date:
+    description: TEXT. Date when fan joined the official fan club.
+    sql: club_j_date
+  club_stat:
+    description: TEXT. Current status within official fan club membership.
+    sql: club_stat
+  events_member_pivot:
+    description: BIGINT. Reference to membership record for event access correlation. FK to MembershipAndSpending.
+    sql: events_member_pivot
+  events_reg:
+    description: BIGSERIAL. Auto-generated unique identifier for events and fan club record. PK = EventsAndClub(Events_Reg).
+    sql: events_reg
+  events_social_pivot:
+    description: BIGINT. Reference to social community record for event participation analysis. FK to SocialCommunity.
+    sql: events_social_pivot
+  evt_part:
+    description: 'TEXT. Level and type of event participation by the fan. **NULL means event participation tracking incomplete or no events attended.** **DATA NOISE: Values have random case variations (lowercase, uppercase, mixed case) virtual_idol.**'
+    sql: evt_part
+  evt_participation:
+    description: JSONB column. Event participation data including attendance counts for different event types and voting behavior
+    sql: evt_participation
+  evt_participation_conc_att:
+    description: SMALLINT. Number of concert or performance events attended.
+    sql: JSONB_EXTRACT_PATH_TEXT(evt_participation, 'Conc_Att')
+  evt_participation_vote_part_rate:
+    description: REAL. Participation rate in voting activities as percentage.
+    sql: JSONB_EXTRACT_PATH_TEXT(evt_participation, 'Vote_Part_Rate')
+  event_participation_score:
+    label: Event Participation Score (EPS)
+    description: A weighted score that measures a fan's engagement with platform events, prioritizing in-person attendance.
+    sql: CAST(${online_events} AS DOUBLE PRECISION) + (CAST(${offline_events} AS DOUBLE PRECISION) * 1.5) + (CAST(${meet_and_greets} AS DOUBLE PRECISION) * 2)
+    ai_context: Use this modeled field for Event Participation Score (EPS); do not reconstruct its formula.

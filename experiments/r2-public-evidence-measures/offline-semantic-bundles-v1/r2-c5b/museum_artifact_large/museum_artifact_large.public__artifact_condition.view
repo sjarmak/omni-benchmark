@@ -1,0 +1,66 @@
+label: ArtifactCondition
+description: All columns of the public table ArtifactCondition.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactCondition
+dimensions:
+  artifact_reg_id:
+    description: 'VARCHAR(100). Artifact identifier being assessed (logical reference to ArtifactsCore.ARTregID). Example: "ART-ZKQ-5960998039".'
+    sql: '"artifactRegId"'
+  assessment_date:
+    description: 'VARCHAR(100). Date when condition assessment was performed. Example: "2016-09-24".'
+    sql: '"assessmentDate"'
+  assessment_method:
+    description: 'VARCHAR(100). Technique used for assessment (Visual, Microscope, XRF, UVLight, CTScan, Multispectral). Possible values: "CTScan", "Microscope", "Multispectral", "UVLight", "Visual", "XRF".'
+    sql: '"assessmentMethod"'
+  biological_growth:
+    description: 'VARCHAR(100). Presence of biological contaminants (None, Mold, Insect, Algae, Mixed). Possible values: "Algae", "Insect", "Mixed", "Mold", "None".'
+    sql: '"biologicalGrowth"'
+  color_fading:
+    description: 'VARCHAR(100). Degree of pigment or color degradation (None, Slight, Moderate, Severe, Complete). Example: "Jasmine".'
+    sql: '"colorFading"'
+  corrosion_level:
+    description: 'VARCHAR(100). Extent of corrosion on metallic components (None, Surface, Pitting, Deep, Perforated). Possible values: "Deep", "None", "Perforated", "Pitting", "Surface".'
+    sql: '"corrosionLevel"'
+  crack_density:
+    description: 'VARCHAR(100). Density of surface cracks (None, Sparse, Moderate, Dense, Networked). Possible values: "Dense", "Moderate", "Networked", "None", "Sparse".'
+    sql: '"crackDensity"'
+  environmental_risk:
+    description: 'VARCHAR(100). Risk level from environmental factors (Low, Medium, High, Critical). Possible values: "Critical", "High", "Low", "Medium".'
+    sql: '"environmentalRisk"'
+  equipment_used:
+    description: 'VARCHAR(100). Tools and instruments employed during assessment. Example: "hZJcSoY2x4".'
+    sql: '"equipmentUsed"'
+  handling_caution:
+    description: 'VARCHAR(100). Special handling requirements (None, GlovesRequired, TwoPersonLift, NoHandling, SpecialTools). Possible values: "GlovesRequired", "NoHandling", "None", "SpecialTools", "TwoPersonLift".'
+    sql: '"handlingCaution"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for condition assessment records. Example: 1.'
+    sql: id
+  next_review_date:
+    description: 'VARCHAR(100). Scheduled date for follow-up condition assessment. Example: "2007-01-08".'
+    sql: '"nextReviewDate"'
+  previous_damage:
+    description: 'VARCHAR(100). Documentation of historical damage incidents. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"previousDamage"'
+  recommended_action:
+    description: 'VARCHAR(100). Conservation recommendation (Monitor, Clean, Stabilize, Restore, Isolate, ConsultExpert). Possible values: "Clean", "ConsultExpert", "Isolate", "Monitor", "Restore", "Stabilize".'
+    sql: '"recommendedAction"'
+  report_attachment:
+    description: 'VARCHAR(100). Reference to detailed condition report documentation. Example: "You will succeed because most people are lazy. With its well-designed Graphical User                ".'
+    sql: '"reportAttachment"'
+  restoration_history:
+    description: 'VARCHAR(100). Summary of prior conservation interventions. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"restorationHistory"'
+  staff_code:
+    description: 'BIGINT. Conservator or assessor identifier (foreign key to Staff.Staff_Code). Example: 55.'
+    sql: '"staffCode"'
+  structural_stability:
+    description: 'VARCHAR(100). Evaluation of structural soundness (Stable, SlightInstability, ModerateInstability, Unstable, Collapsed). Possible values: "Collapsed", "ModerateInstability", "SlightInstability", "Stable", "Unstable".'
+    sql: '"structuralStability"'
+  surface_integrity:
+    description: 'VARCHAR(100). Assessment of surface preservation state (Intact, MinorFlaws, ModerateDamage, SevereDamage, Fragmented). Possible values: "Fragmented", "Intact", "MinorFlaws", "ModerateDamage", "SevereDamage".'
+    sql: '"surfaceIntegrity"'
+  urgency_level:
+    description: 'VARCHAR(100). Timeline for required conservation action (Immediate, WithinWeek, WithinMonth, Routine, None). Possible values: "Immediate", "None", "Routine", "WithinMonth", "WithinWeek".'
+    sql: '"urgencyLevel"'

@@ -1,0 +1,72 @@
+label: MaintenancePartsUsage
+description: All columns of the public table MaintenancePartsUsage.
+catalog: archeology_scan_large
+schema: public
+table_name: MaintenancePartsUsage
+dimensions:
+  maintenance_parts_usage_id:
+    description: TEXT. Unique identifier for each maintenance parts usage record.
+    sql: '"MaintenancePartsUsage_id"'
+  compatibility_verified:
+    description: 'BOOLEAN. Whether part compatibility was verified before installation. Possible values: True, False.'
+    sql: compatibility_verified
+  disposal_required:
+    description: 'BOOLEAN. Whether old replaced part requires special disposal. Possible values: True, False.'
+    sql: disposal_required
+  failure_mode_addressed:
+    description: 'TEXT. Type of failure mode the part replacement addresses. Unique values: Wear, Electrical, Mechanical, Environmental, Age, Preventive.'
+    sql: failure_mode_addressed
+  installation_time_minutes:
+    description: 'INTEGER. Time required to install the part in minutes. Example: 50.'
+    sql: installation_time_minutes
+  is_oem_part:
+    description: 'BOOLEAN. Whether the part is original equipment manufacturer. Possible values: True, False.'
+    sql: is_oem_part
+  maintenance_ref:
+    description: TEXT. Reference to the parent equipment maintenance record.
+    sql: maintenance_ref
+  part_category:
+    description: 'TEXT. Category classification of the maintenance part. Unique values: Filter, Battery, Cable, Sensor, Motor, Lens, Housing, Circuit Board.'
+    sql: part_category
+  part_condition:
+    description: 'TEXT. Condition of the part being installed. Unique values: New, Refurbished, Used, Reconditioned.'
+    sql: part_condition
+  part_weight_grams:
+    description: 'REAL. Weight of individual part in grams. **NULL means Weight not recorded for this part type.** Example: 120.0.'
+    sql: part_weight_grams
+  performance_improvement_percent:
+    description: 'REAL. Estimated performance improvement after part replacement. **NULL means Performance impact not measured.** Example: 15.0.'
+    sql: performance_improvement_percent
+  quantity_used:
+    description: 'INTEGER. Number of individual parts used in maintenance. Example: 50.'
+    sql: quantity_used
+  reorder_triggered:
+    description: 'BOOLEAN. Whether this usage triggered a reorder of the part. Possible values: True, False.'
+    sql: reorder_triggered
+  requires_calibration:
+    description: 'BOOLEAN. Whether equipment needs recalibration after part installation. Possible values: True, False.'
+    sql: requires_calibration
+  stock_quantity_remaining:
+    description: 'INTEGER. Inventory quantity remaining after this usage. Example: 50.'
+    sql: stock_quantity_remaining
+  supplier_lead_time_days:
+    description: 'INTEGER. Number of days to receive part from supplier. Example: 50.'
+    sql: supplier_lead_time_days
+  total_cost_usd:
+    description: 'REAL. Total cost for all units used in US dollars. Example: 150.0.'
+    sql: total_cost_usd
+  unit_cost_usd:
+    description: 'REAL. Cost per unit of the part in US dollars. Example: 85.0.'
+    sql: unit_cost_usd
+  usage_timestamp:
+    description: 'TIMESTAMP. Date and time when the part was installed or used. Example: 2024-01-01 12:00:00.'
+    sql: usage_timestamp
+  warranty_months:
+    description: 'INTEGER. Warranty period for the part in months. Example: 50.'
+    sql: warranty_months
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct MaintenancePartsUsage public identity values.
+    label: MaintenancePartsUsage Count
+    sql: ${archeology_scan_large_public__maintenance_parts_usage.maintenance_parts_usage_id}

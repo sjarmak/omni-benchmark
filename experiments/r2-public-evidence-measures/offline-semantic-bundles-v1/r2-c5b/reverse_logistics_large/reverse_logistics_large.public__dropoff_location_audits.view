@@ -1,0 +1,63 @@
+label: dropoff_location_audits
+description: All columns of the public table dropoff_location_audits.
+catalog: reverse_logistics_large
+schema: public
+table_name: dropoff_location_audits
+dimensions:
+  audit_visit_id:
+    description: TEXT. Unique identifier for the audit visit.
+    sql: audit_visit_id
+  auditor_name:
+    description: TEXT. Name of the field auditor.
+    sql: auditor_name
+  branding_compliance_score:
+    description: 'INTEGER. Score (1-10) on branding/signage visibility. Example: 50.'
+    sql: branding_compliance_score
+  critical_violation_found:
+    description: BOOLEAN. Was a critical failure found?.
+    sql: critical_violation_found
+  customer_wait_time_obs:
+    description: 'INTEGER. Observed wait time in minutes. Example: 50.'
+    sql: customer_wait_time_obs
+  equipment_functional_flag:
+    description: BOOLEAN. Was the scanner/printer working?.
+    sql: equipment_functional_flag
+  follow_up_required_flag:
+    description: BOOLEAN. Is a follow-up visit needed?.
+    sql: follow_up_required_flag
+  geo_fencing_match:
+    description: BOOLEAN. Did GPS match the store location?.
+    sql: geo_fencing_match
+  manager_signature_captured:
+    description: BOOLEAN. Did the location manager sign off?.
+    sql: manager_signature_captured
+  mystery_shopper_flag:
+    description: BOOLEAN. Was this a mystery shopper visit?.
+    sql: mystery_shopper_flag
+  overall_audit_grade:
+    description: 'TEXT. Final grade (A, B, C, F). Unique values: A, B, C, F.'
+    sql: overall_audit_grade
+  photo_proof_count:
+    description: 'INTEGER. Number of photos taken. Example: 50.'
+    sql: photo_proof_count
+  security_compliance_flag:
+    description: BOOLEAN. Were packages stored securely?.
+    sql: security_compliance_flag
+  staff_knowledge_check:
+    description: 'TEXT. Assessment of staff knowledge. Unique values: Excellent, Passable, Poor.'
+    sql: staff_knowledge_check
+  storage_area_cleanliness:
+    description: 'TEXT. Rating of storage area condition. Unique values: Clean, Cluttered, Dirty.'
+    sql: storage_area_cleanliness
+  supply_stock_level_pct:
+    description: 'INTEGER. Percentage of packaging supplies in stock. Example: 50.'
+    sql: supply_stock_level_pct
+  target_return_point:
+    description: TEXT. The return point being audited.
+    sql: target_return_point
+  visit_date:
+    description: TIMESTAMP. Date of the visit.
+    sql: visit_date
+  visit_duration_minutes:
+    description: 'INTEGER. Time spent conducting the audit. Example: 45.'
+    sql: visit_duration_minutes

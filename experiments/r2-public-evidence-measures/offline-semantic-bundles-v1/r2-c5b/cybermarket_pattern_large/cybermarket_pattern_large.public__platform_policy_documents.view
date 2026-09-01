@@ -1,0 +1,105 @@
+label: platform_policy_documents
+description: All columns of the public table platform_policy_documents.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: platform_policy_documents
+dimensions:
+  approver:
+    description: 'TEXT. Executive approver of the document. Example: CISO.'
+    sql: '"APPROVER"'
+  documenthash:
+    description: 'TEXT. SHA-256 hash of the signed PDF. Example: 97d3e5a861695c2f7d…'
+    sql: '"DOCUMENThash"'
+  last_updated:
+    description: 'DATE (YYYY.MM.DD). Last date substantive changes were made. Example: 2025.02.10.'
+    sql: '"LAST_UPDATED"'
+  notes:
+    description: 'TEXT. Additional legal or operational commentary. **NULL means no extra notes were recorded.** Example: "Vendor addendum pending."'
+    sql: '"NOTES"'
+  platcode:
+    description: 'TEXT. Foreign-key to markets.PlatCode. Example: MKP_027.'
+    sql: '"PLATcode"'
+  signed:
+    description: 'BOOLEAN. Whether signature collection is complete. Example: false.'
+    sql: '"SIGNED"'
+  version:
+    description: 'TEXT. Version string of the policy. Example: 2.3.'
+    sql: '"VERSION"'
+  affected_vendors:
+    description: 'BIGINT. Vendors who must adhere to the policy. Example: 84.'
+    sql: '"affectedVendors"'
+  affected_users:
+    description: 'BIGINT. Estimated number of users impacted by the policy. Example: 821,000.'
+    sql: affected_users
+  author:
+    description: 'TEXT. Team or person who drafted the policy. Example: Privacy Office.'
+    sql: author
+  change_log:
+    description: 'TEXT. Short description of changes in this version. Example: "Added CCPA disclosure language."'
+    sql: change_log
+  compliance_requirement:
+    description: 'TEXT. Regulatory framework the policy is designed to satisfy (GDPR, SOX, etc.). Example: GDPR.'
+    sql: compliance_requirement
+  effective_date:
+    description: 'DATE (YYYY.MM.DD). Date the policy became legally binding. Example: 2024.11.01.'
+    sql: '"effectiveDate"'
+  enforcement_level:
+    description: 'TEXT. Severity tier for enforcement (Low, Medium, High, Critical). Example: High.'
+    sql: '"enforcementLevel"'
+  expiry_date:
+    description: 'DATE (YYYY.MM.DD). Date the policy is scheduled to expire or be superseded. Example: 2027.11.01.'
+    sql: '"expiryDATE"'
+  jurisdiction:
+    description: 'TEXT. Principal legal jurisdiction(s) the policy applies to. Example: EU.'
+    sql: jurisdiction
+  next_review_date:
+    description: 'DATE (YYYY.MM.DD). Scheduled next review. Example: 2026.02.05.'
+    sql: next_review_date
+  notification_date:
+    description: 'DATE (YYYY.MM.DD). Date the notification was dispatched. Example: 2025.02.06.'
+    sql: '"notificationDATE"'
+  notification_sent:
+    description: 'BOOLEAN. Whether formal notification was issued to users/vendors. Example: true.'
+    sql: '"notificationSent"'
+  penalty_ceiling_kusd:
+    description: 'TEXT. Maximum penalty (thousands USD) allowed under policy. **NULL means ceiling undecided.** Example: ≤ 250'
+    sql: '"penaltyCeiling_KUSD"'
+  policy_ref:
+    description: 'TEXT. Primary-key reference for the policy record. Example: POL-fb3d2f70c1.'
+    sql: '"policyRef"'
+  policy_type:
+    description: 'TEXT. Document category (Privacy Policy, ToS, etc.). Example: Privacy Policy.'
+    sql: policy_type
+  review_date:
+    description: 'DATE (YYYY.MM.DD). Date of the last formal review. **NULL means review not yet performed for this version.** Example: 2025.02.05.'
+    sql: '"reviewDATE"'
+  reviewed:
+    description: 'BOOLEAN. True if legal/compliance review completed for the version. Example: true.'
+    sql: reviewed
+  revision_count:
+    description: 'BIGINT. Number of revisions since original publication. Example: 3.'
+    sql: '"revisionCOUNT"'
+  scope:
+    description: 'TEXT. Audience or systems covered (Consumers, Partners, Internal, etc.). Example: Consumers.'
+    sql: scope
+  signature_required:
+    description: 'BOOLEAN. True if signatures are mandated for acceptance. Example: false.'
+    sql: signature_required
+  signed_date:
+    description: 'DATE (YYYY.MM.DD). Date the policy was signed by the approver. Example: 2025.02.11.'
+    sql: '"signedDate"'
+  signed_by:
+    description: 'TEXT. Signatory name or title. **NULL means signature collection not completed or not required.** Example: CEO.'
+    sql: signed_by
+  status:
+    description: 'TEXT. Lifecycle status of the policy (Active, Draft, Deprecated). Example: Active.'
+    sql: status
+  update_cadence:
+    description: 'TEXT. Expected update frequency (annual, bi-annual, quarterly). Example: bi-annual.'
+    sql: '"updateCadence"'
+  url:
+    description: 'TEXT. HTTPS link to the rendered HTML/PDF. Example: https://policies.example.com/MKP_027/2.3.html.'
+    sql: url
+  violation_penalty:
+    description: 'REAL. Monetary penalty in USD for non-compliance. **NULL means penalty terms pending legal review.** Example: 25000.00.'
+    sql: violation_penalty

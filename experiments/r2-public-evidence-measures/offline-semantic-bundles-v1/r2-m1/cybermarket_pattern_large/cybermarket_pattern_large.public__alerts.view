@@ -1,0 +1,59 @@
+label: Alerts
+description: Alert records with public severity-level context.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: alerts
+dimensions:
+  severity_level:
+    description: 'TEXT. Severity level assigned to the alert. Possible values: Critical, High, Low, Medium.'
+    label: Alert Severity Level
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'severity_level_stat')
+    ai_context: 'Alert Severity Levels: Values: Critical, High, Medium, Low.'
+  annotation_count:
+    description: 'BIGINT. Number of analyst annotations attached to the alert record. Example: 3.'
+    sql: '"AnnotationCount"'
+  event_tag:
+    description: 'TEXT. Identifier of the transaction for which the alert was generated. PK. FK to transactions(EventCode). Example: TX4833222.'
+    sql: '"EventTag"'
+  next_review_dt:
+    description: 'DATE. Date of the next scheduled review. Example: 2025/3/17.'
+    sql: '"NextReviewDt"'
+  review_freq:
+    description: 'TEXT. Recommended frequency for reviewing the alert or case. Possible values: Daily, Monthly, Weekly.'
+    sql: '"ReviewFreq"'
+  alert_case_management:
+    description: JSONB column. Stores details about the alert case, including severity level, response time, and actions taken.
+    sql: alert_case_management
+  alert_case_management_action_taken_stat:
+    description: 'TEXT. Action undertaken in response to the alert. **NULL means no action has yet been recorded.**. Possible values: Restriction, Termination, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'action_taken_stat')
+  alert_case_management_alert_category:
+    description: 'TEXT. Categorical class of the alert. **NULL means alert has not yet been classified.**. Possible values: Behavior, Pattern, Security, Transaction.'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'alert_category')
+  alert_case_management_case_state_stat:
+    description: 'TEXT. Current state of the incident case. Possible values: Ongoing, Open, Resolved.'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'case_state_stat')
+  alert_case_management_confidence_metric_val:
+    description: 'REAL. Confidence score associated with the alert classification. Example: 59.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'confidence_metric_val')
+  alert_case_management_escalation_tier_stat:
+    description: 'TEXT. Escalation tier applied to the alert. **NULL means escalation tier has not been assigned.**. Possible values: Level1, Level2, Level3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'escalation_tier_stat')
+  alert_case_management_invest_priority_stat:
+    description: 'TEXT. Investigation-priority level for the alert. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'invest_priority_stat')
+  alert_case_management_needs_followup_stat:
+    description: 'BOOLEAN. Indicates whether further follow-up is required. Possible values: No, Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'needs_followup_stat')
+  alert_case_management_resolve_hours:
+    description: 'BIGINT. Hours taken to resolve the alert. Example: 122.'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'resolve_hours')
+  alert_case_management_resp_time_min:
+    description: 'BIGINT. Time taken to respond to the alert, in minutes. Example: 1411.'
+    sql: JSONB_EXTRACT_PATH_TEXT(alert_case_management, 'resp_time_min')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Alerts public identity values.
+    label: Alerts Count
+    sql: ${cybermarket_pattern_large_public__alerts.event_tag}

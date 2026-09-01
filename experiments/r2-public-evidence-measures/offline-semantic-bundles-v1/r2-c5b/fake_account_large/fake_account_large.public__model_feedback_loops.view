@@ -1,0 +1,60 @@
+label: model_feedback_loops
+description: All columns of the public table model_feedback_loops.
+catalog: fake_account_large
+schema: public
+table_name: model_feedback_loops
+dimensions:
+  feedback_loop_code:
+    description: TEXT. Unique identifier for the RLHF feedback record.
+    sql: '"FeedbackLoop_CODE"'
+  annotation_cost_micros:
+    description: 'INTEGER. Cost paid to the human labeler. Example: 50000.'
+    sql: annotation_cost_micros
+  annotator_worker_id:
+    description: TEXT. ID of the specific human labeler.
+    sql: annotator_worker_id
+  code_execution_success:
+    description: 'BOOLEAN. True if generated code ran without errors. Possible values: True, False.'
+    sql: code_execution_success
+  coherence_score:
+    description: 'REAL. Score 0-1 for logical flow of text. Example: 50.0.'
+    sql: coherence_score
+  correction_edit_distance:
+    description: 'INTEGER. Levenshtein distance between model output and ideal. **NULL means No text correction made.** Example: 50.'
+    sql: correction_edit_distance
+  critique_text_length:
+    description: 'INTEGER. Character count of reviewer''s written feedback. **NULL means No written critique.** Example: 50.'
+    sql: critique_text_length
+  embedding_drift_metric:
+    description: 'REAL. Distance of response vector from gold standard. Example: 0.3.'
+    sql: embedding_drift_metric
+  fine_tuning_dataset_inclusion:
+    description: 'BOOLEAN. True if selected for next training run. Possible values: True, False.'
+    sql: fine_tuning_dataset_inclusion
+  hallucination_detected_flag:
+    description: 'BOOLEAN. True if model stated false facts. Possible values: True, False.'
+    sql: hallucination_detected_flag
+  human_label_rating:
+    description: 'INTEGER. 1-7 Likert scale rating by human annotator. Example: 5.'
+    sql: human_label_rating
+  inference_trace_ref:
+    description: TEXT. Reference to the AI generation being evaluated.
+    sql: inference_trace_ref
+  instruction_following_score:
+    description: 'REAL. Score 0-1 for adherence to prompt constraints. Example: 50.0.'
+    sql: instruction_following_score
+  labeling_latency_sec:
+    description: 'INTEGER. Time spent by human to evaluate the output. Example: 45.'
+    sql: labeling_latency_sec
+  response_conciseness_rating:
+    description: 'INTEGER. 1-5 rating on verbosity. Unique values: 1, 2, 3, 4, 5.'
+    sql: response_conciseness_rating
+  reviewer_consensus_level:
+    description: 'REAL. Agreement score if multiple reviewers checked. **NULL means Single reviewer only.** Example: 0.85.'
+    sql: reviewer_consensus_level
+  safety_violation_tag:
+    description: 'TEXT. Tag if human identified safety issues missed by model. Unique values: HATE, SEXUAL, PII, NONE.'
+    sql: safety_violation_tag
+  sentiment_mismatch_flag:
+    description: 'BOOLEAN. True if output tone didn''t match request. Possible values: True, False.'
+    sql: sentiment_mismatch_flag

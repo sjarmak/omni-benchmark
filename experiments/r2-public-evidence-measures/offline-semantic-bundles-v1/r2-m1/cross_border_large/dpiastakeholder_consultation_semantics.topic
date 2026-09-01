@@ -1,0 +1,21 @@
+base_view: cross_border_large_public__dpiastakeholder_consultation
+label: DPIAStakeholderConsultation
+description: All columns of the public table DPIAStakeholderConsultation.
+fields:
+- cross_border_large_public__dpiastakeholder_consultation.*
+- cross_border_large_public__compliance.*
+- cross_border_large_public__data_flow.*
+- cross_border_large_public__data_profile.*
+- cross_border_large_public__dpiarecord.*
+- cross_border_large_public__risk_management.*
+- cross_border_large_public__security_profile.*
+- cross_border_large_public__vendor_management.*
+joins:
+  cross_border_large_public__dpiarecord:
+    cross_border_large_public__compliance:
+      cross_border_large_public__risk_management:
+        cross_border_large_public__data_flow: {}
+      cross_border_large_public__vendor_management:
+        cross_border_large_public__security_profile:
+          cross_border_large_public__data_profile: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

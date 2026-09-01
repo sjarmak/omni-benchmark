@@ -1,0 +1,57 @@
+label: grid_load_optimization
+description: All columns of the public table grid_load_optimization.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: grid_load_optimization
+dimensions:
+  battery_backup_discharge_kw:
+    description: 'REAL. Power drawn from local UPS/Storage. Example: 50.0.'
+    sql: battery_backup_discharge_kw
+  carbon_intensity_g_kwh:
+    description: 'INTEGER. Grid carbon density at this time. Example: 400.'
+    sql: carbon_intensity_g_kwh
+  current_tariff_rate_usd_kwh:
+    description: TEXT. Cost of energy at this moment.
+    sql: current_tariff_rate_usd_kwh
+  demand_response_active:
+    description: 'BOOLEAN. Is utility asking to shed load?. Possible values: True, False.'
+    sql: demand_response_active
+  grid_event_id:
+    description: TEXT. Unique key for grid interaction log.
+    sql: grid_event_id
+  grid_frequency_hz:
+    description: 'REAL. AC frequency supply (target 50/60). Example: 60.0.'
+    sql: grid_frequency_hz
+  grid_provider_status:
+    description: 'TEXT. Status signal from utility API. Unique values: Normal, Strain, Outage_Warn.'
+    sql: grid_provider_status
+  harmonic_distortion_pct:
+    description: 'REAL. Total Harmonic Distortion (THD). Example: 3.'
+    sql: harmonic_distortion_pct
+  is_peak_hours:
+    description: 'BOOLEAN. Are we in a high-demand window?. Possible values: True, False.'
+    sql: is_peak_hours
+  load_shedding_action_id:
+    description: TEXT. ID of automated shutdown script. **NULL means No action taken.**
+    sql: load_shedding_action_id
+  peak_demand_charge_accumulated:
+    description: TEXT. Rolling cost for peak usage.
+    sql: peak_demand_charge_accumulated
+  power_factor_grid:
+    description: 'REAL. Efficiency of incoming power (0-1). Example: 50.0.'
+    sql: power_factor_grid
+  power_log_ref:
+    description: 'INTEGER. Link to the raw power consumption data. Example: 50.'
+    sql: power_log_ref
+  reactive_power_kvar:
+    description: 'REAL. Wasted power in the system. Example: 10.'
+    sql: reactive_power_kvar
+  solar_generation_kw:
+    description: 'REAL. Local PV generation offset. Example: 50.0.'
+    sql: solar_generation_kw
+  supply_voltage_v:
+    description: 'REAL. Incoming voltage level. Example: 480.'
+    sql: supply_voltage_v
+  voltage_sag_detected:
+    description: 'BOOLEAN. Did voltage drop below threshold?. Possible values: True, False.'
+    sql: voltage_sag_detected

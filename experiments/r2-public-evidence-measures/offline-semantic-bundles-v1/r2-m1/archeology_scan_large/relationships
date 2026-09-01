@@ -1,0 +1,420 @@
+- join_from_view: archeology_scan_large_public__project_stakeholders
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_stakeholders.project_association} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__project_institution_partnership
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_institution_partnership.project_fk} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__personnel_certifications
+  join_to_view: archeology_scan_large_public__skills
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__personnel_certifications.related_skill_code} = ${archeology_scan_large_public__skills.skill_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__project_stakeholders
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_stakeholders.added_by_user_tag} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__scans
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__scans.crewref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__software_licenses
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__software_licenses.assigned_user_tag} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__scans
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__scans.zoneref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__artifacts
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__artifacts.discovered_by_personnel_fk} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__excavation_sessions
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__excavation_sessions.site_ref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__mesh
+  join_to_view: archeology_scan_large_public__equipment
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__mesh.equipref} = ${archeology_scan_large_public__equipment.equipregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__personnel_skills
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__personnel_skills.verified_by_supervisor_ref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__project_milestones
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_milestones.owner_ref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__equipment_maintenance
+  join_to_view: archeology_scan_large_public__equipment
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__equipment_maintenance.equipment_ref} = ${archeology_scan_large_public__equipment.equipregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__field_note_attachments
+  join_to_view: archeology_scan_large_public__field_notes
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__field_note_attachments.note_ref} = ${archeology_scan_large_public__field_notes.field_notes_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__geological_surveys
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__geological_surveys.location_ref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__geological_surveys
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__geological_surveys.surveyed_by_crew_ref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__personnel_certifications
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__personnel_certifications.verified_by} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__treatment_chemical_applications
+  join_to_view: archeology_scan_large_public__conservation_treatments
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__treatment_chemical_applications.treatment_ref} = ${archeology_scan_large_public__conservation_treatments.conservation_treatments_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__sample_analysis
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__sample_analysis.analyst_ref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__environment
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__environment.zoneref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__project_budgets
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_budgets.project_ref} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__pointcloud
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__pointcloud.crewref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__photo_processing_queue
+  join_to_view: archeology_scan_large_public__artifact_photography
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__photo_processing_queue.photography_ref} = ${archeology_scan_large_public__artifact_photography.artifact_photography_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__data_access_logs
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__data_access_logs.user_tag} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__qualitycontrol
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__qualitycontrol.crewref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__data_access_logs
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__data_access_logs.project_context_code} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__excavation_findings
+  join_to_view: archeology_scan_large_public__excavation_sessions
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__excavation_findings.session_ref} = ${archeology_scan_large_public__excavation_sessions.excavation_sessions_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__project_stakeholders
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_stakeholders.site_association} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__project_milestones
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_milestones.project_id_link} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__transport_condition_readings
+  join_to_view: archeology_scan_large_public__transport_logistics
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__transport_condition_readings.logistics_ref} = ${archeology_scan_large_public__transport_logistics.transport_logistics_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__mesh
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__mesh.zoneref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__artifacts
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__artifacts.site_loc_ref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__artifact_photography
+  join_to_view: archeology_scan_large_public__artifacts
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__artifact_photography.artifact_ref} = ${archeology_scan_large_public__artifacts.artifact_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__permits
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__permits.project_assignment} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__registration
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__registration.arcref} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__pointcloud
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__pointcloud.arcref} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__personnel_skills
+  join_to_view: archeology_scan_large_public__skills
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__personnel_skills.skill_ref} = ${archeology_scan_large_public__skills.skill_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__spatial
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__spatial.crewref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__lab_sample_processing
+  join_to_view: archeology_scan_large_public__sample_analysis
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__lab_sample_processing.analysis_ref} = ${archeology_scan_large_public__sample_analysis.analysis_index}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__expense_receipts
+  join_to_view: archeology_scan_large_public__project_expenses
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__expense_receipts.expense_ref} = ${archeology_scan_large_public__project_expenses.project_expenses_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__permits
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__permits.applicant_tag} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__qualitycontrol
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__qualitycontrol.arcref} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__registration
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__registration.crewref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__maintenance_parts_usage
+  join_to_view: archeology_scan_large_public__equipment_maintenance
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__maintenance_parts_usage.maintenance_ref} = ${archeology_scan_large_public__equipment_maintenance.equipment_maintenance_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__processing
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__processing.zoneref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__project_expenses
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_expenses.project_ref} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__transport_logistics
+  join_to_view: archeology_scan_large_public__shipping_log
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__transport_logistics.shipment_ref} = ${archeology_scan_large_public__shipping_log.shipment_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__artifact_condition_assessments
+  join_to_view: archeology_scan_large_public__artifacts
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__artifact_condition_assessments.artifact_ref} = ${archeology_scan_large_public__artifacts.artifact_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__shipping_log
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__shipping_log.related_project} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__sample_contamination_log
+  join_to_view: archeology_scan_large_public__lab_sample_processing
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__sample_contamination_log.processing_ref} = ${archeology_scan_large_public__lab_sample_processing.lab_sample_processing_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__shipping_log
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__shipping_log.received_by_crew_ref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__project_institution_partnership
+  join_to_view: archeology_scan_large_public__research_institutions
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_institution_partnership.institution_code} = ${archeology_scan_large_public__research_institutions.institution_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__scans
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__scans.arcref} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__sample_analysis
+  join_to_view: archeology_scan_large_public__artifacts
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__sample_analysis.artifact_fk} = ${archeology_scan_large_public__artifacts.artifact_tag}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__spatial
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__spatial.arcref} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__processing
+  join_to_view: archeology_scan_large_public__equipment
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__processing.equipref} = ${archeology_scan_large_public__equipment.equipregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__features
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__features.zoneref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__environment
+  join_to_view: archeology_scan_large_public__equipment
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__environment.equipref} = ${archeology_scan_large_public__equipment.equipregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__software_licenses
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__software_licenses.assigned_project_code} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__geological_surveys
+  join_to_view: archeology_scan_large_public__equipment
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__geological_surveys.equipment_used_fk} = ${archeology_scan_large_public__equipment.equipregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__scan_calibration
+  join_to_view: archeology_scan_large_public__scans
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__scan_calibration.scan_ref} = ${archeology_scan_large_public__scans.questregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__project_budgets
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__project_budgets.approver_crew_tag} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__environment_alert_events
+  join_to_view: archeology_scan_large_public__site_environment_monitoring
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__environment_alert_events.monitoring_ref} = ${archeology_scan_large_public__site_environment_monitoring.site_environment_monitoring_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__calibration_verification_tests
+  join_to_view: archeology_scan_large_public__scan_calibration
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__calibration_verification_tests.calibration_ref} = ${archeology_scan_large_public__scan_calibration.scan_calibration_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__conservation
+  join_to_view: archeology_scan_large_public__projects
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__conservation.arcref} = ${archeology_scan_large_public__projects.arcregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__features
+  join_to_view: archeology_scan_large_public__equipment
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__features.equipref} = ${archeology_scan_large_public__equipment.equipregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__site_environment_monitoring
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__site_environment_monitoring.site_ref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__conservation
+  join_to_view: archeology_scan_large_public__sites
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__conservation.zoneref} = ${archeology_scan_large_public__sites.zoneregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__conservation_treatments
+  join_to_view: archeology_scan_large_public__conservation
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__conservation_treatments.conservation_ref} = ${archeology_scan_large_public__conservation.cureregistry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: archeology_scan_large_public__field_notes
+  join_to_view: archeology_scan_large_public__personnel
+  join_type: always_left
+  on_sql: ${archeology_scan_large_public__field_notes.personnel_ref} = ${archeology_scan_large_public__personnel.crewregistry}
+  relationship_type: many_to_one
+  reversible: false

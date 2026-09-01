@@ -1,0 +1,99 @@
+label: technical_regulations
+description: All columns of the public table technical_regulations.
+catalog: sports_events_large
+schema: public
+table_name: technical_regulations
+dimensions:
+  applies_to:
+    description: 'DATE. Date until the regulation is valid. Example: 2028-12-31.'
+    sql: '"Applies_To"'
+  category:
+    description: 'TEXT. Category of the regulation. Possible values: aero, engine, chassis. Example: aero.'
+    sql: '"Category"'
+  consultation_notes:
+    description: 'TEXT. Notes from the consultation process for the regulation. Example: Team feedback.'
+    sql: '"ConsultationNotes"'
+  doc_url:
+    description: 'TEXT. URL linking to the official document or guidelines. Example: http://docs.com/regulation/1.'
+    sql: '"Doc_URL"'
+  enforcement_body:
+    description: 'TEXT. Body responsible for enforcing the regulation. Example: FIA.'
+    sql: '"EnforcementBody"'
+  exceptions_json:
+    description: 'JSONB. Exceptions to the regulation, if any. Example: {wet:lenient}.'
+    sql: '"Exceptions_JSON"'
+  grandfathering_clause:
+    description: 'TEXT. Clause allowing for exceptions for older models or technology. Example: Pre-2024 ok.'
+    sql: '"GrandfatheringClause"'
+  impact_on_cost_cap:
+    description: 'REAL. Impact of the regulation on the cost cap in millions of USD. Example: 0.5.'
+    sql: '"ImpactOnCostCap"'
+  impact_on_safety_score:
+    description: 'REAL. Impact of the regulation on the safety score. Example: 0.2.'
+    sql: '"ImpactOnSafetyScore"'
+  min_dimension:
+    description: 'REAL. Minimum dimension specified by the regulation. Example: 800.0.'
+    sql: '"MIN_DIMENSION"'
+  materials_allowed:
+    description: 'TEXT. Materials allowed for the technology under this regulation. Example: CF composites.'
+    sql: '"MaterialsAllowed"'
+  max_dimension:
+    description: 'REAL. Maximum dimension specified by the regulation. Example: 1200.0.'
+    sql: '"Max_Dimension"'
+  measurement_units:
+    description: 'TEXT. Measurement units used in the regulation. Example: mm.'
+    sql: '"MeasurementUnits"'
+  penalty_guideline:
+    description: 'TEXT. Penalty guideline for non-compliance with the regulation. Example: Grid drop.'
+    sql: '"PenaltyGuideline"'
+  review_cycle_months:
+    description: 'BIGINT. Frequency in months at which the regulation will be reviewed. Example: 12.'
+    sql: '"REVIEW_CYCLE_MONTHS"'
+  rationale:
+    description: 'TEXT. Rationale behind the regulation. Example: Safety.'
+    sql: '"Rationale"'
+  reg_code:
+    description: 'TEXT. Unique regulation code. Example: TR-2025-AERO-01.'
+    sql: '"Reg_Code"'
+  regulation_key:
+    description: BIGSERIAL. Surrogate primary key for technical_regulations rows. PK.
+    sql: '"Regulation_Key"'
+  stakeholder_json:
+    description: 'JSONB. JSON object listing the teams or stakeholders consulted. Example: {teams:10}.'
+    sql: '"Stakeholder_JSON"'
+  status_:
+    description: 'TEXT. Current status of the regulation. Possible values: final, draft, pending. Example: final.'
+    sql: '"Status_"'
+  superseded_by_code:
+    description: 'TEXT. Regulation code that supersedes this regulation. Example: TR-2027-AERO-01.'
+    sql: '"SupersededByCode"'
+  supersedes_reg_code:
+    description: 'TEXT. Regulation code that this regulation supersedes. Example: TR-2023-AERO-01.'
+    sql: '"SupersedesRegCode"'
+  title:
+    description: 'TEXT. Title or name of the regulation. Example: Front Wing Endplate.'
+    sql: '"TITLE"'
+  tol_plus:
+    description: 'REAL. Upper tolerance limit defined in the regulation. Example: 2.0.'
+    sql: '"TOL_PLUS"'
+  testing_protocol:
+    description: 'TEXT. Type of testing protocol defined by the regulation. Example: Deflection test.'
+    sql: '"TestingProtocol"'
+  tol_minus:
+    description: 'REAL. Lower tolerance limit defined in the regulation. Example: -2.0.'
+    sql: '"Tol_Minus"'
+  update_count:
+    description: 'BIGINT. Number of times the regulation has been updated. Example: 3.'
+    sql: '"UpdateCount"'
+  weight_limit_kg:
+    description: 'REAL. Maximum weight limit in kilograms as defined by the regulation. Example: 798.0.'
+    sql: '"WeightLimitKG"'
+  applies_from:
+    description: 'DATE. Date when the regulation comes into effect. Example: 2025-01-01.'
+    sql: '"applies_From"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct technical_regulations public identity values.
+    label: technical_regulations Count
+    sql: ${sports_events_large_public__technical_regulations.regulation_key}

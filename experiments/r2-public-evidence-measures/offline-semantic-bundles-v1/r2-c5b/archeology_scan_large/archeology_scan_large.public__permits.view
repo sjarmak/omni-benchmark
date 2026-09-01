@@ -1,0 +1,99 @@
+label: permits
+description: All columns of the public table permits.
+catalog: archeology_scan_large
+schema: public
+table_name: permits
+dimensions:
+  area_covered_sqm:
+    description: 'REAL. The area in square meters covered by the permit. **NULL means not applicable.**。 Example: 15000.5.'
+    sql: '"AREA_COVERED_SQM"'
+  applicant_tag:
+    description: 'TEXT. Foreign key for the person who applied for the permit. FK。 Example: OP6953.'
+    sql: '"ApplicantTag"'
+  currency_code:
+    description: 'TEXT. The currency of the permit fee。 Example: USD.'
+    sql: '"CURRENCY_CODE"'
+  fee_paid:
+    description: 'REAL. The fee paid for the permit。 Example: 1500.'
+    sql: '"FeePaid"'
+  permit_index:
+    description: 'BIGINT. Unique identifier for a permit. PK。 Example: 6001.'
+    sql: '"PermitIndex"'
+  permit_type:
+    description: 'TEXT. The type of permit。 Possible values: Conservation, Excavation, Excavation Amendment, Export, Imaging, Marine Survey, Remote Sensing, Research, Survey.'
+    sql: '"PermitType"'
+  species_impacted:
+    description: 'TEXT. Any protected species impacted by the permitted work. **NULL means no species are impacted.**。 Example: Sage Grouse.'
+    sql: '"SpeciesImpacted"'
+  country_code:
+    description: 'TEXT. The country of the issuing authority。 Example: US.'
+    sql: country_code
+  depth_limit_m:
+    description: 'REAL. The depth limit in meters for excavation. **NULL means no depth limit is specified.**。 Possible values: 0.0, 1.5, 10.0, 2.0, 3.0, 4.0, 5.0, 8.0.'
+    sql: depth_limit_m
+  permit_compliance_profile:
+    description: JSONB column. Aggregates compliance, reporting, renewal, and oversight details for each permit record.
+    sql: permit_compliance_profile
+  permit_number:
+    description: 'TEXT. The official number of the permit. UNIQUE。 Example: USA-BLM-2022-001.'
+    sql: permit_number
+  project_assignment:
+    description: 'TEXT. Foreign key for the project this permit is for. FK。 Example: PR7509.'
+    sql: project_assignment
+  status:
+    description: 'TEXT. The current status of the permit。 Possible values: Active, Expired, Pending.'
+    sql: status
+  permit_compliance_profile_conditions_stakeholder_consultation_status:
+    description: 'TEXT. The status of consultation with stakeholders. **NULL means not required.**。 Possible values: Completed, Pending.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'conditions', 'STAKEHOLDER_CONSULTATION_STATUS')
+  permit_compliance_profile_conditions_audit_outcome:
+    description: 'TEXT. The outcome of the last compliance audit. **NULL means no audit has been conducted.**。 Possible values: Passed.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'conditions', 'audit_outcome')
+  permit_compliance_profile_conditions_conditions:
+    description: 'TEXT. Any conditions attached to the permit。 Example: Quarterly reporting required. Must employ tribal monitor..'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'conditions', 'conditions')
+  permit_compliance_profile_conditions_is_renewable:
+    description: 'BOOLEAN. A flag indicating if the permit is renewable。 Possible values: False, True.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'conditions', 'is_renewable')
+  permit_compliance_profile_conditions_revocation_reason:
+    description: TEXT. The reason the permit was revoked. **NULL means the permit is not revoked.**
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'conditions', 'revocation_reason')
+  permit_compliance_profile_docs_associated_document_url:
+    description: 'TEXT. A URL to a copy of the permit document. **NULL means no digital copy is available.**。 Example: https://digisite.org/permits/USABLM2022_001.pdf.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'docs', 'ASSOCIATED_DOCUMENT_URL')
+  permit_compliance_profile_docs_digital_certificate_tag:
+    description: 'TEXT. An identifier for a digital version of the permit. **NULL means no digital certificate exists.**。 Example: CERT-USA-BLM-001.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'docs', 'DigitalCertificateTag')
+  permit_compliance_profile_docs_last_compliance_report_url:
+    description: 'TEXT. A URL to the last submitted compliance report. **NULL means no report has been submitted.**。 Possible values: https://digisite.org/reports/AUSPARKS2022_031_Y2.pdf, https://digisite.org/reports/CANPARKS2020_007_Y4.pdf, https://digisite.org/reports/CHNSACH2023_055_Y1.pdf, https://digisite.org/reports/GBMMO2020_042_final.pdf, https://digisite.org/reports/ITASABAP2021_015_Y2.pdf, https://digisite.org/reports/USABLM2022_001_Q1.pdf.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'docs', 'LastComplianceReportUrl')
+  permit_compliance_profile_oversight_issuing_authority:
+    description: 'TEXT. The government body or authority that issued the permit。 Example: US Bureau of Land Management.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'oversight', 'ISSUING_AUTHORITY')
+  permit_compliance_profile_oversight_officer_contact_email:
+    description: 'TEXT. The email for the officer in charge. **NULL means it is unknown.**。 Example: kwaters@blm.gov.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'oversight', 'OFFICER_CONTACT_EMAIL')
+  permit_compliance_profile_oversight_officer_in_charge_name:
+    description: 'TEXT. The name of the officer in charge at the issuing authority. **NULL means it is unknown.**。 Example: Karen Waters.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'oversight', 'OfficerInChargeName')
+  permit_compliance_profile_timing_application_date:
+    description: 'DATE. The date the permit was applied for。 Example: 12/01/2021.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'timing', 'ApplicationDate')
+  permit_compliance_profile_timing_expiry_date:
+    description: 'DATE. The date the permit expires。 Example: 12/31/2025.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'timing', 'EXPIRY_DATE')
+  permit_compliance_profile_timing_issue_date:
+    description: 'DATE. The date the permit was issued。 Example: 03/01/2022.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'timing', 'IssueDate')
+  permit_compliance_profile_timing_last_audit_date:
+    description: 'DATE. The date of the last audit for compliance. **NULL means no audit has been conducted.**。 Example: 08/15/2023.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'timing', 'LAST_AUDIT_DATE')
+  permit_compliance_profile_timing_renewal_application_date:
+    description: 'DATE. The date a renewal was applied for. **NULL means no renewal has been applied for.**。 Possible values: 05/15/2024.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'timing', 'RenewalApplicationDate')
+  permit_compliance_profile_timing_compliance_report_due_date:
+    description: 'DATE. The due date for a compliance report. **NULL means no report is required.**。 Possible values: 01/31/2024, 01/31/2025, 02/28/2025, 04/30/2025, 06/30/2024, 09/30/2023, 09/30/2024.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'timing', 'compliance_report_due_date')
+  permit_compliance_profile_timing_public_comment_period_end:
+    description: 'DATE. The end date for a public comment period. **NULL means not applicable.**。 Example: 11/30/2021.'
+    sql: JSONB_EXTRACT_PATH_TEXT(permit_compliance_profile, 'timing', 'public_comment_period_end')

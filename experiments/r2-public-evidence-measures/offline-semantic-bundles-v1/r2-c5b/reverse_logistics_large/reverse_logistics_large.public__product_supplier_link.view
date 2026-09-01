@@ -1,0 +1,51 @@
+label: product_supplier_link
+description: All columns of the public table product_supplier_link.
+catalog: reverse_logistics_large
+schema: public
+table_name: product_supplier_link
+dimensions:
+  active_link:
+    description: 'BOOLEAN. Indicates if this is an active supply link. Possible values: True, False.'
+    sql: active_link
+  contract_reference:
+    description: 'TEXT. A reference to the specific contract governing this link. **NULL indicates supply is based on purchase orders, not a long-term contract.** Example: CON-77tKbAhl.'
+    sql: contract_reference
+  country_of_origin_from_supplier:
+    description: 'TEXT. The country of origin for the product from this supplier. Possible values: China, USA, Vietnam.'
+    sql: country_of_origin_from_supplier
+  date_linked:
+    description: 'DATE. The date this supplier was first linked to this product. Example: 2023-04-30.'
+    sql: date_linked
+  is_primary_supplier:
+    description: 'BOOLEAN. Indicates if this is the primary supplier for this product. Possible values: True, False.'
+    sql: is_primary_supplier
+  last_order_date:
+    description: 'DATE. The date of the last order placed with this supplier for this product. **NULL indicates a new link with no orders yet.** Example: 2022-03-23.'
+    sql: last_order_date
+  link_id:
+    description: 'BIGINT. Unique identifier for the product-supplier link. PK. Example: 3000.'
+    sql: link_id
+  minimum_lead_time_days:
+    description: 'BIGINT. The minimum lead time in days for this supplier. Example: 48.'
+    sql: minimum_lead_time_days
+  notes:
+    description: 'TEXT. Notes about this specific product-supplier relationship. **NULL means there are no special notes.** Example: Contract under renegotiation..'
+    sql: notes
+  product_reference:
+    description: 'TEXT. The item code of the product. FK to products.itemcode. Example: PRD00146.'
+    sql: product_reference
+  quality_rating_for_this_product:
+    description: 'REAL. The quality rating for this product from this specific supplier. **NULL means a rating has not yet been established.** Example: 3.6.'
+    sql: quality_rating_for_this_product
+  supplier_providing_product:
+    description: 'BIGINT. The ID of the supplier. FK to suppliers.supplier_id. Example: 2.'
+    sql: supplier_providing_product
+  supplier_sku:
+    description: 'TEXT. The SKU used by the supplier for this product. Example: SUP-SKU-SVUj20To.'
+    sql: supplier_sku
+  supply_chain_tier:
+    description: 'BIGINT. The tier of this supplier in the supply chain. Possible values: 1, 2, 3.'
+    sql: supply_chain_tier
+  unit_purchase_price:
+    description: 'REAL. The price per unit when purchasing from this supplier. Example: 431.12.'
+    sql: unit_purchase_price

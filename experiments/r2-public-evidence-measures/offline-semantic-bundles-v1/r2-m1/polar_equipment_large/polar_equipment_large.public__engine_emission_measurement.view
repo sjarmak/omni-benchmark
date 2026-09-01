@@ -1,0 +1,72 @@
+label: EngineEmissionMeasurement
+description: All columns of the public table EngineEmissionMeasurement.
+catalog: polar_equipment_large
+schema: public
+table_name: EngineEmissionMeasurement
+dimensions:
+  catalyst_efficiency_pct:
+    description: 'REAL. Catalytic converter efficiency percentage. **NULL means Catalyst monitoring disabled.** Example: 92.'
+    sql: '"catalystEfficiency_pct"'
+  co2_emission_gkm:
+    description: 'REAL. Carbon dioxide emissions in grams per kilometer. **NULL means CO2 sensor offline.** Example: 180.'
+    sql: '"co2Emission_gkm"'
+  co_level_ppm:
+    description: 'REAL. Carbon monoxide concentration in parts per million. **NULL means CO sensor calibration required.** Example: 250.'
+    sql: '"coLevel_ppm"'
+  compliance_status:
+    description: 'TEXT. Emission compliance status against regulations. Unique values: Compliant, Marginal, Non-Compliant, Pending Review.'
+    sql: '"complianceStatus"'
+  dpf_soot_load_pct:
+    description: 'REAL. Diesel particulate filter soot load percentage. **NULL means DPF not installed or not diesel.** Example: 50.0.'
+    sql: '"dpfSootLoad_pct"'
+  egr_rate_pct:
+    description: 'REAL. Exhaust gas recirculation rate percentage. **NULL means EGR system not equipped.** Example: 50.0.'
+    sql: '"egrRate_pct"'
+  emission_measure_seq:
+    description: 'TEXT. Unique identifier for the engine emission measurement record. Example: EEM-1A2B3C.'
+    sql: '"emissionMeasureSeq"'
+  emission_standard:
+    description: 'TEXT. Emission standard being evaluated against. Unique values: Euro 6, Euro 5, EPA Tier 4, EPA Tier 3, Stage V.'
+    sql: '"emissionStandard"'
+  exhaust_flow_rate_kgh:
+    description: 'REAL. Exhaust gas flow rate in kilograms per hour. **NULL means Flow meter unavailable.** Example: 150.'
+    sql: '"exhaustFlowRate_kgh"'
+  exhaust_temp_c:
+    description: 'REAL. Exhaust gas temperature in degrees Celsius. **NULL means Exhaust temp sensor failure.** Example: 450.'
+    sql: '"exhaustTempC"'
+  hc_level_ppm:
+    description: 'REAL. Hydrocarbon concentration in parts per million. **NULL means HC sensor not responding.** Example: 80.'
+    sql: '"hcLevel_ppm"'
+  lambda_value:
+    description: 'REAL. Air-fuel ratio lambda value. **NULL means Lambda sensor error.** Example: 1.0.'
+    sql: '"lambdaValue"'
+  measurement_timestamp:
+    description: 'TIMESTAMP. Timestamp when the emission measurement was taken. Example: 2024-01-01 12:00:00.'
+    sql: '"measurementTimestamp"'
+  measurement_uncertainty_pct:
+    description: 'REAL. Measurement uncertainty as percentage. **NULL means Uncertainty not calculated.** Example: 50.0.'
+    sql: '"measurementUncertainty_pct"'
+  nox_level_ppm:
+    description: 'REAL. Nitrogen oxides concentration in parts per million. **NULL means NOx sensor malfunction.** Example: 120.'
+    sql: '"noxLevel_ppm"'
+  oxygen_content_pct:
+    description: 'REAL. Oxygen content in exhaust as percentage. **NULL means O2 sensor degraded.** Example: 5.'
+    sql: '"oxygenContent_pct"'
+  particulate_matter_mgm3:
+    description: 'REAL. Particulate matter concentration in milligrams per cubic meter. **NULL means PM sensor clogged.** Example: 0.8.'
+    sql: '"particulateMatter_mgm3"'
+  runtime_snap_ref:
+    description: TEXT. Reference to the engine runtime snapshot during which emissions were measured.
+    sql: runtime_snap_ref
+  sensor_calibration_valid:
+    description: 'BOOLEAN. Flag indicating if emission sensors were within calibration. Possible values: True, False.'
+    sql: '"sensorCalibrationValid"'
+  test_condition:
+    description: 'TEXT. Operating condition during emission test. Unique values: Idle, Loaded, Transient, Cold Start, Hot Stabilized.'
+    sql: '"testCondition"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EngineEmissionMeasurement public identity values.
+    label: EngineEmissionMeasurement Count
+    sql: ${polar_equipment_large_public__engine_emission_measurement.emission_measure_seq}

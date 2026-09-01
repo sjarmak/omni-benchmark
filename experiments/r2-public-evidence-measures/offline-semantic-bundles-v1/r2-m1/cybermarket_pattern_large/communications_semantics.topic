@@ -1,0 +1,21 @@
+base_view: cybermarket_pattern_large_public__communications
+label: Communications
+description: Communication-thread records with row-level suspicion-signal density and language-pattern context.
+fields:
+- cybermarket_pattern_large_public__communications.*
+- cybermarket_pattern_large_public__buyers.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__transactions.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__transactions:
+    cybermarket_pattern_large_public__buyers: {}
+    cybermarket_pattern_large_public__markets: {}
+    cybermarket_pattern_large_public__vendors: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields suspicion_signal_density rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Traceable Communication: Message threads exhibiting a high volume of flagged keywords and linguistic anomalies are marked as Traceable for further review.'

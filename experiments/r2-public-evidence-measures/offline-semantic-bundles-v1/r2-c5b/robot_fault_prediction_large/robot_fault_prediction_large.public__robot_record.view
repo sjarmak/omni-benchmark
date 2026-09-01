@@ -1,0 +1,15 @@
+label: robot_record
+description: All columns of the public table robot_record.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: robot_record
+dimensions:
+  botcode:
+    description: 'TEXT. Unique robot code identifier. PK. Example: RB2073.'
+    sql: botcode
+  recreg:
+    description: 'TEXT. Unique record registration identifier. PK. Example: RF100725.'
+    sql: recreg
+  rects:
+    description: 'TIMESTAMP. Timestamp of the record creation. Not nullable. Possible values: 2025-02-18, 2025-02-19.'
+    sql: rects

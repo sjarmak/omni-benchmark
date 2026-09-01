@@ -1,0 +1,88 @@
+label: Returns
+description: Return-case rows with public channel, timing, shipping, warranty, and fraud semantics.
+catalog: reverse_logistics_large
+schema: public
+table_name: returns
+dimensions:
+  shipping_fee:
+    description: 'REAL. Shipping fee for the return. Example: 64.1.'
+    label: Shipping Fee
+    sql: CAST(JSONB_EXTRACT_PATH_TEXT(return_details, 'shipping', 'fee') AS DOUBLE PRECISION)
+    ai_context: 'Shipping Fee: A monetary amount reflecting transportation cost incurred for a single return shipment.'
+  days_lapsed:
+    description: 'BIGINT. Number of days lapsed since the transaction. Example: 33.'
+    label: Days Lapsed
+    sql: dayslapsed
+    ai_context: 'Days Lapsed: Difference in days between transaction date and point at which funds/refund are issued.'
+  return_channel:
+    description: VARCHAR(50). Channel through which the return was made.
+    label: Return Channel
+    sql: return_channel
+    ai_context: 'Return Channels: Marked as ''Store'' when customer returns item in person at a retail outlet; ''Courier'' when customer arranges a courier service for doorstep pickup; ''Mail'' when item is posted through the national mail system; ''Locker'' when customer deposits parcel in an automated locker or drop-box; ''Pickup'' when retailer schedules a home or office collection for oversized or fragile goods.'
+  fraud_risk_level:
+    description: VARCHAR(50). Fraud risk level for the return. **NULL means no fraud risk level assessed.**
+    label: Fraud Risk Level
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'fraud', 'risk_level')
+    ai_context: 'Fraud Risk Levels: There are 3 different levels: ''Low'', ''Medium'' and ''High''.'
+  warranty_status:
+    description: 'VARCHAR(50). Warranty status of the product being returned. Possible values: Expired, Not Applicable, Valid.'
+    label: Warranty Status
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'authorization', 'warranty_status')
+    ai_context: 'Warranty Statuses: ''Valid'' is within manufacturer or retailer warranty period; ''Expired'' is warranty term has lapsed; ''Not Applicable'' is no warranty offered or proof unavailable.'
+  casenum:
+    description: 'VARCHAR(50). Unique identifier for the return case. PK. Example: RL924605.'
+    sql: casenum
+  itemlink:
+    description: 'VARCHAR(50). Foreign key to the products table (ItemCode). FK to products. Example: PRD00023.'
+    sql: itemlink
+  logtime:
+    description: 'VARCHAR(50). Timestamp when the return was logged. Example: 2024/11/04.'
+    sql: logtime
+  return_details:
+    description: JSONB column. Groups together metadata about the return reason, authorization, and shipping logistics.
+    sql: return_details
+  revdate:
+    description: 'TEXT. Date when the return was processed. Example: 2025-01-20.'
+    sql: revdate
+  srctxn:
+    description: 'VARCHAR(50). Foreign key to the orders table (TxnNum). FK to orders. Example: ORD89293.'
+    sql: srctxn
+  return_details_authorization_auth_status:
+    description: 'TEXT. Authorization status of the return. Possible values: Approved, Pending, Rejected.'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'authorization', 'auth_status')
+  return_details_authorization_warranty_claim:
+    description: 'TEXT. Warranty claim information. **NULL means no warranty claim information available.**. Example: WC8668.'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'authorization', 'warranty_claim')
+  return_details_fraud_fraud_flags:
+    description: 'BIGINT. Fraud flags indicating potential issues with the return. Possible values: 0, 1, 2, 3, 4, 5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'fraud', 'fraud_flags')
+  return_details_reasoning_client_notes:
+    description: 'TEXT. Notes from the client regarding the return. Example: Chance building four loss study. Response actually miss everybody such..'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'reasoning', 'client_notes')
+  return_details_reasoning_primary_reason:
+    description: 'VARCHAR(50). Primary reason for the return. Possible values: Changed Mind, Quality Issue, Size/Fit, Wrong Item.'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'reasoning', 'primary_reason')
+  return_details_reasoning_reason_notes:
+    description: 'TEXT. Notes related to the reasons for the return. Example: Yard which quickly step since half part..'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'reasoning', 'reason_notes')
+  return_details_reasoning_secondary_reason:
+    description: 'VARCHAR(50). Secondary reason for the return. Possible values: Better Price, Damaged, Defective, Not as Described.'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'reasoning', 'secondary_reason')
+  return_details_shipping_carrier:
+    description: VARCHAR(50). Shipping vendor used for the return.
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'shipping', 'carrier')
+  return_details_shipping_estimated_arrival:
+    description: 'TEXT. Estimated arrival date for the returned item. Example: 2025-03-03.'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'shipping', 'estimated_arrival')
+  return_details_shipping_insurance_amount:
+    description: 'REAL. Insurance amount associated with the return. Example: 502.73.'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'shipping', 'insurance_amount')
+  return_details_shipping_tracking_reference:
+    description: 'TEXT. Tracking reference for the return shipment. Example: 83.'
+    sql: JSONB_EXTRACT_PATH_TEXT(return_details, 'shipping', 'tracking_reference')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Returns public identity values.
+    label: Returns Count
+    sql: ${reverse_logistics_large_public__returns.casenum}

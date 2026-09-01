@@ -1,0 +1,66 @@
+label: RecommendationClickstream
+description: All columns of the public table RecommendationClickstream.
+catalog: virtual_idol_large
+schema: public
+table_name: RecommendationClickstream
+dimensions:
+  app_version:
+    description: TEXT. Client app version.
+    sql: app_version
+  battery_level_pct:
+    description: 'INTEGER. Device battery at click. Example: 50.'
+    sql: battery_level_pct
+  click_event_id:
+    description: TEXT. Unique ID for the interaction.
+    sql: click_event_id
+  click_timestamp:
+    description: 'TIMESTAMP. Time of click. Example: 2024-01-01 12:00:00.'
+    sql: click_timestamp
+  device_orientation:
+    description: 'TEXT. Portrait vs Landscape. Unique values: Portrait, Landscape.'
+    sql: device_orientation
+  feed_ref:
+    description: TEXT. FK to AlgorithmRecommendationFeeds.
+    sql: feed_ref
+  gesture_type:
+    description: 'TEXT. Tap, Swipe, Long Press. Unique values: Tap, Double Tap.'
+    sql: gesture_type
+  hover_duration_ms:
+    description: 'INTEGER. Time mouse hovered before click. **NULL means Mobile/No hover.** Example: 500.'
+    sql: hover_duration_ms
+  interaction_velocity_score:
+    description: 'REAL. Speed of user interaction flow. Example: 1.0.'
+    sql: interaction_velocity_score
+  is_misclick:
+    description: 'BOOLEAN. Inferred accidental click (<2s duration). Possible values: True, False.'
+    sql: is_misclick
+  network_type:
+    description: 'TEXT. 4G, 5G, WiFi. Unique values: WiFi, 5G, 4G.'
+    sql: network_type
+  referrer_module:
+    description: 'TEXT. UI component name. Unique values: Home Feed, Sidebar, End Screen.'
+    sql: referrer_module
+  return_to_feed_time_sec:
+    description: 'REAL. Seconds until user came back (Bounce rate proxy). **NULL means Ended session.** Example: 120.'
+    sql: return_to_feed_time_sec
+  screen_touch_pressure:
+    description: 'REAL. Force of touch (if supported). **NULL means Not supported.** Example: 0.5.'
+    sql: screen_touch_pressure
+  scroll_depth_pct:
+    description: 'INTEGER. How far down the feed they were. Example: 30.'
+    sql: scroll_depth_pct
+  session_id:
+    description: TEXT. Session trace ID.
+    sql: session_id
+  subsequent_action:
+    description: 'TEXT. What they did next. Unique values: Watch, Like, Comment, Quit.'
+    sql: subsequent_action
+  ui_element_clicked:
+    description: 'TEXT. What part was clicked (Thumbnail, Title, Profile). Unique values: Thumbnail, Title, Channel Icon.'
+    sql: ui_element_clicked
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct RecommendationClickstream public identity values.
+    label: RecommendationClickstream Count
+    sql: ${virtual_idol_large_public__recommendation_clickstream.click_event_id}

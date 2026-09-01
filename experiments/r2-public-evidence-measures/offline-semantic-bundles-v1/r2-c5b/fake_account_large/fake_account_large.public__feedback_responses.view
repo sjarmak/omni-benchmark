@@ -1,0 +1,114 @@
+label: feedback_responses
+description: All columns of the public table feedback_responses.
+catalog: fake_account_large
+schema: public
+table_name: feedback_responses
+dimensions:
+  agent_loc:
+    description: 'TEXT. Agent location (ISO country). Example: US.'
+    sql: '"AGENT_LOC"'
+  downvote_cnt:
+    description: 'BIGINT. Community down-votes. Example: 18.'
+    sql: '"DOWNVOTE_CNT"'
+  escalate_flag:
+    description: 'TEXT. Yes/No — escalated by this reply. Example: No.'
+    sql: '"ESCALATE_FLAG"'
+  publicflag:
+    description: 'TEXT. Visibility of reply (Public / Private). Example: Private.'
+    sql: '"PUBLICFLAG"'
+  read_ts:
+    description: 'TIMESTAMPTZ. Read acknowledgment time. Example: 2024/05/31 19:20:05.'
+    sql: '"READ_TS"'
+  response_time_sec:
+    description: 'REAL. Latency from feedback to reply, seconds. Example: 41912.0.'
+    sql: '"RESPONSE_TIME_SEC"'
+  resp_type:
+    description: 'TEXT. Reply kind. Values: InternalNote, CustomerReply, AgentReply, SystemMessage. Example: SystemMessage.'
+    sql: '"RESP_TYPE"'
+  response_code:
+    description: 'TEXT. Unique reply ID. Example: RSP97130855.'
+    sql: '"Response_CODE"'
+  sentiment:
+    description: 'REAL. Polarity score (−1 … 1). Example: −0.00.'
+    sql: '"SENTIMENT"'
+  status_after:
+    description: 'TEXT. Ticket status after reply. Example: Pending.'
+    sql: '"STATUS_AFTER"'
+  updated_ts:
+    description: 'TIMESTAMPTZ. Last modification time. Example: 2024/07/04 02:09:04.'
+    sql: '"UPDATED_TS"'
+  url_flag:
+    description: 'TEXT. Yes/No — URLs included. Example: No.'
+    sql: '"URL_FLAG"'
+  agent_group:
+    description: 'TEXT. Support group. Values: Tier1, Tier2, Escalations. Example: Tier1.'
+    sql: '"agentGroup"'
+  agent_id:
+    description: 'TEXT. Responding agent identifier. Example: AGT271350.'
+    sql: '"agentID"'
+  agent_role:
+    description: 'TEXT. Agent role. Values: SupportAgent, Supervisor, Bot. Example: Bot.'
+    sql: '"agentRole"'
+  agent_score:
+    description: 'REAL. Agent quality metric (0–100). **NULL when not evaluated.** Example in CSV: 93.83.'
+    sql: '"agentScore"'
+  agent_skill:
+    description: 'TEXT. Primary skill or queue (Billing, Technical, General, Abuse). Example: Technical.'
+    sql: '"agentSkill"'
+  attach_cnt:
+    description: 'BIGINT. Number of file attachments. **NULL when no attachments logged.** Example in CSV: NULL.'
+    sql: '"attachCnt"'
+  confidential_flag:
+    description: 'TEXT. Yes/No — contains sensitive info. Example: No.'
+    sql: '"confidentialFlag"'
+  escalate_ts:
+    description: 'TIMESTAMPTZ. Escalation time. **NULL when not escalated.** Example: NULL.'
+    sql: '"escalateTs"'
+  feedback_code_ref:
+    description: 'TEXT. FK to feedback_items.Feedback_CODE. Example: FB43230777.'
+    sql: feedback_code_ref
+  follow_up_ts:
+    description: 'TIMESTAMPTZ. Follow-up deadline. **NULL when none set.** Example: NULL.'
+    sql: '"followUpTs"'
+  follow_up_flag:
+    description: 'TEXT. Yes/No — follow-up required. Example: Yes.'
+    sql: follow_up_flag
+  lang:
+    description: 'TEXT. ISO-639-1 language code. Example: ja.'
+    sql: lang
+  media_flag:
+    description: 'TEXT. Yes/No — media attached. Example: Yes.'
+    sql: media_flag
+  notes:
+    description: 'TEXT. Internal supervisor notes. Example in CSV: NULL.'
+    sql: notes
+  reaction_cnt:
+    description: 'BIGINT. Emoji reactions. Example: 24.'
+    sql: '"reactionCnt"'
+  read_flag:
+    description: 'TEXT. Yes/No — customer has read. Example: Yes.'
+    sql: '"readFlag"'
+  resolution_flag:
+    description: 'TEXT. Yes/No — marks resolution reply. Example: No.'
+    sql: '"resolutionFlag"'
+  resp_score:
+    description: 'REAL. Quality score for this reply (0–100). Example: 5.57.'
+    sql: '"respScore"'
+  resp_text:
+    description: 'TEXT. Response body (UTF-8). Example: Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+    sql: '"respText"'
+  resp_ts:
+    description: 'TIMESTAMPTZ. Response timestamp. Example: 2025/04/13 01:56:51.'
+    sql: '"respTs"'
+  response_window:
+    description: 'TEXT. Human string of response-time bucket. Example: within 10 h.'
+    sql: response_window
+  sla_flag:
+    description: 'TEXT. SLA status (Met, Missed, N/A). Example: Met.'
+    sql: '"slaFlag"'
+  status_before:
+    description: 'TEXT. Ticket status before reply. Example: Resolved.'
+    sql: '"statusBefore"'
+  upvote_cnt:
+    description: 'BIGINT. Community up-votes on reply. Example: 34.'
+    sql: '"upvoteCnt"'

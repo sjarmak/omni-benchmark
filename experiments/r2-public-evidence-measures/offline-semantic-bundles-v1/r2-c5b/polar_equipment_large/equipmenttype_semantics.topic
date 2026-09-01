@@ -1,0 +1,13 @@
+base_view: polar_equipment_large_public__equipmenttype
+label: Equipment Types
+description: Equipment-type records with public safety-index field context.
+fields:
+- polar_equipment_large_public__equipmenttype.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Domain definitions for this topic:
+
+  - Overall Safety Performance Index (OSPI): OSPI = \text{safety index}/100 \times EER \times 0.8
+
+  - Sustainable Polar Operations (SPO): Polar operations are defined as ''sustainable'' when the site maintains RSSI > 0.7 and EWRII > 0.65, with waste management status = ''Normal'' and environmental impact index < 6.0.'

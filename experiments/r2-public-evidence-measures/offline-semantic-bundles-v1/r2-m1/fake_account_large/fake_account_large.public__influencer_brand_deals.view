@@ -1,0 +1,72 @@
+label: influencer_brand_deals
+description: All columns of the public table influencer_brand_deals.
+catalog: fake_account_large
+schema: public
+table_name: influencer_brand_deals
+dimensions:
+  deal_code:
+    description: TEXT. Unique identifier for the brand collaboration contract.
+    sql: '"Deal_CODE"'
+  actual_roi_multiplier:
+    description: 'REAL. Calculated return on investment for the brand. **NULL means Campaign not yet finished.** Example: 3.5.'
+    sql: actual_roi_multiplier
+  agency_fee_percentage:
+    description: 'REAL. Cut taken by the talent agency. **NULL means Self-represented.** Unique values: 0.1, 0.15, 0.2.'
+    sql: agency_fee_percentage
+  audience_overlap_pct:
+    description: 'REAL. Percentage of influencer audience matching brand target. Example: 50.0.'
+    sql: audience_overlap_pct
+  brand_industry_code:
+    description: 'TEXT. Category of the sponsoring brand. Unique values: FASHION, TECH, BEAUTY, GAMING.'
+    sql: brand_industry_code
+  brand_sentiment_alignment_score:
+    description: 'REAL. Semantic similarity between creator tone and brand voice. Example: 0.8.'
+    sql: brand_sentiment_alignment_score
+  breach_penalty_amt:
+    description: 'INTEGER. Fee owed if deliverables are missed. **NULL means No specific penalty clause.** Example: 1000.'
+    sql: breach_penalty_amt
+  content_approval_latency_hours:
+    description: 'INTEGER. Time taken by brand to approve draft content. **NULL means No approval required.** Example: 50.'
+    sql: content_approval_latency_hours
+  contract_value_usd:
+    description: 'INTEGER. Total monetary value of the deal. Example: 5000.'
+    sql: contract_value_usd
+  deal_status:
+    description: 'TEXT. Current lifecycle state of the deal. Unique values: NEGOTIATING, ACTIVE, COMPLETED, DISPUTED.'
+    sql: deal_status
+  deliverable_post_count:
+    description: 'INTEGER. Number of feed posts required by contract. Example: 50.'
+    sql: deliverable_post_count
+  deliverable_story_count:
+    description: 'INTEGER. Number of ephemeral stories required. Example: 50.'
+    sql: deliverable_story_count
+  exclusivity_duration_days:
+    description: 'INTEGER. Days influencer cannot work with competitors. **NULL means No exclusivity clause.** Example: 50.'
+    sql: exclusivity_duration_days
+  influencer_acct_ref:
+    description: TEXT. Account reference of the creator/influencer.
+    sql: influencer_acct_ref
+  legal_jurisdiction_code:
+    description: 'TEXT. Country code for legal contract enforcement. Unique values: US, UK, EU, SG.'
+    sql: legal_jurisdiction_code
+  link_click_attribution_count:
+    description: 'INTEGER. Total clicks driven by the sponsored content. Example: 500.'
+    sql: link_click_attribution_count
+  organic_lift_estimate_pct:
+    description: 'REAL. Estimated increase in organic traffic during campaign. Example: 12.0.'
+    sql: organic_lift_estimate_pct
+  promo_code_redemption_count:
+    description: 'INTEGER. Number of times unique promo code was used. **NULL means No promo code assigned.** Example: 100.'
+    sql: promo_code_redemption_count
+  revision_round_count:
+    description: 'INTEGER. Number of times content was sent back for edits. Example: 50.'
+    sql: revision_round_count
+  target_engagement_rate:
+    description: 'REAL. Promised engagement rate metric. **NULL means No performance guarantee.** Example: 0.05.'
+    sql: target_engagement_rate
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct influencer_brand_deals public identity values.
+    label: influencer_brand_deals Count
+    sql: ${fake_account_large_public__influencer_brand_deals.deal_code}

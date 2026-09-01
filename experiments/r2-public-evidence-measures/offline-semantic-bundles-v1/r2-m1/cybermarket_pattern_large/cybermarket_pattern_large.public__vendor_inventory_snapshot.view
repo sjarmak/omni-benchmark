@@ -1,0 +1,60 @@
+label: VendorInventorySnapshot
+description: All columns of the public table VendorInventorySnapshot.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: VendorInventorySnapshot
+dimensions:
+  vis_id:
+    description: 'TEXT. Unique identifier for the vendor inventory snapshot record. Example: VIS-1A2B3C.'
+    sql: '"VIS_id"'
+  active_sku_count:
+    description: 'INTEGER. Number of SKUs currently available for sale. Example: 120.'
+    sql: active_sku_count
+  avg_days_on_hand:
+    description: 'REAL. Average number of days inventory is held before sale. Example: 45.0.'
+    sql: avg_days_on_hand
+  dead_stock_percentage:
+    description: 'REAL. Percentage of inventory with no sales in 90+ days. Example: 8.0.'
+    sql: dead_stock_percentage
+  inventory_turnover_ratio:
+    description: 'REAL. Ratio of cost of goods sold to average inventory. Example: 8.0.'
+    sql: inventory_turnover_ratio
+  inventory_value_usd:
+    description: 'REAL. Total value of inventory at cost in USD. Example: 75000.0.'
+    sql: inventory_value_usd
+  low_stock_sku_count:
+    description: 'INTEGER. Number of SKUs with stock below reorder threshold. Example: 25.'
+    sql: low_stock_sku_count
+  out_of_stock_sku_count:
+    description: 'INTEGER. Number of SKUs currently out of stock. Example: 15.'
+    sql: out_of_stock_sku_count
+  overstock_percentage:
+    description: 'REAL. Percentage of inventory exceeding optimal levels. Example: 12.0.'
+    sql: overstock_percentage
+  reorder_pending_count:
+    description: 'INTEGER. Number of pending reorder requests. Example: 8.'
+    sql: reorder_pending_count
+  snapshot_timestamp:
+    description: 'TIMESTAMP. Timestamp when the inventory snapshot was captured. Example: 2024-01-01 12:00:00.'
+    sql: snapshot_timestamp
+  stockout_incidents_30d:
+    description: 'INTEGER. Number of stockout incidents in last 30 days. Example: 5.'
+    sql: stockout_incidents_30d
+  total_inventory_units:
+    description: 'INTEGER. Total number of units across all SKUs. Example: 5000.'
+    sql: total_inventory_units
+  total_sku_count:
+    description: 'INTEGER. Total number of unique SKUs in inventory. Example: 150.'
+    sql: total_sku_count
+  vendor_metrics_ref:
+    description: TEXT. Reference to the vendor performance metrics record.
+    sql: vendor_metrics_ref
+  warehouse_utilization_pct:
+    description: 'REAL. Percentage of warehouse capacity currently used. **NULL means Vendor uses dropshipping model.** Example: 68.0.'
+    sql: warehouse_utilization_pct
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct VendorInventorySnapshot public identity values.
+    label: VendorInventorySnapshot Count
+    sql: ${cybermarket_pattern_large_public__vendor_inventory_snapshot.vis_id}

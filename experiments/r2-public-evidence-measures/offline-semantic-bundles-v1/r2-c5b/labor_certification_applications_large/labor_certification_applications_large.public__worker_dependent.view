@@ -1,0 +1,57 @@
+label: worker_dependent
+description: All columns of the public table worker_dependent.
+catalog: labor_certification_applications_large
+schema: public
+table_name: worker_dependent
+dimensions:
+  dep_code:
+    description: 'TEXT. Unique identifier for a dependent record. PK. Example: DEP000001.'
+    sql: '"DEP_code"'
+  i94_num:
+    description: 'TEXT. Dependent’s most recent I-94 number. Example: I942595091.'
+    sql: '"I94_NUM"'
+  sevisid:
+    description: 'TEXT. SEVIS ID (if in F/J status). Example: N6071833174.'
+    sql: '"SEVISid"'
+  addr_same_flag:
+    description: 'TEXT. Shares the same residential address as worker? Values: Yes, No. Example: Yes.'
+    sql: '"addrSame_flag"'
+  age_band:
+    description: 'TEXT. Age bracket. Values: 0–4 yrs, 5–12 yrs, 13–17 yrs, 18+ yrs. Example: 18+ yrs.'
+    sql: '"ageBand"'
+  dep_fname:
+    description: 'TEXT. Dependent’s first name. Example: Ava.'
+    sql: '"depFName"'
+  dep_lname:
+    description: 'TEXT. Dependent’s last name. Example: Davis.'
+    sql: '"depLName"'
+  dob_iso:
+    description: 'DATE. Dependent’s date of birth. Example: 1965-04-01.'
+    sql: '"dobISO"'
+  insurance_flag:
+    description: 'TEXT. Covered by employer‐sponsored insurance? Values: Yes, No. Example: Yes.'
+    sql: insurance_flag
+  last_entry_day:
+    description: 'DATE. Date of last U.S. entry. Example: 2021-09-13.'
+    sql: '"lastEntryDAY"'
+  passport_num:
+    description: 'TEXT. Dependent’s passport number. Example: P92595725.'
+    sql: '"passportNum"'
+  relationship:
+    description: 'TEXT. Relationship to the worker. Possible values: Spouse, Child, Parent, Sibling. Example: Parent.'
+    sql: relationship
+  school_dist:
+    description: 'TEXT. Distance to nearest school. Example: 10 mi to PS-118.'
+    sql: '"schoolDist"'
+  study_auth_flag:
+    description: 'TEXT. Holds study authorization? Values: Yes, No. Example: No.'
+    sql: '"studyAuth_flag"'
+  visa_class:
+    description: 'TEXT. Current or last U.S. visa class. Possible: H4, F2, B2, L2, TD, J2, None. Example: B2.'
+    sql: '"visaClass"'
+  work_auth_flag:
+    description: 'TEXT. Holds work authorization? Values: Yes, No. Example: Yes.'
+    sql: '"workAuth_flag"'
+  worker_ref:
+    description: 'TEXT. FK to worker_profile.worker_CODE. Example: W000004.'
+    sql: worker_ref

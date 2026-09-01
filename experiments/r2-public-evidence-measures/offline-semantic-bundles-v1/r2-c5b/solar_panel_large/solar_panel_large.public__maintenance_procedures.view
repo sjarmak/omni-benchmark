@@ -1,0 +1,51 @@
+label: maintenance_procedures
+description: All columns of the public table maintenance_procedures.
+catalog: solar_panel_large
+schema: public
+table_name: maintenance_procedures
+dimensions:
+  approver_ref:
+    description: 'TEXT. FK -> technicians.TechNum. The senior technician or manager who approved the procedure. Possible values: T-101, T-102, T-103, T-104, T-105, T-106, T-107, T-109.'
+    sql: '"Approver_Ref"'
+  author_ref:
+    description: 'TEXT. FK -> technicians.TechNum. The technician who authored the procedure. Example: T-141.'
+    sql: '"Author_Ref"'
+  category:
+    description: 'TEXT. The category of the maintenance activity. Possible values: Cleaning, Electrical, Mechanical, Safety Check.'
+    sql: '"CATEGORY"'
+  estimated_hours:
+    description: 'REAL. The estimated number of hours required to complete the procedure. Example: Multimeter; Infrared Thermometer; Torque Wrench.'
+    sql: '"ESTIMATED_HOURS"'
+  is_active:
+    description: 'BOOLEAN. A flag indicating if the procedure is currently in use. Possible values: False, True.'
+    sql: '"IS_ACTIVE"'
+  last_revision:
+    description: 'DATE. The date the procedure was last revised. Example: 2024-03-05.'
+    sql: '"LAST_REVISION"'
+  procedure_code:
+    description: 'TEXT. Unique identifier for a standardized maintenance procedure. Example: PROC-01.'
+    sql: '"ProcedureCode"'
+  safety_warnings:
+    description: 'TEXT. A list of key safety warnings associated with the procedure. Example: including air filters and fan operation..'
+    sql: '"SAFETY_WARNINGS"'
+  creation_date:
+    description: 'DATE. The date the procedure was first created. Example: 2021-01-10.'
+    sql: creation_date
+  description:
+    description: 'TEXT. A brief description of what the procedure entails. Example: Visual and functional check of all central inverters.'
+    sql: description
+  doc_url:
+    description: 'TEXT. A URL or file path to the full procedure document. Example: /docs/proc01.pdf.'
+    sql: doc_url
+  frequency_in_days:
+    description: 'BIGINT. The recommended interval in days between performances of this procedure. Possible values: 1095.0, 180.0, 1825.0, 30.0, 365.0, 730.0, 8.0, 90.0.'
+    sql: frequency_in_days
+  proc_version:
+    description: 'TEXT. The version number of the procedure document. Possible values: v1.0, v1.1, v1.2, v1.3, v1.5, v2.0, v2.1, v2.2, v3.0.'
+    sql: proc_version
+  procedure_name:
+    description: 'TEXT. The common name of the maintenance procedure. Example: Quarterly Inverter Check.'
+    sql: procedure_name
+  required_tools:
+    description: 'TEXT. A list of tools and equipment required to perform the procedure. Example: High Voltage! Disconnect AC and DC sides before opening panels..'
+    sql: '"requiredTools"'

@@ -1,0 +1,66 @@
+label: BatteryDegradationAnalysis
+description: All columns of the public table BatteryDegradationAnalysis.
+catalog: polar_equipment_large
+schema: public
+table_name: BatteryDegradationAnalysis
+dimensions:
+  analysis_confidence_score:
+    description: 'REAL. Confidence score of the analysis results (0-100). **NULL means Confidence calculation skipped.** Example: 88.'
+    sql: '"analysisConfidenceScore"'
+  analysis_timestamp:
+    description: 'TIMESTAMP. Timestamp when the degradation analysis was performed. Example: 2024-01-01 12:00:00.'
+    sql: '"analysisTimestamp"'
+  avg_cell_voltage_deviation_mv:
+    description: 'REAL. Average deviation in cell voltages in millivolts. **NULL means Cell-level monitoring not available.** Example: 15.'
+    sql: '"avgCellVoltageDeviation_mv"'
+  calendar_age_days:
+    description: 'INTEGER. Calendar age of the battery in days since commissioning. **NULL means Commission date unknown.** Example: 50.'
+    sql: '"calendarAgeDays"'
+  capacity_fade_pct:
+    description: 'REAL. Total capacity fade since commissioning as percentage. **NULL means Baseline capacity unknown.** Example: 50.0.'
+    sql: '"capacityFade_pct"'
+  cell_balancing_required:
+    description: 'BOOLEAN. Flag indicating if cell balancing is recommended. Possible values: True, False.'
+    sql: '"cellBalancingRequired"'
+  charge_cycle_ref:
+    description: TEXT. Reference to the battery charge cycle log being analyzed.
+    sql: charge_cycle_ref
+  coulombic_efficiency_pct:
+    description: 'REAL. Coulombic efficiency of charge-discharge cycles. **NULL means Efficiency calculation failed.** Example: 98.5.'
+    sql: '"coulombicEfficiency_pct"'
+  cycle_count:
+    description: 'INTEGER. Total number of charge-discharge cycles completed. **NULL means Cycle counter reset or missing.** Example: 50.'
+    sql: '"cycleCount"'
+  degradation_analysis_seq:
+    description: 'TEXT. Unique identifier for the battery degradation analysis record. Example: BDA-1A2B3C.'
+    sql: '"degradationAnalysisSeq"'
+  degradation_mode:
+    description: 'TEXT. Primary identified degradation mechanism. Unique values: SEI Growth, Lithium Plating, Active Material Loss, Electrolyte Decomposition, Unknown.'
+    sql: '"degradationMode"'
+  energy_throughput_kwh:
+    description: 'REAL. Total energy throughput since commissioning in kWh. **NULL means Energy meter data missing.** Example: 50.0.'
+    sql: '"energyThroughput_kwh"'
+  equivalent_full_cycles:
+    description: 'REAL. Equivalent full charge cycles accounting for partial cycles. **NULL means EFC calculation unavailable.** Example: 50.0.'
+    sql: '"equivalentFullCycles"'
+  internal_resistance_mohm:
+    description: 'REAL. Measured internal resistance in milliohms. **NULL means Resistance measurement unavailable.** Example: 45.'
+    sql: '"internalResistance_mohm"'
+  max_cell_temp_delta_c:
+    description: 'REAL. Maximum temperature difference between cells in Celsius. **NULL means Cell temperature sensors offline.** Example: 5.'
+    sql: '"maxCellTempDelta_C"'
+  predicted_eol_days:
+    description: 'INTEGER. Predicted days until end of useful life. **NULL means EOL prediction model unavailable.** Example: 800.'
+    sql: '"predictedEOL_days"'
+  resistance_growth_rate_pct_month:
+    description: 'REAL. Monthly rate of internal resistance increase as percentage. **NULL means Insufficient historical data.** Example: 0.8.'
+    sql: '"resistanceGrowthRate_pctMonth"'
+  safety_risk_level:
+    description: 'TEXT. Assessed safety risk level based on degradation patterns. Unique values: Nominal, Elevated, High, Critical.'
+    sql: '"safetyRiskLevel"'
+  state_of_health_pct:
+    description: 'REAL. Current state of health as percentage of original capacity. **NULL means SOH calculation failed.** Example: 85.'
+    sql: '"stateOfHealthPct"'
+  thermal_stress_category:
+    description: 'TEXT. Classification of thermal stress experienced by battery. Unique values: Low, Moderate, High, Extreme.'
+    sql: '"thermalStressCategory"'

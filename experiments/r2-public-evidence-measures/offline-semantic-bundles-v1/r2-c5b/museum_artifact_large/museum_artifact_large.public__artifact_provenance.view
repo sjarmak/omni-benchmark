@@ -1,0 +1,57 @@
+label: ArtifactProvenance
+description: All columns of the public table ArtifactProvenance.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactProvenance
+dimensions:
+  authenticity_score:
+    description: 'TEXT. No description provided. Example: 0.98.'
+    sql: '"AUTHENTICITY_SCORE"'
+  country_of_origin:
+    description: 'TEXT. No description provided. Possible values: Afghanistan (Chinese influence), Cambodia, China, China (Xinjiang), Japan (Tang style), Korea, Sweden (Excavated in China), USA, United Kingdom (made in China), Unknown.'
+    sql: '"CountryOfOrigin"'
+  is_public:
+    description: 'TEXT. No description provided. Possible values: False, True.'
+    sql: '"IS_PUBLIC"'
+  legal_status:
+    description: 'TEXT. No description provided. Possible values: Clear Title, Clear Title (from auction), Clear Title - On Loan, Held in Trust, Promised Gift, Repatriated, Title Unverified, To be repatriated, Under Review.'
+    sql: '"LEGAL_STATUS"'
+  last_verified:
+    description: 'TEXT. No description provided. Example: 10-NOV-2023.'
+    sql: '"LastVerified"'
+  previous_collection:
+    description: 'TEXT. No description provided. Example: Alistair Finch Collection.'
+    sql: '"PREVIOUS_COLLECTION"'
+  previous_owner:
+    description: 'TEXT. No description provided. Example: Estate of Sir Alistair Finch.'
+    sql: '"PREVIOUS_OWNER"'
+  provenance_record_num:
+    description: 'TEXT. No description provided. Example: 1.'
+    sql: '"Provenance_Record_Num"'
+  record_verifier_staff_code:
+    description: 'TEXT. No description provided. Example: 2.'
+    sql: '"Record_Verifier_Staff_Code"'
+  acquisition_details:
+    description: JSONB column. Details the acquisition of the artifact, including the method, date, and price.
+    sql: acquisition_details
+  artifact_history_for:
+    description: 'TEXT. No description provided. Example: ART20001.'
+    sql: artifact_history_for
+  owner_type:
+    description: 'TEXT. No description provided. Example: Private Collector.'
+    sql: owner_type
+  provenance_narrative:
+    description: 'TEXT. No description provided. Example: Purchased at auction from the estate of the renowned collector Sir Alistair Finch, who acquired it in Hong Kong in the 1970s..'
+    sql: provenance_narrative
+  record_created:
+    description: 'TEXT. No description provided. Example: 2015-06-23T10:00:00Z.'
+    sql: record_created
+  acquisition_details_acquisition_method:
+    description: 'TEXT. No description provided. Possible values: Bequest, Donation, Excavation, Exchange, Found in Collection, Loan, Purchase, Restitution, Transfer.'
+    sql: JSONB_EXTRACT_PATH_TEXT(acquisition_details, 'ACQUISITION_METHOD')
+  acquisition_details_acquisition_price_usd:
+    description: 'TEXT. No description provided. Example: 1250000.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(acquisition_details, 'ACQUISITION_PRICE_USD')
+  acquisition_details_acquired_on:
+    description: 'TEXT. No description provided. Example: 22-JUN-2015.'
+    sql: JSONB_EXTRACT_PATH_TEXT(acquisition_details, 'AcquiredOn')

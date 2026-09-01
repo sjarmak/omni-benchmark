@@ -1,0 +1,13 @@
+base_view: residential_data_large_public__household_transportation_usage
+label: household_transportation_usage
+description: All columns of the public table household_transportation_usage.
+fields:
+- residential_data_large_public__household_transportation_usage.*
+- residential_data_large_public__households.*
+- residential_data_large_public__service_types.*
+- residential_data_large_public__transportation_modes.*
+joins:
+  residential_data_large_public__households:
+    residential_data_large_public__service_types: {}
+  residential_data_large_public__transportation_modes: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

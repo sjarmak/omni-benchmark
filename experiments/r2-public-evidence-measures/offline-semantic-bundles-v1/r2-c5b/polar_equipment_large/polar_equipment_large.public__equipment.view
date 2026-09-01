@@ -1,0 +1,29 @@
+label: Equipment
+description: Equipment records with public reliability-index field context.
+catalog: polar_equipment_large
+schema: public
+table_name: Equipment
+dimensions:
+  reliability_index:
+    description: 'REAL. Reliability index of the equipment. Example: 97.8.'
+    label: Reliability Index
+    sql: '"RELIAB_IDX"'
+    ai_context: 'reliabilityindex: The reliability index typically ranges from 0 to 1, where values below 0.5 indicate equipment that fails frequently and requires constant maintenance, values between 0.5-0.8 represent equipment with occasional failures that require regular maintenance, and values above 0.8 indicate highly reliable equipment with minimal downtime.'
+  equip_code:
+    description: 'TEXT. Unique identifier for the equipment. PK. Example: PE593707.'
+    sql: '"EQUIP_CODE"'
+  equip_type:
+    description: TEXT. Reference to the equipment type. FK to EquipmentType.EquipType.
+    sql: '"EquipType"'
+  maker_name:
+    description: 'TEXT. Name of the equipment manufacturer. **NULL means no manufacturer provided.**. Example: Lee, Meyers and Hamilton.'
+    sql: '"MakerName"'
+  service_yrs:
+    description: 'BIGINT. Number of years the equipment has been in service. Example: 4.'
+    sql: '"SERVICE_YRS"'
+  model_name:
+    description: 'TEXT. Model name of the equipment. **NULL means no model name provided.**. Example: Model-925.'
+    sql: model_name
+  util_percent:
+    description: 'REAL. Utilization percentage of the equipment. Example: 53.'
+    sql: '"utilPercent"'

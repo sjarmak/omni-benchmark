@@ -1,0 +1,72 @@
+label: Waste_Processing_Plant_Efficiency
+description: All columns of the public table Waste_Processing_Plant_Efficiency.
+catalog: residential_data_large
+schema: public
+table_name: Waste_Processing_Plant_Efficiency
+dimensions:
+  process_efficiency_pk:
+    description: 'TEXT. Unique identifier for waste processing cycle audit. Example: WPE-1A2B3C.'
+    sql: '"Process_Efficiency_PK"'
+  waste_composition_fk:
+    description: TEXT. Reference to the specific waste stream composition being processed.
+    sql: '"Waste_Composition_FK"'
+  baling_pressure_psi:
+    description: 'REAL. Hydraulic pressure for plastic/paper bale formation. Example: 2200.'
+    sql: baling_pressure_psi
+  carbon_credit_generation_value_brl:
+    description: 'REAL. Financial value of carbon credits earned in BRL. **NULL means Pending verification.** Example: 50.0.'
+    sql: carbon_credit_generation_value_brl
+  compost_moisture_content_percent:
+    description: 'REAL. Relative humidity of the organic processing pile. **NULL means Anaerobic phase measurement skipped.** Example: 55.'
+    sql: compost_moisture_content_percent
+  conveyor_belt_speed_mps:
+    description: 'REAL. Linear speed of the primary sorting belt in meters per second. Example: 1.2.'
+    sql: conveyor_belt_speed_mps
+  daily_operational_hours:
+    description: 'REAL. Total active uptime for the processing line. Example: 50.0.'
+    sql: daily_operational_hours
+  eddy_current_frequency_khz:
+    description: 'REAL. Frequency for non-ferrous metal separation. **NULL means Equipment bypass.** Example: 50.0.'
+    sql: eddy_current_frequency_khz
+  electricity_self_generation_kwh:
+    description: 'REAL. Energy produced in-house via steam or biogas. **NULL means Generator offline.** Example: 5000.'
+    sql: electricity_self_generation_kwh
+  flue_gas_scrubbing_efficiency:
+    description: 'REAL. Percentage of acidic gases removed from emissions. **NULL means Incinerator offline.** Example: 50.0.'
+    sql: flue_gas_scrubbing_efficiency
+  fly_ash_production_kg_ton:
+    description: 'REAL. Mass of fly ash generated per ton of waste burned. **NULL means No thermal processing performed.** Example: 25.'
+    sql: fly_ash_production_kg_ton
+  incineration_temperature_celsius:
+    description: 'REAL. Core temperature of the waste-to-energy furnace. **NULL means Plant operational in recycling-only mode.** Example: 950.'
+    sql: incineration_temperature_celsius
+  leachate_treatment_ph_level:
+    description: 'REAL. Acidity of the processed liquid waste. **NULL means Probe failure.** Example: 7.2.'
+    sql: leachate_treatment_ph_level
+  magnet_separation_strength_gauss:
+    description: 'INTEGER. Strength of the over-band magnet for ferrous recovery. Example: 50.'
+    sql: magnet_separation_strength_gauss
+  methane_capture_rate_m3_hour:
+    description: 'REAL. Biogas volume captured for energy recovery. **NULL means Digester maintenance.** Example: 450.'
+    sql: methane_capture_rate_m3_hour
+  noise_pollution_level_db:
+    description: 'REAL. Average decibel level at the plant perimeter. Example: 75.'
+    sql: noise_pollution_level_db
+  optical_sorter_accuracy_ratio:
+    description: 'REAL. Efficiency of automated NIR polymer identification. **NULL means Sensor calibration required.** Example: 0.92.'
+    sql: optical_sorter_accuracy_ratio
+  residue_landfill_ratio:
+    description: 'REAL. Proportion of incoming waste destined for landfill after sorting. Example: 0.15.'
+    sql: residue_landfill_ratio
+  shredder_torque_nm:
+    description: 'REAL. Mechanical force applied by heavy duty industrial shredders. Example: 50.0.'
+    sql: shredder_torque_nm
+  trommel_screen_mesh_size_mm:
+    description: 'INTEGER. Aperture size of the rotating cylindrical screen. Unique values: 10, 25, 50, 100.'
+    sql: trommel_screen_mesh_size_mm
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Waste_Processing_Plant_Efficiency public identity values.
+    label: Waste_Processing_Plant_Efficiency Count
+    sql: ${residential_data_large_public__waste_processing_plant_efficiency.process_efficiency_pk}

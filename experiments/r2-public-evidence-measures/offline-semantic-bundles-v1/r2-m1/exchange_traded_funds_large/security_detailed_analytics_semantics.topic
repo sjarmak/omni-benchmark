@@ -1,0 +1,9 @@
+base_view: exchange_traded_funds_large_public__security_detailed_analytics
+label: security_detailed_analytics
+description: All columns of the public table security_detailed_analytics.
+fields:
+- exchange_traded_funds_large_public__security_detailed_analytics.*
+- exchange_traded_funds_large_public__securities.*
+joins:
+  exchange_traded_funds_large_public__securities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

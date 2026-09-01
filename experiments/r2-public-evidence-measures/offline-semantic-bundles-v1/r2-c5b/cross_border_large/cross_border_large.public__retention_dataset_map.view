@@ -1,0 +1,45 @@
+label: Retention_Dataset_Map
+description: All columns of the public table Retention_Dataset_Map.
+catalog: cross_border_large
+schema: public
+table_name: Retention_Dataset_Map
+dimensions:
+  applicability:
+    description: 'TEXT. How the retention schedule applies to this dataset Possible values: Full, Partial, Specific Fields Only.'
+    sql: '"APPLICABILITY"'
+  auto_enforcement:
+    description: BOOLEAN. Whether schedule is auto-enforced for this dataset Boolean flag (true/false).
+    sql: '"AUTO_ENFORCEMENT"'
+  last_disposal_date:
+    description: DATE. Date of last disposal under this schedule **NULL means No disposal executed yet.**
+    sql: '"LAST_DISPOSAL_DATE"'
+  rdm_id:
+    description: BIGINT. Primary key. Unique mapping identifier
+    sql: '"RDM_ID"'
+  records_under_schedule:
+    description: BIGINT. Approximate number of records under this schedule
+    sql: '"RECORDS_UNDER_SCHEDULE"'
+  retention_ref:
+    description: BIGINT. Foreign key referencing RetentionSchedule(RETENTION_ID). Related retention schedule
+    sql: '"RETENTION_REF"'
+  status:
+    description: 'TEXT. Mapping status Possible values: Active, Pending Review, Deprecated.'
+    sql: '"STATUS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  dataset_ref:
+    description: BIGINT. Foreign key referencing Dataset_Catalog(dataset_code). Related dataset
+    sql: dataset_ref
+  disposal_count:
+    description: BIGINT. Number of disposals executed under this mapping
+    sql: disposal_count
+  fields_covered:
+    description: BIGINT. Number of fields covered by this schedule
+    sql: fields_covered
+  mapping_effective_date:
+    description: DATE. When this mapping became effective
+    sql: mapping_effective_date

@@ -1,0 +1,60 @@
+label: appeal_compliance_checks
+description: All columns of the public table appeal_compliance_checks.
+catalog: reverse_logistics_large
+schema: public
+table_name: appeal_compliance_checks
+dimensions:
+  auditor_notes:
+    description: TEXT. Free text notes from the auditor. **NULL means No notes.**
+    sql: auditor_notes
+  auditor_user_id:
+    description: TEXT. ID of the compliance officer.
+    sql: auditor_user_id
+  bias_detection_flag:
+    description: BOOLEAN. Indicates if potential bias was detected in the decision.
+    sql: bias_detection_flag
+  check_outcome_status:
+    description: 'TEXT. Final outcome of the compliance check. Unique values: Pass, Pass with Comments, Fail.'
+    sql: check_outcome_status
+  check_timestamp:
+    description: 'TIMESTAMP. When the check was performed. Example: 2024-01-01 12:00:00.'
+    sql: check_timestamp
+  communication_tone_rating:
+    description: 'TEXT. Rating of the tone used with customer. Unique values: Professional, Empathetic, Robotic, Rude.'
+    sql: communication_tone_rating
+  compliance_check_id:
+    description: TEXT. Unique identifier for the compliance review.
+    sql: compliance_check_id
+  corrective_action_required:
+    description: BOOLEAN. If the appeal decision needs to be redone.
+    sql: corrective_action_required
+  documentation_completeness:
+    description: 'TEXT. Rating of documentation quality. Unique values: Complete, Partial, Missing Info.'
+    sql: documentation_completeness
+  financial_accuracy_verified:
+    description: BOOLEAN. Verified the refund amount was calculated correctly.
+    sql: financial_accuracy_verified
+  override_justification_valid:
+    description: BOOLEAN. If the override reason was valid (if applicable). **NULL means No override.**
+    sql: override_justification_valid
+  policy_adherence_score:
+    description: 'INTEGER. Score (0-100) on how well policy was followed. Example: 90.'
+    sql: policy_adherence_score
+  recheck_scheduled_date:
+    description: TIMESTAMP. Date for a follow-up check if failed. **NULL means No recheck needed.**
+    sql: recheck_scheduled_date
+  regulatory_risk_flag:
+    description: BOOLEAN. Indicates risk of consumer protection violation.
+    sql: regulatory_risk_flag
+  sampling_method_code:
+    description: 'TEXT. How this appeal was selected (Random, High Value). Unique values: Random, Targeted-Value, Complaint-Driven.'
+    sql: sampling_method_code
+  standard_version_ref:
+    description: 'TEXT. Version of the compliance standard used. Unique values: v2024.1, v2025.0.'
+    sql: standard_version_ref
+  target_appeal_ref:
+    description: TEXT. Reference to the appeal being audited.
+    sql: target_appeal_ref
+  training_gap_identified:
+    description: 'TEXT. Specific training topic identified as missing. Unique values: None, Empathy, Policy 4.2, System Usage.'
+    sql: training_gap_identified

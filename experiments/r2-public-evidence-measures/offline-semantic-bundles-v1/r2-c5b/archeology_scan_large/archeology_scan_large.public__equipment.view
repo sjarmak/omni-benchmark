@@ -1,0 +1,48 @@
+label: equipment
+description: All columns of the public table equipment.
+catalog: archeology_scan_large
+schema: public
+table_name: equipment
+dimensions:
+  accuracy_per_time:
+    description: 'TEXT. Accuracy improvement over scanning time. Example: 3 mm/hr.'
+    sql: accuracy_per_time
+  battery_drain:
+    description: 'TEXT. Battery consumption rate during operation. Example: 8%/hr.'
+    sql: battery_drain
+  cost_per_area:
+    description: 'TEXT. Cost efficiency per unit area. Example: 45 USD/m².'
+    sql: cost_per_area
+  coverage_rate:
+    description: 'TEXT. Area coverage rate during scanning. Example: 12 m²/hr.'
+    sql: coverage_rate
+  equipdesign:
+    description: 'TEXT. Model designation of scanning equipment. Example: Model-669.'
+    sql: equipdesign
+  equipform:
+    description: 'TEXT. Type classification of scanning equipment. Example: LiDAR scanner, precise 3D measurement technology.'
+    sql: equipform
+  equipregistry:
+    description: 'TEXT. Unique serial number identifier for scanning equipment. PK = Equipment(EquipRegistry). Example: SN20065.'
+    sql: equipregistry
+  equipstatus:
+    description: TEXT. Current operational condition of equipment. Excellent condition, optimal performance guaranteed.
+    sql: equipstatus
+  equiptune:
+    description: 'DATE. Date of last equipment calibration or maintenance. Examprle: 2024-11-01.'
+    sql: equiptune
+  point_generation_rate:
+    description: 'TEXT. Point cloud generation efficiency. Example: 62000 pts/min.'
+    sql: point_generation_rate
+  power_consumption:
+    description: 'TEXT. Equipment power consumption rate. Example: 125 W/hr.'
+    sql: power_consumption
+  powerlevel:
+    description: 'TEXT. Battery charge level as percentage. Example: 62% battery, extended operation available.'
+    sql: powerlevel
+  storage_usage_rate:
+    description: 'TEXT. Storage space consumption during scanning. Example: 2.8 GB/hr.'
+    sql: storage_usage_rate
+  transport_speed:
+    description: 'TEXT. Transportation speed for equipment delivery. Example: 85 km/h.'
+    sql: transport_speed

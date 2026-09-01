@@ -1,0 +1,72 @@
+label: Air_Quality_Health_Correlation
+description: All columns of the public table Air_Quality_Health_Correlation.
+catalog: residential_data_large
+schema: public
+table_name: Air_Quality_Health_Correlation
+dimensions:
+  health_impact_pk:
+    description: 'TEXT. Unique key for air quality health impact record. Example: AHC-1A2B3C.'
+    sql: '"Health_Impact_PK"'
+  microclimate_sensor_fk:
+    description: TEXT. Reference to the environmental sensor data.
+    sql: '"Microclimate_Sensor_FK"'
+  air_quality_index_official:
+    description: 'INTEGER. Locally calculated regulatory AQI. Example: 50.'
+    sql: air_quality_index_official
+  asthma_inhaler_sales_proxy:
+    description: 'REAL. Normalized index of local pharmacy inhaler sales. **NULL means Sales data unavailable for region.** Example: 100.'
+    sql: asthma_inhaler_sales_proxy
+  black_carbon_concentration_ugm3:
+    description: 'REAL. Soot concentration primarily from diesel combustion. **NULL means Aethalometer maintenance.** Example: 50.0.'
+    sql: black_carbon_concentration_ugm3
+  carbon_monoxide_ppm:
+    description: 'REAL. CO concentration in parts per million. Example: 0.8.'
+    sql: carbon_monoxide_ppm
+  indoor_air_filtration_adoption_ratio:
+    description: 'REAL. Estimated prevalence of air purifiers in the sector. Example: 50.0.'
+    sql: indoor_air_filtration_adoption_ratio
+  neighborhood_vulnerability_score:
+    description: 'REAL. Demographic-based health susceptibility (0-1). Example: 0.5.'
+    sql: neighborhood_vulnerability_score
+  outdoor_physical_activity_reduction:
+    description: 'REAL. Drop in pedestrian traffic due to poor air quality (%). **NULL means Anonymized mobility data missing.** Example: 50.0.'
+    sql: outdoor_physical_activity_reduction
+  ozone_concentration_ppb:
+    description: 'REAL. Ground-level ozone concentration. **NULL means O3 sensor calibration.** Example: 35.'
+    sql: ozone_concentration_ppb
+  pollen_count_grains_m3:
+    description: 'INTEGER. Atmospheric pollen concentration. Example: 50.'
+    sql: pollen_count_grains_m3
+  respiratory_hospital_admissions_count:
+    description: 'INTEGER. Number of local hospital admissions for breathing issues. Example: 5.'
+    sql: respiratory_hospital_admissions_count
+  school_recess_cancellation_binary:
+    description: 'INTEGER. 1 if outdoor activities were prohibited due to AQI. Unique values: 0, 1.'
+    sql: school_recess_cancellation_binary
+  sulfur_dioxide_concentration_ppb:
+    description: 'REAL. SO2 concentration in the air. Example: 50.0.'
+    sql: sulfur_dioxide_concentration_ppb
+  thermal_inversion_strength:
+    description: 'REAL. Temperature gradient delta indicating trapped pollutants. Example: 2.0.'
+    sql: thermal_inversion_strength
+  traffic_density_normalized:
+    description: 'REAL. Proximity-weighted traffic volume (0-1). Example: 50.0.'
+    sql: traffic_density_normalized
+  visibility_range_meters:
+    description: 'REAL. Maximum distance at which objects can be clearly seen. **NULL means Mist/Fog obscuration.** Example: 15000.'
+    sql: visibility_range_meters
+  volatile_organic_compounds_ppb:
+    description: 'REAL. Total TVOC measurement. Example: 50.0.'
+    sql: volatile_organic_compounds_ppb
+  wildfire_smoke_index:
+    description: 'REAL. Satellite-derived smoke density value (0-1). Example: 50.0.'
+    sql: wildfire_smoke_index
+  wind_direction_degrees:
+    description: 'INTEGER. Meteorological wind direction (0-359). Example: 50.'
+    sql: wind_direction_degrees
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Air_Quality_Health_Correlation public identity values.
+    label: Air_Quality_Health_Correlation Count
+    sql: ${residential_data_large_public__air_quality_health_correlation.health_impact_pk}

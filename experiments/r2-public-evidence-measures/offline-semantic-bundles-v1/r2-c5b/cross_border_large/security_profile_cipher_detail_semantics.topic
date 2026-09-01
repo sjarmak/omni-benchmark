@@ -1,0 +1,15 @@
+base_view: cross_border_large_public__security_profile_cipher_detail
+label: SecurityProfile_CipherDetail
+description: All columns of the public table SecurityProfile_CipherDetail.
+fields:
+- cross_border_large_public__security_profile_cipher_detail.*
+- cross_border_large_public__data_flow.*
+- cross_border_large_public__data_profile.*
+- cross_border_large_public__risk_management.*
+- cross_border_large_public__security_profile.*
+joins:
+  cross_border_large_public__security_profile:
+    cross_border_large_public__data_flow: {}
+    cross_border_large_public__data_profile: {}
+    cross_border_large_public__risk_management: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,72 @@
+label: Emergency_Vehicle_Telematics
+description: All columns of the public table Emergency_Vehicle_Telematics.
+catalog: residential_data_large
+schema: public
+table_name: Emergency_Vehicle_Telematics
+dimensions:
+  patrol_log_fk:
+    description: TEXT. Reference to the higher-level patrol log record.
+    sql: '"Patrol_Log_FK"'
+  vehicle_telematics_pk:
+    description: 'TEXT. Primary key for patrol vehicle sensor telemetry. Example: EVT-1A2B3C.'
+    sql: '"Vehicle_Telematics_PK"'
+  acceleration_g_force_peak:
+    description: 'REAL. Maximum G-force detected by onboard accelerometer. Example: 0.4.'
+    sql: acceleration_g_force_peak
+  alternator_voltage_output:
+    description: 'REAL. Charging system voltage. **NULL means Regulator fault.** Example: 14.2.'
+    sql: alternator_voltage_output
+  brake_pad_wear_percentage:
+    description: 'REAL. Estimated remaining life of brake friction material. Example: 50.0.'
+    sql: brake_pad_wear_percentage
+  cabin_temperature_celsius:
+    description: 'REAL. Internal temperature of the vehicle cockpit. Example: 22.'
+    sql: cabin_temperature_celsius
+  canbus_error_count:
+    description: 'INTEGER. Detected network communication errors on the vehicle bus. Example: 50.'
+    sql: canbus_error_count
+  dashcam_storage_remaining_gb:
+    description: 'REAL. Available disk space on the mobile digital video recorder. Example: 50.0.'
+    sql: dashcam_storage_remaining_gb
+  emergency_light_bar_draw_amps:
+    description: 'REAL. Electrical load from visual warning systems. Unique values: 0, 8, 15, 25.'
+    sql: emergency_light_bar_draw_amps
+  engine_coolant_temp_c:
+    description: 'REAL. Vehicle engine operating temperature. **NULL means OBD-II communication error.** Example: 95.'
+    sql: engine_coolant_temp_c
+  fuel_injection_rate_gps:
+    description: 'REAL. Instantaneous fuel flow rate in grams per second. Example: 2.5.'
+    sql: fuel_injection_rate_gps
+  gun_rack_lock_status:
+    description: 'INTEGER. Binary state of the electronic weapon release (0=Locked, 1=Released). Unique values: 0, 1.'
+    sql: gun_rack_lock_status
+  idle_time_minutes:
+    description: 'REAL. Time spent stationary with the engine running. Example: 120.'
+    sql: idle_time_minutes
+  license_plate_reader_hits:
+    description: 'INTEGER. Count of plates scanned and verified by ALPR system. **NULL means ALPR not equipped.** Example: 450.'
+    sql: license_plate_reader_hits
+  radio_transmission_count:
+    description: 'INTEGER. Number of PTT (Push-to-Talk) activations. Example: 25.'
+    sql: radio_transmission_count
+  siren_activation_duration_sec:
+    description: 'INTEGER. Cumulative time sirens were active during patrol. Example: 50.'
+    sql: siren_activation_duration_sec
+  tire_pressure_front_left_psi:
+    description: 'REAL. Air pressure in front-left tire. **NULL means TPMS sensor failure.** Example: 35.'
+    sql: tire_pressure_front_left_psi
+  tire_pressure_front_right_psi:
+    description: 'REAL. Air pressure in front-right tire. **NULL means TPMS sensor failure.** Example: 35.'
+    sql: tire_pressure_front_right_psi
+  transmission_fluid_pressure_psi:
+    description: 'REAL. Hydraulic pressure in the automatic transmission. **NULL means Manual transmission vehicle.** Example: 180.'
+    sql: transmission_fluid_pressure_psi
+  wiper_fluid_level_percent:
+    description: 'REAL. Remaining washer fluid volume. **NULL means Level sensor not present.** Example: 50.0.'
+    sql: wiper_fluid_level_percent
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Emergency_Vehicle_Telematics public identity values.
+    label: Emergency_Vehicle_Telematics Count
+    sql: ${residential_data_large_public__emergency_vehicle_telematics.vehicle_telematics_pk}

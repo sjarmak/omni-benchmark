@@ -1,0 +1,63 @@
+label: GovernanceDecision
+description: All columns of the public table GovernanceDecision.
+catalog: cross_border_large
+schema: public
+table_name: GovernanceDecision
+dimensions:
+  abstentions:
+    description: BIGINT. Number of abstentions
+    sql: '"ABSTENTIONS"'
+  budget_impact_usd:
+    description: 'REAL. Budget impact of the decision Typical range: 0 to 1000000. **NULL means No budget impact.**'
+    sql: '"BUDGET_IMPACT_USD"'
+  decision_id:
+    description: BIGINT. Primary key. Unique governance decision identifier
+    sql: '"DECISION_ID"'
+  decision_type:
+    description: 'TEXT. Type of governance decision Possible values: Policy Approval, Risk Acceptance, Budget Allocation, Exception Approval, Vendor Approval, Incident Response.'
+    sql: '"DECISION_TYPE"'
+  follow_up_owner:
+    description: 'TEXT. Person responsible for follow-up Possible values: Privacy Office, IT Security, Legal, Compliance.'
+    sql: '"FOLLOW_UP_OWNER"'
+  meeting_date:
+    description: DATE. Date of governance meeting
+    sql: '"MEETING_DATE"'
+  rationale:
+    description: TEXT. Decision rationale summary **NULL means Rationale not documented.**
+    sql: '"RATIONALE"'
+  scenario_ref:
+    description: BIGINT. Foreign key referencing Risk_Scenario(Scenario_Code). Related risk scenario
+    sql: '"SCENARIO_REF"'
+  votes_for:
+    description: BIGINT. Number of votes in favor
+    sql: '"VOTES_FOR"'
+  chair:
+    description: 'TEXT. Meeting chair Possible values: CIO, CISO, DPO, General Counsel, CFO.'
+    sql: chair
+  committee:
+    description: 'TEXT. Committee making the decision Possible values: Privacy Board, Security Committee, Risk Committee, Executive Board, IT Governance.'
+    sql: committee
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  decision_code:
+    description: TEXT. Decision reference code
+    sql: decision_code
+  implementation_deadline:
+    description: DATE. Deadline for implementing the decision **NULL means No specific deadline.**
+    sql: implementation_deadline
+  minutes_url:
+    description: TEXT. URL to meeting minutes
+    sql: minutes_url
+  outcome:
+    description: 'TEXT. Decision outcome Possible values: Approved, Rejected, Deferred, Conditional Approval.'
+    sql: outcome
+  policy_ref:
+    description: BIGINT. Foreign key referencing PolicyVersion(POLICY_VERSION_ID). Related policy version
+    sql: policy_ref
+  risk_accepted:
+    description: 'TEXT. Level of risk accepted by the decision Possible values: None, Low, Medium, High.'
+    sql: risk_accepted
+  votes_against:
+    description: BIGINT. Number of votes against
+    sql: votes_against

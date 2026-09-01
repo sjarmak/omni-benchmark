@@ -1,0 +1,96 @@
+label: transportation_network
+description: All columns of the public table transportation_network.
+catalog: residential_data_large
+schema: public
+table_name: transportation_network
+dimensions:
+  air_conditioning:
+    description: 'TEXT. Air conditioning availability in vehicles. **NULL means climate control not documented.**. Possible values: Yes.'
+    sql: '"AIR_conditioning"'
+  accessibility_compliant:
+    description: 'TEXT. Compliance with accessibility standards. **NULL means accessibility not assessed.**. Possible values: Yes, no, yes.'
+    sql: '"Accessibility_Compliant"'
+  average_speed_kmh:
+    description: 'REAL. Average operating speed in kilometers per hour. **NULL means speed data not collected.**. Possible values: 15.6, 18.2, 28.5, 45.2, 45.5, 55.8.'
+    sql: '"Average_Speed_KMH"'
+  bicycle_storage:
+    description: 'TEXT. Bicycle storage facilities availability. **NULL means bicycle accommodation not available or assessed.**. Possible values: No, Yes.'
+    sql: '"Bicycle_Storage"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"CREATED_at"'
+  customer_satisfaction_score:
+    description: 'REAL. Customer satisfaction rating on 1-10 scale. **NULL means customer feedback not collected.**. Possible values: 7.2, 7.8, 8.5, 8.9, 9.2.'
+    sql: '"Customer_Satisfaction_Score"'
+  daily_frequency:
+    description: 'BIGINT. Number of daily service runs. **NULL means service frequency not scheduled.**. Possible values: 120.0, 180.0, 96.0.'
+    sql: '"DAILY_frequency"'
+  daily_ridership:
+    description: 'BIGINT. Average number of daily passengers. **NULL means ridership data not tracked.**. Possible values: 1200.0, 1950.0, 2800.0, 8500.0.'
+    sql: '"Daily_Ridership"'
+  fuel_efficiency_km_per_liter:
+    description: 'REAL. Fuel efficiency in kilometers per liter. **NULL means fuel efficiency not tracked.**. Possible values: 0.0, 8.5.'
+    sql: '"FUEL_efficiency_km_per_liter"'
+  monthly_pass_cost_brl:
+    description: 'REAL. Monthly pass cost in Brazilian Real. **NULL means monthly passes not offered.**. Possible values: 0.0, 120.0, 180.0, 250.0.'
+    sql: '"Monthly_Pass_Cost_BRL"'
+  on_time_performance_percent:
+    description: 'REAL. Percentage of on-time arrivals. **NULL means punctuality not monitored.**. Possible values: 78.9, 85.2, 92.1, 95.8.'
+    sql: '"ON_time_performance_percent"'
+  operating_hours_per_day:
+    description: 'REAL. Daily operating hours for transportation service. **NULL means operating hours not standardized.**. Possible values: 16.5, 17.0, 18.0, 20.0.'
+    sql: '"OPERATING_hours_per_day"'
+  off_peak_frequency:
+    description: 'BIGINT. Service frequency during off-peak hours. **NULL means off-peak scheduling not established.**. Possible values: 3.0, 4.0, 6.0.'
+    sql: '"Off_Peak_Frequency"'
+  route_name:
+    description: 'TEXT. Official name or identifier of transportation route. Possible values: Ciclovia Parque Taguatinga, Linha 102 - Centro Taguatinga, Metro Linha Azul Guará, Trem Urbano Taguatinga Sul, Ônibus Expresso Guará-Plano.'
+    sql: '"Route_Name"'
+  stops_count:
+    description: 'BIGINT. Number of stops along the route. **NULL means stop count not documented.**. Possible values: 15.0, 18.0, 22.0, 8.0.'
+    sql: '"Stops_Count"'
+  transport_mode:
+    description: 'TEXT. Mode of transportation (bus, metro, train, bike). Possible values: bike, bus, metro, train.'
+    sql: '"TRANSPORT_mode"'
+  transport_id:
+    description: 'BIGSERIAL. Primary key identifier for transportation network record. PK. Possible values: 1, 2, 3, 4, 5.'
+    sql: '"Transport_ID"'
+  transportation_coverage_area:
+    description: 'TEXT. Transportation coverage area identifier. FK to locations(regioncode). Possible values: Guará, Taguatinga.'
+    sql: '"Transportation_Coverage_Area"'
+  transportation_grid_sector:
+    description: 'BIGINT. Grid sector number for transportation zone. FK to locations(zonenum). Possible values: 222, 315.'
+    sql: '"Transportation_Grid_Sector"'
+  vehicle_count:
+    description: 'BIGINT. Number of vehicles in transportation fleet. **NULL means fleet size not documented.**. Possible values: 12.0, 15.0, 4.0, 8.0.'
+    sql: '"VEHICLE_count"'
+  wheelchair_accessible:
+    description: 'TEXT. Wheelchair accessibility features. **NULL means wheelchair access not documented.**. Possible values: Yes.'
+    sql: '"WHEELCHAIR_accessible"'
+  fare_cost_brl:
+    description: 'REAL. Single trip fare cost in Brazilian Real. **NULL means fare structure not established.**. Possible values: 0.0, 4.5, 6.8, 8.5.'
+    sql: '"fare_cost_BRL"'
+  maintenance_cost_monthly_brl:
+    description: 'REAL. Monthly maintenance costs in Brazilian Real. **NULL means maintenance costs not tracked.**. Possible values: 15600.0, 18900.0, 200.0, 45000.0.'
+    sql: '"maintenance_cost_MONTHLY_brl"'
+  peak_hour_frequency:
+    description: 'BIGINT. Service frequency during peak hours. **NULL means peak hour scheduling not differentiated.**. Possible values: 12.0, 6.0, 8.0.'
+    sql: '"peak_hour_FREQUENCY"'
+  route_length_km:
+    description: 'REAL. Total route length in kilometers. **NULL means route length not measured.**. Possible values: 12.7, 15.8, 25.3, 8.2.'
+    sql: '"route_length_KM"'
+  safety_incidents_per_month:
+    description: 'BIGINT. Number of safety incidents per month. **NULL means safety incidents not tracked.**. Possible values: 0.0, 1.0, 2.0.'
+    sql: '"safety_incidents_PER_month"'
+  security_cameras:
+    description: 'TEXT. Security camera system presence. **NULL means security systems not installed or assessed.**. Possible values: Yes.'
+    sql: '"security_CAMERAS"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: updated_at
+  vehicle_capacity:
+    description: 'BIGINT. Passenger capacity per vehicle. **NULL means capacity specifications not available.**. Possible values: 300.0, 60.0, 80.0.'
+    sql: '"vehicle_CAPACITY"'
+  wifi_available:
+    description: 'TEXT. WiFi internet availability for passengers. **NULL means connectivity not provided or assessed.**. Possible values: No, Yes.'
+    sql: '"wifi_AVAILABLE"'

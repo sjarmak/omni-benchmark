@@ -1,0 +1,11 @@
+base_view: residential_data_large_public__community_engagement
+label: community_engagement
+description: All columns of the public table community_engagement.
+fields:
+- residential_data_large_public__community_engagement.*
+- residential_data_large_public__households.*
+- residential_data_large_public__service_types.*
+joins:
+  residential_data_large_public__households:
+    residential_data_large_public__service_types: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

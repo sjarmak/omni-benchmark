@@ -1,0 +1,7 @@
+base_view: sports_events_large_public__training_programs
+label: training_programs
+description: All columns of the public table training_programs.
+fields:
+- sports_events_large_public__training_programs.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,87 @@
+label: Security Profiles
+description: Security-profile rows with encryption, access-control, log-retention, and modeled robustness semantics.
+catalog: cross_border_large
+schema: public
+table_name: SecurityProfile
+dimensions:
+  enc_state:
+    description: 'TEXT. The overall state of encryption. Possible values: Partial, Full.'
+    label: Encryption Status
+    sql: enc_state
+    ai_context: 'Encryption Status: Options: full encryption or partial encryption.'
+  acl_state:
+    description: 'TEXT. The state of Access Control Lists (ACLs). Possible values: Strong, Weak, Adequate.'
+    label: Access Control Strength
+    sql: acl_state
+  log_ret_days:
+    description: 'BIGINT. The log retention period in days. Example: 2795.'
+    label: Audit Log Retention (days)
+    sql: '"LogRetDays"'
+    ai_context: 'Audit Log Retention: Higher means longer history is available.'
+  apisecstate:
+    description: 'TEXT. The security state of the API. Possible values: Secure, Vulnerable, Review Required.'
+    sql: '"APISECSTATE"'
+  authz_frame:
+    description: 'TEXT. The authorization framework in use. Possible values: ABAC, RBAC, Custom.'
+    sql: '"AUTHZ_FRAME"'
+  drecstate:
+    description: 'TEXT. The state of disaster recovery. Possible values: Missing, Tested, Untested.'
+    sql: '"DRECSTATE"'
+  encmeth:
+    description: 'TEXT. The encryption method used. Possible values: Custom, AES-256, RSA-2048, SM4.'
+    sql: '"ENCMETH"'
+  mask_level:
+    description: 'TEXT. The level of data masking applied. Possible values: Partial, Full.'
+    sql: '"MASK_LEVEL"'
+  psymstate:
+    description: 'TEXT. The state of pseudonymization. Possible values: Partial, Applied.'
+    sql: '"PSYMSTATE"'
+  riskkey:
+    description: 'BIGINT. Foreign key to RiskManagement(RISKTRACE). Example: 271.'
+    sql: '"RISKKEY"'
+  record_registry:
+    description: 'TEXT. Foreign key to the record registry. Example: CB640347.'
+    sql: '"RecordRegistry"'
+  security_trace:
+    description: 'BIGINT. Unique identifier for the security profile. PK. Example: 271.'
+    sql: '"SECURITY_TRACE"'
+  anon_meth:
+    description: 'TEXT. The anonymization method used. Possible values: L-Diversity, K-Anonymity, T-Closeness.'
+    sql: '"anonMeth"'
+  auth_meth:
+    description: 'TEXT. The authentication method used. Possible values: SSO, MFA, Basic.'
+    sql: '"authMeth"'
+  bc_state:
+    description: 'TEXT. The state of business continuity plans. Possible values: Review Required, Outdated, Active.'
+    sql: bc_state
+  bkp_state:
+    description: 'TEXT. The state of data backups. Possible values: Outdated, Failed, Current.'
+    sql: bkp_state
+  flow_key:
+    description: 'TEXT. Foreign key to the data flow record. Example: CB640347.'
+    sql: '"flowKey"'
+  key_man_state:
+    description: 'TEXT. The state of cryptographic key management. Possible values: Distributed, Centralized, Hybrid.'
+    sql: '"keyManState"'
+  log_int_check:
+    description: 'TEXT. The status of the log integrity check. Possible values: Failed, Pending, Passed.'
+    sql: '"logIntCheck"'
+  profile_key:
+    description: 'BIGINT. Foreign key to DataProfile(profileTrace). Example: 271.'
+    sql: profile_key
+  security_robustness_score:
+    label: Security Robustness Score (SRS)
+    description: Reflects how strong the protections are for keeping data safe.
+    sql: CASE WHEN ${enc_state} IS NULL OR ${acl_state} IS NULL THEN NULL WHEN ${enc_state} = 'Full' AND ${acl_state} = 'Strong' THEN 3 WHEN ${enc_state} = 'Full' OR ${acl_state} = 'Strong' THEN 2 ELSE 1 END
+    ai_context: Use this modeled field for Security Robustness Score (SRS); do not reconstruct its formula.
+  is_secure_data_flow:
+    label: Secure Data Flow
+    description: Marks a transfer as secure if the protections are at the highest level.
+    sql: ${security_robustness_score} = 3
+    ai_context: Use this modeled field for Secure Data Flow; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Security Profiles public identity values.
+    label: Security Profiles Count
+    sql: ${cross_border_large_public__security_profile.security_trace}

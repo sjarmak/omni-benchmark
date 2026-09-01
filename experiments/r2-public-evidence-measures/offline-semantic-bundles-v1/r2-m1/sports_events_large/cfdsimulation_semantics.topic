@@ -1,0 +1,11 @@
+base_view: sports_events_large_public__cfdsimulation
+label: CFDSimulation
+description: All columns of the public table CFDSimulation.
+fields:
+- sports_events_large_public__cfdsimulation.*
+- sports_events_large_public__car_development_program.*
+- sports_events_large_public__constructors.*
+joins:
+  sports_events_large_public__car_development_program:
+    sports_events_large_public__constructors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

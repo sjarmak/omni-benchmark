@@ -1,0 +1,11 @@
+base_view: planets_data_large_public__mission_data_product
+label: MissionDataProduct
+description: All columns of the public table MissionDataProduct.
+fields:
+- planets_data_large_public__mission_data_product.*
+- planets_data_large_public__mission_instrument.*
+- planets_data_large_public__space_mission.*
+joins:
+  planets_data_large_public__mission_instrument:
+    planets_data_large_public__space_mission: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

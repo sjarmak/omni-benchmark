@@ -1,0 +1,72 @@
+label: Digital_Classroom_Engagement
+description: All columns of the public table Digital_Classroom_Engagement.
+catalog: residential_data_large
+schema: public
+table_name: Digital_Classroom_Engagement
+dimensions:
+  engagement_metric_pk:
+    description: 'TEXT. Unique key for digital classroom resource utilization record. Example: DCE-1A2B3C.'
+    sql: '"Engagement_Metric_PK"'
+  resource_inventory_fk:
+    description: TEXT. Link to the physical education resources inventory.
+    sql: '"Resource_Inventory_FK"'
+  bandwidth_utilization_per_desktop_mbps:
+    description: 'REAL. Average internet throughput used per classroom PC. Example: 4.5.'
+    sql: bandwidth_utilization_per_desktop_mbps
+  classroom_audio_amplification_db:
+    description: 'REAL. Gain level of the teacher microphone system. **NULL means System not in use.** Example: 15.'
+    sql: classroom_audio_amplification_db
+  coding_environment_uptime_percent:
+    description: 'REAL. Availability of cloud-based IDEs for CS classes. **NULL means Computer Science lab not present.** Example: 50.0.'
+    sql: coding_environment_uptime_percent
+  digital_attendance_system_error_rate:
+    description: 'REAL. Frequency of failed biometric/RFID student check-ins. **NULL means Manual roll call used.** Example: 0.01.'
+    sql: digital_attendance_system_error_rate
+  ebook_checkout_frequency:
+    description: 'INTEGER. Number of digital books accessed daily. **NULL means Digital library system maintenance.** Example: 120.'
+    sql: ebook_checkout_frequency
+  educational_video_streaming_gb:
+    description: 'REAL. Total volume of educational video content streamed. Example: 15.0.'
+    sql: educational_video_streaming_gb
+  facility_wifi_ap_count:
+    description: 'INTEGER. Total active wireless access points in the building. Example: 50.'
+    sql: facility_wifi_ap_count
+  interactive_whiteboard_uptime_hours:
+    description: 'REAL. Daily active usage hours of smart boards. Example: 5.5.'
+    sql: interactive_whiteboard_uptime_hours
+  it_support_ticket_volume:
+    description: 'INTEGER. Requests for technical assistance regarding facility hardware. Example: 8.'
+    sql: it_support_ticket_volume
+  learning_management_system_hits:
+    description: 'INTEGER. Total daily clicks within the facility LMS portal. Example: 50.'
+    sql: learning_management_system_hits
+  printer_ink_level_avg_percent:
+    description: 'REAL. Average remaining ink across all networked printers. **NULL means Printer offline.** Example: 50.0.'
+    sql: printer_ink_level_avg_percent
+  science_sim_software_launches:
+    description: 'INTEGER. Executions of virtual lab simulation software. **NULL means No science curriculum scheduled.** Example: 45.'
+    sql: science_sim_software_launches
+  software_license_compliance_ratio:
+    description: 'REAL. Percentage of installed software with active licenses. Example: 50.0.'
+    sql: software_license_compliance_ratio
+  student_login_concurrency_peak:
+    description: 'INTEGER. Highest number of simultaneous users on the facility network. Example: 250.'
+    sql: student_login_concurrency_peak
+  tablet_charging_station_load_amps:
+    description: 'REAL. Current draw for bulk tablet charging carts. **NULL means Charging complete or cart empty.** Example: 12.0.'
+    sql: tablet_charging_station_load_amps
+  teacher_laptop_battery_health_avg:
+    description: 'REAL. Average battery capacity relative to design capacity. Example: 0.82.'
+    sql: teacher_laptop_battery_health_avg
+  vr_headset_usage_minutes:
+    description: 'INTEGER. Time spent by students in virtual reality modules. **NULL means VR hardware not available in this facility.** Example: 120.'
+    sql: vr_headset_usage_minutes
+  web_filter_blocked_attempts:
+    description: 'INTEGER. Count of restricted URL access attempts. Example: 50.'
+    sql: web_filter_blocked_attempts
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Digital_Classroom_Engagement public identity values.
+    label: Digital_Classroom_Engagement Count
+    sql: ${residential_data_large_public__digital_classroom_engagement.engagement_metric_pk}

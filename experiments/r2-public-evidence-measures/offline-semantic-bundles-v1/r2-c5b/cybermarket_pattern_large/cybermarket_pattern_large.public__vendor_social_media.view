@@ -1,0 +1,99 @@
+label: vendor_social_media
+description: All columns of the public table vendor_social_media.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendor_social_media
+dimensions:
+  accountage:
+    description: 'BIGINT. Age of the social account in days (now − creation_date). Example: 1200.'
+    sql: '"ACCOUNTage"'
+  avgshares:
+    description: 'REAL. Mean shares/retweets per post. Example: 3.1.'
+    sql: '"AVGSHARES"'
+  contentflag_count:
+    description: 'BIGINT. Content moderation flags (e.g., copyright takedowns). Example: 1.'
+    sql: '"CONTENTflagCOUNT"'
+  marketing_opt_in:
+    description: 'BOOLEAN. If True, the vendor consents to marketing via this social channel. Example: False.'
+    sql: '"MarketingOptIn"'
+  postcount:
+    description: 'BIGINT. Lifetime posts/tweets/videos published. Example: 1284.'
+    sql: '"POSTcount"'
+  avg_likes:
+    description: 'REAL. Mean likes per post over last 90 days. **NULL means likes not yet processed.** Example: 120.3.'
+    sql: '"avgLIKES"'
+  avg_comments:
+    description: 'REAL. Mean comments per post (same look-back window). Example: 8.4.'
+    sql: avg_comments
+  bot_follower_pct:
+    description: 'REAL. Estimated share of bot or low-quality followers. **NULL means no bot-analysis yet.** Example: 7.64.'
+    sql: bot_follower_pct
+  brand_mentioncount:
+    description: 'BIGINT. Count of vendor brand mentions detected across posts. Example: 2495.'
+    sql: '"brandMENTIONcount"'
+  engage_window_percent_per_post:
+    description: 'TEXT. Average engagement per post expressed as percentage window. Example: 2.1 %/post.'
+    sql: '"engageWindow_percent_per_post"'
+  follower_growth_followers_per_month:
+    description: 'TEXT. Net new followers per calendar month. Example: +1200 followers/month.'
+    sql: '"followerGrowth_followers_per_month"'
+  influence_score:
+    description: 'REAL. Algorithmic influence score that blends reach and engagement quality. Example: 78.0.'
+    sql: '"influenceSCORE"'
+  last_updated:
+    description: 'text. Datetime metrics were last scraped (MM/DD/YYYY HH:MM:SS). Example: 07/15/2025 22:47:03.'
+    sql: '"lastUpdated"'
+  last_post_date:
+    description: 'text. Datetime of the vendor’s most recent post (MM/DD/YYYY HH:MM:SS). Example: 07/15/2025 21:18:02.'
+    sql: last_post_date
+  most_used_hashtag:
+    description: 'TEXT. Hashtag used most often over last 90 days. Example: #AlphaDeals.'
+    sql: most_used_hashtag
+  peak_engagementtime:
+    description: 'TEXT. Daypart (HH:MM-HH:MM) with historically highest engagement. Example: 18:00-20:00.'
+    sql: '"peakENGAGEMENTtime"'
+  platform_name:
+    description: 'TEXT. Name of the social platform the record refers to (Twitter, Instagram, TikTok, etc.). Example: Twitter.'
+    sql: '"platformNAME"'
+  profile_complete:
+    description: 'BOOLEAN. True if avatar, bio, links and contact fields are set. Example: True.'
+    sql: profile_complete
+  profile_url:
+    description: 'TEXT. URL to the vendor’s public social profile. Example: https://twitter.com/v63085.'
+    sql: profile_url
+  risk_score:
+    description: 'REAL. Platform-specific risk indicator derived from behaviour signals. Example: 12.5.'
+    sql: '"riskScore"'
+  seller_key:
+    description: 'TEXT. FK linking the social record to vendors.SellerKey. Example: V63085.'
+    sql: '"sellerKey"'
+  social_ref:
+    description: 'TEXT. Primary-key token identifying the social-media metrics record. Example: SOC-V63085.'
+    sql: '"socialRef"'
+  socnetsignalsbag:
+    description: JSONB column. Messy bundle of social stats, sentiment, followers, audience mix etc.
+    sql: socnetsignalsbag
+  spam_report_count:
+    description: 'BIGINT. Number of spam or abuse reports filed by other users. Example: 4.'
+    sql: spam_report_count
+  verified_status:
+    description: 'BOOLEAN. True if the platform shows a verification checkmark. Example: True.'
+    sql: verified_status
+  socnetsignalsbag_senti_score:
+    description: 'text. Sentiment polarity averaged across recent posts (−1 negative → +1 positive). Example: 01/01/1970 00:00:00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(socnetsignalsbag, 'SentiScore')
+  socnetsignalsbag_eng_rate:
+    description: 'REAL. Average engagement per post as percent of followers. **NULL means engagement not yet processed.** Example: 2.45.'
+    sql: JSONB_EXTRACT_PATH_TEXT(socnetsignalsbag, 'engRate_')
+  socnetsignalsbag_follg_cnt:
+    description: 'BIGINT. Accounts the vendor follows—useful for symmetry metrics. Example: 347.'
+    sql: JSONB_EXTRACT_PATH_TEXT(socnetsignalsbag, 'follg_cnt')
+  socnetsignalsbag_followers_cnt:
+    description: 'BIGINT. Total number of followers at snapshot time. **NULL means crawl failed or data still collecting.** Example: 15945.'
+    sql: JSONB_EXTRACT_PATH_TEXT(socnetsignalsbag, 'followersCnt')
+  socnetsignalsbag_geo_spread_idx:
+    description: 'REAL. Shannon-entropy-based index showing geographic diversity of followers (0 low → 1 high). Example: 0.78.'
+    sql: JSONB_EXTRACT_PATH_TEXT(socnetsignalsbag, 'geoSpreadIdx')
+  socnetsignalsbag_rep_index:
+    description: 'REAL. Composite reputation index from sentiment and mentions. **NULL means not calculated.** Example: 68.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(socnetsignalsbag, 'repINDEX')

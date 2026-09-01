@@ -1,0 +1,12 @@
+label: account_clusters
+description: All columns of the public table account_clusters.
+catalog: fake_account_large
+schema: public
+table_name: account_clusters
+dimensions:
+  acct_bridge:
+    description: TEXT. Account reference for the cluster. PK. FK to accounts.
+    sql: acct_bridge
+  clu_ref:
+    description: TEXT. Cluster reference identifier. PK. FK to cluster_analysis.
+    sql: clu_ref

@@ -1,0 +1,72 @@
+label: MissionDataProduct
+description: All columns of the public table MissionDataProduct.
+catalog: planets_data_large
+schema: public
+table_name: MissionDataProduct
+dimensions:
+  citation_count:
+    description: BIGINT. Number of citations referencing this product
+    sql: '"CITATION_COUNT"'
+  data_completeness_pct:
+    description: 'REAL. Percentage of expected data received Typical range: 0 to 100.'
+    sql: '"DATA_COMPLETENESS_PCT"'
+  data_product_id:
+    description: BIGINT. Primary key. Unique data product identifier
+    sql: '"DATA_PRODUCT_ID"'
+  file_size_mb:
+    description: 'REAL. File size in megabytes Typical range: 0.01 to 10000.'
+    sql: '"FILE_SIZE_MB"'
+  observation_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Date of the source observation
+    sql: '"OBSERVATION_DATE"'
+  pipeline_version:
+    description: 'TEXT. Processing pipeline version Possible values: v1.0, v2.0, v2.1, v3.0, v4.0.'
+    sql: '"PIPELINE_VERSION"'
+  product_type:
+    description: 'TEXT. Type of data product Possible values: Raw Frame, Calibrated Image, Light Curve, Spectrum, Catalog, Time Series, Reduced Data.'
+    sql: '"PRODUCT_TYPE"'
+  release_date:
+    description: DATE. Public release date **NULL means Data still under embargo.**
+    sql: '"RELEASE_DATE"'
+  snr:
+    description: 'REAL. Signal-to-noise ratio achieved Typical range: 1 to 500.'
+    sql: '"SNR"'
+  stellar_targets_count:
+    description: BIGINT. Number of stellar targets in this product
+    sql: '"STELLAR_TARGETS_COUNT"'
+  archive_url:
+    description: TEXT. URL to data archive
+    sql: archive_url
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  download_count:
+    description: BIGINT. Number of times downloaded
+    sql: download_count
+  exposure_time_s:
+    description: 'REAL. Total exposure time in seconds Typical range: 0.1 to 86400.'
+    sql: exposure_time_s
+  format:
+    description: 'TEXT. Data file format Possible values: FITS, CSV, HDF5, VOTable, ASDF, ECSV.'
+    sql: format
+  instrument_ref:
+    description: BIGINT. Foreign key referencing MissionInstrument(INSTRUMENT_ID). Source instrument
+    sql: instrument_ref
+  processing_level:
+    description: 'TEXT. Data processing level Possible values: Level 0, Level 1, Level 2, Level 3, Level 4.'
+    sql: processing_level
+  product_code:
+    description: TEXT. Data product catalog code
+    sql: product_code
+  publicly_available:
+    description: BOOLEAN. Whether data is publicly available Boolean flag (true/false).
+    sql: publicly_available
+  quality_flags:
+    description: JSONB. Quality flag summary
+    sql: quality_flags
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct MissionDataProduct public identity values.
+    label: MissionDataProduct Count
+    sql: ${planets_data_large_public__mission_data_product.data_product_id}

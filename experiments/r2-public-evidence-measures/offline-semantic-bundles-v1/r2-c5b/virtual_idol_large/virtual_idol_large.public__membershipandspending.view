@@ -1,0 +1,29 @@
+label: Membership and Spending
+description: Membership records with row-level membership type semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: membershipandspending
+dimensions:
+  membership_type:
+    description: TEXT. Type or tier of membership subscription held by the fan.
+    label: Membership Type
+    sql: memb_kind
+    ai_context: 'Premium Member: A fan is considered a Premium Member if their membership type is not ''Free''. This includes tiers like ''Basic'', ''Elite'', etc.'
+  cost_efficiency:
+    description: 'TEXT. Value-to-cost ratio for membership and spending efficiency. Example: 85 value/USD.'
+    sql: cost_efficiency
+  memb_days:
+    description: SMALLINT. Duration of current membership in days since activation.
+    sql: memb_days
+  member_fan_pivot:
+    description: TEXT. Reference to the fan user for this membership record. FK to Fans.
+    sql: member_fan_pivot
+  member_reg:
+    description: BIGSERIAL. Auto-generated unique identifier for membership and spending record. PK = MembershipAndSpending(Member_Reg).
+    sql: member_reg
+  spending_profile:
+    description: JSON string detailing spending rate, frequency, method, and total amount.
+    sql: spending_profile
+  value_per_day:
+    description: 'TEXT. Monthly spending projection based on current patterns. Example: 208.84866536458333 USD/month.'
+    sql: value_per_day

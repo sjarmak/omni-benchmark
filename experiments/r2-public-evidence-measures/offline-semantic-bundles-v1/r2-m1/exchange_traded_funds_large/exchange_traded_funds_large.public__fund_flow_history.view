@@ -1,0 +1,117 @@
+label: fund_flow_history
+description: All columns of the public table fund_flow_history.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: fund_flow_history
+dimensions:
+  advisor_flow:
+    description: 'REAL. Flow through financial advisors. Examples: 35000, -85000, 850000.'
+    sql: advisor_flow
+  category_return_1d:
+    description: 'TEXT. One-day category return with units. Examples: 0.08%/day, -0.22%/day, 0.38%/day.'
+    sql: category_return_1d
+  creation_shares:
+    description: 'TEXT. Number of shares created with unit notation. Examples: 10000 shares/$0.5M, 500 shares/$0.02M, 125000 shares/$3.75M.'
+    sql: creation_shares
+  daily_net_flow:
+    description: 'REAL. Net daily flow in dollars. Examples: 450000, -1250000, 8500000.'
+    sql: daily_net_flow
+  data_source:
+    description: 'TEXT. Source of the flow data. **NULL means data source is not recorded or unknown.**. Possible values: BLOOMBERG TERMINAL, Bloomberg Terminal, REUTERS FEED, Reuters Feed, bloomberg terminal, reuters feed.'
+    sql: data_source
+  direct_flow:
+    description: 'REAL. Direct investment flow. Examples: 10000, -35000, 350000.'
+    sql: direct_flow
+  expense_attribution:
+    description: 'TEXT. Expense impact attribution with units. Examples: -0.02%/expense, -0.03%/expense, -0.01%/expense.'
+    sql: expense_attribution
+  flow_20day_avg:
+    description: 'REAL. Twenty-day average flow. Examples: 380000, -1100000, 8200000.'
+    sql: flow_20day_avg
+  flow_5day_avg:
+    description: 'REAL. Five-day average flow. Examples: 425000, -950000, 7800000.'
+    sql: flow_5day_avg
+  flow_60day_avg:
+    description: 'REAL. Sixty-day average flow. Examples: 395000, -875000, 7950000.'
+    sql: flow_60day_avg
+  flow_as_percent_aum:
+    description: 'TEXT. Flow as percentage of AUM with units. Examples: 1.64%/AUM, -4.31%/AUM, 0.32%/AUM.'
+    sql: flow_as_percent_aum
+  flow_date:
+    description: 'DATE. Date of the fund flow measurement. Possible values: 2024-12-01, 2024-12-02, 2024-12-03, 2024-12-04, 2024-12-05.'
+    sql: flow_date
+  flow_id:
+    description: 'BIGSERIAL. Primary key identifier for fund flow record. PK. Examples: 1, 2, 3.'
+    sql: flow_id
+  flow_intensity:
+    description: 'TEXT. Intensity level of flows (Low, Medium, High). Possible values: High, Low, Medium.'
+    sql: flow_intensity
+  flow_persistence_persist_wk:
+    description: 'TEXT. Persistence of flow direction with units. Examples: 0.75, 0.35, 0.85.'
+    sql: flow_persistence_persist_wk
+  flow_trend_direction:
+    description: 'TEXT. Direction of flow trend (Inflow, Outflow, Stable). Possible values: Inflow, Outflow.'
+    sql: flow_trend_direction
+  flow_velocity:
+    description: 'TEXT. Speed of fund flows with units. Examples: 2.8 flows/day, 4.2 flows/day, 1.8 flows/day.'
+    sql: flow_velocity
+  flow_volatility:
+    description: 'TEXT. Volatility of fund flows with units. Examples: 125000 vol/day, 385000 vol/day, 950000 vol/day.'
+    sql: flow_volatility
+  fund_return_1d:
+    description: 'TEXT. One-day fund return with units. Examples: 0.12%/day, -0.18%/day, 0.45%/day.'
+    sql: fund_return_1d
+  fund_ticker:
+    description: 'TEXT. Fund ticker symbol identifier. Examples: AVMU, QQD, FALN.'
+    sql: fund_ticker
+  institutional_flow:
+    description: 'REAL. Flow from institutional investors. Examples: 320000, -850000, 5200000.'
+    sql: institutional_flow
+  last_updated:
+    description: 'TEXT. Timestamp of last data update. Possible values: 2024-12-01 17:30:00 EST-5, 2024-12-02 16:45:00 EST-5, 2024-12-03 14:20:00 EST-5, 2024-12-04 13:15:00 EST-5, 2024-12-05 11:30:00 EST-5.'
+    sql: last_updated
+  liquidity_impact_liq:
+    description: 'TEXT. Impact on fund liquidity with units. Examples: 0.05, -0.12, 0.02.'
+    sql: liquidity_impact_liq
+  market_return_1d:
+    description: 'TEXT. One-day market return with units. Examples: 0.15%/day, -0.18%/day, 0.42%/day.'
+    sql: market_return_1d
+  market_volatility:
+    description: 'TEXT. Market volatility during flow period with units. Examples: 0.85%/day, 1.45%/day, 0.95%/day.'
+    sql: market_volatility
+  media_mentions:
+    description: 'BIGINT. Number of media mentions during period. Examples: 15, 28, 42.'
+    sql: media_mentions
+  net_share_change:
+    description: 'BIGINT. Net change in outstanding shares. Examples: 8000, -8000, 100000.'
+    sql: net_share_change
+  performance_attribution_perf:
+    description: 'TEXT. Performance attribution analysis with units. Examples: 0.08, -0.15, 0.35.'
+    sql: performance_attribution_perf
+  price_impact_estimate:
+    description: 'TEXT. Estimated price impact of flows with units. Examples: 0.02%/impact, -0.08%/impact, 0.01%/impact.'
+    sql: price_impact_estimate
+  redemption_shares:
+    description: 'TEXT. Number of shares redeemed with unit notation. Examples: 2000 shares/$0.1M, 8500 shares/$0.26M, 25000 shares/$0.75M.'
+    sql: redemption_shares
+  relative_return_1d:
+    description: 'TEXT. One-day relative return with units. Examples: 0.04%/day, 0.00%/day, 0.03%/day.'
+    sql: relative_return_1d
+  retail_flow:
+    description: 'REAL. Flow from retail investors. Examples: 85000, -280000, 2100000.'
+    sql: retail_flow
+  risk_attribution:
+    description: 'TEXT. Risk-based flow attribution with units. Examples: 0.03%/risk, -0.08%/risk, 0.05%/risk.'
+    sql: risk_attribution
+  sector_rotation:
+    description: 'BOOLEAN. Indicator of sector rotation activity. Possible values: False, True.'
+    sql: sector_rotation
+  spread_impact:
+    description: 'TEXT. Impact on bid-ask spreads with units. Examples: 0.01%/spread, -0.03%/spread, 0.005%/spread.'
+    sql: spread_impact
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct fund_flow_history public identity values.
+    label: fund_flow_history Count
+    sql: ${exchange_traded_funds_large_public__fund_flow_history.flow_id}

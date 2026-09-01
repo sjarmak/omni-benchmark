@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__categories
+label: categories
+description: All columns of the public table categories.
+fields:
+- exchange_traded_funds_large_public__categories.*
+joins: {}
+ai_context: This topic models no cross-table joins.

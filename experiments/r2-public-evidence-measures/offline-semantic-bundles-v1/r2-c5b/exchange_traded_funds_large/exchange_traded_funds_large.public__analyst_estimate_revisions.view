@@ -1,0 +1,66 @@
+label: AnalystEstimateRevisions
+description: All columns of the public table AnalystEstimateRevisions.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: AnalystEstimateRevisions
+dimensions:
+  analyst_estimate_revisions_id:
+    description: TEXT. Unique identifier for estimate revision record.
+    sql: '"AnalystEstimateRevisions_id"'
+  consensus_ref:
+    description: TEXT. Reference to the analyst research consensus.
+    sql: consensus_ref
+  conviction_level:
+    description: 'TEXT. Analyst conviction level on revision. Unique values: Low, Medium, High, Very High.'
+    sql: conviction_level
+  days_since_earnings:
+    description: 'INTEGER. Days since last earnings announcement. Example: 50.'
+    sql: days_since_earnings
+  eps_revision_pct:
+    description: 'REAL. Percentage change in EPS estimate. **NULL means Revision percentage not calculable.** Example: 0.0.'
+    sql: eps_revision_pct
+  estimate_period_quarters_ahead:
+    description: 'INTEGER. Number of quarters ahead for estimate. Example: 50.'
+    sql: estimate_period_quarters_ahead
+  has_model_change:
+    description: 'BOOLEAN. Whether revision involves model methodology change. Possible values: True, False.'
+    sql: has_model_change
+  is_street_high:
+    description: 'BOOLEAN. Whether estimate is highest on Street. Possible values: True, False.'
+    sql: is_street_high
+  is_street_low:
+    description: 'BOOLEAN. Whether estimate is lowest on Street. Possible values: True, False.'
+    sql: is_street_low
+  previous_eps_estimate:
+    description: 'REAL. Previous EPS estimate value. **NULL means No prior estimate existed.** Example: 50.0.'
+    sql: previous_eps_estimate
+  previous_revenue_estimate_millions:
+    description: 'REAL. Previous revenue estimate in millions USD. **NULL means No prior revenue estimate.** Example: 50.0.'
+    sql: previous_revenue_estimate_millions
+  previous_target_price:
+    description: 'REAL. Previous target price. **NULL means No prior target price.** Example: 50.0.'
+    sql: previous_target_price
+  revenue_revision_pct:
+    description: 'REAL. Percentage change in revenue estimate. **NULL means Revenue revision not calculable.** Example: 0.5.'
+    sql: revenue_revision_pct
+  revised_eps_estimate:
+    description: 'REAL. Revised EPS estimate value. Example: 50.0.'
+    sql: revised_eps_estimate
+  revised_revenue_estimate_millions:
+    description: 'REAL. Revised revenue estimate in millions USD. **NULL means Revenue estimate not updated.** Example: 50.0.'
+    sql: revised_revenue_estimate_millions
+  revised_target_price:
+    description: 'REAL. Revised target price. **NULL means Target price not updated.** Example: 50.0.'
+    sql: revised_target_price
+  revision_catalyst:
+    description: 'TEXT. Primary catalyst for estimate revision. Unique values: Earnings Report, Management Guidance, Industry Trend, Macro Event, Product Launch, M&A Activity, Analyst Call.'
+    sql: revision_catalyst
+  revision_direction:
+    description: 'TEXT. Direction of estimate revision. Unique values: Upgrade, Downgrade, Initiated, Reiterated, Suspended.'
+    sql: revision_direction
+  revision_timestamp:
+    description: 'TIMESTAMP. Timestamp of estimate revision. Example: 2024-01-01 12:00:00.'
+    sql: revision_timestamp
+  target_price_revision_pct:
+    description: 'REAL. Percentage change in target price. **NULL means Target revision not calculable.** Example: 2.0.'
+    sql: target_price_revision_pct

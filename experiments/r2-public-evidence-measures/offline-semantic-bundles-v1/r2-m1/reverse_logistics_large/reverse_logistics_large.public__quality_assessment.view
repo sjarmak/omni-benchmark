@@ -1,0 +1,62 @@
+label: Quality Assessment
+description: Inspection rows with public item-condition semantics.
+catalog: reverse_logistics_large
+schema: public
+table_name: quality_assessment
+dimensions:
+  item_condition:
+    description: 'TEXT. Condition of the item during inspection. Possible values: Damaged, Like New, New, Used.'
+    label: Item Condition
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'condition', 'item_condition')
+    ai_context: 'Item Condition States: There are 4 different states: ''New'', ''Like New'', ''Used'' and ''Damaged''.'
+  assessment_summary:
+    description: JSONB column. Summarizes quality inspection, usage, and documentation state for a returned product.
+    sql: assessment_summary
+  inspectref:
+    description: VARCHAR(50). Foreign key to the returns table (CaseNum). PK, FK to returns.
+    sql: inspectref
+  assessment_summary_condition_completeness:
+    description: 'VARCHAR(50). Completeness state of the item during inspection. Possible values: Accessories Missing, Complete, Missing Parts.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'condition', 'completeness')
+  assessment_summary_condition_package_condition:
+    description: VARCHAR(50). Condition of the packaging during inspection.
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'condition', 'package_condition')
+  assessment_summary_condition_usage_signs:
+    description: 'VARCHAR(50). Signs of usage observed on the item. **NULL means no usage signs observed.**. Possible values: Heavy, Minor, Significant.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'condition', 'usage_signs')
+  assessment_summary_defects_defect_severity:
+    description: 'VARCHAR(50). Severity level of the defect. **NULL means no defect severity reported.**. Possible values: Critical, Major, Minor.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'defects', 'defect_severity')
+  assessment_summary_defects_defect_type:
+    description: 'TEXT. Type of defect found during inspection. **NULL means no defect type reported.**. Possible values: Manufacturing, Shipping, Usage.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'defects', 'defect_type')
+  assessment_summary_documentation_documentation_status:
+    description: VARCHAR(50). Completeness status of the product documentation.
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'documentation', 'documentation_status')
+  assessment_summary_documentation_has_photos:
+    description: 'VARCHAR(20). Indicates if the item has supporting photos. Possible values: 0, 1, F, False, N, NO, P, True, Y, YES.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'documentation', 'has_photos')
+  assessment_summary_documentation_needs_investigation:
+    description: 'VARCHAR(20). Indicates if further investigation is required. Possible values: No, Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'documentation', 'needs_investigation')
+  assessment_summary_documentation_qa_alert:
+    description: 'VARCHAR(20). Quality assurance alert status. Possible values: No, Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'documentation', 'qa_alert')
+  assessment_summary_results_aesthetic_score:
+    description: 'REAL. Aesthetic score assigned to the item based on inspection. Example: 5.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'results', 'aesthetic_score')
+  assessment_summary_results_functional_test_result:
+    description: 'TEXT. Functional test result for the item. Possible values: Fail, Partial, Pass.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'results', 'functional_test_result')
+  assessment_summary_results_qa_result:
+    description: VARCHAR(50). Quality assessment result (e.g., pass, fail).
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'results', 'qa_result')
+  assessment_summary_results_tech_review_status:
+    description: 'VARCHAR(20). Technical review status of the item. Possible values: Completed, Not Required, Pending.'
+    sql: JSONB_EXTRACT_PATH_TEXT(assessment_summary, 'results', 'tech_review_status')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Quality Assessment public identity values.
+    label: Quality Assessment Count
+    sql: ${reverse_logistics_large_public__quality_assessment.inspectref}

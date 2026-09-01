@@ -1,0 +1,111 @@
+label: circuit_aliases
+description: All columns of the public table circuit_aliases.
+catalog: sports_events_large
+schema: public
+table_name: circuit_aliases
+dimensions:
+  alt_code:
+    description: 'TEXT. Alternate short code for the alias. Possible values (observed): MEL, MON, SIL, SUZ. **NULL means no alternate code (e.g., same as ShortName) or not assigned.** Example: SIL.'
+    sql: '"ALT_CODE"'
+  attr_03:
+    description: 'TEXT. Free-form attribute tag. Example: public roads.'
+    sql: '"ATTR_03"'
+  attr_01:
+    description: 'TEXT. Free-form attribute tag. Example: historic.'
+    sql: '"Attr_01"'
+  broadcaster_slug:
+    description: 'TEXT. Media/broadcaster slug for the alias. **NULL means no broadcaster slug exists or not recorded.** Example: suzuka-gp.'
+    sql: '"BroadcasterSlug"'
+  circuit_alias_key:
+    description: BIGSERIAL. Surrogate primary key for circuit_aliases rows. PK.
+    sql: '"CircuitAlias_Key"'
+  country_code:
+    description: 'TEXT. ISO 3166-1 alpha-2 country code. Example: AU.'
+    sql: '"Country_Code"'
+  end_year:
+    description: 'BIGINT. Last year the alias was in use. **NULL means the alias is ongoing/primary or the end year is unknown.** Example: 2010.'
+    sql: '"END_YEAR"'
+  is_primary:
+    description: 'BOOLEAN. Whether this is the current/primary alias. Example: false.'
+    sql: '"IsPrimary"'
+  language_code:
+    description: 'TEXT. BCP-47/ISO-style language code for the alias label. Example: en.'
+    sql: '"LANGUAGE_code"'
+  local_name:
+    description: 'TEXT. Local-language name used by residents/organizers. Example: Albert Park GP.'
+    sql: '"LocalName"'
+  nick_name:
+    description: 'TEXT. Informal nickname. Example: The Lake.'
+    sql: '"NickName"'
+  ref_2:
+    description: 'TEXT. Auxiliary reference/document id. Example: doc-124.'
+    sql: '"REF_2"'
+  ref_1:
+    description: 'TEXT. Auxiliary reference/document id. Example: doc-123.'
+    sql: '"Ref_1"'
+  script:
+    description: 'TEXT. Script code used for the alias (e.g., Latn, Kana). Possible values (observed): Latn, Kana. Example: Latn.'
+    sql: '"SCRIPT"'
+  short_name:
+    description: 'TEXT. Short display name/abbreviation. Example: MEL.'
+    sql: '"ShortName"'
+  signage_name:
+    description: 'TEXT. Name used on physical signage. Example: Albert Park Circuit.'
+    sql: '"SignageName"'
+  start_year:
+    description: 'BIGINT. First year the alias came into use. Example: 1996.'
+    sql: '"Start_Year"'
+  updated_by:
+    description: 'TEXT. Username/actor that last updated the alias record. Example: editor1.'
+    sql: '"UPDATED_BY"'
+  url_wiki:
+    description: 'TEXT. Reference link to a wiki page. Example: http://example.com/wiki.'
+    sql: '"URL_Wiki"'
+  url_official:
+    description: 'TEXT. Official website URL for the alias/circuit. Example: http://example.com/official.'
+    sql: '"UrlOfficial"'
+  verification_src:
+    description: 'TEXT. Source used to verify the alias (e.g., FIA handbook, official site, archive). Example: FIA handbook.'
+    sql: '"VerificationSRC"'
+  verified:
+    description: 'BOOLEAN. Whether the alias has been verified by an editor. Example: true.'
+    sql: '"Verified"'
+  alias_label:
+    description: 'TEXT. Human-friendly alias label used locally or historically. Example: Albert Park.'
+    sql: '"alias_Label"'
+  attr_02:
+    description: 'TEXT. Free-form attribute tag. Example: temporary.'
+    sql: attr_02
+  attr_04:
+    description: 'TEXT. Free-form attribute tag. Example: lake winds.'
+    sql: attr_04
+  cctkey_ref:
+    description: 'INTEGER. Foreign key referencing circuits.cctkey for the circuit this alias belongs to. FK → circuits(cctkey). Example: 3.'
+    sql: '"cctkeyREF"'
+  created_by:
+    description: 'TEXT. Username/actor that created the alias record. Example: ops_user.'
+    sql: created_by
+  geo_context:
+    description: 'TEXT. Geographical context (e.g., urban park, countryside, forest edge). Example: urban park.'
+    sql: '"geoContext"'
+  map_label:
+    description: 'TEXT. Short map label used on maps. Example: Albert Park.'
+    sql: map_label
+  ref3:
+    description: 'TEXT. Auxiliary reference/document id. Example: doc-125.'
+    sql: ref3
+  ref_json:
+    description: 'JSONB. Structured reference metadata (e.g., {lang:en}). Example: {lang:en}.'
+    sql: ref_json
+  ticketing_slug:
+    description: 'TEXT. Ticketing system slug for the alias. **NULL means not sold under this alias or not available.** Example: mel-gp.'
+    sql: ticketing_slug
+  transliteration:
+    description: 'TEXT. Transliteration of alias into another script. **NULL means not applicable (e.g., already Latin) or not provided.** Example: Suzuka.'
+    sql: transliteration
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct circuit_aliases public identity values.
+    label: circuit_aliases Count
+    sql: ${sports_events_large_public__circuit_aliases.circuit_alias_key}

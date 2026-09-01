@@ -1,0 +1,48 @@
+label: ArtifactRatings
+description: All columns of the public table ArtifactRatings.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactRatings
+dimensions:
+  art_link:
+    description: TEXT. Reference to the artifact in ArtifactsCore. FK to ArtifactsCore.ARTregID.
+    sql: '"ART_link"'
+  hist_sign:
+    description: 'BIGINT. Unique historical identifier for the artifact rating. PK. Possible values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.'
+    sql: '"HIST_sign"'
+  rating_profile:
+    description: JSONB column. Collects every curatorial and conservation-planning rating for an artifact into one JSONB payload so that significance, display priority, and treatment difficulty can be queried together.
+    sql: rating_profile
+  rating_profile_conservation_difficulty:
+    description: 'TEXT. Description of the conservation differences. Possible values: High, Low, Medium.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rating_profile, 'conservation_difficulty')
+  rating_profile_cultural_score:
+    description: 'BIGINT. Cultural significance score of the artifact. Example: 25.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rating_profile, 'cultural_score')
+  rating_profile_deterioration_rate:
+    description: 'TEXT. Rate of deterioration of the artifact. Possible values: Moderate, Rapid, Slow.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rating_profile, 'deterioration_rate')
+  rating_profile_educational_value:
+    description: 'BIGINT. Educational value of the artifact. Possible values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rating_profile, 'educational_value')
+  rating_profile_exhibit_value:
+    description: 'BIGINT. Exhibition value score of the artifact. Possible values: 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rating_profile, 'exhibit_value')
+  rating_profile_material_stability:
+    description: 'TEXT. Material stability rating of the artifact. Possible values: Moderate, Stable, Unstable.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rating_profile, 'material_stability')
+  rating_profile_public_access_rating:
+    description: 'BIGINT. Public access rating for the artifact. Possible values: 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rating_profile, 'public_access_rating')
+  rating_profile_research_score:
+    description: 'BIGINT. Research score of the artifact. Possible values: 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rating_profile, 'research_score')
+  rating_profile_treatment_complexity:
+    description: 'TEXT. Complexity of conservation treatment. Possible values: Complex, Moderate, Simple.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rating_profile, 'treatment_complexity')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ArtifactRatings public identity values.
+    label: ArtifactRatings Count
+    sql: ${museum_artifact_large_public__artifact_ratings.hist_sign}

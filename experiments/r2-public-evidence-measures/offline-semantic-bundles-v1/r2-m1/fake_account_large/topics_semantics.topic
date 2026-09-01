@@ -1,0 +1,7 @@
+base_view: fake_account_large_public__topics
+label: topics
+description: All columns of the public table topics.
+fields:
+- fake_account_large_public__topics.*
+joins: {}
+ai_context: This topic models no cross-table joins.

@@ -1,0 +1,69 @@
+label: ScientificPublication
+description: All columns of the public table ScientificPublication.
+catalog: planets_data_large
+schema: public
+table_name: ScientificPublication
+dimensions:
+  ads_url:
+    description: TEXT. ADS URL
+    sql: '"ADS_URL"'
+  arxiv_url:
+    description: TEXT. arXiv preprint URL **NULL means No preprint available.**
+    sql: '"ARXIV_URL"'
+  citation_count:
+    description: BIGINT. Number of citations
+    sql: '"CITATION_COUNT"'
+  doi:
+    description: TEXT. Digital Object Identifier
+    sql: '"DOI"'
+  first_author:
+    description: TEXT. First author name
+    sql: '"FIRST_AUTHOR"'
+  journal:
+    description: 'TEXT. Journal name Possible values: A&A, ApJ, MNRAS, Nature, Science, AJ, PASP, Icarus.'
+    sql: '"JOURNAL"'
+  open_access:
+    description: 'TEXT. Open access status Possible values: Gold, Green, Hybrid, Closed.'
+    sql: '"OPEN_ACCESS"'
+  planets_reported:
+    description: BIGINT. Number of planets reported
+    sql: '"PLANETS_REPORTED"'
+  publication_id:
+    description: BIGINT. Primary key. Unique publication identifier
+    sql: '"PUBLICATION_ID"'
+  title:
+    description: TEXT. Publication title
+    sql: '"TITLE"'
+  volume:
+    description: BIGINT. Journal volume **NULL means Not yet assigned volume.**
+    sql: '"VOLUME"'
+  abstract_summary:
+    description: TEXT. Brief abstract summary **NULL means Abstract not available.**
+    sql: abstract_summary
+  author_count:
+    description: BIGINT. Number of authors
+    sql: author_count
+  bibcode:
+    description: TEXT. ADS bibcode
+    sql: bibcode
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  pages_start:
+    description: BIGINT. Start page
+    sql: pages_start
+  peer_reviewed:
+    description: BOOLEAN. Whether publication is peer-reviewed Boolean flag (true/false).
+    sql: peer_reviewed
+  program_ref:
+    description: BIGINT. Foreign key referencing research_programs(programRef). Related research program
+    sql: program_ref
+  publication_type:
+    description: 'TEXT. Type of publication Possible values: Journal Article, Conference Proceeding, Preprint, Technical Report, Thesis, Review.'
+    sql: publication_type
+  reference_count:
+    description: BIGINT. Number of references
+    sql: reference_count
+  year:
+    description: BIGINT. Publication year
+    sql: year

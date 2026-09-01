@@ -1,0 +1,102 @@
+label: product_review_tag_map
+description: All columns of the public table product_review_tag_map.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: product_review_tag_map
+dimensions:
+  active:
+    description: 'BOOLEAN. Indicates if the tag assignment is currently active. Example: True.'
+    sql: '"ACTIVE"'
+  approved_by:
+    description: 'TEXT. User who approved the tag assignment. Example: Admin1.'
+    sql: '"APPROVED_BY"'
+  attr10:
+    description: 'TEXT. Attribute 10 associated with the review and tag mapping. Example: Value10.'
+    sql: '"ATTR10"'
+  attr7:
+    description: 'TEXT. Attribute 7 associated with the review and tag mapping. Example: Value7.'
+    sql: '"ATTR7"'
+  attr_4:
+    description: 'TEXT. Attribute 4 associated with the review and tag mapping. Example: Value4.'
+    sql: '"ATTR_4"'
+  attr_two:
+    description: 'TEXT. Attribute 2 associated with the review and tag mapping. Example: Value2.'
+    sql: '"ATTR_TWO"'
+  assigned_at:
+    description: 'TIMESTAMP. Date and time when the tag was assigned to the review. Example: 2025-07-16 15:23:00.'
+    sql: '"AssignedAt"'
+  attr3:
+    description: 'TEXT. Attribute 3 associated with the review and tag mapping. Example: Value3.'
+    sql: '"Attr3"'
+  confidence:
+    description: 'REAL. Confidence score for the relevance of the tag to the review. Example: 0.85.'
+    sql: '"CONFIDENCE"'
+  deprecation_date:
+    description: DATE. Date when the tag assignment was deprecated. **NULL means the tag assignment has not been deprecated.**
+    sql: '"DeprecationDate"'
+  notes:
+    description: 'TEXT. Additional notes regarding the assignment of the tag. Example: Tag assigned by admin based on sentiment analysis.'
+    sql: '"NOTES"'
+  source_system:
+    description: 'TEXT. The system from which the tag assignment was made. Example: System1.'
+    sql: '"SourceSYSTEM"'
+  updated_at:
+    description: 'TIMESTAMP. Date and time when the record was last updated. Example: 2025-07-17 10:00:00.'
+    sql: '"UPDATED_AT"'
+  weight:
+    description: 'REAL. Weight assigned to the tag based on its importance to the review. Example: 1.2.'
+    sql: '"Weight"'
+  age_window:
+    description: 'TEXT. Time window during which the tag assignment is valid (in days). Example: within 30 days.'
+    sql: '"ageWindow"'
+  approval_status:
+    description: 'TEXT. Approval status for the tag assignment. Example: Approved.'
+    sql: '"approvalStatus"'
+  approval_date:
+    description: 'DATE. Date when the tag assignment was approved. Example: 2025-07-16.'
+    sql: approval_date
+  assigned_by:
+    description: 'TEXT. User who assigned the tag to the review. Example: User1.'
+    sql: assigned_by
+  attr1:
+    description: 'TEXT. Attribute 1 associated with the review and tag mapping. Example: Value1.'
+    sql: attr1
+  attr8:
+    description: 'TEXT. Attribute 8 associated with the review and tag mapping. Example: Value8.'
+    sql: attr8
+  attr_nine:
+    description: 'TEXT. Attribute 9 associated with the review and tag mapping. Example: Value9.'
+    sql: attr_nine
+  attr_six:
+    description: 'TEXT. Attribute 6 associated with the review and tag mapping. Example: Value6.'
+    sql: attr_six
+  attrfive:
+    description: 'TEXT. Attribute 5 associated with the review and tag mapping. Example: Value5.'
+    sql: attrfive
+  created_at:
+    description: 'TIMESTAMP. Date and time when the record was created. Example: 2025-07-16 15:30:00.'
+    sql: created_at
+  deprecated:
+    description: 'BOOLEAN. Indicates if the tag assignment is deprecated. Example: False.'
+    sql: deprecated
+  evidence_url:
+    description: 'TEXT. URL providing evidence for the tag''s relevance to the review. Example: http://evidence1.com.'
+    sql: '"evidenceUrl"'
+  quality_score:
+    description: 'REAL. Quality score of the tag assignment. Example: 0.9.'
+    sql: '"quality_SCORE"'
+  relevance_band:
+    description: 'TEXT. Range of relevance score for the tag assignment. Example: 0.70–0.90.'
+    sql: '"relevanceBand"'
+  relevance_score:
+    description: 'REAL. Relevance score indicating how relevant the tag is to the review. Example: 0.9.'
+    sql: relevance_score
+  review_ref:
+    description: 'TEXT. Reference to the product review. FK to product_review_feedback. Example: REV-d47b1ed10745.'
+    sql: '"reviewRef"'
+  tag_key:
+    description: 'TEXT. Reference to the tag in the tag library. FK to tag_library. Example: TAG001.'
+    sql: '"tagKey"'
+  version:
+    description: 'INT. Version number of the tag assignment. Example: 1.'
+    sql: version

@@ -1,0 +1,11 @@
+base_view: planets_data_large_public__emission_absorption_feature
+label: EmissionAbsorptionFeature
+description: All columns of the public table EmissionAbsorptionFeature.
+fields:
+- planets_data_large_public__emission_absorption_feature.*
+- planets_data_large_public__spectral_line_measurement.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__spectral_line_measurement:
+    planets_data_large_public__stars: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

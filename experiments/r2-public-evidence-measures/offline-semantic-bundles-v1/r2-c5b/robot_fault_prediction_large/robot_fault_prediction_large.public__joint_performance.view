@@ -1,0 +1,72 @@
+label: joint_performance
+description: All columns of the public table joint_performance.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: joint_performance
+dimensions:
+  joint_metrics:
+    description: JSONB column. Captures the kinematic performance of every joint (angle, speed, and torque) in a single hierarchical JSON structure for quick retrieval.
+    sql: joint_metrics
+  jperfdetref:
+    description: TEXT. Foreign key to the robot_details table (BotDetReg). FK to robot_details.
+    sql: jperfdetref
+  jperfid:
+    description: BIGSERIAL. Unique identifier for the joint performance record. PK.
+    sql: jperfid
+  jperfoperref:
+    description: TEXT. Foreign key to the operation table (OperReg). FK to operation.
+    sql: jperfoperref
+  joint_metrics_j1_angle_deg:
+    description: 'REAL. Joint 1 angle value in degrees. Example: -37.72.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J1', 'angle_deg')
+  joint_metrics_j1_speed_dps:
+    description: 'REAL. Joint 1 speed value in radians per second. Example: 36.74.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J1', 'speed_dps')
+  joint_metrics_j1_torque_nm:
+    description: 'REAL. Joint 1 torque value in Nm. Example: 12.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J1', 'torque_nm')
+  joint_metrics_j2_angle_deg:
+    description: 'REAL. Joint 2 angle value in degrees. Example: 177.36.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J2', 'angle_deg')
+  joint_metrics_j2_speed_dps:
+    description: 'REAL. Joint 2 speed value in radians per second. Example: 65.06.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J2', 'speed_dps')
+  joint_metrics_j2_torque_nm:
+    description: 'REAL. Joint 2 torque value in Nm. Example: 79.88.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J2', 'torque_nm')
+  joint_metrics_j3_angle_deg:
+    description: 'REAL. Joint 3 angle value in degrees. Example: 83.27.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J3', 'angle_deg')
+  joint_metrics_j3_speed_dps:
+    description: 'REAL. Joint 3 speed value in radians per second. Example: 174.45.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J3', 'speed_dps')
+  joint_metrics_j3_torque_nm:
+    description: 'REAL. Joint 3 torque value in Nm. Example: 55.91.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J3', 'torque_nm')
+  joint_metrics_j4_angle_deg:
+    description: 'REAL. Joint 4 angle value in degrees. Example: -151.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J4', 'angle_deg')
+  joint_metrics_j4_speed_dps:
+    description: 'REAL. Joint 4 speed value in radians per second. Example: 96.65.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J4', 'speed_dps')
+  joint_metrics_j4_torque_nm:
+    description: 'REAL. Joint 4 torque value in Nm. Example: 75.22.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J4', 'torque_nm')
+  joint_metrics_j5_angle_deg:
+    description: 'REAL. Joint 5 angle value in degrees. Example: -162.94.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J5', 'angle_deg')
+  joint_metrics_j5_speed_dps:
+    description: 'REAL. Joint 5 speed value in radians per second. Example: 167.12.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J5', 'speed_dps')
+  joint_metrics_j5_torque_nm:
+    description: 'REAL. Joint 5 torque value in Nm. Example: 2.14.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J5', 'torque_nm')
+  joint_metrics_j6_angle_deg:
+    description: 'REAL. Joint 6 angle value in degrees. Example: -72.08.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J6', 'angle_deg')
+  joint_metrics_j6_speed_dps:
+    description: 'REAL. Joint 6 speed value in radians per second. Example: 69.94.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J6', 'speed_dps')
+  joint_metrics_j6_torque_nm:
+    description: 'REAL. Joint 6 torque value in Nm. Example: 45.07.'
+    sql: JSONB_EXTRACT_PATH_TEXT(joint_metrics, 'J6', 'torque_nm')

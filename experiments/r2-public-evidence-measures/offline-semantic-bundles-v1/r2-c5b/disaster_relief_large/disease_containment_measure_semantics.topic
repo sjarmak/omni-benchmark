@@ -1,0 +1,11 @@
+base_view: disaster_relief_large_public__disease_containment_measure
+label: DiseaseContainmentMeasure
+description: All columns of the public table DiseaseContainmentMeasure.
+fields:
+- disaster_relief_large_public__disease_containment_measure.*
+- disaster_relief_large_public__disaster_event_core.*
+- disaster_relief_large_public__disease_outbreak_core.*
+joins:
+  disaster_relief_large_public__disaster_event_core: {}
+  disaster_relief_large_public__disease_outbreak_core: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

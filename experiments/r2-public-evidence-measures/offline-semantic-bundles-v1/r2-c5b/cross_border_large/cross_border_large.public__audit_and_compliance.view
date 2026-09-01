@@ -1,0 +1,108 @@
+label: Audit and Compliance
+description: Audit rows with finding counts, data-subject request counts, response time, remediation deadlines, and same-row modeled semantics.
+catalog: cross_border_large
+schema: public
+table_name: AuditAndCompliance
+dimensions:
+  crit_find_num:
+    description: 'BIGINT. The number of critical findings from audits. Example: 0.'
+    label: Critical Findings
+    sql: '"critFindNum"'
+  findtally:
+    description: 'BIGINT. The total tally of audit findings. Example: 49.'
+    label: Total Findings
+    sql: '"FINDTALLY"'
+  acc_req_num:
+    description: 'BIGINT. The number of access requests. Example: 75.'
+    label: Access Requests
+    sql: '"AccReqNum"'
+  del_req_num:
+    description: 'BIGINT. The number of data deletion requests. Example: 354.'
+    label: Deletion Requests
+    sql: '"DEL_REQ_NUM"'
+  rect_req_num:
+    description: 'BIGINT. The number of data rectification requests. Example: 13.'
+    label: Correction Requests
+    sql: rect_req_num
+  portreqnum:
+    description: 'BIGINT. The number of data portability requests. Example: 50.'
+    label: Transfer Requests
+    sql: '"PORTREQNUM"'
+  resp_time_day:
+    description: 'REAL. The average response time in days. Example: 16.'
+    label: Response Time (days)
+    sql: resp_time_day
+    ai_context: 'Response Time: Lower means faster response; higher means delays.'
+  remed_due:
+    description: 'DATE. The due date for remediation actions. Example: 2025-04-24.'
+    label: Remediation Due Date
+    sql: '"REMED_DUE"'
+  audit_trace:
+    description: 'BIGINT. Unique identifier for the audit trace. PK. Example: 75.'
+    sql: '"AUDIT_TRACE"'
+  audtrail_state:
+    description: 'TEXT. The state or status of the audit trail. Possible values: Partial, Complete, Missing.'
+    sql: '"AudtrailState"'
+  comp_join:
+    description: 'BIGINT. Foreign key to Compliance(complianceTrace). Example: 75.'
+    sql: '"COMP_JOIN"'
+  sysintstate:
+    description: 'TEXT. The state of system integration. Possible values: Partial, Manual, Fully Integrated.'
+    sql: '"SYSINTSTATE"'
+  transimpassess:
+    description: 'TEXT. Assessment of transfer impact. Possible values: Completed, Required, In Progress.'
+    sql: '"TRANSIMPASSESS"'
+  vend_join:
+    description: 'BIGINT. Foreign key to VendorManagement(Vendor_Trace). Example: 75.'
+    sql: '"VendJoin"'
+  auth_notify:
+    description: 'TEXT. Status of authorization notifications. Possible values: Required, Submitted, Not Required.'
+    sql: '"authNotify"'
+  border_mech:
+    description: 'TEXT. The legal mechanism used for cross-border transfers. Possible values: SCCs, BCRs, Adequacy Decision, Derogations.'
+    sql: border_mech
+  data_map_state:
+    description: 'TEXT. The current status of the data map. Possible values: Outdated, Complete, Partial.'
+    sql: data_map_state
+  local_reqs:
+    description: 'TEXT. Status of meeting local legal requirements. Possible values: Partial, Met, Not Met.'
+    sql: '"localReqs"'
+  profjoin:
+    description: 'BIGINT. Foreign key to DataProfile(profileTrace). Example: 75.'
+    sql: profjoin
+  record_registry:
+    description: 'TEXT. Unique identifier for the record in the registry. Example: CB735421.'
+    sql: record_registry
+  remed_state:
+    description: 'TEXT. The current state of remediation efforts. Possible values: Not Started, Completed, In Progress.'
+    sql: remed_state
+  audit_finding_severity:
+    label: Audit Finding Severity (AFS)
+    description: Indicates how serious audit findings are, especially critical issues.
+    sql: ${crit_find_num} * 1.0 / (${findtally} + 1.0)
+    ai_context: Use this modeled field for Audit Finding Severity (AFS); do not reconstruct its formula.
+  is_critical_audit_issue:
+    label: Critical Audit Issue
+    description: Flags an audit when the severity of findings is high.
+    sql: ${audit_finding_severity} > 0.5
+    ai_context: Use this modeled field for Critical Audit Issue; do not reconstruct its formula.
+  request_breakdown:
+    label: Request Breakdown
+    description: Lists the types and numbers of requests individuals made about their data.
+    sql: '''access requests: '' || CAST(${acc_req_num} AS TEXT) || '', deletion requests: '' || CAST(${del_req_num} AS TEXT) || '', correction requests: '' || CAST(${rect_req_num} AS TEXT) || '', transfer requests: '' || CAST(${portreqnum} AS TEXT)'
+    ai_context: Use this modeled field for Request Breakdown; do not reconstruct its formula.
+  is_slow_remediation_timeline:
+    label: Slow Remediation Timeline
+    description: Labels cases where the deadline to fix an issue has already passed.
+    sql: CURRENT_DATE > ${remed_due}
+    ai_context: Use this modeled field for Slow Remediation Timeline; do not reconstruct its formula.
+  is_nearing_remediation_deadline:
+    label: Nearing Remediation Deadline
+    description: Highlights transfers close to their fix deadline.
+    sql: ${remed_due} - CURRENT_DATE BETWEEN -5 AND 0
+    ai_context: Use this modeled field for Nearing Remediation Deadline; do not reconstruct its formula.
+  data_subject_request_load:
+    label: Data Subject Request Load (DSRL)
+    description: Shows how many requests people made about their own data.
+    sql: ${acc_req_num} + ${del_req_num} + ${rect_req_num} + ${portreqnum}
+    ai_context: Use this modeled field for Data Subject Request Load (DSRL); do not reconstruct its formula.

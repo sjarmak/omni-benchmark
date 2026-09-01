@@ -1,0 +1,66 @@
+label: HologramProjectorMaintenance
+description: All columns of the public table HologramProjectorMaintenance.
+catalog: virtual_idol_large
+schema: public
+table_name: HologramProjectorMaintenance
+dimensions:
+  bulb_life_remaining_hours:
+    description: 'INTEGER. Remaining lifespan of light source. Example: 2000.'
+    sql: bulb_life_remaining_hours
+  color_calibration_score:
+    description: 'REAL. Accuracy of color reproduction. Example: 98.'
+    sql: color_calibration_score
+  component_replaced:
+    description: 'TEXT. Part swapped out. **NULL means Routine checkup.** Unique values: None, Bulb, Filter, Power Supply.'
+    sql: component_replaced
+  cooling_fan_rpm:
+    description: 'INTEGER. Fan speed. Example: 1200.'
+    sql: cooling_fan_rpm
+  cost_usd:
+    description: 'REAL. Cost of parts and labor. Example: 500.'
+    sql: cost_usd
+  error_log_summary:
+    description: TEXT. Codes retrieved from memory. **NULL means No errors.**
+    sql: error_log_summary
+  event_venue_ref:
+    description: 'INTEGER. The event location using the gear. Example: 50.'
+    sql: event_venue_ref
+  firmware_version:
+    description: TEXT. Software version on device.
+    sql: firmware_version
+  is_critical_failure:
+    description: 'BOOLEAN. True if device was broken. Possible values: True, False.'
+    sql: is_critical_failure
+  lens_cleanliness_rating:
+    description: 'TEXT. State of the optics. Unique values: Pristine, Dusty, Smudged.'
+    sql: lens_cleanliness_rating
+  maintenance_id:
+    description: TEXT. Unique ID for the service record.
+    sql: maintenance_id
+  next_service_due_date:
+    description: TIMESTAMP. Scheduled next visit.
+    sql: next_service_due_date
+  operating_temp_celsius:
+    description: 'REAL. Temp during test run. Example: 45.'
+    sql: operating_temp_celsius
+  power_cycle_count:
+    description: 'INTEGER. Times turned on/off. Example: 500.'
+    sql: power_cycle_count
+  projector_model:
+    description: 'TEXT. Model name. Unique values: HoloProj X1, HoloProj Pro.'
+    sql: projector_model
+  projector_serial_num:
+    description: TEXT. Hardware ID.
+    sql: projector_serial_num
+  service_date:
+    description: TIMESTAMP. Date of maintenance.
+    sql: service_date
+  technician_name:
+    description: TEXT. Person performing service.
+    sql: technician_name
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct HologramProjectorMaintenance public identity values.
+    label: HologramProjectorMaintenance Count
+    sql: ${virtual_idol_large_public__hologram_projector_maintenance.maintenance_id}

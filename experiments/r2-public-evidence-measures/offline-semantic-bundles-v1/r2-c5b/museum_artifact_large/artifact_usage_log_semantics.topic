@@ -1,0 +1,17 @@
+base_view: museum_artifact_large_public__artifact_usage_log
+label: ArtifactUsageLog
+description: All columns of the public table ArtifactUsageLog.
+fields:
+- museum_artifact_large_public__artifact_usage_log.*
+- museum_artifact_large_public__environmental_readings_core.*
+- museum_artifact_large_public__exhibition_halls.*
+- museum_artifact_large_public__showcases.*
+- museum_artifact_large_public__staff.*
+- museum_artifact_large_public__usage_records.*
+joins:
+  museum_artifact_large_public__staff: {}
+  museum_artifact_large_public__usage_records:
+    museum_artifact_large_public__environmental_readings_core:
+      museum_artifact_large_public__showcases:
+        museum_artifact_large_public__exhibition_halls: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

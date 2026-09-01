@@ -1,0 +1,96 @@
+label: WaterTreatmentCycle
+description: All columns of the public table WaterTreatmentCycle.
+catalog: polar_equipment_large
+schema: public
+table_name: WaterTreatmentCycle
+dimensions:
+  backwash_min:
+    description: 'REAL. Duration of the backwash cleaning phase in minutes. **NULL means no backwash cycle was performed (not applicable to this process type).** Example: 11.8.'
+    sql: '"backwashMin"'
+  bacteria_cfu_ml:
+    description: 'REAL. Bacterial count measured in Colony Forming Units per milliliter. Example: 112.7.'
+    sql: bacteria_cfu_ml
+  chlorine_mg_l:
+    description: 'REAL. Concentration of chlorine added or measured, in milligrams per liter. **NULL means the process type did not involve chlorine dosing.** Example: 1.71.'
+    sql: '"chlorine_mgL"'
+  clean_chem_l:
+    description: 'REAL. Volume of cleaning chemicals consumed during the cycle in liters. Example: 30.6.'
+    sql: '"cleanChem_L"'
+  comments:
+    description: 'TEXT. Free-text notes regarding observations or adjustments made during the cycle. Example: Chlorine dosing adjusted mid-cycle.'
+    sql: comments
+  cond_u_scm:
+    description: 'REAL. Electrical conductivity of the water in microsiemens per centimeter. Example: 1410.6.'
+    sql: '"cond_uScm"'
+  cycle_stamp:
+    description: 'BIGINT. Unique identifier sequence for the specific water treatment cycle. PK. Example: 2571.'
+    sql: '"cycleStamp"'
+  doc_ref:
+    description: 'TEXT. Reference ID for the associated documentation or batch report. Example: DOC-6414.'
+    sql: '"docRef"'
+  energy_k_wh:
+    description: 'REAL. Total energy consumed during the cycle in kilowatt-hours. Example: 124.3.'
+    sql: '"energy_kWh"'
+  fault_code:
+    description: 'TEXT. Specific error code identifying technical issues. **NULL means the cycle ran successfully or is currently running without faults.** Possible values: ChemLow, FLT01, FLT02, FLT03, PumpFail.'
+    sql: '"faultCode"'
+  filter_dp_k_pa:
+    description: 'REAL. Differential pressure across the filter membrane in kilopascals. Example: 137.5.'
+    sql: '"filterDP_kPa"'
+  for_water_proc:
+    description: 'BIGINT. Foreign key referencing the parent water processing facility or unit. Example: 877.'
+    sql: for_water_proc
+  hardness_mg_l:
+    description: 'REAL. Mineral content (calcium/magnesium) of the water in milligrams per liter. Example: 59.1.'
+    sql: '"hardness_mgL"'
+  inflow_l:
+    description: 'REAL. Total volume of water that entered the unit for processing, in liters. Example: 4383.2.'
+    sql: '"inflow_L"'
+  membrane_flux_lm2h:
+    description: 'REAL. Rate of flow through the membrane per unit area (Liters per square meter per hour). **NULL means the process did not utilize membrane filtration.** Example: 47.8.'
+    sql: '"membraneFlux_Lm2h"'
+  nitrate_mg_l:
+    description: 'REAL. Concentration of nitrates remaining in the water in milligrams per liter. Example: 12.42.'
+    sql: '"nitrate_mgL"'
+  operator:
+    description: 'TEXT. The designated personnel managing the cycle. Possible values: Operator A, Operator B, Operator C, Tech D.'
+    sql: operator
+  outflow_l:
+    description: 'REAL. Total volume of treated water produced, in liters. Example: 568.3.'
+    sql: '"outflow_L"'
+  ozone_mg_l:
+    description: 'REAL. Concentration of ozone applied, in milligrams per liter. **NULL means the process type did not involve ozonation.** Example: 0.35.'
+    sql: '"ozone_mgL"'
+  ph:
+    description: 'REAL. Acidity or basicity level of the water. Example: 6.54.'
+    sql: ph
+  proc_type:
+    description: 'TEXT. The specific type of treatment process applied during this cycle. Possible values: Chlorination, Filtration, Ozonation, Reverse Osmosis, Softening, UV Disinfection.'
+    sql: '"procType"'
+  recovery_pct:
+    description: 'REAL. The percentage of inflow water successfully recovered as treated outflow. Example: 80.'
+    sql: recovery_pct
+  status:
+    description: 'TEXT. Current operational state or final result of the cycle. Possible values: Aborted, Completed, Fault, Running.'
+    sql: status
+  temp_c:
+    description: 'REAL. Water temperature during the process in degrees Celsius. Example: 16.'
+    sql: '"temp_C"'
+  toc_mg_l:
+    description: 'REAL. Total Organic Carbon measured in the water in milligrams per liter. Example: 9.98.'
+    sql: '"toc_mgL"'
+  ts_end:
+    description: 'TIMESTAMP. Date and time when the treatment cycle concluded. Example: 2025-06-01 19:53:42.'
+    sql: '"tsEnd"'
+  ts_start:
+    description: 'TIMESTAMP. Date and time when the treatment cycle began. Example: 2025-07-15 09:00:00.'
+    sql: '"tsStart"'
+  turbidity_ntu:
+    description: 'REAL. Measure of water clarity (cloudiness) in Nephelometric Turbidity Units. Example: 0.43.'
+    sql: '"turbidity_NTU"'
+  uv_dose_m_jcm2:
+    description: 'REAL. UV radiation dosage applied in millijoules per square centimeter. **NULL means the process type did not involve UV disinfection.** Example: 192.6.'
+    sql: '"uvDose_mJcm2"'
+  waste_l:
+    description: 'REAL. Volume of waste water or brine produced during the process in liters. Example: 144.3.'
+    sql: '"waste_L"'

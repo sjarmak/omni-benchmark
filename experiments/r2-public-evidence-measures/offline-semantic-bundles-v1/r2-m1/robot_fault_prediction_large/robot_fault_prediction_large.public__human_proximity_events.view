@@ -1,0 +1,63 @@
+label: human_proximity_events
+description: All columns of the public table human_proximity_events.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: human_proximity_events
+dimensions:
+  approach_velocity_mps:
+    description: 'REAL. Speed of human approaching bot. Example: 1.2.'
+    sql: approach_velocity_mps
+  audible_alarm_activated:
+    description: 'BOOLEAN. Did the siren sound?. Possible values: True, False.'
+    sql: audible_alarm_activated
+  detected_distance_mm:
+    description: 'REAL. Minimum distance between human and bot. Example: 50.0.'
+    sql: detected_distance_mm
+  emergency_stop_triggered:
+    description: 'BOOLEAN. Did the bot perform an E-Stop?. Possible values: True, False.'
+    sql: emergency_stop_triggered
+  event_duration_sec:
+    description: 'REAL. How long the intrusion lasted. Example: 50.0.'
+    sql: event_duration_sec
+  floor_hazard_detected:
+    description: 'BOOLEAN. Was debris detected near event?. Possible values: True, False.'
+    sql: floor_hazard_detected
+  incident_review_required:
+    description: 'BOOLEAN. Flag for safety manager review. Possible values: True, False.'
+    sql: incident_review_required
+  involved_robot_ref:
+    description: TEXT. Robot involved in the proximity alert.
+    sql: involved_robot_ref
+  lighting_condition_lux:
+    description: 'REAL. Ambient light during event. Example: 400.'
+    sql: lighting_condition_lux
+  operator_badge_id:
+    description: TEXT. RFID tag of human if available. **NULL means No RFID read.**
+    sql: operator_badge_id
+  ppe_helmet_detected:
+    description: 'BOOLEAN. Was a hard hat seen?. Possible values: True, False.'
+    sql: ppe_helmet_detected
+  ppe_vest_detected:
+    description: 'BOOLEAN. Was reflective safety gear seen?. Possible values: True, False.'
+    sql: ppe_vest_detected
+  proximity_event_id:
+    description: TEXT. Unique key for the safety event.
+    sql: proximity_event_id
+  robot_momentum_kgms:
+    description: 'REAL. Kinetic energy proxy at event time. Example: 100.'
+    sql: robot_momentum_kgms
+  safety_zone_classification:
+    description: 'TEXT. Zone triggered (Warning, Danger, Critical). Unique values: Green, Yellow, Red.'
+    sql: safety_zone_classification
+  sensor_source_id:
+    description: TEXT. Which LiDAR/Camera triggered this.
+    sql: sensor_source_id
+  speed_reduction_factor:
+    description: 'REAL. Factor by which bot slowed (0.0-1.0). Example: 50.0.'
+    sql: speed_reduction_factor
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct human_proximity_events public identity values.
+    label: human_proximity_events Count
+    sql: ${robot_fault_prediction_large_public__human_proximity_events.proximity_event_id}

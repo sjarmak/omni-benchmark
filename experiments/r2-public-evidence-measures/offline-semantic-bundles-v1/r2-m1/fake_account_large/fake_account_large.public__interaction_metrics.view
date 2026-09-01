@@ -1,0 +1,47 @@
+label: Interaction Metrics
+description: Account-level interaction metrics with public conversation-nature context.
+catalog: fake_account_large
+schema: public
+table_name: interaction_metrics
+dimensions:
+  conversation_naturalness_value:
+    description: 'REAL. Conversation nature score. Example: 0.825.'
+    label: Conversation Naturalness Value
+    sql: '"ConvNat"'
+    ai_context: 'conversation naturalness value: Ranges from 0 to 1. Values above 0.7 indicate natural human conversation, while values below 0.3 suggest automated or scripted responses.'
+  key_ptn_hit:
+    description: 'REAL. Key pattern hit score. **NULL means key pattern hit not recorded.**. Example: 0.589.'
+    sql: '"KeyPtnHit"'
+  lang_soph:
+    description: 'REAL. Language sophistication score. Example: 0.03.'
+    sql: '"LangSoph"'
+  msg_freq:
+    description: 'REAL. Message frequency. Example: 60.1.'
+    sql: '"MsgFreq"'
+  msg_sim:
+    description: 'REAL. Message similarity score. Example: 0.041.'
+    sql: '"MsgSim"'
+  msg_target_div:
+    description: 'REAL. Message target diversity. Example: 0.498.'
+    sql: '"MsgTargetDiv"'
+  resp_time_ptn:
+    description: 'TEXT. Response time pattern. **NULL means response time pattern not recorded.**. Possible values: Delayed, Instant, Natural, Random.'
+    sql: '"RespTimePtn"'
+  sent_var:
+    description: 'REAL. Sentiment variance score. Example: 0.005.'
+    sql: '"SentVar"'
+  top_coh:
+    description: 'REAL. Top coherence score. Example: 0.856.'
+    sql: '"TopCoh"'
+  txt_uniq:
+    description: 'REAL. Text uniqueness score. Example: 0.44.'
+    sql: '"TxtUniq"'
+  acct_dm:
+    description: TEXT. Account reference for direct messaging metrics. PK. FK to accounts.
+    sql: acct_dm
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Interaction Metrics public identity values.
+    label: Interaction Metrics Count
+    sql: ${fake_account_large_public__interaction_metrics.acct_dm}

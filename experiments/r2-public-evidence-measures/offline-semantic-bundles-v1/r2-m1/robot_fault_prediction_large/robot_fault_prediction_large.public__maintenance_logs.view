@@ -1,0 +1,108 @@
+label: maintenance_logs
+description: All columns of the public table maintenance_logs.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: maintenance_logs
+dimensions:
+  approving_supervisor_tag:
+    description: 'TEXT. The tech_code of the supervisor who approved the work. **NULL indicates the work order did not require supervisor approval.**. Possible values: TCH_1001, TCH_1002, TCH_1003, TCH_1007, TCH_1008, TCH_1011, TCH_1012, TCH_1017, TCH_1032.'
+    sql: '"Approving_Supervisor_Tag"'
+  calibration_before_status:
+    description: 'TEXT. The calibration status of the robot before the maintenance. Possible values: Out of Spec, Within Spec.'
+    sql: '"CalibrationBeforeStatus"'
+  corrective_actions_taken:
+    description: 'TEXT. A description of the corrective actions taken. Example: Replaced motor assembly and re-lubricated gearbox. Tested full range of motion..'
+    sql: '"CorrectiveActionsTaken"'
+  firmware_update_version:
+    description: 'TEXT. The firmware version installed during an update. Possible values: 5.5.8, 6.2.1, 9.6.7.'
+    sql: '"FIRMWARE_UPDATE_VERSION"'
+  follow_up_needed:
+    description: 'BOOLEAN. A flag indicating if a follow-up action is required. Possible values: False, True.'
+    sql: '"FOLLOW_UP_NEEDED"'
+  maintenance_type:
+    description: 'TEXT. The type of maintenance performed. Possible values: Corrective, Preventive, Emergency, Calibration, Upgrade, Scheduled, Consultation. Possible values: Calibration, Consultation, Corrective, Emergency, Preventive, Scheduled, Upgrade.'
+    sql: '"MAINTENANCE_TYPE"'
+  maintained_robot_reg:
+    description: 'TEXT. The registration code of the robot being maintained. Example: RB8530.'
+    sql: '"Maintained_Robot_Reg"'
+  priority_level:
+    description: 'BIGINT. The priority level of the work order (1=High, 4=Low). Possible values: 1, 2, 3, 4.'
+    sql: '"PRIORITY_LEVEL"'
+  performing_tech_num:
+    description: 'TEXT. The tech_code of the technician who performed the maintenance. Example: TCH_1001.'
+    sql: '"Performing_Tech_Num"'
+  root_cause_analysis:
+    description: 'TEXT. An analysis of the root cause of the issue. Example: Motor overheated due to bearing failure..'
+    sql: '"ROOT_CAUSE_ANALYSIS"'
+  related_operation_code:
+    description: 'TEXT. The operation code associated with the robot at the time of maintenance. Example: OP_MCRH5P.'
+    sql: '"Related_Operation_Code"'
+  summary:
+    description: 'TEXT. A brief summary of the work performed. Example: Replaced faulty J2 axis motor..'
+    sql: '"SUMMARY"'
+  status:
+    description: 'TEXT. The final status of the work order. Possible values: Completed, Cancelled. Possible values: Cancelled, Completed.'
+    sql: '"Status"'
+  system_rebooted:
+    description: 'BOOLEAN. A flag indicating if the robot system was rebooted during maintenance. Possible values: False, True.'
+    sql: '"SystemRebooted"'
+  tools_used:
+    description: 'TEXT. A list of tools used for the job. Example: Torque wrench set, laptop with FANUC software, grease gun.'
+    sql: '"TOOLS_USED"'
+  vendor_invoice_num:
+    description: 'TEXT. The invoice number from the external vendor. **NULL indicates no external vendor was involved.**. Possible values: INV-ABB-201, INV-BR-005, INV-KUKA-001, INV-SICK-010.'
+    sql: '"VENDOR_INVOICE_NUM"'
+  work_order_tag:
+    description: 'TEXT. Unique identifier for the maintenance work order. PK. Example: WO-25-0001.'
+    sql: '"WorkOrderTag"'
+  associated_fault_code:
+    description: 'TEXT. The fault code associated with the maintenance event. Example: E-2015.'
+    sql: associated_fault_code
+  calibration_after_status:
+    description: 'TEXT. The calibration status of the robot after the maintenance. Possible values: Within Spec.'
+    sql: calibration_after_status
+  cost_breakdown:
+    description: JSONB column. Stores the financial details of the maintenance activity, including labor, parts, and total cost.
+    sql: cost_breakdown
+  downtime_impact_hours:
+    description: 'TEXT. The total downtime in hours caused by the maintenance activity. Example: 4.0 hours.'
+    sql: downtime_impact_hours
+  duration_minutes:
+    description: 'TEXT. The duration of the maintenance activity in minutes. Example: 180 min.'
+    sql: duration_minutes
+  external_vendor_involved:
+    description: 'TEXT. The name of the external vendor, if any, involved in the maintenance. Possible values: ABB Inc., B&R Automation, KUKA Robotics, SICK AG.'
+    sql: external_vendor_involved
+  log_timestamp:
+    description: 'TEXT. The timestamp when the maintenance log was created, formatted as YYYY.MM.DD HH24:MI:SS. Example: 2025.08.10 14:30:00.'
+    sql: log_timestamp
+  next_maintenance_due:
+    description: 'TEXT. The date for the next scheduled maintenance, formatted as YYYY.MM.DD. Example: 2026.02.10.'
+    sql: next_maintenance_due
+  preventive_measures_suggested:
+    description: 'TEXT. Any suggested measures to prevent future occurrences. **NULL indicates no specific measures were suggested, common for routine PMs.**. Example: Monitor J2 motor temperature for next 100 operating hours..'
+    sql: preventive_measures_suggested
+  robot_op_hours_at_maint:
+    description: 'text. The total operating hours of the robot at the time of maintenance. Example: 15234.5.'
+    sql: robot_op_hours_at_maint
+  signoff_timestamp:
+    description: 'TEXT. The timestamp when the work order was signed off, formatted as YYYY.MM.DD HH24:MI:SS. Example: 2025.08.10 18:00:00.'
+    sql: signoff_timestamp
+  software_update_version:
+    description: 'TEXT. The software version installed during an update. Possible values: 2.0, 2.1, 7.1.2.'
+    sql: software_update_version
+  cost_breakdown_labor_usd:
+    description: 'REAL. The labor cost of the maintenance in USD. Example: 170.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cost_breakdown, 'labor_usd')
+  cost_breakdown_parts_usd:
+    description: 'REAL. The cost of spare parts used in the maintenance in USD. Example: 4500.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cost_breakdown, 'parts_usd')
+  cost_breakdown_total_usd:
+    description: 'REAL. The total cost of the maintenance (labor + parts) in USD. Example: 4670.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(cost_breakdown, 'total_usd')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct maintenance_logs public identity values.
+    label: maintenance_logs Count
+    sql: ${robot_fault_prediction_large_public__maintenance_logs.work_order_tag}

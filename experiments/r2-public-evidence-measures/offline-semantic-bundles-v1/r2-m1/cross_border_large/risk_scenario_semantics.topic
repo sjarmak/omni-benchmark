@@ -1,0 +1,7 @@
+base_view: cross_border_large_public__risk_scenario
+label: Risk_Scenario
+description: All columns of the public table Risk_Scenario.
+fields:
+- cross_border_large_public__risk_scenario.*
+joins: {}
+ai_context: This topic models no cross-table joins.

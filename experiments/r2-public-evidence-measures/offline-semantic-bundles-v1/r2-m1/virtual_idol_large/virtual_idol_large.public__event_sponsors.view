@@ -1,0 +1,105 @@
+label: event_sponsors
+description: All columns of the public table event_sponsors.
+catalog: virtual_idol_large
+schema: public
+table_name: event_sponsors
+dimensions:
+  contract_date:
+    description: 'DATE. The date the sponsorship contract was signed. Example: 2025-07-15.'
+    sql: '"CONTRACT_DATE"'
+  coupon_code_redemptions:
+    description: Number of times the sponsor's coupon code was redeemed.
+    sql: '"CouponCodeRedemptions"'
+  duration_of_sponsorship_days:
+    description: 'BIGINT. The duration of the sponsorship agreement in days. Example: 90.'
+    sql: '"DURATION_OF_SPONSORSHIP_days"'
+  date_modified:
+    description: 'TIMESTAMP. The timestamp when this sponsorship record was last modified. Example: 2025-08-01 14:30:00.'
+    sql: '"DateModified"'
+  event_identifier:
+    description: 'BIGINT. Foreign key referencing the event being sponsored. FK to eventsandclub(events_reg). Example: 1.'
+    sql: '"Event_Identifier"'
+  exclusivity_for_industry:
+    description: 'BOOLEAN. A flag indicating if the sponsor has exclusivity for their industry at this event. Example: true.'
+    sql: '"ExclusivityForIndustry"'
+  lead_generation_count:
+    description: Number of potential leads generated for the sponsor during the event.
+    sql: '"LEAD_GENERATION_COUNT"'
+  logo_placement_details:
+    description: 'TEXT. A description of where the sponsor''s logo will be placed. Example: Main stage banner, website header.'
+    sql: '"LogoPlacementDetails"'
+  modified_by:
+    description: 'TEXT. The user or process that last modified the record. Example: sales_manager.'
+    sql: '"MODIFIED_BY"'
+  notes:
+    description: 'TEXT. General notes about the sponsorship. **NULL means no additional notes were recorded.** Example: Sponsor requested prime logo placement..'
+    sql: '"NOTES"'
+  number_of_complimentary_tickets:
+    description: 'BIGINT. The number of free tickets given to the sponsor. Example: 10.'
+    sql: '"NumberOfComplimentaryTickets"'
+  on_site_personnel_count:
+    description: 'BIGINT. The number of on-site staff from the sponsor at the event. **NULL means no on-site personnel or the number is not tracked.** Example: 5.'
+    sql: '"OnSitePersonnelCount"'
+  post_event_report_provided:
+    description: 'BOOLEAN. A flag indicating whether a post-event report was provided to the sponsor. Example: false.'
+    sql: '"POST_EVENT_REPORT_PROVIDED"'
+  promotional_materials_provided:
+    description: 'TEXT ARRAY. A list of promotional materials provided by the sponsor. Example: {"Banners","Flyers"}.'
+    sql: '"PromotionalMaterialsProvided"'
+  renewal_intent:
+    description: 'BOOLEAN. A flag indicating if the sponsor has expressed intent to renew for future events. **NULL means intent is unknown.** Example: true.'
+    sql: '"RenewalIntent"'
+  shoutout_script:
+    description: 'TEXT. The script for any verbal acknowledgements or ''shoutouts'' for the sponsor. **NULL means no specific script is provided.** Example: We''d like to give a special thanks to TechCorp for making this event possible!.'
+    sql: '"SHOUTOUT_SCRIPT"'
+  social_media_mentions_count:
+    description: Count of social media mentions related to the sponsor.
+    sql: '"SOCIAL_MEDIA_MENTIONS_COUNT"'
+  special_requests:
+    description: 'TEXT. Any special requests made by the sponsor. **NULL means no special requests were made.** Example: Access to VIP lounge for their staff..'
+    sql: '"SPECIAL_REQUESTS"'
+  sponsor_identifier:
+    description: 'BIGINT. Foreign key referencing the sponsor. FK to sponsors(SPONSOR_ID). Example: 1.'
+    sql: '"Sponsor_Identifier"'
+  sponsorship_amount_dollar:
+    description: 'REAL. The monetary value of the sponsorship in USD. Example: 20000.'
+    sql: '"SponsorshipAmount_dollar"'
+  activation_plan:
+    description: 'TEXT. A description of the sponsor''s marketing activation plan for the event. **NULL means no specific plan was provided.** Example: Interactive booth with product demos and giveaways..'
+    sql: activation_plan
+  booth_location:
+    description: 'TEXT. The location of the sponsor''s booth at the event venue. **NULL means the sponsor does not have a physical booth.** Example: A1.'
+    sql: booth_location
+  brand_awareness_lift_percent:
+    description: 'REAL. The measured percentage increase in brand awareness for the sponsor. **NULL means this metric was not measured.** Example: 15.5.'
+    sql: brand_awareness_lift_percent
+  date_created:
+    description: 'TIMESTAMP. The timestamp when this sponsorship record was created. Example: 2025-07-15 09:00:00.'
+    sql: date_created
+  event_sponsor_id:
+    description: 'BIGINT. Unique identifier for the event sponsorship record. PK. Example: 1.'
+    sql: event_sponsor_id
+  liaison_officer:
+    description: 'TEXT. The primary contact person for this sponsorship. Example: John Doe.'
+    sql: liaison_officer
+  payment_status:
+    description: 'TEXT. The current status of the sponsorship payment. Possible values: Paid, Pending. Example: Paid.'
+    sql: payment_status
+  sponsor_satisfaction_score:
+    description: 'REAL. The sponsor''s satisfaction score on a scale (e.g., 1-10). **NULL means the score has not been collected yet.** Example: 9.5.'
+    sql: sponsor_satisfaction_score
+  sponsorship_level:
+    description: 'TEXT. The tier of sponsorship. Possible values: Platinum, Gold, Silver. Example: Platinum.'
+    sql: sponsorship_level
+  status:
+    description: 'TEXT. The current status of the sponsorship. Possible values: Active, Expired, Cancelled. Example: Active.'
+    sql: status
+  website_link_clicks:
+    description: Number of clicks driven to the sponsor's website.
+    sql: website_link_clicks
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct event_sponsors public identity values.
+    label: event_sponsors Count
+    sql: ${virtual_idol_large_public__event_sponsors.event_sponsor_id}

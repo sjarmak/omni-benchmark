@@ -1,0 +1,60 @@
+label: cdn_traffic_spikes
+description: All columns of the public table cdn_traffic_spikes.
+catalog: fake_account_large
+schema: public
+table_name: cdn_traffic_spikes
+dimensions:
+  spike_code:
+    description: TEXT. Unique ID for the detected traffic anomaly.
+    sql: '"Spike_CODE"'
+  bandwidth_cost_surcharge_usd:
+    description: 'REAL. Extra cost incurred due to the spike. Example: 50.0.'
+    sql: bandwidth_cost_surcharge_usd
+  bot_traffic_percentage:
+    description: 'REAL. Percentage of requests identified as bots. Example: 50.0.'
+    sql: bot_traffic_percentage
+  cache_miss_burst_rate:
+    description: 'REAL. Rate of cache misses during the event. Example: 50.0.'
+    sql: cache_miss_burst_rate
+  ddos_attack_signature:
+    description: 'TEXT. Type of attack if malicious (e.g., SYN Flood). Unique values: SYN_FLOOD, UDP_AMP, L7_HTTP, NONE.'
+    sql: ddos_attack_signature
+  duration_sec:
+    description: 'INTEGER. Length of the traffic surge. Example: 50.'
+    sql: duration_sec
+  edge_metric_ref:
+    description: TEXT. Reference to the daily edge report.
+    sql: edge_metric_ref
+  geo_concentration_country:
+    description: 'TEXT. Country code if traffic was highly localized. **NULL means Distributed/Global.** Unique values: CN, RU, US, BR.'
+    sql: geo_concentration_country
+  http_503_error_count:
+    description: 'INTEGER. Service Unavailable errors served. Example: 50.'
+    sql: http_503_error_count
+  mitigation_auto_trigger:
+    description: 'BOOLEAN. True if auto-mitigation systems activated. Possible values: True, False.'
+    sql: mitigation_auto_trigger
+  origin_latency_peak_ms:
+    description: 'INTEGER. Max latency to origin server during spike. Example: 500.'
+    sql: origin_latency_peak_ms
+  peak_rps:
+    description: 'INTEGER. Maximum Requests Per Second during spike. Example: 5000.'
+    sql: peak_rps
+  scrubbing_center_route:
+    description: 'TEXT. Route ID if traffic diverted to scrubber. **NULL means No diversion.** Unique values: SCRUB-A, SCRUB-B.'
+    sql: scrubbing_center_route
+  spike_start_offset_sec:
+    description: 'INTEGER. Second of the day when spike started. Example: 50.'
+    sql: spike_start_offset_sec
+  traffic_volume_gb:
+    description: 'REAL. Total data transferred during the spike. Example: 50.'
+    sql: traffic_volume_gb
+  unique_source_ip_count:
+    description: 'INTEGER. Number of distinct IPs involved. Example: 2000.'
+    sql: unique_source_ip_count
+  user_agent_entropy:
+    description: 'REAL. Measure of randomness in User-Agent strings. Example: 3.5.'
+    sql: user_agent_entropy
+  waf_block_count:
+    description: 'INTEGER. Requests blocked by Web Application Firewall. Example: 50.'
+    sql: waf_block_count

@@ -1,0 +1,90 @@
+label: SupplyItemCatalogue
+description: All columns of the public table SupplyItemCatalogue.
+catalog: disaster_relief_large
+schema: public
+table_name: SupplyItemCatalogue
+dimensions:
+  avg_weight_kg:
+    description: REAL. Average net weight per unit in kilograms.
+    sql: '"AvgWeightKg"'
+  barcode:
+    description: TEXT. EAN or UPC code (13 digits).
+    sql: '"BARCODE"'
+  cost_per_unit:
+    description: REAL. Latest unit cost in the stated currency.
+    sql: '"CostPerUnit"'
+  currency:
+    description: TEXT. ISO 4217 currency code (e.g., USD).
+    sql: '"Currency"'
+  description:
+    description: TEXT. Narrative description or usage notes. May be NULL for standard items.
+    sql: '"Description"'
+  hazardous_flag:
+    description: BOOLEAN. TRUE if classified as hazardous (e.g., flammable, chemical).
+    sql: '"HAZARDOUS_FLAG"'
+  is_active:
+    description: BOOLEAN. FALSE when the item is discontinued in the system.
+    sql: '"IS_ACTIVE"'
+  item_category:
+    description: 'TEXT. Logical grouping of the item. Possible values: Food, Water, Medical, Shelter, Sanitation, Tools.'
+    sql: '"ITEM_CATEGORY"'
+  item_name:
+    description: TEXT. Descriptive product name (e.g., “Durable Blanket”).
+    sql: '"Item_Name"'
+  last_price_update:
+    description: DATE. Date the unit price was last verified.
+    sql: '"LAST_PRICE_UPDATE"'
+  lead_time_days:
+    description: INT. Average supplier lead time (order to hub receipt) in days.
+    sql: '"Lead_Time_Days"'
+  manufacturer:
+    description: TEXT. Producing company or factory. May be NULL if manufacturer unknown for generic commodities.
+    sql: '"MANUFACTURER"'
+  notes:
+    description: TEXT. Free-form comments; may be NULL when no special remarks.
+    sql: '"NOTES"'
+  safety_stock:
+    description: INT. Buffer stock level for service-level protection.
+    sql: '"SAFETY_STOCK"'
+  sku_code:
+    description: TEXT. Internal stock-keeping unit code.
+    sql: '"SKU_Code"'
+  shelf_life_days:
+    description: INT. Guaranteed shelf life from manufacture under recommended storage.
+    sql: '"Shelf_Life_Days"'
+  updated_at:
+    description: TIMESTAMP. Last metadata update (UTC).
+    sql: '"UPDATED_at"'
+  version:
+    description: INT. Metadata version counter.
+    sql: '"VERSION"'
+  avg_volume_m3:
+    description: REAL. Average volume per unit in cubic metres. May be NULL when exact packaging not yet measured.
+    sql: '"avg_VOLUME_m3"'
+  created_at:
+    description: TIMESTAMP. Record creation timestamp (UTC).
+    sql: created_at
+  item_id:
+    description: VARCHAR(20). Unique catalogue identifier for the supply item. PK.
+    sql: '"itemID"'
+  pack_volume_m3_per_100units:
+    description: REAL. Packaging volume in cubic metres required for 100 units (e.g., 0.15).
+    sql: '"packVolume_m3_per_100units"'
+  price_band_usd_per_unit_range:
+    description: TEXT. Historical price range in USD per unit (e.g., 1.20-1.50).
+    sql: '"priceBand_USD_per_unit_range"'
+  reorder_point:
+    description: INT. Minimum on-hand quantity triggering automatic replenishment.
+    sql: reorder_point
+  storage_temp_celsius:
+    description: REAL. Recommended storage temperature in °C. May be NULL when ambient-stable.
+    sql: '"storageTempCelsius"'
+  supplier_name:
+    description: TEXT. Primary vendor for procurement.
+    sql: '"supplierNAME"'
+  temp_tolerance_c_range:
+    description: TEXT. Acceptable storage temperature band in °C (e.g., -10–+40).
+    sql: '"tempTolerance_C_range"'
+  unit:
+    description: TEXT. Base trading/stocking unit (box, crate, kit, etc.).
+    sql: unit

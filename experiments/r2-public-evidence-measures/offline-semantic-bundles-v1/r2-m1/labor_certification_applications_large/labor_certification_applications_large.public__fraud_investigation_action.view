@@ -1,0 +1,72 @@
+label: FraudInvestigationAction
+description: All columns of the public table FraudInvestigationAction.
+catalog: labor_certification_applications_large
+schema: public
+table_name: FraudInvestigationAction
+dimensions:
+  fia_code:
+    description: 'TEXT. Unique identifier for fraud investigation action record. Example: FIA-1A2B3C.'
+    sql: '"FIA_code"'
+  action_cost_usd:
+    description: 'REAL. Estimated cost of investigation action in USD. Example: 1500.'
+    sql: '"actionCost_USD"'
+  action_date:
+    description: 'TIMESTAMP. Date when investigation action was taken. Example: 2024-01-01 12:00:00.'
+    sql: '"actionDate"'
+  action_status:
+    description: 'TEXT. Current status of the investigation action. Unique values: Initiated, In Progress, Completed, On Hold, Cancelled.'
+    sql: '"actionStatus"'
+  action_type:
+    description: 'TEXT. Type of investigative action taken. Unique values: Document Request, Site Visit, Interview, Background Check, Financial Audit, Referral to ICE, Case Hold, Evidence Preservation.'
+    sql: '"actionType"'
+  completion_date:
+    description: 'TIMESTAMP. Date when action was completed. **NULL means Action not yet completed.** Example: 2024-01-01 12:00:00.'
+    sql: '"completionDate"'
+  cooperation_level:
+    description: 'TEXT. Level of cooperation from subjects. Unique values: Full Cooperation, Partial Cooperation, Non-Cooperative, Hostile, No Contact.'
+    sql: '"cooperationLevel"'
+  evidence_collected_ct:
+    description: 'INTEGER. Number of evidence items collected. Example: 5.'
+    sql: '"evidenceCollected_ct"'
+  findings_clear_case_flag:
+    description: 'BOOLEAN. Indicates if findings clear the case of fraud. Possible values: True, False.'
+    sql: '"findingsClearCase_flag"'
+  findings_confirm_fraud_flag:
+    description: 'BOOLEAN. Indicates if findings confirm fraud suspicions. Possible values: True, False.'
+    sql: '"findingsConfirmFraud_flag"'
+  fraud_ref:
+    description: TEXT. Foreign key reference to CaseFraudIndicator table.
+    sql: fraud_ref
+  hours_expended:
+    description: 'REAL. Hours spent on this investigation action. **NULL means Time tracking not completed.** Example: 8.'
+    sql: '"hoursExpended"'
+  investigation_priority:
+    description: 'TEXT. Priority level assigned to investigation. Unique values: Critical, High, Medium, Low, Routine.'
+    sql: '"investigationPriority"'
+  investigator_assigned:
+    description: TEXT. ID or name of assigned investigator.
+    sql: '"investigatorAssigned"'
+  referral_agency:
+    description: 'TEXT. Agency to which referral was made. Unique values: ICE, DOJ, FBI, State AG, DOL, None.'
+    sql: '"referralAgency"'
+  referral_made_flag:
+    description: 'BOOLEAN. Indicates if referral to other agency was made. Possible values: True, False.'
+    sql: '"referralMade_flag"'
+  report_generated_flag:
+    description: 'BOOLEAN. Indicates if formal report was generated. Possible values: True, False.'
+    sql: '"reportGenerated_flag"'
+  subpoena_issued_flag:
+    description: 'BOOLEAN. Indicates if subpoena was issued. Possible values: True, False.'
+    sql: '"subpoenaIssued_flag"'
+  supervisor_review_flag:
+    description: 'BOOLEAN. Indicates if supervisor review was completed. Possible values: True, False.'
+    sql: '"supervisorReview_flag"'
+  witnesses_interviewed_ct:
+    description: 'INTEGER. Number of witnesses interviewed. Example: 2.'
+    sql: '"witnessesInterviewed_ct"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct FraudInvestigationAction public identity values.
+    label: FraudInvestigationAction Count
+    sql: ${labor_certification_applications_large_public__fraud_investigation_action.fia_code}

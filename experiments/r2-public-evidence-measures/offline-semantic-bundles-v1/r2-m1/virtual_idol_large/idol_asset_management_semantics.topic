@@ -1,0 +1,9 @@
+base_view: virtual_idol_large_public__idol_asset_management
+label: idol_asset_management
+description: All columns of the public table idol_asset_management.
+fields:
+- virtual_idol_large_public__idol_asset_management.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,54 @@
+label: wage_history
+description: All columns of the public table wage_history.
+catalog: labor_certification_applications_large
+schema: public
+table_name: wage_history
+dimensions:
+  cola_pct:
+    description: 'REAL. Cost-of-Living Adjustment applied to the wage schedule. **NULL means COLA not negotiated or data unavailable.** Example: 4.49.'
+    sql: '"COLA_pct"'
+  wage_to_real:
+    description: 'REAL. Maximum wage figure exactly as reported in the source (no unit conversion). Example: 214614.6.'
+    sql: '"WAGE_TO_real"'
+  wage_code:
+    description: 'TEXT. Unique identifier for this wage-history record. PK. Example: WAGE00002.'
+    sql: '"WAGE_code"'
+  confidence_pct:
+    description: 'REAL. Analyst certainty (0–100) in accuracy of the wage data. Example: 73.61.'
+    sql: confidence_pct
+  effective_day:
+    description: 'DATE. First day the wage rates in this record became effective. Example: 2021-06-21.'
+    sql: '"effectiveDAY"'
+  inflation_ref_idx:
+    description: 'REAL. CPI or inflation index used as reference for COLA calculations. Example: 191.7.'
+    sql: '"inflationRef_idx"'
+  meta_pad1:
+    description: 'TEXT. Payroll classification tag. Possible values: Exempt, Non-exempt, Hourly, Salary. Example: Exempt.'
+    sql: '"metaPad1"'
+  meta_pad2:
+    description: 'TEXT. Source system for this wage record. Possible values: BLS, Company Survey, MarketBench, Glassdoor, LinkedIn Insights. **NULL means source unknown or blended.** Example: LinkedIn Insights.'
+    sql: '"metaPad2"'
+  meta_pad3:
+    description: 'TEXT. Data-quality status. Possible values: Reviewed, Pending, Draft, Validated. Example: Draft.'
+    sql: '"metaPad3"'
+  percentile50:
+    description: 'REAL. 50th-percentile (median) wage. Example: 162 475.'
+    sql: percentile50
+  percentile75:
+    description: 'REAL. 75th-percentile wage. Example: 170 598.75.'
+    sql: percentile75
+  percentile90:
+    description: 'REAL. 90th-percentile wage. Example: 178 722.5.'
+    sql: percentile90
+  reasoning_blob:
+    description: 'TEXT. Analyst notes or provenance comments. Example: Synthetic demo data.'
+    sql: '"reasoningBlob"'
+  time_window:
+    description: 'TEXT. Accounting or reporting window for this wage (e.g., fiscal year, calendar quarter). Examples: FY-2024, Q2-2025.'
+    sql: '"timeWindow"'
+  track_ref:
+    description: 'TEXT. Foreign-key to prevailing_wage.trackNo identifying the wage track. Example: 823.'
+    sql: track_ref
+  wage_unit_pretty:
+    description: TEXT. Human-readable formatted display of the wage unit (e.g., 'Per Hour', 'Per Year', 'Per Month') for presentation purposes. Contains NULL when wage unit display format is not defined or wage data entry is incomplete.
+    sql: '"wageUnit_pretty"'

@@ -1,0 +1,102 @@
+label: customer_communication_logs
+description: All columns of the public table customer_communication_logs.
+catalog: reverse_logistics_large
+schema: public
+table_name: customer_communication_logs
+dimensions:
+  automated_response_used:
+    description: 'TEXT. Indicates if an automated response was used. Possible values: Yes, No.'
+    sql: '"AUTOMATED_RESPONSE_USED"'
+  first_contact_resolution:
+    description: 'BOOLEAN. Indicates if the issue was resolved in this single communication. Possible values: True, False.'
+    sql: '"FIRST_CONTACT_RESOLUTION"'
+  log_id:
+    description: 'BIGINT. Unique identifier for the communication log entry. PK. Example: 7000.'
+    sql: '"LogID"'
+  sentiment_score:
+    description: 'REAL. A score from -1.0 to 1.0 indicating the sentiment of the communication. Example: 0.59.'
+    sql: '"SentimentScore"'
+  transcript_available:
+    description: 'BOOLEAN. Indicates if a transcript is available. Example: True.'
+    sql: '"TRANSCRIPT_AVAILABLE"'
+  archived_status:
+    description: 'BIGINT. A flag indicating if the log is archived (0 for no, 1 for yes). Example: 0.'
+    sql: archived_status
+  audit_trail_log:
+    description: 'JSONB. A JSON object with an audit trail for the log entry. Example: {user: system, action: create_log}.'
+    sql: audit_trail_log
+  call_duration_seconds:
+    description: 'BIGINT. The duration of the communication in seconds. **NULL means the communication was not a phone call.** Example: 561.0.'
+    sql: call_duration_seconds
+  case_reference_number:
+    description: 'TEXT. A reference number for the associated case. Example: CASE-IVAHN2HO.'
+    sql: case_reference_number
+  channel:
+    description: 'TEXT. The channel used for the communication. Possible values: Email, Phone, Chat.'
+    sql: channel
+  communication_priority:
+    description: 'TEXT. The priority level of the communication. Possible values: Normal, High, Low.'
+    sql: communication_priority
+  communication_timestamp:
+    description: 'TIMESTAMP. The exact date and time the communication occurred. Example: 2025-03-18 03:25:35.'
+    sql: communication_timestamp
+  contact_reason:
+    description: 'TEXT. The primary reason for the customer contact. Possible values: Return Status, Product Quality, Refund Inquiry, Warranty Claim, Shipping Issue, Account Question.'
+    sql: contact_reason
+  customer_effort_score:
+    description: 'REAL. A score indicating how much effort the customer had to exert. **NULL means this survey was not offered or completed.** Example: 3.7.'
+    sql: customer_effort_score
+  customer_satisfaction_rating:
+    description: 'BIGINT. A 1-5 star rating provided by the customer. **NULL means the customer did not provide a rating.** Example: 1.0.'
+    sql: customer_satisfaction_rating
+  data_privacy_consent_given:
+    description: 'BOOLEAN. Indicates if the customer gave consent regarding data privacy. Possible values: True, False.'
+    sql: data_privacy_consent_given
+  direction:
+    description: 'TEXT. The direction of the communication. Possible values: Inbound, Outbound.'
+    sql: direction
+  employee_handler_id:
+    description: 'BIGINT. The ID of the employee who handled the communication. FK to employees.EMPLOYEE_ID. Example: 1011.'
+    sql: employee_handler_id
+  escalation_flag:
+    description: 'TEXT. A flag indicating if the communication resulted in an escalation. Example: No.'
+    sql: escalation_flag
+  follow_up_required:
+    description: 'BOOLEAN. Indicates if a follow-up action is required. Possible values: True, False.'
+    sql: follow_up_required
+  issue_type_tag:
+    description: 'TEXT. A tag categorizing the issue. Possible values: Logistics, Quality, Billing, Technical, Account.'
+    sql: issue_type_tag
+  language_of_communication:
+    description: 'TEXT. The language used in the communication. Possible values: English, Spanish.'
+    sql: language_of_communication
+  log_entry_date:
+    description: 'DATE. The date the log was entered into the system. Example: 2025-09-06.'
+    sql: log_entry_date
+  logged_customer_profile:
+    description: 'TEXT. The profile number of the customer involved in the communication. FK to customers.profilenum. Example: CUS00074.'
+    sql: logged_customer_profile
+  notes_for_next_agent:
+    description: 'TEXT. Notes left by the agent for the next agent who handles the case. **NULL means no specific notes were left or the issue was resolved.** Example: Technical issue, requires Tier 2 support..'
+    sql: notes_for_next_agent
+  recording_url:
+    description: 'TEXT. A URL to the call recording. **NULL means the communication was not a phone call or was not recorded.** Example: https://recordings.example.com/PoFDzHQRtkU0.mp3.'
+    sql: recording_url
+  related_order_txn:
+    description: 'TEXT. The transaction number of a related order. Example: ORD84865.'
+    sql: related_order_txn
+  resolution_status:
+    description: 'TEXT. The status of the issue at the end of the communication. Possible values: Resolved, Pending Customer, Escalated, Needs Follow-up.'
+    sql: resolution_status
+  summary_of_communication:
+    description: 'TEXT. A brief, one-line summary of the communication''s purpose. Example: Follow-up on case 13126..'
+    sql: summary_of_communication
+  update_timestamp:
+    description: 'TIMESTAMP. The timestamp of the last update to this log entry. Example: 2025-09-08 11:50:26.'
+    sql: update_timestamp
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct customer_communication_logs public identity values.
+    label: customer_communication_logs Count
+    sql: ${reverse_logistics_large_public__customer_communication_logs.log_id}

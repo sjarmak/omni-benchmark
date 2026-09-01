@@ -1,0 +1,102 @@
+label: FuelingAndChargingEvent
+description: All columns of the public table FuelingAndChargingEvent.
+catalog: polar_equipment_large
+schema: public
+table_name: FuelingAndChargingEvent
+dimensions:
+  ambient_temp_c:
+    description: 'REAL. Ambient temperature at the site (°C). Example: 28.4.'
+    sql: '"ambientTemp_C"'
+  avg_power_w:
+    description: 'REAL. Average charging power (W). **NULL means fueling session.** Example: 158000.'
+    sql: '"avgPower_W"'
+  battery_power_link:
+    description: 'BIGINT. Linked battery pack ID used during charging; references PowerBattery(PWR_BATT_ID). **NULL means the event is a liquid/gas fueling event (no battery link).** Example: 1042.'
+    sql: battery_power_link
+  charge_curr_a:
+    description: 'REAL. Charging current (A). **NULL means fueling session.** Example: 312.5.'
+    sql: '"chargeCurr_A"'
+  charge_volt_v:
+    description: 'REAL. Charging voltage (V). **NULL means fueling session.** Example: 750.0.'
+    sql: '"chargeVolt_V"'
+  cost_usd:
+    description: 'REAL. Cost of the session in USD. Example: 87.42.'
+    sql: cost_usd
+  doc_ref:
+    description: 'TEXT. External document or reference ID for the event. Example: EVT-7123.'
+    sql: '"docRef"'
+  duration_s:
+    description: 'BIGINT. Session duration in seconds. Example: 3600.'
+    sql: duration_s
+  end_soc_pct:
+    description: 'REAL. Battery state of charge at session end (%). **NULL means fueling session.** Example: 78.4.'
+    sql: '"endSOC_pct"'
+  energy_in_k_wh:
+    description: 'REAL. Energy delivered to the battery (kWh). **NULL means fueling session (non-electric).** Example: 124.5.'
+    sql: '"energyIn_kWh"'
+  event_time:
+    description: 'TIMESTAMP. When the fueling/charging session occurred (yyyy/mm/dd hh:mm:ss). Example: 2025/07/05 20:00:00.'
+    sql: '"eventTime"'
+  for_equip_event:
+    description: 'TEXT. Equipment code associated with the event; references Equipment(EQUIP_CODE). Example: PE593707.'
+    sql: for_equip_event
+  fuel_charge_seq:
+    description: BIGSERIAL. Surrogate primary key for the event row. PK.
+    sql: '"fuelChargeSeq"'
+  fuel_mass_kg:
+    description: 'REAL. Mass of fuel dispensed (kg), computed with typical density. **NULL means Electric session.** Example: 106.89.'
+    sql: '"fuelMass_kg"'
+  fuel_type:
+    description: 'TEXT. Type of fueling/energy session. Possible values (from file): Diesel, Gasoline, CNG, Hydrogen, Electric. Example: Electric.'
+    sql: '"fuelType"'
+  fuel_volume_l:
+    description: 'REAL. Liquid/gaseous fuel volume dispensed (L). **NULL means Electric session (no liquid/gas fuel).** Example: 128.4.'
+    sql: '"fuelVolume_L"'
+  gps_lat_deg:
+    description: 'REAL. Latitude (WGS84). Example: 35.689245.'
+    sql: '"gpsLat_deg"'
+  gps_lon_deg:
+    description: 'REAL. Longitude (WGS84). Example: 139.692317.'
+    sql: '"gpsLon_deg"'
+  leak_detected:
+    description: 'TEXT. Whether any leak was detected. For Electric sessions we record No. Possible values (from file): Yes, No. Example: No.'
+    sql: '"leakDetected"'
+  meter_end_k_wh:
+    description: 'REAL. Charger meter reading at end (kWh). **NULL means fueling session.** Example: 12575.3.'
+    sql: '"meterEnd_kWh"'
+  meter_start_k_wh:
+    description: 'REAL. Charger meter reading at start (kWh). **NULL means fueling session.** Example: 12450.8.'
+    sql: '"meterStart_kWh"'
+  notes:
+    description: 'TEXT. Session note/remark. Example: DC fast charge session; cable temp within limits.'
+    sql: notes
+  nozzle_id:
+    description: 'TEXT. Pump nozzle identifier. **NULL means Electric session (no nozzle).** Example: Nozzle-7.'
+    sql: '"nozzleID"'
+  op_name:
+    description: 'TEXT. Operator or team handling the session. Possible values (from file): Ops Team A, Ops Team B, Ops Team C, Field Tech D, Shift Lead E. Example: Ops Team C.'
+    sql: '"opName"'
+  peak_power_w:
+    description: 'REAL. Peak charging power (W). **NULL means fueling session.** Example: 223000.'
+    sql: '"peakPower_W"'
+  post_check_status:
+    description: 'TEXT. Post-operation status. Possible values (from file): OK, Needs Service, Cleaned. Example: Needs Service.'
+    sql: '"postCheckStatus"'
+  pre_check_status:
+    description: 'TEXT. Pre-operation status. Possible values (from file): OK, Minor Issue, Bypassed. Example: OK.'
+    sql: '"preCheckStatus"'
+  safety_observer:
+    description: 'TEXT. Safety observer on duty. Possible values (from file): Observer-01, Observer-02, Observer-03, Observer-04. Example: Observer-02.'
+    sql: '"safetyObserver"'
+  spill_ml:
+    description: 'REAL. Spill quantity (mL). For Electric sessions this is recorded as 0.0. Example: 0.0.'
+    sql: spill_ml
+  start_soc_pct:
+    description: 'REAL. Battery state of charge at session start (%). **NULL means fueling session.** Example: 32.1.'
+    sql: '"startSOC_pct"'
+  ticket_no:
+    description: 'TEXT. Station ticket or receipt number. Example: TKT-493201.'
+    sql: '"ticketNo"'
+  wind_mps:
+    description: 'REAL. Wind speed (m/s). Example: 3.7.'
+    sql: wind_mps

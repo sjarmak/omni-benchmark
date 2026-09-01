@@ -1,0 +1,15 @@
+base_view: solar_panel_large_public__alert
+label: Alerts
+description: Maintenance and replacement priority alerts.
+fields:
+- solar_panel_large_public__alert.*
+- solar_panel_large_public__panel_models.*
+- solar_panel_large_public__plant_record.*
+- solar_panel_large_public__plants.*
+joins:
+  solar_panel_large_public__plant_record:
+    solar_panel_large_public__plants:
+      solar_panel_large_public__panel_models: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields critical_alert, high_maintenance_priority, high_replacement_priority rather than reconstructing their formulas.'

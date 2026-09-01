@@ -1,0 +1,78 @@
+label: PrivacyTrainingProgram
+description: All columns of the public table PrivacyTrainingProgram.
+catalog: cross_border_large
+schema: public
+table_name: PrivacyTrainingProgram
+dimensions:
+  avg_completion_rate:
+    description: 'REAL. Average completion rate Typical range: 0 to 100.'
+    sql: '"AVG_COMPLETION_RATE"'
+  content_url:
+    description: TEXT. URL to training content/platform
+    sql: '"CONTENT_URL"'
+  delivery_mode:
+    description: 'TEXT. How training is delivered Possible values: E-Learning, Classroom, Webinar, Workshop, Blended.'
+    sql: '"DELIVERY_MODE"'
+  duration_hours:
+    description: 'REAL. Duration in hours Typical range: 0.5 to 40.'
+    sql: '"DURATION_HOURS"'
+  language:
+    description: 'TEXT. Primary language of training Possible values: English, German, French, Spanish, Mandarin, Japanese.'
+    sql: '"LANGUAGE"'
+  pass_mark_pct:
+    description: BIGINT. Minimum pass mark percentage
+    sql: '"PASS_MARK_PCT"'
+  program_name:
+    description: 'TEXT. Name of the training program Possible values: GDPR Fundamentals, Data Breach Response, Privacy by Design, Cross-Border Transfers, Data Subject Rights, DPIA Methodology, Vendor Privacy Assessment, Security Awareness.'
+    sql: '"PROGRAM_NAME"'
+  provider:
+    description: 'TEXT. Training content provider Possible values: Internal, IAPP, OneTrust, Coursera, LinkedIn Learning, External Consultant.'
+    sql: '"PROVIDER"'
+  status:
+    description: 'TEXT. Program status Possible values: Active, Under Review, Deprecated, Draft.'
+    sql: '"STATUS"'
+  training_prog_id:
+    description: BIGINT. Primary key. Unique training program identifier
+    sql: '"TRAINING_PROG_ID"'
+  validity_months:
+    description: BIGINT. How long the certification remains valid (months)
+    sql: '"VALIDITY_MONTHS"'
+  avg_satisfaction_score:
+    description: 'REAL. Average satisfaction score (0-10) Typical range: 0 to 10.'
+    sql: avg_satisfaction_score
+  category:
+    description: 'TEXT. Training category Possible values: Mandatory, Role-Based, Specialist, Refresher.'
+    sql: category
+  certification_awarded:
+    description: BOOLEAN. Whether a certificate is awarded on completion Boolean flag (true/false).
+    sql: certification_awarded
+  cost_per_attendee_usd:
+    description: 'REAL. Cost per attendee in USD Typical range: 0 to 2000.'
+    sql: cost_per_attendee_usd
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  difficulty_level:
+    description: 'TEXT. Difficulty level Possible values: Beginner, Intermediate, Advanced, Expert.'
+    sql: difficulty_level
+  multi_language_available:
+    description: BOOLEAN. Whether available in multiple languages Boolean flag (true/false).
+    sql: multi_language_available
+  program_code:
+    description: TEXT. Program reference code
+    sql: program_code
+  renewal_reminder_days:
+    description: BIGINT. Days before expiry to send renewal reminder
+    sql: renewal_reminder_days
+  target_audience:
+    description: 'TEXT. Target audience for the training Possible values: All Staff, IT, Legal, HR, Management, DPO Team, Engineering, Customer Service.'
+    sql: target_audience
+  total_modules:
+    description: BIGINT. Number of modules in the program
+    sql: total_modules
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct PrivacyTrainingProgram public identity values.
+    label: PrivacyTrainingProgram Count
+    sql: ${cross_border_large_public__privacy_training_program.training_prog_id}

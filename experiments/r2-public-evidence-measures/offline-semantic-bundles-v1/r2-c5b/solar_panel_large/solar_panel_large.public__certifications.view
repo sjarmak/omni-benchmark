@@ -1,0 +1,51 @@
+label: certifications
+description: All columns of the public table certifications.
+catalog: solar_panel_large
+schema: public
+table_name: certifications
+dimensions:
+  cert_identifier:
+    description: 'TEXT. The official code or identifier used by the issuing body. Example: PVIP-1.'
+    sql: '"CERT_IDENTIFIER"'
+  cert_level:
+    description: 'TEXT. The level of the certification, if applicable (e.g., Associate, Professional). Possible values: Advanced, Associate, Awareness, Competent Person, Expert, Level 1, Master, Professional.'
+    sql: '"CERT_LEVEL"'
+  cert_code:
+    description: 'TEXT. Unique identifier for a specific certification. Example: CERT-01.'
+    sql: '"CertCode"'
+  description:
+    description: 'TEXT. A brief description of the certification''s scope and purpose. Example: Entry-level certification for solar PV installers..'
+    sql: '"DESCRIPTION"'
+  issuing_body:
+    description: 'TEXT. The organization or authority that issues the certification. Example: NABCEP.'
+    sql: '"IssuingBody"'
+  last_updated:
+    description: 'TIMESTAMP. Timestamp of the last modification to the certification record. Example: 2024-01-15 09:00:00.'
+    sql: '"LAST_UPDATED"'
+  renewal_cost:
+    description: 'REAL. The cost to renew the certification. Example: $250.00.'
+    sql: '"RENEWAL_COST"'
+  requires_cert_code:
+    description: 'TEXT. FK -> certifications.CertCode. The prerequisite certification required for this one. Possible values: CERT-01, CERT-02, CERT-03, CERT-04, CERT-08, CERT-09, CERT-17, CERT-18.'
+    sql: '"Requires_Cert_Code"'
+  category:
+    description: 'TEXT. The category of the certification (e.g., Technical, Safety). Possible values: Manufacturer Specific, Safety, Technical.'
+    sql: category
+  certification_name:
+    description: 'TEXT. The official name of the certification. Example: Certified Solar PV Installer.'
+    sql: certification_name
+  created_ts:
+    description: 'TIMESTAMP. Timestamp when the certification record was created. Example: 2019-01-15 09:00:00.'
+    sql: created_ts
+  is_renewable:
+    description: 'BOOLEAN. A flag indicating if the certification can be renewed. Possible values: False, True.'
+    sql: '"isRenewable"'
+  issuer_website:
+    description: 'TEXT. The website of the issuing body. Example: https://nabcep.org.'
+    sql: issuer_website
+  required_training_hours:
+    description: 'BIGINT. The number of training hours required for the certification. Possible values: 16, 20, 24, 32, 4, 40, 58, 6, 60, 8.'
+    sql: required_training_hours
+  validity_months:
+    description: 'BIGINT. The number of months the certification is valid before expiration. Possible values: 12, 2 years, 24, 24 Months, 3 years, 36, 36 Months, 4 years.'
+    sql: validity_months

@@ -1,0 +1,9 @@
+base_view: disaster_relief_large_public__shelter_core
+label: ShelterCore
+description: All columns of the public table ShelterCore.
+fields:
+- disaster_relief_large_public__shelter_core.*
+- disaster_relief_large_public__disaster_event_core.*
+joins:
+  disaster_relief_large_public__disaster_event_core: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

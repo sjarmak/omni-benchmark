@@ -1,0 +1,102 @@
+label: education_facilities
+description: All columns of the public table education_facilities.
+catalog: residential_data_large
+schema: public
+table_name: education_facilities
+dimensions:
+  academic_performance_score:
+    description: 'REAL. Academic performance rating on 0-100 scale. **NULL means performance assessment not conducted.**. Possible values: 78.5, 82.1, 89.3.'
+    sql: '"Academic_Performance_Score"'
+  computer_count:
+    description: 'BIGINT. Number of computers available for students. **NULL means computer inventory not tracked.**. Possible values: 120.0, 180.0, 450.0.'
+    sql: '"COMPUTER_count"'
+  classroom_count:
+    description: 'BIGINT. Number of classroom spaces. Possible values: 180, 20, 32, 35.'
+    sql: '"Classroom_Count"'
+  disability_accessible:
+    description: 'TEXT. Accessibility features for disabled students. **NULL means accessibility not assessed.**. Possible values: Yes.'
+    sql: '"DISABILITY_accessible"'
+  extracurricular_programs_count:
+    description: 'BIGINT. Number of extracurricular programs offered. Possible values: 12, 15, 45, 8.'
+    sql: '"EXTRACURRICULAR_programs_count"'
+  education_regional_zone:
+    description: 'TEXT. Regional zone identifier for facility location. FK to locations(regioncode). Possible values: Taguatinga, samambaia.'
+    sql: '"Education_Regional_Zone"'
+  education_zone_number:
+    description: 'BIGINT. Zone number within regional area. FK to locations(zonenum). Possible values: 315, 352.'
+    sql: '"Education_Zone_Number"'
+  electricity_reliability_percent:
+    description: 'REAL. Percentage of time electricity is available. **NULL means power reliability not monitored.**. Possible values: 88.7, 92.3, 95.1.'
+    sql: '"Electricity_Reliability_Percent"'
+  facility_id:
+    description: 'BIGSERIAL. Primary key identifier for education facility record. PK. Possible values: 1, 2, 3, 4.'
+    sql: '"Facility_ID"'
+  facility_type:
+    description: 'TEXT. Type of educational facility (school, university, vocational). Possible values: clinic, hospital, pharmacy, school, university, vocational.'
+    sql: '"Facility_Type"'
+  laboratory_count:
+    description: 'BIGINT. Number of laboratory facilities. Possible values: 35, 4, 6, 8.'
+    sql: '"LABORATORY_count"'
+  meal_program:
+    description: 'TEXT. School meal program availability. **NULL means meal program status not recorded.**. Possible values: Yes.'
+    sql: '"Meal_Program"'
+  playground_area_m2:
+    description: 'REAL. Playground and recreation area in square meters. **NULL means playground not available.**. Possible values: 1200.0, 2500.0, 8000.0.'
+    sql: '"Playground_Area_M2"'
+  scholarship_availability_percent:
+    description: 'REAL. Percentage of students eligible for scholarships. **NULL means scholarship data not tracked.**. Possible values: 15.5, 20.0, 25.0.'
+    sql: '"SCHOLARSHIP_availability_percent"'
+  student_capacity:
+    description: 'BIGINT. Maximum student enrollment capacity. **NULL means capacity not determined.**. Possible values: 15000.0, 500.0, 800.0.'
+    sql: '"STUDENT_capacity"'
+  student_teacher_ratio:
+    description: 'REAL. Ratio of students to teachers. **NULL means ratio not calculated.**. Possible values: 17.3, 18.0, 22.1.'
+    sql: '"STUDENT_teacher_ratio"'
+  teacher_count:
+    description: 'BIGINT. Number of teaching staff members. Possible values: 28, 42, 55, 680.'
+    sql: '"Teacher_Count"'
+  tuition_fee_monthly_brl:
+    description: 'REAL. Monthly tuition cost in Brazilian Real. **NULL means free education or fees not applicable.**. Possible values: 0.0, 250.0, 380.0.'
+    sql: '"Tuition_Fee_Monthly_BRL"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"Updated_At"'
+  water_access_quality:
+    description: 'BIGINT. Water access quality rating. **NULL means water quality not assessed.**. Possible values: 7.0, 8.0, 9.0.'
+    sql: '"WATER_access_quality"'
+  annual_budget_brl:
+    description: 'REAL. Annual operating budget in Brazilian Real. Possible values: 12500000.0, 15500000.0, 180000.0, 420000.0, 850000.0, 980000.0.'
+    sql: '"annual_budget_BRL"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: '"created_AT"'
+  current_enrollment:
+    description: 'BIGINT. Current number of enrolled students. **NULL means enrollment data not available.**. Possible values: 432.0, 756.0, 950.0.'
+    sql: '"current_ENROLLMENT"'
+  facility_name:
+    description: 'TEXT. Official name of educational institution. Possible values: Centro de Educacao Profissional, Clinica Popular da Tijuca, Colegio Particular Santos Dumont, Escola Estadual Dom Pedro II, Farmacia Drogasil Centro, Hospital Sao Camilo, Universidade Federal Fluminense.'
+    sql: '"facility_NAME"'
+  facility_area_m2:
+    description: 'REAL. Total facility area in square meters. Possible values: 3800.0, 45000.0, 5200.5, 6500.0.'
+    sql: '"facility_area_M2"'
+  graduation_rate_percent:
+    description: 'REAL. Percentage of students who successfully graduate. **NULL means graduation tracking not available.**. Possible values: 82.4, 87.2, 91.5.'
+    sql: '"graduation_rate_PERCENT"'
+  internet_speed_mbps:
+    description: 'REAL. Internet connection speed in megabits per second. Possible values: 100.0, 25.0, 50.5, 75.0.'
+    sql: '"internet_speed_MBPS"'
+  library_size_m2:
+    description: 'REAL. Library area in square meters. **NULL means library not present or area not measured.**. Possible values: 200.0, 2500.0, 450.0.'
+    sql: '"library_size_M2"'
+  security_level:
+    description: 'BIGINT. Security measures rating. Possible values: 6, 7, 8, 9.'
+    sql: '"security_LEVEL"'
+  transportation_service:
+    description: 'TEXT. Availability of student transportation services. **NULL means transportation status not documented.**. Possible values: Available, Limited.'
+    sql: '"transportation_SERVICE"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct education_facilities public identity values.
+    label: education_facilities Count
+    sql: ${residential_data_large_public__education_facilities.facility_id}

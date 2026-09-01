@@ -1,0 +1,105 @@
+label: fan_sentiment_analysis
+description: All columns of the public table fan_sentiment_analysis.
+catalog: virtual_idol_large
+schema: public
+table_name: fan_sentiment_analysis
+dimensions:
+  confidence_score:
+    description: 'REAL. The model''s confidence in the accuracy of the sentiment label. Example: 0.8229.'
+    sql: '"ConfidenceScore"'
+  data_processing_pipeline_id:
+    description: 'TEXT. The identifier for the data processing pipeline that handled this analysis. Example: d8aa633e-c499-4bcd-a5a5-1e1ca9779bb7.'
+    sql: '"DATA_PROCESSING_PIPELINE_ID"'
+  escalation_reason:
+    description: 'TEXT. The reason why the interaction was flagged for escalation. **NULL means no escalation was needed.** Example: Threatening language detected.'
+    sql: '"ESCALATION_REASON"'
+  fan_account_id:
+    description: 'TEXT. Foreign key referencing the fan account. FK to fans(user_registry). Example: FAN92697.'
+    sql: '"Fan_Account_ID"'
+  idol_mentioned:
+    description: 'TEXT. The ID of the virtual idol mentioned in the text. Example: VI6185.'
+    sql: '"IdolMentioned"'
+  interaction_activity_id:
+    description: 'TEXT. Foreign key referencing the specific interaction being analyzed. FK to interactions(activity_reg). Example: FI125333.'
+    sql: '"Interaction_Activity_ID"'
+  is_escalation_needed:
+    description: 'BOOLEAN. A flag indicating if the interaction needs to be escalated to a human moderator. Example: false.'
+    sql: '"IsEscalationNeeded"'
+  key_phrases:
+    description: 'TEXT ARRAY. A list of key phrases extracted from the text. Example: {support,digital,idol}.'
+    sql: '"KEY_PHRASES"'
+  language:
+    description: 'TEXT. The language of the analyzed text. Example: en.'
+    sql: '"Language"'
+  named_entity_recognition_results:
+    description: 'JSONB. A JSON object of named entities (like people, events) recognized in the text. Example: {"PERSON": "Ben Carter", "EVENT": "Live Concert"}.'
+    sql: '"NamedEntityRecognitionResults"'
+  product_mentioned:
+    description: 'TEXT. The name of the product mentioned in the text. **NULL means no product was mentioned.** Example: Plush Toy.'
+    sql: '"PRODUCT_MENTIONED"'
+  profanity_detected:
+    description: 'BOOLEAN. A flag indicating if profanity was detected in the text. Example: false.'
+    sql: '"PROFANITY_DETECTED"'
+  record_creation_date:
+    description: 'TIMESTAMP. The timestamp when this analysis record was created. Example: 2025/01/28 13:12.'
+    sql: '"RECORD_CREATION_DATE"'
+  related_sentiment_ids:
+    description: BIGINT ARRAY. A list of IDs of other related sentiment analysis records. **NULL means there are no related records.**
+    sql: '"RELATED_SENTIMENT_IDS"'
+  review_timestamp:
+    description: TIMESTAMP. The timestamp of the human review. **NULL means it has not been reviewed.**
+    sql: '"REVIEW_TIMESTAMP"'
+  reviewed_by:
+    description: 'TEXT. The ID of the moderator who reviewed the item. **NULL means it has not been reviewed by a human.** Example: MOD-007.'
+    sql: '"ReviewedBy"'
+  sentiment_score:
+    description: 'REAL. The numerical sentiment score, where positive is > 0, negative is < 0, and neutral is 0. Example: 0.882.'
+    sql: '"SENTIMENT_SCORE"'
+  sarcasm_detection_score:
+    description: 'REAL. A score indicating the likelihood of sarcasm in the text. **NULL means sarcasm was not analyzed.** Example: 0.341.'
+    sql: '"SarcasmDetectionScore"'
+  sentiment_id:
+    description: 'BIGINT. Unique identifier for the sentiment analysis record. PK. Example: 1.'
+    sql: '"SentimentID"'
+  text_source:
+    description: 'TEXT. The origin of the text that was analyzed. Example: Product Review.'
+    sql: '"TEXT_SOURCE"'
+  thread_id:
+    description: 'TEXT. The identifier for the conversation thread the text belongs to. Example: 61633939.'
+    sql: '"ThreadID"'
+  analysis_model_version:
+    description: 'TEXT. The version of the sentiment analysis model used. Example: v3.1.2.'
+    sql: analysis_model_version
+  analysis_timestamp:
+    description: 'TIMESTAMP. The timestamp when the sentiment analysis was performed. Example: 2025/08/18 06:50.'
+    sql: analysis_timestamp
+  contextual_tags:
+    description: 'TEXT ARRAY. A list of contextual tags related to the interaction. Example: {idol}.'
+    sql: contextual_tags
+  emotions_detected:
+    description: 'JSONB. A JSON object with scores for various emotions detected in the text. Example: {"Joy": 0.92, "Anger": 0.97}.'
+    sql: emotions_detected
+  intent_classification:
+    description: 'TEXT. The classified intent of the text (e.g., question, complaint). Example: Complaint.'
+    sql: intent_classification
+  moderator_review_status:
+    description: 'TEXT. The status of the human moderator review. Possible values: Not Required, Reviewed. Example: Not Required.'
+    sql: moderator_review_status
+  notes:
+    description: 'TEXT. General notes about the analysis. **NULL means no notes were added.** Example: Active in forums..'
+    sql: notes
+  sentiment_label:
+    description: 'TEXT. The categorical label for the sentiment. Possible values: Positive, Neutral, Negative. Example: Positive.'
+    sql: sentiment_label
+  source_platform:
+    description: 'TEXT. The platform where the original text was posted. Example: YouTube.'
+    sql: source_platform
+  topic_modeling_results:
+    description: 'TEXT ARRAY. A list of topics identified in the text by a topic modeling algorithm. Example: {exclusive}.'
+    sql: topic_modeling_results
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct fan_sentiment_analysis public identity values.
+    label: fan_sentiment_analysis Count
+    sql: ${virtual_idol_large_public__fan_sentiment_analysis.sentiment_id}

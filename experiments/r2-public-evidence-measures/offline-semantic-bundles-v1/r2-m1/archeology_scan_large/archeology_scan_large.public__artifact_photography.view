@@ -1,0 +1,72 @@
+label: ArtifactPhotography
+description: All columns of the public table ArtifactPhotography.
+catalog: archeology_scan_large
+schema: public
+table_name: ArtifactPhotography
+dimensions:
+  artifact_photography_id:
+    description: TEXT. Unique identifier for artifact photography record.
+    sql: '"ArtifactPhotography_id"'
+  aperture_fstop:
+    description: 'REAL. Aperture f-stop value used for exposure. **NULL means EXIF data not available.** Unique values: 2.8, 4.0, 5.6, 8.0, 11.0, 16.0.'
+    sql: aperture_fstop
+  artifact_ref:
+    description: 'INTEGER. Reference to the artifact being photographed. Example: 50.'
+    sql: artifact_ref
+  background_type:
+    description: 'TEXT. Type of background used in photograph. Unique values: White Seamless, Gray Card, Black Velvet, In Situ, Scale Grid.'
+    sql: background_type
+  capture_timestamp:
+    description: 'TIMESTAMP. Date and time when photograph was captured. Example: 2024-01-01 12:00:00.'
+    sql: capture_timestamp
+  color_chart_included:
+    description: 'BOOLEAN. Indicates if color calibration chart is visible. Possible values: True, False.'
+    sql: color_chart_included
+  color_temperature_kelvin:
+    description: 'INTEGER. Color temperature of lighting in Kelvin. **NULL means Color temperature not calibrated.** Example: 5500.'
+    sql: color_temperature_kelvin
+  file_size_megabytes:
+    description: 'REAL. Size of image file in megabytes. Example: 25.'
+    sql: file_size_megabytes
+  focal_length_mm:
+    description: 'REAL. Lens focal length used in millimeters. **NULL means EXIF data not available.** Unique values: 35.0, 50.0, 85.0, 100.0, 105.0.'
+    sql: focal_length_mm
+  focus_stacking_layers:
+    description: 'INTEGER. Number of images used in focus stacking composite. **NULL means Single shot without focus stacking.** Example: 50.'
+    sql: focus_stacking_layers
+  image_quality_score:
+    description: 'REAL. Automated quality assessment score from 0 to 100. Example: 82.'
+    sql: image_quality_score
+  image_resolution_megapixels:
+    description: 'REAL. Resolution of captured image in megapixels. Unique values: 12.0, 24.0, 36.0, 45.0, 61.0.'
+    sql: image_resolution_megapixels
+  is_raw_format:
+    description: 'BOOLEAN. Indicates if image is stored in RAW format. Possible values: True, False.'
+    sql: is_raw_format
+  iso_sensitivity:
+    description: 'INTEGER. ISO sensitivity setting used. **NULL means EXIF data not available.** Unique values: 100, 200, 400, 800, 1600.'
+    sql: iso_sensitivity
+  lighting_type:
+    description: 'TEXT. Type of lighting used for photograph. Unique values: Natural, Studio Flash, LED Panel, Ring Light, Mixed.'
+    sql: lighting_type
+  processing_time_seconds:
+    description: 'REAL. Time spent processing image in seconds. **NULL means Image not yet processed.** Example: 45.'
+    sql: processing_time_seconds
+  scale_bar_included:
+    description: 'BOOLEAN. Indicates if scale bar is visible in image. Possible values: True, False.'
+    sql: scale_bar_included
+  shutter_speed_fraction:
+    description: 'TEXT. Shutter speed as fraction of second. **NULL means EXIF data not available.** Unique values: 1/60, 1/125, 1/250, 1/500, 1/1000.'
+    sql: shutter_speed_fraction
+  storage_location:
+    description: 'TEXT. Storage system where image is archived. Unique values: Local NAS, Cloud Primary, Cloud Backup, External Drive.'
+    sql: storage_location
+  view_angle:
+    description: 'TEXT. Angle from which artifact was photographed. Unique values: Top Down, Profile Left, Profile Right, Front, Back, Detail, Oblique.'
+    sql: view_angle
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ArtifactPhotography public identity values.
+    label: ArtifactPhotography Count
+    sql: ${archeology_scan_large_public__artifact_photography.artifact_photography_id}

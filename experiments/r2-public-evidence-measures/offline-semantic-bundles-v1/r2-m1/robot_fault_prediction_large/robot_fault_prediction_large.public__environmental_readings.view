@@ -1,0 +1,21 @@
+label: environmental_readings
+description: All columns of the public table environmental_readings.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: environmental_readings
+dimensions:
+  notes:
+    description: 'TEXT. Notes about the reading, typically added for anomalies. **NULL indicates no special notes.**. Possible values: CNC machine running hot., Cleanroom temperature rising. Check HVAC., Spraying cycle in progress., Sudden vibration spike, needs investigation., Test cycle causing high vibration., Welding cycle active..'
+    sql: '"NOTES"'
+  reading_value:
+    description: 'REAL. The numerical value of the sensor reading. Example: 28.5.'
+    sql: '"READING_VALUE"'
+  source_sensor_tag:
+    description: 'TEXT. The unique tag of the sensor that produced the reading. PK, FK. Example: TEMP-WC101-01.'
+    sql: '"Source_Sensor_Tag"'
+  is_anomaly:
+    description: 'BOOLEAN. A flag indicating if the reading is considered an anomaly. **NULL indicates the reading has not yet been processed by an anomaly detection model.**. Possible values: False, True.'
+    sql: is_anomaly
+  reading_timestamp:
+    description: 'TEXT. The UTC timestamp of when the reading was taken, in ISO 8601 format. PK. Possible values: 2025-10-18T13:00:00Z, 2025-10-18T13:01:00Z, 2025-10-18T13:02:00Z.'
+    sql: reading_timestamp

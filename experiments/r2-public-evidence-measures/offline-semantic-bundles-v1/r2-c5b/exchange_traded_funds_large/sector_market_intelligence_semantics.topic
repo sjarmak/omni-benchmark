@@ -1,0 +1,9 @@
+base_view: exchange_traded_funds_large_public__sector_market_intelligence
+label: sector_market_intelligence
+description: All columns of the public table sector_market_intelligence.
+fields:
+- exchange_traded_funds_large_public__sector_market_intelligence.*
+- exchange_traded_funds_large_public__sectors.*
+joins:
+  exchange_traded_funds_large_public__sectors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

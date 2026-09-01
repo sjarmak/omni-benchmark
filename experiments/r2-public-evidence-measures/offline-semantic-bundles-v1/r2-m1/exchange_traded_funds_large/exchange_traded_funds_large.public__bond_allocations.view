@@ -1,0 +1,24 @@
+label: bond_allocations
+description: All columns of the public table bond_allocations.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: bond_allocations
+dimensions:
+  allocationpct:
+    description: Percentage (0-1) of the fund's bond holdings in this credit rating category.
+    sql: allocationpct
+  bondallocid:
+    description: A SERIAL primary key uniquely identifying each bond credit rating allocation record for funds.
+    sql: bondallocid
+  fundlink:
+    description: Foreign key referencing funds.TickerSym, indicating which fund has this bond allocation.
+    sql: fundlink
+  ratinglink:
+    description: Foreign key referencing bond_ratings.RateKey, indicating which credit rating category the allocation applies to.
+    sql: ratinglink
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct bond_allocations public identity values.
+    label: bond_allocations Count
+    sql: ${exchange_traded_funds_large_public__bond_allocations.bondallocid}

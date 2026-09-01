@@ -1,0 +1,9 @@
+base_view: museum_artifact_large_public__sensitivity_data
+label: Artifact Sensitivity
+description: Artifact-sensitivity rows with light and humidity sensitivity context.
+fields:
+- museum_artifact_large_public__sensitivity_data.*
+- museum_artifact_large_public__artifacts_core.*
+joins:
+  museum_artifact_large_public__artifacts_core: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,9 @@
+base_view: planets_data_large_public__pipeline_quality_metric
+label: PipelineQualityMetric
+description: All columns of the public table PipelineQualityMetric.
+fields:
+- planets_data_large_public__pipeline_quality_metric.*
+- planets_data_large_public__data_reduction_pipeline.*
+joins:
+  planets_data_large_public__data_reduction_pipeline: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

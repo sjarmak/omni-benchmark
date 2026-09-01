@@ -1,0 +1,108 @@
+label: DataFlow_Detail
+description: All columns of the public table DataFlow_Detail.
+catalog: cross_border_large
+schema: public
+table_name: DataFlow_Detail
+dimensions:
+  acceleration_m_per_s2:
+    description: REAL. Not physically meaningful for data flows; kept for schema compatibility. **NULL by design to avoid misleading values.**
+    sql: '"ACCELERATION_M_PER_S2"'
+  flowdetail_code:
+    description: 'BIGINT. Surrogate primary key for each detail record. Example: 1.'
+    sql: '"FLOWDETAIL_CODE"'
+  momentum_kg_m_per_s:
+    description: REAL. Not physically meaningful for data flows; kept for schema compatibility. **NULL by design to avoid misleading values.**
+    sql: '"Momentum_kg_m_per_s"'
+  detail_flow_code:
+    description: 'TEXT. Foreign key referencing DataFlow(RecordRegistry). Example: CB932064.'
+    sql: detail_flow_code
+  net_perf_profile:
+    description: JSONB column. Aggregates end-to-end network performance, reliability, and sustainability metrics for a single data flow observation.
+    sql: net_perf_profile
+  net_perf_profile_actors_dest_actor_type:
+    description: 'TEXT. Type/class of the destination actor. Possible values: cache, data_lake, database, message_broker, mobile_client, object_store, service, warehouse. Example: cache.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'actors', 'dest_actor_type')
+  net_perf_profile_actors_origin_actor_type:
+    description: 'TEXT. Type/class of the origin actor. Possible values: batch_job, cache, client_app, data_lake, database, message_broker, service, streaming_job. Example: service.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'actors', 'origin_actor_type')
+  net_perf_profile_latency_loss_avg_latency_ms:
+    description: 'REAL. Average round-trip latency (ms). Example: 106.31.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'latency_loss', 'avg_latency_ms')
+  net_perf_profile_latency_loss_jitter_ms:
+    description: 'REAL. Latency variation/jitter (ms). Example: 9.37.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'latency_loss', 'jitter_ms')
+  net_perf_profile_latency_loss_p95_latency_ms:
+    description: 'REAL. 95th percentile latency (ms). Example: 136.23.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'latency_loss', 'p95_latency_ms')
+  net_perf_profile_latency_loss_packet_loss_pct:
+    description: 'REAL. Packet loss rate (%). Example: 0.1684. **NULL means packet loss was not recorded or is unavailable.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'latency_loss', 'packet_loss_pct')
+  net_perf_profile_pathing_dest_region:
+    description: 'TEXT. Logical region of the destination endpoint. Possible values (observed): af-south, ap-northeast, ap-southeast, eu-central, eu-west, me-south, sa-east, us-east, us-west. Example: ap-northeast.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'pathing', 'dest_region')
+  net_perf_profile_pathing_path_hops:
+    description: 'BIGINT. Estimated number of router/switch hops along the path. Example: 7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'pathing', 'path_hops')
+  net_perf_profile_pathing_propagation_speed_m_per_s:
+    description: 'REAL. Effective propagation speed (m/s) derived from distance and RTT (v ≈ 2·distance / RTT). Example: 196959834.45.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'pathing', 'propagation_speed_m_per_s')
+  net_perf_profile_pathing_route_distance_km:
+    description: 'REAL. Estimated route (great-circle/network) distance in kilometers. Example: 10469.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'pathing', 'route_distance_km')
+  net_perf_profile_pathing_source_region:
+    description: 'TEXT. Logical region of the source endpoint. Possible values (observed): af-south, ap-northeast, ap-southeast, eu-central, eu-west, me-south, sa-east, us-east, us-west. Example: us-east.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'pathing', 'source_region')
+  net_perf_profile_protocol_family:
+    description: 'TEXT. Application/transport protocol family observed. Possible values: HTTP, MQTT, NFS, QUIC, SFTP, TCP, UDP, gRPC. Example: HTTP.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'protocol_family')
+  net_perf_profile_reliability_integrity_failures:
+    description: 'BIGINT. Count of integrity check failures (e.g., checksum mismatches). Example: 1. **NULL means integrity checks were not performed or not reported.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'reliability', 'integrity_failures')
+  net_perf_profile_reliability_retry_strategy:
+    description: 'TEXT. Strategy used for retries on failure. Possible values: adaptive, exponential_backoff, fixed_interval, idempotent_requeue, none. Example: adaptive.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'reliability', 'retry_strategy')
+  net_perf_profile_reliability_sla_met:
+    description: 'TEXT. Whether the flow met the SLA target. Possible values: True, False. Example: False.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'reliability', 'sla_met')
+  net_perf_profile_reliability_sla_target_pct:
+    description: 'REAL. Target success/availability for the flow (%). Example: 99.158. **NULL means no SLA target defined or reported.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'reliability', 'sla_target_pct')
+  net_perf_profile_sustainability_co2_emission_kg:
+    description: 'REAL. Estimated CO₂ emissions (kg) from transfer energy consumption. Example: 5.9073.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'sustainability', 'co2_emission_kg')
+  net_perf_profile_sustainability_energy_kwh:
+    description: 'REAL. Estimated energy used by the transfer (kWh), based on data volume and an energy intensity factor. Example: 11.0769.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'sustainability', 'energy_kwh')
+  net_perf_profile_throughput_avg_mbps:
+    description: 'REAL. Average throughput of the flow (Mb/s). Example: 131.966. **NULL means throughput measurement was unavailable for this flow.**'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'throughput', 'avg_mbps')
+  net_perf_profile_throughput_compression_ratio:
+    description: 'REAL. Payload compression ratio (post/pre). Range (typical): 0.45–1.00. Example: 0.668.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'throughput', 'compression_ratio')
+  net_perf_profile_throughput_p95_mbps:
+    description: 'REAL. 95th percentile throughput (Mb/s). Example: 162.187.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'throughput', 'p95_mbps')
+  net_perf_profile_throughput_window_size_mb:
+    description: 'REAL. Effective bandwidth–delay product (MB), i.e., bytes-in-flight at steady state. Example: 1.754.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'throughput', 'window_size_mb')
+  net_perf_profile_timestamps_created_at:
+    description: 'TIMESTAMP. Record creation timestamp in ISO-8601 (UTC). Example: 2025-07-05T21:33:05Z.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'timestamps', 'created_at')
+  net_perf_profile_timestamps_updated_at:
+    description: 'TIMESTAMP. Last update timestamp in ISO-8601 (UTC). Example: 2025-07-07T11:17:19Z.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'timestamps', 'updated_at')
+  net_perf_profile_volume_shape_data_encrypted_pct:
+    description: 'REAL. Percentage of data encrypted in transit (%). Example: 90.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'volume_shape', 'data_encrypted_pct')
+  net_perf_profile_volume_shape_files_transferred:
+    description: 'BIGINT. Number of files transferred. Example: 153.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'volume_shape', 'files_transferred')
+  net_perf_profile_volume_shape_records_transferred:
+    description: 'BIGINT. Estimated count of individual records transferred. Example: 288078934.'
+    sql: JSONB_EXTRACT_PATH_TEXT(net_perf_profile, 'volume_shape', 'records_transferred')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DataFlow_Detail public identity values.
+    label: DataFlow_Detail Count
+    sql: ${cross_border_large_public__data_flow_detail.flowdetail_code}

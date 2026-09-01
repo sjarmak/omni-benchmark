@@ -1,0 +1,62 @@
+label: Plants
+description: Solar plant attributes.
+catalog: solar_panel_large
+schema: public
+table_name: plants
+dimensions:
+  cap:
+    description: 'REAL. Total installed capacity in megawatts. Example: 257.58.'
+    label: Plant Capacity
+    sql: cap_mw
+  warrstate:
+    description: 'TEXT. Current status of equipment warranty. NULL means the encoder does not report status or data are missing. Possible values: Active, Claimed, Expired.'
+    label: Warranty Status
+    sql: warrstate
+  warrclaims:
+    description: 'BIGINT. Number of warranty claims made. NULL means the encoder does not report status or data are missing. Possible values: 0.0, 1.0, 2.0, 3.0, 4.0, 5.0.'
+    label: Warranty Claims
+    sql: warrclaims
+  azmdeg:
+    description: 'REAL. Panel orientation relative to true north. Example: 169.8.'
+    sql: azmdeg
+  complyflag:
+    description: 'TEXT. Compliance status with regulations. Possible values: Compliant, Non-Compliant, Under Review.'
+    sql: complyflag
+  docstate:
+    description: 'TEXT. Completeness status of plant documentation. Possible values: Complete, Missing, Partial.'
+    sql: docstate
+  envtag:
+    description: 'TEXT. Environmental impact classification. Possible values: High, Low, Medium.'
+    sql: envtag
+  goliveon:
+    description: 'DATE. Date when the plant became operational. Example: 43159.'
+    sql: goliveon
+  insurstate:
+    description: 'TEXT. Current insurance coverage status. Possible values: Covered, Expired, Partial.'
+    sql: insurstate
+  modhook:
+    description: TEXT. Foreign-key referencing panel_models.ModKey. Links to panel model details.
+    sql: modhook
+  recyclenote:
+    description: 'TEXT. Status of panel recycling program. NULL means the encoder does not report status or data are missing. Possible values: Available, In Development.'
+    sql: recyclenote
+  sitekey:
+    description: 'TEXT. Unique identifier for the solar power plant. Example: SP9227.'
+    sql: sitekey
+  sitelabel:
+    description: 'TEXT. Name or description of the solar facility. Example: Solar Plant West Davidport.'
+    sql: sitelabel
+  tiltdeg:
+    description: 'REAL. Angle of panel tilt from horizontal. Example: 1.2.'
+    sql: tiltdeg
+  warranty_claim_risk:
+    label: Warranty Claim Risk
+    description: Indicates a high likelihood of future warranty claims based on past activity and current status.
+    sql: ${warrstate} = 'Claimed' AND ${warrclaims} > 2
+    ai_context: Use this modeled field for Warranty Claim Risk; do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Plants public identity values.
+    label: Plants Count
+    sql: ${solar_panel_large_public__plants.sitekey}

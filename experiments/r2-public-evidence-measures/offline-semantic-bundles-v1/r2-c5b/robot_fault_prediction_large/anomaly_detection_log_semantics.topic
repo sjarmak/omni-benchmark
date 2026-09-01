@@ -1,0 +1,17 @@
+base_view: robot_fault_prediction_large_public__anomaly_detection_log
+label: anomaly_detection_log
+description: All columns of the public table anomaly_detection_log.
+fields:
+- robot_fault_prediction_large_public__anomaly_detection_log.*
+- robot_fault_prediction_large_public__actuation_data.*
+- robot_fault_prediction_large_public__maintenance_logs.*
+- robot_fault_prediction_large_public__operation.*
+- robot_fault_prediction_large_public__robot_record.*
+- robot_fault_prediction_large_public__technicians.*
+joins:
+  robot_fault_prediction_large_public__actuation_data:
+    robot_fault_prediction_large_public__operation: {}
+    robot_fault_prediction_large_public__robot_record: {}
+  robot_fault_prediction_large_public__maintenance_logs: {}
+  robot_fault_prediction_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

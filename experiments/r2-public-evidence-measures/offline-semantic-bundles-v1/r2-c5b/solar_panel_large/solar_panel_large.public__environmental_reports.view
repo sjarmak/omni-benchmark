@@ -1,0 +1,51 @@
+label: environmental_reports
+description: All columns of the public table environmental_reports.
+catalog: solar_panel_large
+schema: public
+table_name: environmental_reports
+dimensions:
+  entry_timestamp:
+    description: 'TIMESTAMP. Timestamp when the report record was entered into the system. Example: 2023-04-12 14:00:00.'
+    sql: '"ENTRY_TIMESTAMP"'
+  facility_tag:
+    description: 'TEXT. FK -> plants.sitekey. The solar plant the report pertains to. Example: SP9227.'
+    sql: '"FacilityTag"'
+  quarter:
+    description: 'TEXT. The quarter of the year covered by the report (Q1, Q2, Q3, Q4). Possible values: Q1, Q2, Q3, Q4.'
+    sql: '"QUARTER"'
+  report_author:
+    description: 'TEXT. The name of the person who authored the report. Possible values: Emily White, John Green, Maria Garcia, Sam Johnson.'
+    sql: '"REPORT_AUTHOR"'
+  report_num:
+    description: 'TEXT. Unique identifier for an environmental report. Example: ER-23Q1-SP9227.'
+    sql: '"ReportNum"'
+  submitted_date:
+    description: 'DATE. The date the report was submitted to a regulatory body. Example: 2023-04-12.'
+    sql: '"SUBMITTED_DATE"'
+  waste_recycled_kg:
+    description: 'REAL. The total weight of waste recycled in kilograms. Example: 155.8 kg.'
+    sql: '"WASTE_RECYCLED_KG"'
+  wildlife_incidents:
+    description: 'BIGINT. The number of recorded incidents involving wildlife. Possible values: 0, 1, 2.'
+    sql: '"WILDLIFE_INCIDENTS"'
+  carbon_footprint_tons:
+    description: 'REAL. The estimated operational carbon footprint in tons of CO2 equivalent. Example: 5.3 tons CO2e.'
+    sql: carbon_footprint_tons
+  community_summary:
+    description: 'TEXT. A summary of community engagement activities for the period. Example: Hosted community open house..'
+    sql: community_summary
+  land_impact_notes:
+    description: 'TEXT. Notes on land use, erosion, and vegetation impact. Example: No significant impact noted..'
+    sql: land_impact_notes
+  report_status:
+    description: 'TEXT. The current status of the report. Possible values: Approved, Draft, Submitted.'
+    sql: report_status
+  reporting_year:
+    description: 'BIGINT. The year covered by the report. Possible values: 2022, 2023, 2024.'
+    sql: reporting_year
+  verified_by:
+    description: 'TEXT. The name of the third-party firm that verified the report''s data. Possible values: EcoSure LLC, EcoVerify Inc, GreenLeaf Consulting.'
+    sql: verified_by
+  water_usage_liters:
+    description: 'BIGINT. Total water usage in liters for the period, primarily for panel cleaning. Example: 510,234 Liters.'
+    sql: water_usage_liters

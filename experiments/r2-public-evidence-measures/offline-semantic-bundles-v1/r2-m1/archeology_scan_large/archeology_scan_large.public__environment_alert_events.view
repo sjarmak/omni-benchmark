@@ -1,0 +1,72 @@
+label: EnvironmentAlertEvents
+description: All columns of the public table EnvironmentAlertEvents.
+catalog: archeology_scan_large
+schema: public
+table_name: EnvironmentAlertEvents
+dimensions:
+  environment_alert_events_id:
+    description: TEXT. Unique identifier for each environmental alert event.
+    sql: '"EnvironmentAlertEvents_id"'
+  actual_value:
+    description: 'REAL. Actual measured value that exceeded threshold. Example: 50.0.'
+    sql: actual_value
+  alert_acknowledged:
+    description: 'BOOLEAN. Whether the alert was formally acknowledged. Possible values: True, False.'
+    sql: alert_acknowledged
+  alert_duration_minutes:
+    description: 'INTEGER. Duration of the alert condition in minutes. **NULL means Alert still active.** Example: 50.'
+    sql: alert_duration_minutes
+  alert_timestamp:
+    description: 'TIMESTAMP. Date and time when the alert was triggered. Example: 2024-01-01 12:00:00.'
+    sql: alert_timestamp
+  alert_type:
+    description: 'TEXT. Category of environmental alert triggered. Unique values: Temperature, Humidity, Wind, Precipitation, UV Index, Air Quality, Soil Moisture.'
+    sql: alert_type
+  damage_assessment_required:
+    description: 'BOOLEAN. Whether post-event damage assessment was needed. Possible values: True, False.'
+    sql: damage_assessment_required
+  deviation_percent:
+    description: 'REAL. Percentage deviation from acceptable threshold. Example: 25.0.'
+    sql: deviation_percent
+  equipment_protection_activated:
+    description: 'BOOLEAN. Whether equipment protection measures were engaged. Possible values: True, False.'
+    sql: equipment_protection_activated
+  estimated_damage_cost_usd:
+    description: 'REAL. Estimated cost of any damage in US dollars. **NULL means No damage occurred or assessment pending.** Example: 500.0.'
+    sql: estimated_damage_cost_usd
+  false_alarm:
+    description: 'BOOLEAN. Whether the alert was determined to be a false alarm. Possible values: True, False.'
+    sql: false_alarm
+  monitoring_ref:
+    description: TEXT. Reference to the site environment monitoring record.
+    sql: monitoring_ref
+  notification_method:
+    description: 'TEXT. Primary method used to notify personnel. Unique values: SMS, Email, Radio, App Push, Siren, Phone Call.'
+    sql: notification_method
+  personnel_notified_count:
+    description: 'INTEGER. Number of personnel who received alert notification. Example: 50.'
+    sql: personnel_notified_count
+  response_time_minutes:
+    description: 'INTEGER. Time in minutes until first response action. **NULL means No response action taken yet.** Example: 50.'
+    sql: response_time_minutes
+  sensor_accuracy_verified:
+    description: 'BOOLEAN. Whether sensor accuracy was verified after alert. Possible values: True, False.'
+    sql: sensor_accuracy_verified
+  severity_level:
+    description: 'TEXT. Severity classification of the alert. Unique values: Advisory, Watch, Warning, Critical, Emergency.'
+    sql: severity_level
+  site_evacuation_ordered:
+    description: 'BOOLEAN. Whether site evacuation was ordered. Possible values: True, False.'
+    sql: site_evacuation_ordered
+  threshold_value:
+    description: 'REAL. Threshold value that triggered the alert. Example: 50.0.'
+    sql: threshold_value
+  work_stoppage_required:
+    description: 'BOOLEAN. Whether field work had to be suspended. Possible values: True, False.'
+    sql: work_stoppage_required
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EnvironmentAlertEvents public identity values.
+    label: EnvironmentAlertEvents Count
+    sql: ${archeology_scan_large_public__environment_alert_events.environment_alert_events_id}

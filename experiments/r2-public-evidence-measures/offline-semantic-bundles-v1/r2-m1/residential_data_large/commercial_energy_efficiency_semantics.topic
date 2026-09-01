@@ -1,0 +1,9 @@
+base_view: residential_data_large_public__commercial_energy_efficiency
+label: Commercial_Energy_Efficiency
+description: All columns of the public table Commercial_Energy_Efficiency.
+fields:
+- residential_data_large_public__commercial_energy_efficiency.*
+- residential_data_large_public__commercial_establishments.*
+joins:
+  residential_data_large_public__commercial_establishments: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

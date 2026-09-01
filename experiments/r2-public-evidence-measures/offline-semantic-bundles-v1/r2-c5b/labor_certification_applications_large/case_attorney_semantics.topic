@@ -1,0 +1,23 @@
+base_view: labor_certification_applications_large_public__case_attorney
+label: case_attorney
+description: All columns of the public table case_attorney.
+fields:
+- labor_certification_applications_large_public__case_attorney.*
+- labor_certification_applications_large_public__attorney.*
+- labor_certification_applications_large_public__cases.*
+- labor_certification_applications_large_public__preparer.*
+joins:
+  labor_certification_applications_large_public__attorney: {}
+  labor_certification_applications_large_public__cases:
+    labor_certification_applications_large_public__preparer: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Attorney Case Load (ACL): ACL is the total number of cases handled by each attorney. Attorney assignment is tracked as part of the application process.
+
+  - External Counsel Rate (ECR): ECR = (Number of Applications with Attorney / Total Number of Applications) × 100%. Attorney assignment is tracked as part of the application process.
+
+  - Attorney Representation Status: Attorney representation status indicates whether an employer has legal counsel for the visa application process. When present, it shows the employer has retained qualified legal assistance for navigating immigration regulations. When absent, it indicates the employer is self-represented, handling the application process internally without specialized legal counsel. This status is tracked as part of the application process.
+
+  - Legal Representation Efficacy: Legal representation efficacy is measured by comparing the approval rate of applications with attorney representation to those without. High Impact is defined as over 10% higher approval rate, Moderate Impact as 5-10% higher, and Minimal Impact as less than 5% difference.'

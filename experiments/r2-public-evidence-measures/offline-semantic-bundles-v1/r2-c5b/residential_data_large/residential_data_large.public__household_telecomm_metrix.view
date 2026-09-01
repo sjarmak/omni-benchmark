@@ -1,0 +1,63 @@
+label: Household_Telecomm_Metrix
+description: All columns of the public table Household_Telecomm_Metrix.
+catalog: residential_data_large
+schema: public
+table_name: Household_Telecomm_Metrix
+dimensions:
+  comms_stats_pk:
+    description: 'TEXT. Primary key for household digital connectivity metrics. Example: HTM-1A2B3C.'
+    sql: '"Comms_Stats_PK"'
+  cellular_signal_strength_dbm:
+    description: 'INTEGER. Average LTE/5G signal strength inside the dwelling (-120 to -30). Example: -85.'
+    sql: cellular_signal_strength_dbm
+  download_speed_mbps:
+    description: 'REAL. Average sustained download speed measured at the router. **NULL means Offline at time of probe.** Example: 100.'
+    sql: download_speed_mbps
+  fiber_optic_availability_score:
+    description: 'REAL. Proximity to the nearest fiber backbone termination point. Example: 0.7.'
+    sql: fiber_optic_availability_score
+  gaming_console_count:
+    description: 'INTEGER. Number of dedicated gaming systems (PlayStation, Xbox, etc.). Example: 50.'
+    sql: gaming_console_count
+  household_target:
+    description: 'INTEGER. Reference to the specific household unit. Example: 50.'
+    sql: household_target
+  iot_device_count:
+    description: 'INTEGER. Total number of unique MAC addresses connected to the local network. Example: 50.'
+    sql: iot_device_count
+  latency_ping_ms:
+    description: 'INTEGER. Network response time to local exchange server. Example: 25.'
+    sql: latency_ping_ms
+  monthly_data_usage_gb:
+    description: 'REAL. Total data transferred in the previous billing cycle. Example: 450.'
+    sql: monthly_data_usage_gb
+  network_security_firewall_status:
+    description: 'TEXT. Configuration level of the local network firewall. Unique values: Strict, Moderate, Disabled.'
+    sql: network_security_firewall_status
+  parental_control_filter_status:
+    description: 'INTEGER. Binary flag for active content filtering at the router level. Unique values: 1, 0.'
+    sql: parental_control_filter_status
+  public_ip_static_assignment:
+    description: 'INTEGER. Binary flag for static vs dynamic IP address (1=Static, 0=Dynamic). Unique values: 1, 0.'
+    sql: public_ip_static_assignment
+  remote_work_hours_per_week:
+    description: 'INTEGER. Estimated total hours of remote employment activities using the connection. Example: 50.'
+    sql: remote_work_hours_per_week
+  router_uptime_percent:
+    description: 'REAL. Reliability of the home gateway hardware over 30 days. Example: 0.99.'
+    sql: router_uptime_percent
+  smart_tv_screen_resolution_max:
+    description: 'TEXT. Highest resolution device connected to the home network. **NULL means No display devices detected.** Unique values: 8K, 4K, 1080p, 720p.'
+    sql: smart_tv_screen_resolution_max
+  streaming_service_subscription_count:
+    description: 'INTEGER. Number of active OTT platforms used by the household. Example: 50.'
+    sql: streaming_service_subscription_count
+  upload_speed_mbps:
+    description: 'REAL. Average sustained upload speed measured at the router. **NULL means Offline at time of probe.** Example: 40.'
+    sql: upload_speed_mbps
+  vpn_usage_frequency_score:
+    description: 'REAL. Prevalence of encrypted tunnel usage (0.0 to 1.0). Example: 50.0.'
+    sql: vpn_usage_frequency_score
+  wi_fi_6_compatibility_flag:
+    description: 'INTEGER. Binary flag for 802.11ax hardware capability (1=Yes, 0=No). Unique values: 1, 0.'
+    sql: wi_fi_6_compatibility_flag

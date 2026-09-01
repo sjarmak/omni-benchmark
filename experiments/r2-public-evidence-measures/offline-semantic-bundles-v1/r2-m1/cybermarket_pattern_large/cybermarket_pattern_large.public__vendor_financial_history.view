@@ -1,0 +1,114 @@
+label: vendor_financial_history
+description: All columns of the public table vendor_financial_history.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendor_financial_history
+dimensions:
+  ar_balance:
+    description: 'REAL. Accounts-receivable outstanding. Example: 45000.'
+    sql: '"AR_BALANCE"'
+  chargeback_total:
+    description: 'REAL. Total value of chargebacks disputed or lost. Example: 7890.'
+    sql: '"CHARGEBACK_total"'
+  debtburden:
+    description: 'REAL. Total debt principal outstanding. Example: 150000.'
+    sql: '"DEBTburden"'
+  fin_hist_ref:
+    description: 'TEXT. Primary-key reference tying the row to a specific time-boxed snapshot. Example: FIN-V63085.'
+    sql: '"FIN_HIST_REF"'
+  medianorder_value:
+    description: 'REAL. Median value of all orders. Example: 54.2.'
+    sql: '"MEDIANorderValue"'
+  sellerkey:
+    description: 'TEXT. FK referencing vendors.SellerKey. Example: V63085.'
+    sql: '"Sellerkey"'
+  total_cost:
+    description: 'REAL. Sum of cost of goods and overhead. Example: 1374982.4.'
+    sql: '"TOTAL_COST"'
+  advertising_spend:
+    description: 'REAL. Spend on sponsored listings, PPC ads, etc. Example: 97500.'
+    sql: advertising_spend
+  ap_balance:
+    description: 'REAL. Accounts-payable outstanding. Example: 30000.'
+    sql: '"apBalance"'
+  avg_order_value:
+    description: 'REAL. Arithmetic mean order value. **NULL means orders not processed yet.** Example: 58.11.'
+    sql: '"avgOrderValue"'
+  cash_flow:
+    description: 'REAL. Net cash movement (operating + investing + financing). Example: 210000.'
+    sql: cash_flow
+  credit_scoring_score:
+    description: 'REAL. External bureau credit score (integer or scaled). Example: 720.'
+    sql: credit_scoring_score
+  crypto_exchange_holdings:
+    description: 'REAL. Value of cryptocurrency holdings converted to reporting currency. Example: 21103.75.'
+    sql: '"crypto_exchangeHOLDINGS"'
+  fees_paid:
+    description: 'REAL. Platform, payment-processor and listing fees paid. Example: 15200.'
+    sql: '"feesPAID"'
+  fiat_holdings:
+    description: 'REAL. Cash and bank account balances. Example: 98765.43.'
+    sql: fiat_holdings
+  gross_profit:
+    description: 'REAL. total_revenue − cost_of_goods. Example: 628757.42.'
+    sql: '"grossProfit"'
+  inventory_value:
+    description: 'REAL. Closing inventory valuation at cost. Example: 350000.'
+    sql: inventory_value
+  liquidity_pulse_times_coverage:
+    description: 'TEXT. Trend statement of liquidity ratio change. Example: 1.8 × coverage.'
+    sql: '"liquidityPulse_times_coverage"'
+  net_profit:
+    description: 'REAL. Bottom-line profit after all expenses and tax. **NULL means still being finalised.** Example: 780757.48.'
+    sql: net_profit
+  operating_expenses:
+    description: 'REAL. Overheads excluding COGS (payroll, rent). Example: 185000.'
+    sql: operating_expenses
+  period_end:
+    description: 'DATE. Inclusive period end. Example: 2024-12-31 23:59:59.'
+    sql: '"periodEND"'
+  period_start:
+    description: 'DATE. Inclusive start of the reporting period (YYYY-MM-DD HH:MM:SS). Example: 2024-01-01 00:00:00.'
+    sql: period_start
+  ratiosmashup:
+    description: JSONB column. Collection of vendor's liquidity, leverage and margin figures
+    sql: ratiosmashup
+  refund_total:
+    description: 'REAL. Monetary amount refunded to buyers. Example: 23450.'
+    sql: refund_total
+  return_on_ad_spend:
+    description: 'REAL. ROAS (revenue ÷ ad spend). Example: 4.1.'
+    sql: return_on_ad_spend
+  std_dev_order_value:
+    description: 'REAL. Standard deviation of order values—used to assess ticket-size volatility. Example: 12.35.'
+    sql: '"stdDevOrderValue"'
+  tax_paid:
+    description: 'REAL. Taxes remitted for the period. Example: 123500.'
+    sql: '"taxPaid"'
+  total_revenue:
+    description: 'REAL. Gross sales during the period. **NULL means revenue not reported yet.** Example: 2003739.82.'
+    sql: total_revenue
+  update_timestamp:
+    description: 'TIMESTAMP. Datetime this financial snapshot was last imported (YYYY-MM-DD HH:MM:SS). Example: 2025-02-15 11:42:06.'
+    sql: update_timestamp
+  ratiosmashup_int_cov:
+    description: 'REAL. EBIT ÷ interest expense. Example: 6.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ratiosmashup, 'intCov')
+  ratiosmashup_levrge:
+    description: 'REAL. Debt-to-equity or similar leverage metric. Example: 0.45.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ratiosmashup, 'levrge')
+  ratiosmashup_liq_ratio_val:
+    description: 'REAL. Current ratio = current assets ÷ current liabilities. **NULL means not computed yet.** Example: 1.85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ratiosmashup, 'liq_ratio_val')
+  ratiosmashup_p_margin_pct:
+    description: 'REAL. Net profit ÷ revenue (%). **NULL means margin still pending.** Example: 26.14.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ratiosmashup, 'pMargin_pct')
+  ratiosmashup_profit_band:
+    description: 'TEXT. Human-readable range describing profit margin bucket. Example: 25–35 % margin.'
+    sql: JSONB_EXTRACT_PATH_TEXT(ratiosmashup, 'profitBand')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct vendor_financial_history public identity values.
+    label: vendor_financial_history Count
+    sql: ${cybermarket_pattern_large_public__vendor_financial_history.fin_hist_ref}

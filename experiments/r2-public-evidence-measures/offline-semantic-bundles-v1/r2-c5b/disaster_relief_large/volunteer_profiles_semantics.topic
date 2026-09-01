@@ -1,0 +1,13 @@
+base_view: disaster_relief_large_public__volunteer_profiles
+label: VolunteerProfiles
+description: All columns of the public table VolunteerProfiles.
+fields:
+- disaster_relief_large_public__volunteer_profiles.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__humanresources.*
+- disaster_relief_large_public__operations.*
+joins:
+  disaster_relief_large_public__humanresources:
+    disaster_relief_large_public__disasterevents: {}
+    disaster_relief_large_public__operations: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,78 @@
+label: data_quality_log
+description: All columns of the public table data_quality_log.
+catalog: labor_certification_applications_large
+schema: public
+table_name: data_quality_log
+dimensions:
+  dq_code:
+    description: 'TEXT. Unique identifier for the data-quality scan record. PK. Example: DQ00001.'
+    sql: '"DQ_code"'
+  col_alpha:
+    description: 'TEXT. Custom column for client-specific tagging. Example: A.'
+    sql: '"colAlpha"'
+  col_beta:
+    description: 'TEXT. Custom column for client-specific tagging. Example: B.'
+    sql: '"colBeta"'
+  col_delta:
+    description: 'TEXT. Custom column for client-specific tagging. Example: D.'
+    sql: '"colDelta"'
+  col_gamma:
+    description: 'TEXT. Custom column for client-specific tagging. Example: C.'
+    sql: '"colGamma"'
+  col_omega:
+    description: 'TEXT. Custom column for client-specific tagging. Example: E.'
+    sql: '"colOmega"'
+  data_owner:
+    description: 'TEXT. Team responsible for data quality. Possible values: Data Eng, Analytics, Compliance, HRIS. Example: Compliance.'
+    sql: '"dataOwner"'
+  dup_pct:
+    description: 'REAL. Percentage of rows flagged as duplicates. Example: 4.62.'
+    sql: '"dupPct"'
+  elapsed_since_scan_d:
+    description: 'REAL. Days elapsed from scan to report generation. Example: 29.'
+    sql: '"elapsedSinceScan_d"'
+  issue_count:
+    description: 'BIGINT. Total quality issues logged in this scan. Example: 128.'
+    sql: '"issueCount"'
+  issue_resolved_pct:
+    description: 'REAL. Percentage of issues already resolved when the log was generated. **NULL means remediation not yet started or metric not recorded.** Example: 60.73.'
+    sql: '"issueResolved_pct"'
+  last_scan_day:
+    description: 'DATE. Date the scan was performed. Example: 2025-06-23.'
+    sql: '"lastScanDay"'
+  next_scan_window:
+    description: 'TEXT. Scheduled date or period for the next scan. Example: 2025-09-04.'
+    sql: '"nextScanWindow"'
+  notes:
+    description: 'TEXT. Additional notes or remediation status. **NULL when no comment provided.** Example: Escalated to vendor.'
+    sql: notes
+  null_pct:
+    description: 'REAL. Percentage of total cells that were NULL. Example: 19.31.'
+    sql: '"nullPct"'
+  outlier_pct:
+    description: 'REAL. Percentage of numeric values identified as outliers. Example: 1.40.'
+    sql: '"outlierPct"'
+  reason_context:
+    description: 'TEXT. Reason or context for running the scan. Example: Routine nightly scan.'
+    sql: '"reasonContext"'
+  rec_accuracy_pct:
+    description: 'REAL. Record-level accuracy estimate (%) after cleansing. **NULL if accuracy calculation deferred.** Example: 81.40.'
+    sql: '"recAccuracy_pct"'
+  row_cnt:
+    description: 'BIGINT. Total rows present in the table at scan time. Example: 476 351.'
+    sql: '"rowCNT"'
+  severity_level:
+    description: 'TEXT. Overall severity of the detected issues. Possible values: Low, Medium, High, Critical. **NULL when severity not yet assessed.** Example: Critical.'
+    sql: '"severityLEVEL"'
+  sla_days:
+    description: 'REAL. Service-level agreement (days) for resolving the issues. **NULL when no SLA committed.** Example: 34.'
+    sql: sla_days
+  table_scanned:
+    description: 'TEXT. Name of the table that was scanned. Example: worker_education_final.'
+    sql: '"tableScanned"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct data_quality_log public identity values.
+    label: data_quality_log Count
+    sql: ${labor_certification_applications_large_public__data_quality_log.dq_code}

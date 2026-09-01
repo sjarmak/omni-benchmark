@@ -1,0 +1,30 @@
+label: maintenance_parts_usage
+description: All columns of the public table maintenance_parts_usage.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: maintenance_parts_usage
+dimensions:
+  maintenance_activity_link:
+    description: 'TEXT. Foreign key referencing the WorkOrderTag in the maintenance_logs table. Example: WO-25-0001.'
+    sql: '"Maintenance_Activity_Link"'
+  part_sku_link:
+    description: 'TEXT. Foreign key referencing the SKU of the part used in the spare_parts_inventory table. Possible values: SP-ABB-CAB-001, SP-FAN-MOT-001, SP-GEN-LUB-001, SP-KUK-GBX-001, SP-YAS-FAN-001.'
+    sql: '"Part_SKU_Link"'
+  usage_timestamp:
+    description: 'TEXT. The timestamp when the part was officially recorded as used. Example: 2025.08.10 15:00:00.'
+    sql: '"USAGE_TIMESTAMP"'
+  part_serial_number:
+    description: 'TEXT. The serial number of the specific part used, if tracked. **NULL means serial number is not tracked for this part.**. Possible values: SN-00-168-334-20250411, SN-00-168-334-20250811, SN-00-168-334-20250814, SN-00-168-334-20250829, SN-00-168-334-20250918, SN-A06B-0235-B100-20250810, SN-A06B-0235-B100-20250823, SN-A06B-0235-B100-20250913.'
+    sql: part_serial_number
+  quantity_used:
+    description: 'BIGINT. The quantity of the part used in this instance. Possible values: 1, 2, 3, 4.'
+    sql: quantity_used
+  usage_record:
+    description: 'BIGINT. Unique identifier for a part usage record. PK. Example: 1.'
+    sql: usage_record
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct maintenance_parts_usage public identity values.
+    label: maintenance_parts_usage Count
+    sql: ${robot_fault_prediction_large_public__maintenance_parts_usage.usage_record}

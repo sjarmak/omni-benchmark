@@ -1,0 +1,66 @@
+label: ForecastAccuracyMetrics
+description: All columns of the public table ForecastAccuracyMetrics.
+catalog: solar_panel_large
+schema: public
+table_name: ForecastAccuracyMetrics
+dimensions:
+  absolute_error_mwh:
+    description: 'REAL. Abs(Predicted - Actual). Example: 5.'
+    sql: absolute_error_mwh
+  accuracy_tier:
+    description: 'TEXT. Classification (Excellent, Good, Poor). Unique values: Excellent, Good, Acceptable, Poor.'
+    sql: accuracy_tier
+  actual_generation_mwh:
+    description: 'REAL. The real value observed after the fact. Example: 100.'
+    sql: actual_generation_mwh
+  actual_irradiance_ghi:
+    description: 'REAL. Measured GHI. Example: 500.'
+    sql: actual_irradiance_ghi
+  actual_temp_c:
+    description: 'REAL. Measured Temp. Example: 25.'
+    sql: actual_temp_c
+  adjusted_forecast_mwh:
+    description: 'REAL. Forecast corrected for known outages/curtailment. Example: 98.'
+    sql: adjusted_forecast_mwh
+  algorithm_notes:
+    description: TEXT. Auto-generated analysis of why error occurred. **NULL means data unavailable.**
+    sql: algorithm_notes
+  bias_mwh:
+    description: 'REAL. Predicted - Actual (shows over/under). Example: 0.'
+    sql: bias_mwh
+  curtailment_impact_mwh:
+    description: 'REAL. Generation lost to curtailment (excluded from error?). **NULL means No curtailment.** Example: 2.'
+    sql: curtailment_impact_mwh
+  evaluation_timestamp:
+    description: 'TIMESTAMP. When this accuracy check was run. Example: 2024-01-01 12:00:00.'
+    sql: evaluation_timestamp
+  financial_penalty_applied:
+    description: 'BOOLEAN. True if deviation caused a market penalty. Possible values: True, False.'
+    sql: financial_penalty_applied
+  forecast_ref:
+    description: TEXT. FK to EnergyGenerationForecasts.
+    sql: forecast_ref
+  metric_id:
+    description: TEXT. Unique ID for the accuracy record.
+    sql: metric_id
+  outage_impact_mwh:
+    description: 'REAL. Generation lost to equipment failure. **NULL means No outages.** Example: 5.'
+    sql: outage_impact_mwh
+  penalty_cost_usd:
+    description: 'REAL. Cost of the penalty. **NULL means No penalty.** Example: 200.'
+    sql: penalty_cost_usd
+  percentage_error_pct:
+    description: 'REAL. (Abs Error / Actual) * 100. Example: 5.'
+    sql: percentage_error_pct
+  squared_error:
+    description: 'REAL. Error squared (for RMSE calculations). Example: 25.'
+    sql: squared_error
+  weather_deviation_flag:
+    description: 'BOOLEAN. True if actual weather differed significantly from forecast. Possible values: True, False.'
+    sql: weather_deviation_flag
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ForecastAccuracyMetrics public identity values.
+    label: ForecastAccuracyMetrics Count
+    sql: ${solar_panel_large_public__forecast_accuracy_metrics.metric_id}

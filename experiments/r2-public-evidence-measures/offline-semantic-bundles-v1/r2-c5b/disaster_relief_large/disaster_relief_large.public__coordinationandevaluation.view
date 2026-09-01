@@ -1,0 +1,111 @@
+label: Coordination and Evaluation
+description: Coordination and evaluation records with row-level quality, accountability, and effectiveness semantics.
+catalog: disaster_relief_large
+schema: public
+table_name: coordinationandevaluation
+dimensions:
+  report_compliance:
+    description: 'REAL. Percentage score indicating compliance with reporting standards. Example: 96.6.'
+    label: Report Compliance
+    sql: report_compliance
+  stakeholder_satisfaction:
+    description: 'REAL. Numerical score representing stakeholder satisfaction levels. Example: 1.6.'
+    label: Stakeholder Satisfaction
+    sql: stakeholder_satisf
+  data_quality_value:
+    description: 'BIGINT. Score (1-5) representing the quality and reliability of collected data. Example: 2.'
+    label: Data Quality Value
+    sql: dataqualityvalue
+  compliance_state:
+    description: 'TEXT. Overall regulatory or procedural compliance status. Possible values: Compliant, Non-Compliant, Partial.'
+    label: Compliance State
+    sql: compliancestate
+  audit_state:
+    description: 'TEXT. Current status regarding financial or operational audits. Possible values: Completed, Due, Overdue.'
+    label: Audit State
+    sql: audit_state
+  quality_control_steps:
+    description: 'TEXT. Assessment of the strength of quality control measures. Possible values: Moderate, Strong, Weak.'
+    label: Quality Control Steps
+    sql: qualitycontrolsteps
+  coordination_effectiveness_level:
+    description: 'TEXT. Rating of the effectiveness of coordination efforts. Possible values: High, Low, Medium.'
+    label: Coordination Effectiveness Level
+    sql: coord_effect_lvl
+    ai_context: 'Coordination Effectiveness Levels: ''Low'': Poor communication, duplicated efforts. ''Medium'': Functional coordination with some gaps. ''High'': Seamless, efficient, and collaborative partnership among all stakeholders.'
+  accesslimitation:
+    description: 'TEXT. Description of constraints preventing full access to the area. **NULL means full access is available with no reported limitations.** Possible values: Partial, Severe.'
+    sql: accesslimitation
+  bestpracticeslisted:
+    description: 'TEXT. Count of best practices identified and listed. Example: 13.'
+    sql: bestpracticeslisted
+  contingencyplanstage:
+    description: 'TEXT. Status of the contingency planning process. Possible values: Due, Overdue, Updated.'
+    sql: contingencyplanstage
+  coord_dist_ref:
+    description: 'TEXT. Reference identifier for the associated distribution event. Example: DIST_W3SQ1.'
+    sql: coord_dist_ref
+  coordevalregistry:
+    description: 'TEXT. Unique identifier for the coordination and evaluation record. PK. Example: COORD_00AG.'
+    sql: coordevalregistry
+  coordopsref:
+    description: 'TEXT. Reference identifier for the associated operation. Example: OPS_79SCC.'
+    sql: coordopsref
+  documentation_state:
+    description: 'TEXT. Completeness status of required project documentation. **NULL means the status of documentation is untracked.** Possible values: Complete, Incomplete, Partial.'
+    sql: documentation_state
+  evaluationstage:
+    description: 'TEXT. Current stage of the project evaluation process. **NULL means evaluation has not been scheduled or initiated.** Possible values: Current, Due, Overdue.'
+    sql: evaluationstage
+  improvement_recs:
+    description: 'TEXT. Count of recommendations made for improvement. Example: 13.'
+    sql: improvement_recs
+  infosharingstate:
+    description: 'TEXT. Status of information sharing mechanisms between stakeholders. Possible values: Effective, Limited, Poor.'
+    sql: infosharingstate
+  insurance_scope:
+    description: 'TEXT. Extent of insurance coverage for the operation. **NULL means insurance coverage details are not on file.** Possible values: Full, Partial.'
+    sql: insurance_scope
+  lessons_learned_stage:
+    description: 'TEXT. Status of the lessons learned documentation process. Possible values: Documented, In Progress, Pending.'
+    sql: lessons_learned_stage
+  lessonsrecorded:
+    description: 'TEXT. Count of specific lessons recorded in the system. Example: 13.'
+    sql: lessonsrecorded
+  mediacoversentiment:
+    description: 'TEXT. General sentiment of media coverage regarding the operation. Possible values: Negative, Neutral, Positive.'
+    sql: mediacoversentiment
+  monitoring_freq:
+    description: 'TEXT. Frequency at which monitoring activities are conducted. Possible values: Daily, Monthly, Weekly.'
+    sql: monitoring_freq
+  next_review_date:
+    description: 'DATE. Scheduled date for the next operational review. Example: 2025-06-05.'
+    sql: next_review_date
+  notes:
+    description: 'TEXT. Free-text notes regarding the evaluation or coordination. **NULL means no specific observations were recorded.** Example: Delayed due to weather.'
+    sql: notes
+  partnerorgs:
+    description: 'TEXT. Count or listing of partner organizations involved. **NULL means number of partner organizations is unknown or zero.** Example: 16.0.'
+    sql: partnerorgs
+  public_perception:
+    description: 'TEXT. Star rating or score indicating public perception. Example: 3.9★.'
+    sql: public_perception
+  risk_mitigation_steps:
+    description: 'TEXT. Assessment of the adequacy of risk mitigation measures in place. Possible values: Adequate, Insufficient, Partial.'
+    sql: risk_mitigation_steps
+  safety_ranking:
+    description: 'TEXT. Assessed safety level of the operating environment. **NULL means safety assessment has not been conducted or is pending.** Possible values: High Risk, Moderate, Safe.'
+    sql: safety_ranking
+  secincidentcount:
+    description: 'BIGINT. Count of security incidents recorded during the evaluation period. Example: 8.'
+    sql: secincidentcount
+  coordination_quality_index:
+    label: Coordination Quality Index (CQI)
+    description: An index measuring the quality of inter-agency coordination and information management.
+    sql: (${report_compliance} + ${stakeholder_satisfaction} * 20.0 + ${data_quality_value} * 20.0) / 3.0
+    ai_context: Use this modeled field for Coordination Quality Index (CQI); do not reconstruct its formula.
+  is_high_accountability_response:
+    label: High-Accountability Response
+    description: A response characterized by strong compliance, documentation, and quality control.
+    sql: ${compliance_state} = 'Compliant' AND ${audit_state} = 'Completed' AND ${quality_control_steps} = 'Strong'
+    ai_context: Use this modeled field for High-Accountability Response; do not reconstruct its formula.

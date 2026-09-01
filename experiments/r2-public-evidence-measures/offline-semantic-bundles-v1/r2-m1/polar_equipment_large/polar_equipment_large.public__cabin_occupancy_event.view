@@ -1,0 +1,72 @@
+label: CabinOccupancyEvent
+description: All columns of the public table CabinOccupancyEvent.
+catalog: polar_equipment_large
+schema: public
+table_name: CabinOccupancyEvent
+dimensions:
+  air_quality_index:
+    description: 'REAL. Composite cabin air quality index 0-100. Example: 75.'
+    sql: '"airQualityIndex"'
+  avg_body_temp_c:
+    description: 'REAL. Average detected body temperature in Celsius. **NULL means Thermal detection not available or empty cabin.** Example: 36.6.'
+    sql: '"avgBodyTempC"'
+  cabin_ref:
+    description: 'INTEGER. Reference to the cabin environment record. Example: 50.'
+    sql: cabin_ref
+  co2_level_ppm:
+    description: 'REAL. CO2 concentration in cabin in parts per million. **NULL means CO2 sensor not calibrated.** Example: 850.'
+    sql: '"co2Level_ppm"'
+  comfort_score:
+    description: 'REAL. Computed occupant comfort score 0-100. Example: 72.'
+    sql: '"comfortScore"'
+  door_open_count:
+    description: 'INTEGER. Number of door open events in measurement period. Example: 4.'
+    sql: '"doorOpenCount"'
+  emergency_button_pressed:
+    description: 'TEXT. Whether emergency call button was pressed. Possible values: True, False.'
+    sql: '"emergencyButtonPressed"'
+  entertainment_active:
+    description: 'TEXT. Whether entertainment system is active. Possible values: True, False.'
+    sql: '"entertainmentActive"'
+  event_timestamp:
+    description: 'TIMESTAMP. Timestamp when occupancy event was recorded. Example: 2024-01-01 12:00:00.'
+    sql: '"eventTimestamp"'
+  humidity_pct:
+    description: 'REAL. Cabin interior relative humidity percentage. **NULL means Humidity sensor offline.** Example: 45.'
+    sql: '"humidityPct"'
+  hvac_mode:
+    description: 'TEXT. Current HVAC operating mode. Unique values: Off, Heat, Cool, Auto, Vent, Defrost.'
+    sql: '"hvacMode"'
+  interior_temp_c:
+    description: 'REAL. Cabin interior temperature in Celsius. **NULL means Interior temp sensor offline.** Example: 22.'
+    sql: '"interiorTempC"'
+  lighting_mode:
+    description: 'TEXT. Current cabin lighting mode. Unique values: Off, Dim, Normal, Bright, Reading, Emergency.'
+    sql: '"lightingMode"'
+  max_capacity:
+    description: 'INTEGER. Maximum rated occupancy capacity. Unique values: 4, 6, 8, 10, 12, 15.'
+    sql: '"maxCapacity"'
+  motion_activity_level:
+    description: 'TEXT. Detected level of occupant motion activity. Unique values: None, Low, Moderate, High, Extreme.'
+    sql: '"motionActivityLevel"'
+  noise_level_d_b:
+    description: 'REAL. Cabin interior noise level in decibels. **NULL means Audio sensor malfunction.** Example: 58.'
+    sql: '"noiseLevel_dB"'
+  occupancy_event_seq:
+    description: TEXT. Unique identifier for each cabin occupancy event.
+    sql: '"occupancyEventSeq"'
+  occupancy_pct:
+    description: 'REAL. Percentage of cabin capacity utilized. Example: 50.0.'
+    sql: '"occupancyPct"'
+  occupant_count:
+    description: 'INTEGER. Number of occupants detected in cabin. Example: 3.'
+    sql: '"occupantCount"'
+  seatbelt_engaged_count:
+    description: 'INTEGER. Number of seatbelts currently engaged. **NULL means Seatbelt sensors not equipped.** Example: 3.'
+    sql: '"seatbeltEngagedCount"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CabinOccupancyEvent public identity values.
+    label: CabinOccupancyEvent Count
+    sql: ${polar_equipment_large_public__cabin_occupancy_event.occupancy_event_seq}

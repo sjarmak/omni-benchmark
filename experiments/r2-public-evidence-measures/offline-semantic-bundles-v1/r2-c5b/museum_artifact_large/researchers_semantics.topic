@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__researchers
+label: Researchers
+description: All columns of the public table Researchers.
+fields:
+- museum_artifact_large_public__researchers.*
+joins: {}
+ai_context: This topic models no cross-table joins.

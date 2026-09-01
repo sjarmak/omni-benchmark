@@ -1,0 +1,105 @@
+label: fraud_detection_rules
+description: All columns of the public table fraud_detection_rules.
+catalog: reverse_logistics_large
+schema: public
+table_name: fraud_detection_rules
+dimensions:
+  creation_timestamp:
+    description: 'TEXT. The timestamp when the rule was created. Example: 2025/07/09 11:50:29.'
+    sql: '"CREATION_TIMESTAMP"'
+  expiry_date:
+    description: 'TEXT. The date the rule will expire, in YYYY/MM/DD format. **NULL means the rule is permanent.** Example: 2025/10/02.'
+    sql: '"EXPIRY_DATE"'
+  is_active:
+    description: 'BOOLEAN. Indicates if the rule is currently active. Example: True.'
+    sql: '"IS_ACTIVE"'
+  last_updated_timestamp:
+    description: 'TEXT. The timestamp when the rule was last updated. Example: 2025/07/27 13:24:08.'
+    sql: '"LAST_UPDATED_TIMESTAMP"'
+  risk_score_impact:
+    description: 'BIGINT. The number of points this rule adds to a fraud score when triggered. Example: 69.'
+    sql: '"RISK_SCORE_IMPACT"'
+  rule_id:
+    description: 'TEXT. Unique identifier for the fraud detection rule. PK. Example: RULE-0001.'
+    sql: '"RULE_ID"'
+  rule_name:
+    description: 'TEXT. The human-readable name of the rule. Example: Rule Velocity 1.'
+    sql: '"RULE_NAME"'
+  severity_level:
+    description: 'TEXT. The severity of the triggered alert. Possible values: Low, Medium, High, Critical.'
+    sql: '"SEVERITY_LEVEL"'
+  action_on_trigger:
+    description: 'TEXT. The action to take when the rule is triggered. Possible values: Alert, Block, Review.'
+    sql: action_on_trigger
+  audit_history:
+    description: 'JSONB. A JSON object or array containing the audit history of the rule. Example: [{user: 1019, action: create}].'
+    sql: audit_history
+  author_employee_id:
+    description: 'BIGINT. The employee ID of the rule''s author. FK to employees.EMPLOYEE_ID. Example: 1038.'
+    sql: author_employee_id
+  comparison_operator:
+    description: 'TEXT. The comparison operator used with the threshold value. Possible values: >, <, =.'
+    sql: comparison_operator
+  cooldown_period_hours:
+    description: 'BIGINT. The number of hours before the rule can trigger again on the same entity. **NULL means the rule can trigger repeatedly without cooldown.** Example: 6.0.'
+    sql: cooldown_period_hours
+  data_fields_checked:
+    description: 'JSONB. A JSON array of the data fields the rule inspects. Example: [return_value, shipping_address].'
+    sql: data_fields_checked
+  dependencies_on_other_rules:
+    description: 'JSONB. A JSON array of other RULE_IDs that must trigger before this one. Example: [RULE-0004].'
+    sql: dependencies_on_other_rules
+  is_machine_learning_based:
+    description: 'BOOLEAN. Indicates if the rule uses a machine learning model. Example: False.'
+    sql: is_machine_learning_based
+  is_temporary_rule:
+    description: 'BOOLEAN. Indicates if the rule is temporary. Example: False.'
+    sql: is_temporary_rule
+  model_version:
+    description: 'TEXT. The version of the ML model used. **NULL means the rule is not based on a machine learning model.** Example: v2.4.'
+    sql: model_version
+  notification_group_email:
+    description: 'TEXT. The email address for alert notifications. Example: fraud-alerts-tier2@examplecorp.com.'
+    sql: notification_group_email
+  regulatory_context:
+    description: 'TEXT. The regulatory context for the rule, if any. Possible values: Internal Policy, SOX, PCI-DSS.'
+    sql: regulatory_context
+  rule_category:
+    description: 'TEXT. The category of the fraud rule. Possible values: Velocity, Value, History, Pattern.'
+    sql: rule_category
+  rule_description:
+    description: 'TEXT. A brief description of what the rule detects. Example: Flags transactions exceeding a value threshold..'
+    sql: rule_description
+  rule_logic:
+    description: 'TEXT. The logic of the rule, which could be a query or plain text. Example: COUNT(returns) > 3 WHERE customer.id = X.'
+    sql: rule_logic
+  rule_performance:
+    description: JSONB column. Stores performance metrics for the fraud detection rule, including accuracy rates.
+    sql: rule_performance
+  testing_status:
+    description: 'TEXT. The current status of the rule in the development lifecycle. Possible values: Production, Testing, Archived.'
+    sql: testing_status
+  threshold_value:
+    description: 'REAL. The numerical threshold for the rule''s logic. **NULL means the rule logic is not based on a simple numerical threshold.** Example: 179.51.'
+    sql: threshold_value
+  validation_dataset_ref:
+    description: 'TEXT. A reference to the dataset used to validate the rule. **NULL indicates validation was done via simulation or other methods.** Example: dataset_2024_Q4.csv.'
+    sql: validation_dataset_ref
+  version:
+    description: 'REAL. The version number of the rule. Example: 1.7.'
+    sql: version
+  rule_performance_false_positive_rate_percent:
+    description: 'REAL. The known percentage of times this rule triggers incorrectly. Example: 13.19.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rule_performance, 'false_positive_rate_percent')
+  rule_performance_performance_notes:
+    description: 'TEXT. Notes on the rule''s performance. **NULL indicates no recent performance notes.** Example: Requires review in Q4..'
+    sql: JSONB_EXTRACT_PATH_TEXT(rule_performance, 'performance_notes')
+  rule_performance_true_positive_rate_percent:
+    description: 'REAL. The known percentage of times this rule triggers correctly. Example: 94.85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(rule_performance, 'true_positive_rate_percent')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct fraud_detection_rules public identity values.
+    label: fraud_detection_rules Count
+    sql: ${reverse_logistics_large_public__fraud_detection_rules.rule_id}

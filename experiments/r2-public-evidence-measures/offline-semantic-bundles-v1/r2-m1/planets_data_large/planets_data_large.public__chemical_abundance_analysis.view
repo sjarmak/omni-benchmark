@@ -1,0 +1,78 @@
+label: ChemicalAbundanceAnalysis
+description: All columns of the public table ChemicalAbundanceAnalysis.
+catalog: planets_data_large
+schema: public
+table_name: ChemicalAbundanceAnalysis
+dimensions:
+  abundance_error:
+    description: 'REAL. Measurement uncertainty Typical range: 0.01 to 0.5.'
+    sql: '"ABUNDANCE_ERROR"'
+  abundance_id:
+    description: BIGINT. Primary key. Unique chemical abundance analysis identifier
+    sql: '"ABUNDANCE_ID"'
+  analysis_method:
+    description: 'TEXT. Method of abundance determination Possible values: EW-Based, Spectral Synthesis, Photometric, Machine Learning.'
+    sql: '"ANALYSIS_METHOD"'
+  effective_temp_k:
+    description: 'REAL. Adopted effective temperature Typical range: 3000 to 10000.'
+    sql: '"EFFECTIVE_TEMP_K"'
+  element:
+    description: 'TEXT. Chemical element analyzed Possible values: Fe, C, N, O, Mg, Si, Ca, Ti.'
+    sql: '"ELEMENT"'
+  linelist_source:
+    description: 'TEXT. Source of atomic line list Possible values: VALD3, Kurucz, NIST, Custom.'
+    sql: '"LINELIST_SOURCE"'
+  microturbulence_km_per_s:
+    description: 'REAL. Adopted microturbulence velocity Typical range: 0.1 to 5.'
+    sql: '"MICROTURBULENCE_km_per_s"'
+  nlte_correction_dex:
+    description: 'REAL. NLTE correction in dex Typical range: -0.5 to 0.5. **NULL means No NLTE correction applied.**'
+    sql: '"NLTE_CORRECTION_dex"'
+  reference_publication:
+    description: TEXT. Publication DOI **NULL means Analysis not yet published.**
+    sql: '"REFERENCE_PUBLICATION"'
+  systematic_errors:
+    description: JSONB. Systematic error budget
+    sql: '"SYSTEMATIC_ERRORS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  abundance_fe_h:
+    description: 'REAL. [X/Fe] abundance ratio Typical range: -3 to 3.'
+    sql: '"abundance_Fe_H"'
+  analysis_code:
+    description: TEXT. Analysis reference code
+    sql: analysis_code
+  analysis_date:
+    description: DATE. Date of analysis
+    sql: analysis_date
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  lines_used:
+    description: BIGINT. Number of spectral lines used
+    sql: lines_used
+  log_g_cgs:
+    description: 'REAL. Adopted surface gravity log g Typical range: 0 to 5.5.'
+    sql: log_g_cgs
+  metallicity_fe_h:
+    description: 'REAL. Adopted overall metallicity [Fe/H] Typical range: -4 to 1.'
+    sql: '"metallicity_Fe_H"'
+  model_atmosphere:
+    description: 'TEXT. Model atmosphere grid used Possible values: MARCS, Kurucz, PHOENIX, ATLAS9.'
+    sql: model_atmosphere
+  nlte_correction_applied:
+    description: BOOLEAN. Whether non-LTE corrections were applied Boolean flag (true/false).
+    sql: nlte_correction_applied
+  quality_grade:
+    description: 'TEXT. Quality grade of the analysis Possible values: Premium, Standard, Preliminary.'
+    sql: quality_grade
+  stellar_ref:
+    description: BIGINT. Foreign key referencing stars(stellarref). Related star
+    sql: stellar_ref
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ChemicalAbundanceAnalysis public identity values.
+    label: ChemicalAbundanceAnalysis Count
+    sql: ${planets_data_large_public__chemical_abundance_analysis.abundance_id}

@@ -1,0 +1,23 @@
+label: Constructors
+description: Constructor records.
+catalog: sports_events_large
+schema: public
+table_name: constructors
+dimensions:
+  naty:
+    description: 'VARCHAR. Nationality of the constructor. **NULL means the team''s nationality is not specified in the dataset.**. Example: British.'
+    label: Constructor nationality
+    sql: naty
+    ai_context: 'Data Unavailability for Constructor Nationality: When a constructor''s nationality is not specified, it means the team''s country of origin is not recorded in the dataset.'
+  cstr_key:
+    description: 'INTEGER. Unique identifier for the constructor. PK. Example: 1.'
+    sql: cstr_key
+  linkpage:
+    description: 'VARCHAR. URL to the constructor''s page. **NULL means the reference link is missing.**. Example: http://en.wikipedia.org/wiki/BMW_Sauber.'
+    sql: linkpage
+  namelabel:
+    description: 'VARCHAR. Full team name. **NULL means the constructor name has not been resolved or released.**. Example: McLaren.'
+    sql: namelabel
+  refcod:
+    description: 'TEXT. Constructor reference code. Example: mclaren.'
+    sql: refcod

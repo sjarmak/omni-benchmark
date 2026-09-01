@@ -1,0 +1,9 @@
+base_view: residential_data_large_public__education_facility_resources
+label: Education_Facility_Resources
+description: All columns of the public table Education_Facility_Resources.
+fields:
+- residential_data_large_public__education_facility_resources.*
+- residential_data_large_public__education_facilities.*
+joins:
+  residential_data_large_public__education_facilities: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

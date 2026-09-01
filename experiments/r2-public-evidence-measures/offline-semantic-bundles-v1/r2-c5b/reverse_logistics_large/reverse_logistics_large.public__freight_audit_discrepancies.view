@@ -1,0 +1,60 @@
+label: freight_audit_discrepancies
+description: All columns of the public table freight_audit_discrepancies.
+catalog: reverse_logistics_large
+schema: public
+table_name: freight_audit_discrepancies
+dimensions:
+  auditor_assigned_user:
+    description: TEXT. Human auditor assigned if manual review needed. **NULL means Fully automated.**
+    sql: auditor_assigned_user
+  auto_approve_threshold_met:
+    description: BOOLEAN. If the variance was small enough to auto-waive.
+    sql: auto_approve_threshold_met
+  automated_detection_flag:
+    description: BOOLEAN. Was this found by the automated auditor?.
+    sql: automated_detection_flag
+  carrier_appeal_status:
+    description: 'TEXT. Did the carrier accept the correction?. Unique values: Accepted, Contested, Pending.'
+    sql: carrier_appeal_status
+  carrier_billed_amount:
+    description: 'REAL. Amount originally billed by carrier for this line item. Example: 20.'
+    sql: carrier_billed_amount
+  carrier_comment_log:
+    description: TEXT. Response text from the carrier. **NULL means No comment.**
+    sql: carrier_comment_log
+  contract_calculated_amount:
+    description: 'REAL. Amount calculated based on the contract. Example: 15.'
+    sql: contract_calculated_amount
+  contract_clause_ref:
+    description: TEXT. Reference to the specific contract clause violated.
+    sql: contract_clause_ref
+  discrepancy_case_ref:
+    description: TEXT. Unique identifier for the audit discrepancy case.
+    sql: discrepancy_case_ref
+  discrepancy_type_code:
+    description: 'TEXT. Type of error found (e.g., Rate Error, Duplicate). Unique values: Rate Variance, Duplicate Billing, Weight Mismatch, Wrong Zone, Invalid Accessorial.'
+    sql: discrepancy_type_code
+  impact_severity_level:
+    description: 'INTEGER. Severity 1-5 based on financial impact. Example: 50.'
+    sql: impact_severity_level
+  invoice_recon_ref:
+    description: TEXT. Reference to the parent reconciliation record.
+    sql: invoice_recon_ref
+  refund_received_flag:
+    description: BOOLEAN. If a credit note/refund was actually processed.
+    sql: refund_received_flag
+  resolution_timestamp:
+    description: 'TIMESTAMP. When the discrepancy was closed. **NULL means Open.** Example: 2024-01-01 12:00:00.'
+    sql: resolution_timestamp
+  root_cause_category:
+    description: 'TEXT. Root cause (e.g., Fuel Surcharge Update Lag). Unique values: Data Entry Error, Contract Expiry, System Glitch, Fuel Index Lag.'
+    sql: root_cause_category
+  system_version_audit:
+    description: 'TEXT. Version of the audit software used. Unique values: v2.1, v2.2.'
+    sql: system_version_audit
+  variance_percentage:
+    description: 'REAL. Percentage difference relative to contract rate. Example: 15.'
+    sql: variance_percentage
+  variance_value:
+    description: 'REAL. Absolute difference in value. Example: 5.'
+    sql: variance_value

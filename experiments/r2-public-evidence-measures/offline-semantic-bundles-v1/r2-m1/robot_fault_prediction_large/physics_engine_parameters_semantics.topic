@@ -1,0 +1,15 @@
+base_view: robot_fault_prediction_large_public__physics_engine_parameters
+label: physics_engine_parameters
+description: All columns of the public table physics_engine_parameters.
+fields:
+- robot_fault_prediction_large_public__physics_engine_parameters.*
+- robot_fault_prediction_large_public__digital_twin_sync_log.*
+- robot_fault_prediction_large_public__robot_details.*
+- robot_fault_prediction_large_public__robot_record.*
+- robot_fault_prediction_large_public__simulation_models.*
+joins:
+  robot_fault_prediction_large_public__digital_twin_sync_log:
+    robot_fault_prediction_large_public__simulation_models:
+      robot_fault_prediction_large_public__robot_details:
+        robot_fault_prediction_large_public__robot_record: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

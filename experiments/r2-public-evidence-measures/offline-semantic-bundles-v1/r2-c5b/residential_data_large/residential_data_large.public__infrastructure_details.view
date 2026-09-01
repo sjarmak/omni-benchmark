@@ -1,0 +1,93 @@
+label: infrastructure_details
+description: All columns of the public table infrastructure_details.
+catalog: residential_data_large
+schema: public
+table_name: infrastructure_details
+dimensions:
+  contractor_id:
+    description: 'BIGINT. Identifier for contractor responsible for infrastructure. **NULL means contractor information not recorded.**. Possible values: 101.0, 102.0, 103.0.'
+    sql: '"CONTRACTOR_ID"'
+  compliance_score:
+    description: 'BIGINT. Infrastructure compliance rating score. **NULL means compliance assessment not performed.**. Possible values: 85, 92, true.'
+    sql: '"Compliance_Score"'
+  curb_height_cm:
+    description: 'BIGINT. Height of street curb in centimeters. **NULL means curb not present or not measured.**. Possible values: 12.0, 15.0, 18.0.'
+    sql: '"Curb_Height_cm"'
+  detail_id:
+    description: 'BIGSERIAL. Primary key identifier for infrastructure detail record. PK. Possible values: 1, 2, 3, 4, 5.'
+    sql: '"Detail_ID"'
+  emergency_access_width_m:
+    description: 'REAL. Width available for emergency vehicle access in meters. **NULL means emergency access not assessed.**. Possible values: 2.8, 2024-01-15, 3.8, false.'
+    sql: '"EMERGENCY_access_width_m"'
+  fiber_optic_availability:
+    description: 'TEXT. Availability status of fiber optic infrastructure. **NULL means fiber optic status not surveyed.**. Possible values: 2024-01-16, false, true.'
+    sql: '"Fiber_Optic_Availability"'
+  infrastructure_specification_code:
+    description: 'BIGINT. Reference to infrastructure record for detailed specifications. FK to infrastructure(infraref). Possible values: 1, 2, 222, 231, 6.'
+    sql: '"Infrastructure_Specification_Code"'
+  installation_date:
+    description: 'DATE. Date when infrastructure was originally installed. **NULL means installation date not recorded.**. Possible values: 2019-03-15, 2020-07-22, 2021-05-17, 2021-12-05.'
+    sql: '"Installation_Date"'
+  last_maintenance_date:
+    description: 'DATE. Date of most recent maintenance activity. **NULL means maintenance history not tracked.**. Possible values: 2023-09-10, 2024-01-10, 2024-02-14.'
+    sql: '"LAST_maintenance_date"'
+  noise_level_db:
+    description: 'REAL. Ambient noise level in decibels. **NULL means noise monitoring not performed.**. Possible values: 62.1, 68.2, 75.3.'
+    sql: '"Noise_Level_DB"'
+  parking_spots_count:
+    description: 'BIGINT. Number of designated parking spaces. **NULL means parking count not surveyed.**. Possible values: 12.0, 16.0, 8.0.'
+    sql: '"Parking_Spots_Count"'
+  road_load_capacity_kg_per_m2:
+    description: 'REAL. Maximum load bearing capacity of road surface in kilograms per square meter. **NULL means load capacity not tested.**. Possible values: 2500.0, 2800.0, 3200.0.'
+    sql: '"ROAD_LOAD_CAPACITY_kg_per_m2"'
+  road_width_m:
+    description: 'REAL. Road width measurement in meters. **NULL means road width not surveyed.**. Possible values: 7.2, 8.5, 9.8.'
+    sql: '"Road_Width_M"'
+  street_lighting_lumens:
+    description: 'BIGINT. Street lighting intensity in lumens. **NULL means lighting not measured or not present.**. Possible values: 12000.0, 6800.0, 9200.0.'
+    sql: '"STREET_LIGHTING_LUMENS"'
+  traffic_volume_vehicles_per_day:
+    description: 'BIGINT. Daily vehicle traffic count. **NULL means traffic monitoring not conducted.**. Possible values: 1850.0, 2850.0, 3100.0, 4200.0.'
+    sql: '"TRAFFIC_volume_vehicles_per_day"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. **NULL means update history not tracked.**. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"Updated_At"'
+  warranty_expiry_date:
+    description: 'DATE. Date when infrastructure warranty expires. **NULL means warranty information not available.**. Possible values: 2025-11-08, 2026-03-15, 2027-07-22, 2028-05-12.'
+    sql: '"Warranty_Expiry_Date"'
+  air_quality_pm25_ug_per_m3:
+    description: 'REAL. PM2.5 air pollution concentration in micrograms per cubic meter. **NULL means air quality monitoring not available.**. Possible values: 15.2, 18.4, 22.4.'
+    sql: '"air_quality_PM25_ug_per_m3"'
+  created_at:
+    description: 'DATE. Record creation timestamp. **NULL means creation date not logged.**. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: created_at
+  drainage_capacity_m3_per_hour:
+    description: 'REAL. Storm drainage system capacity in cubic meters per hour. **NULL means drainage capacity not assessed.**. Possible values: 18.9, 25.3, 32.1.'
+    sql: '"drainage_CAPACITY_m3_per_hour"'
+  inspection_frequency_months:
+    description: 'BIGINT. Frequency of infrastructure inspections in months. **NULL means inspection schedule not established.**. Possible values: 4.0, 6.0, 8.0.'
+    sql: '"inspection_frequency_MONTHS"'
+  maintenance_cost_brl:
+    description: 'REAL. Cost of maintenance activities in Brazilian Real. **NULL means maintenance costs not tracked.**. Possible values: 12300.45, 15750.8, 8950.25.'
+    sql: '"maintenance_cost_BRL"'
+  parking_area_m2:
+    description: 'REAL. Total parking area in square meters. **NULL means parking area not calculated.**. Possible values: 180.5, 245.0, 320.8.'
+    sql: '"parking_area_M2"'
+  sidewalk_width_m:
+    description: 'REAL. Sidewalk width measurement in meters. **NULL means sidewalk not present or not measured.**. Possible values: 1.9, 2.1, 2.5.'
+    sql: sidewalk_width_m
+  utility_pole_count:
+    description: 'BIGINT. Number of utility poles in infrastructure area. **NULL means utility poles not counted.**. Possible values: 15, 2024-01-15, 2024-01-16, 25.'
+    sql: '"utility_pole_COUNT"'
+  water_system_metrics:
+    description: JSONB column. Groups all water infrastructure measurements including pressure, flow rate, and pipe specifications for comprehensive water system analysis.
+    sql: water_system_metrics
+  water_system_metrics_water_pressure_psi:
+    description: 'REAL. Water system pressure measurement in pounds per square inch. **NULL means pressure monitoring not available or system not pressurized.**. Possible values: 38.9, 45.2, 52.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(water_system_metrics, 'WATER_PRESSURE_PSI')
+  water_system_metrics_water_flow_rate_lps:
+    description: 'REAL. Water flow rate capacity in liters per second. **NULL means flow rate not measured or water system not available.**. Possible values: 12.5, 15.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(water_system_metrics, 'Water_Flow_Rate_lps')
+  water_system_metrics_pipe_diameter_mm:
+    description: 'BIGINT. Water pipe diameter specification in millimeters. **NULL means pipe specifications not documented.**. Possible values: 125.0, 175.0, 200.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(water_system_metrics, 'pipe_diameter_MM')

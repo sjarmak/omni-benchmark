@@ -1,0 +1,138 @@
+label: performance_benchmark_history
+description: All columns of the public table performance_benchmark_history.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: performance_benchmark_history
+dimensions:
+  alpha_generation:
+    description: 'TEXT. Alpha generation relative to benchmark with unit notation. Possible values: -0.85%/alpha, 0.32%/alpha, 0.65%/alpha, 1.25%/alpha.'
+    sql: alpha_generation
+  asset_allocation_effect_alloc:
+    description: 'TEXT. Asset allocation effect on performance with unit notation. Possible values: -0.18, 0.05, 0.08, 0.15, 0.22.'
+    sql: asset_allocation_effect_alloc
+  benchmark_change_indicator:
+    description: 'BOOLEAN. Indicator of benchmark change during period. Possible values: False.'
+    sql: benchmark_change_indicator
+  benchmark_date:
+    description: 'DATE. Date of benchmark performance measurement. Possible values: 2024-12-01.'
+    sql: benchmark_date
+  benchmark_history_id:
+    description: 'BIGSERIAL. Primary key identifier for benchmark performance record. PK. Possible values: 1, 2, 3, 4, 5.'
+    sql: benchmark_history_id
+  benchmark_name:
+    description: 'TEXT. Name of the benchmark index. Possible values: Bloomberg 1-3 Year Treasury Index, ICE BofA US High Yield Index, MSCI Frontier Markets Index, Russell 3000 Growth Index, S&P Target Date 2060 Index.'
+    sql: benchmark_name
+  benchmark_provider:
+    description: 'TEXT. Provider of the benchmark index. Possible values: Bloomberg, FTSE Russell, ICE Data Services, MSCI Inc, S&P Dow Jones Indices.'
+    sql: benchmark_provider
+  benchmark_return_1d:
+    description: 'TEXT. One-day benchmark return with unit notation. Possible values: -0.22%/day, -0.28%/day, 0.08%/day, 0.15%/day, 0.38%/day.'
+    sql: benchmark_return_1d
+  benchmark_return_1m:
+    description: 'TEXT. One-month benchmark return with unit notation. Possible values: -1.48%/month, 1.18%/month, 2.18%/month, 2.45%/month, 4.15%/month.'
+    sql: benchmark_return_1m
+  benchmark_return_1y:
+    description: 'TEXT. One-year benchmark return with unit notation. Possible values: -9.85%/year, 11.8%/year, 14.2%/year, 16.5%/year, 6.95%/year.'
+    sql: benchmark_return_1y
+  benchmark_return_3m:
+    description: 'TEXT. Three-month benchmark return with unit notation. Possible values: -4.25%/quarter, 11.9%/quarter, 3.65%/quarter, 7.45%/quarter, 9.85%/quarter.'
+    sql: benchmark_return_3m
+  benchmark_symbol:
+    description: 'TEXT. Symbol or ticker of the benchmark. Possible values: BT13, HYG0, MXFM, RUG, SPXT2060.'
+    sql: benchmark_symbol
+  benchmark_type:
+    description: 'TEXT. Type of benchmark (Primary, Secondary, Custom). Possible values: Primary.'
+    sql: benchmark_type
+  benchmark_volatility_vol:
+    description: 'TEXT. Benchmark volatility measure with unit notation. Possible values: 0.66, 0.82, 0.88, 1.52, 1.65.'
+    sql: benchmark_volatility_vol
+  beta_to_benchmark:
+    description: 'TEXT. Beta coefficient relative to benchmark with unit notation. Possible values: 0.95 beta/benchmark, 0.99 beta/benchmark, 1.02 beta/benchmark, 1.08 beta/benchmark, 1.12 beta/benchmark.'
+    sql: beta_to_benchmark
+  change_effective_date:
+    description: DATE. Effective date of benchmark change. **NULL means no benchmark change occurred.**. **No data available**.
+    sql: change_effective_date
+  change_reason:
+    description: TEXT. Reason for benchmark change. **NULL means no benchmark change occurred.**. **No data available**.
+    sql: change_reason
+  correlation_coefficient:
+    description: 'TEXT. Correlation coefficient with benchmark with unit notation. Possible values: 0.88 corr/benchmark, 0.89 corr/benchmark, 0.92 corr/benchmark, 0.95 corr/benchmark, 0.98 corr/benchmark.'
+    sql: correlation_coefficient
+  currency_effect:
+    description: 'TEXT. Currency impact on performance with unit notation. Possible values: 0.00%/currency, 0.25%/currency.'
+    sql: currency_effect
+  data_source:
+    description: 'TEXT. Source of the performance data. Possible values: BLOOMBERG TERMINAL, Bloomberg Terminal, Reuters Feed, bloomberg terminal, reuters feed.'
+    sql: data_source
+  excess_return_1d:
+    description: 'TEXT. One-day excess return over benchmark with unit notation. Possible values: -0.04%/day, 0.03%/day, 0.04%/day, 0.07%/day.'
+    sql: excess_return_1d
+  excess_return_1m:
+    description: 'TEXT. One-month excess return over benchmark with unit notation. Possible values: -0.30%/month, 0.07%/month, 0.17%/month, 0.23%/month, 0.37%/month.'
+    sql: excess_return_1m
+  excess_return_1y:
+    description: 'TEXT. One-year excess return over benchmark with unit notation. Possible values: -1.4%/year, 0.30%/year, 0.7%/year, 1.40%/year, 1.7%/year.'
+    sql: excess_return_1y
+  excess_return_3m:
+    description: 'TEXT. Three-month excess return over benchmark with unit notation. Possible values: -0.90%/quarter, 0.20%/quarter, 0.40%/quarter, 0.9%/quarter.'
+    sql: excess_return_3m
+  fund_return_1d:
+    description: 'TEXT. One-day fund return with unit notation. Possible values: -0.18%/day, -0.32%/day, 0.12%/day, 0.18%/day, 0.45%/day.'
+    sql: fund_return_1d
+  fund_return_1m:
+    description: 'TEXT. One-month fund return with unit notation. Possible values: -1.25%/month, 1.25%/month, 2.15%/month, 2.35%/month, 4.52%/month.'
+    sql: fund_return_1m
+  fund_return_1y:
+    description: 'TEXT. One-year fund return with unit notation. Possible values: -8.45%/year, 12.5%/year, 12.8%/year, 18.2%/year, 7.25%/year.'
+    sql: fund_return_1y
+  fund_return_3m:
+    description: 'TEXT. Three-month fund return with unit notation. Possible values: -3.85%/quarter, 12.8%/quarter, 3.85%/quarter, 7.85%/quarter, 8.95%/quarter.'
+    sql: fund_return_3m
+  fund_ticker:
+    description: 'TEXT. Fund ticker symbol identifier. Possible values: AVMU, FALN, FTGC, QQD, USTB.'
+    sql: fund_ticker
+  fund_volatility_vol:
+    description: 'TEXT. Fund volatility measure with unit notation. Possible values: 0.65, 0.85, 0.95, 1.45, 1.85.'
+    sql: fund_volatility_vol
+  information_ratio_1m:
+    description: 'TEXT. One-month information ratio with unit notation. Possible values: -0.16 ratio/excess, 0.11 ratio/excess, 0.16 ratio/excess, 0.20 ratio/excess, 0.39 ratio/excess.'
+    sql: information_ratio_1m
+  information_ratio_1y:
+    description: 'TEXT. One-year information ratio with unit notation. Possible values: -0.36 ratio/excess, 0.21 ratio/excess, 0.33 ratio/excess, 0.49 ratio/excess.'
+    sql: information_ratio_1y
+  information_ratio_3m:
+    description: 'TEXT. Three-month information ratio with unit notation. Possible values: -0.37 ratio/excess, 0.14 ratio/excess, 0.21 ratio/excess, 0.32 ratio/excess, 0.49 ratio/excess.'
+    sql: information_ratio_3m
+  interaction_effect_interact:
+    description: 'TEXT. Interaction effect between allocation and selection with unit notation. Possible values: -0.05, -0.08, 0.01, 0.02, 0.12.'
+    sql: interaction_effect_interact
+  last_updated:
+    description: 'TEXT. Timestamp of last data update. Possible values: 2024-12-01 16:00:00 AKST-9.'
+    sql: last_updated
+  previous_benchmark:
+    description: TEXT. Previously used benchmark identifier. **NULL means no previous benchmark or fund has not changed benchmarks.**. **No data available**.
+    sql: previous_benchmark
+  r_squared:
+    description: 'TEXT. R-squared correlation measure with unit notation. Possible values: 0.77 rsq/benchmark, 0.79 rsq/benchmark, 0.85 rsq/benchmark, 0.91 rsq/benchmark, 0.96 rsq/benchmark.'
+    sql: r_squared
+  relative_volatility:
+    description: 'TEXT. Relative volatility versus benchmark with unit notation. Possible values: 0.95 vol/benchmark, 0.98 vol/benchmark, 1.04 vol/benchmark, 1.08 vol/benchmark, 1.12 vol/benchmark.'
+    sql: relative_volatility
+  security_selection_effect_sel:
+    description: 'TEXT. Security selection effect on performance with unit notation. Possible values: -0.72, 0.22, 0.25, 0.32, 0.68.'
+    sql: security_selection_effect_sel
+  tracking_error_1m:
+    description: 'TEXT. One-month tracking error with unit notation. Possible values: 0.65%/tracking, 0.85%/tracking, 0.95%/tracking, 1.45%/tracking, 1.85%/tracking.'
+    sql: tracking_error_1m
+  tracking_error_1y:
+    description: 'TEXT. One-year tracking error with unit notation. Possible values: 1.45%/tracking, 2.15%/tracking, 3.45%/tracking, 3.85%/tracking, 4.25%/tracking.'
+    sql: tracking_error_1y
+  tracking_error_3m:
+    description: 'TEXT. Three-month tracking error with unit notation. Possible values: 0.95%/tracking, 1.25%/tracking, 1.85%/tracking, 2.45%/tracking, 2.85%/tracking.'
+    sql: tracking_error_3m
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct performance_benchmark_history public identity values.
+    label: performance_benchmark_history Count
+    sql: ${exchange_traded_funds_large_public__performance_benchmark_history.benchmark_history_id}

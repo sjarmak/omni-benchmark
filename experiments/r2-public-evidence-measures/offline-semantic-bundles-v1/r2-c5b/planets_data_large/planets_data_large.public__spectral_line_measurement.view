@@ -1,0 +1,81 @@
+label: SpectralLineMeasurement
+description: All columns of the public table SpectralLineMeasurement.
+catalog: planets_data_large
+schema: public
+table_name: SpectralLineMeasurement
+dimensions:
+  abundance_error:
+    description: 'REAL. Abundance uncertainty Typical range: 0.01 to 0.5. **NULL means Abundance not derived.**'
+    sql: '"ABUNDANCE_ERROR"'
+  blended:
+    description: BOOLEAN. Whether line is blended with other features Boolean flag (true/false).
+    sql: '"BLENDED"'
+  element:
+    description: 'TEXT. Chemical element Possible values: Fe, Ca, Na, Mg, Si, Ti, Cr, Ni.'
+    sql: '"ELEMENT"'
+  equivalent_width_pm:
+    description: 'REAL. Equivalent width in picometers Typical range: 1 to 300.'
+    sql: '"EQUIVALENT_WIDTH_pm"'
+  fit_parameters:
+    description: JSONB. Line profile fit parameters
+    sql: '"FIT_PARAMETERS"'
+  fwhm_km_per_s:
+    description: 'REAL. Full width at half maximum in km/s Typical range: 1 to 50.'
+    sql: '"FWHM_km_per_s"'
+  line_depth:
+    description: 'REAL. Fractional line depth (0-1) Typical range: 0.01 to 0.99.'
+    sql: '"LINE_DEPTH"'
+  line_type:
+    description: 'TEXT. Type of spectral line Possible values: Absorption, Emission, P-Cygni, Inverse P-Cygni.'
+    sql: '"LINE_TYPE"'
+  observation_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Date of spectral observation
+    sql: '"OBSERVATION_DATE"'
+  rest_wavelength_nm:
+    description: 'REAL. Rest wavelength in nm Typical range: 100 to 2500.'
+    sql: '"REST_WAVELENGTH_nm"'
+  snr_at_line:
+    description: 'REAL. Signal-to-noise ratio at line position Typical range: 5 to 500.'
+    sql: '"SNR_AT_LINE"'
+  spectral_line_id:
+    description: BIGINT. Primary key. Unique spectral line measurement identifier
+    sql: '"SPECTRAL_LINE_ID"'
+  spectral_resolution:
+    description: 'REAL. Spectral resolution of observation Typical range: 1000 to 200000.'
+    sql: '"SPECTRAL_RESOLUTION"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  abundance_log_eps:
+    description: 'REAL. Derived abundance log epsilon(X) Typical range: 0 to 12. **NULL means Abundance not derived from this line.**'
+    sql: abundance_log_eps
+  analysis_method:
+    description: 'TEXT. Analysis method used Possible values: Gaussian Fit, Voigt Profile, EW Integration, Template Match, Synthesis.'
+    sql: analysis_method
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  equivalent_width_error_pm:
+    description: 'REAL. Uncertainty in equivalent width Typical range: 0.1 to 30.'
+    sql: equivalent_width_error_pm
+  ionization_state:
+    description: 'TEXT. Ionization state Possible values: I, II, III, IV.'
+    sql: ionization_state
+  measurement_code:
+    description: TEXT. Measurement reference code
+    sql: measurement_code
+  observed_wavelength_nm:
+    description: 'REAL. Observed wavelength in nm Typical range: 100 to 2500.'
+    sql: observed_wavelength_nm
+  quality_flag:
+    description: 'TEXT. Quality assessment of measurement Possible values: A-Excellent, B-Good, C-Fair, D-Poor.'
+    sql: quality_flag
+  radial_velocity_shift_km_per_s:
+    description: 'REAL. Radial velocity shift Typical range: -200 to 200.'
+    sql: radial_velocity_shift_km_per_s
+  spectrograph_used:
+    description: 'TEXT. Spectrograph used for measurement Possible values: HARPS, ESPRESSO, HIRES, UVES, PEPSI, CARMENES.'
+    sql: spectrograph_used
+  stellar_ref:
+    description: BIGINT. Foreign key referencing stars(stellarref). Related star
+    sql: stellar_ref

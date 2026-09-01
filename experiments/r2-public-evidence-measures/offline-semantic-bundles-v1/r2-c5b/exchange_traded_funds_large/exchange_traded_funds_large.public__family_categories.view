@@ -1,0 +1,15 @@
+label: family_categories
+description: All columns of the public table family_categories.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: family_categories
+dimensions:
+  categorylink:
+    description: Foreign key referencing categories.ClassType, indicating which category the fund family operates in.
+    sql: categorylink
+  familylink:
+    description: Foreign key referencing families.GroupName, indicating which fund family offers products in this category.
+    sql: familylink
+  linkid:
+    description: A SERIAL primary key uniquely identifying each relationship between fund families and categories they offer.
+    sql: linkid

@@ -1,0 +1,66 @@
+label: DisasterResponseTeam
+description: All columns of the public table DisasterResponseTeam.
+catalog: disaster_relief_large
+schema: public
+table_name: DisasterResponseTeam
+dimensions:
+  casualties:
+    description: 'VARCHAR(100). Count of team members killed in action. Example: "877".'
+    sql: casualties
+  communication_channel:
+    description: 'VARCHAR(100). Primary communications method (SatellitePhone|Radio|Cellular|Internet|Messenger|None). Possible values: "Cellular", "Internet", "Messenger", "None", "Radio", "SatellitePhone".'
+    sql: '"communicationChannel"'
+  coordination_agency:
+    description: 'VARCHAR(100). Primary agency coordinating team activities. Example: "877".'
+    sql: '"coordinationAgency"'
+  daily_reports:
+    description: 'VARCHAR(100). Reference to daily situation reports filed by team. Example: "A man is not old until regrets take the place of dreams. Navicat provides powerful                  ".'
+    sql: '"dailyReports"'
+  deployment_date:
+    description: 'VARCHAR(100). Date team was deployed to operational area. Example: "2001-01-01".'
+    sql: '"deploymentDate"'
+  deployment_location:
+    description: 'VARCHAR(100). Geographic area or facility where team is operating. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"deploymentLocation"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 1489.'
+    sql: '"disasterEventId"'
+  equipment_deployed:
+    description: 'VARCHAR(100). Description of specialized equipment assigned to team. Example: "I destroy my enemies when I make them my friends. Navicat Monitor requires a repository             ".'
+    sql: '"equipmentDeployed"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for response team records. Example: 1.'
+    sql: id
+  injuries:
+    description: 'VARCHAR(100). Count of team members requiring medical evacuation. Example: "877".'
+    sql: injuries
+  mission_objectives:
+    description: 'VARCHAR(100). Stated operational goals and success criteria. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"missionObjectives"'
+  notes:
+    description: 'VARCHAR(100). Commander notes or operational observations. Example: "537".'
+    sql: notes
+  rescues_performed:
+    description: 'VARCHAR(100). Count of individuals successfully rescued by team. Example: "877".'
+    sql: '"rescuesPerformed"'
+  specialization:
+    description: 'VARCHAR(100). Primary operational capability (SearchRescue|Medical|Logistics|Engineering|Security|Psychosocial|Communication|WaterSanitation|Shelter|Assessment). Possible values: "Assessment", "Communication", "Engineering", "Logistics", "Medical", "Psychosocial", "SearchRescue", "Security", "Shelter", "WaterSanitation".'
+    sql: specialization
+  status:
+    description: 'VARCHAR(100). Current operational status (Deployed|Standby|Resting|Relocating|Demobilized|Casualty). Possible values: "Casualty", "Demobilized", "Deployed", "Relocating", "Resting", "Standby".'
+    sql: status
+  supplies_distributed:
+    description: 'VARCHAR(100). Quantity of relief supplies distributed through team operations. Example: "877".'
+    sql: '"suppliesDistributed"'
+  team_leader:
+    description: 'VARCHAR(100). Name of team commander or lead coordinator. Example: "Man Kwok Wing".'
+    sql: '"teamLeader"'
+  team_name:
+    description: 'VARCHAR(100). Official designation or call sign of response team. Example: "Man Kwok Wing".'
+    sql: '"teamName"'
+  team_size:
+    description: 'VARCHAR(100). Total personnel count assigned to team. Possible values: "L", "M", "S", "XL", "XS", "XXL".'
+    sql: '"teamSize"'
+  vehicles_assigned:
+    description: 'VARCHAR(100). Count of vehicles allocated to team operations. Example: "zdirF96v9y".'
+    sql: '"vehiclesAssigned"'

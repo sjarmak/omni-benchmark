@@ -1,0 +1,105 @@
+label: SensorModel
+description: All columns of the public table SensorModel.
+catalog: polar_equipment_large
+schema: public
+table_name: SensorModel
+dimensions:
+  model_handle:
+    description: 'TEXT. Unique sensor model handle. PK. Example: SM-LID-1000.'
+    sql: '"modelHandle"'
+  sensor_characteristics:
+    description: JSONB column. Groups electrical, physical, and measurement performance properties of a sensor model.
+    sql: sensor_characteristics
+  sensor_characteristics_env_limits_ingress_ip:
+    description: 'TEXT. Ingress protection rating. Possible values (from file): IP54, IP65, IP67, IP68. Example: IP65.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'env_limits', 'ingressIP')
+  sensor_characteristics_env_limits_press_max_k_pa:
+    description: 'REAL. Maximum operating pressure (kPa). Example: 108.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'env_limits', 'pressMax_kPa')
+  sensor_characteristics_env_limits_press_min_k_pa:
+    description: 'REAL. Minimum operating pressure (kPa). Example: 91.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'env_limits', 'pressMin_kPa')
+  sensor_characteristics_env_limits_temp_max_c:
+    description: 'REAL. Maximum rated operating temperature (°C). Example: 69.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'env_limits', 'tempMax_C')
+  sensor_characteristics_env_limits_temp_min_c:
+    description: 'REAL. Minimum rated operating temperature (°C). Example: -34.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'env_limits', 'tempMin_C')
+  sensor_characteristics_identity_model:
+    description: 'TEXT. Vendor model identifier. Example: Lidar-704.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'identity', 'Model')
+  sensor_characteristics_identity_maker:
+    description: 'TEXT. Manufacturer name (safe regions only). Example: NordTech GmbH (Germany).'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'identity', 'maker')
+  sensor_characteristics_identity_meas_unit:
+    description: 'TEXT. Measurement unit of the primary signal. Example: m.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'identity', 'measUnit')
+  sensor_characteristics_identity_sensor_type:
+    description: 'TEXT. Sensor modality/type. Possible values (from file): Accelerometer, Barometer, CO2, GPS, Gyroscope, Humidity, Lidar, Magnetometer, PM2.5, RTD, Thermocouple, Ultrasonic. Example: Lidar.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'identity', 'sensorType')
+  sensor_characteristics_interface_interface:
+    description: 'TEXT. Electrical interface. Possible values (from file): CAN, I2C, SPI, UART, USB. Example: I2C.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'interface', 'Interface')
+  sensor_characteristics_interface_baud_bps:
+    description: 'REAL. UART baud rate when Interface=UART. **NULL means the model is not UART.** Example: 115200.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'interface', 'baud_bps')
+  sensor_characteristics_interface_i2c_addr_hex:
+    description: 'TEXT. I²C 7-bit address in hex when Interface=I2C. **NULL means the model is not I²C.** Example: 0x76.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'interface', 'i2cAddr_hex')
+  sensor_characteristics_interface_spi_mode:
+    description: 'TEXT. SPI mode when Interface=SPI. **NULL means the model is not SPI.** Example: Mode3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'interface', 'spiMode')
+  sensor_characteristics_measurement_accuracy_pct:
+    description: 'REAL. Full-scale accuracy (% of reading or FS). Example: 0.157.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'measurement', 'accuracy_pct')
+  sensor_characteristics_measurement_linearity_pct:
+    description: 'REAL. Non-linearity vs ideal (%). Example: 0.53.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'measurement', 'linearity_pct')
+  sensor_characteristics_measurement_range_max:
+    description: 'REAL. Maximum measurable value. Example: 741.81.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'measurement', 'rangeMax')
+  sensor_characteristics_measurement_range_min:
+    description: 'REAL. Minimum measurable value. Example: 0.11.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'measurement', 'rangeMin')
+  sensor_characteristics_measurement_repeatability_pct:
+    description: 'REAL. Repeatability expressed as percent. Example: 0.367.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'measurement', 'repeatability_pct')
+  sensor_characteristics_measurement_resolution:
+    description: 'REAL. Smallest resolvable change in measured unit. Example: 0.42198.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'measurement', 'resolution')
+  sensor_characteristics_mechanical_dim_hei_mm:
+    description: 'REAL. Package height (mm). Example: 15.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'mechanical', 'dimHei_mm')
+  sensor_characteristics_mechanical_dim_len_mm:
+    description: 'REAL. Package length (mm). Example: 73.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'mechanical', 'dimLen_mm')
+  sensor_characteristics_mechanical_dim_wid_mm:
+    description: 'REAL. Package width (mm). Example: 42.5.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'mechanical', 'dimWid_mm')
+  sensor_characteristics_mechanical_housing_material:
+    description: 'TEXT. Primary housing material. **NULL means bare/probe-style element (e.g., RTD/Thermocouple) without a dedicated housing.** Possible values (from file): ABS, Aluminum, Polycarbonate, Stainless Steel. Example: Aluminum.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'mechanical', 'housingMaterial')
+  sensor_characteristics_mechanical_mass_g:
+    description: 'REAL. Sensor mass in grams. Example: 144.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'mechanical', 'mass_g')
+  sensor_characteristics_mechanical_mount_type:
+    description: 'TEXT. Mechanical mounting style. Possible values (from file): Adhesive, Bracket, DIN Rail, Flange, Stud. Example: Flange.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'mechanical', 'mountType')
+  sensor_characteristics_notes_notes:
+    description: 'TEXT. Model application and integration notes. **NULL means notes intentionally omitted for low-accuracy variants (accuracy_pct > 1.5%%).** Example: Lidar with Flange mounting in Aluminum housing; IP65 enclosure. Interface: I2C I2C address 0x76. Range: 0.110 to 741.810 m; accuracy ±0.157%. Response time 6.3 ms. Supply 3.3 V / 118.8 mA. Used for localization and obstacle ranging in mobile platforms.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'notes', 'notes')
+  sensor_characteristics_supply_power_w:
+    description: 'REAL. Typical power draw in watts. Example: 0.392.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'supply', 'power_W')
+  sensor_characteristics_supply_supply_curr_m_a:
+    description: 'REAL. Typical supply current in mA. Example: 118.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'supply', 'supplyCurr_mA')
+  sensor_characteristics_supply_supply_volt_v:
+    description: 'REAL. Supply voltage in volts. Example: 3.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'supply', 'supplyVolt_V')
+  sensor_characteristics_timing_response_time_ms:
+    description: 'REAL. Time constant / 10–90%% response, milliseconds. Example: 6.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'timing', 'responseTime_ms')
+  sensor_characteristics_timing_warmup_s:
+    description: 'REAL. Recommended warm-up time, seconds. Example: 1.07.'
+    sql: JSONB_EXTRACT_PATH_TEXT(sensor_characteristics, 'timing', 'warmup_s')

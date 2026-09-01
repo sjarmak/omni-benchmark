@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__annual_returns
+label: Annual Fund Returns
+description: Annual fund and category returns with row-level outperformance semantics.
+fields:
+- exchange_traded_funds_large_public__annual_returns.*
+joins: {}
+ai_context: "This topic models no cross-table joins.\nUse the modeled business fields annual_fund_outperformance rather than reconstructing their formulas.\nDomain definitions for this topic:\n- Average Upside Outperformance: \bar{O}{\text{up}} = \text{Average 'Annual Fund Outperformance' during years with positive category returns.}\n- Average Downside Outperformance: \bar{O}{\text{down}} = \text{Average 'Annual Fund Outperformance' during years with non-positive category returns.}"

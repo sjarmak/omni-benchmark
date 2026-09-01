@@ -1,0 +1,99 @@
+label: merchandise_designers_map
+description: All columns of the public table merchandise_designers_map.
+catalog: virtual_idol_large
+schema: public
+table_name: merchandise_designers_map
+dimensions:
+  availability_schedule:
+    description: 'TEXT. The designer''s general availability. Example: Flexible, project-based.'
+    sql: '"AVAILABILITY_SCHEDULE"'
+  commission_rate_percent:
+    description: 'REAL. The commission rate for the designer as a percentage. **NULL means the designer was paid a one-time fee.** Example: 19.16.'
+    sql: '"COMMISSION_RATE_percent"'
+  contract_date:
+    description: 'DATE. The date the contract with the designer was signed. Example: 02-01-2023.'
+    sql: '"ContractDate"'
+  creator_identifier:
+    description: 'BIGINT. Foreign key referencing the designer. FK to designers(DESIGNER_ID). Example: 2.'
+    sql: '"Creator_Identifier"'
+  design_approval_date:
+    description: 'DATE. The date the final design was approved. Example: 2024-04-30.'
+    sql: '"DESIGN_APPROVAL_DATE"'
+  feedback_on_collaboration:
+    description: 'TEXT. Feedback on the collaboration with the designer. **NULL means no feedback was recorded.** Example: Met all deadlines, very professional..'
+    sql: '"FEEDBACK_ON_COLLABORATION"'
+  final_design_file_url:
+    description: 'TEXT. A URL to the final design files. Example: https://cdn.example.com/designs/811a6646-d44e-48b3-a19c-b3507c62a4fa.zip.'
+    sql: '"FINAL_DESIGN_FILE_URL"'
+  is_exclusive_design:
+    description: 'BOOLEAN. A flag indicating if the design is exclusive. Example: false.'
+    sql: '"IS_EXCLUSIVE_DESIGN"'
+  invoice_history_ids:
+    description: 'BIGINT ARRAY. A list of invoice IDs related to this designer''s work. Example: {113, 284}.'
+    sql: '"InvoiceHistoryIDs"'
+  legal_document_id:
+    description: 'BIGINT. The identifier for the legal contract document. Example: 5824.'
+    sql: '"LEGAL_DOCUMENT_ID"'
+  merchandise_item_identifier:
+    description: 'BIGINT. Foreign key referencing the merchandise item. FK to idol_merchandise_details(MerchItemID). Example: 2047.'
+    sql: '"Merchandise_Item_Identifier"'
+  next_payment_date:
+    description: DATE. The date of the next scheduled payment. **NULL means no further payments are scheduled.**
+    sql: '"NEXT_PAYMENT_DATE"'
+  notes:
+    description: TEXT. General notes about the collaboration with the designer. **NULL means no notes were added.**
+    sql: '"Notes"'
+  payment_status:
+    description: 'TEXT. The status of payments to the designer. Possible values: Pending, Partially Paid, Paid. Example: Pending.'
+    sql: '"PaymentStatus"'
+  performance_bonus_dollar:
+    description: 'REAL. A performance bonus paid to the designer in USD. **NULL means no performance bonus was given.** Example: 913.88.'
+    sql: '"PerformanceBonus_dollar"'
+  revisions_requested:
+    description: 'BIGINT. The number of revisions requested during the design process. Example: 3.0.'
+    sql: '"RevisionsRequested"'
+  royalty_agreement:
+    description: 'TEXT. A summary of the royalty agreement. Example: Work-for-hire..'
+    sql: '"RoyaltyAgreement"'
+  timezone:
+    description: 'TEXT. The designer''s timezone. Example: EST.'
+    sql: '"Timezone"'
+  work_end_date:
+    description: 'DATE. The date the designer completed work. **NULL means the work is ongoing.** Example: 10-01-2024.'
+    sql: '"WORK_END_DATE"'
+  work_start_date:
+    description: 'DATE. The date the designer started work. Example: 03-21-2023.'
+    sql: '"WorkStartDate"'
+  approved_by:
+    description: 'TEXT. The person who approved the final design. Example: Emi Müller.'
+    sql: approved_by
+  communication_preference:
+    description: 'TEXT. The designer''s preferred method of communication. Example: Email.'
+    sql: communication_preference
+  contact_email:
+    description: 'TEXT. The contact email for the designer. Example: emi.müller@web-host.org.'
+    sql: contact_email
+  contract_end_date:
+    description: 'DATE. The end date of the contract with the designer. **NULL means the contract is ongoing or has no fixed end date.** Example: 11-09-2025.'
+    sql: contract_end_date
+  contribution_role:
+    description: 'TEXT. The role the designer had in the item''s creation. Possible values: Graphic Designer, Concept Artist, 3D Modeler, Illustrator, Lead Designer. Example: Graphic Designer.'
+    sql: contribution_role
+  credit_in_product_description:
+    description: 'TEXT. The credit text to be included in the product description. Example: Design by [Designer Name].'
+    sql: credit_in_product_description
+  merch_designer_id:
+    description: 'BIGINT. Unique identifier for the merchandise-designer mapping. PK. Example: 5001.'
+    sql: merch_designer_id
+  nda_status:
+    description: 'TEXT. The status of the non-disclosure agreement. Example: Signed.'
+    sql: nda_status
+  one_time_payment_dollar:
+    description: 'REAL. A one-time payment to the designer in USD. **NULL means the designer is paid via commission or royalty.** Example: 1522.71.'
+    sql: one_time_payment_dollar
+  rating_of_designer:
+    description: 'REAL. An internal rating of the designer''s performance. Example: 4.9.'
+    sql: rating_of_designer
+  total_hours_billed_hr:
+    description: 'REAL. The total number of hours billed by the designer. Example: 62.2.'
+    sql: total_hours_billed_hr

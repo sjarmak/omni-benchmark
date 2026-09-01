@@ -1,0 +1,102 @@
+label: training_programs
+description: All columns of the public table training_programs.
+catalog: sports_events_large
+schema: public
+table_name: training_programs
+dimensions:
+  assessment_type:
+    description: 'TEXT. Type of assessment for the program. **NULL means no assessment.** Example: quiz.'
+    sql: '"AssessmentType"'
+  cost_usd:
+    description: 'REAL. Cost of the training program in USD. Example: 800.0.'
+    sql: '"COST_USD"'
+  capacity:
+    description: 'BIGINT. Capacity of the training program. Example: 24.'
+    sql: '"Capacity"'
+  category:
+    description: 'TEXT. Category of the training program. Example: Engineering.'
+    sql: '"Category"'
+  cert_awarded:
+    description: 'TEXT. Certification awarded upon completion. **NULL means no certification.** Example: DAQ Level 1.'
+    sql: '"Cert_Awarded"'
+  completion_rate:
+    description: 'REAL. Program completion rate. Example: 0.88.'
+    sql: '"CompletionRate"'
+  compliance_doc_url:
+    description: 'TEXT. URL for compliance documentation. Example: http://compliance.com/1.'
+    sql: '"ComplianceDocURL"'
+  compliance_flag:
+    description: 'BOOLEAN. Whether the training program complies with regulatory standards. Example: true.'
+    sql: '"Compliance_Flag"'
+  duration_hours:
+    description: 'REAL. Duration of the training program in hours. Example: 12.0.'
+    sql: '"Duration_Hours"'
+  equipment_needed:
+    description: 'TEXT. Equipment needed for the training. Example: laptop.'
+    sql: '"Equipment_Needed"'
+  expiry_months:
+    description: 'BIGINT. Expiry period for the certification in months. Example: 24.'
+    sql: '"Expiry_Months"'
+  feedback_avg:
+    description: 'REAL. Average feedback score for the program. Example: 4.6.'
+    sql: '"Feedback_Avg"'
+  feedback_n:
+    description: 'BIGINT. Number of feedback submissions. Example: 120.'
+    sql: '"Feedback_N"'
+  followup_recommend:
+    description: 'TEXT. Follow-up recommended program. Example: TP-ENG-201.'
+    sql: '"Followup_Recommend"'
+  kpi_skill_gain:
+    description: 'REAL. Expected skill gain from the program. Example: 0.25.'
+    sql: '"KPI_Skill_Gain"'
+  materials_json:
+    description: 'JSONB. JSON object with training materials details. Example: {slides:slides1.pdf}.'
+    sql: '"Materials_JSON"'
+  materials_url:
+    description: 'TEXT. URL for the program materials. **NULL means no URL provided.** Example: http://trainingmaterial.com/1.'
+    sql: '"Materials_URL"'
+  mode_:
+    description: 'TEXT. Mode of delivery for the training program. Possible values: in-person, virtual. Example: in-person.'
+    sql: '"Mode_"'
+  notes:
+    description: 'TEXT. Additional notes for the program. Example: Bring PPE.'
+    sql: '"Notes"'
+  pass_mark_pct:
+    description: 'REAL. Minimum passing percentage for the program. Example: 0.70.'
+    sql: '"PASS_MARK_PCT"'
+  prerequisites:
+    description: 'TEXT. Prerequisite program code. **NULL means no prerequisites.** Example: TP-ENG-001.'
+    sql: '"Prerequisites"'
+  program_code:
+    description: 'TEXT. Unique program code for the training. Example: TP-ENG-101.'
+    sql: '"ProgramCode"'
+  provider:
+    description: 'TEXT. Provider of the training program. Example: Bosch Academy.'
+    sql: '"Provider"'
+  retake_window_days:
+    description: 'BIGINT. Retake window in days. Example: 30.'
+    sql: '"RetakeWindow_Days"'
+  schedule_json:
+    description: 'JSONB. JSON object containing training dates. Example: {dates:[2024-06-01,2024-06-02]}.'
+    sql: '"Schedule_JSON"'
+  title:
+    description: 'TEXT. Title of the training program. Example: Data Acquisition.'
+    sql: '"TITLE"'
+  training_identifier:
+    description: BIGSERIAL. Surrogate primary key for training_programs rows. PK.
+    sql: '"TRAINING_Identifier"'
+  trainer_name:
+    description: 'TEXT. Name of the trainer for the program. Example: Dr. Lee.'
+    sql: '"TrainerName"'
+  trainer_bio:
+    description: 'TEXT. Bio of the trainer. Example: PhD Mech Eng.'
+    sql: '"Trainer_Bio"'
+  venue:
+    description: 'TEXT. Venue for the training. Example: HQ Lab 2.'
+    sql: '"Venue"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct training_programs public identity values.
+    label: training_programs Count
+    sql: ${sports_events_large_public__training_programs.training_identifier}

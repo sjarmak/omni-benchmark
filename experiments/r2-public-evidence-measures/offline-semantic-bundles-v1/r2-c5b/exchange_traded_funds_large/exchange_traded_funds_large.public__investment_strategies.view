@@ -1,0 +1,99 @@
+label: investment_strategies
+description: All columns of the public table investment_strategies.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: investment_strategies
+dimensions:
+  benchmark_index:
+    description: 'TEXT. Reference index used to gauge relative performance. **NULL means no benchmark has been specified.** Possible values: Barclays Agg Bond, MSCI World, Russell 2000, S&P 500.'
+    sql: '"BenchmarkIndex"'
+  best_market_conditions:
+    description: 'TEXT. Specific market conditions favouring the strategy. Possible values: High growth, Low inflation, Stable rates.'
+    sql: '"BestMarketConditions"'
+  created_date:
+    description: 'DATE. Date the strategy record was created. Example: 2021-03-15.'
+    sql: '"CreatedDate"'
+  economic_cycle_performance:
+    description: 'TEXT. Economic-cycle phase where the strategy performs best. Possible values: Expansion, Recession, Recovery.'
+    sql: '"EconomicCyclePerformance"'
+  expected_annual_return:
+    description: 'REAL. Projected average annual return (percentage). Example: 7.25.'
+    sql: '"ExpectedAnnualReturn"'
+  expected_information_ratio:
+    description: 'REAL. Projected active risk-adjusted return (Information Ratio). **NULL means no Information Ratio projection is available.** Example: 0.45.'
+    sql: '"ExpectedInformationRatio"'
+  expected_sharpe_ratio:
+    description: 'REAL. Projected risk-adjusted return (Sharpe ratio). Example: 0.80.'
+    sql: '"ExpectedSharpeRatio"'
+  implementation_complexity:
+    description: 'TEXT. Operational complexity of running the strategy. Possible values: High, Low, Medium.'
+    sql: '"ImplementationComplexity"'
+  investment_approach:
+    description: 'TEXT. Primary analytical approach taken. Possible values: Bottom-up, Quantitative, Top-down.'
+    sql: '"InvestmentApproach"'
+  is_active:
+    description: 'BOOLEAN. Indicates whether the strategy is currently available for investment. Possible values: False, True.'
+    sql: '"IsActive"'
+  last_updated:
+    description: 'TIMESTAMP. Timestamp of the last record update. Example: 2025-06-30 18:12:45.'
+    sql: '"LastUpdated"'
+  market_environment_suitability:
+    description: 'TEXT. Market regimes where the strategy tends to thrive. Possible values: Bear, Bull, Neutral, Volatile.'
+    sql: '"MarketEnvironmentSuitability"'
+  maximum_capacity:
+    description: 'BIGINT. Estimated maximum assets the strategy can accommodate before performance degrades. Example: 5 000 000 000.'
+    sql: '"MaximumCapacity"'
+  minimum_investment:
+    description: 'REAL. Minimum capital required to invest in the strategy. Example: 1 000 000.'
+    sql: '"MinimumInvestment"'
+  rebalancing_frequency:
+    description: 'TEXT. How often the portfolio is rebalanced. Possible values: Annual, Monthly, Quarterly, Semi-annual.'
+    sql: '"RebalancingFrequency"'
+  required_expertise:
+    description: 'TEXT. Skill level required to manage the strategy. Possible values: Advanced, Basic, Intermediate.'
+    sql: '"RequiredExpertise"'
+  risk_level:
+    description: 'TEXT. Overall risk tolerance embedded in the strategy. Possible values: Aggressive, Conservative, Moderate.'
+    sql: '"RiskLevel"'
+  selection_criteria:
+    description: 'TEXT. Primary filters used to pick securities. Possible values: Fundamentals, Market cap, Quant screen, Technical signals.'
+    sql: '"SelectionCriteria"'
+  strategy_category:
+    description: 'TEXT. High-level classification of the strategy. Possible values: Active, Alternative, Factor, Passive.'
+    sql: '"StrategyCategory"'
+  strategy_code:
+    description: 'TEXT. Short code used in internal systems. Example: SE0IFD.'
+    sql: '"StrategyCode"'
+  strategy_description:
+    description: 'TEXT. Narrative overview of the strategy’s objective and process. **NULL means a formal description has not been provided.** Example: A sector-rotation momentum overlay.'
+    sql: '"StrategyDescription"'
+  strategy_id:
+    description: 'BIGINT. Unique identifier for each investment strategy. Example: 1.'
+    sql: '"StrategyID"'
+  strategy_name:
+    description: 'TEXT. Human-readable name of the strategy. Example: Strategy 001 Momentum.'
+    sql: '"StrategyName"'
+  time_horizon:
+    description: 'TEXT. Typical holding period assumed. Possible values: Long-term, Medium-term, Short-term.'
+    sql: '"TimeHorizon"'
+  weighting_scheme:
+    description: 'TEXT. Method used to assign weights to holdings. Possible values: Equal-weight, Market-cap weight, Risk-parity, Volatility-weighted.'
+    sql: '"WeightingScheme"'
+  worst_market_conditions:
+    description: 'TEXT. Conditions most detrimental to the strategy. Possible values: Deflation, High inflation, Rising rates.'
+    sql: '"WorstMarketConditions"'
+  risk_targets_raw:
+    description: JSONB column. Original camel-cased risk parameters preserved verbatim inside one JSONB column.
+    sql: risk_targets_raw
+  risk_targets_raw_beta_target:
+    description: 'REAL. Target beta versus the benchmark. Example: 0.85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_targets_raw, 'BetaTarget')
+  risk_targets_raw_correlation_target:
+    description: 'REAL. Target correlation to the benchmark. Example: 0.92.'
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_targets_raw, 'CorrelationTarget')
+  risk_targets_raw_maximum_drawdown_limit:
+    description: 'REAL. Pre-defined maximum peak-to-trough loss tolerance (percentage). **NULL means no drawdown constraint applies.** Example: 20.00.'
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_targets_raw, 'MaximumDrawdownLimit')
+  risk_targets_raw_target_volatility:
+    description: 'REAL. Annualised volatility the strategy aims to target (percentage). Example: 12.50.'
+    sql: JSONB_EXTRACT_PATH_TEXT(risk_targets_raw, 'TargetVolatility')

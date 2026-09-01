@@ -1,0 +1,102 @@
+label: environmental_data
+description: All columns of the public table environmental_data.
+catalog: residential_data_large
+schema: public
+table_name: environmental_data
+dimensions:
+  air_pressure_hpa:
+    description: 'REAL. Atmospheric pressure in hectopascals. **NULL means pressure monitoring not conducted.**. Possible values: 1012.8, 1015.2.'
+    sql: '"AIR_pressure_hpa"'
+  energy_consumption_kwh:
+    description: 'REAL. Energy consumption in kilowatt hours. Possible values: 1020.8, 890.2, 975.4.'
+    sql: '"ENERGY_consumption_kwh"'
+  env_id:
+    description: 'BIGSERIAL. Primary key identifier for environmental monitoring record. PK. Possible values: 1, 2, 3.'
+    sql: '"ENV_id"'
+  environmental_region_tag:
+    description: 'TEXT. Regional tag for environmental monitoring location. FK to locations(regioncode). Possible values: Guará, Taguatinga.'
+    sql: '"Environmental_Region_Tag"'
+  environmental_zone_reference:
+    description: 'BIGINT. Zone reference number for monitoring area. FK to locations(zonenum). Possible values: 222, 315.'
+    sql: '"Environmental_Zone_Reference"'
+  green_space_area_m2:
+    description: 'REAL. Green space area in square meters. **NULL means green space not surveyed.**. Possible values: 15000.0, 18500.0.'
+    sql: '"GREEN_space_area_m2"'
+  humidity_percent:
+    description: 'REAL. Relative humidity percentage. **NULL means humidity not measured.**. Possible values: 68.9, 72.3.'
+    sql: '"Humidity_Percent"'
+  measurement_date:
+    description: 'DATE. Date when environmental measurements were taken. Possible values: 2025-08-15, 2025-08-16, 2025-08-17.'
+    sql: '"MEASUREMENT_date"'
+  noise_level_evening_db:
+    description: 'REAL. Evening noise level in decibels. **NULL means evening noise monitoring not conducted.**. Possible values: 58.7, 64.5.'
+    sql: '"NOISE_level_evening_db"'
+  noise_level_morning_db:
+    description: 'REAL. Morning noise level in decibels. Possible values: 52.3, 55.8, 61.2.'
+    sql: '"Noise_Level_Morning_DB"'
+  precipitation_mm:
+    description: 'REAL. Precipitation amount in millimeters. Possible values: 0.0, 2.1, 5.2.'
+    sql: '"PRECIPITATION_mm"'
+  recycling_rate_percent:
+    description: 'REAL. Recycling rate percentage. **NULL means recycling data not collected.**. Possible values: 28.5, 32.7, 85.6.'
+    sql: '"Recycling_Rate_Percent"'
+  soil_ph_level:
+    description: 'REAL. Soil pH level measurement. Possible values: 6.5, 6.8, 6.9.'
+    sql: '"SOIL_ph_level"'
+  tree_coverage_percent:
+    description: 'REAL. Percentage of area covered by trees. Possible values: 28.7, 35.4, 41.2.'
+    sql: '"Tree_Coverage_Percent"'
+  updated_at:
+    description: 'DATE. Record last update timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-08-10, 2025-08-15, 2025-08-20.'
+    sql: '"UPDATED_at"'
+  water_turbidity_ntu:
+    description: 'REAL. Water turbidity in nephelometric turbidity units. **NULL means water turbidity not measured.**. Possible values: 4.5, 5.8.'
+    sql: '"Water_Turbidity_NTU"'
+  wind_direction_degrees:
+    description: 'BIGINT. Wind direction in degrees. **NULL means wind direction not measured.**. Possible values: 180.0, 225.0.'
+    sql: '"Wind_Direction_Degrees"'
+  air_quality_measurements:
+    description: JSONB column. Combines all air pollution and quality indicators including particulate matter, gases, and pollutant concentrations.
+    sql: air_quality_measurements
+  air_temperature_celsius:
+    description: 'REAL. Air temperature measurement in Celsius. **NULL means temperature monitoring not available.**. Possible values: 28.5, 30.1.'
+    sql: '"air_temperature_CELSIUS"'
+  created_at:
+    description: 'DATE. Record creation timestamp. Possible values: 2024-01-15, 2024-01-16, 2024-01-17, 2024-01-18, 2024-01-19, 2024-01-20, 2024-01-21, 2025-07-15, 2025-08-01, 2025-08-05.'
+    sql: created_at
+  renewable_energy_percent:
+    description: 'REAL. Percentage of energy from renewable sources. **NULL means renewable energy data not tracked.**. Possible values: 0.0, 18.5, 22.1.'
+    sql: '"renewable_energy_PERCENT"'
+  soil_moisture_percent:
+    description: 'REAL. Soil moisture content percentage. **NULL means soil moisture not monitored.**. Possible values: 38.6, 42.1.'
+    sql: '"soil_moisture_PERCENT"'
+  uv_index:
+    description: 'REAL. Ultraviolet radiation index measurement. **NULL means UV monitoring not conducted.**. Possible values: 8.5, 9.2.'
+    sql: '"uv_INDEX"'
+  waste_generation_kg_per_day:
+    description: 'REAL. Daily waste generation in kilograms. **NULL means waste tracking not available.**. Possible values: 125.6, 142.3.'
+    sql: '"waste_generation_KG_per_day"'
+  water_quality_ph:
+    description: 'REAL. Water pH level measurement. **NULL means water quality monitoring not available.**. Possible values: 7.2, 7.8.'
+    sql: '"water_quality_PH"'
+  wind_speed_ms:
+    description: 'REAL. Wind speed in meters per second. **NULL means wind monitoring not available.**. Possible values: 2.8, 3.2.'
+    sql: '"wind_speed_MS"'
+  air_quality_measurements_gas_concentrations_ozone_level_ppb:
+    description: 'REAL. Ozone concentration in parts per billion. **NULL means ozone monitoring not conducted.**. Possible values: 28.9, 32.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(air_quality_measurements, 'gas_concentrations', 'OZONE_level_ppb')
+  air_quality_measurements_gas_concentrations_co2_level_ppm:
+    description: 'REAL. Carbon dioxide concentration in parts per million. Possible values: 405.2, 410.5, 418.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(air_quality_measurements, 'gas_concentrations', 'co2_level_PPM')
+  air_quality_measurements_particulate_matter_0:
+    description: 'REAL. PM10 particulate matter concentration in micrograms per cubic meter. **NULL means PM10 monitoring not available.**. Possible values: 38.9, 45.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(air_quality_measurements, 'particulate_matter', '0')
+  air_quality_measurements_particulate_matter_1:
+    description: 'REAL. PM2.5 particulate matter concentration in micrograms per cubic meter. Possible values: 15.3, 18.7, 20.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(air_quality_measurements, 'particulate_matter', '1')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct environmental_data public identity values.
+    label: environmental_data Count
+    sql: ${residential_data_large_public__environmental_data.env_id}

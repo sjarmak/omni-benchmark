@@ -1,0 +1,33 @@
+label: production_log
+description: All columns of the public table production_log.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: production_log
+dimensions:
+  end_timestamp:
+    description: 'TEXT. The end timestamp of this specific operation run. Example: 2025-08-10 13:15:00.'
+    sql: end_timestamp
+  operreg:
+    description: 'TEXT. The registration code of the specific robot operation run. FK. Example: OP_MCRH5P.'
+    sql: operreg
+  order_num:
+    description: 'TEXT. The production order number being worked on. FK. Example: ORD-25-0001.'
+    sql: order_num
+  outcome:
+    description: 'TEXT. The outcome of the operation run. Possible values: Success, Fault, Operator-Stopped. Possible values: Failure, Success.'
+    sql: outcome
+  production_log_pk:
+    description: 'BIGINT. Unique identifier for the production log entry. PK. Example: 1.'
+    sql: production_log_pk
+  start_timestamp:
+    description: 'TEXT. The start timestamp of this specific operation run. Example: 2025-08-10 08:15:00.'
+    sql: start_timestamp
+  units_processed:
+    description: 'BIGINT. The number of units processed during this specific operation run. Example: 100.'
+    sql: units_processed
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct production_log public identity values.
+    label: production_log Count
+    sql: ${robot_fault_prediction_large_public__production_log.production_log_pk}

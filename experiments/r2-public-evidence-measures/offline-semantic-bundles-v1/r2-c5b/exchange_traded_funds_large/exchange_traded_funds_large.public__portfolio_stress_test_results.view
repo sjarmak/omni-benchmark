@@ -1,0 +1,60 @@
+label: PortfolioStressTestResults
+description: All columns of the public table PortfolioStressTestResults.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: PortfolioStressTestResults
+dimensions:
+  portfolio_stress_test_results_id:
+    description: 'TEXT. Unique identifier for the stress test execution. Example: XX-1A2B3C.'
+    sql: '"PortfolioStressTestResults_id"'
+  beta_under_stress:
+    description: 'REAL. Projected portfolio beta in the stress scenario. Example: 1.2.'
+    sql: beta_under_stress
+  capital_buffer_utilization:
+    description: 'REAL. Percentage of excess capital consumed. Example: 50.0.'
+    sql: capital_buffer_utilization
+  correlation_breakdown_score:
+    description: 'REAL. Measure of how much asset correlations converge to 1. Example: 50.0.'
+    sql: correlation_breakdown_score
+  expected_shortfall_99:
+    description: 'REAL. Average loss in the worst 1% of cases. Example: 50.0.'
+    sql: expected_shortfall_99
+  fund_ref:
+    description: 'INTEGER. Reference to the fund tested. Example: 50.'
+    sql: fund_ref
+  liquidity_coverage_ratio:
+    description: 'REAL. Ratio of liquid assets to stressed outflows. Example: 1.5.'
+    sql: liquidity_coverage_ratio
+  margin_call_probability:
+    description: 'REAL. Probability of receiving margin calls. Example: 50.0.'
+    sql: margin_call_probability
+  max_drawdown_simulated:
+    description: 'REAL. Worst peak-to-trough decline in simulation. Example: 50.0.'
+    sql: max_drawdown_simulated
+  projected_nav_impact_pct:
+    description: 'REAL. Estimated impact on Net Asset Value. Example: -5.0.'
+    sql: projected_nav_impact_pct
+  recovery_days_estimate:
+    description: 'INTEGER. Estimated days to recover prior high water mark. Example: 50.'
+    sql: recovery_days_estimate
+  redemption_pressure_index:
+    description: 'REAL. Index representing investor panic selling. Example: 50.0.'
+    sql: redemption_pressure_index
+  regulatory_report_flag:
+    description: 'BOOLEAN. Whether this test is for regulatory reporting. Possible values: True, False.'
+    sql: regulatory_report_flag
+  scenario_name:
+    description: 'TEXT. Name of the hypothetical market scenario. Unique values: 2008 Crisis, Rate Hike 200bps, Tech Bubble Burst, Oil Shock, Pandemic 2.0.'
+    sql: scenario_name
+  test_execution_date:
+    description: 'TIMESTAMP. Date the stress test was run. Example: 2024-01-01 12:00:00.'
+    sql: test_execution_date
+  var_95_parametric:
+    description: 'REAL. 95% Value at Risk based on parametric method. Example: 50.0.'
+    sql: var_95_parametric
+  var_99_historical:
+    description: 'REAL. 99% Value at Risk based on historical method. Example: 50.0.'
+    sql: var_99_historical
+  volatility_regime_code:
+    description: 'TEXT. Assumed volatility environment. Unique values: Low, Normal, High, Extreme.'
+    sql: volatility_regime_code

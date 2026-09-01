@@ -1,0 +1,69 @@
+label: WindTunnelResult
+description: All columns of the public table WindTunnelResult.
+catalog: sports_events_large
+schema: public
+table_name: WindTunnelResult
+dimensions:
+  aero_efficiency:
+    description: 'REAL. Aerodynamic efficiency (CL/CD) Typical range: 2.5 to 5.'
+    sql: '"AERO_EFFICIENCY"'
+  cl_rear_pct:
+    description: 'REAL. Rear downforce percentage Typical range: 45 to 65.'
+    sql: '"CL_REAR_PCT"'
+  cl_total:
+    description: 'REAL. Total lift coefficient (negative=downforce) Typical range: -5 to -1.'
+    sql: '"CL_TOTAL"'
+  configuration:
+    description: 'TEXT. Car configuration tested Possible values: Baseline, Upgrade A, Upgrade B, Upgrade C, Low Downforce, High Downforce, Wet.'
+    sql: '"CONFIGURATION"'
+  correlation_confirmed:
+    description: BOOLEAN. Whether results correlate with track data Boolean flag (true/false).
+    sql: '"CORRELATION_CONFIRMED"'
+  ride_height_front_mm:
+    description: 'REAL. Front ride height in mm Typical range: 10 to 50.'
+    sql: '"RIDE_HEIGHT_FRONT_MM"'
+  run_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Date of wind tunnel run
+    sql: '"RUN_DATE"'
+  wind_speed_mps:
+    description: 'REAL. Wind speed in m/s Typical range: 10 to 70.'
+    sql: '"WIND_SPEED_MPS"'
+  wt_result_id:
+    description: BIGINT. Primary key. Unique wind tunnel result identifier
+    sql: '"WT_RESULT_ID"'
+  cd_total:
+    description: 'REAL. Total drag coefficient Typical range: 0.5 to 1.5.'
+    sql: cd_total
+  cl_front_pct:
+    description: 'REAL. Front downforce percentage Typical range: 35 to 55.'
+    sql: cl_front_pct
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  dev_program_ref:
+    description: BIGINT. Foreign key referencing CarDevelopmentProgram(DEV_PROGRAM_ID). Related dev program
+    sql: dev_program_ref
+  drag_count_improvement:
+    description: 'REAL. Drag count improvement vs baseline Typical range: -20 to 30.'
+    sql: drag_count_improvement
+  model_scale:
+    description: 'TEXT. Wind tunnel model scale Possible values: 60%, 50%, Full Scale.'
+    sql: model_scale
+  occupancy_hours:
+    description: BIGINT. Tunnel occupancy in hours
+    sql: occupancy_hours
+  ride_height_rear_mm:
+    description: 'REAL. Rear ride height in mm Typical range: 25 to 80.'
+    sql: ride_height_rear_mm
+  run_code:
+    description: TEXT. Wind tunnel run code
+    sql: run_code
+  yaw_angle_deg:
+    description: 'REAL. Yaw angle in degrees Typical range: -15 to 15.'
+    sql: yaw_angle_deg
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct WindTunnelResult public identity values.
+    label: WindTunnelResult Count
+    sql: ${sports_events_large_public__wind_tunnel_result.wt_result_id}

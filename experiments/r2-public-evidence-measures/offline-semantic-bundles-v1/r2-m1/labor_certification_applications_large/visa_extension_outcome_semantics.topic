@@ -1,0 +1,13 @@
+base_view: labor_certification_applications_large_public__visa_extension_outcome
+label: VisaExtensionOutcome
+description: All columns of the public table VisaExtensionOutcome.
+fields:
+- labor_certification_applications_large_public__visa_extension_outcome.*
+- labor_certification_applications_large_public__cases.*
+- labor_certification_applications_large_public__preparer.*
+- labor_certification_applications_large_public__visa_extension_request.*
+joins:
+  labor_certification_applications_large_public__visa_extension_request:
+    labor_certification_applications_large_public__cases:
+      labor_certification_applications_large_public__preparer: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

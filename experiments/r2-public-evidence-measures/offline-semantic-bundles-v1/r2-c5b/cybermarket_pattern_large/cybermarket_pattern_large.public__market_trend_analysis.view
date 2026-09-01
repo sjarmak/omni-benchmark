@@ -1,0 +1,66 @@
+label: MarketTrendAnalysis
+description: All columns of the public table MarketTrendAnalysis.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: MarketTrendAnalysis
+dimensions:
+  mta_id:
+    description: 'TEXT. Unique identifier for the market trend analysis record. Example: MTA-1A2B3C.'
+    sql: '"MTA_id"'
+  actionable_insights_count:
+    description: 'INTEGER. Number of actionable insights derived from analysis. Example: 5.'
+    sql: actionable_insights_count
+  analysis_timestamp:
+    description: 'TIMESTAMP. Timestamp when the trend analysis was performed. Example: 2024-01-01 12:00:00.'
+    sql: analysis_timestamp
+  competitor_analysis_ref:
+    description: TEXT. Reference to the market competitor analysis record.
+    sql: competitor_analysis_ref
+  data_quality_score:
+    description: 'REAL. Quality score of underlying data used (0-100). Example: 82.0.'
+    sql: data_quality_score
+  forecast_confidence_pct:
+    description: 'REAL. Confidence level in trend forecast accuracy. Example: 72.0.'
+    sql: forecast_confidence_pct
+  geographic_scope:
+    description: 'TEXT. Geographic region where trend is observed. Unique values: Global, North America, Europe, Asia Pacific, Latin America, Middle East Africa.'
+    sql: geographic_scope
+  historical_comparison_months:
+    description: 'INTEGER. Number of months of historical data used for comparison. Unique values: 3, 6, 12, 24, 36.'
+    sql: historical_comparison_months
+  market_segment:
+    description: 'TEXT. Market segment applicable to the trend. Unique values: Electronics, Fashion, Home Goods, Health Beauty, Sports, Automotive, Food Beverage, Services.'
+    sql: market_segment
+  mom_growth_rate_pct:
+    description: 'REAL. Month-over-month growth rate percentage. **NULL means Insufficient data for MoM calculation.** Example: 2.0.'
+    sql: mom_growth_rate_pct
+  opportunity_score:
+    description: 'REAL. Score indicating business opportunity potential (0-100). Example: 55.0.'
+    sql: opportunity_score
+  projected_impact_usd_millions:
+    description: 'REAL. Projected financial impact of trend in millions USD. **NULL means Impact quantification not feasible.** Example: 25.0.'
+    sql: projected_impact_usd_millions
+  requires_executive_review:
+    description: 'BOOLEAN. Indicates if trend requires executive-level review. Possible values: True, False.'
+    sql: requires_executive_review
+  risk_level:
+    description: 'TEXT. Risk level associated with the trend. Unique values: Low, Medium, High, Critical.'
+    sql: risk_level
+  sample_size:
+    description: 'INTEGER. Number of data points used in trend analysis. Example: 15000.'
+    sql: sample_size
+  trend_category:
+    description: 'TEXT. Category of market trend being analyzed. Unique values: Consumer Behavior, Pricing Dynamics, Product Demand, Seasonal Patterns, Technology Adoption, Regulatory Impact.'
+    sql: trend_category
+  trend_direction:
+    description: 'TEXT. Direction of the identified trend. Unique values: Strong Upward, Moderate Upward, Stable, Moderate Downward, Strong Downward.'
+    sql: trend_direction
+  trend_maturity_stage:
+    description: 'TEXT. Maturity stage of the identified trend. Unique values: Emerging, Growing, Mature, Declining.'
+    sql: trend_maturity_stage
+  trend_strength_score:
+    description: 'REAL. Confidence score for trend strength (0-100). Example: 65.0.'
+    sql: trend_strength_score
+  yoy_growth_rate_pct:
+    description: 'REAL. Year-over-year growth rate percentage. **NULL means Insufficient historical data for YoY calculation.** Example: 8.0.'
+    sql: yoy_growth_rate_pct

@@ -1,0 +1,23 @@
+base_view: virtual_idol_large_public__commerceandcollection
+label: Commerce and Collection
+description: Commerce records with row-level collection semantics.
+fields:
+- virtual_idol_large_public__commerceandcollection.*
+- virtual_idol_large_public__engagement.*
+- virtual_idol_large_public__fans.*
+- virtual_idol_large_public__interactions.*
+- virtual_idol_large_public__membershipandspending.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__engagement:
+    virtual_idol_large_public__interactions:
+      virtual_idol_large_public__virtualidols: {}
+  virtual_idol_large_public__membershipandspending:
+    virtual_idol_large_public__fans: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields collection_rate rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Collector Fan: A fan is a Collector Fan if their Collection Rate (CR) is greater than 50 and their collection completion rate is above 75%.'

@@ -1,0 +1,102 @@
+label: vendor_profile_details
+description: All columns of the public table vendor_profile_details.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendor_profile_details
+dimensions:
+  city:
+    description: 'TEXT. City component extracted from `legal_address`. Example: Austin.'
+    sql: '"CITY"'
+  countrycode:
+    description: 'TEXT. ISO-3166-1 alpha-2 country code corresponding to `legal_address`. Example: AU.'
+    sql: '"COUNTRYcode"'
+  legalentityname:
+    description: 'TEXT. Official registered legal name of the vendor entity. Stores the vendor’s legal entity name as filed with regulators/tax authorities. Example: V63085 Inc..'
+    sql: '"LEGALENTITYname"'
+  profiletoken:
+    description: 'TEXT. Opaque UUID-like string uniquely identifying a vendor profile (primary key). Example: Pa771f92edd77.'
+    sql: '"PROFILEtoken"'
+  phone:
+    description: 'TEXT. Primary business telephone number in E.164 format when available. Example: +1-892-858-9935.'
+    sql: '"Phone"'
+  preferred_contact:
+    description: 'TEXT. Vendor’s preferred communication channel for critical alerts (choices such as email, phone, dashboard-inbox). Example: email.'
+    sql: '"PreferredContact"'
+  registration_doc_hash:
+    description: 'TEXT. Cryptographic hash (e.g., SHA-256) of the registration PDF for tamper detection. Example: 5db3e077e265472485cfdcc9e08a5fe3.'
+    sql: '"RegistrationDocHASH"'
+  socialscore:
+    description: 'REAL. Influence score derived from linked social-media accounts and sentiment. **NULL means score not available yet.** Example: 7.88.'
+    sql: '"SOCIALscore"'
+  complianceblob_v1:
+    description: JSONB column. Blobby JSON holding AML+KYC status and various compliance/risk scores for vendor profile
+    sql: complianceblob_v1
+  email:
+    description: 'TEXT. Main business-contact email address used for compliance notices. Example: info@v63085-inc.com.'
+    sql: email
+  last_profile_update:
+    description: 'TIMESTAMP. Datetime the profile was last edited by vendor or compliance staff (format YYYY/MM/DD HH:MM:SS). Example: 2024/04/09 05:37:51.'
+    sql: '"lastProfileUpdate"'
+  legal_address:
+    description: 'TEXT. Full street address on corporate formation or trade licence documents. Example: 125 Broadway.'
+    sql: legal_address
+  marketing_opt_in:
+    description: 'BOOLEAN. Indicates if the vendor consents to receive promotional material. Example: True.'
+    sql: marketing_opt_in
+  payout_velocity_usd_per_day:
+    description: 'TEXT. Average daily payout volume settled to the vendor, expressed in USD/day. Example: 350 USD/day.'
+    sql: '"payoutVelocity_USD_per_day"'
+  postal_code:
+    description: 'TEXT. Postal or ZIP code—useful for geocoding and tax rules. Example: 23434.'
+    sql: postal_code
+  preferred_language:
+    description: 'TEXT. RFC-5646 language tag for UI localisation / messages. Example: en.'
+    sql: preferred_language
+  profile_version:
+    description: 'INT. Monotonically increasing version counter for the profile payload—helps with optimistic locking and audit trails. Example: 1.'
+    sql: '"profileVERSION"'
+  profile_complete_pct:
+    description: 'REAL. Percentage of required onboarding fields the vendor has filled out. **NULL means completeness not computed yet.** Example: 92.0.'
+    sql: profile_complete_pct
+  registration_doc_ref:
+    description: 'TEXT. Filename or GUID pointing to uploaded incorporation / trade-register documents. Example: DOCec47a4a17c35.'
+    sql: registration_doc_ref
+  seller_key:
+    description: 'TEXT. Foreign key linking this profile to the master vendor record in `vendors` (SellerKey). Example: V63085.'
+    sql: seller_key
+  state_prov:
+    description: 'TEXT. State or province subdivision for the legal address (blank for countries without such subdivisions). Example: FL.'
+    sql: '"stateProv"'
+  time_zone:
+    description: 'TEXT. IANA timezone ID associated with the vendor’s headquarters. Example: Australia/Sydney.'
+    sql: '"timeZone"'
+  two_factor_enabled:
+    description: 'BOOLEAN. True when the vendor’s account has two-factor authentication activated. Example: False.'
+    sql: '"twoFactorENABLED"'
+  web_site:
+    description: 'TEXT. Canonical public website or storefront URL controlled by the vendor. Example: https://v63085-inc.com.'
+    sql: '"webSite"'
+  complianceblob_v1_aml_stat:
+    description: 'TEXT. Result of Anti-Money-Laundering screening (e.g., clear, flagged). Example: flagged.'
+    sql: JSONB_EXTRACT_PATH_TEXT(complianceblob_v1, 'amlStat')
+  complianceblob_v1_cmpl_score:
+    description: 'REAL. Composite compliance score derived from KYC/AML and licence checks. **NULL means score not yet calculated or pending review.** Example: 76.88.'
+    sql: JSONB_EXTRACT_PATH_TEXT(complianceblob_v1, 'cmplScore')
+  complianceblob_v1_kyc_status_txt:
+    description: 'TEXT. Result of Know-Your-Customer (KYC) identity verification. Typical states: pending, approved, rejected. Example: pending.'
+    sql: JSONB_EXTRACT_PATH_TEXT(complianceblob_v1, 'kyc_status_txt')
+  complianceblob_v1_rep_score_val:
+    description: 'REAL. Reputation index sourced from marketplace ratings and dispute history. **NULL means reputation not yet computed.** Example: 69.78.'
+    sql: JSONB_EXTRACT_PATH_TEXT(complianceblob_v1, 'rep_score_val')
+  complianceblob_v1_risk_scoreraw:
+    description: 'REAL. Quantitative risk score combining behavioural, financial and reputational factors. **NULL means risk not yet assessed.** Example: 84.23.'
+    sql: JSONB_EXTRACT_PATH_TEXT(complianceblob_v1, 'riskSCOREraw')
+  complianceblob_v1_trust_gradient30d:
+    description: 'TEXT. Direction and magnitude of trust-score movement over the last 30 days. Example: ↑ 0.12 score/30 d.'
+    sql: JSONB_EXTRACT_PATH_TEXT(complianceblob_v1, 'trustGradient30d')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct vendor_profile_details public identity values.
+    label: vendor_profile_details Count
+    sql: ${cybermarket_pattern_large_public__vendor_profile_details.profiletoken}

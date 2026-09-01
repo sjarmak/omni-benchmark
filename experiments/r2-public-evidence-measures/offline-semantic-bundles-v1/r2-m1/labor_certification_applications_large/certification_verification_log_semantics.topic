@@ -1,0 +1,11 @@
+base_view: labor_certification_applications_large_public__certification_verification_log
+label: CertificationVerificationLog
+description: All columns of the public table CertificationVerificationLog.
+fields:
+- labor_certification_applications_large_public__certification_verification_log.*
+- labor_certification_applications_large_public__worker_profile.*
+- labor_certification_applications_large_public__worker_skill_certification.*
+joins:
+  labor_certification_applications_large_public__worker_skill_certification:
+    labor_certification_applications_large_public__worker_profile: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

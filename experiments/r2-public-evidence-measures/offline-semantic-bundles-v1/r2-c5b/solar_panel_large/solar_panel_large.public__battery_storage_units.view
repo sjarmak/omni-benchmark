@@ -1,0 +1,66 @@
+label: BatteryStorageUnits
+description: All columns of the public table BatteryStorageUnits.
+catalog: solar_panel_large
+schema: public
+table_name: BatteryStorageUnits
+dimensions:
+  chemistry_type:
+    description: 'TEXT. Battery cell chemistry technology. Unique values: LFP, NMC, Flow, Lead-Acid.'
+    sql: chemistry_type
+  cooling_system_status:
+    description: 'TEXT. Operational status of the HVAC/liquid cooling system. Unique values: Active, Idle, Fault, Maintenance.'
+    sql: cooling_system_status
+  coupling_type:
+    description: 'TEXT. How the battery connects to the grid (AC-coupled vs DC-coupled). Unique values: AC-Coupled, DC-Coupled.'
+    sql: coupling_type
+  current_soc_pct:
+    description: 'REAL. Current State of Charge percentage (0-100). **NULL means Telemetry offline.** Example: 65.'
+    sql: current_soc_pct
+  cycle_count:
+    description: 'INTEGER. Total number of charge/discharge cycles completed. Example: 450.'
+    sql: cycle_count
+  depth_of_discharge_limit:
+    description: 'REAL. Software-locked maximum discharge depth percentage. **NULL means Default setting used.** Example: 50.0.'
+    sql: depth_of_discharge_limit
+  firmware_version:
+    description: TEXT. Current BMS firmware version.
+    sql: firmware_version
+  grid_services_enabled:
+    description: 'BOOLEAN. Whether the unit is enrolled in frequency response/ancillary services. Possible values: True, False.'
+    sql: grid_services_enabled
+  install_date:
+    description: TIMESTAMP. Date the battery unit was commissioned.
+    sql: install_date
+  internal_temp_c:
+    description: 'REAL. Average internal temperature of battery cells in Celsius. **NULL means Sensor error.** Example: 25.'
+    sql: internal_temp_c
+  last_maintenance_date:
+    description: TIMESTAMP. Date of last physical inspection. **NULL means New installation.**
+    sql: last_maintenance_date
+  manufacturer_ref:
+    description: 'TEXT. Foreign key reference to asset_manufacturers. Unique values: MFR-01, MFR-03, MFR-05.'
+    sql: manufacturer_ref
+  purchase_cost_usd:
+    description: 'REAL. Capital expenditure for the unit in USD. **NULL means Data confidential or missing.** Example: 450000.'
+    sql: purchase_cost_usd
+  rated_capacity_kwh:
+    description: 'REAL. Total energy storage capacity in kWh. Example: 2000.'
+    sql: rated_capacity_kwh
+  rated_power_kw:
+    description: 'REAL. Maximum power output in kW. Example: 500.'
+    sql: rated_power_kw
+  safety_shutdown_count:
+    description: 'INTEGER. Number of times BMS triggered emergency shutdown. Example: 50.'
+    sql: safety_shutdown_count
+  site_ref:
+    description: TEXT. Reference to the solar plant where this battery is installed.
+    sql: site_ref
+  state_of_health_pct:
+    description: 'REAL. Current State of Health percentage relative to new. Example: 92.'
+    sql: state_of_health_pct
+  storage_unit_id:
+    description: 'TEXT. Unique identifier for the battery storage container/unit. Example: BESS-1A2B3C.'
+    sql: storage_unit_id
+  warranty_expiration:
+    description: TIMESTAMP. Date the manufacturer warranty expires.
+    sql: warranty_expiration

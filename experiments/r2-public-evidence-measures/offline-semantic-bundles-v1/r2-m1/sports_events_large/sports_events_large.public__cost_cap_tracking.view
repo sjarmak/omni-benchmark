@@ -1,0 +1,60 @@
+label: CostCapTracking
+description: All columns of the public table CostCapTracking.
+catalog: sports_events_large
+schema: public
+table_name: CostCapTracking
+dimensions:
+  amount_usd:
+    description: 'REAL. Expense amount in USD Typical range: 100 to 10000000.'
+    sql: '"AMOUNT_USD"'
+  approver:
+    description: 'TEXT. Person who approved the expense Possible values: Finance Director, Team Principal, CFO, Department Head.'
+    sql: '"APPROVER"'
+  costcap_id:
+    description: BIGINT. Primary key. Unique cost cap tracking entry identifier
+    sql: '"COSTCAP_ID"'
+  depreciation_rate_pct:
+    description: 'REAL. Annual depreciation rate if capex Typical range: 10 to 100. **NULL means Not capital expenditure.**'
+    sql: '"DEPRECIATION_RATE_PCT"'
+  exclusion_reason:
+    description: 'TEXT. Reason for exclusion Possible values: Driver Salary, Heritage Activities, Marketing, Hospitality. **NULL means Expense is fully included.**'
+    sql: '"EXCLUSION_REASON"'
+  po_number:
+    description: TEXT. Purchase order number
+    sql: '"PO_NUMBER"'
+  reporting_date:
+    description: DATE. Date of cost cap report
+    sql: '"REPORTING_DATE"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  approval_status:
+    description: 'TEXT. Expense approval status Possible values: Pre-approved, Approved, Pending, Flagged.'
+    sql: approval_status
+  budget_ref:
+    description: BIGINT. Foreign key referencing TeamBudget(BUDGET_ID). Related budget
+    sql: budget_ref
+  capex_flag:
+    description: BOOLEAN. Whether this is capital expenditure Boolean flag (true/false).
+    sql: capex_flag
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  expense_category:
+    description: 'TEXT. Expense category Possible values: Chassis, Power Unit, Aerodynamics, Personnel, Travel, Testing, IT, Facilities.'
+    sql: expense_category
+  fia_reportable:
+    description: BOOLEAN. Whether expense must be reported to FIA Boolean flag (true/false).
+    sql: fia_reportable
+  inclusion_status:
+    description: 'TEXT. Cost cap inclusion status Possible values: Included, Excluded, Partially Excluded, Under Review.'
+    sql: inclusion_status
+  vendor:
+    description: TEXT. Vendor/supplier name
+    sql: vendor
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CostCapTracking public identity values.
+    label: CostCapTracking Count
+    sql: ${sports_events_large_public__cost_cap_tracking.costcap_id}

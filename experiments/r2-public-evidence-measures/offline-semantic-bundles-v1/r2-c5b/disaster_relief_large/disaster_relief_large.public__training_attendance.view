@@ -1,0 +1,66 @@
+label: TrainingAttendance
+description: All columns of the public table TrainingAttendance.
+catalog: disaster_relief_large
+schema: public
+table_name: TrainingAttendance
+dimensions:
+  areas_for_improvement:
+    description: 'VARCHAR(100). Identified skill gaps requiring development. Example: "You must be the change you wish to see in the world. If the plan doesn’t work,                    ".'
+    sql: '"areasForImprovement"'
+  arrival_time:
+    description: 'VARCHAR(100). Time volunteer arrived at training session. Example: "11:08:49".'
+    sql: '"arrivalTime"'
+  attendance_date:
+    description: 'VARCHAR(100). Date volunteer attended training session. Example: "2026-01-05".'
+    sql: '"attendanceDate"'
+  attendance_status:
+    description: 'VARCHAR(100). Attendance classification (Present|Late|EarlyDeparture|Absent|Excused). Possible values: "Absent", "EarlyDeparture", "Excused", "Late", "Present".'
+    sql: '"attendanceStatus"'
+  certificate_issued:
+    description: 'VARCHAR(100). Certification issuance status (Yes|No|Pending|Mailed|Digital). Possible values: "Digital", "Mailed", "No", "Pending", "Yes".'
+    sql: '"certificateIssued"'
+  certificate_number:
+    description: 'VARCHAR(100). Unique identifier for issued certification. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"certificateNumber"'
+  certification_eligible:
+    description: 'VARCHAR(100). Eligibility for certification issuance (Yes|No|Conditional|Pending). Possible values: "Conditional", "No", "Pending", "Yes".'
+    sql: '"certificationEligible"'
+  departure_time:
+    description: 'VARCHAR(100). Time volunteer departed training session. Example: "17:49:24".'
+    sql: '"departureTime"'
+  feedback_provided:
+    description: 'VARCHAR(100). Volunteer feedback submission status (Yes|No|Partial). Possible values: "No", "Partial", "Yes".'
+    sql: '"feedbackProvided"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for training attendance records. Example: 1.'
+    sql: id
+  notes:
+    description: 'VARCHAR(100). Instructor observations or recommendations. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: notes
+  participation_score:
+    description: 'VARCHAR(100). Instructor rating of engagement level (1-10 scale). Example: "HDBuFY4hGr".'
+    sql: '"participationScore"'
+  practical_assessment:
+    description: 'VARCHAR(100). Hands-on skills evaluation result (Excellent|Good|Satisfactory|NeedsImprovement|Failed). Possible values: "Excellent", "Failed", "Good", "NeedsImprovement", "Satisfactory".'
+    sql: '"practicalAssessment"'
+  quiz_score:
+    description: 'VARCHAR(100). Assessment score on knowledge checks (0-100). Example: "Rd2mB5dngk".'
+    sql: '"quizScore"'
+  retraining_date:
+    description: 'VARCHAR(100). Scheduled date for required retraining. Example: "2013-01-13".'
+    sql: '"retrainingDate"'
+  retraining_required:
+    description: 'VARCHAR(100). Mandatory retraining requirement status (Yes|No|Recommended). Possible values: "No", "Recommended", "Yes".'
+    sql: '"retrainingRequired"'
+  skills_demonstrated:
+    description: 'VARCHAR(100). Specific competencies observed during training. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"skillsDemonstrated"'
+  suggestions:
+    description: 'VARCHAR(100). Volunteer suggestions for training improvement. Example: "mkYrFMnDmm".'
+    sql: suggestions
+  training_session_id:
+    description: 'BIGINT. Foreign key reference to training session (TrainingSessionCore.id). Example: 1489.'
+    sql: '"trainingSessionId"'
+  volunteer_id:
+    description: 'BIGINT. Foreign key reference to volunteer profile (VolunteerCore.id). Example: 1489.'
+    sql: '"volunteerId"'

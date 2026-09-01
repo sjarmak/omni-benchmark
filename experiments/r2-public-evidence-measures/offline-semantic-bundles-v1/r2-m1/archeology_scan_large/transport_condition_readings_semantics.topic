@@ -1,0 +1,15 @@
+base_view: archeology_scan_large_public__transport_condition_readings
+label: TransportConditionReadings
+description: All columns of the public table TransportConditionReadings.
+fields:
+- archeology_scan_large_public__transport_condition_readings.*
+- archeology_scan_large_public__personnel.*
+- archeology_scan_large_public__projects.*
+- archeology_scan_large_public__shipping_log.*
+- archeology_scan_large_public__transport_logistics.*
+joins:
+  archeology_scan_large_public__transport_logistics:
+    archeology_scan_large_public__shipping_log:
+      archeology_scan_large_public__personnel: {}
+      archeology_scan_large_public__projects: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,11 @@
+base_view: archeology_scan_large_public__equipment
+label: equipment
+description: All columns of the public table equipment.
+fields:
+- archeology_scan_large_public__equipment.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Domain definitions for this topic:
+
+  - Equipment Effectiveness Ratio (EER): EER = \frac{\text{SQS} \times EquipStatus\_value}{\text{Battery Level (%)} \times (101 - EquipAge\_days) / 365} \times 25, \text{ where SQS is the Scan Quality Score, EquipStatus_value is 1.0 for ''Excellent'' to 0.2 for ''Poor'', and EquipAge_days is days since \text{Calibration Date}, with higher values indicating more efficient use of equipment relative to condition.}'

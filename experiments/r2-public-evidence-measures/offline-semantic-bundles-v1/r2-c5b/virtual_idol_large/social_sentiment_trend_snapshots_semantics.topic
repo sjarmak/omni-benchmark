@@ -1,0 +1,9 @@
+base_view: virtual_idol_large_public__social_sentiment_trend_snapshots
+label: SocialSentimentTrendSnapshots
+description: All columns of the public table SocialSentimentTrendSnapshots.
+fields:
+- virtual_idol_large_public__social_sentiment_trend_snapshots.*
+- virtual_idol_large_public__virtualidols.*
+joins:
+  virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,19 @@
+base_view: cybermarket_pattern_large_public__alerts
+label: Alerts
+description: Alert records with public severity-level context.
+fields:
+- cybermarket_pattern_large_public__alerts.*
+- cybermarket_pattern_large_public__buyers.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__transactions.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__transactions:
+    cybermarket_pattern_large_public__buyers: {}
+    cybermarket_pattern_large_public__markets: {}
+    cybermarket_pattern_large_public__vendors: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Tier-3 Escalation Case: Alert cases escalated to Tier-3 represent the highest priority and warrant immediate incident response action.'

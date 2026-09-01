@@ -1,0 +1,72 @@
+label: DisposalRecord
+description: All columns of the public table DisposalRecord.
+catalog: cross_border_large
+schema: public
+table_name: DisposalRecord
+dimensions:
+  dataset_ref:
+    description: BIGINT. Foreign key referencing Dataset_Catalog(dataset_code). Related dataset
+    sql: '"DATASET_REF"'
+  data_volume_gb:
+    description: 'REAL. Volume of data disposed in GB Typical range: 0.001 to 500.'
+    sql: '"DATA_VOLUME_GB"'
+  disposal_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. When disposal was executed
+    sql: '"DISPOSAL_DATE"'
+  disposal_id:
+    description: BIGINT. Primary key. Unique disposal record identifier
+    sql: '"DISPOSAL_ID"'
+  disposal_tool:
+    description: 'TEXT. Tool used for disposal Possible values: Blancco, DBAN, AWS Data Lifecycle, Azure Purge, Custom Script.'
+    sql: '"DISPOSAL_TOOL"'
+  disposal_type:
+    description: 'TEXT. Type of disposal Possible values: Automated, Manual, Triggered, Emergency.'
+    sql: '"DISPOSAL_TYPE"'
+  legal_hold_conflict:
+    description: BOOLEAN. Whether a legal hold prevented full disposal Boolean flag (true/false).
+    sql: '"LEGAL_HOLD_CONFLICT"'
+  systems_affected:
+    description: BIGINT. Number of systems from which data was disposed
+    sql: '"SYSTEMS_AFFECTED"'
+  verification_date:
+    description: DATE. Date of verification **NULL means Verification pending.**
+    sql: '"VERIFICATION_DATE"'
+  verification_status:
+    description: 'TEXT. Disposal verification status Possible values: Verified, Pending Verification, Failed Verification.'
+    sql: '"VERIFICATION_STATUS"'
+  backup_included:
+    description: BOOLEAN. Whether backup copies were also disposed Boolean flag (true/false).
+    sql: backup_included
+  certificate_url:
+    description: TEXT. URL to disposal certificate
+    sql: certificate_url
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  disposal_code:
+    description: TEXT. Disposal reference code
+    sql: disposal_code
+  legal_hold_checked:
+    description: BOOLEAN. Whether legal hold was checked before disposal Boolean flag (true/false).
+    sql: legal_hold_checked
+  legal_hold_details:
+    description: TEXT. Details of legal hold conflict **NULL means No legal hold conflict.**
+    sql: legal_hold_details
+  method:
+    description: 'TEXT. Specific disposal method used Possible values: Cryptographic Erasure, Overwrite, Degaussing, Physical Destruction, Anonymization, Pseudonymization.'
+    sql: method
+  records_disposed:
+    description: BIGINT. Number of records disposed
+    sql: records_disposed
+  retention_ref:
+    description: BIGINT. Foreign key referencing RetentionSchedule(RETENTION_ID). Related retention schedule
+    sql: retention_ref
+  verified_by:
+    description: 'TEXT. Person who verified disposal Possible values: IT Ops, Compliance, External Auditor, Automated System.'
+    sql: verified_by
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DisposalRecord public identity values.
+    label: DisposalRecord Count
+    sql: ${cross_border_large_public__disposal_record.disposal_id}

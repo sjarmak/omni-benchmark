@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__monitor_showcase_map
+label: Monitor_Showcase_Map
+description: All columns of the public table Monitor_Showcase_Map.
+fields:
+- museum_artifact_large_public__monitor_showcase_map.*
+joins: {}
+ai_context: This topic models no cross-table joins.

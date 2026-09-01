@@ -1,0 +1,96 @@
+label: skills
+description: All columns of the public table skills.
+catalog: archeology_scan_large
+schema: public
+table_name: skills
+dimensions:
+  average_market_salary:
+    description: 'REAL. The average market salary for individuals with this skill. **NULL means this data is not available.**。 Example: $75,000.'
+    sql: '"AverageMarketSalary"'
+  color_code_hex:
+    description: 'TEXT. A hex color code associated with the skill for visualization。 Example: #FF5733.'
+    sql: '"COLOR_CODE_HEX"'
+  certification_body:
+    description: 'TEXT. The organization that provides certification for this skill. **NULL means the skill is not certifiable or the body is not specified.**。 Example: Leica Geosystems.'
+    sql: '"CertificationBody"'
+  contact_person_ref:
+    description: TEXT. A reference to a subject matter expert for this skill. **NULL means no contact is listed.**
+    sql: '"ContactPersonRef"'
+  date_deprecated:
+    description: DATE. The date this skill became deprecated or obsolete. **NULL means the skill is currently active.**
+    sql: '"DateDeprecated"'
+  department_owner:
+    description: 'TEXT. The department that ''owns'' or is the primary user of this skill。 Example: Survey Dept..'
+    sql: '"DepartmentOwner"'
+  industry_standard_code:
+    description: 'TEXT. A code referencing an external industry standard。 Example: OP-TLS-01.'
+    sql: '"INDUSTRY_STANDARD_CODE"'
+  is_certified_skill:
+    description: 'BOOLEAN. A flag indicating if this skill can be formally certified。 Possible values: False, True.'
+    sql: '"IS_CERTIFIED_SKILL"'
+  is_rare_skill:
+    description: 'BOOLEAN. A flag indicating if this is a rare or specialized skill。 Possible values: False, True.'
+    sql: '"IS_RARE_SKILL"'
+  icon_url:
+    description: 'TEXT. A URL to an icon representing the skill。 Example: https://example.com/icon301.png.'
+    sql: '"IconUrl"'
+  keywords:
+    description: 'TEXT. Keywords for searching for this skill。 Example: TLS, Laser Scanning, Point Cloud.'
+    sql: '"KEYWORDS"'
+  parent_skill_category:
+    description: 'TEXT. A higher-level category for this skill。 Example: Surveying.'
+    sql: '"ParentSkillCategory"'
+  prerequisite_skill_ref:
+    description: 'BIGINT. The SkillCode of a prerequisite skill. FK. **NULL means there are no prerequisites.**。 Possible values: 301.0, 303.0, 305.0, 307.0, 308.0, 316.0.'
+    sql: '"PrerequisiteSkillRef"'
+  renewal_procedure:
+    description: 'TEXT. The procedure for renewing a certification or skill. **NULL means not applicable.**。 Example: Online Refresher Course.'
+    sql: '"RENEWAL_PROCEDURE"'
+  skill_name:
+    description: 'TEXT. The name of the skill. UNIQUE。 Example: Terrestrial LiDAR Scanning (TLS).'
+    sql: '"SKILL_NAME"'
+  standard_training_hours:
+    description: 'BIGINT. The standard number of hours required for training。 Example: 40 hours.'
+    sql: '"STANDARD_TRAINING_HOURS"'
+  skill_category:
+    description: 'TEXT. The category the skill belongs to。 Possible values: Conservation, Data Analysis, Documentation, Field Skills, Hardware Operation, Lab Skills, Management, Soft Skills, Software.'
+    sql: '"SkillCategory"'
+  skill_code:
+    description: 'BIGINT. Unique identifier for a skill. PK。 Example: 301.'
+    sql: '"SkillCode"'
+  training_provider:
+    description: 'TEXT. The recommended provider for training in this skill。 Example: Vendor Training.'
+    sql: '"TrainingProvider"'
+  version_number:
+    description: 'TEXT. The version number for skills that evolve over time (e.g., software skills)。 Example: v3.0.'
+    sql: '"VERSION_NUMBER"'
+  validity_period_months:
+    description: 'BIGINT. The period in months for which a certification is valid. **NULL means validity does not expire.**。 Possible values: 24.0, 36.0, 60.0.'
+    sql: '"ValidityPeriodMonths"'
+  assessment_method:
+    description: 'TEXT. How proficiency in the skill is assessed。 Example: Practical Exam.'
+    sql: assessment_method
+  date_created:
+    description: 'DATE. The date this skill was added to the database。 Example: 2015-01-15 09:00:00.'
+    sql: date_created
+  demand_level:
+    description: 'TEXT. The current demand level for this skill within the organization。 Possible values: High, Low, Medium.'
+    sql: demand_level
+  is_internal_skill:
+    description: 'BOOLEAN. A flag indicating if this is a skill specific to the organization。 Possible values: False, True.'
+    sql: is_internal_skill
+  online_resource_link:
+    description: TEXT. A URL to an online resource for this skill. **NULL means no link is provided.**
+    sql: online_resource_link
+  relevance_score:
+    description: 'BIGINT. An internal score of the skill''s relevance to the organization。 Example: 95.'
+    sql: relevance_score
+  skill_description:
+    description: 'TEXT. A detailed description of the skill。 Example: Operation of static terrestrial laser scanners for high-density point cloud acquisition..'
+    sql: skill_description
+  tools_associated:
+    description: 'TEXT. A list of tools or equipment associated with this skill。 Example: Leica RTC360, Faro Focus.'
+    sql: tools_associated
+  validation_authority:
+    description: 'TEXT. The authority that validates proficiency in this skill。 Example: Certified Operator Program.'
+    sql: validation_authority

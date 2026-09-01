@@ -1,0 +1,11 @@
+base_view: archeology_scan_large_public__field_note_attachments
+label: FieldNoteAttachments
+description: All columns of the public table FieldNoteAttachments.
+fields:
+- archeology_scan_large_public__field_note_attachments.*
+- archeology_scan_large_public__field_notes.*
+- archeology_scan_large_public__personnel.*
+joins:
+  archeology_scan_large_public__field_notes:
+    archeology_scan_large_public__personnel: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

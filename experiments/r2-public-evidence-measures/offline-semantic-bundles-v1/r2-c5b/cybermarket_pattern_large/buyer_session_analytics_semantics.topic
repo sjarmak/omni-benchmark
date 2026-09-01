@@ -1,0 +1,9 @@
+base_view: cybermarket_pattern_large_public__buyer_session_analytics
+label: BuyerSessionAnalytics
+description: All columns of the public table BuyerSessionAnalytics.
+fields:
+- cybermarket_pattern_large_public__buyer_session_analytics.*
+- cybermarket_pattern_large_public__buyers.*
+joins:
+  cybermarket_pattern_large_public__buyers: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

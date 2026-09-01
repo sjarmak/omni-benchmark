@@ -1,0 +1,66 @@
+label: InfrastructureAssessmentCore
+description: All columns of the public table InfrastructureAssessmentCore.
+catalog: disaster_relief_large
+schema: public
+table_name: InfrastructureAssessmentCore
+dimensions:
+  affected_population:
+    description: 'VARCHAR(100). Count of population dependent on assessed infrastructure. Example: "QygCcZSFnH".'
+    sql: '"affectedPopulation"'
+  assessment_date:
+    description: 'VARCHAR(100). Date assessment was conducted. Example: "2022-08-23".'
+    sql: '"assessmentDate"'
+  assessor_count:
+    description: 'VARCHAR(100). Number of personnel participating in assessment. Example: "877".'
+    sql: '"assessorCount"'
+  avg_repair_cost_usd:
+    description: 'VARCHAR(100). Estimated average repair cost per infrastructure component in USD. Example: "537".'
+    sql: '"avgRepairCostUSD"'
+  critical_facilities:
+    description: 'VARCHAR(100). List of essential facilities impacted by infrastructure failure. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"criticalFacilities"'
+  damage_summary:
+    description: 'VARCHAR(100). Narrative description of infrastructure damage patterns. Example: "537".'
+    sql: '"damageSummary"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 6114.'
+    sql: '"disasterEventId"'
+  hospital_capacity_pct:
+    description: 'VARCHAR(100). Functional hospital bed capacity percentage (0-100). Example: "877".'
+    sql: '"hospitalCapacityPct"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for infrastructure assessment records. Example: 1.'
+    sql: id
+  infra_assess_id_ref:
+    description: 'VARCHAR(100). Logical reference to assessment registry identifier (CommunityInfrastructureAssessments.infraAssessId). Example: "g6WGbErK8R".'
+    sql: '"infraAssessIdRef"'
+  notes:
+    description: 'VARCHAR(100). Additional assessment observations or recommendations. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: notes
+  power_grid_state:
+    description: 'VARCHAR(100). Electrical infrastructure status (Operational|Partial|NonOperational|Destroyed|Restored). Possible values: "Destroyed", "NonOperational", "Operational", "Partial", "Restored".'
+    sql: '"powerGridState"'
+  priority_level:
+    description: 'VARCHAR(100). Repair priority classification (Critical|High|Medium|Low|Deferred). Possible values: "Critical", "Deferred", "High", "Low", "Medium".'
+    sql: '"priorityLevel"'
+  rapid_assessment_team:
+    description: 'VARCHAR(100). Designation of team conducting rapid infrastructure assessment. Example: "877".'
+    sql: '"rapidAssessmentTeam"'
+  repair_budget_musd:
+    description: 'VARCHAR(100). Total allocated budget for infrastructure repairs in millions USD. Example: "537".'
+    sql: '"repairBudgetMUSD"'
+  restoration_timeline:
+    description: 'VARCHAR(100). Projected schedule for full infrastructure restoration. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"restorationTimeline"'
+  road_clearance_etahours:
+    description: 'VARCHAR(100). Estimated time to clear critical transportation routes in hours. Example: "537".'
+    sql: '"roadClearanceETAHours"'
+  telecom_state:
+    description: 'VARCHAR(100). Telecommunications infrastructure status (Operational|Partial|NonOperational|Destroyed|Restored). Possible values: "Destroyed", "NonOperational", "Operational", "Partial", "Restored".'
+    sql: '"telecomState"'
+  version:
+    description: 'VARCHAR(100). Version number for assessment record updates. Example: "afSGScM3bx".'
+    sql: version
+  water_system_state:
+    description: 'VARCHAR(100). Potable water infrastructure status (Operational|Partial|NonOperational|Contaminated|Restored). Possible values: "Destroyed", "NonOperational", "Operational", "Partial", "Restored".'
+    sql: '"waterSystemState"'

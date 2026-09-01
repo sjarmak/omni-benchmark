@@ -1,0 +1,114 @@
+label: platform_availability_snapshots
+description: All columns of the public table platform_availability_snapshots.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: platform_availability_snapshots
+dimensions:
+  apierror_rate:
+    description: 'REAL. Percentage of API calls returning non-2xx codes. Example: 0.59.'
+    sql: '"APIerrorRATE"'
+  dbconnsuccess_pct:
+    description: 'REAL. Successful DB connection attempts. Example: 99.7.'
+    sql: '"DBCONNSuccessPct"'
+  http4_xxpct:
+    description: 'REAL. Share of 4xx responses. Example: 0.40.'
+    sql: '"HTTP4XXPCT"'
+  mtbf:
+    description: 'REAL. Mean Time Between Failures in hours. Example: 320.4.'
+    sql: '"MTBF"'
+  api_successrate:
+    description: 'REAL. Percentage of API calls returning 2xx codes. Example: 99.41.'
+    sql: '"apiSUCCESSrate"'
+  asset_cdnhit_rate:
+    description: 'REAL. CDN hit rate for static assets (%). Example: 96.4.'
+    sql: '"assetCDNhitRate"'
+  avail_latency_blob:
+    description: JSONB column. Uptime and latency/failure snapshot stuffed into one JSON
+    sql: avail_latency_blob
+  availability_ref:
+    description: 'TEXT. Primary-key reference for each backend availability snapshot. Example: AVL-b30577a12c.'
+    sql: '"availabilityRef"'
+  edge_cache_ttl:
+    description: 'REAL. Default edge-cache Time-to-Live in seconds. Example: 900.'
+    sql: '"edgeCacheTTL"'
+  edge_cache_hit_rate:
+    description: 'REAL. Edge cache hit rate for dynamic data (%). Example: 88.2.'
+    sql: edge_cache_hit_rate
+  geo_latency_variance:
+    description: 'REAL. Standard deviation of latency across geos (ms). Example: 42.8.'
+    sql: geo_latency_variance
+  hero_image_load_time:
+    description: 'REAL. Time to load the main hero image (seconds). Example: 1.82.'
+    sql: hero_image_load_time
+  http2xx_pct:
+    description: 'REAL. Same as apiSUCCESSrate but copied for client analytics. Example: 99.41.'
+    sql: http2xx_pct
+  http_5xx_pct:
+    description: 'REAL. Share of 5xx responses. Example: 0.19.'
+    sql: http_5xx_pct
+  incident_count:
+    description: 'BIGINT. Number of distinct incident tickets opened in the window. Example: 1.'
+    sql: incident_count
+  last_updated:
+    description: 'TIMESTAMP (YYYY Mon.DD HH:MM:SS). Row update time. Example: 2025 Jul.16 05:15:30.'
+    sql: '"lastUpdated"'
+  mean_time_to_recovery:
+    description: 'REAL. Mean Time To Recovery (MTTR) in minutes. Example: 7.2.'
+    sql: mean_time_to_recovery
+  outage_window_min_per_day:
+    description: 'TEXT. Typical daily outage window in minutes. Example: 2–25.'
+    sql: '"outageWindow_min_per_day"'
+  plat_code:
+    description: 'TEXT. Foreign-key to markets.PlatCode. Example: MKP_027.'
+    sql: '"platCode"'
+  queue_backlog_depth:
+    description: 'REAL. Average depth of async job queue. Example: 14.2.'
+    sql: queue_backlog_depth
+  sched_maint_minutes:
+    description: 'BIGINT. Minutes of scheduled maintenance within the window. Example: 30.'
+    sql: sched_maint_minutes
+  search_index_lag_sec:
+    description: 'BIGINT. Seconds the search index lags behind write path. **NULL means search service disabled or telemetry missing.** Example: 180.'
+    sql: search_index_lag_sec
+  snapshot_ts:
+    description: 'TIMESTAMP (YYYY Mon.DD HH:MM:SS). Exact moment the metrics were captured. Example: 2025 Jul.16 05:12:54.'
+    sql: '"snapshot_TS"'
+  ssl_handshake_fail_pct:
+    description: 'REAL. TLS handshake failure rate. **NULL means metric not collected on that POP.** Example: 0.03.'
+    sql: '"sslHandshakeFailPct"'
+  throughput_mbps:
+    description: 'REAL. Mean transfer throughput in Mbps. Example: 512.3.'
+    sql: '"throughput_Mbps"'
+  tls_version:
+    description: 'TEXT. Predominant TLS protocol version observed. **NULL means version non-determinable (mixed traffic).** Example: TLS 1.3.'
+    sql: '"tlsVERSION"'
+  unsched_maint_minutes:
+    description: 'BIGINT. Minutes of unscheduled emergency maintenance. **NULL means none recorded or telemetry missing.** Example: 8.'
+    sql: '"unschedMaintMinutes"'
+  websocket_conn_success_pct:
+    description: 'REAL. Successful WebSocket upgrade rate. Example: 99.2.'
+    sql: websocket_conn_success_pct
+  avail_latency_blob_down_min:
+    description: 'BIGINT. Total downtime minutes corresponding to UPTIMEpct. Example: 2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(avail_latency_blob, 'down_min')
+  avail_latency_blob_lat_avg_ms:
+    description: 'REAL. Average backend response latency in milliseconds. Example: 112.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(avail_latency_blob, 'latAvgMS')
+  avail_latency_blob_lat_peak_ms:
+    description: 'REAL. Worst single sampled response time in milliseconds. Example: 294.3.'
+    sql: JSONB_EXTRACT_PATH_TEXT(avail_latency_blob, 'latPeakMS')
+  avail_latency_blob_latency_fan_spread:
+    description: 'TEXT. Observed latency fan (min–max) in ms. **NULL means latency fan histogram unavailable.** Example: 76–164.'
+    sql: JSONB_EXTRACT_PATH_TEXT(avail_latency_blob, 'latencyFanSpread')
+  avail_latency_blob_packet_loss:
+    description: 'REAL. Average packet loss percentage during synthetic ping tests. Example: 0.04.'
+    sql: JSONB_EXTRACT_PATH_TEXT(avail_latency_blob, 'packetLoss%')
+  avail_latency_blob_up_pct:
+    description: 'REAL. Percentage of time the platform was healthy during the previous 24 hours. Example: 99.87.'
+    sql: JSONB_EXTRACT_PATH_TEXT(avail_latency_blob, 'upPct')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct platform_availability_snapshots public identity values.
+    label: platform_availability_snapshots Count
+    sql: ${cybermarket_pattern_large_public__platform_availability_snapshots.availability_ref}

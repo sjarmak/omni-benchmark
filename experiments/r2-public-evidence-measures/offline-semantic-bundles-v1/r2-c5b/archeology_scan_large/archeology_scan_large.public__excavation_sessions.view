@@ -1,0 +1,66 @@
+label: ExcavationSessions
+description: All columns of the public table ExcavationSessions.
+catalog: archeology_scan_large
+schema: public
+table_name: ExcavationSessions
+dimensions:
+  excavation_sessions_id:
+    description: TEXT. Unique identifier for excavation session record.
+    sql: '"ExcavationSessions_id"'
+  ambient_temperature_celsius:
+    description: 'REAL. Average ambient temperature during session in Celsius. **NULL means Temperature sensor unavailable.** Example: 22.'
+    sql: ambient_temperature_celsius
+  artifacts_found_count:
+    description: 'INTEGER. Number of artifacts discovered during this session. Example: 50.'
+    sql: artifacts_found_count
+  crew_count:
+    description: 'INTEGER. Number of personnel actively working during session. Example: 50.'
+    sql: crew_count
+  equipment_cost_daily:
+    description: 'REAL. Daily cost of equipment used in local currency. **NULL means Cost tracking not enabled.** Example: 250.'
+    sql: equipment_cost_daily
+  excavation_depth_cm:
+    description: 'REAL. Total depth excavated during session in centimeters. Example: 25.'
+    sql: excavation_depth_cm
+  excavation_method:
+    description: 'TEXT. Primary excavation method used during session. Unique values: Trowel, Shovel, Mattock, Mechanical, Water Screening.'
+    sql: excavation_method
+  ground_water_level_cm:
+    description: 'REAL. Depth to groundwater table in centimeters if encountered. **NULL means Groundwater not encountered.** Example: 200.'
+    sql: ground_water_level_cm
+  humidity_percent:
+    description: 'REAL. Average relative humidity percentage during session. **NULL means Humidity sensor unavailable.** Example: 55.'
+    sql: humidity_percent
+  is_stratigraphic_change:
+    description: 'BOOLEAN. Indicates if a stratigraphic layer change was observed. Possible values: True, False.'
+    sql: is_stratigraphic_change
+  labor_hours_total:
+    description: 'REAL. Total person-hours of labor expended during session. Example: 32.'
+    sql: labor_hours_total
+  photos_taken_count:
+    description: 'INTEGER. Number of photographs taken during session. Example: 50.'
+    sql: photos_taken_count
+  samples_collected_count:
+    description: 'INTEGER. Number of soil or material samples collected. Example: 50.'
+    sql: samples_collected_count
+  session_end_time:
+    description: 'TIMESTAMP. Date and time when excavation session concluded. **NULL means Session still in progress or not recorded.** Example: 2024-01-01 12:00:00.'
+    sql: session_end_time
+  session_start_time:
+    description: 'TIMESTAMP. Date and time when excavation session began. Example: 2024-01-01 12:00:00.'
+    sql: session_start_time
+  session_status:
+    description: 'TEXT. Current status of the excavation session. Unique values: Completed, In Progress, Paused, Cancelled.'
+    sql: session_status
+  sieve_mesh_size_mm:
+    description: 'REAL. Mesh size of sieve used for screening in millimeters. **NULL means No sieving performed.** Unique values: 2.0, 4.0, 6.0, 10.0.'
+    sql: sieve_mesh_size_mm
+  site_ref:
+    description: TEXT. Reference to the archaeological site being excavated.
+    sql: site_ref
+  soil_volume_liters:
+    description: 'REAL. Volume of soil removed during session in liters. **NULL means Volume not measured for this session.** Example: 150.'
+    sql: soil_volume_liters
+  weather_condition:
+    description: 'TEXT. Weather conditions during excavation session. **NULL means Weather not recorded.** Unique values: Clear, Cloudy, Light Rain, Hot, Windy.'
+    sql: weather_condition

@@ -1,0 +1,60 @@
+label: CorporateActionEvents
+description: All columns of the public table CorporateActionEvents.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: CorporateActionEvents
+dimensions:
+  corporate_action_events_id:
+    description: 'TEXT. Unique identifier for the corporate action event. Example: XX-1A2B3C.'
+    sql: '"CorporateActionEvents_id"'
+  adjustment_factor:
+    description: 'REAL. Factor used to adjust historical prices. Example: 0.98.'
+    sql: adjustment_factor
+  announcement_date:
+    description: 'TIMESTAMP. Date the action was publicly announced. Example: 2024-01-01 12:00:00.'
+    sql: announcement_date
+  cash_amount:
+    description: 'REAL. Cash value per share associated with the event. **NULL means Event does not involve cash.** Example: 1.5.'
+    sql: cash_amount
+  currency_code:
+    description: 'TEXT. Currency of the cash amount. Unique values: USD, EUR, GBP, JPY, CAD.'
+    sql: currency_code
+  event_status:
+    description: 'TEXT. Current workflow status of the event. Unique values: Confirmed, Unconfirmed, Cancelled, Effective.'
+    sql: event_status
+  event_type:
+    description: 'TEXT. Category of the corporate action. Unique values: Dividend, Stock Split, Merger, Spin-off, Rights Issue, Acquisition.'
+    sql: event_type
+  ex_dividend_date:
+    description: 'TIMESTAMP. The date on which the security trades without the benefit of the corporate action. **NULL means Not applicable for non-dividend events.** Example: 2024-01-01 12:00:00.'
+    sql: ex_dividend_date
+  is_mandatory:
+    description: 'BOOLEAN. Whether shareholder participation is mandatory. Possible values: True, False.'
+    sql: is_mandatory
+  market_price_at_announce:
+    description: 'REAL. Closing price of security on announcement date. Example: 150.'
+    sql: market_price_at_announce
+  notes_text:
+    description: TEXT. Additional analyst notes. **NULL means No additional notes.**
+    sql: notes_text
+  payment_date:
+    description: 'TIMESTAMP. Date the benefit is paid to shareholders. **NULL means Pending final confirmation.** Example: 2024-01-01 12:00:00.'
+    sql: payment_date
+  provider_source_code:
+    description: 'TEXT. Data provider code for this event. Unique values: BBG, RTR, MS, FACTSET.'
+    sql: provider_source_code
+  ratio_denominator:
+    description: 'REAL. Denominator for stock split or rights ratio. **NULL means Not a ratio-based event.** Example: 50.0.'
+    sql: ratio_denominator
+  ratio_numerator:
+    description: 'REAL. Numerator for stock split or rights ratio. **NULL means Not a ratio-based event.** Example: 50.0.'
+    sql: ratio_numerator
+  regulatory_approval_flag:
+    description: 'BOOLEAN. Indicates if regulatory approval has been granted. Possible values: True, False.'
+    sql: regulatory_approval_flag
+  security_ref:
+    description: 'INTEGER. Reference to the affected security. Example: 50.'
+    sql: security_ref
+  tax_status_code:
+    description: 'TEXT. Tax classification of the event. Unique values: Taxable, Non-Taxable, Deferred, Reclassification.'
+    sql: tax_status_code

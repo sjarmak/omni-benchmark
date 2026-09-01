@@ -1,0 +1,51 @@
+label: training_sessions
+description: All columns of the public table training_sessions.
+catalog: solar_panel_large
+schema: public
+table_name: training_sessions
+dimensions:
+  course_code:
+    description: 'TEXT. The unique internal or external code for the course. Example: PV101.'
+    sql: '"COURSE_CODE"'
+  instructor_bio:
+    description: 'TEXT. A brief biography of the instructor. Example: 20+ years Master Electrician, NABCEP certified..'
+    sql: '"INSTRUCTOR_BIO"'
+  location:
+    description: 'TEXT. The physical or virtual location of the training. Example: Main Office Training Room.'
+    sql: '"LOCATION"'
+  max_attendees:
+    description: 'BIGINT. The maximum number of attendees allowed in the session. Possible values: 10, 100, 12, 15, 20, 25, 30, 40, 50, 8.'
+    sql: '"MAX_ATTENDEES"'
+  session_date:
+    description: 'DATE. The date the training session is held. Example: 06/12/2023.'
+    sql: '"SESSION_DATE"'
+  session_tag:
+    description: 'TEXT. Unique identifier for a specific training session. Example: SESS-01.'
+    sql: '"SessionTag"'
+  ties_to_cert:
+    description: 'TEXT. FK -> certifications.CertCode. The certification this training is associated with. Example: CERT-01.'
+    sql: '"Ties_To_Cert"'
+  cost_per_head:
+    description: 'REAL. The cost per person to attend the training. Example: $500.00.'
+    sql: cost_per_head
+  course_name:
+    description: 'TEXT. The title of the training course. Example: Intro to PV Installation.'
+    sql: '"courseName"'
+  created_ts:
+    description: 'TIMESTAMP. Timestamp when the training session record was created. Example: 2019-01-15 09:00:00.'
+    sql: created_ts
+  duration_hours:
+    description: 'REAL. The duration of the training session in hours. Example: 8.0 hours.'
+    sql: duration_hours
+  instructor:
+    description: 'TEXT. The name of the primary instructor. Example: Frank Miller.'
+    sql: instructor
+  last_modified_ts:
+    description: 'TIMESTAMP. Timestamp of the last modification to the training session record. Example: 2023-10-10 10:00:00.'
+    sql: last_modified_ts
+  provider:
+    description: 'TEXT. The company or organization providing the training. Example: SolarTrain Inc..'
+    sql: provider
+  training_type:
+    description: 'TEXT. The format of the training session. Possible values: On-site, Online, Workshop.'
+    sql: '"trainingType"'

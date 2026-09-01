@@ -1,0 +1,11 @@
+base_view: robot_fault_prediction_large_public__product_materials
+label: product_materials
+description: All columns of the public table product_materials.
+fields:
+- robot_fault_prediction_large_public__product_materials.*
+- robot_fault_prediction_large_public__materials.*
+- robot_fault_prediction_large_public__products.*
+joins:
+  robot_fault_prediction_large_public__materials: {}
+  robot_fault_prediction_large_public__products: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

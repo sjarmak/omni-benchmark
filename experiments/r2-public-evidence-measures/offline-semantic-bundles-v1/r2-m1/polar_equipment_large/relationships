@@ -1,0 +1,426 @@
+- join_from_view: polar_equipment_large_public__communication_link_metric
+  join_to_view: polar_equipment_large_public__communication
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__communication_link_metric.for_comm_link} = ${polar_equipment_large_public__communication.comm_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_sensor_mapping
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_sensor_mapping.equip_ref_map} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_sensor_mapping
+  join_to_view: polar_equipment_large_public__sensor_model_measurement_profile
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_sensor_mapping.cal_profile_link} = ${polar_equipment_large_public__sensor_model_measurement_profile.profile_stamp}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_location_history
+  join_to_view: polar_equipment_large_public__location
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_location_history.at_station} = ${polar_equipment_large_public__location.station_name}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__task_crew_assignment
+  join_to_view: polar_equipment_large_public__crew_member
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__task_crew_assignment.crew_ref_code} = ${polar_equipment_large_public__crew_member.crew_token}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__cabinenvironment
+  join_to_view: polar_equipment_large_public__communication
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__cabinenvironment.comm_link} = ${polar_equipment_large_public__communication.comm_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__location_environmental_log
+  join_to_view: polar_equipment_large_public__location
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__location_environmental_log.location_ref} = ${polar_equipment_large_public__location.station_name}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__battery_charge_cycle_log
+  join_to_view: polar_equipment_large_public__powerbattery
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__battery_charge_cycle_log.battery_ref} = ${polar_equipment_large_public__powerbattery.pwr_batt_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__maintenance_work_order
+  join_to_view: polar_equipment_large_public__operationmaintenance
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__maintenance_work_order.opmaint_ref} = ${polar_equipment_large_public__operationmaintenance.op_maint_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__scientific_calibration_schedule
+  join_to_view: polar_equipment_large_public__scientific
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__scientific_calibration_schedule.for_science_row} = ${polar_equipment_large_public__scientific.sci_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__scientific_experiment_result
+  join_to_view: polar_equipment_large_public__scientific_data_acquisition
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__scientific_experiment_result.data_acq_ref} = ${polar_equipment_large_public__scientific_data_acquisition.data_acq_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__crew_project_assignment
+  join_to_view: polar_equipment_large_public__crew_member
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__crew_project_assignment.crew_ref} = ${polar_equipment_large_public__crew_member.crew_token}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__water_treatment_cycle
+  join_to_view: polar_equipment_large_public__waterandwaste
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__water_treatment_cycle.for_water_proc} = ${polar_equipment_large_public__waterandwaste.water_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_performance_log
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_performance_log.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__transmission_service_history
+  join_to_view: polar_equipment_large_public__transmission
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__transmission_service_history.transmission_ref} = ${polar_equipment_large_public__transmission.trans_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__station_equipment_type
+  join_to_view: polar_equipment_large_public__equipmenttype
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__station_equipment_type.equip_type} = ${polar_equipment_large_public__equipmenttype.equip_type}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__operationmaintenance
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__operationmaintenance.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__thermalsolarwindandgrid
+  join_to_view: polar_equipment_large_public__communication
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__thermalsolarwindandgrid.comm_link} = ${polar_equipment_large_public__communication.comm_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__communication_quality_metric
+  join_to_view: polar_equipment_large_public__communication_session_log
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__communication_quality_metric.comm_session_ref} = ${polar_equipment_large_public__communication_session_log.comm_session_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_lifecycle
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_lifecycle.life_equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__transmission
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__transmission.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__station_equipment_type
+  join_to_view: polar_equipment_large_public__location
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__station_equipment_type.station_name} = ${polar_equipment_large_public__location.station_name}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__cabinenvironment
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__cabinenvironment.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__safety_inspection
+  join_to_view: polar_equipment_large_public__lighting_and_safety
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__safety_inspection.for_light_asset} = ${polar_equipment_large_public__lighting_and_safety.light_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__chassis_and_vehicle
+  join_to_view: polar_equipment_large_public__engine_and_fluids
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__chassis_and_vehicle.engine_link} = ${polar_equipment_large_public__engine_and_fluids.engine_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__task_crew_assignment
+  join_to_view: polar_equipment_large_public__maintenance_task_catalog
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__task_crew_assignment.task_ref_code} = ${polar_equipment_large_public__maintenance_task_catalog.task_code_token}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__sensor_model_measurement_profile
+  join_to_view: polar_equipment_large_public__sensor_model
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__sensor_model_measurement_profile.profile_for_model} = ${polar_equipment_large_public__sensor_model.model_handle}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__communication
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__communication.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__communication
+  join_to_view: polar_equipment_large_public__operationmaintenance
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__communication.opmaint_link} = ${polar_equipment_large_public__operationmaintenance.op_maint_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__engine_runtime_snapshot
+  join_to_view: polar_equipment_large_public__engine_and_fluids
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__engine_runtime_snapshot.engine_ref} = ${polar_equipment_large_public__engine_and_fluids.engine_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__battery_degradation_analysis
+  join_to_view: polar_equipment_large_public__battery_charge_cycle_log
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__battery_degradation_analysis.charge_cycle_ref} = ${polar_equipment_large_public__battery_charge_cycle_log.charge_cycle_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_location_history
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_location_history.loc_for_equipment} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__chassis_and_vehicle
+  join_to_view: polar_equipment_large_public__transmission
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__chassis_and_vehicle.trans_link} = ${polar_equipment_large_public__transmission.trans_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__engine_and_fluids
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__engine_and_fluids.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__transmission_diagnostic_event
+  join_to_view: polar_equipment_large_public__transmission
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__transmission_diagnostic_event.for_transmission} = ${polar_equipment_large_public__transmission.trans_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__waterandwaste
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__waterandwaste.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__energy_generation_log
+  join_to_view: polar_equipment_large_public__thermalsolarwindandgrid
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__energy_generation_log.for_thermal_asset} = ${polar_equipment_large_public__thermalsolarwindandgrid.thermal_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__communication
+  join_to_view: polar_equipment_large_public__location
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__communication.loc_link} = ${polar_equipment_large_public__location.station_name}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__engine_and_fluids
+  join_to_view: polar_equipment_large_public__powerbattery
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__engine_and_fluids.batt_link} = ${polar_equipment_large_public__powerbattery.pwr_batt_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_type_detail
+  join_to_view: polar_equipment_large_public__equipmenttype
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_type_detail.for_type_code} = ${polar_equipment_large_public__equipmenttype.equip_type}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__crew_certification_record
+  join_to_view: polar_equipment_large_public__crew_member
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__crew_certification_record.crew_ref} = ${polar_equipment_large_public__crew_member.crew_token}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__communication_session_log
+  join_to_view: polar_equipment_large_public__communication
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__communication_session_log.comm_ref} = ${polar_equipment_large_public__communication.comm_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__fueling_and_charging_event
+  join_to_view: polar_equipment_large_public__powerbattery
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__fueling_and_charging_event.battery_power_link} = ${polar_equipment_large_public__powerbattery.pwr_batt_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__transmission_fluid_analysis
+  join_to_view: polar_equipment_large_public__transmission_service_history
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__transmission_fluid_analysis.trans_service_ref} = ${polar_equipment_large_public__transmission_service_history.trans_service_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__cabin_occupancy_event
+  join_to_view: polar_equipment_large_public__cabinenvironment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__cabin_occupancy_event.cabin_ref} = ${polar_equipment_large_public__cabinenvironment.cabin_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_specification
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_specification.spec_for_equipment} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__cabinenvironment
+  join_to_view: polar_equipment_large_public__location
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__cabinenvironment.loc_link} = ${polar_equipment_large_public__location.station_name}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__transmission
+  join_to_view: polar_equipment_large_public__engine_and_fluids
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__transmission.engine_link} = ${polar_equipment_large_public__engine_and_fluids.engine_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_sensor_mapping
+  join_to_view: polar_equipment_large_public__sensor_model
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_sensor_mapping.sensor_model_ref} = ${polar_equipment_large_public__sensor_model.model_handle}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__powerbattery
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__powerbattery.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__engine_and_fluids
+  join_to_view: polar_equipment_large_public__operationmaintenance
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__engine_and_fluids.opmaint_link} = ${polar_equipment_large_public__operationmaintenance.op_maint_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__lighting_and_safety
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__lighting_and_safety.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__scientific_data_acquisition
+  join_to_view: polar_equipment_large_public__scientific
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__scientific_data_acquisition.scientific_ref} = ${polar_equipment_large_public__scientific.sci_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__chassis_and_vehicle
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__chassis_and_vehicle.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__transmission
+  join_to_view: polar_equipment_large_public__operationmaintenance
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__transmission.opmaint_link} = ${polar_equipment_large_public__operationmaintenance.op_maint_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__scientific_calibration_schedule
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__scientific_calibration_schedule.equip_ref_for_cal} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment
+  join_to_view: polar_equipment_large_public__equipmenttype
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment.equip_type} = ${polar_equipment_large_public__equipmenttype.equip_type}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__location_weather_observation
+  join_to_view: polar_equipment_large_public__location_environmental_log
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__location_weather_observation.env_log_ref} = ${polar_equipment_large_public__location_environmental_log.env_log_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__cabin_air_quality_sample
+  join_to_view: polar_equipment_large_public__cabin_occupancy_event
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__cabin_air_quality_sample.occupancy_event_ref} = ${polar_equipment_large_public__cabin_occupancy_event.occupancy_event_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_health_assessment
+  join_to_view: polar_equipment_large_public__equipment_performance_log
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_health_assessment.perf_log_ref} = ${polar_equipment_large_public__equipment_performance_log.perf_log_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__chassis_dynamics_event
+  join_to_view: polar_equipment_large_public__chassis_and_vehicle
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__chassis_dynamics_event.for_chassis} = ${polar_equipment_large_public__chassis_and_vehicle.chassis_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__maintenance_part_consumption
+  join_to_view: polar_equipment_large_public__maintenance_work_order
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__maintenance_part_consumption.work_order_ref} = ${polar_equipment_large_public__maintenance_work_order.work_order_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__weatherandstructure
+  join_to_view: polar_equipment_large_public__operationmaintenance
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__weatherandstructure.opmaint_link} = ${polar_equipment_large_public__operationmaintenance.op_maint_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__crew_training_session
+  join_to_view: polar_equipment_large_public__crew_certification_record
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__crew_training_session.cert_record_ref} = ${polar_equipment_large_public__crew_certification_record.cert_record_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__weatherandstructure
+  join_to_view: polar_equipment_large_public__location
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__weatherandstructure.loc_link} = ${polar_equipment_large_public__location.station_name}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__scientific
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__scientific.equip_ref} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__fueling_and_charging_event
+  join_to_view: polar_equipment_large_public__equipment
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__fueling_and_charging_event.for_equip_event} = ${polar_equipment_large_public__equipment.equip_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__crew_project_assignment
+  join_to_view: polar_equipment_large_public__project
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__crew_project_assignment.project_ref} = ${polar_equipment_large_public__project.project_slug}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__equipment_anomaly_detection
+  join_to_view: polar_equipment_large_public__equipment_performance_log
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__equipment_anomaly_detection.perf_log_ref} = ${polar_equipment_large_public__equipment_performance_log.perf_log_seq}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__thermalsolarwindandgrid
+  join_to_view: polar_equipment_large_public__powerbattery
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__thermalsolarwindandgrid.batt_link} = ${polar_equipment_large_public__powerbattery.pwr_batt_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: polar_equipment_large_public__engine_emission_measurement
+  join_to_view: polar_equipment_large_public__engine_runtime_snapshot
+  join_type: always_left
+  on_sql: ${polar_equipment_large_public__engine_emission_measurement.runtime_snap_ref} = ${polar_equipment_large_public__engine_runtime_snapshot.runtime_snap_seq}
+  relationship_type: many_to_one
+  reversible: false

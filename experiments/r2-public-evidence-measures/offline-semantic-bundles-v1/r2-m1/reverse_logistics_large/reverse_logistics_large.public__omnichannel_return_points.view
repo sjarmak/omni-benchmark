@@ -1,0 +1,72 @@
+label: omnichannel_return_points
+description: All columns of the public table omnichannel_return_points.
+catalog: reverse_logistics_large
+schema: public
+table_name: omnichannel_return_points
+dimensions:
+  accessibility_rating:
+    description: 'INTEGER. Accessibility score (1-5) for customers. Example: 50.'
+    sql: accessibility_rating
+  avg_daily_volume_cnt:
+    description: 'INTEGER. Average number of returns received daily. Example: 50.'
+    sql: avg_daily_volume_cnt
+  complaint_count_ytd:
+    description: 'INTEGER. Number of customer complaints this year. Example: 50.'
+    sql: complaint_count_ytd
+  contact_person_name:
+    description: TEXT. Manager or contact at the location.
+    sql: contact_person_name
+  contract_expiry_date:
+    description: TIMESTAMP. When the partnership contract expires.
+    sql: contract_expiry_date
+  current_occupancy_pct:
+    description: 'REAL. Current percentage of storage used. Example: 50.0.'
+    sql: current_occupancy_pct
+  full_address_str:
+    description: TEXT. Physical address of the return point.
+    sql: full_address_str
+  geo_latitude_val:
+    description: 'REAL. GPS Latitude. Example: 50.0.'
+    sql: geo_latitude_val
+  geo_longitude_val:
+    description: 'REAL. GPS Longitude. Example: 50.0.'
+    sql: geo_longitude_val
+  location_name_label:
+    description: TEXT. Display name of the location (e.g., 'Downtown Kiosk').
+    sql: location_name_label
+  operating_hours_str:
+    description: 'TEXT. String describing open hours. Unique values: 09:00-21:00, 24/7, 08:00-18:00.'
+    sql: operating_hours_str
+  parking_availability_code:
+    description: 'TEXT. Description of parking (Street, Lot, None). Unique values: Dedicated Lot, Street, None.'
+    sql: parking_availability_code
+  partner_type_cat:
+    description: 'TEXT. Type of partner hosting the point. Unique values: Retail Store, Locker, Pharmacy, Gas Station.'
+    sql: partner_type_cat
+  pickup_carrier_ref:
+    description: 'INTEGER. Primary carrier responsible for pickups here. Example: 50.'
+    sql: pickup_carrier_ref
+  pickup_frequency_code:
+    description: 'TEXT. How often the carrier picks up (e.g., Daily). Unique values: Daily, Bi-Weekly, On Demand.'
+    sql: pickup_frequency_code
+  point_active_status:
+    description: BOOLEAN. If the return point is currently active.
+    sql: point_active_status
+  printer_available_flag:
+    description: BOOLEAN. If the location can print labels for customers.
+    sql: printer_available_flag
+  return_point_code:
+    description: TEXT. Unique identifier for the return drop-off point.
+    sql: return_point_code
+  storage_capacity_m3:
+    description: 'REAL. Max volume of returns this location can hold. Example: 2.0.'
+    sql: storage_capacity_m3
+  supplies_available_flag:
+    description: BOOLEAN. If packaging supplies are available onsite.
+    sql: supplies_available_flag
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct omnichannel_return_points public identity values.
+    label: omnichannel_return_points Count
+    sql: ${reverse_logistics_large_public__omnichannel_return_points.return_point_code}

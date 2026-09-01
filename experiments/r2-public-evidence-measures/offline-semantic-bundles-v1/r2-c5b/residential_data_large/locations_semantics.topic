@@ -1,0 +1,7 @@
+base_view: residential_data_large_public__locations
+label: locations
+description: All columns of the public table locations.
+fields:
+- residential_data_large_public__locations.*
+joins: {}
+ai_context: This topic models no cross-table joins.

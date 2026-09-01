@@ -1,0 +1,102 @@
+label: fan_technical_profile
+description: All columns of the public table fan_technical_profile.
+catalog: virtual_idol_large
+schema: public
+table_name: fan_technical_profile
+dimensions:
+  ad_blocker_enabled:
+    description: 'BOOLEAN. A flag indicating if the fan has an ad blocker enabled. Example: true.'
+    sql: '"AD_BLOCKER_ENABLED"'
+  app_version_in_use:
+    description: 'TEXT. The version of the fan-facing application being used. Example: v3.9.1.'
+    sql: '"APP_VERSION_IN_USE"'
+  audio_output_device:
+    description: 'TEXT. The fan''s typical audio output device. Example: Headphones.'
+    sql: '"AUDIO_OUTPUT_DEVICE"'
+  average_upload_speed_mbps:
+    description: 'REAL. The fan''s average internet upload speed in Mbps. Example: 82.4.'
+    sql: '"AVERAGE_UPLOAD_SPEED_mbps"'
+  antivirus_software:
+    description: 'TEXT. The antivirus software used by the fan. **NULL means no antivirus software was detected or reported.** Example: Windows Defender.'
+    sql: '"AntivirusSoftware"'
+  average_download_speed_mbps:
+    description: 'REAL. The fan''s average internet download speed in Mbps. Example: 756.78.'
+    sql: '"AverageDownloadSpeed_mbps"'
+  average_session_latency_ms:
+    description: 'REAL. The fan''s average session latency in milliseconds. Example: 182.03.'
+    sql: '"AverageSessionLatency_ms"'
+  cpu_model:
+    description: Model name of the fan's device CPU (e.g., Apple M3, Snapdragon).
+    sql: '"CPU_MODEL"'
+  data_saver_mode_enabled:
+    description: 'BOOLEAN. A flag indicating if the fan has data saver mode enabled. Example: false.'
+    sql: '"DataSaverModeEnabled"'
+  device_battery_health_percent:
+    description: 'REAL. The battery health percentage of the fan''s mobile device. **NULL means the device is not a mobile device or the health is not reported.** Example: 82.1.'
+    sql: '"DeviceBatteryHealth_percent"'
+  fan_user_id:
+    description: 'TEXT. Foreign key referencing the fan. FK to fans(user_registry). Example: FAN79893.'
+    sql: '"Fan_User_ID"'
+  has_vr_headset:
+    description: 'BOOLEAN. A flag indicating if the fan owns a VR headset. Example: true.'
+    sql: '"HAS_VR_HEADSET"'
+  has_ar_capabilities:
+    description: 'BOOLEAN. A flag indicating if the fan''s primary device has Augmented Reality capabilities. Example: true.'
+    sql: '"HasArCapabilities"'
+  packet_loss_rate_percent:
+    description: 'REAL. The fan''s average packet loss rate. Example: 2.05.'
+    sql: '"PACKET_LOSS_RATE_percent"'
+  preferred_streaming_quality:
+    description: 'TEXT. The fan''s preferred streaming quality. Possible values: 1080p, 720p, 4K, Auto. Example: 1080p.'
+    sql: '"PREFERRED_STREAMING_QUALITY"'
+  primary_browser:
+    description: 'TEXT. The fan''s primary web browser. Possible values: Firefox, Edge, Safari, Chrome, Brave. Example: Firefox.'
+    sql: '"PRIMARY_BROWSER"'
+  primary_device_os:
+    description: 'TEXT. The fan''s primary operating system. Possible values: Android 14, Ubuntu 24.04, macOS Sonoma, Windows 11, iOS 17. Example: Android 14.'
+    sql: '"PrimaryDeviceOS"'
+  screen_resolution_height_px:
+    description: 'BIGINT. The height of the fan''s primary screen resolution in pixels. Example: 900.'
+    sql: '"ScreenResolutionHeight_px"'
+  storage_type:
+    description: Type of storage used in the device (e.g., SSD, HDD).
+    sql: '"StorageType"'
+  timezone:
+    description: 'TEXT. The fan''s timezone. Example: Europe/London.'
+    sql: '"TIMEZONE"'
+  uses_vpn:
+    description: 'BOOLEAN. A flag indicating if the fan regularly uses a VPN. Example: false.'
+    sql: '"UsesVPN"'
+  firewall_configuration:
+    description: 'TEXT. The type of firewall configuration used. **NULL means this information is not available.** Example: Default.'
+    sql: firewall_configuration
+  hardware_specification:
+    description: JSON string containing detailed hardware specs (CPU, GPU, RAM, etc.).
+    sql: hardware_specification
+  internet_connection_type:
+    description: 'TEXT. The fan''s typical internet connection type. Possible values: DSL, Fiber, 5G, Starlink, Cable. Example: DSL.'
+    sql: internet_connection_type
+  last_crash_report_timestamp:
+    description: 'TIMESTAMP. The timestamp of the last crash report submitted by the application. **NULL means no crash reports have been submitted.** Example: 2024-10-11 20:22:39.'
+    sql: last_crash_report_timestamp
+  last_profile_update:
+    description: 'TIMESTAMP. The timestamp of the last update to this technical profile. Example: 2025-04-10 20:43:53.'
+    sql: last_profile_update
+  location_tracking_enabled:
+    description: 'BOOLEAN. A flag indicating if the fan has enabled location tracking. Example: true.'
+    sql: location_tracking_enabled
+  microphone_quality_rating:
+    description: 'REAL. A rating of the fan''s microphone quality. **NULL means the quality has not been rated.** Example: 3.6.'
+    sql: microphone_quality_rating
+  multitasking_behavior_score:
+    description: 'REAL. A score representing the fan''s multitasking behavior during sessions. Example: 0.379.'
+    sql: multitasking_behavior_score
+  screen_resolution_width_px:
+    description: 'BIGINT. The width of the fan''s primary screen resolution in pixels. Example: 3840.'
+    sql: screen_resolution_width_px
+  technical_profile_id:
+    description: 'BIGINT. Unique identifier for the fan''s technical profile. PK. Example: 1.'
+    sql: technical_profile_id
+  vr_headset_model:
+    description: 'TEXT. The model of the fan''s VR headset. **NULL means the fan does not own a VR headset.** Example: Valve Index.'
+    sql: vr_headset_model

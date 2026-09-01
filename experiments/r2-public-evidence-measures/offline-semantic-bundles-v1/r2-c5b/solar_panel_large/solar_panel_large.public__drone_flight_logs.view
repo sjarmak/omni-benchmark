@@ -1,0 +1,66 @@
+label: DroneFlightLogs
+description: All columns of the public table DroneFlightLogs.
+catalog: solar_panel_large
+schema: public
+table_name: DroneFlightLogs
+dimensions:
+  airspace_permission_id:
+    description: TEXT. LAANC or authorization code for controlled airspace. **NULL means Class G (Uncontrolled) airspace.**
+    sql: airspace_permission_id
+  battery_start_pct:
+    description: 'INTEGER. Battery percentage at takeoff. Example: 98.'
+    sql: battery_start_pct
+  cloud_cover_pct:
+    description: 'REAL. Cloud cover percentage affecting irradiance during flight. Example: 20.'
+    sql: cloud_cover_pct
+  crash_incident_flag:
+    description: 'BOOLEAN. True if the drone suffered a crash or hard landing. Possible values: True, False.'
+    sql: crash_incident_flag
+  drone_model:
+    description: 'TEXT. Model of the UAV used. Unique values: DJI Matrice 300, Skydio 2+, SenseFly eBee.'
+    sql: drone_model
+  duration_minutes:
+    description: 'REAL. Total flight time in minutes. Example: 25.'
+    sql: duration_minutes
+  flight_date:
+    description: TIMESTAMP. Date the flight occurred.
+    sql: flight_date
+  flight_log_id:
+    description: TEXT. Unique identifier for the drone inspection flight.
+    sql: flight_log_id
+  flight_mode:
+    description: 'TEXT. Type of flight pattern used. Unique values: Grid, Linear, Orbit, Manual.'
+    sql: flight_mode
+  flight_path_gpx_url:
+    description: TEXT. Link to the GPX file of the flight path.
+    sql: flight_path_gpx_url
+  images_captured_count:
+    description: 'INTEGER. Total number of images (RGB + Thermal) taken. Example: 1500.'
+    sql: images_captured_count
+  max_altitude_meters:
+    description: 'REAL. Maximum altitude reached during survey. Example: 40.'
+    sql: max_altitude_meters
+  operator_notes:
+    description: TEXT. Subjective notes from the pilot. **NULL means No notes added.**
+    sql: operator_notes
+  pilot_ref:
+    description: 'TEXT. FK reference to technicians (TechNum) who piloted the drone. **NULL means Autonomous/Automated flight.** Unique values: T-101, T-102, T-103.'
+    sql: pilot_ref
+  processing_status:
+    description: 'TEXT. Status of the photogrammetry/AI analysis. Unique values: Uploaded, Processing, Completed, Failed.'
+    sql: processing_status
+  raw_data_size_gb:
+    description: 'REAL. Size of the raw dataset uploaded in Gigabytes. Example: 12.'
+    sql: raw_data_size_gb
+  site_ref:
+    description: TEXT. Reference to the plant surveyed.
+    sql: site_ref
+  start_time:
+    description: 'TIMESTAMP. Timestamp of takeoff. Example: 2024-01-01 12:00:00.'
+    sql: start_time
+  thermal_hotspots_found:
+    description: 'INTEGER. Count of potential hotspots identified during initial processing. **NULL means RGB-only flight (no thermal).** Example: 50.'
+    sql: thermal_hotspots_found
+  wind_speed_at_altitude:
+    description: 'REAL. Average wind speed at flight altitude in m/s. **NULL means Sensor data missing.** Example: 4.'
+    sql: wind_speed_at_altitude

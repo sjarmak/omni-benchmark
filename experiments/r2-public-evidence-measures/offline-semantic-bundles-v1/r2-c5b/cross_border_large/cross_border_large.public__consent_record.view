@@ -1,0 +1,72 @@
+label: ConsentRecord
+description: All columns of the public table ConsentRecord.
+catalog: cross_border_large
+schema: public
+table_name: ConsentRecord
+dimensions:
+  consent_id:
+    description: BIGINT. Primary key. Unique consent record identifier
+    sql: '"CONSENT_ID"'
+  consent_preferences:
+    description: JSONB. Detailed consent preferences
+    sql: '"CONSENT_PREFERENCES"'
+  consent_type:
+    description: 'TEXT. Type of consent obtained Possible values: Explicit, Implicit, Opt-In, Opt-Out, Legitimate Interest.'
+    sql: '"CONSENT_TYPE"'
+  dataset_ref:
+    description: BIGINT. Foreign key referencing Dataset_Catalog(dataset_code). Dataset to which consent applies
+    sql: '"DATASET_REF"'
+  expiry_date:
+    description: DATE. Consent expiry date
+    sql: '"EXPIRY_DATE"'
+  granted_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When consent was granted
+    sql: '"GRANTED_AT"'
+  granular:
+    description: BOOLEAN. Whether consent was collected at granular level Boolean flag (true/false).
+    sql: '"GRANULAR"'
+  informed:
+    description: BOOLEAN. Whether subject was properly informed Boolean flag (true/false).
+    sql: '"INFORMED"'
+  proof_available:
+    description: BOOLEAN. Whether proof of consent collection exists Boolean flag (true/false).
+    sql: '"PROOF_AVAILABLE"'
+  status:
+    description: 'TEXT. Current consent status Possible values: Active, Withdrawn, Expired, Pending Renewal.'
+    sql: '"STATUS"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  withdrawal_channel:
+    description: 'TEXT. Channel through which consent was withdrawn Possible values: Web Form, Email, Phone, API, Letter. **NULL means Consent not withdrawn.**'
+    sql: '"WITHDRAWAL_CHANNEL"'
+  age_verification:
+    description: 'TEXT. Age verification status Possible values: Verified Adult, Minor with Guardian, Not Verified.'
+    sql: age_verification
+  collection_method:
+    description: 'TEXT. How consent was collected Possible values: Web Form, Cookie Banner, Paper Form, Verbal, App Prompt, Email.'
+    sql: collection_method
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  dsr_ref:
+    description: BIGINT. Foreign key referencing DataSubjectRequest(DSR_ID). Related DSR if consent was modified via request
+    sql: dsr_ref
+  freely_given:
+    description: BOOLEAN. Whether consent was freely given (no bundling) Boolean flag (true/false).
+    sql: freely_given
+  privacy_notice_version:
+    description: 'TEXT. Version of privacy notice shown at collection Possible values: v1.0, v1.1, v2.0, v2.1, v3.0.'
+    sql: privacy_notice_version
+  processing_purpose:
+    description: 'TEXT. Purpose for which consent was obtained Possible values: Marketing, Analytics, Service Delivery, Research, Profiling, Third Party Sharing, Cross-Border Transfer.'
+    sql: processing_purpose
+  proof_url:
+    description: TEXT. URL to consent proof/record
+    sql: proof_url
+  subject_pseudonym:
+    description: TEXT. Pseudonymized subject identifier
+    sql: subject_pseudonym
+  withdrawn_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. When consent was withdrawn **NULL means Consent not withdrawn.**
+    sql: withdrawn_at

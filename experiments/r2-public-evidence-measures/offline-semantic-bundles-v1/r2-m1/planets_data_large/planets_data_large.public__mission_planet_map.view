@@ -1,0 +1,57 @@
+label: Mission_Planet_Map
+description: All columns of the public table Mission_Planet_Map.
+catalog: planets_data_large
+schema: public
+table_name: Mission_Planet_Map
+dimensions:
+  confirmed:
+    description: BOOLEAN. Whether planet detection is confirmed Boolean flag (true/false).
+    sql: '"CONFIRMED"'
+  discovery_role:
+    description: 'TEXT. Role of mission in planet study Possible values: Discoverer, Confirmer, Characterizer, Monitor.'
+    sql: '"DISCOVERY_ROLE"'
+  false_positive_probability:
+    description: 'REAL. False positive probability (%) Typical range: 0 to 100.'
+    sql: '"FALSE_POSITIVE_PROBABILITY"'
+  mission_ref:
+    description: BIGINT. Foreign key referencing SpaceMission(mission_id). Related mission
+    sql: '"MISSION_REF"'
+  mpm_id:
+    description: BIGINT. Primary key. Unique mission-planet mapping identifier
+    sql: '"MPM_ID"'
+  snr_detection:
+    description: 'REAL. Signal-to-noise ratio of detection Typical range: 3 to 200.'
+    sql: '"SNR_DETECTION"'
+  total_exposure_time_hours:
+    description: 'REAL. Total exposure time in hours Typical range: 0.1 to 5000.'
+    sql: '"TOTAL_EXPOSURE_TIME_hours"'
+  transit_depth_ppm:
+    description: 'REAL. Transit depth in parts per million Typical range: 10 to 50000. **NULL means Not detected via transit method.**'
+    sql: '"TRANSIT_DEPTH_ppm"'
+  confirmation_status:
+    description: 'TEXT. Current confirmation status Possible values: Confirmed, Candidate, False Positive, Validated.'
+    sql: confirmation_status
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  detection_method:
+    description: 'TEXT. Detection method used Possible values: Transit, Radial Velocity, Direct Imaging, Microlensing, Transit Timing, Astrometry.'
+    sql: detection_method
+  first_detection_date:
+    description: DATE. Date of first detection
+    sql: first_detection_date
+  observations_count:
+    description: BIGINT. Number of observations of this planet
+    sql: observations_count
+  planet_ref:
+    description: BIGINT. Foreign key referencing planets(planetref). Related planet
+    sql: planet_ref
+  rv_amplitude_m_per_s:
+    description: 'REAL. Radial velocity semi-amplitude Typical range: 0.1 to 1000. **NULL means Not detected via RV method.**'
+    sql: rv_amplitude_m_per_s
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Mission_Planet_Map public identity values.
+    label: Mission_Planet_Map Count
+    sql: ${planets_data_large_public__mission_planet_map.mpm_id}

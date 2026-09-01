@@ -1,0 +1,69 @@
+label: physics_simulation_data
+description: All columns of the public table physics_simulation_data.
+catalog: virtual_idol_large
+schema: public
+table_name: physics_simulation_data
+dimensions:
+  acceleration_x_m_per_s2:
+    description: Acceleration vector component along the X-axis.
+    sql: '"ACCELERATION_X_m_per_s2"'
+  acceleration_z_m_per_s2:
+    description: Acceleration vector component along the Z-axis.
+    sql: '"AccelerationZ_m_per_s2"'
+  collision_detected:
+    description: 'BOOLEAN. A flag indicating if a collision was detected in this frame. Example: false.'
+    sql: '"COLLISION_DETECTED"'
+  force_applied_newtons:
+    description: 'REAL. The force applied to the object in Newtons. Example: 3.12.'
+    sql: '"FORCE_APPLIED_newtons"'
+  frame_number:
+    description: 'BIGINT. The frame number of the simulation sequence. Example: 0.'
+    sql: '"FrameNumber"'
+  gravity_m_per_s2:
+    description: 'REAL. The gravity value used in the simulation in meters per second squared. Example: 9.81.'
+    sql: '"GRAVITY_m_per_s2"'
+  idol_id:
+    description: 'TEXT. Foreign key referencing the virtual idol associated with the simulation. FK to virtualidols(entity_reg). Example: VI4162.'
+    sql: '"IDOL_ID"'
+  simulation_notes:
+    description: 'TEXT. Notes about the simulation run. **NULL means no notes were added.** Example: Passed stress test..'
+    sql: '"SIMULATION_NOTES"'
+  simulation_id:
+    description: 'BIGINT. Unique identifier for the simulation data point. PK. Example: 1.'
+    sql: '"SimulationID"'
+  simulation_software:
+    description: 'TEXT. The software used to run the simulation. Example: Unreal Engine Chaos.'
+    sql: '"SimulationSoftware"'
+  validated_by:
+    description: TEXT. The person who validated the simulation results. **NULL means the results have not been validated.**
+    sql: '"VALIDATED_BY"'
+  velocity_x_m_per_s:
+    description: Velocity vector component along the X-axis.
+    sql: '"VELOCITY_X_m_per_s"'
+  velocity_z_m_per_s:
+    description: Velocity vector component along the Z-axis.
+    sql: '"VelocityZ_m_per_s"'
+  colliding_object_id:
+    description: 'TEXT. The identifier of the object that was collided with. **NULL means no collision occurred.** Example: scenery_3.'
+    sql: colliding_object_id
+  friction_coefficient:
+    description: 'REAL. The friction coefficient used in the simulation. Example: 0.5.'
+    sql: friction_coefficient
+  kinematics:
+    description: JSON string containing full velocity and acceleration vector data.
+    sql: kinematics
+  object_simulated:
+    description: 'TEXT. The object or part of the model being simulated. Example: Ribbon.'
+    sql: object_simulated
+  simulation_timestamp:
+    description: 'TIMESTAMP. The timestamp of the simulation frame. Example: 2025-09-03T06:20:19.451041.'
+    sql: simulation_timestamp
+  validation_status:
+    description: 'TEXT. The status of the validation of the simulation results. **NULL means the results have not been validated.** Example: Validated.'
+    sql: validation_status
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct physics_simulation_data public identity values.
+    label: physics_simulation_data Count
+    sql: ${virtual_idol_large_public__physics_simulation_data.simulation_id}

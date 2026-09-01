@@ -1,0 +1,72 @@
+label: VolunteerDeployment
+description: All columns of the public table VolunteerDeployment.
+catalog: disaster_relief_large
+schema: public
+table_name: VolunteerDeployment
+dimensions:
+  accommodation_type:
+    description: 'VARCHAR(100). Lodging arrangement (Tent|Barracks|Hotel|HomeStay|None|Other). Possible values: "Barracks", "HomeStay", "Hotel", "None", "Other", "Tent".'
+    sql: '"accommodationType"'
+  assignment_type:
+    description: 'VARCHAR(100). Nature of volunteer duties (FieldOperations|Logistics|Medical|Administration|Security|Training|Assessment|Coordination|Communications|Other). Possible values: "Administration", "Assessment", "Communications", "Coordination", "FieldOperations", "Logistics", "Medical", "Other", "Security", "Training".'
+    sql: '"assignmentType"'
+  certification_required:
+    description: 'VARCHAR(100). Mandatory certification requirement status (Yes|No|Conditional). Possible values: "Conditional", "No", "Yes".'
+    sql: '"certificationRequired"'
+  certification_status:
+    description: 'VARCHAR(100). Verification status of required certifications (Valid|Expired|Pending|NotRequired|Waived). Possible values: "Expired", "NotRequired", "Pending", "Valid", "Waived".'
+    sql: '"certificationStatus"'
+  deployment_date:
+    description: 'VARCHAR(100). Date volunteer commenced field assignment. Example: "2014-06-05".'
+    sql: '"deploymentDate"'
+  deployment_location:
+    description: 'VARCHAR(100). Geographic area or facility of assignment. Example: "SCeDe5eo4y".'
+    sql: '"deploymentLocation"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 6114.'
+    sql: '"disasterEventId"'
+  emergency_contact_notified:
+    description: 'VARCHAR(100). Emergency contact notification status (Yes|No|Attempted|N/A). Possible values: "Attempted", "N/A", "No", "Yes".'
+    sql: '"emergencyContactNotified"'
+  equipment_used:
+    description: 'VARCHAR(100). Specialized equipment operated during assignment. Example: "yEVYG7MbOs".'
+    sql: '"equipmentUsed"'
+  hours_worked:
+    description: 'VARCHAR(100). Total hours worked during deployment period. Example: "537".'
+    sql: '"hoursWorked"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for volunteer deployment records. Example: 1.'
+    sql: id
+  meals_provided:
+    description: 'VARCHAR(100). Food service provision status (All|Partial|None|SelfProvided). Possible values: "All", "None", "Partial", "SelfProvided".'
+    sql: '"mealsProvided"'
+  notes:
+    description: 'VARCHAR(100). Deployment supervisor observations or issues. Example: "cBnYRJvhvT".'
+    sql: notes
+  performance_rating:
+    description: 'VARCHAR(100). Supervisor assessment of volunteer performance (1-10 scale). Example: "7tsWwF3gdS".'
+    sql: '"performanceRating"'
+  safety_incidents:
+    description: 'VARCHAR(100). Safety events during deployment (None|NearMiss|Minor|Major|Critical). Possible values: "Critical", "Major", "Minor", "NearMiss", "None".'
+    sql: '"safetyIncidents"'
+  supervisor_name:
+    description: 'VARCHAR(100). Name of direct supervisor for deployment. Example: "Takeda Kazuma".'
+    sql: '"supervisorName"'
+  tasks_performed:
+    description: 'VARCHAR(100). Specific activities completed during assignment. Example: "oVj22fz2FO".'
+    sql: '"tasksPerformed"'
+  transportation_provided:
+    description: 'VARCHAR(100). Transport arrangement status (Yes|No|Partial|SelfArranged). Possible values: "No", "Partial", "SelfArranged", "Yes".'
+    sql: '"transportationProvided"'
+  version:
+    description: 'VARCHAR(100). Record version number for audit purposes. Example: "muE2gtz1pn".'
+    sql: version
+  volunteer_id:
+    description: 'BIGINT. Foreign key reference to volunteer profile (VolunteerCore.id). Example: 6114.'
+    sql: '"volunteerId"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct VolunteerDeployment public identity values.
+    label: VolunteerDeployment Count
+    sql: ${disaster_relief_large_public__volunteer_deployment.id}

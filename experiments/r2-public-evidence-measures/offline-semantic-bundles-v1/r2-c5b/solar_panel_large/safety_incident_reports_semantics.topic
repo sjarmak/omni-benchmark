@@ -1,0 +1,9 @@
+base_view: solar_panel_large_public__safety_incident_reports
+label: SafetyIncidentReports
+description: All columns of the public table SafetyIncidentReports.
+fields:
+- solar_panel_large_public__safety_incident_reports.*
+- solar_panel_large_public__technicians.*
+joins:
+  solar_panel_large_public__technicians: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

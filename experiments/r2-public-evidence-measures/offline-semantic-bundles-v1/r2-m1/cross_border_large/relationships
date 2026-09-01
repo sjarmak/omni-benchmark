@@ -1,0 +1,396 @@
+- join_from_view: cross_border_large_public__employee_certification
+  join_to_view: cross_border_large_public__privacy_training_program
+  join_type: always_left
+  on_sql: ${cross_border_large_public__employee_certification.training_prog_ref} = ${cross_border_large_public__privacy_training_program.training_prog_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__audit_and_compliance
+  join_to_view: cross_border_large_public__vendor_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__audit_and_compliance.vend_join} = ${cross_border_large_public__vendor_management.vendor_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__slamonitoring
+  join_to_view: cross_border_large_public__subprocessor_registry
+  join_type: always_left
+  on_sql: ${cross_border_large_public__slamonitoring.subprocessor_ref} = ${cross_border_large_public__subprocessor_registry.subprocessor_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__incident_response_plan
+  join_to_view: cross_border_large_public__incident_register
+  join_type: always_left
+  on_sql: ${cross_border_large_public__incident_response_plan.incident_ref} = ${cross_border_large_public__incident_register.incident_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__api_control_map
+  join_to_view: cross_border_large_public__api_endpoint
+  join_type: always_left
+  on_sql: ${cross_border_large_public__api_control_map.api_code} = ${cross_border_large_public__api_endpoint.api_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__data_flow_detail
+  join_to_view: cross_border_large_public__data_flow
+  join_type: always_left
+  on_sql: ${cross_border_large_public__data_flow_detail.detail_flow_code} = ${cross_border_large_public__data_flow.record_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__forensic_investigation
+  join_to_view: cross_border_large_public__incident_register
+  join_type: always_left
+  on_sql: ${cross_border_large_public__forensic_investigation.incident_ref} = ${cross_border_large_public__incident_register.incident_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__governance_decision
+  join_to_view: cross_border_large_public__risk_scenario
+  join_type: always_left
+  on_sql: ${cross_border_large_public__governance_decision.scenario_ref} = ${cross_border_large_public__risk_scenario.scenario_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__retention_schedule
+  join_to_view: cross_border_large_public__geo_jurisdiction
+  join_type: always_left
+  on_sql: ${cross_border_large_public__retention_schedule.jurisdiction_ref} = ${cross_border_large_public__geo_jurisdiction.jurisdiction_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__incident_notification
+  join_to_view: cross_border_large_public__incident_register
+  join_type: always_left
+  on_sql: ${cross_border_large_public__incident_notification.incident_id_ref} = ${cross_border_large_public__incident_register.incident_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__training_completion_log
+  join_to_view: cross_border_large_public__privacy_training_program
+  join_type: always_left
+  on_sql: ${cross_border_large_public__training_completion_log.program_ref} = ${cross_border_large_public__privacy_training_program.training_prog_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__disposal_record
+  join_to_view: cross_border_large_public__dataset_catalog
+  join_type: always_left
+  on_sql: ${cross_border_large_public__disposal_record.dataset_ref} = ${cross_border_large_public__dataset_catalog.dataset_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__consent_record
+  join_to_view: cross_border_large_public__dataset_catalog
+  join_type: always_left
+  on_sql: ${cross_border_large_public__consent_record.dataset_ref} = ${cross_border_large_public__dataset_catalog.dataset_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__audit_and_compliance
+  join_to_view: cross_border_large_public__compliance
+  join_type: always_left
+  on_sql: ${cross_border_large_public__audit_and_compliance.comp_join} = ${cross_border_large_public__compliance.compliance_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__subprocessor_registry
+  join_to_view: cross_border_large_public__vendor_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__subprocessor_registry.vendor_ref} = ${cross_border_large_public__vendor_management.vendor_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__policy_acknowledgment
+  join_to_view: cross_border_large_public__policy_version
+  join_type: always_left
+  on_sql: ${cross_border_large_public__policy_acknowledgment.policy_ref} = ${cross_border_large_public__policy_version.policy_version_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__subprocessor_registry
+  join_to_view: cross_border_large_public__geo_jurisdiction
+  join_type: always_left
+  on_sql: ${cross_border_large_public__subprocessor_registry.jurisdiction_ref} = ${cross_border_large_public__geo_jurisdiction.jurisdiction_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__subprocessor_vendor_map
+  join_to_view: cross_border_large_public__vendor_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__subprocessor_vendor_map.vendor_ref} = ${cross_border_large_public__vendor_management.vendor_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__security_profile
+  join_to_view: cross_border_large_public__risk_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__security_profile.riskkey} = ${cross_border_large_public__risk_management.risktrace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__portability_request
+  join_to_view: cross_border_large_public__data_subject_request
+  join_type: always_left
+  on_sql: ${cross_border_large_public__portability_request.dsr_ref} = ${cross_border_large_public__data_subject_request.dsr_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__compliance
+  join_to_view: cross_border_large_public__risk_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__compliance.risk_tie} = ${cross_border_large_public__risk_management.risktrace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__dataset_legal_map
+  join_to_view: cross_border_large_public__dataset_catalog
+  join_type: always_left
+  on_sql: ${cross_border_large_public__dataset_legal_map.dataset_code} = ${cross_border_large_public__dataset_catalog.dataset_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__training_completion_log
+  join_to_view: cross_border_large_public__employee_certification
+  join_type: always_left
+  on_sql: ${cross_border_large_public__training_completion_log.cert_ref} = ${cross_border_large_public__employee_certification.cert_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__incident_control_map
+  join_to_view: cross_border_large_public__incident_register
+  join_type: always_left
+  on_sql: ${cross_border_large_public__incident_control_map.incident_ref} = ${cross_border_large_public__incident_register.incident_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__rights_compliance_map
+  join_to_view: cross_border_large_public__legal_article
+  join_type: always_left
+  on_sql: ${cross_border_large_public__rights_compliance_map.article_ref} = ${cross_border_large_public__legal_article.article_no}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__due_diligence_assessment
+  join_to_view: cross_border_large_public__subprocessor_registry
+  join_type: always_left
+  on_sql: ${cross_border_large_public__due_diligence_assessment.subprocessor_ref} = ${cross_border_large_public__subprocessor_registry.subprocessor_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__risk_management_detail
+  join_to_view: cross_border_large_public__risk_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__risk_management_detail.risk_flow_code} = ${cross_border_large_public__risk_management.risktrace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__subprocessor_vendor_map
+  join_to_view: cross_border_large_public__subprocessor_registry
+  join_type: always_left
+  on_sql: ${cross_border_large_public__subprocessor_vendor_map.subprocessor_ref} = ${cross_border_large_public__subprocessor_registry.subprocessor_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__audit_and_compliance
+  join_to_view: cross_border_large_public__data_profile
+  join_type: always_left
+  on_sql: ${cross_border_large_public__audit_and_compliance.profjoin} = ${cross_border_large_public__data_profile.profile_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__consent_record
+  join_to_view: cross_border_large_public__data_subject_request
+  join_type: always_left
+  on_sql: ${cross_border_large_public__consent_record.dsr_ref} = ${cross_border_large_public__data_subject_request.dsr_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__api_endpoint
+  join_to_view: cross_border_large_public__security_profile
+  join_type: always_left
+  on_sql: ${cross_border_large_public__api_endpoint.endpoint_security_code} = ${cross_border_large_public__security_profile.security_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__vendor_management
+  join_to_view: cross_border_large_public__risk_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__vendor_management.riskassoc} = ${cross_border_large_public__risk_management.risktrace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__vendor_management
+  join_to_view: cross_border_large_public__security_profile
+  join_type: always_left
+  on_sql: ${cross_border_large_public__vendor_management.sec_join} = ${cross_border_large_public__security_profile.security_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__compliance_detail
+  join_to_view: cross_border_large_public__compliance
+  join_type: always_left
+  on_sql: ${cross_border_large_public__compliance_detail.compliance_code} = ${cross_border_large_public__compliance.compliance_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__data_profile
+  join_to_view: cross_border_large_public__risk_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__data_profile.risk_join} = ${cross_border_large_public__risk_management.risktrace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__incident_register
+  join_to_view: cross_border_large_public__risk_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__incident_register.risk_trace_ref} = ${cross_border_large_public__risk_management.risktrace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__dpia_dataset_map
+  join_to_view: cross_border_large_public__dpiarecord
+  join_type: always_left
+  on_sql: ${cross_border_large_public__dpia_dataset_map.dpia_ref} = ${cross_border_large_public__dpiarecord.dpia_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__security_profile_cipher_detail
+  join_to_view: cross_border_large_public__security_profile
+  join_type: always_left
+  on_sql: ${cross_border_large_public__security_profile_cipher_detail.security_code} = ${cross_border_large_public__security_profile.security_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__rights_compliance_map
+  join_to_view: cross_border_large_public__data_subject_request
+  join_type: always_left
+  on_sql: ${cross_border_large_public__rights_compliance_map.dsr_ref} = ${cross_border_large_public__data_subject_request.dsr_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__incident_register
+  join_to_view: cross_border_large_public__compliance
+  join_type: always_left
+  on_sql: ${cross_border_large_public__incident_register.compliance_ref} = ${cross_border_large_public__compliance.compliance_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__data_profile_lineage
+  join_to_view: cross_border_large_public__data_profile
+  join_type: always_left
+  on_sql: ${cross_border_large_public__data_profile_lineage.lineage_flow_code} = ${cross_border_large_public__data_profile.profile_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__retention_dataset_map
+  join_to_view: cross_border_large_public__dataset_catalog
+  join_type: always_left
+  on_sql: ${cross_border_large_public__retention_dataset_map.dataset_ref} = ${cross_border_large_public__dataset_catalog.dataset_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__remediation_action
+  join_to_view: cross_border_large_public__incident_register
+  join_type: always_left
+  on_sql: ${cross_border_large_public__remediation_action.incident_ref} = ${cross_border_large_public__incident_register.incident_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__disposal_record
+  join_to_view: cross_border_large_public__retention_schedule
+  join_type: always_left
+  on_sql: ${cross_border_large_public__disposal_record.retention_ref} = ${cross_border_large_public__retention_schedule.retention_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__security_profile
+  join_to_view: cross_border_large_public__data_flow
+  join_type: always_left
+  on_sql: ${cross_border_large_public__security_profile.flow_key} = ${cross_border_large_public__data_flow.record_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__security_profile
+  join_to_view: cross_border_large_public__data_profile
+  join_type: always_left
+  on_sql: ${cross_border_large_public__security_profile.profile_key} = ${cross_border_large_public__data_profile.profile_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__retention_dataset_map
+  join_to_view: cross_border_large_public__retention_schedule
+  join_type: always_left
+  on_sql: ${cross_border_large_public__retention_dataset_map.retention_ref} = ${cross_border_large_public__retention_schedule.retention_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__dpiastakeholder_consultation
+  join_to_view: cross_border_large_public__dpiarecord
+  join_type: always_left
+  on_sql: ${cross_border_large_public__dpiastakeholder_consultation.dpia_ref} = ${cross_border_large_public__dpiarecord.dpia_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__dpiarecommendation
+  join_to_view: cross_border_large_public__dpiarecord
+  join_type: always_left
+  on_sql: ${cross_border_large_public__dpiarecommendation.dpia_ref} = ${cross_border_large_public__dpiarecord.dpia_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__data_subject_request
+  join_to_view: cross_border_large_public__geo_jurisdiction
+  join_type: always_left
+  on_sql: ${cross_border_large_public__data_subject_request.jurisdiction_ref} = ${cross_border_large_public__geo_jurisdiction.jurisdiction_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__incident_notification
+  join_to_view: cross_border_large_public__geo_jurisdiction
+  join_type: always_left
+  on_sql: ${cross_border_large_public__incident_notification.jurisdiction_ref} = ${cross_border_large_public__geo_jurisdiction.jurisdiction_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__dataset_legal_map
+  join_to_view: cross_border_large_public__legal_article
+  join_type: always_left
+  on_sql: ${cross_border_large_public__dataset_legal_map.article_number} = ${cross_border_large_public__legal_article.article_no}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__jurisdiction_mechanism_map
+  join_to_view: cross_border_large_public__geo_jurisdiction
+  join_type: always_left
+  on_sql: ${cross_border_large_public__jurisdiction_mechanism_map.jurisdiction_number} = ${cross_border_large_public__geo_jurisdiction.jurisdiction_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__dpiaassessment_criteria
+  join_to_view: cross_border_large_public__dpiarecord
+  join_type: always_left
+  on_sql: ${cross_border_large_public__dpiaassessment_criteria.dpia_ref} = ${cross_border_large_public__dpiarecord.dpia_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__dpia_dataset_map
+  join_to_view: cross_border_large_public__dataset_catalog
+  join_type: always_left
+  on_sql: ${cross_border_large_public__dpia_dataset_map.dataset_ref} = ${cross_border_large_public__dataset_catalog.dataset_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__training_material
+  join_to_view: cross_border_large_public__privacy_training_program
+  join_type: always_left
+  on_sql: ${cross_border_large_public__training_material.program_ref} = ${cross_border_large_public__privacy_training_program.training_prog_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__compliance
+  join_to_view: cross_border_large_public__vendor_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__compliance.vendor_tie} = ${cross_border_large_public__vendor_management.vendor_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__erasure_request
+  join_to_view: cross_border_large_public__data_subject_request
+  join_type: always_left
+  on_sql: ${cross_border_large_public__erasure_request.dsr_ref} = ${cross_border_large_public__data_subject_request.dsr_id}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__jurisdiction_mechanism_map
+  join_to_view: cross_border_large_public__transfer_mechanism
+  join_type: always_left
+  on_sql: ${cross_border_large_public__jurisdiction_mechanism_map.mechanism_no} = ${cross_border_large_public__transfer_mechanism.mechanism_no}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__vendor_contract_detail
+  join_to_view: cross_border_large_public__vendor_management
+  join_type: always_left
+  on_sql: ${cross_border_large_public__vendor_contract_detail.vendor_code} = ${cross_border_large_public__vendor_management.vendor_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__data_subject_request
+  join_to_view: cross_border_large_public__compliance
+  join_type: always_left
+  on_sql: ${cross_border_large_public__data_subject_request.compliance_ref} = ${cross_border_large_public__compliance.compliance_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__data_profile
+  join_to_view: cross_border_large_public__data_flow
+  join_type: always_left
+  on_sql: ${cross_border_large_public__data_profile.flow_sign} = ${cross_border_large_public__data_flow.record_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__risk_management
+  join_to_view: cross_border_large_public__data_flow
+  join_type: always_left
+  on_sql: ${cross_border_large_public__risk_management.flow_link} = ${cross_border_large_public__data_flow.record_registry}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__dpiarecord
+  join_to_view: cross_border_large_public__compliance
+  join_type: always_left
+  on_sql: ${cross_border_large_public__dpiarecord.compliance_trace_ref} = ${cross_border_large_public__compliance.compliance_trace}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__control_scenario_map
+  join_to_view: cross_border_large_public__risk_scenario
+  join_type: always_left
+  on_sql: ${cross_border_large_public__control_scenario_map.scenario_code} = ${cross_border_large_public__risk_scenario.scenario_code}
+  relationship_type: many_to_one
+  reversible: false
+- join_from_view: cross_border_large_public__governance_decision
+  join_to_view: cross_border_large_public__policy_version
+  join_type: always_left
+  on_sql: ${cross_border_large_public__governance_decision.policy_ref} = ${cross_border_large_public__policy_version.policy_version_id}
+  relationship_type: many_to_one
+  reversible: false

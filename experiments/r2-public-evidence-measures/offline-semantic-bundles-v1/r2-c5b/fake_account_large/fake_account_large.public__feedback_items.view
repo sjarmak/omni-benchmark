@@ -1,0 +1,117 @@
+label: feedback_items
+description: All columns of the public table feedback_items.
+catalog: fake_account_large
+schema: public
+table_name: feedback_items
+dimensions:
+  category:
+    description: 'TEXT. Functional area. Example: UI.'
+    sql: '"CATEGORY"'
+  channel:
+    description: 'TEXT. Inbound channel. Possible values: Email, Web, MobileApp, Chatbot.'
+    sql: '"CHANNEL"'
+  downvote_cnt:
+    description: 'BIGINT. Community down-votes. Example: 3.'
+    sql: '"DOWNVOTE_CNT"'
+  feedback_code:
+    description: 'TEXT. Unique feedback ticket ID. PK. Example: FB03942571.'
+    sql: '"Feedback_CODE"'
+  lang:
+    description: 'TEXT. ISO-639-1 language code. Example: en.'
+    sql: '"LANG"'
+  notes:
+    description: TEXT. Internal handling notes.
+    sql: '"Notes"'
+  priority:
+    description: 'TEXT. Priority flag. Possible values: Low, Medium, High, Urgent.'
+    sql: '"PRIORITY"'
+  acct_ref:
+    description: 'TEXT. FK to accounts.acct_ref. Example: ACC7210284.'
+    sql: acct_ref
+  attach_cnt:
+    description: 'BIGINT. Number of file attachments. **NULL means attachment count was not logged (not merely zero).** Example (when present): 2.'
+    sql: '"attachCnt"'
+  content_text:
+    description: TEXT. Full free-form feedback content (UTF-8).
+    sql: '"contentText"'
+  engagement_flags:
+    description: JSONB column. Captures sentiment, toxicity and follow-up flags associated with a feedback ticket.
+    sql: engagement_flags
+  escalate_flag:
+    description: 'TEXT. Yes/No — ticket escalated. Example: Yes.'
+    sql: '"escalateFlag"'
+  escalate_to:
+    description: 'TEXT. Assignee for escalation. **NULL if not escalated.** Example: ADM05763.'
+    sql: '"escalateTo"'
+  escalate_ts:
+    description: TIMESTAMPTZ. Escalation timestamp. **NULL if never escalated.**
+    sql: '"escalateTs"'
+  feedback_score:
+    description: 'REAL. Composite quality score (0-100). Example: 88.35.'
+    sql: '"feedbackScore"'
+  feedback_type:
+    description: 'TEXT. Classification. Possible values: Bug, FeatureRequest, Complaint, Praise, Inquiry.'
+    sql: '"feedbackType"'
+  platform:
+    description: 'TEXT. Client platform. Possible values: Web, iOS, Android.'
+    sql: platform
+  reply_cnt:
+    description: 'BIGINT. Number of internal replies. Example: 5.'
+    sql: '"replyCnt"'
+  resolution:
+    description: 'TEXT. Closing resolution. **NULL for tickets not yet resolved.** Possible values: Fixed, Won''t Fix, Duplicate, As Designed, Pending.'
+    sql: resolution
+  resolve_ts:
+    description: TIMESTAMPTZ. Resolution time. **NULL until resolved.**
+    sql: '"resolveTs"'
+  sla_target_d:
+    description: 'BIGINT. SLA target in days. Example: 7.'
+    sql: '"slaTargetD"'
+  state:
+    description: 'TEXT. Workflow state. Possible values: Open, In Progress, Closed, Resolved, Rejected.'
+    sql: state
+  status_ts:
+    description: 'TIMESTAMPTZ. Last state update. Example: 2025-03-01T09:18:34.'
+    sql: '"statusTs"'
+  sub_category:
+    description: 'TEXT. Sub-area detail. Example: UX.'
+    sql: '"subCategory"'
+  subject:
+    description: 'TEXT. Short subject line. Example: Feedback on latest update.'
+    sql: subject
+  submit_ts:
+    description: 'TIMESTAMPTZ. Submission time. Example: 2025-02-11T03:22:14.'
+    sql: '"submitTs"'
+  upvote_cnt:
+    description: 'BIGINT. Community up-votes. Example: 15.'
+    sql: '"upvoteCnt"'
+  engagement_flags_media_flag:
+    description: 'TEXT. Yes/No — media attached. Example: No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'MEDIA_FLAG')
+  engagement_flags_resp_req_flag:
+    description: 'TEXT. Yes/No — explicit response requested. Example: No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'RESP_REQ_FLAG')
+  engagement_flags_tox_score:
+    description: 'REAL. Toxicity score (0-1). Example: 0.05.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'TOX_SCORE')
+  engagement_flags_anon_flag:
+    description: 'TEXT. Yes/No — submitted anonymously. Example: No.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'anonFlag')
+  engagement_flags_follow_up_flag:
+    description: 'TEXT. Yes/No — reporter requested follow-up. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'followUpFlag')
+  engagement_flags_sentiment:
+    description: 'REAL. Sentiment polarity (−1 to 1). Example: 0.15.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'sentiment')
+  engagement_flags_sentiment_band:
+    description: 'TEXT. Binned sentiment label. Possible values: Negative, Neutral, Neutral–Positive, Positive.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'sentiment_band')
+  engagement_flags_sla_met_flag:
+    description: 'TEXT. Yes/No — SLA met. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'slaMetFlag')
+  engagement_flags_spam_score:
+    description: 'REAL. Spam likelihood (0-1). Example: 0.13.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'spamScore')
+  engagement_flags_url_flag:
+    description: 'TEXT. Yes/No — URLs included. Example: Yes.'
+    sql: JSONB_EXTRACT_PATH_TEXT(engagement_flags, 'urlFlag')

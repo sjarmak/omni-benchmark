@@ -1,0 +1,115 @@
+label: Labor Certification Cases
+description: Application case rows with public visa, disclosure, status, worker-position, worksite-count, and worksite-density semantics.
+catalog: labor_certification_applications_large
+schema: public
+table_name: cases
+dimensions:
+  visa_classification:
+    description: 'enum_visa_class. Visa class for the case. Possible values: E-3 Australian, H-1B, H-1B1 Chile, H-1B1 Singapore.'
+    label: Visa Classification
+    sql: visacls
+    ai_context: 'Visa Classification Types: The visa classification system includes several types: H-1B (specialty occupations requiring theoretical and practical application of specialized knowledge), H-1B1 Singapore (Singapore nationals in specialty occupations), H-1B1 Chile (Chilean nationals in specialty occupations), and E-3 Australian (Australian nationals in specialty occupations).'
+  public_disclosure_status:
+    description: 'TEXT. Public disclosure status. Possible values: Disclose Business, Disclose Business and Employment, Disclose Employment.'
+    label: Public Disclosure Status
+    sql: pubdisc
+    ai_context: 'Public Disclosure Options: Employers can choose whether their business information is publicly disclosed in the visa application process. ''Disclose Business'' indicates the employer consents to having their information publicly available, while other options may restrict disclosure to protect confidential business information. Disclosure choices are recorded as part of the application data.'
+  application_status:
+    description: 'TEXT. Current status of the case. Possible values: CERTIFIED, Certified, certified.'
+    label: Application Status
+    sql: statustag
+    ai_context: 'Application Status Categories: Possible outcomes for a visa application include: Certified (approved), Denied (rejected), Withdrawn (voluntarily withdrawn by applicant), and Certified-Withdrawn (approved but later withdrawn). Application status is tracked as part of the application data.'
+  worker_positions:
+    description: 'BIGINT. Total number of worker positions in the case. Possible values: 1, 3, 4, 5, 6, 10, 25, 50.'
+    label: Worker Positions
+    sql: headct
+  worksite_count:
+    description: 'BIGINT. Total number of worksite locations. Possible values: 1, 2, 3, 4, 5, 10.'
+    label: Worksite Count
+    sql: siteslots
+  agreelc:
+    description: 'TEXT. Agreement to the labor condition statement. Possible values: Yes.'
+    sql: agreelc
+  amendflag:
+    description: 'BIGINT. Flag indicating if the petition is amended. Possible values: 0, 1, 2, 5.'
+    sql: amendflag
+  appa:
+    description: 'TEXT. Indicates if Appendix A is attached. Possible values: .'
+    sql: appa
+  beginday:
+    description: 'TEXT. Start date of employment. Example: 21/12/2023.'
+    sql: beginday
+  changefirm:
+    description: 'BIGINT. Number of employer changes. Possible values: 0, 1, 2, 5, 10.'
+    sql: changefirm
+  changeprev:
+    description: 'BIGINT. Number of changes from previous employment. Possible values: 0, 1, 2, 5.'
+    sql: changeprev
+  concurrentlynew:
+    description: 'BIGINT. Number of concurrent new employment positions. Possible values: 0, 1.'
+    sql: concurrentlynew
+  contemp:
+    description: 'BIGINT. Number of continued employment positions. Possible values: 0, 1, 2, 5, 10.'
+    sql: contemp
+  decisionday:
+    description: 'TEXT. Date the case decision was made. **NULL means decision date not provided.**. Possible values: 2023-12-29.'
+    sql: decisionday
+  endday:
+    description: 'TEXT. End date of employment. **NULL means no end date provided.**. Example: 2026 20th Dec..'
+    sql: endday
+  filekey:
+    description: TEXT. Unique case number identifier. PK.
+    sql: filekey
+  fulltimeind:
+    description: 'TEXT. Full-time employment indicator (Y/N). Possible values: 0, 1, N, Y.'
+    sql: fulltimeind
+  h1bdep:
+    description: 'enum_h1b_dependent. Indicates if the applicant is a dependent under H-1B. Possible values: No, Yes.'
+    sql: h1bdep
+  homefirm:
+    description: 'TEXT. Employer reference. FK to employer.corpHandle. Example: Avant Healthcare Professionals, LLC..'
+    sql: homefirm
+  homezip:
+    description: 'TEXT. Employer postal code reference. FK to employer.ZipRef. Example: 32751.'
+    sql: homezip
+  jobtag:
+    description: 'TEXT. Job title associated with the case. Example: Registered Nurse.'
+    sql: jobtag
+  newemp:
+    description: 'BIGINT. Number of new employment positions. Possible values: 0, 1, 2, 5, 10, 20.'
+    sql: newemp
+  origcertday:
+    description: 'DATE. Original certification date. **NULL means certification date not provided.**. Possible values: .'
+    sql: origcertday
+  preplink:
+    description: 'TEXT. Preparer’s email address. FK to preparer.prepMail. Example: tyler.peace@muimmigration.com.'
+    sql: preplink
+  recvday:
+    description: 'TEXT. Date the case was received. Possible values: 2023/12/21.'
+    sql: recvday
+  soccd:
+    description: 'TEXT. Standard Occupational Classification (SOC) code. Example: 29-1141.00.'
+    sql: soccd
+  soctitle:
+    description: 'TEXT. SOC title for the job role. Example: Registered Nurses.'
+    sql: soctitle
+  statbasis:
+    description: 'TEXT. Statutory basis for the case. Possible values: $60,000 or higher annual wage, Both $60,000 or higher in annual wage and Masters Degree or higher in related specialty.'
+    sql: statbasis
+  supporth:
+    description: 'enum_support_h1b. Indicates if the employer supports H-1B. Possible values: Yes.'
+    sql: supporth
+  willfulv:
+    description: 'enum_willful_violator. Indicates if the employer is a willful violator. Possible values: No.'
+    sql: willfulv
+  worksite_density:
+    label: Worksite Density (WD)
+    description: Measures the number of visa workers per worksite.
+    sql: CASE WHEN ${worksite_count} <> 0 THEN CAST(${worker_positions} AS DOUBLE PRECISION) / ${worksite_count} END
+    ai_context: Use this modeled field for Worksite Density (WD); do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Labor Certification Cases public identity values.
+    label: Labor Certification Cases Count
+    sql: ${labor_certification_applications_large_public__cases.filekey}

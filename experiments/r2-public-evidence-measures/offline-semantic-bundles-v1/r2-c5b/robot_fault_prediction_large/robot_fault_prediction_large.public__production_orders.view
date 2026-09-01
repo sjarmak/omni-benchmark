@@ -1,0 +1,45 @@
+label: production_orders
+description: All columns of the public table production_orders.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: production_orders
+dimensions:
+  actual_end_timestamp:
+    description: 'TEXT. The timestamp when production actually ended, formatted as YYYY-MM-DD HH:MI. **NULL indicates the order has not completed.**. Example: 2025-08-15 16:30.'
+    sql: actual_end_timestamp
+  actual_start_timestamp:
+    description: 'TEXT. The timestamp when production actually started, formatted as YYYY-MM-DD HH:MI. **NULL indicates the order has not started.**. Example: 2025-08-10 08:15.'
+    sql: actual_start_timestamp
+  creation_timestamp:
+    description: 'TEXT. The timestamp when the order was created, formatted as YYYY-MM-DD HH:MI. Example: 2025-08-01 09:00.'
+    sql: creation_timestamp
+  is_rush_order:
+    description: 'BOOLEAN. A flag indicating if this is a rush order. Possible values: False, True.'
+    sql: is_rush_order
+  notes:
+    description: 'TEXT. Additional notes about the production order. **NULL indicates no special notes.**. Possible values: Awaiting updated firmware from client., Expedite partial shipment for ORD-25-0002, Final order run before product discontinuation., High priority for electronics partner., High volume injector run., On hold pending material quality check., R&D project cancelled by client., R&D prototype run., RUSH order for new machine build., Standard order for Automotive Solutions Inc..'
+    sql: notes
+  order_num:
+    description: 'TEXT. Unique identifier for the production order. PK. Example: ORD-25-0001.'
+    sql: order_num
+  priority:
+    description: 'BIGINT. The priority of the order (1=High). Possible values: 1, 2, 3.'
+    sql: priority
+  product_sku:
+    description: 'TEXT. The SKU of the product to be produced. FK. Example: PROD-ASM-001.'
+    sql: product_sku
+  quantity_produced:
+    description: 'BIGINT. The quantity of the product already produced for this order. Example: 1000.'
+    sql: quantity_produced
+  quantity_to_produce:
+    description: 'BIGINT. The total quantity of the product to be produced for this order. Example: 1000.'
+    sql: quantity_to_produce
+  scheduled_start_timestamp:
+    description: 'TEXT. The timestamp when production is scheduled to start, formatted as YYYY-MM-DD HH:MI. Example: 2025-08-10 08:00.'
+    sql: scheduled_start_timestamp
+  status:
+    description: 'TEXT. The current status of the production order. Possible values: Completed, In Progress, Pending, On Hold, Cancelled. Possible values: Cancelled, Completed, In Progress, On Hold, Pending.'
+    sql: status
+  workcell_code:
+    description: 'TEXT. The workcell assigned to produce the order. FK. Example: WC-101.'
+    sql: workcell_code

@@ -1,0 +1,48 @@
+label: behavioral_scores
+description: All columns of the public table behavioral_scores.
+catalog: fake_account_large
+schema: public
+table_name: behavioral_scores
+dimensions:
+  acct_beh:
+    description: TEXT. Account reference for behavioral scores. PK. FK to accounts.
+    sql: acct_beh
+  behavioral_anomaly_scores:
+    description: JSONB column. Consolidates all automated-behaviour, spam, pattern-anomaly and commercial-intent scores so model pipelines can ingest a single JSONB document per account.
+    sql: behavioral_anomaly_scores
+  behavioral_anomaly_scores_automation_spam_automated_behavior:
+    description: 'REAL. Automatic behavior score. Example: 0.789.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'automation_spam', 'automated_behavior')
+  behavioral_anomaly_scores_automation_spam_bot_likelihood:
+    description: 'REAL. Bot likelihood score. **NULL means bot likelihood not calculated.**. Example: 0.203.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'automation_spam', 'bot_likelihood')
+  behavioral_anomaly_scores_automation_spam_spam_score:
+    description: 'REAL. Spam score. Example: 0.315.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'automation_spam', 'spam_score')
+  behavioral_anomaly_scores_commercial_intent_score:
+    description: 'REAL. Communication intensity score. **NULL means communication intensity not recorded.**. Example: 0.558.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'commercial_intent_score')
+  behavioral_anomaly_scores_pattern_scores_behavior_pattern:
+    description: 'REAL. Behavior pattern score. Example: 0.087.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'pattern_scores', 'behavior_pattern')
+  behavioral_anomaly_scores_pattern_scores_content_pattern:
+    description: 'REAL. Content pattern score. Example: 0.178.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'pattern_scores', 'content_pattern')
+  behavioral_anomaly_scores_pattern_scores_network_pattern:
+    description: 'REAL. Network behavior pattern score. Example: 0.307.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'pattern_scores', 'network_pattern')
+  behavioral_anomaly_scores_pattern_scores_profile_pattern:
+    description: 'REAL. Profile behavior pattern score. Example: 0.869.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'pattern_scores', 'profile_pattern')
+  behavioral_anomaly_scores_pattern_scores_technical_pattern:
+    description: 'REAL. Technical behavior pattern score. Example: 0.246.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'pattern_scores', 'technical_pattern')
+  behavioral_anomaly_scores_pattern_scores_temporal_pattern:
+    description: 'REAL. Temporary behavior pattern score. **NULL means temporary pattern not recorded.**. Example: 0.883.'
+    sql: JSONB_EXTRACT_PATH_TEXT(behavioral_anomaly_scores, 'pattern_scores', 'temporal_pattern')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct behavioral_scores public identity values.
+    label: behavioral_scores Count
+    sql: ${fake_account_large_public__behavioral_scores.acct_beh}

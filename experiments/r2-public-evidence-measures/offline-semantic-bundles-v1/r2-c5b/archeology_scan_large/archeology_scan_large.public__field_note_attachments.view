@@ -1,0 +1,66 @@
+label: FieldNoteAttachments
+description: All columns of the public table FieldNoteAttachments.
+catalog: archeology_scan_large
+schema: public
+table_name: FieldNoteAttachments
+dimensions:
+  field_note_attachments_id:
+    description: TEXT. Unique identifier for each field note attachment.
+    sql: '"FieldNoteAttachments_id"'
+  access_count:
+    description: 'INTEGER. Number of times attachment has been accessed. Example: 50.'
+    sql: access_count
+  annotation_complete:
+    description: 'BOOLEAN. Whether required annotations have been completed. Possible values: True, False.'
+    sql: annotation_complete
+  attachment_timestamp:
+    description: 'TIMESTAMP. Date and time when attachment was added to note. Example: 2024-01-01 12:00:00.'
+    sql: attachment_timestamp
+  attachment_type:
+    description: 'TEXT. Type classification of the attached file. Unique values: Photo, Sketch, Audio, Video, Document, Scan, Map.'
+    sql: attachment_type
+  audio_duration_seconds:
+    description: 'INTEGER. Duration of audio attachment in seconds. **NULL means Attachment is not an audio file.** Example: 50.'
+    sql: audio_duration_seconds
+  backup_verified:
+    description: 'BOOLEAN. Whether attachment has been backed up to server. Possible values: True, False.'
+    sql: backup_verified
+  caption_length_chars:
+    description: 'INTEGER. Character length of attachment caption text. Example: 50.'
+    sql: caption_length_chars
+  compression_ratio:
+    description: 'REAL. Compression ratio applied to the file. **NULL means Uncompressed file.** Example: 50.0.'
+    sql: compression_ratio
+  file_format:
+    description: 'TEXT. File format extension of the attachment. Unique values: JPG, PNG, PDF, MP3, MP4, TIFF, WAV.'
+    sql: file_format
+  file_size_kb:
+    description: 'REAL. Size of the attachment file in kilobytes. Example: 2500.0.'
+    sql: file_size_kb
+  gps_latitude:
+    description: 'REAL. GPS latitude coordinate where attachment was captured. **NULL means GPS data not available for this attachment.** Example: 50.0.'
+    sql: gps_latitude
+  gps_longitude:
+    description: 'REAL. GPS longitude coordinate where attachment was captured. **NULL means GPS data not available for this attachment.** Example: 50.0.'
+    sql: gps_longitude
+  image_height_pixels:
+    description: 'INTEGER. Height of image attachment in pixels. **NULL means Attachment is not an image file.** Example: 50.'
+    sql: image_height_pixels
+  image_width_pixels:
+    description: 'INTEGER. Width of image attachment in pixels. **NULL means Attachment is not an image file.** Example: 50.'
+    sql: image_width_pixels
+  is_primary_attachment:
+    description: 'BOOLEAN. Whether this is the primary attachment for the note. Possible values: True, False.'
+    sql: is_primary_attachment
+  note_ref:
+    description: TEXT. Reference to the parent field note record.
+    sql: note_ref
+  quality_rating:
+    description: 'REAL. Quality rating of attachment from 1 to 5 stars. **NULL means Not yet rated.** Example: 50.0.'
+    sql: quality_rating
+  requires_annotation:
+    description: 'BOOLEAN. Whether attachment requires additional annotation. Possible values: True, False.'
+    sql: requires_annotation
+  video_duration_seconds:
+    description: 'INTEGER. Duration of video attachment in seconds. **NULL means Attachment is not a video file.** Example: 50.'
+    sql: video_duration_seconds

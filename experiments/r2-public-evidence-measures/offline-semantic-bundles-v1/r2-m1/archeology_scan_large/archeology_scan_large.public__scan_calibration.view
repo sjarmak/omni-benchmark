@@ -1,0 +1,72 @@
+label: ScanCalibration
+description: All columns of the public table ScanCalibration.
+catalog: archeology_scan_large
+schema: public
+table_name: ScanCalibration
+dimensions:
+  scan_calibration_id:
+    description: TEXT. Unique identifier for scan calibration record.
+    sql: '"ScanCalibration_id"'
+  ambient_temperature_celsius:
+    description: 'REAL. Temperature during calibration in Celsius. **NULL means Temperature not recorded.** Example: 22.'
+    sql: ambient_temperature_celsius
+  calibration_duration_minutes:
+    description: 'REAL. Time spent on calibration procedure in minutes. Example: 25.'
+    sql: calibration_duration_minutes
+  calibration_method:
+    description: 'TEXT. Method used for scanner calibration. Unique values: Target Board, Sphere Reference, Plane Fitting, Bundle Adjustment, Factory Default.'
+    sql: calibration_method
+  calibration_passed:
+    description: 'BOOLEAN. Indicates if calibration met acceptance criteria. Possible values: True, False.'
+    sql: calibration_passed
+  calibration_timestamp:
+    description: 'TIMESTAMP. Date and time when calibration was performed. Example: 2024-01-01 12:00:00.'
+    sql: calibration_timestamp
+  focal_length_adjustment_mm:
+    description: 'REAL. Focal length adjustment applied in millimeters. **NULL means No focal length adjustment needed.** Example: 0.'
+    sql: focal_length_adjustment_mm
+  is_automated:
+    description: 'BOOLEAN. Indicates if calibration was automated or manual. Possible values: True, False.'
+    sql: is_automated
+  iterations_required:
+    description: 'INTEGER. Number of calibration iterations performed. Example: 50.'
+    sql: iterations_required
+  max_deviation_mm:
+    description: 'REAL. Maximum deviation from reference in millimeters. Example: 1.5.'
+    sql: max_deviation_mm
+  operator_experience_level:
+    description: 'TEXT. Experience level of calibration operator. Unique values: Junior, Intermediate, Senior, Expert.'
+    sql: operator_experience_level
+  principal_point_x_pixels:
+    description: 'REAL. Principal point X coordinate in pixels. Example: 2048.'
+    sql: principal_point_x_pixels
+  principal_point_y_pixels:
+    description: 'REAL. Principal point Y coordinate in pixels. Example: 1536.'
+    sql: principal_point_y_pixels
+  radial_distortion_k1:
+    description: 'REAL. First radial distortion coefficient. Example: -0.1.'
+    sql: radial_distortion_k1
+  radial_distortion_k2:
+    description: 'REAL. Second radial distortion coefficient. Example: 0.05.'
+    sql: radial_distortion_k2
+  reference_target_count:
+    description: 'INTEGER. Number of reference targets used in calibration. Example: 50.'
+    sql: reference_target_count
+  rms_error_mm:
+    description: 'REAL. Root mean square error of calibration in millimeters. Example: 0.8.'
+    sql: rms_error_mm
+  scan_ref:
+    description: TEXT. Reference to the scan being calibrated.
+    sql: scan_ref
+  software_version:
+    description: 'TEXT. Version of calibration software used. Unique values: v2.1.0, v2.2.0, v2.3.1, v3.0.0.'
+    sql: software_version
+  validity_period_days:
+    description: 'INTEGER. Days until calibration expires. Unique values: 7, 14, 30, 90.'
+    sql: validity_period_days
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ScanCalibration public identity values.
+    label: ScanCalibration Count
+    sql: ${archeology_scan_large_public__scan_calibration.scan_calibration_id}

@@ -1,0 +1,57 @@
+label: StellarMultiplicityRecord
+description: All columns of the public table StellarMultiplicityRecord.
+catalog: planets_data_large
+schema: public
+table_name: StellarMultiplicityRecord
+dimensions:
+  binary_ref:
+    description: BIGINT. Foreign key referencing binary_star_systems(binaryRef). Related binary system
+    sql: '"BINARY_REF"'
+  component_count:
+    description: BIGINT. Number of stellar components
+    sql: '"COMPONENT_COUNT"'
+  discovery_reference:
+    description: TEXT. Reference to discovery publication
+    sql: '"DISCOVERY_REFERENCE"'
+  mass_ratio:
+    description: 'REAL. Mass ratio q = M2/M1 Typical range: 0.01 to 1. **NULL means Mass ratio unknown.**'
+    sql: '"MASS_RATIO"'
+  multiplicity_id:
+    description: BIGINT. Primary key. Unique multiplicity record identifier
+    sql: '"MULTIPLICITY_ID"'
+  orbital_period_years:
+    description: 'REAL. Orbital period in years Typical range: 0.01 to 10000. **NULL means Period unknown or single star.**'
+    sql: '"ORBITAL_PERIOD_YEARS"'
+  planet_hosting_viable:
+    description: BOOLEAN. Whether planet formation is viable Boolean flag (true/false).
+    sql: '"PLANET_HOSTING_VIABLE"'
+  separation_au:
+    description: 'REAL. Physical separation in AU Typical range: 0.1 to 10000. **NULL means Single star or unknown distance.**'
+    sql: '"SEPARATION_AU"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  detection_method:
+    description: 'TEXT. Method used to detect multiplicity Possible values: Visual, Spectroscopic, Astrometric, Eclipsing, Speckle, AO Imaging.'
+    sql: detection_method
+  dynamically_stable:
+    description: BOOLEAN. Whether system is dynamically stable Boolean flag (true/false). **NULL means Single star.**
+    sql: dynamically_stable
+  last_observation_date:
+    description: DATE. Date of last observation of this system
+    sql: last_observation_date
+  magnitude_difference:
+    description: 'REAL. Magnitude difference between components Typical range: 0 to 10. **NULL means Single star.**'
+    sql: magnitude_difference
+  separation_arcsec:
+    description: 'REAL. Angular separation in arcseconds Typical range: 0.01 to 100. **NULL means Single star or unresolved.**'
+    sql: separation_arcsec
+  stellar_ref:
+    description: BIGINT. Foreign key referencing stars(stellarref). Primary star
+    sql: stellar_ref
+  system_type:
+    description: 'TEXT. Multiplicity classification Possible values: Single, Binary, Triple, Quadruple, Higher.'
+    sql: system_type

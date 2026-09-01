@@ -1,0 +1,84 @@
+label: Preferences and Settings
+description: Preference records with row-level usage and stability semantics.
+catalog: virtual_idol_large
+schema: public
+table_name: preferencesandsettings
+dimensions:
+  interaction_consistency_score:
+    description: REAL. Interaction consistency score measuring regular engagement patterns.
+    label: Interaction Consistency Score
+    sql: JSONB_EXTRACT_PATH_TEXT(usage_metrics, 'Int_Consist')
+  platform_stability_score:
+    description: REAL. Platform stability score based on session reliability and connection quality.
+    label: Platform Stability Score
+    sql: JSONB_EXTRACT_PATH_TEXT(usage_metrics, 'Plat_Stable')
+  privacy_setting:
+    description: TEXT. Privacy settings configuration chosen by the fan.
+    label: Privacy Setting
+    sql: priv_set
+    ai_context: 'Privacy Setting Levels: Indicates the level of information a fan chooses to share. ''Public'' allows anyone to see their profile. ''Private'' restricts profile visibility to approved connections.'
+  access_set:
+    description: TEXT. Accessibility settings and accommodations enabled.
+    sql: access_set
+  comm_pref:
+    description: TEXT. Communication preferences for interactions with other users. **NULL means communication preferences not specified or using standard settings.**
+    sql: comm_pref
+  conn_qual:
+    description: TEXT. Connection quality classification based on technical performance.
+    sql: conn_qual
+  dev_count:
+    description: SMALLINT. Number of devices registered for account access.
+    sql: dev_count
+  ds_consent:
+    description: TEXT. Data sharing consent status for analytics and personalization.
+    sql: ds_consent
+  lang_set:
+    description: TEXT. Language settings for platform interface and content.
+    sql: lang_set
+  last_log_dt:
+    description: TEXT. Date and time of most recent login to the platform.
+    sql: last_log_dt
+  log_freq:
+    description: TEXT. Login frequency pattern and regularity classification.
+    sql: log_freq
+  mark_pref:
+    description: TEXT. Marketing communication preferences and opt-in status.
+    sql: mark_pref
+  notif_pref:
+    description: TEXT. Notification preferences for various platform activities. **NULL means notification preferences not configured or using platform defaults.**
+    sql: notif_pref
+  pref_reg:
+    description: BIGSERIAL. Auto-generated unique identifier for preferences and settings record. PK = PreferencesAndSettings(Pref_Reg).
+    sql: pref_reg
+  preferences_member_pivot:
+    description: BIGINT. Reference to membership record for preference correlation. FK to MembershipAndSpending.
+    sql: preferences_member_pivot
+  preferences_social_pivot:
+    description: BIGINT. Reference to social community record for social preference analysis. FK to SocialCommunity.
+    sql: preferences_social_pivot
+  usage_metrics:
+    description: JSONB column. Platform usage metrics including session data, time spent, and activity consistency measurements
+    sql: usage_metrics
+  usage_metrics_avg_daily_min:
+    description: SMALLINT. Average daily time spent on platform in minutes.
+    sql: JSONB_EXTRACT_PATH_TEXT(usage_metrics, 'Avg_Daily_Min')
+  usage_metrics_peak_sess:
+    description: SMALLINT. Maximum concurrent sessions recorded for this user.
+    sql: JSONB_EXTRACT_PATH_TEXT(usage_metrics, 'Peak_Sess')
+  usage_metrics_sess_count:
+    description: BIGINT. Total number of login sessions since account creation.
+    sql: JSONB_EXTRACT_PATH_TEXT(usage_metrics, 'Sess_Count')
+  usage_metrics_time_hrs:
+    description: BIGINT. Total time spent online on the platform in hours.
+    sql: JSONB_EXTRACT_PATH_TEXT(usage_metrics, 'Time_Hrs')
+  platform_stickiness_score:
+    label: Platform Stickiness Score (PSS)
+    description: Measures a fan's loyalty and connection to the platform based on their interaction consistency and session stability.
+    sql: (CAST(${interaction_consistency_score} AS DOUBLE PRECISION) + CAST(${platform_stability_score} AS DOUBLE PRECISION)) / 2
+    ai_context: Use this modeled field for Platform Stickiness Score (PSS); do not reconstruct its formula.
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Preferences and Settings public identity values.
+    label: Preferences and Settings Count
+    sql: ${virtual_idol_large_public__preferencesandsettings.pref_reg}

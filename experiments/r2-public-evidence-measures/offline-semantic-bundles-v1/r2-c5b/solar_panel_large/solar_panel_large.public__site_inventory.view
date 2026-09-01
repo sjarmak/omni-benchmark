@@ -1,0 +1,27 @@
+label: site_inventory
+description: All columns of the public table site_inventory.
+catalog: solar_panel_large
+schema: public
+table_name: site_inventory
+dimensions:
+  last_checked:
+    description: 'DATE. The date the inventory level for this part was last physically checked. Example: 2024-05-01.'
+    sql: '"LAST_CHECKED"'
+  location_tag:
+    description: 'TEXT. PK & FK -> plants.sitekey. The site where the inventory is located. Example: SP9227.'
+    sql: '"LocationTag"'
+  reorder_level:
+    description: 'BIGINT. The inventory level at which a new order for the part should be placed. Example: 50.'
+    sql: '"REORDER_LEVEL"'
+  stock_item_sku:
+    description: 'TEXT. PK & FK -> spare_parts.PartSKU. The SKU of the part in inventory. Example: SP-DI-001.'
+    sql: '"StockItemSKU"'
+  last_restock:
+    description: 'DATE. The date the part was last restocked. Example: 2024-03-01.'
+    sql: last_restock
+  last_updated_ts:
+    description: 'TIMESTAMP. Timestamp of the last update to this inventory record. Example: 2024-05-01 09:00:00.'
+    sql: last_updated_ts
+  quantity:
+    description: 'BIGINT. The current quantity of the part on hand at the site. Example: 155.'
+    sql: quantity

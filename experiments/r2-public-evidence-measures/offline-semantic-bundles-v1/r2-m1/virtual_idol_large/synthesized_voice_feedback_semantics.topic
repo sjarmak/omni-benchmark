@@ -1,0 +1,11 @@
+base_view: virtual_idol_large_public__synthesized_voice_feedback
+label: SynthesizedVoiceFeedback
+description: All columns of the public table SynthesizedVoiceFeedback.
+fields:
+- virtual_idol_large_public__synthesized_voice_feedback.*
+- virtual_idol_large_public__virtualidols.*
+- virtual_idol_large_public__voice_synthesis_quality_logs.*
+joins:
+  virtual_idol_large_public__voice_synthesis_quality_logs:
+    virtual_idol_large_public__virtualidols: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,60 @@
+label: EmissionAbsorptionFeature
+description: All columns of the public table EmissionAbsorptionFeature.
+catalog: planets_data_large
+schema: public
+table_name: EmissionAbsorptionFeature
+dimensions:
+  feature_id:
+    description: BIGINT. Primary key. Unique spectral feature identifier
+    sql: '"FEATURE_ID"'
+  feature_type:
+    description: 'TEXT. Type of spectral feature Possible values: Absorption, Emission, P-Cygni, Broad Absorption, Narrow Emission, Molecular Band.'
+    sql: '"FEATURE_TYPE"'
+  integrated_flux:
+    description: 'REAL. Integrated flux of feature Typical range: 1e-20 to 1e-10.'
+    sql: '"INTEGRATED_FLUX"'
+  observation_date:
+    description: TIMESTAMP WITHOUT TIME ZONE. Date of observation
+    sql: '"OBSERVATION_DATE"'
+  origin:
+    description: 'TEXT. Physical origin of the feature Possible values: Photospheric, Chromospheric, Circumstellar, Interstellar, Telluric.'
+    sql: '"ORIGIN"'
+  variability_amplitude_pct:
+    description: 'REAL. Variability amplitude as percentage Typical range: 0.1 to 100. **NULL means Feature not variable.**'
+    sql: '"VARIABILITY_AMPLITUDE_PCT"'
+  velocity_resolved:
+    description: BOOLEAN. Whether velocity structure is resolved Boolean flag (true/false).
+    sql: '"VELOCITY_RESOLVED"'
+  width_nm:
+    description: 'REAL. Feature width in nm Typical range: 0.001 to 50.'
+    sql: '"WIDTH_nm"'
+  asymmetry_index:
+    description: 'REAL. Line asymmetry index Typical range: -1 to 1.'
+    sql: asymmetry_index
+  center_wavelength_nm:
+    description: 'REAL. Center wavelength in nm Typical range: 100 to 5000.'
+    sql: center_wavelength_nm
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  identification_confidence:
+    description: 'TEXT. Identification confidence level Possible values: Definite, Probable, Possible, Tentative.'
+    sql: identification_confidence
+  peak_flux_relative:
+    description: 'REAL. Peak flux relative to continuum Typical range: 0.01 to 5.'
+    sql: peak_flux_relative
+  spectral_line_ref:
+    description: BIGINT. Foreign key referencing SpectralLineMeasurement(SPECTRAL_LINE_ID). Related spectral line
+    sql: spectral_line_ref
+  variable:
+    description: BOOLEAN. Whether feature shows variability Boolean flag (true/false).
+    sql: variable
+  velocity_dispersion_km_per_s:
+    description: 'REAL. Velocity dispersion Typical range: 0.5 to 200. **NULL means Velocity structure not resolved.**'
+    sql: velocity_dispersion_km_per_s
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct EmissionAbsorptionFeature public identity values.
+    label: EmissionAbsorptionFeature Count
+    sql: ${planets_data_large_public__emission_absorption_feature.feature_id}

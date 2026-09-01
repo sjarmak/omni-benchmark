@@ -1,0 +1,81 @@
+label: worker_education
+description: All columns of the public table worker_education.
+catalog: labor_certification_applications_large
+schema: public
+table_name: worker_education
+dimensions:
+  edu_code:
+    description: 'TEXT. Unique identifier for an education record. PK. Example: EDU000001.'
+    sql: '"EDU_code"'
+  university_name:
+    description: 'TEXT. Awarding institution. Example: Peking University.'
+    sql: '"UniversityName"'
+  accred_body:
+    description: 'TEXT. Program accreditation body. Possible values: ABET, AACSB, Regional, International, National, Equivalency. **NULL means program is unaccredited or data unavailable.** Example: ABET.'
+    sql: '"accredBody"'
+  advisor_name:
+    description: 'TEXT. Primary faculty advisor. **NULL when not applicable.** Example: Prof. Gomez.'
+    sql: '"advisorNAME"'
+  course_count:
+    description: 'BIGINT. Number of courses completed. Example: 32.'
+    sql: '"courseCount"'
+  credit_scoring_hours:
+    description: 'REAL. Total credit hours earned. Example: 96.'
+    sql: '"credit_scoringHours"'
+  degree_type:
+    description: 'TEXT. Degree or credential earned. Possible values: High School, Associate, Bachelor, Master, PhD, Diploma, Certificate. Example: Master.'
+    sql: '"degreeTYPE"'
+  diploma_uploaded_flag:
+    description: 'TEXT. Diploma copy uploaded? Values: Yes, No. Example: Yes.'
+    sql: '"diplomaUploaded_flag"'
+  edu_span:
+    description: 'TEXT. Human-readable program span. Example: 05/2018 – 12/2020.'
+    sql: '"eduSpan"'
+  eval_agency:
+    description: 'TEXT. Evaluation agency. Possible values: WES, ECE, IERF, NA. Example: IERF.'
+    sql: '"evalAgency"'
+  eval_score:
+    description: 'REAL. Score or grade assigned by evaluator (0-100). Example: 74.5.'
+    sql: '"evalScore"'
+  field_major:
+    description: 'TEXT. Academic major or concentration. Example: Economics.'
+    sql: '"fieldMajor"'
+  gpa_scaled:
+    description: 'REAL. GPA on a 4-point scale. Example: 2.65.'
+    sql: '"gpaScaled"'
+  grad_day:
+    description: 'DATE. Program completion / award date. Example: 2020-12-31.'
+    sql: '"gradDay"'
+  honor_desc:
+    description: 'TEXT. Honors designation (Cum Laude, Magna Cum Laude, Summa Cum Laude, etc.). **NULL if none.** Example: Summa Cum Laude.'
+    sql: '"honorDESC"'
+  honors_flag:
+    description: 'TEXT. Graduated with honors? Values: Yes, No. Example: Yes.'
+    sql: '"honorsFLAG"'
+  online_flag:
+    description: 'TEXT. Delivery mode was 100 % online? Possible values: Yes, No. Example: No.'
+    sql: online_flag
+  reasoning_line:
+    description: 'TEXT. Compliance/verification note entered by analyst. Example: Degree verified via registrar portal.'
+    sql: '"reasoningLine"'
+  start_day:
+    description: 'DATE. Program start date (ISO-8601). Example: 2018-05-27.'
+    sql: '"startDay"'
+  thesis_title:
+    description: 'TEXT. Thesis / dissertation title (research degrees) or capstone topic. **NULL for non-thesis programs.** Example: Thesis on Economics Applications.'
+    sql: '"thesisTitle"'
+  transcript_eval_flag:
+    description: 'TEXT. Foreign-credential evaluation performed? Values: Yes, No. Example: Yes.'
+    sql: '"transcriptEval_flag"'
+  univ_city:
+    description: 'TEXT. City where the institution is located. Example: Tokyo.'
+    sql: '"univCity"'
+  univ_nation:
+    description: 'TEXT. Country code of the institution. Example: US.'
+    sql: '"univNation"'
+  used_for_lca_flag:
+    description: 'TEXT. Was this credential supplied for the LCA/prevailing-wage filing? Values: Yes, No. Example: No.'
+    sql: '"usedForLCA_flag"'
+  worker_ref:
+    description: 'TEXT. FK to worker_profile.worker_CODE. Example: W000001.'
+    sql: worker_ref

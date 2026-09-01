@@ -1,0 +1,15 @@
+base_view: disaster_relief_large_public__vehicle_maintenance_logs
+label: VehicleMaintenanceLogs
+description: All columns of the public table VehicleMaintenanceLogs.
+fields:
+- disaster_relief_large_public__vehicle_maintenance_logs.*
+- disaster_relief_large_public__disasterevents.*
+- disaster_relief_large_public__distributionhubs.*
+- disaster_relief_large_public__supplies.*
+- disaster_relief_large_public__transportation.*
+joins:
+  disaster_relief_large_public__transportation:
+    disaster_relief_large_public__disasterevents: {}
+    disaster_relief_large_public__distributionhubs: {}
+    disaster_relief_large_public__supplies: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

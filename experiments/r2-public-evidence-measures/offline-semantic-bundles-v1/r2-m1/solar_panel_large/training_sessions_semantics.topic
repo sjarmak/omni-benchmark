@@ -1,0 +1,9 @@
+base_view: solar_panel_large_public__training_sessions
+label: training_sessions
+description: All columns of the public table training_sessions.
+fields:
+- solar_panel_large_public__training_sessions.*
+- solar_panel_large_public__certifications.*
+joins:
+  solar_panel_large_public__certifications: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

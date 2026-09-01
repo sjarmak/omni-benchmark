@@ -1,0 +1,99 @@
+label: research_institutions
+description: All columns of the public table research_institutions.
+catalog: archeology_scan_large
+schema: public
+table_name: research_institutions
+dimensions:
+  accreditation_body:
+    description: 'TEXT. The body that accredits the institution。 Example: The Privy Council.'
+    sql: '"ACCREDITATION_BODY"'
+  annual_funding_contribution:
+    description: 'REAL. The annual financial contribution from this partner. **NULL means no financial contribution is made.**。 Possible values: $120,000.00, $25,000.00, $50,000.00, ¥80,000.00, €150,000.00, €30,000.00, €40,000.00.'
+    sql: '"ANNUAL_FUNDING_CONTRIBUTION"'
+  address:
+    description: 'TEXT. The full street address of the institution。 Example: The Old Schools, Trinity Lane.'
+    sql: '"Address"'
+  country:
+    description: 'TEXT. The country where the institution is located。 Example: GB.'
+    sql: '"COUNTRY"'
+  endowment_usd:
+    description: 'BIGINT. The total endowment of the institution in USD. **NULL means this data is not public or available.**。 Possible values: $37,800,000,000, $9,800,000,000, $950,000,000.'
+    sql: '"EndowmentUSD"'
+  grid_id:
+    description: 'TEXT. The Global Research Identifier Database (GRID) ID。 Example: grid.5335.0.'
+    sql: '"GRID_ID"'
+  institution_code:
+    description: 'BIGINT. Unique identifier for a research institution. PK。 Example: 201.'
+    sql: '"InstitutionCode"'
+  institution_type:
+    description: 'TEXT. The type of institution。 Possible values: Government Agency, Museum, Private Foundation, Research Institute, University, University Lab.'
+    sql: '"InstitutionType"'
+  ip_sharing_agreement_status:
+    description: 'TEXT. The status of an Intellectual Property sharing agreement. **NULL means no such agreement exists.**。 Possible values: Active, Negotiating.'
+    sql: '"IpSharingAgreementStatus"'
+  joint_publication_count:
+    description: 'BIGINT. The number of joint publications with this institution。 Example: 15.'
+    sql: '"JOINT_PUBLICATION_COUNT"'
+  logo_url:
+    description: 'TEXT. A URL to the institution''s logo。 Example: https://example.com/logo201.png.'
+    sql: '"LogoUrl"'
+  longitude:
+    description: 'REAL. The geographic longitude of the institution。 Example: 0.1192.'
+    sql: '"Longitude"'
+  mou_expiry_date:
+    description: 'DATE. The expiry date of the MOU. **NULL means no MOU is in place or it does not expire.**。 Example: May 11, 2025.'
+    sql: '"MOU_EXPIRY_DATE"'
+  mou_signing_date:
+    description: 'DATE. The date a Memorandum of Understanding (MOU) was signed. **NULL means no MOU is in place.**。 Example: May 12, 2020.'
+    sql: '"MouSigningDate"'
+  number_of_researchers:
+    description: 'BIGINT. The estimated number of researchers at the institution。 Example: ~6000 researchers.'
+    sql: '"NUMBER_OF_RESEARCHERS"'
+  postal_code:
+    description: 'TEXT. The postal code for the institution''s address。 Example: CB2 1TN.'
+    sql: '"POSTAL_CODE"'
+  primary_contact_email:
+    description: 'TEXT. The email address of the primary contact。 Example: research.office@cam.ac.uk.'
+    sql: '"PRIMARY_CONTACT_EMAIL"'
+  primary_contact_name:
+    description: 'TEXT. The name of the primary contact person at the institution。 Example: Dr. Alistair Finch.'
+    sql: '"PrimaryContactName"'
+  ror_id:
+    description: 'TEXT. The Research Organization Registry (ROR) identifier。 Example: 013neaj68.'
+    sql: '"RorId"'
+  student_exchange_program:
+    description: 'BOOLEAN. A flag indicating if a student exchange program is active。 Possible values: False, True.'
+    sql: '"StudentExchangeProgram"'
+  city:
+    description: 'TEXT. The city where the institution is located。 Example: Cambridge.'
+    sql: city
+  collaboration_level:
+    description: 'TEXT. The level of collaboration. **NULL means it has not been assessed.**。 Possible values: Collaborator, Data Partner, Funder, Lead Collaborator, Permitting Authority, Service Provider, Technology Partner.'
+    sql: collaboration_level
+  date_established:
+    description: 'DATE. The year or date the institution was established。 Example: 1209-01-01 00:00:00.'
+    sql: date_established
+  department_involved:
+    description: 'TEXT. The specific department involved in the partnership. **NULL means the partnership is at the institutional level.**。 Example: Department of archeology.'
+    sql: department_involved
+  equipment_loan_agreement:
+    description: 'TEXT. Details of any equipment loan agreements. **NULL means no such agreement exists.**。 Possible values: Active, Pending, Signed.'
+    sql: equipment_loan_agreement
+  institution_name:
+    description: 'TEXT. The official name of the research institution. UNIQUE。 Example: University of Cambridge.'
+    sql: institution_name
+  is_partner_institution:
+    description: 'BOOLEAN. A flag indicating if this is a formal partner institution。 Possible values: False, True.'
+    sql: is_partner_institution
+  latitude:
+    description: 'REAL. The geographic latitude of the institution。 Example: 52.2053.'
+    sql: latitude
+  research_ranking:
+    description: 'BIGINT. A global or national research ranking number. **NULL means this is not applicable or unknown.**。 Example: 3.0.'
+    sql: research_ranking
+  specialization_field:
+    description: 'TEXT. The primary field of specialization for the institution。 Example: archeology, Classics.'
+    sql: specialization_field
+  website:
+    description: 'TEXT. The official website of the institution。 Example: https://www.cam.ac.uk.'
+    sql: website

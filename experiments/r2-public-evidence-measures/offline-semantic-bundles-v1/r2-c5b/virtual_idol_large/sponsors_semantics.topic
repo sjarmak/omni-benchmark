@@ -1,0 +1,7 @@
+base_view: virtual_idol_large_public__sponsors
+label: sponsors
+description: All columns of the public table sponsors.
+fields:
+- virtual_idol_large_public__sponsors.*
+joins: {}
+ai_context: This topic models no cross-table joins.

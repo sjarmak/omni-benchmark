@@ -1,0 +1,12 @@
+label: vendor_payment_methods
+description: All columns of the public table vendor_payment_methods.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: vendor_payment_methods
+dimensions:
+  accepted_pmt_types:
+    description: 'TEXT. Payment type accepted by the vendor. PK (composite). Possible values: 1, 2, 3, 4, 5.'
+    sql: '"AcceptedPmtTypes"'
+  vendor_link:
+    description: 'TEXT. Identifier of the vendor. PK (composite). FK to vendors(SellerKey). Example: V63085.'
+    sql: '"VendorLink"'

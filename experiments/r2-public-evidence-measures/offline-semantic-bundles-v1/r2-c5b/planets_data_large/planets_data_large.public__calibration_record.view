@@ -1,0 +1,60 @@
+label: CalibrationRecord
+description: All columns of the public table CalibrationRecord.
+catalog: planets_data_large
+schema: public
+table_name: CalibrationRecord
+dimensions:
+  bad_pixels_count:
+    description: BIGINT. Number of bad pixels identified
+    sql: '"BAD_PIXELS_COUNT"'
+  calibration_type:
+    description: 'TEXT. Type of calibration Possible values: Bias, Dark, Flat, Arc, Standard Star, Telluric, Photometric Zero Point.'
+    sql: '"CALIBRATION_TYPE"'
+  cal_record_id:
+    description: BIGINT. Primary key. Unique calibration record identifier
+    sql: '"CAL_RECORD_ID"'
+  humidity_pct:
+    description: 'REAL. Ambient humidity percentage Typical range: 0 to 100. **NULL means Humidity not recorded.**'
+    sql: '"HUMIDITY_PCT"'
+  master_rms:
+    description: 'REAL. RMS of master calibration frame Typical range: 0.1 to 100.'
+    sql: '"MASTER_RMS"'
+  notes:
+    description: TEXT. Calibration notes **NULL means No notes.**
+    sql: '"NOTES"'
+  operator:
+    description: 'TEXT. Operator who took calibration Possible values: Night Astronomer, Day Astronomer, Telescope Operator, Automated. **NULL means Automated calibration.**'
+    sql: '"OPERATOR"'
+  pipeline_ref:
+    description: BIGINT. Foreign key referencing DataReductionPipeline(PIPELINE_ID). Related pipeline
+    sql: '"PIPELINE_REF"'
+  status:
+    description: 'TEXT. Calibration validity status Possible values: Valid, Expired, Superseded, Failed.'
+    sql: '"STATUS"'
+  validity_hours:
+    description: 'REAL. Duration of calibration validity in hours Typical range: 1 to 720.'
+    sql: '"VALIDITY_HOURS"'
+  automatic:
+    description: BOOLEAN. Whether calibration was taken automatically Boolean flag (true/false).
+    sql: automatic
+  calibration_timestamp:
+    description: TIMESTAMP WITHOUT TIME ZONE. When calibration was performed
+    sql: calibration_timestamp
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  file_url:
+    description: TEXT. URL to calibration file
+    sql: file_url
+  frames_combined:
+    description: BIGINT. Number of frames combined
+    sql: frames_combined
+  instrument_ref:
+    description: BIGINT. Foreign key referencing instruments_surveys(instrumentref). Related instrument
+    sql: instrument_ref
+  quality_score:
+    description: 'REAL. Quality score of calibration Typical range: 0 to 100.'
+    sql: quality_score
+  temperature_k:
+    description: 'REAL. Detector temperature during calibration Typical range: 6 to 300.'
+    sql: '"temperature_K"'

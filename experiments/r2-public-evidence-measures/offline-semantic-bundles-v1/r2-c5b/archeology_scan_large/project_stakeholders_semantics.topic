@@ -1,0 +1,13 @@
+base_view: archeology_scan_large_public__project_stakeholders
+label: project_stakeholders
+description: All columns of the public table project_stakeholders.
+fields:
+- archeology_scan_large_public__project_stakeholders.*
+- archeology_scan_large_public__personnel.*
+- archeology_scan_large_public__projects.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__personnel: {}
+  archeology_scan_large_public__projects: {}
+  archeology_scan_large_public__sites: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,11 @@
+base_view: cybermarket_pattern_large_public__vendor_markets
+label: vendor_markets
+description: All columns of the public table vendor_markets.
+fields:
+- cybermarket_pattern_large_public__vendor_markets.*
+- cybermarket_pattern_large_public__markets.*
+- cybermarket_pattern_large_public__vendors.*
+joins:
+  cybermarket_pattern_large_public__markets: {}
+  cybermarket_pattern_large_public__vendors: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

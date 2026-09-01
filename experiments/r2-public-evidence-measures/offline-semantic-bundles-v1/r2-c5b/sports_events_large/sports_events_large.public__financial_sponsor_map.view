@@ -1,0 +1,57 @@
+label: Financial_Sponsor_Map
+description: All columns of the public table Financial_Sponsor_Map.
+catalog: sports_events_large
+schema: public
+table_name: Financial_Sponsor_Map
+dimensions:
+  activation_rights:
+    description: 'TEXT. Sponsorship activation rights Possible values: Logo, Car Livery, Team Wear, Digital, Hospitality, Full Package.'
+    sql: '"ACTIVATION_RIGHTS"'
+  budget_ref:
+    description: BIGINT. Foreign key referencing TeamBudget(BUDGET_ID). Related budget
+    sql: '"BUDGET_REF"'
+  category_exclusion:
+    description: 'TEXT. Exclusive category if applicable Possible values: Energy Drink, IT Services, Crypto, Automotive, Telecoms. **NULL means No exclusivity.**'
+    sql: '"CATEGORY_EXCLUSION"'
+  contract_end:
+    description: DATE. Sponsorship contract end
+    sql: '"CONTRACT_END"'
+  fsm_id:
+    description: BIGINT. Primary key. Unique financial-sponsor mapping identifier
+    sql: '"FSM_ID"'
+  payment_status:
+    description: 'TEXT. Payment status Possible values: Paid, Invoiced, Scheduled, Overdue, Disputed.'
+    sql: '"PAYMENT_STATUS"'
+  performance_clause:
+    description: 'TEXT. Whether performance clauses exist Possible values: Yes, No, Partial.'
+    sql: '"PERFORMANCE_CLAUSE"'
+  sponsorship_tier:
+    description: 'TEXT. Sponsorship tier Possible values: Title, Major, Official, Technical, Regional.'
+    sql: '"SPONSORSHIP_TIER"'
+  updated_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Last update timestamp
+    sql: '"UPDATED_AT"'
+  annual_value_musd:
+    description: 'REAL. Annual sponsorship value Typical range: 0.1 to 100.'
+    sql: annual_value_musd
+  budget_contribution_pct:
+    description: 'REAL. Percentage contribution to total budget Typical range: 0 to 100.'
+    sql: budget_contribution_pct
+  contract_start:
+    description: DATE. Sponsorship contract start
+    sql: contract_start
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  exclusivity:
+    description: BOOLEAN. Whether sponsor has category exclusivity Boolean flag (true/false).
+    sql: exclusivity
+  make_good_liability_musd:
+    description: 'REAL. Potential make-good liability Typical range: 0 to 20. **NULL means No make-good clause.**'
+    sql: make_good_liability_musd
+  renewal_option:
+    description: BOOLEAN. Whether renewal option exists Boolean flag (true/false).
+    sql: renewal_option
+  sponsor_ref:
+    description: BIGINT. Foreign key referencing sponsor_entities(Sponsor_Record). Related sponsor
+    sql: sponsor_ref

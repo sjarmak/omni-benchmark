@@ -1,0 +1,87 @@
+label: observation_conditions
+description: All columns of the public table observation_conditions.
+catalog: planets_data_large
+schema: public
+table_name: observation_conditions
+dimensions:
+  airmass:
+    description: 'real. Atmospheric airmass during observation. Example: 1.05.'
+    sql: '"AIRMASS"'
+  altitude_meters:
+    description: 'real. Elevation above sea level of observing site in meters. Example: 1712.'
+    sql: '"Altitude_meters"'
+  data_quality_flags:
+    description: 'bigint. Numerical flags indicating data quality issues or characteristics. Possible values: 1, 2, 3, 4, 5.'
+    sql: '"DataQualityFlags"'
+  environmental_stability_index:
+    description: 'real. Index quantifying environmental stability during observation. **NULL means stability index was not calculated.**. Possible values: 0.45, 0.65, 0.82, 0.88, 0.91, 0.95.'
+    sql: '"ENVIRONMENTAL_STABILITY_INDEX"'
+  latitude_degrees:
+    description: 'real. Geographic latitude of observing site in degrees. Possible values: -24.6272, -29.2584, -30.1692, 19.8283, 31.9599, 32.7803, 33.3563, 34.2251.'
+    sql: '"LATITUDE_degrees"'
+  moon_distance_from_target_degrees:
+    description: 'real. Angular distance from Moon to target in degrees. **NULL means moon distance was not calculated.**. Possible values: 145.8, 156.2, 25.4, 89.2.'
+    sql: '"MoonDistanceFromTarget_degrees"'
+  observationlink:
+    description: 'bigint. Foreign key reference to the parent observation record. FK to planet_instrument_observations(OBS_REF). Possible values: 1, 2, 3, 4, 5, 6, 7, 8.'
+    sql: '"OBSERVATIONLINK"'
+  photometric_conditions_assessment:
+    description: 'text. Qualitative assessment of photometric conditions (excellent, good, poor, etc.). Possible values: Marginal, Non-photometric, Photometric.'
+    sql: '"PHOTOMETRIC_CONDITIONS_ASSESSMENT"'
+  site_name:
+    description: 'text. Name of the observing site or facility. Possible values: Apache Point Observatory, Cerro Tololo, Kitt Peak, La Silla Observatory, Mauna Kea, Mount Wilson, Palomar Observatory, Paranal Observatory.'
+    sql: '"SiteName"'
+  conditions_ref:
+    description: 'bigint. Primary key identifier for observation condition records. PK. Possible values: 22001, 22002, 22003, 22004, 22005, 22006, 22007, 22008.'
+    sql: '"conditionsRef"'
+  envmetrics:
+    description: JSONB column. Environmental and atmospheric conditions during astronomical observations, including weather, seeing, and sky quality metrics.
+    sql: envmetrics
+  longitude_degrees:
+    description: 'real. Geographic longitude of observing site in degrees. Possible values: -105.82, -111.5997, -116.865, -118.0586, -155.4783, -70.4042, -70.7345, -70.8046.'
+    sql: longitude_degrees
+  moon_phase:
+    description: 'real. Lunar illumination fraction during observation (0.0 to 1.0). Possible values: 0.05, 0.15, 0.18, 0.25, 0.28, 0.31, 0.85, 0.88.'
+    sql: moon_phase
+  notes:
+    description: 'text. Additional notes or comments about observing conditions. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: notes
+  observation_date:
+    description: 'timestamp. Precise timestamp when observations were conducted. Example: 2023-03-15.'
+    sql: observation_date
+  overall_observing_quality:
+    description: 'text. Overall assessment of observing conditions quality. Possible values: Excellent, Fair, Good, Poor, Very Good.'
+    sql: overall_observing_quality
+  envmetrics_cloud_coverage_percentage:
+    description: 'real. Cloud coverage during observation as percentage (0 to 100). **NULL means cloud coverage was not assessed.**. Possible values: 0.0, 10.0, 15.0, 25.0, 35.0, 5.0, 8.0.'
+    sql: JSONB_EXTRACT_PATH_TEXT(envmetrics, 'CLOUD_COVERAGE_percentage')
+  envmetrics_extinction_coefficient_mag_airmass:
+    description: 'real. Atmospheric extinction coefficient in magnitudes per airmass. **NULL means extinction coefficient was not determined.**. Possible values: 0.08, 0.12, 0.15, 0.18, 0.25.'
+    sql: JSONB_EXTRACT_PATH_TEXT(envmetrics, 'ExtinctionCoefficient_mag/airmass')
+  envmetrics_humidity_percentage:
+    description: 'real. Relative humidity during observation as percentage. Possible values: 15, 18, 28, 32, 38, 45, 48, 65.'
+    sql: JSONB_EXTRACT_PATH_TEXT(envmetrics, 'HUMIDITY_percentage')
+  envmetrics_sky_brightness_v_band_mag_arcsec:
+    description: 'real. Sky background brightness in V-band magnitudes per square arcsecond. Possible values: 20.1, 20.5, 20.8, 21.1, 21.3, 21.8, 21.9, 22.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(envmetrics, 'SKY_BRIGHTNESS_V_BAND_mag/arcsec²')
+  envmetrics_seeing_fwhm_arcseconds:
+    description: 'real. Atmospheric seeing FWHM in arcseconds. Possible values: 0.85, 0.92, 1.08, 1.15, 1.28, 1.35, 1.42, 1.85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(envmetrics, 'SeeingFwhm_arcseconds')
+  envmetrics_temperature_celsius:
+    description: 'real. Ambient temperature during observation in degrees Celsius. Example: 11.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(envmetrics, 'Temperature_Celsius')
+  envmetrics_atmospheric_pressure_mbar:
+    description: 'real. Atmospheric pressure during observation in millibars. Possible values: 1011.8, 1012.3, 1013.2, 615.2, 856.2, 895.4, 965.8, 985.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(envmetrics, 'atmospheric_pressure_mbar')
+  envmetrics_atmospheric_transmission:
+    description: 'real. Atmospheric transmission coefficient (0.0 to 1.0). **NULL means atmospheric transmission was not measured.**. Possible values: 0.78, 0.88, 0.89, 0.92, 0.95.'
+    sql: JSONB_EXTRACT_PATH_TEXT(envmetrics, 'atmospheric_transmission')
+  envmetrics_wind_speed_m_s:
+    description: 'real. Wind speed during observation in meters per second. **NULL means wind speed was not measured.**. Possible values: 2.1, 2.8, 3.2, 3.8, 4.8, 5.5, 6.2, 7.2, 7.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(envmetrics, 'wind_speed_m/s')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct observation_conditions public identity values.
+    label: observation_conditions Count
+    sql: ${planets_data_large_public__observation_conditions.conditions_ref}

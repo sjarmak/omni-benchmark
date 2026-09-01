@@ -1,0 +1,7 @@
+base_view: labor_certification_applications_large_public__recruitment_campaign
+label: recruitment_campaign
+description: All columns of the public table recruitment_campaign.
+fields:
+- labor_certification_applications_large_public__recruitment_campaign.*
+joins: {}
+ai_context: This topic models no cross-table joins.

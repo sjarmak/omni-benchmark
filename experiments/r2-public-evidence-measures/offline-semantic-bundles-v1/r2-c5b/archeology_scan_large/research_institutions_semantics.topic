@@ -1,0 +1,7 @@
+base_view: archeology_scan_large_public__research_institutions
+label: research_institutions
+description: All columns of the public table research_institutions.
+fields:
+- archeology_scan_large_public__research_institutions.*
+joins: {}
+ai_context: This topic models no cross-table joins.

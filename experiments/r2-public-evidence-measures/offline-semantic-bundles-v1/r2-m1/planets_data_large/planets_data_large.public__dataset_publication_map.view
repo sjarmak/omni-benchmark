@@ -1,0 +1,48 @@
+label: Dataset_Publication_Map
+description: All columns of the public table Dataset_Publication_Map.
+catalog: planets_data_large
+schema: public
+table_name: Dataset_Publication_Map
+dimensions:
+  access_date:
+    description: TEXT. Date dataset was accessed **NULL means Access date not recorded.**
+    sql: '"ACCESS_DATE"'
+  dataset_fraction_pct:
+    description: 'REAL. Fraction of total dataset used Typical range: 0 to 100.'
+    sql: '"DATASET_FRACTION_PCT"'
+  data_version:
+    description: 'TEXT. Version of dataset used Possible values: DR1, DR2, DR3, Latest, Custom.'
+    sql: '"DATA_VERSION"'
+  dpm_id:
+    description: BIGINT. Primary key. Unique dataset-publication mapping identifier
+    sql: '"DPM_ID"'
+  publication_ref:
+    description: BIGINT. Foreign key referencing ScientificPublication(PUBLICATION_ID). Related publication
+    sql: '"PUBLICATION_REF"'
+  query_shared:
+    description: BOOLEAN. Whether the data query/selection criteria were shared Boolean flag (true/false).
+    sql: '"QUERY_SHARED"'
+  usage_type:
+    description: 'TEXT. How the dataset was used in the publication Possible values: Primary Data Source, Comparison Sample, Calibration Reference, Validation Set, Method Training.'
+    sql: '"USAGE_TYPE"'
+  catalog_ref:
+    description: BIGINT. Foreign key referencing astronomical_catalogs(CATALOGREF). Related catalog/dataset
+    sql: catalog_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  data_access_acknowledged:
+    description: BOOLEAN. Whether proper data acknowledgment was made Boolean flag (true/false).
+    sql: data_access_acknowledged
+  records_used:
+    description: BIGINT. Number of records from dataset used
+    sql: records_used
+  supplementary_url:
+    description: TEXT. URL to supplementary data **NULL means No supplementary data.**
+    sql: supplementary_url
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Dataset_Publication_Map public identity values.
+    label: Dataset_Publication_Map Count
+    sql: ${planets_data_large_public__dataset_publication_map.dpm_id}

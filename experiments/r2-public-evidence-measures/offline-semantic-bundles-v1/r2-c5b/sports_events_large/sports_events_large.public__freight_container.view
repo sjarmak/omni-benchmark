@@ -1,0 +1,57 @@
+label: FreightContainer
+description: All columns of the public table FreightContainer.
+catalog: sports_events_large
+schema: public
+table_name: FreightContainer
+dimensions:
+  container_id:
+    description: BIGINT. Primary key. Unique freight container identifier
+    sql: '"CONTAINER_ID"'
+  container_type:
+    description: 'TEXT. Type of container Possible values: Standard 20ft, Standard 40ft, High Cube, Custom Crate, Pallet, Hardcase.'
+    sql: '"CONTAINER_TYPE"'
+  gps_tracked:
+    description: BOOLEAN. Whether container has GPS tracking Boolean flag (true/false).
+    sql: '"GPS_TRACKED"'
+  height_m:
+    description: 'REAL. Height in meters Typical range: 0.3 to 2.7.'
+    sql: '"HEIGHT_M"'
+  length_m:
+    description: 'REAL. Length in meters Typical range: 0.5 to 12.'
+    sql: '"LENGTH_M"'
+  priority:
+    description: 'TEXT. Shipping priority Possible values: Urgent, Standard, Low.'
+    sql: '"PRIORITY"'
+  seal_status:
+    description: 'TEXT. Container seal status Possible values: Sealed, Opened, Inspected, Resealed.'
+    sql: '"SEAL_STATUS"'
+  temp_setpoint_c:
+    description: 'REAL. Temperature setpoint if controlled Typical range: 5 to 25. **NULL means Not temperature controlled.**'
+    sql: '"TEMP_SETPOINT_C"'
+  container_code:
+    description: TEXT. Container identifier code
+    sql: container_code
+  contents_manifest:
+    description: TEXT. Summary of container contents
+    sql: contents_manifest
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  fragile:
+    description: BOOLEAN. Whether contents are fragile Boolean flag (true/false).
+    sql: fragile
+  insurance_value_usd:
+    description: 'REAL. Insured value of contents Typical range: 500 to 1000000.'
+    sql: insurance_value_usd
+  shipment_ref:
+    description: BIGINT. Foreign key referencing EquipmentShipment(SHIPMENT_ID). Related shipment
+    sql: shipment_ref
+  temperature_controlled:
+    description: BOOLEAN. Whether container is temperature controlled Boolean flag (true/false).
+    sql: temperature_controlled
+  weight_kg:
+    description: 'REAL. Container weight including contents Typical range: 20 to 20000.'
+    sql: weight_kg
+  width_m:
+    description: 'REAL. Width in meters Typical range: 0.3 to 2.5.'
+    sql: width_m

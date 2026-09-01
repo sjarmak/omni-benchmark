@@ -1,0 +1,72 @@
+label: TreatmentChemicalApplications
+description: All columns of the public table TreatmentChemicalApplications.
+catalog: archeology_scan_large
+schema: public
+table_name: TreatmentChemicalApplications
+dimensions:
+  treatment_chemical_applications_id:
+    description: TEXT. Unique identifier for each chemical application record.
+    sql: '"TreatmentChemicalApplications_id"'
+  application_method:
+    description: 'TEXT. Method used to apply the chemical. Unique values: Brush, Spray, Immersion, Injection, Poultice, Vapor.'
+    sql: application_method
+  application_timestamp:
+    description: 'TIMESTAMP. Date and time when chemical was applied. Example: 2024-01-01 12:00:00.'
+    sql: application_timestamp
+  chemical_category:
+    description: 'TEXT. Category classification of the applied chemical. Unique values: Consolidant, Cleaning Agent, Corrosion Inhibitor, Adhesive, Coating, Solvent, Biocide.'
+    sql: chemical_category
+  concentration_percent:
+    description: 'REAL. Concentration of active ingredient as percentage. Example: 50.0.'
+    sql: concentration_percent
+  cost_per_application_usd:
+    description: 'REAL. Cost of chemical used in this application in USD. Example: 35.0.'
+    sql: cost_per_application_usd
+  curing_time_hours:
+    description: 'REAL. Full curing time required in hours. **NULL means No curing required for this chemical.** Example: 50.0.'
+    sql: curing_time_hours
+  drying_time_hours:
+    description: 'REAL. Required drying time after application in hours. Example: 50.0.'
+    sql: drying_time_hours
+  effectiveness_rating:
+    description: 'REAL. Effectiveness rating from 1 to 10. **NULL means Effectiveness assessment pending.** Example: 7.5.'
+    sql: effectiveness_rating
+  humidity_during_application:
+    description: 'REAL. Relative humidity during application as percentage. Example: 50.0.'
+    sql: humidity_during_application
+  layers_applied:
+    description: 'INTEGER. Number of chemical layers applied. Example: 50.'
+    sql: layers_applied
+  penetration_depth_mm:
+    description: 'REAL. Estimated penetration depth in millimeters. **NULL means Surface application only.** Example: 3.0.'
+    sql: penetration_depth_mm
+  ppe_required:
+    description: 'BOOLEAN. Whether personal protective equipment was required. Possible values: True, False.'
+    sql: ppe_required
+  reversibility_rating:
+    description: 'TEXT. Rating of treatment reversibility. Unique values: Fully Reversible, Partially Reversible, Difficult to Reverse, Irreversible.'
+    sql: reversibility_rating
+  surface_area_treated_cm2:
+    description: 'REAL. Surface area treated in square centimeters. Example: 150.0.'
+    sql: surface_area_treated_cm2
+  temperature_during_application:
+    description: 'REAL. Ambient temperature during application in Celsius. Example: 22.0.'
+    sql: temperature_during_application
+  toxicity_level:
+    description: 'TEXT. Toxicity classification of the chemical. Unique values: Non-Toxic, Low, Moderate, High.'
+    sql: toxicity_level
+  treatment_ref:
+    description: TEXT. Reference to the parent conservation treatment record.
+    sql: treatment_ref
+  ventilation_required:
+    description: 'BOOLEAN. Whether enhanced ventilation was required. Possible values: True, False.'
+    sql: ventilation_required
+  volume_applied_ml:
+    description: 'REAL. Volume of chemical solution applied in milliliters. Example: 25.0.'
+    sql: volume_applied_ml
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct TreatmentChemicalApplications public identity values.
+    label: TreatmentChemicalApplications Count
+    sql: ${archeology_scan_large_public__treatment_chemical_applications.treatment_chemical_applications_id}

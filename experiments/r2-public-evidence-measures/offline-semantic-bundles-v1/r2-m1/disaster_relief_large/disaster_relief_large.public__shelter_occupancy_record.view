@@ -1,0 +1,72 @@
+label: ShelterOccupancyRecord
+description: All columns of the public table ShelterOccupancyRecord.
+catalog: disaster_relief_large
+schema: public
+table_name: ShelterOccupancyRecord
+dimensions:
+  bed_assigned:
+    description: 'VARCHAR(100). Specific bed or sleeping space identifier. Example: "How we spend our days is, of course, how we spend our lives. Such sessions are also                 ".'
+    sql: '"bedAssigned"'
+  beneficiary_id:
+    description: 'BIGINT. Foreign key reference to beneficiary household (BeneficiaryCore.id). Example: 6114.'
+    sql: '"beneficiaryId"'
+  check_in_date:
+    description: 'VARCHAR(100). Date and time household entered shelter facility. Example: "2026-01-05".'
+    sql: '"checkInDate"'
+  check_out_date:
+    description: 'VARCHAR(100). Date and time household departed shelter facility. Example: "2016-09-24".'
+    sql: '"checkOutDate"'
+  complaints_filed:
+    description: 'VARCHAR(100). Formal complaints submitted (None|Minor|Moderate|Major|Multiple). Possible values: "Major", "Minor", "Moderate", "Multiple", "None".'
+    sql: '"complaintsFiled"'
+  daily_attendance:
+    description: 'VARCHAR(100). Daily presence verification (Present|Absent|Partial|Unknown). Possible values: "Absent", "Partial", "Present", "Unknown".'
+    sql: '"dailyAttendance"'
+  dietary_requirements:
+    description: 'VARCHAR(100). Special food requirements or restrictions. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"dietaryRequirements"'
+  exit_interview_completed:
+    description: 'VARCHAR(100). Departure assessment status (Yes|No|Pending|N/A). Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"exitInterviewCompleted"'
+  family_members_count:
+    description: 'VARCHAR(100). Count of household members occupying assigned space. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"familyMembersCount"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for shelter occupancy records. Example: 1.'
+    sql: id
+  medical_conditions:
+    description: 'VARCHAR(100). Health conditions requiring monitoring or special care. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"medicalConditions"'
+  next_destination:
+    description: 'VARCHAR(100). Planned location after shelter departure. Example: "A comfort zone is a beautiful place, but nothing ever grows there. The On Startup                   ".'
+    sql: '"nextDestination"'
+  notes:
+    description: 'VARCHAR(100). Shelter manager observations or case notes. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: notes
+  orientation_completed:
+    description: 'VARCHAR(100). Shelter rules orientation status (Yes|No|Partial). Possible values: "No", "Partial", "Yes".'
+    sql: '"orientationCompleted"'
+  referrals_made:
+    description: 'VARCHAR(100). External service referrals provided to household. Example: "A comfort zone is a beautiful place, but nothing ever grows there. To start working                 ".'
+    sql: '"referralsMade"'
+  rules_acknowledged:
+    description: 'VARCHAR(100). Rules acknowledgment status (Yes|No|Pending). Possible values: "No", "Pending", "Yes".'
+    sql: '"rulesAcknowledged"'
+  security_clearance:
+    description: 'VARCHAR(100). Security screening status (Cleared|Pending|Restricted|Denied|Exempt). Possible values: "Cleared", "Denied", "Exempt", "Pending", "Restricted".'
+    sql: '"securityClearance"'
+  services_utilized:
+    description: 'VARCHAR(100). Support services accessed during stay. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"servicesUtilized"'
+  shelter_id:
+    description: 'BIGINT. Foreign key reference to shelter facility (ShelterCore.id). Example: 6114.'
+    sql: '"shelterId"'
+  special_needs:
+    description: 'VARCHAR(100). Accommodations required (e.g., wheelchair access, infant care). Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"specialNeeds"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct ShelterOccupancyRecord public identity values.
+    label: ShelterOccupancyRecord Count
+    sql: ${disaster_relief_large_public__shelter_occupancy_record.id}

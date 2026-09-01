@@ -1,0 +1,9 @@
+base_view: planets_data_large_public__observation_proposal
+label: ObservationProposal
+description: All columns of the public table ObservationProposal.
+fields:
+- planets_data_large_public__observation_proposal.*
+- planets_data_large_public__research_programs.*
+joins:
+  planets_data_large_public__research_programs: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

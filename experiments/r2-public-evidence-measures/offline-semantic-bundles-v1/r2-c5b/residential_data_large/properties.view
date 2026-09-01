@@ -1,0 +1,29 @@
+label: Properties
+description: Public residential property records with dwelling context.
+catalog: residential_data_large
+schema: public
+table_name: properties
+dimensions:
+  dwelling_type:
+    description: Dwelling type classification describing the structural and architectural category of the residential unit. Contains NULL when dwelling type is non-standard, mixed-use, or classification is pending assessment. Ex. Brickwork house, Apartment
+    label: Dwelling Type
+    sql: JSONB_EXTRACT_PATH_TEXT(dwelling_specs, 'Dwelling_Class')
+    ai_context: 'Dwelling Type: Values based on schema include ''Brickwork house'', ''Apartment'', ''Condominium'', etc.'
+  dwelling_specs:
+    description: JSONB column. Combines dwelling characteristics including structural type and room specifications for property classification and capacity assessment.
+    sql: dwelling_specs
+  houselink:
+    description: Foreign key referencing households.HouseNum with unique constraint, ensuring 1:1 relationship between properties and households. EX.3,4,7
+    sql: houselink
+  infralink:
+    description: Foreign key referencing infrastructure.InfraRef, indicating which infrastructure configuration applies to this property's location and services. EX.1,2
+    sql: infralink
+  propref:
+    description: A SERIAL primary key uniquely identifying each residential property record in the database. EX. 1,2,3
+    sql: propref
+  dwelling_specs_bath_count:
+    description: Total number of bathrooms in the residential property, including full bathrooms and half-bathrooms. Contains NULL when bathroom count is not available or property has shared/communal bathroom facilities that cannot be counted per household. Ex. 1, 2, 3
+    sql: JSONB_EXTRACT_PATH_TEXT(dwelling_specs, 'Bath_Count')
+  dwelling_specs_room_count:
+    description: Total number of bedrooms in the residential property, representing the sleeping accommodation capacity. Contains NULL when room count is not available or property has non-standard room configurations that cannot be classified as bedrooms. Ex. 1, 2, 3
+    sql: JSONB_EXTRACT_PATH_TEXT(dwelling_specs, 'Room_Count')

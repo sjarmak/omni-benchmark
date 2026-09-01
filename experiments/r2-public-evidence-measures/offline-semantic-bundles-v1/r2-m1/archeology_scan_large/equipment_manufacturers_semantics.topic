@@ -1,0 +1,7 @@
+base_view: archeology_scan_large_public__equipment_manufacturers
+label: equipment_manufacturers
+description: All columns of the public table equipment_manufacturers.
+fields:
+- archeology_scan_large_public__equipment_manufacturers.*
+joins: {}
+ai_context: This topic models no cross-table joins.

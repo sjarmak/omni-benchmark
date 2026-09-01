@@ -1,0 +1,7 @@
+base_view: museum_artifact_large_public__digital_assets
+label: DigitalAssets
+description: All columns of the public table DigitalAssets.
+fields:
+- museum_artifact_large_public__digital_assets.*
+joins: {}
+ai_context: This topic models no cross-table joins.

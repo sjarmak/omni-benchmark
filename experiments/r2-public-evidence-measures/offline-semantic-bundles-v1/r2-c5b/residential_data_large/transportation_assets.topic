@@ -1,0 +1,11 @@
+base_view: residential_data_large_public__transportation_assets
+label: Transportation Assets
+description: Public household transportation asset records with vehicle context.
+fields:
+- residential_data_large_public__transportation_assets.*
+- residential_data_large_public__households.*
+- residential_data_large_public__service_types.*
+joins:
+  residential_data_large_public__households:
+    residential_data_large_public__service_types: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

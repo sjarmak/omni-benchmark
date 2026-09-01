@@ -1,0 +1,9 @@
+base_view: labor_certification_applications_large_public__employer_compliance_score
+label: EmployerComplianceScore
+description: All columns of the public table EmployerComplianceScore.
+fields:
+- labor_certification_applications_large_public__employer_compliance_score.*
+- labor_certification_applications_large_public__employer_poc.*
+joins:
+  labor_certification_applications_large_public__employer_poc: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

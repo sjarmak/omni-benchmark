@@ -1,0 +1,120 @@
+label: account_audit_logs
+description: All columns of the public table account_audit_logs.
+catalog: fake_account_large
+schema: public
+table_name: account_audit_logs
+dimensions:
+  approve_ts:
+    description: 'TIMESTAMPTZ. Approval timestamp. Example: 2025-03-20T01:12:43.'
+    sql: '"APPROVE_TS"'
+  audit_rank:
+    description: 'REAL. Percentile rank of audit risk (0-100). Example: 25.45.'
+    sql: '"AUDIT_RANK"'
+  audit_type:
+    description: 'TEXT. Audit action category. Possible values: ProfileUpdate, PasswordReset, StatusChange, RiskReview, RoleChange.'
+    sql: '"AUDIT_TYPE"'
+  auto_flag:
+    description: 'TEXT. Yes/No — whether the event was auto-generated. Example: Yes.'
+    sql: '"AUTO_FLAG"'
+  audit_code:
+    description: 'TEXT. Unique audit-event ID. PK. Example: AUD88769382.'
+    sql: '"Audit_CODE"'
+  location:
+    description: 'TEXT. ISO country code of request origin. Example: JP.'
+    sql: '"LOCATION"'
+  new_snap:
+    description: 'JSONB. Metrics after change. Example: {risk:54.12,status:Disabled}.'
+    sql: '"NEW_SNAP"'
+  outcome:
+    description: 'TEXT. Overall result. Possible values: Success, Fail, Partial.'
+    sql: '"OUTCOME"'
+  reason_code:
+    description: 'TEXT. Reason for the audit. Possible values: UserRequest, RiskAlert, Compliance, SuspiciousActivity.'
+    sql: '"REASON_CODE"'
+  risk_before:
+    description: 'REAL. Risk score prior to the change. Example: 38.56.'
+    sql: '"RISK_BEFORE"'
+  status_before:
+    description: 'TEXT. Status before change. Possible values: Active, Disabled, Locked, Pending.'
+    sql: '"STATUS_BEFORE"'
+  acct_ref:
+    description: 'TEXT. FK to accounts.acct_ref. Example: ACC7210284.'
+    sql: acct_ref
+  actor_role:
+    description: 'TEXT. Role of the actor that triggered the audit. Possible values: System, Admin, SupportAgent, User.'
+    sql: '"actorRole"'
+  actor_ref:
+    description: 'TEXT. Actor identifier. Example: USR601593.'
+    sql: actor_ref
+  api_ver:
+    description: 'TEXT. API version invoked. Example: v3.2.'
+    sql: '"apiVER"'
+  approved_by:
+    description: 'TEXT. Approving admin ID. **NULL when auto-approval or no approval required.** Example (when present): ADM03578.'
+    sql: '"approvedBy"'
+  audit_bucket:
+    description: 'TEXT. Risk bucket. Possible values: Low, Medium, High, Critical.'
+    sql: '"auditBucket"'
+  audit_extra:
+    description: 'JSONB. Optional extended metadata. **NULL when no extra payload captured.** Example (when present): {extra:info}.'
+    sql: '"auditExtra"'
+  audit_ts:
+    description: 'TIMESTAMPTZ. Event timestamp. Example: 2025-03-19T22:43:51.'
+    sql: '"auditTs"'
+  audit_latency_min:
+    description: 'REAL. Minutes from trigger until audit processed (unit moved to header). Example: 29.'
+    sql: audit_latency_min
+  audit_score:
+    description: 'REAL. Composite risk/quality score (0-1). Example: 0.12.'
+    sql: audit_score
+  change_count:
+    description: 'BIGINT. Number of fields changed in this event. Example: 4.'
+    sql: '"changeCount"'
+  client_ip:
+    description: 'INET. Source IP. Example: 208.91.116.253.'
+    sql: '"clientIP"'
+  delta_hash:
+    description: 'TEXT. Hash of diff payload. Example: c4e2a3c6e9120d8a.'
+    sql: '"deltaHash"'
+  err_code:
+    description: 'TEXT. Error code if OUTCOME ≠ Success. **NULL means no error occurred.** Possible values: ERR_NONE, ERR_TIMEOUT, ERR_VALIDATION, ERR_DB, ERR_AUTH.'
+    sql: '"errCode"'
+  escalated:
+    description: 'TEXT. Yes/No — whether event was escalated. Example: No.'
+    sql: escalated
+  field_list:
+    description: 'JSONB. Array of changed field names. Example: [phone,risk,email,status].'
+    sql: field_list
+  latency_ms:
+    description: 'BIGINT. End-to-end latency in milliseconds. Example: 654.'
+    sql: '"latencyMs"'
+  note_text:
+    description: 'TEXT. Auditor comment. **NULL means no comment was provided (routine automated entry).** Example (when present): Manual review.'
+    sql: '"noteText"'
+  prev_snap:
+    description: 'JSONB. Key metrics before change. Example: {risk:38.56,status:Active}.'
+    sql: '"prevSnap"'
+  risk_after:
+    description: 'REAL. Risk score after the change. Example: 54.12.'
+    sql: '"riskAfter"'
+  rollback_flag:
+    description: 'TEXT. Yes/No — rollback executed. Example: No.'
+    sql: '"rollbackFlag"'
+  rollback_ts:
+    description: TIMESTAMPTZ. Rollback timestamp. **NULL means the change has not been rolled back.**
+    sql: rollback_ts
+  status_after:
+    description: 'TEXT. Status after change. Example: Disabled.'
+    sql: '"statusAfter"'
+  sys_ver:
+    description: 'TEXT. Client system version. Example: 6.8.'
+    sql: '"sysVer"'
+  user_agent:
+    description: 'TEXT. HTTP user-agent string. Example: Mozilla/5.0.'
+    sql: user_agent
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct account_audit_logs public identity values.
+    label: account_audit_logs Count
+    sql: ${fake_account_large_public__account_audit_logs.audit_code}

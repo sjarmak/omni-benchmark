@@ -1,0 +1,63 @@
+label: SafetyEquipmentInspection
+description: All columns of the public table SafetyEquipmentInspection.
+catalog: sports_events_large
+schema: public
+table_name: SafetyEquipmentInspection
+dimensions:
+  action_required:
+    description: 'TEXT. Required follow-up action Possible values: None, Replace, Repair, Re-inspect, Condemn.'
+    sql: '"ACTION_REQUIRED"'
+  certificate_url:
+    description: TEXT. URL to inspection certificate
+    sql: '"CERTIFICATE_URL"'
+  condition:
+    description: 'TEXT. Equipment condition assessment Possible values: New, Good, Acceptable, Worn, Damaged.'
+    sql: '"CONDITION"'
+  equipment_expiry:
+    description: DATE. Equipment expiry/replacement date
+    sql: '"EQUIPMENT_EXPIRY"'
+  inspection_id:
+    description: BIGINT. Primary key. Unique inspection identifier
+    sql: '"INSPECTION_ID"'
+  inspection_type:
+    description: 'TEXT. Type of inspection Possible values: Pre-Season, Pre-Race, Post-Incident, Random, Scheduled.'
+    sql: '"INSPECTION_TYPE"'
+  regulation_ref:
+    description: BIGINT. Foreign key referencing technical_regulations(Regulation_Key). Related regulation
+    sql: '"REGULATION_REF"'
+  result:
+    description: 'TEXT. Inspection result Possible values: Pass, Conditional Pass, Fail, Deferred.'
+    sql: '"RESULT"'
+  serial_number:
+    description: TEXT. Equipment serial number
+    sql: '"SERIAL_NUMBER"'
+  constructor_ref:
+    description: BIGINT. Foreign key referencing constructors(cstr_key). Related constructor
+    sql: constructor_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  defect_found:
+    description: TEXT. Description of defect if any **NULL means No defect found.**
+    sql: defect_found
+  equipment_type:
+    description: 'TEXT. Type of safety equipment Possible values: Helmet, HANS Device, Fireproof Suit, Gloves, Boots, Seat Belts, Halo, Crash Structure.'
+    sql: equipment_type
+  expiry_checked:
+    description: BOOLEAN. Whether expiry date was verified Boolean flag (true/false).
+    sql: expiry_checked
+  inspection_date:
+    description: DATE. Date of inspection
+    sql: inspection_date
+  inspector:
+    description: 'TEXT. Inspector name/badge Possible values: FIA Inspector A, FIA Inspector B, Team Safety Officer.'
+    sql: inspector
+  within_validity:
+    description: BOOLEAN. Whether equipment is within validity Boolean flag (true/false).
+    sql: within_validity
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct SafetyEquipmentInspection public identity values.
+    label: SafetyEquipmentInspection Count
+    sql: ${sports_events_large_public__safety_equipment_inspection.inspection_id}

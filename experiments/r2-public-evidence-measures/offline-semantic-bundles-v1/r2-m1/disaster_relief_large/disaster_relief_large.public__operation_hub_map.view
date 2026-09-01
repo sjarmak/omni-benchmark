@@ -1,0 +1,18 @@
+label: operation_hub_map
+description: All columns of the public table operation_hub_map.
+catalog: disaster_relief_large
+schema: public
+table_name: operation_hub_map
+dimensions:
+  allocated_cap_tons:
+    description: 'REAL. Allocated capacity in tons. Example: 202.6.'
+    sql: allocated_cap_tons
+  hub_role:
+    description: 'TEXT. Role or function of the hub in the operation. Possible values: Backup Hub, Forward Depot, Primary Hub.'
+    sql: hub_role
+  hubregistry:
+    description: VARCHAR(20). Distribution hub registry identifier. PK. FK to DistributionHubs.
+    sql: hubregistry
+  opsregistry:
+    description: VARCHAR(20). Operations registry identifier. PK. FK to Operations.
+    sql: opsregistry

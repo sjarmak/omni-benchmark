@@ -1,0 +1,36 @@
+label: power_consumption_log
+description: All columns of the public table power_consumption_log.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: power_consumption_log
+dimensions:
+  botdetreg:
+    description: 'TEXT. The registration code of the robot being monitored. FK. Example: RB8530.'
+    sql: botdetreg
+  electrical_metrics:
+    description: JSONB column. Groups the instantaneous electrical measurements taken at the log timestamp.
+    sql: electrical_metrics
+  energy_consumed_kwh:
+    description: 'REAL. The energy consumed in the preceding time interval, in kilowatt-hours. Example: 0.087.'
+    sql: energy_consumed_kwh
+  is_in_standby:
+    description: 'BOOLEAN. A flag indicating if the robot was in standby mode at the time of the reading. Possible values: False, True.'
+    sql: is_in_standby
+  log_timestamp:
+    description: 'TEXT. The timestamp of the power reading, in ISO 8601 format with timezone offset. Possible values: 2025-10-18T10:00:00-05:00, 2025-10-18T10:01:00-05:00, 2025-10-18T10:02:00-05:00.'
+    sql: log_timestamp
+  power_log_pk:
+    description: 'BIGINT. Unique identifier for the power log entry. PK. Example: 1.'
+    sql: power_log_pk
+  electrical_metrics_current_a:
+    description: 'REAL. The average current in amperes. Example: 7.8.'
+    sql: JSONB_EXTRACT_PATH_TEXT(electrical_metrics, 'current_a')
+  electrical_metrics_power_factor:
+    description: 'REAL. The power factor of the robot''s electricity consumption. **NULL indicates the value could not be accurately measured (e.g., during standby).**. Example: 0.85.'
+    sql: JSONB_EXTRACT_PATH_TEXT(electrical_metrics, 'power_factor')
+  electrical_metrics_power_kw:
+    description: 'REAL. The instantaneous power consumption in kilowatts. Example: 5.2.'
+    sql: JSONB_EXTRACT_PATH_TEXT(electrical_metrics, 'power_kw')
+  electrical_metrics_voltage_v:
+    description: 'REAL. The average voltage in volts. Example: 480.1.'
+    sql: JSONB_EXTRACT_PATH_TEXT(electrical_metrics, 'voltage_v')

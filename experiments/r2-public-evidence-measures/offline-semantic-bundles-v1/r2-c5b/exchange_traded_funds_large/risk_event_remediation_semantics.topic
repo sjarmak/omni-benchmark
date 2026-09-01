@@ -1,0 +1,11 @@
+base_view: exchange_traded_funds_large_public__risk_event_remediation
+label: RiskEventRemediation
+description: All columns of the public table RiskEventRemediation.
+fields:
+- exchange_traded_funds_large_public__risk_event_remediation.*
+- exchange_traded_funds_large_public__funds.*
+- exchange_traded_funds_large_public__operational_risk_events.*
+joins:
+  exchange_traded_funds_large_public__operational_risk_events:
+    exchange_traded_funds_large_public__funds: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

@@ -1,0 +1,19 @@
+base_view: archeology_scan_large_public__mesh
+label: Mesh Models
+description: Mesh records with row-level geometric complexity, texture density, and model fidelity semantics.
+fields:
+- archeology_scan_large_public__mesh.*
+- archeology_scan_large_public__equipment.*
+- archeology_scan_large_public__sites.*
+joins:
+  archeology_scan_large_public__equipment: {}
+  archeology_scan_large_public__sites: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Use the modeled business fields is_high_fidelity_mesh, mesh_complexity_ratio, model_fidelity_score, texture_density_index rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Resource-Intensive Model: A model with \text{Mesh Faces} > 2,000,000 and \text{MPR} < 15, where MPR is Mesh-to-Point Ratio, requiring specialized hardware for effective interaction and analytical software optimized for large-scale geometric processing with hierarchical level-of-detail implementation.
+
+  - Mesh Quality Classification: A three-tier classification where ''Has High-Fidelity Meshes'' indicates sites with at least one mesh meeting high-fidelity criteria, ''Standard Mesh Quality'' indicates sites with meshes that don''t meet high-fidelity standards, and ''No Mesh Data'' indicates sites lacking 3D mesh documentation entirely. This classification helps prioritize additional documentation efforts and determines appropriate analytical approaches for different sites.'

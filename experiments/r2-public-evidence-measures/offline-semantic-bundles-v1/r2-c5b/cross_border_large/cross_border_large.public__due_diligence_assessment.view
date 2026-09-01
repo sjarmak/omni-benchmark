@@ -1,0 +1,66 @@
+label: DueDiligenceAssessment
+description: All columns of the public table DueDiligenceAssessment.
+catalog: cross_border_large
+schema: public
+table_name: DueDiligenceAssessment
+dimensions:
+  assessment_type:
+    description: 'TEXT. Type of assessment Possible values: Initial, Annual Review, Triggered, Post-Incident, Renewal.'
+    sql: '"ASSESSMENT_TYPE"'
+  assessor:
+    description: 'TEXT. Person/team conducting the assessment Possible values: Vendor Risk Team, Privacy Office, IT Security, External Auditor.'
+    sql: '"ASSESSOR"'
+  dda_id:
+    description: BIGINT. Primary key. Unique due diligence assessment identifier
+    sql: '"DDA_ID"'
+  findings_critical:
+    description: BIGINT. Number of critical findings
+    sql: '"FINDINGS_CRITICAL"'
+  findings_medium:
+    description: BIGINT. Number of medium findings
+    sql: '"FINDINGS_MEDIUM"'
+  incident_response_score:
+    description: 'REAL. Incident response capability score (0-10) Typical range: 0 to 10.'
+    sql: '"INCIDENT_RESPONSE_SCORE"'
+  recommendation:
+    description: 'TEXT. Assessment recommendation Possible values: Approve, Approve with Conditions, Remediate, Reject.'
+    sql: '"RECOMMENDATION"'
+  report_url:
+    description: TEXT. URL to assessment report
+    sql: '"REPORT_URL"'
+  security_controls_score:
+    description: 'REAL. Security controls score (0-10) Typical range: 0 to 10.'
+    sql: '"SECURITY_CONTROLS_SCORE"'
+  status:
+    description: 'TEXT. Assessment status Possible values: Scheduled, In Progress, Completed, Overdue.'
+    sql: '"STATUS"'
+  subprocessor_ref:
+    description: BIGINT. Foreign key referencing SubprocessorRegistry(SUBPROCESSOR_ID). Related subprocessor
+    sql: '"SUBPROCESSOR_REF"'
+  assessment_code:
+    description: TEXT. Assessment reference code
+    sql: assessment_code
+  assessment_date:
+    description: DATE. Date assessment was conducted
+    sql: assessment_date
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  data_handling_score:
+    description: 'REAL. Data handling practices score (0-10) Typical range: 0 to 10.'
+    sql: data_handling_score
+  findings_high:
+    description: BIGINT. Number of high findings
+    sql: findings_high
+  findings_low:
+    description: BIGINT. Number of low findings
+    sql: findings_low
+  next_review_date:
+    description: DATE. Scheduled next review date
+    sql: next_review_date
+  overall_score:
+    description: 'REAL. Overall assessment score (0-10) Typical range: 0 to 10.'
+    sql: overall_score
+  privacy_practices_score:
+    description: 'REAL. Privacy practices score (0-10) Typical range: 0 to 10.'
+    sql: privacy_practices_score

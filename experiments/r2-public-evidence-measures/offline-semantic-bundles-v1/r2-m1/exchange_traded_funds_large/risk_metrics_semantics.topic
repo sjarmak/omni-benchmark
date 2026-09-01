@@ -1,0 +1,7 @@
+base_view: exchange_traded_funds_large_public__risk_metrics
+label: Fund Risk Metrics
+description: Fund risk records with row-level alpha, benchmark tracking, and appraisal semantics.
+fields:
+- exchange_traded_funds_large_public__risk_metrics.*
+joins: {}
+ai_context: "This topic models no cross-table joins.\nUse the modeled business fields appraisal_ratio, is_alpha_generator, is_market_tracking_fund, is_passive_alpha_generator rather than reconstructing their formulas.\nDomain definitions for this topic:\n- Risk-Return Efficiency Index: \text{RREI} = \frac{\text{Return on Cost}}{\text{3-Year Volatility}}\n- Cost-Adjusted Alpha: CAA = \text{3-Year Alpha} - \text{Relative Expense Ratio}\n- Fallen Angel: A fund is a Fallen Angel if it was previously considered a 'Consistent Outperformer' but its most recent 3-year alpha is now negative.\n- Defensive Anchor: A fund is a Defensive Anchor if its 3-year Beta is less than 0.75 and it has a high 'Capital Preservation Index' score."

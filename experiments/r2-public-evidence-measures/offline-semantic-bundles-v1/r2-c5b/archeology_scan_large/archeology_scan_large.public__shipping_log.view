@@ -1,0 +1,93 @@
+label: shipping_log
+description: All columns of the public table shipping_log.
+catalog: archeology_scan_large
+schema: public
+table_name: shipping_log
+dimensions:
+  carrier_name:
+    description: 'TEXT. The name of the shipping carrier. **NULL means a local or internal transport was used.**。 Example: DHL Global Forwarding.'
+    sql: '"CarrierName"'
+  content_type:
+    description: 'TEXT. The general type of content in the shipment。 Possible values: Artifact, Documents, Equipment, Sample.'
+    sql: '"ContentType"'
+  content_registry_list:
+    description: 'TEXT. A list of specific registry keys for the items in the shipment. **NULL means the contents were not itemized.**。 Example: SAMP-2001, SAMP-2002, SAMP-2003.'
+    sql: '"Content_Registry_List"'
+  currency_code:
+    description: 'TEXT. The currency of the shipping cost. **NULL means the cost was not recorded.**。 Possible values: CAD, CHF, EGP, EUR, GBP, MXN, USD.'
+    sql: '"CurrencyCode"'
+  customs_declaration_code:
+    description: 'TEXT. The code used for customs declaration. **NULL means it was a domestic shipment or no code was required.**。 Example: C2345 (Scientific Samples).'
+    sql: '"CustomsDeclarationCode"'
+  damage_report_url:
+    description: 'TEXT. A URL to a damage report if the shipment arrived damaged. **NULL means the shipment was not damaged.**。 Possible values: https://example.com/damage/55001, https://example.com/damage/55014, https://example.com/damage/55047.'
+    sql: '"DAMAGE_REPORT_URL"'
+  delivery_condition:
+    description: 'TEXT. The condition of the package upon delivery. **NULL means the shipment has not been delivered.**。 Possible values: Good, Lost, Minor Damage, Slight Damage.'
+    sql: '"DELIVERY_CONDITION"'
+  delivery_date:
+    description: 'DATE. The date the items were delivered. **NULL means the shipment is still in transit or was lost.**。 Example: 22-Jul-19.'
+    sql: '"DeliveryDate"'
+  is_international:
+    description: 'BOOLEAN. A flag indicating if this is an international shipment. **NULL means it is not specified.**。 Possible values: False, True.'
+    sql: '"IS_INTERNATIONAL"'
+  item_count:
+    description: 'BIGINT. The total number of items in the shipment。 Possible values: 1, 10, 100, 15, 150, 2, 20, 25, 3, 5.'
+    sql: '"ITEM_COUNT"'
+  invoice_url:
+    description: 'TEXT. A URL to the shipping invoice. **NULL means no invoice is available online.**。 Example: https://example.com/invoice/55001.'
+    sql: '"InvoiceUrl"'
+  is_hazardous:
+    description: 'BOOLEAN. A flag indicating if the shipment contains hazardous materials。 Possible values: False, True.'
+    sql: '"IsHazardous"'
+  origin_address:
+    description: 'TEXT. The address from which the items were shipped。 Example: Sanliurfa, Turkey.'
+    sql: '"ORIGIN_ADDRESS"'
+  package_type:
+    description: 'TEXT. The type of packaging used。 Example: Insulated Box.'
+    sql: '"PackageType"'
+  packed_by_crew_ref:
+    description: 'TEXT. Foreign key for the person who packed the shipment. FK。 Example: OP8108.'
+    sql: '"PackedByCrewRef"'
+  received_by_crew_ref:
+    description: 'TEXT. Foreign key for the person who received the shipment. FK. **NULL means the shipment has not been delivered or the receiver was not recorded.**。 Example: OP3541.'
+    sql: '"RECEIVED_BY_CREW_REF"'
+  return_shipment_tag:
+    description: 'BIGINT. The tag of the return shipment, if applicable. **NULL means this is not a return shipment.**。 Possible values: 55010.0, 55021.0, 55025.0, 55030.0, 55040.0.'
+    sql: '"ReturnShipmentTag"'
+  shipment_status:
+    description: 'TEXT. The current status of the shipment。 Possible values: Cancelled, Customs Hold, Delivered, In Transit, Lost in Transit, Pending Pickup.'
+    sql: '"SHIPMENT_STATUS"'
+  shipment_tag:
+    description: 'BIGINT. Unique identifier for a shipment. PK。 Example: 55001.'
+    sql: '"ShipmentTag"'
+  signed_by:
+    description: 'TEXT. The name of the person who signed for the delivery. **NULL means the shipment has not been delivered.**。 Example: Dr. Schmidt.'
+    sql: '"SignedBy"'
+  tracking_number:
+    description: 'TEXT. The tracking number provided by the carrier. UNIQUE. **NULL means no tracking number was provided.**。 Example: JD0146000018988102.'
+    sql: '"TRACKING_NUMBER"'
+  destination_address:
+    description: 'TEXT. The address to which the items are being shipped。 Example: Max Planck Institute, Jena, Germany.'
+    sql: destination_address
+  expedited_shipping:
+    description: 'BOOLEAN. A flag indicating if expedited shipping was used. **NULL means it is not specified.**。 Possible values: False, True.'
+    sql: expedited_shipping
+  insurance_value:
+    description: 'REAL. The insured value of the shipment''s contents。 Example: $5,000.00 .'
+    sql: insurance_value
+  related_project:
+    description: 'TEXT. Foreign key linking to the project related to this shipment. FK。 Example: PR2309.'
+    sql: related_project
+  shipment_date:
+    description: 'DATE. The date the items were shipped。 Example: 15-Jul-19.'
+    sql: shipment_date
+  shipping_cost:
+    description: 'REAL. The cost of the shipment. **NULL means the cost was not recorded or was free.**。 Example: � 1,250.00.'
+    sql: shipping_cost
+  temperature_controlled:
+    description: 'BOOLEAN. A flag indicating if the shipment requires temperature control. **NULL means it is not specified.**。 Possible values: False, True.'
+    sql: temperature_controlled
+  total_weight_kg:
+    description: 'REAL. The total weight of the shipment in kilograms。 Example: 5.5 kg.'
+    sql: total_weight_kg

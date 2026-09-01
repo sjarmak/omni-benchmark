@@ -1,0 +1,96 @@
+label: mechanical_status
+description: All columns of the public table mechanical_status.
+catalog: robot_fault_prediction_large
+schema: public
+table_name: mechanical_status
+dimensions:
+  component_status:
+    description: JSONB column. Bundles together the real-time status of brakes, encoders, and gearbox health for easier diagnostics and alerting.
+    sql: component_status
+  mechactref:
+    description: TEXT. Foreign key to the actuation_data table (ActReg). FK to actuation_data.
+    sql: mechactref
+  mechdetref:
+    description: TEXT. Foreign key to the robot_details table (BotDetReg). FK to robot_details.
+    sql: mechdetref
+  mechoperref:
+    description: TEXT. Foreign key to the operation table (OperReg). PK, FK to operation.
+    sql: mechoperref
+  component_status_brakes_j1:
+    description: 'TEXT. Brake 1 status. **NULL means no brake 1 status data available.**. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'brakes', 'J1')
+  component_status_brakes_j2:
+    description: 'TEXT. Brake 2 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'brakes', 'J2')
+  component_status_brakes_j3:
+    description: 'TEXT. Brake 3 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'brakes', 'J3')
+  component_status_brakes_j4:
+    description: 'TEXT. Brake 4 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'brakes', 'J4')
+  component_status_brakes_j5:
+    description: 'TEXT. Brake 5 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'brakes', 'J5')
+  component_status_brakes_j6:
+    description: 'TEXT. Brake 6 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'brakes', 'J6')
+  component_status_encoders_j1:
+    description: 'TEXT. Encoder 1 status. **NULL means no encoder 1 status data available.**. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'encoders', 'J1')
+  component_status_encoders_j2:
+    description: 'TEXT. Encoder 2 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'encoders', 'J2')
+  component_status_encoders_j3:
+    description: 'TEXT. Encoder 3 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'encoders', 'J3')
+  component_status_encoders_j4:
+    description: 'TEXT. Encoder 4 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'encoders', 'J4')
+  component_status_encoders_j5:
+    description: 'TEXT. Encoder 5 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'encoders', 'J5')
+  component_status_encoders_j6:
+    description: 'TEXT. Encoder 6 status. Possible values: Error, Normal, Warning.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'encoders', 'J6')
+  component_status_gearboxes_j1_temperature_c:
+    description: 'REAL. Gearbox 1 temperature in Celsius. Example: 24.92.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J1', 'temperature_C')
+  component_status_gearboxes_j1_vibration_mmps:
+    description: 'REAL. Gearbox 1 vibration in mm/s. Example: 3.273.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J1', 'vibration_mmps')
+  component_status_gearboxes_j2_temperature_c:
+    description: 'REAL. Gearbox 2 temperature in Celsius. Example: 79.14.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J2', 'temperature_C')
+  component_status_gearboxes_j2_vibration_mmps:
+    description: 'REAL. Gearbox 2 vibration in mm/s. Example: 1.912.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J2', 'vibration_mmps')
+  component_status_gearboxes_j3_temperature_c:
+    description: 'REAL. Gearbox 3 temperature in Celsius. Example: 56.76.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J3', 'temperature_C')
+  component_status_gearboxes_j3_vibration_mmps:
+    description: 'REAL. Gearbox 3 vibration in mm/s. Example: 1.361.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J3', 'vibration_mmps')
+  component_status_gearboxes_j4_temperature_c:
+    description: 'REAL. Gearbox 4 temperature in Celsius. Example: 35.39.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J4', 'temperature_C')
+  component_status_gearboxes_j4_vibration_mmps:
+    description: 'REAL. Gearbox 4 vibration in mm/s. Example: 5.302.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J4', 'vibration_mmps')
+  component_status_gearboxes_j5_temperature_c:
+    description: 'REAL. Gearbox 5 temperature in Celsius. Example: 60.72.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J5', 'temperature_C')
+  component_status_gearboxes_j5_vibration_mmps:
+    description: 'REAL. Gearbox 5 vibration in mm/s. Example: 7.001.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J5', 'vibration_mmps')
+  component_status_gearboxes_j6_temperature_c:
+    description: 'REAL. Gearbox 6 temperature in Celsius. Example: 48.18.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J6', 'temperature_C')
+  component_status_gearboxes_j6_vibration_mmps:
+    description: 'REAL. Gearbox 6 vibration in mm/s. Example: 5.74.'
+    sql: JSONB_EXTRACT_PATH_TEXT(component_status, 'gearboxes', 'J6', 'vibration_mmps')
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct mechanical_status public identity values.
+    label: mechanical_status Count
+    sql: ${robot_fault_prediction_large_public__mechanical_status.mechoperref}

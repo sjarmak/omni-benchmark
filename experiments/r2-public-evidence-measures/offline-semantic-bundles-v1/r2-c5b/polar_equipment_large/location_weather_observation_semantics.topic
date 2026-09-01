@@ -1,0 +1,11 @@
+base_view: polar_equipment_large_public__location_weather_observation
+label: LocationWeatherObservation
+description: All columns of the public table LocationWeatherObservation.
+fields:
+- polar_equipment_large_public__location_weather_observation.*
+- polar_equipment_large_public__location.*
+- polar_equipment_large_public__location_environmental_log.*
+joins:
+  polar_equipment_large_public__location_environmental_log:
+    polar_equipment_large_public__location: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

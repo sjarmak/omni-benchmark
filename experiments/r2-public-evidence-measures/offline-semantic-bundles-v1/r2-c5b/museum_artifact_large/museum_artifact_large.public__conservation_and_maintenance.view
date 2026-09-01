@@ -1,0 +1,69 @@
+label: Conservation and Maintenance
+description: Conservation-maintenance rows with scheduled-cleaning overdue-day semantics.
+catalog: museum_artifact_large
+schema: public
+table_name: ConservationAndMaintenance
+dimensions:
+  scheduled_next_cleaning_date:
+    description: 'DATE. Date when the next cleaning is due. Example: 2025/5/10.'
+    label: Scheduled Next Cleaning Date
+    sql: '"nextClean"'
+  budget_alloc:
+    description: 'TEXT. Budget allocated for conservation and maintenance. Possible values: Adequate, Insufficient, Review Required.'
+    sql: budget_alloc
+  budget_stat:
+    description: 'TEXT. Status of the maintenance budget. Possible values: Available, Depleted, Limited.'
+    sql: budget_stat
+  clean_days:
+    description: 'BIGINT. Number of days since the last cleaning. Example: 83.0.'
+    sql: '"cleanDays"'
+  conserve_freq:
+    description: 'TEXT. Frequency of conservation activities. Possible values: Frequent, Occasional, Rare.'
+    sql: '"conserveFreq"'
+  drill_stat:
+    description: 'TEXT. Status of any drills conducted for emergency preparedness. Possible values: Current, Due, Overdue.'
+    sql: drill_stat
+  history:
+    description: 'TEXT. Historical data related to conservation and maintenance. Possible values: Extensive, Minimal, Moderate.'
+    sql: history
+  incident_stat:
+    description: 'TEXT. Status of any incidents related to the artifact or worksite. Possible values: Closed, Open.'
+    sql: incident_stat
+  last_clean:
+    description: 'DATE. Date when the artifact or worksite was last cleaned. Example: 16-Dec-24.'
+    sql: '"lastClean"'
+  maint_log:
+    description: 'TEXT. Maintenance log details. Possible values: Pending, Review, Updated.'
+    sql: '"maintLog"'
+  maint_id:
+    description: BIGSERIAL. Unique identifier for each conservation and maintenance record. PK.
+    sql: maint_id
+  monitor_link:
+    description: TEXT. Reference to the environmental reading linked to maintenance. FK to EnvironmentalReadingsCore.monitor_code.
+    sql: monitor_link
+  prev_treat:
+    description: 'BIGINT. Reference to previous treatment or maintenance action. Example: 4.'
+    sql: '"prevTreat"'
+  prio_tag:
+    description: 'TEXT. Priority tag for the conservation or maintenance action. Possible values: High, Low, Medium, Urgent.'
+    sql: prio_tag
+  reverse_pot:
+    description: 'TEXT. Potential for reversing damage or deterioration. Possible values: High, Low, Medium.'
+    sql: '"reversePot"'
+  surf_link:
+    description: BIGINT. Reference to the surface and physical readings linked to maintenance. FK to SurfaceAndPhysicalReadings.surf_id.
+    sql: surf_link
+  train_stat:
+    description: 'TEXT. Training status for maintenance personnel. Possible values: Current, Due, Overdue.'
+    sql: train_stat
+  treat_effect:
+    description: 'TEXT. Effectiveness of the treatment applied. Possible values: High, Low, Medium.'
+    sql: '"treatEffect"'
+  treat_stat:
+    description: 'TEXT. Treatment status of the artifact or worksite. Possible values: In Progress, Not Required, Scheduled.'
+    sql: treat_stat
+  overdue_days:
+    label: Overdue Days
+    description: Calculates the number of days a scheduled maintenance task is past its due date.
+    sql: CURRENT_DATE - ${scheduled_next_cleaning_date}
+    ai_context: Use this modeled field for Overdue Days; do not reconstruct its formula.

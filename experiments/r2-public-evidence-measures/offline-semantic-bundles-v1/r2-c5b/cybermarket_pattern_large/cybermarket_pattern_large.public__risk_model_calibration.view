@@ -1,0 +1,66 @@
+label: RiskModelCalibration
+description: All columns of the public table RiskModelCalibration.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: RiskModelCalibration
+dimensions:
+  rmc_id:
+    description: 'TEXT. Unique identifier for the risk model calibration record. Example: RMC-1A2B3C.'
+    sql: '"RMC_id"'
+  auc_roc_score:
+    description: 'REAL. Area under ROC curve for the calibrated model. Example: 0.85.'
+    sql: auc_roc_score
+  calibration_approved:
+    description: 'BOOLEAN. Indicates if calibration passed quality thresholds. Possible values: True, False.'
+    sql: calibration_approved
+  calibration_runtime_seconds:
+    description: 'REAL. Time taken to complete calibration in seconds. Example: 180.0.'
+    sql: calibration_runtime_seconds
+  calibration_sample_size:
+    description: 'INTEGER. Number of samples used for calibration. Example: 50000.'
+    sql: calibration_sample_size
+  calibration_timestamp:
+    description: 'TIMESTAMP. Timestamp when the calibration was performed. Example: 2024-01-01 12:00:00.'
+    sql: calibration_timestamp
+  calibration_type:
+    description: 'TEXT. Type of calibration procedure applied. Unique values: Platt Scaling, Isotonic Regression, Temperature Scaling, Beta Calibration, Histogram Binning.'
+    sql: calibration_type
+  deployed_to_production:
+    description: 'BOOLEAN. Indicates if calibrated model was deployed to production. Possible values: True, False.'
+    sql: deployed_to_production
+  expected_calibration_error:
+    description: 'REAL. Expected calibration error metric. Example: 50.0.'
+    sql: expected_calibration_error
+  f1_score:
+    description: 'REAL. F1 score combining precision and recall. Example: 0.72.'
+    sql: f1_score
+  max_calibration_error:
+    description: 'REAL. Maximum calibration error across probability bins. Example: 50.0.'
+    sql: max_calibration_error
+  model_drift_detected:
+    description: 'BOOLEAN. Indicates if model drift was detected during calibration. Possible values: True, False.'
+    sql: model_drift_detected
+  post_calibration_brier_score:
+    description: 'REAL. Brier score after calibration (lower is better). Example: 50.0.'
+    sql: post_calibration_brier_score
+  pre_calibration_brier_score:
+    description: 'REAL. Brier score before calibration (lower is better). Example: 50.0.'
+    sql: pre_calibration_brier_score
+  precision_at_threshold:
+    description: 'REAL. Precision at the operational decision threshold. Example: 0.75.'
+    sql: precision_at_threshold
+  prediction_ref:
+    description: TEXT. Reference to the risk model prediction record.
+    sql: prediction_ref
+  probability_bins_count:
+    description: 'INTEGER. Number of probability bins used in calibration. Unique values: 5, 10, 15, 20, 25.'
+    sql: probability_bins_count
+  recalibration_recommended:
+    description: 'BOOLEAN. Indicates if immediate recalibration is recommended. Possible values: True, False.'
+    sql: recalibration_recommended
+  recall_at_threshold:
+    description: 'REAL. Recall at the operational decision threshold. Example: 0.7.'
+    sql: recall_at_threshold
+  validation_sample_size:
+    description: 'INTEGER. Number of samples used for validation. Example: 15000.'
+    sql: validation_sample_size

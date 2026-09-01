@@ -1,0 +1,66 @@
+label: ResearcherAccess
+description: All columns of the public table ResearcherAccess.
+catalog: museum_artifact_large
+schema: public
+table_name: ResearcherAccess
+dimensions:
+  access_date:
+    description: 'VARCHAR(100). Date of research access session. Example: "2002-09-30".'
+    sql: '"accessDate"'
+  access_purpose:
+    description: 'VARCHAR(100). Research objective (AcademicResearch, Publication, ExhibitionPrep, ConservationStudy, StudentProject). Possible values: "AcademicResearch", "ConservationStudy", "ExhibitionPrep", "Publication", "StudentProject".'
+    sql: '"accessPurpose"'
+  approval_status:
+    description: 'VARCHAR(100). Current approval state (Approved, Pending, Rejected, Revoked, Expired). Possible values: "Approved", "Expired", "Pending", "Rejected", "Revoked".'
+    sql: '"approvalStatus"'
+  artifact_reg_id:
+    description: 'VARCHAR(100). Identifier of accessed artifact (logical reference to ArtifactsCore.ARTregID). Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"artifactRegId"'
+  confidentiality_agreement:
+    description: 'VARCHAR(100). Status of signed confidentiality agreement (Signed, Waived, NotRequired, Expired, Pending). Possible values: "Confidential", "Embargoed", "Maybe", "No", "YesPlanned".'
+    sql: '"confidentialityAgreement"'
+  data_collected:
+    description: 'VARCHAR(100). Types of research data gathered during session. Example: "I will greet this day with love in my heart. If your Internet Service Provider (ISP)                ".'
+    sql: '"dataCollected"'
+  duration_minutes:
+    description: 'VARCHAR(100). Total duration of access session in minutes. Possible values: "MicroSample", "NonInvasiveOnly", "None", "NonePermitted", "SurfaceSwab".'
+    sql: '"durationMinutes"'
+  emergency_procedures:
+    description: 'VARCHAR(100). Emergency protocols briefed to researcher. Possible values: "FullAccess", "LabAccess", "PublicArea", "RestrictedZone", "StorageOnly".'
+    sql: '"emergencyProcedures"'
+  equipment_calibration:
+    description: 'VARCHAR(100). Calibration status of research equipment used (Certified, Recent, Outdated, Unknown, NotApplicable). Possible values: "Certified", "NotApplicable", "Outdated", "Recent", "Unknown".'
+    sql: '"equipmentCalibration"'
+  facility_access_level:
+    description: 'VARCHAR(100). Areas of facility accessible to researcher (PublicArea, StorageOnly, LabAccess, RestrictedZone, FullAccess). Possible values: "Expired", "NotRequired", "Pending", "Signed", "Waived".'
+    sql: '"facilityAccessLevel"'
+  handling_permission:
+    description: 'VARCHAR(100). Level of physical interaction permitted (FullHandling, SupervisedHandling, VisualOnly, NoContact, PhotographyOnly). Possible values: "FullHandling", "NoContact", "PhotographyOnly", "SupervisedHandling", "VisualOnly".'
+    sql: '"handlingPermission"'
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for researcher access records. Example: 1.'
+    sql: id
+  incident_reported:
+    description: 'VARCHAR(100). Safety or security incidents during session (None, Minor, Moderate, Major, Critical). Possible values: "Critical", "Major", "Minor", "Moderate", "None".'
+    sql: '"incidentReported"'
+  publication_intent:
+    description: 'VARCHAR(100). Planned dissemination of research findings (YesPlanned, Maybe, No, Confidential, Embargoed). Example: "IyueNeTBC1".'
+    sql: '"publicationIntent"'
+  researcher_index:
+    description: 'VARCHAR(100). Identifier of researcher (logical reference to Researchers.Researcher_Index). Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"researcherIndex"'
+  samples_taken:
+    description: 'VARCHAR(100). Type of samples collected (None, SurfaceSwab, MicroSample, NonInvasiveOnly, NonePermitted). Possible values: "MicroSample", "NonInvasiveOnly", "None", "NonePermitted", "SurfaceSwab".'
+    sql: '"samplesTaken"'
+  staff_code:
+    description: 'BIGINT. Supervising staff member identifier (foreign key to Staff.Staff_Code). Example: 55.'
+    sql: '"staffCode"'
+  supervision_required:
+    description: 'VARCHAR(100). Required supervision level (None, StaffPresent, ConservatorPresent, SecurityPresent, Multiple). Possible values: "ConservatorPresent", "Multiple", "None", "SecurityPresent", "StaffPresent".'
+    sql: '"supervisionRequired"'
+  tools_used:
+    description: 'VARCHAR(100). Research tools and equipment utilized during session. Example: "Anyone who has never made a mistake has never tried anything new. Navicat Cloud could               ".'
+    sql: '"toolsUsed"'
+  waste_disposal:
+    description: 'VARCHAR(100). Protocol for research waste handling (NoneGenerated, Standard, Hazardous, Biohazard, SpecialHandling). Possible values: "Biohazard", "Hazardous", "NoneGenerated", "SpecialHandling", "Standard".'
+    sql: '"wasteDisposal"'

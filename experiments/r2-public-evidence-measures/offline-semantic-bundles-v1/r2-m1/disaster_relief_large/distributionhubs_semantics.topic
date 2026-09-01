@@ -1,0 +1,13 @@
+base_view: disaster_relief_large_public__distributionhubs
+label: Distribution Hubs
+description: Distribution-hub records with row-level utilization, turnover, and overload semantics.
+fields:
+- disaster_relief_large_public__distributionhubs.*
+joins: {}
+ai_context: 'This topic models no cross-table joins.
+
+  Use the modeled business fields is_hub_overloaded rather than reconstructing their formulas.
+
+  Domain definitions for this topic:
+
+  - Hub Strain Index (HSI): A score blending internal stress and external demand. Formula: (0.5 * ((hubUtilPct / 100) + (stockTurnRate / 10))) + (0.5 * avg_dsi_served).'

@@ -1,0 +1,108 @@
+label: product_attribute_metrics
+description: All columns of the public table product_attribute_metrics.
+catalog: cybermarket_pattern_large
+schema: public
+table_name: product_attribute_metrics
+dimensions:
+  complaint_count:
+    description: 'BIGINT. Number of support or QA complaints linked to this product. Example: 12.'
+    sql: '"ComplaintCOUNT"'
+  descriptionlen:
+    description: 'BIGINT. Character count of the full listing description. Example: 1,248.'
+    sql: '"DESCRIPTIONLEN"'
+  discount_pct:
+    description: 'REAL. Current discount relative to regular price (%). **NULL means the product was not on sale or discount data was unavailable.** Example: 15.25.'
+    sql: '"DISCOUNT_pct"'
+  negativereview_pct:
+    description: 'REAL. Share of reviews with 1★ or 2★ ratings. Example: 6.3.'
+    sql: '"NEGATIVEreviewPCT"'
+  qualityscore:
+    description: 'REAL. Composite listing-quality score (0-100). Example: 93.2.'
+    sql: '"QUALITYscore"'
+  restock_freq:
+    description: 'REAL. Average restock frequency per year. Example: 4.1.'
+    sql: '"RestockFreq"'
+  seller_pointer:
+    description: 'TEXT. Foreign-key identifier for the seller record in products. Example: V63085.'
+    sql: '"SellerPointer"'
+  subcategory:
+    description: 'TEXT. Second-level classification inside the product category. Example: Type_B.'
+    sql: '"Subcategory"'
+  attr_metrictoken:
+    description: 'TEXT. Primary-key reference that uniquely identifies one metric snapshot for a product listing. Example: ATTR-9e1a4c351d.'
+    sql: '"attrMETRICtoken"'
+  avg_image_res:
+    description: 'REAL. Average image resolution in megapixels. Example: 3.94.'
+    sql: '"avgImageRes"'
+  bundle_sale_pct:
+    description: 'REAL. Percent of sales that were part of a bundle. Example: 27.4.'
+    sql: '"bundleSalePct"'
+  cross_border_sell_rate:
+    description: 'REAL. Percent of orders where this item was cross-sold with a complementary product. **NULL means cross-sell events not observed or data unavailable.** Example: 11.9.'
+    sql: '"cross_borderSellRate"'
+  funnelishusermetrics_blob:
+    description: JSONB column. User view/cart/purchase funnel statistics + session bounce things
+    sql: funnelishusermetrics_blob
+  image_count:
+    description: 'BIGINT. Number of images attached to the listing. Example: 4.'
+    sql: '"imageCount"'
+  keyword_density:
+    description: 'REAL. Percent of description words that match high-value keywords. Example: 2.54.'
+    sql: keyword_density
+  last_updated:
+    description: 'TEXT. Snapshot timestamp in the format “yyyy Mon.ddth”. Example: 2024 Apr.22nd.'
+    sql: last_updated
+  listingage:
+    description: 'BIGINT. Age of the listing in days at snapshot time. Example: 155.'
+    sql: listingage
+  positive_review_pct:
+    description: 'REAL. Share of reviews with 4★ or 5★ ratings. Example: 89.6.'
+    sql: positive_review_pct
+  price_elasticity:
+    description: 'REAL. Estimated demand elasticity (negative => price-sensitive). Example: -1.73.'
+    sql: '"priceElasticity"'
+  price_window_usd_per_item:
+    description: 'TEXT. Range of observed selling prices per item, expressed in USD. Example: 44–72.'
+    sql: '"priceWindow_USD_per_item"'
+  prodcat:
+    description: 'TEXT. High-level product category pulled from the products table. Example: Digital.'
+    sql: prodcat
+  return_rate:
+    description: 'REAL. Percentage of completed sales that were returned. **NULL means no return data has been captured yet.** Example: 2.87.'
+    sql: return_rate
+  seasonality_index:
+    description: 'REAL. Seasonal demand index (0-1, higher means strong seasonality). **NULL means insufficient history to compute.** Example: 0.78.'
+    sql: seasonality_index
+  stock_velocity_units_per_day:
+    description: 'TEXT. Typical daily sell-through velocity in units. Example: 186'
+    sql: '"stockVelocity_units_per_day"'
+  stock_turnover_rate:
+    description: 'REAL. Annualised stock turns (times inventory is sold and replaced). Example: 9.8.'
+    sql: stock_turnover_rate
+  title_length:
+    description: 'BIGINT. Character count of the listing title. Example: 97.'
+    sql: title_length
+  unique_visitor_cnt:
+    description: 'BIGINT. Unique visitors who viewed the listing in the analysis window. Example: 44,312.'
+    sql: unique_visitor_cnt
+  upsell_rate:
+    description: 'REAL. Percent of checkouts where this product was upsold from a cheaper item. **NULL means upsell tracking was not enabled for the product.** Example: 8.1.'
+    sql: upsell_rate
+  video_count:
+    description: 'BIGINT. Number of product videos. Example: 1.'
+    sql: video_count
+  funnelishusermetrics_blob_add2_cart_pct:
+    description: 'REAL. Percentage of sessions where the item was added to cart. Example: 18.7.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnelishusermetrics_blob, 'add2Cart_pct')
+  funnelishusermetrics_blob_avg_view_sec:
+    description: 'REAL. Average seconds visitors spent on the listing page. Example: 5.9.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnelishusermetrics_blob, 'avgViewSec')
+  funnelishusermetrics_blob_bounce_pct:
+    description: 'REAL. Percent of single-page visits that exited without interaction. Example: 38.4.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnelishusermetrics_blob, 'bouncePct')
+  funnelishusermetrics_blob_cart_drop_pct:
+    description: 'REAL. Percentage of initiated carts for this item that were abandoned. Example: 81.6.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnelishusermetrics_blob, 'cartDropPCT')
+  funnelishusermetrics_blob_conv_rate_pct:
+    description: 'REAL. Percentage of visitors who purchased the product. Example: 3.84.'
+    sql: JSONB_EXTRACT_PATH_TEXT(funnelishusermetrics_blob, 'convRatePct')

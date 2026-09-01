@@ -1,0 +1,51 @@
+label: Logistics_Circuit_Map
+description: All columns of the public table Logistics_Circuit_Map.
+catalog: sports_events_large
+schema: public
+table_name: Logistics_Circuit_Map
+dimensions:
+  arrival_timestamp:
+    description: TIMESTAMP WITHOUT TIME ZONE. Actual arrival timestamp **NULL means Not yet arrived.**
+    sql: '"ARRIVAL_TIMESTAMP"'
+  inspection_passed:
+    description: BOOLEAN. Whether arrival inspection passed Boolean flag (true/false).
+    sql: '"INSPECTION_PASSED"'
+  lcm_id:
+    description: BIGINT. Primary key. Unique logistics-circuit mapping identifier
+    sql: '"LCM_ID"'
+  logistics_zone:
+    description: 'TEXT. Destination logistics zone at circuit Possible values: Paddock, Pit Lane, Garage, Hospitality, Broadcast Compound, Public Area.'
+    sql: '"LOGISTICS_ZONE"'
+  on_site:
+    description: BOOLEAN. Whether equipment has arrived on site Boolean flag (true/false).
+    sql: '"ON_SITE"'
+  shipment_ref:
+    description: BIGINT. Foreign key referencing EquipmentShipment(SHIPMENT_ID). Related shipment
+    sql: '"SHIPMENT_REF"'
+  unloading_equipment:
+    description: 'TEXT. Equipment needed for unloading Possible values: Forklift, Crane, Manual, Conveyor.'
+    sql: '"UNLOADING_EQUIPMENT"'
+  circuit_ref:
+    description: BIGINT. Foreign key referencing circuits(cctkey). Related circuit
+    sql: circuit_ref
+  created_at:
+    description: TIMESTAMP WITHOUT TIME ZONE. Record creation timestamp
+    sql: created_at
+  inspection_notes:
+    description: TEXT. Notes from arrival inspection **NULL means No issues noted.**
+    sql: inspection_notes
+  receiving_contact:
+    description: 'TEXT. Person receiving the shipment Possible values: Logistics Manager, Garage Coordinator, Hospitality Lead.'
+    sql: receiving_contact
+  required_by_date:
+    description: DATE. Date equipment must be at circuit
+    sql: required_by_date
+  unloading_time_min:
+    description: BIGINT. Time to unload in minutes
+    sql: unloading_time_min
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct Logistics_Circuit_Map public identity values.
+    label: Logistics_Circuit_Map Count
+    sql: ${sports_events_large_public__logistics_circuit_map.lcm_id}

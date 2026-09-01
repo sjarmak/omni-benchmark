@@ -1,0 +1,72 @@
+label: InsurancePolicyDetail
+description: All columns of the public table InsurancePolicyDetail.
+catalog: museum_artifact_large
+schema: public
+table_name: InsurancePolicyDetail
+dimensions:
+  appraisal_date:
+    description: VARCHAR(100). Date of most recent professional appraisal.
+    sql: '"appraisalDate"'
+  appraisal_value:
+    description: VARCHAR(100). Professional appraisal value in USD.
+    sql: '"appraisalValue"'
+  artifact_reg_id:
+    description: VARCHAR(100). Identifier of insured artifact (logical reference to ArtifactsCore.ARTregID).
+    sql: '"artifactRegId"'
+  broker_contact:
+    description: VARCHAR(100). Insurance broker contact information.
+    sql: '"brokerContact"'
+  claims_history:
+    description: VARCHAR(100). Record of prior insurance claims filed.
+    sql: '"claimsHistory"'
+  coverage_amount:
+    description: VARCHAR(100). Total insured value in USD.
+    sql: '"coverageAmount"'
+  coverage_scope:
+    description: VARCHAR(100). Types of perils covered (AllRisks, NamedPerils, TransitOnly, ExhibitionOnly, StorageOnly).
+    sql: '"coverageScope"'
+  deductible_amount:
+    description: VARCHAR(100). Policy deductible amount in USD.
+    sql: '"deductibleAmount"'
+  exclusions:
+    description: VARCHAR(100). Specific risks or conditions not covered by policy.
+    sql: exclusions
+  id:
+    description: BIGSERIAL. Auto-increment primary key for insurance policy records.
+    sql: id
+  insurer_name:
+    description: VARCHAR(100). Name of underwriting insurance company.
+    sql: '"insurerName"'
+  policy_contract_num:
+    description: VARCHAR(100). Unique insurance contract identifier.
+    sql: '"policyContractNum"'
+  policy_document:
+    description: VARCHAR(100). Reference to complete policy documentation file.
+    sql: '"policyDocument"'
+  policy_end_date:
+    description: VARCHAR(100). Expiration date of insurance coverage.
+    sql: '"policyEndDate"'
+  policy_start_date:
+    description: VARCHAR(100). Effective date of insurance coverage.
+    sql: '"policyStartDate"'
+  premium_amount:
+    description: VARCHAR(100). Annual premium payment amount in USD.
+    sql: '"premiumAmount"'
+  renewal_reminder:
+    description: VARCHAR(100). Date for policy renewal notification.
+    sql: '"renewalReminder"'
+  risk_assessment_ref:
+    description: VARCHAR(100). Reference to supporting risk assessment documentation.
+    sql: '"riskAssessmentRef"'
+  special_conditions:
+    description: VARCHAR(100). Unique policy stipulations or requirements.
+    sql: '"specialConditions"'
+  staff_code:
+    description: BIGINT. Insurance coordinator identifier (foreign key to Staff.Staff_Code).
+    sql: '"staffCode"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct InsurancePolicyDetail public identity values.
+    label: InsurancePolicyDetail Count
+    sql: ${museum_artifact_large_public__insurance_policy_detail.id}

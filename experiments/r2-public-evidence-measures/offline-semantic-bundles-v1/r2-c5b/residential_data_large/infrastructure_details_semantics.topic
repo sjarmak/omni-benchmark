@@ -1,0 +1,9 @@
+base_view: residential_data_large_public__infrastructure_details
+label: infrastructure_details
+description: All columns of the public table infrastructure_details.
+fields:
+- residential_data_large_public__infrastructure_details.*
+- residential_data_large_public__infrastructure.*
+joins:
+  residential_data_large_public__infrastructure: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

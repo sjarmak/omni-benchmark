@@ -1,0 +1,75 @@
+label: planet_research_programs
+description: All columns of the public table planet_research_programs.
+catalog: planets_data_large
+schema: public
+table_name: planet_research_programs
+dimensions:
+  active_status:
+    description: 'boolean. Flag indicating if research on this planet is currently active. Possible values: False, True.'
+    sql: '"ActiveStatus"'
+  challenges_encountered:
+    description: 'text. Challenges encountered during research on this planet. **NULL means no challenges were documented.**. Possible values: No signals detected to date, Stellar activity contamination, Weather and seeing limitations.'
+    sql: '"CHALLENGES_ENCOUNTERED"'
+  collaboration_effectiveness_rating:
+    description: 'real. Rating of collaboration effectiveness for this planet''s research (0.0 to 10.0). **NULL means collaboration effectiveness was not rated.**. Possible values: 0.88, 0.92.'
+    sql: '"CollaborationEffectivenessRating"'
+  data_sharing_level:
+    description: 'text. Level of data sharing for this planet''s research (public, restricted, proprietary). Possible values: Collaborative sharing, Open, Open after 6 months, Proprietary 12 months.'
+    sql: '"DATA_SHARING_LEVEL"'
+  enrollment_date:
+    description: 'date. Date when the planet was enrolled in the program. Possible values: 2016-09-05, 2018-07-20, 2022-03-15, 2023-02-10, 2030-06-01.'
+    sql: '"ENROLLMENT_DATE"'
+  future_research_directions:
+    description: 'text. Recommended future research directions for this planet. **NULL means future directions were not specified.**. Possible values: Atmospheric follow-up with JWST, Coronagraph technology advancement needed, Expanded frequency coverage, Extended atmospheric analysis.'
+    sql: '"FutureResearchDirections"'
+  methodology_employed:
+    description: 'text. Research methodology used for studying this planet. Possible values: Coronagraphy and spectroscopy, Ground-based spectroscopy, Radio observations, Space-based photometry, Transit spectroscopy.'
+    sql: '"MethodologyEmployed"'
+  notes:
+    description: 'text. Additional notes or comments about the planet''s participation in the program. **NULL means no additional observations were recorded.**. Example: Active M dwarf with flares.'
+    sql: '"NOTES"'
+  observing_time_allocated_hours:
+    description: 'real. Total observing time allocated for this planet in hours. **NULL means observing time was not allocated or tracked.**. Possible values: 156.8, 245.0, 45.2, 89.5.'
+    sql: '"OBSERVING_TIME_ALLOCATED_hours"'
+  planetprogramref:
+    description: 'bigint. Primary key identifier for planet research program association records. PK. Possible values: 26001, 26002, 26003, 26004, 26005.'
+    sql: '"PLANETPROGRAMREF"'
+  priority_level:
+    description: 'text. Priority level assigned to this planet within the program. Possible values: High, Low, Medium, Very High.'
+    sql: '"PRIORITY_LEVEL"'
+  participation_type:
+    description: 'text. Type of participation in the program (target, comparison, control, etc.). Possible values: Atmospheric Study, Follow-up Target, Primary Target, SETI Target, Survey Target.'
+    sql: '"ParticipationType"'
+  performance_metrics_achieved:
+    description: 'text. Performance metrics achieved for research on this planet. **NULL means performance metrics were not recorded.**. Possible values: {"observations_completed": 1250, "sensitivity": "1e-25 W/m²"}, {"precision": 0.00005, "follow_up_rate": 0.85}, {"resolution_achieved": 100000}, {"snr_achieved": 125, "wavelength_coverage": 0.95}.'
+    sql: '"PerformanceMetricsAchieved"'
+  personnel_assigned:
+    description: 'bigint. Number of personnel assigned to work on this planet. **NULL means personnel assignments were not tracked.**. Possible values: 12.0, 3.0, 5.0, 8.0.'
+    sql: '"PersonnelAssigned"'
+  success_indicators_met:
+    description: 'text. Success indicators that were met for this planet''s research. Possible values: Negative results but scientifically valuable, Not yet assessed, Planet confirmed and characterized, Preliminary results promising, Successful water vapor detection.'
+    sql: '"SUCCESS_INDICATORS_MET"'
+  completion_date:
+    description: 'date. Date when research on this planet was completed. **NULL means research is ongoing or completion date not recorded.**. Possible values: 2023-11-30.'
+    sql: completion_date
+  funding_allocated_usd:
+    description: 'real. Funding specifically allocated for research on this planet in US dollars. **NULL means funding allocation was not tracked.**. Possible values: 125000.0, 2500000.0, 450000.0, 850000.0.'
+    sql: '"funding_allocated_USD"'
+  lessons_learned:
+    description: 'text. Lessons learned from studying this planet. **NULL means lessons learned were not documented.**. Possible values: Advanced detrending techniques required, Long integration times essential, Target brightness insufficient for current technology.'
+    sql: lessons_learned
+  planet_link:
+    description: 'bigint. Foreign key reference to the planet being studied. FK to planets(planetRef). Example: 1.'
+    sql: '"planetLink"'
+  program_link:
+    description: 'bigint. Foreign key reference to the research program. FK to research_programs(programRef). Possible values: 25001, 25002, 25003, 25004, 25005.'
+    sql: program_link
+  publication_contributions:
+    description: 'text. Contributions to publications resulting from this planet''s study. **NULL means publication contributions were not recorded.**. Possible values: 1 paper in preparation, 12 peer-reviewed papers, 2 technical papers, 3 high-impact publications.'
+    sql: publication_contributions
+  research_focus_areas:
+    description: 'text. Specific research focus areas for this planet. Possible values: Atmospheric composition;Temperature structure, Direct imaging;Biosignature search, High-resolution atmospheric spectroscopy, Technosignature detection, Transit photometry;Stellar characterization.'
+    sql: research_focus_areas
+  scientific_impact_score:
+    description: 'real. Quantitative assessment of scientific impact from studying this planet. **NULL means impact score was not calculated.**. Possible values: 6.2, 6.8, 7.3, 7.5, 7.8, 8.1, 8.9, 9.2, 9.8.'
+    sql: scientific_impact_score

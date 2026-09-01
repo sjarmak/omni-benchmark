@@ -1,0 +1,26 @@
+label: Artifacts
+description: Artifact rows with public conservation-status context.
+catalog: museum_artifact_large
+schema: public
+table_name: ArtifactsCore
+dimensions:
+  conservation_status:
+    description: 'TEXT. Current conservation status of the artifact. **NULL means no conservation status provided.**. Possible values: Critical, Excellent, Fair, Good, Poor.'
+    label: Conservation Status
+    sql: conserve_status
+    ai_context: 'Conservation Status Categories: Values range from ''Excellent'' (recently conserved, no issues), ''Good'' (stable with minor issues), ''Fair'' (stable but with noticeable issues), ''Poor'' (active deterioration), to ''Critical'' (severe deterioration requiring immediate intervention).'
+  artreg_id:
+    description: 'TEXT. Unique identifier for each artifact. PK. Example: ART54317.'
+    sql: '"ARTregID"'
+  dynasty:
+    description: 'TEXT. Dynasty or period the artifact belongs to. Possible values: Han, Ming, Qing, Song, Tang, Yuan.'
+    sql: '"DYNASTY"'
+  mat_kind:
+    description: 'TEXT. Material type of the artifact. Possible values: Bronze, Ceramic, Jade, Paper, Stone, Textile, Wood.'
+    sql: '"MatKind"'
+  age_years:
+    description: 'BIGINT. Age of the artifact in years. Example: 943.'
+    sql: '"ageYears"'
+  art_title:
+    description: 'TEXT. Title of the artifact. **NULL means no title provided.**. Example: Culture Painting.'
+    sql: art_title

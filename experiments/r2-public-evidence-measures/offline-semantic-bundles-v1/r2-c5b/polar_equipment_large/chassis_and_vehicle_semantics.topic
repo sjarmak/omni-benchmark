@@ -1,0 +1,23 @@
+base_view: polar_equipment_large_public__chassis_and_vehicle
+label: ChassisAndVehicle
+description: All columns of the public table ChassisAndVehicle.
+fields:
+- polar_equipment_large_public__chassis_and_vehicle.*
+- polar_equipment_large_public__engine_and_fluids.*
+- polar_equipment_large_public__equipment.*
+- polar_equipment_large_public__equipmenttype.*
+- polar_equipment_large_public__operationmaintenance.*
+- polar_equipment_large_public__powerbattery.*
+- polar_equipment_large_public__transmission.*
+joins:
+  polar_equipment_large_public__engine_and_fluids:
+    polar_equipment_large_public__operationmaintenance: {}
+    polar_equipment_large_public__powerbattery: {}
+  polar_equipment_large_public__equipment:
+    polar_equipment_large_public__equipmenttype: {}
+  polar_equipment_large_public__transmission: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Vehicle Operational Safety Threshold: A vehicle is considered ''Safe for Operation'' when it maintains a VPC > 0.6, has brake fluid levels above 50%, brake pad wear below 70%, adequate tire pressure (tire pressure (kPa) > 200).'

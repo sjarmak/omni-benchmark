@@ -1,0 +1,13 @@
+base_view: planets_data_large_public__mission_planet_map
+label: Mission_Planet_Map
+description: All columns of the public table Mission_Planet_Map.
+fields:
+- planets_data_large_public__mission_planet_map.*
+- planets_data_large_public__planets.*
+- planets_data_large_public__space_mission.*
+- planets_data_large_public__stars.*
+joins:
+  planets_data_large_public__planets:
+    planets_data_large_public__stars: {}
+  planets_data_large_public__space_mission: {}
+ai_context: Reach related views through the declared joins on this topic instead of re-deriving relationships.

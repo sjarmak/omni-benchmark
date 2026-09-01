@@ -1,0 +1,105 @@
+label: geological_surveys
+description: All columns of the public table geological_surveys.
+catalog: archeology_scan_large
+schema: public
+table_name: geological_surveys
+dimensions:
+  bedrock_depth_m:
+    description: 'REAL. The depth to bedrock in meters。 Example: 8.5.'
+    sql: '"BedrockDepthM"'
+  conductivity_siemens_m:
+    description: 'REAL. The electrical conductivity of the soil。 Example: 0.02.'
+    sql: '"CONDUCTIVITY_SIEMENS_M"'
+  data_processing_software:
+    description: 'TEXT. The software used to process the survey data。 Possible values: ArcGIS Pro, EKKO_Project, GPR-SLICE v7.5, GPR-SLICE v8.0, Geoplot 4.0, IXRefrax, Oasis montaj, RES2DINV, ReflexW.'
+    sql: '"DataProcessingSoftware"'
+  equipment_used_fk:
+    description: 'TEXT. Foreign key for the primary equipment used in the survey. FK。 Example: SN10024.'
+    sql: '"EQUIPMENT_USED_FK"'
+  grid_resolution_m:
+    description: 'REAL. The grid resolution of the survey in meters。 Possible values: 0.05, 0.1, 0.15, 0.2, 0.25, 0.5, 1.0, 10.0, 2.0, 5.0.'
+    sql: '"GRID_RESOLUTION_M"'
+  is_stable_for_excavation:
+    description: 'BOOLEAN. A flag indicating if the ground is considered stable for excavation。 Possible values: False, True.'
+    sql: '"IS_STABLE_FOR_EXCAVATION"'
+  interpretation_notes:
+    description: 'TEXT. Notes on the interpretation of the survey results。 Example: Anomaly A corresponds with historical maps..'
+    sql: '"InterpretationNotes"'
+  organic_content_percent:
+    description: 'REAL. The percentage of organic content in the soil。 Example: 5.2.'
+    sql: '"ORGANIC_CONTENT_PERCENT"'
+  publication_link:
+    description: BIGINT. A link to a publication that uses this survey data. **NULL means it has not been published.**
+    sql: '"PUBLICATION_LINK"'
+  ph_level:
+    description: 'REAL. The pH level of the soil。 Example: 6.8.'
+    sql: '"PhLevel"'
+  porosity_percent:
+    description: 'REAL. The porosity of the soil as a percentage。 Example: 25.5.'
+    sql: '"PorosityPercent"'
+  primary_anomaly_description:
+    description: 'TEXT. A description of the most significant anomaly found。 Example: Possible buried wall structure at 2m depth..'
+    sql: '"PrimaryAnomalyDescription"'
+  report_url:
+    description: 'TEXT. A URL to the full survey report。 Example: https://digisite.org/reports/SUR-501.'
+    sql: '"REPORT_URL"'
+  surveyed_by_crew_ref:
+    description: 'TEXT. Foreign key for the person who conducted the survey. FK。 Example: OP6953.'
+    sql: '"SURVEYED_BY_CREW_REF"'
+  seismic_hazard_level:
+    description: 'TEXT. The assessed level of seismic hazard。 Possible values: High, Low, Medium.'
+    sql: '"SeismicHazardLevel"'
+  survey_method:
+    description: 'TEXT. The method used for the survey。 Possible values: GPR, LIDAR Derivative (DTM), Magnetometry, Resistivity, Seismic Refraction.'
+    sql: '"SurveyMethod"'
+  survey_tag:
+    description: 'BIGINT. Unique identifier for a geological survey. PK。 Example: 501.'
+    sql: '"SurveyTag"'
+  validation_status:
+    description: 'TEXT. The validation status of the survey results。 Possible values: Halted, Pending Peer Review, Preliminary, Verified.'
+    sql: '"VALIDATION_STATUS"'
+  water_table_depth_m:
+    description: 'REAL. The depth to the water table in meters。 Example: 15.2.'
+    sql: '"WATER_TABLE_DEPTH_M"'
+  weather_conditions:
+    description: 'TEXT. The weather conditions during the survey。 Example: Clear, 15C.'
+    sql: '"WeatherConditions"'
+  anomalies_detected_count:
+    description: 'BIGINT. The number of geological anomalies detected。 Example: 3.'
+    sql: anomalies_detected_count
+  compaction_level:
+    description: 'REAL. The level of soil compaction。 Possible values: High, Loose, Low, Medium, Variable, Very High, Very Low.'
+    sql: compaction_level
+  contamination_report:
+    description: 'TEXT. Notes on any contamination found. **NULL means no contamination was reported.**。 Possible values: High levels of iron., High organic content., High seismic activity., Karstic terrain, risk of collapse., Modern contaminants present., Trace heavy metals detected., Unstable soil layers..'
+    sql: contamination_report
+  data_analyst_ref:
+    description: 'TEXT. A reference to the person who analyzed the data。 Example: OP6661.'
+    sql: data_analyst_ref
+  location_ref:
+    description: 'TEXT. Foreign key linking to the site that was surveyed. FK。 Example: SC1017.'
+    sql: location_ref
+  magnetic_susceptibility:
+    description: 'REAL. The magnetic susceptibility of the soil。 Example: 0.0003.'
+    sql: magnetic_susceptibility
+  mineral_composition:
+    description: 'JSONB. A JSON object detailing the mineral composition。 Example: {|quartz|: 60, |feldspar|: 25, |clay|: 15}.'
+    sql: mineral_composition
+  report_author_ref:
+    description: 'TEXT. A reference to the author of the survey report。 Example: OP7224.'
+    sql: report_author_ref
+  soil_type:
+    description: 'TEXT. The dominant soil type identified。 Example: Loam.'
+    sql: soil_type
+  survey_area_sqm:
+    description: 'REAL. The total area surveyed in square meters。 Example: 10000.'
+    sql: survey_area_sqm
+  survey_date:
+    description: 'DATE. The date the survey was conducted。 Example: 20-Mar-22.'
+    sql: survey_date
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct geological_surveys public identity values.
+    label: geological_surveys Count
+    sql: ${archeology_scan_large_public__geological_surveys.survey_tag}

@@ -1,0 +1,66 @@
+label: VolunteerCore
+description: All columns of the public table VolunteerCore.
+catalog: disaster_relief_large
+schema: public
+table_name: VolunteerCore
+dimensions:
+  availability_status:
+    description: 'VARCHAR(100). Current availability for deployment (Available|PartTime|OnAssignment|Unavailable|Training). Possible values: "Available", "OnAssignment", "PartTime", "Training", "Unavailable".'
+    sql: '"availabilityStatus"'
+  certification_id:
+    description: 'VARCHAR(100). Identifier for professional certifications held. Example: "hdrh9SZ8yI".'
+    sql: '"certificationId"'
+  date_of_birth:
+    description: 'VARCHAR(100). Volunteer''s birth date. Example: "2014-03-04".'
+    sql: '"dateOfBirth"'
+  disaster_event_id:
+    description: 'BIGINT. Foreign key reference to parent disaster event (DisasterEventCore.id). Example: 1489.'
+    sql: '"disasterEventId"'
+  emergency_contact_name:
+    description: 'VARCHAR(100). Name of designated emergency contact person. Example: "Koyama Mitsuki".'
+    sql: '"emergencyContactName"'
+  emergency_contact_phone:
+    description: 'VARCHAR(100). Phone number of emergency contact. Example: "718-110-7736".'
+    sql: '"emergencyContactPhone"'
+  first_name:
+    description: 'VARCHAR(100). Volunteer''s given name. Example: "Koyama Mitsuki".'
+    sql: '"firstName"'
+  gender:
+    description: 'VARCHAR(100). Gender identity (Male|Female|NonBinary|PreferNotToSay|Unknown). Possible values: "F", "M".'
+    sql: gender
+  id:
+    description: 'BIGSERIAL. Auto-increment primary key for volunteer profile records. Example: 1.'
+    sql: id
+  last_deployed:
+    description: 'VARCHAR(100). Date of most recent field deployment. Example: "XtEXYqdpqC".'
+    sql: '"lastDeployed"'
+  last_name:
+    description: 'VARCHAR(100). Volunteer''s family name. Example: "Koyama Mitsuki".'
+    sql: '"lastName"'
+  medical_conditions:
+    description: 'VARCHAR(100). Relevant health conditions affecting deployment eligibility. Example: "5V2EoxRgPy".'
+    sql: '"medicalConditions"'
+  nationality:
+    description: 'VARCHAR(100). Volunteer''s country of citizenship. Example: "WCdZPLr3xI".'
+    sql: nationality
+  skill_level:
+    description: 'VARCHAR(100). Proficiency rating (Novice|Intermediate|Advanced|Expert|Master). Possible values: "Advanced", "Expert", "Intermediate", "Master", "Novice".'
+    sql: '"skillLevel"'
+  skill_primary:
+    description: 'VARCHAR(100). Primary technical capability (Medical|SearchRescue|Logistics|Translation|Construction|Psychosocial|IT|Security|Administration|Teaching). Possible values: "Administration", "Construction", "IT", "Logistics", "Medical", "Psychosocial", "SearchRescue", "Security", "Teaching", "Translation".'
+    sql: '"skillPrimary"'
+  skill_secondary:
+    description: 'VARCHAR(100). Secondary technical capability or none (Medical|SearchRescue|Logistics|Translation|Construction|Psychosocial|IT|Security|Administration|Teaching|None). Possible values: "Administration", "Construction", "IT", "Logistics", "Medical", "Psychosocial", "SearchRescue", "Security", "Teaching", "Translation".'
+    sql: '"skillSecondary"'
+  status:
+    description: 'VARCHAR(100). Current operational status (Active|Deployed|OnLeave|Inactive|Suspended|Retired). Possible values: "Active", "Deployed", "Inactive", "OnLeave", "Retired", "Suspended".'
+    sql: status
+  training_completed:
+    description: 'VARCHAR(100). Status of required training modules (Yes|No|Partial|Expired|Pending). Possible values: "Expired", "No", "Partial", "Pending", "Yes".'
+    sql: '"trainingCompleted"'
+  volunteer_id_ref:
+    description: 'VARCHAR(100). Logical reference to volunteer registry identifier (VolunteerProfiles.VOLUNTEERID). Example: "b0zqukcp7m".'
+    sql: '"volunteerIdRef"'
+  years_experience:
+    description: 'VARCHAR(100). Years of relevant field experience. Example: "wO7qsu8Ofe".'
+    sql: '"yearsExperience"'

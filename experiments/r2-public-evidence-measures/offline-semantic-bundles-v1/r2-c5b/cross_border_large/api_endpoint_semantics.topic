@@ -1,0 +1,19 @@
+base_view: cross_border_large_public__api_endpoint
+label: API Endpoints
+description: API endpoint observations with public context for the structured success-percentage field.
+fields:
+- cross_border_large_public__api_endpoint.*
+- cross_border_large_public__data_flow.*
+- cross_border_large_public__data_profile.*
+- cross_border_large_public__risk_management.*
+- cross_border_large_public__security_profile.*
+joins:
+  cross_border_large_public__security_profile:
+    cross_border_large_public__data_flow: {}
+    cross_border_large_public__data_profile: {}
+    cross_border_large_public__risk_management: {}
+ai_context: 'Reach related views through the declared joins on this topic instead of re-deriving relationships.
+
+  Domain definitions for this topic:
+
+  - Data Transfer Efficiency (DTE): DTE = (successful transfers rate) divided by (number of transfer errors plus one)'

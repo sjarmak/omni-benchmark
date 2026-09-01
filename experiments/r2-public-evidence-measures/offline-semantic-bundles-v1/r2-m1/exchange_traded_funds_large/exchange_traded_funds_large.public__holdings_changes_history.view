@@ -1,0 +1,108 @@
+label: holdings_changes_history
+description: All columns of the public table holdings_changes_history.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: holdings_changes_history
+dimensions:
+  allocation_effect_alloc:
+    description: 'TEXT. Portfolio allocation effect with units. Examples: 0.3, 0.6, 1.6.'
+    sql: allocation_effect_alloc
+  beta_contribution_change:
+    description: 'TEXT. Change in beta contribution with units. Examples: 0.05%/beta, 0.18%/beta, 0.08%/beta.'
+    sql: beta_contribution_change
+  change_date:
+    description: 'DATE. Date when the holding change occurred. Possible values: 2024-12-01, 2024-12-02, 2024-12-03, 2024-12-04, 2024-12-05.'
+    sql: change_date
+  change_reason:
+    description: 'TEXT. Reason for the holding change (Active Trade, Corporate Action, Index Change). Possible values: Active Trade, Index Change, active trade, corporate action, index change.'
+    sql: change_reason
+  change_size:
+    description: 'TEXT. Size classification of the change (Minor, Moderate, Major). Possible values: Major, Minor, Moderate.'
+    sql: change_size
+  change_type:
+    description: 'TEXT. Type of change (New Position, Increase, Decrease, Elimination). Possible values: Decrease, Increase, New Position.'
+    sql: change_type
+  data_source:
+    description: 'TEXT. Source of the holdings change data. **NULL means data source is not recorded or unknown.**. Possible values: BLOOMBERG TERMINAL, Bloomberg Terminal, REUTERS FEED, Reuters Feed, bloomberg terminal, reuters feed.'
+    sql: data_source
+  diversification_impact:
+    description: 'TEXT. Impact on portfolio diversification with units. Examples: 0.15%/diversity, 0.35%/diversity, 0.18%/diversity.'
+    sql: diversification_impact
+  estimated_transaction_cost:
+    description: 'REAL. Estimated cost of the transaction. Examples: 850.25, 2250.5, 5850.25.'
+    sql: estimated_transaction_cost
+  fund_ticker:
+    description: 'TEXT. Fund ticker symbol identifier. Examples: AVMU, QQD, FALN.'
+    sql: fund_ticker
+  holding_change:
+    description: 'REAL. Absolute change in holding amount. Examples: 0.3, 0.6, 1.6.'
+    sql: holding_change
+  holding_change_id:
+    description: 'BIGSERIAL. Primary key identifier for holdings change record. PK. Examples: 1, 2, 3.'
+    sql: holding_change_id
+  holding_change_percent:
+    description: 'TEXT. Percentage change in holding with units. Examples: 12.0%/quarter, 50.0%/quarter, 10.5%/quarter.'
+    sql: holding_change_percent
+  last_updated:
+    description: 'TEXT. Timestamp of last data update. Examples: 2024-12-01 09:15:00 HKT+8, 2024-12-01 15:45:00 HKT+8, 2024-12-01 08:30:00 HKT+8.'
+    sql: last_updated
+  market_impact:
+    description: 'TEXT. Market impact assessment with units. Examples: 0.02%/trade, 0.08%/trade, 0.03%/trade.'
+    sql: market_impact
+  market_value_change:
+    description: 'REAL. Absolute change in market value. Examples: 375000, 1450000, 128160000.'
+    sql: market_value_change
+  market_value_change_percent:
+    description: 'TEXT. Percentage change in market value with units. Examples: 12.0%/period, 50.0%/period, 10.5%/period.'
+    sql: market_value_change_percent
+  new_holding:
+    description: 'REAL. New holding percentage or amount. Examples: 2.8, 1.8, 16.8.'
+    sql: new_holding
+  new_market_value:
+    description: 'REAL. New market value of the holding. Examples: 3500000, 4350000, 1328400000.'
+    sql: new_market_value
+  new_rank:
+    description: 'BIGINT. New ranking position within portfolio. Examples: 12, 5, 2.'
+    sql: new_rank
+  new_shares:
+    description: 'BIGINT. New number of shares held. Examples: 140000, 140625, 44280000.'
+    sql: new_shares
+  previous_holding:
+    description: 'REAL. Previous holding percentage or amount. Examples: 2.5, 1.2, 15.2.'
+    sql: previous_holding
+  previous_market_value:
+    description: 'REAL. Previous market value of the holding. Examples: 3125000, 2900000, 1200240000.'
+    sql: previous_market_value
+  previous_rank:
+    description: 'BIGINT. Previous ranking position within portfolio. **NULL means previous ranking data is not available or not applicable.**. Possible values: 1.0, 12.0, 15.0, 18.0, 2.0, 28.0, 3.0, 8.0.'
+    sql: previous_rank
+  previous_shares:
+    description: 'BIGINT. Previous number of shares held. Examples: 125000, 93750, 40080000.'
+    sql: previous_shares
+  rank_change:
+    description: 'BIGINT. Change in ranking position. **NULL means rank change cannot be calculated due to missing previous rank.**. Possible values: -1.0, -3.0, -6.0, 0.0, 1.0.'
+    sql: rank_change
+  risk_contribution_change:
+    description: 'TEXT. Change in risk contribution with units. Examples: -0.08%/risk, 0.25%/risk, -0.05%/risk.'
+    sql: risk_contribution_change
+  security_price_impact:
+    description: 'TEXT. Price impact of the security change with units. Examples: 2.8%/price, 8.5%/price, 4.2%/price.'
+    sql: security_price_impact
+  selection_effect_sel:
+    description: 'TEXT. Security selection effect with units. Examples: 0.1, 0.4, 0.8.'
+    sql: selection_effect_sel
+  share_change:
+    description: 'BIGINT. Absolute change in share count. Examples: 15000, 46875, 4200000.'
+    sql: share_change
+  share_change_percent:
+    description: 'TEXT. Percentage change in shares with units. Examples: 12.0%/change, 50.0%/change, 10.5%/change.'
+    sql: share_change_percent
+  timing_analysis:
+    description: 'TEXT. Analysis of transaction timing. Examples: Pre-Market/Optimal, End-Of-Day/Average, Pre-Market/Good.'
+    sql: timing_analysis
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct holdings_changes_history public identity values.
+    label: holdings_changes_history Count
+    sql: ${exchange_traded_funds_large_public__holdings_changes_history.holding_change_id}

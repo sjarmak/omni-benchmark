@@ -1,0 +1,72 @@
+label: CrewCertificationRecord
+description: All columns of the public table CrewCertificationRecord.
+catalog: polar_equipment_large
+schema: public
+table_name: CrewCertificationRecord
+dimensions:
+  attempt_number:
+    description: 'INTEGER. Which attempt number achieved certification. Example: 1.'
+    sql: '"attemptNumber"'
+  cert_record_seq:
+    description: TEXT. Unique identifier for each certification record.
+    sql: '"certRecordSeq"'
+  certification_category:
+    description: 'TEXT. Category of the certification obtained. Unique values: Safety, Operations, Maintenance, Scientific, Emergency, Leadership.'
+    sql: '"certificationCategory"'
+  certification_date:
+    description: 'TIMESTAMP. Date when certification was awarded. Example: 2024-01-01 12:00:00.'
+    sql: '"certificationDate"'
+  certification_level:
+    description: 'TEXT. Proficiency level of the certification. Unique values: Basic, Intermediate, Advanced, Expert, Master.'
+    sql: '"certificationLevel"'
+  certification_method:
+    description: 'TEXT. Method through which certification was obtained. Unique values: InPerson, Online, Hybrid, Proctored, SelfPaced.'
+    sql: '"certificationMethod"'
+  continuing_education_hrs:
+    description: 'REAL. Continuing education hours earned post-certification. Example: 15.'
+    sql: '"continuingEducationHrs"'
+  cost_usd:
+    description: 'REAL. Total cost of certification in US dollars. **NULL means Cost covered by organization.** Example: 850.'
+    sql: '"costUSD"'
+  crew_ref:
+    description: TEXT. Reference to the crew member holding certification.
+    sql: crew_ref
+  exam_score_pct:
+    description: 'REAL. Final examination score as percentage. **NULL means Performance-based certification without exam.** Example: 82.'
+    sql: '"examScorePct"'
+  expiration_date:
+    description: 'TIMESTAMP. Date when certification expires. **NULL means Lifetime certification with no expiration.** Example: 2024-01-01 12:00:00.'
+    sql: '"expirationDate"'
+  issuing_authority:
+    description: 'TEXT. Organization that issued the certification. Unique values: InternalTraining, ExternalVendor, GovernmentAgency, IndustryBody, AcademicInstitution.'
+    sql: '"issuingAuthority"'
+  practical_eval_score:
+    description: 'REAL. Practical evaluation score 0-100. **NULL means No practical evaluation component.** Example: 78.'
+    sql: '"practicalEvalScore"'
+  practical_hours_logged:
+    description: 'REAL. Hands-on practical hours logged. **NULL means Theory-only certification.** Example: 25.'
+    sql: '"practicalHoursLogged"'
+  renewal_period_months:
+    description: 'INTEGER. Renewal period in months if applicable. **NULL means No renewal required.** Unique values: 12, 24, 36, 60.'
+    sql: '"renewalPeriodMonths"'
+  renewal_required:
+    description: 'TEXT. Whether periodic renewal is required. Possible values: True, False.'
+    sql: '"renewalRequired"'
+  special_endorsement_count:
+    description: 'INTEGER. Number of special endorsements on certification. Example: 1.'
+    sql: '"specialEndorsementCount"'
+  supervisor_approved:
+    description: 'TEXT. Whether supervisor approval was obtained. Possible values: True, False.'
+    sql: '"supervisorApproved"'
+  training_hours_completed:
+    description: 'REAL. Total training hours completed for certification. Example: 40.'
+    sql: '"trainingHoursCompleted"'
+  verification_status:
+    description: 'TEXT. Current verification status of credentials. Unique values: Verified, Pending, Expired, Revoked, UnderReview.'
+    sql: '"verificationStatus"'
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct CrewCertificationRecord public identity values.
+    label: CrewCertificationRecord Count
+    sql: ${polar_equipment_large_public__crew_certification_record.cert_record_seq}

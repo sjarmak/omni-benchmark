@@ -1,0 +1,62 @@
+ai_context: 'Prefer the declared semantic model when answering questions: pick the topic whose base view matches the question''s grain, reach related tables through the topic''s declared joins, and use modeled business fields instead of reconstructing their formulas. Declared joins are many-to-one and safe to traverse; when aggregating across the one-to-many direction, aggregate at the child grain or deduplicate with DISTINCT before combining. For ranking questions, order explicitly and apply the requested tie behavior. Domain definitions ported from the public knowledge base appear below and in each topic''s context; treat them as authoritative.
+
+  Database-wide domain definitions:
+
+  - Aid Delivery Cost per Ton (ADC): The total transport costs for a given transport ID, divided by the total tons delivered by that same transport ID.
+
+  - Shelter Gap: The difference between the number of displaced individuals and the number of available shelter units. Formula: GREATEST(0, displaced_population - shelter_units).
+
+  - Response Effectiveness Score (RES): A weighted score of an operation''s success. Formula: (0.4 * success_rate) + (0.3 * bene_feedbackscore * 10) + (0.3 * distequityidx * 100).
+
+  - Supply Chain Fragility Index (SCFI): A score assessing supply chain vulnerability. Formula: (0.5 * ((hubutilpct / 100) + (stockturnrate / 10))) + (0.5 * break_rate).
+
+  - Logistical Gridlock: A ''Logistical Gridlock'' is identified if the supply flow state is ''Disrupted'' AND transportation access is ''Minimal''.
+
+  - Supply Sufficiency (Days): Calculates the minimum number of days supplies can last, assuming a daily consumption of 2kg of food and 3 liters of water per person. Formula: LEAST((food_tons * 1000) / (affected_population * 2), water_liters / (affected_population * 3)).
+
+  - Financial Burn Rate (FBR): The average daily expenditure of an operation. Formula: total_operational_costs / (current_date - operation_start_date).
+
+  - Gridlock Severity Index (GSI): A weighted sum calculated after converting categorical data to scores: priority_rank (''critical''=1 to ''low''=4) and transport_access (''minimal''=1.0, ''limited''=0.5). The final formula is: ((10 - priority_score) * 0.5) + (total_personnel * 0.2) + (transport_restriction_score * 30).
+
+  - Cost Per Person Affected (CPPA): The total cost of an operation divided by the affected population. Total cost is the sum of ops_costs_usd, transportcostsUSD, storage_costs_usd, and personnelcostsUsd.
+
+  - Cost Per Beneficiary (CPB): Calculated by dividing the total costs by the total affected population. Total costs are the sum of ops_costs_usd, transportcostsUSD, storage_costs_usd, and personnelcostsUsd.
+
+  - High Risk Operation: An operation is considered ''High Risk'' if its status is ''Active'' AND its safety ranking is ''High Risk'' OR it has more than 5 security incidents.
+
+  - Medical Staff Ratio: A ratio indicating medical staff availability. Formula: (medical_staff_count / affected_population) * 1000.
+
+  - Medical Support Ratio (MSR): The ratio of available medical personnel to the total number of casualties and injured. Formula: medical_personnel / (casualties + injured).
+
+  - Imminent Supply Depletion Alert: An ''Imminent Supply Depletion Alert'' is triggered when the calculated Supply Sufficiency (Days) is less than 2.
+
+  - Highly Effective Operation: An operation is ''Highly Effective'' if its Response Effectiveness Score (RES) is greater than 75 AND its Coordination Quality Index (CQI) is greater than 75.
+
+  - Severe Shelter Crisis: A ''Severe Shelter Crisis'' is active if the calculated Shelter Gap is greater than 1,000 units.
+
+  - Failing Operation: An operation is ''Failing'' if its Logistical Throughput per Vehicle (LTV) is below 1.0 OR its Response Effectiveness Score (RES) is below 40.
+
+  - High Cost, Low Impact Operation: An operation is ''High Cost, Low Impact'' if its Cost Per Person Affected (CPPA) is above average AND its Response Effectiveness Score (RES) is below average.
+
+  - Operation with Fragile Supply Chain: An operation has a ''Fragile Supply Chain'' if its Supply Chain Fragility Index (SCFI) is greater than 5.0.
+
+  - Financially Unstable Operation: An operation is ''Financially Unstable'' if its Financial Health Score (FHS) is below 50.
+
+  - Fragile Supply Chain: An operation is considered to have a ''Fragile Supply Chain'' if its Supply Chain Fragility Index (SCFI) is greater than 5.0.
+
+  - Public Health Emergency: A ''Public Health Emergency'' exists if the Public Health Risk Score (PHRS) exceeds a critical threshold of 70.
+
+  - Overwhelmed Logistical Hub: A hub is ''Overwhelmed'' if its Hub Strain Index (HSI) is greater than 1,000,000.'
+ai_settings:
+  query_all_views_and_fields: enabled
+  validate_analysis: disabled
+  conversation_prune_length: max
+  analyze_configuration:
+    model: standard
+    thinking: none
+  build_configuration:
+    model: smartest
+    thinking: none
+  simple_summarize_configuration:
+    model: fastest
+    thinking: none

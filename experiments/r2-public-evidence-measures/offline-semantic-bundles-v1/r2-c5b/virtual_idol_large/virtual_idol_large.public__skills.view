@@ -1,0 +1,15 @@
+label: skills
+description: All columns of the public table skills.
+catalog: virtual_idol_large
+schema: public
+table_name: skills
+dimensions:
+  skill_category:
+    description: 'TEXT. The category the skill belongs to. Possible values include: Musical Talent, Technical Production, Artistic, Community, Performance, Gaming, Language, Lifestyle, Technical, Communication. **NULL means the skill is not categorized.** Example: Musical Talent.'
+    sql: '"SKILL_CATEGORY"'
+  skill_name:
+    description: 'TEXT. The name of the skill. Example: Singing (Soprano).'
+    sql: '"SkillName"'
+  skill_id:
+    description: 'BIGINT. Unique identifier for the skill. PK. Example: 1.'
+    sql: skill_id

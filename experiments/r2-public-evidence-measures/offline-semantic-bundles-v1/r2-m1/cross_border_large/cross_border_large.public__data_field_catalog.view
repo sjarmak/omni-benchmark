@@ -1,0 +1,102 @@
+label: DataField_Catalog
+description: All columns of the public table DataField_Catalog.
+catalog: cross_border_large
+schema: public
+table_name: DataField_Catalog
+dimensions:
+  data_type:
+    description: 'TEXT. Data type of the field. Example: INTEGER.'
+    sql: '"DATA_TYPE"'
+  description:
+    description: 'TEXT. Description of the field. Example: Description of Field 1.'
+    sql: '"Description"'
+  field_code:
+    description: 'BIGINT. Unique identifier for each field. Example: 1.'
+    sql: '"FIELD_CODE"'
+  field_name:
+    description: 'TEXT. Name of the data field. Example: Field_1.'
+    sql: '"Field_Name"'
+  governance_policy:
+    description: 'TEXT. Governance policy for the field. Example: Policy for Field 1.'
+    sql: '"GOVERNANCE_POLICY"'
+  is_primary_key:
+    description: 'TEXT. Whether the field is a primary key. Possible values: Yes, No. Example: Yes.'
+    sql: '"IS_PRIMARY_KEY"'
+  momentum_kg_m_per_s:
+    description: 'REAL. Momentum in kg·m/s. Example: 2.3.'
+    sql: '"MOMENTUM_KG_M_PER_S"'
+  masking_rule:
+    description: 'TEXT. Masking rule applied to the field. Example: Masking Rule for Field 1.'
+    sql: '"Masking_Rule"'
+  null_count:
+    description: 'BIGINT. Number of NULL values in the field. Example: 25.'
+    sql: '"NULL_COUNT"'
+  owner:
+    description: 'TEXT. Owner of the data field. Example: Alice.'
+    sql: '"OWNER"'
+  sample_max:
+    description: 'REAL. Maximum sample value. Example: 5.12.'
+    sql: '"SAMPLE_MAX"'
+  sample_p5:
+    description: 'REAL. 5th percentile sample value. Example: 2.45.'
+    sql: '"SAMPLE_P5"'
+  sample_rate_hz:
+    description: 'REAL. Sample rate in Hz. Example: 10.5.'
+    sql: '"SAMPLE_RATE_HZ"'
+  unit:
+    description: 'TEXT. Unit of measurement for the field. Example: GB.'
+    sql: '"UNIT"'
+  valid_rate_pct:
+    description: 'REAL. Percentage of valid values in the field. Example: 89.5.'
+    sql: '"VALID_RATE_PCT"'
+  dataset_code:
+    description: 'BIGINT. Foreign key referencing Dataset_Catalog(dataset_code). Example: 3.'
+    sql: dataset_code
+  distinct_count:
+    description: 'BIGINT. Distinct count of field values. Example: 150.'
+    sql: distinct_count
+  field_alias:
+    description: 'TEXT. Alias for the data field. Example: Alias_1. **NULL means alias not provided.**'
+    sql: field_alias
+  field_profile_no:
+    description: 'BIGINT. Unique identifier for the field profile. Example: 4321.'
+    sql: field_profile_no
+  is_foreign_key:
+    description: 'TEXT. Whether the field is a foreign key. Possible values: Yes, No. Example: No.'
+    sql: is_foreign_key
+  is_nullable:
+    description: 'TEXT. Whether the field is nullable. Possible values: Yes, No. Example: No.'
+    sql: is_nullable
+  null_rate_pct:
+    description: 'REAL. Percentage of NULL values in the field. Example: 10.5.'
+    sql: null_rate_pct
+  pii_type:
+    description: 'TEXT. PII classification for the field. Possible values: None, Personal, Sensitive. Example: Personal.'
+    sql: pii_type
+  sample_avg:
+    description: 'REAL. Average sample value. Example: 3.67.'
+    sql: sample_avg
+  sample_min:
+    description: 'REAL. Minimum sample value. Example: 1.23.'
+    sql: sample_min
+  sample_p95:
+    description: 'REAL. 95th percentile sample value. Example: 4.89.'
+    sql: sample_p95
+  std_dev:
+    description: 'REAL. Standard deviation of sample values. Example: 0.45.'
+    sql: std_dev
+  unit_category:
+    description: 'TEXT. Category of the unit. Example: Storage.'
+    sql: unit_category
+  update_frequency_min:
+    description: 'BIGINT. Update frequency in minutes. Example: 1440.'
+    sql: update_frequency_min
+  velocity_m_per_s:
+    description: 'REAL. Data field velocity in meters per second. Example: 5.0.'
+    sql: velocity_m_per_s
+measures:
+  count:
+    aggregate_type: count_distinct
+    description: Count of distinct DataField_Catalog public identity values.
+    label: DataField_Catalog Count
+    sql: ${cross_border_large_public__data_field_catalog.field_code}

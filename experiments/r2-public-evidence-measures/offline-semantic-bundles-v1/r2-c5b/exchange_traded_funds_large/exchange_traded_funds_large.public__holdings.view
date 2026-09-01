@@ -1,0 +1,21 @@
+label: holdings
+description: All columns of the public table holdings.
+catalog: exchange_traded_funds_large
+schema: public
+table_name: holdings
+dimensions:
+  holdingpct:
+    description: Percentage (0-1) of the fund's total assets represented by this individual security holding.
+    sql: holdingpct
+  holdref:
+    description: A SERIAL primary key uniquely identifying each individual security holding record within funds.
+    sql: holdref
+  instrumentref:
+    description: Foreign key referencing funds.TickerSym, indicating which fund holds this security.
+    sql: instrumentref
+  positionrank:
+    description: Ranking of this holding within the fund's portfolio (1 = largest holding, 2 = second largest, etc.). Contains  NULL when position ranking is not available or not tracked.
+    sql: positionrank
+  securitykey:
+    description: Foreign key referencing securities.InstrumentCode, indicating which specific security is held.
+    sql: securitykey
