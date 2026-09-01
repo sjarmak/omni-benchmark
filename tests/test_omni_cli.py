@@ -676,3 +676,93 @@ def test_job_identifier_cannot_inject_cli_options(method_name: str) -> None:
         getattr(client, method_name)("--help")
 
     assert runner.invocations == []
+
+
+def test_credit_usage_reads_named_memberships_over_json_stdin() -> None:
+    environment = _token_environment()
+    payload = {
+        "periodEnd": 1788220800000,
+        "periodStart": 1785542400000,
+        "users": [
+            {
+                "creditsUsed": 635.297481375,
+                "userId": "595a871e-e5a9-46b7-a208-f8920da67263",
+            }
+        ],
+    }
+    runner = FakeRunner(stdout=json.dumps(payload))
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+    )
+
+    assert client.credit_usage(["595a871e-e5a9-46b7-a208-f8920da67263"]) == payload
+
+    invocation = runner.invocations[0]
+    assert invocation.arguments[-4:] == (
+        "ai",
+        "credit-usage-users-read",
+        "--body",
+        "-",
+    )
+    assert json.loads(invocation.stdin or "") == {
+        "userIds": ["595a871e-e5a9-46b7-a208-f8920da67263"]
+    }
+
+
+def test_credit_usage_retries_a_throttled_read_and_keeps_its_stdin() -> None:
+    environment = _token_environment()
+    payload = {
+        "periodEnd": 1788220800000,
+        "periodStart": 1785542400000,
+        "users": [
+            {"creditsUsed": 1.0, "userId": "595a871e-e5a9-46b7-a208-f8920da67263"}
+        ],
+    }
+    runner = ScriptedRunner(
+        [(1, "", "HTTP 429 too many requests"), (0, json.dumps(payload), "")]
+    )
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+        observer_retry_schedule_seconds=(0.01,),
+        sleep=lambda _: None,
+    )
+
+    assert client.credit_usage(["595a871e-e5a9-46b7-a208-f8920da67263"]) == payload
+
+    assert [json.loads(call.stdin or "") for call in runner.invocations] == [
+        {"userIds": ["595a871e-e5a9-46b7-a208-f8920da67263"]}
+    ] * 2
+    assert client.observer_retry_telemetry()["observer_retry_count"] == 1
+
+
+@pytest.mark.parametrize(
+    "user_ids",
+    [
+        [],
+        "595a871e-e5a9-46b7-a208-f8920da67263",
+        ["not-a-membership-id"],
+        [None],
+        ["595A871E-E5A9-46B7-A208-F8920DA67263"],
+        [
+            "595a871e-e5a9-46b7-a208-f8920da67263",
+            "595a871e-e5a9-46b7-a208-f8920da67263",
+        ],
+    ],
+)
+def test_credit_usage_refuses_identities_it_cannot_bill(user_ids: object) -> None:
+    environment = _token_environment()
+    runner = FakeRunner()
+    client = OmniCliClient(
+        OmniCliSettings.from_environment(environment),
+        runner=runner,
+        environment=environment,
+    )
+
+    with pytest.raises(OmniCliError, match="membership ID"):
+        client.credit_usage(user_ids)  # type: ignore[arg-type]
+
+    assert runner.invocations == []

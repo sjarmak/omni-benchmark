@@ -20,6 +20,7 @@ from .content_policy import ContentPolicy
 from .omni_attempt import C4AttemptArtifacts, C4AttemptSpec, write_c4_attempt
 from .omni_capture import OmniJobCapture, OmniJobClient, OmniProbeResult
 from .omni_cli import OmniCliClient, OmniCliError, OmniCliSettings
+from .omni_credit_cost import capture_with_cost
 from .omni_probe_preflight import (
     C4ProbeSpecs,
     CliVersionObserver,
@@ -225,7 +226,13 @@ def _execute_probe(
     }
     if sleep is not None:
         capture_options["sleep"] = sleep
-    result = OmniJobCapture(client, plan.store, **capture_options).probe(plan.question)
+    result = capture_with_cost(
+        client=client,
+        environment=plan.environment,
+        capture=lambda: OmniJobCapture(client, plan.store, **capture_options).probe(
+            plan.question
+        ),
+    )
     return _write_attempt(plan, result), result
 
 

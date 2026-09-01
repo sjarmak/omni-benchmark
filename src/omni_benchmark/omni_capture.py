@@ -14,6 +14,7 @@ from .artifact_store import ArtifactStore, StoredArtifact
 from .autoresearch_config import _canonical_bytes
 from .autoresearch_runs import TRACE_SCHEMA_VERSION
 from .content_policy import REDACTED, ContentPolicy
+from .omni_credit_cost import AttemptCost
 from .omni_result_adapter import (
     OmniResultContractError,
     OmniUnsupportedResultTypeError,
@@ -92,6 +93,7 @@ class OmniProbeResult:
     latency_ms: float
     observer_retry_count: int = 0
     observer_retry_wait_ms: float = 0.0
+    cost: AttemptCost | None = None
 
 
 @dataclass(frozen=True)

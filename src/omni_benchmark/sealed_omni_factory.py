@@ -13,6 +13,7 @@ from .artifact_store import ArtifactStore
 from .freeze_b import FreezeBCondition
 from .omni_capture import OmniJobCapture, OmniProbeResult
 from .omni_cli import OmniCliClient, OmniCliError, OmniCliSettings
+from .omni_credit_cost import capture_with_cost
 from .omni_probe_cli import _verify_authentication
 from .omni_probe_preflight import (
     C4ProbeSpecs,
@@ -268,12 +269,16 @@ def _run_probe(
     try:
         client = OmniCliClient(pinned, environment=environment)
         _verify_authentication(client)
-        return OmniJobCapture(
-            client,
-            store,
-            maximum_status_checks=specs.condition.maximum_status_checks,
-            poll_schedule_seconds=specs.condition.poll_schedule_seconds,
-        ).probe(question)
+        return capture_with_cost(
+            client=client,
+            environment=environment,
+            capture=lambda: OmniJobCapture(
+                client,
+                store,
+                maximum_status_checks=specs.condition.maximum_status_checks,
+                poll_schedule_seconds=specs.condition.poll_schedule_seconds,
+            ).probe(question),
+        )
     except Exception as error:
         raise SealedOmniFactoryError("Omni production capture failed") from error
 

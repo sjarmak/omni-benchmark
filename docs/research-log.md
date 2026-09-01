@@ -12769,6 +12769,24 @@ unbracketed path to the record shape shipped today.
 Bracketing is opt-in through `OMNI_COST_BRACKET_LEASE_DIR`. Unconfigured, the
 attempt record is unchanged field for field.
 
+### Two integration points the change had to fix, not just add to
+
+`baseline_batch._hard_budget_cost` required a C4 attempt with a null cost to
+carry exactly the job-API reason, and raised "C4 unavailable cost reason is not
+preserved" otherwise. Left alone, a bracket that failed its post-read or spanned
+the rollover would have failed the whole batch's cost accounting on a reason that
+is more informative than the one it replaced. The check now accepts any of the
+four named reasons, and still rejects an unexplained null. With a measured cost
+present, the hard per-attempt ceiling finally applies to C4 rather than falling
+through to the reservation, and `BatchTelemetry.total_cost_usd` stops being null
+for a governed batch, which is where the per-arm number surfaces.
+
+`SEALED_RUNTIME_SOURCE_PATHS` is closed over static local imports and is checked
+by `test_runtime_source_set_is_closed_over_static_local_imports`. Adding
+`omni_credit_cost` to the sealed C4 import graph without listing it there left a
+runtime source that `verify_sealed_runtime_sources` would not bind to the frozen
+commit. The test caught it; the module is now listed.
+
 ### Deliberately not done
 
 C1-C4 cost is not backfilled. The counter is cumulative and those attempts are

@@ -9,6 +9,7 @@ from pathlib import Path
 from .artifact_store import ArtifactStore, StoredArtifact
 from .autoresearch_artifacts import TRACE_SCHEMA_VERSION
 from .omni_capture import OmniProbeResult
+from .omni_credit_cost import COST_SOURCE_UNAVAILABLE, AttemptCost
 from .omni_result_adapter import reject_forbidden_keys
 from .run_manifest import RunManifest
 
@@ -128,12 +129,13 @@ def _telemetry_fields(spec: C4AttemptSpec, probe: OmniProbeResult) -> dict[str, 
         + (("model_version",) if spec.model_version is None else ())
         + (("database_query_count",) if probe.database_query_count is None else ())
     )
+    cost = _attempt_cost(spec, probe)
     return {
         "budget_policy_sha256": spec.budget_policy_sha256,
         "cost_reservation_usd": spec.cost_reservation_usd,
-        "cost_source": "unavailable",
-        "cost_unavailable_reason": spec.cost_unavailable_reason,
-        "cost_usd": None,
+        "cost_source": cost.cost_source,
+        "cost_unavailable_reason": cost.cost_unavailable_reason,
+        "cost_usd": cost.cost_usd,
         "database_query_count": probe.database_query_count,
         "observer_retry_count": probe.observer_retry_count,
         "observer_retry_wait_ms": probe.observer_retry_wait_ms,
@@ -151,6 +153,19 @@ def _telemetry_fields(spec: C4AttemptSpec, probe: OmniProbeResult) -> dict[str, 
         ],
         "validation_attempt_count": probe.validation_attempt_count,
     }
+
+
+def _attempt_cost(spec: C4AttemptSpec, probe: OmniProbeResult) -> AttemptCost:
+    """Prefer a measured bracket; otherwise keep the job API's silence explicit."""
+    if probe.cost is None:
+        return AttemptCost(
+            cost_usd=None,
+            cost_source=COST_SOURCE_UNAVAILABLE,
+            cost_unavailable_reason=spec.cost_unavailable_reason,
+        )
+    if type(probe.cost) is not AttemptCost:
+        raise ValueError("C4 attempt cost is invalid")
+    return probe.cost
 
 
 def _trace_fields(workspace: Path, probe: OmniProbeResult) -> dict[str, object]:

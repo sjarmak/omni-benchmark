@@ -7,7 +7,14 @@ from pathlib import Path
 import pytest
 
 from omni_benchmark.artifact_store import ArtifactStore
+from omni_benchmark.autoresearch_capture_policy import validate_capture_telemetry
 from omni_benchmark.omni_capture import OmniProbeResult
+from omni_benchmark.omni_credit_cost import (
+    COST_SOURCE_CREDIT_USAGE_DELTA,
+    COST_UNAVAILABLE_READ_FAILED,
+    AttemptCost,
+    unavailable_cost,
+)
 from omni_benchmark.sealed_generation_staging import (
     SealedAttemptRepository,
     prepare_sealed_attempt,
@@ -40,6 +47,7 @@ def _probe(
     failure_class: str | None = None,
     generated_query: str | None = None,
     job_result_observed: bool | None = None,
+    cost: AttemptCost | None = None,
 ) -> OmniProbeResult:
     trace = store.write_jsonl(
         Path("attempt.trace.jsonl"),
@@ -117,6 +125,7 @@ def _probe(
         latency_ms=1_000.0,
         observer_retry_count=0,
         observer_retry_wait_ms=0.0,
+        cost=cost,
     )
 
 
@@ -345,3 +354,61 @@ def test_c4_adapter_rejects_invalid_root_runner_authority_and_result(
         adapter.execute(prepared)
     with pytest.raises(SealedOmniAdapterError, match="authority"):
         adapter.execute(object())  # type: ignore[arg-type]
+
+
+def test_an_unbracketed_c4_attempt_still_records_cost_as_unavailable(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    _, freeze, prepared = _prepared()
+    adapter = _adapter(workspace, freeze, lambda _prepared, store: _probe(store))
+
+    record = dict(adapter.execute(prepared).generation_record)
+
+    validate_capture_telemetry(record)
+    assert record["cost_usd"] is None
+    assert record["cost_source"] == "unavailable"
+    assert record["cost_unavailable_reason"] == "omni_job_api_does_not_expose_cost"
+
+
+def test_a_bracketed_c4_attempt_records_the_measured_credit_delta(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    _, freeze, prepared = _prepared()
+    measured = AttemptCost(
+        cost_usd=0.68390625,
+        cost_source=COST_SOURCE_CREDIT_USAGE_DELTA,
+        cost_unavailable_reason=None,
+    )
+    adapter = _adapter(
+        workspace, freeze, lambda _prepared, store: _probe(store, cost=measured)
+    )
+
+    record = dict(adapter.execute(prepared).generation_record)
+
+    validate_capture_telemetry(record)
+    assert record["cost_usd"] == 0.68390625
+    assert record["cost_source"] == COST_SOURCE_CREDIT_USAGE_DELTA
+    assert record["cost_unavailable_reason"] is None
+
+
+def test_a_failed_bracket_read_is_separable_from_the_job_api_silence(
+    tmp_path: Path,
+) -> None:
+    workspace = _workspace(tmp_path)
+    _, freeze, prepared = _prepared()
+    adapter = _adapter(
+        workspace,
+        freeze,
+        lambda _prepared, store: _probe(
+            store, cost=unavailable_cost(COST_UNAVAILABLE_READ_FAILED)
+        ),
+    )
+
+    record = dict(adapter.execute(prepared).generation_record)
+
+    validate_capture_telemetry(record)
+    assert record["cost_usd"] is None
+    assert record["cost_source"] == "unavailable"
+    assert record["cost_unavailable_reason"] == COST_UNAVAILABLE_READ_FAILED

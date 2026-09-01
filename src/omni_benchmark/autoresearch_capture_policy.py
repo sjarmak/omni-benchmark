@@ -6,6 +6,7 @@ from typing import Any, Mapping
 
 from .autoresearch_artifacts import _count, _validate_trace_reference
 from .autoresearch_config import AutoresearchError
+from .omni_credit_cost import COST_SOURCE_CREDIT_USAGE_DELTA
 
 
 def validate_capture_telemetry(record: Mapping[str, Any]) -> None:
@@ -74,15 +75,27 @@ def _validate_failure(record: Mapping[str, Any]) -> None:
         )
 
 
+_SOURCE_VOCABULARY: Mapping[str, tuple[str, ...]] = {
+    "token_source": ("provider_reported", "derived", "unavailable"),
+    "cost_source": (
+        "provider_reported",
+        "derived",
+        COST_SOURCE_CREDIT_USAGE_DELTA,
+        "unavailable",
+    ),
+}
+
+
 def _validate_sources(record: Mapping[str, Any]) -> None:
     for source_field, value_field in (
         ("token_source", "token_usage"),
         ("cost_source", "cost_usd"),
     ):
+        allowed = _SOURCE_VOCABULARY[source_field]
         source = record[source_field]
-        if source not in {"provider_reported", "derived", "unavailable"}:
+        if source not in allowed:
             raise AutoresearchError(
-                f"{source_field} must be provider_reported, derived, or unavailable"
+                f"{source_field} must be {', '.join(allowed[:-1])}, or {allowed[-1]}"
             )
         if (record[value_field] is None) != (source == "unavailable"):
             raise AutoresearchError(

@@ -10,6 +10,7 @@ from .artifact_store import ALLOWED_RAW_ROOTS, ArtifactStore, ArtifactStoreError
 from .freeze_b import FreezeBCondition
 from .omni_attempt import C4AttemptSpec, _attempt_record
 from .omni_capture import OmniProbeResult
+from .omni_credit_cost import COST_UNAVAILABLE_JOB_API
 from .sealed_dispatch import (
     SealedAdapterResult,
     SealedDispatchPolicy,
@@ -102,7 +103,7 @@ class SealedOmniConditionAdapter:
             cli_versions=self._policy.cli_versions("C4"),
             cost_reservation_usd=float(self._policy.reservation("C4")),
             budget_policy_sha256=self._policy.sha256,
-            cost_unavailable_reason="omni_job_api_does_not_expose_cost",
+            cost_unavailable_reason=COST_UNAVAILABLE_JOB_API,
         )
         try:
             record = _attempt_record(

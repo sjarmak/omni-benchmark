@@ -105,6 +105,7 @@ SEALED_RUNTIME_SOURCE_PATHS = (
     "src/omni_benchmark/omni_attempt.py",
     "src/omni_benchmark/omni_capture.py",
     "src/omni_benchmark/omni_cli.py",
+    "src/omni_benchmark/omni_credit_cost.py",
     "src/omni_benchmark/omni_probe_cli.py",
     "src/omni_benchmark/omni_probe_preflight.py",
     "src/omni_benchmark/omni_result_adapter.py",

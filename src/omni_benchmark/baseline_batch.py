@@ -23,6 +23,12 @@ from .c4_baseline_arm import (
     C4BaselineArmError,
     parse_c4_baseline_arm_spec,
 )
+from .omni_credit_cost import (
+    COST_UNAVAILABLE_JOB_API,
+    COST_UNAVAILABLE_NONMONOTONIC,
+    COST_UNAVAILABLE_PERIOD_ROLLOVER,
+    COST_UNAVAILABLE_READ_FAILED,
+)
 from .omni_probe_preflight import OmniProbePreflightError, committed_spec
 from .omni_result_adapter import reject_forbidden_keys
 from .run_manifest import RunManifest, RunManifestError
@@ -41,7 +47,14 @@ _IDENTIFIER_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}")
 _COMMIT_PATTERN = re.compile(r"[0-9a-f]{40,64}")
 _MAX_PRIVATE_FILE_BYTES = 16 * 1024 * 1024
 _SCORED_FIELDS = frozenset({"accuracy", "correctness", "outcome", "scored_outcome"})
-_C4_COST_UNAVAILABLE_REASON = "omni_job_api_does_not_expose_cost"
+_C4_COST_UNAVAILABLE_REASONS = frozenset(
+    {
+        COST_UNAVAILABLE_JOB_API,
+        COST_UNAVAILABLE_NONMONOTONIC,
+        COST_UNAVAILABLE_PERIOD_ROLLOVER,
+        COST_UNAVAILABLE_READ_FAILED,
+    }
+)
 
 
 class BaselineBatchError(RuntimeError):
@@ -1266,7 +1279,7 @@ def _hard_budget_cost(observation: AttemptObservation, budget: BatchBudget) -> f
         if observation.cost_reservation_usd != expected_reservation:
             raise BaselineBatchError("C4 budget reservation changed after capture")
         if observation.cost_usd is None and (
-            observation.cost_unavailable_reason != _C4_COST_UNAVAILABLE_REASON
+            observation.cost_unavailable_reason not in _C4_COST_UNAVAILABLE_REASONS
         ):
             raise BaselineBatchError("C4 unavailable cost reason is not preserved")
         if observation.attempt.condition in budget.telemetry_only_conditions:

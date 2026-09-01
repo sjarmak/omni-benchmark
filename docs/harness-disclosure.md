@@ -198,8 +198,9 @@ before scoring. It records:
   explicit degraded reason when trace capture is unavailable.
 
 Unobserved counts are `null` and must be named in `telemetry_unavailable`; they
-are never encoded as zero. Token/cost values separately declare
-`provider_reported`, `derived`, or `unavailable`. Scoring produces a separate
+are never encoded as zero. Token values declare `provider_reported`, `derived`,
+or `unavailable`; cost values declare those three or `credit_usage_delta`, the
+bracketed measurement described in the 2026-08-31 cost addendum below. Scoring produces a separate
 record with `correct`, `wrong_answer`, or `refused_or_error`; it does not mutate
 the generation record. Raw traces and generated SQL live only under ignored
 run roots. Committed artifacts contain hashes and permitted summaries.
@@ -469,3 +470,54 @@ an unknown planner result type, 1 to a completed job with no parseable query, an
 governed SQL, so generation succeeded and the result contract failed downstream.
 This depresses C4 accuracy by construction and is disclosed as a deliberate
 fail-closed choice, not as an open gate.
+
+## Addendum 2026-08-31: governed cost from bracketed credit usage
+
+The pinned Omni job contract exposes no cost. Neither `ai job-status` nor `ai
+job-result` carries one, so every governed attempt through the sealed C1-C4 run
+recorded `cost_usd: null`, `cost_source: "unavailable"`, and
+`cost_unavailable_reason: "omni_job_api_does_not_expose_cost"`. That remains true
+of the job API and is not superseded here.
+
+Spend is readable elsewhere. `POST /api/v1/ai/credit-usage/users` (`omni ai
+credit-usage-users-read`) returns one cumulative credit total per membership id
+for the current billing period, with the period's own bounds; one credit is one
+US dollar. August 2026 read 635.297481375 credits for membership
+`595a871e-...`, captured in `experiments/analysis/omni-credit-usage-2026-08.json`.
+
+A cumulative counter is not a per-attempt cost, so `omni_credit_cost.py` measures
+one attempt as the difference between a read taken immediately before the job is
+submitted and a read taken immediately after it terminates. A measured bracket
+records the delta with `cost_source: "credit_usage_delta"`. The mechanism is
+opt-in: with no `OMNI_COST_BRACKET_LEASE_DIR` configured, the attempt record is
+what it was before, unchanged field for field.
+
+Three conditions have to hold for a delta to mean anything, and each is enforced
+in code rather than assumed:
+
+- **Sole consumer and serialization.** Any other spend on the identity inside the
+  bracket lands in the same counter. The bracket takes an exclusive advisory lease
+  on the membership id for its whole duration and refuses to launch without one, so
+  a second harness attempt on that identity fails rather than producing two
+  unattributable deltas. A bracketed arm must therefore be scheduled serially.
+- **Period boundary.** The counter resets at the UTC month boundary. A pair of
+  reads that disagree about the period bounds records
+  `cost_unavailable_reason: "credit_usage_period_rollover"` rather than a negative
+  or truncated number; a counter that moved backwards within one period records
+  `"credit_usage_nonmonotonic"`.
+- **Read failure.** A failed pre-read refuses the launch, before any spend. A
+  failed post-read keeps the attempt and records
+  `"credit_usage_read_failed"`, which is distinct from the job-API case above, so
+  the two are separable in analysis.
+
+Two limits remain and are not closed by the lease. The lease binds harness
+processes only: a browser session or any other client spending on the same
+identity inside the bracket is undetectable and would inflate the delta, so a
+bracketed arm requires an identity that is otherwise idle. And the endpoint
+reports whole-account credits, not per-job attribution, so the delta is a
+measurement of what the account spent during the attempt rather than a figure the
+provider attributes to that attempt.
+
+Cost is not backfilled for C1-C4. The counter is cumulative and those attempts are
+past, so no read taken now can recover their individual cost, and the rerun policy
+forbids re-running a trial to collect it. Their cost column stays unavailable.

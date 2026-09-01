@@ -37,6 +37,7 @@ from .e02_candidate import (
 from .omni_attempt import C4AttemptArtifacts, C4AttemptSpec
 from .omni_capture import OmniJobCapture, OmniJobClient, OmniProbeResult
 from .omni_cli import OmniCliClient
+from .omni_credit_cost import COST_UNAVAILABLE_JOB_API, capture_with_cost
 from .omni_probe_cli import ProbePlan
 from . import omni_probe_cli as omni_probe
 from .omni_probe_preflight import (
@@ -326,7 +327,13 @@ def _capture_public_baseline_omni(
     }
     if sleep is not None:
         options["sleep"] = sleep
-    return OmniJobCapture(client, plan.store, **options).probe(plan.question)
+    return capture_with_cost(
+        client=client,
+        environment=plan.environment,
+        capture=lambda: OmniJobCapture(client, plan.store, **options).probe(
+            plan.question
+        ),
+    )
 
 
 def _committed_semantic_plan(
@@ -386,7 +393,7 @@ def _c4_attempt_spec(plan: ProbePlan) -> C4AttemptSpec:
         budget_policy_sha256=_required_sha256_environment(
             plan.environment, "OMNI_BUDGET_POLICY_SHA256"
         ),
-        cost_unavailable_reason="omni_job_api_does_not_expose_cost",
+        cost_unavailable_reason=COST_UNAVAILABLE_JOB_API,
     )
 
 

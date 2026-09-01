@@ -14,6 +14,7 @@ from typing import Any
 from urllib.parse import urlparse
 
 from .content_policy import ContentPolicy
+from .omni_credit_cost import MEMBERSHIP_ID_PATTERN
 
 
 class OmniCliError(RuntimeError):
@@ -215,6 +216,16 @@ class OmniCliClient:
         """Read all actions and results for one completed job."""
         return self._run_json(("ai", "job-result", _required_job_id(job_id)))
 
+    def credit_usage(self, user_ids: Sequence[str]) -> dict[str, Any]:
+        """Read cumulative period AI credit usage for the named memberships."""
+        identities = _required_user_ids(user_ids)
+        return self._run_observer_json(
+            ("ai", "credit-usage-users-read", "--body", "-"),
+            stdin=json.dumps(
+                {"userIds": identities}, separators=(",", ":"), sort_keys=True
+            ),
+        )
+
     def run_query_json(self, query: Mapping[str, Any]) -> list[dict[str, Any]]:
         """Rerun one semantic query as raw JSON without formatting or cache reuse."""
         semantic_query = _query_with_model(query, self._settings.model_id)
@@ -260,16 +271,18 @@ class OmniCliClient:
             raise OmniCliError("Omni CLI JSON response must be an object")
         return value
 
-    def _run_observer_json(self, command: Sequence[str]) -> dict[str, Any]:
+    def _run_observer_json(
+        self, command: Sequence[str], *, stdin: str | None = None
+    ) -> dict[str, Any]:
         for delay in self._observer_retry_schedule:
             try:
-                return self._run_json(command)
+                return self._run_json(command, stdin=stdin)
             except _OmniHttp429Error:
                 self._sleep(delay)
                 self._observer_retry_count += 1
                 self._observer_retry_wait_ms += delay * 1000
         try:
-            return self._run_json(command)
+            return self._run_json(command, stdin=stdin)
         except _OmniHttp429Error as error:
             wait_ms = f"{self._observer_retry_wait_ms:g}"
             raise OmniCliError(
@@ -396,6 +409,24 @@ def _required_job_id(value: object) -> str:
     if not isinstance(value, str) or JOB_ID_PATTERN.fullmatch(value) is None:
         raise OmniCliError("job_id must be a bounded identifier")
     return value
+
+
+def _required_user_ids(value: object) -> list[str]:
+    if (
+        not isinstance(value, Sequence)
+        or isinstance(value, (str, bytes))
+        or not value
+        or any(
+            not isinstance(user_id, str)
+            or MEMBERSHIP_ID_PATTERN.fullmatch(user_id) is None
+            for user_id in value
+        )
+    ):
+        raise OmniCliError("user_ids must be a non-empty list of membership IDs")
+    identities = list(value)
+    if len(set(identities)) != len(identities):
+        raise OmniCliError("user_ids must not repeat a membership ID")
+    return identities
 
 
 def _query_with_model(query: Mapping[str, Any], model_id: str) -> dict[str, Any]:
