@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 """Put C5 on the same dev-A questions as every other condition.
 
-The direct conditions were frozen over 18 databases and the governed conditions
-over the 16 with verified deployments, and the direct freeze is itself missing
-14 dev-A questions, so no two of these arms were scored on the same question set.
+dev-A is 154 questions over 18 databases, and neither arm covers all of it. The
+governed frame excludes 18 questions - every question on mental_healths_large and
+organ_transplant_large - under the scorer-conformance manifest, whose disposition is
+scheduled_but_unscorable and whose failure class is gold_statement_error, leaving 136
+over 16 databases. The direct freeze covers a different 140, missing all 14 questions
+on archeology_scan_large and cybermarket_pattern_large. The two dropped database pairs
+are disjoint, so the frames union back to all 154 and intersect at 122 over 14
+databases; no two of these arms were scored on the same question set.
+
 `derive` narrows a frozen selection to the intersection of the governed
 execution frame and the direct freeze, which lets one scorer run per selection
 produce C1, C2, C3, C4, and C5 aggregates over identical questions. `report`

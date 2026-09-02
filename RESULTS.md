@@ -641,10 +641,16 @@ recoverable sidecars. All 26 were classified `evaluated_system_failure`, so ever
 one counts against C5 as a candidate execution error rather than being set aside
 as infrastructure.
 
-The five conditions have never shared a question set: the direct arms were
-frozen over 18 databases and the governed arms over the 16 with verified
-deployments, and the direct freeze is itself missing 14 dev-A questions. On the
-122-question intersection where all five can be compared directly:
+The five conditions have never shared a question set. dev-A is 154 questions over
+18 databases. The governed arms drop 18 of them, every question on
+`mental_healths_large` and `organ_transplant_large`, excluded by the
+scorer-conformance manifest as `scheduled_but_unscorable` with failure class
+`gold_statement_error` because neither frozen scorer can score them, leaving 136
+over 16 databases. The direct freeze covers a different 140, missing all 14
+questions on `archeology_scan_large` and `cybermarket_pattern_large`. The two
+dropped database pairs are disjoint, so the frames union back to all 154 and
+intersect at 122 questions over 14 databases. On that intersection, where all five
+can be compared directly:
 
 | Condition | Official Soft EX | Sensitivity |
 | --- | --- | --- |
