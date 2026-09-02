@@ -1,0 +1,81 @@
+# Reference this view as neondb_telemetry__trace_event
+label: Trace event
+description: Ordered trace events per attempt (seq), with per-event durations and telemetry deltas.
+catalog: neondb
+schema: telemetry
+table_name: trace_event
+
+dimensions:
+  attempt_id:
+    description: Attempt the event belongs to.
+    format: ID
+  generation_record_sha256:
+    description: SHA-256 of the generation record.
+  seq:
+    description: Event sequence number within the attempt.
+  timestamp:
+    description: Event timestamp.
+  component:
+    description: Component that emitted the event.
+  event_type:
+    description: Event type.
+  tool_name:
+    description: Tool name for tool events.
+  status:
+    description: Event status.
+  failure_class:
+    description: Failure class for failed events.
+  duration_ms:
+    description: Event duration in milliseconds.
+  elapsed_ms:
+    description: Elapsed time since attempt start in milliseconds.
+  input_tokens:
+    description: Input tokens attributed to the event.
+  output_tokens:
+    description: Output tokens attributed to the event.
+  model:
+    description: Model used by the event.
+  provider:
+    description: Provider used by the event.
+  retry_delta:
+    description: Retries added by the event.
+  tool_call_delta:
+    description: Tool calls added by the event.
+  database_query_delta:
+    description: Database queries added by the event.
+  validation_attempt_delta:
+    description: Validation attempts added by the event.
+  metadata_sha256:
+    description: SHA-256 of the event metadata.
+
+measures:
+  events:
+    aggregate_type: count
+    description: Number of trace events.
+  total_duration_ms:
+    aggregate_type: sum
+    description: Sum of duration_ms.
+    sql: ${neondb_telemetry__trace_event.duration_ms}
+  mean_duration_ms:
+    aggregate_type: average
+    description: Mean duration_ms.
+    sql: ${neondb_telemetry__trace_event.duration_ms}
+  tool_calls:
+    aggregate_type: sum
+    description: Sum of tool_call_delta.
+    sql: ${neondb_telemetry__trace_event.tool_call_delta}
+  database_queries:
+    aggregate_type: sum
+    description: Sum of database_query_delta.
+    sql: ${neondb_telemetry__trace_event.database_query_delta}
+  retries:
+    aggregate_type: sum
+    description: Sum of retry_delta.
+    sql: ${neondb_telemetry__trace_event.retry_delta}
+
+custom_compound_primary_key_sql:
+  [
+    "${neondb_telemetry__trace_event.attempt_id}",
+    "${neondb_telemetry__trace_event.generation_record_sha256}",
+    "${neondb_telemetry__trace_event.seq}"
+  ]

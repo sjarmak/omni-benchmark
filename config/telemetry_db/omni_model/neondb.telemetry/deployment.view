@@ -1,0 +1,44 @@
+# Reference this view as neondb_telemetry__deployment
+label: Deployment
+description: One row per semantic-model deployment per database, with the Omni branch it landed on.
+catalog: neondb
+schema: telemetry
+table_name: deployment
+
+dimensions:
+  deployment_id:
+    description: Deployment identifier.
+    format: ID
+  database:
+    description: LiveSQLBench database the bundle was deployed for.
+  connection_id:
+    description: Omni connection id.
+    format: ID
+  branch_id:
+    description: Omni branch id.
+    format: ID
+  branch_name:
+    description: Omni branch name.
+  file_count:
+    description: Number of YAML files in the deployed bundle.
+  failure_stage:
+    description: Stage at which the deployment failed, NULL on success.
+  failure_detail:
+    description: Failure detail, NULL on success.
+  file_sha256:
+    description: JSON map of file name to SHA-256.
+
+measures:
+  deployments:
+    aggregate_type: count
+    description: Number of deployment rows.
+  failed_deployments:
+    aggregate_type: count
+    description: Deployment rows with a failure_stage.
+    sql: ${neondb_telemetry__deployment.failure_stage}
+
+custom_compound_primary_key_sql:
+  [
+    "${neondb_telemetry__deployment.deployment_id}",
+    "${neondb_telemetry__deployment.database}"
+  ]

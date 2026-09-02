@@ -1,0 +1,10 @@
+base_view: neondb_telemetry__sealed_aggregate
+label: Sealed aggregate
+description: Published sealed-test rates per scorer and condition from aggregate.json.
+fields:
+- neondb_telemetry__sealed_aggregate.*
+joins: {}
+ai_context: >-
+  Report both scorers side by side; the rows are published values, not
+  recomputed. This topic does not join to neondb_telemetry__run: its run_id is
+  the preserved sealed evaluation root, not a telemetry.run key.

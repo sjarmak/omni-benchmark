@@ -1,0 +1,5 @@
+base_view: neondb_telemetry__deployment
+label: Deployment
+description: Semantic-model deployments per database and Omni branch.
+fields:
+- neondb_telemetry__deployment.*

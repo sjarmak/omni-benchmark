@@ -1,0 +1,40 @@
+- join_from_view: neondb_telemetry__attempt
+  join_to_view: neondb_telemetry__run
+  join_type: always_left
+  on_sql: ${neondb_telemetry__attempt.run_id} = ${neondb_telemetry__run.run_id}
+  relationship_type: many_to_one
+- join_from_view: neondb_telemetry__attempt
+  join_to_view: neondb_telemetry__question
+  join_type: always_left
+  on_sql: ${neondb_telemetry__attempt.instance_id} = ${neondb_telemetry__question.instance_id}
+  relationship_type: many_to_one
+- join_from_view: neondb_telemetry__attempt
+  join_to_view: neondb_telemetry__score
+  join_type: always_left
+  on_sql: ${neondb_telemetry__attempt.attempt_id} = ${neondb_telemetry__score.attempt_id} AND ${neondb_telemetry__attempt.generation_record_sha256} = ${neondb_telemetry__score.generation_record_sha256}
+  relationship_type: one_to_many
+- join_from_view: neondb_telemetry__attempt
+  join_to_view: neondb_telemetry__attempt_scored
+  join_type: always_left
+  on_sql: ${neondb_telemetry__attempt.attempt_id} = ${neondb_telemetry__attempt_scored.attempt_id} AND ${neondb_telemetry__attempt.generation_record_sha256} = ${neondb_telemetry__attempt_scored.generation_record_sha256}
+  relationship_type: one_to_one
+- join_from_view: neondb_telemetry__attempt
+  join_to_view: neondb_telemetry__attempt_label_latest
+  join_type: always_left
+  on_sql: ${neondb_telemetry__attempt.attempt_id} = ${neondb_telemetry__attempt_label_latest.attempt_id} AND ${neondb_telemetry__attempt.generation_record_sha256} = ${neondb_telemetry__attempt_label_latest.generation_record_sha256}
+  relationship_type: one_to_many
+- join_from_view: neondb_telemetry__attempt
+  join_to_view: neondb_telemetry__dev_a_frame
+  join_type: always_left
+  on_sql: ${neondb_telemetry__attempt.instance_id} = ${neondb_telemetry__dev_a_frame.instance_id}
+  relationship_type: many_to_one
+- join_from_view: neondb_telemetry__trace_event
+  join_to_view: neondb_telemetry__attempt
+  join_type: always_left
+  on_sql: ${neondb_telemetry__trace_event.attempt_id} = ${neondb_telemetry__attempt.attempt_id} AND ${neondb_telemetry__trace_event.generation_record_sha256} = ${neondb_telemetry__attempt.generation_record_sha256}
+  relationship_type: many_to_one
+- join_from_view: neondb_telemetry__trace_event
+  join_to_view: neondb_telemetry__action_evidence
+  join_type: always_left
+  on_sql: ${neondb_telemetry__trace_event.attempt_id} = ${neondb_telemetry__action_evidence.attempt_id} AND ${neondb_telemetry__trace_event.generation_record_sha256} = ${neondb_telemetry__action_evidence.generation_record_sha256} AND ${neondb_telemetry__trace_event.seq} = ${neondb_telemetry__action_evidence.trace_seq}
+  relationship_type: one_to_one

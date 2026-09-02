@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "description": "Arm assignment for dev-A generation runs under experiments/autoresearch/raw. Keys are the run_id carried by each generation record. arm: a fixed arm label, or null to reuse the record's condition. canonical: true only for the run that experiments/trace_viewer/collect.py joins for that arm (GENERATION_RUNS and CONDITIONS). Runs absent from this file load with arm = condition and canonical = false.",
+  "runs": {
+    "public-baseline-v1-direct-16db": {"arm": null, "canonical": true},
+    "public-baseline-v1-direct-16db-continuation-1": {"arm": null, "canonical": true},
+    "public-c4-baseline-v8": {"arm": "C4", "canonical": true},
+    "c5-dev-a-v4": {"arm": "C5", "canonical": true},
+    "e02-dev-a-v6": {"arm": "E02", "canonical": false}
+  }
+}

@@ -1,0 +1,37 @@
+# Reference this view as neondb_telemetry__attempt_label_latest
+label: Attempt label (latest)
+description: >-
+  Latest label per attempt, labeler and taxonomy version from the append-only
+  attempt_label table. Category is a versioned judgment, not a loader field.
+catalog: neondb
+schema: telemetry
+table_name: attempt_label_latest
+
+dimensions:
+  label_id:
+    description: Label identifier.
+    format: ID
+    primary_key: true
+  attempt_id:
+    description: Labeled attempt (join key to attempt).
+    format: ID
+  generation_record_sha256:
+    description: SHA-256 of the labeled generation record.
+  taxonomy_version:
+    description: Failure taxonomy version the category belongs to.
+  category:
+    description: Assigned failure category.
+  labeler:
+    description: Who assigned the label (human id or classifier pass).
+  rationale:
+    description: Free-text rationale.
+  created_at:
+    description: When the label was written.
+  pass_id:
+    description: Label pass identifier.
+    format: ID
+
+measures:
+  labels:
+    aggregate_type: count
+    description: Number of latest labels.

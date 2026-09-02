@@ -1,0 +1,45 @@
+base_view: neondb_telemetry__attempt
+label: Attempt scored (dev-A)
+description: >-
+  Dev-A accuracy, failure and cost analysis. Attempts joined to both frozen
+  scorers, the public question, the run, the latest labels and the
+  attempt_scored view (scorer-disagreement flip rate). Defaults to
+  partition dev-a because only dev-A attempts carry scores.
+fields:
+- neondb_telemetry__attempt.*
+- neondb_telemetry__score.*
+- neondb_telemetry__question.*
+- neondb_telemetry__run.*
+- neondb_telemetry__attempt_label_latest.*
+- neondb_telemetry__attempt_scored.*
+- neondb_telemetry__dev_a_frame.*
+joins:
+  neondb_telemetry__score: {}
+  neondb_telemetry__question: {}
+  neondb_telemetry__run: {}
+  neondb_telemetry__attempt_label_latest: {}
+  neondb_telemetry__attempt_scored: {}
+  neondb_telemetry__dev_a_frame: {}
+default_filters:
+  neondb_telemetry__attempt.partition:
+    is: dev-a
+ai_context: >-
+  Report official_accuracy and sensitivity_accuracy together; never pick one.
+  Group by neondb_telemetry__attempt.arm, not run.arm, because multi-condition
+  runs have a NULL run arm. When comparing accuracy across arms, filter
+  neondb_telemetry__dev_a_frame.in_official_frame to true (or
+  in_sensitivity_frame for the sensitivity scorer). Without that filter each
+  arm gets its own denominator and the arms are not comparable, because the
+  arms did not all run the same questions. The frames are 122 questions
+  official and 121 sensitivity. A NULL outcome means the scorer could not
+  evaluate the question at all, because the benchmark's own reference query
+  fails against the pinned public databases or its result exceeds the
+  sensitivity row cap; it is a benchmark-input defect, never a failure of the
+  evaluated system, and such rows are excluded from every denominator.
+  neondb_telemetry__attempt_scored.cost_per_official_correct is the cost of
+  official-scored attempts per correct answer; it is NULL for arms without
+  priced cost (C4, C5, E02). Cost for those arms is structurally unavailable
+  because the Omni AI job API reports no cost or credit figure per job. Never
+  estimate it from token counts: the arms bill through a different provider and
+  the records carry no cache breakdown, so a token rate card misprices even the
+  arms it is fitted on.

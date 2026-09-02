@@ -1,0 +1,35 @@
+# Reference this view as neondb_telemetry__action_evidence
+label: Action evidence
+description: Retrieval and exploratory-SQL evidence attached to a trace event (trace_seq).
+catalog: neondb
+schema: telemetry
+table_name: action_evidence
+
+dimensions:
+  attempt_id:
+    description: Attempt the evidence belongs to.
+    format: ID
+  generation_record_sha256:
+    description: SHA-256 of the generation record.
+  trace_seq:
+    description: Sequence number of the trace event this evidence belongs to.
+  tool_name:
+    description: Tool that produced the evidence.
+  retrieval_query:
+    description: Retrieval query text.
+  retrieved_public_ids:
+    description: JSON list of retrieved public ids.
+  exploratory_sql:
+    description: Exploratory SQL the agent ran.
+
+measures:
+  evidence_rows:
+    aggregate_type: count
+    description: Number of evidence rows.
+
+custom_compound_primary_key_sql:
+  [
+    "${neondb_telemetry__action_evidence.attempt_id}",
+    "${neondb_telemetry__action_evidence.generation_record_sha256}",
+    "${neondb_telemetry__action_evidence.trace_seq}"
+  ]

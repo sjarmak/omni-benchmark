@@ -1,0 +1,145 @@
+# Reference this view as neondb_telemetry__score
+label: Score
+description: >-
+  One row per attempt per frozen scorer (official_soft_ex and sensitivity),
+  dev-A only. Both scorers are always reported; never pick one after seeing
+  results (docs/scoring.md). Outcome is correct, wrong_answer, or
+  refused_or_error; status is scored or unscorable.
+catalog: neondb
+schema: telemetry
+table_name: score
+
+dimensions:
+  attempt_id:
+    description: Attempt identifier (join key to attempt).
+    format: ID
+  generation_record_sha256:
+    description: SHA-256 of the generation record that was scored.
+  scorer:
+    description: 'Frozen scorer: official_soft_ex (benchmark-comparable) or sensitivity (prespecified sensitivity analysis).'
+  scorer_version:
+    description: Frozen scorer version string.
+  outcome:
+    description: 'Scorer outcome: correct, wrong_answer, refused_or_error. NULL when status is unscorable, which is a benchmark-input defect and never a failure of the evaluated system.'
+  status:
+    description: 'scored, or unscorable when the benchmark reference query itself could not be evaluated against the pinned public databases. Unscorable rows are excluded from every accuracy denominator; 18 of 154 dev-A questions are unscorable.'
+  failure_category:
+    description: Why a scored attempt was not correct (candidate_execution_error, agent_refusal, no_query, gold_statement_error, gold_result_overflow).
+  score_artifact_sha256:
+    description: SHA-256 of the immutable score artifact.
+
+measures:
+  score_rows:
+    aggregate_type: count
+    description: Score rows (two per scored attempt, one per scorer).
+  official_scored_attempts:
+    aggregate_type: count
+    description: official_soft_ex rows with status scored (accuracy denominator).
+    filters:
+      neondb_telemetry__score.scorer:
+        is: official_soft_ex
+      neondb_telemetry__score.status:
+        is: scored
+  official_unscorable_attempts:
+    aggregate_type: count
+    description: official_soft_ex rows with status unscorable.
+    filters:
+      neondb_telemetry__score.scorer:
+        is: official_soft_ex
+      neondb_telemetry__score.status:
+        is: unscorable
+  official_correct_count:
+    aggregate_type: count
+    description: official_soft_ex rows with outcome correct.
+    filters:
+      neondb_telemetry__score.scorer:
+        is: official_soft_ex
+      neondb_telemetry__score.outcome:
+        is: correct
+  official_wrong_count:
+    aggregate_type: count
+    description: official_soft_ex rows with outcome wrong_answer.
+    filters:
+      neondb_telemetry__score.scorer:
+        is: official_soft_ex
+      neondb_telemetry__score.outcome:
+        is: wrong_answer
+  official_refused_or_error_count:
+    aggregate_type: count
+    description: official_soft_ex rows with outcome refused_or_error.
+    filters:
+      neondb_telemetry__score.scorer:
+        is: official_soft_ex
+      neondb_telemetry__score.outcome:
+        is: refused_or_error
+  official_accuracy:
+    description: official_correct_count divided by official_scored_attempts.
+    sql: ${neondb_telemetry__score.official_correct_count} * 1.0 / NULLIF(${neondb_telemetry__score.official_scored_attempts}, 0)
+    format: PERCENT_2
+  official_wrong_rate:
+    description: official_wrong_count divided by official_scored_attempts.
+    sql: ${neondb_telemetry__score.official_wrong_count} * 1.0 / NULLIF(${neondb_telemetry__score.official_scored_attempts}, 0)
+    format: PERCENT_2
+  official_refused_or_error_rate:
+    description: official_refused_or_error_count divided by official_scored_attempts.
+    sql: ${neondb_telemetry__score.official_refused_or_error_count} * 1.0 / NULLIF(${neondb_telemetry__score.official_scored_attempts}, 0)
+    format: PERCENT_2
+  sensitivity_scored_attempts:
+    aggregate_type: count
+    description: sensitivity rows with status scored (accuracy denominator).
+    filters:
+      neondb_telemetry__score.scorer:
+        is: sensitivity
+      neondb_telemetry__score.status:
+        is: scored
+  sensitivity_unscorable_attempts:
+    aggregate_type: count
+    description: sensitivity rows with status unscorable.
+    filters:
+      neondb_telemetry__score.scorer:
+        is: sensitivity
+      neondb_telemetry__score.status:
+        is: unscorable
+  sensitivity_correct_count:
+    aggregate_type: count
+    description: sensitivity rows with outcome correct.
+    filters:
+      neondb_telemetry__score.scorer:
+        is: sensitivity
+      neondb_telemetry__score.outcome:
+        is: correct
+  sensitivity_wrong_count:
+    aggregate_type: count
+    description: sensitivity rows with outcome wrong_answer.
+    filters:
+      neondb_telemetry__score.scorer:
+        is: sensitivity
+      neondb_telemetry__score.outcome:
+        is: wrong_answer
+  sensitivity_refused_or_error_count:
+    aggregate_type: count
+    description: sensitivity rows with outcome refused_or_error.
+    filters:
+      neondb_telemetry__score.scorer:
+        is: sensitivity
+      neondb_telemetry__score.outcome:
+        is: refused_or_error
+  sensitivity_accuracy:
+    description: sensitivity_correct_count divided by sensitivity_scored_attempts.
+    sql: ${neondb_telemetry__score.sensitivity_correct_count} * 1.0 / NULLIF(${neondb_telemetry__score.sensitivity_scored_attempts}, 0)
+    format: PERCENT_2
+  sensitivity_wrong_rate:
+    description: sensitivity_wrong_count divided by sensitivity_scored_attempts.
+    sql: ${neondb_telemetry__score.sensitivity_wrong_count} * 1.0 / NULLIF(${neondb_telemetry__score.sensitivity_scored_attempts}, 0)
+    format: PERCENT_2
+  sensitivity_refused_or_error_rate:
+    description: sensitivity_refused_or_error_count divided by sensitivity_scored_attempts.
+    sql: ${neondb_telemetry__score.sensitivity_refused_or_error_count} * 1.0 / NULLIF(${neondb_telemetry__score.sensitivity_scored_attempts}, 0)
+    format: PERCENT_2
+
+custom_compound_primary_key_sql:
+  [
+    "${neondb_telemetry__score.attempt_id}",
+    "${neondb_telemetry__score.generation_record_sha256}",
+    "${neondb_telemetry__score.scorer}"
+  ]

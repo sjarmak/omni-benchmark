@@ -14183,3 +14183,274 @@ provider call, evaluated attempt, result, correctness value, dev-B data, sealed
 data, commit, or push was created or accessed. The map is evidence from one
 outcome-blind agent classification workflow, not human agreement, domain
 authority, manual-review effort, or Omni Modeling Agent quality.
+
+## 2026-09-02 — Telemetry database: evidence queryable through Omni (epic omni-benchmark-6v9)
+
+### Hypothesis
+
+Tuning, observability-gap, and failure-classification questions are answered
+today by one-off analysis scripts over 10k artifact files. If the same evidence
+sits in a relational star (attempt grain, both scorers, trace events, action
+evidence, versioned labels) behind an Omni model, those questions become
+ad-hoc queries, and the Omni model itself becomes a second product surface to
+study. The custody boundary is preserved by construction: dev-A loads with
+correctness, sealed C1-C4 loads telemetry and published aggregates only, and
+per-attempt sealed correctness has no load path.
+
+### Decisions and provisioning
+
+Four forks were ratified through a structured interview and recorded in
+`docs/telemetry-db-plan.md`: custody scope, isolated Neon host, git-ledgered
+labels, hand-authored Omni model. A separate Neon project
+`falling-fog-46720631` and Omni connection
+`a511399c-aa51-4f51-b00a-6845d767687b` were created with the two CLIs
+(identifiers in `docs/database-setup.md`, no secrets). Schema and loader are
+being built under a review-and-refute workflow; the acceptance gate is exact
+agreement between database aggregates and the frozen JSON outputs under
+`experiments/analysis/` before any Omni measure is trusted.
+
+### Reconciliation gate (omni-benchmark-6v9.6)
+
+Hypothesis: load `load-2026-09-02-v1` reproduces, from SQL over public telemetry
+columns alone, every aggregate the frozen analysis artifacts publish, so the
+database can be trusted as the evidence source behind the Omni model.
+
+Method: `scripts/reconcile_telemetry_db.py` (logic in
+`src/omni_benchmark/telemetry_db/reconcile.py`, `reconcile_observed.py`, and
+`reconcile_stats.py`) projects each frozen artifact onto the values the database
+can reproduce, recomputes them from `telemetry.attempt`, `telemetry.score`, and
+`telemetry.sealed_aggregate`, and compares leaf by leaf: counts and strings
+exact, six-decimal rates, costs, and medians within an absolute 1e-6. The
+matched dev-A frame is reproduced as the set of instances with a non-null
+verdict for the scorer in all five arms C1 to C5 (122 official, 121
+sensitivity), the same intersection `experiments/trace_viewer/collect.py` takes
+over the score artifacts. Tukey quartiles, cost totals, and shares use the same
+rounding as the producing scripts.
+
+| Group | Checks | Matched | Failed | Aggregates reproduced |
+| --- | --- | --- | --- | --- |
+| dev_a_frame | 50 | 50 | 0 | c5-matched-122-comparison-v1: correct, wrong_answer, refused_or_error, scoreable_attempts, accuracy_percent per scorer and arm (official C1 9/80/33, C2 29/91/2, C3 16/74/32, C4 5/83/34, C5 13/85/24 of 122; sensitivity on 121) |
+| matched_122_rollup | 163 | 163 | 0 | matched-122-cost-time-rollup-v1: attempts, official_correct, measured spend (C1 161.848775, C2 181.990381, C3 195.074372 USD; medians; cost per correct answer 17.983197, 6.27553, 12.192148), wall-time hours and medians, Tukey distributions of latency, tokens, and cost for all five arms; frame question_count 122 |
+| sealed_telemetry | 352 | 352 | 0 | sealed-telemetry-summary-v2: per condition attempt_count 267, repetitions 89 x 3, outcomes, refusal, model identities, failure origins and classes, sources, declared_unavailable, latency and token Tukey, tool and query medians, cost (C1 381.277875, C2 506.659498, C3 491.70421, C4 unavailable), outcome resource medians |
+| sealed_aggregate | 144 | 144 | 0 | aggregate.json for official_soft_ex and sensitivity: correct, wrong_answer, refused_or_error, mean_accuracy, pass_3_rate, wrong_rate, refused_or_error_rate, error_rate, correctness_flip_rate, scoreable_attempts per condition from sealed_aggregate; generation_outcomes and terminal_failure_classes recounted from attempt rows |
+| correctness_matrix | 65 | 65 | 0 | sealed-correctness-matrix-v1 arm_summary pooled counts and percent per scorer and condition (official C1 27, C2 59, C3 23, C4 23 of 267); terminal_failure_classes including `none` |
+| c5_telemetry_comparison | 236 | 236 | 0 | c5-telemetry-comparison-v1: 136 matched (instance, repetition) coordinates between public-c4-baseline-v8 and c5-dev-a-v4; outcomes, models, token and cost sources, all-attempt and answered-attempt distributions |
+| query_path_tally | 108 | 108 | 0 | governed-query-path-tally-v2: six arms, attempts, parseable, seven shape counters, semantic_token_total, shares; the Python regexes ported to Postgres ARE |
+
+Total: 1118 checks, 1118 matched, 0 mismatches. Report:
+`experiments/analysis/telemetry-db-reconciliation-v1.json`. Load reconciled:
+`load-2026-09-02-v1` (system_commit NULL, loaded with `--allow-dirty-tree`). No
+loader or reader defect surfaced, so no reload was performed.
+
+Differences that are real but not mismatches:
+
+- Arm C4 on dev-A holds 137 attempts, not 136. `archeology-vertical-v1`
+  (non-canonical, `manifest.arm.canonical` false) contributes one attempt with
+  `arm = condition = C4`. It has no score row, so the scored frame, the
+  run-scoped comparison, and the tally exclude it; a query that groups dev-A by
+  `arm` alone counts it. Filter on `run.manifest->'arm'->>'canonical'` or on
+  `run_id` when an arm-level figure must match a frozen artifact.
+- Cost totals: the database sum is exact (C1 381.2778745) and the artifact
+  publishes six decimals (381.277875); the comparison rounds the observed side
+  the same way and agrees within 1e-6.
+- The governed arms' cost in the rollup (0.6839 USD per attempt, 83.4358 per
+  arm) is an arm-level credit estimate, not a stored value. The database
+  reproduces `spend.coverage = 0` and `cost_usd.missing = 122` for C4 and C5;
+  the estimate itself is not a database check.
+- Per-repetition sealed correctness (r1, r2, r3 in the matrix and
+  `per_repetition_accuracy` in aggregate.json) is not reproducible: per-cohort
+  sealed score files are never loaded by design. Pooled counts and published
+  rates come from `sealed_aggregate`, which mirrors aggregate.json by
+  construction; the independent evidence in that group is the outcome and
+  failure-class recount from `attempt`.
+- The tally artifact records arm labels only. The label-to-run mapping
+  (dev-a-c4 = public-c4-baseline-v8, dev-a-c5 = c5-dev-a-v4, dev-a-e02 =
+  e02-dev-a-v6, sealed-c4 = sealed-c4-r1, sealed-c4-r2, sealed-c4-r3) is fixed in
+  `reconcile.py` and confirmed by the attempt and parseable counts.
+
+Tests: `tests/test_telemetry_db_reconcile.py` (10 passed) loads a synthetic
+dataset through `upsert_rows` and asserts both a passing and a failing
+reconciliation. Verification gate status: met for this load.
+
+
+### Model deployed and questioned in words (omni-benchmark-6v9.5)
+
+Hypothesis: a hand-authored semantic model over the reconciled telemetry
+database lets a benchmark question be asked in English and answered from the
+same numbers the frozen artifacts publish, with no SQL and no per-question
+hand-holding.
+
+Method: 18 YAML files under `config/telemetry_db/omni_model/` (10 views, a
+relationships file, model AI context, 5 topics) deployed through the omni CLI
+verbs `models create`, `create-branch`, `yaml-create`, `validate`,
+`merge-branch`, driven by `scripts/deploy_telemetry_omni_model.py` (dry-run by
+default). Shared model `5a1dcadb-0cfa-4b0f-b660-48ce2e84bc41` on connection
+`a511399c-aa51-4f51-b00a-6845d767687b`; merged branch `telemetry-model-v6`.
+Measures carry the scoring semantics of `docs/scoring.md`: both frozen scorers
+are always available and never chosen between, correctness is dev-A only, and
+arm comes from `attempt.arm` because `run.arm` is null on the two
+multi-condition runs.
+
+Result: `models validate` returned no issues. Seven field-level demo queries and
+four natural-language questions through `omni ai job-submit` all reproduce psql
+ground truth exactly (queries and answers in `docs/telemetry-db-plan.md`). The
+model answered "which arm has the highest official accuracy and what is its cost
+per correct answer" with C2 at 23.77 percent and 6.28 USD per correct answer,
+matching `matched-122-cost-time-rollup-v1.json`, and volunteered the sensitivity
+figure beside it rather than picking a scorer.
+
+Review: a four-lens review with three-vote adversarial refutation produced 19
+findings; 16 were confirmed and applied, 3 were refuted. The one finding above
+`low` was a dead join: the model declared a `sealed_aggregate` to `run`
+relationship that matches zero rows, because `sealed_aggregate.run_id` is the
+preserved evaluation root `sealed-final-v6` while `run` holds only the twelve
+cohort runs. It was removed in `telemetry-model-v6` and the dimension
+description now says so.
+
+Two observations the database surfaced that no frozen artifact reports:
+
+- 54 official and 60 sensitivity score rows carry a null outcome, all in C1, C2
+  and C3, 18 per arm per scorer. Their median latency is 74 to 88 seconds
+  against 36 to 52 seconds for scored-and-wrong attempts, and 50 of the 54 carry
+  a terminal failure class. Scored-but-no-verdict is currently indistinguishable
+  from absent in the accuracy denominator.
+- Effort and correctness move in opposite directions in every arm and under both
+  scorers. Correct attempts are 40 to 50 percent faster at the median and use the
+  same or fewer tool calls, so failure looks like long tool-heavy flailing rather
+  than under-exploration.
+
+Neither observation changes a frozen result. Both are candidates for the next
+telemetry round, together with the one hard gap the model found: cost is null for
+every C4, C5 and E02 attempt, reason `omni_job_api_does_not_expose_cost`, so cost
+per correct answer cannot be computed for the governed arms at all.
+
+Tests: 154 telemetry-database tests plus 16 deploy-script tests pass at 94
+percent branch coverage; the full suite passes at 2775 tests with the one
+pre-existing R2 workspace test deselected.
+
+### The matched frame is now expressible in the model (omni-benchmark-6v9.7)
+
+Hypothesis: the null-outcome score rows are dropped silently from the accuracy
+denominator, so the model can overstate or understate an arm.
+
+The hypothesis was wrong on its own terms and right about the consequence.
+Every null-outcome dev-A score row carries `status = unscorable` and a failure
+category: `gold_statement_error` for 54 official and 54 sensitivity rows, and
+`gold_result_overflow` for 6 sensitivity rows. The statement errors are
+PostgreSQL 42P01, undefined table: all nine `mental_healths_large` and all nine
+`organ_transplant_large` questions reference relations the pinned public restore
+omits, so the benchmark's own reference query cannot run. The overflow rows are
+one `polar_equipment_large` question whose reference result exceeds the
+sensitivity scorer's frozen 10,000-row cap. The 18 affected instances are
+identical across C1, C2 and C3 and absent from C4, C5 and E02. This is a
+benchmark-input defect, never a failure of the evaluated system, and excluding
+it from the denominator was already frozen under `omni-benchmark-ei0.3.1`.
+
+The real defect was that the Omni model had no way to express the matched frame.
+Asked to compare arms, the AI divided by 136 for every arm, which is neither the
+frame nor any arm's true denominator. Fixed by adding `telemetry.dev_a_frame`, a
+view that marks each dev-A instance in or out of each scorer's frame using the
+same rule the reconciliation applies independently: a verdict in all five of C1
+to C5. The live view returns 122 official and 121 sensitivity of 154, and
+`tests/test_telemetry_db_reconcile.py` now asserts the view and
+`reconcile_observed.FRAME_ROWS_SQL` select the same instances, so the two
+definitions cannot drift apart silently. Omni's schema cache required an
+explicit `models refresh` before validation would accept the new view.
+
+Result: re-asked after the deployment, the AI returned C2 29, C3 16, C5 13, C1 9
+and C4 5 correct on 122 scored, which matches the frozen reconciliation exactly.
+It also noted without prompting that E02 sits outside the C1 to C5 frame, and
+refused to estimate governed-arm cost.
+
+### Governed-arm cost cannot be recovered, only stated (omni-benchmark-6v9.8)
+
+Hypothesis: cost for C4, C5 and E02 could be reconstructed from token counts and
+a published rate card, or read from another Omni surface.
+
+Both were tested and rejected. Within a single priced arm the implied dollars
+per million input tokens spans 0.775 to 22.0, so no single rate exists to apply;
+an in-sample pooled rate model is off by 13.9 percent at the median, 30.0
+percent at p90 and 811.7 percent at worst, and that is before the two structural
+problems: the governed arms bill through Bedrock while the priced arms bill
+through Claude Code OAuth, and no cache-read breakdown exists anywhere in
+`token_usage`. On the second path, `ai job-status`, `ai job-result` and `ai
+conversation-detail` carry no cost, credit or token field at all; the only meter
+is `ai credit-controls-get`, which is org-wide, denominated in credits, and
+scoped to the current billing period, so it cannot be attributed to an attempt.
+
+Result: the gap is stated rather than filled. `cost_per_official_correct` was
+already null-guarded on both operands; the model and topic AI context now say
+that cost is unavailable by construction for C4, C5 and E02 and must never be
+estimated from token counts. A later query confirmed the AI now says so itself.
+
+### A third no-verdict class the frozen artifacts do not report
+
+Asked in English what a missing verdict means, the model separated two cases the
+plan had treated as one. Beyond the 18 scored-but-unscorable rows, 110 dev-A
+attempts have no score row at all: C1 34, C2 28, C3 28, C4 1, E02 19. Verified
+against the database, 91 carry `failure_origin = evaluated_system` (65
+`model_setup_error`, 9 `model_auth_error`, 2 `agent_refusal`, 1
+`response_contract_error`), 19 carry `failure_origin = benchmark_infrastructure`
+in E02, and 14 answered but were never scored. Eight of those 14 are superseded
+duplicates on instances that were scored anyway. The remaining six are all
+`archeology_scan_3`, which has zero scored attempts in C1, C2 and C3 and is
+therefore outside both matched frames, so no reported number is affected.
+Tracked as `omni-benchmark-6v9.10`: these attempts belong in a reliability
+figure split by failure origin, not in an accuracy table and not nowhere.
+
+### Failure-classification labeling pass (omni-benchmark-6v9.9)
+
+Hypothesis: `failure-taxonomy-v1` can be applied at scale to dev-A failures from
+public evidence alone, and the resulting labels turn "which arm is more accurate"
+into "which mechanism fails, where".
+
+Method: `src/omni_benchmark/telemetry_db/label_context.py` packages one
+evidence record per attempt from an explicit column allowlist, never
+`generation_record` wholesale, and refuses any instance outside the dev-A split
+before a prompt is written. Repeated evidence fields are de-duplicated and
+sampled at 40 values with the full count kept beside the sample, so truncation
+is visible to the labeler rather than silent. Cohort: every scored dev-A attempt
+whose official outcome is `wrong_answer` or `refused_or_error` across C1 to C5
+and E02, a census of 663 attempts, not a sample. The 110 attempts with no score
+row are outside the cohort by construction, and the 18 unscorable questions are
+excluded because their defect is on the benchmark's side. Labels are assigned by
+model, one category and a rationale per attempt, and appended to the git-tracked
+ledger through the dev-A custody guard in `scripts/label_attempt.py`.
+
+Result: 48 labeler agents covered all 663 attempts, one label each, no gaps and
+no duplicates; ingested as pass `dev-a-failures-model-v1` into
+`experiments/labels/dev-a-failures-model-v1.jsonl` and loaded into
+`telemetry.attempt_label`. On the 122-question matched official frame (639 of
+the 663 labels; the remaining 24 sit on out-of-frame instances), the leading
+category per arm is C1 `hkb_absent_or_mistransformed` 25 of 113, C2
+`hkb_absent_or_mistransformed` 27 of 93, C3 `refusal_error` 32 of 106, C4
+`semantic_compilation` 34 of 117, C5 `hkb_absent_or_mistransformed` 23 of 109
+just ahead of `semantic_compilation` 22, and E02 `hkb_absent_or_mistransformed`
+29 of 101. Omni reproduced this cut from the natural-language question alone
+(AI job cba69343), which was the point of building the database.
+
+Three readings survive inspection. First, missing or mistransformed house
+knowledge is the most pervasive mechanism: it leads four of six arms and is
+never below third, so it is a property of the benchmark's questions rather than
+of any one condition. Second, C4's apparent `semantic_compilation` dominance is
+an artifact of harness reach, not of reasoning: 56 of the 62
+`semantic_compilation` labels carry `failure_origin =
+'benchmark_infrastructure'` with terminal class
+`unsupported_semantic_result_type`, meaning the semantic layer returned a result
+shape the adapter cannot consume. Excluding infrastructure-origin attempts, C4
+leads with `hkb_absent_or_mistransformed` 24 of 73 and C5 with 23 of 85, the
+same mechanism as every other arm. Third, `refusal_error` is condition-specific
+rather than pervasive: 32 in C3 and 20 in C1 against one or two in C2, C4, C5,
+and E02. Several labeler notes flag that the C1 and C3 refusals are themselves
+downstream of an absent house metric, the model stopping for insufficient
+context after retrieval returned only raw columns, so the refusal and
+knowledge-absence categories are not independent at the margin.
+
+Two limits on this pass. Labelers saw no gold statement and no result rows by
+construction, so a label names the defect visible in the generated SQL,
+exploratory SQL, and retrieval evidence, not the difference from the reference
+answer; the batch notes name the runner-up category and the evidence that would
+settle it wherever the call was close. And `failure-taxonomy-v1` assigns exactly
+one category per attempt, which forces a choice on attempts carrying two defects
+at once. Both are recorded rather than corrected: the pass is versioned, so a
+second pass under a different ledger can revisit either.

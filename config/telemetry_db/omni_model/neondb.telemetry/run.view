@@ -1,0 +1,53 @@
+# Reference this view as neondb_telemetry__run
+label: Run
+description: >-
+  One row per benchmark run. Arm and condition are NULL on multi-condition
+  dev-A runs (public-baseline-v1-direct-16db and its continuation carry C1, C2
+  and C3 attempts); take arm from the attempt view.
+catalog: neondb
+schema: telemetry
+table_name: run
+
+dimensions:
+  run_id:
+    description: Run identifier.
+    format: ID
+    primary_key: true
+  cohort_id:
+    description: Cohort the run belongs to.
+    format: ID
+  condition:
+    description: Preregistered condition of a single-condition run; NULL for multi-condition runs.
+  arm:
+    description: Arm of a single-arm run; NULL for multi-condition runs.
+  repetition:
+    description: Repetition index of the run.
+  scope:
+    description: Run scope.
+  partition:
+    description: dev-a or test.
+  model_name:
+    description: Model name pinned by the run.
+  model_provider:
+    description: Model provider pinned by the run.
+  model_version:
+    description: Model version pinned by the run.
+  system_commit:
+    description: Git commit of the evaluated system.
+  semantic_model_ref:
+    description: Semantic model reference used by the run.
+  semantic_model_sha256:
+    description: SHA-256 of the semantic model bundle.
+  started_at:
+    description: Run start time.
+  finished_at:
+    description: Run finish time.
+  question_count:
+    description: Number of questions the run manifest covers.
+  manifest:
+    description: Run manifest JSON.
+
+measures:
+  runs:
+    aggregate_type: count
+    description: Number of runs.

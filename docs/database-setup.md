@@ -222,3 +222,26 @@ fingerprint parity, role provisioning, SELECT access, and denied writes:
 OMNI_BENCHMARK_POSTGRES_INTEGRATION=1 \
   uv run pytest tests/test_database_integration.py
 ```
+
+## Telemetry database
+
+The benchmark evidence database described in `docs/telemetry-db-plan.md` is a
+separate Neon project so that no evaluated database ever shares compute,
+branches, or credentials with it. Created 2026-09-02 with `neonctl` and the
+`omni` CLI:
+
+| Identifier | Value |
+| --- | --- |
+| Neon project | `falling-fog-46720631` (`omni-benchmark-telemetry`) |
+| Organization / region / version | `org-steep-term-23543236` / `aws-us-east-2` / PostgreSQL 18 |
+| Branch | `br-falling-leaf-aygwwv3m` (`main`) |
+| Database / schema | `neondb` / `telemetry` |
+| Loader role | `neondb_owner` (DSN in the untracked `.env` as `OMNI_BENCHMARK_TELEMETRY_DSN`) |
+| Omni role | `omni_telemetry_reader`: `CONNECT`, `USAGE` and `SELECT` on `telemetry` only, default privileges granted for future tables |
+| Omni connection | `a511399c-aa51-4f51-b00a-6845d767687b` (`omni-benchmark telemetry`, dialect postgres, `includeSchemas` = `telemetry`, base role `QUERIER`) |
+| Omni schema model | `a511399c-aa51-4f51-b00a-6845d767687b` (same id as the connection; created with `models create` kind `SCHEMA`, then `models refresh`) |
+| Omni shared model | `5a1dcadb-0cfa-4b0f-b660-48ce2e84bc41` (`omni-benchmark telemetry`, kind `SHARED`; YAML in `config/telemetry_db/omni_model/`, deployed by `scripts/deploy_telemetry_omni_model.py`) |
+| Deployed model branch | `telemetry-model-v6` (`07efa1ca-5c47-4fb0-936e-5f54adf2d608`), validated clean and merged 2026-09-02; it removed the zero-row `sealed_aggregate` to `run` relationship |
+
+No endpoint, connection URL, or password is recorded here. The reader role
+cannot create objects in `public` or `telemetry`.

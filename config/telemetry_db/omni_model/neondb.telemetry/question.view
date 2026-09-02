@@ -1,0 +1,31 @@
+# Reference this view as neondb_telemetry__question
+label: Question
+description: >-
+  Public LiveSQLBench question metadata only. No gold SQL, test cases,
+  external knowledge, or hidden annotations are loaded.
+catalog: neondb
+schema: telemetry
+table_name: question
+
+dimensions:
+  instance_id:
+    description: LiveSQLBench instance id.
+    format: ID
+    primary_key: true
+  database:
+    description: LiveSQLBench database the question targets.
+  partition:
+    description: dev-a, dev-b, or test membership.
+  category:
+    description: Public task category (Query for every eligible task).
+  high_level:
+    description: Public high_level flag.
+  question:
+    description: Public natural-language question text.
+  public_fields:
+    description: Remaining public fields as JSON.
+
+measures:
+  questions:
+    aggregate_type: count
+    description: Number of questions.

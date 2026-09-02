@@ -1,0 +1,57 @@
+# Reference this view as neondb_telemetry__sealed_aggregate
+label: Sealed aggregate
+description: >-
+  Published sealed-test rates from aggregate.json, one row per run, scorer and
+  condition. This is the only sealed correctness in the database; there is no
+  per-attempt sealed correctness. correctness_flip_rate here is the published
+  repetition-flip rate (pass_1 + pass_2 over scoreable questions), not the
+  scorer-disagreement flip_rate of the attempt_scored view.
+catalog: neondb
+schema: telemetry
+table_name: sealed_aggregate
+
+dimensions:
+  run_id:
+    description: >-
+      Preserved sealed evaluation root (sealed-final-v6) that pools the three
+      cohort runs per condition. It is not a telemetry.run key and does not
+      join to neondb_telemetry__run.
+    format: ID
+  scorer:
+    description: official_soft_ex or sensitivity.
+  condition:
+    description: Sealed condition C1-C4.
+  report:
+    description: Full published report row as JSON.
+  correct:
+    description: Published correct count.
+  wrong_answer:
+    description: Published wrong-answer count.
+  refused_or_error:
+    description: Published refused-or-error count.
+  mean_accuracy:
+    description: Published mean accuracy.
+  pass_3_rate:
+    description: Published pass^3 rate.
+  wrong_rate:
+    description: Published wrong rate.
+  refused_or_error_rate:
+    description: Published refused-or-error rate.
+  error_rate:
+    description: Published error rate.
+  correctness_flip_rate:
+    description: Published repetition flip rate.
+  scoreable_attempts:
+    description: Published scoreable attempt count.
+
+measures:
+  rows:
+    aggregate_type: count
+    description: Number of aggregate rows.
+
+custom_compound_primary_key_sql:
+  [
+    "${neondb_telemetry__sealed_aggregate.run_id}",
+    "${neondb_telemetry__sealed_aggregate.scorer}",
+    "${neondb_telemetry__sealed_aggregate.condition}"
+  ]

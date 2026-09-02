@@ -1,0 +1,173 @@
+# Reference this view as neondb_telemetry__attempt_scored
+label: Attempt scored
+description: >-
+  Database view that pins both scorers onto one attempt row (dev-A only carries
+  scores). Used for scorer-disagreement measures that need both outcomes on the
+  same row. Telemetry columns duplicate the attempt view.
+catalog: neondb
+schema: telemetry
+table_name: attempt_scored
+
+dimensions:
+  attempt_id:
+    description: Attempt identifier (one-to-one with attempt).
+    format: ID
+  generation_record_sha256:
+    description: SHA-256 of the generation record.
+  run_id:
+    description: Run identifier.
+    format: ID
+  instance_id:
+    description: LiveSQLBench instance id.
+    format: ID
+  database:
+    description: LiveSQLBench database name.
+  condition:
+    description: Preregistered condition (C5 and E02 stored as C4; use arm).
+  arm:
+    description: Analysis arm.
+  repetition:
+    description: Repetition index.
+  partition:
+    description: dev-a or test.
+  started_at:
+    description: Attempt start time.
+  finished_at:
+    description: Attempt finish time.
+  latency_ms:
+    description: Wall-clock latency in milliseconds.
+  model_name:
+    description: Model name.
+  model_provider:
+    description: Model provider.
+  input_tokens:
+    description: Input tokens.
+  output_tokens:
+    description: Output tokens.
+  total_tokens:
+    description: Total tokens.
+  token_source:
+    description: Token count source.
+  cost_usd:
+    description: Attempt cost in USD when priced.
+  cost_source:
+    description: Cost source.
+  cost_unavailable_reason:
+    description: Why cost is NULL.
+  generation_outcome:
+    description: answered, refused, or errored.
+  execution_status:
+    description: Execution status of the answered query.
+  failure_origin:
+    description: evaluated_system or benchmark_infrastructure.
+  terminal_failure_class:
+    description: Terminal failure class.
+  harness_failure:
+    description: Harness failure detail.
+  generated_sql:
+    description: Generated SQL.
+  generated_query:
+    description: Generated semantic query.
+  query_unavailable_reason:
+    description: Why the query is missing.
+  tool_call_count:
+    description: Tool calls.
+  tool_calls_by_name:
+    description: JSON map of tool name to count.
+  database_query_count:
+    description: Database queries.
+  retry_count:
+    description: Retries.
+  validation_attempt_count:
+    description: Validation attempts.
+  actual_result_status:
+    description: Actual result status.
+  actual_result_hash:
+    description: Actual result hash.
+  trace_captured:
+    description: Trace captured flag.
+  trace_truncated:
+    description: Trace truncated flag.
+  trace_degraded_reason:
+    description: Trace degradation reason.
+  telemetry_unavailable:
+    description: Unavailable telemetry fields (JSON).
+  artifact_dir:
+    description: Artifact directory.
+  generation_record:
+    description: Generation record JSON.
+  official_scorer_version:
+    description: official_soft_ex scorer version.
+  official_outcome:
+    description: 'official_soft_ex outcome: correct, wrong_answer, refused_or_error, NULL when unscorable or unscored.'
+  official_status:
+    description: official_soft_ex status (scored or unscorable).
+  official_failure_category:
+    description: official_soft_ex failure category.
+  sensitivity_scorer_version:
+    description: sensitivity scorer version.
+  sensitivity_outcome:
+    description: 'sensitivity outcome: correct, wrong_answer, refused_or_error, NULL when unscorable or unscored.'
+  sensitivity_status:
+    description: sensitivity status (scored or unscorable).
+  sensitivity_failure_category:
+    description: sensitivity failure category.
+  run_cohort_id:
+    description: Cohort id of the run.
+    format: ID
+  run_scope:
+    description: Scope of the run.
+  run_model_version:
+    description: Model version recorded on the run.
+  run_system_commit:
+    description: System commit recorded on the run.
+  run_semantic_model_ref:
+    description: Semantic model reference recorded on the run.
+  run_semantic_model_sha256:
+    description: Semantic model SHA-256 recorded on the run.
+  scored_by_both:
+    description: True when both scorers reached status scored.
+    sql: ${neondb_telemetry__attempt_scored.official_status} = 'scored' AND ${neondb_telemetry__attempt_scored.sensitivity_status} = 'scored'
+  correctness_flip:
+    description: True when the two scorers disagree on correctness (one says correct, the other does not) for an attempt scored by both.
+    sql: ${neondb_telemetry__attempt_scored.scored_by_both} AND (${neondb_telemetry__attempt_scored.official_outcome} = 'correct') <> (${neondb_telemetry__attempt_scored.sensitivity_outcome} = 'correct')
+
+measures:
+  scored_by_both_count:
+    aggregate_type: count
+    description: Attempts with status scored under both scorers.
+    filters:
+      neondb_telemetry__attempt_scored.scored_by_both:
+        is: true
+  correctness_flip_count:
+    aggregate_type: count
+    description: Attempts where official_soft_ex and sensitivity disagree on correctness.
+    filters:
+      neondb_telemetry__attempt_scored.correctness_flip:
+        is: true
+  flip_rate:
+    description: correctness_flip_count divided by scored_by_both_count.
+    sql: ${neondb_telemetry__attempt_scored.correctness_flip_count} * 1.0 / NULLIF(${neondb_telemetry__attempt_scored.scored_by_both_count}, 0)
+    format: PERCENT_2
+  official_scored_cost_usd:
+    aggregate_type: sum
+    description: Sum of cost_usd over attempts with official_status scored (the README cost table denominator).
+    sql: ${neondb_telemetry__attempt_scored.cost_usd}
+    filters:
+      neondb_telemetry__attempt_scored.official_status:
+        is: scored
+  official_correct_count:
+    aggregate_type: count
+    description: Attempts with official_outcome correct.
+    filters:
+      neondb_telemetry__attempt_scored.official_outcome:
+        is: correct
+  cost_per_official_correct:
+    description: official_scored_cost_usd divided by official_correct_count (USD per correct answer, as in the README cost table). NULL when no scored attempt carries a priced cost or nothing is correct.
+    sql: NULLIF(${neondb_telemetry__attempt_scored.official_scored_cost_usd}, 0) / NULLIF(${neondb_telemetry__attempt_scored.official_correct_count}, 0)
+
+custom_compound_primary_key_sql:
+  [
+    "${neondb_telemetry__attempt_scored.attempt_id}",
+    "${neondb_telemetry__attempt_scored.generation_record_sha256}"
+  ]

@@ -1,0 +1,17 @@
+ai_context: >-
+  Benchmark evidence database for the omni-benchmark LiveSQLBench evaluation.
+  Grain: one attempt per row in neondb_telemetry__attempt, keyed by attempt_id
+  and generation_record_sha256. Use arm (C1, C2, C3, C4, C5, E02) as the
+  analysis unit; condition is the preregistered condition and stores C5 and
+  E02 as C4. Correctness exists only for partition dev-a, in
+  neondb_telemetry__score, with two frozen scorers that are always reported
+  together: official_soft_ex (benchmark-comparable) and sensitivity. Accuracy
+  is correct divided by status = scored rows of that scorer. Sealed test
+  attempts (partition test) carry telemetry only; their published rates live
+  in neondb_telemetry__sealed_aggregate. Prefer the modeled measures over
+  reconstructing them. Cross-arm accuracy comparisons must be filtered to
+  neondb_telemetry__dev_a_frame.in_official_frame (122 questions) or
+  in_sensitivity_frame (121 questions); unfiltered per-arm denominators are
+  not comparable because the arms did not all run the same questions. Cost is
+  unavailable by construction for C4, C5 and E02 and must never be estimated
+  from token counts.

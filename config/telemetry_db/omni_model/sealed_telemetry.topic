@@ -1,0 +1,21 @@
+base_view: neondb_telemetry__attempt
+label: Sealed telemetry (test)
+description: >-
+  Sealed test attempts (three repetitions per condition) with telemetry only:
+  latency, tokens, failure classes, tool and query counts. No per-attempt
+  correctness exists for this partition; use the Sealed aggregate topic for the
+  published rates.
+fields:
+- neondb_telemetry__attempt.*
+- neondb_telemetry__question.*
+- neondb_telemetry__run.*
+joins:
+  neondb_telemetry__question: {}
+  neondb_telemetry__run: {}
+default_filters:
+  neondb_telemetry__attempt.partition:
+    is: test
+ai_context: >-
+  Correctness measures are not available here by design. Compare arms on
+  median_latency_ms, refused_or_error_rate, terminal_failure_class and token
+  totals only.

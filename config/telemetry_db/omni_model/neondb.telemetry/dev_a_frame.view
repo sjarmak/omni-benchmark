@@ -1,0 +1,40 @@
+# Reference this view as neondb_telemetry__dev_a_frame
+label: Dev-A matched frame
+description: >-
+  One row per dev-A question, flagging whether that question is inside each
+  frozen scorer's matched comparison frame. A question is in a scorer's frame
+  when the scorer returned a verdict for it in all five compared arms (C1
+  through C5). The frames are 122 questions official and 121 sensitivity out of
+  154; the difference is a gold-side benchmark defect, not a system failure.
+  Filter on in_official_frame to compare accuracy across arms on equal footing.
+catalog: neondb
+schema: telemetry
+table_name: dev_a_frame
+
+dimensions:
+  instance_id:
+    description: Question identifier (join key to attempt and question).
+    format: ID
+  in_official_frame:
+    description: True when official_soft_ex returned a verdict in all five compared arms.
+  in_sensitivity_frame:
+    description: True when the sensitivity scorer returned a verdict in all five compared arms.
+
+measures:
+  frame_questions:
+    aggregate_type: count
+    description: Dev-A questions, before any frame filter.
+  official_frame_questions:
+    aggregate_type: count
+    description: Questions inside the official_soft_ex matched frame (122).
+    filters:
+      neondb_telemetry__dev_a_frame.in_official_frame:
+        is: true
+  sensitivity_frame_questions:
+    aggregate_type: count
+    description: Questions inside the sensitivity matched frame (121).
+    filters:
+      neondb_telemetry__dev_a_frame.in_sensitivity_frame:
+        is: true
+
+custom_compound_primary_key_sql: ["${neondb_telemetry__dev_a_frame.instance_id}"]

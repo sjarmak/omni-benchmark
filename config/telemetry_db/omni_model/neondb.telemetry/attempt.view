@@ -1,0 +1,202 @@
+# Reference this view as neondb_telemetry__attempt
+label: Attempt
+description: >-
+  One generation attempt per row, grain attempt_id + generation_record_sha256.
+  Telemetry only: correctness lives in the score view (dev-A only). Arm is the
+  analysis unit; condition is the preregistered condition (C5 and E02 attempts
+  carry condition C4).
+catalog: neondb
+schema: telemetry
+table_name: attempt
+
+dimensions:
+  attempt_id:
+    description: Attempt identifier. Unique across the loaded evidence.
+    format: ID
+  generation_record_sha256:
+    description: SHA-256 of the immutable generation record this row came from.
+  run_id:
+    description: Run identifier (join key to run). Multi-condition dev-A runs carry several arms.
+    format: ID
+  instance_id:
+    description: LiveSQLBench instance id (join key to question).
+    format: ID
+  database:
+    description: LiveSQLBench database name the question targets.
+  condition:
+    description: 'Preregistered condition: C1, C2, C3, C4. C5 and E02 attempts are stored as C4; use arm.'
+  arm:
+    description: 'Analysis arm: C1, C2, C3, C4, C5, E02.'
+  repetition:
+    description: Repetition index within the run (sealed runs r1-r3).
+  partition:
+    description: 'dev-a (development, scored) or test (sealed, telemetry only).'
+  started_at:
+    description: Attempt start time.
+  finished_at:
+    description: Attempt finish time.
+  latency_ms:
+    description: Wall-clock latency of the attempt in milliseconds.
+  model_name:
+    description: Model name used by the attempt.
+  model_provider:
+    description: Model provider used by the attempt.
+  input_tokens:
+    description: Input tokens consumed. NULL when the token source did not report them.
+  output_tokens:
+    description: Output tokens produced. NULL when the token source did not report them.
+  total_tokens:
+    description: Input plus output tokens when reported.
+  token_source:
+    description: Where the token counts came from.
+  cost_usd:
+    description: Attempt cost in USD. NULL for arms without a priced cost source (C4, C5, E02).
+  cost_source:
+    description: Where the cost figure came from.
+  cost_unavailable_reason:
+    description: Why cost_usd is NULL.
+  generation_outcome:
+    description: 'Three-state attempt outcome: answered, refused, errored.'
+  execution_status:
+    description: Execution status of the answered query (complete when the answer ran).
+  failure_origin:
+    description: 'Who owns a failure: evaluated_system or benchmark_infrastructure. NULL when answered.'
+  terminal_failure_class:
+    description: Terminal failure class of a refused or errored attempt. NULL when answered.
+  harness_failure:
+    description: Harness failure detail when the benchmark harness failed.
+  generated_sql:
+    description: SQL the attempt produced, when any.
+  generated_query:
+    description: Semantic query the attempt produced, when any.
+  query_unavailable_reason:
+    description: Why generated_sql or generated_query is missing.
+  tool_call_count:
+    description: Number of tool calls made during the attempt.
+  tool_calls_by_name:
+    description: JSON map of tool name to call count.
+  database_query_count:
+    description: Number of database queries issued during the attempt.
+  retry_count:
+    description: Number of retries the attempt performed.
+  validation_attempt_count:
+    description: Number of validation attempts.
+  actual_result_status:
+    description: Status of the actual result execution.
+  actual_result_hash:
+    description: Hash of the actual result rows.
+  trace_captured:
+    description: Whether a trace was captured for the attempt.
+  trace_truncated:
+    description: Whether the captured trace was truncated.
+  trace_degraded_reason:
+    description: Why the trace is degraded, when it is.
+  telemetry_unavailable:
+    description: JSON list of telemetry fields that were unavailable.
+  artifact_dir:
+    description: Preserved artifact directory of the attempt.
+  generation_record:
+    description: Full generation record as JSON (public fields only).
+
+measures:
+  attempts:
+    aggregate_type: count
+    description: Number of attempt rows.
+  answered_attempts:
+    aggregate_type: count
+    description: Attempts with generation_outcome answered.
+    filters:
+      neondb_telemetry__attempt.generation_outcome:
+        is: answered
+  refused_attempts:
+    aggregate_type: count
+    description: Attempts with generation_outcome refused.
+    filters:
+      neondb_telemetry__attempt.generation_outcome:
+        is: refused
+  errored_attempts:
+    aggregate_type: count
+    description: Attempts with generation_outcome errored.
+    filters:
+      neondb_telemetry__attempt.generation_outcome:
+        is: errored
+  refused_or_error_attempts:
+    aggregate_type: count
+    description: Attempts with generation_outcome refused or errored (telemetry view of refused_or_error, not the scorer outcome).
+    filters:
+      neondb_telemetry__attempt.generation_outcome:
+        is: [refused, errored]
+  refused_or_error_rate:
+    description: refused_or_error_attempts divided by attempts.
+    sql: ${neondb_telemetry__attempt.refused_or_error_attempts} * 1.0 / NULLIF(${neondb_telemetry__attempt.attempts}, 0)
+    format: PERCENT_2
+  evaluated_system_failures:
+    aggregate_type: count
+    description: Failures owned by the evaluated system (failure_origin evaluated_system).
+    filters:
+      neondb_telemetry__attempt.failure_origin:
+        is: evaluated_system
+  infrastructure_failures:
+    aggregate_type: count
+    description: Failures owned by benchmark infrastructure (failure_origin benchmark_infrastructure).
+    filters:
+      neondb_telemetry__attempt.failure_origin:
+        is: benchmark_infrastructure
+  mean_latency_ms:
+    aggregate_type: average
+    description: Mean latency_ms over attempts.
+    sql: ${neondb_telemetry__attempt.latency_ms}
+  median_latency_ms:
+    aggregate_type: median
+    description: Median latency_ms over attempts.
+    sql: ${neondb_telemetry__attempt.latency_ms}
+  total_input_tokens:
+    aggregate_type: sum
+    description: Sum of input_tokens.
+    sql: ${neondb_telemetry__attempt.input_tokens}
+  total_output_tokens:
+    aggregate_type: sum
+    description: Sum of output_tokens.
+    sql: ${neondb_telemetry__attempt.output_tokens}
+  total_tokens_sum:
+    aggregate_type: sum
+    description: Sum of total_tokens.
+    sql: ${neondb_telemetry__attempt.total_tokens}
+  mean_total_tokens:
+    aggregate_type: average
+    description: Mean total_tokens over attempts that reported tokens.
+    sql: ${neondb_telemetry__attempt.total_tokens}
+  total_cost_usd:
+    aggregate_type: sum
+    description: Sum of cost_usd over attempts with a priced cost.
+    sql: ${neondb_telemetry__attempt.cost_usd}
+  priced_attempts:
+    aggregate_type: count
+    description: Attempts with a non-null cost_usd.
+    sql: ${neondb_telemetry__attempt.cost_usd}
+  mean_cost_usd:
+    aggregate_type: average
+    description: Mean cost_usd over priced attempts.
+    sql: ${neondb_telemetry__attempt.cost_usd}
+  mean_tool_call_count:
+    aggregate_type: average
+    description: Mean tool_call_count.
+    sql: ${neondb_telemetry__attempt.tool_call_count}
+  mean_database_query_count:
+    aggregate_type: average
+    description: Mean database_query_count.
+    sql: ${neondb_telemetry__attempt.database_query_count}
+  mean_retry_count:
+    aggregate_type: average
+    description: Mean retry_count.
+    sql: ${neondb_telemetry__attempt.retry_count}
+  mean_validation_attempt_count:
+    aggregate_type: average
+    description: Mean validation_attempt_count.
+    sql: ${neondb_telemetry__attempt.validation_attempt_count}
+
+custom_compound_primary_key_sql:
+  [
+    "${neondb_telemetry__attempt.attempt_id}",
+    "${neondb_telemetry__attempt.generation_record_sha256}"
+  ]

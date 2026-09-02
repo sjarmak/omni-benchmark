@@ -1,0 +1,15 @@
+base_view: neondb_telemetry__trace_event
+label: Trace
+description: Trace events and action evidence joined back to the attempt, its run and its question.
+fields:
+- neondb_telemetry__trace_event.*
+- neondb_telemetry__action_evidence.*
+- neondb_telemetry__attempt.*
+- neondb_telemetry__run.*
+- neondb_telemetry__question.*
+joins:
+  neondb_telemetry__action_evidence: {}
+  neondb_telemetry__attempt:
+    neondb_telemetry__run: {}
+    neondb_telemetry__question: {}
+ai_context: Events are ordered by seq within an attempt; action evidence is keyed by trace_seq.
