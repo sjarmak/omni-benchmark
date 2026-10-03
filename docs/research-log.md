@@ -13674,3 +13674,50 @@ and custody posture. The governed dollar figures remain estimates and remain
 non-comparable with the direct arms; that limit is now carried by the data, not
 only by the prose around it. No Omni call, deployment, evaluated attempt, dev-B
 access, or sealed access was made.
+
+
+## 2026-10-03 — Portable confined directory descriptor resolution
+
+Hypothesis: macOS `F_GETPATH` can supply the same descriptor-derived real path
+that Linux obtains from `/proc/self/fd`, restoring confined artifact writes
+without relaxing no-follow traversal, workspace containment, or ownership.
+Generality: cross-platform IO mechanism; no database or question specificity.
+Source bead: `omni-benchmark-1cm`.
+
+A small helper preserves Linux resolution and uses the macOS descriptor path
+buffer with strict real-path resolution. Unsupported platforms fail closed.
+The initial helper tests failed before implementation (3 failed, 1 passed).
+Focused acceptance plus portability regressions pass: 176 tests. Tests cover
+real descriptor paths, symlinked roots, a confined immutable write, escaped
+symlink rejection, unsupported platforms, and the Linux proc path contract.
+Ruff check and formatting pass. Focused module branch coverage is 77.7%; this
+check does not establish the repository-wide 80% coverage gate. The full suite
+is running once to classify remaining failures; no unrelated implementation
+will be changed. No provider, dev-B, or sealed annotation access occurred.
+
+Full-suite outcome on macOS / Python 3.14.7: 28 failed, 2255 passed, 19 skipped
+in 928.01 seconds. This single full run collected the first four new portability
+tests; the final focused run includes all six (176 passed). The older baseline
+in the source bead is a different revision/test inventory, so these counts are
+not a paired reduction estimate.
+
+Remaining failure groups, deliberately left unchanged:
+- 10 C5/E02 candidate/publication failures: no-follow IO rejects macOS `/var`
+  symlink paths from temporary snapshot roots.
+- 6 Claude direct security/runtime failures: descriptor-pinned subprocess input
+  and executable paths still depend on `/proc/self/fd`.
+- 5 dump coverage/restore failures: case-insensitive filesystem behavior collapses
+  filenames that the loader fixtures require to differ by case.
+- 3 sealed publication failures: libc `renameat2` is unavailable on macOS.
+- 2 inventory excessive-nesting tests: JSON loads return an object-shape error
+  instead of the expected parse error under this interpreter.
+- 1 cost/time rollup regeneration failure: ignored raw score artifact absent.
+- 1 bytecode preflight failure: expected rejection did not occur.
+
+Independent review ran six portability tests and targeted Ruff with no findings.
+Linux resolution was verified by a mocked path contract, not a Linux live run.
+The existing lexical policy still requires absolute artifact paths to use the
+resolved workspace prefix; symlinked workspace writes were verified with a
+relative path. No protocol, scorer, split, manifest, endpoint, protected data,
+provider, or out-of-scope module was changed. Repository-wide 80% coverage was
+not established; the focused module coverage measurement was 77.7%.
