@@ -22,14 +22,13 @@ TELEMETRY_ADMIN_DSN = os.environ.get(
 def _use_synthetic_claude_binary_for_mocked_transports(
     tmp_path_factory: pytest.TempPathFactory,
 ) -> None:
-    """Keep mocked transport tests independent of a host-installed Claude CLI."""
     binary = tmp_path_factory.mktemp("claude-test-runtime") / "claude"
     content = b"#!/bin/sh\nexit 97\n"
     binary.write_bytes(content)
     binary.chmod(0o700)
 
     patch = pytest.MonkeyPatch()
-    # An operator who set the override in their shell must not steer the suite.
+    patch.setattr(claude_transport, "platform", "linux")
     patch.delenv(claude_transport.CLAUDE_BINARY_PATH_ENV, raising=False)
     patch.setattr(claude_transport, "PINNED_CLAUDE_BINARY", binary)
     patch.setattr(

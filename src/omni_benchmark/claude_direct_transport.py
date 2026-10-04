@@ -8,6 +8,7 @@ import subprocess
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
+from sys import platform
 from typing import Any, Callable
 
 from .claude_failure_classification import classify_claude_failure
@@ -105,6 +106,11 @@ class ClaudeDirectTransport:
         *,
         runner: ClaudeProcessRunner | None = None,
     ) -> None:
+        if platform == "darwin":
+            raise ClaudeDirectTransportError(
+                "setup",
+                "Restricted Claude transport on darwin lacks descriptor-pinning capability",
+            )
         self._config = _validate_config(config)
         self._runner = run_claude_process if runner is None else runner
         self._resource_identity = _resource_identity(self._config)
