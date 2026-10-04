@@ -15334,3 +15334,16 @@ per-attempt dollars as `cost_source = credit_usage_delta` rather than repeating
 this gap. D-226's figures are unchanged and remain correct as stated in its own
 artifact; what changes is the claim about what could have been known. No Omni
 evaluated attempt, dev-B access, or sealed access was made.
+
+## 2026-10-04 — round-2 stage driver, slice B1 (gve.3.2.1)
+
+Hypothesis: the five sealed-final-v6 restarts were lost in the seams between
+stages, so a driver that owns only ordering, an append-only stage ledger and
+resume removes the hand-assembly without moving any policy. Slice B1 adds
+`src/omni_benchmark/round2_driver.py` and `scripts/round2_driver.py`: a
+strictly validated JSON manifest, an exclusive, locked, fsynced
+`stage-ledger.jsonl` under an explicit `--state-root`, and resume that skips a
+stage only when its last record ended with exit 0 and every declared output
+exists. Stages run through an injected runner; a test asserts the module
+imports no dispatch, execution, sealed, custody, scoring or Freeze B module.
+No real stage argv yet (B2), no cohort finalization (B3), no live call.
