@@ -278,6 +278,70 @@ def test_report_contains_fixed_paired_secondary_endpoints() -> None:
     assert report["paired_cost"]["status"] == "complete"
 
 
+def test_scorer_specific_unscorable_pair_is_excluded_from_accuracy() -> None:
+    inputs = _inputs()
+    for key in (
+        "control_sensitivity_score_bytes",
+        "treatment_sensitivity_score_bytes",
+    ):
+        score = json.loads(inputs[key])
+        score["schema_version"] = "r2-score-artifact-v2"
+        for attempt in score["attempts"]:
+            attempt["status"] = "scored"
+        unscorable = score["attempts"][-1]
+        unscorable.pop("outcome")
+        unscorable["status"] = "unscorable"
+        unscorable["failure_category"] = "gold_statement_error"
+        inputs[key] = canonical_catalog_bytes(score)
+
+    report = _build(inputs)
+    sensitivity = report["scorers"]["sensitivity"]
+
+    for condition in (CONTROL_CONDITION, TREATMENT_CONDITION):
+        arm = sensitivity["arms"][condition]
+        assert arm["scheduled_attempts"] == 4
+        assert arm["scoreable_attempts"] == 3
+        assert arm["unscorable_attempts"] == 1
+    assert sensitivity["arms"][CONTROL_CONDITION]["accuracy"] == pytest.approx(2 / 3)
+    assert sensitivity["arms"][TREATMENT_CONDITION]["accuracy"] == pytest.approx(2 / 3)
+    assert sensitivity["paired_accuracy"]["pair_count"] == 3
+
+    changed = json.loads(inputs["treatment_sensitivity_score_bytes"])
+    changed["attempts"][-1] = {
+        "attempt_id": changed["attempts"][-1]["attempt_id"],
+        "generation_record_sha256": changed["attempts"][-1]["generation_record_sha256"],
+        "outcome": "wrong_answer",
+        "status": "scored",
+    }
+    inputs["treatment_sensitivity_score_bytes"] = canonical_catalog_bytes(changed)
+    with pytest.raises(R2PairedOutcomeError, match="unscorable frame differs"):
+        _build(inputs)
+
+
+@pytest.mark.parametrize(
+    ("update", "message"),
+    [
+        ({"status": "unknown"}, "status"),
+        ({"status": "unscorable", "outcome": None}, "failure category"),
+    ],
+)
+def test_v2_score_artifact_rejects_invalid_disposition(
+    update: dict[str, Any], message: str
+) -> None:
+    inputs = _inputs()
+    score = json.loads(inputs["control_sensitivity_score_bytes"])
+    score["schema_version"] = "r2-score-artifact-v2"
+    for attempt in score["attempts"]:
+        attempt["status"] = "scored"
+    score["attempts"][0].update(update)
+    if update.get("status") == "unscorable":
+        score["attempts"][0].pop("outcome")
+    inputs["control_sensitivity_score_bytes"] = canonical_catalog_bytes(score)
+
+    with pytest.raises(R2PairedOutcomeError, match=message):
+        _build(inputs)
+
+
 def test_report_counts_generation_reliability_and_complete_telemetry() -> None:
     report = _build()
     control = report["generation"][CONTROL_CONDITION]
@@ -302,6 +366,22 @@ def test_report_counts_generation_reliability_and_complete_telemetry() -> None:
         "tool_call_count": 14,
         "total_cost_usd": pytest.approx(10.0),
         "validation_attempt_count": 6,
+    }
+    assert report["paired_reliability"]["answered_rate"] == {
+        "discordant_gains": 1,
+        "discordant_losses": 0,
+        "estimate": pytest.approx(0.25),
+        "lower": pytest.approx(0.0),
+        "pair_count": 4,
+        "upper": pytest.approx(0.75),
+    }
+    assert report["paired_reliability"]["result_contract_failure_rate"] == {
+        "discordant_decreases": 1,
+        "discordant_increases": 0,
+        "estimate": pytest.approx(-0.25),
+        "lower": pytest.approx(-0.75),
+        "pair_count": 4,
+        "upper": pytest.approx(0.0),
     }
 
 
@@ -611,7 +691,7 @@ def test_cli_rejects_symlink_input(tmp_path: Path) -> None:
 def test_analysis_freeze_manifest_binds_exact_policy_code_and_fixtures() -> None:
     path = (
         REPOSITORY_ROOT / "experiments/r2-public-evidence-measures/"
-        "r2-paired-outcome-analysis-freeze-v1.json"
+        "r2-paired-outcome-analysis-freeze-v3.json"
     )
     content = path.read_bytes()
     value = json.loads(content)
@@ -628,7 +708,7 @@ def test_analysis_freeze_manifest_binds_exact_policy_code_and_fixtures() -> None
         "sensitivity_scorer_version": SENSITIVITY_SCORER_VERSION,
     }
     assert value["policy"] == {
-        "accuracy_denominator": "all_scheduled_pairs",
+        "accuracy_denominator": "scorer_specific_scoreable_pairs",
         "bootstrap_interval": "percentile_nearest_rank_95",
         "bootstrap_replicates": 10_000,
         "bootstrap_sampler": "sha256_modulo_question_count_v1",
@@ -637,13 +717,18 @@ def test_analysis_freeze_manifest_binds_exact_policy_code_and_fixtures() -> None
         "cost_contrast": "treatment_minus_control_complete_pairs_only",
         "efficiency_claims": "require_comparable_output_coverage",
         "output": "aggregate_only_no_question_or_attempt_outcomes",
+        "paired_reliability": "answered_and_result_contract_rate_deltas",
         "result_contract_failure_classes": [
             "response_contract_error",
             "result_contract_error",
             "unsupported_semantic_result_type",
         ],
         "scorers": "both_frozen_always_reported",
+        "unscorable_policy": "exclude_same_gold_unscorable_pair_from_scorer_denominator",
     }
+    assert value["supersedes"]["path"].endswith(
+        "r2-paired-outcome-analysis-freeze-v2.json"
+    )
     files = value["files"]
     assert [item["path"] for item in files] == [
         "src/omni_benchmark/r2_paired_outcomes.py",

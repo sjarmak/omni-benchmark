@@ -14184,6 +14184,42 @@ data, commit, or push was created or accessed. The map is evidence from one
 outcome-blind agent classification workflow, not human agreement, domain
 authority, manual-review effort, or Omni Modeling Agent quality.
 
+## 2026-09-01 — D-235: Begin the immutable R2 deployment gate
+
+### Hypothesis and authorized scope
+
+**Hypothesis.** Relative to a contemporaneous public-evidence bridge with no
+measures, adding the 812 accepted, agent-adjudicated public-evidence Omni
+measures will increase verified governed semantic replacement on the frozen
+136-question dev-A frame. The primary result is mechanism evidence under the
+preregistered classifier; accuracy, reliability, latency, tokens, and available
+cost telemetry are secondary. The series cannot establish domain authority,
+manual-review burden, sealed generalization, or broad Omni product value.
+
+The operator confirmed and authorized continuing through the new deployments,
+one immutable paired 272-attempt execution, both frozen scorers, and the frozen
+analyses. The previously open source-cleanup gate has the exact terminal status
+`file=0 directory=0`. The committed execution surface is Git commit
+`5a85941be34df128f8813ca796a545c776ac77df`; the append-only identities are
+`r2-c5b-deployment-v1`, `r2-m1-deployment-v1`,
+`r2-c5b-generation-v1`, and `r2-m1-generation-v1`, with final output root
+`experiments/autoresearch/raw/r2-public-evidence-measures-v1`. All three roots
+were absent before preparation.
+
+The dry plan uses the established governed C4 telemetry budget policy SHA-256
+`d0677a90b5de8703ed4d3106f1f69f47c245a3ee4c5c78adc2a39e7969f58161`
+and documented observed attempt-cost basis USD 0.7275655 for each arm. That
+projects USD 98.95 per arm and USD 197.90 total, below the preregistered USD 500
+per-arm and USD 1,000 total gates. Provider configuration will reuse the exact
+operator-owned HTTPS origin and OAuth profile already embedded as non-secret
+constants in the prior approved launcher; neither value will be printed or
+changed, and the obsolete launcher will not be executed. Any authentication
+failure pauses the lane without credential repair. Deployment is Tier 1,
+question/gold/correctness/dev-B/sealed blind, and targets only fresh isolated
+`livesqlbench-*` identities. Evaluated execution remains closed until the two
+16-database exact-readback deployments and every provider-inert receipt gate
+pass.
+
 ## 2026-09-02 — Telemetry database: evidence queryable through Omni (epic omni-benchmark-6v9)
 
 ### Hypothesis
@@ -14759,3 +14795,542 @@ IDs matched that permitted set exactly; no additional failure appeared. Full
 run evidence remains outside the repository at /tmp/omni-g3c-full.log and
 /tmp/omni-g3c-full.xml. The code and regression tests will ship together on
 work/omni-benchmark-g3c for project-lead review.
+## 2026-09-02 — D-236: Preserve the terminal R2 treatment deployment and recover under a fresh identity
+
+### Failure and diagnosis
+
+The corrected control deployment `r2-c5b-deployment-v2` completed 16 verified
+and zero failed at source commit
+`1e37dd77ba249d21bac52ea386c51950482c2fda`; an independent gate authenticated
+all 16 exact-source records. The contemporaneous treatment deployment
+`r2-m1-deployment-v2` then terminated with three verified and thirteen failed.
+The initiating `cross_border_large` record reached `product_api` with zero
+uploaded files. The remaining in-flight and queued work failed closed, also
+with zero uploads; no record was overwritten or deleted.
+
+This is a demonstrable deployment-infrastructure failure rather than a semantic
+or outcome-driven retry. The failed manifest SHA-256
+`5ab82da27e7b9d4196f7a8fba1cb61a1aa89d97555867adabc86202179080c20`
+is byte-identical to the same database in `r2-m1-deployment-v1`, where all 114
+files uploaded, product validation returned zero issues, and exact readback
+passed. Three other treatment-v2 databases also uploaded and verified before
+the terminal failure. Evaluated generation has not started, and no question,
+gold, correctness, dev-B, or sealed input was accessed in this diagnosis.
+
+### Recovery hypothesis and boundary
+
+If the product-API failure was transient, the unchanged treatment bundle should
+complete under the fresh Tier-1 identity `r2-m1-deployment-v3`. Preserve v2 as
+terminal evidence; do not change the source commit, semantic files, control-v2
+deployment, provider profile, or credentials. Do not repair or rotate OAuth.
+After 16 exact readbacks, independently authenticate v3 and bind dispatch to
+control v2 plus treatment v3. This recovery is tracked by
+`omni-benchmark-w5x.30`; it is permitted by the public-deployment retry rule and
+is not a rerun based on an answer or score.
+
+Treatment v3 repeated the terminal condition: zero verified, sixteen failed,
+with all four initial workers creating isolated models and branches but failing
+at `product_api` before upload count one. A full v4 retry is therefore not
+justified. The official Omni YAML endpoint is one file per request, documents
+HTTP 429 as a possible response, and the CLI documents structured JSON errors
+on stderr. The harness currently discards stderr and preserves only
+`OmniDeploymentCliError`, so it cannot distinguish quota, rate limit, auth, or
+server failure. The smallest next check is one fresh isolated one-database
+diagnostic identity whose runner may record only a safe error code and stderr
+SHA-256, never the message, profile, URL, or credential. It will either confirm
+the failure class or establish that the external state has recovered before any
+full treatment retry.
+
+The first refined diagnostic appeared to verify but did not test a recovered
+write. Its custom local run ID ended in `v2`; the established remote identity
+mapper reduced that to the existing `r2-m1-v2` model name, and Omni returned the
+already verified model and branch. The record correctly shows zero uploads and
+an exact readback. Treat this as a diagnostic-identity collision, not recovery,
+and do not use it to justify a full retry. The final status check must use an
+actually unused numeric identity suffix and verify that the record either
+captures the safe HTTP status at its first write or reports a positive upload
+count before any recovery inference.
+
+The genuinely unused `r2-m1-deployment-diagnostic-v99` identity created model
+and branch names ending in `r2-m1-v99`, uploaded all 102 files for
+`disaster_relief_large`, returned zero validation issues, and passed exact
+102-file readback at the unchanged source commit. This is positive evidence
+that the external write condition recovered. One full treatment recovery under
+`r2-m1-deployment-v4` is now justified. Pace the shared request queue at 2.0
+seconds rather than 1.25 seconds to stay below a plausible rolling write limit;
+this changes deployment throughput only, not semantic content, evaluated
+runtime, or either arm definition. If v4 fails again, stop without v5.
+
+Treatment v4 completed 16 verified and zero failed under unique `v4` model and
+branch names. The provider-inert paired preflight then authenticated control v2
+plus treatment v4, reproduced 272 pending attempts and the adopted opportunity
+map, and projected USD 197.90 total; execution-plan SHA-256 is
+`bd864648992f2a05d5d2857e935efe56673e3a66e11823bf5f8b642097f7632d`.
+No evaluated attempt had started.
+
+The committed receipt CLI subsequently failed before materialization with
+`receipt binding is invalid`. The binding passed the real preflight; the defect
+is that `prepare_r2_dispatch_inputs` exposes an immutable `MappingProxyType`
+while `build_r2_receipt` sends an arbitrary `Mapping` directly to
+`json.dumps`. Tests covered only `dict`. Both exclusive receipt paths remained
+absent. Preserve source commit and deployment evidence: materialize through the
+same committed builder after a shallow `dict(inputs.binding)` conversion, then
+require the unchanged canonical validator, exact Beads response, expiry, and
+single-use consumer. The post-run regression is `omni-benchmark-w5x.32`.
+
+The bounded adapter recomputed the full binding, converted only its immutable
+outer mapping to `dict`, and materialized the canonical mode-`0600` receipt at
+`experiments/r2-public-evidence-measures/live-approvals/r2-paired-dispatch-v2.json`.
+Receipt SHA-256 is
+`254af74ceca16686468edcb0c44905fa3d4681623bacda9107094e0e67d0b693`;
+expiry is `2026-09-03T04:07:09.654769Z`. The exact sole Response comment was
+attached to human-labeled decision `omni-benchmark-w5x.31`, which closed
+`Responded` at `2026-09-02T04:07:16Z`, within the required minute. The receipt
+remained unconsumed and the output root absent at this ledger point. The live
+launcher must inject the established HTTPS origin and sole OAuth profile,
+remove token mode, and let the committed environment validator run before
+exclusive receipt consumption.
+
+The first live authorization invocation failed before provider-environment
+construction and before consumption because the unchanged validator also sent
+its `expected_binding` `MappingProxyType` directly to `json.dumps`. Receipt mode
+remained `0600`; the exact consumption marker and output root remained absent.
+The bounded adapter must also call the unchanged validator with
+`dict(expected_binding)`, after which `authorize_r2_dispatch` still performs its
+independent exact mapping comparison and `execute_r2_dispatch` still owns the
+only exclusive consumer. This second production-type regression was added to
+`omni-benchmark-w5x.32`.
+
+Decision `omni-benchmark-w5x.31` otherwise authenticated but its sole response
+comment was 2,145 bytes rather than the canonical 2,144 because `bd comment
+--file` preserved the receipt maker's terminal newline. Beads exposes no comment
+edit path, and a second response would also fail. The old receipt remains
+immutable and unconsumed. Fix-forward decision `omni-benchmark-w5x.33` binds the
+same action to a new receipt; its exact response was passed as a no-shell
+subprocess argument, producing one 2,144-byte comment before closing
+`Responded`. The new canonical mode-`0600` receipt SHA-256 is
+`a29c3056039cf7129075ee66bc61de04990a7bffd0fb86dd569292ee324069c9`,
+expires `2026-09-03T04:15:57.996730Z`, and passed standalone receipt-plus-decision
+authentication. The response-transport regression is included in
+`omni-benchmark-w5x.32`.
+
+## 2026-09-02 — D-237: Start the exact receipt-gated R2 paired series
+
+### Action boundary
+
+The corrected provider-inert dispatch preflight at system commit
+`1e37dd77ba249d21bac52ea386c51950482c2fda` authenticated the complete
+272-attempt schedule, the 16-database control deployment
+`r2-c5b-deployment-v2`, the recovered 16-database treatment deployment
+`r2-m1-deployment-v4`, the adopted 45/90/1 opportunity map, the cleanup gate,
+the USD 197.90 projected total, and the exact runtime sources. The bounded
+operational adapter converted only the immutable outer preflight mapping to a
+plain `dict` at the unchanged receipt validator's JSON boundary; the
+dispatcher's independent exact mapping comparison remained in force.
+
+Canonical receipt SHA-256
+`a29c3056039cf7129075ee66bc61de04990a7bffd0fb86dd569292ee324069c9`
+then authenticated against the sole exact 2,144-byte response on decision
+`omni-benchmark-w5x.33` and was consumed exactly once under
+`experiments/approvals/r2-paired-series/`. The output root was absent before
+consumption. The dispatcher constructed the production executor only after the
+operator-owned HTTPS origin and sole OAuth profile passed the committed
+environment validator, then began the frozen interleaved run IDs
+`r2-c5b-generation-v2` and `r2-m1-generation-v2`.
+
+No correctness, result value, hidden annotation, dev-B data, or sealed input
+was read at this boundary. Attempts publish append-only terminal bundles in the
+precommitted order; no outcome-driven retry is available. Both frozen scorers
+remain unopened until the complete arm files finalize.
+
+## 2026-09-02 — D-238: Bridge finalized R2 arms through the frozen dev-A scorers
+
+### Hypothesis and boundary
+
+The R2 paired-outcome analyzer is frozen to consume canonical
+`score-artifact-v1` files bound to each finalized arm, while the existing
+dev-A scoring CLI accepts only the earlier public-direct and C4 selection
+manifests. This is an integration gap, not a reason to define or choose a new
+correctness metric after generation.
+
+Hypothesis: a narrow R2 adapter can validate the complete finalized arm against
+the frozen R2 schedule and public dev-A manifest, attach the already-authorized
+dev-A release only after that public validation, invoke the unchanged official
+Soft EX and corrected sensitivity implementations, and publish the existing
+minimal score-artifact schema with file- and record-level hashes. It must not
+change scorer versions or semantics, expose SQL in its outputs, accept partial
+arms, access dev-B or sealed-test records, or permit an outcome-driven rerun.
+Implementation and focused verification are tracked by
+`omni-benchmark-w5x.35`; coding remains separate from the still-running live
+dispatcher.
+
+## 2026-09-02 — D-239: Complete and finalize the immutable R2 paired generation
+
+The receipt-gated dispatcher exited zero after reconciling all 272 scheduled
+attempts: 272 completed in this run and zero remaining. The append-only raw tree
+contains exactly 272 `generation.jsonl` files and 272 `run.json` manifests. No
+attempt was retried or replaced based on its answer or terminal disposition.
+
+Automatic finalization produced two complete 136-record arms under
+`experiments/autoresearch/raw/r2-public-evidence-measures-v2-finalized/`.
+The finalization manifest SHA-256 is
+`e7dd135656cdb15375edc62107369ca8d191facda2f8921343da57bd5ba443ac`;
+the control generation SHA-256 is
+`7c2f063102cd828b534b144c85650cbda32df2e555cd2dada6543b76978ac738`;
+the treatment generation SHA-256 is
+`2da7277f566b4bafb5a81723ab980aae8f3a949fbd564a2a9ec29356ccc56b7d`.
+The manifest binds execution plan
+`bd864648992f2a05d5d2857e935efe56673e3a66e11823bf5f8b642097f7632d`
+and system commit `1e37dd77ba249d21bac52ea386c51950482c2fda` and records that
+correctness, hidden annotations, result values, and sealed-test data were not
+used in finalization.
+
+## 2026-09-02 — D-240: Freeze the R2 dev-A scoring bridge before correctness
+
+The real public-first preparation gate rebuilt all 272 finalized generation
+records from their per-attempt manifests and result-artifact hashes before
+opening the authorized dev-A release. It reproduced execution-plan SHA-256
+`bd864648992f2a05d5d2857e935efe56673e3a66e11823bf5f8b642097f7632d`,
+136 selected questions, 154 released questions, 18 unrepresented questions,
+and both final arm hashes exactly.
+
+The narrow scoring bridge reuses the unchanged frozen official Soft EX and
+corrected sensitivity implementations. Its freeze artifact SHA-256 is
+`a4076f84b3d5631612d4c76e00b847d44a0d9d4a9b0ce0ba132a092f65418c03`.
+The prior aggregate conformance receipt fixes 136 official-scoreable and 135
+sensitivity-scoreable questions. Because the R2 v1 paired analyzer could not
+represent that one gold-unscorable sensitivity pair, an outcome-blind v2 repair
+was frozen before candidate correctness: preserve `unscorable` plus its gold
+failure category, require the same unscorable frame in both arms, and exclude
+it only from that scorer's accuracy and paired-bootstrap denominator. The v2
+analysis freeze SHA-256 is
+`094271d7a1adee9c1bdbfa5314c9fd5d4c5997947952a05608d88fdb776642bd`.
+It preserves both scorer versions and the original deterministic bootstrap
+seed.
+
+Focused verification passes 22 tests with 80.17% branch coverage across the
+adapter and paired analyzer; lint and formatting pass. The score output root is
+absent. The next action is one complete offline scoring pass against the
+existing pinned PostgreSQL 18.6 container and established distinct admin and
+read-only roles. No Omni call, new generation, dev-B access, sealed-test
+access, or outcome-driven retry is authorized or needed.
+
+## 2026-09-02 — D-241: Score R2 and preserve the null mechanism result
+
+The single complete dual-scorer pass exited zero against the pinned PostgreSQL
+18.6 container and the authenticated 136-official / 135-sensitivity aggregate
+conformance receipt. Four immutable arm/scorer artifacts were published under
+`experiments/autoresearch/raw/r2-public-evidence-measures-v2-scores/`; aggregate
+receipt SHA-256 is
+`dccc3bc785f08256fc60bbd9b6e4eb91932ca76d33f708872155471830a0be6b`.
+No scoring retry occurred.
+
+The preregistered mechanism classifier found zero verified replacements among
+45 mapped opportunities: 0.0%, Wilson 95% [0.0%, 7.87%]. Nine pairs were
+unresolved; among the 36 parseable pairs, the result remained 0/36, Wilson 95%
+[0.0%, 9.64%]. Treatment generations referenced a measure in 11 opportunities,
+but none satisfied the exact paired replacement definition; both arms had
+three inline equivalents. Mechanism-report SHA-256 is
+`bfbfd9bc33a54389ef18aa03f5715d8e37937b1dfb5c93f3b9ef3be72954ec8e`.
+
+Official accuracy was 10/136 (7.35%) for R2-C5B and 14/136 (10.29%) for R2-M1,
+a paired +2.94 percentage-point estimate with five gains, one loss, and 95%
+bootstrap interval [0.0, 6.62] percentage points. Sensitivity accuracy was
+9/135 (6.67%) versus 13/135 (9.63%), a paired +2.96-point estimate with five
+gains, one loss, and interval [0.0, 6.67] points. Both intervals include zero;
+do not claim a demonstrated correctness improvement.
+
+Generation reliability moved more visibly: answered attempts increased from
+109 to 121, while result-contract failures fell from 26 to 14. Median latency
+was essentially unchanged (40.21 versus 40.24 seconds); treatment latency IQR
+was lower (21.36 versus 30.85 seconds). Cost, token, tool-call, validation-call,
+and database-query telemetry were unavailable for every attempt and remain
+null. Paired-outcome report SHA-256 is
+`fa56b55529c29b72d0b4e360bfbe75635e3fac29f463a74389fc60e23b526480`.
+
+## 2026-09-02 — D-242: Restore the preregistered paired reliability uncertainty
+
+Post-score audit found that the frozen paired analyzer reported arm-level
+generation reliability but omitted the paired delta and uncertainty required
+by the protocol and parent acceptance criteria. This is a fixed-endpoint
+integration omission, not an outcome-selected new analysis. Add paired
+treatment-minus-control contrasts for answered rate and result-contract-failure
+rate across all 136 scheduled pairs, using the unchanged 10,000-replicate seed,
+and continue emitting aggregate-only output. Version and freeze the correction;
+do not change the semantic-reuse or correctness results.
+
+## 2026-09-02 — D-243: Finalize R2 with a supported reliability result and a null mechanism result
+
+The versioned correction preserved every v2 semantic and correctness value and
+added only the preregistered paired reliability contrasts. Analysis freeze v3
+has file SHA-256
+`7b2f59fe2d77b36466f8702d40f01422e74bc87ea48e3dc66507ffde025213b8`.
+The resulting aggregate report has file SHA-256
+`5fc3c23487e0d1141a46136adaf47477414962640500d75d393250d8258afb65`
+and canonical artifact SHA-256
+`cebea9abb85f78d69ed997c3ff88c35d30604c9563be74a7adb7fc1b77ebb927`.
+
+Across all 136 fixed pairs, the treatment answered 14 coordinates that the
+control did not and lost two that the control answered. Answered rate increased
+by 8.82 percentage points, with the frozen 10,000-replicate paired bootstrap 95%
+interval [+3.68, +14.71]. Result-contract-failure rate decreased by 8.82 points,
+with 13 decreases, one increase, and interval [-13.97, -3.68]. This is the
+statistically supported R2 benefit. It is an end-to-end reliability effect, not
+evidence that the measures were selected or that correctness improved.
+
+The final interpretation therefore keeps three endpoints separate: verified
+semantic replacement is 0/45 with Wilson upper bound 7.87%; official and
+sensitivity correctness each move about +2.95 points but their intervals include
+zero; answered reliability improves with an interval excluding zero. The highest
+leverage product actions are to expose measure candidates, selections,
+rejections, and typed reason codes; detect equivalent inline metric logic; and
+let operators prefer or require composed measures. A separate operational
+finding records the 3,533-file serialized deployment path: content-addressed bulk
+sync, idempotent resume, structured failures, and server-side validation/readback
+receipts would remove a large product and evaluation tax.
+
+No dev-B checkpoint or sealed-test action was taken. Cost, token, tool-call,
+validation-call, and database-query telemetry were absent for every R2 attempt,
+so no R2 cost or efficiency conclusion is reported.
+
+## 2026-09-02 — D-244: Start R3 from product-decision oracles, not another broad run
+
+### Hypothesis and order
+
+R2 leaves three product surfaces structurally unmeasured: the planner does not
+expose why a measure was or was not selected; rewritten SQL can finish planning
+but fail the result adapter on an unsupported type; and exact model deployment
+scales through serialized per-file writes. Another broad accuracy run would
+confound those mechanisms again. The higher-leverage next step is to define a
+typed product contract and a falsifiable acceptance oracle for each surface,
+then repair only the benchmark paths needed to measure them.
+
+Epic `omni-benchmark-qvf` owns this R3 program. Work starts with
+`omni-benchmark-qvf.1`, a measure-selection trace whose scored fields are closed
+enums rather than free-form prose. Bulk deployment (`qvf.2`) follows the existing
+predeployment fail-fast issue `w5x.29`; the rewritten-SQL result contract is
+`qvf.3`; and `qvf.4` prepares, but does not authorize, the existing Modeling
+Agent comparator `w5x.3`. The completed R2 artifacts remain immutable and serve
+only as baseline evidence.
+
+The current Omni documentation sharpens the deployment claim. Its bulk-update
+guide explicitly states that the YAML endpoint writes one file per request and
+that hundreds or thousands of files can take hours. Writing to a model branch
+avoids one git synchronization per file and preserves partial progress, but the
+documented loop still makes one API call for every file. The R3 deployment
+contract therefore targets content-addressed multi-file transfer and idempotent
+resume, not the already-documented branch workflow.
+
+No live provider action is needed for the first three contract and local-oracle
+stages. No dev-B or sealed-test input is in scope. The Modeling Agent comparison
+retains its exact prospective approval boundary and must not inspect query
+history, prior outcomes, or R2 run artifacts.
+
+## 2026-09-02 — D-245: Make measure selection a typed, independently scored product surface
+
+### Result
+
+The proposed version-1 contract is now explicit in
+`docs/omni-measure-selection-trace-contract.md`, with a reference validator and
+aggregate oracle in `src/omni_benchmark/measure_selection_trace.py`. Required
+scored fields use closed enums. In particular, `decision` is exactly `selected`
+or `rejected`, and `reason_code` is required and checked against a different
+closed vocabulary for each decision. Optional free-form `detail` is accepted for
+diagnostics but is deliberately ignored by every metric.
+
+The contract separates query path from metric path, measure policy from observed
+behavior, and retrieval from selection. Its aggregate output reports candidate
+retrieval, mapped-measure selection, governed-measure composition, inline
+fallback, policy violations, and typed reason distributions without emitting
+attempt IDs, question text, SQL, result values, hidden annotations, correctness,
+or sealed data. A `require_measures` fallback remains in the denominator as a
+policy violation rather than disappearing as an error.
+
+Fifty-eight focused tests cover every policy, query path, metric path, retrieval
+state, selection reason, rejection reason, and fallback reason, plus incompatible
+and protected shapes. They pass in 0.08 seconds at 89.57% branch coverage; Ruff
+and format checks pass. No provider call or historical R2 mutation occurred.
+
+## 2026-09-02 — D-246: Turn serialized deployment into a measurable product contract
+
+### Result
+
+The deployment entry point now reconstructs both semantic arms, the committed
+opportunity/adoption chain, and the exact runtime tree before selecting an arm
+or constructing any provider client. The regression reproducing a missing
+committed dependency stops before the live runner. This fixes forward the D-235
+ordering failure without weakening append-only evidence, exact-source binding,
+or the no-outcome-retry rule.
+
+The first detached acceptance run also caught that current `main` had lost the
+opportunity/adjudication paths from the bounded R2 archive even though the exact
+R2 runtime commit contained them. The working fix restores the complete path set
+and adds a direct coverage regression. A second detached, provider-inert run at
+`1e37dd77` passed both 16-database arms (1,750 files each), reproduced 45 mapped
+opportunities over the 136 eligible frame, and returned execution-plan SHA-256
+`bd864648992f2a05d5d2857e935efe56673e3a66e11823bf5f8b642097f7632d`.
+
+Deployment record schema v3 adds exact per-thread CLI request starts and
+setup/upload/validation/readback request counts, plus end-to-end, phase, and
+local-orchestration seconds. Zero denotes an observed absence; missing legacy
+instrumentation remains null. Arm summaries keep wall time distinct from summed
+per-database phase work, which can overlap under concurrency.
+
+The retrospective lower bound is now reproducible from preserved records. Each
+successful R2 v1 arm contains 16 records, 1,750 planned uploads, 1,750 actual
+uploads, and 1,750 exact-readback files. With the recorded 1.25-second global
+minimum between request starts, the upload calls alone span at least 2,186.25
+seconds, or 36.44 minutes, per arm. Setup, validation, readback, response time,
+and retries are excluded. This is evidence for the observed benchmark path, not
+a fleet-wide latency claim. The null-preserving aggregate artifact has SHA-256
+`3a1091969af99eb6c60f26c8a8a1409355a1da411d1832d6857fe74e810844bf`.
+
+`docs/omni-bulk-semantic-deployment-contract.md` now specifies a three-stage
+prepare, multi-file transfer, and atomic commit protocol with content digests,
+changed-file negotiation, idempotent resume, structured errors and rate-limit
+metadata, validation, and complete-readback receipts. Its executable local
+oracle passes no-op, interrupted transfer, invisible staging, resume,
+idempotency conflict, content mismatch, and exact-readback cases. No Omni
+product endpoint was changed or tested, and no provider, question, gold,
+correctness, dev-B, or sealed input was accessed.
+
+## 2026-09-02 — D-247: Make rewritten-SQL results total and failure-owned
+
+### Result
+
+`docs/omni-rewritten-result-contract.md` now specifies an exact version-1 result
+envelope. Selected output fields have authoritative order, logical type,
+nullability, source type, and semantic role; dependency fields are separate and
+cannot change row cardinality. The closed scalar set covers every type the
+current adapter accepts, while an `unknown` selected type has a lossless opaque
+JSON extension rather than a guessed coercion.
+
+Complete results bind ordered field metadata and page rows by SHA-256. Paged
+results require a cursor and may leave total count unavailable; a truncated
+preview cannot claim completeness. Terminal failures use compatible closed codes
+owned by planner, semantic execution, transport, or adapter. The legacy public
+fixture with an `UNKNOWN` selected field and an extra helper field now resolves
+to `planner/output_type_unresolved` with one selected and one dependency field,
+without SQL or result values.
+
+The executable offline oracle passes ten focused cases covering selected versus
+dependency metadata, nullable values, scalar type enforcement, opaque unknowns,
+pagination, content binding, all four failure owners, the legacy unsupported-type
+boundary, and aggregate-only reporting. No completed answer was replayed; no
+provider, correctness, hidden annotation, dev-B, or sealed-test input was
+accessed. This validates the proposed contract, not current Omni conformance.
+
+## 2026-09-02 — D-248: Freeze the decision packet before a Modeling Agent comparison
+
+### Result and remaining gate
+
+The separate authoring comparator now has a complete decision packet at
+`docs/omni-modeling-agent-comparator-decision-packet.md` and a machine-readable
+action plan at
+`experiments/r3-product-contracts/omni-modeling-agent-comparator-plan-v1.json`.
+The plan SHA-256 is
+`9e3844535658982f9d448114e249a3e62ab994a553fc4749732ac0a5060ff467`.
+
+The packet pins the public HKB, public C5 baseline, exact 16-database control
+bundle set, and scorer-only adopted catalog at input commit `1e37dd77`. It gives
+the Modeling Agent exact Sandbox instructions and prohibits questions,
+`query`/`normal_query`, SQL, correctness, hidden annotations, dev-B, sealed data,
+prior run artifacts, the catalog, query history, and `pg_stat_statements`. It
+also freezes the candidate schema, catalog-agreement metrics, correction
+taxonomy, null effort semantics, 16-session / four-hour / USD 100 ceilings, and
+stop rules.
+
+No Modeling Agent or provider action occurred. The next controlled step is to
+commit the packet and plan, bind their final commit and hashes into the specified
+single-use receipt, and obtain the exact required authorization. That receipt
+authorizes Sandbox proposal generation only; it cannot authorize applying model
+changes or entering the comparator into R2 evidence.
+
+## 2026-09-02 — D-249: Make the real immutable receipt path executable
+
+### Result
+
+The post-run receipt regression now covers the production `MappingProxyType`
+returned by R2 preflight at both canonical JSON boundaries. Each boundary makes
+only a shallow plain-dict copy for serialization; the dispatcher retains its
+independent exact mapping comparison, expiry check, decision authentication, and
+single-use consumer.
+
+Receipt materialization still writes canonical newline-terminated private JSON,
+but its separate Beads `Response:` file now has no terminal newline. Passing that
+file through the documented file transport therefore produces the exact one
+comment the validator expects rather than the 2,145-byte near-match observed in
+D-236. An integrated regression materializes from an immutable binding and
+authenticates the generated response unchanged. Historical dispatch freeze v3 is
+now verified against its introducing commit rather than forbidding all future
+source fixes in the working tree.
+
+Forty-six focused receipt, approval, dispatch, and dispatch-CLI tests pass. Bad
+mappings, noncanonical receipts, duplicate/nonexact comments, expiry, unsafe
+paths, and replay remain rejected. No receipt was materialized outside test
+temporary directories, no approval was consumed, and no provider or protected
+input was accessed.
+
+## 2026-09-02 — Correction to D-226 and omni-benchmark-6v9.8: governed cost has three kinds, not one
+
+### What was overstated
+
+Two earlier entries say more than the evidence supports. The 6v9.8 entry
+concludes that "cost is unavailable by construction for C4, C5 and E02 and must
+never be estimated from token counts", and the model and topic AI context were
+written to say exactly that. D-226 repeats the framing, describing the governed
+arms' cost as unmeasured and carrying the credit figure as an arm-level estimate
+without stating what part of it is measured.
+
+The token-rate half of that conclusion stands: the implied per-token rates span
+0.775 to 22.0 dollars per million input tokens within one arm, the governed arms
+bill through a different path than the priced arms, and no cache-read breakdown
+exists, so reconstructing cost from token counts remains prohibited. The
+"unavailable by construction" half does not stand. Omni bills AI usage in credits
+worth one US dollar each, `POST /api/v1/ai/credit-usage/users` returns that
+counter per membership per billing period, and the August 2026 reading is
+recorded: 635.297481375 credits, captured in
+`experiments/analysis/omni-credit-usage-2026-08.json`. Account-period governed
+spend is therefore measured in dollars. What is missing is attribution, not
+measurement, and it is missing for a mundane reason: `OMNI_COST_BRACKET_LEASE_DIR`
+was never set for any governed run, so `omni_credit_cost.py` took its unbracketed
+path every time. Worse, until today the variable would not have reached an attempt
+child even if an operator had set it, because it was absent from both launcher
+child-environment allowlists.
+
+### The distinction that replaces it
+
+Cost comes in three kinds and each now has its own home in the evidence.
+
+- **Measured, account-period.** `telemetry.credit_period`, `basis =
+  measured_account_period`: 635.30 dollars over 2026-08, alongside 703 recorded
+  Omni-routed attempts and 226 conversations no attempt claims. Account-wide, so
+  it covers modeling and validation work as well as benchmark attempts.
+- **Estimated, per arm.** `telemetry.arm_cost`, `basis =
+  proportional_estimate`: the same measured dollars divided by recorded
+  Omni-routed attempts and multiplied back out per scope, each row paired with an
+  upper bound that charges the unattributed conversations to the benchmark.
+  Sealed C4 267 attempts, C4 public baseline / C5 / E02 136 each, plus 28
+  attempts of aborted pilots. Scope-to-arm mapping is committed in
+  `config/telemetry_db/credit_scopes.json`; a scope the file does not name fails
+  the load rather than loading unattributed.
+- **Unmeasured, per attempt.** `telemetry.attempt.cost_usd` stays NULL for every
+  governed arm with `cost_unavailable_reason =
+  omni_job_api_does_not_expose_cost`. It cannot be backfilled: the counter is
+  cumulative, those attempts are past, and the rerun policy forbids re-running a
+  trial to collect it.
+
+### Consequence
+
+The model's `ai_context` no longer says cost is unavailable by construction; it
+names the three kinds and forbids presenting an `arm_cost` figure as a
+measurement. Two new views, `neondb_telemetry__credit_period` and
+`neondb_telemetry__arm_cost`, carry the same distinction in their descriptions,
+and `arm_cost` deliberately has no join to attempts, since joining an arm-level
+estimate across attempt rows would multiply it. `OMNI_COST_BRACKET_LEASE_DIR` now
+survives both launcher allowlists, is documented in `.env.example`, and is set to
+an existing directory outside the repository, so the next governed run measures
+per-attempt dollars as `cost_source = credit_usage_delta` rather than repeating
+this gap. D-226's figures are unchanged and remain correct as stated in its own
+artifact; what changes is the claim about what could have been known. No Omni
+evaluated attempt, dev-B access, or sealed access was made.

@@ -2,15 +2,18 @@
 
 ## Results report
 
-> **Status, 2026-08-31.** The primary C1-C4 held-out evaluation is complete and
+> **Status, 2026-09-02.** The primary C1-C4 held-out evaluation is complete and
 > frozen; its numbers are final and nothing since has changed them. A mechanism
-> analysis, C5, has since run on development data to test the interpretation of
-> the observed C4 behavior. It does not alter, rerun, or reopen the sealed
-> evaluation and makes no held-out claim; it refines the product-level
-> explanation of the result. C5 was registered after the
+> analysis, C5, and its paired measure follow-up, R2, have since run on
+> development data to test the interpretation of the observed C4 behavior. They
+> do not alter, rerun, or reopen the sealed evaluation and make no held-out
+> claim; they refine the product-level
+> explanation of the result. C5 and R2 were registered after the
 > sealed aggregates became visible, which is recorded in D-197 and is exactly
-> why it is confined to dev-A. Design:
+> why they are confined to dev-A. Designs:
 > [`docs/c5-tuned-governed-condition.md`](docs/c5-tuned-governed-condition.md).
+> R2's public-evidence measure protocol and freezes are under
+> [`experiments/r2-public-evidence-measures/`](experiments/r2-public-evidence-measures/).
 > Trajectory across all experiments:
 > [`docs/experiment-trajectory.md`](docs/experiment-trajectory.md).
 >
@@ -522,6 +525,7 @@ Their reusable changes and promotion rules are recorded in
 | E04: broad HKB context | Prespecified negative control only | Not run | Out of MVP scope after the scoring-order deviation |
 | E05: typed output fields | Registered against the 31 `UNKNOWN`-type contract failures; the preregistered precondition needed 16 of 31 attempts to select a compiled semantic field, and the measured ceiling is 6 of 31 | INCONCLUSIVE by its own stopping rule | Closed; consumed no live attempt |
 | C5: docs-idiomatic tuned governed Omni | Registered 2026-08-30 under D-197, after sealed aggregates were visible. Widened view surface, full FK join graph, complete HKB port to `ai_context`. Public inputs only | Complete on dev-A: 18/136 (13.2%) against frozen C4's 9/136 (6.6%) on the identical frame, at 32% fewer median tokens; topic scoping rose to 132/134 while hand-written aggregates held at 38.1% | Development-only mechanism analysis; no held-out claim is available to it. Supports PF-016 and narrows the C4 interpretation |
+| R2: public-evidence measures | Added 812 conservative entity-count measures to C5, with agent adjudication limited to the public review workbooks and a question-blind 45-opportunity map; randomized paired control/treatment order | Complete on dev-A: 0/45 verified semantic replacements; official accuracy 10/136 to 14/136 with paired 95% CI including zero; answered rate 109/136 to 121/136, paired +8.82 points, 95% CI [+3.68, +14.71] | Mechanism refuted, correctness inconclusive, reliability supported. Development-only; no dev-B or sealed claim |
 
 The no-rerun E02 diagnostic preserves that formal decision while extracting the
 usable evidence. Both frozen scorers were applied offline to the 117 captured
@@ -715,6 +719,53 @@ field resolution throughout and join scope on nearly every attempt.
 > constant, and `join_via_map`, which a submitted query never populates. The
 > field that records join scope, `join_paths_from_topic_name`, was not read. C5
 > did raise it from 69.6% to 98.5%.
+
+### R2: public-evidence measures
+
+R2 tested the remaining C5 mechanism directly. Its treatment arm added 812
+conservative entity-count measures across the same 16 models; the paired control
+kept the otherwise identical C5 bundle measure-free. The measure decisions came
+from agent adjudication of the supplied public review workbook and candidate
+metadata, then explicit operator adoption. The review agent did not inspect
+benchmark question text, SQL, gold answers, correctness, hidden annotations,
+dev-B, or sealed-test data. A separate question-blind opportunity review mapped
+45 of the 136 scheduled coordinates to one or more applicable measures before
+generation.
+
+The primary mechanism result is null. Treatment queries referenced a measure on
+11 mapped opportunities, proving that the definitions were reachable, but zero
+of 45 pairs met the frozen exact replacement rule: 0.0%, Wilson 95% [0.0%,
+7.87%]. Nine pairs were unresolved; restricting to 36 parseable pairs remains
+0/36, with a 9.64% upper bound. Publishing this measure class therefore did not
+demonstrably replace the inline aggregate logic that motivated the intervention.
+
+Correctness moved in a favorable but inconclusive direction. Official Soft EX
+rose from 10/136 (7.35%) to 14/136 (10.29%), a paired +2.94 percentage-point
+estimate with five gains, one loss, and 95% bootstrap interval [0.0, 6.62]. The
+sensitivity scorer rose from 9/135 (6.67%) to 13/135 (9.63%), +2.96 points with
+the same five gains and one loss and interval [0.0, 6.67]. Both intervals include
+zero; R2 does not establish an accuracy improvement.
+
+Reliability is the positive result. Answered attempts rose from 109/136 to
+121/136, a paired +8.82-point change with 95% interval [+3.68, +14.71].
+Result-contract failures fell from 26 to 14, a paired -8.82-point change with
+interval [-13.97, -3.68]. Median latency was effectively unchanged at 40.21
+versus 40.24 seconds. Cost, token, tool-call, validation-call, and database-query
+telemetry were unavailable for every attempt, so R2 supports no efficiency or
+cost claim.
+
+The mechanism and paired reports are
+[`r2-semantic-reuse-v1.json`](experiments/analysis/r2-semantic-reuse-v1.json)
+and
+[`r2-paired-outcomes-v3.json`](experiments/analysis/r2-paired-outcomes-v3.json).
+Together they narrow the product recommendation: adding governed definitions is
+not enough. Omni should expose measure candidates, selection, rejection, and
+typed reason codes, identify inline-equivalent metric logic, and let an operator
+prefer or require composed measures. The deployment itself also exposed a
+separate high-leverage product issue: synchronizing 3,533 semantic files through
+serialized per-file API writes took tens of minutes per arm and made recovery
+disproportionately expensive; [PF-018](docs/product-findings.md#pf-018-large-semantic-bundles-require-thousands-of-serialized-api-writes)
+records the bulk-deployment recommendation.
 
 ### Cost and wall time across all five arms
 
@@ -1211,7 +1262,7 @@ it does not claim held-out improvement from tuning.
 
 ## 7. Product recommendations
 
-The development evidence supports five immediate recommendations:
+The development evidence supports seven immediate recommendations:
 
 1. **Make grain contracts explicit and inspectable.** Model import and AI-facing
    authoring should represent metric grain, entity identity, relationship
@@ -1239,12 +1290,29 @@ The development evidence supports five immediate recommendations:
    query itself succeeded. The contract that needs writing down is the one over
    rewritten SQL: when the agent authors the query, neither side currently
    specifies what the planner guarantees about the type of an output column the
-   semantic model never declared.
+   semantic model never declared. A concrete version-1 proposal and executable
+   oracle are in the [rewritten-result contract](docs/omni-rewritten-result-contract.md).
+6. **Make measure selection an observable, enforceable planner decision.** R2
+   published 812 measures; the agent referenced one on 11 of 45 mapped
+   opportunities but produced zero verified replacements. Return candidate,
+   selected, and rejected measure IDs with typed reason codes, flag equivalent
+   inline logic, and let administrators prefer or require composed measures. The
+   proposed closed trace schema is in the
+   [measure-selection contract](docs/omni-measure-selection-trace-contract.md).
+7. **Deploy semantic bundles by content, not file count.** R2 synchronized 3,533
+   files through serialized per-file writes, turning each exact deployment into
+   a tens-of-minutes operation and making transient recovery costly. Provide an
+   atomic content-addressed bundle upload, changed-file diff, idempotent resume,
+   and structured validation/readback receipt. The precise API proposal and
+   null-preserving benchmark are in the
+   [bulk-deployment contract](docs/omni-bulk-semantic-deployment-contract.md).
 
 The direct and C4 development baselines associate these mechanisms with
-failures. On the matched 89-question, 16-database held-out frame, the comparison
-supports the value of searchable raw HKB context, but it does not show an
-accuracy gain for the frozen governed system.
+failures. R2 adds a paired development result: reliability improved, correctness
+remained inconclusive, and semantic replacement remained null. On the matched
+89-question, 16-database held-out frame, the original comparison supports the
+value of searchable raw HKB context, but it does not show an accuracy gain for
+the frozen governed system.
 The detailed product handoff is in
 [`docs/product-findings.md`](docs/product-findings.md); supporting mechanism
 evidence is in [`docs/failure-taxonomy.md`](docs/failure-taxonomy.md), the

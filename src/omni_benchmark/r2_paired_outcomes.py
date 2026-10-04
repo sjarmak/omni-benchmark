@@ -31,12 +31,12 @@ EXPECTED_SCHEDULE_SHA256 = (
 EXPECTED_PAIR_COUNT = 136
 BOOTSTRAP_REPLICATES = 10_000
 BOOTSTRAP_SEED = "omni-livesqlbench-large-v1-r2-measures-analysis-v1"
-ANALYSIS_VERSION = "r2_paired_outcome_analysis_v1"
+ANALYSIS_VERSION = "r2_paired_outcome_analysis_v3"
 
 _REPORT_KIND = "r2-public-evidence-paired-outcome-report"
 _SCHEDULE_KIND = "r2-public-evidence-measures-paired-schedule"
 _SCHEDULE_VERSION = "r2-public-evidence-measures-paired-schedule-v1"
-_SCORE_SCHEMA_VERSION = "score-artifact-v1"
+_SCORE_SCHEMA_VERSIONS = frozenset({"score-artifact-v1", "r2-score-artifact-v2"})
 _OUTCOMES = ("correct", "refused_or_error", "wrong_answer")
 _GENERATION_OUTCOMES = ("answered", "errored", "refused")
 _SCORED_FIELDS = frozenset(
@@ -83,7 +83,8 @@ class _Generation:
 @dataclass(frozen=True)
 class _Score:
     failure_category: str | None
-    outcome: str
+    outcome: str | None
+    status: str
 
 
 def build_r2_paired_outcome_report(
@@ -205,6 +206,7 @@ def build_r2_paired_outcome_report(
         },
         "kind": _REPORT_KIND,
         "paired_cost": _paired_cost(control, treatment, pair_order),
+        "paired_reliability": _paired_reliability(control, treatment, pair_order),
         "pair_count": expected_pair_count,
         "schema_version": 1,
         "scorers": scorer_reports,
@@ -447,7 +449,8 @@ def _score_artifact(
         raise R2PairedOutcomeError("score artifact is not canonical JSON")
     if set(value) != {"attempts", "generation", "schema_version", "scorer"}:
         raise R2PairedOutcomeError("score artifact shape is invalid")
-    if value.get("schema_version") != _SCORE_SCHEMA_VERSION:
+    schema_version = value.get("schema_version")
+    if schema_version not in _SCORE_SCHEMA_VERSIONS:
         raise R2PairedOutcomeError("score artifact version is invalid")
     binding = _mapping(value.get("generation"), "score generation binding")
     if set(binding) != {"path", "sha256"}:
@@ -474,16 +477,17 @@ def _score_artifact(
     for raw, record in zip(attempts, generation, strict=True):
         attempt = _mapping(raw, "score attempt")
         fields = set(attempt)
-        if (
-            fields
-            - {
-                "attempt_id",
-                "failure_category",
-                "generation_record_sha256",
-                "outcome",
-            }
-            or {"attempt_id", "generation_record_sha256", "outcome"} - fields
-        ):
+        allowed = {
+            "attempt_id",
+            "failure_category",
+            "generation_record_sha256",
+            "outcome",
+        }
+        required = {"attempt_id", "generation_record_sha256", "outcome"}
+        if schema_version == "r2-score-artifact-v2":
+            allowed.add("status")
+            required = {"attempt_id", "generation_record_sha256", "status"}
+        if fields - allowed or required - fields:
             raise R2PairedOutcomeError("score artifact attempt shape is invalid")
         if attempt.get("attempt_id") != record.attempt_id:
             raise R2PairedOutcomeError("score artifact attempt identity is invalid")
@@ -491,15 +495,25 @@ def _score_artifact(
             raise R2PairedOutcomeError(
                 "score artifact generation record hash is invalid"
             )
+        status = attempt.get("status", "scored")
         outcome = attempt.get("outcome")
-        if outcome not in _OUTCOMES:
+        if status not in {"scored", "unscorable"}:
+            raise R2PairedOutcomeError("score artifact status is invalid")
+        if (status == "scored" and outcome not in _OUTCOMES) or (
+            status == "unscorable" and outcome is not None
+        ):
             raise R2PairedOutcomeError("score artifact outcome is invalid")
         category = attempt.get("failure_category")
         if category is not None:
             category = _failure(category, "score failure category")
+        if status == "unscorable" and category is None:
+            raise R2PairedOutcomeError(
+                "unscorable score artifact attempt requires a failure category"
+            )
         result[record.instance_id] = _Score(
             failure_category=category,
-            outcome=str(outcome),
+            outcome=None if outcome is None else str(outcome),
+            status=str(status),
         )
     return result
 
@@ -559,36 +573,53 @@ def _scorer_report(
     arms: dict[str, dict[str, Any]] = {}
     for condition in (CONTROL_CONDITION, TREATMENT_CONDITION):
         selected = scores[condition]
-        outcomes = Counter(score.outcome for score in selected.values())
+        outcomes = Counter(
+            score.outcome for score in selected.values() if score.status == "scored"
+        )
         categories = Counter(
             score.failure_category
             for score in selected.values()
             if score.failure_category is not None
         )
         correct = outcomes["correct"]
+        unscorable = sum(score.status == "unscorable" for score in selected.values())
+        scoreable = len(selected) - unscorable
+        if scoreable < 1:
+            raise R2PairedOutcomeError("scorer has no scoreable attempts")
         total_cost = generation_reports[condition]["telemetry"]["total_cost_usd"]
         arms[condition] = {
-            "accuracy": correct / len(pair_order),
+            "accuracy": correct / scoreable,
             "cost_per_correct_attempt": (
                 None if total_cost is None or correct == 0 else total_cost / correct
             ),
             "failure_categories": dict(sorted(categories.items())),
             "outcomes": {name: outcomes[name] for name in _OUTCOMES},
             "scheduled_attempts": len(generations[condition]),
+            "scoreable_attempts": scoreable,
+            "unscorable_attempts": unscorable,
         }
     control = scores[CONTROL_CONDITION]
     treatment = scores[TREATMENT_CONDITION]
+    control_unscorable = {
+        item for item in pair_order if control[item].status == "unscorable"
+    }
+    treatment_unscorable = {
+        item for item in pair_order if treatment[item].status == "unscorable"
+    }
+    if control_unscorable != treatment_unscorable:
+        raise R2PairedOutcomeError("scorer unscorable frame differs between arms")
+    scoreable_pairs = [item for item in pair_order if item not in control_unscorable]
     differences = [
         int(treatment[item].outcome == "correct")
         - int(control[item].outcome == "correct")
-        for item in pair_order
+        for item in scoreable_pairs
     ]
     interval = _bootstrap_interval(differences)
     interval.update(
         {
             "discordant_gains": sum(value == 1 for value in differences),
             "discordant_losses": sum(value == -1 for value in differences),
-            "pair_count": len(pair_order),
+            "pair_count": len(scoreable_pairs),
         }
     )
     return {
@@ -628,6 +659,46 @@ def _paired_cost(
         **report,
         "pair_count": len(pair_order),
         "status": "complete",
+    }
+
+
+def _paired_reliability(
+    control: Sequence[_Generation],
+    treatment: Sequence[_Generation],
+    pair_order: Sequence[str],
+) -> dict[str, Any]:
+    by_condition = {
+        CONTROL_CONDITION: {record.instance_id: record for record in control},
+        TREATMENT_CONDITION: {record.instance_id: record for record in treatment},
+    }
+
+    def contrast(predicate) -> tuple[dict[str, float], list[int]]:
+        differences = [
+            int(predicate(by_condition[TREATMENT_CONDITION][item]))
+            - int(predicate(by_condition[CONTROL_CONDITION][item]))
+            for item in pair_order
+        ]
+        return _bootstrap_interval(differences), differences
+
+    answered, answered_differences = contrast(
+        lambda record: record.generation_outcome == "answered"
+    )
+    contract, contract_differences = contrast(
+        lambda record: record.terminal_failure_class in _RESULT_CONTRACT_FAILURES
+    )
+    return {
+        "answered_rate": {
+            **answered,
+            "discordant_gains": sum(value == 1 for value in answered_differences),
+            "discordant_losses": sum(value == -1 for value in answered_differences),
+            "pair_count": len(pair_order),
+        },
+        "result_contract_failure_rate": {
+            **contract,
+            "discordant_decreases": sum(value == -1 for value in contract_differences),
+            "discordant_increases": sum(value == 1 for value in contract_differences),
+            "pair_count": len(pair_order),
+        },
     }
 
 

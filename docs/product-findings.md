@@ -17,7 +17,7 @@ Each finding must include:
 Private SQL, hidden knowledge annotations, test-case bodies, credentials, and
 customer data must not appear in this file.
 
-## Current product handoff — 2026-08-30
+## Current product handoff — 2026-09-02
 
 The entries below are append-only observations recorded as the evaluation
 progressed. Their local words such as "pending", "blocked", and "not yet" are
@@ -28,6 +28,8 @@ not an incident-severity classification.
 
 | Priority | Product surface | Current evidence | Product action | Detailed record |
 | --- | --- | --- | --- | --- |
+| Now | Measure discovery and use | In the paired R2 dev-A study, 812 public-evidence entity-count measures were available across 16 models. Of 45 question-blind mapped opportunities, treatment queries referenced a measure in 11 but achieved 0 verified replacements (Wilson 95% upper bound 7.87%). Reliability nevertheless improved: answered rate +8.82 points, 95% CI [+3.68, +14.71], driven by fewer result-contract failures. | Make measure selection an explicit planner step, expose candidate/selected/rejected measures and reasons, warn when equivalent logic is still written inline, and measure composed execution separately from answer reliability. | [PF-017](#pf-017-published-measures-are-reachable-but-not-reliably-selected-as-semantic-replacements) |
+| Now | Bulk semantic deployment | The R2 bundle contained 3,533 semantic files. The CLI/API uploaded one file per serialized, rate-limited request, making exact deployment take tens of minutes per arm; opaque product-API failures forced preserved diagnostic and recovery passes before generation could start. | Add atomic bulk upload or content-addressed bundle sync, idempotent resume, structured rate-limit/server error details, and server-side validation/readback receipts. | [PF-018](#pf-018-large-semantic-bundles-require-thousands-of-serialized-api-writes) |
 | Next | Query-pathway surfacing | Governed jobs return agent-authored `userEditedSQL` on 661 of 661 parseable attempts across six arms, but that SQL references the deployed model through `${view.field}` templating on 660 of 661, and most attempts also scope joins through a topic (69.6% dev-A C4, 98.5% C5). Two shapes leave the model's control: an aggregate hand-written over a field reference because the topic defines no measure (34.1% dev-A C4, 38.1% C5), and a `FROM` naming a physical table (26.0% to 33.0%). No typed field or AI Hub surface names which pathway a job took; `rewriteSql` is constant and cannot. | Return a declared composition mode (`composed`, `templated_sql`, `raw_sql`) on every governed job, surface it in the run view, report hand-written aggregates as modeling feedback, and let an administrator require composed mode and fail with a typed reason. | [PF-016](#pf-016-the-sql-authoring-pathway-is-not-surfaced-and-it-is-the-most-permissive-route) |
 | Now | Rewritten-SQL output contract | 31 of 34 governed baseline non-answers shared an `UNKNOWN` selected-field type. E02 then preserved 14 generated semantic queries that could not be captured because of unsupported result types. Attribution is bounded, not open: at most 6 of the 31 could come from a missing declaration on a compiled derived dimension, and 24 select no compiled field of any kind. Those 24 remain unresolved at the interface between the authored model and the planner. | Define a total typed result contract for rewritten SQL, separate selected and dependency fields, and surface unresolved output types during validation. | [PF-006](#pf-006-unformatted-json-results-still-stringify-numeric-measures), [PF-014](#pf-014-query-plan-summaries-conflate-output-and-dependency-field-metadata) |
 | Now | Complete machine-readable results | Truncation and presentation-control records caused all five strict concurrency-canary captures to fail before narrow adapter corrections; incomplete previews must not be accepted as analytical results. | Return complete results or a stable paginated/content-addressed handle, and keep preview metadata outside data rows. | [PF-010](#pf-010-truncated-governed-results-are-observable-but-not-execution-scorable), [PF-013](#pf-013-governed-job-previews-mix-data-rows-with-presentation-control-records) |
@@ -840,10 +842,16 @@ execution mechanics rather than accuracy.
 - **Proposed product change:** Return explicit `selected_fields` and
   `dependency_fields` sections with canonical names, output order, and executable
   data types. Do not emit `UNKNOWN` for a field that the JSON execution endpoint
-  can return.
+  can return. The proposed total envelope, opaque extension path, pagination,
+  and typed ownership rules are specified in
+  [the rewritten-result contract](omni-rewritten-result-contract.md).
 - **Was the change tested?:** Yes. RED/GREEN tests require exact equality between
   submitted and planned selected fields, selected-field uniqueness and coverage,
-  and exact output-column cardinality. Unknown types remain fail-closed.
+  and exact output-column cardinality. A new offline oracle also tests nullable
+  scalars, dependency-only unknowns, selected unknowns through a lossless opaque
+  representation, complete versus paged results, content digests, and closed
+  planner/execution/transport/adapter failure ownership. No Omni product change
+  was available to test.
 - **Measured effect:** Preserved disaster replay changed from contract failure to
   a 240-row typed result. Preserved ETF replay changed from an undifferentiated
   contract error to a distinct unsupported-type outcome.
@@ -1002,13 +1010,15 @@ execution mechanics rather than accuracy.
   aggregate rate matters separately: it is Omni's own documented signal that a
   topic lacked the measure a metric needed, and it is a modeling gap a customer
   would want reported rather than silently worked around.
-- **Systematic evidence / frequency:** Six arms spanning two semantic-model
+- **Systematic evidence / frequency:** Six historical arms spanning two semantic-model
   generations, 16 databases, and both a sparse compiled model (C4, 6 to 11 views
   per database) and a wider one (C5, 47 to 63 views per database with the full FK
   join graph and the HKB ported into `ai_context`). Widening the model raised
   topic scoping from 69.6% to 98.5% and left the inline-aggregate rate roughly
-  flat, which is consistent with the binding constraint being absent measures
-  rather than absent context. Neither C4 nor C5 defines measures.
+  flat. R2 subsequently added 812 conservative entity-count measures and found
+  that treatment queries referenced one on 11 of 45 mapped opportunities but
+  produced zero verified replacements. That result supersedes the earlier
+  inference that authoring measures alone would resolve the binding constraint.
 - **Benchmark impact:** C4 and C5 accuracy measure an agent writing metric logic
   in SQL against a model that supplied joins and field resolution but no measures.
   They are not measurements of full semantic composition, and they are not
@@ -1032,10 +1042,13 @@ execution mechanics rather than accuracy.
   which counts co-occurring query shapes and emits counts only, never SQL text.
   The superseded schema-1 artifact remains at
   [`../experiments/analysis/governed-query-path-tally-v1.json`](../experiments/analysis/governed-query-path-tally-v1.json)
-  as the record of what was published.
-- **Was the change tested?:** No. C5 tested whether a richer semantic model would
-  change the behavior on its own. It raised topic scoping to 98.5% and did not
-  reduce inline aggregates, which is the phase-2 question.
+  as the record of what was published. The measure intervention is reported in
+  [`../experiments/analysis/r2-semantic-reuse-v1.json`](../experiments/analysis/r2-semantic-reuse-v1.json)
+  and [PF-017](#pf-017-published-measures-are-reachable-but-not-reliably-selected-as-semantic-replacements).
+- **Was the change tested?:** Partly. C5 tested a richer model without measures;
+  R2 then tested 812 conservative entity-count measures. The measures were
+  reachable but did not produce a verified semantic replacement. The proposed
+  typed composition-mode and measure-selection surfaces remain untested.
 - **Measured effect:** C5's wider deployment roughly doubled governed accuracy on
   matched frames (18/136 versus C4's 9/136 official; 13/122 versus 5/122 on the
   five-condition intersection). Median tokens fell from 583,188 to 396,884 and
@@ -1051,12 +1064,134 @@ execution mechanics rather than accuracy.
 - **AI Hub exposes relevant context/behavior?:** Only by reading `userEditedSQL`
   and `join_paths_from_topic_name` off the returned semantic query. `rewriteSql`
   is not usable for this: it is constant.
-- **Fixable through current AI Hub/modeling workflow?:** Partly, and untested.
-  Defining measures is the documented remedy for the inline-aggregate shape and
-  has not been tried here. The surfacing gap is not addressable by model
-  authoring.
+- **Fixable through current AI Hub/modeling workflow?:** Only partly. R2 shows
+  that adding the tested entity-count measures does not by itself make selection
+  or replacement dependable. Richer metric families may behave differently,
+  but the surfacing and enforcement gaps are not addressable by model authoring.
 - **AI Hub Eval outcome:** Not run.
 - **External execution outcome:** All governed conditions in this study.
+- **Evaluator agreement/disagreement:** Not applicable.
+
+## PF-017: Published measures are reachable but not reliably selected as semantic replacements
+
+- **Observed behavior:** R2 added 812 agent-adjudicated, operator-adopted
+  public-evidence entity-count measures to 16 otherwise identical semantic
+  models. The question-blind opportunity map identified 45 relevant dev-A
+  questions. Treatment queries referenced a measure on 11 opportunities, so the
+  definitions were reachable, but zero pairs met the frozen replacement rule.
+- **Minimal non-private reproduction:** Publish a count-distinct model measure,
+  submit a governed question whose mapped metric matches that measure, and
+  compare the returned semantic query with a contemporaneous measure-free arm.
+  The returned query may name a measure without replacing the matched inline
+  aggregate that motivated the definition.
+- **Expected behavior:** When a model measure exactly represents the requested
+  metric, the planner prefers it and reports that selection as a typed decision.
+- **Actual behavior:** Verified replacement was 0/45, 0.0%, Wilson 95% [0.0%,
+  7.87%]. Nine pairs were unresolved; the parseable sensitivity was also 0/36,
+  with a 9.64% upper bound. Treatment referenced a measure 11 times, but those
+  references did not line up with a control inline-equivalent replacement.
+- **Why it matters to customers:** Publishing governed definitions is not enough
+  if callers cannot tell whether the planner found and used the definition that
+  matches their metric. Teams cannot defend semantic consistency from model
+  contents alone.
+- **Systematic evidence / frequency:** One complete randomized-order paired
+  dev-A repetition, 136 pairs across 16 databases; 45 question-blind mapped
+  opportunities. The catalog contains only conservative entity-count measures,
+  so this does not establish behavior for ratios, period logic, or richer
+  business metrics.
+- **Benchmark impact:** This is the primary R2 mechanism endpoint. It rejects the
+  hypothesis that adding these measures, by itself, demonstrably caused semantic
+  replacement in the production agent.
+- **Severity:** High product-leverage gap; bounded experimental scope.
+- **Proposed product change:** Make measure retrieval and selection explicit in
+  the planner. Return candidate, selected, and rejected measure identifiers with
+  typed reason codes; warn when an equivalent aggregate is authored inline; add
+  an administrator policy to prefer or require a governed measure when one
+  matches. The concrete version-1 response shape, enum vocabulary, invariants,
+  failure behavior, and acceptance metrics are specified in
+  [`omni-measure-selection-trace-contract.md`](omni-measure-selection-trace-contract.md).
+- **Was the change tested?:** The modeling intervention was tested; the proposed
+  planner/surfacing change was not.
+- **Measured effect:** Although replacement was null, R2-M1 answered 121/136
+  versus 109/136 for R2-C5B. The paired answered-rate delta was +8.82 percentage
+  points, 95% bootstrap CI [+3.68, +14.71]; result-contract failures fell by
+  8.82 points, CI [−13.97, −3.68]. Official accuracy moved +2.94 points and
+  sensitivity +2.96 points, but both 95% intervals include zero. Treat
+  reliability as the positive signal and correctness as inconclusive.
+- **Experiment / commit provenance:** Decisions D-239 through D-243; generation
+  system commit `1e37dd77`; mechanism artifact
+  [`r2-semantic-reuse-v1.json`](../experiments/analysis/r2-semantic-reuse-v1.json)
+  and paired artifact
+  [`r2-paired-outcomes-v3.json`](../experiments/analysis/r2-paired-outcomes-v3.json).
+- **Visible in AI Hub?:** Measure references are recoverable from returned query
+  content; no typed selection/rejection trace was observed.
+- **AI Hub exposes relevant context/behavior?:** Not enough to distinguish a
+  selected governed metric from unrelated measure use or inline recreation.
+- **Fixable through current AI Hub/modeling workflow?:** Not by adding the same
+  measures alone; that is the intervention R2 tested.
+- **AI Hub Eval outcome:** Not run.
+- **External execution outcome:** Complete paired dev-A run; no dev-B or sealed
+  test action.
+- **Evaluator agreement/disagreement:** Official and sensitivity scorers agree
+  on direction and on the lack of a nonzero accuracy interval.
+
+## PF-018: Large semantic bundles require thousands of serialized API writes
+
+- **Observed behavior:** The two-arm R2 bundle contained 3,533 YAML files. The
+  deployed CLI/API path sent each file through a serialized, rate-limited write
+  queue and then validated and read back every model. This made deployment alone
+  take tens of minutes per arm. A treatment pass failed at the product API after
+  partial progress, and the CLI 1.1.2 integration did not preserve actionable
+  structured error detail.
+- **Minimal non-private reproduction:** Deploy a multi-database semantic bundle
+  with thousands of YAML files through the documented create/update YAML-files
+  API and CLI, pacing requests at the supported rate, then validate and export
+  the model for exact readback.
+- **Expected behavior:** One content-addressed bundle operation uploads changed
+  files atomically or resumes idempotently, returning structured progress,
+  retry-after information, and a validation receipt.
+- **Actual behavior:** One request per file multiplied the minimum request
+  interval into roughly 35–40 minutes per arm before validation/readback; safer
+  2-second pacing was needed after transient failure. End-to-end setup and
+  recovery dominated the experiment's wall time.
+- **Why it matters to customers:** Large semantic models make routine deploy,
+  CI, recovery, and exact environment replication slow and fragile. The cost is
+  proportional to file count rather than changed semantic content.
+- **Systematic evidence / frequency:** Complete control and treatment deployments
+  across 16 isolated models, plus preserved failed treatment v2/v3 evidence and
+  one successful unused-identity diagnostic. This measures one account and CLI
+  version, not fleet-wide latency.
+- **Benchmark impact:** Deployment/recovery consumed hours before the eight-hour
+  generation run could start; it did not alter the paired answers or scores.
+- **Severity:** High workflow/productivity impact for large models; no data-loss
+  observation.
+- **Proposed product change:** Add bulk or archive upload with a content hash,
+  changed-file diff, atomic commit, and idempotent resume. Return structured
+  per-file failure codes, rate-limit metadata, and a server-signed validation
+  plus canonical-readback receipt. Update the CLI to preserve those structured
+  errors without mixing response bodies and usage text. The precise proposed
+  wire contract and acceptance thresholds are in
+  [the bulk semantic deployment contract](omni-bulk-semantic-deployment-contract.md).
+- **Was the change tested?:** No Omni product change was available. A local
+  executable oracle now passes atomicity, no-op, partial-failure/resume,
+  digest-mismatch, idempotency, and exact-readback acceptance cases. Slower
+  client-side pacing recovered the unchanged treatment bundle but remains only
+  a workaround.
+- **Measured effect:** All 16 treatment models eventually validated and read back
+  exactly under v4; the serialized upload tax remained.
+- **Experiment / commit provenance:** D-235 through D-237; deployment records
+  `r2-c5b-deployment-v2`, `r2-m1-deployment-v2`, `v3`, diagnostic `v99`, and
+  successful `r2-m1-deployment-v4` at system commit `1e37dd77`.
+- **Visible in AI Hub?:** Model/branch creation and validation are visible, but
+  the benchmark integration did not receive a useful structured cause for the
+  failed writes.
+- **AI Hub exposes relevant context/behavior?:** Partial; terminal status without
+  sufficient recovery detail.
+- **Fixable through current AI Hub/modeling workflow?:** No; this is deployment
+  transport and observability.
+- **AI Hub Eval outcome:** Not applicable.
+- **External execution outcome:** Eventually successful exact deployments; failed
+  attempts preserved.
 - **Evaluator agreement/disagreement:** Not applicable.
 
 ## Entry template

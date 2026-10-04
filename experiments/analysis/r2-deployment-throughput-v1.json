@@ -1,0 +1,69 @@
+{
+  "arms": {
+    "R2-C5B": {
+      "database_count": 16,
+      "elapsed_seconds": null,
+      "file_count": 1750,
+      "known_request_lower_bound": 1782,
+      "local_orchestration_elapsed_seconds": null,
+      "observed_at": "2026-09-01T19:41:06-04:00",
+      "planned_file_count": 1750,
+      "readback_elapsed_seconds": null,
+      "readback_file_count": 1750,
+      "readback_request_count": null,
+      "record_manifest_sha256": "bdc754c2f51140b7ca1297fd041dcda6c40ac10c297d5266a93f964c6fd7c31a",
+      "request_count": null,
+      "run_claim_sha256": "e483283507fe2e09773ccb74a56c048c5fb1eeb2ac44c1740083d8da28bb70ba",
+      "run_id": "r2-c5b-deployment-v1",
+      "setup_elapsed_seconds": null,
+      "status_counts": {"failed": 0, "verified": 16},
+      "upload_elapsed_seconds": null,
+      "upload_request_count": 1750,
+      "upload_start_span_lower_bound_seconds": 2186.25,
+      "uploaded_file_count": 1750,
+      "validation_elapsed_seconds": null,
+      "validation_request_count": null
+    },
+    "R2-M1": {
+      "database_count": 16,
+      "elapsed_seconds": null,
+      "file_count": 1750,
+      "known_request_lower_bound": 1782,
+      "local_orchestration_elapsed_seconds": null,
+      "observed_at": "2026-09-01T20:23:12-04:00",
+      "planned_file_count": 1750,
+      "readback_elapsed_seconds": null,
+      "readback_file_count": 1750,
+      "readback_request_count": null,
+      "record_manifest_sha256": "3dcbe4f6b28a9d7b7362378318d9d9a459823b8c97d08d445fc17ca9e320c919",
+      "request_count": null,
+      "run_claim_sha256": "55567fe4006c90458d3985beaa5152feff302b6c1278b0c00e8d545540a40fb8",
+      "run_id": "r2-m1-deployment-v1",
+      "setup_elapsed_seconds": null,
+      "status_counts": {"failed": 0, "verified": 16},
+      "upload_elapsed_seconds": null,
+      "upload_request_count": 1750,
+      "upload_start_span_lower_bound_seconds": 2186.25,
+      "uploaded_file_count": 1750,
+      "validation_elapsed_seconds": null,
+      "validation_request_count": null
+    }
+  },
+  "attribution": {
+    "account_count": 1,
+    "claim_scope": "observed_benchmark_cli_api_path_only",
+    "fleet_wide_latency_claim": false,
+    "omni_product_change_tested": false
+  },
+  "derivation": {
+    "known_request_lower_bound": "uploaded_file_count + one validation and one successful readback per verified database; setup and retries excluded",
+    "record_manifest_sha256": "SHA-256 of canonical sorted path and file-SHA-256 records",
+    "upload_request_count": "one documented YAML create/update request per uploaded file",
+    "upload_start_span_lower_bound_seconds": "(upload_request_count - 1) * minimum_request_interval_seconds"
+  },
+  "kind": "r2-deployment-throughput",
+  "minimum_request_interval_seconds": 1.25,
+  "null_semantics": "unavailable_not_zero",
+  "schema_version": 1,
+  "source_commit": "5a85941be34df128f8813ca796a545c776ac77df"
+}

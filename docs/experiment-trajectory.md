@@ -24,19 +24,23 @@ used to select or edit an intervention.
 | 8 | E03 (bounded descriptions), E04 (broad HKB context negative control) | Prespecified only | Not run | Not run | Out of MVP scope after the scoring-order deviation | Registered and left visible rather than quietly dropped |
 | 9 | E05: declaring explicit output types fixes the 31 `UNKNOWN`-type result-contract failures | Preregistered precondition: at least 16 of those 31 attempts must select a compiled semantic field | Immutable generation records, offline | Ceiling is 6 of 31. 24 of 31 select no compiled bundle field at all, so no declaration on a compiled field can reach them | **INCONCLUSIVE** by its own stopping rule, before any live attempt | A stopping rule checked against existing records killed a plausible intervention for zero cost. The failures are upstream of anything the model declares |
 | 10 | C5: Omni deployed the way its documentation prescribes carries the knowledge value C2 demonstrated | Widened view surface (every public table), full FK join graph, complete HKB ported into `ai_context` at field, topic, and model level | 136-question dev-A schedule | 18 correct (13.2%) against frozen C4's 9 (6.6%) on the identical frame; 13/122 against 5/122 on the five-condition intersection; median tokens 396,884 against 583,188; 134 of 134 parseable queries still return agent-authored SQL; topic scoping rose to 132 of 134 and hand-written aggregates held at 38.1% | **Partly supported.** Report as a dev-A mechanism result; no promotion, no held-out claim | The knowledge value survives, metric composition does not. Widening the model from 6-11 views to 47-63 with the full FK graph doubled accuracy and raised join scope from 69.6% to 98.5%, while the hand-written aggregate rate held. The semantic layer worked as context and join scope, not as a metric compiler, which is what PF-016 records in its corrected form |
+| 11 | R2: publishing matched measures causes the governed agent to replace hand-written aggregates with semantic definitions | Add 812 conservative, agent-adjudicated entity-count measures to the C5 model; compare randomized paired control and treatment arms using a question-blind 45-opportunity map | 136 paired dev-A questions across 16 databases | 11 treatment queries referenced a measure, but 0/45 mapped pairs met the frozen replacement rule (Wilson 95% upper bound 7.87%). Official accuracy moved from 10/136 to 14/136, paired +2.94 points with a 95% interval including zero. Answered rate rose from 109/136 to 121/136, paired +8.82 points, 95% CI [+3.68, +14.71] | **Mechanism refuted; reliability supported; correctness inconclusive.** Preserve all three endpoints rather than collapsing them into one score | Measures were reachable but not dependably selected as replacements. The strongest measured value was fewer result-contract failures, not demonstrated metric composition or correctness. This makes explicit selection traces, typed reason codes, and composed-mode enforcement higher leverage than simply publishing more of the same measure class |
 
 ## What the trajectory shows and the numbers do not
 
 **The hypothesis changed when the evidence changed.** Row 5 is a refutation of
 this study's own central design assumption, found by measuring the query path
 rather than assuming it. Everything after row 5 exists because of it: E02 and C5
-both test the mechanism that measurement exposed. The alternative was to report
-C4 minus C3 as a semantic-layer effect, which the telemetry does not support.
+test the mechanism that measurement exposed, and R2 tests the measure constraint
+left by C5. The alternative was to report C4 minus C3 as a semantic-layer effect,
+which the telemetry does not support.
 
 **Null and inconclusive results were preserved, not absorbed.** Rows 6, 8, and 9
-cost live attempts that were never spent, and row 7 spent 136 attempts for a
-formally inconclusive answer. All four remain in the ledger with their original
-classifications. E02's INCONCLUSIVE verdict stands even though its directional
+record experiments or gates that consumed no live attempts, while row 7 spent
+136 attempts for a formally inconclusive answer. Row 11's mechanism null and
+correctness uncertainty remain visible alongside its statistically nonzero
+reliability contrast. E02's
+INCONCLUSIVE verdict stands even though its directional
 diagnostic favors the intervention, because the coverage rule was fixed in
 advance and five attempts genuinely lost their query in transport.
 

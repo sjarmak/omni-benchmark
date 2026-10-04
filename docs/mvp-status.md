@@ -21,7 +21,7 @@ It summarizes the durable Beads tracker and the research ledger; it does not
 replace either one. Update it at every material evidence gate, blocker change,
 human authorization, candidate freeze, or sealed-run transition.
 
-Last reconciled: 2026-08-30T21:14:51-04:00 (America/New_York). Reconciliation
+Last reconciled: 2026-09-02T11:30:00-04:00 (America/New_York). Reconciliation
 happens at material evidence gates only, not on a daily cadence.
 
 ## Current position
@@ -57,14 +57,26 @@ way its documentation prescribes (all-tables view surface, full FK join graph,
 complete public HKB ported to `ai_context`) to test whether C4's result reflects
 the governed path or the sparse model that could be compiled for it. It reflects
 the sparse model: on the identical 136-attempt frame C5 scores 18/136 (13.2%)
-against C4's 9/136 (6.6%), at roughly two-thirds the median token cost, while all
-134 of its parseable queries still took the raw-SQL rewrite path and none
-declared a join. C5 was registered on 2026-08-30 under D-197, after the sealed
+against C4's 9/136 (6.6%), at roughly two-thirds the median token cost. All 134
+parseable queries still carried agent-authored SQL over model-resolved fields,
+while topic join scoping rose to 132/134. C5 was registered on 2026-08-30 under D-197, after the sealed
 aggregates were visible, so it is development-only by construction: it cannot
 alter the frozen held-out numbers, cannot be promoted into a sealed successor,
 and reports both frozen scorers on a single generation that was never rerun for a
 wrong answer. Design:
 [`c5-tuned-governed-condition.md`](c5-tuned-governed-condition.md).
+
+The paired R2 follow-up is now complete on dev-A. Its treatment added 812
+agent-adjudicated, operator-adopted public-evidence entity-count measures to the
+C5 model. Among 45 question-blind mapped opportunities, treatment queries
+referenced a measure 11 times but produced zero verified replacements (Wilson
+95% upper bound 7.87%). Official accuracy moved from 10/136 to 14/136 and
+sensitivity from 9/135 to 13/135, but both paired intervals include zero.
+Answered rate improved from 109/136 to 121/136, a paired +8.82 points with 95%
+interval [+3.68, +14.71], while result-contract failures fell by the same amount.
+The mechanism result is null, correctness is inconclusive, and reliability is
+supported. Dev-B and sealed test remained untouched; unavailable cost and effort
+fields remain null.
 
 Live-action authorization remains tiered by contamination risk
 (`omni-benchmark-xeg`). Public semantic deployment and validation passes are
@@ -101,12 +113,13 @@ limitation, not as system or gold failures.
 | Train-only gold release | Complete | Exactly 154 dev-A records were released through custody; the complete source was removed from the host transfer area. Test gold and dev-B outcomes remain unavailable to development. |
 | Public semantic compiler and deployment preparation | Complete | V13 validates and exactly reads back all 16 answerable databases in one current evidence set. The two official-loader exclusions remain explicit rather than fabricated. |
 | C4 baseline | Complete and scored | V8 completed 136 executable attempts. Official aggregate: 9 correct, 93 wrong, 34 refused/system-error; 18 of 154 scheduled identities are fixed unscorable. Selection SHA-256 `256145c1…5cc`; recovery-manifest SHA-256 `5d6ff474…fd9f`; score-receipt SHA-256 `0296753e…0a78`. |
+| R2 public-evidence measure mechanism study | **Complete and scored on dev-A** | One immutable 136-pair repetition completed with no outcome-driven retry. Verified replacement 0/45; official correctness 10 to 14 with interval including zero; answered rate +8.82 points with interval excluding zero. Reports: `r2-semantic-reuse-v1.json` and `r2-paired-outcomes-v3.json`. |
 | Minimal dev-A experiment set | **Complete; E02 INCONCLUSIVE** | Aggregate-only development analysis selected the preregistered relationship/grain intervention before sealed results were visible. Its sole immutable identity froze at selection `7f173066…c86948`. The no-rerun captured subset is 11/117 E02 versus 9/117 matched C4 under the official scorer, but 14 result-contract failures and five no-query transport failures leave the required 136-question promotion estimate incomplete. |
 | Untuned candidate and baseline Freeze B | **Complete** | Baseline system `8b0c739…`, direct-child control `94cc0d9…`, Freeze-B SHA-256 `e1c9f196…ae4730`; 108 frozen files and all 1,068 schedule coordinates reproduce from Git objects. |
 | Untuned sealed C1-C4 evaluation | **Complete and scored** | V1-v5 remain immutable and excluded. V6 has 1,068 attempts and 12 authenticated cohorts. Split-provenance scoring v10 completed once. Official aggregate `79bcfca3…8faff`; sensitivity `88dd6a71…b7eb26`; correctness-free receipt `534e28b9…b258f7`; aggregate report `884b660f…3a464`. No individual score artifact was opened. |
 | Optimized candidate and held-out arm | **Cancelled; no promoted candidate** | E02 is INCONCLUSIVE on dev-A and cannot be promoted. Do not use sealed aggregates for intervention edits, checkpoints, promotion, or a new held-out arm. |
 | Evidence preservation | **Complete** | Under closed P0 `omni-benchmark-vbt`, the public C4 baseline, sealed-final-v6, and terminal E02 roots have exact, independently verified main-workspace copies. E02 preservation covers 665 files / 5,586,131 bytes with manifest SHA-256 `d665578c…bc33a`. See the [evidence index](evidence-index.md). |
-| Results/product report | **Held-out numbers integrated; final edit remains** | `RESULTS.md` now contains both frozen scorer matrices, paired contrasts, failure analysis, product findings, and the optimization-scope limitation. Finish the concise submission-ready edit and artifact-lineage check. |
+| Results/product report | **R2 integrated; commit/tag remain** | `RESULTS.md`, the evidence index, experiment trajectory, research ledger, and product handoff now carry the R2 mechanism, correctness, reliability, and deployment findings. Focused reproducibility and quality gates pass. Review and Git landing remain separate authorized actions. |
 
 ## What is already usable
 
@@ -138,22 +151,15 @@ C4 does not improve on C1.
 
 ### Waiting on the operator now
 
-One narrow operator action is now listed in `docs/human-decisions.md`:
-
-1. Confirm that the transferred full source and its temporary external transfer
-   directory were removed. Reply only with
-   `remote cleanup status: file=0 directory=0`; retain the private 89-record
-   projection.
-
-No new model run, run authorization, callback, lease action, or protected-data
-transfer is needed.
+Nothing is required to finish the R2 evidence packet. The prior full-source
+cleanup confirmation was received and closed. No new model run, run
+authorization, callback, lease action, or protected-data transfer is needed.
 
 ### Agent-owned work now
 
-- Close the one remaining human custody confirmation while retaining the
-  private 89-record projection used by the completed sealed scorer.
-- Finalize the results packet, make the reviewed submission commit, and create
-  the submission tag.
+- Keep the completed R2 artifacts and product findings internally consistent.
+- Review and Git-land the results packet when an explicit commit action is taken;
+  the broader submission tag remains a separate release decision.
 
 ### Stop rule after E02, and the one authorized exception
 
