@@ -52,7 +52,7 @@ def validate(workspace: Path) -> dict[str, object]:
     relationship_count = 0
     deployment_plan_count = 0
     with tempfile.TemporaryDirectory(prefix="omni-e02-publication-") as temporary:
-        output_root = Path(temporary)
+        output_root = Path(temporary).resolve(strict=True)
         for database, spec, hkb, schema, mapping, mapping_manifest in artifact_sets:
             output = output_root / database
             manifest = publish_e02_bundle_artifacts(
