@@ -7,9 +7,12 @@ import json
 import os
 from dataclasses import replace
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import Mock
 
 import pytest
 
+from omni_benchmark import sealed_evaluation
 from omni_benchmark.sealed_cohort_finalization import finalize_sealed_cohort
 from omni_benchmark.sealed_evaluation import (
     C4_EVALUATED_SYSTEM_FAILURE_CLASSES,
@@ -45,6 +48,94 @@ def test_atomic_directory_publish_never_replaces_existing_destination(
 
     assert source.is_dir()
     assert destination.is_dir()
+
+
+def test_atomic_directory_publish_preserves_contents(tmp_path: Path) -> None:
+    source = tmp_path / "source"
+    destination = tmp_path / "destination"
+    source.mkdir()
+    (source / "payload").write_bytes(b"sealed output")
+
+    _rename_noreplace(source, destination)
+
+    assert not source.exists()
+    assert (destination / "payload").read_bytes() == b"sealed output"
+
+
+@pytest.mark.parametrize("destination_kind", ["file", "directory", "symlink"])
+def test_atomic_directory_publish_preserves_destination(
+    tmp_path: Path, destination_kind: str
+) -> None:
+    source = tmp_path / "source"
+    destination = tmp_path / "destination"
+    source.mkdir()
+    (source / "payload").write_bytes(b"source")
+    if destination_kind == "directory":
+        destination.mkdir()
+        existing_payload = destination / "payload"
+    else:
+        existing_payload = tmp_path / "target"
+        if destination_kind == "symlink":
+            destination.symlink_to(existing_payload)
+        else:
+            existing_payload = destination
+    existing_payload.write_bytes(b"destination")
+    original_inode = destination.lstat().st_ino
+
+    with pytest.raises(FileExistsError):
+        _rename_noreplace(source, destination)
+
+    assert destination.lstat().st_ino == original_inode
+    assert existing_payload.read_bytes() == b"destination"
+    assert (source / "payload").read_bytes() == b"source"
+
+
+def test_atomic_directory_publish_propagates_missing_source(tmp_path: Path) -> None:
+    destination = tmp_path / "destination"
+
+    with pytest.raises(FileNotFoundError):
+        _rename_noreplace(tmp_path / "missing", destination)
+
+    assert not destination.exists()
+
+
+@pytest.mark.parametrize(
+    ("platform", "function_name", "directory_fd", "flag"),
+    [("linux", "renameat2", -100, 1), ("darwin", "renameatx_np", -2, 4)],
+)
+def test_atomic_directory_publish_uses_native_exclusive_rename(
+    monkeypatch: pytest.MonkeyPatch,
+    platform: str,
+    function_name: str,
+    directory_fd: int,
+    flag: int,
+) -> None:
+    rename = Mock(return_value=0)
+    library = Mock(return_value=SimpleNamespace(**{function_name: rename}))
+    monkeypatch.setattr(sealed_evaluation, "sys", SimpleNamespace(platform=platform))
+    monkeypatch.setattr(sealed_evaluation.ctypes, "CDLL", library)
+
+    _rename_noreplace(Path("source"), Path("destination"))
+
+    library.assert_called_once_with(None, use_errno=True)
+    rename.assert_called_once_with(
+        directory_fd, b"source", directory_fd, b"destination", flag
+    )
+
+
+def test_atomic_directory_publish_fails_closed_without_native_function(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "source"
+    destination = tmp_path / "destination"
+    source.mkdir()
+    monkeypatch.setattr(sealed_evaluation.ctypes, "CDLL", Mock(return_value=object()))
+
+    with pytest.raises(OSError, match="required for atomic sealed publication"):
+        _rename_noreplace(source, destination)
+
+    assert source.is_dir()
+    assert not destination.exists()
 
 
 def _complete_batch(workspace: Path, question_count: int = 101):  # type: ignore[no-untyped-def]
