@@ -126,8 +126,9 @@ These cost time if you discover them by hitting them.
   turns a six-file fault into a whole-tree one. `PYTHONDONTWRITEBYTECODE` is in
   `_CHILD_ENVIRONMENT_KEYS`, so exporting it in the launcher stops every attempt
   child from writing any. Do not run a bare `python3 -c` with `sys.path` pointed
-  at `src` either: the system interpreter's foreign cache tag is invisible to
-  the check but still litters the runtime tree.
+  at `src` either: a foreign cache tag is still checked when its bytecode magic
+  matches the running interpreter; only a foreign tag with different magic is
+  skipped, and it still litters the runtime tree.
 
 - Shell aliases may force `-i` on `cp`/`mv`/`rm` and hang the session. Use
   `cp -f`, `mv -f`, `rm -f`, `rm -rf`, and expand destructive paths literally.

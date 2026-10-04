@@ -14717,3 +14717,12 @@ because the frozen `r2_dispatch.py` creates its temporary root under `/var`, a
 symlink, and the snapshot reader refuses symlinked path components. Every file
 involved is hashed by `r2-paired-dispatch-freeze-v3.json`. CLAUDE.md now lists
 the three node IDs; landing gates require no failure outside them.
+
+## 2026-10-04 — bytecode warning corrected after 3ow
+
+Hypothesis: distinguishing a foreign cache tag from foreign bytecode magic
+corrects the stale CLAUDE.md warning without changing runtime behavior
+(omni-benchmark-7zny). General infrastructure documentation only. Source review
+confirmed that a foreign tag is skipped only when its magic also differs;
+matching magic is checked regardless of tag. Reworded one sentence and verified
+with `git diff --check`. No runtime change, live call, or protected-data access.
