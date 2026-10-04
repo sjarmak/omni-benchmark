@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from omni_benchmark.artifact_store import MAX_ARTIFACT_BYTES
 from omni_benchmark.gold_free_scoring import (
     GoldFreeScoringError,
     run_self_consistency_exercise,
@@ -203,3 +204,47 @@ def test_cli_emits_hash_bound_receipt(
     assert receipt["oracle"] == "result_set_self_consistency_not_correctness"
     assert receipt["official_agreement"] is True
     assert receipt["sensitivity_agreement"] is True
+
+
+@pytest.mark.parametrize(
+    "input_name",
+    ["left_generation", "left_result", "right_generation", "right_result"],
+)
+@pytest.mark.parametrize("unsafe_kind", ["oversized", "symlink", "parent_symlink"])
+def test_unsafe_inputs_are_rejected_before_output_creation(
+    tmp_path: Path, input_name: str, unsafe_kind: str
+) -> None:
+    workspace = _workspace(tmp_path)
+    left = _attempt(tmp_path / "left", run_id="left-run", rows=[[1]])
+    right = _attempt(tmp_path / "right", run_id="right-run", rows=[[1]])
+    inputs = {
+        "left_generation": left[0],
+        "left_result": left[1],
+        "right_generation": right[0],
+        "right_result": right[1],
+    }
+    target = inputs[input_name]
+    if unsafe_kind == "oversized":
+        with target.open("r+b") as stream:
+            stream.truncate(MAX_ARTIFACT_BYTES + 1)
+        expected_error = "exceeds"
+        unsafe_path = target
+    elif unsafe_kind == "symlink":
+        unsafe_path = tmp_path / "linked-input"
+        unsafe_path.symlink_to(target)
+        expected_error = "regular non-symlink"
+    else:
+        linked_parent = tmp_path / "linked-parent"
+        linked_parent.symlink_to(target.parent, target_is_directory=True)
+        unsafe_path = linked_parent / target.name
+        expected_error = "regular non-symlink"
+    output_root = Path("experiments/autoresearch/raw/gold-free-v1")
+
+    with pytest.raises(GoldFreeScoringError, match=expected_error):
+        run_self_consistency_exercise(
+            workspace,
+            **{**inputs, input_name: unsafe_path},
+            output_root=output_root,
+        )
+
+    assert not (workspace / output_root).exists()

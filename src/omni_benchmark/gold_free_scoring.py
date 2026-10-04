@@ -9,8 +9,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .artifact_store import ArtifactStore, StoredArtifact
+from .artifact_store import MAX_ARTIFACT_BYTES, ArtifactStore, StoredArtifact
 from .autoresearch_metrics import ValidatedGenerationOutputs
+from .hkb_io import HKBFileSafetyError, read_regular_file
 from .omni_result_adapter import (
     OmniResultContractError,
     decode_result_artifact_rows,
@@ -168,10 +169,17 @@ def run_self_consistency_exercise(
     )
 
 
+def _read_input(path: Path) -> bytes:
+    try:
+        return read_regular_file(Path(path), maximum_bytes=MAX_ARTIFACT_BYTES)
+    except HKBFileSafetyError as error:
+        raise GoldFreeScoringError(str(error)) from error
+
+
 def _load_attempt(
     generation_path: Path, result_path: Path, dev_a_ids: frozenset[str]
 ) -> _AttemptInput:
-    generation_bytes = Path(generation_path).read_bytes()
+    generation_bytes = _read_input(generation_path)
     lines = generation_bytes.splitlines()
     if len(lines) != 1 or not lines[0].strip():
         raise GoldFreeScoringError("generation artifact must contain one record")
@@ -184,7 +192,7 @@ def _load_attempt(
         raise GoldFreeScoringError("exercise inputs must be answered attempts")
     if record.get("actual_result_status") != "complete":
         raise GoldFreeScoringError("exercise inputs must have complete results")
-    result_bytes = Path(result_path).read_bytes()
+    result_bytes = _read_input(result_path)
     result_sha256 = hashlib.sha256(result_bytes).hexdigest()
     expected_result_hash = record.get("actual_result_hash")
     if expected_result_hash != result_sha256:
