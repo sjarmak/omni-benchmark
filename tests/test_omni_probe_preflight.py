@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import sys
 import py_compile
 import stat
 import subprocess
@@ -64,7 +65,11 @@ def test_cli_version_rejects_unrecognized_or_failed_output(tmp_path: Path) -> No
         )
 
 
-def test_system_commit_rejects_ignored_runtime_bytecode(tmp_path: Path) -> None:
+@pytest.mark.parametrize("cache_tag", ["cpython-311", sys.implementation.cache_tag])
+@pytest.mark.parametrize("optimization", [0, 1, 2])
+def test_system_commit_rejects_ignored_runtime_bytecode(
+    tmp_path: Path, cache_tag: str, optimization: int
+) -> None:
     workspace = tmp_path / "workspace"
     source = workspace / "src" / "package"
     source.mkdir(parents=True)
@@ -82,9 +87,15 @@ def test_system_commit_rejects_ignored_runtime_bytecode(tmp_path: Path) -> None:
         capture_output=True,
         text=True,
     ).stdout.strip()
-    bytecode = source / "__pycache__" / "module.cpython-311.pyc"
+    suffix = "" if optimization == 0 else f".opt-{optimization}"
+    bytecode = source / "__pycache__" / f"module.{cache_tag}{suffix}.pyc"
     bytecode.parent.mkdir()
-    py_compile.compile(str(source / "module.py"), cfile=str(bytecode), doraise=True)
+    py_compile.compile(
+        str(source / "module.py"),
+        cfile=str(bytecode),
+        doraise=True,
+        optimize=optimization,
+    )
     verify_system_commit(workspace, commit)
     safe_bytecode = bytecode.read_bytes()
     evil_source = workspace / "evil.py"
@@ -95,6 +106,7 @@ def test_system_commit_rejects_ignored_runtime_bytecode(tmp_path: Path) -> None:
         cfile=str(evil_bytecode),
         dfile=str(source / "module.py"),
         doraise=True,
+        optimize=optimization,
     )
     bytecode.write_bytes(safe_bytecode[:16] + evil_bytecode.read_bytes()[16:])
 

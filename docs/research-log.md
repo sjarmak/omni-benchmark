@@ -14502,6 +14502,7 @@ relative path. No protocol, scorer, split, manifest, endpoint, protected data,
 provider, or out-of-scope module was changed. Repository-wide 80% coverage was
 not established; the focused module coverage measurement was 77.7%.
 
+<<<<<<< HEAD
 ### 2026-10-03 — Linux dump fixtures on macOS (omni-benchmark-199)
 
 Hypothesis: APFS case-insensitive lookup leaks into tests of the pinned Linux
@@ -14524,3 +14525,99 @@ are outside this bead and were left unchanged. Production behavior, protected
 surfaces, and evidence artifacts were not changed. No Linux live run or
 repository-wide coverage measurement was performed; no credentials, provider,
 dev-B, or sealed annotations were accessed.
+=======
+### 2026-10-04 — macOS inventory nesting and bytecode preflight (3ow)
+
+Hypothesis: relying on the JSON decoder's recursion failure and on bytecode
+filenames makes input safety interpreter-dependent. This is a general
+infrastructure intervention, with no benchmark or question-specific rules.
+All three requested regressions failed before implementation on Python 3.14.7.
+The inventory decoders now reject more than 64 nested containers before shape
+validation and preserve their existing parse-error normalization. A Hypothesis
+property checks mixed container chains and string contents, with explicit
+64/65/2000-depth boundaries. Hypothesis is an exactly pinned dev dependency.
+The preflight now verifies current-interpreter bytecode magic even when its
+cache filename has a foreign tag; genuinely foreign magic remains ignored.
+The original corruption expectation is retained and tested for both cache tags
+at optimization levels 0, 1, and 2. This deliberately strengthens the earlier
+filename-only boundary described in CLAUDE.md; normal current-tag behavior is
+unchanged. Source mapping uses Python's public source_from_cache API.
+Focused verification: 39 passed. The required single full-suite run and an
+independent active review are in progress. No provider, credentials, dev-B,
+sealed annotations, scorer, split, manifest, or protocol surface was accessed.
+
+Final validation: focused 39-test gates pass on Python 3.14.7 and 3.12.14;
+Ruff check and formatting pass. Inventory/helper branch coverage is 85.47%,
+with the helper at 100%; repository-wide coverage was not measured.
+Independent active review found no defects and checked that duplicate-field
+errors and genuinely foreign bytecode handling remain intact.
+The single full-suite run produced 29 failed, 2782 passed, 38 skipped in
+486.07 seconds. No newly failing test was found: 25 remaining failures match
+/tmp/omni-1cm-full-suite.log, and four artifact-dependent failures absent from
+that older test inventory were reproduced on an untouched detached worktree
+at the exact local base 1f1b74ce6dc53fcddd59faafa9211fe252f85f38:
+- test_measure_agent_adjudication.py::test_real_accepted_catalog_regenerates_byte_identically
+- test_measure_opportunity_agent_adjudication.py::test_real_adopted_agent_map_regenerates_byte_identically
+- test_measure_opportunity_map.py::test_real_review_workbook_regenerates_byte_identically
+- test_r2_dispatch.py::test_committed_opportunity_loader_requires_reproduction_and_nonempty_map
+These four baseline checks failed together in 1.97 seconds. The full-suite log
+is /tmp/omni-benchmark-3ow-full-suite.txt and the exact-base check log is
+/tmp/omni-benchmark-3ow-base-four.txt; neither is committed. Remaining failures
+are outside this bead and remain unchanged. Linux execution was not available;
+Python 3.12 supplies an older-interpreter regression check on the same Mac.
+No claim is made that this work is reachable from an upstream remote.
+
+## 2026-10-03 — Fresh-checkout evidence tests and R2 temporary roots
+
+Hypothesis: three regeneration tests assert permissions Git cannot preserve,
+the cost/time rollup requires ignored raw inputs, and the R2 synthetic snapshot
+fails on a symlinked temporary parent before its map validator runs.
+Generality: checkout and platform IO portability; no question-specific behavior.
+Source bead: `omni-benchmark-d0k`, base local main `1f1b74c`.
+
+The configured baseline reproduced 98 passes and five failures. Committed public
+artifact contents and hashes remain checked, while private-mode assertions remain
+on newly written files. Rollup regeneration now explicitly skips absent ignored
+score or generation inputs; its committed aggregate checks still run. The R2
+loader resolves its newly created temporary directory before creating the
+snapshot, retaining no-follow reads within it. A direct/symlinked-parent regression
+ran before the fix: one passed, one failed at the aliased parent.
+
+No committed evidence, scorer, split, manifest, protocol, credential, or live
+provider state changed. GitHub reuse search was attempted but the local CLI has
+no authenticated account; no credentials were configured. Full-suite verification
+and independent review are pending at this point.
+
+The first focused GREEN attempt instead caught a frozen source hash: changing
+`r2_dispatch.py` invalidates the existing dispatch-freeze binding (102 passed,
+one failed, one skipped). The source edit was reverted, preserving both frozen
+source and evidence. The synthetic loader test now gives `TemporaryDirectory`
+a resolved pytest-owned parent, so it tests reproduction in its controlled
+fixture independently of the host's temporary-root alias. This does not repair
+live snapshot handling on macOS; that remains separate frozen-runtime work.
+
+A second focused gate found the test file itself is freeze-bound (101 passed,
+one failed, one skipped). Independent review also identified two edited
+opportunity-test files in the same frozen file manifest. The requested test edits
+cannot satisfy that current-working-tree source check without changing its
+interpretation or the frozen evidence. This is a scope conflict, escalated to
+`omni-benchmark-pl`; no freeze change, commit, or full-suite run was made. Ruff
+check and format check passed. The production temporary-root limitation is
+tracked as `omni-benchmark-stm8`.
+
+At 2026-10-04 03:19Z the lead explicitly narrowed d0k to the two unfrozen tests:
+accepted-catalog regeneration and matched cost/time rollup regeneration. All
+three frozen test-file edits were reverted. Acceptance is now those two test
+files passing and one full-suite run with no failures outside the lead's recorded
+32-node baseline at local main `1f1b74c`. The frozen-runtime work remains outside
+this branch; no human-controlled binding was changed.
+
+Final narrowed-scope evidence: 38 focused tests passed and one regeneration test
+explicitly skipped for absent ignored raw inputs. Independent review repeated
+that gate with no findings; repository Ruff check and format check passed.
+The single full-suite run reported 30 failed, 2,771 passed, 39 skipped. Comparing
+JUnit node IDs to the lead's 32-node baseline found zero new failures; exactly
+the two unfrozen target failures left the failure set. The 30 remaining failures
+are unchanged known baseline issues, including the three frozen tests. No
+full-suite rerun or repository-wide coverage claim was made.
+>>>>>>> main

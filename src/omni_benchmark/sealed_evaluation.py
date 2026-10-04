@@ -8,6 +8,7 @@ import json
 import os
 import secrets
 import stat
+import sys
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from pathlib import Path
@@ -568,25 +569,29 @@ def _relative_raw_root(value: Path) -> Path:
 
 
 def _rename_noreplace(source: Path, destination: Path) -> None:
-    """Atomically publish a directory without replacing a raced destination."""
+    function_name, current_directory, exclusive_flag = (
+        ("renameatx_np", -2, 4) if sys.platform == "darwin" else ("renameat2", -100, 1)
+    )
     try:
-        renameat2 = ctypes.CDLL(None, use_errno=True).renameat2
+        rename_exclusive = getattr(ctypes.CDLL(None, use_errno=True), function_name)
     except AttributeError as error:
-        raise OSError("renameat2 is required for atomic sealed publication") from error
-    renameat2.argtypes = (
+        raise OSError(
+            f"{function_name} is required for atomic sealed publication"
+        ) from error
+    rename_exclusive.argtypes = (
         ctypes.c_int,
         ctypes.c_char_p,
         ctypes.c_int,
         ctypes.c_char_p,
         ctypes.c_uint,
     )
-    renameat2.restype = ctypes.c_int
-    if renameat2(
-        -100,
+    rename_exclusive.restype = ctypes.c_int
+    if rename_exclusive(
+        current_directory,
         os.fsencode(source),
-        -100,
+        current_directory,
         os.fsencode(destination),
-        1,
+        exclusive_flag,
     ):
         error_number = ctypes.get_errno()
         raise OSError(error_number, os.strerror(error_number), destination)
