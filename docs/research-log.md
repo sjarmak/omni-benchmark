@@ -14501,3 +14501,44 @@ resolved workspace prefix; symlinked workspace writes were verified with a
 relative path. No protocol, scorer, split, manifest, endpoint, protected data,
 provider, or out-of-scope module was changed. Repository-wide 80% coverage was
 not established; the focused module coverage measurement was 77.7%.
+
+### 2026-10-04 — macOS inventory nesting and bytecode preflight (3ow)
+
+Hypothesis: relying on the JSON decoder's recursion failure and on bytecode
+filenames makes input safety interpreter-dependent. This is a general
+infrastructure intervention, with no benchmark or question-specific rules.
+All three requested regressions failed before implementation on Python 3.14.7.
+The inventory decoders now reject more than 64 nested containers before shape
+validation and preserve their existing parse-error normalization. A Hypothesis
+property checks mixed container chains and string contents, with explicit
+64/65/2000-depth boundaries. Hypothesis is an exactly pinned dev dependency.
+The preflight now verifies current-interpreter bytecode magic even when its
+cache filename has a foreign tag; genuinely foreign magic remains ignored.
+The original corruption expectation is retained and tested for both cache tags
+at optimization levels 0, 1, and 2. This deliberately strengthens the earlier
+filename-only boundary described in CLAUDE.md; normal current-tag behavior is
+unchanged. Source mapping uses Python's public source_from_cache API.
+Focused verification: 39 passed. The required single full-suite run and an
+independent active review are in progress. No provider, credentials, dev-B,
+sealed annotations, scorer, split, manifest, or protocol surface was accessed.
+
+Final validation: focused 39-test gates pass on Python 3.14.7 and 3.12.14;
+Ruff check and formatting pass. Inventory/helper branch coverage is 85.47%,
+with the helper at 100%; repository-wide coverage was not measured.
+Independent active review found no defects and checked that duplicate-field
+errors and genuinely foreign bytecode handling remain intact.
+The single full-suite run produced 29 failed, 2782 passed, 38 skipped in
+486.07 seconds. No newly failing test was found: 25 remaining failures match
+/tmp/omni-1cm-full-suite.log, and four artifact-dependent failures absent from
+that older test inventory were reproduced on an untouched detached worktree
+at the exact local base 1f1b74ce6dc53fcddd59faafa9211fe252f85f38:
+- test_measure_agent_adjudication.py::test_real_accepted_catalog_regenerates_byte_identically
+- test_measure_opportunity_agent_adjudication.py::test_real_adopted_agent_map_regenerates_byte_identically
+- test_measure_opportunity_map.py::test_real_review_workbook_regenerates_byte_identically
+- test_r2_dispatch.py::test_committed_opportunity_loader_requires_reproduction_and_nonempty_map
+These four baseline checks failed together in 1.97 seconds. The full-suite log
+is /tmp/omni-benchmark-3ow-full-suite.txt and the exact-base check log is
+/tmp/omni-benchmark-3ow-base-four.txt; neither is committed. Remaining failures
+are outside this bead and remain unchanged. Linux execution was not available;
+Python 3.12 supplies an older-interpreter regression check on the same Mac.
+No claim is made that this work is reachable from an upstream remote.
