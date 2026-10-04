@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 from .hkb_io import HKBFileSafetyError, read_regular_file
+from .json_nesting import validate_json_nesting
 
 
 class SchemaSourceInventoryError(ValueError):
@@ -152,6 +153,7 @@ def load_schema_source_inventory(path: Path | str) -> SchemaSourceInventory:
             maximum_bytes=_MAXIMUM_INVENTORY_BYTES,
         )
         value = json.loads(content, object_pairs_hook=_strict_json_object)
+        validate_json_nesting(value)
     except (
         HKBFileSafetyError,
         UnicodeError,

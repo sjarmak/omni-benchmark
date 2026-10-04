@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .hkb_io import HKBFileSafetyError, read_regular_file
+from .json_nesting import validate_json_nesting
 
 
 class HKBInventoryError(ValueError):
@@ -102,6 +103,7 @@ def _parse_source_file(value: Any, index: int) -> HKBSourceFile:
 def _decode_inventory(content: bytes, source: Path) -> dict[str, Any]:
     try:
         value = json.loads(content, object_pairs_hook=_strict_json_object)
+        validate_json_nesting(value)
     except (UnicodeError, json.JSONDecodeError, RecursionError) as error:
         raise HKBInventoryError(
             f"cannot parse HKB inventory {source}: {error}"

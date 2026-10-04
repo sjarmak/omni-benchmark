@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.machinery
+import importlib.util
 import json
 import math
 import os
@@ -145,7 +146,7 @@ def _verify_ignored_runtime_files(workspace: Path) -> None:
         if not encoded:
             continue
         path = Path(encoded.decode("utf-8"))
-        if path.suffix == ".pyc" and _is_loadable_bytecode(path):
+        if path.suffix == ".pyc":
             _verify_bytecode_matches_source(workspace, path)
         elif _is_ignored_executable(path):
             raise OmniProbePreflightError(
@@ -170,6 +171,11 @@ def _is_loadable_bytecode(path: Path) -> bool:
 def _verify_bytecode_matches_source(workspace: Path, bytecode_path: Path) -> None:
     try:
         bytecode = _read_regular_file(workspace, bytecode_path)
+        if (
+            not _is_loadable_bytecode(bytecode_path)
+            and bytecode[:4] != importlib.util.MAGIC_NUMBER
+        ):
+            return
         source_path = _source_for_bytecode(bytecode_path)
         _read_regular_file(workspace, source_path)
         if not _matches_compiled_source(
@@ -207,12 +213,7 @@ def _matches_compiled_source(
 def _source_for_bytecode(path: Path) -> Path:
     if path.parent.name != "__pycache__":
         return path.with_suffix(".py")
-    cache_tag = sys.implementation.cache_tag
-    marker = "" if cache_tag is None else f".{cache_tag}"
-    if not marker or marker not in path.name:
-        raise ValueError("bytecode cache tag does not match this interpreter")
-    module_name = path.name.split(marker, maxsplit=1)[0]
-    return path.parent.parent / f"{module_name}.py"
+    return Path(importlib.util.source_from_cache(str(path)))
 
 
 def _bytecode_optimization(path: Path) -> int:
