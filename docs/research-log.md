@@ -14726,3 +14726,36 @@ corrects the stale CLAUDE.md warning without changing runtime behavior
 confirmed that a foreign tag is skipped only when its magic also differs;
 matching magic is checked regardless of tag. Reworded one sentence and verified
 with `git diff --check`. No runtime change, live call, or protected-data access.
+## 2026-10-04 — bounded gold-free scorer inputs (omni-benchmark-g3c)
+
+Hypothesis: routing the four caller-supplied generation/result inputs through
+the existing bounded no-follow regular-file reader rejects oversized files and
+symlinks before hashing or scoring, while preserving valid self-consistency
+receipts. This is a general IO boundary fix; no scorer definition, benchmark
+question, split, protocol, or provider behavior changes. The baseline focused
+scorer suite passed all five tests. GitHub code search was unavailable because
+the CLI has no authenticated profile; reuse is being checked in the repository.
+The full-suite gate retains the three documented permanent freeze-v3 failures
+under decision dec-g5sh and requires no failures outside them.
+
+The RED gate produced 12 failures and five passes: every caller input followed
+leaf and parent symlinks, and oversized inputs reached parsing or hashing instead
+of a byte-limit rejection. The fix uses hkb_io.read_regular_file with the
+ArtifactStore MAX_ARTIFACT_BYTES ceiling for both input types, translating safety
+errors to GoldFreeScoringError. This keeps the existing storage limit and avoids
+a new scoring policy. The GREEN focused scorer/reader gate passed 25 tests;
+repository-wide Ruff lint and formatting checks passed. Full-suite coverage and
+independent active verification are pending.
+
+Independent active review repeated the 25 focused tests and changed-file Ruff
+checks, verified bounded descriptor traversal and CLI error propagation, and
+reported no material findings. Public manifest reads are outside this bead;
+no live provider, private annotations, credential action, merge or push occurred.
+
+The full-suite final-tree gate completed: 2,828 passed, 47 skipped, and exactly
+the three documented permanent freeze-v3 failures from dec-g5sh. Branch coverage
+was 83.51%, exceeding the 80% threshold. JUnit failure
+IDs matched that permitted set exactly; no additional failure appeared. Full
+run evidence remains outside the repository at /tmp/omni-g3c-full.log and
+/tmp/omni-g3c-full.xml. The code and regression tests will ship together on
+work/omni-benchmark-g3c for project-lead review.
