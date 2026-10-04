@@ -25,6 +25,20 @@ uv run pytest --cov=omni_benchmark --cov-branch   # branch coverage, fail_under=
 uv run ruff check . && uv run ruff format --check .
 ```
 
+Three tests are permanent known failures (Stephanie, 2026-10-04, `dec-g5sh`).
+Their bytes are hashed by
+`experiments/r2-public-evidence-measures/r2-paired-dispatch-freeze-v3.json`, so
+they are never edited, skipped or marked `xfail`. A landing gate passes when the
+suite shows no failure outside them.
+
+- `tests/test_measure_opportunity_map.py::test_real_review_workbook_regenerates_byte_identically`
+  and `tests/test_measure_opportunity_agent_adjudication.py::test_real_adopted_agent_map_regenerates_byte_identically`
+  assert mode `0600` on committed files; git checks files out `0644`.
+- `tests/test_r2_dispatch.py::test_committed_opportunity_loader_requires_reproduction_and_nonempty_map`
+  fails where the temporary directory path has a symlinked component, as on
+  macOS (`/var` -> `/private/var`). The temporary root is created in the frozen
+  `src/omni_benchmark/r2_dispatch.py`.
+
 ## Hard boundaries (do not relax for convenience)
 
 - **Never** read, grep, index, or summarize hidden fields for the 101 test IDs.

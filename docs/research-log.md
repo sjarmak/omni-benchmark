@@ -14701,3 +14701,19 @@ new failures appeared. Logs and XML remain outside the repository under
 /tmp/omni-199-rework-final.*. The 19 unrelated baseline failures remain outside
 this bead. No Linux execution, repository-wide coverage measurement, provider
 access, protected data, merge or push was performed.
+
+## 2026-10-04 — three R2 freeze-v3 tests recorded as permanent known failures
+
+Ruling, not a hypothesis: Stephanie chose on 2026-10-04 (decision `dec-g5sh`,
+option a) to keep three failing tests as documented known failures rather than
+change the freeze-v3 source check. The freeze record is untouched. After the
+macOS portability follow-ups landed (merge cc83b30), a full suite on macOS
+reported 3 failed, 2816 passed, 47 skipped, branch coverage 83.51%; all three
+failures are these tests.
+
+Two tests assert mode 0600 on committed R2 evidence files, which a git checkout
+writes as 0644, so they fail on every fresh checkout. The third fails on macOS
+because the frozen `r2_dispatch.py` creates its temporary root under `/var`, a
+symlink, and the snapshot reader refuses symlinked path components. Every file
+involved is hashed by `r2-paired-dispatch-freeze-v3.json`. CLAUDE.md now lists
+the three node IDs; landing gates require no failure outside them.
