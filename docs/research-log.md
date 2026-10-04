@@ -14734,3 +14734,10 @@ open. The successful read path is unchanged. The focused gate passed 15 tests
 and repository Ruff checks passed. Independent review actively verified final
 symlink rejection and descriptor cleanup under injected failures, with no
 findings. No protected data or provider access was performed.
+
+The first full-suite pass exposed two schema callers that require the existing
+`regular non-symlink` message category. The pass was stopped at roughly 75%
+while correcting that regression. A stricter regression assertion failed twice
+before the fix; the final message appends the ancestor detail to the existing
+category. All 36 HKB, scoring, schema-inspection and schema-source tests pass,
+and repository Ruff checks remain clean. A fresh final-tree suite follows.

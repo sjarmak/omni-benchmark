@@ -54,7 +54,8 @@ def _open_directory_path(path: Path) -> list[int]:
                 metadata = os.stat(component, dir_fd=current, follow_symlinks=False)
                 if stat.S_ISLNK(metadata.st_mode):
                     raise HKBFileSafetyError(
-                        f"{path}: ancestor {component} is a symlink"
+                        f"{path} must be a regular non-symlink file: "
+                        f"ancestor {component} is a symlink"
                     ) from error
                 raise
             descriptors.append(current)

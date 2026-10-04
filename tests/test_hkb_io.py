@@ -26,7 +26,10 @@ def test_regular_reader_names_symlinked_ancestor(
     ancestor = root / "linked-parent"
     ancestor.symlink_to(target, target_is_directory=True)
 
-    with pytest.raises(HKBFileSafetyError, match="ancestor linked-parent is a symlink"):
+    with pytest.raises(
+        HKBFileSafetyError,
+        match="regular non-symlink file: ancestor linked-parent is a symlink",
+    ):
         read_regular_file(ancestor / "source.json", maximum_bytes=10)
 
     if not dangling:
