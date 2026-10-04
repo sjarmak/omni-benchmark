@@ -12,6 +12,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "experiments/analysis"))
 
@@ -28,6 +30,25 @@ def payload() -> dict:
 
 
 def test_committed_artifact_regenerates_byte_identically():
+    required_scores = {
+        rollup.collect.RAW / artifact / f"{scorer}.score.json"
+        for artifact, _ in rollup.collect.CONDITIONS.values()
+        for scorer in rollup.collect.SCORERS
+    }
+    missing_scores = sorted(
+        str(path.relative_to(ROOT)) for path in required_scores if not path.is_file()
+    )
+    if missing_scores:
+        pytest.skip("Gitignored raw score inputs absent: " + ", ".join(missing_scores))
+    missing_runs = [
+        run
+        for run in rollup.collect.GENERATION_RUNS
+        if not any((rollup.collect.RAW / run).rglob("generation.jsonl"))
+    ]
+    if missing_runs:
+        pytest.skip(
+            "Gitignored generation inputs absent for runs: " + ", ".join(missing_runs)
+        )
     assert rollup.canonical_bytes(rollup.build()) == COMMITTED.read_bytes()
 
 

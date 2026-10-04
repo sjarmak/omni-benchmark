@@ -14542,3 +14542,57 @@ is /tmp/omni-benchmark-3ow-full-suite.txt and the exact-base check log is
 are outside this bead and remain unchanged. Linux execution was not available;
 Python 3.12 supplies an older-interpreter regression check on the same Mac.
 No claim is made that this work is reachable from an upstream remote.
+
+## 2026-10-03 — Fresh-checkout evidence tests and R2 temporary roots
+
+Hypothesis: three regeneration tests assert permissions Git cannot preserve,
+the cost/time rollup requires ignored raw inputs, and the R2 synthetic snapshot
+fails on a symlinked temporary parent before its map validator runs.
+Generality: checkout and platform IO portability; no question-specific behavior.
+Source bead: `omni-benchmark-d0k`, base local main `1f1b74c`.
+
+The configured baseline reproduced 98 passes and five failures. Committed public
+artifact contents and hashes remain checked, while private-mode assertions remain
+on newly written files. Rollup regeneration now explicitly skips absent ignored
+score or generation inputs; its committed aggregate checks still run. The R2
+loader resolves its newly created temporary directory before creating the
+snapshot, retaining no-follow reads within it. A direct/symlinked-parent regression
+ran before the fix: one passed, one failed at the aliased parent.
+
+No committed evidence, scorer, split, manifest, protocol, credential, or live
+provider state changed. GitHub reuse search was attempted but the local CLI has
+no authenticated account; no credentials were configured. Full-suite verification
+and independent review are pending at this point.
+
+The first focused GREEN attempt instead caught a frozen source hash: changing
+`r2_dispatch.py` invalidates the existing dispatch-freeze binding (102 passed,
+one failed, one skipped). The source edit was reverted, preserving both frozen
+source and evidence. The synthetic loader test now gives `TemporaryDirectory`
+a resolved pytest-owned parent, so it tests reproduction in its controlled
+fixture independently of the host's temporary-root alias. This does not repair
+live snapshot handling on macOS; that remains separate frozen-runtime work.
+
+A second focused gate found the test file itself is freeze-bound (101 passed,
+one failed, one skipped). Independent review also identified two edited
+opportunity-test files in the same frozen file manifest. The requested test edits
+cannot satisfy that current-working-tree source check without changing its
+interpretation or the frozen evidence. This is a scope conflict, escalated to
+`omni-benchmark-pl`; no freeze change, commit, or full-suite run was made. Ruff
+check and format check passed. The production temporary-root limitation is
+tracked as `omni-benchmark-stm8`.
+
+At 2026-10-04 03:19Z the lead explicitly narrowed d0k to the two unfrozen tests:
+accepted-catalog regeneration and matched cost/time rollup regeneration. All
+three frozen test-file edits were reverted. Acceptance is now those two test
+files passing and one full-suite run with no failures outside the lead's recorded
+32-node baseline at local main `1f1b74c`. The frozen-runtime work remains outside
+this branch; no human-controlled binding was changed.
+
+Final narrowed-scope evidence: 38 focused tests passed and one regeneration test
+explicitly skipped for absent ignored raw inputs. Independent review repeated
+that gate with no findings; repository Ruff check and format check passed.
+The single full-suite run reported 30 failed, 2,771 passed, 39 skipped. Comparing
+JUnit node IDs to the lead's 32-node baseline found zero new failures; exactly
+the two unfrozen target failures left the failure set. The 30 remaining failures
+are unchanged known baseline issues, including the three frozen tests. No
+full-suite rerun or repository-wide coverage claim was made.

@@ -686,7 +686,6 @@ def test_real_accepted_catalog_regenerates_byte_identically() -> None:
     assert regenerated["summary"]["accepted_database_count"] == 16
     assert len(regenerated["generator"]["input_files"]) == 81
     assert all("review" not in item for item in regenerated["accepted_candidates"])
-    assert path.stat().st_mode & 0o777 == 0o600
     assert hashlib.sha256(observed).hexdigest() == (
         "2d2f9c15bc5f5271db924fa4377b41c26a0e61bcec221ed31d10b3365358039a"
     )
