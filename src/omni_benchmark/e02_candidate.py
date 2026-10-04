@@ -95,8 +95,9 @@ def load_committed_e02_candidate(
     archive = _git_archive(root, commit)
     try:
         with tempfile.TemporaryDirectory(prefix="omni-e02-committed-") as directory:
-            snapshot = Path(directory) / "snapshot"
-            output = Path(directory) / "candidate"
+            temporary_root = Path(directory).resolve(strict=True)
+            snapshot = temporary_root / "snapshot"
+            output = temporary_root / "candidate"
             snapshot.mkdir(mode=0o700)
             output.mkdir(mode=0o700)
             _extract_archive(archive, snapshot)

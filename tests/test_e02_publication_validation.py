@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import importlib.util
+import tempfile
 from pathlib import Path
+
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,3 +35,15 @@ def test_all_e02_candidates_publish_and_authenticate_locally() -> None:
     assert result["file_count"] == 272
     assert result["relationship_count"] == 91
     assert len(result["candidate_set_sha256"]) == 64
+
+
+def test_publication_accepts_a_symlinked_temporary_root(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    target = tmp_path / "real"
+    target.mkdir()
+    alias = tmp_path / "alias"
+    alias.symlink_to(target, target_is_directory=True)
+    monkeypatch.setattr(tempfile, "tempdir", str(alias))
+
+    test_all_e02_candidates_publish_and_authenticate_locally()

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import subprocess
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -61,3 +62,15 @@ def test_c5_single_database_load_rejects_a_database_outside_the_candidate() -> N
 def test_e02_candidate_rejects_a_noncanonical_commit() -> None:
     with pytest.raises(E02CandidateError, match="commit"):
         load_committed_e02_candidate(ROOT, "HEAD")
+
+
+def test_committed_candidate_accepts_a_symlinked_temporary_root(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    target = tmp_path / "real"
+    target.mkdir()
+    alias = tmp_path / "alias"
+    alias.symlink_to(target, target_is_directory=True)
+    monkeypatch.setattr(tempfile, "tempdir", str(alias))
+
+    test_exact_committed_e02_candidate_reproduces_all_deployment_plans()

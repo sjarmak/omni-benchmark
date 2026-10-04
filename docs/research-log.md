@@ -14596,3 +14596,28 @@ JUnit node IDs to the lead's 32-node baseline found zero new failures; exactly
 the two unfrozen target failures left the failure set. The 30 remaining failures
 are unchanged known baseline issues, including the three frozen tests. No
 full-suite rerun or repository-wide coverage claim was made.
+
+## 2026-10-03 — C5/E02 temporary-root portability
+
+Hypothesis: resolving tool-owned temporary roots once before snapshot extraction
+and publication restores macOS execution while retaining no-follow traversal
+beneath those roots. Generality: platform IO mechanism, with no database or
+question specificity. Source bead: `omni-benchmark-qrp`. The isolated local-main
+preflight reproduced 10 failures and 11 passes. GitHub code search was unavailable
+because the CLI is unauthenticated; the existing confined-root resolution pattern
+provides the implementation precedent. No live calls or protected inputs are
+needed for this change.
+
+The two new symlinked-temporary-root regressions failed before implementation.
+Canonicalizing the publication-validation root and committed-candidate temporary
+root restores execution without changing any no-follow helper. Focused acceptance
+and IO safety checks pass: 42 tests. Independent review passed 11 regression and
+safety tests, targeted Ruff, and diff-check with no findings. Repository-wide
+Ruff check and formatting pass. Linux host execution and repository-wide coverage
+have not been measured. The initial full-suite process was interrupted at 81%
+without a terminal summary. Recovery started one replacement full-suite run,
+which finished with 2,782 passed, 22 failed, and 38 skipped. Comparing exact
+failure node IDs against the lead's 32-failure Mac baseline confirms zero new
+failures and resolves exactly the ten targeted C5/E02 failures. Recovery review
+also passed all 31 scoped tests, repository-wide Ruff, and diff-check. The
+remaining 22 baseline failures are outside this bead's assigned scope.
