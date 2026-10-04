@@ -6,6 +6,8 @@
     "public-baseline-v1-direct-16db-continuation-1": {"arm": null, "canonical": true},
     "public-c4-baseline-v8": {"arm": "C4", "canonical": true},
     "c5-dev-a-v4": {"arm": "C5", "canonical": true},
-    "e02-dev-a-v6": {"arm": "E02", "canonical": false}
+    "e02-dev-a-v6": {"arm": "E02", "canonical": false},
+    "r2-c5b-generation-v2": {"arm": null, "canonical": false},
+    "r2-m1-generation-v2": {"arm": null, "canonical": false}
   }
 }

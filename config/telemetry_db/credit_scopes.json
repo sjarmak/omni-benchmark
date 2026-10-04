@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "description": "Maps each spend scope in experiments/analysis/omni-credit-spend-breakdown-*.json onto the telemetry arm and partition that scope covers. arm and partition are null for spend that produced no attempt rows (aborted pilots, probes, validation). A scope absent from this file fails the load rather than loading unattributed.",
+  "scopes": {
+    "sealed C4, scored (runs/sealed-final-v6)": {"arm": "C4", "partition": "test"},
+    "C4 public baseline (public-c4-baseline-v8)": {"arm": "C4", "partition": "dev-a"},
+    "C5 dev-A (c5-dev-a-v4)": {"arm": "C5", "partition": "dev-a"},
+    "E02 dev-A (e02-dev-a-v6)": {"arm": "E02", "partition": "dev-a"},
+    "sealed pilots v1-v5, aborted/partial": {"arm": null, "partition": null}
+  }
+}

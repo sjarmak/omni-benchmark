@@ -257,6 +257,46 @@ def build_arms(root: Path) -> None:
     )
 
 
+def build_credits(root: Path) -> None:
+    _dump_json(
+        root / "config" / "telemetry_db" / "credit_scopes.json",
+        {
+            "schema_version": 1,
+            "scopes": {
+                "C5 dev-A (c5-run)": {"arm": "C5", "partition": "dev-a"},
+                "aborted pilots": {"arm": None, "partition": None},
+            },
+        },
+    )
+    analysis = root / "experiments" / "analysis"
+    _dump_json(
+        analysis / "omni-credit-usage-2026-08.json",
+        {
+            "credit_unit_usd": 1.0,
+            "period_start_utc": "2026-08-01T00:00:00+00:00",
+            "period_end_utc": "2026-09-01T00:00:00+00:00",
+            "captured_at_utc": "2026-08-31T19:00:27Z",
+            "raw_response": {"users": [{"creditsUsed": 40.0}]},
+        },
+    )
+    _dump_json(
+        analysis / "omni-credit-spend-breakdown-2026-08.json",
+        {
+            "period": "2026-08-01T00:00:00Z / 2026-09-01T00:00:00Z",
+            "credits_used_usd": 40.0,
+            "omni_routed_attempts_recorded": 8,
+            "account_ai_conversations_in_period": 10,
+            "unattributed_conversations": 2,
+            "proportional_estimate_usd_per_omni_attempt": 5.0,
+            "upper_bound_usd_per_omni_attempt": 6.0,
+            "arms": [
+                {"arm": "C5 dev-A (c5-run)", "omni_attempts": 6},
+                {"arm": "aborted pilots", "omni_attempts": 2},
+            ],
+        },
+    )
+
+
 def _write_direct_run(raw: Path) -> dict[str, str]:
     """The two-condition ``direct-run``: one traced attempt and one untraced."""
     shas: dict[str, str] = {}
@@ -453,6 +493,7 @@ def build_tree(tmp_path: Path) -> Sources:
     root = tmp_path / "repo"
     build_manifests(root)
     build_arms(root)
+    build_credits(root)
     build_dev_a(root)
     build_deployments(root)
     build_sealed(root)

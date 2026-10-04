@@ -1,0 +1,54 @@
+label: Credit period
+description: >-
+  Measured Omni AI spend for one billing period, from the recorded
+  credit-usage capture. One Omni AI credit is one US dollar, and the API
+  exposes one cumulative counter per membership per period, so this row is the
+  only measured cost in the database. It is account-wide: it covers every
+  Omni AI conversation in the period, benchmark or not, which is why
+  unattributed_conversations matters when reading it. Per-attempt cost is not
+  measured for any recorded run; see neondb_telemetry__arm_cost for the
+  derived per-arm split.
+catalog: neondb
+schema: telemetry
+table_name: credit_period
+
+dimensions:
+  period_start:
+    description: Start of the billing period, UTC.
+  period_end:
+    description: End of the billing period, UTC.
+  credits_used_usd:
+    description: >-
+      Measured account spend in US dollars for the period (credits summed
+      across memberships, times credit_unit_usd).
+  credit_unit_usd:
+    description: Dollars per Omni AI credit, 1.0 for this account.
+  basis:
+    description: >-
+      Always measured_account_period. It marks this figure as read from the
+      billing API rather than derived.
+  omni_routed_attempts_recorded:
+    description: >-
+      Benchmark attempts recorded in the period that routed through Omni AI.
+      The denominator behind the proportional per-attempt estimate.
+  ai_conversations:
+    description: Omni AI conversations the account ran in the period.
+  unattributed_conversations:
+    description: >-
+      Conversations in the period that no recorded benchmark attempt claims
+      (modeling, validation, and interactive work). Spend attributed to arms is
+      an upper bound to the extent this is non-zero.
+  captured_at:
+    description: When the credit reading was taken.
+  source_artifact:
+    description: Committed artifact the reading came from.
+  source_artifact_sha256:
+    description: sha256 of that artifact.
+  note:
+    description: Capture note recorded with the reading.
+
+measures:
+  measured_usd:
+    aggregate_type: sum
+    sql: ${credits_used_usd}
+    description: Measured account spend across the selected periods.

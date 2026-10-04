@@ -119,6 +119,39 @@ CREATE TABLE IF NOT EXISTS telemetry.score (
     PRIMARY KEY (attempt_id, generation_record_sha256, scorer)
 );
 
+CREATE TABLE IF NOT EXISTS telemetry.credit_period (
+    period_start timestamptz NOT NULL,
+    period_end timestamptz NOT NULL,
+    credits_used_usd numeric NOT NULL,
+    credit_unit_usd numeric NOT NULL,
+    basis text NOT NULL,
+    omni_routed_attempts_recorded int,
+    ai_conversations int,
+    unattributed_conversations int,
+    captured_at timestamptz,
+    source_artifact text,
+    source_artifact_sha256 text,
+    note text,
+    PRIMARY KEY (period_start)
+);
+
+CREATE TABLE IF NOT EXISTS telemetry.arm_cost (
+    period_start timestamptz NOT NULL,
+    scope text NOT NULL,
+    arm text,
+    partition text,
+    basis text NOT NULL,
+    omni_attempts int NOT NULL,
+    usd_per_attempt numeric,
+    usd_per_attempt_upper numeric,
+    cost_usd numeric,
+    cost_usd_upper numeric,
+    source_artifact text,
+    source_artifact_sha256 text,
+    note text,
+    PRIMARY KEY (period_start, scope)
+);
+
 CREATE TABLE IF NOT EXISTS telemetry.trace_event (
     attempt_id text NOT NULL,
     generation_record_sha256 text NOT NULL,

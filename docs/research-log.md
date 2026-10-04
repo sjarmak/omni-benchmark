@@ -15334,3 +15334,46 @@ per-attempt dollars as `cost_source = credit_usage_delta` rather than repeating
 this gap. D-226's figures are unchanged and remain correct as stated in its own
 artifact; what changes is the claim about what could have been known. No Omni
 evaluated attempt, dev-B access, or sealed access was made.
+
+
+## 2026-10-04 — Restore credit-period telemetry (omni-benchmark-behp)
+
+Hypothesis: the preserved credit-period reader, arm allocation, and opaque
+attempt-ID support can be restored without changing evaluated runtime or frozen
+files. This is benchmark-specific offline telemetry plumbing, not a runtime
+intervention. The restored credit-reader tests failed collection before source
+restoration because credit_readers was absent.
+
+The lead's scope ruling selects documentation reconciliation: baseline_batch_cli
+and r2_live_executor do not forward OMNI_COST_BRACKET_LEASE_DIR today. The earlier
+log claim that both allowlists carry it is superseded; bracketed r5a needs
+launcher support first. No launcher changes, live Neon or Omni calls, deployment,
+arm-cost run, dev-B access, or protected data access are part of this restoration.
+
+Independent review reproduced an orphaned breakdown being silently ignored; its
+regression failed before adding a matching-usage guard. Review also identified
+incorrect cost provenance in the preserved descriptions: the lower recorded
+rate divides account spend across all conversations, whereas the upper rate
+divides it across recorded attempts. The restored model and plan now say this
+explicitly. The earlier ledger's description of the lower allocation as all
+measured dollars divided by recorded attempts is superseded. A Hypothesis
+allocation conservation check was added during restoration verification (after
+source restoration, not in the initial RED step); the new orphan regression
+followed RED/GREEN.
+
+Final telemetry gate: 180 tests passed, with 93.64% branch-aware coverage
+(credit_readers 88%, loader 100%). Synthetic PostgreSQL integration ran against
+a temporary local PostgreSQL 17 server, stopped afterward. Independent
+re-review approved the corrections. Ruff check, format check, and diff check
+passed. Every changed path was checked for tracked JSON references: only
+harness-disclosure appears, as a path/prose reference in preregistration and
+cost-scenario metadata, not a freeze hash. No frozen hashed files changed.
+
+Full-suite acceptance: 2,921 passed, 47 skipped, and exactly the three
+CLAUDE.md known frozen-test failures; branch-aware coverage 83.31%. The full
+run began before the review corrections, so final telemetry code and added
+regressions were verified separately in the 180-test coverage gate above.
+Ruff check and format check passed after all code changes. The frozen tests
+were neither edited nor skipped. Skipped local PostgreSQL integration was
+covered by the separate synthetic-server gate; unavailable dump/run artifacts
+remain untested in this checkout.

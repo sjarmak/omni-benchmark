@@ -33,6 +33,8 @@ from .telemetry_db_helpers import (
     build_tree,
     generation_record,
     run_json,
+    score_artifact,
+    score_entry,
     trace_events,
     write_attempt_dir,
 )
@@ -103,6 +105,63 @@ def test_read_dev_a_score_rows_join_both_scorers(sources: Sources) -> None:
         scores[("c5-run:alpha_large_Q1:C4:1", "official_soft_ex")]["scorer_version"]
         == "official_soft_ex-v1"
     )
+
+
+def test_read_dev_a_joins_a_score_entry_for_an_opaque_attempt_id(
+    sources: Sources,
+) -> None:
+    attempt_id = "r2attempt-0123456789abcdef01234567"
+    record = generation_record(
+        "opaque-run", "alpha_large_Q1", "C1", attempt_id=attempt_id
+    )
+    sha = write_attempt_dir(
+        sources.raw_dir / "opaque-run" / "alpha_large" / "C1" / "alpha_large_Q1-r1",
+        record,
+        run_json=run_json("C1"),
+        trace=trace_events(1),
+    )
+    _dump_json(
+        sources.raw_dir / "opaque-run-scores-v1" / "official.score.json",
+        score_artifact("official_soft_ex", [score_entry(attempt_id, sha)]),
+    )
+    batch = _dev_a(sources)
+    attempt = {r.values["attempt_id"]: r.values for r in batch.rows["attempt"]}
+    assert attempt[attempt_id]["instance_id"] == "alpha_large_Q1"
+    scores = {
+        (r.values["attempt_id"], r.values["scorer"]): r.values
+        for r in batch.rows["score"]
+    }
+    assert scores[(attempt_id, "official_soft_ex")]["outcome"] == "correct"
+
+
+def test_read_dev_a_reads_a_score_directory_without_a_version_suffix(
+    sources: Sources,
+) -> None:
+    attempt = _attempts(sources)["c4-run:alpha_large_Q1:C4:1"]
+    reason = "run_directory_without_generation_records"
+    before = _dev_a(sources).dropped.get(reason, 0)
+    _dump_json(
+        sources.raw_dir / "later-run-scores" / "sensitivity.score.json",
+        score_artifact(
+            "sensitivity",
+            [
+                score_entry(
+                    attempt["attempt_id"],
+                    attempt["generation_record_sha256"],
+                    "wrong_answer",
+                )
+            ],
+        ),
+    )
+    batch = _dev_a(sources)
+    scores = {
+        (r.values["attempt_id"], r.values["scorer"]): r.values
+        for r in batch.rows["score"]
+    }
+    assert scores[("c4-run:alpha_large_Q1:C4:1", "sensitivity")]["outcome"] == (
+        "wrong_answer"
+    )
+    assert batch.dropped.get(reason, 0) == before
 
 
 def test_read_dev_a_trace_and_action_evidence_rows(sources: Sources) -> None:
@@ -208,7 +267,7 @@ def test_read_dev_a_score_conflict_raises(sources: Sources) -> None:
             "no generation record",
         ),
         (
-            {"attempt_id": "bad", "generation_record_sha256": SHA},
+            {"attempt_id": "bad:id", "generation_record_sha256": SHA},
             ReaderError,
             "malformed",
         ),

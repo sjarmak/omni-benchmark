@@ -23,7 +23,7 @@ from .generation_rows import (
     ReaderError,
     action_evidence_rows,
     attempt_row,
-    instance_of_attempt_id,
+    optional_instance_of_attempt_id,
     parse_timestamp,
     read_generation_records,
     trace_event_rows,
@@ -43,7 +43,7 @@ TRACE_FILENAME = "attempt.trace.jsonl"
 ACTION_EVIDENCE_FILENAME = "attempt.action-evidence.json"
 RUN_MANIFEST_FILENAME = "run.json"
 FAILURE_FILENAME = "failure.json"
-SCORE_DIR_GLOB = "*-scores-v*"
+SCORE_DIR_GLOB = "*-scores*"
 SCORE_FILE_GLOB = "*.score.json"
 _RUN_JSON_FIELDS = (
     "scope",
@@ -352,7 +352,9 @@ def _score_row(
         raise ReaderError(
             f"{context}: attempt_id and generation_record_sha256 must be text"
         )
-    assert_dev_a_instance(instance_of_attempt_id(attempt_id, context), split, context)
+    embedded = optional_instance_of_attempt_id(attempt_id, context)
+    if embedded is not None:
+        assert_dev_a_instance(embedded, split, context)
     generation = generations.get(sha256)
     if generation is None:
         raise ReaderError(f"{context}: no generation record with sha256 {sha256}")

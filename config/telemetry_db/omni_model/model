@@ -1,17 +1,29 @@
 ai_context: >-
   Benchmark evidence database for the omni-benchmark LiveSQLBench evaluation.
   Grain: one attempt per row in neondb_telemetry__attempt, keyed by attempt_id
-  and generation_record_sha256. Use arm (C1, C2, C3, C4, C5, E02) as the
-  analysis unit; condition is the preregistered condition and stores C5 and
-  E02 as C4. Correctness exists only for partition dev-a, in
+  and generation_record_sha256. Use arm (C1, C2, C3, C4, C5, E02, R2-C5B,
+  R2-M1) as the analysis unit; condition is the preregistered condition and
+  stores C5 and E02 as C4. Correctness exists only for partition dev-a, in
   neondb_telemetry__score, with two frozen scorers that are always reported
   together: official_soft_ex (benchmark-comparable) and sensitivity. Accuracy
   is correct divided by status = scored rows of that scorer. Sealed test
   attempts (partition test) carry telemetry only; their published rates live
   in neondb_telemetry__sealed_aggregate. Prefer the modeled measures over
-  reconstructing them. Cross-arm accuracy comparisons must be filtered to
-  neondb_telemetry__dev_a_frame.in_official_frame (122 questions) or
-  in_sensitivity_frame (121 questions); unfiltered per-arm denominators are
-  not comparable because the arms did not all run the same questions. Cost is
-  unavailable by construction for C4, C5 and E02 and must never be estimated
-  from token counts.
+  reconstructing them. Cross-arm accuracy comparisons across C1 through C5 must
+  be filtered to neondb_telemetry__dev_a_frame.in_official_frame (122
+  questions) or in_sensitivity_frame (121 questions); unfiltered per-arm
+  denominators are not comparable because the arms did not all run the same
+  questions. R2-C5B and R2-M1 are a separate paired study over 136 dev-A
+  questions, a superset of both frames, so a frame filter changes their counts
+  away from the frozen R2 rollup; say which set a number is over. Cost comes in
+  three kinds and they must never be blurred. Measured: account-wide Omni AI
+  spend per billing period in neondb_telemetry__credit_period, where one credit
+  is one dollar. Estimated: the per-arm allocation of that spend in
+  neondb_telemetry__arm_cost, basis proportional_estimate. Its lower rate divides
+  account spend across all AI conversations and assumes one conversation per
+  attempt; its upper rate allocates all account spend across recorded attempts.
+  Both recorded rates are rounded and assume attempts cost the same.
+  Unmeasured: per-attempt cost_usd on neondb_telemetry__attempt, which is NULL
+  for every governed arm because the credit-bracketing path was not armed for
+  those runs; cost_unavailable_reason says so per attempt. Never estimate cost
+  from token counts, and never present an arm_cost figure as a measurement.
