@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import fcntl
 import hashlib
 import io
 import json
@@ -10,11 +11,13 @@ import re
 import secrets
 import stat
 import subprocess
+import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, BinaryIO, Sequence
 
+DARWIN_PATH_MAX = 1024
 DECISIONS = frozenset({"KEEP", "REVERT", "INCONCLUSIVE", "INVESTIGATE", "ARCHIVE"})
 OUTCOMES = frozenset({"correct", "wrong_answer", "refused_or_error"})
 MANDATORY_FORBIDDEN_FIELDS = frozenset(
@@ -654,6 +657,15 @@ def _read_confined_private_bytes(
         os.close(parent_descriptor)
 
 
+def _directory_descriptor_path(descriptor: int) -> Path:
+    if sys.platform == "linux":
+        return Path(f"/proc/self/fd/{descriptor}").resolve(strict=True)
+    if sys.platform == "darwin":
+        path_buffer = fcntl.fcntl(descriptor, fcntl.F_GETPATH, bytes(DARWIN_PATH_MAX))
+        return Path(os.fsdecode(path_buffer.split(b"\0", 1)[0])).resolve(strict=True)
+    raise AutoresearchError("artifact parent must remain inside workspace")
+
+
 def _open_confined_parent(workspace: Path, path: Path) -> tuple[int, Path]:
     resolved_workspace = workspace.resolve(strict=True)
     confined_path = _unresolved_inside(resolved_workspace, path, "artifact path")
@@ -675,7 +687,7 @@ def _open_confined_parent(workspace: Path, path: Path) -> tuple[int, Path]:
             )
             os.close(descriptor)
             descriptor = next_descriptor
-        opened_parent = Path(f"/proc/self/fd/{descriptor}").resolve(strict=True)
+        opened_parent = _directory_descriptor_path(descriptor)
         opened_parent.relative_to(resolved_workspace)
         metadata = os.fstat(descriptor)
         if not stat.S_ISDIR(metadata.st_mode) or metadata.st_uid != os.getuid():
