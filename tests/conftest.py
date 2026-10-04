@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import os
 import secrets
+from pathlib import Path
 from typing import Iterator
 
 import psycopg
@@ -60,3 +61,20 @@ def throwaway_database() -> Iterator[str]:
             admin.execute(
                 sql.SQL("DROP DATABASE {} WITH (FORCE)").format(sql.Identifier(name))
             )
+
+
+@pytest.fixture
+def linux_dump_file_lookup(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def exact_lookup(original):
+        def lookup(path: Path, *args, **kwargs):
+            if path.is_relative_to(tmp_path) and path.suffix == ".sql":
+                with os.scandir(path.parent) as entries:
+                    names = {entry.name for entry in entries}
+                if path.name not in names:
+                    return False
+            return original(path, *args, **kwargs)
+
+        return lookup
+
+    for method in ("exists", "is_file", "is_symlink"):
+        monkeypatch.setattr(Path, method, exact_lookup(getattr(Path, method)))

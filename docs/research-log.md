@@ -14501,3 +14501,26 @@ resolved workspace prefix; symlinked workspace writes were verified with a
 relative path. No protocol, scorer, split, manifest, endpoint, protected data,
 provider, or out-of-scope module was changed. Repository-wide 80% coverage was
 not established; the focused module coverage measurement was 77.7%.
+
+### 2026-10-03 — Linux dump fixtures on macOS (omni-benchmark-199)
+
+Hypothesis: APFS case-insensitive lookup leaks into tests of the pinned Linux
+loader, while two-case fixture files collapse to one directory entry. This is a
+test-only portability intervention; production loader behavior stays unchanged.
+The three requested test modules reproduced five failures and 44 passes before
+changes. Fixtures will explicitly model case-sensitive lookup and supply an
+in-memory directory listing where APFS cannot represent both spellings.
+
+Outcome: 50 focused tests pass; independent verification, repository-wide Ruff
+check, Ruff formatting check, and diff checks pass. The single full-suite run
+reported 27 failed, 2,776 passed, 38 skipped in 820.65 seconds. All five original
+dump failures disappeared. Four failures absent from the older 1cm log were
+reproduced individually on a clean local-main worktree at
+`1f1b74ce6dc53fcddd59faafa9211fe252f85f38`: three committed artifact permission
+assertions and the R2 opportunity-loader reproduction test. The other 23 failures
+match the recorded 1cm failure list. No new failure was identified from these
+comparisons; test inventory differs from the older full run. Remaining failures
+are outside this bead and were left unchanged. Production behavior, protected
+surfaces, and evidence artifacts were not changed. No Linux live run or
+repository-wide coverage measurement was performed; no credentials, provider,
+dev-B, or sealed annotations were accessed.

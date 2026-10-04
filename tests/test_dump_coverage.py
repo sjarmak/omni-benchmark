@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from omni_benchmark.dump_coverage import describe_dump_coverage, index_case_variants
 
 
@@ -17,7 +19,9 @@ def _dump(root: Path, *names: str) -> None:
         (root / name).write_text("SELECT 1;\n", encoding="utf-8")
 
 
-def test_a_table_whose_file_matches_exactly_is_loaded(tmp_path: Path) -> None:
+def test_a_table_whose_file_matches_exactly_is_loaded(
+    tmp_path: Path, linux_dump_file_lookup: None
+) -> None:
     _dump(tmp_path, "Facilities.sql")
 
     coverage = describe_dump_coverage(
@@ -28,8 +32,9 @@ def test_a_table_whose_file_matches_exactly_is_loaded(tmp_path: Path) -> None:
     assert coverage.skipped == ()
 
 
-def test_a_lowercase_file_does_not_satisfy_a_capitalized_table(tmp_path: Path) -> None:
-    """The upstream defect: the data ships, and the official loader cannot see it."""
+def test_a_lowercase_file_does_not_satisfy_a_capitalized_table(
+    tmp_path: Path, linux_dump_file_lookup: None
+) -> None:
     _dump(tmp_path, "facilities.sql")
 
     coverage = describe_dump_coverage(
@@ -63,7 +68,9 @@ def test_a_table_absent_from_the_archive_is_skipped_without_a_variant(
     assert coverage.reproduces_official_loader
 
 
-def test_an_undeclared_skip_breaks_fidelity(tmp_path: Path) -> None:
+def test_an_undeclared_skip_breaks_fidelity(
+    tmp_path: Path, linux_dump_file_lookup: None
+) -> None:
     _dump(tmp_path, "facilities.sql")
 
     coverage = describe_dump_coverage(
@@ -75,7 +82,7 @@ def test_an_undeclared_skip_breaks_fidelity(tmp_path: Path) -> None:
 
 
 def test_declaring_an_omission_the_loader_actually_loads_breaks_fidelity(
-    tmp_path: Path,
+    tmp_path: Path, linux_dump_file_lookup: None
 ) -> None:
     _dump(tmp_path, "Facilities.sql")
 
@@ -91,10 +98,11 @@ def test_declaring_an_omission_the_loader_actually_loads_breaks_fidelity(
 
 
 def test_both_capitalizations_present_resolves_to_the_exact_name(
-    tmp_path: Path,
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """No ambiguity exists: the official loader names one file and finds it."""
-    _dump(tmp_path, "Facilities.sql", "facilities.sql")
+    _dump(tmp_path, "Facilities.sql")
+    paths = tuple(tmp_path / name for name in ("Facilities.sql", "facilities.sql"))
+    monkeypatch.setattr(Path, "glob", lambda path, pattern: iter(paths))
 
     coverage = describe_dump_coverage(
         database="fixture", dump_root=tmp_path, restore_order=("Facilities",)
@@ -105,8 +113,11 @@ def test_both_capitalizations_present_resolves_to_the_exact_name(
     assert loaded.path.name == "Facilities.sql"
 
 
-def test_case_variants_are_grouped_and_non_sql_files_ignored(tmp_path: Path) -> None:
-    _dump(tmp_path, "Facilities.sql", "facilities.sql", "notes.txt")
+def test_case_variants_are_grouped(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    paths = tuple(tmp_path / name for name in ("Facilities.sql", "facilities.sql"))
+    monkeypatch.setattr(Path, "glob", lambda path, pattern: iter(paths))
 
     variants = index_case_variants(tmp_path)
 
@@ -114,7 +125,14 @@ def test_case_variants_are_grouped_and_non_sql_files_ignored(tmp_path: Path) -> 
         "Facilities.sql",
         "facilities.sql",
     ]
-    assert "notes" not in variants
+
+
+def test_non_sql_files_are_ignored(tmp_path: Path) -> None:
+    _dump(tmp_path, "Facilities.sql", "notes.txt")
+
+    variants = index_case_variants(tmp_path)
+
+    assert tuple(variants) == ("facilities",)
 
 
 def test_restore_order_is_preserved(tmp_path: Path) -> None:

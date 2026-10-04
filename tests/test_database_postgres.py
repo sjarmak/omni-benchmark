@@ -499,15 +499,8 @@ def test_fingerprint_compare_requires_same_postgres_version(tmp_path: Path) -> N
 
 
 def test_restore_skips_a_declared_omission_whose_only_file_differs_in_case(
-    tmp_path: Path,
+    tmp_path: Path, linux_dump_file_lookup: None
 ) -> None:
-    """The official loader resolves ``<table>.sql`` exactly and skips on a miss.
-
-    ``mental_healths_large`` ships ``facilities.sql`` for a table its restore order
-    spells ``Facilities``, so upstream builds its reference database without it.
-    Loading the lowercase file here would put 34 tables in this database that the
-    scorer's does not have. See docs/research-log.md D-138.
-    """
     (tmp_path / "facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
     client = RecordingClient()
 
@@ -523,9 +516,8 @@ def test_restore_skips_a_declared_omission_whose_only_file_differs_in_case(
 
 
 def test_restore_rejects_an_omission_whose_exact_file_is_present(
-    tmp_path: Path,
+    tmp_path: Path, linux_dump_file_lookup: None
 ) -> None:
-    """A declared omission must describe a real upstream skip, not hide a file."""
     (tmp_path / "Facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
     client = RecordingClient()
 
