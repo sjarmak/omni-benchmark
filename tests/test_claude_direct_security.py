@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import sys
 from dataclasses import FrozenInstanceError
 from pathlib import Path
 
@@ -333,6 +334,10 @@ class _WriteTemporaryFileRunner(_RecordingRunner):
         ("working_directory", "work"),
     ],
 )
+@pytest.mark.skipif(
+    sys.platform == "darwin",
+    reason="omni-benchmark-zu0: Darwin lacks descriptor-pinned Claude invocation",
+)
 def test_contained_input_replacement_during_runner_is_rejected_after_runner(
     tmp_path: Path, directory_attribute: str, pinned_root: str
 ) -> None:
@@ -399,6 +404,10 @@ class _SwapRestoreContainedFileRunner(_RecordingRunner):
         )
 
 
+@pytest.mark.skipif(
+    sys.platform == "darwin",
+    reason="omni-benchmark-zu0: Darwin lacks descriptor-pinned Claude invocation",
+)
 def test_transient_original_swap_cannot_change_provider_visible_bytes(
     tmp_path: Path,
 ) -> None:
@@ -416,6 +425,10 @@ def test_transient_original_swap_cannot_change_provider_visible_bytes(
     assert turn.action["type"] == "answer"
 
 
+@pytest.mark.skipif(
+    sys.platform == "darwin",
+    reason="omni-benchmark-zu0: Darwin lacks descriptor-pinned Claude invocation",
+)
 def test_temporary_directory_content_remains_mutable_during_runner(
     tmp_path: Path,
 ) -> None:
@@ -430,6 +443,10 @@ def test_temporary_directory_content_remains_mutable_during_runner(
     assert len(runner.calls) == 1
 
 
+@pytest.mark.skipif(
+    sys.platform == "darwin",
+    reason="omni-benchmark-zu0: Darwin lacks descriptor-pinned Claude invocation",
+)
 def test_binary_and_directories_are_fd_pinned_across_verification_to_use(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -454,3 +471,33 @@ def test_binary_and_directories_are_fd_pinned_across_verification_to_use(
     assert runner.pinned_binary == reviewed_bytes
     assert runner.pinned_config_inode != runner.reviewed_config_inode
     assert turn.provenance.binary_sha256 == reviewed_hash
+
+
+@pytest.mark.parametrize("custom_runner", [False, True])
+def test_darwin_refuses_before_resource_preparation_or_process_start(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, custom_runner: bool
+) -> None:
+    config = _config(tmp_path)
+    calls = []
+
+    def forbidden_call(*args: object, **kwargs: object) -> None:
+        calls.append((args, kwargs))
+        pytest.fail("Darwin refusal must precede resources and process invocation")
+
+    monkeypatch.setattr(claude_transport, "platform", "darwin")
+    for name in (
+        "_validate_config",
+        "_resource_identity",
+        "_pin_resources",
+        "run_claude_process",
+    ):
+        monkeypatch.setattr(claude_transport, name, forbidden_call)
+    monkeypatch.setattr(claude_transport.subprocess, "run", forbidden_call)
+
+    with pytest.raises(ClaudeDirectTransportError) as exc:
+        ClaudeDirectTransport(config, runner=forbidden_call if custom_runner else None)
+
+    assert exc.value.category == "setup"
+    assert "darwin" in str(exc.value)
+    assert "descriptor-pinning" in str(exc.value)
+    assert calls == []

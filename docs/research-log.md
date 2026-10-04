@@ -14501,3 +14501,29 @@ resolved workspace prefix; symlinked workspace writes were verified with a
 relative path. No protocol, scorer, split, manifest, endpoint, protected data,
 provider, or out-of-scope module was changed. Repository-wide 80% coverage was
 not established; the focused module coverage measurement was 77.7%.
+
+
+### 2026-10-04 — Darwin restricted Claude transport refuses before setup
+
+Hypothesis: Darwin cannot preserve the existing descriptor-to-use guarantee
+with pathname snapshots, so an early explicit setup refusal is the smallest
+secure behavior. This is general transport infrastructure, with no
+question-specific or benchmark-specific logic. Lead review on
+`omni-benchmark-zu0` approved refusal and rejected the weaker snapshot path.
+
+Two new refusal cases failed before implementation because constructor config
+validation ran first. The constructor now refuses Darwin before validation,
+resource identity, pinning, or process invocation. Linux descriptor paths are
+unchanged. Mocked transport tests explicitly simulate Linux; the six tests that
+actually dereference proc descriptors skip on Darwin with this bead's reason.
+The two Darwin refusal cases override that simulation and trap resource and
+runner entry points. Focused security/transport/runtime tests: 82 passed,
+6 skipped. Repository Ruff check and format check passed. Independent active review found no defects. Transport module branch-aware
+coverage is 89.47% across the three focused files. The single full-suite run
+finished with 26 failed, 2772 passed, and 44 skipped in 879.24 seconds; every
+failed node ID appears in the lead's 32-ID local-main baseline, with no new
+failures. The six descriptor cases now skip explicitly and two refusal cases
+pass. This comparison uses the supplied local-main baseline, not fresh remote
+ancestry evidence. Remaining baseline failures are outside this bead's scope. No live calls, credentials,
+protected annotations, scorer, split, manifest, or protocol changes. Actual
+Linux execution has not been verified on this Mac.
