@@ -14502,7 +14502,6 @@ relative path. No protocol, scorer, split, manifest, endpoint, protected data,
 provider, or out-of-scope module was changed. Repository-wide 80% coverage was
 not established; the focused module coverage measurement was 77.7%.
 
-<<<<<<< HEAD
 ### 2026-10-03 — Linux dump fixtures on macOS (omni-benchmark-199)
 
 Hypothesis: APFS case-insensitive lookup leaks into tests of the pinned Linux
@@ -14525,7 +14524,6 @@ are outside this bead and were left unchanged. Production behavior, protected
 surfaces, and evidence artifacts were not changed. No Linux live run or
 repository-wide coverage measurement was performed; no credentials, provider,
 dev-B, or sealed annotations were accessed.
-=======
 ### 2026-10-04 — macOS inventory nesting and bytecode preflight (3ow)
 
 Hypothesis: relying on the JSON decoder's recursion failure and on bytecode
@@ -14620,4 +14618,36 @@ JUnit node IDs to the lead's 32-node baseline found zero new failures; exactly
 the two unfrozen target failures left the failure set. The 30 remaining failures
 are unchanged known baseline issues, including the three frozen tests. No
 full-suite rerun or repository-wide coverage claim was made.
->>>>>>> main
+
+
+## 2026-10-04 — exact dump filenames across host filesystems (199 rework)
+
+Hypothesis: production must establish filename presence from case-sensitive
+comparisons to directory-entry names before filesystem type checks. APFS otherwise
+loads tables skipped by the pinned Linux loader. This is a general filesystem
+mechanism change with no question-specific or database-specific behavior.
+
+Removed the rejected Path lookup fixture and glob monkeypatches. The real-file
+RED gate returned four failures, 44 passes and two explicit skips for fixtures
+requiring both case variants on a filesystem unable to store them separately.
+Production now checks names obtained with os.scandir before the existing file
+and symlink checks. Restore rejects a required case variant before database IO.
+The inherited merge committed research-log conflict markers; removed only those
+markers while preserving both ledger entries.
+
+Independent review exposed two boundary regressions introduced by directory
+listing: absent/non-directory audit roots and non-directory restore roots.
+Three new tests failed before correction, then passed. The audit preserves its
+all-skipped report for unavailable roots; restore translates listing errors into
+DatabaseOperationError. Final focused validation: 52 passed and two explicit
+APFS skips. Independent re-review repeated the focused tests and Ruff checks
+with no remaining findings. The initial full-suite run was interrupted after
+review changed source; the final-tree gate uses a fresh run.
+
+The completed final-tree full suite reported 19 failed, 2,802 passed and
+41 skipped. JUnit failure IDs are a subset of the lead’s exact 24-ID baseline
+on local main 0940e66; all five targeted dump failures disappeared and zero
+new failures appeared. Logs and XML remain outside the repository under
+/tmp/omni-199-rework-final.*. The 19 unrelated baseline failures remain outside
+this bead. No Linux execution, repository-wide coverage measurement, provider
+access, protected data, merge or push was performed.

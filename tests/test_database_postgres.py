@@ -499,7 +499,7 @@ def test_fingerprint_compare_requires_same_postgres_version(tmp_path: Path) -> N
 
 
 def test_restore_skips_a_declared_omission_whose_only_file_differs_in_case(
-    tmp_path: Path, linux_dump_file_lookup: None
+    tmp_path: Path,
 ) -> None:
     (tmp_path / "facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
     client = RecordingClient()
@@ -516,7 +516,7 @@ def test_restore_skips_a_declared_omission_whose_only_file_differs_in_case(
 
 
 def test_restore_rejects_an_omission_whose_exact_file_is_present(
-    tmp_path: Path, linux_dump_file_lookup: None
+    tmp_path: Path,
 ) -> None:
     (tmp_path / "Facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
     client = RecordingClient()
@@ -528,5 +528,36 @@ def test_restore_rejects_an_omission_whose_exact_file_is_present(
             dump_directory=tmp_path,
             restore_order=("Facilities",),
             omitted_tables=("Facilities",),
+        )
+    assert client.calls == []
+
+
+def test_restore_rejects_a_case_variant_for_a_required_dump(tmp_path: Path) -> None:
+    (tmp_path / "facilities.sql").write_text("SELECT 1;\n", encoding="utf-8")
+    client = RecordingClient()
+
+    with pytest.raises(
+        DatabaseOperationError, match="missing ordered dump file.*Facilities.sql"
+    ):
+        restore_database(
+            client,
+            database="fixture_db",
+            dump_directory=tmp_path,
+            restore_order=("Facilities",),
+        )
+    assert client.calls == []
+
+
+def test_restore_rejects_a_non_directory_before_database_change(tmp_path: Path) -> None:
+    dump_directory = tmp_path / "dump"
+    dump_directory.write_text("not a directory", encoding="utf-8")
+    client = RecordingClient()
+
+    with pytest.raises(DatabaseOperationError, match="dump directory"):
+        restore_database(
+            client,
+            database="fixture_db",
+            dump_directory=dump_directory,
+            restore_order=("Facilities",),
         )
     assert client.calls == []

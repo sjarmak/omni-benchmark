@@ -155,22 +155,33 @@ def restore_database(
         raise DatabaseOperationError("invalid explicitly omitted dump tables")
     for table in omitted_tables:
         validate_identifier(table)
+    try:
+        with os.scandir(dump_root) as directory_entries:
+            names = frozenset(entry.name for entry in directory_entries)
+    except OSError as error:
+        raise DatabaseOperationError(
+            f"cannot list dump directory: {dump_directory}"
+        ) from error
     dump_files: list[Path] = []
     for table in restore_order:
         validate_identifier(table)
         candidate = dump_root / f"{table}.sql"
         if table in omitted:
-            if candidate.exists() or candidate.is_symlink():
+            if candidate.name in names and (
+                candidate.exists() or candidate.is_symlink()
+            ):
                 raise DatabaseOperationError(
                     f"explicitly omitted dump file exists: {candidate.name}"
                 )
             continue
-        if candidate.is_symlink():
+        if candidate.name in names and candidate.is_symlink():
             raise DatabaseOperationError(
                 f"dump file must not be a symlink: {candidate.name}"
             )
         dump_files.append(candidate)
-    missing = tuple(path.name for path in dump_files if not path.is_file())
+    missing = tuple(
+        path.name for path in dump_files if path.name not in names or not path.is_file()
+    )
     if missing:
         raise DatabaseOperationError(
             "missing ordered dump file(s): " + ", ".join(missing)
