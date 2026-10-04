@@ -24,6 +24,7 @@ That invariant is what :func:`describe_dump_coverage` reports.
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -109,10 +110,15 @@ def describe_dump_coverage(
     pass.
     """
     variants = index_case_variants(dump_root)
+    try:
+        with os.scandir(dump_root) as directory_entries:
+            names = frozenset(entry.name for entry in directory_entries)
+    except (FileNotFoundError, NotADirectoryError):
+        names = frozenset()
     entries: list[TableDump] = []
     for table in restore_order:
         exact = dump_root / f"{table}.sql"
-        if exact.is_file():
+        if exact.name in names and exact.is_file():
             entries.append(TableDump(table=table, path=exact, case_variant=None))
             continue
         others = tuple(

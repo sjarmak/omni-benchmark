@@ -185,7 +185,6 @@ def _upstream_dump_tree(root: Path, inventory) -> None:
 def test_cli_dump_coverage_confirms_the_inventory_reproduces_the_official_loader(
     tmp_path: Path, capsys
 ) -> None:
-    """The committed omissions must match what upstream actually skips."""
     inventory = load_database_inventory(DEFAULT_INVENTORY)
     _upstream_dump_tree(tmp_path, inventory)
 

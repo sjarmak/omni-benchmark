@@ -9,12 +9,26 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from omni_benchmark.dump_coverage import describe_dump_coverage, index_case_variants
 
 
 def _dump(root: Path, *names: str) -> None:
     for name in names:
         (root / name).write_text("SELECT 1;\n", encoding="utf-8")
+
+
+@pytest.fixture
+def case_sensitive_dump_directory(tmp_path: Path) -> None:
+    probe = tmp_path / "case-probe"
+    probe.write_text("probe", encoding="utf-8")
+    insensitive = (tmp_path / "CASE-PROBE").exists()
+    probe.unlink()
+    if insensitive:
+        pytest.skip(
+            "filesystem cannot hold Facilities.sql and facilities.sql separately"
+        )
 
 
 def test_a_table_whose_file_matches_exactly_is_loaded(tmp_path: Path) -> None:
@@ -29,7 +43,6 @@ def test_a_table_whose_file_matches_exactly_is_loaded(tmp_path: Path) -> None:
 
 
 def test_a_lowercase_file_does_not_satisfy_a_capitalized_table(tmp_path: Path) -> None:
-    """The upstream defect: the data ships, and the official loader cannot see it."""
     _dump(tmp_path, "facilities.sql")
 
     coverage = describe_dump_coverage(
@@ -91,9 +104,8 @@ def test_declaring_an_omission_the_loader_actually_loads_breaks_fidelity(
 
 
 def test_both_capitalizations_present_resolves_to_the_exact_name(
-    tmp_path: Path,
+    tmp_path: Path, case_sensitive_dump_directory: None
 ) -> None:
-    """No ambiguity exists: the official loader names one file and finds it."""
     _dump(tmp_path, "Facilities.sql", "facilities.sql")
 
     coverage = describe_dump_coverage(
@@ -105,8 +117,10 @@ def test_both_capitalizations_present_resolves_to_the_exact_name(
     assert loaded.path.name == "Facilities.sql"
 
 
-def test_case_variants_are_grouped_and_non_sql_files_ignored(tmp_path: Path) -> None:
-    _dump(tmp_path, "Facilities.sql", "facilities.sql", "notes.txt")
+def test_case_variants_are_grouped(
+    tmp_path: Path, case_sensitive_dump_directory: None
+) -> None:
+    _dump(tmp_path, "Facilities.sql", "facilities.sql")
 
     variants = index_case_variants(tmp_path)
 
@@ -114,7 +128,14 @@ def test_case_variants_are_grouped_and_non_sql_files_ignored(tmp_path: Path) -> 
         "Facilities.sql",
         "facilities.sql",
     ]
-    assert "notes" not in variants
+
+
+def test_non_sql_files_are_ignored(tmp_path: Path) -> None:
+    _dump(tmp_path, "Facilities.sql", "notes.txt")
+
+    variants = index_case_variants(tmp_path)
+
+    assert tuple(variants) == ("facilities",)
 
 
 def test_restore_order_is_preserved(tmp_path: Path) -> None:
@@ -125,3 +146,19 @@ def test_restore_order_is_preserved(tmp_path: Path) -> None:
     )
 
     assert [entry.table for entry in coverage.tables] == ["c", "a", "b"]
+
+
+@pytest.mark.parametrize("regular_file", (False, True))
+def test_unavailable_dump_directory_reports_skipped_tables(
+    tmp_path: Path, regular_file: bool
+) -> None:
+    root = tmp_path / "unavailable"
+    if regular_file:
+        root.write_text("not a directory", encoding="utf-8")
+
+    coverage = describe_dump_coverage(
+        database="fixture", dump_root=root, restore_order=("Facilities",)
+    )
+
+    assert coverage.undeclared_skips == ("Facilities",)
+    assert coverage.skipped[0].case_variant is None

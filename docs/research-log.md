@@ -14502,6 +14502,28 @@ relative path. No protocol, scorer, split, manifest, endpoint, protected data,
 provider, or out-of-scope module was changed. Repository-wide 80% coverage was
 not established; the focused module coverage measurement was 77.7%.
 
+### 2026-10-03 — Linux dump fixtures on macOS (omni-benchmark-199)
+
+Hypothesis: APFS case-insensitive lookup leaks into tests of the pinned Linux
+loader, while two-case fixture files collapse to one directory entry. This is a
+test-only portability intervention; production loader behavior stays unchanged.
+The three requested test modules reproduced five failures and 44 passes before
+changes. Fixtures will explicitly model case-sensitive lookup and supply an
+in-memory directory listing where APFS cannot represent both spellings.
+
+Outcome: 50 focused tests pass; independent verification, repository-wide Ruff
+check, Ruff formatting check, and diff checks pass. The single full-suite run
+reported 27 failed, 2,776 passed, 38 skipped in 820.65 seconds. All five original
+dump failures disappeared. Four failures absent from the older 1cm log were
+reproduced individually on a clean local-main worktree at
+`1f1b74ce6dc53fcddd59faafa9211fe252f85f38`: three committed artifact permission
+assertions and the R2 opportunity-loader reproduction test. The other 23 failures
+match the recorded 1cm failure list. No new failure was identified from these
+comparisons; test inventory differs from the older full run. Remaining failures
+are outside this bead and were left unchanged. Production behavior, protected
+surfaces, and evidence artifacts were not changed. No Linux live run or
+repository-wide coverage measurement was performed; no credentials, provider,
+dev-B, or sealed annotations were accessed.
 ### 2026-10-04 — macOS inventory nesting and bytecode preflight (3ow)
 
 Hypothesis: relying on the JSON decoder's recursion failure and on bytecode
@@ -14647,3 +14669,35 @@ pass. This comparison uses the supplied local-main baseline, not fresh remote
 ancestry evidence. Remaining baseline failures are outside this bead's scope. No live calls, credentials,
 protected annotations, scorer, split, manifest, or protocol changes. Actual
 Linux execution has not been verified on this Mac.
+
+## 2026-10-04 — exact dump filenames across host filesystems (199 rework)
+
+Hypothesis: production must establish filename presence from case-sensitive
+comparisons to directory-entry names before filesystem type checks. APFS otherwise
+loads tables skipped by the pinned Linux loader. This is a general filesystem
+mechanism change with no question-specific or database-specific behavior.
+
+Removed the rejected Path lookup fixture and glob monkeypatches. The real-file
+RED gate returned four failures, 44 passes and two explicit skips for fixtures
+requiring both case variants on a filesystem unable to store them separately.
+Production now checks names obtained with os.scandir before the existing file
+and symlink checks. Restore rejects a required case variant before database IO.
+The inherited merge committed research-log conflict markers; removed only those
+markers while preserving both ledger entries.
+
+Independent review exposed two boundary regressions introduced by directory
+listing: absent/non-directory audit roots and non-directory restore roots.
+Three new tests failed before correction, then passed. The audit preserves its
+all-skipped report for unavailable roots; restore translates listing errors into
+DatabaseOperationError. Final focused validation: 52 passed and two explicit
+APFS skips. Independent re-review repeated the focused tests and Ruff checks
+with no remaining findings. The initial full-suite run was interrupted after
+review changed source; the final-tree gate uses a fresh run.
+
+The completed final-tree full suite reported 19 failed, 2,802 passed and
+41 skipped. JUnit failure IDs are a subset of the lead’s exact 24-ID baseline
+on local main 0940e66; all five targeted dump failures disappeared and zero
+new failures appeared. Logs and XML remain outside the repository under
+/tmp/omni-199-rework-final.*. The 19 unrelated baseline failures remain outside
+this bead. No Linux execution, repository-wide coverage measurement, provider
+access, protected data, merge or push was performed.
