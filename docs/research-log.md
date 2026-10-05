@@ -15412,3 +15412,23 @@ Ruff check and format check passed after all code changes. The frozen tests
 were neither edited nor skipped. Skipped local PostgreSQL integration was
 covered by the separate synthetic-server gate; unavailable dump/run artifacts
 remain untested in this checkout.
+
+## 2026-10-05 — Synchronize client cancellation test (omni-benchmark-fyzv)
+
+Hypothesis: the fixed 30 ms fake-query sleep races the real 10 ms timer under
+Mac scheduler load. Blocking the fake query on an Event released only by
+connection cancellation should make this offline test deterministic without
+changing PostgreSQL execution behavior. This is test infrastructure only,
+with no evaluated runtime intervention. Before editing, all 28
+experiments/**/*freeze*.json records were checked recursively: none references
+tests/test_postgres_execution.py or its current SHA-256.
+
+The baseline failed on isolated run 19 with DID NOT RAISE. The synchronized
+test passed 50/50 fresh isolated pytest processes. The 21-test execution gate
+passed with 92.16% branch-aware coverage of postgres_execution.py. Disabling
+the timer in an offline negative control made the test fail after its bounded
+Event wait. Timeout SQLSTATE, statement index, cancellation, rollback, no
+commit, and cursor cleanup remain asserted. Repository Ruff check, format
+check, and diff check passed. No production source, frozen scorer, protocol,
+provider, credentials, dev-B, or sealed data was changed or accessed; no full
+suite or real PostgreSQL run was performed for this test-only change.
