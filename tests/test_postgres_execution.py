@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-import time
+from collections.abc import Mapping
+from threading import Event
 
 import pytest
 
@@ -13,7 +14,11 @@ from omni_benchmark.postgres_execution import (
     PostgreSQLExecutionError,
     execute_query_sequence,
 )
-from tests.execution_fixtures import SyntheticConnection, SyntheticDatabaseError
+from tests.execution_fixtures import (
+    SyntheticConnection,
+    SyntheticDatabaseError,
+    SyntheticResponse,
+)
 
 
 def test_sequence_uses_official_timeout_and_returns_only_last_statement_rows() -> None:
@@ -182,14 +187,28 @@ def test_rollback_failure_is_not_swallowed_and_is_infrastructure_owned() -> None
     assert captured.value.kind == "infrastructure"
 
 
-class SlowCursorConnection(SyntheticConnection):
+class CancellationBlockingConnection(SyntheticConnection):
+    def __init__(
+        self,
+        responses: Mapping[str, SyntheticResponse],
+        events: list[tuple[object, ...]],
+    ) -> None:
+        super().__init__(responses, events)
+        self._cancelled = Event()
+
+    def cancel_safe(self) -> None:
+        super().cancel_safe()
+        self._cancelled.set()
+
     def cursor(self):  # type: ignore[no-untyped-def]
         cursor = super().cursor()
         original_execute = cursor.execute
 
         def execute(sql: str) -> None:
             if sql == "SELECT slow_operation":
-                time.sleep(0.03)
+                assert self._cancelled.wait(timeout=5), (
+                    "Client cancellation did not arrive"
+                )
             original_execute(sql)
 
         cursor.execute = execute  # type: ignore[method-assign]
@@ -198,7 +217,9 @@ class SlowCursorConnection(SyntheticConnection):
 
 def test_client_wall_clock_cancellation_cannot_be_disabled_by_sql() -> None:
     events: list[tuple[object, ...]] = []
-    connection = SlowCursorConnection({"SELECT slow_operation": [(1,)]}, events)
+    connection = CancellationBlockingConnection(
+        {"SELECT slow_operation": [(1,)]}, events
+    )
 
     with pytest.raises(PostgreSQLExecutionError) as captured:
         execute_query_sequence(
@@ -208,4 +229,9 @@ def test_client_wall_clock_cancellation_cannot_be_disabled_by_sql() -> None:
         )
 
     assert captured.value.kind == "timeout"
-    assert ("cancel_safe",) in events
+    assert captured.value.sqlstate == "57014"
+    assert captured.value.statement_index == 0
+    assert events.count(("cancel_safe",)) == 1
+    assert events.count(("rollback",)) == 1
+    assert ("commit",) not in events
+    assert events[-1] == ("cursor_close",)
