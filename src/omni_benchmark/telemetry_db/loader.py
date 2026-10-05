@@ -21,10 +21,11 @@ from .custody import (
     load_split_ids,
     reject_forbidden_fields,
 )
-from .generation_rows import instance_of_attempt_id
+from .generation_rows import optional_instance_of_attempt_id
 from .readers import (
     SourceBatch,
     read_arms,
+    read_credits,
     read_deployments,
     read_dev_a,
     read_labels,
@@ -47,6 +48,8 @@ TABLE_LOAD_ORDER = (
     "action_evidence",
     "sealed_aggregate",
     "attempt_label",
+    "credit_period",
+    "arm_cost",
 )
 
 
@@ -82,6 +85,14 @@ class Sources:
     @property
     def labels_dir(self) -> Path:
         return self.repo_root / "experiments" / "labels"
+
+    @property
+    def analysis_dir(self) -> Path:
+        return self.repo_root / "experiments" / "analysis"
+
+    @property
+    def credit_scopes_path(self) -> Path:
+        return self.repo_root / "config" / "telemetry_db" / "credit_scopes.json"
 
     @property
     def sealed_dir(self) -> Path:
@@ -144,6 +155,11 @@ def _read_batches(sources: Sources, split: SplitIds) -> list[SourceBatch]:
     batches = [
         release.batch,
         read_deployments(sources.deployments_dir, repo_root=sources.repo_root),
+        read_credits(
+            sources.analysis_dir,
+            repo_root=sources.repo_root,
+            scopes_path=sources.credit_scopes_path,
+        ),
     ]
     if sources.include_dev_a:
         batches.append(
@@ -205,28 +221,25 @@ def _merge_rows(batches: list[SourceBatch]) -> tuple[dict[str, tuple[Row, ...]],
 def _guard_custody(
     rows: Mapping[str, tuple[Row, ...]], split: SplitIds
 ) -> dict[str, Any]:
-    """Re-check every merged row before anything reaches a connection.
-
-    Scores and labels must name dev-A instances, every label must point at an
-    attempt in the same load, and no attempt may belong to any split other than
-    dev-A or the sealed test split.
-    """
     scanned = 0
     for table, table_rows in rows.items():
         for row in table_rows:
             key = tuple(row.values[column] for column in row.spec.primary_key)
             reject_forbidden_fields(dict(row.values), f"{table} row {key}")
             scanned += 1
+    attempt_instances = _attempt_instances(rows.get("attempt", ()))
     for table in ("score", "attempt_label"):
         for row in rows.get(table, ()):
-            context = f"{table} row {row.values['attempt_id']}"
-            instance = instance_of_attempt_id(str(row.values["attempt_id"]), context)
+            attempt_id = str(row.values["attempt_id"])
+            context = f"{table} row {attempt_id}"
+            embedded = optional_instance_of_attempt_id(attempt_id, context)
+            if embedded is not None:
+                assert_dev_a_instance(embedded, split, context)
+            key = (row.values["attempt_id"], row.values["generation_record_sha256"])
+            instance = attempt_instances.get(key)
+            if instance is None:
+                raise LoaderError(f"{table} row {key} names no loaded attempt")
             assert_dev_a_instance(instance, split, context)
-    attempt_keys = _attempt_keys_of(rows.get("attempt", ()))
-    for row in rows.get("attempt_label", ()):
-        key = (row.values["attempt_id"], row.values["generation_record_sha256"])
-        if key not in attempt_keys:
-            raise LoaderError(f"attempt_label row {key} names no loaded attempt")
     for row in rows.get("attempt", ()):
         instance = str(row.values["instance_id"])
         if instance not in split.dev_a and instance not in split.test:
@@ -245,10 +258,16 @@ def _guard_custody(
 
 
 def _attempt_keys_of(rows: tuple[Row, ...]) -> frozenset[tuple[str, str]]:
-    return frozenset(
-        (row.values["attempt_id"], row.values["generation_record_sha256"])
+    return frozenset(_attempt_instances(rows))
+
+
+def _attempt_instances(rows: tuple[Row, ...]) -> dict[tuple[Any, Any], str]:
+    return {
+        (row.values["attempt_id"], row.values["generation_record_sha256"]): str(
+            row.values["instance_id"]
+        )
         for row in rows
-    )
+    }
 
 
 def load_all(

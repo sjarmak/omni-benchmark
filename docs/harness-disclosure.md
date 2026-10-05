@@ -499,7 +499,13 @@ one attempt as the difference between a read taken immediately before the job is
 submitted and a read taken immediately after it terminates. A measured bracket
 records the delta with `cost_source: "credit_usage_delta"`. The mechanism is
 opt-in: with no `OMNI_COST_BRACKET_LEASE_DIR` configured, the attempt record is
-what it was before, unchanged field for field.
+what it was before, unchanged field for field. Every governed run recorded so far
+took that unconfigured path, which is why per-attempt cost is NULL across C4, C5,
+E02 and the R2 arms. The variable is documented in `.env.example`, but
+`baseline_batch_cli` and `r2_live_executor` do not forward
+`OMNI_COST_BRACKET_LEASE_DIR` through their child environment allowlists today.
+A bracketed-cost run (r5a, Stephanie's) needs launcher support first; setting the
+variable in the parent environment alone does not enable those attempt children.
 
 Three conditions have to hold for a delta to mean anything, and each is enforced
 in code rather than assumed:
@@ -530,3 +536,8 @@ provider attributes to that attempt.
 Cost is not backfilled for C1-C4. The counter is cumulative and those attempts are
 past, so no read taken now can recover their individual cost, and the rerun policy
 forbids re-running a trial to collect it. Their cost column stays unavailable.
+What the account spent is a separate question and is answerable: the period
+reading and its proportional per-arm allocation load into the telemetry database
+as `telemetry.credit_period` (`basis = measured_account_period`) and
+`telemetry.arm_cost` (`basis = proportional_estimate`, with an upper bound).
+Measured at account level, estimated at arm level, unmeasured per attempt.

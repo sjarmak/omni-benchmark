@@ -14,6 +14,7 @@ from typing import Any, Mapping
 
 from ..custody import CustodyError, read_id_file
 from .arms import ArmMapping, read_arms
+from .credit_readers import read_credits
 from .custody import (
     DEV_A_IDS_FILENAME,
     DEV_B_IDS_FILENAME,
@@ -53,6 +54,7 @@ __all__ = [
     "ReleasedQuestion",
     "SourceBatch",
     "read_arms",
+    "read_credits",
     "read_deployments",
     "read_dev_a",
     "read_labels",

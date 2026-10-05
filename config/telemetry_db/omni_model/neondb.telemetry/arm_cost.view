@@ -1,0 +1,69 @@
+label: Arm cost
+description: >-
+  Derived allocation of a period's measured spend across the scopes that ran in
+  it. Every figure here is an estimate. cost_usd uses the recorded proportional
+  rate, which allocates account spend across all AI conversations and assumes
+  one conversation per attempt. cost_usd_upper uses the recorded upper rate,
+  which allocates all account spend across recorded benchmark attempts,
+  including spend from unattributed conversations. Both rates are rounded in
+  the source artifact and assume attempts cost the same. Rows with a null arm are spend that produced no attempt
+  rows (aborted pilots, probes, validation). This view does not join to
+  attempts; joining it would multiply an arm-level estimate across attempt rows.
+  Report it beside a measured figure, never as one.
+catalog: neondb
+schema: telemetry
+table_name: arm_cost
+
+dimensions:
+  period_start:
+    description: Billing period this allocation divides, joins conceptually to credit_period.
+  scope:
+    description: >-
+      Spend scope as written in the recorded breakdown, naming the run it
+      covers.
+  arm:
+    description: >-
+      Arm the scope covers (C4, C5, E02), or null when the spend produced no
+      attempt rows.
+  partition:
+    description: dev-a or test, null for spend with no attempts.
+  basis:
+    description: >-
+      Always proportional_estimate. It marks every cost figure in this view as
+      derived rather than measured.
+  omni_attempts:
+    description: Attempts recorded for this scope.
+  usd_per_attempt:
+    description: Period-wide proportional estimate, dollars per Omni-routed attempt.
+  usd_per_attempt_upper:
+    description: Upper-bound dollars per attempt, charging unattributed conversations to the benchmark.
+  cost_usd:
+    description: usd_per_attempt times omni_attempts. An estimate.
+  cost_usd_upper:
+    description: usd_per_attempt_upper times omni_attempts. An estimate.
+  source_artifact:
+    description: Committed breakdown artifact this allocation came from.
+  source_artifact_sha256:
+    description: sha256 of that artifact.
+  note:
+    description: Scope note recorded in the breakdown.
+
+measures:
+  estimated_usd:
+    aggregate_type: sum
+    sql: ${cost_usd}
+    description: Estimated spend across the selected scopes. Derived, not measured.
+  estimated_usd_upper:
+    aggregate_type: sum
+    sql: ${cost_usd_upper}
+    description: Upper-bound estimated spend across the selected scopes.
+  attempts:
+    aggregate_type: sum
+    sql: ${omni_attempts}
+    description: Attempts the selected scopes recorded.
+
+custom_compound_primary_key_sql:
+  [
+    "${neondb_telemetry__arm_cost.period_start}",
+    "${neondb_telemetry__arm_cost.scope}"
+  ]

@@ -100,6 +100,8 @@ def _validate_record_identity(record: Mapping[str, Any], context: str) -> None:
             raise ReaderError(f"{context}: {key} must be a non-empty string")
     if not isinstance(record.get("repetition"), int):
         raise ReaderError(f"{context}: repetition must be an integer")
+    if ":" not in record["attempt_id"]:
+        return
     segments = record["attempt_id"].split(":")
     if len(segments) != ATTEMPT_ID_SEGMENTS:
         raise ReaderError(f"{context}: attempt_id must have four ':' segments")
@@ -114,6 +116,12 @@ def instance_of_attempt_id(attempt_id: str, context: str) -> str:
     if len(segments) != ATTEMPT_ID_SEGMENTS:
         raise ReaderError(f"{context}: attempt_id {attempt_id!r} is malformed")
     return segments[1]
+
+
+def optional_instance_of_attempt_id(attempt_id: str, context: str) -> str | None:
+    if ":" not in attempt_id:
+        return None
+    return instance_of_attempt_id(attempt_id, context)
 
 
 def parse_timestamp(value: Any, context: str) -> datetime | None:

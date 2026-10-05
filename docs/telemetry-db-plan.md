@@ -40,7 +40,14 @@ reconciliation query. C5 and E02 records carry `condition: C4` because their
 scaffold is unchanged, so condition alone cannot separate them. `run.arm` is
 NULL for the two multi-condition runs (`public-baseline-v1-direct-16db` and
 `-continuation-1`, which mix C1, C2 and C3), which is why no query may group by
-it. R2-C5B and R2-M1 land as further arms when that frozen study executes.
+it. R2-C5B and R2-M1 loaded on 2026-09-02 from
+`experiments/autoresearch/raw/r2-public-evidence-measures-v2` (runs
+`r2-c5b-generation-v2` and `r2-m1-generation-v2`, 136 attempts each). Those two
+arms are a separate paired study over 136 dev-A questions, a superset of both
+matched frames (122 official, 121 sensitivity). The frozen R2 rollup in
+`experiments/analysis/r2-paired-outcomes-v3.json` is over all 136; a query that
+filters `dev_a_frame` puts R2 on the same questions as C1 through E02 and so
+returns different counts than the freeze. Report which set a number is over.
 
 ## Loader
 
@@ -152,7 +159,21 @@ the loaded database.
 
    C1 to C3 match the README cost table. The governed arms store
    `cost_unavailable_reason = omni_job_api_does_not_expose_cost`, so their
-   telemetry cost is NULL and the measure stays NULL rather than dividing zero.
+   per-attempt cost is NULL and the measure stays NULL rather than dividing
+   zero. That is a gap in per-attempt attribution, not in cost: Omni bills AI
+   usage in credits worth a dollar each, and the recorded account reading for
+   2026-08 ($635.30 over 703 recorded Omni-routed attempts) loads into
+   `neondb_telemetry__credit_period` with `basis = measured_account_period`.
+   `neondb_telemetry__arm_cost` uses the recorded rounded proportional rate
+   ($0.6839 per attempt), which divides account spend across all 929 AI
+   conversations and assumes one conversation per attempt. The upper rate
+   ($0.9037) divides all account spend across the 703 recorded attempts,
+   charging the 226 unattributed conversations to the benchmark. Both are
+   flagged `basis = proportional_estimate`. Governed-arm cost is therefore reportable at arm level as an
+   estimate and unmeasured per attempt; the bracketing path that would measure
+   it per attempt (`omni_credit_cost`, gated on `OMNI_COST_BRACKET_LEASE_DIR`)
+   was not armed for these runs. Do not join `arm_cost` to attempts: it would
+   multiply an arm-level estimate across attempt rows.
 
 3. Terminal failure class distribution by arm (sealed test attempts). Table
    `neondb_telemetry__attempt`, fields `attempt.partition`, `attempt.arm`,

@@ -56,6 +56,8 @@ EXPECTED_COUNTS = {
     "action_evidence": 2,
     "sealed_aggregate": 4,
     "attempt_label": 0,
+    "credit_period": 1,
+    "arm_cost": 2,
 }
 DIRECT_ATTEMPT = "direct-run:alpha_large_Q1:C1:1"
 
@@ -239,6 +241,19 @@ def test_guard_custody_refuses_rows_outside_their_split(
     row = _keyed(table, f"run:{instance}:C1:1", **extra)
     with pytest.raises(CustodyViolation, match=match):
         _guard_custody({table: (row,)}, SPLIT)
+
+
+def test_guard_custody_resolves_an_opaque_attempt_id_through_its_attempt() -> None:
+    opaque = "r2attempt-0123456789abcdef01234567"
+    score = _keyed("score", opaque, scorer="official_soft_ex")
+    with pytest.raises(LoaderError, match="names no loaded attempt"):
+        _guard_custody({"score": (score,)}, SPLIT)
+    outside = _keyed("attempt", opaque, instance_id=DEV_B_INSTANCE)
+    with pytest.raises(CustodyViolation, match="not in the dev-A split"):
+        _guard_custody({"attempt": (outside,), "score": (score,)}, SPLIT)
+    inside = _keyed("attempt", opaque, instance_id="alpha_large_Q1")
+    tally = _guard_custody({"attempt": (inside,), "score": (score,)}, SPLIT)
+    assert tally["score_rows_checked_against_split"] == 1
 
 
 def test_guard_custody_ties_labels_to_attempts_and_scans_values() -> None:
