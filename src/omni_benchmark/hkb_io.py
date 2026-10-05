@@ -48,10 +48,19 @@ def _open_directory_path(path: Path) -> list[int]:
         current = os.open(absolute.anchor, _DIRECTORY_FLAGS)
         descriptors.append(current)
         for component in absolute.parts[1:]:
-            current = os.open(component, _DIRECTORY_FLAGS, dir_fd=current)
+            try:
+                current = os.open(component, _DIRECTORY_FLAGS, dir_fd=current)
+            except OSError as error:
+                metadata = os.stat(component, dir_fd=current, follow_symlinks=False)
+                if stat.S_ISLNK(metadata.st_mode):
+                    raise HKBFileSafetyError(
+                        f"{path} must be a regular non-symlink file: "
+                        f"ancestor {component} is a symlink"
+                    ) from error
+                raise
             descriptors.append(current)
         return descriptors
-    except OSError:
+    except (OSError, HKBFileSafetyError):
         _close_all(descriptors)
         raise
 

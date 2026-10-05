@@ -15347,3 +15347,26 @@ stage only when its last record ended with exit 0 and every declared output
 exists. Stages run through an injected runner; a test asserts the module
 imports no dispatch, execution, sealed, custody, scoring or Freeze B module.
 No real stage argv yet (B2), no cohort finalization (B3), no live call.
+## 2026-10-04 — bounded reader ancestor diagnostics (omni-benchmark-nsc3)
+
+Hypothesis: naming the symlinked directory component in a bounded-read refusal
+makes macOS temporary-path failures actionable without weakening no-follow
+reads. This is a general filesystem diagnostic change, with no benchmark or
+question-specific behavior. The target file has no references in tracked JSON
+freeze records. The base focused gate passed 13 tests. GitHub code search was
+unavailable because this worker has no gh authentication; the existing
+descriptor-relative no-follow implementation remains the approach.
+
+Both regression cases failed on the old generic message, then passed after
+adding descriptor-relative, no-follow metadata inspection on a failed directory
+open. The successful read path is unchanged. The focused gate passed 15 tests
+and repository Ruff checks passed. Independent review actively verified final
+symlink rejection and descriptor cleanup under injected failures, with no
+findings. No protected data or provider access was performed.
+
+The first full-suite pass exposed two schema callers that require the existing
+`regular non-symlink` message category. The pass was stopped at roughly 75%
+while correcting that regression. A stricter regression assertion failed twice
+before the fix; the final message appends the ancestor detail to the existing
+category. All 36 HKB, scoring, schema-inspection and schema-source tests pass,
+and repository Ruff checks remain clean. A fresh final-tree suite follows.

@@ -9,8 +9,31 @@ from omni_benchmark.hkb_io import (
     HKBFileSafetyError,
     publish_flat_files,
     publish_nested_files,
+    read_regular_file,
     read_relative_regular_file,
 )
+
+
+@pytest.mark.parametrize("dangling", [False, True])
+def test_regular_reader_names_symlinked_ancestor(
+    tmp_path: Path, dangling: bool
+) -> None:
+    root = tmp_path.resolve()
+    target = root / "target"
+    if not dangling:
+        target.mkdir()
+        (target / "source.json").write_text("safe")
+    ancestor = root / "linked-parent"
+    ancestor.symlink_to(target, target_is_directory=True)
+
+    with pytest.raises(
+        HKBFileSafetyError,
+        match="regular non-symlink file: ancestor linked-parent is a symlink",
+    ):
+        read_regular_file(ancestor / "source.json", maximum_bytes=10)
+
+    if not dangling:
+        assert read_regular_file(target / "source.json", maximum_bytes=10) == b"safe"
 
 
 @pytest.mark.parametrize(
