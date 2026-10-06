@@ -12,9 +12,14 @@ ones.
   headline estimates unseen-question performance inside a modeled database, not
   cold-start performance on an unmodeled one.
   \item \textbf{Supervision.} The protocol permitted offline use of training
-  failures and training gold. The executed final candidate used neither, and the
-  metered partition was never consumed, so the reported system is the frozen
-  mechanical baseline rather than a tuned one.
+  failures and gold only for the 154 \texttt{dev-A} questions. The other 77
+  development questions form guardian-only \texttt{dev-B}: their labels and
+  annotations never enter the workspace, and only signed aggregate checkpoint
+  receipts may inform development. Public-only baseline generation over all 231
+  development questions does not authorize local access to their hidden labels.
+  The executed final candidate used no question-level supervision, and the
+  metered \texttt{dev-B} partition was never consumed, so the reported system is
+  the frozen mechanical baseline rather than a tuned one.
   \item \textbf{Contamination.} The benchmark is public. The maintainers' design
   claim cannot rule out post-release model exposure, and this project cannot
   inspect training provenance. Paired within-question contrasts are less

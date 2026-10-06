@@ -104,9 +104,14 @@ identifier as untrusted free text can reject legitimate public metadata.
 
 \subsection{The development baseline}
 
-The 630-attempt direct baseline was frozen by content hash before the train-only
-gold release. Its exact development intersection contains 420 attempts over 140
-of the 154 development questions; 14 questions have no baseline output and were
+The protocol specified public-only baseline generation over all 231 development
+questions before hidden-label release. Only the 154 \texttt{dev-A} records may
+be released locally for scoring and offline diagnosis; the 77 \texttt{dev-B}
+labels and annotations remain guardian-only, with only signed aggregate
+checkpoint receipts permitted into development. No \texttt{dev-B} checkpoint
+was consumed. The executed 630-attempt direct baseline was frozen by content
+hash before the \texttt{dev-A}-only gold release. Its exact development
+intersection contains 420 attempts over 140 of the 154 \texttt{dev-A} questions; 14 questions have no baseline output and were
 left missing rather than backfilled. Gold conformance left 122 questions per
 condition scoreable under the official scorer, and 121 under the sensitivity
 scorer, which retained one fewer result that exceeded its fixed normalization
@@ -170,7 +175,7 @@ Optimization on the development partition is the part of an evaluation most
 likely to leak, to overfit, or to be narrated favorably afterward, so it was
 constrained by a control plane whose records are append-only and whose failed
 experiments therefore remain in the record. Routine optimization received a
-derived public view containing only the 154 development identifiers and never a
+derived public view containing only the 154 \texttt{dev-A} identifiers and never a
 checkpoint or held-out outcome. Generation artifacts may carry generated SQL or a
 governed query, latency, token and cost observations, non-secret tool failures,
 and the semantic-object identifiers the system used; they may not carry gold SQL,

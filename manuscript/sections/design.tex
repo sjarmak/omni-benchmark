@@ -87,9 +87,11 @@ and missing-row categories.
 
 \paragraph{Information tiers.}
 Table~\ref{tab:tiers} states what may be used where. The governing rule is that
-hidden training annotations could influence a reusable system under the protocol
-but may never become question-specific runtime input. The executed final
-candidate does not use that supervision. Development
+hidden \texttt{dev-A} annotations could influence a reusable system under the
+protocol but may never become question-specific runtime input. Hidden
+\texttt{dev-B} labels and annotations remain guardian-only; development may
+receive only signed aggregate checkpoint receipts. The executed final
+candidate does not use that supervision. \texttt{dev-A}
 \texttt{external\_knowledge} identifiers are privileged diagnostic-oracle
 metadata: they may be consulted \emph{after} a prediction, to test whether the
 required public HKB nodes were represented, whether dependencies compiled, and
@@ -110,7 +112,8 @@ ablation.
 Information & Development use & Runtime use & Held-out \\
 \midrule
 Public schema, HKB, column meanings, questions & Allowed & Allowed & Frozen \\
-Hidden train SQL, test cases, knowledge identifiers & Offline supervision only & Prohibited & Frozen \\
+Hidden \texttt{dev-A} SQL, test cases, knowledge identifiers & Offline supervision only & Prohibited & Frozen \\
+Hidden \texttt{dev-B} SQL, test cases, knowledge identifiers & Guardian only; signed aggregates & Prohibited & Frozen \\
 Hidden test SQL, test cases, knowledge identifiers & Prohibited & Prohibited & Sealed evaluator only \\
 \bottomrule
 \end{tabular}
@@ -120,12 +123,13 @@ Hidden test SQL, test cases, knowledge identifiers & Prohibited & Prohibited & S
 The complete private attachment stays under human custody outside the repository
 and outside any agent-accessible workspace; its SHA-256 is computed without
 displaying or parsing its contents. Only after the split commit exists may a
-custodian-run extraction emit exactly the 231 training records into an ignored
-directory. The release tool verifies the canonical train identifiers and split
-metadata against the externally recorded pre-gold commit rather than the mutable
-current branch, rejects sources inside the workspace, refuses overwrites, writes
-mode \texttt{0600}, and reports only counts and hashes. It never releases the 101
-held-out records. Logs may contain identifiers, hashes, counts, status codes, and
+custodian-run extraction emit only the 154 \texttt{dev-A} records into the
+ignored \texttt{data/private/dev-a/} directory. The release tool verifies the
+canonical \texttt{dev-A} identifiers and development-split metadata against the
+externally recorded Freeze A commit rather than the mutable current branch,
+rejects sources inside the workspace, refuses overwrites, writes mode
+\texttt{0600}, and reports only counts and hashes. It releases neither the 77
+\texttt{dev-B} records nor the 101 held-out records. Logs may contain identifiers, hashes, counts, status codes, and
 aggregate scores, never hidden SQL, hidden knowledge identifiers, or test-case
 bodies.
 
@@ -146,9 +150,11 @@ Before hidden training annotations are released, a public-only baseline is
 preserved: transform public schema, column meanings, and HKB into the semantic
 layer deterministically; validate the model structurally; freeze the mechanical
 transformation revision and model artifacts; generate baseline outputs on all 231
-development questions; and only then release train annotations for scoring and
-failure analysis. This separates initial transformation quality from any
-improvement that might have been obtained through supervision. The baseline may be scored once its immutable
+development questions; and only then release \texttt{dev-A} annotations for
+local scoring and failure analysis. Under the protocol, \texttt{dev-B} outputs may be scored only
+by the guardian, returning signed aggregate checkpoint receipts; no such
+checkpoint was consumed in the executed study. This separates initial
+transformation quality from any improvement that might have been obtained through supervision. The baseline may be scored once its immutable
 outputs exist, but may never be regenerated retrospectively. The protocol
 permitted supervision on development questions, but the executed final system is
 the frozen mechanical baseline and receives no question-level supervision. It is
